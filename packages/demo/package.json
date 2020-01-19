@@ -1,0 +1,35 @@
+{
+  "name": "@ui-schema/demo",
+  "private": true,
+  "version": "0.0.0",
+  "description": "",
+  "homepage": "",
+  "author": "Michael Becker <michael@bemit.codes>",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "files": [
+    "css",
+    "es",
+    "lib",
+    "umd"
+  ],
+  "dependencies": {
+    "@material-ui/core": "^4.8",
+    "@material-ui/icons": "^4.5",
+    "@ui-schema/ds-material": "*",
+    "@ui-schema/ui-schema": "*",
+    "prop-types": "^15.7.2",
+    "react": "^16.12",
+    "react-dom": "^16.12",
+    "react-error-boundary": "^1.2.5",
+    "react-helmet": "^5.2.1",
+    "react-immutable-editor": "^0.5.1",
+    "react-router": "^5.1.2",
+    "scheduler": "^0.18.0"
+  },
+  "scripts": {},
+  "devDependencies": {
+    "react-router-dom": "^5.1.2"
+  }
+}

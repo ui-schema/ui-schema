@@ -1,0 +1,25 @@
+{
+  "name": "@ui-schema/ui-schema",
+  "version": "0.0.0",
+  "description": "",
+  "homepage": "",
+  "author": "Michael Becker <michael@bemit.codes>",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "files": [
+    "css",
+    "es",
+    "lib",
+    "umd"
+  ],
+  "dependencies": {
+    "immutable": "^4.0.0-rc.12",
+    "react-error-boundary": "^1.2.5"
+  },
+  "peerDependencies": {
+    "react": "^16.8"
+  },
+  "scripts": {
+  }
+}

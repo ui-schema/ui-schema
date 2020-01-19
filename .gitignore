@@ -1,0 +1,25 @@
+# env variables
+.env
+
+# default upload dir
+/upload
+
+# default tmp dir
+/tmp
+/dist
+
+# Composer
+/vendor
+
+# NodeJS
+node_modules
+
+# Mac
+.DS_Store
+
+#
+## JetBrains IDE's
+
+.idea/
+*.iml
+*.iws

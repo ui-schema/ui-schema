@@ -1,0 +1,23 @@
+{
+  "name": "@ui-schema/ds-material",
+  "version": "0.0.0",
+  "description": "",
+  "homepage": "",
+  "author": "Michael Becker <michael@bemit.codes>",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "files": [
+    "es",
+    "lib"
+  ],
+  "dependencies": {
+    "@ui-schema/ui-schema": "*",
+    "react-id-generator": "^3.0.0"
+  },
+  "peerDependencies": {
+    "@material-ui/core": "^4.8",
+    "@material-ui/icons": "^4.5",
+    "react": "^16.8"
+  }
+}

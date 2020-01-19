@@ -1,0 +1,61 @@
+image: bemiteu/webbuild
+
+#
+# Defaults
+
+options:
+  max-time: 15
+
+clone:
+  depth: 1
+
+#
+## Reusable Steps, define only one step per var (thus no hyphen)
+
+build: &build
+  step:
+    name: Build
+    caches:
+      - node
+    script:
+      - npm i --loglevel verbose
+      - npm run hoist
+      - npm run build
+      - cp -r ./tools/server_nodejs/* ./dist/demo
+      - cd ./dist/demo
+      - zip -r demo.zip .
+      - cd ../../
+      - mv ./dist/demo/demo.zip .
+    artifacts:
+      - packages/ds-material/**
+      - packages/ui-schema/**
+      - demo.zip
+
+artifactSaveBranch: &artifactSaveBranch
+  step:
+    name: Artifact Save Branch
+    script:
+      - cp demo.zip demo_${BITBUCKET_BRANCH}.zip
+      - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"demo_${BITBUCKET_BRANCH}.zip"
+
+artifactSaveBuild: &artifactSaveBuild
+  step:
+    name: Artifact Save Build
+    script:
+      - cp demo.zip demo_${BITBUCKET_BUILD_NUMBER}.zip
+      - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"demo_${BITBUCKET_BUILD_NUMBER}.zip"
+
+#
+## Actual Pipeline
+
+pipelines:
+  default:
+    - <<: *build
+    - parallel:
+        - <<: *artifactSaveBranch
+        - <<: *artifactSaveBuild
+
+definitions:
+  caches:
+    node: ui/node_modules
+    composer: node/vendor
