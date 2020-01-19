@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - 12
+
+install:
+  - npm i
+  - npm run hoist
+script:
+  - npm run build
