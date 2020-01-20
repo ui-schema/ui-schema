@@ -3,7 +3,7 @@ const path = require('path');
 const {delDir} = require('./tools');
 const {paths, packRoot} = require('../config');
 const {buildEsModules} = require('./babel');
-const {startWebpack, serveWebpack} = require('./webpack');
+const {buildWebpack, serveWebpack} = require('./webpack');
 const symlinkDir = require('symlink-dir');
 const {packages, packagesNames} = require('./webpack.packages');
 const {demoBuild, demoServe} = require('./webpack.demo');
@@ -63,7 +63,7 @@ if(-1 !== process.argv.indexOf('--serve')) {
                 // console.log(c.module.rules);
                 // console.log(Object.keys(c.entry));
             });
-            startWebpack(configs);
+            buildWebpack(configs);
         })
         .catch(err => {
             console.error(err);

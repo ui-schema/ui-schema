@@ -31,27 +31,32 @@ function serveWebpack(config) {
     });
 }
 
-function startWebpack(config) {
+function buildWebpack(config, cb) {
     webpack(config, (err, stats) => {
         if(err) {
             console.error(err.stack || err);
             if(err.details) {
                 console.error(err.details);
             }
-            return;
+            process.exit(1);
         }
 
         if(stats.hasErrors()) {
             logStats(stats);
-            throw new Error('Compilation has errors!');
+            console.error('Compilation has errors!');
+            process.exit(1);
         } else if(stats.hasWarnings()) {
             logStats(stats);
-            throw new Error('Compilation has warnings!');
+            console.error('Compilation has warnings!');
+            process.exit(1);
         } else {
             logStats(stats);
+            if(cb) {
+                cb();
+            }
         }
     });
 }
 
-exports.startWebpack = startWebpack;
+exports.buildWebpack = buildWebpack;
 exports.serveWebpack = serveWebpack;
