@@ -1,12 +1,9 @@
 'use strict';
 
 const path = require('path');
-const fs = require('fs');
 const isWsl = require('is-wsl');
 const TerserPlugin = require('terser-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const EsmWebpackPlugin = require("@purtuga/esm-webpack-plugin");
-const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 
 function getConfig({
                        context,
@@ -243,34 +240,7 @@ function getConfig({
     return config;
 }
 
-const babelPresets = [
-    /*[
-        '@babel/preset-env',
-        {
-            //"modules": 'amd',
-            "targets": {
-                "esmodules": true
-            },
-            loose: true,
-        },
-    ],*/
-    ['@babel/preset-react', {loose: true}],
-    //'@babel/preset-flow',
-];
-const babelPlugins = [
-    "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-transform-react-jsx",
-    "@babel/plugin-proposal-export-namespace-from",
-    //["@babel/plugin-transform-runtime", {"useESModules": true}],
-    ['@babel/plugin-proposal-object-rest-spread', {
-        useBuiltIns: true,
-    },],
-    ['@babel/plugin-proposal-class-properties', {loose: true}],
-    //"transform-es2015-template-literals",
-    //"es6-promise",
-];
-
-function getPackageConfig(context, entry, dist, library, libraryTarget, resolve, externals) {
+function getPackageConfig(context, entry, dist, library, libraryTarget, resolve, externals, babelPresets, babelPlugins,) {
     const config = getConfig({
         context,
         mode: 'production',
@@ -306,23 +276,5 @@ function getPackageConfig(context, entry, dist, library, libraryTarget, resolve,
     return config;
 }
 
-function getPackageBuilders(context, entry, dist, library, resolve, externals) {
-    const builders = [];
-
-    builders.push(getPackageConfig(context, entry, path.resolve(dist, 'lib'), false, false, resolve, externals));
-
-    //builders.push(getPackageConfig(context, entry, path.resolve(dist, 'es'), library, 'assign', resolve, externals, true));
-    //builders.push(getPackageConfig(context, entry, path.resolve(dist, 'es'), false, false, resolve, externals));
-
-    return builders;
-}
-
-const buildExternal = (common, amd) => {
-    return common;
-};
-
 exports.getConfig = getConfig;
-exports.getPackageBuilders = getPackageBuilders;
-exports.buildExternal = buildExternal;
-exports.babelPlugins = babelPlugins;
-exports.babelPresets = babelPresets;
+exports.getPackageConfig = getPackageConfig;

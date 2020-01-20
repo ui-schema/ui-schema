@@ -1,6 +1,5 @@
 const path = require('path');
-const {buildExternal} = require('./packer/webpack.common');
-const {spawn} = require('cross-spawn');
+const {buildExternal} = require('./packer/tools');
 
 const paths = {
     demo: {
@@ -10,7 +9,7 @@ const paths = {
         port: 4200,
         main: path.resolve(__dirname, 'packages', 'demo/src/index.js'),
         dist: path.resolve(__dirname, 'dist', 'demo'),
-        servedPath: '/'// todo: make homepage dependent
+        servedPath: '/'// todo: make package.json homepage dependent
     },
     packages: {
         uiSchema: {
@@ -21,9 +20,9 @@ const paths = {
             root: path.resolve(__dirname, 'packages', 'ds-material'),
             entry: path.resolve(__dirname, 'packages', 'ds-material/src/'),
             externals: {
-                "@ui-schema/ui-schema": buildExternal("commonjs @ui-schema/ui-schema", "UISchema"),
-                "@material-ui/core": buildExternal("commonjs @material-ui/core", "MaterialUiCore"),
-                "@material-ui/icons": buildExternal("commonjs @material-ui/icons", "MaterialUiIcons"),
+                "@ui-schema/ui-schema": buildExternal("@ui-schema/ui-schema"),
+                "@material-ui/core": buildExternal("@material-ui/core"),
+                "@material-ui/icons": buildExternal("@material-ui/icons"),
             }
         },
     }
@@ -45,12 +44,7 @@ const packSrc = Object.keys(paths.packages).map(pack => {
 
 const packRoot = Object.keys(paths.packages).map(pack => paths.packages[pack].root);
 
-const spawnBabel = (args) => {
-    return spawn(require.resolve('./node_modules/.bin/babel'), args, {stdio: 'inherit'});
-};
-
 exports.packMods = packMods;
 exports.packEs = packEs;
 exports.packSrc = packSrc;
 exports.packRoot = packRoot;
-exports.spawnBabel = spawnBabel;

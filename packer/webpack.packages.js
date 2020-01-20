@@ -1,21 +1,39 @@
 'use strict';
 
 const path = require('path');
-const {buildExternal, getPackageBuilders} = require('./webpack.common');
+const {getPackageConfig} = require('./webpack.common');
 const {paths} = require('../config');
+const {buildExternal} = require('./tools');
 
-const externals = {
-    react: buildExternal("commonjs react", "React"),
-    "react-dom": buildExternal("commonjs react-dom", "ReactDOM"),
+const defaultExternals = {
+    react: buildExternal("react"),
+    "react-dom": buildExternal("react-dom"),
 };
+
+const babelPresets = [
+    ['@babel/preset-react', {loose: true}],
+];
+const babelPlugins = [
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-transform-react-jsx",
+    "@babel/plugin-proposal-export-namespace-from",
+    ['@babel/plugin-proposal-object-rest-spread', {useBuiltIns: true,},],
+    ['@babel/plugin-proposal-class-properties', {loose: true}],
+];
+
+function getPackageBuilders(context, entry, dist, library, resolve, externals) {
+    const builders = [];
+    builders.push(getPackageConfig(context, entry, path.resolve(dist, 'lib'), library, false, resolve, externals, babelPresets, babelPlugins));
+    return builders;
+}
 
 const packages = [];
 
 Object.keys(paths.packages).forEach(pack => {
-    let extern = {...externals};
+    let externals = {...defaultExternals};
     if(paths.packages[pack].externals) {
-        extern = {
-            ...externals,
+        externals = {
+            ...defaultExternals,
             ...paths.packages[pack].externals
         }
     }
@@ -30,7 +48,7 @@ Object.keys(paths.packages).forEach(pack => {
             path.resolve(paths.packages[pack].root, 'node_modules'),
         ],
         {
-            ...extern
+            ...externals
         },
     ));
 });
@@ -38,3 +56,5 @@ Object.keys(paths.packages).forEach(pack => {
 exports.packages = packages;
 exports.packagesNames = Object.keys(paths.packages);
 exports.buildExternal = buildExternal;
+exports.babelPresets = babelPresets;
+exports.babelPlugins = babelPlugins;

@@ -4,12 +4,13 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const path = require('path');
 const {getConfig} = require('./webpack.common');
+const {buildEnv} = require('./tools');
 const {paths, packMods, packEs, packSrc} = require('../config');
 
 const demoCommon = {
     context: paths.demo.root,
     entry: {
-        react: ["react", "react-dom"],
+        vendors: ['react', 'react-dom', 'react-error-boundary', 'immutable', '@material-ui/core', '@material-ui/icons'],
         main: paths.demo.main,
     },
     output: {
@@ -21,14 +22,14 @@ const demoCommon = {
     babelPresets: [
         '@babel/preset-env',
         '@babel/preset-react',
-        //'@babel/preset-flow',
     ],
     babelPlugins: [
         "@babel/plugin-syntax-dynamic-import",
         "@babel/plugin-transform-react-jsx",
-        "@babel/plugin-transform-runtime",
+        "@babel/plugin-proposal-export-namespace-from",
         "@babel/plugin-proposal-object-rest-spread",
         "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-transform-runtime",
         "transform-es2015-template-literals",
         "es6-promise",
     ],
@@ -86,11 +87,15 @@ const demoCommon = {
         ),
 
         // doesnt work with v4 of HtmlWebpackPlugin, but we need HtmlWebpackPlugin for the code splitting it seems
-        //new InterpolateHtmlPlugin(HtmlWebpackPlugin, env.raw),
+        //new InterpolateHtmlPlugin(HtmlWebpackPlugin, buildEnv(paths.demo.servedPath).raw),
     ],
     splitChunks: true,
     devtool: 'cheap-module-source-map',
 };
+
+//
+// Config for serving demo app with live-building packages
+//
 
 const demoServe = {...demoCommon};
 
@@ -111,10 +116,14 @@ const demoServeConfig = getConfig(demoServe, [
     ...packSrc,
 ]);
 
-//demoServeConfig.optimization.runtimeChunk = "single";
+demoServeConfig.optimization.runtimeChunk = "single";
 demoServeConfig.optimization.namedModules = true;
 
 exports.demoServe = demoServeConfig;
+
+//
+// Config for building demo app
+//
 
 const demoBuild = {...demoCommon};
 
@@ -128,6 +137,5 @@ demoBuild.plugins.push(new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+
 
 const demoBuildConfig = getConfig(demoBuild);
 
-//const demoBuildConfig = getConfig(demoBuild, packEs);
 demoBuildConfig.optimization.runtimeChunk = "single";
 exports.demoBuild = demoBuildConfig;
