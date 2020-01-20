@@ -1,9 +1,17 @@
 language: node_js
 node_js:
   - 12
-
 install:
   - npm i
   - npm run hoist
 script:
   - npm run build
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: bash echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc && npm run publish -- --yes && rm ~/.npmrc
+    on:
+      tags: true
+env:
+  global:
+    secure: Sob0fPMr4lNMf6YjOp8SSgeTZQWex8YSDnlF9AF4i1gvRhuPVNfwcPMziQuVhZbluvUITWpXg4j5+m3k8gFjz+VjcomG7ngk77x1bb0ue2VU/ZVI7ZFLCXpoU/YpIcO8Tofha0UwZm0XoXyp+KTYzuSOMVMq8bCad0RrZCnJ6rGfqhRraaDbuoUCLv6rOL43CIFRLUqu7L6tiXkSQqw6cZiBKPnviUMhzPBuHqN29kalhz16s/iTJegW26PSpAYxbUMZiFa4Gp9b7zQSW5HaXtJ4Q9xpYMmj9/hosRyOFgk22V539M+Gi61TBRLn1506vxYrBi9bIB6IAnDppcP9ZoZmbUtfuLiq/JMY5ojsLM0HcfFUIXLhnP7YyycacDtL5ZNXOfU5ecQ1ObdLTcvCoZc/TdZUleb8bzxFmd1Fl/ZH1UZXu6imXN+FtaAL+yNXr2wyfKVqoUZFGVTzPbujEWmXGnaJ7yZvVxfKtBuTw3DPxT5b/tjnyrYlOD/KF8vD03SBwiTy+NhZjbofZb1JZ9o+hwHeNR6DiAcLjKvrE1rOget3teCwhvdYc8KgOAiS99JfRyaF4W2ABKvSVxC44LlGN9y+9PGSy0MvHwIaUHqA67G95uDHO7HJnfxJSk1pAhIr5v5fegw+plvdexpBeyxCdoxyfSWJ5vMfg8omBe4=

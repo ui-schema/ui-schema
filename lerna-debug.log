@@ -1,0 +1,28 @@
+0 silly argv { _: [ 'version' ],
+0 silly argv   lernaVersion: '3.20.2',
+0 silly argv   '$0': 'node_modules\\lerna\\cli.js' }
+1 notice cli v3.20.2
+2 verbose rootPath E:\#\bemit\ui-schema
+3 info current version 0.0.0
+4 silly isAnythingCommitted
+5 verbose isAnythingCommitted 1
+6 silly currentBranch
+7 verbose currentBranch master
+8 silly remoteBranchExists
+9 silly isBehindUpstream
+10 error Error: Command failed: git remote update
+10 error git@github.com: Permission denied (publickey).
+10 error fatal: Could not read from remote repository.
+10 error
+10 error Please make sure you have the correct access rights
+10 error and the repository exists.
+10 error error: Could not fetch origin
+10 error
+10 error Fetching origin
+10 error
+10 error     at makeError (E:\#\bemit\ui-schema\node_modules\execa\index.js:174:9)
+10 error     at Function.module.exports.sync (E:\#\bemit\ui-schema\node_modules\execa\index.js:338:15)
+10 error     at Object.execSync (E:\#\bemit\ui-schema\node_modules\@lerna\child-process\index.js:26:16)
+10 error     at updateRemote (E:\#\bemit\ui-schema\node_modules\@lerna\version\lib\is-behind-upstream.js:26:16)
+10 error     at isBehindUpstream (E:\#\bemit\ui-schema\node_modules\@lerna\version\lib\is-behind-upstream.js:11:3)
+10 error     at VersionCommand.initialize (E:\#\bemit\ui-schema\node_modules\@lerna\version\index.js:150:9)

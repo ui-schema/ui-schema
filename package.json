@@ -12,7 +12,8 @@
     "clean": "npm run clean-dist && lerna clean -y",
     "clean-dist": "node packer/packer.js --clean",
     "bootstrap": "lerna bootstrap",
-    "hoist": "lerna bootstrap --hoist"
+    "hoist": "lerna bootstrap --hoist",
+    "publish": "lerna publish from-package --no-git-reset"
   },
   "author": "",
   "license": "MIT",

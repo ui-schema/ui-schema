@@ -2,12 +2,10 @@
 
 JSON-Schema form + ui generator for any design system, first-class support for [Material Design React UI](https://material-ui.com).
 
-![Travis (.org) branch](https://img.shields.io/travis/ui-schema/ui-schema/master?style=flat-square) ![react compatibility](https://img.shields.io/badge/React-%3E%3D16.8-success?style=flat-square&logo=react)
+[![Travis (.org) branch](https://img.shields.io/travis/ui-schema/ui-schema/master?style=flat-square)](https://travis-ci.org/ui-schema/ui-schema) [![react compatibility](https://img.shields.io/badge/React-%3E%3D16.8-success?style=flat-square&logo=react)](https://reactjs.org/)
 
-- @ui-schema/ui-schema ![npm (scoped)](https://img.shields.io/npm/v/ui-schema/ui-schema?style=flat-square) 
-- @ui-schema/ds-material ![npm (scoped)](https://img.shields.io/npm/v/ui-schema/ds-material?style=flat-square) 
-
-develop ![Travis (.org) branch](https://img.shields.io/travis/ui-schema/ui-schema/develop?style=flat-square)
+- @ui-schema/ui-schema [![npm (scoped)](https://img.shields.io/npm/v/ui-schema/ui-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ui-schema) 
+- @ui-schema/ds-material [![npm (scoped)](https://img.shields.io/npm/v/ui-schema/ds-material?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-material)
 
 >
 > ⚠️Work in progress!
