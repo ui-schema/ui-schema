@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ImmutableEditor from "../component/ImmutableEditor";
-import {useSchemaEditor} from "@ui-schema/ui-schema/src";
+import {useSchemaEditor} from "@ui-schema/ui-schema";
 
 const SchemaDebug = () => {
     const {store, schema, setData, setSchema} = useSchemaEditor();

@@ -1,21 +1,10 @@
 'use strict';
 
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const InterpolateHtmlPlugin = require('interpolate-html-plugin');
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const path = require('path');
 const {getConfig} = require('./webpack.common');
-const {paths} = require('../config');
-const {env} = require('./webpack');
-
-const packMods = Object.keys(paths.packages).map(pack => {
-    return path.resolve(paths.packages[pack].root, 'node_modules');
-});
-
-const packSrc = Object.keys(paths.packages).map(pack => {
-    return path.resolve(paths.packages[pack].root, 'src');
-});
+const {paths, packMods, packEs, packSrc} = require('../config');
 
 const demoCommon = {
     context: paths.demo.root,
@@ -29,6 +18,20 @@ const demoCommon = {
         chunkFilename: 'assets/[name].chunk.js',
         futureEmitAssets: true,
     },
+    babelPresets: [
+        '@babel/preset-env',
+        '@babel/preset-react',
+        //'@babel/preset-flow',
+    ],
+    babelPlugins: [
+        "@babel/plugin-syntax-dynamic-import",
+        "@babel/plugin-transform-react-jsx",
+        "@babel/plugin-transform-runtime",
+        "@babel/plugin-proposal-object-rest-spread",
+        "@babel/plugin-proposal-class-properties",
+        "transform-es2015-template-literals",
+        "es6-promise",
+    ],
     rules: [{
         test: /\.(jpe?g|png|gif)$/i,
         exclude: /node_modules/,
@@ -103,7 +106,10 @@ demoServe.devServer = {
     port: paths.demo.port
 };
 
-const demoServeConfig = getConfig(demoServe, packSrc);
+const demoServeConfig = getConfig(demoServe, [
+    ...packEs,
+    ...packSrc,
+]);
 
 //demoServeConfig.optimization.runtimeChunk = "single";
 demoServeConfig.optimization.namedModules = true;
@@ -120,6 +126,8 @@ demoBuild.plugins = [...demoBuild.plugins];
 // https://github.com/facebook/create-react-app/issues/5358
 demoBuild.plugins.push(new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]));
 
-const demoBuildConfig = getConfig(demoBuild, packSrc);
+const demoBuildConfig = getConfig(demoBuild);
+
+//const demoBuildConfig = getConfig(demoBuild, packEs);
 demoBuildConfig.optimization.runtimeChunk = "single";
 exports.demoBuild = demoBuildConfig;

@@ -5,19 +5,22 @@
   "homepage": "",
   "author": "Michael Becker <michael@bemit.codes>",
   "license": "MIT",
-  "main": "lib/index.js",
-  "module": "es/index.js",
+  "main": "./lib/index.js",
+  "module": "./es/index.js",
   "files": [
     "es",
     "lib"
   ],
+  "devDependencies": {
+    "react": "^16.12"
+  },
   "dependencies": {
-    "@ui-schema/ui-schema": "*",
     "react-id-generator": "^3.0.0"
   },
   "peerDependencies": {
     "@material-ui/core": "^4.8",
     "@material-ui/icons": "^4.5",
+    "@ui-schema/ui-schema": "*",
     "react": "^16.8"
   }
 }

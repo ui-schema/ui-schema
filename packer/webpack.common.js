@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+const fs = require('fs');
 const isWsl = require('is-wsl');
 const TerserPlugin = require('terser-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
@@ -17,12 +18,15 @@ function getConfig({
                        performance = {
                            hints: 'warning'
                        },
+                       babelPresets = [],
+                       babelPlugins = [],
                        resolve = [],
                        plugins = [],
                        externals = {},
                        splitChunks = false,
                        devServer = false,
                        devtool = false,
+                       modules = false,
                    } = {},
                    include = []) {
     const config = {
@@ -56,11 +60,10 @@ function getConfig({
                         loader: "babel-loader",
                         options: {
                             presets: [
-                                '@babel/preset-env',
-                                '@babel/preset-react'
+                                ...babelPresets,
                             ],
                             plugins: [
-                                [
+                                /*[
                                     require.resolve('babel-plugin-named-asset-import'),
                                     {
                                         loaderMap: {
@@ -70,7 +73,8 @@ function getConfig({
                                             },
                                         },
                                     },
-                                ],
+                                ],*/
+                                ...babelPlugins,
                             ],
                             // This is a feature of `babel-loader` for webpack (not Babel itself).
                             // It enables caching results in ./node_modules/.cache/babel-loader/
@@ -236,34 +240,60 @@ function getConfig({
         config.devtool = devtool;
     }
 
-    /*const smp = new SpeedMeasurePlugin();
-    return smp.wrap(config);*/
     return config;
 }
+
+const babelPresets = [
+    /*[
+        '@babel/preset-env',
+        {
+            //"modules": 'amd',
+            "targets": {
+                "esmodules": true
+            },
+            loose: true,
+        },
+    ],*/
+    ['@babel/preset-react', {loose: true}],
+    //'@babel/preset-flow',
+];
+const babelPlugins = [
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-transform-react-jsx",
+    "@babel/plugin-proposal-export-namespace-from",
+    //["@babel/plugin-transform-runtime", {"useESModules": true}],
+    ['@babel/plugin-proposal-object-rest-spread', {
+        useBuiltIns: true,
+    },],
+    ['@babel/plugin-proposal-class-properties', {loose: true}],
+    //"transform-es2015-template-literals",
+    //"es6-promise",
+];
 
 function getPackageConfig(context, entry, dist, library, libraryTarget, resolve, externals) {
     const config = getConfig({
         context,
         mode: 'production',
-        entry: {
-            index: entry,
-        },
+        entry: {index: entry},
         output: {
             filename: '[name].js',
             path: dist,
         },
+        babelPresets,
+        babelPlugins,
         performance: {
             hints: 'warning',
             maxEntrypointSize: 500000,// 500kb
             maxAssetSize: 500000,
         },
         resolve,
-        minimize: true,
+        minimize: false,
         plugins: [
             new CleanWebpackPlugin(),
         ],
         externals,
         splitChunks: false,
+        modules: false,
     });
 
     if(library) {
@@ -271,8 +301,6 @@ function getPackageConfig(context, entry, dist, library, libraryTarget, resolve,
     }
     if(libraryTarget) {
         config.output.libraryTarget = libraryTarget;
-    } else {
-        config.plugins.push(new EsmWebpackPlugin());
     }
 
     return config;
@@ -280,21 +308,21 @@ function getPackageConfig(context, entry, dist, library, libraryTarget, resolve,
 
 function getPackageBuilders(context, entry, dist, library, resolve, externals) {
     const builders = [];
-    builders.push(getPackageConfig(context, entry, path.resolve(dist, 'lib'), library, 'commonjs', resolve, externals));
-    builders.push(getPackageConfig(context, entry, path.resolve(dist, 'es'), library, false, resolve, externals));
+
+    builders.push(getPackageConfig(context, entry, path.resolve(dist, 'lib'), false, false, resolve, externals));
+
+    //builders.push(getPackageConfig(context, entry, path.resolve(dist, 'es'), library, 'assign', resolve, externals, true));
+    //builders.push(getPackageConfig(context, entry, path.resolve(dist, 'es'), false, false, resolve, externals));
 
     return builders;
 }
 
 const buildExternal = (common, amd) => {
-    return {
-        commonjs: common,
-        commonjs2: common,
-        amd: amd,
-        root: amd
-    };
+    return common;
 };
 
 exports.getConfig = getConfig;
 exports.getPackageBuilders = getPackageBuilders;
 exports.buildExternal = buildExternal;
+exports.babelPlugins = babelPlugins;
+exports.babelPresets = babelPresets;

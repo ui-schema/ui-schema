@@ -3,7 +3,7 @@ import {
     FormControl, FormLabel, FormHelperText, FormGroup, FormControlLabel,
     Switch, Checkbox, RadioGroup, Radio,
 } from "@material-ui/core";
-import {beautifyKey, defaultSetter} from "@ui-schema/ui-schema/src";
+import {beautifyKey, defaultSetter} from "@ui-schema/ui-schema";
 import {useId} from "react-id-generator";
 
 const BoolRenderer = ({lastKey, schema, value, setData, storeKeys}) => {

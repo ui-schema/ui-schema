@@ -3,7 +3,7 @@ import {
     FormControl, FormHelperText, Checkbox, InputLabel,
     MenuItem, Select as MuiSelect, ListItemText,
 } from "@material-ui/core";
-import {beautifyKey, defaultSetter} from "@ui-schema/ui-schema/src";
+import {beautifyKey, defaultSetter} from "@ui-schema/ui-schema";
 import {List} from "immutable";
 
 const Select = ({

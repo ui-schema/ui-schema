@@ -5,14 +5,15 @@
   "homepage": "",
   "author": "Michael Becker <michael@bemit.codes>",
   "license": "MIT",
-  "main": "lib/index.js",
-  "module": "es/index.js",
+  "main": "./lib/index.js",
+  "module": "./es/index.js",
   "files": [
-    "css",
-    "es",
     "lib",
-    "umd"
+    "es"
   ],
+  "devDependencies": {
+    "react": "^16.12"
+  },
   "dependencies": {
     "immutable": "^4.0.0-rc.12",
     "react-error-boundary": "^1.2.5"

@@ -6,15 +6,16 @@ import {data1, schema1, schemaUser} from "../_schema1";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Orders from "../ds/material-ui/dashboard/Orders";
-import {widgets} from "@ui-schema/ds-material/src";
-import {SchemaEditor} from "@ui-schema/ui-schema/src";
+import {widgets,} from "@ui-schema/ds-material";
+import {SchemaEditor} from "@ui-schema/ui-schema";
 import {SchemaDebug} from "../component/SchemaDebug";
 
 const user = {};
 
 const Main = ({classes = {}}) => {
+    if(!SchemaEditor) return null;
+
     return <React.Fragment>
-        {/* Recent Orders */}
         <Grid item xs={12}>
             <Paper className={classes.paper}>
                 <SchemaEditor
@@ -29,7 +30,6 @@ const Main = ({classes = {}}) => {
         <Grid item xs={12}>
             <Paper className={classes.paper}>
                 <Grid container spacing={3} justify={'center'}>
-                    {/* Recent Orders */}
                     <Grid item xs={12} md={6}>
                         <SchemaEditor
                             schema={schemaUser}
@@ -42,7 +42,6 @@ const Main = ({classes = {}}) => {
                 </Grid>
             </Paper>
         </Grid>
-        {/* Recent Orders */}
         <Grid item xs={12}>
             <Paper className={classes.paper}>
                 <Orders/>
@@ -50,6 +49,7 @@ const Main = ({classes = {}}) => {
         </Grid>
     </React.Fragment>
 };
+
 const MaterialUi = () => {
     return <AppTheme>
         <Dashboard main={Main}/>

@@ -5,16 +5,16 @@ const {buildExternal, getPackageBuilders} = require('./webpack.common');
 const {paths} = require('../config');
 
 const externals = {
-    react: buildExternal("react", "React"),
-    "react-dom": buildExternal("react-dom", "ReactDOM"),
+    react: buildExternal("commonjs react", "React"),
+    "react-dom": buildExternal("commonjs react-dom", "ReactDOM"),
 };
 
 const packages = [];
 
 Object.keys(paths.packages).forEach(pack => {
-    let ex = {...externals};
+    let extern = {...externals};
     if(paths.packages[pack].externals) {
-        ex = {
+        extern = {
             ...externals,
             ...paths.packages[pack].externals
         }
@@ -22,15 +22,15 @@ Object.keys(paths.packages).forEach(pack => {
 
     packages.push(...getPackageBuilders(
         paths.packages[pack].root,
-        paths.packages[pack].main,
+        paths.packages[pack].entry,
         paths.packages[pack].root,
         pack,
         [
-            'node_modules',
+            path.resolve(__dirname, '../', 'node_modules'),
             path.resolve(paths.packages[pack].root, 'node_modules'),
         ],
         {
-            ...ex
+            ...extern
         },
     ));
 });

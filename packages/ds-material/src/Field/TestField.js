@@ -3,7 +3,7 @@ import {
     TextField
 } from "@material-ui/core";
 import {unstable_trace as trace} from "scheduler/tracing";
-import {beautifyKey} from "@ui-schema/ui-schema/src";
+import {beautifyKey} from "@ui-schema/ui-schema";
 
 const StringRenderer = ({type, lastKey, schema, value, multiline, rows, rowsMax, setData, storeKeys}) => {
     const format = schema.get('format');
