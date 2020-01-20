@@ -1,6 +1,7 @@
-import {NumberRenderer, StringRenderer, TextRenderer} from "./Field/TestField";
-import {Select, SelectMulti} from "./Field/Select";
-import {BoolRenderer, OptionsCheck, OptionsRadio} from "./Field/Options";
+import {NumberRenderer, StringRenderer, TextRenderer} from "./Widgets/TestField";
+import {Select, SelectMulti} from "./Widgets/Select";
+import {BoolRenderer, OptionsCheck, OptionsRadio} from "./Widgets/Options";
+import {Stepper, Step} from "./Widgets/Stepper";
 import {RootRenderer, GroupRenderer, WidgetRenderer} from "./Grid";
 
 const widgets = {
@@ -19,6 +20,8 @@ const widgets = {
         OptionsRadio,
         Select,
         SelectMulti,
+        Stepper,
+        Step,
     },
 };
 

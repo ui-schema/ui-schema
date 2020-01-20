@@ -109,55 +109,55 @@ Match by `type` in schema and each type component must handle its own formats:
 
 | Type         | Format      | Component            | Material-UI | Bootstrap | ? |
 | :---         | :---        | :---                 | ---: | ---: | ---: | 
-| `string`     | -           | [Normal Text Input](packages/docs/TextField.md)    | ☑ | 🔲 | 🔲 |
-| `string`     | `date`      | Date Input           | ☑ | 🔲 | 🔲 |
-| `string`     | `date-time` | Date+Time Input      | 🔲 | 🔲 | 🔲 |
-| `string`     | `time`      | Time Input           | 🔲 | 🔲 | 🔲 |
-| `string`     | `email`     | Email Input          | 🔲 | 🔲 | 🔲 |
-| `string`     | `tel`       | Tel. No. Input       | 🔲 | 🔲 | 🔲 |
-| `number`     | -           | Number Input         | ☑ | 🔲 | 🔲 |
-| `bool` or `boolean` | -    | Toggle Input (true/false) | ☑ | 🔲 | 🔲 |
-| `object`     | -           | Native Objects       | ☑ | 🔲 | 🔲 |
+| `string`     | -           | [Normal Text Input](packages/docs/TextField.md)    | ⬛ | ⬜ | ⬜ |
+| `string`     | `date`      | Date Input           | ⬛ | ⬜ | ⬜ |
+| `string`     | `date-time` | Date+Time Input      | ⬜ | ⬜ | ⬜ |
+| `string`     | `time`      | Time Input           | ⬜ | ⬜ | ⬜ |
+| `string`     | `email`     | Email Input          | ⬜ | ⬜ | ⬜ |
+| `string`     | `tel`       | Tel. No. Input       | ⬜ | ⬜ | ⬜ |
+| `number`     | -           | Number Input         | ⬛ | ⬜ | ⬜ |
+| `bool` or `boolean` | -    | Toggle Input (true/false) | ⬛ | ⬜ | ⬜ |
+| `object`     | -           | Native Objects       | ⬛ | ⬜ | ⬜ |
 | `array`      | -           | only supported through widgets | - | - | - |
 
 Included widgets (match by `widget` in schema), each widget could have multiple types and formats:
 
 | Widget     | Component | Expected Type(s) | Formats | Material-UI | Bootstrap | ? |
 | :---       | :----     | ---: | ---: | ---: | ---: | ---: |
-| StringList | multiple strings as list  | `array<string>` | - | 🔲 | 🔲 | 🔲 |
-| Text       | multiline text input  | `string` | - | ☑ | 🔲 | 🔲 |
-| TextRich   | multiline rich text editor | `string` or `array` or `object` | **`html`** or `md` | 🔲 | 🔲 | 🔲 |
-| TextRichInline | single-line rich text editor | `string` or `array` or `object` | **`html`** or `md` | 🔲 | 🔲 | 🔲 |
-| Code       | text editor with syntax highlight | `string` or `array` or `object` | *multiple* | 🔲 | 🔲 | 🔲 |
-| Color      | color input  | `string` | - | 🔲 | 🔲 | 🔲 |
-| File       | single file selector  | `object` | - | 🔲 | 🔲 | 🔲 |
-| Files      | multiple files selector  | `object` | - | 🔲 | 🔲 | 🔲 |
-| Folder     | single folder selector  | `object` | - | 🔲 | 🔲 | 🔲 |
-| Folders    | multiple folder selector  | `object` | - | 🔲 | 🔲 | 🔲 |
-| MediaImage | single/multiple image selector, may enable embed of external (like from youtube) | `object` | - | 🔲 | 🔲 | 🔲 |
-| MediaVideo | single/multiple video selector, may enable embed of external | `object` | - | 🔲 | 🔲 | 🔲 |
-| MediaAudio | single/multiple audio selector, may enable embed of external | `object` | - | 🔲 | 🔲 | 🔲 |
-| MediaGallery | multiple media files selector, may enable embed of external | `object` | - | 🔲 | 🔲 | 🔲 |
-| Table      | table editor  | `object` or `string` | - | 🔲 | 🔲 | 🔲 |
-| Grid       | drag-drop grid  | `object` | - | 🔲 | 🔲 | 🔲 |
-| GenericList | list with sub-schema  | `array` | - | 🔲 | 🔲 | 🔲 |
-| Card | card with headline and any sub-schema  | `array` or `object` | - | 🔲 | 🔲 | 🔲 |
-| ExpansionPanel | list headlines and sub-schema  | `array` or `object` | - | 🔲 | 🔲 | 🔲 |
-| Step       | list with sub-schema as steppers | `array` or `object` | - | 🔲 | 🔲 | 🔲 |
-| Tabs       | list with sub-schema as tabs | `array` or `object` | - | 🔲 | 🔲 | 🔲 |
-| BoolIcon   |   | `bool` | - | 🔲 | 🔲 | 🔲 |
-| OptionsCheck | group of checkboxes  | `array` | - | ☑ | 🔲 | 🔲 |
-| OptionsRadio | group of radio buttons  | `string` | - | ☑ | 🔲 | 🔲 |
-| Select     |  select one out of n | `string` | - | ☑ | 🔲 | 🔲 |
-| SelectMulti  |   | `array` (`List`) | - | ☑ | 🔲 | 🔲 |
-| [SelectGroup](https://material-ui.com/components/selects/#grouping)  |   | `array` | - | 🔲 | 🔲 | 🔲 |
-| Dialog     | sub-schema as dialog | `object` | - | 🔲 | 🔲 | 🔲 |
-| TransferList | double select list | `array` or `object` | - | 🔲 | 🔲 | 🔲 |
-| NumberSlider | slider as input | `int` | - | 🔲 | 🔲 | 🔲 |
+| StringList | multiple strings as list  | `array<string>` | - | ⬜ | ⬜ | ⬜ |
+| Text       | multiline text input  | `string` | - | ⬛ | ⬜ | ⬜ |
+| TextRich   | multiline rich text editor | `string` or `array` or `object` | **`html`** or `md` | ⬜ | ⬜ | ⬜ |
+| TextRichInline | single-line rich text editor | `string` or `array` or `object` | **`html`** or `md` | ⬜ | ⬜ | ⬜ |
+| Code       | text editor with syntax highlight | `string` or `array` or `object` | *multiple* | ⬜ | ⬜ | ⬜ |
+| Color      | color input  | `string` | - | ⬜ | ⬜ | ⬜ |
+| File       | single file selector  | `object` | - | ⬜ | ⬜ | ⬜ |
+| Files      | multiple files selector  | `object` | - | ⬜ | ⬜ | ⬜ |
+| Folder     | single folder selector  | `object` | - | ⬜ | ⬜ | ⬜ |
+| Folders    | multiple folder selector  | `object` | - | ⬜ | ⬜ | ⬜ |
+| MediaImage | single/multiple image selector, may enable embed of external (like from youtube) | `object` | - | ⬜ | ⬜ | ⬜ |
+| MediaVideo | single/multiple video selector, may enable embed of external | `object` | - | ⬜ | ⬜ | ⬜ |
+| MediaAudio | single/multiple audio selector, may enable embed of external | `object` | - | ⬜ | ⬜ | ⬜ |
+| MediaGallery | multiple media files selector, may enable embed of external | `object` | - | ⬜ | ⬜ | ⬜ |
+| Table      | table editor  | `object` or `string` | - | ⬜ | ⬜ | ⬜ |
+| Grid       | drag-drop grid  | `object` | - | ⬜ | ⬜ | ⬜ |
+| GenericList | list with sub-schema  | `array` | - | ⬜ | ⬜ | ⬜ |
+| Card | card with headline and any sub-schema  | `array` or `object` | - | ⬜ | ⬜ | ⬜ |
+| ExpansionPanel | list headlines and sub-schema  | `array` or `object` | - | ⬜ | ⬜ | ⬜ |
+| Step       | list with sub-schema as steppers | `array` or `object` | - | ⬜ | ⬜ | ⬜ |
+| Tabs       | list with sub-schema as tabs | `array` or `object` | - | ⬜ | ⬜ | ⬜ |
+| BoolIcon   |   | `bool` | - | ⬜ | ⬜ | ⬜ |
+| OptionsCheck | group of checkboxes  | `array` | - | ⬛ | ⬜ | ⬜ |
+| OptionsRadio | group of radio buttons  | `string` | - | ⬛ | ⬜ | ⬜ |
+| Select     |  select one out of n | `string` | - | ⬛ | ⬜ | ⬜ |
+| SelectMulti  |   | `array` (`List`) | - | ⬛ | ⬜ | ⬜ |
+| [SelectGroup](https://material-ui.com/components/selects/#grouping)  |   | `array` | - | ⬜ | ⬜ | ⬜ |
+| Dialog     | sub-schema as dialog | `object` | - | ⬜ | ⬜ | ⬜ |
+| TransferList | double select list | `array` or `object` | - | ⬜ | ⬜ | ⬜ |
+| NumberSlider | slider as input | `int` | - | ⬜ | ⬜ | ⬜ |
 
 ... more to follow
 
-- ☑ only means some working example is existing during the current dev-state.
+- ⬛ only means some working example is existing during the current dev-state.
 
 ## Contributing
 

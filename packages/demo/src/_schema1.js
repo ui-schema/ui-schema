@@ -5,6 +5,57 @@ const schema1 = {
         sizeMd: 6,
     },*/
     properties: {
+        stepper: {
+            type: "object",
+            widget: "Stepper",
+            properties: {
+                'step-1': {
+                    type: "object",
+                    properties: {
+                        name: {
+                            type: "string",
+                            view: {
+                                sizeMd: 6,
+                            }
+                        },
+                        surname: {
+                            type: "string",
+                            view: {
+                                sizeMd: 6
+                            }
+                        },
+                    }
+                },
+                'step-2': {
+                    type: "object",
+                    widget: "Step",
+                    properties: {
+                        topics: {
+                            type: "string",
+                            widget: "SelectMulti",
+                            view: {
+                                sizeMd: 3
+                            },
+                            enum: [
+                                'theater',
+                                'crime',
+                                'sci-fi',
+                                'horror',
+                            ],
+                        },
+                    }
+                },
+                'step-3': {
+                    type: "object",
+                    widget: "Step",
+                    properties: {
+                        accepted: {
+                            type: "boolean",
+                        },
+                    }
+                },
+            }
+        },
         headline: {
             type: "string",
             view: {

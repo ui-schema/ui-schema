@@ -9,7 +9,7 @@ import {useId} from "react-id-generator";
 const BoolRenderer = ({lastKey, schema, value, setData, storeKeys}) => {
 
     React.useEffect(() => {
-        defaultSetter(value, schema, setData, storeKeys, false);
+        defaultSetter(value, schema, setData, storeKeys);
     }, [value, setData, storeKeys, schema]);
 
     const currentVal = typeof value !== 'undefined' ? value : (schema.get('default') || false);
@@ -45,7 +45,7 @@ const OptionsCheck = ({lastKey, required, schema, value, setData, storeKeys}) =>
     if(!enum_val) return null;
 
     React.useEffect(() => {
-        defaultSetter(value, schema, setData, storeKeys, false);
+        defaultSetter(value, schema, setData, storeKeys);
     }, [value, setData, storeKeys, schema]);
 
     return <FormControl required={required.contains(lastKey)} error={false} component="fieldset">
@@ -78,7 +78,7 @@ const OptionsRadio = ({lastKey, required, schema, value, setData, storeKeys}) =>
 
     const currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '');
     React.useEffect(() => {
-        defaultSetter(value, schema, setData, storeKeys, false);
+        defaultSetter(value, schema, setData, storeKeys);
     }, [value, setData, storeKeys, schema]);
 
     return <FormControl required={required.contains(lastKey)} error={false} component="fieldset">

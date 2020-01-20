@@ -1,8 +1,8 @@
-const defaultSetter = (value, schema, setData, storeKeys, fallback) => {
+const defaultSetter = (value, schema, setData, storeKeys) => {
     if(typeof value === 'undefined') {
         let default_val = schema.get('default');
         if(typeof default_val !== "undefined") {
-            setData(storeKeys, (default_val || fallback))
+            setData(storeKeys, default_val)
         }
     }
 };

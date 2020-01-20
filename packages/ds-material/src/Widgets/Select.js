@@ -23,7 +23,7 @@ const Select = ({
     }
 
     React.useEffect(() => {
-        defaultSetter(value, schema, setData, storeKeys, false);
+        defaultSetter(value, schema, setData, storeKeys);
     }, [value, setData, storeKeys, schema]);
 
     return <FormControl required={required.contains(lastKey)} error={false}>

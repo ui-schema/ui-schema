@@ -39,7 +39,7 @@ function fromJSOrdered(js) {
 /**
  * Reducer Store initializer, either creates new immutable nested maps or uses provided (e.g. to connect multiple with each other)
  *
- * @todo for connect multiple schema editors it must be possible to either pass childStore or also storeKeys down
+ * @todo should defaults resolved at this point and not through using the reducer? could nested defaults at objects lead to mismatched data (wrong execution order)?
  *
  * @param schema
  * @param data
@@ -58,7 +58,8 @@ const init = ({schema, data, widgets, storeMap, schemaMap} = {}) => {
 
 const SchemaEditorProvider = ({children, ...props} = {}) => (
 
-    // todo: add here useEffect with dependencies [schema, data, widgets] with dispatch to re-new the whole editor on prop chanegs
+    // todo: a) add here useEffect with dependencies [schema, data, widgets] with dispatch to re-new the whole editor on prop chanegs
+    // todo: b) ?
 
     <SchemaEditorContext.Provider
         value={React.useReducer(reducer, props, init)}

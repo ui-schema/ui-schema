@@ -20,7 +20,7 @@ const DumpWidgetRenderer = React.memo(({renderer: Renderer, widgetRenderer: Widg
     </ErrorBoundary>;
 });
 
-let SchemaWidgetRenderer = ({schema, required, storeKeys, level}) => {
+const SchemaWidgetRenderer = ({schema, required, storeKeys, level}) => {
     const {store, setData, widgets} = useSchemaEditor();
     const {WidgetRenderer} = widgets;
     const type = schema.get('type');
@@ -94,12 +94,15 @@ const SchemaEditorRenderer = ({schema, parentSchema, storeKeys = undefined, leve
         return null;
     }
 
+    // todo: parentSchema is only pushed down to use e.g. `required` which is in this schema level but influences to child-schema, extracting such information here?
+
     return schema ?
         // split widget/native-types from pure-object
         <DumpSwitchingRenderer
             schema={schema} parentSchema={parentSchema}
             storeKeys={storeKeys}
-            level={level} groupRenderer={GroupRenderer}
+            level={level}
+            groupRenderer={GroupRenderer}
         />
         : null;
 };
@@ -135,6 +138,27 @@ const SchemaRootRenderer = () => {
 };
 
 /**
+ * Simple nested-schema renderer, begins directly at `group`/`widget` level and reuses the context/hooks of the parent SchemaEditor
+ *
+ * @todo it should be possible to also attach on `onChange` of store
+ * @todo it should be possible to overwrite parent `widgets`
+ *
+ * @param schema
+ * @param parentSchema
+ * @param storeKeys
+ * @param level
+ * @return {*}
+ * @constructor
+ */
+const NestedSchemaEditor = ({schema, parentSchema, storeKeys, level = 0}) =>
+    <SchemaEditorRenderer
+        schema={schema}
+        parentSchema={parentSchema}
+        storeKeys={storeKeys}
+        level={level}
+    />;
+
+/**
  * Main Component to create a schema based UI generator
  *
  * @param {*} children
@@ -150,4 +174,5 @@ let SchemaEditor = ({children, ...props}) => (
 );
 SchemaEditor = React.memo(SchemaEditor);
 
-export {SchemaEditor};
+
+export {SchemaEditor, NestedSchemaEditor};
