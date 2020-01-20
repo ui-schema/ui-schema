@@ -8,6 +8,7 @@ script:
   - npm run build
 deploy:
   - provider: script
+    skip_cleanup: true
     script: bash $(echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc && npm run publish -- --yes && rm ~/.npmrc)
     on:
       tags: true
