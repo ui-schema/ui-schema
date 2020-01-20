@@ -161,8 +161,8 @@ Included widgets (match by `widget` in schema), each widget could have multiple 
 
 1. Fork/Clone Repository
 2. Install root dev-dependencies (like lerna, webpack): `npm i`
-3. Bootstrap [lerna](https://lerna.js.org/), install all dependencies: `npm run hoist`
-4. Start dev-server: `npm start`
+3. Bootstrap [lerna](https://lerna.js.org/), install all dependencies: `npm run bootstrap`
+4. Start dev-server: `npm start` (will clean-dist + symlink-es-modules + hoist)
 5. Open browser on [localhost:4200](http://localhost:4200)
 6. Explore [packages](packages)
 7. Code -> Commit -> Pull Request -> Being Awesome!

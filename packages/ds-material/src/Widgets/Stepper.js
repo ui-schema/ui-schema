@@ -2,11 +2,9 @@ import React from "react";
 import {
     makeStyles, Stepper as MuiStepper, Step as MuiStep, StepLabel, Button, Typography,
 } from "@material-ui/core";
-import {defaultSetter} from "@ui-schema/ui-schema";
+import {defaultSetter, beautifyKey, NestedSchemaEditor} from "@ui-schema/ui-schema";
 import {SchemaGridItem} from "../Grid";
 //import {OrderedMap} from 'immutable';
-import {beautifyKey} from "../../../ui-schema/src";
-import {NestedSchemaEditor} from "../../../ui-schema/src/Schema/Editor";
 
 const useStyles = makeStyles(theme => ({
     root: {
