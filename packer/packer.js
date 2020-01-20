@@ -18,7 +18,7 @@ if(-1 !== process.argv.indexOf('--serve')) {
                 .then(() => console.log('pack symlinked! from: ', pack_src, ' to: ', pack_es))
                 .catch(err => {
                     console.error('pack symlink error', err);
-                    return Promise.reject(err);
+                    process.exit(1);
                 });
         }
     });
@@ -67,6 +67,6 @@ if(-1 !== process.argv.indexOf('--serve')) {
         })
         .catch(err => {
             console.error(err);
-            return Promise.reject(err);
+            process.exit(1);
         });
 }
