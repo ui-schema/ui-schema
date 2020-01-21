@@ -2,7 +2,10 @@ language: node_js
 node_js:
   - 12
 install:
-  - bash $($(echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc) && ls ~/ && echo $(npm whoami) && rm ~/.npmrc)
+  - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+  - ls ~/
+  - echo $(npm whoami)
+  - rm ~/.npmrc
   #- npm ci
   #- npm run bootstrap
   #script:
