@@ -5,7 +5,6 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "sstart": "cross-env NODE_ENV=development node packer/packer.js --serve",
     "start": "npm run clean-dist && npm run hoist && cross-env NODE_ENV=development node packer/packer.js --serve",
     "prebuild": "npm run clean-dist && npm run hoist",
     "build": "cross-env NODE_ENV=production CI=true node packer/packer.js",
@@ -13,7 +12,7 @@
     "clean-dist": "node packer/packer.js --clean",
     "bootstrap": "lerna bootstrap",
     "hoist": "lerna bootstrap --hoist",
-    "publish": "lerna publish from-package --no-git-reset"
+    "release": "lerna publish from-package --no-git-reset"
   },
   "author": "",
   "license": "MIT",

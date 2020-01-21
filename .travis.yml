@@ -2,16 +2,18 @@ language: node_js
 node_js:
   - 12
 install:
-  - npm ci
-  - npm run bootstrap
-script:
-  - npm run build
+  - bash $($(echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc) && npm whoami && rm ~/.npmrc)
+  #- npm ci
+  #- npm run bootstrap
+  #script:
+  #- npm run build
 deploy:
   - provider: script
     skip_cleanup: true
-    script: bash $($(echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc) && ls ~/ && npm run publish -- --yes && rm ~/.npmrc)
+    script: bash $($(echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc) && npm whoami && rm ~/.npmrc)
+    #script: bash $($(echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc) && npm whoami && ls ~/ && npm run release -- --yes && rm ~/.npmrc)
     on:
       tags: true
 env:
   global:
-    secure: Sob0fPMr4lNMf6YjOp8SSgeTZQWex8YSDnlF9AF4i1gvRhuPVNfwcPMziQuVhZbluvUITWpXg4j5+m3k8gFjz+VjcomG7ngk77x1bb0ue2VU/ZVI7ZFLCXpoU/YpIcO8Tofha0UwZm0XoXyp+KTYzuSOMVMq8bCad0RrZCnJ6rGfqhRraaDbuoUCLv6rOL43CIFRLUqu7L6tiXkSQqw6cZiBKPnviUMhzPBuHqN29kalhz16s/iTJegW26PSpAYxbUMZiFa4Gp9b7zQSW5HaXtJ4Q9xpYMmj9/hosRyOFgk22V539M+Gi61TBRLn1506vxYrBi9bIB6IAnDppcP9ZoZmbUtfuLiq/JMY5ojsLM0HcfFUIXLhnP7YyycacDtL5ZNXOfU5ecQ1ObdLTcvCoZc/TdZUleb8bzxFmd1Fl/ZH1UZXu6imXN+FtaAL+yNXr2wyfKVqoUZFGVTzPbujEWmXGnaJ7yZvVxfKtBuTw3DPxT5b/tjnyrYlOD/KF8vD03SBwiTy+NhZjbofZb1JZ9o+hwHeNR6DiAcLjKvrE1rOget3teCwhvdYc8KgOAiS99JfRyaF4W2ABKvSVxC44LlGN9y+9PGSy0MvHwIaUHqA67G95uDHO7HJnfxJSk1pAhIr5v5fegw+plvdexpBeyxCdoxyfSWJ5vMfg8omBe4=
+    secure: V5yFkvl96kopueXm0eqNjrts0UT8q6QtvLqj4ZUtaHxii6W1mKqaKpllctqTcGFWLdPxR0a7NK4sBCf7ttNLloLrBZ+SnaFbYrgVi1VqI6l0Y0UcVqGxFZOFJY1C/mpQHSqVMLMwcWg7qSVGekygdPWBU4fsgcuauz6qXG/q0/DKs3/GnhWszW92wbqMsmN//SXDt1/76CC7SWQ8cnyzURtFds86oU+cy0GMNIJcvNF9p39pHo03rfxiMkk3PB30eF7TB18bL3hcvdVOBn1FTtcVrO0QUapqSNtWpxl0dnnZrMPGEVrbWAG5ZsrHwBWgEqf6FPneQnVHZ/N8bdEneEX77/e3lPTfvJNeOTbgGlYT9yEOjFKgKeEjEMa+KvhUqxeOgu+b0yDzX89YvxA65ymx0TdHeskvQpCpOUAO8zQx+khX+nfKqi7CGTOsaIgYO/pBM2INq3BenXjafqQhS9xQYumap+GCbG2St6SRPd6cMg51nkAXjFLoGvMBZNc5iIatsWv1nASuhu01pUuWMgAWxNK9+NEiu0hzNOcZSOkynQexh2KPi8sjzGsGGOV/VfrDtC4/EgJC4k1tAG/YMw4dEvxCfMxqtYk+a/z6DwMxz4jH1SVoAt6P22PXJynuojeNgKRhm/Mw4kH6sIUgqSH67NwvigJ3maTQwoNa0DU=
