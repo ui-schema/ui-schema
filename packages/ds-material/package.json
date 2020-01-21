@@ -22,5 +22,8 @@
     "@material-ui/icons": "^4.5",
     "@ui-schema/ui-schema": "*",
     "react": "^16.8"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

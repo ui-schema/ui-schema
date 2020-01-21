@@ -21,5 +21,8 @@
   "peerDependencies": {
     "react": "^16.8"
   },
-  "scripts": {}
+  "scripts": {},
+  "publishConfig": {
+    "access": "public"
+  }
 }

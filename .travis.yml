@@ -2,18 +2,15 @@ language: node_js
 node_js:
   - 12
 install:
-  - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-  - ls ~/
-  - echo $(npm whoami)
-  - rm ~/.npmrc
-  #- npm ci
-  #- npm run bootstrap
-  #script:
-  #- npm run build
+  - npm ci
+  - npm run bootstrap
+script:
+  - npm run build
 deploy:
   - provider: script
     skip_cleanup: true
-    script: bash $($(echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc) && npm whoami && rm ~/.npmrc)
+    script: bash $($(echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc) && npm run release -- --yes && rm ~/.npmrc)
+    #script: bash $($(echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc) && npm whoami && rm ~/.npmrc)
     #script: bash $($(echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc) && npm whoami && ls ~/ && npm run release -- --yes && rm ~/.npmrc)
     on:
       tags: true
