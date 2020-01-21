@@ -1,5 +1,6 @@
 # env variables
 .env
+.npmrc
 
 # default upload dir
 /upload

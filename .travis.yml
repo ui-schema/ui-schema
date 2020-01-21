@@ -9,9 +9,7 @@ script:
 deploy:
   - provider: script
     skip_cleanup: true
-    script: bash $($(echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc) && npm whoami && npm login && npm run release -- --yes && rm ~/.npmrc)
-    #script: bash $($(echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc) && npm whoami && rm ~/.npmrc)
-    #script: bash $($(echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc) && npm whoami && ls ~/ && npm run release -- --yes && rm ~/.npmrc)
+    script: bash packer/deploy.sh
     on:
       tags: true
 env:
