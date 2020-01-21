@@ -17,6 +17,8 @@ node_modules
 # Mac
 .DS_Store
 
+lerna-debug.log
+
 #
 ## JetBrains IDE's
 
