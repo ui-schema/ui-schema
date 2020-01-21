@@ -44,6 +44,9 @@ function getConfig({
                         cache: true,
                         formatter: require.resolve('react-dev-utils/eslintFormatter'),
                         eslintPath: require.resolve('eslint'),
+                        emitWarning: !(mode === 'production'),
+                        //failOnError: true,
+                        //failOnWarning: true,
                     },
                     loader: require.resolve('eslint-loader'),
                 }, {
