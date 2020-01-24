@@ -76,7 +76,11 @@ This JSON-Schema vocabulary is used:
 - `maxLength` string max. length
 - `minimum` number min. length
 - `maximum` number max. length
-
+- [conditionals](https://json-schema.org/understanding-json-schema/reference/conditionals.html)
+    - `allOf`
+    - `if`
+    - `else`
+    
 It got extended with special only-UI keywords:
 
 - `view` currently only used for the grid system

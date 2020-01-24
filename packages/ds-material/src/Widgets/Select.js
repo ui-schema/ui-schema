@@ -3,7 +3,7 @@ import {
     FormControl, FormHelperText, Checkbox, InputLabel,
     MenuItem, Select as MuiSelect, ListItemText,
 } from "@material-ui/core";
-import {beautifyKey, defaultSetter} from "@ui-schema/ui-schema";
+import {beautifyKey} from "@ui-schema/ui-schema";
 import {List} from "immutable";
 
 const Select = ({
@@ -21,10 +21,6 @@ const Select = ({
     } else {
         currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '');
     }
-
-    React.useEffect(() => {
-        defaultSetter(value, schema, setData, storeKeys);
-    }, [value, setData, storeKeys, schema]);
 
     return <FormControl required={required.contains(lastKey)} error={false}>
         <InputLabel id={"demo-simple-select-label" + lastKey}>{beautifyKey(lastKey)}</InputLabel>

@@ -3,25 +3,23 @@ import {
     FormControl, FormLabel, FormHelperText, FormGroup, FormControlLabel,
     Switch, Checkbox, RadioGroup, Radio,
 } from "@material-ui/core";
-import {beautifyKey, defaultSetter} from "@ui-schema/ui-schema";
+import {beautifyKey} from "@ui-schema/ui-schema";
 import {useId} from "react-id-generator";
 
 const BoolRenderer = ({lastKey, schema, value, setData, storeKeys}) => {
+    const currentVal = typeof value !== 'undefined' ? value : false;
 
-    React.useEffect(() => {
-        defaultSetter(value, schema, setData, storeKeys);
-    }, [value, setData, storeKeys, schema]);
-
-    const currentVal = typeof value !== 'undefined' ? value : (schema.get('default') || false);
+    //console.log(schema.get('required'));
 
     return <FormControlLabel
         control={
             <Switch
+                required={schema.get('required')}
                 checked={currentVal}
                 onChange={() => setData(storeKeys, !currentVal)}
             />
         }
-        label={beautifyKey(lastKey)}
+        label={beautifyKey(lastKey) + (schema.get('required') ? ' *' : '')}
     />;
 };
 
@@ -43,10 +41,6 @@ const OptionCheck = ({currentValue, onChange, label}) => {
 const OptionsCheck = ({lastKey, required, schema, value, setData, storeKeys}) => {
     const enum_val = schema.get('enum');
     if(!enum_val) return null;
-
-    React.useEffect(() => {
-        defaultSetter(value, schema, setData, storeKeys);
-    }, [value, setData, storeKeys, schema]);
 
     return <FormControl required={required.contains(lastKey)} error={false} component="fieldset">
         <FormLabel component="legend">{beautifyKey(lastKey)}</FormLabel>
@@ -77,9 +71,6 @@ const OptionsRadio = ({lastKey, required, schema, value, setData, storeKeys}) =>
     if(!enum_val) return null;
 
     const currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '');
-    React.useEffect(() => {
-        defaultSetter(value, schema, setData, storeKeys);
-    }, [value, setData, storeKeys, schema]);
 
     return <FormControl required={required.contains(lastKey)} error={false} component="fieldset">
         <FormLabel component="legend">{beautifyKey(lastKey)}</FormLabel>

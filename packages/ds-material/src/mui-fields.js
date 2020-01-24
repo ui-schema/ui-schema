@@ -1,13 +1,13 @@
-import {NumberRenderer, StringRenderer, TextRenderer} from "./Widgets/TestField";
+import {NumberRenderer, StringRenderer, TextRenderer} from "./Widgets/TextField";
 import {Select, SelectMulti} from "./Widgets/Select";
 import {BoolRenderer, OptionsCheck, OptionsRadio} from "./Widgets/Options";
 import {Stepper, Step} from "./Widgets/Stepper";
-import {RootRenderer, GroupRenderer, WidgetRenderer} from "./Grid";
+import {RootRenderer, GroupRenderer, widgetStack} from "./Grid";
 
 const widgets = {
     RootRenderer,
     GroupRenderer,
-    WidgetRenderer,
+    widgetStack,
     types: {
         string: StringRenderer,
         bool: BoolRenderer,

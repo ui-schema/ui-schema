@@ -3,19 +3,24 @@
 A widget is responsible to render the UI and either display or make the editing of the data possible, it handles one schema level and may connect to another nested SchemaEditor if it handles a special object/group.
 
 - `RootRenderer` main wrapper around everything
-- `GroupRenderer` wraps an object that is not a widget
+- `GroupRenderer` wraps an object that is not a widget (native JS-object)
     - props: `schema`
-- `WidgetRenderer` is wrapped arround all final widgets
+- `widgetStack` is a widget plugin system, this wraps all widgets individually and is e.g. used to handle json schema `default`
+    - `{current, Widget, widgetStack, ...props}` prop signature of each plugin
+    - `current` index/current position in stack
+    - `Widget` actual component to render
+    - `widgetStack` whole stack that is currently rendered
+    - `props` are the props which are getting pushed to to `Widget`
+    - use the `<NextPluginRenderer {...props} newProp={false}/>` to automatically render the plugins nested, `newProp` is available in the widget this way
 - `custom` contains widgets mapping with schema's `widget`
-    - `Text`
 - `types` contains widgets mapping with schema's `type`
-    - `string`
     
 Example default binding `material-ui`:
 
 ```js
 import React from "react";
 import Grid from "@material-ui/core/Grid";
+import {NumberRenderer, StringRenderer, TextRenderer} from "@ui-schema/ds-material";
 
 const SchemaGridItem = ({schema, children}) => {
     return <Grid
@@ -30,7 +35,7 @@ const SchemaGridItem = ({schema, children}) => {
     </Grid>
 };
 
-const WidgetRenderer = ({schema, children}) => <SchemaGridItem schema={schema}>
+const widgetStack = ({schema, children}) => <SchemaGridItem schema={schema}>
     {children}
 </SchemaGridItem>;
 
@@ -45,12 +50,15 @@ const GroupRenderer = ({schema, children}) => <SchemaGridItem schema={schema}>
 const widgets = {
     RootRenderer,// wraps the whole editor
     GroupRenderer,// wraps any `object` that has no custom widget
-    WidgetRenderer,// optional: wraps any rendered widget
+    widgetStack,// optional: wraps any rendered widget
     types: {
         // supply your needed native-type widgets
+        number: NumberRenderer,
+        string: StringRenderer,
     },
     custom: {
         // supply your needed custom widgets
+        Text: TextRenderer,
     },
 };
 

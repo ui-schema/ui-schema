@@ -12,39 +12,70 @@ const MyFallbackComponent = ({componentStack, error}) => (
     </div>
 );
 
-const DumpWidgetRenderer = React.memo(({renderer: Renderer, widgetRenderer: WidgetRenderer, ...props}) => {
-    // abstraction layer that only pushes the to-rendering's values
-    // thus no hook inside widget needed, widget can be pure/dump for its scope
+const getPlugin = (current, widgetStack) => {
+    return current < widgetStack.length ? widgetStack[current] : false;
+};
+
+const WidgetStackRenderer = ({current, Widget, widgetStack, ...props}) => {
+    // plugin layer
+
+    // first Plugin
+    const Plugin = getPlugin(current, widgetStack);
+
     return <ErrorBoundary FallbackComponent={MyFallbackComponent}>
-        {WidgetRenderer ? <WidgetRenderer {...props}><Renderer {...props}/></WidgetRenderer> : <Renderer {...props}/>}
+        {Plugin ? <Plugin {...props} Widget={Widget} valid widgetStack={widgetStack} current={current}/> : 'plugin-stack-error'}
+    </ErrorBoundary>;
+};
+
+const FinalWidgetRenderer = ({Widget, ...props}) => {
+    return <Widget {...props}/>;
+};
+
+const NextPluginRenderer = ({current, Widget, widgetStack, ...props}) => {
+    const next = current + 1;
+    const Plugin = getPlugin(next, widgetStack);
+
+    return next < widgetStack.length ?
+        Plugin ? <Plugin {...props} Widget={Widget} widgetStack={widgetStack} current={next}/> : 'plugin-error' :
+        <FinalWidgetRenderer {...props} Widget={Widget}/>;
+};
+
+const DumpWidgetRenderer = React.memo(({Widget, widgetStack: widgetStack, ...props}) => {
+    // abstraction layer that only pushes the to-rendering's values
+    // thus no hook inside widget needed, widget and widget-plugins can be pure/dump for its scope
+
+    return <ErrorBoundary FallbackComponent={MyFallbackComponent}>
+        {widgetStack ?
+            <WidgetStackRenderer {...props} Widget={Widget} widgetStack={widgetStack} current={0}/> :
+            <FinalWidgetRenderer {...props} Widget={Widget}/>}
     </ErrorBoundary>;
 });
 
 const SchemaWidgetRenderer = ({schema, required, storeKeys, level}) => {
     const {store, setData, widgets} = useSchemaEditor();
-    const {WidgetRenderer} = widgets;
+    const {widgetStack} = widgets;
     const type = schema.get('type');
-    const widget = schema.get('widget');
+    const widget_name = schema.get('widget');
 
     // getting the to-render component based on if it finds a custom object-widget or a widget extending native-types
-    let renderer = null;
+    let Widget = null;
 
-    if(widget && widgets.custom) {
-        if(!widgets.custom[widget]) {
-            return 'custom-' + widget;
+    if(widget_name && widgets.custom) {
+        if(!widgets.custom[widget_name]) {
+            return 'missing-custom-' + widget_name;
         }
-        renderer = widgets.custom[widget];
+        Widget = widgets.custom[widget_name];
     } else if(type && widgets.types) {
         if(!widgets.types[type]) {
-            return 'type-' + type;
+            return 'missing-type-' + type;
         }
-        renderer = widgets.types[type];
+        Widget = widgets.types[type];
     }
 
     // todo: make it easy to to extend these properties with a widget
-    return renderer ? <DumpWidgetRenderer
-        renderer={renderer}
-        widgetRenderer={WidgetRenderer}
+    return Widget ? <DumpWidgetRenderer
+        Widget={Widget}
+        widgetStack={widgetStack}
         value={store.getIn(storeKeys)}
         lastKey={storeKeys.get(storeKeys.count() - 1)}
         storeKeys={storeKeys}
@@ -175,4 +206,4 @@ let SchemaEditor = ({children, ...props}) => (
 SchemaEditor = React.memo(SchemaEditor);
 
 
-export {SchemaEditor, NestedSchemaEditor};
+export {SchemaEditor, NestedSchemaEditor, NextPluginRenderer};

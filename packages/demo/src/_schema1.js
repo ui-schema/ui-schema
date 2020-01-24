@@ -14,6 +14,9 @@ const schema1 = {
                     properties: {
                         name: {
                             type: "string",
+                            minLength: 2,
+                            maxLength: 3,
+                            required: true,
                             view: {
                                 sizeMd: 6,
                             }
@@ -68,6 +71,10 @@ const schema1 = {
         },
         subline: {
             type: "number",
+            minimum: 0,
+            exclusiveMinimum: 100,
+            maximum: 100,
+            exclusiveMaximum: true,
             view: {
                 sizeMd: 3
             }
@@ -128,6 +135,7 @@ const schema1 = {
                 },
                 center_item_content: {
                     type: "bool",
+                    required: true,
                     view: {
                         sizeMd: 12
                     }

@@ -2,9 +2,7 @@ import React from "react";
 import {
     makeStyles, Stepper as MuiStepper, Step as MuiStep, StepLabel, Button, Typography,
 } from "@material-ui/core";
-import {defaultSetter, beautifyKey, NestedSchemaEditor} from "@ui-schema/ui-schema";
-import {SchemaGridItem} from "../Grid";
-//import {OrderedMap} from 'immutable';
+import {beautifyKey, NestedSchemaEditor} from "@ui-schema/ui-schema";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -24,20 +22,14 @@ const Step = ({
                   //lastKey, required,
                   schema, storeKeys, level,
               }) => {
-    return <SchemaGridItem schema={schema}>
-        <NestedSchemaEditor storeKeys={storeKeys} schema={schema.delete('widget')} level={level + 1}/>
-    </SchemaGridItem>;
+    return <NestedSchemaEditor storeKeys={storeKeys} schema={schema.delete('widget')} level={level + 1}/>
 };
 
 const Stepper = ({
                      //lastKey, required,
-                     schema, value, setData, storeKeys
+                     schema, storeKeys
                  }) => {
     if(!schema) return null;
-
-    React.useEffect(() => {
-        defaultSetter(value, schema, setData, storeKeys);
-    }, [value, setData, storeKeys, schema]);
 
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
@@ -91,71 +83,69 @@ const Stepper = ({
         setActiveStep(0);
     };
 
-    return <SchemaGridItem schema={schema}>
-        <div className={classes.root}>
-            <MuiStepper activeStep={activeStep}>
-                {steps.map((step, name) => {
-                    const stepProps = {};
-                    const labelProps = {};
-                    /*if(isStepOptional(name)) {
-                        labelProps.optional = <Typography variant="caption">Optional</Typography>;
-                    }*/
-                    if(isStepSkipped(name)) {
-                        stepProps.completed = false;
-                    }
-                    return (
-                        <MuiStep key={name} {...stepProps}>
-                            <StepLabel {...labelProps}>{beautifyKey(name)}</StepLabel>
-                        </MuiStep>
-                    );
-                }).valueSeq()}
-            </MuiStepper>
-            <div>
-                {activeStep === stepOrder.size ? (
-                    <div>
-                        <Typography className={classes.instructions}>
-                            All steps completed - you&apos;re finished
-                        </Typography>
-                        <Button onClick={handleReset} className={classes.button}>
-                            Reset
+    return <div className={classes.root}>
+        <MuiStepper activeStep={activeStep}>
+            {steps.map((step, name) => {
+                const stepProps = {};
+                const labelProps = {};
+                /*if(isStepOptional(name)) {
+                    labelProps.optional = <Typography variant="caption">Optional</Typography>;
+                }*/
+                if(isStepSkipped(name)) {
+                    stepProps.completed = false;
+                }
+                return (
+                    <MuiStep key={name} {...stepProps}>
+                        <StepLabel {...labelProps}>{beautifyKey(name)}</StepLabel>
+                    </MuiStep>
+                );
+            }).valueSeq()}
+        </MuiStepper>
+        <div>
+            {activeStep === stepOrder.size ? (
+                <div>
+                    <Typography className={classes.instructions}>
+                        All steps completed - you&apos;re finished
+                    </Typography>
+                    <Button onClick={handleReset} className={classes.button}>
+                        Reset
+                    </Button>
+                </div>
+            ) : (
+                <div>
+                    <Typography className={classes.instructions}>{beautifyKey(stepOrder.get(activeStep))}</Typography>
+                    <NestedSchemaEditor
+                        storeKeys={storeKeys.push(stepOrder.get(activeStep))}
+                        schema={steps.get(stepOrder.get(activeStep))}
+                    />
+                    <div style={{margin: '24px 0 0 0'}}>
+                        <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                            Back
                         </Button>
-                    </div>
-                ) : (
-                    <div>
-                        <Typography className={classes.instructions}>{beautifyKey(stepOrder.get(activeStep))}</Typography>
-                        <NestedSchemaEditor
-                            storeKeys={storeKeys.push(stepOrder.get(activeStep))}
-                            schema={steps.get(stepOrder.get(activeStep))}
-                        />
-                        <div style={{margin: '24px 0 0 0'}}>
-                            <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                                Back
-                            </Button>
-                            {isStepOptional(activeStep) && (
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={handleSkip}
-                                    className={classes.button}
-                                >
-                                    Skip
-                                </Button>
-                            )}
-
+                        {isStepOptional(activeStep) && (
                             <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={handleNext}
+                                onClick={handleSkip}
                                 className={classes.button}
                             >
-                                {activeStep === steps.size - 1 ? 'Finish' : 'Next'}
+                                Skip
                             </Button>
-                        </div>
+                        )}
+
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleNext}
+                            className={classes.button}
+                        >
+                            {activeStep === steps.size - 1 ? 'Finish' : 'Next'}
+                        </Button>
                     </div>
-                )}
-            </div>
+                </div>
+            )}
         </div>
-    </SchemaGridItem>;
+    </div>;
 };
 
 export {Stepper, Step};

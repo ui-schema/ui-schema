@@ -9,10 +9,6 @@ const EDIT_SCHEMA = 'EDIT_SCHEMA';
 const reducer = (state, action) => {
     switch(action.type) {
         case EDIT_DATA:
-            /*state.editedUser = state.editedUser
-                .setIn([action.userId, ...action.keys], action.val)
-                .setIn([action.userId, 'lastEditAt'], action.lastEditAt);*/
-
             return {
                 ...state,
                 store: state.store.setIn(action.keys, action.val),
@@ -44,21 +40,21 @@ function fromJSOrdered(js) {
  * @param schema
  * @param data
  * @param widgets
- * @param storeMap
- * @param schemaMap
+ * @param {function} t translator
  * @return {{schema: OrderedMap, store: OrderedMap, widgets: {}}}
  */
-const init = ({schema, data, widgets, storeMap, schemaMap} = {}) => {
+const init = ({schema, data, widgets, t} = {}) => {
     return {
-        store: storeMap || new OrderedMap(fromJSOrdered(data)),
-        schema: schemaMap || new OrderedMap(fromJSOrdered(schema)),
+        store: new OrderedMap(fromJSOrdered(data)),
+        schema: new OrderedMap(fromJSOrdered(schema)),
         widgets: widgets,
+        t: t,
     }
 };
 
 const SchemaEditorProvider = ({children, ...props} = {}) => (
 
-    // todo: a) add here useEffect with dependencies [schema, data, widgets] with dispatch to re-new the whole editor on prop chanegs
+    // todo: a) add here useEffect with dependencies [schema, data, widgets] with dispatch to re-new the whole editor on prop changes
     // todo: b) ?
 
     <SchemaEditorContext.Provider
