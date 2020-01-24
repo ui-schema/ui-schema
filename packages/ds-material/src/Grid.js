@@ -1,7 +1,7 @@
 import React from "react";
 import {Grid} from "@material-ui/core";
 import {NextPluginRenderer, SchemaDefaultHandler} from "@ui-schema/ui-schema";
-import {MinMaxHandler} from "@ui-schema/ui-schema/src/Handling/MinMaxHandler";
+import {MinMaxHandler} from "@ui-schema/ui-schema";
 
 const SchemaGridItem = ({schema, children, defaultMd}) => {
     const view = schema ? schema.getIn(['view']) : undefined;
