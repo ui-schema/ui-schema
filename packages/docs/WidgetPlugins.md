@@ -2,16 +2,25 @@
 
 ## Plugin List
 
->
-> ❗ the actual plugins are not ready yet
->
+### Schema Driven
 
-| Plugin | Package | Handles | Added Props | Status |
-| :---   | :---    | :---    | :--- | :--- |
-| MinMaxHandler | @ui-schema/ui-schema | min/max validity | `valid`, `errors` | ✔(string,number) ❗ |
-| DefaultHandler | @ui-schema/ui-schema | keyword `default` | - | ❗ |
-| TypeValidityHandler | @ui-schema/ui-schema | keyword `type` | `valid`, `errors` | ✔ |
-| ValidityReporter | @ui-schema/ui-schema | setting validity changes | - | ❌ |
+| Plugin               | Package              | Handles              | Added Props | Status |
+| :---                 | :---                 | :---                 | :---        | :--- |
+| DefaultHandler       | @ui-schema/ui-schema | keyword `default`    | - | ❗ |
+| ValidityReporter     | @ui-schema/ui-schema | setting validity changes | - | ❌ |
+
+### Validation Plugins
+
+| Plugin               | Package              | Handles              | Added Props | Status |
+| :---                 | :---                 | :---                 | :---        | :--- |
+| MinMaxValidator      | @ui-schema/ui-schema | min/max validity     | `valid`, `errors` | ✔(string,number) ❗ |
+| TypeValidator        | @ui-schema/ui-schema | keyword `type`       | `valid`, `errors` | ✔ |
+| ValueValidatorConst  | @ui-schema/ui-schema | keywords `type`, `const` | `valid`, `errors` | ✔ |
+| ValueValidatorEnum   | @ui-schema/ui-schema | keywords `type`, `enum` | `valid`, `errors` | ✔ |
+| PatternValidator     | @ui-schema/ui-schema | keywords `type:string`, `pattern` | `valid`, `errors` | ❌ |
+| MultipleOfValidator  | @ui-schema/ui-schema | keywords `type:number,integer`, `multipleOf` | `valid`, `errors` | ✔ |
+| ArrayValidator       | @ui-schema/ui-schema | keywords `type:array` | `valid`, `errors` | ❌ |
+| RequiredValidator    | @ui-schema/ui-schema | keywords `type:object`, `required` | `valid`, `errors` | ❌ |
 
 ## Creating Plugins
 
@@ -21,7 +30,7 @@
 
 Each plugin can change or add properties to the final widget in an easy way, the render behaviour can be changed, even asynchronous actions could be applied schema driven.
 
-Creating a Plugin like:
+Creating a plugin like:
 
 ```js
 import React from "react";

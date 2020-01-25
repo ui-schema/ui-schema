@@ -23,7 +23,7 @@ Example default binding `material-ui`:
 import React from "react";
 import {Grid} from "@material-ui/core";
 import {
-    NextPluginRenderer, DefaultHandler, MinMaxHandler
+    NextPluginRenderer, DefaultHandler, MinMaxValidator
 } from "@ui-schema/ui-schema";
 
 const SchemaGridItem = ({schema, children, defaultMd}) => {
@@ -65,7 +65,7 @@ const SchemaGridHandler = (props) => {
 };
 
 const widgetStack = [
-    MinMaxHandler,
+    MinMaxValidator,
     SchemaGridHandler,
     DefaultHandler,
 ];

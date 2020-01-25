@@ -22,6 +22,8 @@ Supplying the `t` prop to an `SchemaEditor` enables dynamic translations and con
 
 Keyword `t` is not default JSON-Schema, UI-Schema defines it as an 'string' or 'one or two-dimension object' containing multiple or one language with multiple translation keys.
 
+> must work with dynamic properties
+
 ```json
 {
   "t": "Some english text"

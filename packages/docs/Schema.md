@@ -10,16 +10,19 @@ This JSON-Schema vocabulary is used within the included widget-matching:
 These keywords may be implemented in each widget/design-system:
 
 - `format` e.g. `date` for the `type` `string`
-- `title` what should be used as title, default passes it to translation
-- `description` what should be used as description, default passes it to translation
+- `title` what should be used as title, passed to translation by default
+- `description` what should be used as description, passed to translation by default
 - `$comment` is recommended to leave maintaining notes
 
 Universal Keywords:
 
 - `default` what will be used if the field hasn't existing data ✔
     - sets the defined value(s) **before** rendering the UI ✔
-- `enum` restricts the value to a list of values, used in e.g. select to build the selection ❗
-- `const` to restrict the value to a single value ❌ 
+- `enum` restricts the value to a list of values, used in e.g. select to build the selection ✔
+    - [specification](https://json-schema.org/understanding-json-schema/reference/generic.html#enumerated-values)
+- `const` to restrict the value to a single value ✔
+    - when `object` or `array` only works correctly with immutable `List` or `Map`, the initially provided schema and data props are already compatible
+    - [specification](https://json-schema.org/understanding-json-schema/reference/generic.html#constant-values)
 
 Usage scenario needs to be created:
 
@@ -67,16 +70,15 @@ Generic Keywords:
 
 - `required` of parent (array) and in own schema (bool) ❗
 - `format` in own schema (widget must implement it)
-- [non-JSON](https://json-schema.org/understanding-json-schema/reference/non_json_data.html)
+- [non-JSON](https://json-schema.org/understanding-json-schema/reference/non_json_data.html) (widget must implement it)
     - `contentMediaType` may be used to change widget behaviour
     - `contentEncoding` may be used to change widget behaviour
 
 Validation Keywords:
 
 - `pattern` ❌
-- through `MinMaxHandler` from `@ui-schema/ui-schema`
-    - `minLength` string min. length ✔
-    - `maxLength` string max. length ✔
+- `minLength` string min. length ✔
+- `maxLength` string max. length ✔
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/string.html)
 
@@ -94,12 +96,11 @@ Generic Keywords:
 
 Validation Keywords:
 
-- `multipleOf` restricts to the multiples of the given number ❌
-- through `MinMaxHandler` from `@ui-schema/ui-schema`:
-    - `minimum` number min. or same length ✔
-    - `exclusiveMinimum` number min. length ✔
-    - `maximum` number max. or same length ✔
-    - `exclusiveMaximum` number max. length ✔
+- `multipleOf` restricts to the multiples of the given number ✔
+- `minimum` number min. or same length ✔
+- `exclusiveMinimum` number min. length ✔
+- `maximum` number max. or same length ✔
+- `exclusiveMaximum` number max. length ✔
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/numeric.html)
 

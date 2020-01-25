@@ -23,6 +23,7 @@ const schema1 = {
                         },
                         surname: {
                             type: "string",
+                            const: "Doe",
                             view: {
                                 sizeMd: 6
                             }
@@ -61,6 +62,12 @@ const schema1 = {
         },
         headline: {
             type: "string",
+            /*enum: [
+                'test 1',
+                'test2',
+                'test3 ! #^@%$# ',
+                111,// is false! (and that's how it should be)
+            ],*/
             view: {
                 sizeXs: 6,
                 sizeSm: 6,
@@ -69,12 +76,18 @@ const schema1 = {
                 sizeLx: 6,
             }
         },
-        subline: {
+        qty: {
             type: "number",
             minimum: 2,
-            //exclusiveMinimum: 100,
-            maximum: 100,
-            //exclusiveMaximum: 200,
+            maximum: 10,
+            view: {
+                sizeMd: 3
+            }
+        },
+        qty2: {
+            type: "number",
+            exclusiveMinimum: 2,
+            exclusiveMaximum: 10,
             view: {
                 sizeMd: 3
             }
@@ -91,8 +104,9 @@ const schema1 = {
                 sizeMd: 3
             }
         },
-        s1ubline: {
-            type: "string",
+        length: {
+            type: "number",
+            multipleOf: 2,
             view: {
                 sizeMd: 3
             }
@@ -108,14 +122,15 @@ const schema1 = {
                 //margin: 'normal',
             }
         },
-        o2utro: {
+        tag: {
             type: "string",
             view: {
                 sizeMd: 3
             }
         },
-        o22utro: {
-            type: "string",
+        stock: {
+            type: "number",
+            const: 50,
             view: {
                 sizeMd: 3
             }

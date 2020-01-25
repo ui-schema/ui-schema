@@ -5,7 +5,7 @@ import {NextPluginRenderer} from "../Schema/Editor";
 const ERROR_WRONG_TYPE = 'wrong-type';
 // const ERROR_NOT_SET = 'not-set';
 
-const TypeValidityHandler = (props) => {
+const TypeValidator = (props) => {
     const {
         schema, value, errors = new List(),
     } = props;
@@ -55,4 +55,4 @@ const TypeValidityHandler = (props) => {
     return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
 };
 
-export {TypeValidityHandler, ERROR_WRONG_TYPE}
+export {TypeValidator, ERROR_WRONG_TYPE}

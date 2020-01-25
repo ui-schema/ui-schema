@@ -5,7 +5,7 @@ import {NextPluginRenderer} from "../Schema/Editor";
 const ERROR_MIN_LENGTH = 'min-length';
 const ERROR_MAX_LENGTH = 'max-length';
 
-const MinMaxHandler = (props) => {
+const MinMaxValidator = (props) => {
     const {
         schema, value, errors = new List(),
     } = props;
@@ -68,8 +68,7 @@ const MinMaxHandler = (props) => {
         }
     }
 
-
     return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
 };
 
-export {MinMaxHandler, ERROR_MAX_LENGTH, ERROR_MIN_LENGTH}
+export {MinMaxValidator, ERROR_MAX_LENGTH, ERROR_MIN_LENGTH}

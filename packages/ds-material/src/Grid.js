@@ -1,8 +1,6 @@
 import React from "react";
 import {Grid} from "@material-ui/core";
-import {
-    NextPluginRenderer, DefaultHandler, MinMaxHandler, TypeValidityHandler
-} from "@ui-schema/ui-schema";
+import {NextPluginRenderer} from "@ui-schema/ui-schema";
 
 const SchemaGridItem = ({schema, children, defaultMd}) => {
     const view = schema ? schema.getIn(['view']) : undefined;
@@ -42,11 +40,4 @@ const SchemaGridHandler = (props) => {
     </SchemaGridItem>;
 };
 
-const widgetStack = [
-    SchemaGridHandler,
-    DefaultHandler,
-    MinMaxHandler,
-    TypeValidityHandler,
-];
-
-export {SchemaGridItem, RootRenderer, GroupRenderer, widgetStack};
+export {SchemaGridHandler, SchemaGridItem, RootRenderer, GroupRenderer};
