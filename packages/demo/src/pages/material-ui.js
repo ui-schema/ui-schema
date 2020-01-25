@@ -5,6 +5,7 @@ import Dashboard from '../ds/material-ui/dashboard/Dashboard';
 import {data1, schema1, schemaUser} from "../_schema1";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import {Button} from "@material-ui/core";
 import Orders from "../ds/material-ui/dashboard/Orders";
 import {widgets,} from "@ui-schema/ds-material";
 import {SchemaEditor} from "@ui-schema/ui-schema";
@@ -15,6 +16,8 @@ const user = {};
 const Main = ({classes = {}}) => {
     if(!SchemaEditor) return null;
 
+    const [showValidity, setShowValidity] = React.useState(false);
+
     return <React.Fragment>
         <Grid item xs={12}>
             <Paper className={classes.paper}>
@@ -22,9 +25,11 @@ const Main = ({classes = {}}) => {
                     schema={schema1}
                     data={data1}
                     widgets={widgets}
+                    showValidity={showValidity}
                 >
                     <SchemaDebug/>
                 </SchemaEditor>
+                <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
             </Paper>
         </Grid>
         <Grid item xs={12}>

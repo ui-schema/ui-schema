@@ -40,6 +40,6 @@ This editor has multiple levels of performance optimization:
 - [Overview](../../README.md)
 - [UI-JSON-Schema](./Schema.md)
 - [Widget System](./Widgets.md)
-- [Schema-Plugins](./SchemaPlugins.md)
+- [Widget Plugins](./WidgetPlugins.md)
 - [Localization / Translation](./Localization.md)
 - [Performance](./Performance.md)

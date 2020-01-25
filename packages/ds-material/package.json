@@ -11,6 +11,14 @@
     "es",
     "lib"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ui-schema/ui-schema.git",
+    "directory": "packages/ds-material"
+  },
+  "bugs": {
+    "url": "https://github.com/ui-schema/ui-schema/issues"
+  },
   "devDependencies": {
     "react": "^16.12"
   },

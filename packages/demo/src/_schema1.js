@@ -71,10 +71,10 @@ const schema1 = {
         },
         subline: {
             type: "number",
-            minimum: 0,
-            exclusiveMinimum: 100,
+            minimum: 2,
+            //exclusiveMinimum: 100,
             maximum: 100,
-            exclusiveMaximum: true,
+            //exclusiveMaximum: 200,
             view: {
                 sizeMd: 3
             }

@@ -17,36 +17,55 @@ const MinMaxHandler = (props) => {
     if(type === 'string') {
         let minLength = schema.get('minLength');
         let maxLength = schema.get('maxLength');
-        if(minLength) {
-            if(typeof value === 'string') {
+
+        if(typeof value === 'string') {
+            if(minLength) {
                 if(value.length < minLength) {
                     valid = false;
                     errors.push(ERROR_MIN_LENGTH);
                 }
-            } else {
-                valid = false;
             }
-        }
-        if(maxLength) {
-            if(typeof value === 'string') {
+            if(maxLength) {
                 if(value.length > maxLength) {
                     valid = false;
                     errors.push(ERROR_MAX_LENGTH);
                 }
-            } else {
-                valid = false;
             }
         }
     }
 
     if(type === 'number') {
         let minimum = schema.get('minimum');
-        /*let exclusiveMinimum = schema.get('exclusiveMinimum');
+        let exclusiveMinimum = schema.get('exclusiveMinimum');
         let maximum = schema.get('maximum');
-        let exclusiveMaximum = schema.get('exclusiveMaximum');*/
+        let exclusiveMaximum = schema.get('exclusiveMaximum');
 
-        // todo: implement number like https://json-schema.org/understanding-json-schema/reference/numeric.html
-        console.log(minimum);
+        if(typeof value === 'number') {
+            if(minimum) {
+                if(value < minimum) {
+                    valid = false;
+                    errors.push(ERROR_MIN_LENGTH);
+                }
+            }
+            if(exclusiveMinimum) {
+                if(value <= exclusiveMinimum) {
+                    valid = false;
+                    errors.push(ERROR_MIN_LENGTH);
+                }
+            }
+            if(maximum) {
+                if(value > maximum) {
+                    valid = false;
+                    errors.push(ERROR_MAX_LENGTH);
+                }
+            }
+            if(exclusiveMaximum) {
+                if(value >= exclusiveMaximum) {
+                    valid = false;
+                    errors.push(ERROR_MAX_LENGTH);
+                }
+            }
+        }
     }
 
 

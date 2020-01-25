@@ -1,6 +1,6 @@
 # UI-Schema
 
-JSON-Schema form + ui generator for any design system, first-class support for [Material Design React UI](https://material-ui.com).
+JSON-Schema form + ui generator for any design system, first-class support for [Material UI React](https://material-ui.com).
 
 [![Travis (.org) branch](https://img.shields.io/travis/ui-schema/ui-schema/master?style=flat-square)](https://travis-ci.org/ui-schema/ui-schema) [![react compatibility](https://img.shields.io/badge/React-%3E%3D16.8-success?style=flat-square&logo=react)](https://reactjs.org/)
 
@@ -17,9 +17,53 @@ JSON-Schema form + ui generator for any design system, first-class support for [
 > This readme currently serves as a mix of documentation, completion tracking and big-picture.
 >
 
+```js
+import React from "react";
+import {SchemaEditor} from "@ui-schema/ui-schema";
+import {widgets} from "@ui-schema/ds-material";
+import {ImmutableEditor, themeMaterial} from 'react-immutable-editor';
+
+const SchemaDebug = () => {
+    const {store, schema, setData, setSchema} = useSchemaEditor();
+
+    return <React.Fragment>
+        <ImmutableEditor
+            data={schema} onChange={setData} getVal={keys => store.getIn(keys)}
+            theme={themeMaterial}/>
+        <ImmutableEditor
+            data={schema} onChange={setSchema} getVal={keys => schema.getIn(keys)}
+            theme={themeMaterial}/>
+    </React.Fragment>
+};
+
+const schema1 = {};// todo: add schema/data example & hoisted state
+const data1 = {};
+
+const Editor = () => {
+    const [showValidity, setShowValidity] = React.useState(false);
+    const [valid, setValidity] = React.useState(false);
+
+    return <div>
+        <SchemaEditor
+            schema={schema1}
+            data={data1}
+            widgets={widgets}
+            onChange={(keys, data, store) => store.setIn(keys, data)}
+            showValidity={showValidity}
+            onValidity={valid => setValidity(valid)}
+        >
+            <SchemaDebug/>
+        </SchemaEditor>
+       <button onClick={() => valid ? doingSomeAction() : setShowValidity(true)}>send!</button>
+    </div>
+};
+
+export {Editor}
+```
+
 ## Schema
 
-We are using the JSON-Schema included keywords to describe the data and create the UI based on the data-schema and special UI keywords. A data-schema with integrated ui-schema enforces the consistency of the UX across different apps and devices.
+JSON-Schema included keywords are used to describe the data and create the UI based on the data-schema and special UI keywords. A data-schema with integrated ui-schema enforces the consistency of the UX across different apps and devices.
 
 [... more](./packages/docs/Schema.md)
 
@@ -104,10 +148,11 @@ Included widgets (match by `widget` in schema), each widget could have multiple 
 
 - [UI-JSON-Schema](./packages/docs/Schema.md), on which types and keywords are supported
 - [Widget System](./packages/docs/Widgets.md), how to create design-system bindings and override widgets
+- [Creating Widgets](./packages/docs/Widgets.md#creating-widgets)
 - Widgets
     - [TextField](./packages/docs/widgets/TextField.md)
     - [Stepper](./packages/docs/widgets/TextField.md)
-- [Schema-Plugins](./packages/docs/SchemaPlugins.md)
+- [Widget Plugins](./packages/docs/WidgetPlugins.md)
 - [Localization / Translation](./packages/docs/Localization.md)
 - [Performance](./packages/docs/Performance.md) insights and tips
 

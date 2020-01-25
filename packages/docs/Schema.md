@@ -38,6 +38,7 @@ Usage scenario needs to be created:
 | :----     | :----  | :----       |
 | ✔         | ❗      | ❌          |
     
+> target support is `JSON-Schema Draft 2019-09`
     
 ## UI-Schema Extension
 
@@ -69,11 +70,10 @@ Generic Keywords:
 
 Validation Keywords:
 
-- `minLength` string min. length ✔
-    - through `MinMaxHandler` from `@ui-schema/ui-schema`
-- `maxLength` string max. length ✔
-    - through `MinMaxHandler` from `@ui-schema/ui-schema`
 - `pattern` ❌
+- through `MinMaxHandler` from `@ui-schema/ui-schema`
+    - `minLength` string min. length ✔
+    - `maxLength` string max. length ✔
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/string.html)
 
@@ -91,10 +91,11 @@ Generic Keywords:
 Validation Keywords:
 
 - `multipleOf` restricts to the multiples of the given number ❌
-- `minimum` number min. or same length ❌
-- `exclusiveMinimum` number min. length ❌
-- `maximum` number max. or same length ❌
-- `exclusiveMaximum` number max. length ❌
+- through `MinMaxHandler` from `@ui-schema/ui-schema`:
+    - `minimum` number min. or same length ✔
+    - `exclusiveMinimum` number min. length ✔
+    - `maximum` number max. or same length ✔
+    - `exclusiveMaximum` number max. length ✔
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/numeric.html)
 
@@ -148,6 +149,6 @@ Can be used to render some only-text/display widget that will not provide any en
 - [Overview](../../README.md)
 - [UI-JSON-Schema](./Schema.md)
 - [Widget System](./Widgets.md)
-- [Schema-Plugins](./SchemaPlugins.md)
+- [Widget Plugins](./WidgetPlugins.md)
 - [Localization / Translation](./Localization.md)
 - [Performance](./Performance.md)

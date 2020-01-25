@@ -52,7 +52,7 @@ const DumpWidgetRenderer = React.memo(({Widget, widgetStack: widgetStack, ...pro
 });
 
 const SchemaWidgetRenderer = ({schema, required, storeKeys, level}) => {
-    const {store, setData, widgets} = useSchemaEditor();
+    const {store, setData, widgets, showValidity, t} = useSchemaEditor();
     const {widgetStack} = widgets;
     const type = schema.get('type');
     const widget_name = schema.get('widget');
@@ -74,10 +74,14 @@ const SchemaWidgetRenderer = ({schema, required, storeKeys, level}) => {
 
     // todo: make it easy to to extend these properties with a widget
     return Widget ? <DumpWidgetRenderer
-        Widget={Widget}
-        widgetStack={widgetStack}
+        Widget={Widget}// passed to FinalWidgetRenderer and WidgetStackRenderer
+        widgetStack={widgetStack}// passed only to WidgetStackRenderer
+
+        // all others are getting pushed to Widget
+        t={t}
+        showValidity={showValidity}
         value={store.getIn(storeKeys)}
-        lastKey={storeKeys.get(storeKeys.count() - 1)}
+        ownKey={storeKeys.get(storeKeys.count() - 1)}
         storeKeys={storeKeys}
         setData={setData}
         level={level}

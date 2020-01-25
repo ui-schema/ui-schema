@@ -6,7 +6,7 @@ import {
 import {beautifyKey} from "@ui-schema/ui-schema";
 import {useId} from "react-id-generator";
 
-const BoolRenderer = ({lastKey, schema, value, setData, storeKeys}) => {
+const BoolRenderer = ({ownKey, schema, value, setData, storeKeys}) => {
     const currentVal = typeof value !== 'undefined' ? value : false;
 
     //console.log(schema.get('required'));
@@ -19,7 +19,7 @@ const BoolRenderer = ({lastKey, schema, value, setData, storeKeys}) => {
                 onChange={() => setData(storeKeys, !currentVal)}
             />
         }
-        label={beautifyKey(lastKey) + (schema.get('required') ? ' *' : '')}
+        label={beautifyKey(ownKey) + (schema.get('required') ? ' *' : '')}
     />;
 };
 
@@ -38,12 +38,12 @@ const OptionCheck = ({currentValue, onChange, label}) => {
     />;
 };
 
-const OptionsCheck = ({lastKey, required, schema, value, setData, storeKeys}) => {
+const OptionsCheck = ({ownKey, required, schema, value, setData, storeKeys}) => {
     const enum_val = schema.get('enum');
     if(!enum_val) return null;
 
-    return <FormControl required={required.contains(lastKey)} error={false} component="fieldset">
-        <FormLabel component="legend">{beautifyKey(lastKey)}</FormLabel>
+    return <FormControl required={required.contains(ownKey)} error={false} component="fieldset">
+        <FormLabel component="legend">{beautifyKey(ownKey)}</FormLabel>
         <FormGroup>
             {enum_val ? enum_val.map((enum_name) => {
                 const currentValue = value && value.contains && typeof value.contains(enum_name) !== 'undefined' ? value.contains(enum_name) : false;
@@ -66,14 +66,14 @@ const OptionsCheck = ({lastKey, required, schema, value, setData, storeKeys}) =>
     </FormControl>;
 };
 
-const OptionsRadio = ({lastKey, required, schema, value, setData, storeKeys}) => {
+const OptionsRadio = ({ownKey, required, schema, value, setData, storeKeys}) => {
     const enum_val = schema.get('enum');
     if(!enum_val) return null;
 
     const currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '');
 
-    return <FormControl required={required.contains(lastKey)} error={false} component="fieldset">
-        <FormLabel component="legend">{beautifyKey(lastKey)}</FormLabel>
+    return <FormControl required={required.contains(ownKey)} error={false} component="fieldset">
+        <FormLabel component="legend">{beautifyKey(ownKey)}</FormLabel>
         <RadioGroup>
             {enum_val ? enum_val.map((enum_name) => {
                 return <FormControlLabel

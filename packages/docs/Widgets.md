@@ -1,5 +1,9 @@
 # Widget System
 
+>
+> ✔ working, not expected to change (that much) breaking in the near future
+>
+
 A widget is responsible to render the UI and either display or make the editing of the data possible, it handles one schema level and may connect to another nested SchemaEditor if it handles a special object/group.
 
 Through the modular approach and easy definition of a new widget, the widget system can be used to create complex, separated UI components, where the orchestration can be done from an external system like some backend API.
@@ -9,12 +13,7 @@ Through the modular approach and easy definition of a new widget, the widget sys
     - props: `schema`
 - `widgetStack` is the widget plugin system, this wraps all widgets individually
     - e.g. used to handle json schema `default`
-    - `{current, Widget, widgetStack, ...props}` prop signature of each plugin
-    - `current` index/current position in stack
-    - `Widget` actual component to render
-    - `widgetStack` whole stack that is currently rendered
-    - `props` are the props which are getting pushed to to `Widget`
-    - use the `<NextPluginRenderer {...props} newProp={false}/>` to automatically render the plugins nested, `newProp` is available in the widget this way
+    - see [how to create widget plugins](./WidgetPlugins.md)
 - `custom` contains widgets mapping with schema's `widget`
 - `types` contains widgets mapping with schema's `type`
     
@@ -24,7 +23,7 @@ Example default binding `material-ui`:
 import React from "react";
 import {Grid} from "@material-ui/core";
 import {
-    NextPluginRenderer, SchemaDefaultHandler, MinMaxHandler
+    NextPluginRenderer, DefaultHandler, MinMaxHandler
 } from "@ui-schema/ui-schema";
 
 const SchemaGridItem = ({schema, children, defaultMd}) => {
@@ -68,7 +67,7 @@ const SchemaGridHandler = (props) => {
 const widgetStack = [
     MinMaxHandler,
     SchemaGridHandler,
-    SchemaDefaultHandler,
+    DefaultHandler,
 ];
 
 const widgets = {
@@ -89,11 +88,31 @@ const widgets = {
 export {widgets}
 ```
 
+## Creating Widgets
+
+You need to show content and inputs in a special way? Something not supported (yet)? Just create a widget with the functionality you need! JSON-Schema is handled mostly by the `widgetStack` for you, simply use the provided properties to build the behaviour of the widget.
+
+Each widget get's a lot of properties provided by the root schema provided or added by plugins.
+
+Properties from editor:
+
+- `t` : `{function}` see [translation](./Localization.md#translation)
+- `showValidity` : `{boolean}`
+- `value` : `{*}`
+- `ownKey` : `{string|integer}`
+- `storeKeys` : `{List}`
+- `setData` : `{function}`
+- `level` : `{integer}`
+- `schema` : `{Map}`
+- `required` : `{List|boolean}`
+
+See [plugins](./WidgetPlugins.md) for the rest of the provided properties.
+
 ## Docs
 
 - [Overview](../../README.md)
 - [UI-JSON-Schema](./Schema.md)
 - [Widget System](./Widgets.md)
-- [Schema-Plugins](./SchemaPlugins.md)
+- [Widget Plugins](./WidgetPlugins.md)
 - [Localization / Translation](./Localization.md)
 - [Performance](./Performance.md)

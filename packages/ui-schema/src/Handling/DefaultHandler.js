@@ -1,7 +1,7 @@
 import React from "react";
 import {NextPluginRenderer} from "../Schema/Editor";
 
-const SchemaDefaultHandler = (props) => {
+const DefaultHandler = (props) => {
     const {
         schema, value, setData, storeKeys
     } = props;
@@ -9,6 +9,9 @@ const SchemaDefaultHandler = (props) => {
     let default_val = schema.get('default');
     if(typeof value === 'undefined') {
         if(typeof default_val !== 'undefined') {
+            // todo:
+            //   on object/array: what if manually removed default entry?
+            //   all other types will have some other default then `undefined` when unselected
             setData(storeKeys, default_val)
         }
     }
@@ -17,4 +20,4 @@ const SchemaDefaultHandler = (props) => {
         ? <NextPluginRenderer {...props}/> : null;
 };
 
-export {SchemaDefaultHandler}
+export {DefaultHandler}

@@ -8,7 +8,7 @@ import {List} from "immutable";
 
 const Select = ({
                     multiple,
-                    lastKey, required, schema, value, setData, storeKeys
+                    ownKey, required, schema, value, setData, storeKeys
                 }) => {
     if(!schema) return null;
 
@@ -22,11 +22,11 @@ const Select = ({
         currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '');
     }
 
-    return <FormControl required={required.contains(lastKey)} error={false}>
-        <InputLabel id={"demo-simple-select-label" + lastKey}>{beautifyKey(lastKey)}</InputLabel>
+    return <FormControl required={required.contains(ownKey)} error={false}>
+        <InputLabel id={"demo-simple-select-label" + ownKey}>{beautifyKey(ownKey)}</InputLabel>
         <MuiSelect
-            labelId={"demo-simple-select-label" + lastKey}
-            id={"demo-simple-select" + lastKey}
+            labelId={"demo-simple-select-label" + ownKey}
+            id={"demo-simple-select" + ownKey}
             value={multiple ? currentValue.toArray() : currentValue}
             multiple={multiple}
             renderValue={selected => multiple ?

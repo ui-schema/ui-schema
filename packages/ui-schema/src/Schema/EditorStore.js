@@ -5,8 +5,9 @@ const SchemaEditorContext = React.createContext({});
 
 const EDIT_DATA = 'EDIT_DATA';
 const EDIT_SCHEMA = 'EDIT_SCHEMA';
+const UPDATE_PASS_THROUGH = 'UPDATE_PASS_THROUGH';
 
-const reducer = (state, action) => {
+const reduce = (state, action) => {
     switch(action.type) {
         case EDIT_DATA:
             return {
@@ -18,6 +19,14 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 schema: state.schema.setIn(action.keys, action.val),
+            };
+
+        case UPDATE_PASS_THROUGH:
+            if(!action.prop) return state;
+
+            return {
+                ...state,
+                ...action.prop
             };
 
         default:
@@ -41,28 +50,61 @@ function fromJSOrdered(js) {
  * @param data
  * @param widgets
  * @param {function} t translator
+ * @param {function} onChange
+ * @param {function} onValidity
+ * @param {boolean} showValidity
  * @return {{schema: OrderedMap, store: OrderedMap, widgets: {}}}
  */
-const init = ({schema, data, widgets, t} = {}) => {
+const init = ({schema, data, widgets, t, onChange, onValidity, showValidity} = {}) => {
     return {
         store: new OrderedMap(fromJSOrdered(data)),
         schema: new OrderedMap(fromJSOrdered(schema)),
         widgets: widgets,
-        t: t,
+        t: t || (t1 => t1),
+        onChange,
+        onValidity,
+        showValidity,
     }
 };
 
-const SchemaEditorProvider = ({children, ...props} = {}) => (
+const SchemaEditorProvider = ({children, ...props} = {}) => {
 
     // todo: a) add here useEffect with dependencies [schema, data, widgets] with dispatch to re-new the whole editor on prop changes
     // todo: b) ?
 
-    <SchemaEditorContext.Provider
-        value={React.useReducer(reducer, props, init)}
+    const {showValidity, t, widgets, onChange, onValidity} = props;
+
+    const reducer = React.useReducer(reduce, props, init);
+    const [, dispatch] = reducer;
+
+    // todo: this is bad, should use two provider, react may forget those sometimes
+
+    React.useEffect(() => dispatch({
+        type: UPDATE_PASS_THROUGH, prop: {showValidity}
+    }), [showValidity]);
+
+    React.useEffect(() => dispatch({
+        type: UPDATE_PASS_THROUGH, prop: {t}
+    }), [t]);
+
+    React.useEffect(() => dispatch({
+        type: UPDATE_PASS_THROUGH, prop: {widgets}
+    }), [widgets]);
+
+    React.useEffect(() => dispatch({
+        type: UPDATE_PASS_THROUGH, prop: {onChange}
+    }), [onChange]);
+
+    React.useEffect(() => dispatch({
+        type: UPDATE_PASS_THROUGH, prop: {onValidity}
+    }), [onValidity]);
+
+    return <SchemaEditorContext.Provider
+        value={reducer}
     >
         {children}
     </SchemaEditorContext.Provider>
-);
+};
 
 const editData = (keys, val) => ({
     type: EDIT_DATA,

@@ -69,6 +69,6 @@ Design systems should support both, the Material-UI library supports it.
 - [Overview](../../README.md)
 - [UI-JSON-Schema](./Schema.md)
 - [Widget System](./Widgets.md)
-- [Schema-Plugins](./SchemaPlugins.md)
+- [Widget Plugins](./WidgetPlugins.md)
 - [Localization / Translation](./Localization.md)
 - [Performance](./Performance.md)
