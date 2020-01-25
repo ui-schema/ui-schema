@@ -10,50 +10,56 @@ import Orders from "../ds/material-ui/dashboard/Orders";
 import {widgets,} from "@ui-schema/ds-material";
 import {SchemaEditor} from "@ui-schema/ui-schema";
 import {SchemaDebug} from "../component/SchemaDebug";
+import {Map} from 'immutable';
 
 const user = {};
 
-const Main = ({classes = {}}) => {
-    if(!SchemaEditor) return null;
-
+const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
+    const [validity, setValidity] = React.useState(Map({}));
 
     return <React.Fragment>
-        <Grid item xs={12}>
-            <Paper className={classes.paper}>
-                <SchemaEditor
-                    schema={schema1}
-                    data={data1}
-                    widgets={widgets}
-                    showValidity={showValidity}
-                >
-                    <SchemaDebug/>
-                </SchemaEditor>
-                <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
-            </Paper>
-        </Grid>
-        <Grid item xs={12}>
-            <Paper className={classes.paper}>
-                <Grid container spacing={3} justify={'center'}>
-                    <Grid item xs={12} md={6}>
-                        <SchemaEditor
-                            schema={schemaUser}
-                            data={user}
-                            widgets={widgets}
-                        >
-                            <SchemaDebug/>
-                        </SchemaEditor>
-                    </Grid>
-                </Grid>
-            </Paper>
-        </Grid>
-        <Grid item xs={12}>
-            <Paper className={classes.paper}>
-                <Orders/>
-            </Paper>
-        </Grid>
+        <SchemaEditor
+            schema={schema1}
+            data={data1}
+            widgets={widgets}
+            showValidity={showValidity}
+            onValidity={setValidity}
+        >
+            <SchemaDebug/>
+        </SchemaEditor>
+        <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
+        {validity.contains(false) ? 'invalid' : 'valid'}
     </React.Fragment>
 };
+
+const Main = ({classes = {}}) => <React.Fragment>
+    <Grid item xs={12}>
+        <Paper className={classes.paper}>
+            <MainStore/>
+        </Paper>
+    </Grid>
+    <Grid item xs={12}>
+        <Paper className={classes.paper}>
+            <Grid container spacing={3} justify={'center'}>
+                <Grid item xs={12} md={6}>
+                    <SchemaEditor
+                        schema={schemaUser}
+                        data={user}
+                        widgets={widgets}
+                    >
+                        <SchemaDebug/>
+                    </SchemaEditor>
+                </Grid>
+            </Grid>
+        </Paper>
+    </Grid>
+    <Grid item xs={12}>
+        <Paper className={classes.paper}>
+            <Orders/>
+        </Paper>
+    </Grid>
+</React.Fragment>;
 
 const MaterialUi = () => {
     return <AppTheme>

@@ -3,7 +3,10 @@ import {Select, SelectMulti} from "./Widgets/Select";
 import {BoolRenderer, OptionsCheck, OptionsRadio} from "./Widgets/Options";
 import {Stepper, Step} from "./Widgets/Stepper";
 import {RootRenderer, GroupRenderer, SchemaGridHandler} from "./Grid";
-import {DefaultHandler, MinMaxValidator, TypeValidator, MultipleOfValidator, ValueValidatorEnum, ValueValidatorConst, RequiredValidator} from "@ui-schema/ui-schema";
+import {
+    DefaultHandler, ValidityReporter,
+    MinMaxValidator, TypeValidator, MultipleOfValidator, ValueValidatorEnum, ValueValidatorConst, RequiredValidator, PatternValidator,
+} from "@ui-schema/ui-schema";
 
 const widgetStack = [
     SchemaGridHandler,
@@ -14,6 +17,8 @@ const widgetStack = [
     MultipleOfValidator,
     ValueValidatorConst,
     ValueValidatorEnum,
+    PatternValidator,
+    ValidityReporter,
 ];
 
 const widgets = {

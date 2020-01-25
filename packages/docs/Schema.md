@@ -75,7 +75,7 @@ Generic Keywords:
 
 Validation Keywords:
 
-- `pattern` ❌
+- `pattern` ✔
 - `minLength` string min. length ✔
 - `maxLength` string max. length ✔
 

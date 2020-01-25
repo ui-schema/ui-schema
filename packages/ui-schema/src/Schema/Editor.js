@@ -52,7 +52,7 @@ const DumpWidgetRenderer = React.memo(({Widget, widgetStack: widgetStack, ...pro
 });
 
 const SchemaWidgetRenderer = ({schema, required, storeKeys, level}) => {
-    const {store, setData, widgets, showValidity, t} = useSchemaEditor();
+    const {store, setData, widgets, showValidity, onValidity, t} = useSchemaEditor();
     const {widgetStack} = widgets;
     const type = schema.get('type');
     const widget_name = schema.get('widget');
@@ -80,6 +80,7 @@ const SchemaWidgetRenderer = ({schema, required, storeKeys, level}) => {
         // all others are getting pushed to Widget
         t={t}
         showValidity={showValidity}
+        onValidity={onValidity}
         value={store.getIn(storeKeys)}
         ownKey={storeKeys.get(storeKeys.count() - 1)}
         storeKeys={storeKeys}

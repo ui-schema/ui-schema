@@ -4,10 +4,12 @@
 
 ### Schema Driven
 
-| Plugin               | Package              | Handles              | Added Props | Status |
-| :---                 | :---                 | :---                 | :---        | :--- |
-| DefaultHandler       | @ui-schema/ui-schema | keyword `default`    | - | ✔ |
-| ValidityReporter     | @ui-schema/ui-schema | setting validity changes | - | ❌ |
+| Plugin                                              | Package              | Handles              | Added Props | Status |
+| :---                                                | :---                 | :---                 | :---        | :--- |
+| DefaultHandler                                      | @ui-schema/ui-schema | keyword `default`    | - | ✔ |
+| [ValidityReporter](#validityreporter)               | @ui-schema/ui-schema | setting validity changes | - | ✔ |
+| [CombiningHandler](#combininghandler)               | @ui-schema/ui-schema | ... | ... | ❌ |
+| [CombiningNetworkHandler](#combiningnetworkhandler) | @ui-schema/ui-schema | ... | ... | ❌ |
 
 ### Validation Plugins
 
@@ -17,12 +19,54 @@
 | TypeValidator        | @ui-schema/ui-schema | keyword `type`       | `valid`, `errors` | ✔ |
 | ValueValidatorConst  | @ui-schema/ui-schema | keywords `type`, `const` | `valid`, `errors` | ✔ |
 | ValueValidatorEnum   | @ui-schema/ui-schema | keywords `type`, `enum` | `valid`, `errors` | ✔ |
-| PatternValidator     | @ui-schema/ui-schema | keywords `type:string`, `pattern` | `valid`, `errors` | ❌ |
+| PatternValidator     | @ui-schema/ui-schema | keywords `type:string`, `pattern` | `valid`, `errors` | ✔ |
 | MultipleOfValidator  | @ui-schema/ui-schema | keywords `type:number,integer`, `multipleOf` | `valid`, `errors` | ✔ |
-| ArrayValidator       | @ui-schema/ui-schema | keywords `type:array` | `valid`, `errors` | ❌ |
+| ArrayValidator       | @ui-schema/ui-schema | `type:array`          | `valid`, `errors` | ❌ |
+| ObjectValidator      | @ui-schema/ui-schema | `type:object`         | ... | ❌ |
 | RequiredValidator    | @ui-schema/ui-schema | keywords `type:object`, `required` | `valid`, `errors`, `required` | ✔ |
 
 - `MinMaxValidator` depends on `RequiredValidator`
+
+#### ValidityReporter
+
+Submits the validity of each widget up to the state hoisted component when it changes.
+
+```js
+import React from 'react';
+import {SchemaEditor} from "@ui-schema/ui-schema";
+import {widgets,} from "@ui-schema/ds-material";
+import {Map} from 'immutable';
+
+import {data1, schema1} from "../_schema1";
+
+const MainStore = () => {
+    /**
+     * @var {Map} validity flat map with the storeKeys of each widget joined by dots, each value to true or false (false = invalid)
+     */
+    const [validity, setValidity] = React.useState(Map({}));
+
+    return <React.Fragment>
+        <SchemaEditor
+            schema={schema1}
+            data={data1}
+            widgets={widgets}
+            onValidity={setValidity}
+            { /* setter must get the previous state as value, it must be an immutable map, will return updatted map */ }
+            onValidity={(setter) => setValidity(setter(validity))}
+            
+        />
+        {validity.contains(false) ? 'invalid' : 'valid'}
+    </React.Fragment>
+};
+```
+
+#### CombiningHandler
+
+Combining schemas from within one schema, [specification](https://json-schema.org/understanding-json-schema/reference/combining.html)
+
+#### CombiningNetworkHandler
+
+Combining schemas from external addressed by using `$id` and `$ref`, [specification](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property)
 
 ## Creating Plugins
 

@@ -123,8 +123,10 @@ const schema1 = {
                 //margin: 'normal',
             }
         },
-        tag: {
+        usaPhone: {
             type: "string",
+            // only valid for: (888)555-1212 or 555-1212
+            pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$",
             view: {
                 sizeMd: 3
             }
