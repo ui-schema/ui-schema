@@ -23,7 +23,7 @@ const WidgetStackRenderer = ({current, Widget, widgetStack, ...props}) => {
     const Plugin = getPlugin(current, widgetStack);
 
     return <ErrorBoundary FallbackComponent={MyFallbackComponent}>
-        {Plugin ? <Plugin {...props} Widget={Widget} valid widgetStack={widgetStack} current={current}/> : 'plugin-stack-error'}
+        {Plugin ? <Plugin {...props} Widget={Widget} valid errors={List()} widgetStack={widgetStack} current={current}/> : 'plugin-stack-error'}
     </ErrorBoundary>;
 };
 

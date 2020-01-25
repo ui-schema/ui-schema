@@ -97,14 +97,16 @@ Each widget get's a lot of properties provided by the root schema provided or ad
 Properties from editor:
 
 - `t` : `{function}` see [translation](./Localization.md#translation)
-- `showValidity` : `{boolean}`
 - `value` : `{*}`
-- `ownKey` : `{string|integer}`
 - `storeKeys` : `{List}`
+- `ownKey` : `{string|integer}`
 - `setData` : `{function}`
-- `level` : `{integer}`
 - `schema` : `{Map}`
-- `required` : `{List|boolean}`
+- `level` : `{integer}`
+- `required` : `{boolean}` (Transformed from `undefined|List` to `boolean` by `RequiredValidator`)
+- `valid` : `{boolean}`
+- `showValidity` : `{boolean}`
+- `errors` : `{List}`
 
 See [plugins](./WidgetPlugins.md) for the rest of the provided properties.
 

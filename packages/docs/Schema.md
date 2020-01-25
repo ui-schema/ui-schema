@@ -68,7 +68,6 @@ The JSON-Schema gets extended with special only-UI keywords:
 
 Generic Keywords:
 
-- `required` of parent (array) and in own schema (bool) ❗
 - `format` in own schema (widget must implement it)
 - [non-JSON](https://json-schema.org/understanding-json-schema/reference/non_json_data.html) (widget must implement it)
     - `contentMediaType` may be used to change widget behaviour
@@ -90,10 +89,6 @@ Numbers can be described as:
 - `type: integer` only integer ✔
     - uses `Number.isInteger` to check type, may needs polyfill ✔
 
-Generic Keywords:
-
-- `required` of parent (array) and in own schema (bool) ❌
-
 Validation Keywords:
 
 - `multipleOf` restricts to the multiples of the given number ✔
@@ -106,10 +101,6 @@ Validation Keywords:
 
 ### Type Boolean
 
-Generic Keywords:
-
-- `required` of parent (array) and in own schema (bool) ❌
-
 [Specification](https://json-schema.org/understanding-json-schema/reference/boolean.html)
 
 ### Type Object
@@ -118,7 +109,14 @@ Type validity reports true when: `typeof value === 'object'` for vanilla-JS and 
 
 Generic Keywords:
 
-- `required` of parent (array) and in own schema (bool) ❌
+- `required` an array that contains which properties must be set, the `RequiredValidator` treats empty/false values as `invalid`! ✔
+    - invalid are:
+        - `array` with a length of `0`, e.g. `[]`, `List([])`
+        - `object` where the keys array has a length of `0`, e.g. `{}`, `Map({})`
+        - `string` where empty after trim
+        - `boolean` where false
+        - `number` has no falsy check, invalid when not type of number, (`0` is a valid number, `"0"` is not valid)
+        - where the value is `undefined`
 
 Validation Keywords:
 

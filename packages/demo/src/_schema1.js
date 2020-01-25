@@ -16,19 +16,20 @@ const schema1 = {
                             type: "string",
                             minLength: 2,
                             maxLength: 3,
-                            required: true,
                             view: {
                                 sizeMd: 6,
                             }
                         },
                         surname: {
                             type: "string",
-                            const: "Doe",
                             view: {
                                 sizeMd: 6
                             }
                         },
-                    }
+                    },
+                    required: [
+                        'surname'
+                    ]
                 },
                 'step-2': {
                     type: "object",
@@ -142,20 +143,22 @@ const schema1 = {
             },
             properties: {
                 center_items: {
-                    type: "bool",
+                    type: "boolean",
                     default: true,
                     view: {
                         sizeMd: 12
                     }
                 },
                 center_item_content: {
-                    type: "bool",
-                    required: true,
+                    type: "boolean",
                     view: {
                         sizeMd: 12
                     }
                 }
-            }
+            },
+            required: [
+                'center_item_content'
+            ]
         },
         layouts: {
             type: "array",
@@ -177,6 +180,18 @@ const schema1 = {
         size: {
             type: "string",
             widget: "OptionsRadio",
+            view: {
+                sizeMd: 3
+            },
+            enum: [
+                'small',
+                'middle',
+                'big',
+            ],
+        },
+        sizeDef: {
+            type: "string",
+            widget: "OptionsRadio",
             default: "middle",
             view: {
                 sizeMd: 3
@@ -190,7 +205,7 @@ const schema1 = {
         age: {
             type: "string",
             widget: "Select",
-            default: "adult",
+            //default: "adult",
             view: {
                 sizeMd: 3
             },
@@ -202,7 +217,7 @@ const schema1 = {
             ],
         },
         ages: {
-            type: "string",
+            type: "array",
             widget: "SelectMulti",
             view: {
                 sizeMd: 3
@@ -252,7 +267,10 @@ const schema1 = {
         }
     },
     required: [
-        'layouts'
+        'layouts',
+        'size',
+        'age',
+        'ages'
     ]
 };
 

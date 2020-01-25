@@ -7,8 +7,9 @@ const ERROR_ENUM_MISMATCH = 'enum-mismatch';
 
 const ValueValidatorEnum = (props) => {
     const {
-        schema, value, errors = new List(),
+        schema, value
     } = props;
+    let {errors} = props;
 
     let {valid} = props;
 
@@ -24,12 +25,12 @@ const ValueValidatorEnum = (props) => {
         if(List.isList(_enum)) {
             if(!_enum.contains(value)) {
                 valid = false;
-                errors.push(ERROR_ENUM_MISMATCH);
+                errors = errors.push(ERROR_ENUM_MISMATCH);
             }
         } else if(Array.isArray(_enum)) {
             if(-1 === _enum.indexOf(value)) {
                 valid = false;
-                errors.push(ERROR_ENUM_MISMATCH);
+                errors = errors.push(ERROR_ENUM_MISMATCH);
             }
         }
     }
@@ -39,8 +40,9 @@ const ValueValidatorEnum = (props) => {
 
 const ValueValidatorConst = (props) => {
     const {
-        schema, value, errors = new List(),
+        schema, value
     } = props;
+    let {errors} = props;
 
     let {valid} = props;
 
@@ -52,7 +54,7 @@ const ValueValidatorConst = (props) => {
     if(type === 'string' || type === 'number' || type === 'integer' || type === 'boolean' || type === 'array' || type === 'object') {
         if(value !== _const) {
             valid = false;
-            errors.push(ERROR_CONST_MISMATCH);
+            errors = errors.push(ERROR_CONST_MISMATCH);
         }
     }
 

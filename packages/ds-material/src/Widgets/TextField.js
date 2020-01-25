@@ -4,26 +4,17 @@ import {
 } from "@material-ui/core";
 import {unstable_trace as trace} from "scheduler/tracing";
 import {beautifyKey} from "@ui-schema/ui-schema";
-import {List} from 'immutable';
 
-const StringRenderer = ({type, ownKey, schema, value, multiline, showValidity, rows, rowsMax, setData, storeKeys, valid, required}) => {
+const StringRenderer = ({type, ownKey, schema, value, multiline, rows, rowsMax, setData, storeKeys, showValidity, valid, required}) => {
     const format = schema.get('format');
     const fieldType = format === 'date' ? 'date' : type;
-
-    let isRequired = schema.get('required');
-    if(required && !isRequired) {
-        if(List.isList(required)) {
-            isRequired = required.contains(ownKey);
-        }
-    }
-    // todo:: show errors, show invalid only after blur or when required
 
     return <TextField
         label={beautifyKey(ownKey)}
         type={fieldType}
         multiline={multiline}
-        required={isRequired}
-        error={(!valid || (isRequired && !value)) && showValidity}
+        required={required}
+        error={!valid && showValidity}
         rows={rows}
         rowsMax={rowsMax}
         fullWidth

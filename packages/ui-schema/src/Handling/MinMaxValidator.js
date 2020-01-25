@@ -1,5 +1,4 @@
 import React from "react";
-import {List} from "immutable";
 import {NextPluginRenderer} from "../Schema/Editor";
 
 const ERROR_MIN_LENGTH = 'min-length';
@@ -7,8 +6,11 @@ const ERROR_MAX_LENGTH = 'max-length';
 
 const MinMaxValidator = (props) => {
     const {
-        schema, value, errors = new List(),
+        schema, value,
+        required,
     } = props;
+
+    let {errors} = props;
 
     let {valid} = props;
 
@@ -20,15 +22,17 @@ const MinMaxValidator = (props) => {
 
         if(typeof value === 'string') {
             if(minLength) {
-                if(value.length < minLength) {
+                if(!(!required && 0 === value.length) && value.length < minLength) {
+                    // when not required and empty string it is okay
                     valid = false;
-                    errors.push(ERROR_MIN_LENGTH);
+                    errors = errors.push(ERROR_MIN_LENGTH);
                 }
             }
             if(maxLength) {
-                if(value.length > maxLength) {
+                if(!(!required && 0 === value.length) && value.length > maxLength) {
+                    // when not required and empty string it is okay
                     valid = false;
-                    errors.push(ERROR_MAX_LENGTH);
+                    errors = errors.push(ERROR_MAX_LENGTH);
                 }
             }
         }
@@ -41,28 +45,33 @@ const MinMaxValidator = (props) => {
         let exclusiveMaximum = schema.get('exclusiveMaximum');
 
         if(typeof value === 'number') {
-            if(minimum) {
+            let notRequiredAndZero = (!required && 0 === value);
+            if(!notRequiredAndZero && minimum) {
+                // when not required and value is zero it is okay
                 if(value < minimum) {
                     valid = false;
-                    errors.push(ERROR_MIN_LENGTH);
+                    errors = errors.push(ERROR_MIN_LENGTH);
                 }
             }
-            if(exclusiveMinimum) {
+            if(!notRequiredAndZero && exclusiveMinimum) {
+                // when not required and value is zero it is okay
                 if(value <= exclusiveMinimum) {
                     valid = false;
-                    errors.push(ERROR_MIN_LENGTH);
+                    errors = errors.push(ERROR_MIN_LENGTH);
                 }
             }
-            if(maximum) {
+            if(!notRequiredAndZero && maximum) {
+                // when not required and value is zero it is okay
                 if(value > maximum) {
                     valid = false;
-                    errors.push(ERROR_MAX_LENGTH);
+                    errors = errors.push(ERROR_MAX_LENGTH);
                 }
             }
-            if(exclusiveMaximum) {
+            if(!notRequiredAndZero && exclusiveMaximum) {
+                // when not required and value is zero it is okay
                 if(value >= exclusiveMaximum) {
                     valid = false;
-                    errors.push(ERROR_MAX_LENGTH);
+                    errors = errors.push(ERROR_MAX_LENGTH);
                 }
             }
         }

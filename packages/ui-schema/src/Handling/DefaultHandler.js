@@ -9,9 +9,6 @@ const DefaultHandler = (props) => {
     let default_val = schema.get('default');
     if(typeof value === 'undefined') {
         if(typeof default_val !== 'undefined') {
-            // todo:
-            //   on object/array: what if manually removed default entry?
-            //   all other types will have some other default then `undefined` when unselected
             setData(storeKeys, default_val)
         }
     }

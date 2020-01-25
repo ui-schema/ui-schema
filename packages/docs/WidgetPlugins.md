@@ -6,7 +6,7 @@
 
 | Plugin               | Package              | Handles              | Added Props | Status |
 | :---                 | :---                 | :---                 | :---        | :--- |
-| DefaultHandler       | @ui-schema/ui-schema | keyword `default`    | - | ❗ |
+| DefaultHandler       | @ui-schema/ui-schema | keyword `default`    | - | ✔ |
 | ValidityReporter     | @ui-schema/ui-schema | setting validity changes | - | ❌ |
 
 ### Validation Plugins
@@ -20,7 +20,9 @@
 | PatternValidator     | @ui-schema/ui-schema | keywords `type:string`, `pattern` | `valid`, `errors` | ❌ |
 | MultipleOfValidator  | @ui-schema/ui-schema | keywords `type:number,integer`, `multipleOf` | `valid`, `errors` | ✔ |
 | ArrayValidator       | @ui-schema/ui-schema | keywords `type:array` | `valid`, `errors` | ❌ |
-| RequiredValidator    | @ui-schema/ui-schema | keywords `type:object`, `required` | `valid`, `errors` | ❌ |
+| RequiredValidator    | @ui-schema/ui-schema | keywords `type:object`, `required` | `valid`, `errors`, `required` | ✔ |
+
+- `MinMaxValidator` depends on `RequiredValidator`
 
 ## Creating Plugins
 

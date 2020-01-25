@@ -6,3 +6,4 @@ export * from './Handling/TypeValidator';
 export * from './Handling/MultipleOfValidator';
 export * from './Handling/MinMaxValidator';
 export * from './Handling/ValueValidator';
+export * from './Handling/RequiredValidator';

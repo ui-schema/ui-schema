@@ -8,7 +8,8 @@ import {List} from "immutable";
 
 const Select = ({
                     multiple,
-                    ownKey, required, schema, value, setData, storeKeys
+                    ownKey, schema, value, setData, storeKeys,
+                    showValidity, valid, required, errors
                 }) => {
     if(!schema) return null;
 
@@ -22,7 +23,7 @@ const Select = ({
         currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '');
     }
 
-    return <FormControl required={required.contains(ownKey)} error={false}>
+    return <FormControl required={required} error={!valid && showValidity} fullWidth>
         <InputLabel id={"demo-simple-select-label" + ownKey}>{beautifyKey(ownKey)}</InputLabel>
         <MuiSelect
             labelId={"demo-simple-select-label" + ownKey}
@@ -49,7 +50,10 @@ const Select = ({
                 </MenuItem>
             ).valueSeq() : null}
         </MuiSelect>
-        <FormHelperText>Some important helper text</FormHelperText>
+
+        {showValidity && errors.size ? errors.map((error, i) =>
+            <FormHelperText key={i}>{Array.isArray(error) ? error[0] : error}</FormHelperText>
+        ).valueSeq() : null}
     </FormControl>;
 };
 

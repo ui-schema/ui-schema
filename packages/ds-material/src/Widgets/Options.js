@@ -1,25 +1,38 @@
 import React from "react";
 import {
     FormControl, FormLabel, FormHelperText, FormGroup, FormControlLabel,
-    Switch, Checkbox, RadioGroup, Radio,
+    Switch, Checkbox, RadioGroup, Radio, makeStyles
 } from "@material-ui/core";
+import {grey} from "@material-ui/core/colors";
 import {beautifyKey} from "@ui-schema/ui-schema";
 import {useId} from "react-id-generator";
 
-const BoolRenderer = ({ownKey, schema, value, setData, storeKeys}) => {
+const switchStyle = makeStyles(theme => ({
+    switchBase: {
+        color: ({error}) => error ? theme.palette.error.main : (theme.palette.type === 'dark' ? grey[400] : grey[50]),
+    },
+    checked: {},
+    track: {
+        backgroundColor: ({error}) => error ? theme.palette.error.dark : (theme.palette.type === 'dark' ? grey[500] : grey[300]),
+    },
+}));
+
+
+const BoolRenderer = ({ownKey, value, setData, storeKeys, showValidity, valid, required}) => {
     const currentVal = typeof value !== 'undefined' ? value : false;
 
-    //console.log(schema.get('required'));
+    const classes = switchStyle({error: !valid && showValidity});
 
     return <FormControlLabel
         control={
             <Switch
-                required={schema.get('required')}
+                classes={classes}
+                required={required}
                 checked={currentVal}
                 onChange={() => setData(storeKeys, !currentVal)}
             />
         }
-        label={beautifyKey(ownKey) + (schema.get('required') ? ' *' : '')}
+        label={beautifyKey(ownKey) + (required ? ' *' : '')}
     />;
 };
 
@@ -38,11 +51,11 @@ const OptionCheck = ({currentValue, onChange, label}) => {
     />;
 };
 
-const OptionsCheck = ({ownKey, required, schema, value, setData, storeKeys}) => {
+const OptionsCheck = ({ownKey, schema, value, setData, storeKeys, showValidity, valid, required, errors}) => {
     const enum_val = schema.get('enum');
     if(!enum_val) return null;
 
-    return <FormControl required={required.contains(ownKey)} error={false} component="fieldset">
+    return <FormControl required={required} error={!valid && showValidity} component="fieldset">
         <FormLabel component="legend">{beautifyKey(ownKey)}</FormLabel>
         <FormGroup>
             {enum_val ? enum_val.map((enum_name) => {
@@ -62,17 +75,20 @@ const OptionsCheck = ({ownKey, required, schema, value, setData, storeKeys}) => 
                 />
             }).valueSeq() : null}
         </FormGroup>
-        <FormHelperText>You can display an error</FormHelperText>
+
+        {showValidity && errors.size ? errors.map((error, i) =>
+            <FormHelperText key={i}>{Array.isArray(error) ? error[0] : error}</FormHelperText>
+        ).valueSeq() : null}
     </FormControl>;
 };
 
-const OptionsRadio = ({ownKey, required, schema, value, setData, storeKeys}) => {
+const OptionsRadio = ({ownKey, schema, value, setData, storeKeys, showValidity, valid, required, errors}) => {
     const enum_val = schema.get('enum');
     if(!enum_val) return null;
 
     const currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '');
 
-    return <FormControl required={required.contains(ownKey)} error={false} component="fieldset">
+    return <FormControl required={required} error={!valid && showValidity} component="fieldset">
         <FormLabel component="legend">{beautifyKey(ownKey)}</FormLabel>
         <RadioGroup>
             {enum_val ? enum_val.map((enum_name) => {
@@ -87,7 +103,10 @@ const OptionsRadio = ({ownKey, required, schema, value, setData, storeKeys}) => 
                 />
             }).valueSeq() : null}
         </RadioGroup>
-        <FormHelperText>You can display an error</FormHelperText>
+
+        {showValidity && errors.size ? errors.map((error, i) =>
+            <FormHelperText key={i}>{Array.isArray(error) ? error[0] : error}</FormHelperText>
+        ).valueSeq() : null}
     </FormControl>
 };
 
