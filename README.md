@@ -17,74 +17,11 @@ JSON-Schema form + ui generator for any design system, first-class support for [
 > This readme currently serves as a mix of documentation, completion tracking and big-picture.
 >
 
-```json
-{
-  "$id": "https://example.com/some-ui.schema.json",
-  "$schema": "http://ui-schema.bemit.codes/draft-07/schema#",
-  "description": "A representation of some user data definition",
-  
-  "type": "object",
-
-  "properties": {
-    "name": { "type": "string" },
-    "credit_card": { "type": "number" },
-    "avatar": { 
-      "type": "object",
-      "widget": "FileUpload"
-    }
-  },
-
-  "required": ["name"],
-
-  "dependencies": {// dynamic content & toggles etc.
-    "post-office-box": [ "street-address" ],
-    "extended-address": [ "street-address" ],
-    // needs existing property
-    "credit_card": ["billing_address"],
-    // supplies new property needed when credit_card
-    "credit_card": {
-      "properties": {
-        "billing_address": { "type": "string" }
-      },
-      "required": ["billing_address"]
-    }
-  }
-}
-```
-
-- Dependencies: 
-    - [Property](https://json-schema.org/understanding-json-schema/reference/object.html#property-dependencies)
-    - [Schema](https://json-schema.org/understanding-json-schema/reference/object.html#schema-dependencies)
-    - outdated in draft-7
-    
 ## Schema
 
 We are using the JSON-Schema included keywords to describe the data and create the UI based on the data-schema and special UI keywords. A data-schema with integrated ui-schema enforces the consistency of the UX across different apps and devices.
 
-This JSON-Schema vocabulary is used:
- 
-- `type` valid types currently supported: `string`, `number`, `boolean`, `object`
-- `format` e.g. `date` when the `type` is `string`
-- `properties` object sub-schemas
-- `headline` what will be used as headline for the current UI
-- `default` what will be used if the field hasn't existing data
-- `required` for enforcing the fill-out of an field
-- `dependencies` for on-the fly sub-schemas and interaction based UI visibility
-    - or more precisly using the next Draft-7: `dependentSchemas` and `dependentRequired`
-- `enum` for creating multi-selects, checkboxes, radios etc.
-- `minLength` string min. length
-- `maxLength` string max. length
-- `minimum` number min. length
-- `maximum` number max. length
-- [conditionals](https://json-schema.org/understanding-json-schema/reference/conditionals.html)
-    - `allOf`
-    - `if`
-    - `else`
-    
-It got extended with special only-UI keywords:
-
-- `view` currently only used for the grid system
-- `widget` to render the data-ui as a special widget, not using the default type based binding
+[... more](./packages/docs/Schema.md)
 
 ## Widget Design Systems
 
@@ -160,6 +97,19 @@ Included widgets (match by `widget` in schema), each widget could have multiple 
 ... more to follow
 
 - ⬛ only means some working example is existing during the current dev-state.
+
+[... more on providing/overriding Widgets](./packages/docs/Widgets.md)
+
+## Docs
+
+- [UI-JSON-Schema](./packages/docs/Schema.md), on which types and keywords are supported
+- [Widget System](./packages/docs/Widgets.md), how to create design-system bindings and override widgets
+- Widgets
+    - [TextField](./packages/docs/widgets/TextField.md)
+    - [Stepper](./packages/docs/widgets/TextField.md)
+- [Schema-Plugins](./packages/docs/SchemaPlugins.md)
+- [Localization / Translation](./packages/docs/Localization.md)
+- [Performance](./packages/docs/Performance.md) insights and tips
 
 ## Contributing
 

@@ -29,3 +29,12 @@ This editor has multiple levels of performance optimization:
             - re-renders on changes of current schema-levels: `type`, `widget`, `schema`, `storeKeys`, `level`, `properties` and `GroupRenderer`
         - `SchemaWidgetRenderer` wraps `DumpWidgetRenderer` which is the abstraction layer to the final widgets
             - re-renders on changes of **current** widgets: `renderer`, `value`, `lastKey`, `storeKeys`, `setData`, `level`, `schema`
+
+## Docs
+
+- [Overview](../../README.md)
+- [UI-JSON-Schema](./Schema.md)
+- [Widget System](./Widgets.md)
+- [Schema-Plugins](./SchemaPlugins.md)
+- [Localization / Translation](./Localization.md)
+- [Performance](./Performance.md)
