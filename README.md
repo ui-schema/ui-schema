@@ -17,6 +17,8 @@ JSON-Schema form + ui generator for any design system, first-class support for [
 > This readme currently serves as a mix of documentation, completion tracking and big-picture.
 >
 
+Simplified example:
+
 ```js
 import React from "react";
 import {SchemaEditor} from "@ui-schema/ui-schema";
@@ -28,7 +30,7 @@ const SchemaDebug = () => {
 
     return <React.Fragment>
         <ImmutableEditor
-            data={schema} onChange={setData} getVal={keys => store.getIn(keys)}
+            data={store} onChange={setData} getVal={keys => store.getIn(keys)}
             theme={themeMaterial}/>
         <ImmutableEditor
             data={schema} onChange={setSchema} getVal={keys => schema.getIn(keys)}
@@ -48,8 +50,10 @@ const Editor = () => {
             schema={schema1}
             data={data1}
             widgets={widgets}
-            onChange={(keys, data, store) => store.setIn(keys, data)}
             showValidity={showValidity}
+            
+            {/* todo: onChange, onValidity */}
+            onChange={(keys, data, store) => store.setIn(keys, data)}
             onValidity={valid => setValidity(valid)}
         >
             <SchemaDebug/>

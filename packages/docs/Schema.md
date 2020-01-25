@@ -2,8 +2,9 @@
 
 This JSON-Schema vocabulary is used within the included widget-matching:
  
-- `type` valid types currently supported: `string`, `number`, `boolean`, `object` ✔
-    - `array` validation needs to be implemented, render must be implemented through a widget
+- `type` valid types currently supported: `string`, `number`, `boolean`, `object`, `array` ✔
+    - `array` render must be implemented through a widget
+    - validity for `typeof undefined` must be handled depending on `required` in the widget
 - `widget`, non-standard JSON-Schema to select a specific UI ✔
 
 These keywords may be implemented in each widget/design-system:
@@ -38,7 +39,9 @@ Usage scenario needs to be created:
 | :----     | :----  | :----       |
 | ✔         | ❗      | ❌          |
     
+>
 > target support is `JSON-Schema Draft 2019-09`
+>
     
 ## UI-Schema Extension
 
@@ -81,8 +84,9 @@ Validation Keywords:
 
 Numbers can be described as:
 
-- `type` `number` integer or float ✔
-- `type` `integer` only integer ❌
+- `type: number` integer or float ✔
+- `type: integer` only integer ✔
+    - uses `Number.isInteger` to check type, may needs polyfill ✔
 
 Generic Keywords:
 
@@ -109,6 +113,8 @@ Generic Keywords:
 
 ### Type Object
 
+Type validity reports true when: `typeof value === 'object'` for vanilla-JS and `Map.isMap` for immutable. ✔
+
 Generic Keywords:
 
 - `required` of parent (array) and in own schema (bool) ❌
@@ -125,6 +131,8 @@ Validation Keywords:
 [Specification](https://json-schema.org/understanding-json-schema/reference/object.html)
 
 ### Type Array
+
+Type validity reports true when: `Array.isArray(value)` for vanilla-JS and `List.isList` for immutable. ✔
 
 Validation Keywords:
 

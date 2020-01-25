@@ -6,10 +6,12 @@
 > ❗ the actual plugins are not ready yet
 >
 
-| Plugin | Package | Handles | Status |
-| :---   | :---    | :---    | :--- |
-| MinMaxHandler | @ui-schema/ui-schema |  |  |
-| DefaultHandler | @ui-schema/ui-schema | keyword `default` |  |
+| Plugin | Package | Handles | Added Props | Status |
+| :---   | :---    | :---    | :--- | :--- |
+| MinMaxHandler | @ui-schema/ui-schema | min/max validity | `valid`, `errors` | ✔(string,number) ❗ |
+| DefaultHandler | @ui-schema/ui-schema | keyword `default` | - | ❗ |
+| TypeValidityHandler | @ui-schema/ui-schema | keyword `type` | `valid`, `errors` | ✔ |
+| ValidityReporter | @ui-schema/ui-schema | setting validity changes | - | ❌ |
 
 ## Creating Plugins
 

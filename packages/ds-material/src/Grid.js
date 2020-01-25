@@ -1,7 +1,7 @@
 import React from "react";
 import {Grid} from "@material-ui/core";
 import {
-    NextPluginRenderer, DefaultHandler, MinMaxHandler
+    NextPluginRenderer, DefaultHandler, MinMaxHandler, TypeValidityHandler
 } from "@ui-schema/ui-schema";
 
 const SchemaGridItem = ({schema, children, defaultMd}) => {
@@ -43,9 +43,10 @@ const SchemaGridHandler = (props) => {
 };
 
 const widgetStack = [
-    MinMaxHandler,
     SchemaGridHandler,
     DefaultHandler,
+    MinMaxHandler,
+    TypeValidityHandler,
 ];
 
 export {SchemaGridItem, RootRenderer, GroupRenderer, widgetStack};
