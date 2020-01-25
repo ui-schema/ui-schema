@@ -32,7 +32,7 @@ Usage scenario needs to be created:
     - `if`
     - `else`
 - [recursive](https://json-schema.org/understanding-json-schema/structuring.html#recursion) with `$ref` ❌
-- [schema-id](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property) with `$id` and use `$ref` with `$id` to load partial datas lazily ❌
+- [schema-id](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property) with `$id` and use `$ref` with `$id` to load partial sub-schemas lazily or include relatively ❌
     
 | Supported | Refine | Unsupported |
 | :----     | :----  | :----       |

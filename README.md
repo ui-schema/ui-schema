@@ -96,7 +96,7 @@ Included widgets (match by `widget` in schema), each widget could have multiple 
 
 ... more to follow
 
-- ⬛ only means some working example is existing during the current dev-state.
+⬛ only means some working example is existing during the current dev-state.
 
 [... more on providing/overriding Widgets](./packages/docs/Widgets.md)
 
