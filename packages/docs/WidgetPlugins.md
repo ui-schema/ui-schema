@@ -21,7 +21,7 @@
 | ValueValidatorEnum   | @ui-schema/ui-schema | keywords `type`, `enum` | `valid`, `errors` | ✔ |
 | PatternValidator     | @ui-schema/ui-schema | keywords `type:string`, `pattern` | `valid`, `errors` | ✔ |
 | MultipleOfValidator  | @ui-schema/ui-schema | keywords `type:number,integer`, `multipleOf` | `valid`, `errors` | ✔ |
-| ArrayValidator       | @ui-schema/ui-schema | `type:array`          | `valid`, `errors` | ❌ |
+| ArrayValidator       | @ui-schema/ui-schema | `type:array`          | `valid`, `errors` | ✔(partial sub-schema for single sub-schema) ❗ |
 | ObjectValidator      | @ui-schema/ui-schema | `type:object`         | ... | ❌ |
 | RequiredValidator    | @ui-schema/ui-schema | keywords `type:object`, `required` | `valid`, `errors`, `required` | ✔ |
 
@@ -29,7 +29,7 @@
 
 #### ValidityReporter
 
-Submits the validity of each widget up to the state hoisted component when it changes.
+Submits the validity of each widget up to the state hoisted component when it changes.`
 
 ```js
 import React from 'react';
@@ -41,7 +41,7 @@ import {data1, schema1} from "../_schema1";
 
 const MainStore = () => {
     /**
-     * @var {Map} validity flat map with the storeKeys of each widget joined by dots, each value to true or false (false = invalid)
+     * @var {Map} validity nested map with special key `__valid` which may be true or false, for each layer separately, if valid or not is not inherited upwards
      */
     const [validity, setValidity] = React.useState(Map({}));
 
@@ -51,12 +51,27 @@ const MainStore = () => {
             data={data1}
             widgets={widgets}
             onValidity={setValidity}
-            { /* setter must get the previous state as value, it must be an immutable map, will return updatted map */ }
+            { /* setter must get the previous state as value, it must be an immutable map, will return updated map */ }
             onValidity={(setter) => setValidity(setter(validity))}
             
         />
         {validity.contains(false) ? 'invalid' : 'valid'}
     </React.Fragment>
+};
+```
+
+Checking if invalid scope in a **widget**:
+
+> **[bug]** `isInvalid` seems to not work correctly recursively sometimes (strange bug)
+
+```js
+import {isInvalid} from "@ui-schema/ui-schema";
+
+const SomeWidget = ({validity, storeKeys, ...props}) => {
+
+    let invalid = isInvalid(validity, storeKeys, false); // Map, List, boolean: <if count>
+
+    return null; // should be the binding component
 };
 ```
 

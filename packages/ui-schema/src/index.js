@@ -9,3 +9,4 @@ export * from './Handling/MinMaxValidator';
 export * from './Handling/ValueValidator';
 export * from './Handling/RequiredValidator';
 export * from './Handling/PatternValidator';
+export * from './Handling/ArrayValidator';

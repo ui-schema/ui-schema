@@ -8,7 +8,7 @@ import Paper from "@material-ui/core/Paper";
 import {Button} from "@material-ui/core";
 import Orders from "../ds/material-ui/dashboard/Orders";
 import {widgets,} from "@ui-schema/ds-material";
-import {SchemaEditor} from "@ui-schema/ui-schema";
+import {SchemaEditor, isInvalid} from "@ui-schema/ui-schema";
 import {SchemaDebug} from "../component/SchemaDebug";
 import {Map} from 'immutable';
 
@@ -23,13 +23,14 @@ const MainStore = () => {
             schema={schema1}
             data={data1}
             widgets={widgets}
+            validity={validity}
             showValidity={showValidity}
             onValidity={setValidity}
         >
             <SchemaDebug/>
         </SchemaEditor>
         <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
-        {validity.contains(false) ? 'invalid' : 'valid'}
+        {isInvalid(validity) ? 'invalid' : 'valid'}
     </React.Fragment>
 };
 

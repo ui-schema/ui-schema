@@ -2,7 +2,7 @@ import React from "react";
 import {
     makeStyles, Stepper as MuiStepper, Step as MuiStep, StepLabel, Button, Typography,
 } from "@material-ui/core";
-import {beautifyKey, NestedSchemaEditor} from "@ui-schema/ui-schema";
+import {beautifyKey, NestedSchemaEditor, isInvalid} from "@ui-schema/ui-schema";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -20,22 +20,26 @@ const useStyles = makeStyles(theme => ({
 
 const Step = ({
                   //ownKey, required,
-                  schema, storeKeys, level,
+                  schema, storeKeys, level, ...p
               }) => {
-    return <NestedSchemaEditor storeKeys={storeKeys} schema={schema.delete('widget')} level={level + 1}/>
+    return <NestedSchemaEditor storeKeys={storeKeys} schema={schema.delete('widget')} level={level + 1} {...p}/>
 };
 
 const Stepper = ({
                      //ownKey, required,
-                     schema, storeKeys
+                     schema, storeKeys, validity,
                  }) => {
     if(!schema) return null;
+
+    const [showValidity, setShowValidity] = React.useState(false);
 
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const [skipped, setSkipped] = React.useState(new Set());
     const steps = schema.get('properties');
     const stepOrder = steps.keySeq();
+
+    let activeStepInvalid = isInvalid(validity, storeKeys.push(stepOrder.get(activeStep)));
 
     React.useEffect(() => {
         //setActiveStep(0)
@@ -50,14 +54,19 @@ const Stepper = ({
     };
 
     const handleNext = () => {
-        let newSkipped = skipped;
-        if(isStepSkipped(activeStep)) {
-            newSkipped = new Set(newSkipped.values());
-            newSkipped.delete(activeStep);
-        }
+        if(activeStepInvalid) {
+            setShowValidity(true);
+        } else {
+            setShowValidity(false);
+            let newSkipped = skipped;
+            if(isStepSkipped(activeStep)) {
+                newSkipped = new Set(newSkipped.values());
+                newSkipped.delete(activeStep);
+            }
 
-        setActiveStep(prevActiveStep => prevActiveStep + 1);
-        setSkipped(newSkipped);
+            setActiveStep(prevActiveStep => prevActiveStep + 1);
+            setSkipped(newSkipped);
+        }
     };
 
     const handleBack = () => {
@@ -114,10 +123,13 @@ const Stepper = ({
             ) : (
                 <div>
                     <Typography className={classes.instructions}>{beautifyKey(stepOrder.get(activeStep))}</Typography>
+
                     <NestedSchemaEditor
+                        showValidity={showValidity}
                         storeKeys={storeKeys.push(stepOrder.get(activeStep))}
                         schema={steps.get(stepOrder.get(activeStep))}
                     />
+
                     <div style={{margin: '24px 0 0 0'}}>
                         <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                             Back

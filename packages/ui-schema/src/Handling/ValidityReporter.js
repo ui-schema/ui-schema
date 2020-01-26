@@ -1,5 +1,6 @@
 import React from "react";
 import {NextPluginRenderer} from "../Schema/Editor";
+import {Map} from 'immutable';
 
 const ValidityReporter = (props) => {
     const {
@@ -13,12 +14,62 @@ const ValidityReporter = (props) => {
         if(onValidity) {
             // todo: only call onValidity when validity really changed and not set? [performance]
             //   use effect may forget dependencies
-            let key_str = storeKeys.valueSeq().join('.');
-            onValidity(validity => validity.set(key_str, valid));
+            onValidity(validity => validity.setIn(storeKeys.push('__valid'), valid));
         }
     }, [valid]);
 
     return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
 };
 
-export {ValidityReporter}
+const searchRecursive = (immutable, val, keys, count = false) => {
+    if(!immutable) return 0;
+
+    let found = 0;
+
+    let further = [];
+    for(let [, value] of immutable) {
+        if(Map.isMap(value)) {
+            if(keys) {
+                let t = value.getIn(keys);
+                if(typeof t !== 'undefined' || typeof val === 'undefined') {
+                    if(t === val) {
+                        found++;
+                        if(!count) {
+                            break;
+                        }
+                    }
+                } else {
+                    further.push(value);
+                }
+            } else {
+                further.push(value);
+            }
+        } else if(value === val) {
+            found++;
+
+            if(!count) {
+                break;
+            }
+        }
+    }
+
+    if(further.length && (!found || (found && count))) {
+        for(let value of further) {
+            found += searchRecursive(value, val, keys, count);
+
+            if(found && !count) {
+                break;
+            }
+        }
+    }
+
+    return found;
+};
+
+const isInvalid = (validity, scope = [], count = false) => {
+    if(!validity) return 0;
+
+    return searchRecursive(validity.getIn(scope), false, ['__valid'], count);
+};
+
+export {ValidityReporter, isInvalid, searchRecursive}

@@ -22,6 +22,7 @@ const ValueValidatorEnum = (props) => {
     if(typeof _enum === 'undefined' || typeof value === 'undefined') return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
 
     if(type === 'string' || type === 'number' || type === 'integer' || type === 'boolean') {
+        // todo: should enum respect required?
         if(List.isList(_enum)) {
             if(!_enum.contains(value)) {
                 valid = false;
@@ -53,6 +54,7 @@ const ValueValidatorConst = (props) => {
 
     if(type === 'string' || type === 'number' || type === 'integer' || type === 'boolean' || type === 'array' || type === 'object') {
         if(value !== _const) {
+            // todo: should const respect required?
             valid = false;
             errors = errors.push(ERROR_CONST_MISMATCH);
         }

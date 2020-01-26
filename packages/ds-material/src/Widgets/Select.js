@@ -31,15 +31,19 @@ const Select = ({
             value={multiple ? currentValue.toArray() : currentValue}
             multiple={multiple}
             renderValue={selected => multiple ?
-                selected.map(s => beautifyKey(s)).join(', ') :
+                selected.map(
+                    s => typeof s === 'string' ?
+                        beautifyKey(s) :
+                        s + '')
+                    .join(', ') :
                 beautifyKey(selected)}
             onChange={(e) => multiple ?
                 setData(storeKeys, List(e.target.value)) :
                 setData(storeKeys, e.target.value)}
         >
-            {enum_val ? enum_val.map((enum_name) =>
+            {enum_val ? enum_val.map((enum_name, i) =>
                 <MenuItem
-                    key={enum_name}
+                    key={enum_name + '-' + i}
                     value={enum_name}
                 >{multiple ?
                     <React.Fragment>

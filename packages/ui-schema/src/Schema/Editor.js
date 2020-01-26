@@ -51,8 +51,8 @@ const DumpWidgetRenderer = React.memo(({Widget, widgetStack: widgetStack, ...pro
     </ErrorBoundary>;
 });
 
-const SchemaWidgetRenderer = ({schema, required, storeKeys, level}) => {
-    const {store, setData, widgets, showValidity, onValidity, t} = useSchemaEditor();
+const SchemaWidgetRenderer = ({schema, required, storeKeys, level, showValidity: showValidityOverride}) => {
+    const {store, setData, widgets, showValidity, validity, onValidity, t} = useSchemaEditor();
     const {widgetStack} = widgets;
     const type = schema.get('type');
     const widget_name = schema.get('widget');
@@ -79,7 +79,8 @@ const SchemaWidgetRenderer = ({schema, required, storeKeys, level}) => {
 
         // all others are getting pushed to Widget
         t={t}
-        showValidity={showValidity}
+        showValidity={showValidity || showValidityOverride}
+        validity={validity}
         onValidity={onValidity}
         value={store.getIn(storeKeys)}
         ownKey={storeKeys.get(storeKeys.count() - 1)}
@@ -94,7 +95,7 @@ const SchemaWidgetRenderer = ({schema, required, storeKeys, level}) => {
 /**
  * decided if a widget or another group should be rendered, a group is any object without a widget
  */
-let DumpSwitchingRenderer = ({schema, storeKeys, level, parentSchema, groupRenderer: GroupRenderer}) => {
+let DumpSwitchingRenderer = ({schema, storeKeys, level, parentSchema, groupRenderer: GroupRenderer, showValidity}) => {
     const type = schema.get('type');
     const widget = schema.get('widget');
     const properties = schema.get('properties');
@@ -108,17 +109,17 @@ let DumpSwitchingRenderer = ({schema, storeKeys, level, parentSchema, groupRende
     }
 
     return type !== 'object' || widget ?
-        <SchemaWidgetRenderer schema={schema} storeKeys={storeKeys} level={level} required={required}/> :
+        <SchemaWidgetRenderer schema={schema} storeKeys={storeKeys} level={level} required={required} showValidity={showValidity}/> :
         <GroupRenderer level={level} schema={schema}>
             {/*<PropertiesRenderer properties={properties} storeKeys={storeKeys} level={level}/>*/}
             {properties ? properties.map((childSchema, childKey) =>
-                <SchemaEditorRenderer key={childKey} schema={childSchema} parentSchema={schema} storeKeys={storeKeys.push(childKey)} level={level + 1}/>
+                <SchemaEditorRenderer key={childKey} schema={childSchema} parentSchema={schema} storeKeys={storeKeys.push(childKey)} level={level + 1} showValidity={showValidity}/>
             ).valueSeq() : null}
         </GroupRenderer>
 };
 DumpSwitchingRenderer = React.memo(DumpSwitchingRenderer);
 
-const SchemaEditorRenderer = ({schema, parentSchema, storeKeys = undefined, level = 0}) => {
+const SchemaEditorRenderer = ({schema, parentSchema, storeKeys = undefined, level = 0, showValidity}) => {
     const {widgets} = useSchemaEditor();
     if(!storeKeys) {
         storeKeys = List();
@@ -139,6 +140,7 @@ const SchemaEditorRenderer = ({schema, parentSchema, storeKeys = undefined, leve
             storeKeys={storeKeys}
             level={level}
             groupRenderer={GroupRenderer}
+            showValidity={showValidity}
         />
         : null;
 };
@@ -186,12 +188,13 @@ const SchemaRootRenderer = () => {
  * @return {*}
  * @constructor
  */
-const NestedSchemaEditor = ({schema, parentSchema, storeKeys, level = 0}) =>
+const NestedSchemaEditor = ({schema, parentSchema, storeKeys, level = 0, showValidity}) =>
     <SchemaEditorRenderer
         schema={schema}
         parentSchema={parentSchema}
         storeKeys={storeKeys}
         level={level}
+        showValidity={showValidity}
     />;
 
 /**

@@ -5,7 +5,7 @@ import {Stepper, Step} from "./Widgets/Stepper";
 import {RootRenderer, GroupRenderer, SchemaGridHandler} from "./Grid";
 import {
     DefaultHandler, ValidityReporter,
-    MinMaxValidator, TypeValidator, MultipleOfValidator, ValueValidatorEnum, ValueValidatorConst, RequiredValidator, PatternValidator,
+    MinMaxValidator, TypeValidator, MultipleOfValidator, ValueValidatorEnum, ValueValidatorConst, RequiredValidator, PatternValidator, ArrayValidator,
 } from "@ui-schema/ui-schema";
 
 const widgetStack = [
@@ -18,6 +18,7 @@ const widgetStack = [
     ValueValidatorConst,
     ValueValidatorEnum,
     PatternValidator,
+    ArrayValidator,
     ValidityReporter,
 ];
 

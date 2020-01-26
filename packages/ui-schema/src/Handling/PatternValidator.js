@@ -3,6 +3,21 @@ import {NextPluginRenderer} from "../Schema/Editor";
 
 const ERROR_PATTERN = 'pattern-not-matching';
 
+/**
+ * Return true if the pattern matches or no pattern applied or false otherwise
+ * @param type
+ * @param value
+ * @param pattern
+ * @return {*|boolean}
+ */
+const validatePattern = (type, value, pattern) => {
+    if(type === 'string' && typeof value === 'string' && pattern) {
+        return null !== value.match(pattern);
+    }
+
+    return true;
+};
+
 const PatternValidator = (props) => {
     const {
         schema, value
@@ -12,16 +27,14 @@ const PatternValidator = (props) => {
     let {valid} = props;
 
     let type = schema.get('type');
+    let pattern = schema.get('pattern');
 
-    if(type === 'string' && typeof value === 'string') {
-        let pattern = schema.get('pattern');
-        if(pattern && null === value.match(pattern)) {
-            valid = false;
-            errors = errors.push(ERROR_PATTERN);
-        }
+    if(!validatePattern(type, value, pattern)) {
+        valid = false;
+        errors = errors.push(ERROR_PATTERN);
     }
 
     return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
 };
 
-export {PatternValidator, ERROR_PATTERN}
+export {PatternValidator, ERROR_PATTERN, validatePattern}

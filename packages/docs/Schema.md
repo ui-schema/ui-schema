@@ -101,6 +101,10 @@ Validation Keywords:
 
 ### Type Boolean
 
+Type validity reports true when of type `boolean`. ✔
+
+For required booleans `false` validates as invalid. ✔
+
 [Specification](https://json-schema.org/understanding-json-schema/reference/boolean.html)
 
 ### Type Object
@@ -137,11 +141,15 @@ Validation Keywords:
 
 - `minItems` min. number of items ❌
 - `maxItems` max. number of items ❌
-- `uniqueItems` all items must be of an unique value ❌
-- `items` restricts all items to a specific type (one-all) ❌
-- `contains` one or more items needs to be a specific type ❌
-- `items` restricts items to a specific type in an order (tuple) ❌
-    - `additionalItems` if more then defined for the tuple are allowed ❌
+- `uniqueItems` all items must be of an unique value ✔
+- `items` restricts all items be valid against a sub-schema (one-all) ✔
+    - ❗ only checks schema: `type`, `pattern`, everything `MinMaxValidator` supports
+    - ❗ no full sub-schema against array items
+- `contains` one or more items needs to be valid against a sub-schema ✔
+    - ❗ only checks schema: `type`, `pattern`, everything `MinMaxValidator` supports
+    - ❗ no full sub-schema against array items
+- `items` restricts items to be valid against sub-schemas in an defined order (tuple) ❌
+    - `additionalItems` if more props then defined are allowed ❌
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/array.html)
 

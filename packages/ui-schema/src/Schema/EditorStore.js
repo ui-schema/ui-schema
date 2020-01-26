@@ -1,5 +1,5 @@
 import React from "react";
-import {Seq, OrderedMap} from "immutable";
+import {Seq, Map, OrderedMap} from "immutable";
 
 const SchemaEditorContext = React.createContext({});
 
@@ -49,17 +49,19 @@ function fromJSOrdered(js) {
  * @param widgets
  * @param {function} t translator
  * @param {function} onChange
+ * @param {Map} validity
  * @param {function} onValidity
  * @param {boolean} showValidity
  * @return {{schema: OrderedMap, store: OrderedMap, widgets: {}}}
  */
-const init = ({schema, data, widgets, t, onChange, onValidity, showValidity} = {}) => {
+const init = ({schema, data, widgets, t, onChange, validity, onValidity, showValidity} = {}) => {
     return {
         store: new OrderedMap(fromJSOrdered(data)),
         schema: new OrderedMap(fromJSOrdered(schema)),
         widgets: widgets,
         t: t || (t1 => t1),
         onChange,
+        validity,
         onValidity,
         showValidity,
     }
@@ -70,7 +72,7 @@ const SchemaEditorProvider = ({children, ...props} = {}) => {
     // todo: a) add here useEffect with dependencies [schema, data, widgets] with dispatch to re-new the whole editor on prop changes
     // todo: b) ?
 
-    const {showValidity, t, widgets, onChange, onValidity} = props;
+    const {showValidity, t, widgets, onChange, validity = Map({}), onValidity} = props;
 
     const reducer = React.useReducer(reduce, props, init);
     const [, dispatch] = reducer;
@@ -92,6 +94,10 @@ const SchemaEditorProvider = ({children, ...props} = {}) => {
     React.useEffect(() => dispatch({
         type: UPDATE_PASS_THROUGH, prop: {onChange}
     }), [onChange]);
+
+    React.useEffect(() => dispatch({
+        type: UPDATE_PASS_THROUGH, prop: {validity,}
+    }), [validity,]);
 
     React.useEffect(() => dispatch({
         type: UPDATE_PASS_THROUGH, prop: {onValidity}

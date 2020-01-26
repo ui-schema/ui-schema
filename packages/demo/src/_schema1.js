@@ -224,6 +224,13 @@ const schema1 = {
             view: {
                 sizeMd: 3
             },
+            /*
+             * input for variable contains must be provided with custom widget/store currently
+            contains: {
+                type: 'number',
+                minimum: 2,
+            },*/
+            uniqueItems: true,
             enum: [
                 'child',
                 'teen',
@@ -359,7 +366,7 @@ function seedSchema(schema, widget = {
 
 }
 
-//seedSchema(schema1);
+// seedSchema(schema1);
 
 const data1 = {
     headline: "bdsakjbgfjkweqbkjbfgn"
