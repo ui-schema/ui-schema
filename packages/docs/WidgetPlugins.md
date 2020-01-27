@@ -117,16 +117,17 @@ This plugin must be above your HTML-Grid rendering plugin, otherwise the HTML wi
 ❗ Dynamically extending a schema is currently supported with `dependencies` and `oneOf`, interpret `oneOf` like a switch.
 
 - create dependencies
-- use the property name, its value will be used
-- define a restricting sub-schema for the used property name, if the value is valid against it
-- the whole sub-schema is added dynamically from that property
-- please note: there will be no schema-change in state, it's property calculated on-render and dynamically rendered parallel to the referencing property
+- use the properties name which's value should be used
+- define a restricting sub-schema for the used property name, if the value is valid against it:
+    - the whole sub-schema is added dynamically from that property
+    - please note: there will be no schema-change in state, it's property calculated on-render and dynamically rendered parallel to the referencing property
 
 ```js
 let schema = {
     title: "Person",
     type: "object",
     properties: {
+        // here `country` is defined
         country: {
             type: "string",
             widget: 'Select',
@@ -142,8 +143,10 @@ let schema = {
         "country"
     ],
     dependencies: {
+        // here `country` get's a dependency defined
         country: {
             oneOf: [
+                // oneOf supports multiple sub-schema, the schema that matches first is used
                 {
                     // do nothing when `usa` is selected 
                     properties: {
