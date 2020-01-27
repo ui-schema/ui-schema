@@ -142,10 +142,10 @@ Validation Keywords:
 - `maxItems` max. number of items ❌
 - `uniqueItems` all items must be of an unique value ✔
 - `items` restricts all items be valid against a sub-schema (one-all) ✔
-    - ❗ only checks some schema: everything [validateSchema](./WidgetPlugins.md@validateschema) supports
+    - ❗ only checks some schema: everything [validateSchema](./WidgetPlugins.md#validateschema) supports
     - ❗ no full sub-schema against array items
 - `contains` one or more items needs to be valid against a sub-schema ✔
-    - ❗ only checks some schema: everything [validateSchema](./WidgetPlugins.md@validateschema) supports
+    - ❗ only checks some schema: everything [validateSchema](./WidgetPlugins.md#validateschema) supports
     - ❗ no full sub-schema against array items
 - `items` restricts items to be valid against sub-schemas in an defined order (tuple) ❌
     - `additionalItems` if more props then defined are allowed ❌

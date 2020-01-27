@@ -87,8 +87,6 @@ const MainStore = () => {
 
 Checking if invalid scope in a **widget**:
 
-> **[bug]** `isInvalid` seems to not work correctly recursively sometimes (strange bug)
-
 ```js
 import {isInvalid} from "@ui-schema/ui-schema";
 
@@ -100,17 +98,90 @@ const SomeWidget = ({validity, storeKeys, ...props}) => {
 };
 ```
 
+> when it should evaluate to invalid - but it says valid, check your custom widgets and if correctly passing `onValidity` down the tree
+
 #### DependentHandler
 
 Enables on-the-fly sub-schema rendering based on current input, e.g. show more address fields if a customer is a business.
+
+This plugin must be above your HTML-Grid rendering plugin, otherwise the HTML will be nested wrongly.
 
 - keyword `dependencies`, `dependentSchemas`
     - nested combination keywords in here
 - [combining schemas](https://json-schema.org/understanding-json-schema/reference/combining.html) ❌
     - `allOf`
     - `anyOf`
-    - `oneOf`
+    - `oneOf` ❗
     - `not`
+    
+❗ Dynamically extending a schema is currently supported with `dependencies` and `oneOf`, interpret `oneOf` like a switch.
+
+- create dependencies
+- use the property name, its value will be used
+- define a restricting sub-schema for the used property name, if the value is valid against it
+- the whole sub-schema is added dynamically from that property
+- please note: there will be no schema-change in state, it's property calculated on-render and dynamically rendered parallel to the referencing property
+
+```js
+let schema = {
+    title: "Person",
+    type: "object",
+    properties: {
+        country: {
+            type: "string",
+            widget: 'Select',
+            enum: [
+                "usa",
+                "canada",
+                "eu"
+            ],
+            default: "eu"
+        }
+    },
+    required: [
+        "country"
+    ],
+    dependencies: {
+        country: {
+            oneOf: [
+                {
+                    // do nothing when `usa` is selected 
+                    properties: {
+                        country: {
+                            const: "usa"
+                        }
+                    }
+                },
+                {
+                    // add number input when `canada` is selected
+                    properties: {
+                        country: {
+                            const: "canada"
+                        },
+                        maple_trees: {
+                            type: "number"
+                        }
+                    }
+                },
+                {
+                    // add boolean input when `eu` is selected and make it required
+                    properties: {
+                        country: {
+                            const: "eu"
+                        },
+                        privacy: {
+                            type: "boolean"
+                        }
+                    },
+                    required: [
+                        "privacy"
+                    ]
+                }
+            ]
+        }
+    }
+};
+```
 
 #### ConditionalHandler
 

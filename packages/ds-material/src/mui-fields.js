@@ -11,6 +11,7 @@ import {
 } from "@ui-schema/ui-schema";
 
 const widgetStack = [
+    DependentHandler,
     SchemaGridHandler,
     DefaultHandler,
     RequiredValidator,
@@ -21,7 +22,6 @@ const widgetStack = [
     ValueValidatorEnum,
     PatternValidator,
     ArrayValidator,
-    DependentHandler,
     ValidityReporter,
 ];
 

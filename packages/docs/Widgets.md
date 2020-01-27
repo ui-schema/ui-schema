@@ -69,6 +69,7 @@ const SchemaGridHandler = (props) => {
 };
 
 const widgetStack = [
+    DependentHandler,
     SchemaGridHandler,
     DefaultHandler,
     RequiredValidator,
@@ -79,7 +80,6 @@ const widgetStack = [
     ValueValidatorEnum,
     PatternValidator,
     ArrayValidator,
-    DependentHandler,
     ValidityReporter,
 ];
 
@@ -116,10 +116,12 @@ Properties from editor:
 - `setData` : `{function}`
 - `schema` : `{Map}`
 - `parentSchema` : `{Map}`
+- `dependencies` : `{undefined|Map}`
 - `level` : `{integer}`
 - `required` : `{boolean}` (extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `RequiredValidator`)
 - `valid` : `{boolean}`
 - `showValidity` : `{boolean}`
+- `onValidity` : `{function}`
 - `errors` : `{List}`
 
 See [plugins](./WidgetPlugins.md) for the rest of the provided properties.
