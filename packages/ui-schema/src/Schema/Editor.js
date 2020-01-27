@@ -51,7 +51,7 @@ const DumpWidgetRenderer = React.memo(({Widget, widgetStack: widgetStack, ...pro
     </ErrorBoundary>;
 });
 
-const SchemaWidgetRenderer = ({schema, required, storeKeys, level, showValidity: showValidityOverride}) => {
+const SchemaWidgetRenderer = ({schema, parentSchema, storeKeys, showValidity: showValidityOverride, ...props}) => {
     const {store, setData, widgets, showValidity, validity, onValidity, t} = useSchemaEditor();
     const {widgetStack} = widgets;
     const type = schema.get('type');
@@ -72,34 +72,6 @@ const SchemaWidgetRenderer = ({schema, required, storeKeys, level, showValidity:
         Widget = widgets.types[type];
     }
 
-    // todo: make it easy to to extend these properties with a widget
-    return Widget ? <DumpWidgetRenderer
-        Widget={Widget}// passed to FinalWidgetRenderer and WidgetStackRenderer
-        widgetStack={widgetStack}// passed only to WidgetStackRenderer
-
-        // all others are getting pushed to Widget
-        t={t}
-        showValidity={showValidity || showValidityOverride}
-        validity={validity}
-        onValidity={onValidity}
-        value={store.getIn(storeKeys)}
-        ownKey={storeKeys.get(storeKeys.count() - 1)}
-        storeKeys={storeKeys}
-        setData={setData}
-        level={level}
-        schema={schema}
-        required={required}
-    /> : null;
-};
-
-/**
- * decided if a widget or another group should be rendered, a group is any object without a widget
- */
-let DumpSwitchingRenderer = ({schema, storeKeys, level, parentSchema, groupRenderer: GroupRenderer, showValidity}) => {
-    const type = schema.get('type');
-    const widget = schema.get('widget');
-    const properties = schema.get('properties');
-
     let required = List([]);
     if(parentSchema) {
         let tmp_required = parentSchema.get('required');
@@ -108,19 +80,60 @@ let DumpSwitchingRenderer = ({schema, storeKeys, level, parentSchema, groupRende
         }
     }
 
+    // todo: make it easy to to extend these properties with a widget
+    return Widget ? <DumpWidgetRenderer
+        Widget={Widget}// passed to FinalWidgetRenderer and WidgetStackRenderer
+        widgetStack={widgetStack}// passed only to WidgetStackRenderer
+
+        // all others are getting pushed to Widget
+        t={t}
+        {...props}
+        showValidity={showValidity || showValidityOverride}
+        validity={validity}
+        onValidity={onValidity}
+        value={store.getIn(storeKeys)}
+        ownKey={storeKeys.get(storeKeys.count() - 1)}
+        storeKeys={storeKeys}
+        setData={setData}
+        schema={schema}
+        required={required}
+        parentSchema={parentSchema}
+    /> : null;
+};
+
+/**
+ * decided if a widget or another group should be rendered, a group is any object without a widget
+ */
+let DumpSwitchingRenderer = ({schema, storeKeys, level, groupRenderer: GroupRenderer, dependencies: ownDependencies, ...props}) => {
+    const type = schema.get('type');
+    const widget = schema.get('widget');
+    const properties = schema.get('properties');
+    const dependencies = schema.get('dependencies');
+
+    // it is important here that props get destructed before other props, e.g. `parentSchema` may be overwritten
     return type !== 'object' || widget ?
-        <SchemaWidgetRenderer schema={schema} storeKeys={storeKeys} level={level} required={required} showValidity={showValidity}/> :
+        <SchemaWidgetRenderer
+            {...props}
+            schema={schema} storeKeys={storeKeys} level={level}
+            dependencies={ownDependencies ? ownDependencies : undefined}
+        /> :
         <GroupRenderer level={level} schema={schema}>
-            {/*<PropertiesRenderer properties={properties} storeKeys={storeKeys} level={level}/>*/}
             {properties ? properties.map((childSchema, childKey) =>
-                <SchemaEditorRenderer key={childKey} schema={childSchema} parentSchema={schema} storeKeys={storeKeys.push(childKey)} level={level + 1} showValidity={showValidity}/>
+                <SchemaEditorRenderer
+                    key={childKey}
+                    {...props}
+                    schema={childSchema} parentSchema={schema}
+                    dependencies={dependencies ? dependencies.get(childKey) : undefined}
+                    storeKeys={storeKeys.push(childKey)} level={level + 1}
+                />
             ).valueSeq() : null}
         </GroupRenderer>
 };
 DumpSwitchingRenderer = React.memo(DumpSwitchingRenderer);
 
-const SchemaEditorRenderer = ({schema, parentSchema, storeKeys = undefined, level = 0, showValidity}) => {
+const SchemaEditorRenderer = ({schema, storeKeys = undefined, level = 0, ...props}) => {
     const {widgets} = useSchemaEditor();
+
     if(!storeKeys) {
         storeKeys = List();
     }
@@ -131,16 +144,12 @@ const SchemaEditorRenderer = ({schema, parentSchema, storeKeys = undefined, leve
         return null;
     }
 
-    // todo: parentSchema is only pushed down to use e.g. `required` which is in this schema level but influences to child-schema, extracting such information here?
-
     return schema ?
         // split widget/native-types from pure-object
         <DumpSwitchingRenderer
-            schema={schema} parentSchema={parentSchema}
-            storeKeys={storeKeys}
-            level={level}
+            {...props}
+            schema={schema} storeKeys={storeKeys} level={level}
             groupRenderer={GroupRenderer}
-            showValidity={showValidity}
         />
         : null;
 };
@@ -185,6 +194,7 @@ const SchemaRootRenderer = () => {
  * @param parentSchema
  * @param storeKeys
  * @param level
+ * @param showValidity
  * @return {*}
  * @constructor
  */

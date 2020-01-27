@@ -4,8 +4,10 @@ import {BoolRenderer, OptionsCheck, OptionsRadio} from "./Widgets/Options";
 import {Stepper, Step} from "./Widgets/Stepper";
 import {RootRenderer, GroupRenderer, SchemaGridHandler} from "./Grid";
 import {
-    DefaultHandler, ValidityReporter,
-    MinMaxValidator, TypeValidator, MultipleOfValidator, ValueValidatorEnum, ValueValidatorConst, RequiredValidator, PatternValidator, ArrayValidator,
+    DefaultHandler, ValidityReporter, DependentHandler,
+    MinMaxValidator, TypeValidator, MultipleOfValidator,
+    ValueValidatorEnum, ValueValidatorConst,
+    RequiredValidator, PatternValidator, ArrayValidator,
 } from "@ui-schema/ui-schema";
 
 const widgetStack = [
@@ -19,6 +21,7 @@ const widgetStack = [
     ValueValidatorEnum,
     PatternValidator,
     ArrayValidator,
+    DependentHandler,
     ValidityReporter,
 ];
 
@@ -26,6 +29,7 @@ const widgets = {
     RootRenderer,
     GroupRenderer,
     widgetStack,
+    ErrorFallback: 'todo',
     types: {
         string: StringRenderer,
         bool: BoolRenderer,

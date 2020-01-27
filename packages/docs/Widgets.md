@@ -23,7 +23,11 @@ Example default binding `material-ui`:
 import React from "react";
 import {Grid} from "@material-ui/core";
 import {
-    NextPluginRenderer, DefaultHandler, MinMaxValidator
+    NextPluginRenderer,
+    DefaultHandler, ValidityReporter, DependentHandler,
+    MinMaxValidator, TypeValidator, MultipleOfValidator,
+    ValueValidatorEnum, ValueValidatorConst,
+    RequiredValidator, PatternValidator, ArrayValidator,
 } from "@ui-schema/ui-schema";
 
 const SchemaGridItem = ({schema, children, defaultMd}) => {
@@ -65,9 +69,18 @@ const SchemaGridHandler = (props) => {
 };
 
 const widgetStack = [
-    MinMaxValidator,
     SchemaGridHandler,
     DefaultHandler,
+    RequiredValidator,
+    MinMaxValidator,
+    TypeValidator,
+    MultipleOfValidator,
+    ValueValidatorConst,
+    ValueValidatorEnum,
+    PatternValidator,
+    ArrayValidator,
+    DependentHandler,
+    ValidityReporter,
 ];
 
 const widgets = {
@@ -102,8 +115,9 @@ Properties from editor:
 - `ownKey` : `{string|integer}`
 - `setData` : `{function}`
 - `schema` : `{Map}`
+- `parentSchema` : `{Map}`
 - `level` : `{integer}`
-- `required` : `{boolean}` (Transformed from `undefined|List` to `boolean` by `RequiredValidator`)
+- `required` : `{boolean}` (extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `RequiredValidator`)
 - `valid` : `{boolean}`
 - `showValidity` : `{boolean}`
 - `errors` : `{List}`

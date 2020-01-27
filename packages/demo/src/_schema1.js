@@ -283,6 +283,86 @@ const schema1 = {
     ]
 };
 
+const schemaWDep1 = {
+    "type": "object",
+
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "credit_card": {
+            "type": "number"
+        }
+    },
+
+    "required": ["name"],
+
+    "dependencies": {
+        "credit_card": {
+            "properties": {
+                "billing_address": {"type": "string"}
+            },
+            "required": ["billing_address"]
+        }
+    }
+};
+
+const schemaWDep = {
+    title: "Person",
+    type: "object",
+    properties: {
+        country: {
+            type: "string",
+            widget: 'Select',
+            enum: [
+                "usa",
+                "canada",
+                "eu"
+            ],
+            default: "eu"
+        }
+    },
+    required: [
+        "country"
+    ],
+    dependencies: {
+        "country": {
+            oneOf: [
+                {
+                    properties: {
+                        "country": {
+                            const: "usa"
+                        }
+                    }
+                },
+                {
+                    properties: {
+                        "country": {
+                            const: "canada"
+                        },
+                        "maple_trees": {
+                            type: "number"
+                        }
+                    }
+                },
+                {
+                    properties: {
+                        "country": {
+                            const: "eu"
+                        },
+                        "privacy": {
+                            type: "boolean"
+                        }
+                    },
+                    required: [
+                        "privacy"
+                    ]
+                }
+            ]
+        }
+    }
+};
+
 const schemaUser = {
     type: "object",
     title: "headline",
@@ -372,4 +452,4 @@ const data1 = {
     headline: "bdsakjbgfjkweqbkjbfgn"
 };
 
-export {schema1, data1, schemaUser, seedSchema}
+export {schema1, data1, schemaWDep, schemaWDep1, schemaUser, seedSchema}

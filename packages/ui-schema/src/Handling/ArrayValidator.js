@@ -1,10 +1,7 @@
 import React from "react";
 import {List} from "immutable";
 import {NextPluginRenderer} from "../Schema/Editor";
-import {validateType} from "./TypeValidator";
-import {ERROR_WRONG_TYPE} from "./TypeValidator";
-import {ERROR_PATTERN, validatePattern} from "./PatternValidator";
-import {validateMinMax} from "./MinMaxValidator";
+import {validateSchema} from "../Schema/ValidateSchema";
 
 const ERROR_DUPLICATE_ITEMS = 'duplicate-items';
 const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains';
@@ -20,33 +17,13 @@ let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== in
  * @return {boolean}
  */
 const validateArray = (schema, value, find = false) => {
-    let type = schema.get('type');
-    let pattern = schema.get('pattern');
-
     // setting err results in: a) return false by default when validate, b) return ERROR_NOT_FOUND_CONTAINS by default when find
     // for a: after one fail err will be <string>
     // for b: after one full valid successful found err will be false
     let err = find ? ERROR_NOT_FOUND_CONTAINS : false;
     for(let val of value) {
-        if(!validateType(val, type)) {
-            err = ERROR_WRONG_TYPE;
-            if(!find) {
-                break;
-            }
-        } else if(!validatePattern(type, val, pattern)) {
-            err = ERROR_PATTERN;
-            if(!find) {
-                break;
-            }
-        } else if(validateMinMax(type, schema, val, false).size) {
-            // todo: duplicate validate checks when invalid [performance]
-            err = validateMinMax(type, schema, val, false);
-            if(!find) {
-                break;
-            }
-        } else if(find) {
-            // all valid item found, now set error to false and
-            err = false;
+        err = validateSchema(schema, val);
+        if(err && !find) {
             break;
         }
     }

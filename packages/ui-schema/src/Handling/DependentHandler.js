@@ -1,5 +1,7 @@
 import React from "react";
 import {NextPluginRenderer} from "../Schema/Editor";
+import {validateSchema} from "../Schema/ValidateSchema";
+import {NestedSchemaEditor} from "../Schema/Editor";
 
 /*
  dependant handler:
@@ -10,18 +12,40 @@ import {NextPluginRenderer} from "../Schema/Editor";
  */
 const DependentHandler = (props) => {
     const {
-        schema, value, setData, storeKeys
+        dependencies, value, storeKeys, ownKey, schema, level, showValidity,
     } = props;
 
-    let default_val = schema.get('default');
-    if(typeof value === 'undefined') {
-        if(typeof default_val !== 'undefined') {
-            setData(storeKeys, default_val)
+    //
+    // todo first scribble of dependency handling
+    //
+
+    let nestedSchema = undefined;
+    if(dependencies) {
+        const oneOf = dependencies.get('oneOf');
+        if(oneOf) {
+            for(let val of oneOf) {
+                const ownValidation = val.getIn(['properties', ownKey]);
+                // todo: how to behave when self value is not defined in it's own `oneOf` dependency?
+                if(ownValidation) {
+                    if(false === validateSchema(ownValidation.set('type', schema.get('type')), value)) {
+                        // no errors in schema found, this should be rendered now dynamically
+                        nestedSchema = val.deleteIn(['properties', ownKey]);
+                    }
+                }
+            }
         }
     }
 
-    return (typeof value !== 'undefined' && typeof default_val !== 'undefined') || typeof default_val === 'undefined'
-        ? <NextPluginRenderer {...props}/> : null;
+    // nestedSchema should use `object` and `widget` of current, or all but dependencies?
+    return <React.Fragment>
+        <NextPluginRenderer {...props}/>
+        {nestedSchema ? <NestedSchemaEditor
+            schema={nestedSchema.set('type', 'object')}
+            storeKeys={storeKeys.slice(0, storeKeys.size - 1)}
+            level={level + 1}
+            showValidity={showValidity}
+        /> : null}
+    </React.Fragment>;
 };
 
 export {DependentHandler}

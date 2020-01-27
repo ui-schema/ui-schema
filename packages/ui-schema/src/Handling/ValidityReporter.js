@@ -16,6 +16,11 @@ const ValidityReporter = (props) => {
             //   use effect may forget dependencies
             onValidity(validity => validity.setIn(storeKeys.push('__valid'), valid));
         }
+
+        return () => {
+            // delete own validity state on component unmount
+            onValidity(validity => validity.deleteIn(storeKeys));
+        };
     }, [valid]);
 
     return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
@@ -38,9 +43,8 @@ const searchRecursive = (immutable, val, keys, count = false) => {
                             break;
                         }
                     }
-                } else {
-                    further.push(value);
                 }
+                further.push(value.deleteIn(keys));
             } else {
                 further.push(value);
             }

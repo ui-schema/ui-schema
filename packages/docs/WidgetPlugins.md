@@ -8,28 +8,53 @@
 | :---                                                | :---                 | :---                 | :---        | :--- |
 | DefaultHandler                                      | @ui-schema/ui-schema | keyword `default`    | - | ✔ |
 | [ValidityReporter](#validityreporter)               | @ui-schema/ui-schema | setting validity changes | - | ✔ |
+| [DependentHandler](#dependenthandler)               | @ui-schema/ui-schema | keyword `dependencies` | ... | ❗  |
+| [ConditionalHandler](#conditionalhandler)           | @ui-schema/ui-schema | ... | ... | ❌ |
 | [CombiningHandler](#combininghandler)               | @ui-schema/ui-schema | ... | ... | ❌ |
 | [CombiningNetworkHandler](#combiningnetworkhandler) | @ui-schema/ui-schema | ... | ... | ❌ |
 
 ### Validation Plugins
 
-| Plugin               | Package              | Handles              | Added Props | Status |
-| :---                 | :---                 | :---                 | :---        | :--- |
-| MinMaxValidator      | @ui-schema/ui-schema | min/max validity     | `valid`, `errors` | ✔(string,number) ❗ |
-| TypeValidator        | @ui-schema/ui-schema | keyword `type`       | `valid`, `errors` | ✔ |
-| ValueValidatorConst  | @ui-schema/ui-schema | keywords `type`, `const` | `valid`, `errors` | ✔ |
-| ValueValidatorEnum   | @ui-schema/ui-schema | keywords `type`, `enum` | `valid`, `errors` | ✔ |
-| PatternValidator     | @ui-schema/ui-schema | keywords `type:string`, `pattern` | `valid`, `errors` | ✔ |
-| MultipleOfValidator  | @ui-schema/ui-schema | keywords `type:number,integer`, `multipleOf` | `valid`, `errors` | ✔ |
-| ArrayValidator       | @ui-schema/ui-schema | `type:array`          | `valid`, `errors` | ✔(partial sub-schema for single sub-schema) ❗ |
-| ObjectValidator      | @ui-schema/ui-schema | `type:object`         | ... | ❌ |
-| RequiredValidator    | @ui-schema/ui-schema | keywords `type:object`, `required` | `valid`, `errors`, `required` | ✔ |
+| Plugin               | Package              | Validity Fn.         | Handles              | Added Props | Status |
+| :---                 | :---                 | :---                 | :---                 | :---        | :--- |
+| MinMaxValidator      | @ui-schema/ui-schema | validateMinMax       | min/max validity     | `valid`, `errors` | ✔(string,number) ❗ |
+| TypeValidator        | @ui-schema/ui-schema | validateType         | keyword `type`       | `valid`, `errors` | ✔ |
+| ValueValidatorConst  | @ui-schema/ui-schema | validateConst        | keywords `type`, `const` | `valid`, `errors` | ✔ |
+| ValueValidatorEnum   | @ui-schema/ui-schema | validateEnum         | keywords `type`, `enum` | `valid`, `errors` | ✔ |
+| PatternValidator     | @ui-schema/ui-schema | validatePattern      | keywords `type:string`, `pattern` | `valid`, `errors` | ✔ |
+| MultipleOfValidator  | @ui-schema/ui-schema |                      | keywords `type:number,integer`, `multipleOf` | `valid`, `errors` | ✔ |
+| ArrayValidator       | @ui-schema/ui-schema |                      | `type:array`          | `valid`, `errors` | ✔(partial sub-schema for single sub-schema) ❗ |
+| ObjectValidator      | @ui-schema/ui-schema |                      | `type:object`         | ... | ❌ |
+| RequiredValidator    | @ui-schema/ui-schema |                      | keywords `type:object`, `required` | `valid`, `errors`, `required` | ✔ |
 
-- `MinMaxValidator` depends on `RequiredValidator`
+- `MinMaxValidator` depends on `RequiredValidator` ✔
+    - on render it behaves `strict` only when `required` ✔
+    - validation checking outside is always strict ✔
+- sub-schema validation/array validation is done by `validateSchema`  ✔ 
+    - (todo: new override-prop/more docs)
+
+#### validateSchema
+
+    import {validateSchema} from '@ui-schema/ui-schema';
+    
+Exports the validation functions used by the plugins for usage outside of the render tree.
+
+Returns `false` when **no error** was found, otherwise `true` or `List` with errors.
+
+Currently includes the handlers of:
+
+- validateType
+- validatePattern
+- validateMinMax
+- validateMultipleOf
+- validateConst
+- validateEnum
 
 #### ValidityReporter
 
 Submits the validity of each widget up to the state hoisted component when it changes.`
+
+> Reported format is not like specified in [2019-09#rfc-10.4.2](https://json-schema.org/draft/2019-09/json-schema-core.html#rfc.section.10.4.2), current used is better for performance and the render-validation used.
 
 ```js
 import React from 'react';
@@ -75,9 +100,28 @@ const SomeWidget = ({validity, storeKeys, ...props}) => {
 };
 ```
 
+#### DependentHandler
+
+Enables on-the-fly sub-schema rendering based on current input, e.g. show more address fields if a customer is a business.
+
+- keyword `dependencies`, `dependentSchemas`
+    - nested combination keywords in here
+- [combining schemas](https://json-schema.org/understanding-json-schema/reference/combining.html) ❌
+    - `allOf`
+    - `anyOf`
+    - `oneOf`
+    - `not`
+
+#### ConditionalHandler
+
+- [conditionals](https://json-schema.org/understanding-json-schema/reference/conditionals.html) ❌
+    - `allOf`
+    - `if`
+    - `else`
+    
 #### CombiningHandler
 
-Combining schemas from within one schema, [specification](https://json-schema.org/understanding-json-schema/reference/combining.html)
+Combining schemas from within one schema by definition, id, ref, [specification](https://json-schema.org/understanding-json-schema/reference/combining.html)
 
 #### CombiningNetworkHandler
 

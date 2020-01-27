@@ -2,9 +2,10 @@
 
 This JSON-Schema vocabulary is used within the included widget-matching:
  
-- `type` valid types currently supported: `string`, `number`, `boolean`, `object`, `array` ✔
+- `type` valid types: `string`, `number`, `boolean`, `object`, `array` ✔
     - `array` render must be implemented through a widget
     - validity for `typeof undefined` must be handled depending on `required` in the widget
+    - multi-type support for one schema ❌
 - `widget`, non-standard JSON-Schema to select a specific UI ✔
 
 These keywords may be implemented in each widget/design-system:
@@ -26,24 +27,18 @@ Universal Keywords:
 
 Usage scenario needs to be created:
 
-- [combining schemas](https://json-schema.org/understanding-json-schema/reference/combining.html) ❌
-    - `allOf`
-    - `anyOf`
-    - `oneOf`
-    - `not`
-- [conditionals](https://json-schema.org/understanding-json-schema/reference/conditionals.html) ❌
-    - `allOf`
-    - `if`
-    - `else`
-- [recursive](https://json-schema.org/understanding-json-schema/structuring.html#recursion) with `$ref` ❌
-- [schema-id](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property) with `$id` and use `$ref` with `$id` to load partial sub-schemas lazily or include relatively ❌
+- structuring, reuse, extension
+    - [recursive](https://json-schema.org/understanding-json-schema/structuring.html#recursion) with `$ref` ❌
+    - [schema-id](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property) with `$id` and use `$ref` with `$id` to load partial sub-schemas lazily or include relatively ❌
     
 | Supported | Refine | Unsupported |
 | :----     | :----  | :----       |
 | ✔         | ❗      | ❌          |
     
 >
-> target support is `JSON-Schema Draft 2019-09`
+> target support is JSON-Schema [Draft 2019-09](https://json-schema.org/draft/2019-09/release-notes.html) with minor differences (UX / Native Form Feeling)
+>
+> extended with non-standard vocabulary for UI purposes
 >
     
 ## UI-Schema Extension
@@ -121,6 +116,10 @@ Generic Keywords:
         - `boolean` where false
         - `number` has no falsy check, invalid when not type of number, (`0` is a valid number, `"0"` is not valid)
         - where the value is `undefined`
+    - JSON-Schema difference: instead of only checking for the "existence of the property", we check for a "falsy" value for each type
+        - this way it is a more native feeling of HTML form validation, where an empty string is wrong for a required text input 
+    - **todo**: add a way to make it "strict" (property existence check without value check) ❌
+    - **todo**: add a way to sanitize any value from "loose" to "strict" when updating the values store ❌
 
 Validation Keywords:
 
@@ -143,10 +142,10 @@ Validation Keywords:
 - `maxItems` max. number of items ❌
 - `uniqueItems` all items must be of an unique value ✔
 - `items` restricts all items be valid against a sub-schema (one-all) ✔
-    - ❗ only checks schema: `type`, `pattern`, everything `MinMaxValidator` supports
+    - ❗ only checks some schema: everything [validateSchema](./WidgetPlugins.md@validateschema) supports
     - ❗ no full sub-schema against array items
 - `contains` one or more items needs to be valid against a sub-schema ✔
-    - ❗ only checks schema: `type`, `pattern`, everything `MinMaxValidator` supports
+    - ❗ only checks some schema: everything [validateSchema](./WidgetPlugins.md@validateschema) supports
     - ❗ no full sub-schema against array items
 - `items` restricts items to be valid against sub-schemas in an defined order (tuple) ❌
     - `additionalItems` if more props then defined are allowed ❌
@@ -156,6 +155,8 @@ Validation Keywords:
 ### Type Null
 
 Can be used to render some only-text/display widget that will not provide any entry in the resulting data.
+
+Validates true for `null` value but property exists. ❌
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/null.html)
 

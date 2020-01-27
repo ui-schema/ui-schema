@@ -2,7 +2,7 @@ import React from 'react';
 import AppTheme from '../ds/material-ui/layout/AppTheme';
 import Dashboard from '../ds/material-ui/dashboard/Dashboard';
 
-import {data1, schema1, schemaUser} from "../_schema1";
+import {data1, schema1, schemaWDep, schemaUser} from "../_schema1";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import {Button} from "@material-ui/core";
@@ -34,7 +34,33 @@ const MainStore = () => {
     </React.Fragment>
 };
 
+const data2 = {};
+const MainDependencies = () => {
+    const [showValidity, setShowValidity] = React.useState(false);
+    const [validity, setValidity] = React.useState(Map({}));
+
+    return <React.Fragment>
+        <SchemaEditor
+            schema={schemaWDep}
+            data={data2}
+            widgets={widgets}
+            validity={validity}
+            showValidity={showValidity}
+            onValidity={setValidity}
+        >
+            <SchemaDebug/>
+        </SchemaEditor>
+        <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
+        {isInvalid(validity) ? 'invalid' : 'valid'}
+    </React.Fragment>
+};
+
 const Main = ({classes = {}}) => <React.Fragment>
+    <Grid item xs={12}>
+        <Paper className={classes.paper}>
+            <MainDependencies/>
+        </Paper>
+    </Grid>
     <Grid item xs={12}>
         <Paper className={classes.paper}>
             <MainStore/>

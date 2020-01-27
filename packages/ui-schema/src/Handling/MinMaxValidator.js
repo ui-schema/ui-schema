@@ -10,10 +10,10 @@ const ERROR_MAX_LENGTH = 'max-length';
  * @param type
  * @param schema
  * @param value
- * @param required
+ * @param strict
  * @return {List<any>}
  */
-const validateMinMax = (type, schema, value, required) => {
+const validateMinMax = (type, schema, value, strict) => {
     let errors = List();
     if(type === 'string') {
         let minLength = schema.get('minLength');
@@ -21,14 +21,14 @@ const validateMinMax = (type, schema, value, required) => {
 
         if(typeof value === 'string') {
             if(minLength) {
-                if(!(!required && 0 === value.length) && value.length < minLength) {
-                    // when not required and empty string it is okay
+                if(!(!strict && 0 === value.length) && value.length < minLength) {
+                    // when not `strict` and empty string it is okay
                     errors = errors.push(ERROR_MIN_LENGTH);
                 }
             }
             if(maxLength) {
-                if(!(!required && 0 === value.length) && value.length > maxLength) {
-                    // when not required and empty string it is okay
+                if(!(!strict && 0 === value.length) && value.length > maxLength) {
+                    // when not `strict` and empty string it is okay
                     errors = errors.push(ERROR_MAX_LENGTH);
                 }
             }
@@ -42,27 +42,27 @@ const validateMinMax = (type, schema, value, required) => {
         let exclusiveMaximum = schema.get('exclusiveMaximum');
 
         if(typeof value === 'number') {
-            let notRequiredAndZero = (!required && 0 === value);
-            if(!notRequiredAndZero && minimum) {
-                // when not required and value is zero it is okay
+            let notStrictAndZero = (!strict && 0 === value);
+            if(!notStrictAndZero && minimum) {
+                // when not `strict` and value is zero it is okay
                 if(value < minimum) {
                     errors = errors.push(ERROR_MIN_LENGTH);
                 }
             }
-            if(!notRequiredAndZero && exclusiveMinimum) {
-                // when not required and value is zero it is okay
+            if(!notStrictAndZero && exclusiveMinimum) {
+                // when not `strict` and value is zero it is okay
                 if(value <= exclusiveMinimum) {
                     errors = errors.push(ERROR_MIN_LENGTH);
                 }
             }
-            if(!notRequiredAndZero && maximum) {
-                // when not required and value is zero it is okay
+            if(!notStrictAndZero && maximum) {
+                // when not `strict` and value is zero it is okay
                 if(value > maximum) {
                     errors = errors.push(ERROR_MAX_LENGTH);
                 }
             }
-            if(!notRequiredAndZero && exclusiveMaximum) {
-                // when not required and value is zero it is okay
+            if(!notStrictAndZero && exclusiveMaximum) {
+                // when not `strict` and value is zero it is okay
                 if(value >= exclusiveMaximum) {
                     errors = errors.push(ERROR_MAX_LENGTH);
                 }

@@ -18,16 +18,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Step = ({
-                  //ownKey, required,
-                  schema, storeKeys, level, ...p
-              }) => {
+const Step = ({schema, storeKeys, level, ...p}) => {
     return <NestedSchemaEditor storeKeys={storeKeys} schema={schema.delete('widget')} level={level + 1} {...p}/>
 };
 
 const Stepper = ({
                      //ownKey, required,
-                     schema, storeKeys, validity,
+                     schema, storeKeys, validity, onValidity,
                  }) => {
     if(!schema) return null;
 
@@ -126,6 +123,7 @@ const Stepper = ({
 
                     <NestedSchemaEditor
                         showValidity={showValidity}
+                        onValidity={onValidity}
                         storeKeys={storeKeys.push(stepOrder.get(activeStep))}
                         schema={steps.get(stepOrder.get(activeStep))}
                     />

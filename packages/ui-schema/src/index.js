@@ -1,6 +1,7 @@
-export {SchemaEditor, NestedSchemaEditor, NextPluginRenderer} from './Schema/Editor';
-export {useSchemaEditor, SchemaEditorProvider} from './Schema/EditorStore';
-export {beautifyKey} from './Utils/beautify';
+export * from './Schema/Editor';
+export * from './Schema/EditorStore';
+export * from './Utils/beautify';
+export * from './Schema/ValidateSchema';
 export * from './Handling/DefaultHandler';
 export * from './Handling/ValidityReporter';
 export * from './Handling/TypeValidator';
@@ -10,3 +11,4 @@ export * from './Handling/ValueValidator';
 export * from './Handling/RequiredValidator';
 export * from './Handling/PatternValidator';
 export * from './Handling/ArrayValidator';
+export * from './Handling/DependentHandler';
