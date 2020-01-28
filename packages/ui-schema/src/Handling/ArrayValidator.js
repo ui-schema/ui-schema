@@ -1,6 +1,6 @@
 import React from "react";
 import {List} from "immutable";
-import {NextPluginRenderer} from "../Schema/Editor";
+import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 import {validateSchema} from "../Schema/ValidateSchema";
 
 const ERROR_DUPLICATE_ITEMS = 'duplicate-items';

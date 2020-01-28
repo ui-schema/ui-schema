@@ -1,6 +1,6 @@
 import React from "react";
 import {List} from "immutable";
-import {NextPluginRenderer} from "../Schema/Editor";
+import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 
 const ERROR_MIN_LENGTH = 'min-length';
 const ERROR_MAX_LENGTH = 'max-length';

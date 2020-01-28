@@ -1,5 +1,5 @@
 import React from "react";
-import {NextPluginRenderer} from "../Schema/Editor";
+import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 import {validateSchema} from "../Schema/ValidateSchema";
 import {NestedSchemaEditor} from "../Schema/Editor";
 

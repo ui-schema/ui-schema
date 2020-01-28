@@ -1,4 +1,5 @@
 export * from './Schema/Editor';
+export * from './Schema/EditorWidgetStack';
 export * from './Schema/EditorStore';
 export * from './Utils/beautify';
 export * from './Schema/ValidateSchema';

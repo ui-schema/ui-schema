@@ -1,5 +1,5 @@
 import React from "react";
-import {NextPluginRenderer} from "../Schema/Editor";
+import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 
 const ERROR_PATTERN = 'pattern-not-matching';
 

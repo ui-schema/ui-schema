@@ -1,6 +1,6 @@
 import React from "react";
 import {List, Map} from "immutable";
-import {NextPluginRenderer} from "../Schema/Editor";
+import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 
 const ERROR_NOT_SET = 'required-not-set';
 

@@ -1,6 +1,6 @@
 import React from "react";
 import {List} from "immutable";
-import {NextPluginRenderer} from "../Schema/Editor";
+import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 
 const ERROR_CONST_MISMATCH = 'const-mismatch';
 const ERROR_ENUM_MISMATCH = 'enum-mismatch';
