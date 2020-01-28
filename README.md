@@ -21,44 +21,53 @@ Simplified example:
 
 ```js
 import React from "react";
-import {SchemaEditor} from "@ui-schema/ui-schema";
+import {SchemaEditor, isInvalid} from "@ui-schema/ui-schema";
 import {widgets} from "@ui-schema/ds-material";
 import {ImmutableEditor, themeMaterial} from 'react-immutable-editor';
 
-const SchemaDebug = () => {
-    const {store, schema, setData, setSchema} = useSchemaEditor();
+const SchemaDebug = ({setSchema}) => {
+     const {store, schema, onChange} = useSchemaData();
 
     return <React.Fragment>
         <ImmutableEditor
-            data={store} onChange={setData} getVal={keys => store.getIn(keys)}
-            theme={themeMaterial}/>
+            data={store}
+            onChange={(keys, value) => onChange(store.setIn(keys, value))}
+            getVal={keys => store.getIn(keys)}
+            theme={themeMaterial}
+        />
         <ImmutableEditor
             data={schema} onChange={setSchema} getVal={keys => schema.getIn(keys)}
             theme={themeMaterial}/>
     </React.Fragment>
 };
 
-const schema1 = {};// todo: add schema/data example & hoisted state
+const schema1 = {};// todo: add schema w/ existing data example
 const data1 = {};
 
 const Editor = () => {
     const [showValidity, setShowValidity] = React.useState(false);
-    const [valid, setValidity] = React.useState(false);
-
-    return <div>
+    const [validity, setValidity] = React.useState(createMap());
+    const [data, setData] = React.useState(createOrderedMap(data1));
+    const [schema, setSchema] = React.useState(createOrderedMap(schema1));
+    
+    return <React.Fragment>
         <SchemaEditor
-            schema={schema1}
-            data={data1}
+            schema={schema}
+            store={data}
+            onChange={setData}
             widgets={widgets}
+            validity={validity}
             showValidity={showValidity}
-            
-            {/* todo: onChange, onValidity */}
-            onChange={(keys, data, store) => store.setIn(keys, data)}
-            onValidity={valid => setValidity(valid)}
+            onValidity={setValidity}
+
+            {/* or write onChange / onValidity like: */}
+            onChange={handler => setData(handler(data))}
+            {/* handler must get the previous state as value, it must be an immutable map, will return updated map */}
+            onValidity={handler => setValidity(handler(validity))}
         >
-            <SchemaDebug/>
+            <SchemaDebug setSchema={setSchema}/>
         </SchemaEditor>
-       <button onClick={() => valid ? doingSomeAction() : setShowValidity(true)}>send!</button>
+       <button onClick={() => isInvalid(validity) ? setShowValidity(true) : doingSomeAction()}>send!</button>
     </div>
 };
 

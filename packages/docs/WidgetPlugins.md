@@ -58,41 +58,13 @@ Submits the validity of each widget up to the state hoisted component when it ch
 
 > Reported format is not like specified in [2019-09#rfc-10.4.2](https://json-schema.org/draft/2019-09/json-schema-core.html#rfc.section.10.4.2), current used is better for performance and the render-validation used.
 
-```js
-import React from 'react';
-import {SchemaEditor} from "@ui-schema/ui-schema";
-import {widgets,} from "@ui-schema/ds-material";
-import {Map} from 'immutable';
-
-import {data1, schema1} from "../_schema1";
-
-const MainStore = () => {
-    /**
-     * @var {Map} validity nested map with special key `__valid` which may be true or false, for each layer separately, if valid or not is not inherited upwards
-     */
-    const [validity, setValidity] = React.useState(Map({}));
-
-    return <React.Fragment>
-        <SchemaEditor
-            schema={schema1}
-            data={data1}
-            widgets={widgets}
-            onValidity={setValidity}
-            { /* setter must get the previous state as value, it must be an immutable map, will return updated map */ }
-            onValidity={(setter) => setValidity(setter(validity))}
-            
-        />
-        {validity.contains(false) ? 'invalid' : 'valid'}
-    </React.Fragment>
-};
-```
-
 Checking if invalid scope in a **widget**:
 
 ```js
-import {isInvalid} from "@ui-schema/ui-schema";
+import {isInvalid, } from "@ui-schema/ui-schema";
 
-const SomeWidget = ({validity, storeKeys, ...props}) => {
+const SomeWidget = ({storeKeys, ...props}) => {
+const useEditor
 
     let invalid = isInvalid(validity, storeKeys, false); // Map, List, boolean: <if count>
 

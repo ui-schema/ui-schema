@@ -2,7 +2,7 @@ import React from "react";
 import {
     makeStyles, Stepper as MuiStepper, Step as MuiStep, StepLabel, Button, Typography,
 } from "@material-ui/core";
-import {beautifyKey, NestedSchemaEditor, isInvalid} from "@ui-schema/ui-schema";
+import {beautifyKey, NestedSchemaEditor, isInvalid, useSchemaValidity} from "@ui-schema/ui-schema";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -24,7 +24,7 @@ const Step = ({schema, storeKeys, level, ...p}) => {
 
 const Stepper = ({
                      //ownKey, required,
-                     schema, storeKeys, validity, onValidity,
+                     schema, storeKeys,
                  }) => {
     if(!schema) return null;
 
@@ -36,6 +36,7 @@ const Stepper = ({
     const steps = schema.get('properties');
     const stepOrder = steps.keySeq();
 
+    const {validity} = useSchemaValidity();
     let activeStepInvalid = isInvalid(validity, storeKeys.push(stepOrder.get(activeStep)));
 
     React.useEffect(() => {
@@ -123,7 +124,6 @@ const Stepper = ({
 
                     <NestedSchemaEditor
                         showValidity={showValidity}
-                        onValidity={onValidity}
                         storeKeys={storeKeys.push(stepOrder.get(activeStep))}
                         schema={steps.get(stepOrder.get(activeStep))}
                     />

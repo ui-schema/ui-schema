@@ -1,6 +1,6 @@
 import React from "react";
 import {List} from "immutable";
-import {useSchemaEditor} from "./EditorStore";
+import {useSchemaData, useSchemaWidgets} from "./EditorStore";
 import {WidgetStackRenderer} from "./EditorWidgetStack";
 
 const DumpWidgetRenderer = React.memo(({Widget, widgetStack: widgetStack, ...props}) => {
@@ -12,8 +12,9 @@ const DumpWidgetRenderer = React.memo(({Widget, widgetStack: widgetStack, ...pro
         <Widget {...props}/>;
 });
 
-const SchemaWidgetRenderer = ({schema, parentSchema, storeKeys, showValidity: showValidityOverride, ...props}) => {
-    const {store, setData, widgets, showValidity, validity, onValidity, t} = useSchemaEditor();
+const SchemaWidgetRenderer = ({schema, parentSchema, storeKeys, ...props}) => {
+    const {store, onChange,} = useSchemaData();
+    const {widgets,} = useSchemaWidgets();
     const {widgetStack} = widgets;
     const type = schema.get('type');
     const widget_name = schema.get('widget');
@@ -47,15 +48,11 @@ const SchemaWidgetRenderer = ({schema, parentSchema, storeKeys, showValidity: sh
         widgetStack={widgetStack}// passed only to WidgetStackRenderer
 
         // all others are getting pushed to Widget
-        t={t}
         {...props}
-        showValidity={showValidity || showValidityOverride}
-        validity={validity}
-        onValidity={onValidity}
         value={store.getIn(storeKeys)}
         ownKey={storeKeys.get(storeKeys.count() - 1)}
         storeKeys={storeKeys}
-        setData={setData}
+        onChange={onChange}
         schema={schema}
         required={required}
         parentSchema={parentSchema}

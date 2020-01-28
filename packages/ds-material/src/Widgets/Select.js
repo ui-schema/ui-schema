@@ -8,7 +8,7 @@ import {List} from "immutable";
 
 const Select = ({
                     multiple,
-                    ownKey, schema, value, setData, storeKeys,
+                    ownKey, schema, value, onChange, storeKeys,
                     showValidity, valid, required, errors
                 }) => {
     if(!schema) return null;
@@ -38,8 +38,8 @@ const Select = ({
                     .join(', ') :
                 beautifyKey(selected)}
             onChange={(e) => multiple ?
-                setData(storeKeys, List(e.target.value)) :
-                setData(storeKeys, e.target.value)}
+                onChange(store => store.setIn(storeKeys, List(e.target.value))) :
+                onChange(store => store.setIn(storeKeys, e.target.value))}
         >
             {enum_val ? enum_val.map((enum_name, i) =>
                 <MenuItem

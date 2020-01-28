@@ -1,145 +1,43 @@
 import React from "react";
-import {Seq, Map, OrderedMap} from "immutable";
 
-const SchemaEditorContext = React.createContext({});
+const EditorDataContext = React.createContext({});
+const EditorValidityContext = React.createContext({});
+const EditorWidgetsContext = React.createContext({});
 
-const EDIT_DATA = 'EDIT_DATA';
-const EDIT_SCHEMA = 'EDIT_SCHEMA';
-const UPDATE_PASS_THROUGH = 'UPDATE_PASS_THROUGH';
+let EditorDataProvider = React.memo(({children, ...props}) => <EditorDataContext.Provider value={props} children={children}/>);
+let EditorValidityProvider = React.memo(({children, ...props}) => <EditorValidityContext.Provider value={props} children={children}/>);
+let EditorWidgetsProvider = React.memo(({children, ...props}) => <EditorWidgetsContext.Provider value={props} children={children}/>);
 
-const reduce = (state, action) => {
-    switch(action.type) {
-        case EDIT_DATA:
-            return {
-                ...state,
-                store: state.store.setIn(action.keys, action.val),
-            };
-
-        case EDIT_SCHEMA:
-            return {
-                ...state,
-                schema: state.schema.setIn(action.keys, action.val),
-            };
-
-        case UPDATE_PASS_THROUGH:
-            if(!action.prop) return state;
-
-            return {
-                ...state,
-                ...action.prop
-            };
-
-        default:
-            return state;
-    }
+const SchemaEditorProvider = ({
+                                  children,
+                                  schema,
+                                  store, onChange,
+                                  widgets, // t,
+                                  validity, showValidity, onValidity,
+                              } = {}) => {
+    return <EditorDataProvider store={store} onChange={onChange} schema={schema}>
+        <EditorValidityProvider validity={validity} showValidity={showValidity} onValidity={onValidity}>
+            <EditorWidgetsProvider widgets={widgets}>
+                {children}
+            </EditorWidgetsProvider>
+        </EditorValidityProvider>
+    </EditorDataProvider>
 };
 
-function fromJSOrdered(js) {
-    return typeof js !== 'object' || js === null ? js :
-        Array.isArray(js) ?
-            Seq(js).map(fromJSOrdered).toList() :
-            Seq(js).map(fromJSOrdered).toOrderedMap();
-}
-
-/**
- * Reducer Store initializer, either creates new immutable nested maps or uses provided (e.g. to connect multiple with each other)
- *
- * @param schema
- * @param data
- * @param widgets
- * @param {function} t translator
- * @param {function} onChange
- * @param {Map} validity
- * @param {function} onValidity
- * @param {boolean} showValidity
- * @return {{schema: OrderedMap, store: OrderedMap, widgets: {}}}
- */
-const init = ({schema, data, widgets, t, onChange, validity, onValidity, showValidity} = {}) => {
-    return {
-        store: new OrderedMap(fromJSOrdered(data)),
-        schema: new OrderedMap(fromJSOrdered(schema)),
-        widgets: widgets,
-        t: t || (t1 => t1),
-        onChange,
-        validity,
-        onValidity,
-        showValidity,
-    }
+const useSchemaData = () => {
+    return React.useContext(EditorDataContext);
 };
 
-const SchemaEditorProvider = ({children, ...props} = {}) => {
-
-    // todo: a) add here useEffect with dependencies [schema, data, widgets] with dispatch to re-new the whole editor on prop changes
-    // todo: b) ?
-
-    const {showValidity, t, widgets, onChange, validity = Map({}), onValidity} = props;
-
-    const reducer = React.useReducer(reduce, props, init);
-    const [, dispatch] = reducer;
-
-    // todo: this is bad, should use two provider, react may forget use-effect dependencies sometimes [performance]
-
-    React.useEffect(() => dispatch({
-        type: UPDATE_PASS_THROUGH, prop: {showValidity}
-    }), [showValidity]);
-
-    React.useEffect(() => dispatch({
-        type: UPDATE_PASS_THROUGH, prop: {t}
-    }), [t]);
-
-    React.useEffect(() => dispatch({
-        type: UPDATE_PASS_THROUGH, prop: {widgets}
-    }), [widgets]);
-
-    React.useEffect(() => dispatch({
-        type: UPDATE_PASS_THROUGH, prop: {onChange}
-    }), [onChange]);
-
-    React.useEffect(() => dispatch({
-        type: UPDATE_PASS_THROUGH, prop: {validity,}
-    }), [validity,]);
-
-    React.useEffect(() => dispatch({
-        type: UPDATE_PASS_THROUGH, prop: {onValidity}
-    }), [onValidity]);
-
-    return <SchemaEditorContext.Provider
-        value={reducer}
-    >
-        {children}
-    </SchemaEditorContext.Provider>
+const useSchemaValidity = () => {
+    return React.useContext(EditorValidityContext);
 };
 
-const editData = (keys, val) => ({
-    type: EDIT_DATA,
-    keys,
-    val,
-    lastEditAt: new Date(),
-});
-
-const editSchema = (keys, val) => ({
-    type: EDIT_SCHEMA,
-    keys,
-    val,
-    lastEditAt: new Date(),
-});
-
-const useSchemaEditor = () => {
-    const [state, dispatch] = React.useContext(SchemaEditorContext);
-
-    const setData = React.useCallback((keys, val) => {
-        dispatch(editData(keys, val));
-    }, [dispatch]);
-
-    const setSchema = React.useCallback((keys, val) => {
-        dispatch(editSchema(keys, val));
-    }, [dispatch]);
-
-    return {
-        ...state,
-        setData,
-        setSchema,
-    }
+const useSchemaWidgets = () => {
+    return React.useContext(EditorWidgetsContext);
 };
 
-export {SchemaEditorProvider, useSchemaEditor};
+export {
+    SchemaEditorProvider,
+    useSchemaData, useSchemaValidity, useSchemaWidgets,
+    EditorDataProvider, EditorValidityProvider, EditorWidgetsProvider,
+};

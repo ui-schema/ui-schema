@@ -12,7 +12,7 @@ import {NestedSchemaEditor} from "../Schema/Editor";
  */
 const DependentHandler = (props) => {
     const {
-        dependencies, value, storeKeys, ownKey, schema, level, showValidity,
+        dependencies, value, storeKeys, ownKey, schema, level,
     } = props;
 
     //
@@ -43,7 +43,6 @@ const DependentHandler = (props) => {
             schema={nestedSchema.set('type', 'object')}
             storeKeys={storeKeys.slice(0, storeKeys.size - 1)}
             level={level + 1}
-            showValidity={showValidity}
         /> : null}
     </React.Fragment>;
 };

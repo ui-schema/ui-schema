@@ -1,3 +1,5 @@
+import {createOrderedMap} from "@ui-schema/ui-schema";
+
 const schema1 = {
     type: "object",
     title: "headline",
@@ -307,7 +309,7 @@ const schemaWDep1 = {
     }
 };
 
-const schemaWDep = {
+const schemaWDep = createOrderedMap({
     title: "Person",
     type: "object",
     properties: {
@@ -361,9 +363,9 @@ const schemaWDep = {
             ]
         }
     }
-};
+});
 
-const schemaUser = {
+const schemaUser = createOrderedMap({
     type: "object",
     title: "headline",
     /*view: {
@@ -425,7 +427,7 @@ const schemaUser = {
             }
         },
     }
-};
+});
 
 /**
  * Seed the Schema with additional widgets for performance tests

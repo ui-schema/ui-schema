@@ -1,14 +1,14 @@
 import React from 'react';
 
 import ImmutableEditor from "../component/ImmutableEditor";
-import {useSchemaEditor} from "@ui-schema/ui-schema";
+import {useSchemaData} from "@ui-schema/ui-schema";
 
 const SchemaDebug = () => {
-    const {store, schema, setData, setSchema} = useSchemaEditor();
+    const {store, schema, onChange} = useSchemaData();
 
     return <React.Fragment>
-        <ImmutableEditor data={store} onChange={setData} getVal={keys => store.getIn(keys)}/>
-        <ImmutableEditor data={schema} onChange={setSchema} getVal={keys => schema.getIn(keys)}/>
+        <ImmutableEditor data={store} onChange={(keys, value) => onChange(store.setIn(keys, value))} getVal={keys => store.getIn(keys)}/>
+        <ImmutableEditor data={schema} onChange={() => console.log('not implemented')} getVal={keys => schema.getIn(keys)}/>
     </React.Fragment>
 };
 

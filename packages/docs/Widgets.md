@@ -113,7 +113,7 @@ Properties from editor:
 - `value` : `{*}`
 - `storeKeys` : `{List}`
 - `ownKey` : `{string|integer}`
-- `setData` : `{function}`
+- `onChange` : `{function}`
 - `schema` : `{Map}`
 - `parentSchema` : `{Map}`
 - `dependencies` : `{undefined|Map}`

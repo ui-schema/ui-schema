@@ -18,7 +18,7 @@ const switchStyle = makeStyles(theme => ({
 }));
 
 
-const BoolRenderer = ({ownKey, value, setData, storeKeys, showValidity, valid, required}) => {
+const BoolRenderer = ({ownKey, value, onChange, storeKeys, showValidity, valid, required}) => {
     const currentVal = typeof value !== 'undefined' ? value : false;
 
     const classes = switchStyle({error: !valid && showValidity});
@@ -29,7 +29,7 @@ const BoolRenderer = ({ownKey, value, setData, storeKeys, showValidity, valid, r
                 classes={classes}
                 required={required}
                 checked={currentVal}
-                onChange={() => setData(storeKeys, !currentVal)}
+                onChange={() => onChange(store => store.setIn(storeKeys, !currentVal))}
             />
         }
         label={beautifyKey(ownKey) + (required ? ' *' : '')}
@@ -51,7 +51,7 @@ const OptionCheck = ({currentValue, onChange, label}) => {
     />;
 };
 
-const OptionsCheck = ({ownKey, schema, value, setData, storeKeys, showValidity, valid, required, errors}) => {
+const OptionsCheck = ({ownKey, schema, value, onChange, storeKeys, showValidity, valid, required, errors}) => {
     const enum_val = schema.get('enum');
     if(!enum_val) return null;
 
@@ -66,9 +66,9 @@ const OptionsCheck = ({ownKey, schema, value, setData, storeKeys, showValidity, 
                     currentValue={currentValue}
                     onChange={() => {
                         if(currentValue) {
-                            setData(storeKeys, value.delete(value.indexOf(enum_name)));
+                            onChange(store => store.setIn(storeKeys, value.delete(value.indexOf(enum_name))));
                         } else {
-                            setData(storeKeys, value.push(enum_name));
+                            onChange(store => store.setIn(storeKeys, value.push(enum_name)));
                         }
                     }}
                     label={beautifyKey(enum_name)}
@@ -82,7 +82,7 @@ const OptionsCheck = ({ownKey, schema, value, setData, storeKeys, showValidity, 
     </FormControl>;
 };
 
-const OptionsRadio = ({ownKey, schema, value, setData, storeKeys, showValidity, valid, required, errors}) => {
+const OptionsRadio = ({ownKey, schema, value, onChange, storeKeys, showValidity, valid, required, errors}) => {
     const enum_val = schema.get('enum');
     if(!enum_val) return null;
 
@@ -97,7 +97,7 @@ const OptionsRadio = ({ownKey, schema, value, setData, storeKeys, showValidity, 
                     control={<Radio
                         value={enum_name}
                         checked={enum_name === currentValue}
-                        onChange={() => setData(storeKeys, enum_name)}
+                        onChange={() => onChange(store => store.setIn(storeKeys, enum_name))}
                     />}
                     label={beautifyKey(enum_name)}
                 />

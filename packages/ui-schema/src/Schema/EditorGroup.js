@@ -1,6 +1,6 @@
 import React from "react";
 import {List} from "immutable";
-import {useSchemaEditor} from "./EditorStore";
+import {useSchemaWidgets} from "./EditorStore";
 import {SchemaWidgetRenderer} from "./EditorWidget";
 
 /**
@@ -34,7 +34,7 @@ let DumpSwitchingRenderer = ({schema, storeKeys, level, groupRenderer: GroupRend
 DumpSwitchingRenderer = React.memo(DumpSwitchingRenderer);
 
 const SchemaEditorRenderer = ({schema, storeKeys = undefined, level = 0, ...props}) => {
-    const {widgets} = useSchemaEditor();
+    const {widgets} = useSchemaWidgets();
 
     if(!storeKeys) {
         storeKeys = List();

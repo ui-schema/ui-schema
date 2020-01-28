@@ -1,5 +1,5 @@
 import React from 'react';
-import {SchemaEditorProvider, useSchemaEditor} from "./EditorStore";
+import {EditorValidityProvider, SchemaEditorProvider, useSchemaData, useSchemaValidity, useSchemaWidgets} from "./EditorStore";
 import {SchemaEditorRenderer} from "./EditorGroup";
 
 /**
@@ -17,7 +17,8 @@ const DumpRootRenderer = React.memo(({rootRenderer: RootRenderer, schema}) => {
  * @return {null|*}
  */
 const SchemaRootRenderer = () => {
-    const {schema, store, widgets} = useSchemaEditor();
+    const {schema, store,} = useSchemaData();
+    const {widgets} = useSchemaWidgets();
 
     // first root rendering check if needed props are existing
     if(!schema || !store || !widgets) return null;
@@ -46,14 +47,18 @@ const SchemaRootRenderer = () => {
  * @return {*}
  * @constructor
  */
-const NestedSchemaEditor = ({schema, parentSchema, storeKeys, level = 0, showValidity}) =>
-    <SchemaEditorRenderer
-        schema={schema}
-        parentSchema={parentSchema}
-        storeKeys={storeKeys}
-        level={level}
-        showValidity={showValidity}
-    />;
+const NestedSchemaEditor = ({schema, parentSchema, storeKeys, showValidity, level = 0}) => {
+    const validity = useSchemaValidity();
+
+    return <EditorValidityProvider {...validity} showValidity={showValidity || validity.showValidity}>
+        <SchemaEditorRenderer
+            schema={schema}
+            parentSchema={parentSchema}
+            storeKeys={storeKeys}
+            level={level}
+        />
+    </EditorValidityProvider>
+};
 
 /**
  * Main Component to create a schema based UI generator

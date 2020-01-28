@@ -8,20 +8,45 @@ import Paper from "@material-ui/core/Paper";
 import {Button} from "@material-ui/core";
 import Orders from "../ds/material-ui/dashboard/Orders";
 import {widgets,} from "@ui-schema/ds-material";
-import {SchemaEditor, isInvalid} from "@ui-schema/ui-schema";
+import {SchemaEditor, isInvalid, createOrderedMap, createMap} from "@ui-schema/ui-schema";
 import {SchemaDebug} from "../component/SchemaDebug";
 import {Map} from 'immutable';
 
-const user = {};
-
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
-    const [validity, setValidity] = React.useState(Map({}));
+    const [validity, setValidity] = React.useState(createMap());
+    const [data, setData] = React.useState(createOrderedMap(data1));
+    const [schema, setSchema] = React.useState(createOrderedMap(schema1));
 
     return <React.Fragment>
         <SchemaEditor
-            schema={schema1}
-            data={data1}
+            schema={schema}
+            store={data}
+            onChange={setData}
+            widgets={widgets}
+            validity={validity}
+            showValidity={showValidity}
+            onValidity={setValidity}
+        >
+            <SchemaDebug setSchema={setSchema}/>
+        </SchemaEditor>
+
+        <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
+        {isInvalid(validity) ? 'invalid' : 'valid'}
+
+    </React.Fragment>
+};
+
+const MainDependencies = () => {
+    const [showValidity, setShowValidity] = React.useState(false);
+    const [validity, setValidity] = React.useState(Map({}));
+    const [data, setData] = React.useState(createOrderedMap({}));
+
+    return <React.Fragment>
+        <SchemaEditor
+            schema={schemaWDep}
+            store={data}
+            onChange={setData}
             widgets={widgets}
             validity={validity}
             showValidity={showValidity}
@@ -34,25 +59,21 @@ const MainStore = () => {
     </React.Fragment>
 };
 
-const data2 = {};
-const MainDependencies = () => {
-    const [showValidity, setShowValidity] = React.useState(false);
-    const [validity, setValidity] = React.useState(Map({}));
+const DemoUser = () => {
+    const [data, setData] = React.useState(createOrderedMap({}));
 
-    return <React.Fragment>
-        <SchemaEditor
-            schema={schemaWDep}
-            data={data2}
-            widgets={widgets}
-            validity={validity}
-            showValidity={showValidity}
-            onValidity={setValidity}
-        >
-            <SchemaDebug/>
-        </SchemaEditor>
-        <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
-        {isInvalid(validity) ? 'invalid' : 'valid'}
-    </React.Fragment>
+    return <Grid container spacing={3} justify={'center'}>
+        <Grid item xs={12} md={6}>
+            <SchemaEditor
+                schema={schemaUser}
+                store={data}
+                onChange={setData}
+                widgets={widgets}
+            >
+                <SchemaDebug/>
+            </SchemaEditor>
+        </Grid>
+    </Grid>
 };
 
 const Main = ({classes = {}}) => <React.Fragment>
@@ -68,17 +89,7 @@ const Main = ({classes = {}}) => <React.Fragment>
     </Grid>
     <Grid item xs={12}>
         <Paper className={classes.paper}>
-            <Grid container spacing={3} justify={'center'}>
-                <Grid item xs={12} md={6}>
-                    <SchemaEditor
-                        schema={schemaUser}
-                        data={user}
-                        widgets={widgets}
-                    >
-                        <SchemaDebug/>
-                    </SchemaEditor>
-                </Grid>
-            </Grid>
+            <DemoUser/>
         </Paper>
     </Grid>
     <Grid item xs={12}>
