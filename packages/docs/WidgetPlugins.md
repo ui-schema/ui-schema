@@ -61,10 +61,13 @@ Submits the validity of each widget up to the state hoisted component when it ch
 Checking if invalid scope in a **widget**:
 
 ```js
-import {isInvalid, } from "@ui-schema/ui-schema";
+import {isInvalid, useSchemaValidity} from "@ui-schema/ui-schema";
 
 const SomeWidget = ({storeKeys, ...props}) => {
-const useEditor
+    const {
+        validity, onValidity, // must be resolved by hook
+        showValidity          // is also added to the props by `ValidityReporter` for ease of access
+    } = useSchemaValidity();
 
     let invalid = isInvalid(validity, storeKeys, false); // Map, List, boolean: <if count>
 
@@ -72,9 +75,9 @@ const useEditor
 };
 ```
 
-> when it should evaluate to invalid - but it says valid, check your custom widgets and if correctly passing `onValidity` down the tree
 >
 > the component deletes the invalidation status on its own dismount, resulting in: only mounted components get's validated, this is intended behaviour at the moment!
+>
 
 #### DependentHandler
 

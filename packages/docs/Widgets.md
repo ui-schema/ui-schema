@@ -119,10 +119,9 @@ Properties from editor:
 - `dependencies` : `{undefined|Map}`
 - `level` : `{integer}`
 - `required` : `{boolean}` (extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `RequiredValidator`)
-- `valid` : `{boolean}`
-- `showValidity` : `{boolean}`
-- `onValidity` : `{function}`
-- `errors` : `{List}`
+- `valid` : `{boolean}` if this schema level got some error, detected/changed from the widgetStack, 
+- `showValidity` : `{boolean}` added to the props by `InvalidityReporter`
+- `errors` : `{List}` invalidity errors, added from the widgetStack for the current widget/schema-level
 
 See [plugins](./WidgetPlugins.md) for the rest of the provided properties.
 
