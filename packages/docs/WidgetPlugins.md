@@ -22,7 +22,7 @@
 | ValueValidatorConst  | @ui-schema/ui-schema | validateConst        | keywords `type`, `const` | `valid`, `errors` | ✔ |
 | ValueValidatorEnum   | @ui-schema/ui-schema | validateEnum         | keywords `type`, `enum` | `valid`, `errors` | ✔ |
 | PatternValidator     | @ui-schema/ui-schema | validatePattern      | keywords `type:string`, `pattern` | `valid`, `errors` | ✔ |
-| MultipleOfValidator  | @ui-schema/ui-schema |                      | keywords `type:number,integer`, `multipleOf` | `valid`, `errors` | ✔ |
+| MultipleOfValidator  | @ui-schema/ui-schema | validateMultipleOf   | keywords `type:number,integer`, `multipleOf` | `valid`, `errors` | ✔ |
 | ArrayValidator       | @ui-schema/ui-schema |                      | `type:array`          | `valid`, `errors` | ✔(partial sub-schema for single sub-schema) ❗ |
 | ObjectValidator      | @ui-schema/ui-schema |                      | `type:object`         | ... | ❌ |
 | RequiredValidator    | @ui-schema/ui-schema |                      | keywords `type:object`, `required` | `valid`, `errors`, `required` | ✔ |
@@ -35,8 +35,10 @@
 
 #### validateSchema
 
-    import {validateSchema} from '@ui-schema/ui-schema';
-    
+```js
+import {validateSchema} from '@ui-schema/ui-schema';
+```
+
 Exports the validation functions used by the plugins for usage outside of the render tree.
 
 Returns `false` when **no error** was found, otherwise `true` or `List` with errors.
@@ -52,7 +54,7 @@ Currently includes the handlers of:
 
 #### ValidityReporter
 
-Submits the validity of each widget up to the state hoisted component when it changes.`
+Submits the validity of each widget up to the state hoisted component when it changes.
 
 > Reported format is not like specified in [2019-09#rfc-10.4.2](https://json-schema.org/draft/2019-09/json-schema-core.html#rfc.section.10.4.2), current used is better for performance and the render-validation used.
 
@@ -99,22 +101,27 @@ const SomeWidget = ({validity, storeKeys, ...props}) => {
 ```
 
 > when it should evaluate to invalid - but it says valid, check your custom widgets and if correctly passing `onValidity` down the tree
+>
+> the component deletes the invalidation status on its own dismount, resulting in: only mounted components get's validated, this is intended behaviour at the moment!
 
 #### DependentHandler
 
-Enables on-the-fly sub-schema rendering based on current input, e.g. show more address fields if a customer is a business.
+Enables on-the-fly sub-schema rendering based on current data, e.g. show more address fields if a customer is a business.
 
-This plugin must be above your HTML-Grid rendering plugin, otherwise the HTML will be nested wrongly.
-
-- keyword `dependencies`, `dependentSchemas`
+- keyword `dependencies`, `dependentSchemas` ❌
     - nested combination keywords in here
-- [combining schemas](https://json-schema.org/understanding-json-schema/reference/combining.html) ❌
+- must be above HTML-Grid rendering plugin, otherwise the HTML will be nested wrongly ✔
+- combining schemas ❌
     - `allOf`
     - `anyOf`
     - `oneOf` ❗
     - `not`
-    
-❗ Dynamically extending a schema is currently supported with `dependencies` and `oneOf`, interpret `oneOf` like a switch.
+- ❗ only checks some schema: everything [validateSchema](#validateschema) supports
+- full feature set needs [ConditionalHandler](#conditionalhandler), [CombiningHandler](#combininghandler), [CombiningNetworkHandler](#combiningnetworkhandler), which are not implemented yet
+
+❗ Dynamically extending a schema is currently supported a little bit with `dependencies` and `oneOf`, interpret `oneOf` like a switch.
+
+❗ Should be moved to group-level, thus group-level plugins are needed... 
 
 - create dependencies
 - use the properties name which's value should be used
@@ -185,6 +192,10 @@ let schema = {
     }
 };
 ```
+
+Specifications:
+[dependencies](https://json-schema.org/understanding-json-schema/reference/object.html#dependencies)
+[combining schemas](https://json-schema.org/understanding-json-schema/reference/combining.html)
 
 #### ConditionalHandler
 

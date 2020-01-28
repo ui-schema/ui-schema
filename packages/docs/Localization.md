@@ -66,6 +66,20 @@ Currently only LTR is supported by the bindings, RTL will be added in the future
 
 Design systems should support both, the Material-UI library supports it.
 
+## Text Transform
+
+❌ Concept, not implemented
+
+When no translation should be used, but e.g. the property names should simply be in uppercase, `tt` influence the text-transformation.
+
+- any value that is not falsy disables `t`
+- `tt: true` uses `beautifyKey` for optimistic beautification
+- `tt: 'uppercase'` turns all letters in uppercase
+- `tt: 'lowercase'` turns all letters in lowercase
+- `tt: 'no-special'` will only print normal a-Z 0-9 chars
+- `tt` should support `boolean`, `string` and `array|List`
+- `tt` should support inheritance through the schema (define one-time per schema)
+
 ## Docs
 
 - [Overview](../../README.md)

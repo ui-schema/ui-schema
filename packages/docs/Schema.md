@@ -128,7 +128,7 @@ Validation Keywords:
 - `additionalProperties` when `false` only defined properties are allowed ❌
 - `propertyNames.pattern` regex pattern to limit naming of properties ❌
 - `patternProperties` to restrict names of properties to certain types with regex ❌ 
-- [dependencies](https://json-schema.org/understanding-json-schema/reference/object.html#dependencies) for dynamic sub-schema/properties ❌
+- [dependencies](./WidgetPlugins.md#dependenthandler) for dynamic sub-schema/properties ❗
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/object.html)
 
