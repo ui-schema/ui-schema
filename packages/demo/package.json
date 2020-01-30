@@ -1,7 +1,7 @@
 {
   "name": "@ui-schema/demo",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "homepage": "",
   "author": "Michael Becker <michael@bemit.codes>",
@@ -9,8 +9,8 @@
   "dependencies": {
     "@material-ui/core": "^4.8",
     "@material-ui/icons": "^4.5",
-    "@ui-schema/ds-material": "^0.0.1",
-    "@ui-schema/ui-schema": "^0.0.1",
+    "@ui-schema/ds-material": "^0.0.2",
+    "@ui-schema/ui-schema": "^0.0.2",
     "immutable": "^4.0.0-rc.12",
     "prop-types": "^15.7.2",
     "react": "^16.12",

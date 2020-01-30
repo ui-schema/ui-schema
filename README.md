@@ -186,6 +186,15 @@ Changes from any package are reflected inside the demo package.
 - Clean build dirs: `npm run clean-dist`
 - Add new node_module to one package: `lerna add <npm-package-name> --scope=@ui-schema/demo [--dev] [--peer]`, without `--scope` in all packages
 
+Publish, for main-repo only:
+
+1. Currently manually `lerna version <semver> --no-git-tag-version` is needed
+    - like `lerna version 0.0.2 --no-git-tag-version`, see [docs](https://github.com/lerna/lerna/tree/master/commands/version#lifecycle-scripts)
+2. Then tag the commit with the same version
+3. Push, CI will publish to npm using `npm run release -- --yes`
+    - this leads to: `lerna publish from-package --no-git-reset --yes`
+4. **todo:** automate version bump by git-tags w/ publish, and switch to independent lerna versioning
+
 ## License
 
 This project is free software distributed under the **MIT License**.

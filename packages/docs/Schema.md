@@ -45,10 +45,14 @@ Usage scenario needs to be created:
 
 The JSON-Schema gets extended with special only-UI keywords:
 
-- `view` currently only used for the grid system
-    - `sizeXs`, `sizeSm`, `sizeMd`, `sizeLg`, `sizeXl` to build responsive UIs ✔
+- `view` currently only used for the grid system ✔
 - `widget` (see top of page), UI selection ✔
-- `t` for [translation](./Localization.md#Translation)
+- `t`, `tt` for [translation](./Localization.md#Translation)
+
+### View Keyword
+
+- `sizeXs`, `sizeSm`, `sizeMd`, `sizeLg`, `sizeXl` to build responsive UIs ✔
+    - takes a number between `1` and `12`
 
 ## Types
 
@@ -159,6 +163,12 @@ Can be used to render some only-text/display widget that will not provide any en
 Validates true for `null` value but property exists. ❌
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/null.html)
+
+## Schema is Read-Only
+
+The editor doesn't change the schema, currently it is designed as a property that is considered read-only.
+
+Depending on the used 
 
 ## Docs
 
