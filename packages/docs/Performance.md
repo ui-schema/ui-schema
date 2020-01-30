@@ -4,7 +4,7 @@ This editor has multiple levels of performance optimization:
 
 - [immutables](https://immutable-js.github.io/immutable-js/) as internal store
     - does not apply to `widgets`, storing memoized components in immutable are a problem 
-- [memoization](https://reactjs.org/docs/hooks-reference.html#usememo) of `setData` and `setSchema` action creators
+- [memoization](https://reactjs.org/docs/hooks-reference.html#usememo) of `setData` and `setSchema` action creators with React.memo hook
 - no html re-rendering of no-changed scopes
     - **previously**: e.g. `setData` updates the hook `useSchemaStore`, thus typing in inputs lags
         - within the core this hook is used to access the context
@@ -34,6 +34,7 @@ This editor has multiple levels of performance optimization:
         - `WidgetStackRenderer` initial `widgetStack` render handling
             - re-renders on changes of **current** widgets properties
             - additionally receives: `Widget`, `widgetStack`, `current`
+     
 
 ## Docs
 

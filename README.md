@@ -10,7 +10,7 @@ JSON-Schema form + ui generator for any design system, first-class support for [
 >
 > ⚠️Work in progress!
 >
-> UI-Schema is an extract and rewrite of the form-generator logic used internally by our admin panel.
+> UI-Schema is an extract and rewrite of the form-generator logic used internally by our admin panel. --> maybe: read, write, update, delete?
 > 
 > The fundamentals are working, but a lot of JSON-schema stuff, code testing and widgets needs to be done.
 >
@@ -78,6 +78,8 @@ export {Editor}
 
 JSON-Schema included keywords are used to describe the data and create the UI based on the data-schema and special UI keywords. A data-schema with integrated ui-schema enforces the consistency of the UX across different apps and devices.
 
+For compatibility, we conform to the JSON-Schema vocabulary. There are some additional keywords for own widgets.
+
 [... more](./packages/docs/Schema.md)
 
 ## Widget Design Systems
@@ -116,6 +118,8 @@ Match by `type` in schema and each type component must handle its own formats:
 | `object`     | -           | Native Objects       | ⬛ | ⬜ | ⬜ |
 | `array`      | -           | only supported through widgets | - | - | - |
 
+> Date + Time als Beschreibung: Timestamp??
+
 Included widgets (match by `widget` in schema), each widget could have multiple types and formats:
 
 | Widget     | Component | Expected Type(s) | Formats | Material-UI | Bootstrap | ? |
@@ -152,6 +156,7 @@ Included widgets (match by `widget` in schema), each widget could have multiple 
 | NumberSlider | slider as input | `int` | - | ⬜ | ⬜ | ⬜ |
 
 ... more to follow
+> Link also (relative, absolute path) --> validity: pattern verifies if encoded chars
 
 ⬛ only means some working example is existing during the current dev-state.
 
