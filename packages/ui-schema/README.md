@@ -10,6 +10,12 @@ Core UI-Schema renderer, a JSON-Schema form + ui generator for any design system
 
 See the [documentation and specification](https://github.com/ui-schema/ui-schema)
 
+---
+
+**🚀 [Live Demo: UI-Schema with Material Design on repl.co](https://ui-schema-build.elbakerino.repl.co)**
+
+---
+
 ## License
 
 This project is free software distributed under the **MIT License**.

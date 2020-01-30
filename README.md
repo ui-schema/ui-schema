@@ -7,6 +7,12 @@ JSON-Schema form + ui generator for any design system, first-class support for [
 - @ui-schema/ui-schema [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ui-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ui-schema) 
 - @ui-schema/ds-material [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-material?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-material)
 
+---
+
+**🚀 [Live Demo: UI-Schema with Material Design on repl.co](https://ui-schema-build.elbakerino.repl.co)**
+
+---
+
 >
 > ⚠️Work in progress!
 >
@@ -15,13 +21,12 @@ JSON-Schema form + ui generator for any design system, first-class support for [
 > The fundamentals are working, but a lot of JSON-schema stuff, code testing and widgets needs to be done.
 >
 > This readme currently serves as a mix of documentation, completion tracking and big-picture.
->
 
 Simplified example:
 
 ```js
 import React from "react";
-import {SchemaEditor, isInvalid} from "@ui-schema/ui-schema";
+import {SchemaEditor, isInvalid, createMap, createOrderedMap} from "@ui-schema/ui-schema";
 import {widgets} from "@ui-schema/ds-material";
 import {ImmutableEditor, themeMaterial} from 'react-immutable-editor';
 
@@ -68,7 +73,7 @@ const Editor = () => {
             <SchemaDebug setSchema={setSchema}/>
         </SchemaEditor>
        <button onClick={() => isInvalid(validity) ? setShowValidity(true) : doingSomeAction()}>send!</button>
-    </div>
+    </React.Fragment>
 };
 
 export {Editor}
@@ -105,7 +110,7 @@ Match by `type` in schema and each type component must handle its own formats:
 
 | Type         | Format      | Component            | Material-UI | Bootstrap | ? |
 | :---         | :---        | :---                 | ---: | ---: | ---: | 
-| `string`     | -           | [Normal Text Input](packages/docs/TextField.md)    | ⬛ | ⬜ | ⬜ |
+| `string`     | -           | [Normal Text Input](packages/docs/widgets/TextField.md)    | ⬛ | ⬜ | ⬜ |
 | `string`     | `date`      | Date Input           | ⬛ | ⬜ | ⬜ |
 | `string`     | `date-time` | Date+Time Input      | ⬜ | ⬜ | ⬜ |
 | `string`     | `time`      | Time Input           | ⬜ | ⬜ | ⬜ |
