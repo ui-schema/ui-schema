@@ -34,6 +34,20 @@ const validateMinMax = (type, schema, value, strict) => {
             }
         }
     }
+    if(type === 'array') {
+        let minLength = schema.get('minLength');
+        let maxLength = schema.get('maxLength');
+        if(minLength) {
+            if (!value || value.size < minLength) {
+                errors = errors.push(ERROR_MIN_LENGTH);
+            }
+        }
+        if(maxLength) {
+            if (!value || value.size > maxLength) {
+                errors = errors.push(ERROR_MAX_LENGTH);
+            }
+        }
+    }
 
     if(type === 'number') {
         let minimum = schema.get('minimum');
