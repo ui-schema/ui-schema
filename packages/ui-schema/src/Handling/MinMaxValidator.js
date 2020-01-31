@@ -4,6 +4,8 @@ import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 
 const ERROR_MIN_LENGTH = 'min-length';
 const ERROR_MAX_LENGTH = 'max-length';
+const ERROR_MIN_SIZE = 'min-size';
+const ERROR_MAX_SIZE = 'max-size';
 
 /**
  *
@@ -35,15 +37,34 @@ const validateMinMax = (type, schema, value, strict) => {
         }
     }
     if(type === 'array') {
-        let minLength = schema.get('minLength');
-        let maxLength = schema.get('maxLength');
-        if(minLength) {
-            if (!value || value.size < minLength) {
+        let minSize = schema.get('minSize');
+        let maxSize = schema.get('maxSize');
+        console.log('bla');
+        if(minSize) {
+            if (!value || value.size < minSize) {
+                errors = errors.push(ERROR_MIN_SIZE);
+            }
+        }
+        if(maxSize) {
+            if (!value || value.size > maxSize) {
+                errors = errors.push(ERROR_MAX_SIZE);
+            }
+        }
+    }
+
+    if(type === 'object') {
+        let minProperties = schema.get('minProperties');
+        let maxProperties = schema.get('maxProperties');
+        console.log('i´m an object');
+        console.log(schema.get('view'));
+        if(minProperties) {
+            console.log(value);
+            if (!value || value.length < minProperties) {
                 errors = errors.push(ERROR_MIN_LENGTH);
             }
         }
-        if(maxLength) {
-            if (!value || value.size > maxLength) {
+        if(maxProperties) {
+            if (!value || value.length > minProperties) {
                 errors = errors.push(ERROR_MAX_LENGTH);
             }
         }
