@@ -9,7 +9,9 @@ JSON-Schema form + ui generator for any design system, first-class support for [
 
 ---
 
-**🚀 [Live Demo: UI-Schema with Material Design on repl.co](https://ui-schema-build.elbakerino.repl.co)**
+**🚀 [Live Editor: CRA + UI-Schema + Material Design on repl.it](https://repl.it/@elbakerino/ui-schema-cra)**
+
+**[Fullscreen Demo](https://ui-schema-build.elbakerino.repl.co)** - *[build-src](https://repl.it/@elbakerino/ui-schema-build)*
 
 ---
 

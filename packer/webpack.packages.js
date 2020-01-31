@@ -23,7 +23,8 @@ const babelPlugins = [
 
 function getPackageBuilders(context, entry, dist, library, resolve, externals) {
     const builders = [];
-    builders.push(getPackageConfig(context, entry, path.resolve(dist, 'lib'), library, false, resolve, externals, babelPresets, babelPlugins));
+    builders.push(getPackageConfig(context, entry, path.resolve(dist, 'lib'), false, false, resolve, externals, babelPresets, babelPlugins));
+    //builders.push(getPackageConfig(context, entry, path.resolve(dist, 'lib'), library, false, resolve, externals, babelPresets, babelPlugins));
     return builders;
 }
 

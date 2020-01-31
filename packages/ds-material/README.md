@@ -12,7 +12,9 @@ See the [documentation and specification](https://github.com/ui-schema/ui-schema
 
 ---
 
-**🚀 [Live Demo: UI-Schema with Material Design on repl.co](https://ui-schema-build.elbakerino.repl.co)**
+**🚀 [Live Editor: CRA + UI-Schema + Material Design on repl.it](https://repl.it/@elbakerino/ui-schema-cra)**
+
+**[Fullscreen Demo](https://ui-schema-build.elbakerino.repl.co)** - *[build-src](https://repl.it/@elbakerino/ui-schema-build)*
 
 ---
 
