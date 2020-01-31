@@ -9,7 +9,6 @@ const spawnBabel = (args) => {
 
 function buildEsModules(packages) {
     let babels = [];
-    //const babelFile = path.join(packages[pack].root, '.babelrc.json');
     const babelFile = path.join(__dirname, '../', 'babel.config.json');
 
     return new Promise((resolve, reject) => {
@@ -45,7 +44,7 @@ function buildEsModules(packages) {
         Promise.all(babels)
             .then((e) => {
                 if(e.length === babels.length) {
-                    console.log('Builded ES6 packages!');
+                    console.log('Builded ES6 modules!');
                     fs.unlink(babelFile, unlinkError => {
                         if(unlinkError) {
                             reject(unlinkError);

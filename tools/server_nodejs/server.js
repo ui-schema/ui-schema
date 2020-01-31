@@ -12,6 +12,6 @@ app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.listen(9220, () => {
-    console.log('Server startet on port http://localhost:9220');
+app.listen(3030, () => {
+    console.log('Server started on port http://localhost:3030');
 });
