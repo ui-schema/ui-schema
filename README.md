@@ -29,14 +29,102 @@ JSON-Schema form + ui generator for any design system, first-class support for [
 >
 > This readme currently serves as a mix of documentation, completion tracking and big-picture.
 
-Simplified example:
+## Schema
+
+JSON-Schema included keywords are used to describe the data and create the UI based on the data-schema and special UI keywords. A data-schema with integrated ui-schema enforces the consistency of the UX across different apps and devices.
+
+## Docs
+
+- [UI JSON-Schema](./packages/docs/Schema.md), supported types and keywords
+- [Design-Systems + Widgets List](#widget-design-systems)
+- [Widget System](./packages/docs/Widgets.md), how to create design-system bindings and override widgets
+    - [Creating Widgets](./packages/docs/Widgets.md#creating-widgets)
+- [Widget Plugins](./packages/docs/WidgetPlugins.md)
+    - [validateSchema](./packages/docs/WidgetPlugins.md#validateschema)
+    - [DependentHandler](./packages/docs/WidgetPlugins.md#dependenthandler)
+    - [Creating Plugins](./packages/docs/WidgetPlugins.md#creating-plugins)
+- [Localization / Translation](./packages/docs/Localization.md)
+- [Performance](./packages/docs/Performance.md) insights and tips
+- [Contributing](#contributing)
+- [Free-Open-Source: MIT License](#license)
+
+Simple Example:
 
 ```js
 import React from "react";
-import {SchemaEditor, isInvalid, createMap, createOrderedMap} from "@ui-schema/ui-schema";
-import {widgets} from "@ui-schema/ds-material";
-import {ImmutableEditor, themeMaterial} from 'react-immutable-editor';
+import {ImmutableEditor, themeMaterial} from 'react-immutable-editor';// optional
 
+// Import Schema-Editor
+import {SchemaEditor, isInvalid, createMap, createOrderedMap} from "@ui-schema/ui-schema";
+// Get the widgets binding for your design-system
+import {widgets} from "@ui-schema/ds-material";
+
+// could be fetched from some API or bundled with the app
+const schema1 = {
+    title: "Person",
+    type: "object",
+    properties: {
+        country: {
+            type: "string",
+            widget: 'Select',
+            enum: [
+                "usa",
+                "canada",
+                "eu"
+            ],
+            default: "eu"
+        },
+        name: {
+            type: "string",
+            minimum: 2,
+            maximum: 1,
+        }
+    },
+    required: [
+        "country",
+        "name",
+    ],
+};
+const data1 = {};
+
+const Editor = () => {
+    // optional state for display errors/invalidity
+    const [showValidity, setShowValidity] = React.useState(false);
+    
+    // needed variables and setters for the SchemaEditor, create where ever you like
+    const [validity, setValidity] = React.useState(createMap());
+    const [data, setData] = React.useState(createOrderedMap(data1));
+    const [schema, setSchema] = React.useState(createOrderedMap(schema1));
+    
+    return <React.Fragment>
+        <SchemaEditor
+            schema={schema}
+            store={data}
+            onChange={setData}
+
+            validity={validity}
+            onValidity={setValidity}
+            showValidity={showValidity}
+            widgets={widgets}
+
+            {/* or write onChange / onValidity like: */}
+            onChange={handler => setData(handler(data))}
+            {/* handler must get the previous state as value, it must be an immutable map, will return updated map */}
+            onValidity={handler => setValidity(handler(validity))}
+        >
+            <SchemaDebug setSchema={setSchema}/>
+        </SchemaEditor>
+        <button
+            {/* show the invalidity only at submit (or pass `true` to `showValidity`) */} 
+            onClick={() => isInvalid(validity) ? setShowValidity(true) : doingSomeAction()}
+        >send!</button>
+    </React.Fragment>
+};
+
+// Developer tool for live data and schema display and manipulation, optional
+// Recommended for production:
+//     use dynamic code-splitting to not bundle the SchemaDebug
+//     use e.g. `react-loadable`
 const SchemaDebug = ({setSchema}) => {
      const {store, schema, onChange} = useSchemaData();
 
@@ -53,44 +141,8 @@ const SchemaDebug = ({setSchema}) => {
     </React.Fragment>
 };
 
-const schema1 = {};// todo: add schema w/ existing data example
-const data1 = {};
-
-const Editor = () => {
-    const [showValidity, setShowValidity] = React.useState(false);
-    const [validity, setValidity] = React.useState(createMap());
-    const [data, setData] = React.useState(createOrderedMap(data1));
-    const [schema, setSchema] = React.useState(createOrderedMap(schema1));
-    
-    return <React.Fragment>
-        <SchemaEditor
-            schema={schema}
-            store={data}
-            onChange={setData}
-            widgets={widgets}
-            validity={validity}
-            showValidity={showValidity}
-            onValidity={setValidity}
-
-            {/* or write onChange / onValidity like: */}
-            onChange={handler => setData(handler(data))}
-            {/* handler must get the previous state as value, it must be an immutable map, will return updated map */}
-            onValidity={handler => setValidity(handler(validity))}
-        >
-            <SchemaDebug setSchema={setSchema}/>
-        </SchemaEditor>
-       <button onClick={() => isInvalid(validity) ? setShowValidity(true) : doingSomeAction()}>send!</button>
-    </React.Fragment>
-};
-
 export {Editor}
 ```
-
-## Schema
-
-JSON-Schema included keywords are used to describe the data and create the UI based on the data-schema and special UI keywords. A data-schema with integrated ui-schema enforces the consistency of the UX across different apps and devices.
-
-[... more](./packages/docs/Schema.md)
 
 ## Widget Design Systems
 
@@ -168,18 +220,6 @@ Included widgets (match by `widget` in schema), each widget could have multiple 
 ⬛ only means some working example is existing during the current dev-state.
 
 [... more on providing/overriding Widgets](./packages/docs/Widgets.md)
-
-## Docs
-
-- [UI-JSON-Schema](./packages/docs/Schema.md), on which types and keywords are supported
-- [Widget System](./packages/docs/Widgets.md), how to create design-system bindings and override widgets
-- [Creating Widgets](./packages/docs/Widgets.md#creating-widgets)
-- Widgets
-    - [TextField](./packages/docs/widgets/TextField.md)
-    - [Stepper](./packages/docs/widgets/TextField.md)
-- [Widget Plugins](./packages/docs/WidgetPlugins.md)
-- [Localization / Translation](./packages/docs/Localization.md)
-- [Performance](./packages/docs/Performance.md) insights and tips
 
 ## Contributing
 
