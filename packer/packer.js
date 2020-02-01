@@ -46,14 +46,14 @@ if(-1 !== process.argv.indexOf('--serve')) {
 } else {
     // production build
 
-    console.log('Production build for `demo` and ' + packagesNames.length + ' packs: `' + packagesNames.join(', ') + '`');
+    console.log('Production build for `demo` and ' + packagesNames.length + ' modules: `' + packagesNames.join(', ') + '`');
 
     console.log('');
-    console.log('Starting ES6 build for ' + packagesNames.length + ' packs: `' + packagesNames.join(', ') + '`');
+    console.log('Starting ES6 build for ' + packagesNames.length + ' modules: `' + packagesNames.join(', ') + '`');
     buildEsModules(paths.packages)
         .then(() => {
             console.log('');
-            console.log('Starting webpack build for `demo` and ' + packagesNames.length + ' packs: `' + packagesNames.join(', ') + '`');
+            console.log('Starting webpack build for `demo` and ' + packagesNames.length + ' modules: `' + packagesNames.join(', ') + '`');
             // combine configs to build packages and demo
             const configs = [...packages];
             configs.push(demoBuild);

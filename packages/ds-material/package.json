@@ -1,6 +1,6 @@
 {
   "name": "@ui-schema/ds-material",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "",
   "homepage": "",
   "author": "Michael Becker <michael@bemit.codes>",
@@ -23,7 +23,7 @@
     "react": "^16.12"
   },
   "dependencies": {
-    "@ui-schema/ui-schema": "*",
+    "@ui-schema/ui-schema": "^0.0.4",
     "react-id-generator": "^3.0.0"
   },
   "peerDependencies": {

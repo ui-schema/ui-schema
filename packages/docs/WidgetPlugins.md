@@ -206,7 +206,7 @@ import {NextPluginRenderer} from "@ui-schema/ui-schema";
 
 const NewPlugin = (props) => {
     // special props which don't reach `Widget`, only for plugins
-    const {current, Widget, widgetStack} = props;
+    const {current, Widget, widgetStack} = props;~~~~~~~~~~~~
 
     // doing some logic
     const newProp = props.schema.get('keyword') ? 'success' : 'error';
