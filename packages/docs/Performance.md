@@ -33,8 +33,7 @@ This editor has multiple levels of performance optimization:
             - additionally receives: `Widget`, `widgetStack`
         - `WidgetStackRenderer` initial `widgetStack` render handling
             - re-renders on changes of **current** widgets properties
-            - additionally receives: `Widget`, `widgetStack`, `current`
-     
+            - additionally receives: `Widget`, `widgetStack`, `current`    
 
 ## Docs
 

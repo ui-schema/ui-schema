@@ -4,15 +4,15 @@ This JSON-Schema vocabulary is used within the included widget-matching:
  
 - `type` valid types: `string`, `number`, `boolean`, `object`, `array` ✔
     - `array` render must be implemented through a widget
-    - validity for `typeof undefined` must be handled depending on `required` in the widget:`undefined`is valid if `required` is false.
+    - validity for `typeof undefined` must be handled depending on `required` in the widget
     - multi-type support for one schema ❌
 - `widget`, non-standard JSON-Schema to select a specific UI ✔
 
 These keywords may be implemented in each widget/design-system:
 
 - `format` e.g. `date` for the `type` `string`
-- `title` what should be used as title, passed to translation by default
-- `description` what should be used as description, passed to translation by default
+- `title` what should be used as title, passed to translation
+- `description` what should be used as description, passed to translation
 - `$comment` is recommended to leave maintaining notes
 
 Universal Keywords:
@@ -72,7 +72,6 @@ Generic Keywords:
     - `contentMediaType` may be used to change widget behaviour
     - `contentEncoding` may be used to change widget behaviour
     
-> Here an example needed: `application/json` or `applicationJson`??
 
 Validation Keywords:
 
@@ -163,8 +162,6 @@ Validation Keywords:
 Can be used to render some only-text/display widget that will not provide any entry in the resulting data.
 
 Validates true for `null` value but property exists. ❌
-
-> Hier noch ein unterschied: Type null & type undefined?
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/null.html)
 

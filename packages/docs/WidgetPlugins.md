@@ -1,7 +1,5 @@
 # Widget Plugins 
 
-Plugins are components that contribute to rendering or validating widgets.
-
 ## Plugin List
 
 ### Schema Driven
