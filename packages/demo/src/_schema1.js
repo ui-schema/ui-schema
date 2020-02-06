@@ -10,6 +10,10 @@ const schema1 = {
         stepper: {
             type: "object",
             widget: "Stepper",
+            minProperties: 4,
+            maxProperties: 3,
+            additionalProperties: false,
+            patternProperties: /* "bla", */ "[A-Za-z0-9_]",
             properties: {
                 'step-1': {
                     type: "object",
@@ -142,8 +146,6 @@ const schema1 = {
         },
         style: {
             type: "object",
-            minProperties: 2,
-            maxProperties: 3,
             view: {
                 sizeMd: 3
             },
@@ -224,8 +226,8 @@ const schema1 = {
         },
         ages: {
             type: "array",
-            minSize: 2,
-            maxSize: 3,
+            minItems: 2,
+            maxItems: 3,
             widget: "SelectMulti",
             view: {
                 sizeMd: 3
@@ -243,6 +245,34 @@ const schema1 = {
                 'adult',
                 '50plus',
             ],
+        },
+
+        url: {
+            type: "object",
+            view: {
+                sizeMd: 3
+            },
+            minProperties: 3,
+            maxProperties: 3,
+            additionalProperties: false,
+            patternProperties: 'bla',
+            properties: {
+                host: {
+                    type: "string",
+                    pattern: 'bla',
+                    default: 'myhost',
+                    view: {
+                        sizeMd: 12
+                    }
+                },
+                path: {
+                    type: "string",
+                    default: '/contact',
+                    view: {
+                        sizeMd: 12
+                    }
+                }
+            },
         },
         desc: {
             type: "object",

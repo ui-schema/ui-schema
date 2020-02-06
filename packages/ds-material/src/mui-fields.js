@@ -7,7 +7,8 @@ import {
     DefaultHandler, ValidityReporter, DependentHandler,
     MinMaxValidator, TypeValidator, MultipleOfValidator,
     ValueValidatorEnum, ValueValidatorConst,
-    RequiredValidator, PatternValidator, ArrayValidator,
+    RequiredValidator, PatternValidator,
+    ArrayValidator, ObjectValidator,
 } from "@ui-schema/ui-schema";
 
 const widgetStack = [
@@ -22,6 +23,7 @@ const widgetStack = [
     ValueValidatorEnum,
     PatternValidator,
     ArrayValidator,
+    ObjectValidator,
     ValidityReporter,
 ];
 

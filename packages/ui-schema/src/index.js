@@ -13,4 +13,5 @@ export * from './Handling/ValueValidator';
 export * from './Handling/RequiredValidator';
 export * from './Handling/PatternValidator';
 export * from './Handling/ArrayValidator';
+export * from './Handling/ObjectValidator';
 export * from './Handling/DependentHandler';
