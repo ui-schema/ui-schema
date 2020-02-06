@@ -35,6 +35,35 @@ const validateMinMax = (type, schema, value, strict) => {
         }
     }
 
+    if(type === 'array') {
+        let minItems = schema.get('minItems');
+        let maxItems = schema.get('maxItems');
+
+        if(minItems) {
+            if(List.isList(value)) {
+                if(!(!strict && 0 === value.size) && value.size < minItems) {
+                    errors = errors.push(ERROR_MIN_LENGTH);
+                }
+            } else if(Array.isArray(value)) {
+                if(!(!strict && 0 === value.length) && value.length < minItems) {
+                    errors = errors.push(ERROR_MIN_LENGTH);
+                }
+            }
+        }
+
+        if(maxItems) {
+            if(List.isList(value)) {
+                if(!(!strict && 0 === value.size) &&   value.size > maxItems) {
+                    errors = errors.push(ERROR_MAX_LENGTH);
+                }
+            } else if(Array.isArray(value)) {
+                if(!(!strict && 0 === value.length) && value.length > maxItems) {
+                    errors = errors.push(ERROR_MAX_LENGTH);
+                }
+            }
+        }
+    }
+
     if(type === 'number') {
         let minimum = schema.get('minimum');
         let exclusiveMinimum = schema.get('exclusiveMinimum');

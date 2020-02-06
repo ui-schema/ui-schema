@@ -142,6 +142,8 @@ const schema1 = {
         },
         style: {
             type: "object",
+            minProperties: 2,
+            maxProperties: 3,
             view: {
                 sizeMd: 3
             },
@@ -222,6 +224,8 @@ const schema1 = {
         },
         ages: {
             type: "array",
+            minItems: 2,
+            maxItems: 3,
             widget: "SelectMulti",
             view: {
                 sizeMd: 3

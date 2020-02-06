@@ -22,6 +22,8 @@ Supplying the `t` prop to an `SchemaEditor` enables dynamic translations and con
 
 Keyword `t` is not default JSON-Schema, UI-Schema defines it as an 'string' or 'one or two-dimension object' containing multiple or one language with multiple translation keys.
 
+- `t` is on by default, set to `false` for disabling.
+
 > must work with dynamic properties
 
 ```json
@@ -72,7 +74,6 @@ Design systems should support both, the Material-UI library supports it.
 
 When no translation should be used, but e.g. the property names should simply be in uppercase, `tt` influence the text-transformation.
 
-- any value that is not falsy disables `t`
 - `tt: true` uses `beautifyKey` for optimistic beautification
 - `tt: 'uppercase'` turns all letters in uppercase
 - `tt: 'lowercase'` turns all letters in lowercase

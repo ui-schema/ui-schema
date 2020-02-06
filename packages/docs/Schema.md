@@ -11,8 +11,8 @@ This JSON-Schema vocabulary is used within the included widget-matching:
 These keywords may be implemented in each widget/design-system:
 
 - `format` e.g. `date` for the `type` `string`
-- `title` what should be used as title, passed to translation by default
-- `description` what should be used as description, passed to translation by default
+- `title` what should be used as title, passed to translation
+- `description` what should be used as description, passed to translation
 - `$comment` is recommended to leave maintaining notes
 
 Universal Keywords:
@@ -142,8 +142,8 @@ Type validity reports true when: `Array.isArray(value)` for vanilla-JS and `List
 
 Validation Keywords:
 
-- `minItems` min. number of items ❌
-- `maxItems` max. number of items ❌
+- `minItems` min. number of items ✔
+- `maxItems` max. number of items ✔
 - `uniqueItems` all items must be of an unique value ✔
 - `items` restricts all items be valid against a sub-schema (one-all) ✔
     - ❗ only checks some schema: everything [validateSchema](./WidgetPlugins.md#validateschema) supports
