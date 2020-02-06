@@ -1,6 +1,5 @@
 import React from "react";
 import {List} from "immutable";
-import {Map} from "immutable";
 import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 
 const ERROR_MIN_LENGTH = 'min-length';
@@ -42,11 +41,11 @@ const validateMinMax = (type, schema, value, strict) => {
 
         if(minItems) {
             if(List.isList(value)) {
-                if(!value || value.size < minItems) {
+                if(!(!strict && 0 === value.size) && value.size < minItems) {
                     errors = errors.push(ERROR_MIN_LENGTH);
                 }
             } else if(Array.isArray(value)) {
-                if(!value || value.length < minItems) {
+                if(!(!strict && 0 === value.length) && value.length < minItems) {
                     errors = errors.push(ERROR_MIN_LENGTH);
                 }
             }
@@ -54,11 +53,11 @@ const validateMinMax = (type, schema, value, strict) => {
 
         if(maxItems) {
             if(List.isList(value)) {
-                if(!value || value.size > maxItems) {
+                if(!(!strict && 0 === value.size) &&   value.size > maxItems) {
                     errors = errors.push(ERROR_MAX_LENGTH);
                 }
             } else if(Array.isArray(value)) {
-                if(!value || value.length > maxItems) {
+                if(!(!strict && 0 === value.length) && value.length > maxItems) {
                     errors = errors.push(ERROR_MAX_LENGTH);
                 }
             }

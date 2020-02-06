@@ -224,8 +224,8 @@ const schema1 = {
         },
         ages: {
             type: "array",
-            minSize: 2,
-            maxSize: 3,
+            minItems: 2,
+            maxItems: 3,
             widget: "SelectMulti",
             view: {
                 sizeMd: 3
