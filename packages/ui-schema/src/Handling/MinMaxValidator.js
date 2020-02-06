@@ -23,29 +23,42 @@ const validateMinMax = (type, schema, value, strict) => {
         if(typeof value === 'string') {
             if(minLength) {
                 if(!(!strict && 0 === value.length) && value.length < minLength) {
-                    // when not `strict` and empty string it is okay
                     errors = errors.push(ERROR_MIN_LENGTH);
                 }
             }
             if(maxLength) {
                 if(!(!strict && 0 === value.length) && value.length > maxLength) {
-                    // when not `strict` and empty string it is okay
                     errors = errors.push(ERROR_MAX_LENGTH);
                 }
             }
         }
     }
+
     if(type === 'array') {
         let minItems = schema.get('minItems');
         let maxItems = schema.get('maxItems');
+
         if(minItems) {
-            if(!value || value.size < minItems) {
-                errors = errors.push(ERROR_MIN_LENGTH);
+            if(List.isList(value)) {
+                if(!(!strict && 0 === value.size) && value.size < minItems) {
+                    errors = errors.push(ERROR_MIN_LENGTH);
+                }
+            } else if(Array.isArray(value)) {
+                if(!(!strict && 0 === value.length) && value.length < minItems) {
+                    errors = errors.push(ERROR_MIN_LENGTH);
+                }
             }
         }
+
         if(maxItems) {
-            if(!value || value.size > maxItems) {
-                errors = errors.push(ERROR_MAX_LENGTH);
+            if(List.isList(value)) {
+                if(!(!strict && 0 === value.size) &&   value.size > maxItems) {
+                    errors = errors.push(ERROR_MAX_LENGTH);
+                }
+            } else if(Array.isArray(value)) {
+                if(!(!strict && 0 === value.length) && value.length > maxItems) {
+                    errors = errors.push(ERROR_MAX_LENGTH);
+                }
             }
         }
     }
@@ -59,16 +72,6 @@ const validateMinMax = (type, schema, value, strict) => {
         if(properties) {
             if(Map.isMap(properties) || List.isList(properties)) {
                 let numberOfProperties = schema.getIn(['properties']).keySeq().size;
-
-                if(minProperties && numberOfProperties < minProperties) {
-                    errors = errors.push(ERROR_MIN_LENGTH);
-                }
-                if(maxProperties && numberOfProperties > maxProperties) {
-                    errors = errors.push(ERROR_MAX_LENGTH);
-                }
-
-            } else if(Array.isArray(properties)) {
-                let numberOfProperties = properties.length;
 
                 if(minProperties && numberOfProperties < minProperties) {
                     errors = errors.push(ERROR_MIN_LENGTH);

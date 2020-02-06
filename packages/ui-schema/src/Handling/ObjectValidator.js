@@ -18,7 +18,6 @@ const validateObject = (schema, value, find = false) => {
             break;
         }
     }
-
     return err;
 };
 
@@ -39,46 +38,15 @@ const ObjectValidator = (props) => {
         let properties = schema.get('properties');
 
         if(properties && patternProperties) {
-
-            if(Map.isMap(schema.getIn(['properties']))) {
-                schema.getIn(['properties']).map((value, key) => {
-                    if(!validateNamePattern(key, patternProperties)) {
-                        errors = errors.push(ERROR_PATTERN);
-                    }
-                });
-                if(additionalProperties) {
-                    if(List.isList(value) && value.size !== schema.getIn(['properties']).keySeq().size
-                        || Map.isMap(value) && value.size !== schema.getIn(['properties']).keySeq().size
-                        || Array.isArray(value) && value.length !== schema.getIn(['properties']).keySeq().size) {
-                        errors = errors.push(ERROR_ADDITIONAL_PROP);
-                    }
-                }
-
-            } else if(List.isList(schema.getIn(['properties']))) {
-                for(let listElement of schema.getIn(['properties'])) {
-                    if(!validateNamePattern(listElement, patternProperties)) {
-                        errors = errors.push(ERROR_PATTERN);
-                    }
-                }
-                if(additionalProperties) {
-                    if(List.isList(value) && value.size !== schema.getIn(['properties']).keySeq().size
-                        || Map.isMap(value) && value.size !== schema.getIn(['properties']).keySeq().size
-                        || Array.isArray(value) && value.length !== schema.getIn(['properties']).keySeq().size) {
-                        errors = errors.push(ERROR_ADDITIONAL_PROP);
-                    }
-                }
-            }
-
-        } else if(Array.isArray(properties)) {
-            for(let listElement of properties) {
-                if(!validateNamePattern(listElement, patternProperties)) {
+            schema.getIn(['properties']).map((value, key) => {
+                if(!validateNamePattern(key, patternProperties)) {
                     errors = errors.push(ERROR_PATTERN);
                 }
-            }
+            });
             if(additionalProperties) {
-                if(List.isList(value) && value.size !== properties.length
-                    || Map.isMap(value) && value.size !== properties.length
-                    || Array.isArray(value) && value.length !== properties.length) {
+                if(List.isList(value) && value.size !== schema.getIn(['properties']).keySeq().size
+                    || Map.isMap(value) && value.size !== schema.getIn(['properties']).keySeq().size
+                    || Array.isArray(value) && value.length !== schema.getIn(['properties']).keySeq().size) {
                     errors = errors.push(ERROR_ADDITIONAL_PROP);
                 }
             }

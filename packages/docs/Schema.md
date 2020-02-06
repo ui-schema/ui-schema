@@ -143,8 +143,8 @@ Type validity reports true when: `Array.isArray(value)` for vanilla-JS and `List
 
 Validation Keywords:
 
-- `minItems` min. number of items ❌
-- `maxItems` max. number of items ❌
+- `minItems` min. number of items ✔
+- `maxItems` max. number of items ✔
 - `uniqueItems` all items must be of an unique value ✔
 - `items` restricts all items be valid against a sub-schema (one-all) ✔
     - ❗ only checks some schema: everything [validateSchema](./WidgetPlugins.md#validateschema) supports
