@@ -1,5 +1,6 @@
 import React from "react";
 import {List} from "immutable";
+import {Map} from "immutable";
 import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 
 const ERROR_MIN_LENGTH = 'min-length';
@@ -34,21 +35,35 @@ const validateMinMax = (type, schema, value, strict) => {
             }
         }
     }
+
     if(type === 'array') {
         let minItems = schema.get('minItems');
         let maxItems = schema.get('maxItems');
+
         if(minItems) {
-            if(!value || value.size < minItems) {
-                errors = errors.push(ERROR_MIN_LENGTH);
+            if(List.isList(value)) {
+                if(!value || value.size < minItems) {
+                    errors = errors.push(ERROR_MIN_LENGTH);
+                }
+            } else if(Array.isArray(value)) {
+                if(!value || value.length < minItems) {
+                    errors = errors.push(ERROR_MIN_LENGTH);
+                }
             }
         }
+
         if(maxItems) {
-            if(!value || value.size > maxItems) {
-                errors = errors.push(ERROR_MAX_LENGTH);
+            if(List.isList(value)) {
+                if(!value || value.size > maxItems) {
+                    errors = errors.push(ERROR_MAX_LENGTH);
+                }
+            } else if(Array.isArray(value)) {
+                if(!value || value.length > maxItems) {
+                    errors = errors.push(ERROR_MAX_LENGTH);
+                }
             }
         }
     }
-
 
     if(type === 'number') {
         let minimum = schema.get('minimum');
