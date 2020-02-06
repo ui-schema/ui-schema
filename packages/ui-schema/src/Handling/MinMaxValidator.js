@@ -1,7 +1,6 @@
 import React from "react";
 import {List} from "immutable";
 import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
-import {ERROR_DUPLICATE_ITEMS} from "./ArrayValidator";
 
 const ERROR_MIN_LENGTH = 'min-length';
 const ERROR_MAX_LENGTH = 'max-length';
@@ -49,7 +48,7 @@ const validateMinMax = (type, schema, value, strict) => {
             }
         }
     }
-    
+
 
     if(type === 'number') {
         let minimum = schema.get('minimum');
