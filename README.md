@@ -7,6 +7,7 @@ JSON-Schema form + ui generator for any design system, first-class support for [
 
 - @ui-schema/ui-schema [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ui-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ui-schema) 
 - @ui-schema/ds-material [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-material?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-material)
+- @ui-schema/ds-bootstrap
 
 ---
 
@@ -151,7 +152,7 @@ The package `@ui-schema/ui-schema` supports rendering widgets for JSON-schema `t
 It is possible to connect any design system to the renderer, included or planned support:
 
 - `@ui-schema/ds-material` adds binding to [@material-ui/core](https://material-ui.com/) to use [Material Design](https://material.io/)
-- `@ui-schema/ds-bootstrap` adds binding to plain bootstrap semantic HTMLs **planned**
+- `@ui-schema/ds-bootstrap` adds binding to plain bootstrap semantic HTMLs to use with any Bootstrap theme
 - `@ui-schema/ds-blueprint` adds binding to [blueprintjs](https://blueprintjs.com/docs/) **would be nice**
 - `@ui-schema/ds-semanticui` adds binding to [semantic-ui](https://react.semantic-ui.com/usage/) **would be nice**
 - `@ui-schema/ds-antdesign` adds binding to [Ant Design](https://ant.design/docs/react/introduce) **would be nice**
