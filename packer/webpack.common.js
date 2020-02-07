@@ -115,12 +115,8 @@ function getConfig({
                         sourceMaps: false,
                     },
                 }, {
-                    test: /\.json$/,
-                    exclude: /node_modules/,
-                    loader: "json-loader"
-                }, {
                     test: /\.html$/i,
-                    exclude: [/node_modules/],
+                    // exclude: [/node_modules/],
                     use: [{
                         loader: 'ejs-loader'
                     }, {
@@ -134,11 +130,11 @@ function getConfig({
                     }],
                 }, {
                     test: /\.css$/i,
-                    exclude: [/node_modules/],
+                    // exclude: [/node_modules/],
                     loader: 'style-loader!css-loader'
                 }, {
                     test: /\.json$/,
-                    exclude: /node_modules/,
+                    // exclude: /node_modules/,
                     loader: "json-loader"
                 },
                 ...rules

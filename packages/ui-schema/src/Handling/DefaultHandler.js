@@ -6,6 +6,7 @@ const DefaultHandler = (props) => {
         schema, value, onChange, storeKeys
     } = props;
 
+    // todo: add as effect
     let default_val = schema.get('default');
     if(typeof value === 'undefined') {
         if(typeof default_val !== 'undefined') {
