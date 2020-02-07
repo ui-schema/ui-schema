@@ -4,7 +4,10 @@ import {
     Switch,
     Route
 } from "react-router-dom";
-import {MaterialUi} from './pages/material-ui';
+import {asyncComponent} from "./component/AsyncComponent";
+
+const MaterialUi = asyncComponent(() => import('./pages/material-ui').then(module => module.MaterialUi), 'Material-UI', 'page');
+const Bootstrap = asyncComponent(() => import('./pages/bootstrap').then(module => module.Bootstrap), 'Bootstrap', 'page');
 
 const App = () => <Router>
     <Switch>
@@ -14,12 +17,8 @@ const App = () => <Router>
         <Route path="/ant">
             <h1>Ant</h1>
         </Route>
-        <Route path="/bootstrap">
-            <h1>Bootstrap</h1>
-        </Route>
-        <Route path="/">
-            <MaterialUi/>
-        </Route>
+        <Route path="/bootstrap" component={Bootstrap}/>
+        <Route path="/" exact component={MaterialUi}/>
     </Switch>
 </Router>;
 

@@ -1,4 +1,4 @@
-# Widget Plugins 
+# Widget Plugins
 
 ## Plugin List
 
@@ -14,7 +14,6 @@
 | [CombiningNetworkHandler](#combiningnetworkhandler) | @ui-schema/ui-schema | ... | ... | ❌ |
 
 ### Validation Plugins
---> Maybe: how do both of them work together?
 
 | Plugin               | Package              | Validity Fn.         | Handles              | Added Props | Status |
 | :---                 | :---                 | :---                 | :---                 | :---        | :--- |

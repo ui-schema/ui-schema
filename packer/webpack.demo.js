@@ -34,6 +34,7 @@ const demoCommon = {
         "@babel/plugin-transform-runtime",
         "transform-es2015-template-literals",
         "es6-promise",
+        "react-loadable/babel",
     ],
     rules: [{
         test: /\.(jpe?g|png|gif)$/i,
@@ -110,6 +111,7 @@ demoServe.devServer = {
     compress: true,
     inline: true,
     hot: true,
+    historyApiFallback: true,
     port: paths.demo.port
 };
 

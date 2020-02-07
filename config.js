@@ -27,6 +27,13 @@ const paths = {
                 "@material-ui/icons": buildExternal("@material-ui/icons"),
             }
         },
+        dsBootstrap: {
+            root: path.resolve(__dirname, 'packages', 'ds-bootstrap'),
+            entry: path.resolve(__dirname, 'packages', 'ds-bootstrap/src/'),
+            externals: {
+                "@ui-schema/ui-schema": buildExternal("@ui-schema/ui-schema")
+            }
+        },
     }
 };
 

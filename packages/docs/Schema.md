@@ -71,7 +71,6 @@ Generic Keywords:
 - [non-JSON](https://json-schema.org/understanding-json-schema/reference/non_json_data.html) (widget must implement it)
     - `contentMediaType` may be used to change widget behaviour
     - `contentEncoding` may be used to change widget behaviour
-    
 
 Validation Keywords:
 
