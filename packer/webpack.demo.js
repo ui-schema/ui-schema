@@ -93,7 +93,9 @@ const demoCommon = {
         //new InterpolateHtmlPlugin(HtmlWebpackPlugin, buildEnv(paths.demo.servedPath).raw),
     ],
     splitChunks: true,
-    devtool: 'cheap-module-source-map',
+    // todo: make adjustable by dev/prod
+    devtool: 'eval-cheap-module-source-map',// faster rebuild, not for production
+    // devtool: 'cheap-module-source-map',// slow build, for production
 };
 
 //
