@@ -92,7 +92,19 @@ const demoCommon = {
         // doesnt work with v4 of HtmlWebpackPlugin, but we need HtmlWebpackPlugin for the code splitting it seems
         //new InterpolateHtmlPlugin(HtmlWebpackPlugin, buildEnv(paths.demo.servedPath).raw),
     ],
-    splitChunks: true,
+    //splitChunks: true,
+    splitChunks: {
+        chunks: 'all',
+        name: false,
+        cacheGroups: {
+            default: false,
+            vendors: false,
+            vendor: {
+                chunks: 'all',
+                test: /node_modules/
+            }
+        }
+    },
     // todo: make adjustable by dev/prod
     devtool: 'eval-cheap-module-source-map',// faster rebuild, not for production
     // devtool: 'cheap-module-source-map',// slow build, for production
