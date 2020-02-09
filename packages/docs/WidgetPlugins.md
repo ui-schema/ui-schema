@@ -1,19 +1,23 @@
 # Widget Plugins
 
-## Plugin List
+Plugins are wrapped around each widget/json-schema level and are used to add logic to all. Each plugin should decide if it should do something according to it's props/schema.
 
-### Schema Driven
+## Schema Driven
+
+Plugins that work schema-driven are handling the schema in different ways, these are not used for validation but for creating functionality around the schema.
 
 | Plugin                                              | Package              | Handles              | Added Props | Status |
 | :---                                                | :---                 | :---                 | :---        | :--- |
-| DefaultHandler                                      | @ui-schema/ui-schema | keyword `default`    | - | ✔ |
+| [DefaultHandler](#defaulthandler)                   | @ui-schema/ui-schema | keyword `default`    | - | ✔ |
 | [ValidityReporter](#validityreporter)               | @ui-schema/ui-schema | setting validity changes | - | ✔ |
 | [DependentHandler](#dependenthandler)               | @ui-schema/ui-schema | keyword `dependencies` | ... | ❗  |
 | [ConditionalHandler](#conditionalhandler)           | @ui-schema/ui-schema | ... | ... | ❌ |
 | [CombiningHandler](#combininghandler)               | @ui-schema/ui-schema | ... | ... | ❌ |
 | [CombiningNetworkHandler](#combiningnetworkhandler) | @ui-schema/ui-schema | ... | ... | ❌ |
 
-### Validation Plugins
+## Validation Plugins
+
+Validation plugins also work schema-driven, but are only used for validation of the values/schema.
 
 | Plugin               | Package              | Validity Fn.         | Handles              | Added Props | Status |
 | :---                 | :---                 | :---                 | :---                 | :---        | :--- |
@@ -32,27 +36,22 @@
     - validation checking outside is always strict ✔
 - sub-schema validation/array validation is done by `validateSchema`  ✔ 
     - (todo: new override-prop/more docs)
+- **important notice**
+    - `type: object` and `type: array` can be handled like the others because of using it valueless ❌
+    - this is for performance reasons, a nested object otherwise would trigger a full re-render from it's root-object  
+    - use the hook `useSchemaData` within plugins/widgets that need to access it, build a functional component which wraps a memoized component and only push the values needed further on (or nothing)
+    - arrays and objects should all be valueless and not only "widget-less objects" ❌
+    - arrays should be possible to use `valueless` or `with-value` ❌
+        - good for: full array is handled within one small component
+        - good for: full array is one-level deep and contains only scalar values
 
-#### validateSchema
+## Plugin List
 
-```js
-import {validateSchema} from '@ui-schema/ui-schema';
-```
+### DefaultHandler
 
-Exports the validation functions used by the plugins for usage outside of the render tree.
+Checks if the current schema has a defined `default` keyword and it's value is `undefined`, then it sets the store data and renders further on after it was set.
 
-Returns `false` when **no error** was found, otherwise `true` or `List` with errors.
-
-Currently includes the handlers of:
-
-- validateType
-- validatePattern
-- validateMinMax
-- validateMultipleOf
-- validateConst
-- validateEnum
-
-#### ValidityReporter
+### ValidityReporter
 
 Submits the validity of each widget up to the state hoisted component when it changes.
 
@@ -79,7 +78,26 @@ const SomeWidget = ({storeKeys, ...props}) => {
 > the component deletes the invalidation status on its own dismount, resulting in: only mounted components get's validated, this is intended behaviour at the moment!
 >
 
-#### DependentHandler
+#### validateSchema
+
+```js
+import {validateSchema} from '@ui-schema/ui-schema';
+```
+
+Exports the validation functions used by the plugins for usage outside of the render tree.
+
+Returns `false` when **no error** was found, otherwise `true` or `List` with errors.
+
+Currently includes the handlers of:
+
+- validateType
+- validatePattern
+- validateMinMax
+- validateMultipleOf
+- validateConst
+- validateEnum
+
+### DependentHandler
 
 Enables on-the-fly sub-schema rendering based on current data, e.g. show more address fields if a customer is a business.
 
@@ -96,7 +114,7 @@ Enables on-the-fly sub-schema rendering based on current data, e.g. show more ad
 
 ❗ Dynamically extending a schema is currently supported a little bit with `dependencies` and `oneOf`, interpret `oneOf` like a switch.
 
-❗ Should be moved to group-level, thus group-level plugins are needed... 
+❗ Should be moved to group-level 
 
 - create dependencies
 - use the properties name which's value should be used
@@ -172,18 +190,18 @@ Specifications:
 [dependencies](https://json-schema.org/understanding-json-schema/reference/object.html#dependencies)
 [combining schemas](https://json-schema.org/understanding-json-schema/reference/combining.html)
 
-#### ConditionalHandler
+### ConditionalHandler
 
 - [conditionals](https://json-schema.org/understanding-json-schema/reference/conditionals.html) ❌
     - `allOf`
     - `if`
     - `else`
     
-#### CombiningHandler
+### CombiningHandler
 
 Combining schemas from within one schema by definition, id, ref, [specification](https://json-schema.org/understanding-json-schema/reference/combining.html)
 
-#### CombiningNetworkHandler
+### CombiningNetworkHandler
 
 Combining schemas from external addressed by using `$id` and `$ref`, [specification](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property)
 
@@ -223,6 +241,8 @@ export {NewPlugin}
 - recommended: use `<NextPluginRenderer {...props} newProp={false}/>` 
     - automatically render the plugins nested
     - `newProp` is available in the widget and the next plugins
+    
+See [how to add custom plugins to the binding](./Widgets.md#adding--overwriting-widgets).
 
 ## Docs
 

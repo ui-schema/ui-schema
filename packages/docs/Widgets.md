@@ -8,9 +8,49 @@ A widget is responsible to render the UI and either display or make the editing 
 
 Through the modular approach and easy definition of a new widget, the widget system can be used to create complex, separated UI components, where the orchestration can be done from an external system like some backend API.
 
+## Creating Widgets
+
+>
+> ✔ working, not expected to change (that much) breaking in the near future
+>
+
+You need to show content and inputs in a special way? Something not supported (yet)? Just create a widget with the functionality you need! JSON-Schema is handled mostly by the `widgetStack` for you, simply use the provided properties to build the behaviour of the widget.
+
+Each widget get's a lot of properties provided by the root schema provided or added by plugins.
+
+Properties from editor:
+
+- `t` : `{function}` see [translation](./Localization.md#translation)
+- `value` : `{*}`
+- `storeKeys` : `{List}`
+- `ownKey` : `{string|integer}`
+- `onChange` : `{function}`
+- `schema` : `{Map}`
+- `parentSchema` : `{Map}`
+- `dependencies` : `{undefined|Map}`
+- `level` : `{integer}`
+- `required` : `{boolean}` (extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `RequiredValidator`)
+- `valid` : `{boolean}` if this schema level got some error, detected/changed from the widgetStack, 
+- `showValidity` : `{boolean}` added to the props by `InvalidityReporter`
+- `errors` : `{List}` invalidity errors, added from the widgetStack for the current widget/schema-level
+
+See [how to add the custom widgets](#adding--overwriting-widgets).
+
+See [plugins](./WidgetPlugins.md) for the rest of the provided properties.
+
+
+## Create Design-System Binding
+
+>
+> ✔ working, not expected to change (that much) breaking in the near future
+>
+
+Each SchemaEditor receives an `widgets` object containing all HTML components and the plugins that should be used for rendering.
+
+Create a complete custom or only the components you need.
+
 - `RootRenderer` main wrapper around everything
-- `GroupRenderer` wraps an object that is not a widget (native JS-object)
-    - props: `schema`
+- `GroupRenderer` wraps an object that is not a widget, used by the internal `ObjectRenderer` widget
 - `widgetStack` is the widget plugin system, this wraps all widgets individually
     - e.g. used to handle json schema `default`
     - see [how to create widget plugins](./WidgetPlugins.md)
@@ -29,6 +69,10 @@ import {
     ValueValidatorEnum, ValueValidatorConst,
     RequiredValidator, PatternValidator, ArrayValidator,
 } from "@ui-schema/ui-schema";
+
+import {
+    StringRenderer, NumberRenderer /* and more widgets */
+} from "@ui-schema/ds-material";
 
 const SchemaGridItem = ({schema, children, defaultMd}) => {
     const view = schema ? schema.getIn(['view']) : undefined;
@@ -52,11 +96,9 @@ const SchemaGridItem = ({schema, children, defaultMd}) => {
 
 const RootRenderer = props => <Grid container spacing={0}>{props.children}</Grid>;
 
-const GroupRenderer = ({schema, children}) => <SchemaGridItem schema={schema}>
-    <Grid container spacing={2} wrap={'wrap'}>
-        {children}
-    </Grid>
-</SchemaGridItem>;
+const GroupRenderer = ({children}) => <Grid container spacing={2} wrap={'wrap'}>
+    {children}
+</Grid>;
 
 const SchemaGridHandler = (props) => {
     const {
@@ -101,29 +143,48 @@ const widgets = {
 export {widgets}
 ```
 
-## Creating Widgets
+## Adding / Overwriting Widgets
 
-You need to show content and inputs in a special way? Something not supported (yet)? Just create a widget with the functionality you need! JSON-Schema is handled mostly by the `widgetStack` for you, simply use the provided properties to build the behaviour of the widget.
+>
+> ✔ working, not expected to change (that much) breaking in the near future
+>
 
-Each widget get's a lot of properties provided by the root schema provided or added by plugins.
+This example shows how new plugins or widgets can be added, can be used to overwrite also.
 
-Properties from editor:
+- overwriting is only recommended when using the overwritten on the same page
+- or when using the lazy-loading widgets
+    - needs more exports of defaults from ui-schema/each ds ❌
+    - needs react-loadable/react.lazy support ❌
 
-- `t` : `{function}` see [translation](./Localization.md#translation)
-- `value` : `{*}`
-- `storeKeys` : `{List}`
-- `ownKey` : `{string|integer}`
-- `onChange` : `{function}`
-- `schema` : `{Map}`
-- `parentSchema` : `{Map}`
-- `dependencies` : `{undefined|Map}`
-- `level` : `{integer}`
-- `required` : `{boolean}` (extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `RequiredValidator`)
-- `valid` : `{boolean}` if this schema level got some error, detected/changed from the widgetStack, 
-- `showValidity` : `{boolean}` added to the props by `InvalidityReporter`
-- `errors` : `{List}` invalidity errors, added from the widgetStack for the current widget/schema-level
+```js
+import {widgets,} from "@ui-schema/ds-material";
 
-See [plugins](./WidgetPlugins.md) for the rest of the provided properties.
+const CustomNumberRenderer = () => /* todo: implement */ null;
+const CustomSelect = () => /* todo: implement */ null;
+
+const CustomPlugin = () => /* todo: implement */ null;
+
+// Multi Level destructure-merge to overwrite and clone and not change the original ones
+
+const customWidgetStack = [...widgets.widgetStack];
+// insert a custom plugin before the ValidityReporter (last plugin by default)
+customWidgetStack.splice(customWidgetStack.length - 1, 0, CustomPlugin);
+
+const customWidgets = {
+    ...widgets,
+    widgetStack: customWidgetStack,
+    types: {
+        ...widgets.types, 
+        number: CustomNumberRenderer,
+    },
+    custom: {
+        ...widgets.custom,
+        Select: CustomSelect,
+    },
+};
+
+export {customWidgets}
+```
 
 ## Docs
 

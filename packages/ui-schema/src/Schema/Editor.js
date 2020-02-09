@@ -1,15 +1,52 @@
 import React from 'react';
-import {EditorValidityProvider, SchemaEditorProvider, useSchemaData, useSchemaValidity, useSchemaWidgets} from "./EditorStore";
-import {SchemaEditorRenderer} from "./EditorGroup";
+import {List} from 'immutable';
+import {
+    EditorDataProvider, EditorValidityProvider, EditorWidgetsProvider,
+    useSchemaData, useSchemaValidity, useSchemaWidgets,
+    withWidgets
+} from "./EditorStore";
+import {ValueWidgetRenderer, ValuelessWidgetRenderer} from "./EditorWidget";
+import {ObjectRenderer} from "./EditorObject";
+
+let SchemaEditorRenderer = ({
+                                widgets,// widgets from HOC for performance reasons
+                                schema, storeKeys = undefined, dependencies = undefined, level = 0, ...props
+                            }) => {
+    if(!storeKeys) {
+        // todo: check if it can be removed / defaults exists at every call
+        storeKeys = List([]);
+    }
+
+    const type = schema.get('type');
+    const widget = schema.get('widget');
+    const {GroupRenderer, widgetStack} = widgets;
+
+    return schema ?
+        type !== 'object' || widget ?
+            <ValueWidgetRenderer
+                {...props}
+                schema={schema} storeKeys={storeKeys} level={level}
+                dependencies={dependencies}
+            />
+            : <ValuelessWidgetRenderer
+                {...props}
+                GroupRenderer={GroupRenderer}
+                Widget={ObjectRenderer} widgetStack={widgetStack}
+                schema={schema} storeKeys={storeKeys} level={level}
+                dependencies={dependencies}/>
+        : null;
+};
+SchemaEditorRenderer = withWidgets(React.memo(SchemaEditorRenderer));
 
 /**
- * @type {React.NamedExoticComponent<{rootRenderer?: *, schema?: *}>}
+ * @type {function({rootRenderer: *, schema: *}): *}
  */
-const DumpRootRenderer = React.memo(({rootRenderer: RootRenderer, schema}) => {
+let DumpRootRenderer = ({rootRenderer: RootRenderer, schema}) => {
     return <RootRenderer>
         <SchemaEditorRenderer schema={schema}/>
     </RootRenderer>;
-});
+};
+DumpRootRenderer = React.memo(DumpRootRenderer);
 
 /**
  * Initial rendering of root container and invoking the first schema-group with the root-level-data of `schema`
@@ -64,17 +101,35 @@ const NestedSchemaEditor = ({schema, parentSchema, storeKeys, showValidity, leve
  * Main Component to create a schema based UI generator
  *
  * @param {*} children
- * @param {schema, data, widgets} props
+ * @param children
+ * @param schema
+ * @param store
+ * @param onChange
+ * @param widgets
+ * @param validity
+ * @param showValidity
+ * @param onValidity
+ * @param props
  * @return {*}
+ * @constructor
  */
-let SchemaEditor = ({children, ...props}) => (
-    <SchemaEditorProvider {...props}>
-        {/* providing a dynamic schema editor context and rendering the root renderer */}
-        <SchemaRootRenderer/>
-        {children}
-    </SchemaEditorProvider>
+let SchemaEditor = ({
+                        children,
+                        schema,
+                        store, onChange,
+                        widgets, // t,
+                        validity, showValidity, onValidity,
+                    }) => (
+    <EditorWidgetsProvider widgets={widgets}>
+        <EditorValidityProvider validity={validity} showValidity={showValidity} onValidity={onValidity}>
+            <EditorDataProvider store={store} onChange={onChange} schema={schema}>
+                <SchemaRootRenderer/>
+                {children}
+                {/* providing a dynamic schema editor context and rendering the root renderer */}
+            </EditorDataProvider>
+        </EditorValidityProvider>
+    </EditorWidgetsProvider>
 );
-SchemaEditor = React.memo(SchemaEditor);
 
 
-export {SchemaEditor, NestedSchemaEditor};
+export {SchemaEditor, NestedSchemaEditor, SchemaEditorRenderer};

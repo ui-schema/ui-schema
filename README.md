@@ -6,8 +6,8 @@ JSON-Schema form + ui generator for any design system, first-class support for [
 [![react compatibility](https://img.shields.io/badge/React-%3E%3D16.8-success?style=flat-square&logo=react)](https://reactjs.org/)
 
 - @ui-schema/ui-schema [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ui-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ui-schema) 
-- @ui-schema/ds-material [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-material?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-material)
-- @ui-schema/ds-bootstrap
+- [@ui-schema/ds-material](./packages/docs/DesignSystems.md#material-ui) [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-material?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-material)
+- [@ui-schema/ds-bootstrap](./packages/docs/DesignSystems.md#bootstrap)
 
 ---
 
@@ -37,12 +37,12 @@ JSON-Schema included keywords are used to describe the data and create the UI ba
 ## Docs
 
 - [UI JSON-Schema](./packages/docs/Schema.md), supported types and keywords
-- [Design-Systems + Widgets List](#widget-design-systems)
+- [Design-Systems + Widgets List](#design-systems)
 - [Widget System](./packages/docs/Widgets.md), how to create design-system bindings and override widgets
     - [Creating Widgets](./packages/docs/Widgets.md#creating-widgets)
-- [Widget Plugins](./packages/docs/WidgetPlugins.md)
-    - [validateSchema](./packages/docs/WidgetPlugins.md#validateschema)
-    - [DependentHandler](./packages/docs/WidgetPlugins.md#dependenthandler)
+    - [Creating DS Binding](./packages/docs/Widgets.md#create-design-system-binding)
+    - [Adding / Overwriting Widgets](./packages/docs/Widgets.md#adding--overwriting-widgets)
+- [Widget Plugins](./packages/docs/WidgetPlugins.md), list of plugins and documentation for included
     - [Creating Plugins](./packages/docs/WidgetPlugins.md#creating-plugins)
 - [Localization / Translation](./packages/docs/Localization.md)
 - [Performance](./packages/docs/Performance.md) insights and tips
@@ -145,7 +145,7 @@ const SchemaDebug = ({setSchema}) => {
 export {Editor}
 ```
 
-## Widget Design Systems
+## Design Systems
 
 The package `@ui-schema/ui-schema` supports rendering widgets for JSON-schema `type` and rendering own widgets for any type.
 
@@ -157,6 +157,8 @@ It is possible to connect any design system to the renderer, included or planned
 - `@ui-schema/ds-semanticui` adds binding to [semantic-ui](https://react.semantic-ui.com/usage/) **would be nice**
 - `@ui-schema/ds-antdesign` adds binding to [Ant Design](https://ant.design/docs/react/introduce) **would be nice**
 - `@ui-schema/ds-pulse` adds binding to [.pulse](https://pulse.heartbeat.ua/components/box) **would be nice**
+
+📚 [How To Install A Design System](./packages/docs/DesignSystems.md)
 
 > You want to add a design system binding?
 >
@@ -220,7 +222,7 @@ Included widgets (match by `widget` in schema), each widget could have multiple 
 
 ⬛ only means some working example is existing during the current dev-state.
 
-[... more on providing/overriding Widgets](./packages/docs/Widgets.md)
+📚 [more on providing/overriding Widgets](./packages/docs/Widgets.md)
 
 ## Contributing
 
