@@ -1,14 +1,14 @@
 import React from "react";
 import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 import {Map} from 'immutable';
-import {useSchemaValidity} from "..";
+import {withValidity} from "../Schema/EditorStore";
 
-const ValidityReporter = (props) => {
+const ValidityReporter = withValidity(React.memo((props) => {
     const {
+        onValidity, showValidity, // from HOC
         storeKeys,
     } = props;
     let {errors} = props;
-    const {onValidity, showValidity} = useSchemaValidity();
 
     let {valid} = props;
 
@@ -26,7 +26,7 @@ const ValidityReporter = (props) => {
     }, [valid]);
 
     return <NextPluginRenderer {...props} valid={valid} errors={errors} showValidity={showValidity}/>;
-};
+}));
 
 const searchRecursive = (immutable, val, keys, count = false) => {
     if(!immutable) return 0;

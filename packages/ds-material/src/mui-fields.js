@@ -2,30 +2,8 @@ import {NumberRenderer, StringRenderer, TextRenderer} from "./Widgets/TextField"
 import {Select, SelectMulti} from "./Widgets/Select";
 import {BoolRenderer, OptionsCheck, OptionsRadio} from "./Widgets/Options";
 import {Stepper, Step} from "./Widgets/Stepper";
-import {RootRenderer, GroupRenderer, SchemaGridHandler} from "./Grid";
-import {
-    DefaultHandler, ValidityReporter, DependentHandler,
-    MinMaxValidator, TypeValidator, MultipleOfValidator,
-    ValueValidatorEnum, ValueValidatorConst,
-    RequiredValidator, PatternValidator,
-    ArrayValidator, ObjectValidator,
-} from "@ui-schema/ui-schema";
-
-const widgetStack = [
-    DependentHandler,
-    SchemaGridHandler,
-    DefaultHandler,
-    RequiredValidator,
-    MinMaxValidator,
-    TypeValidator,
-    MultipleOfValidator,
-    ValueValidatorConst,
-    ValueValidatorEnum,
-    PatternValidator,
-    ArrayValidator,
-    ObjectValidator,
-    ValidityReporter,
-];
+import {RootRenderer, GroupRenderer} from "./Grid";
+import {widgetStack} from "./widgetStack";
 
 const widgets = {
     RootRenderer,

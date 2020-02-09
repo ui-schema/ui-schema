@@ -21,19 +21,21 @@ This editor has multiple levels of performance optimization:
     - only the `store` immutable is changing, for each current field it's value is retrieved and pushed to the widget, this way only the widget which's value was changing is re-rendering.
 - memoization in the core:
     - widgets:
-        - `RootRenderer` is wrapped inside a memoized dump-renderer, will re-render on `schema` and `widgets` change
-        - `GroupRenderer` is wrapped inside the memoized dump-renderer `DumpSwitchingRenderer`
+        - `RootRenderer` is wrapped inside a memoized dump-renderer directly after `SchemaEditor`, will re-render on `schema` and `widgets` change
+        - `GroupRenderer` is wrapped inside the memoized renderer `ObjectRenderer`
         - any `types.<Component>`, `custom.<Component>` is wrapped in the memoized `DumpWidgetRenderer`
     - core:
-        - `SchemaEditorRenderer` wraps `DumpSwitchingRenderer` which decides if the current child-schema should be rendered as widget or normal group
-            - re-renders on changes of current schema-levels: `schema`, `parentSchema`, `storeKeys`, `level` and `GroupRenderer`
-        - `SchemaWidgetRenderer` wraps `DumpWidgetRenderer` which is the abstraction layer to the final widgets
+        - `SchemaEditorRenderer` is memoized, receives the widget/widget stack and is the internal entry for starting/nesting the schema
+        - `ValueWidgetRenderer`/`ValuelessWidgetRenderer` wraps `DumpWidgetRenderer` which is the abstraction layer to the final widgets
+            - `ValueWidgetRenderer` uses the hooks to extract the widgets value (not memoized)
+            - `ValuelessWidgetRenderer` doesn't fetch the widgets value, this is used for objects, is memoized, (**currently:** only for objects without a widget)
+            - `DumpWidgetRenderer` is not memoized (not needed)
         - `DumpWidgetRenderer` either renders the final widget or starts rendering the `widgetStack`
             - re-renders on changes of **current** widgets properties
             - additionally receives: `Widget`, `widgetStack`
-        - `WidgetStackRenderer` initial `widgetStack` render handling
-            - re-renders on changes of **current** widgets properties
-            - additionally receives: `Widget`, `widgetStack`, `current`
+        - `WidgetStackRenderer` initial `widgetStack` render handling (not memoized, but inside `DumpWidgetRenderer`)
+
+It is recommended to build your [own ds-binding](./Widgets.md#create-design-system-binding) with only the needed components or use a [lazy-loaded binding](./Widgets.md#lazy-loading-bindings).
 
 ## Docs
 
