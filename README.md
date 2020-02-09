@@ -45,6 +45,7 @@ JSON-Schema included keywords are used to describe the data and create the UI ba
 - [Widget Plugins](./packages/docs/WidgetPlugins.md), list of plugins and documentation for included
     - [Creating Plugins](./packages/docs/WidgetPlugins.md#creating-plugins)
 - [Localization / Translation](./packages/docs/Localization.md)
+- [Core Logic](./packages/docs/UISchemaCore.md)
 - [Performance](./packages/docs/Performance.md) insights and tips
 - [Contributing](#contributing)
 - [Free-Open-Source: MIT License](#license)

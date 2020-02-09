@@ -35,7 +35,7 @@ This editor has multiple levels of performance optimization:
             - additionally receives: `Widget`, `widgetStack`
         - `WidgetStackRenderer` initial `widgetStack` render handling (not memoized, but inside `DumpWidgetRenderer`)
 
-It is recommended to build your own ds-binding with only the needed components or use a lazy-loaded binding.
+It is recommended to build your [own ds-binding](./Widgets.md#create-design-system-binding) with only the needed components or use a [lazy-loaded binding](./Widgets.md#lazy-loading-bindings).
 
 ## Docs
 

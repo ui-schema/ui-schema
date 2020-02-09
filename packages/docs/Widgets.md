@@ -143,6 +143,71 @@ const widgets = {
 export {widgets}
 ```
 
+### Lazy Loading Bindings
+
+> ❌ Concept, not implemented
+>
+> Not all widgets are getting exported perfectly atm.
+
+- needs more exports/splits from ui-schema/each ds ❌
+- needs react-loadable/react.lazy support ❌
+- import should work without `/es` ❌
+
+Lazy bindings are only loading the needed widgets when really rendering, this can be achieved with code-splitting, through dynamic imports and e.g. `React.lazy` or `react-loadable`.
+
+Example with react-loadable
+
+```js
+import React from 'react';
+import Loadable from 'react-loadable';
+
+import {
+    DefaultHandler, ValidityReporter, DependentHandler,
+    MinMaxValidator, TypeValidator, MultipleOfValidator,
+    ValueValidatorEnum, ValueValidatorConst,
+    RequiredValidator, PatternValidator, ArrayValidator,
+} from "@ui-schema/ui-schema";
+
+import {SchemaGridHandler} from "@ui-schema/ds-material/es/Grid";
+
+// Build the loadable widgets
+const StringRenderer = Loadable({
+    loader: () => import('@ui-schema/ds-material/es/Widgets/TextField').then(module => module.StringRenderer),
+    loading: (props) => <p>Loading Widget</p>,// add here your fancy loading component
+});
+
+const widgetStack = [
+    DependentHandler,
+    SchemaGridHandler,
+    DefaultHandler,
+    RequiredValidator,
+    MinMaxValidator,
+    TypeValidator,
+    MultipleOfValidator,
+    ValueValidatorConst,
+    ValueValidatorEnum,
+    PatternValidator,
+    ArrayValidator,
+    ValidityReporter,
+];
+
+const widgets = {
+    RootRenderer,// wraps the whole editor
+    GroupRenderer,// wraps any `object` that has no custom widget
+    widgetStack,// widget plugin system
+    types: {
+        // supply your needed native-type widgets
+        string: StringRenderer,
+    },
+    custom: {
+        // supply your needed custom widgets
+        Text: TextRenderer,
+    },
+};
+
+export {widgets}
+```
+
 ## Adding / Overwriting Widgets
 
 >
@@ -152,9 +217,7 @@ export {widgets}
 This example shows how new plugins or widgets can be added, can be used to overwrite also.
 
 - overwriting is only recommended when using the overwritten on the same page
-- or when using the lazy-loading widgets
-    - needs more exports of defaults from ui-schema/each ds ❌
-    - needs react-loadable/react.lazy support ❌
+- or when using the [lazy-loading widgets](#lazy-loading-bindings)
 
 ```js
 import {widgets,} from "@ui-schema/ds-material";

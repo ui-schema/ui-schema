@@ -37,9 +37,9 @@ Validation plugins also work schema-driven, but are only used for validation of 
 - sub-schema validation/array validation is done by `validateSchema`  ✔ 
     - (todo: new override-prop/more docs)
 - **important notice**
-    - `type: object` and `type: array` can be handled like the others because of using it valueless ❌
+    - `type: object` and `type: array` can **not** be handled like the others because of using the [ValuelessWidgetRenderer](./UISchemaCore.md#ValuelessWidgetRenderer)
     - this is for performance reasons, a nested object otherwise would trigger a full re-render from it's root-object  
-    - use the hook `useSchemaData` within plugins/widgets that need to access it, build a functional component which wraps a memoized component and only push the values needed further on (or nothing)
+    - use the [schema data](./UISchemaCore.md#schema-data-provider) within plugins/widgets that need to access it, build a functional component which wraps a memoized component and only push the values needed further on (or nothing)
     - arrays and objects should all be valueless and not only "widget-less objects" ❌
     - arrays should be possible to use `valueless` or `with-value` ❌
         - good for: full array is handled within one small component
@@ -221,7 +221,7 @@ import {NextPluginRenderer} from "@ui-schema/ui-schema";
 
 const NewPlugin = (props) => {
     // special props which don't reach `Widget`, only for plugins
-    const {current, Widget, widgetStack} = props;~~~~~~~~~~~~
+    const {current, Widget, widgetStack} = props;
 
     // doing some logic
     const newProp = props.schema.get('keyword') ? 'success' : 'error';
