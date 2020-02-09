@@ -57,26 +57,15 @@ Submits the validity of each widget up to the state hoisted component when it ch
 
 > Reported format is not like specified in [2019-09#rfc-10.4.2](https://json-schema.org/draft/2019-09/json-schema-core.html#rfc.section.10.4.2), current used is better for performance and the render-validation used.
 
-Checking if invalid scope in a **widget**:
+The component deletes the invalidation status on its own dismount, resulting in: only mounted components get's validated, this is intended behaviour at the moment! JSON-Schema is handled through props calculation at React render flow.
 
-```js
-import {isInvalid, useSchemaValidity} from "@ui-schema/ui-schema";
+Supplies function: `isInvalid(validity, scope = [], count = false)` to check if some scope e.g. `storeKeys` is invalid.
 
-const SomeWidget = ({storeKeys, ...props}) => {
-    const {
-        validity, onValidity, // must be resolved by hook
-        showValidity          // is also added to the props by `ValidityReporter` for ease of access
-    } = useSchemaValidity();
+- return: `0` when **no** error was found, otherwise `1` or more
+- `scope` : `{Array|List}` with the keys of which schema level should be searched
+- `count` to true will search for the amount of invalids and not end after first invalid
 
-    let invalid = isInvalid(validity, storeKeys, false); // Map, List, boolean: <if count>
-
-    return null; // should be the binding component
-};
-```
-
->
-> the component deletes the invalidation status on its own dismount, resulting in: only mounted components get's validated, this is intended behaviour at the moment!
->
+Build around [Editor Invalidity Provider](./UISchemaCore.md#editor-invalidity-provider).
 
 #### validateSchema
 

@@ -50,7 +50,7 @@ JSON-Schema included keywords are used to describe the data and create the UI ba
 - [Contributing](#contributing)
 - [Free-Open-Source: MIT License](#license)
 
-Simple Example:
+## Basic Example
 
 ```js
 import React from "react";

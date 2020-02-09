@@ -21,10 +21,10 @@ Each widget get's a lot of properties provided by the root schema provided or ad
 Properties from editor:
 
 - `t` : `{function}` see [translation](./Localization.md#translation)
-- `value` : `{*}`
+- `value` : `{*}` (only for scalar values)
+- `onChange` : `{function}` (only for scalar values)
 - `storeKeys` : `{List}`
 - `ownKey` : `{string|integer}`
-- `onChange` : `{function}`
 - `schema` : `{Map}`
 - `parentSchema` : `{Map}`
 - `dependencies` : `{undefined|Map}`

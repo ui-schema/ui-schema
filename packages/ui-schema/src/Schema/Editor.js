@@ -101,15 +101,14 @@ const NestedSchemaEditor = ({schema, parentSchema, storeKeys, showValidity, leve
  * Main Component to create a schema based UI generator
  *
  * @param {*} children
- * @param children
- * @param schema
- * @param store
- * @param onChange
- * @param widgets
- * @param validity
- * @param showValidity
- * @param onValidity
- * @param props
+ * @param {React.ReactNode} children
+ * @param {OrderedMap} schema
+ * @param {OrderedMap} store
+ * @param {function(function): OrderedMap} onChange
+ * @param {{}} widgets
+ * @param {Map|undefined} validity
+ * @param {boolean} showValidity
+ * @param {function(function): Map} onValidity
  * @return {*}
  * @constructor
  */
