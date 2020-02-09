@@ -100,10 +100,11 @@ Enables on-the-fly sub-schema rendering based on current data, e.g. show more ad
     - `not`
 - ❗ only checks some schema: everything [validateSchema](#validateschema) supports
 - full feature set needs [ConditionalHandler](#conditionalhandler), [CombiningHandler](#combininghandler), [CombiningNetworkHandler](#combiningnetworkhandler), which are not implemented yet
+- changes the schema dynamically on runtime ✔
+- does not re-render the Widget when the dependency matching didn't change ✔
+    - as dependencies are applied at object level, this could lead to problematic re-rendering at big objects
 
 ❗ Dynamically extending a schema is currently supported a little bit with `dependencies` and `oneOf`, interpret `oneOf` like a switch.
-
-❗ Should be moved to group-level 
 
 - create dependencies
 - use the properties name which's value should be used

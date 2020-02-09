@@ -7,10 +7,11 @@ import {
 } from "./EditorStore";
 import {ValueWidgetRenderer, ValuelessWidgetRenderer} from "./EditorWidget";
 import {ObjectRenderer} from "./EditorObject";
+import {memo} from "../Utils/memo";
 
 let SchemaEditorRenderer = ({
                                 widgets,// widgets from HOC for performance reasons
-                                schema, storeKeys = undefined, dependencies = undefined, level = 0, ...props
+                                schema, storeKeys = undefined, level = 0, ...props
                             }) => {
     if(!storeKeys) {
         // todo: check if it can be removed / defaults exists at every call
@@ -26,17 +27,16 @@ let SchemaEditorRenderer = ({
             <ValueWidgetRenderer
                 {...props}
                 schema={schema} storeKeys={storeKeys} level={level}
-                dependencies={dependencies}
             />
             : <ValuelessWidgetRenderer
                 {...props}
                 GroupRenderer={GroupRenderer}
                 Widget={ObjectRenderer} widgetStack={widgetStack}
                 schema={schema} storeKeys={storeKeys} level={level}
-                dependencies={dependencies}/>
+            />
         : null;
 };
-SchemaEditorRenderer = withWidgets(React.memo(SchemaEditorRenderer));
+SchemaEditorRenderer = withWidgets(memo(SchemaEditorRenderer));
 
 /**
  * @type {function({rootRenderer: *, schema: *}): *}
@@ -46,7 +46,7 @@ let DumpRootRenderer = ({rootRenderer: RootRenderer, schema}) => {
         <SchemaEditorRenderer schema={schema}/>
     </RootRenderer>;
 };
-DumpRootRenderer = React.memo(DumpRootRenderer);
+DumpRootRenderer = memo(DumpRootRenderer);
 
 /**
  * Initial rendering of root container and invoking the first schema-group with the root-level-data of `schema`

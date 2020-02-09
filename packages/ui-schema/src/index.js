@@ -3,6 +3,7 @@ export * from './Schema/EditorWidgetStack';
 export * from './Schema/EditorStore';
 export * from './Utils/beautify';
 export * from './Utils/createMap';
+export * from './Utils/memo';
 export * from './Schema/ValidateSchema';
 export * from './Handling/DefaultHandler';
 export * from './Handling/ValidityReporter';

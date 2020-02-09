@@ -2,13 +2,14 @@ import React from "react";
 import {List} from "immutable";
 import {useSchemaData, useSchemaWidgets} from "./EditorStore";
 import {WidgetStackRenderer} from "./EditorWidgetStack";
+import {memo} from "../Utils/memo";
 
 let DumpWidgetRenderer = ({Widget, widgetStack: widgetStack, ...props}) => {
     return widgetStack ?
         <WidgetStackRenderer {...props} Widget={Widget} widgetStack={widgetStack} current={0}/> :
         <Widget {...props}/>;
 };
-DumpWidgetRenderer = React.memo(DumpWidgetRenderer);
+DumpWidgetRenderer = memo(DumpWidgetRenderer);
 
 let ValueWidgetRenderer = ({schema, parentSchema, storeKeys, ...props}) => {
     const {store, onChange,} = useSchemaData();
@@ -70,6 +71,6 @@ let ValuelessWidgetRenderer = ({
         parentSchema={parentSchema}
     />;
 };
-ValuelessWidgetRenderer = React.memo(ValuelessWidgetRenderer);
+ValuelessWidgetRenderer = memo(ValuelessWidgetRenderer);
 
 export {ValueWidgetRenderer, ValuelessWidgetRenderer}

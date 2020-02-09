@@ -1,49 +1,69 @@
 import React from "react";
-import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
+import {NextPluginRenderer, NextPluginRendererMemo} from "../Schema/EditorWidgetStack";
 import {validateSchema} from "../Schema/ValidateSchema";
-import {NestedSchemaEditor} from "../Schema/Editor";
+import {useSchemaData} from "../Schema/EditorStore";
 
-/*
- dependant handler:
- one component that checks if the schema has a dependant
- - if it has: call another component that uses the hook (and is a PureComponent)
- - not: call the next-plugin
- thus only widget scopes where a dependent is existing will have a logic-only re-render (when dependant state changed, big re-render)
- */
-const DependentHandler = (props) => {
-    const {
-        dependencies, value, storeKeys, ownKey, schema, level,
-    } = props;
+const DependentRenderer = ({dependencies, ...props}) => {
+    let {schema} = props;
+    const {store} = useSchemaData();
 
-    //
-    // todo first scribble of dependency handling
-    //
+    // todo: use sub-store with `storeKeys/ownKey` when dependencies not in root-object
 
-    let nestedSchema = undefined;
-    if(dependencies) {
-        const oneOf = dependencies.get('oneOf');
+    store.keySeq().forEach(key => {
+        const key_dependencies = dependencies.get(key);
+        if(!key_dependencies) {
+            return;
+        }
+
+        const oneOf = key_dependencies.get('oneOf');
         if(oneOf) {
-            for(let val of oneOf) {
-                const ownValidation = val.getIn(['properties', ownKey]);
+            for(let nestedSchema of oneOf) {
+                const ownValidation = nestedSchema.getIn(['properties', key]);
                 // todo: how to behave when self value is not defined in it's own `oneOf` dependency?
                 if(ownValidation) {
-                    if(false === validateSchema(ownValidation.set('type', schema.get('type')), value)) {
+                    if(false === validateSchema(
+                        ownValidation.set('type', schema.getIn(['properties', key, 'type'])),
+                        store.get(key)
+                    )) {
                         // no errors in schema found, this should be rendered now dynamically
-                        nestedSchema = val.deleteIn(['properties', ownKey]);
+
+                        // todo: what if the `key`'s own schema should be dynamically changed?
+                        //   what to remove?
+                        //   what to keep? when keeping e.g. `const` it could destroy `enum`s
+
+                        nestedSchema = nestedSchema.deleteIn(['properties', key]);
+                        schema = schema.set('properties', schema.get('properties').mergeDeep(nestedSchema.get('properties')));
+
+                        if(nestedSchema.get('required')) {
+                            if(schema.get('required')) {
+                                schema = schema.set('required', schema.get('required').concat(nestedSchema.get('required')));
+                            } else {
+                                schema = schema.set('required', nestedSchema.get('required'));
+                            }
+                        }
+
+                        // todo: which more keywords of the matched `nestedSchema` should be merged into the `schema`?
                     }
                 }
             }
         }
-    }
+    });
 
-    // nestedSchema should use `object` and `widget` of current, or all but dependencies?
+    return <NextPluginRendererMemo {...props} schema={schema}/>;
+};
+
+const DependentHandler = (props) => {
+    //let {storeKeys, ownKey} = props;
+    let {schema} = props;
+
+    //
+    // todo: scribble of dependency handling
+    //
+
+    const dependencies = schema.get('dependencies');
+
     return <React.Fragment>
-        <NextPluginRenderer {...props}/>
-        {nestedSchema ? <NestedSchemaEditor
-            schema={nestedSchema.set('type', 'object')}
-            storeKeys={storeKeys.slice(0, storeKeys.size - 1)}
-            level={level + 1}
-        /> : null}
+        {dependencies ? <DependentRenderer dependencies={dependencies} {...props}/> : <NextPluginRenderer {...props}/>}
     </React.Fragment>;
 };
 
