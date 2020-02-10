@@ -1,17 +1,22 @@
 import React from "react";
 import {NextPluginRenderer} from "@ui-schema/ui-schema";
 
-const SchemaGridItem = ({children}) => {
-//const SchemaGridItem = ({schema, children, defaultMd}) => {
-    /*const view = schema ? schema.getIn(['view']) : undefined;
-    const viewXs = view ? (view.getIn(['sizeXs']) || 12) : 12;
-    const viewSm = schema ? schema.getIn(['view', 'sizeSm']) : undefined;
-    const viewMd = schema ? schema.getIn(['view', 'sizeMd']) : defaultMd;
-    const viewLg = schema ? schema.getIn(['view', 'sizeLg']) : undefined;
-    const viewXl = schema ? schema.getIn(['view', 'sizeXl']) : undefined;*/
+const SchemaGridItem = ({children, schema}) => {
+    let classNameString = 'col-md';
+    const view = schema ? schema.getIn(['view']) : undefined;
+    if(view.getIn(['sizeXs'])) {
+        classNameString = 'col';
+    } else if(schema.getIn(['view', 'sizeSm'])) {
+        classNameString = 'col-sm';
+    } else if(schema.getIn(['view', 'sizeLg'])) {
+        classNameString = 'col-lg';
+    } else if(schema.getIn(['view', 'sizeXl'])) {
+        classNameString = 'col-xl';
+    }
+
 
     return <div
-        className={'col-md-3'}
+        className={[classNameString, 'container'].join(' ')}
     >
         {children}
     </div>
@@ -20,9 +25,7 @@ const SchemaGridItem = ({children}) => {
 const RootRenderer = props => <div className={'container-inner'}>{props.children}</div>;
 
 const GroupRenderer = ({schema, children}) => <SchemaGridItem schema={schema}>
-    <div className={'container'}>
-        {children}
-    </div>
+    {children}
 </SchemaGridItem>;
 
 const SchemaGridHandler = (props) => {
