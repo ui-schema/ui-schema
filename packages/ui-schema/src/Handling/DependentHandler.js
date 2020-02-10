@@ -1,49 +1,80 @@
 import React from "react";
-import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
+import {NextPluginRenderer, NextPluginRendererMemo} from "../Schema/EditorWidgetStack";
 import {validateSchema} from "../Schema/ValidateSchema";
-import {NestedSchemaEditor} from "../Schema/Editor";
+import {useSchemaData} from "../Schema/EditorStore";
+import {checkValueExists} from "./RequiredValidator";
+import {mergeSchema} from "../Utils/mergeSchema";
+import {Map} from 'immutable';
 
-/*
- dependant handler:
- one component that checks if the schema has a dependant
- - if it has: call another component that uses the hook (and is a PureComponent)
- - not: call the next-plugin
- thus only widget scopes where a dependent is existing will have a logic-only re-render (when dependant state changed, big re-render)
- */
-const DependentHandler = (props) => {
-    const {
-        dependencies, value, storeKeys, ownKey, schema, level,
-    } = props;
+const DependentRenderer = ({dependencies, dependentSchemas, ...props}) => {
+    let {schema, storeKeys} = props;
+    const {store} = useSchemaData();
 
-    //
-    // todo first scribble of dependency handling
-    //
+    const currentStore = storeKeys.size ? store.getIn(storeKeys) : store;
 
-    let nestedSchema = undefined;
-    if(dependencies) {
-        const oneOf = dependencies.get('oneOf');
-        if(oneOf) {
-            for(let val of oneOf) {
-                const ownValidation = val.getIn(['properties', ownKey]);
+    if(!currentStore) return <NextPluginRendererMemo {...props} schema={schema}/>;
+
+    currentStore.keySeq().forEach(key => {
+        const key_dependencies = dependencies ? dependencies.get(key) : undefined;
+        const key_dependentSchemas = dependentSchemas ? dependentSchemas.get(key) : undefined;
+
+        // todo: what if the `key`'s own schema should be dynamically changed?
+        //   what to remove?
+        //   what to keep? when keeping e.g. `const` it could destroy `enum`s
+
+        if(key_dependencies && key_dependencies.get('oneOf')) {
+            const oneOf = key_dependencies.get('oneOf');
+            for(let nestedSchema of oneOf) {
+                const ownValidation = nestedSchema.getIn(['properties', key]);
+
                 // todo: how to behave when self value is not defined in it's own `oneOf` dependency?
                 if(ownValidation) {
-                    if(false === validateSchema(ownValidation.set('type', schema.get('type')), value)) {
+                    if(false === validateSchema(
+                        ownValidation.set('type', schema.getIn(['properties', key, 'type'])),
+                        currentStore.get(key)
+                    )) {
                         // no errors in schema found, this should be rendered now dynamically
-                        nestedSchema = val.deleteIn(['properties', ownKey]);
+
+                        nestedSchema = nestedSchema.deleteIn(['properties', key]);
+                        schema = mergeSchema(schema, nestedSchema);
                     }
                 }
             }
-        }
-    }
+        } else if(Map.isMap(key_dependencies) || Map.isMap(key_dependentSchemas)) {
+            // schema-dependencies
+            if(checkValueExists(schema.getIn(['properties', key, 'type']), currentStore.get(key))) {
+                // value for dependency exist, so it should be used
+                if(Map.isMap(key_dependencies)) {
+                    schema = mergeSchema(schema, key_dependencies);
+                } else {
+                    schema = mergeSchema(schema, key_dependentSchemas);
+                }
+            }
+        } else {
+            // property-dependencies
 
-    // nestedSchema should use `object` and `widget` of current, or all but dependencies?
+            // todo: not implemented, usage scenario needed (difference to `required`?)
+        }
+    });
+
+    return <NextPluginRendererMemo {...props} schema={schema}/>;
+};
+
+const DependentHandler = (props) => {
+    let {storeKeys, ownKey, schema} = props;
+
+    const dependencies = schema.get('dependencies');
+    const dependentSchemas = schema.get('dependentSchemas');
+
     return <React.Fragment>
-        <NextPluginRenderer {...props}/>
-        {nestedSchema ? <NestedSchemaEditor
-            schema={nestedSchema.set('type', 'object')}
-            storeKeys={storeKeys.slice(0, storeKeys.size - 1)}
-            level={level + 1}
-        /> : null}
+        {dependencies || dependentSchemas ?
+            <DependentRenderer
+                dependencies={dependencies}
+                dependentSchemas={dependentSchemas}
+                storeKeys={storeKeys}
+                ownKey={ownKey}
+                {...props}/>
+            : <NextPluginRenderer {...props}/>}
     </React.Fragment>;
 };
 

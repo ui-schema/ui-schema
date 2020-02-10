@@ -150,3 +150,43 @@ Layer to get the needed widget by the current schema and let it render for scala
 ### WidgetStackRenderer
 
 ### NextPluginRenderer
+
+Used for plugin rendering, see: [creating plugins](./WidgetPlugins.md#creating-plugins).
+
+#### NextPluginRendererMemo
+
+Same as NextPluginRenderer, but as memoized function, used in e.g. ObjectPlugins when they are using [useSchemaData](#editor-data-provider), see: [creating plugins](./WidgetPlugins.md#creating-plugins).
+
+## Utils
+
+### memo / isEqual
+
+ImmutableJS compatible `React.memo` memoization/equality checker.
+
+```js
+import React from 'react';
+import {isEqual, memo} from '@ui-schema/ui-schema';
+
+// `Comp` will only re-render when the props changes, compares immutable maps and lists correctly.
+const Comp = memo(props => {
+    let res = someHeavyLogic(props);
+    return <div>
+        Complex HTML that should only re-render when needed
+        <OtherComponent {...res}/>
+    </div>;
+});
+```
+
+
+### mergeSchema
+
+Merges two schemas into each other: `ab = mergeSchema(a, b)`
+
+Supports merging of keywords, only does something if existing on `b`
+
+- `properties`, deep-merge b into a
+- `required`, combining both arrays/lists
+- `format`, b overwrites a
+- `widget`, b overwrites a
+- `enum`, b overwrites a
+- `const`, b overwrites a

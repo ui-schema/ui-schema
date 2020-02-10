@@ -319,7 +319,136 @@ const schema1 = {
     ]
 };
 
-const schemaWDep1 = {
+const schemaWConditional = createOrderedMap({
+    title: "Person",
+    type: "object",
+    properties: {
+        country: {
+            type: "string",
+            widget: 'Select',
+            enum: [
+                "usa",
+                "canada",
+                "eu"
+            ],
+            default: "eu"
+        }
+    },
+    required: [
+        "country"
+    ],
+    if: {
+        properties: {
+            "country": {
+                type: 'string',
+                const: "canada"
+            }
+        }
+    },
+    then: {
+        properties: {
+            "maple_trees": {
+                type: "number"
+            }
+        },
+    },
+    else: {
+        properties: {
+            "accept": {
+                type: "boolean"
+            }
+        },
+        required: [
+            "accept"
+        ],
+    }
+});
+
+const schemaWConditional1 = createOrderedMap({
+    title: "Person",
+    type: "object",
+    properties: {
+        country: {
+            type: "string",
+            widget: 'Select',
+            enum: [
+                "usa",
+                "canada",
+                "eu",
+                "de",
+            ],
+            default: "eu"
+        }
+    },
+    required: [
+        "country"
+    ],
+    allOf: [
+        {
+            if: {
+                properties: {
+                    "country": {
+                        type: 'string',
+                        const: "canada"
+                    }
+                }
+            },
+            then: {
+                properties: {
+                    "maple_trees": {
+                        type: "number"
+                    }
+                },
+            }
+        }, {
+            if: {
+                properties: {
+                    "country": {
+                        type: 'string',
+                        enum: ["eu", "de"]
+                    }
+                }
+            },
+            then: {
+                properties: {
+                    "privacy": {
+                        type: "boolean"
+                    }
+                }
+            }
+        }, {
+            if: {
+                properties: {
+                    "country": {
+                        type: 'string',
+                        const: "de"
+                    }
+                }
+            },
+            then: {
+                required: ['privacy']
+            }
+        }, {
+            if: {
+                properties: {
+                    "country": {
+                        type: 'string',
+                        const: "usa"
+                    }
+                }
+            },
+            then: {
+                properties: {
+                    "nickname": {
+                        type: "string"
+                    }
+                },
+            }
+        }
+    ]
+});
+
+const schemaWDep1 = createOrderedMap({
     "type": "object",
 
     "properties": {
@@ -327,13 +456,13 @@ const schemaWDep1 = {
             "type": "string"
         },
         "credit_card": {
-            "type": "number"
+            "type": "string"
         }
     },
 
     "required": ["name"],
 
-    "dependencies": {
+    "dependentSchemas": {
         "credit_card": {
             "properties": {
                 "billing_address": {"type": "string"}
@@ -341,7 +470,43 @@ const schemaWDep1 = {
             "required": ["billing_address"]
         }
     }
-};
+});
+
+let schemaWDep2 = createOrderedMap({
+    title: "Person",
+    type: "object",
+    properties: {
+        // here `country` is defined
+        country_eu: {
+            type: "boolean",
+        },
+        country_canada: {
+            type: "boolean",
+        }
+    },
+    dependencies: {
+        country_eu: {
+            properties: {
+                privacy: {
+                    type: "boolean"
+                },
+                maple_trees: {
+                    minimum: 10,
+                }
+            },
+            required: [
+                "privacy"
+            ]
+        },
+        country_canada: {
+            properties: {
+                maple_trees: {
+                    type: "number"
+                }
+            }
+        }
+    }
+});
 
 const schemaWDep = createOrderedMap({
     title: "Person",
@@ -485,7 +650,7 @@ function seedSchema(schema, widget = {
 // seedSchema(schema1);
 
 const data1 = {
-    headline: "bdsakjbgfjkweqbkjbfgn"
+    headline: "Some Demo Headline"
 };
 
-export {schema1, data1, schemaWDep, schemaWDep1, schemaUser, seedSchema}
+export {schema1, data1, schemaWDep, schemaWDep1, schemaWDep2, schemaWConditional, schemaWConditional1, schemaUser, seedSchema}

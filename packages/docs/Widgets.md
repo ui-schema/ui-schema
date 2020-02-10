@@ -27,12 +27,12 @@ Properties from editor:
 - `ownKey` : `{string|integer}`
 - `schema` : `{Map}`
 - `parentSchema` : `{Map}`
-- `dependencies` : `{undefined|Map}`
 - `level` : `{integer}`
 - `required` : `{boolean}` (extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `RequiredValidator`)
 - `valid` : `{boolean}` if this schema level got some error, detected/changed from the widgetStack, 
 - `showValidity` : `{boolean}` added to the props by `InvalidityReporter`
 - `errors` : `{List}` invalidity errors, added from the widgetStack for the current widget/schema-level
+- `dependencies` : `{undefined|Map}` **removed in 0.0.5**
 
 See [how to add the custom widgets](#adding--overwriting-widgets).
 

@@ -4,12 +4,14 @@ import {
     MinMaxValidator, TypeValidator, MultipleOfValidator,
     ValueValidatorEnum, ValueValidatorConst,
     RequiredValidator, PatternValidator, ArrayValidator,
+    ConditionalHandler,
 } from "@ui-schema/ui-schema";
 
 const widgetStack = [
-    DependentHandler,
     SchemaGridHandler,
     DefaultHandler,
+    DependentHandler,
+    ConditionalHandler,
     RequiredValidator,
     MinMaxValidator,
     TypeValidator,

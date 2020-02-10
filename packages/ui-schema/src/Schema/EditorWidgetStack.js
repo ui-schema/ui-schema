@@ -1,6 +1,7 @@
 import React from "react";
 import {List} from "immutable";
 import ErrorBoundary from "react-error-boundary";
+import {memo} from "../Utils/memo";
 
 const MyFallbackComponent = ({componentStack, error}) => (
     <div>
@@ -35,4 +36,6 @@ const NextPluginRenderer = ({current, Widget, widgetStack, ...props}) => {
         <Widget {...props}/>;
 };
 
-export {NextPluginRenderer, WidgetStackRenderer}
+const NextPluginRendererMemo = memo(NextPluginRenderer);
+
+export {NextPluginRenderer, NextPluginRendererMemo, WidgetStackRenderer}

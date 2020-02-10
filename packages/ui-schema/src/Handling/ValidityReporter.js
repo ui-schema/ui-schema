@@ -2,8 +2,9 @@ import React from "react";
 import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 import {Map} from 'immutable';
 import {withValidity} from "../Schema/EditorStore";
+import {memo} from "../Utils/memo";
 
-const ValidityReporter = withValidity(React.memo((props) => {
+const ValidityReporter = withValidity(memo((props) => {
     const {
         onValidity, showValidity, // from HOC
         storeKeys,
