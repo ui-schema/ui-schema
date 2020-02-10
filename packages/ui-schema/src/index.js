@@ -15,3 +15,4 @@ export * from './Handling/RequiredValidator';
 export * from './Handling/PatternValidator';
 export * from './Handling/ArrayValidator';
 export * from './Handling/DependentHandler';
+export * from './Handling/ConditionalHandler';

@@ -2,50 +2,58 @@ import React from "react";
 import {NextPluginRenderer, NextPluginRendererMemo} from "../Schema/EditorWidgetStack";
 import {validateSchema} from "../Schema/ValidateSchema";
 import {useSchemaData} from "../Schema/EditorStore";
+import {checkValueExists} from "./RequiredValidator";
+import {mergeSchema} from "../Utils/mergeSchema";
+import {Map} from 'immutable';
 
-const DependentRenderer = ({dependencies, ...props}) => {
-    let {schema} = props;
+const DependentRenderer = ({dependencies, dependentSchemas, ...props}) => {
+    let {schema, storeKeys} = props;
     const {store} = useSchemaData();
 
-    // todo: use sub-store with `storeKeys/ownKey` when dependencies not in root-object
+    const currentStore = storeKeys.size ? store.getIn(storeKeys) : store;
 
-    store.keySeq().forEach(key => {
-        const key_dependencies = dependencies.get(key);
-        if(!key_dependencies) {
-            return;
-        }
+    if(!currentStore) return <NextPluginRendererMemo {...props} schema={schema}/>;
 
-        const oneOf = key_dependencies.get('oneOf');
-        if(oneOf) {
+    currentStore.keySeq().forEach(key => {
+        const key_dependencies = dependencies ? dependencies.get(key) : undefined;
+        const key_dependentSchemas = dependentSchemas ? dependentSchemas.get(key) : undefined;
+
+        // todo: what if the `key`'s own schema should be dynamically changed?
+        //   what to remove?
+        //   what to keep? when keeping e.g. `const` it could destroy `enum`s
+
+        if(key_dependencies && key_dependencies.get('oneOf')) {
+            const oneOf = key_dependencies.get('oneOf');
             for(let nestedSchema of oneOf) {
                 const ownValidation = nestedSchema.getIn(['properties', key]);
+
                 // todo: how to behave when self value is not defined in it's own `oneOf` dependency?
                 if(ownValidation) {
                     if(false === validateSchema(
                         ownValidation.set('type', schema.getIn(['properties', key, 'type'])),
-                        store.get(key)
+                        currentStore.get(key)
                     )) {
                         // no errors in schema found, this should be rendered now dynamically
 
-                        // todo: what if the `key`'s own schema should be dynamically changed?
-                        //   what to remove?
-                        //   what to keep? when keeping e.g. `const` it could destroy `enum`s
-
                         nestedSchema = nestedSchema.deleteIn(['properties', key]);
-                        schema = schema.set('properties', schema.get('properties').mergeDeep(nestedSchema.get('properties')));
-
-                        if(nestedSchema.get('required')) {
-                            if(schema.get('required')) {
-                                schema = schema.set('required', schema.get('required').concat(nestedSchema.get('required')));
-                            } else {
-                                schema = schema.set('required', nestedSchema.get('required'));
-                            }
-                        }
-
-                        // todo: which more keywords of the matched `nestedSchema` should be merged into the `schema`?
+                        schema = mergeSchema(schema, nestedSchema);
                     }
                 }
             }
+        } else if(Map.isMap(key_dependencies) || Map.isMap(key_dependentSchemas)) {
+            // schema-dependencies
+            if(checkValueExists(schema.getIn(['properties', key, 'type']), currentStore.get(key))) {
+                // value for dependency exist, so it should be used
+                if(Map.isMap(key_dependencies)) {
+                    schema = mergeSchema(schema, key_dependencies);
+                } else {
+                    schema = mergeSchema(schema, key_dependentSchemas);
+                }
+            }
+        } else {
+            // property-dependencies
+
+            // todo: not implemented, usage scenario needed (difference to `required`?)
         }
     });
 
@@ -53,17 +61,20 @@ const DependentRenderer = ({dependencies, ...props}) => {
 };
 
 const DependentHandler = (props) => {
-    //let {storeKeys, ownKey} = props;
-    let {schema} = props;
-
-    //
-    // todo: scribble of dependency handling
-    //
+    let {storeKeys, ownKey, schema} = props;
 
     const dependencies = schema.get('dependencies');
+    const dependentSchemas = schema.get('dependentSchemas');
 
     return <React.Fragment>
-        {dependencies ? <DependentRenderer dependencies={dependencies} {...props}/> : <NextPluginRenderer {...props}/>}
+        {dependencies || dependentSchemas ?
+            <DependentRenderer
+                dependencies={dependencies}
+                dependentSchemas={dependentSchemas}
+                storeKeys={storeKeys}
+                ownKey={ownKey}
+                {...props}/>
+            : <NextPluginRenderer {...props}/>}
     </React.Fragment>;
 };
 

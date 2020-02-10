@@ -176,3 +176,17 @@ const Comp = memo(props => {
     </div>;
 });
 ```
+
+
+### mergeSchema
+
+Merges two schemas into each other: `ab = mergeSchema(a, b)`
+
+Supports merging of keywords, only does something if existing on `b`
+
+- `properties`, deep-merge b into a
+- `required`, combining both arrays/lists
+- `format`, b overwrites a
+- `widget`, b overwrites a
+- `enum`, b overwrites a
+- `const`, b overwrites a

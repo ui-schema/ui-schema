@@ -1,5 +1,5 @@
 import React from "react";
-import {Map, List} from "immutable";
+import {List} from "immutable";
 import ErrorBoundary from "react-error-boundary";
 import {memo} from "../Utils/memo";
 

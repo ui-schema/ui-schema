@@ -15,14 +15,16 @@ const compare = (prev, next) => {
 };
 
 function isEqual(prevProps, nextProps) {
-    if(Object.keys(prevProps).length !== Object.keys(nextProps).length) {
+    const prevKeys = Object.keys(prevProps);
+    const nextKeys = Object.keys(nextProps);
+    if(
+        prevKeys.length !== nextKeys.length ||
+        !prevKeys.every(v => nextKeys.includes(v))
+    ) {
         return false;
     }
 
     for(let next in nextProps) {
-        if(!prevProps.hasOwnProperty(next)) {
-            return false;
-        }
         if(!compare(prevProps[next], nextProps[next])) {
             return false;
         }
