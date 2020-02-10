@@ -2,10 +2,8 @@ import React from 'react';
 import {
     Link
 } from "react-router-dom";
-import ListItem from '@material-ui/core/ListItem';
+import 'bootstrap/dist/css/bootstrap.css';
 import ListItemIc from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PeopleIcon from '@material-ui/icons/People';
@@ -28,7 +26,7 @@ const ListItemIcon = props => {
 function ListItemLink(props) {
     const {icon, primary, to, normalLink} = props;
 
-    const renderLink = React.useMemo(
+    const RenderLink = React.useMemo(
         () => React.forwardRef((itemProps, ref) =>
             normalLink ?
                 <a href={to} ref={ref} {...itemProps} /> :
@@ -37,10 +35,13 @@ function ListItemLink(props) {
         [to, normalLink],
     );
 
-    return (<ListItem button component={renderLink}>
-        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
-        <ListItemText primary={primary}/>
-    </ListItem>);
+    return (<li>
+        <button className={['list-group-item', 'list-group-item-action', 'text-primary'].join(' ')}>
+            <RenderLink/>
+            {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+            {primary}
+        </button>
+    </li>);
 }
 
 export const mainListItems = (<div>
@@ -53,24 +54,30 @@ export const mainListItems = (<div>
 
 export const secondaryListItems = (
     <div>
-        <ListSubheader inset>Example Schemas</ListSubheader>
-        <ListItem button>
-            <ListItemIcon>
-                <AssignmentIcon/>
-            </ListItemIcon>
-            <ListItemText primary="User"/>
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <AssignmentIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Product"/>
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <AssignmentIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Survey"/>
-        </ListItem>
+        <h6>Example Schemas</h6>
+        <li>
+            <button className={['list-group-item', 'list-group-item-action', 'text-primary'].join(' ')}>
+                <ListItemIcon>
+                    <AssignmentIcon/>
+                </ListItemIcon>
+                User
+            </button>
+        </li>
+        <li>
+            <button className={['list-group-item', 'list-group-item-action', 'text-primary'].join(' ')}>
+                <ListItemIcon>
+                    <AssignmentIcon/>
+                </ListItemIcon>
+                Product
+            </button>
+        </li>
+        <li>
+            <button className={['list-group-item', 'list-group-item-action', 'text-primary'].join(' ')}>
+                <ListItemIcon>
+                    <AssignmentIcon/>
+                </ListItemIcon>
+                Survey
+            </button>
+        </li>
     </div>
 );

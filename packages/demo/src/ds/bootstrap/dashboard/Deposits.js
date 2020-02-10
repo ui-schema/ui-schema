@@ -1,35 +1,37 @@
 import React from 'react';
-import Link from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import 'bootstrap/dist/css/bootstrap.css';
+import {
+    Link
+} from "react-router-dom";
+import {makeStyles} from '@material-ui/core/styles';
 import Title from './Title';
 
 function preventDefault(event) {
-  event.preventDefault();
+    event.preventDefault();
 }
 
 const useStyles = makeStyles({
-  depositContext: {
-    flex: 1,
-  },
+    depositContext: {
+        flex: 1,
+    },
 });
 
 export default function Deposits() {
-  const classes = useStyles();
-  return (
-    <React.Fragment>
-      <Title>Recent Deposits</Title>
-      <Typography component="p" variant="h4">
-        $3,024.00
-      </Typography>
-      <Typography color="textSecondary" className={classes.depositContext}>
-        on 15 March, 2019
-      </Typography>
-      <div>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          View balance
-        </Link>
-      </div>
-    </React.Fragment>
-  );
+    const classes = useStyles();
+    return (
+        <React.Fragment>
+            <Title>Recent Deposits</Title>
+            <p>
+                <h4>$3,024.00</h4>
+            </p>
+            <p className={classes.depositContext}>
+                on 15 March, 2019
+            </p>
+            <div>
+                <Link to={"/#"} onClick={preventDefault}>
+                    View balance
+                </Link>
+            </div>
+        </React.Fragment>
+    );
 }
