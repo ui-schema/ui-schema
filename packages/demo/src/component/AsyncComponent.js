@@ -8,7 +8,7 @@ const asyncComponent = (loader, name, label, preload = undefined) => {
         loading: (load_props) => <Loading {...load_props} styleWrapper={{padding: '6px 0'}} name={name} label={label}/>,
     });
 
-    if(preload) {
+    if(!preload) {
         LoadableComp.preload();
     }
 

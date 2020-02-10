@@ -1,7 +1,7 @@
 import React from "react";
-import styles from 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
-const BootstrapStyle = () => {
+const BootstrapStyle = (styles) => {
     React.useEffect(() => {
         styles.use();
 
@@ -13,7 +13,7 @@ const BootstrapStyle = () => {
 
 const BootstrapDashboard = ({children}) => {
     return <React.Fragment>
-        <BootstrapStyle/>
+       /* <BootstrapStyle/>  */
 
         <h1>Bootstrap!</h1>
         {children}

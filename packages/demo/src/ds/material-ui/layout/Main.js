@@ -20,7 +20,7 @@ function Copyright() {
 const Main = props => {
     const {classes, main: Main} = props;
 
-    return <main className={classes.content}>
+    return <Main className={classes.content}>
         <Container maxWidth="lg" className={classes.container}>
             <Grid container spacing={3}>
                 <Main classes={classes}/>
@@ -29,7 +29,7 @@ const Main = props => {
                 <Copyright/>
             </Box>
         </Container>
-    </main>
+    </Main>
 };
 
 export {Main};
