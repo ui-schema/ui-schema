@@ -252,7 +252,7 @@ export {customWidgets}
 ## Docs
 
 - [Overview](../../README.md)
-- [UI-JSON-Schema](./Schema.md)
+- [UI JSON-Schema](./Schema.md)
 - [Widget System](./Widgets.md)
 - [Widget Plugins](./WidgetPlugins.md)
 - [Localization / Translation](./Localization.md)

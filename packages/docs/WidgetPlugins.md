@@ -12,7 +12,7 @@ Plugins that work schema-driven are handling the schema in different ways, these
 | [ValidityReporter](#validityreporter)               | @ui-schema/ui-schema | setting validity changes | - | ✔ |
 | [DependentHandler](#dependenthandler)               | @ui-schema/ui-schema | keywords `dependencies`, `dependentSchemas` | - | ✔(without property-dependencies) |
 | [ConditionalHandler](#conditionalhandler)           | @ui-schema/ui-schema | keywords `allOf`, `if`, `else`, `then` | - | ✔ |
-| [CombiningHandler](#combininghandler)               | @ui-schema/ui-schema | ... | ... | ❌ |
+| [CombiningHandler](#combininghandler)               | @ui-schema/ui-schema | keyword `allOf`, `oneOf`, `anyOf`, ... | - | ✔(allOf) ❗ |
 | [CombiningNetworkHandler](#combiningnetworkhandler) | @ui-schema/ui-schema | ... | ... | ❌ |
 
 ## Validation Plugins
@@ -39,7 +39,7 @@ Validation plugins also work schema-driven, but are only used for validation of 
 - **important notice**
     - `type: object` and `type: array` can **not** be handled like the others because of using the [ValuelessWidgetRenderer](./UISchemaCore.md#ValuelessWidgetRenderer)
     - this is for performance reasons, a nested object otherwise would trigger a full re-render from it's root-object  
-    - use the [schema data provider](./UISchemaCore.md#schema-data-provider) within plugins/widgets that need to access it, build a functional component which wraps a memoized component and only push the values needed further on (or nothing)
+    - use the [schema data provider](./UISchemaCore.md#editor-data-provider) within plugins/widgets that need to access it, build a functional component which wraps a memoized component and only push the values needed further on (or nothing)
     - arrays and objects should all be valueless and not only "widget-less objects" ❌
     - arrays should be possible to use `valueless` or `with-value` ❌
         - good for: full array is handled within one small component
@@ -93,15 +93,18 @@ Supports `not` keyword for any validation, see [spec.](https://json-schema.org/u
 Enables on-the-fly sub-schema rendering based on single property data and schema, see also [ConditionalHandler](#conditionalhandler).
 
 - keyword `dependencies`, `dependentSchemas`
-    - property dependencies ❌, use `required` instead
+    - property dependencies, handled as dynamic "is-not-empty then required" [spec](https://json-schema.org/understanding-json-schema/reference/object.html#property-dependencies) ❌
     - schema dependencies [spec](https://json-schema.org/understanding-json-schema/reference/object.html#schema-dependencies) ✔
         - simple: extend the schema when a value is not empty (using `not-empty` instead of `property exists`)
         - `oneOf`: if one of the sub-schemas match, this one is applied, think about it as an `switch`
+            - not JSON-Schema standard, for compatibility with [react-jsonschema-form](https://react-jsonschema-form.readthedocs.io/en/latest/dependencies/#dynamic)
 - changes the schema dynamically on runtime ✔
 - does not re-render the Widget when the dependency matching didn't change ✔
 - ❗ only checks some schema: everything [validateSchema](#validateschema) supports
 - ❗ partly-merge from dyn-schema: everything [mergeSchema](./UISchemaCore.md#mergeschema) supports
 - ❗ full feature set needs [ConditionalHandler](#conditionalhandler), [CombiningHandler](#combininghandler), [CombiningNetworkHandler](#combiningnetworkhandler), which are not implemented yet
+
+[Specification](https://json-schema.org/understanding-json-schema/reference/conditionals.html)
 
 Example with `oneOf`:
 
@@ -109,11 +112,10 @@ Example with `oneOf`:
 - use the properties name which's value should be used
 - define a restricting sub-schema for the used property name, if the value is valid against it:
     - the whole sub-schema is added dynamically from that property
-    - please note: there will be no schema-change in state, it's property calculated on-render and dynamically rendered parallel to the referencing property
+    - please note: there will be no schema-change in hoisted state, it's property calculated on-render and dynamically changed in the referencing instance
 
 ```js
 let schema = {
-    title: "Person",
     type: "object",
     properties: {
         // here `country` is defined
@@ -179,7 +181,6 @@ Example with schema-dependencies, e.g. with `boolean`:
 
 ```js
 let schema = {
-    title: "Person",
     type: "object",
     properties: {
         // here `country` is defined
@@ -221,20 +222,27 @@ Specifications:
 
 Enables on-the-fly sub-schema rendering based on current objects data.
 
-- [conditionals](https://json-schema.org/understanding-json-schema/reference/conditionals.html)
-    - `if` the sub-schema against which the object is validated ✔
-    - `else` when valid, else is applied ✔
-    - `then` when invalid, then is applied ✔
-    - `allOf` list of if/else/then which are evaluated ✔
-    - `not` sub-schema that must be invalid ✔
+- `if` the sub-schema against which the object is validated ✔
+- `else` when valid, else is applied ✔
+- `then` when invalid, then is applied ✔
+- `not` sub-schema that must be invalid ✔
+- `allOf` list of if/else/then which are evaluated ✔
+    - is handled by [CombiningHandler](#combininghandler)
 - ❗ only checks some schema: everything [validateSchema](#validateschema) supports
 - ❗ partly-merge from dyn-schema: everything [mergeSchema](./UISchemaCore.md#mergeschema) supports
-    
-Example schema that shows `accept` and makes it required when not selected `canada`. When `canada` is selected a number field is added.
+
+Examples:
+
+- [simple/only one](#conditionalhandler-example-simple)
+- [complex/multiple](#conditionalhandler-example-complex)
+- [using not](#conditionalhandler-example-not)
+
+#### ConditionalHandler Example Simple
+
+Example schema that shows `accept` and makes it required when not selected `canada`. When `canada` is selected a number field is added.1
 
 ```js
 const schemaWConditional = createOrderedMap({
-    title: "Person",
     type: "object",
     properties: {
         country: {
@@ -279,11 +287,12 @@ const schemaWConditional = createOrderedMap({
 });
 ```
 
+#### ConditionalHandler Example Complex
+
 Example using `allOf`, every item is applied in the defined order like above `if/else/then`, multiple changes of the same schema-level will get merged together.
 
 ```js
 const schemaWConditional = createOrderedMap({
-    title: "Person",
     type: "object",
     properties: {
         country: {
@@ -354,11 +363,12 @@ const schemaWConditional = createOrderedMap({
 });
 ```
 
+#### ConditionalHandler Example Not
+
 Example using `not` to display the `accept` input only when not `usa` is selected:
 
 ```js
 const schemaWConditional = createOrderedMap({
-    title: "Person",
     type: "object",
     properties: {
         country: {
@@ -375,33 +385,216 @@ const schemaWConditional = createOrderedMap({
     required: [
         "country"
     ],
-    allOf: [
-        {
-            if: {
-                properties: {
-                    "country": {
-                        not: {
-                            type: 'string',
-                            const: "usa"
-                        }
-                    }
+    if: {
+        properties: {
+            "country": {
+                not: {
+                    type: 'string',
+                    const: "usa"
                 }
-            },
-            then: {
-                properties: {
-                    "accept": {
-                        type: "boolean"
-                    }
-                },
             }
         }
-    ]
+    },
+    then: {
+        properties: {
+            "accept": {
+                type: "boolean"
+            }
+        },
+    }
 });
 ```
 
+[Specification](https://json-schema.org/understanding-json-schema/reference/conditionals.html)
+
 ### CombiningHandler
 
-Combining schemas from within one schema by definition, id, ref, [specification](https://json-schema.org/understanding-json-schema/reference/combining.html)
+Combining schemas from within one schema with:
+
+- `definition` ❌
+- `$id` ❌ 
+- `$ref` ❌
+- `allOf` ✔
+    - all defined schemas are merged together
+    - each `if/else/then` is applied separately to the instance created or existing
+        - uses the merged schema (if something is there to merge)
+        - applies result directly after defined `allOf` item or on already existing items
+    - supports nested `allOf` evaluation for combining-conditional schemas
+- `oneOf` ❗
+- `anyOf` ❗
+- ❗ only checks some schema: everything [validateSchema](#validateschema) supports
+- ❗ partly-merge from dyn-schema: everything [mergeSchema](./UISchemaCore.md#mergeschema) supports
+
+Works in conjunction with the [conditional handler](#conditionalhandler).
+
+[Specification](https://json-schema.org/understanding-json-schema/reference/combining.html)
+
+```js
+const schemaWCombining = createOrderedMap({
+    type: "object",
+    properties: {
+        country: {
+            type: "string",
+            widget: 'Select',
+            enum: [
+                "usa",
+                "canada",
+                "eu"
+            ],
+            default: "eu"
+        },
+        address: {
+            allOf: [
+                {
+                    type: "object",
+                    properties: {
+                        street_address: {type: "string"},
+                        city: {type: "string"},
+                        state: {type: "string"}
+                    },
+                    required: ["street_address", "city", "state"],
+                    if: {
+                        properties: {
+                            "state": {
+                                type: 'string',
+                                const: "rlp"
+                            }
+                        }
+                    },
+                    then: {
+                        properties: {
+                            "zip": {
+                                type: "number"
+                            }
+                        },
+                    },
+                }, {
+                    type: "object",
+                    properties: {
+                        phone: {type: "string"},
+                        email: {type: "string", format: "email"},
+                    },
+                    required: ["email"],
+                    if: {
+                        properties: {
+                            "phone": {
+                                type: 'string',
+                                minLength: 6,
+                            }
+                        }
+                    },
+                    then: {
+                        properties: {
+                            "phone": {
+                                // only valid for: (888)555-1212 or 555-1212
+                                pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$",
+                            }
+                        },
+                    },
+                }
+            ]
+        }
+    }
+});
+```
+
+Example with multiple `if`, nested `allOf`:
+
+```js
+const schemaWCombining = createOrderedMap({
+    type: "object",
+    properties: {
+        country: {
+            type: "string",
+            widget: 'Select',
+            enum: [
+                "usa",
+                "canada",
+                "eu"
+            ],
+            default: "eu"
+        },
+        address: {
+            allOf: [
+                {
+                    type: "object",
+                    properties: {
+                        street_address: {type: "string"},
+                        city: {type: "string"},
+                        state: {type: "string", widget: "Select", enum: ["rlp", "ny", "other"]}
+                    },
+                    required: ["street_address", "city", "state"],
+                    allOf: [
+                        {
+                            if: {
+                                properties: {
+                                    "state": {
+                                        type: 'string',
+                                        const: "rlp"
+                                    }
+                                }
+                            },
+                            then: {
+                                properties: {
+                                    "zip": {
+                                        type: "number"
+                                    }
+                                },
+                            },
+                        }, {
+                            properties: {
+                                "accept": {
+                                    type: 'boolean',
+                                }
+                            }
+                        }, {
+                            if: {
+                                properties: {
+                                    "state": {
+                                        type: 'string',
+                                        const: "ny"
+                                    }
+                                }
+                            },
+                            then: {
+                                properties: {
+                                    "block": {
+                                        type: "string",
+                                        maximum: 15
+                                    }
+                                },
+                            },
+                        }
+                    ],
+                }, {
+                    type: "object",
+                    properties: {
+                        phone: {type: "string"},
+                        email: {type: "string", format: "email"},
+                    },
+                    required: ["email"],
+                    if: {
+                        properties: {
+                            "phone": {
+                                type: 'string',
+                                minLength: 6,
+                            }
+                        }
+                    },
+                    then: {
+                        properties: {
+                            "phone": {
+                                // only valid for: (888)555-1212 or 555-1212
+                                pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$",
+                            }
+                        },
+                    },
+                }
+            ]
+        }
+    }
+});
+```
 
 ### CombiningNetworkHandler
 
@@ -444,12 +637,14 @@ export {NewPlugin}
     - automatically render the plugins nested
     - `newProp` is available in the widget and the next plugins
     
-See [how to add custom plugins to the binding](./Widgets.md#adding--overwriting-widgets).
+See also:
+- [how to add custom plugins to the binding](./Widgets.md#adding--overwriting-widgets).
+- [Editor hooks and HOCs](./UISchemaCore.md#editorstore) can be used to access any data, keep [performance](./Performance.md) in mind! 
 
 ## Docs
 
 - [Overview](../../README.md)
-- [UI-JSON-Schema](./Schema.md)
+- [UI JSON-Schema](./Schema.md)
 - [Widget System](./Widgets.md)
 - [Widget Plugins](./WidgetPlugins.md)
 - [Localization / Translation](./Localization.md)

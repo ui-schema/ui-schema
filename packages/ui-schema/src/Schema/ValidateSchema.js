@@ -5,6 +5,7 @@ import {ERROR_PATTERN, validatePattern} from "../Handling/PatternValidator";
 import {validateMinMax} from "../Handling/MinMaxValidator";
 import {ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum} from "../Handling/ValueValidator";
 import {ERROR_MULTIPLE_OF, validateMultipleOf} from "../Handling/MultipleOfValidator";
+import {ERROR_NOT_SET} from "..";
 
 /**
  * Return false when valid and string/List for an error
@@ -46,18 +47,25 @@ const validateSchema = (schema, value) => {
 };
 
 /**
- * Validating the value property, for property.
+ * Validating the value, property for property.
  *
- * @ todo: add `object-validator` at last position
+ * @todo: add required support, currently treating everything as required (needed for if/else/then logic)
+ * @todo: add `object-validator` at last position
  * @param {Map} schema
  * @param {Map} value
  * @return {List<*>}
  */
 const validateSchemaObject = (schema, value) => {
     let err = List([]);
-    value.forEach((val, key) => {
-        let subSchema = schema.getIn(['properties', key]);
-        if(!subSchema) return;
+    let properties = schema.get('properties');
+    if(!properties) return err;
+
+    properties.forEach((subSchema, key) => {
+        let val = value.get(key);
+        if(typeof val === 'undefined') {
+            err = err.push(ERROR_NOT_SET);
+            return;
+        }
 
         let t = validateSchema(subSchema, val);
         if(t) {

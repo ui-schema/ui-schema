@@ -13,16 +13,18 @@ let ObjectRenderer = ({
         return null;
     }
 
-    return <GroupRenderer level={level} schema={schema}>
-        {properties ? properties.map((childSchema, childKey) =>
+    // no-properties could come from
+    //   e.g. combining/conditional schemas which are currently not applied (e.g. a condition fails)
+    return properties ? <GroupRenderer level={level} schema={schema}>
+        {properties.map((childSchema, childKey) =>
             <SchemaEditorRenderer
                 key={childKey}
                 {...props}
                 schema={childSchema} parentSchema={schema}
                 storeKeys={storeKeys.push(childKey)} level={level + 1}
             />
-        ).valueSeq() : null}
-    </GroupRenderer>
+        ).valueSeq()}
+    </GroupRenderer> : null
 };
 ObjectRenderer = memo(ObjectRenderer);
 

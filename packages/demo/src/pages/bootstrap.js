@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {BootstrapDashboard} from '../ds/bootstrap/layout/Main';
 
-import {data1, schema1} from "../_schema1";
+import {schemaDemoMain, dataDemoMain} from "../schemas/demoMain";
 import {widgets,} from "@ui-schema/ds-bootstrap";
 import {SchemaEditor, isInvalid, createOrderedMap, createMap} from "@ui-schema/ui-schema";
 import {SchemaDebug} from "../component/SchemaDebug";
@@ -11,8 +11,8 @@ import Orders from "../ds/material-ui/dashboard/Orders";
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [validity, setValidity] = React.useState(createMap());
-    const [data, setData] = React.useState(createOrderedMap(data1));
-    const [schema, setSchema] = React.useState(createOrderedMap(schema1));
+    const [data, setData] = React.useState(createOrderedMap(dataDemoMain));
+    const [schema, setSchema] = React.useState(createOrderedMap(schemaDemoMain));
 
     return <React.Fragment>
         <SchemaEditor

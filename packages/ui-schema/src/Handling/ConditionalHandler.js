@@ -33,17 +33,14 @@ const ConditionalRenderer = (props) => {
 
     const currentStore = storeKeys.size ? store.getIn(storeKeys) : store;
 
-    if(!Map.isMap(currentStore)) return <NextPluginRendererMemo {...props} schema={schema}/>;
+    // when current schema does not have a type, it's a pure combining schema and it's conditionals can not be checked
+    //   this can come from a state where the combining schema has not been resolved (yet)
+    if(!Map.isMap(currentStore) || !schema.get('type')) return <NextPluginRendererMemo {...props} schema={schema}/>;
 
-    const allOf = schema.get('allOf');
     const keyIf = schema.get('if');
 
     if(keyIf) {
         schema = handleIfElseThen(schema, currentStore, schema);
-    } else if(allOf) {
-        allOf.forEach(subSchema => {
-            schema = handleIfElseThen(subSchema, currentStore, schema);
-        })
     }
 
     return <NextPluginRendererMemo {...props} schema={schema}/>;
@@ -52,15 +49,14 @@ const ConditionalRenderer = (props) => {
 const ConditionalHandler = (props) => {
     let {schema} = props;
 
-    const hasAllOf = schema.get('allOf');
     const hasIf = schema.get('if');
 
     return <React.Fragment>
-        {hasAllOf || hasIf ?
+        {hasIf ?
             <ConditionalRenderer
                 {...props}/>
             : <NextPluginRenderer {...props}/>}
     </React.Fragment>;
 };
 
-export {ConditionalHandler}
+export {ConditionalHandler, handleIfElseThen}
