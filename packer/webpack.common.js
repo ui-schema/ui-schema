@@ -130,8 +130,15 @@ function getConfig({
                     }],
                 }, {
                     test: /\.css$/i,
-                    // exclude: [/node_modules/],
+                    exclude: [/node_modules/],
                     loader: 'style-loader!css-loader'
+                }, {
+                    test: /\.css$/i,
+                    include: [/node_modules/],
+                    use: [
+                        {loader: 'style-loader', options: {injectType: 'lazySingletonStyleTag'}},
+                        'css-loader',
+                    ],
                 }, {
                     test: /\.json$/,
                     // exclude: /node_modules/,
@@ -233,6 +240,7 @@ function getConfig({
     }
 
     if(devtool) {
+        // see https://webpack.js.org/configuration/devtool/
         config.devtool = devtool;
     }
 

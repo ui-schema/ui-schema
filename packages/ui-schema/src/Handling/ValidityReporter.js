@@ -1,32 +1,35 @@
 import React from "react";
 import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 import {Map} from 'immutable';
-import {useSchemaValidity} from "..";
+import {withValidity} from "../Schema/EditorStore";
+import {memo} from "../Utils/memo";
 
-const ValidityReporter = (props) => {
+const ValidityReporter = withValidity(memo((props) => {
     const {
+        onValidity, showValidity, // from HOC
         storeKeys,
     } = props;
     let {errors} = props;
-    const {onValidity, showValidity} = useSchemaValidity();
 
     let {valid} = props;
 
     React.useEffect(() => {
+        // onValidity always needs to return a `Map`, otherwise it is not set-able again when validity cleared on hoisted component etc.
+
         if(onValidity) {
             // todo: only call onValidity when validity really changed and not set? [performance]
             //   use effect may forget dependencies
-            onValidity(validity => validity.setIn(storeKeys.push('__valid'), valid));
+            onValidity(validity => validity ? validity.setIn(storeKeys.push('__valid'), valid) : Map({}));
         }
 
         return () => {
             // delete own validity state on component unmount
-            onValidity(validity => validity.deleteIn(storeKeys));
+            onValidity(validity => validity ? validity.deleteIn(storeKeys) : Map({}));
         };
     }, [valid]);
 
     return <NextPluginRenderer {...props} valid={valid} errors={errors} showValidity={showValidity}/>;
-};
+}));
 
 const searchRecursive = (immutable, val, keys, count = false) => {
     if(!immutable) return 0;

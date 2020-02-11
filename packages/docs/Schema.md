@@ -1,4 +1,4 @@
-# UI-JSON-Schema
+# UI JSON-Schema
 
 This JSON-Schema vocabulary is used within the included widget-matching:
  
@@ -132,7 +132,8 @@ Validation Keywords:
 - `additionalProperties` when `false` only defined properties are allowed ❌
 - `propertyNames.pattern` regex pattern to limit naming of properties ❌
 - `patternProperties` to restrict names of properties to certain types with regex ❌ 
-- [dependencies](./WidgetPlugins.md#dependenthandler) for dynamic sub-schema/properties ❗
+- [dependencies, dependentSchemas](./WidgetPlugins.md#dependenthandler) for dynamic sub-schema/properties ✔
+- [if, else, then, allOf](./WidgetPlugins.md#conditionalhandler) for conditional sub-schema ✔
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/object.html)
 
@@ -168,12 +169,14 @@ Validates true for `null` value but property exists. ❌
 
 The editor doesn't change the schema, currently it is designed as a property that is considered read-only.
 
-Depending on the used 
+But that's not the whole truth, the schema is manipulated from within the SchemaEditor but the changes are never reflected to the hoisted component.
+
+As the whole rendering is calculated from props/state for each schema-level on it's own, these rendering mechanics may change the schema for it's own or sub-levels. Through this it is e.g. possible to add dynamic properties in the [DependentHandler](./WidgetPlugins.md#dependenthandler).
 
 ## Docs
 
 - [Overview](../../README.md)
-- [UI-JSON-Schema](./Schema.md)
+- [UI JSON-Schema](./Schema.md)
 - [Widget System](./Widgets.md)
 - [Widget Plugins](./WidgetPlugins.md)
 - [Localization / Translation](./Localization.md)

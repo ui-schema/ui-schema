@@ -1,19 +1,23 @@
 # Widget Plugins
 
-## Plugin List
+Plugins are wrapped around each widget/json-schema level and are used to add logic to all. Each plugin should decide if it should do something according to it's props/schema.
 
-### Schema Driven
+## Schema Driven
+
+Plugins that work schema-driven are handling the schema in different ways, these are not used for validation but for creating functionality around the schema - which may influence the validations.
 
 | Plugin                                              | Package              | Handles              | Added Props | Status |
 | :---                                                | :---                 | :---                 | :---        | :--- |
-| DefaultHandler                                      | @ui-schema/ui-schema | keyword `default`    | - | ✔ |
+| [DefaultHandler](#defaulthandler)                   | @ui-schema/ui-schema | keyword `default`    | - | ✔ |
 | [ValidityReporter](#validityreporter)               | @ui-schema/ui-schema | setting validity changes | - | ✔ |
-| [DependentHandler](#dependenthandler)               | @ui-schema/ui-schema | keyword `dependencies` | ... | ❗  |
-| [ConditionalHandler](#conditionalhandler)           | @ui-schema/ui-schema | ... | ... | ❌ |
-| [CombiningHandler](#combininghandler)               | @ui-schema/ui-schema | ... | ... | ❌ |
+| [DependentHandler](#dependenthandler)               | @ui-schema/ui-schema | keywords `dependencies`, `dependentSchemas` | - | ✔(without property-dependencies) |
+| [ConditionalHandler](#conditionalhandler)           | @ui-schema/ui-schema | keywords `allOf`, `if`, `else`, `then` | - | ✔ |
+| [CombiningHandler](#combininghandler)               | @ui-schema/ui-schema | keyword `allOf`, `oneOf`, `anyOf`, ... | - | ✔(allOf) ❗ |
 | [CombiningNetworkHandler](#combiningnetworkhandler) | @ui-schema/ui-schema | ... | ... | ❌ |
 
-### Validation Plugins
+## Validation Plugins
+
+Validation plugins also work schema-driven, but are only used for validation of the values/schema.
 
 | Plugin               | Package              | Validity Fn.         | Handles              | Added Props | Status |
 | :---                 | :---                 | :---                 | :---                 | :---        | :--- |
@@ -25,13 +29,43 @@
 | MultipleOfValidator  | @ui-schema/ui-schema | validateMultipleOf   | keywords `type:number,integer`, `multipleOf` | `valid`, `errors` | ✔ |
 | ArrayValidator       | @ui-schema/ui-schema |                      | `type:array`          | `valid`, `errors` | ✔(partial sub-schema for single sub-schema) ❗ |
 | ObjectValidator      | @ui-schema/ui-schema |                      | `type:object`         | ... | ❌ |
-| RequiredValidator    | @ui-schema/ui-schema |                      | keywords `type:object`, `required` | `valid`, `errors`, `required` | ✔ |
+| RequiredValidator    | @ui-schema/ui-schema | checkValueExists     | keywords `type:object`, `required` | `valid`, `errors`, `required` | ✔ |
 
 - `MinMaxValidator` depends on `RequiredValidator` ✔
     - on render it behaves `strict` only when `required` ✔
     - validation checking outside is always strict ✔
 - sub-schema validation/array validation is done by `validateSchema`  ✔ 
     - (todo: new override-prop/more docs)
+- **important notice**
+    - `type: object` and `type: array` can **not** be handled like the others because of using the [ValuelessWidgetRenderer](./UISchemaCore.md#ValuelessWidgetRenderer)
+    - this is for performance reasons, a nested object otherwise would trigger a full re-render from it's root-object  
+    - use the [schema data provider](./UISchemaCore.md#editor-data-provider) within plugins/widgets that need to access it, build a functional component which wraps a memoized component and only push the values needed further on (or nothing)
+    - arrays and objects should all be valueless and not only "widget-less objects" ❌
+    - arrays should be possible to use `valueless` or `with-value` ❌
+        - good for: full array is handled within one small component
+        - good for: full array is one-level deep and contains only scalar values
+
+## Plugin List
+
+### DefaultHandler
+
+Checks if the current schema has a defined `default` keyword and it's value is `undefined`, then it sets the store data and renders further on after it was set.
+
+### ValidityReporter
+
+Submits the validity of each widget up to the state hoisted component when it changes.
+
+> Reported format is not like specified in [2019-09#rfc-10.4.2](https://json-schema.org/draft/2019-09/json-schema-core.html#rfc.section.10.4.2), current used is better for performance and the render-validation used.
+
+The component deletes the invalidation status on its own dismount, resulting in: only mounted components get's validated, this is intended behaviour at the moment! JSON-Schema is handled through props calculation at React render flow.
+
+Supplies function: `isInvalid(validity, scope = [], count = false)` to check if some scope e.g. `storeKeys` is invalid.
+
+- return: `0` when **no** error was found, otherwise `1` or more
+- `scope` : `{Array|List}` with the keys of which schema level should be searched
+- `count` to true will search for the amount of invalids and not end after first invalid
+
+Build around [Editor Invalidity Provider](./UISchemaCore.md#editor-invalidity-provider).
 
 #### validateSchema
 
@@ -52,61 +86,36 @@ Currently includes the handlers of:
 - validateConst
 - validateEnum
 
-#### ValidityReporter
+Supports `not` keyword for any validation, see [spec.](https://json-schema.org/understanding-json-schema/reference/combining.html#not). When `not` is specified, it's sub-schema is evaluated and not anything else - (behaviour may change).
 
-Submits the validity of each widget up to the state hoisted component when it changes.
+### DependentHandler
 
-> Reported format is not like specified in [2019-09#rfc-10.4.2](https://json-schema.org/draft/2019-09/json-schema-core.html#rfc.section.10.4.2), current used is better for performance and the render-validation used.
+Enables on-the-fly sub-schema rendering based on single property data and schema, see also [ConditionalHandler](#conditionalhandler).
 
-Checking if invalid scope in a **widget**:
-
-```js
-import {isInvalid, useSchemaValidity} from "@ui-schema/ui-schema";
-
-const SomeWidget = ({storeKeys, ...props}) => {
-    const {
-        validity, onValidity, // must be resolved by hook
-        showValidity          // is also added to the props by `ValidityReporter` for ease of access
-    } = useSchemaValidity();
-
-    let invalid = isInvalid(validity, storeKeys, false); // Map, List, boolean: <if count>
-
-    return null; // should be the binding component
-};
-```
-
->
-> the component deletes the invalidation status on its own dismount, resulting in: only mounted components get's validated, this is intended behaviour at the moment!
->
-
-#### DependentHandler
-
-Enables on-the-fly sub-schema rendering based on current data, e.g. show more address fields if a customer is a business.
-
-- keyword `dependencies`, `dependentSchemas` ❌
-    - nested combination keywords in here
-- must be above HTML-Grid rendering plugin, otherwise the HTML will be nested wrongly ✔
-- combining schemas ❌
-    - `allOf`
-    - `anyOf`
-    - `oneOf` ❗
-    - `not`
+- keyword `dependencies`, `dependentSchemas`
+    - property dependencies, handled as dynamic "is-not-empty then required" [spec](https://json-schema.org/understanding-json-schema/reference/object.html#property-dependencies) ❌
+    - schema dependencies [spec](https://json-schema.org/understanding-json-schema/reference/object.html#schema-dependencies) ✔
+        - simple: extend the schema when a value is not empty (using `not-empty` instead of `property exists`)
+        - `oneOf`: if one of the sub-schemas match, this one is applied, think about it as an `switch`
+            - not JSON-Schema standard, for compatibility with [react-jsonschema-form](https://react-jsonschema-form.readthedocs.io/en/latest/dependencies/#dynamic)
+- changes the schema dynamically on runtime ✔
+- does not re-render the Widget when the dependency matching didn't change ✔
 - ❗ only checks some schema: everything [validateSchema](#validateschema) supports
-- full feature set needs [ConditionalHandler](#conditionalhandler), [CombiningHandler](#combininghandler), [CombiningNetworkHandler](#combiningnetworkhandler), which are not implemented yet
+- ❗ partly-merge from dyn-schema: everything [mergeSchema](./UISchemaCore.md#mergeschema) supports
+- ❗ full feature set needs [ConditionalHandler](#conditionalhandler), [CombiningHandler](#combininghandler), [CombiningNetworkHandler](#combiningnetworkhandler), which are not implemented yet
 
-❗ Dynamically extending a schema is currently supported a little bit with `dependencies` and `oneOf`, interpret `oneOf` like a switch.
+[Specification](https://json-schema.org/understanding-json-schema/reference/conditionals.html)
 
-❗ Should be moved to group-level, thus group-level plugins are needed... 
+Example with `oneOf`:
 
 - create dependencies
 - use the properties name which's value should be used
 - define a restricting sub-schema for the used property name, if the value is valid against it:
     - the whole sub-schema is added dynamically from that property
-    - please note: there will be no schema-change in state, it's property calculated on-render and dynamically rendered parallel to the referencing property
+    - please note: there will be no schema-change in hoisted state, it's property calculated on-render and dynamically changed in the referencing instance
 
 ```js
 let schema = {
-    title: "Person",
     type: "object",
     properties: {
         // here `country` is defined
@@ -168,22 +177,426 @@ let schema = {
 };
 ```
 
+Example with schema-dependencies, e.g. with `boolean`:
+
+```js
+let schema = {
+    type: "object",
+    properties: {
+        // here `country` is defined
+        country_eu: {
+            type: "boolean",
+        },
+        country_canada: {
+            type: "boolean",
+        }
+    },
+    dependencies: {
+        country_eu: {
+            // add boolean input when `canada_eu` is not null
+            properties: {
+                privacy: {
+                    type: "boolean"
+                }
+            },
+            required: [
+                "privacy"
+            ]
+        },
+        country_canada: {
+            properties: {
+                maple_trees: {
+                    type: "number"
+                }
+            }
+        }
+    }
+};
+```
+
 Specifications:
 [dependencies](https://json-schema.org/understanding-json-schema/reference/object.html#dependencies)
 [combining schemas](https://json-schema.org/understanding-json-schema/reference/combining.html)
 
-#### ConditionalHandler
+### ConditionalHandler
 
-- [conditionals](https://json-schema.org/understanding-json-schema/reference/conditionals.html) ❌
-    - `allOf`
-    - `if`
-    - `else`
-    
-#### CombiningHandler
+Enables on-the-fly sub-schema rendering based on current objects data.
 
-Combining schemas from within one schema by definition, id, ref, [specification](https://json-schema.org/understanding-json-schema/reference/combining.html)
+- `if` the sub-schema against which the object is validated ✔
+- `else` when valid, else is applied ✔
+- `then` when invalid, then is applied ✔
+- `not` sub-schema that must be invalid ✔
+- `allOf` list of if/else/then which are evaluated ✔
+    - is handled by [CombiningHandler](#combininghandler)
+- ❗ only checks some schema: everything [validateSchema](#validateschema) supports
+- ❗ partly-merge from dyn-schema: everything [mergeSchema](./UISchemaCore.md#mergeschema) supports
 
-#### CombiningNetworkHandler
+Examples:
+
+- [simple/only one](#conditionalhandler-example-simple)
+- [complex/multiple](#conditionalhandler-example-complex)
+- [using not](#conditionalhandler-example-not)
+
+#### ConditionalHandler Example Simple
+
+Example schema that shows `accept` and makes it required when not selected `canada`. When `canada` is selected a number field is added.1
+
+```js
+const schemaWConditional = createOrderedMap({
+    type: "object",
+    properties: {
+        country: {
+            type: "string",
+            widget: 'Select',
+            enum: [
+                "usa",
+                "canada",
+                "eu"
+            ],
+            default: "eu"
+        }
+    },
+    required: [
+        "country"
+    ],
+    if: {
+        properties: {
+            "country": {
+                type: 'string',
+                const: "canada"
+            }
+        }
+    },
+    then: {
+        properties: {
+            "maple_trees": {
+                type: "number"
+            }
+        },
+    },
+    else: {
+        properties: {
+            "accept": {
+                type: "boolean"
+            }
+        },
+        required: [
+            "accept"
+        ],
+    }
+});
+```
+
+#### ConditionalHandler Example Complex
+
+Example using `allOf`, every item is applied in the defined order like above `if/else/then`, multiple changes of the same schema-level will get merged together.
+
+```js
+const schemaWConditional = createOrderedMap({
+    type: "object",
+    properties: {
+        country: {
+            type: "string",
+            widget: 'Select',
+            enum: [
+                "usa",
+                "canada",
+                "eu"
+            ],
+            default: "eu"
+        }
+    },
+    required: [
+        "country"
+    ],
+    allOf: [
+        {
+            if: {
+                properties: {
+                    "country": {
+                        type: 'string',
+                        const: "canada"
+                    }
+                }
+            },
+            then: {
+                properties: {
+                    "maple_trees": {
+                        type: "number"
+                    }
+                },
+            }
+        }, {
+            if: {
+                properties: {
+                    "country": {
+                        type: 'string',
+                        const: "eu"
+                    }
+                }
+            },
+            then: {
+                properties: {
+                    "privacy": {
+                        type: "boolean"
+                    }
+                }
+            }
+        }, {
+            if: {
+                properties: {
+                    "country": {
+                        type: 'string',
+                        const: "usa"
+                    }
+                }
+            },
+            then: {
+                properties: {
+                    "nickname": {
+                        type: "string"
+                    }
+                },
+            }
+        }
+    ]
+});
+```
+
+#### ConditionalHandler Example Not
+
+Example using `not` to display the `accept` input only when not `usa` is selected:
+
+```js
+const schemaWConditional = createOrderedMap({
+    type: "object",
+    properties: {
+        country: {
+            type: "string",
+            widget: 'Select',
+            enum: [
+                "usa",
+                "canada",
+                "eu"
+            ],
+            default: "eu"
+        }
+    },
+    required: [
+        "country"
+    ],
+    if: {
+        properties: {
+            "country": {
+                not: {
+                    type: 'string',
+                    const: "usa"
+                }
+            }
+        }
+    },
+    then: {
+        properties: {
+            "accept": {
+                type: "boolean"
+            }
+        },
+    }
+});
+```
+
+[Specification](https://json-schema.org/understanding-json-schema/reference/conditionals.html)
+
+### CombiningHandler
+
+Combining schemas from within one schema with:
+
+- `definition` ❌
+- `$id` ❌ 
+- `$ref` ❌
+- `allOf` ✔
+    - all defined schemas are merged together
+    - each `if/else/then` is applied separately to the instance created or existing
+        - uses the merged schema (if something is there to merge)
+        - applies result directly after defined `allOf` item or on already existing items
+    - supports nested `allOf` evaluation for combining-conditional schemas
+- `oneOf` ❗
+- `anyOf` ❗
+- ❗ only checks some schema: everything [validateSchema](#validateschema) supports
+- ❗ partly-merge from dyn-schema: everything [mergeSchema](./UISchemaCore.md#mergeschema) supports
+
+Works in conjunction with the [conditional handler](#conditionalhandler).
+
+[Specification](https://json-schema.org/understanding-json-schema/reference/combining.html)
+
+```js
+const schemaWCombining = createOrderedMap({
+    type: "object",
+    properties: {
+        country: {
+            type: "string",
+            widget: 'Select',
+            enum: [
+                "usa",
+                "canada",
+                "eu"
+            ],
+            default: "eu"
+        },
+        address: {
+            allOf: [
+                {
+                    type: "object",
+                    properties: {
+                        street_address: {type: "string"},
+                        city: {type: "string"},
+                        state: {type: "string"}
+                    },
+                    required: ["street_address", "city", "state"],
+                    if: {
+                        properties: {
+                            "state": {
+                                type: 'string',
+                                const: "rlp"
+                            }
+                        }
+                    },
+                    then: {
+                        properties: {
+                            "zip": {
+                                type: "number"
+                            }
+                        },
+                    },
+                }, {
+                    type: "object",
+                    properties: {
+                        phone: {type: "string"},
+                        email: {type: "string", format: "email"},
+                    },
+                    required: ["email"],
+                    if: {
+                        properties: {
+                            "phone": {
+                                type: 'string',
+                                minLength: 6,
+                            }
+                        }
+                    },
+                    then: {
+                        properties: {
+                            "phone": {
+                                // only valid for: (888)555-1212 or 555-1212
+                                pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$",
+                            }
+                        },
+                    },
+                }
+            ]
+        }
+    }
+});
+```
+
+Example with multiple `if`, nested `allOf`:
+
+```js
+const schemaWCombining = createOrderedMap({
+    type: "object",
+    properties: {
+        country: {
+            type: "string",
+            widget: 'Select',
+            enum: [
+                "usa",
+                "canada",
+                "eu"
+            ],
+            default: "eu"
+        },
+        address: {
+            allOf: [
+                {
+                    type: "object",
+                    properties: {
+                        street_address: {type: "string"},
+                        city: {type: "string"},
+                        state: {type: "string", widget: "Select", enum: ["rlp", "ny", "other"]}
+                    },
+                    required: ["street_address", "city", "state"],
+                    allOf: [
+                        {
+                            if: {
+                                properties: {
+                                    "state": {
+                                        type: 'string',
+                                        const: "rlp"
+                                    }
+                                }
+                            },
+                            then: {
+                                properties: {
+                                    "zip": {
+                                        type: "number"
+                                    }
+                                },
+                            },
+                        }, {
+                            properties: {
+                                "accept": {
+                                    type: 'boolean',
+                                }
+                            }
+                        }, {
+                            if: {
+                                properties: {
+                                    "state": {
+                                        type: 'string',
+                                        const: "ny"
+                                    }
+                                }
+                            },
+                            then: {
+                                properties: {
+                                    "block": {
+                                        type: "string",
+                                        maximum: 15
+                                    }
+                                },
+                            },
+                        }
+                    ],
+                }, {
+                    type: "object",
+                    properties: {
+                        phone: {type: "string"},
+                        email: {type: "string", format: "email"},
+                    },
+                    required: ["email"],
+                    if: {
+                        properties: {
+                            "phone": {
+                                type: 'string',
+                                minLength: 6,
+                            }
+                        }
+                    },
+                    then: {
+                        properties: {
+                            "phone": {
+                                // only valid for: (888)555-1212 or 555-1212
+                                pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$",
+                            }
+                        },
+                    },
+                }
+            ]
+        }
+    }
+});
+```
+
+### CombiningNetworkHandler
 
 Combining schemas from external addressed by using `$id` and `$ref`, [specification](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property)
 
@@ -203,7 +616,7 @@ import {NextPluginRenderer} from "@ui-schema/ui-schema";
 
 const NewPlugin = (props) => {
     // special props which don't reach `Widget`, only for plugins
-    const {current, Widget, widgetStack} = props;~~~~~~~~~~~~
+    const {current, Widget, widgetStack} = props;
 
     // doing some logic
     const newProp = props.schema.get('keyword') ? 'success' : 'error';
@@ -223,11 +636,15 @@ export {NewPlugin}
 - recommended: use `<NextPluginRenderer {...props} newProp={false}/>` 
     - automatically render the plugins nested
     - `newProp` is available in the widget and the next plugins
+    
+See also:
+- [how to add custom plugins to the binding](./Widgets.md#adding--overwriting-widgets).
+- [Editor hooks and HOCs](./UISchemaCore.md#editorstore) can be used to access any data, keep [performance](./Performance.md) in mind! 
 
 ## Docs
 
 - [Overview](../../README.md)
-- [UI-JSON-Schema](./Schema.md)
+- [UI JSON-Schema](./Schema.md)
 - [Widget System](./Widgets.md)
 - [Widget Plugins](./WidgetPlugins.md)
 - [Localization / Translation](./Localization.md)

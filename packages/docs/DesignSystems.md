@@ -14,13 +14,21 @@ npm i --save @ui-schema/ui-schema @ui-schema/ds-material @material-ui/core @mate
 
 ## Bootstrap
 
+Use only HTML:
+
 ```bash
-npm i --save @ui-schema/ui-schema @ui-schema/ds-bootstrap @material-ui/core @material-ui/icons immutable
+npm i --save @ui-schema/ui-schema @ui-schema/ds-bootstrap immutable
+```
+
+Use with `bootstrap` package:
+
+```bash
+npm i --save @ui-schema/ui-schema @ui-schema/ds-bootstrap immutable bootstrap
 ```
 
 ## Add Design System Package
 
-> Internal Usage only
+> For contributors - useless for users
 
 Create new lerna package:
 

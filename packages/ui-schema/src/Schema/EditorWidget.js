@@ -2,17 +2,16 @@ import React from "react";
 import {List} from "immutable";
 import {useSchemaData, useSchemaWidgets} from "./EditorStore";
 import {WidgetStackRenderer} from "./EditorWidgetStack";
+import {memo} from "../Utils/memo";
 
-const DumpWidgetRenderer = React.memo(({Widget, widgetStack: widgetStack, ...props}) => {
-    // abstraction layer that only pushes the to-rendering's values
-    // thus no hook inside widget needed, widget and widget-plugins can be pure/dump for its scope
-
+let DumpWidgetRenderer = ({Widget, widgetStack: widgetStack, ...props}) => {
     return widgetStack ?
         <WidgetStackRenderer {...props} Widget={Widget} widgetStack={widgetStack} current={0}/> :
         <Widget {...props}/>;
-});
+};
+DumpWidgetRenderer = memo(DumpWidgetRenderer);
 
-const SchemaWidgetRenderer = ({schema, parentSchema, storeKeys, ...props}) => {
+let ValueWidgetRenderer = ({schema, parentSchema, storeKeys, ...props}) => {
     const {store, onChange,} = useSchemaData();
     const {widgets,} = useSchemaWidgets();
     const {widgetStack} = widgets;
@@ -34,6 +33,23 @@ const SchemaWidgetRenderer = ({schema, parentSchema, storeKeys, ...props}) => {
         Widget = widgets.types[type];
     }
 
+    return Widget ? <ValuelessWidgetRenderer
+        Widget={Widget}// passed to FinalWidgetRenderer and WidgetStackRenderer
+        widgetStack={widgetStack}// passed only to WidgetStackRenderer
+
+        {...props}
+        schema={schema}
+        parentSchema={parentSchema}
+        storeKeys={storeKeys}
+        value={store.getIn(storeKeys)}
+        onChange={onChange}
+    /> : null;
+};
+
+let ValuelessWidgetRenderer = ({
+                                   Widget, widgetStack,
+                                   schema, parentSchema, storeKeys, ...props
+                               }) => {
     let required = List([]);
     if(parentSchema) {
         let tmp_required = parentSchema.get('required');
@@ -42,21 +58,19 @@ const SchemaWidgetRenderer = ({schema, parentSchema, storeKeys, ...props}) => {
         }
     }
 
-    // todo: make it easy to to extend these properties with a widget
-    return Widget ? <DumpWidgetRenderer
+    return <DumpWidgetRenderer
         Widget={Widget}// passed to FinalWidgetRenderer and WidgetStackRenderer
         widgetStack={widgetStack}// passed only to WidgetStackRenderer
 
         // all others are getting pushed to Widget
         {...props}
-        value={store.getIn(storeKeys)}
         ownKey={storeKeys.get(storeKeys.count() - 1)}
         storeKeys={storeKeys}
-        onChange={onChange}
         schema={schema}
         required={required}
         parentSchema={parentSchema}
-    /> : null;
+    />;
 };
+ValuelessWidgetRenderer = memo(ValuelessWidgetRenderer);
 
-export {SchemaWidgetRenderer}
+export {ValueWidgetRenderer, ValuelessWidgetRenderer}
