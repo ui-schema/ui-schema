@@ -2,7 +2,10 @@ import React from 'react';
 import AppTheme from '../ds/material-ui/layout/AppTheme';
 import Dashboard from '../ds/material-ui/dashboard/Dashboard';
 
-import {data1, schema1, schemaWDep, schemaUser, schemaWDep1, schemaWDep2, schemaWConditional, schemaWConditional1} from "../_schema1";
+import {schemaWCombining} from "../schemas/demoCombining";
+import {schemaWConditional, schemaWConditional1} from "../schemas/demoConditional";
+import {schemaWDep, schemaWDep1, schemaWDep2} from "../schemas/demoDependencies";
+import {dataDemoMain, schemaDemoMain, schemaUser} from "../schemas/demoMain";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import {Button} from "@material-ui/core";
@@ -15,8 +18,8 @@ import {Map} from 'immutable';
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [validity, setValidity] = React.useState(createMap());
-    const [data, setData] = React.useState(createOrderedMap(data1));
-    const [schema, setSchema] = React.useState(createOrderedMap(schema1));
+    const [data, setData] = React.useState(createOrderedMap(dataDemoMain));
+    const [schema, setSchema] = React.useState(createOrderedMap(schemaDemoMain));
 
     return <React.Fragment>
         <SchemaEditor
@@ -78,7 +81,7 @@ const DemoUser = () => {
 
 const DummyRenderer = ({id, schema, toggleDummy, getDummy, open, classes}) => <React.Fragment>
     {open ? null : <Button style={{marginBottom: 12}} onClick={() => toggleDummy(id)} variant={getDummy(id) ? 'contained' : 'outlined'}>
-        {id}
+        {id.replace(/([A-Z0-9])/g, ' $1').replace(/^./, str => str.toUpperCase())}
     </Button>}
     {getDummy(id) || open ? <Paper className={classes.paper}>
         <MainDummy schema={schema}/>
@@ -100,15 +103,18 @@ const Main = ({classes = {}}) => {
 
     return <React.Fragment>
         <Grid item xs={12}>
-            <DummyRenderer open id={'schemaWConditional1'} schema={schemaWConditional1} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
-        </Grid>
-        <Grid item xs={12}>
-            <DummyRenderer open id={'schemaWConditional'} schema={schemaWConditional} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
-        </Grid>
-        <Grid item xs={12}>
             <Paper className={classes.paper}>
                 <MainStore/>
             </Paper>
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer id={'schemaWCombining'} schema={schemaWCombining} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer id={'schemaWConditional'} schema={schemaWConditional} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer id={'schemaWConditional1'} schema={schemaWConditional1} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer id={'schemaWDep'} schema={schemaWDep} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
@@ -121,7 +127,7 @@ const Main = ({classes = {}}) => {
         </Grid>
         <Grid item xs={12}>
             <Button style={{marginBottom: 12}} onClick={() => toggleDummy('demoUser')} variant={getDummy('demoUser') ? 'contained' : 'outlined'}>
-                demoUser
+                demo User
             </Button>
             {getDummy('demoUser') ? <Paper className={classes.paper}>
                 <DemoUser/>

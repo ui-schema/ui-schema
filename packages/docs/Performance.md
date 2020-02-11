@@ -1,5 +1,7 @@
 # Performance
 
+> some nice flow/flame-graph pictures should be added here
+
 This editor has multiple levels of performance optimization:
 
 - [immutables](https://immutable-js.github.io/immutable-js/) as internal store
@@ -36,12 +38,12 @@ This editor has multiple levels of performance optimization:
             - additionally receives: `Widget`, `widgetStack`
         - `WidgetStackRenderer` initial `widgetStack` render handling (not memoized, but inside `DumpWidgetRenderer`)
 
-It is recommended to build your [own ds-binding](./Widgets.md#create-design-system-binding) with only the needed components or use a [lazy-loaded binding](./Widgets.md#lazy-loading-bindings).
+Further on to reduce code-size, it is recommended to build your [own ds-binding](./Widgets.md#create-design-system-binding) with only the needed components or use a [lazy-loaded binding](./Widgets.md#lazy-loading-bindings).
 
 ## Docs
 
 - [Overview](../../README.md)
-- [UI-JSON-Schema](./Schema.md)
+- [UI JSON-Schema](./Schema.md)
 - [Widget System](./Widgets.md)
 - [Widget Plugins](./WidgetPlugins.md)
 - [Localization / Translation](./Localization.md)

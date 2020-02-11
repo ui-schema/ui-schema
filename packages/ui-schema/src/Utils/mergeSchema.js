@@ -4,6 +4,9 @@
  * @return {*}
  */
 const mergeSchema = (schema, dyn_schema) => {
+    if(dyn_schema.get('type')) {
+        schema = schema.set('type', dyn_schema.get('type'));
+    }
     if(dyn_schema.get('format')) {
         schema = schema.set('format', dyn_schema.get('format'));
     }
@@ -32,6 +35,9 @@ const mergeSchema = (schema, dyn_schema) => {
     }
     if(dyn_schema.get('const')) {
         schema = schema.set('const', dyn_schema.get('const'));
+    }
+    if(dyn_schema.get('not')) {
+        schema = schema.set('not', dyn_schema.get('not'));
     }
 
     // todo: which more keywords of the matched `nestedSchema` should be merged into the `schema`?

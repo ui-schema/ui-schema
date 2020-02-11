@@ -16,3 +16,4 @@ export * from './Handling/PatternValidator';
 export * from './Handling/ArrayValidator';
 export * from './Handling/DependentHandler';
 export * from './Handling/ConditionalHandler';
+export * from './Handling/CombiningHandler';

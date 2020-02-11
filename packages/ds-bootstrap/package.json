@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ds-bootstrap",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "",
     "homepage": "",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -20,10 +20,10 @@
         "url": "https://github.com/ui-schema/ui-schema/issues"
     },
     "devDependencies": {
+        "@ui-schema/ui-schema": "^0.0.5",
         "react": "^16.12"
     },
     "dependencies": {
-        "@ui-schema/ui-schema": "^0.0.4",
         "react-id-generator": "^3.0.0"
     },
     "peerDependencies": {

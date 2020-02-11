@@ -106,11 +106,11 @@ const Comp = withWidgets(
 
 ### SchemaEditor
 
-Main entry point for every new Schema Editor, renders the RootRenderer and renders the whole schema with `SchemaEditorRenderer`. 
+Main entry point for every new Schema Editor, renders the RootRenderer and starts the whole schema with `SchemaEditorRenderer`. 
 
 ### NestedSchemaEditor
 
-Automatic nesting schema-editor, uses the parent contexts, starts a SchemaEditor at directly at schema-level with `SchemaEditorRenderer`.
+Automatic nesting schema-editor, uses the parent contexts, starts a SchemaEditor at schema-level with `SchemaEditorRenderer`.
 
 It works with adding the wanted schema and it's storeKeys, this automatically enables data-binding by `SchemaEditorRenderer`.
 
@@ -137,9 +137,45 @@ const Box = ({schema, storeKeys, level, showValidity}) => {
 };
 ```
 
+### SchemaEditorProvider
+
+Provider to position the actual editor in any position, just pass everything down to the provider, the SchemaRootRenderer connects to the provider automatically. Recommended to add memoized abstraction layers between HTML and provider.
+
+```js
+import React from "react";
+import {
+    SchemaEditorProvider, SchemaRootRenderer,
+    isInvalid, useSchemaValidity
+} from "@ui-schema/ui-schema";
+
+const CustomFooter = ({someCustomProp}) => {
+    // access the editor context, also available e.g.: useSchemaWidgets, useSchemaData
+    const {validity} = useSchemaValidity();
+    
+    return <p style={{fontWeight: someCustomProp ? 'bold' : 'normal'}}>
+        {isInvalid(validity) ? 'invalid' : 'valid'}
+    </p>
+}
+
+const CustomEditor = ({someCustomProp, ...props}) => (
+    <SchemaEditorProvider {...props}>
+        <div>
+            <SchemaRootRenderer/>
+            <div>
+                <CustomFooter someCustomProp={someCustomProp}/>
+            </div>
+        </div>
+    </SchemaEditorProvider>
+);
+```
+
 ### SchemaEditorRenderer
 
-Layer to get the needed widget by the current schema and let it render for scalar values with [ValueWidgetRenderer](#valuewidgetrenderer) and for others with [ValuelessWidgetRenderer](#valuewidgetrenderer). 
+Layer to get the needed widget by the current schema and let it render for scalar values with [ValueWidgetRenderer](#valuewidgetrenderer) and for others with [ValuelessWidgetRenderer](#valuewidgetrenderer).
+
+### SchemaRootRenderer
+
+Connects to the current context and extracts the starting schema, renders the `widgets.RootRenderer` 
 
 ## Widget Renderer
 
@@ -177,16 +213,30 @@ const Comp = memo(props => {
 });
 ```
 
+See [performance](./Performance.md) for the reasons and philosophy behind it.
 
 ### mergeSchema
 
 Merges two schemas into each other: `ab = mergeSchema(a, b)`
 
-Supports merging of keywords, only does something if existing on `b`
+Supports merging of these keywords, only does something if existing on `b`:
 
 - `properties`, deep-merge b into a
 - `required`, combining both arrays/lists
+- `type`, b overwrites a
 - `format`, b overwrites a
 - `widget`, b overwrites a
 - `enum`, b overwrites a
 - `const`, b overwrites a
+- `not`, b overwrites a
+- `allOf`, are ignored, should be resolved by e.g. [combining handler](./WidgetPlugins.md#combininghandler)
+- `if`, `then`, `else` are ignored, should be resolved by e.g. [conditional handler](./WidgetPlugins.md#conditionalhandler), also `if` that are inside `allOf`
+
+## Docs
+
+- [Overview](../../README.md)
+- [UI JSON-Schema](./Schema.md)
+- [Widget System](./Widgets.md)
+- [Widget Plugins](./WidgetPlugins.md)
+- [Localization / Translation](./Localization.md)
+- [Performance](./Performance.md)

@@ -7,7 +7,7 @@ JSON-Schema form + ui generator for any design system, first-class support for [
 
 - @ui-schema/ui-schema [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ui-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ui-schema) 
 - [@ui-schema/ds-material](./packages/docs/DesignSystems.md#material-ui) [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-material?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-material)
-- [@ui-schema/ds-bootstrap](./packages/docs/DesignSystems.md#bootstrap)
+- [@ui-schema/ds-bootstrap](./packages/docs/DesignSystems.md#bootstrap) [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-bootstrap?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-bootstrap)
 
 ---
 
@@ -63,7 +63,6 @@ import {widgets} from "@ui-schema/ds-material";
 
 // could be fetched from some API or bundled with the app
 const schema1 = {
-    title: "Person",
     type: "object",
     properties: {
         country: {
@@ -113,6 +112,8 @@ const Editor = () => {
             onChange={handler => setData(handler(data))}
             {/* handler must get the previous state as value, it must be an immutable map, will return updated map */}
             onValidity={handler => setValidity(handler(validity))}
+    
+            {/* optional, the `Renderer` contains the actual editor, move to the position wanted*/}
         >
             <SchemaDebug setSchema={setSchema}/>
         </SchemaEditor>
@@ -152,8 +153,8 @@ The package `@ui-schema/ui-schema` supports rendering widgets for JSON-schema `t
 
 It is possible to connect any design system to the renderer, included or planned support:
 
-- `@ui-schema/ds-material` adds binding to [@material-ui/core](https://material-ui.com/) to use [Material Design](https://material.io/)
-- `@ui-schema/ds-bootstrap` adds binding to plain bootstrap semantic HTMLs to use with any Bootstrap theme
+- `@ui-schema/ds-material` adds binding to [@material-ui/core](https://material-ui.com/) to use [Material Design](https://material.io/) **in dev**
+- `@ui-schema/ds-bootstrap` adds binding to plain bootstrap semantic HTMLs to use with any Bootstrap theme **in dev**
 - `@ui-schema/ds-blueprint` adds binding to [blueprintjs](https://blueprintjs.com/docs/) **would be nice**
 - `@ui-schema/ds-semanticui` adds binding to [semantic-ui](https://react.semantic-ui.com/usage/) **would be nice**
 - `@ui-schema/ds-antdesign` adds binding to [Ant Design](https://ant.design/docs/react/introduce) **would be nice**
@@ -229,11 +230,10 @@ Included widgets (match by `widget` in schema), each widget could have multiple 
 
 1. Fork/Clone Repository
 2. Install root dev-dependencies (like lerna, webpack): `npm i`
-3. Bootstrap [lerna](https://lerna.js.org/), install all dependencies: `npm run bootstrap`
-4. Start dev-server: `npm start` (will clean-dist + symlink-es-modules + hoist)
-5. Open browser on [localhost:4200](http://localhost:4200)
-6. Explore [packages](packages)
-7. Code -> Commit -> Pull Request -> Being Awesome!
+3. Start dev-server: `npm start` (will clean-dist + symlink-es-modules + init & hoist packages)
+4. Open browser on [localhost:4200](http://localhost:4200)
+5. Explore [packages](packages)
+6. Code -> Commit -> Pull Request -> Being Awesome!
 
 Changes from any package are reflected inside the demo package.
 
@@ -241,6 +241,7 @@ Changes from any package are reflected inside the demo package.
 - Clean node_modules and build dirs: `npm run clean`
 - Clean build dirs: `npm run clean-dist`
 - Add new node_module to one package: `lerna add <npm-package-name> --scope=@ui-schema/demo [--dev] [--peer]`, without `--scope` in all packages
+- Do not change package.json of packages manually, and if Bootstrap [lerna](https://lerna.js.org/): `npm run bootstrap`
 
 Publish, for main-repo only:
 

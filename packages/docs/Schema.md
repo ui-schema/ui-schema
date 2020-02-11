@@ -1,4 +1,4 @@
-# UI-JSON-Schema
+# UI JSON-Schema
 
 This JSON-Schema vocabulary is used within the included widget-matching:
  
@@ -132,7 +132,8 @@ Validation Keywords:
 - `additionalProperties` when `false` only defined properties are allowed ❌
 - `propertyNames.pattern` regex pattern to limit naming of properties ❌
 - `patternProperties` to restrict names of properties to certain types with regex ❌ 
-- [dependencies](./WidgetPlugins.md#dependenthandler) for dynamic sub-schema/properties ❗
+- [dependencies, dependentSchemas](./WidgetPlugins.md#dependenthandler) for dynamic sub-schema/properties ✔
+- [if, else, then, allOf](./WidgetPlugins.md#conditionalhandler) for conditional sub-schema ✔
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/object.html)
 
@@ -175,7 +176,7 @@ As the whole rendering is calculated from props/state for each schema-level on i
 ## Docs
 
 - [Overview](../../README.md)
-- [UI-JSON-Schema](./Schema.md)
+- [UI JSON-Schema](./Schema.md)
 - [Widget System](./Widgets.md)
 - [Widget Plugins](./WidgetPlugins.md)
 - [Localization / Translation](./Localization.md)

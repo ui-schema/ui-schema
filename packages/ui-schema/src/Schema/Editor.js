@@ -22,8 +22,10 @@ let SchemaEditorRenderer = ({
     const widget = schema.get('widget');
     const {GroupRenderer, widgetStack} = widgets;
 
+    // todo: change switching behaviour, every non-scalar value should use `Valueless`
+    // undefined types need to be handled by the valueless widget renderer, it might be a combining/conditional schema
     return schema ?
-        type !== 'object' || widget ?
+        (type !== 'object' && type) || widget ?
             <ValueWidgetRenderer
                 {...props}
                 schema={schema} storeKeys={storeKeys} level={level}
@@ -114,21 +116,30 @@ const NestedSchemaEditor = ({schema, parentSchema, storeKeys, showValidity, leve
  */
 let SchemaEditor = ({
                         children,
-                        schema,
-                        store, onChange,
-                        widgets, // t,
-                        validity, showValidity, onValidity,
+                        ...props
                     }) => (
+    <SchemaEditorProvider {...props}>
+        <SchemaRootRenderer/>
+        {children}
+        {/* providing a dynamic schema editor context and rendering the root renderer */}
+    </SchemaEditorProvider>
+);
+
+let SchemaEditorProvider = ({
+                                children,
+                                schema,
+                                store, onChange,
+                                widgets, // t,
+                                validity, showValidity, onValidity,
+                            }) => (
     <EditorWidgetsProvider widgets={widgets}>
         <EditorValidityProvider validity={validity} showValidity={showValidity} onValidity={onValidity}>
             <EditorDataProvider store={store} onChange={onChange} schema={schema}>
-                <SchemaRootRenderer/>
                 {children}
-                {/* providing a dynamic schema editor context and rendering the root renderer */}
             </EditorDataProvider>
         </EditorValidityProvider>
     </EditorWidgetsProvider>
 );
 
 
-export {SchemaEditor, NestedSchemaEditor, SchemaEditorRenderer};
+export {SchemaEditor, SchemaEditorProvider, NestedSchemaEditor, SchemaEditorRenderer, SchemaRootRenderer};

@@ -14,15 +14,17 @@ const ValidityReporter = withValidity(memo((props) => {
     let {valid} = props;
 
     React.useEffect(() => {
+        // onValidity always needs to return a `Map`, otherwise it is not set-able again when validity cleared on hoisted component etc.
+
         if(onValidity) {
             // todo: only call onValidity when validity really changed and not set? [performance]
             //   use effect may forget dependencies
-            onValidity(validity => validity.setIn(storeKeys.push('__valid'), valid));
+            onValidity(validity => validity ? validity.setIn(storeKeys.push('__valid'), valid) : Map({}));
         }
 
         return () => {
             // delete own validity state on component unmount
-            onValidity(validity => validity.deleteIn(storeKeys));
+            onValidity(validity => validity ? validity.deleteIn(storeKeys) : Map({}));
         };
     }, [valid]);
 
