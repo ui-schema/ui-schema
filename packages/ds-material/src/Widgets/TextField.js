@@ -20,7 +20,7 @@ const StringRenderer = ({type, ownKey, schema, value, multiline, rows, rowsMax, 
         fullWidth
         variant={schema.getIn(['view', 'variant'])}
         margin={schema.getIn(['view', 'margin'])}
-        value={value ? value : (schema.get('default') || '')}
+        value={typeof value !== 'undefined' ? value : (schema.get('default') || '')}
         onChange={(e) => trace("textfield onchange", performance.now(), () => {
             const value = e.target.value;
             switch(fieldType) {

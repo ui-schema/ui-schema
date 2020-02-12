@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ds-material",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "",
     "homepage": "",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -20,7 +20,7 @@
         "url": "https://github.com/ui-schema/ui-schema/issues"
     },
     "devDependencies": {
-        "@ui-schema/ui-schema": "^0.0.5",
+        "@ui-schema/ui-schema": "^0.0.6",
         "react": "^16.12"
     },
     "dependencies": {
