@@ -2,27 +2,31 @@ import React from "react";
 import {NextPluginRenderer} from "@ui-schema/ui-schema";
 
 const SchemaGridItem = ({children, schema}) => {
-    let classNameString = 'col-md';
+    let classNameArray = [];
     const view = schema ? schema.getIn(['view']) : undefined;
-    if(view.getIn(['sizeXs'])) {
-        classNameString = 'col';
+    if(view && view.getIn(['sizeXs'])) {
+        classNameArray.push('col-xs-' + view.getIn(['sizeXs']));
     } else if(schema.getIn(['view', 'sizeSm'])) {
-        classNameString = 'col-sm';
-    } else if(schema.getIn(['view', 'sizeLg'])) {
-        classNameString = 'col-lg';
+        classNameArray.push('col-sm-' + schema.getIn(['view', 'sizeSm']));
+    }
+    else if(schema.getIn(['view', 'sizeMd'])) {
+        classNameArray.push('col-md-' + schema.getIn(['view', 'sizeMd']));
+    }
+    else if(schema.getIn(['view', 'sizeLg'])) {
+        classNameArray.push('col-lg-' + schema.getIn(['view', 'sizeLg']));
     } else if(schema.getIn(['view', 'sizeXl'])) {
-        classNameString = 'col-xl';
+        classNameArray.push('col-xl-' + schema.getIn(['view', 'sizeXl']));
     }
 
 
     return <div
-        className={[classNameString, 'container'].join(' ')}
+        className={classNameArray.join(' ')}
     >
         {children}
     </div>
 };
 
-const RootRenderer = props => <div className={'container-inner'}>{props.children}</div>;
+const RootRenderer = props => <div>{props.children}</div>;
 
 const GroupRenderer = ({schema, children}) => <SchemaGridItem schema={schema}>
     {children}

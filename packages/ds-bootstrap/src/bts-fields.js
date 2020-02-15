@@ -11,19 +11,19 @@ const widgets = {
     widgetStack,
     ErrorFallback: 'todo',
     types: {
-        string: StringRenderer,
+        /*string: StringRenderer,
         bool: BoolRenderer,
         boolean: BoolRenderer,
-        number: NumberRenderer,
+        number: NumberRenderer, */
     },
     custom: {
-        Text: TextRenderer,
+      /*  Text: TextRenderer,
         OptionsCheck,
         OptionsRadio,
         Select,
         SelectMulti,
         Stepper,
-        Step,
+        Step, */
     },
 };
 

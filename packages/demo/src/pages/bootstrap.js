@@ -6,7 +6,6 @@ import {schemaDemoMain, dataDemoMain} from "../schemas/demoMain";
 import {widgets,} from "@ui-schema/ds-bootstrap";
 import {SchemaEditor, isInvalid, createOrderedMap, createMap} from "@ui-schema/ui-schema";
 import {SchemaDebug} from "../component/SchemaDebug";
-import Orders from "../ds/material-ui/dashboard/Orders";
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
@@ -35,15 +34,8 @@ const MainStore = () => {
 };
 
 const Main = () => <React.Fragment>
-    <div className="container">
-        <div className="shadow-sm">
-            <MainStore/>
-        </div>
-    </div>
-    <div className="container">
-        <div className="shadow-sm">
-            <Orders/>
-        </div>
+    <div>
+        <MainStore/>
     </div>
 </React.Fragment>;
 
