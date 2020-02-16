@@ -20,10 +20,9 @@ const schemaWCombining = createOrderedMap({
                     properties: {
                         street_address: {type: "string"},
                         city: {type: "string"},
-                        state: {type: "string", widget: "Select", enum: ["rlp", "ny", "other"]}
+                        state: {type: "string", widget: "Select", enum: ["other"]}
                     },
                     required: ["street_address", "city", "state"],
-                    "$comment": "$arr = ['rlp' => [['key'=>'zip', 'type'=>'string']], 'ny' => [['key'=>'hausnr', 'type'=>'number']]];",
                     allOf: [
                         {
                             if: {
@@ -189,7 +188,7 @@ const schemaWCombining = createOrderedMap({
                     }
                 },
             },
-        },/* {
+        }, {
             if: {
                 properties: {
                     "country": {
@@ -207,7 +206,7 @@ const schemaWCombining = createOrderedMap({
                     }
                 },
             },
-        },*/
+        },
     ]
 });
 
