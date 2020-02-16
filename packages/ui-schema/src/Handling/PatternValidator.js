@@ -18,11 +18,7 @@ const validatePattern = (type, value, pattern) => {
     return true;
 };
 
-const validateNamePattern = (entry, pattern) => {
-    if(entry.match(pattern)) {
-        return true;
-    } else return false
-};
+const validateNamePattern = (entry, pattern) => entry.match(pattern);
 
 const PatternValidator = (props) => {
     const {
