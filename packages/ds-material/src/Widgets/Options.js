@@ -4,7 +4,8 @@ import {
     Switch, Checkbox, RadioGroup, Radio, makeStyles
 } from "@material-ui/core";
 import {grey} from "@material-ui/core/colors";
-import {beautifyKey} from "@ui-schema/ui-schema";
+import {List} from "immutable";
+import {beautifyKey,} from "@ui-schema/ui-schema";
 import {useId} from "react-id-generator";
 
 const switchStyle = makeStyles(theme => ({
@@ -19,7 +20,7 @@ const switchStyle = makeStyles(theme => ({
 
 
 const BoolRenderer = ({ownKey, value, onChange, storeKeys, showValidity, valid, required}) => {
-    const currentVal = typeof value !== 'undefined' ? value : false;
+    const currentVal = !!value;
 
     const classes = switchStyle({error: !valid && showValidity});
 
@@ -68,7 +69,10 @@ const OptionsCheck = ({ownKey, schema, value, onChange, storeKeys, showValidity,
                         if(currentValue) {
                             onChange(store => store.setIn(storeKeys, value.delete(value.indexOf(enum_name))));
                         } else {
-                            onChange(store => store.setIn(storeKeys, value.push(enum_name)));
+                            onChange(store => store.setIn(
+                                storeKeys,
+                                value ? value.push(enum_name) : List([]).push(enum_name))
+                            );
                         }
                     }}
                     label={beautifyKey(enum_name)}
