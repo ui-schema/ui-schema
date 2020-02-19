@@ -18,8 +18,6 @@ const validatePattern = (type, value, pattern) => {
     return true;
 };
 
-const validateNamePattern = (entry, pattern) => entry.match(pattern);
-
 const PatternValidator = (props) => {
     const {
         schema, value
@@ -39,4 +37,4 @@ const PatternValidator = (props) => {
     return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
 };
 
-export {PatternValidator, ERROR_PATTERN, validatePattern, validateNamePattern}
+export {PatternValidator, ERROR_PATTERN, validatePattern}
