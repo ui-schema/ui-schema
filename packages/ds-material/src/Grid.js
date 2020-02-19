@@ -3,12 +3,13 @@ import {Grid} from "@material-ui/core";
 import {NextPluginRenderer} from "@ui-schema/ui-schema";
 
 const SchemaGridItem = ({schema, children, defaultMd}) => {
-    const view = schema ? schema.getIn(['view']) : undefined;
-    const viewXs = view ? (view.getIn(['sizeXs']) || 12) : 12;
-    const viewSm = schema ? schema.getIn(['view', 'sizeSm']) : undefined;
-    const viewMd = schema ? schema.getIn(['view', 'sizeMd']) : defaultMd;
-    const viewLg = schema ? schema.getIn(['view', 'sizeLg']) : undefined;
-    const viewXl = schema ? schema.getIn(['view', 'sizeXl']) : undefined;
+    const view = schema ? schema.get('view') : undefined;
+
+    const viewXs = view ? (view.get('sizeXs') || 12) : 12;
+    const viewSm = view ? view.get('sizeSm') : undefined;
+    const viewMd = view ? view.get('sizeMd') : defaultMd;
+    const viewLg = view ? view.get('sizeLg') : undefined;
+    const viewXl = view ? view.get('sizeXl') : undefined;
 
     return <Grid
         item

@@ -43,7 +43,7 @@ const TypeValidator = (props) => {
 
     if(!validateType(value, type)) {
         valid = false;
-        errors = errors.push(ERROR_WRONG_TYPE);
+        errors = errors.push(List([ERROR_WRONG_TYPE, Map({actual: typeof value})]));
     }
 
     return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;

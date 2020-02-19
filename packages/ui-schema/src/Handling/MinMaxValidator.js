@@ -1,6 +1,5 @@
 import React from "react";
-import {List} from "immutable";
-import {Map} from "immutable";
+import {List, Map} from "immutable";
 import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 
 const ERROR_MIN_LENGTH = 'min-length';
@@ -23,12 +22,14 @@ const validateMinMax = (type, schema, value, strict) => {
         if(typeof value === 'string') {
             if(minLength) {
                 if(!(!strict && 0 === value.length) && value.length < minLength) {
-                    errors = errors.push(ERROR_MIN_LENGTH);
+                    // when not `strict` and empty string it is okay
+                    errors = errors.push(List([ERROR_MIN_LENGTH, Map({min: minLength})]));
                 }
             }
             if(maxLength) {
                 if(!(!strict && 0 === value.length) && value.length > maxLength) {
-                    errors = errors.push(ERROR_MAX_LENGTH);
+                    // when not `strict` and empty string it is okay
+                    errors = errors.push(List([ERROR_MAX_LENGTH, Map({max: maxLength})]));
                 }
             }
         }
@@ -41,23 +42,23 @@ const validateMinMax = (type, schema, value, strict) => {
         if(minItems) {
             if(List.isList(value)) {
                 if(!(!strict && 0 === value.size) && value.size < minItems) {
-                    errors = errors.push(ERROR_MIN_LENGTH);
+                    errors = errors.push(List([ERROR_MIN_LENGTH, Map({min: minItems})]));
                 }
             } else if(Array.isArray(value)) {
                 if(!(!strict && 0 === value.length) && value.length < minItems) {
-                    errors = errors.push(ERROR_MIN_LENGTH);
+                    errors = errors.push(List([ERROR_MIN_LENGTH, Map({min: minItems})]));
                 }
             }
         }
 
         if(maxItems) {
             if(List.isList(value)) {
-                if(!(!strict && 0 === value.size) &&   value.size > maxItems) {
-                    errors = errors.push(ERROR_MAX_LENGTH);
+                if(!(!strict && 0 === value.size) && value.size > maxItems) {
+                    errors = errors.push(List([ERROR_MAX_LENGTH, Map({max: maxItems})]));
                 }
             } else if(Array.isArray(value)) {
                 if(!(!strict && 0 === value.length) && value.length > maxItems) {
-                    errors = errors.push(ERROR_MAX_LENGTH);
+                    errors = errors.push(List([ERROR_MAX_LENGTH, Map({max: maxItems})]));
                 }
             }
         }
@@ -71,28 +72,28 @@ const validateMinMax = (type, schema, value, strict) => {
 
         if(typeof value === 'number') {
             let notStrictAndZero = (!strict && 0 === value);
-            if(!notStrictAndZero && minimum) {
+            if(!notStrictAndZero && typeof minimum === 'number') {
                 // when not `strict` and value is zero it is okay
                 if(value < minimum) {
-                    errors = errors.push(ERROR_MIN_LENGTH);
+                    errors = errors.push(List([ERROR_MIN_LENGTH, Map({min: minimum})]));
                 }
             }
-            if(!notStrictAndZero && exclusiveMinimum) {
+            if(!notStrictAndZero && typeof exclusiveMinimum === 'number') {
                 // when not `strict` and value is zero it is okay
                 if(value <= exclusiveMinimum) {
-                    errors = errors.push(ERROR_MIN_LENGTH);
+                    errors = errors.push(List([ERROR_MIN_LENGTH, Map({exclMin: exclusiveMinimum})]));
                 }
             }
-            if(!notStrictAndZero && maximum) {
+            if(!notStrictAndZero && typeof maximum === 'number') {
                 // when not `strict` and value is zero it is okay
                 if(value > maximum) {
-                    errors = errors.push(ERROR_MAX_LENGTH);
+                    errors = errors.push(List([ERROR_MAX_LENGTH, Map({max: maximum})]));
                 }
             }
-            if(!notStrictAndZero && exclusiveMaximum) {
+            if(!notStrictAndZero && typeof exclusiveMaximum === 'number') {
                 // when not `strict` and value is zero it is okay
                 if(value >= exclusiveMaximum) {
-                    errors = errors.push(ERROR_MAX_LENGTH);
+                    errors = errors.push(List([ERROR_MAX_LENGTH, Map({exclMax: exclusiveMaximum})]));
                 }
             }
         }

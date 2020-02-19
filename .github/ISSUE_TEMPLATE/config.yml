@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: UI-Schema on Spectrum
+    url: https://spectrum.chat/ui-schema
+    about: Ask questions and discuss in our Spectrum community
+  - name: Material-UI
+    url: https://github.com/mui-org/material-ui
+    about: When not about the Design-System Bindings > Docs + Project of Material-UI
+  - name: Bootstrap
+    url: https://github.com/twbs/bootstrap
+    about: When not about the Design-System Bindings > Docs + Project of Bootstrap

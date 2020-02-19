@@ -1,5 +1,5 @@
 import React from "react";
-import {List} from "immutable";
+import {List, Map} from "immutable";
 import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 
 const ERROR_CONST_MISMATCH = 'const-mismatch';
@@ -86,7 +86,7 @@ const ValueValidatorConst = (props) => {
 
     if(!validateConst(type, schema, value)) {
         valid = false;
-        errors = errors.push(ERROR_CONST_MISMATCH);
+        errors = errors.push(List([ERROR_CONST_MISMATCH, Map({const: schema.get('const')})]));
     }
 
     return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
