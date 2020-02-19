@@ -1,21 +1,6 @@
 import {useSchemaTrans} from "../Schema/EditorStore";
 import React from "react";
 
-/*
-const dictionary = createMap({
-    error: {
-        // usage with simple string
-        'required-not-set': 'Please fill out this field',
-
-        // usage with function that generates the string, using the context
-        'multiple-of': ({multipleOf}) => `Must be multiple of ${multipleOf}`,
-
-        // usage with function, using the context, producing a React functional component
-        'multiple-of': ({multipleOf}) => () => <span>Must be multiple of <u>{multipleOf}</u></span>,
-    }
-});
-*/
-
 /**
  * Dictionary Factory
  * pass in the dictionary that should be used, returns a new function that can work with it.

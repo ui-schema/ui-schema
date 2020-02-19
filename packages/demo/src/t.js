@@ -1,5 +1,7 @@
 import {
-    t, createMap, ERROR_CONST_MISMATCH, ERROR_DUPLICATE_ITEMS, ERROR_ENUM_MISMATCH, ERROR_MAX_LENGTH, ERROR_MIN_LENGTH, ERROR_MULTIPLE_OF, ERROR_NOT_FOUND_CONTAINS,
+    t, createMap,
+    ERROR_CONST_MISMATCH, ERROR_DUPLICATE_ITEMS, ERROR_ENUM_MISMATCH,
+    ERROR_MAX_LENGTH, ERROR_MIN_LENGTH, ERROR_MULTIPLE_OF, ERROR_NOT_FOUND_CONTAINS,
     ERROR_NOT_SET, ERROR_PATTERN, ERROR_WRONG_TYPE
 } from "@ui-schema/ui-schema";
 
@@ -37,7 +39,7 @@ const tEN = t(dicEN);
 const tDE = t(dicDE);
 
 const browserT = (text, context) => {
-    const locale = window.localStorage.getItem('locale') || (navigator.language || navigator.userLanguag);
+    const locale = window.localStorage.getItem('locale') || navigator.language;
     return locale === 'de' ? tDE(text, context) : tEN(text, context);
 };
 

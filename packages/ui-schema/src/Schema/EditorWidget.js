@@ -11,6 +11,8 @@ let DumpWidgetRenderer = ({Widget, widgetStack: widgetStack, ...props}) => {
 };
 DumpWidgetRenderer = memo(DumpWidgetRenderer);
 
+const NoWidget = ({scope, matching}) => <React.Fragment>missing-{scope}-{matching}</React.Fragment>;
+
 let ValueWidgetRenderer = ({schema, parentSchema, storeKeys, ...props}) => {
     const {store, onChange,} = useSchemaData();
     const {widgets,} = useSchemaWidgets();
@@ -22,15 +24,17 @@ let ValueWidgetRenderer = ({schema, parentSchema, storeKeys, ...props}) => {
     let Widget = null;
 
     if(widget_name && widgets.custom) {
-        if(!widgets.custom[widget_name]) {
-            return 'missing-custom-' + widget_name;
+        if(widgets.custom[widget_name]) {
+            Widget = widgets.custom[widget_name];
+        } else {
+            Widget = () => <NoWidget scope={'custom'} matching={widget_name}/>;
         }
-        Widget = widgets.custom[widget_name];
     } else if(type && widgets.types) {
-        if(!widgets.types[type]) {
-            return 'missing-type-' + type;
+        if(widgets.types[type]) {
+            Widget = widgets.types[type];
+        } else {
+            Widget = () => <NoWidget scope={'type'} matching={type}/>;
         }
-        Widget = widgets.types[type];
     }
 
     return Widget ? <ValuelessWidgetRenderer
