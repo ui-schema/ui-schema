@@ -4,6 +4,7 @@ import {NextPluginRenderer} from "@ui-schema/ui-schema";
 const SchemaGridItem = ({children, schema}) => {
     let classNameArray = [];
     const view = schema ? schema.getIn(['view']) : undefined;
+    classNameArray.push('col-xs-12');
     if(view && view.getIn(['sizeXs'])) {
         classNameArray.push('col-xs-' + view.getIn(['sizeXs']));
     }
@@ -28,11 +29,11 @@ const SchemaGridItem = ({children, schema}) => {
     </div>
 };
 
-const RootRenderer = props => <div>{props.children}</div>;
+const RootRenderer = props => <React.Fragment>{props.children}</React.Fragment>;
 
-const GroupRenderer = ({schema, children}) => <SchemaGridItem schema={schema}>
+const GroupRenderer = ({children}) => <div className={'row'}>
     {children}
-</SchemaGridItem>;
+</div>;
 
 const SchemaGridHandler = (props) => {
     const {
