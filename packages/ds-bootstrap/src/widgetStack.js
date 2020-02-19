@@ -1,4 +1,4 @@
-import {RootRenderer, GroupRenderer, SchemaGridHandler} from "./Grid";
+import {SchemaGridHandler} from "./Grid";
 import {
     DefaultHandler, ValidityReporter, DependentHandler,
     MinMaxValidator, TypeValidator, MultipleOfValidator,
@@ -21,13 +21,4 @@ const widgetStack = [
     ValidityReporter,
 ];
 
-const widgets = {
-    RootRenderer,
-    GroupRenderer,
-    widgetStack,
-    ErrorFallback: 'todo',
-    types: {},
-    custom: {},
-};
-
-export {widgets};
+export {widgetStack};

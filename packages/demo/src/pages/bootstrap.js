@@ -34,12 +34,14 @@ const MainStore = () => {
 };
 
 const Main = () => <React.Fragment>
-    <MainStore/>
+    <div>
+        <MainStore/>
+    </div>
 </React.Fragment>;
 
 const Bootstrap = () => {
     return <BootstrapDashboard>
-        <Main/>
+        <Main main={Main}/>
     </BootstrapDashboard>
 };
 
