@@ -5,20 +5,20 @@ const SchemaGridItem = ({children, schema}) => {
     let classNameArray = [];
     const view = schema ? schema.getIn(['view']) : undefined;
     classNameArray.push('col-xs-12');
-    if(view && view.getIn(['sizeXs'])) {
-        classNameArray.push('col-xs-' + view.getIn(['sizeXs']));
+    if(view && view.get('sizeXs')) {
+        classNameArray.push('col-xs-' + view.get('sizeXs'));
     }
-    if(schema.getIn(['view', 'sizeSm'])) {
-        classNameArray.push('col-sm-' + schema.getIn(['view', 'sizeSm']));
+    if(view && view.get('sizeSm')) {
+        classNameArray.push('col-sm-' + view.get('sizeSm'));
     }
-    if(schema.getIn(['view', 'sizeMd'])) {
-        classNameArray.push('col-md-' + schema.getIn(['view', 'sizeMd']));
+    if(view && view.get('sizeMd')) {
+        classNameArray.push('col-md-' + view.get('sizeMd'));
     }
-    if(schema.getIn(['view', 'sizeLg'])) {
-        classNameArray.push('col-lg-' + schema.getIn(['view', 'sizeLg']));
+    if(view && view.get('sizeLg')) {
+        classNameArray.push('col-lg-' + view.get('sizeLg'));
     }
-    if(schema.getIn(['view', 'sizeXl'])) {
-        classNameArray.push('col-xl-' + schema.getIn(['view', 'sizeXl']));
+    if(view && view.get('sizeXl')) {
+        classNameArray.push('col-xl-' + view.get('sizeXl'));
     }
 
 
