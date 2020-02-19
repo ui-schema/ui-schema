@@ -1,12 +1,13 @@
 import React from "react";
 import {
-    FormControl, FormLabel, FormHelperText, FormGroup, FormControlLabel,
+    FormControl, FormLabel, FormGroup, FormControlLabel,
     Switch, Checkbox, RadioGroup, Radio, makeStyles
 } from "@material-ui/core";
 import {grey} from "@material-ui/core/colors";
 import {List} from "immutable";
 import {beautifyKey,} from "@ui-schema/ui-schema";
 import {useId} from "react-id-generator";
+import {ValidityHelperText} from "../Component/LocaleHelperText";
 
 const switchStyle = makeStyles(theme => ({
     switchBase: {
@@ -17,7 +18,6 @@ const switchStyle = makeStyles(theme => ({
         backgroundColor: ({error}) => error ? theme.palette.error.dark : (theme.palette.type === 'dark' ? grey[500] : grey[300]),
     },
 }));
-
 
 const BoolRenderer = ({ownKey, value, onChange, storeKeys, showValidity, valid, required}) => {
     const currentVal = !!value;
@@ -80,9 +80,7 @@ const OptionsCheck = ({ownKey, schema, value, onChange, storeKeys, showValidity,
             }).valueSeq() : null}
         </FormGroup>
 
-        {showValidity && errors.size ? errors.map((error, i) =>
-            <FormHelperText key={i}>{Array.isArray(error) ? error[0] : error}</FormHelperText>
-        ).valueSeq() : null}
+        <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </FormControl>;
 };
 
@@ -108,9 +106,7 @@ const OptionsRadio = ({ownKey, schema, value, onChange, storeKeys, showValidity,
             }).valueSeq() : null}
         </RadioGroup>
 
-        {showValidity && errors.size ? errors.map((error, i) =>
-            <FormHelperText key={i}>{Array.isArray(error) ? error[0] : error}</FormHelperText>
-        ).valueSeq() : null}
+        <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </FormControl>
 };
 

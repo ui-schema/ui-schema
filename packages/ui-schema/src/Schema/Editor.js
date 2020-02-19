@@ -1,7 +1,7 @@
 import React from 'react';
 import {List} from 'immutable';
 import {
-    EditorDataProvider, EditorValidityProvider, EditorWidgetsProvider,
+    EditorDataProvider, EditorTransProvider, EditorValidityProvider, EditorWidgetsProvider,
     useSchemaData, useSchemaValidity, useSchemaWidgets,
     withWidgets
 } from "./EditorStore";
@@ -111,6 +111,7 @@ const NestedSchemaEditor = ({schema, parentSchema, storeKeys, showValidity, leve
  * @param {Map|undefined} validity
  * @param {boolean} showValidity
  * @param {function(function): Map} onValidity
+ * @param {function(string, *): string|React.Component} t
  * @return {*}
  * @constructor
  */
@@ -129,15 +130,17 @@ let SchemaEditorProvider = ({
                                 children,
                                 schema,
                                 store, onChange,
-                                widgets, // t,
+                                widgets, t,
                                 validity, showValidity, onValidity,
                             }) => (
     <EditorWidgetsProvider widgets={widgets}>
-        <EditorValidityProvider validity={validity} showValidity={showValidity} onValidity={onValidity}>
-            <EditorDataProvider store={store} onChange={onChange} schema={schema}>
-                {children}
-            </EditorDataProvider>
-        </EditorValidityProvider>
+        <EditorTransProvider t={t}>
+            <EditorValidityProvider validity={validity} showValidity={showValidity} onValidity={onValidity}>
+                <EditorDataProvider store={store} onChange={onChange} schema={schema}>
+                    {children}
+                </EditorDataProvider>
+            </EditorValidityProvider>
+        </EditorTransProvider>
     </EditorWidgetsProvider>
 );
 

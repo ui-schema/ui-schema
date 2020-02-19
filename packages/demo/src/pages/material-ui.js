@@ -6,6 +6,7 @@ import {schemaWCombining} from "../schemas/demoCombining";
 import {schemaWConditional, schemaWConditional1} from "../schemas/demoConditional";
 import {schemaWDep, schemaWDep1, schemaWDep2} from "../schemas/demoDependencies";
 import {dataDemoMain, schemaDemoMain, schemaUser} from "../schemas/demoMain";
+import {useTheme} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import {Button} from "@material-ui/core";
@@ -14,6 +15,7 @@ import {widgets,} from "@ui-schema/ds-material";
 import {SchemaEditor, isInvalid, createOrderedMap, createMap} from "@ui-schema/ui-schema";
 import {SchemaDebug} from "../component/SchemaDebug";
 import {Map} from 'immutable';
+import {browserT} from "../t";
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
@@ -30,6 +32,7 @@ const MainStore = () => {
             validity={validity}
             showValidity={showValidity}
             onValidity={setValidity}
+            t={browserT}
         >
             <SchemaDebug setSchema={setSchema}/>
         </SchemaEditor>
@@ -54,6 +57,7 @@ const MainDummy = ({schema}) => {
             validity={validity}
             showValidity={showValidity}
             onValidity={setValidity}
+            t={browserT}
         >
             <SchemaDebug/>
         </SchemaEditor>
@@ -72,6 +76,7 @@ const DemoUser = () => {
                 store={data}
                 onChange={setData}
                 widgets={widgets}
+                t={browserT}
             >
                 <SchemaDebug/>
             </SchemaEditor>
@@ -91,6 +96,7 @@ const DummyRenderer = ({id, schema, toggleDummy, getDummy, open, classes}) => <R
 
 const Main = ({classes = {}}) => {
     const [showDummy, setShowVDummy] = React.useState({});
+    const theme = useTheme();
 
     const toggleDummy = id => {
         let tmp = {...showDummy};
@@ -102,7 +108,7 @@ const Main = ({classes = {}}) => {
     };
 
     return <React.Fragment>
-        <Grid item xs={12}>
+        <Grid item xs={12} className={'t-' + theme.palette.type}>
             <Paper className={classes.paper}>
                 <MainStore/>
             </Paper>

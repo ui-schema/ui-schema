@@ -103,8 +103,7 @@ const ArrayValidator = (props) => {
         }
     }
 
-
     return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
 };
 
-export {ArrayValidator, ERROR_DUPLICATE_ITEMS}
+export {ArrayValidator, ERROR_DUPLICATE_ITEMS, ERROR_NOT_FOUND_CONTAINS}

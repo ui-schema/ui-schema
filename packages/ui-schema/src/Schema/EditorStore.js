@@ -3,10 +3,12 @@ import React from "react";
 const EditorDataContext = React.createContext({});
 const EditorValidityContext = React.createContext({});
 const EditorWidgetsContext = React.createContext({});
+const EditorTransContext = React.createContext({});
 
 let EditorDataProvider = ({children, ...props}) => <EditorDataContext.Provider value={props} children={children}/>;
 let EditorValidityProvider = ({children, ...props}) => <EditorValidityContext.Provider value={props} children={children}/>;
 let EditorWidgetsProvider = ({children, ...props}) => <EditorWidgetsContext.Provider value={props} children={children}/>;
+let EditorTransProvider = ({children, ...props}) => <EditorTransContext.Provider value={props} children={children}/>;
 
 const useSchemaData = () => {
     return React.useContext(EditorDataContext);
@@ -18,6 +20,14 @@ const useSchemaValidity = () => {
 
 const useSchemaWidgets = () => {
     return React.useContext(EditorWidgetsContext);
+};
+
+const useSchemaTrans = () => {
+    let context = React.useContext(EditorTransContext);
+    if(!context.t) {
+        context.t = t => t;
+    }
+    return context;
 };
 
 const withData = (Component) => {
@@ -41,9 +51,17 @@ const withWidgets = (Component) => {
     }
 };
 
+const withTrans = (Component) => {
+    return p => {
+        const {t} = useSchemaTrans();
+        return <Component t={t} {...p}/>
+    }
+};
+
 export {
     useSchemaData, withData,
     useSchemaValidity, withValidity,
     useSchemaWidgets, withWidgets,
-    EditorDataProvider, EditorValidityProvider, EditorWidgetsProvider,
+    useSchemaTrans, withTrans,
+    EditorDataProvider, EditorValidityProvider, EditorWidgetsProvider, EditorTransProvider,
 };

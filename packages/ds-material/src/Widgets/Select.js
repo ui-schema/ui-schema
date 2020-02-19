@@ -1,14 +1,15 @@
 import React from "react";
 import {
-    FormControl, FormHelperText, Checkbox, InputLabel,
+    FormControl, Checkbox, InputLabel,
     MenuItem, Select as MuiSelect, ListItemText,
 } from "@material-ui/core";
 import {beautifyKey} from "@ui-schema/ui-schema";
 import {List} from "immutable";
+import {ValidityHelperText} from "../Component/LocaleHelperText";
 
 const Select = ({
                     multiple,
-                    ownKey, schema, value, onChange, storeKeys,
+                    storeKeys, ownKey, schema, value, onChange,
                     showValidity, valid, required, errors
                 }) => {
     if(!schema) return null;
@@ -55,9 +56,7 @@ const Select = ({
             ).valueSeq() : null}
         </MuiSelect>
 
-        {showValidity && errors.size ? errors.map((error, i) =>
-            <FormHelperText key={i}>{Array.isArray(error) ? error[0] : error}</FormHelperText>
-        ).valueSeq() : null}
+        <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </FormControl>;
 };
 
