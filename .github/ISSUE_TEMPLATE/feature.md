@@ -1,18 +1,19 @@
 ---
 name: Feature request
-about: Suggest new behaviours or widgets for the project.
+about: Suggest new behaviours and features for the project.
 ---
 
 <!-- Add a general summary in the title above  -->
 <!-- Selected checkbox is [X] -->
 
-- [ ] I have searched the [issues](https://github.com/mui-org/material-ui/issues) of this repository and believe that this is not a duplicate.
+- [] I have searched the [issues](https://github.com/ui-schema/ui-schema/issues) of this repository and believe that this is not a duplicate.
 
 Please select the scope if you know:
 
-- [ ] UI-Schema (Core, JSON-Schema)
-- [ ] DS-Material (Widget for Material UI)
-- [ ] DS-Bootstrap (Widget for Bootstrap)
+- [] UI-Schema (Core, JSON-Schema)
+- [] DS-Material
+- [] DS-Bootstrap
+- [] other:
 
 ## Summary
 
