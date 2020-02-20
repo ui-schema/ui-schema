@@ -11,7 +11,7 @@ const DefaultValueHandler = ({defaultVal, ...props}) => {
         }
     }, [onChange, storeKeys, defaultVal]);
 
-    if(typeof value !== 'undefined') {
+    if(typeof value === 'undefined') {
         value = defaultVal;
     }
 
