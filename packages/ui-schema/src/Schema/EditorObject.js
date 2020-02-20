@@ -3,15 +3,15 @@ import {SchemaEditorRenderer} from "./Editor";
 import {memo} from "../Utils/memo";
 
 let ObjectRenderer = ({
-                          GroupRenderer,// temporary: HOC in SchemaEditorRenderer
-                          level, schema, storeKeys, ...props
+                          widgets, level, schema, storeKeys, ...props
                       }) => {
     const properties = schema.get('properties');
 
-    if(!GroupRenderer) {
+    if(!widgets.GroupRenderer) {
         console.error('Widget GroupRenderer not existing');
         return null;
     }
+    const GroupRenderer = widgets.GroupRenderer;
 
     // no-properties could come from
     //   e.g. combining/conditional schemas which are currently not applied (e.g. a condition fails)

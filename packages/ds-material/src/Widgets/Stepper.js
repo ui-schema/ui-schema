@@ -2,7 +2,7 @@ import React from "react";
 import {
     makeStyles, Stepper as MuiStepper, Step as MuiStep, StepLabel, Button, Typography,
 } from "@material-ui/core";
-import {beautifyKey, NestedSchemaEditor, isInvalid, useSchemaValidity} from "@ui-schema/ui-schema";
+import {beautifyKey, NestedSchemaEditor, isInvalid, memo, extractValidity} from "@ui-schema/ui-schema";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -17,145 +17,140 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-
 const Step = ({schema, storeKeys, level, ...p}) => {
     return <NestedSchemaEditor storeKeys={storeKeys} schema={schema.delete('widget')} level={level + 1} {...p}/>
 };
 
-const Stepper = ({
-                     //ownKey, required,
-                     schema, storeKeys,
-                 }) => {
-    if(!schema) return null;
+const Stepper = extractValidity(memo(
+    ({
+         schema, storeKeys, validity,
+     }) => {
+        if(!schema) return null;
 
-    const [showValidity, setShowValidity] = React.useState(false);
+        const [showValidity, setShowValidity] = React.useState(false);
 
-    const classes = useStyles();
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [skipped, setSkipped] = React.useState(new Set());
-    const steps = schema.get('properties');
-    const stepOrder = steps.keySeq();
+        const classes = useStyles();
+        const [activeStep, setActiveStep] = React.useState(0);
+        const [skipped, setSkipped] = React.useState(new Set());
+        const steps = schema.get('properties');
+        const stepOrder = steps.keySeq();
 
-    const {validity} = useSchemaValidity();
-    let activeStepInvalid = isInvalid(validity, storeKeys.push(stepOrder.get(activeStep)));
+        let activeStepInvalid = isInvalid(validity, [stepOrder.get(activeStep)]);
 
-    React.useEffect(() => {
-        //setActiveStep(0)
-    }, [setActiveStep, schema]);
+        const isStepOptional = step => {
+            return step === 1;
+        };
 
-    const isStepOptional = step => {
-        return step === 1;
-    };
+        const isStepSkipped = step => {
+            return skipped.has(step);
+        };
 
-    const isStepSkipped = step => {
-        return skipped.has(step);
-    };
+        const handleNext = () => {
+            if(activeStepInvalid) {
+                setShowValidity(true);
+            } else {
+                setShowValidity(false);
+                let newSkipped = skipped;
+                if(isStepSkipped(activeStep)) {
+                    newSkipped = new Set(newSkipped.values());
+                    newSkipped.delete(activeStep);
+                }
 
-    const handleNext = () => {
-        if(activeStepInvalid) {
-            setShowValidity(true);
-        } else {
-            setShowValidity(false);
-            let newSkipped = skipped;
-            if(isStepSkipped(activeStep)) {
-                newSkipped = new Set(newSkipped.values());
-                newSkipped.delete(activeStep);
+                setActiveStep(prevActiveStep => prevActiveStep + 1);
+                setSkipped(newSkipped);
+            }
+        };
+
+        const handleBack = () => {
+            setActiveStep(prevActiveStep => prevActiveStep - 1);
+        };
+
+        const handleSkip = () => {
+            if(!isStepOptional(activeStep)) {
+                // You probably want to guard against something like this,
+                // it should never occur unless someone's actively trying to break something.
+                throw new Error("You can't skip a step that isn't optional.");
             }
 
             setActiveStep(prevActiveStep => prevActiveStep + 1);
-            setSkipped(newSkipped);
-        }
-    };
+            setSkipped(prevSkipped => {
+                const newSkipped = new Set(prevSkipped.values());
+                newSkipped.add(activeStep);
+                return newSkipped;
+            });
+        };
 
-    const handleBack = () => {
-        setActiveStep(prevActiveStep => prevActiveStep - 1);
-    };
+        const handleReset = () => {
+            setActiveStep(0);
+        };
 
-    const handleSkip = () => {
-        if(!isStepOptional(activeStep)) {
-            // You probably want to guard against something like this,
-            // it should never occur unless someone's actively trying to break something.
-            throw new Error("You can't skip a step that isn't optional.");
-        }
-
-        setActiveStep(prevActiveStep => prevActiveStep + 1);
-        setSkipped(prevSkipped => {
-            const newSkipped = new Set(prevSkipped.values());
-            newSkipped.add(activeStep);
-            return newSkipped;
-        });
-    };
-
-    const handleReset = () => {
-        setActiveStep(0);
-    };
-
-    return <div className={classes.root}>
-        <MuiStepper activeStep={activeStep}>
-            {steps.map((step, name) => {
-                const stepProps = {};
-                const labelProps = {};
-                /*if(isStepOptional(name)) {
-                    labelProps.optional = <Typography variant="caption">Optional</Typography>;
-                }*/
-                if(isStepSkipped(name)) {
-                    stepProps.completed = false;
-                }
-                return (
-                    <MuiStep key={name} {...stepProps}>
-                        <StepLabel {...labelProps}>{beautifyKey(name)}</StepLabel>
-                    </MuiStep>
-                );
-            }).valueSeq()}
-        </MuiStepper>
-        <div>
-            {activeStep === stepOrder.size ? (
-                <div>
-                    <Typography className={classes.instructions}>
-                        All steps completed - you&apos;re finished
-                    </Typography>
-                    <Button onClick={handleReset} className={classes.button}>
-                        Reset
-                    </Button>
-                </div>
-            ) : (
-                <div>
-                    <Typography className={classes.instructions}>{beautifyKey(stepOrder.get(activeStep))}</Typography>
-
-                    <NestedSchemaEditor
-                        showValidity={showValidity}
-                        storeKeys={storeKeys.push(stepOrder.get(activeStep))}
-                        schema={steps.get(stepOrder.get(activeStep))}
-                    />
-
-                    <div style={{margin: '24px 0 0 0'}}>
-                        <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                            Back
+        return <div className={classes.root}>
+            <MuiStepper activeStep={activeStep}>
+                {steps.map((step, name) => {
+                    const stepProps = {};
+                    const labelProps = {};
+                    /*if(isStepOptional(name)) {
+                        labelProps.optional = <Typography variant="caption">Optional</Typography>;
+                    }*/
+                    if(isStepSkipped(name)) {
+                        stepProps.completed = false;
+                    }
+                    return (
+                        <MuiStep key={name} {...stepProps}>
+                            <StepLabel {...labelProps}>{beautifyKey(name)}</StepLabel>
+                        </MuiStep>
+                    );
+                }).valueSeq()}
+            </MuiStepper>
+            <div>
+                {activeStep === stepOrder.size ? (
+                    <div>
+                        <Typography className={classes.instructions}>
+                            All steps completed - you&apos;re finished
+                        </Typography>
+                        <Button onClick={handleReset} className={classes.button}>
+                            Reset
                         </Button>
-                        {isStepOptional(activeStep) && (
+                    </div>
+                ) : (
+                    <div>
+                        <Typography className={classes.instructions}>{beautifyKey(stepOrder.get(activeStep))}</Typography>
+
+                        <NestedSchemaEditor
+                            showValidity={showValidity}
+                            storeKeys={storeKeys.push(stepOrder.get(activeStep))}
+                            schema={steps.get(stepOrder.get(activeStep))}
+                        />
+
+                        <div style={{margin: '24px 0 0 0'}}>
+                            <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                                Back
+                            </Button>
+                            {isStepOptional(activeStep) && (
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleSkip}
+                                    className={classes.button}
+                                >
+                                    Skip
+                                </Button>
+                            )}
+
                             <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={handleSkip}
+                                onClick={handleNext}
                                 className={classes.button}
                             >
-                                Skip
+                                {activeStep === steps.size - 1 ? 'Finish' : 'Next'}
                             </Button>
-                        )}
-
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleNext}
-                            className={classes.button}
-                        >
-                            {activeStep === steps.size - 1 ? 'Finish' : 'Next'}
-                        </Button>
+                        </div>
                     </div>
-                </div>
-            )}
-        </div>
-    </div>;
-};
+                )}
+            </div>
+        </div>;
+    }
+));
 
 export {Stepper, Step};

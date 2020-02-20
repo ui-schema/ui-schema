@@ -5,7 +5,7 @@ import {
 } from "@material-ui/core";
 import {grey} from "@material-ui/core/colors";
 import {List} from "immutable";
-import {beautifyKey,} from "@ui-schema/ui-schema";
+import {beautifyKey, extractValue, memo,} from "@ui-schema/ui-schema";
 import {useId} from "react-id-generator";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
@@ -37,7 +37,7 @@ const BoolRenderer = ({ownKey, value, onChange, storeKeys, showValidity, valid, 
     />;
 };
 
-const OptionCheck = ({currentValue, onChange, label}) => {
+const OptionCheck = ({currentValue, label, onChange}) => {
     const formId = useId(1, 'ids-')[0];
 
     return <FormControlLabel
@@ -52,32 +52,37 @@ const OptionCheck = ({currentValue, onChange, label}) => {
     />;
 };
 
-const OptionsCheck = ({ownKey, schema, value, onChange, storeKeys, showValidity, valid, required, errors}) => {
-    const enum_val = schema.get('enum');
-    if(!enum_val) return null;
+const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChange}) => enumVal ?
+    enumVal.map((enum_name) => {
+        const currentValue = value && value.contains && typeof value.contains(enum_name) !== 'undefined' ? value.contains(enum_name) : false;
+
+        return <OptionCheck
+            key={enum_name}
+            currentValue={currentValue}
+            onChange={() => {
+                if(currentValue) {
+                    onChange(store => store.setIn(storeKeys, value.delete(value.indexOf(enum_name))));
+                } else {
+                    onChange(store => store.setIn(
+                        storeKeys,
+                        value ? value.push(enum_name) : List([]).push(enum_name))
+                    );
+                }
+            }}
+            label={beautifyKey(enum_name)}
+        />
+    }).valueSeq()
+    : null
+));
+
+const OptionsCheck = ({ownKey, schema, storeKeys, showValidity, valid, required, errors}) => {
+    const enumVal = schema.get('enum');
+    if(!enumVal) return null;
 
     return <FormControl required={required} error={!valid && showValidity} component="fieldset">
         <FormLabel component="legend">{beautifyKey(ownKey)}</FormLabel>
         <FormGroup>
-            {enum_val ? enum_val.map((enum_name) => {
-                const currentValue = value && value.contains && typeof value.contains(enum_name) !== 'undefined' ? value.contains(enum_name) : false;
-
-                return <OptionCheck
-                    key={enum_name}
-                    currentValue={currentValue}
-                    onChange={() => {
-                        if(currentValue) {
-                            onChange(store => store.setIn(storeKeys, value.delete(value.indexOf(enum_name))));
-                        } else {
-                            onChange(store => store.setIn(
-                                storeKeys,
-                                value ? value.push(enum_name) : List([]).push(enum_name))
-                            );
-                        }
-                    }}
-                    label={beautifyKey(enum_name)}
-                />
-            }).valueSeq() : null}
+            <OptionsCheckValue enumVal={enumVal} storeKeys={storeKeys}/>
         </FormGroup>
 
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
@@ -85,15 +90,15 @@ const OptionsCheck = ({ownKey, schema, value, onChange, storeKeys, showValidity,
 };
 
 const OptionsRadio = ({ownKey, schema, value, onChange, storeKeys, showValidity, valid, required, errors}) => {
-    const enum_val = schema.get('enum');
-    if(!enum_val) return null;
+    const enumVal = schema.get('enum');
+    if(!enumVal) return null;
 
     const currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '');
 
     return <FormControl required={required} error={!valid && showValidity} component="fieldset">
         <FormLabel component="legend">{beautifyKey(ownKey)}</FormLabel>
         <RadioGroup>
-            {enum_val ? enum_val.map((enum_name) => {
+            {enumVal ? enumVal.map((enum_name) => {
                 return <FormControlLabel
                     key={enum_name}
                     control={<Radio

@@ -38,7 +38,7 @@ const schemaDemoMain = {
                     widget: "Step",
                     properties: {
                         topics: {
-                            type: "string",
+                            type: "array",
                             widget: "SelectMulti",
                             view: {
                                 sizeMd: 3

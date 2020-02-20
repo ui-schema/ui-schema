@@ -36,8 +36,6 @@ JSON-Schema form + ui generator for any design system, first-class support for [
 > UI-Schema is an extract and rewrite of the form-generator logic used internally by our admin panel.
 > 
 > The fundamentals are working, but a lot of JSON-schema stuff, code testing and widgets needs to be done.
->
-> This readme currently serves as a mix of documentation, completion tracking and big-picture.
 
 ## Schema
 

@@ -53,7 +53,7 @@ const DependentRenderer = ({dependencies, dependentSchemas, ...props}) => {
         } else {
             // property-dependencies
 
-            // todo: not implemented, usage scenario needed (difference to `required`?)
+            // todo: not implemented, should be handled as dynamic "is-not-empty then required"
         }
     });
 

@@ -1,4 +1,5 @@
 import React from "react";
+import {getDisplayName} from "../Utils/getDisplayName";
 
 const EditorDataContext = React.createContext({});
 const EditorValidityContext = React.createContext({});
@@ -22,45 +23,78 @@ const useSchemaWidgets = () => {
     return React.useContext(EditorWidgetsContext);
 };
 
+const tDefault = t => t;
+
 const useSchemaTrans = () => {
     let context = React.useContext(EditorTransContext);
     if(!context.t) {
-        context.t = t => t;
+        context.t = tDefault;
     }
     return context;
 };
 
 const withData = (Component) => {
-    return p => {
+    const WithData = p => {
         const schemaData = useSchemaData();
         return <Component {...schemaData} {...p}/>
-    }
+    };
+    WithData.displayName = `WithData(${getDisplayName(Component)})`;
+    return WithData;
+};
+
+/**
+ * HOC to extract the value with the storeKeys, pushing only the component's value and onChange to it, not the whole store
+ * @param Component
+ * @return {function(*): *}
+ */
+const extractValue = (Component) => {
+    const ExtractValue = p => {
+        const {store, onChange} = useSchemaData();
+        return <Component {...p} onChange={onChange} value={store ? store.getIn(p.storeKeys) : undefined}/>
+    };
+    ExtractValue.displayName = `ExtractValue(${getDisplayName(Component)})`;
+    return ExtractValue;
+};
+
+const extractValidity = (Component) => {
+    const ExtractValidity = p => {
+        const {validity, onValidity, showValidity} = useSchemaValidity();
+        return <Component {...p} validity={validity ? validity.getIn(p.storeKeys) : undefined} onValidity={onValidity} showValidity={showValidity}/>
+    };
+    ExtractValidity.displayName = `ExtractValidity(${getDisplayName(Component)})`;
+    return ExtractValidity;
 };
 
 const withValidity = (Component) => {
-    return p => {
+    const WithValidity = p => {
         const schemaValidity = useSchemaValidity();
-        return <Component {...schemaValidity} {...p}/>
-    }
+        return <Component {...p} {...schemaValidity}/>
+    };
+    WithValidity.displayName = `WithValidity(${getDisplayName(Component)})`;
+    return WithValidity;
 };
 
 const withWidgets = (Component) => {
-    return p => {
+    const WithWidgets = p => {
         const {widgets} = useSchemaWidgets();
         return <Component widgets={widgets} {...p}/>
-    }
+    };
+    WithWidgets.displayName = `WithWidgets(${getDisplayName(Component)})`;
+    return WithWidgets;
 };
 
 const withTrans = (Component) => {
-    return p => {
+    const WithTans = p => {
         const {t} = useSchemaTrans();
         return <Component t={t} {...p}/>
-    }
+    };
+    WithTans.displayName = `WithTans(${getDisplayName(Component)})`;
+    return WithTans;
 };
 
 export {
-    useSchemaData, withData,
-    useSchemaValidity, withValidity,
+    useSchemaData, withData, extractValue,
+    useSchemaValidity, withValidity, extractValidity,
     useSchemaWidgets, withWidgets,
     useSchemaTrans, withTrans,
     EditorDataProvider, EditorValidityProvider, EditorWidgetsProvider, EditorTransProvider,
