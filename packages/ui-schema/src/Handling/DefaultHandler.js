@@ -15,7 +15,7 @@ const DefaultValueHandler = ({defaultVal, ...props}) => {
         value = defaultVal;
     }
 
-    return <NextPluginRenderer {...props}/>;
+    return <NextPluginRenderer {...props} value={value}/>;
 };
 
 const DefaultHandler = (props) => {
