@@ -16,12 +16,8 @@ const validateMultipleOf = (type, schema, value) => {
 };
 
 const MultipleOfValidator = (props) => {
-    const {
-        schema, value
-    } = props;
-    let {errors} = props;
-
-    let {valid} = props;
+    const {schema, value} = props;
+    let {errors, valid} = props;
 
     let type = schema.get('type');
 

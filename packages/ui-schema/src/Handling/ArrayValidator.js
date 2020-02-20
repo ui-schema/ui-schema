@@ -32,12 +32,8 @@ const validateArray = (schema, value, find = false) => {
 };
 
 const ArrayValidator = (props) => {
-    const {
-        schema, value
-    } = props;
-    let {errors} = props;
-
-    let {valid} = props;
+    const {schema, value} = props;
+    let {errors, valid} = props;
 
     let type = schema.get('type');
 

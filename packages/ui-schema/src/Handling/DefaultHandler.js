@@ -19,9 +19,7 @@ const DefaultValueHandler = ({defaultVal, ...props}) => {
 };
 
 const DefaultHandler = (props) => {
-    const {
-        schema,
-    } = props;
+    const {schema,} = props;
 
     let defaultVal = schema.get('default');
 

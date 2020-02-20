@@ -19,12 +19,8 @@ const validatePattern = (type, value, pattern) => {
 };
 
 const PatternValidator = (props) => {
-    const {
-        schema, value
-    } = props;
-    let {errors} = props;
-
-    let {valid} = props;
+    const {schema, value} = props;
+    let {errors, valid} = props;
 
     let type = schema.get('type');
     let pattern = schema.get('pattern');

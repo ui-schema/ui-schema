@@ -108,9 +108,7 @@ const MinMaxValidator = (props) => {
         required,
     } = props;
 
-    let {errors} = props;
-
-    let {valid} = props;
+    let {errors, valid} = props;
 
     let type = schema.get('type');
 

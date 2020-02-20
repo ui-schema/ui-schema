@@ -30,12 +30,8 @@ const validateEnum = (type, schema, value) => {
 };
 
 const ValueValidatorEnum = (props) => {
-    const {
-        schema, value
-    } = props;
-    let {errors} = props;
-
-    let {valid} = props;
+    const {schema, value} = props;
+    let {errors, valid} = props;
 
     let type = schema.get('type');
     /**
@@ -72,12 +68,8 @@ const validateConst = (type, schema, value) => {
 };
 
 const ValueValidatorConst = (props) => {
-    const {
-        schema, value
-    } = props;
-    let {errors} = props;
-
-    let {valid} = props;
+    const {schema, value} = props;
+    let {errors, valid} = props;
 
     let type = schema.get('type');
     let _const = schema.get('const');
