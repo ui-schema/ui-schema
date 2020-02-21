@@ -1,6 +1,5 @@
 import React from "react";
 import {NextPluginRenderer} from "@ui-schema/ui-schema";
-import clsx from "clsx";
 
 const SchemaGridItem = ({children, schema}) => {
     let classNameArray = [];
