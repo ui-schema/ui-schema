@@ -6,6 +6,7 @@ import {schemaWCombining} from "../schemas/demoCombining";
 import {schemaWConditional, schemaWConditional1} from "../schemas/demoConditional";
 import {schemaWDep, schemaWDep1, schemaWDep2} from "../schemas/demoDependencies";
 import {dataDemoMain, schemaDemoMain, schemaUser} from "../schemas/demoMain";
+import {schemaGrid} from "../schemas/demoGrid";
 import {useTheme} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -130,6 +131,9 @@ const Main = ({classes = {}}) => {
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer id={'schemaWDep2'} schema={schemaWDep2} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer id={'schemaGrid'} schema={schemaGrid} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
         </Grid>
         <Grid item xs={12}>
             <Button style={{marginBottom: 12}} onClick={() => toggleDummy('demoUser')} variant={getDummy('demoUser') ? 'contained' : 'outlined'}>

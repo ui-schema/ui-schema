@@ -32,9 +32,9 @@ const Trans = ({text, context}) => {
     const {t} = useSchemaTrans();
     const Translated = t(text, context);
 
-    return typeof Translated === 'string' || typeof Translated === 'number' ?
+    return typeof Translated === 'string' || typeof Translated === 'number' || typeof Translated === 'object' ?
         Translated :
-        typeof Translated === 'function' || typeof Translated === 'object' ?
+        typeof Translated === 'function' ?
             <Translated/> :
             text
 };

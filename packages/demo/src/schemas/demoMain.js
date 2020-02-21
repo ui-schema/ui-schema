@@ -83,12 +83,14 @@ const schemaDemoMain = {
             type: "number",
             minimum: 2,
             maximum: 10,
+            tt: 'lower',
             view: {
                 sizeMd: 3
             }
         },
         qty2: {
             type: "number",
+            tt: 'upper',
             exclusiveMinimum: 2,
             exclusiveMaximum: 10,
             view: {
@@ -114,7 +116,7 @@ const schemaDemoMain = {
                 sizeMd: 3
             }
         },
-        teeeext: {
+        comment: {
             type: "string",
             widget: "Text",
             view: {

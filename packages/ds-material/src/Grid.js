@@ -31,8 +31,12 @@ const GroupRenderer = ({children}) => <Grid container spacing={2} wrap={'wrap'}>
 
 const SchemaGridHandler = (props) => {
     const {
-        schema,
+        schema, noGrid
     } = props;
+
+    if(noGrid) {
+        return <NextPluginRenderer {...props}/>;
+    }
 
     return <SchemaGridItem schema={schema}>
         <NextPluginRenderer {...props}/>
