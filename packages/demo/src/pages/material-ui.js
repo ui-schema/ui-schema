@@ -21,7 +21,7 @@ const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [validity, setValidity] = React.useState(createMap());
     const [data, setData] = React.useState(createOrderedMap(dataDemoMain));
-    const [schema, setSchema] = React.useState(createOrderedMap(schemaDemoMain));
+    const [schema, setSchema] = React.useState(createOrderedMap(schemaUser));
 
     return <React.Fragment>
         <SchemaEditor
