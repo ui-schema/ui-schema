@@ -44,7 +44,7 @@ const SchemaRootRenderer = () => {
     const {widgets} = useSchemaWidgets();
 
     // first root rendering check if needed props are existing
-    if(!schema || !store || !widgets) return null;
+    if(!schema || typeof store === 'undefined' || !widgets) return null;
 
     const {RootRenderer} = widgets;
 

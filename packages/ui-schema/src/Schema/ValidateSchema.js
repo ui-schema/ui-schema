@@ -32,9 +32,9 @@ const validateSchema = (schema, value) => {
         err = ERROR_WRONG_TYPE;
     } else if(!validatePattern(type, value, pattern)) {
         err = ERROR_PATTERN;
-    } else if(validateMinMax(type, schema, value, true).size) {
+    } else if(validateMinMax(type, schema, value, false).size) {
         // todo: duplicate validate checks when invalid [performance]
-        err = validateMinMax(type, schema, value, true);
+        err = validateMinMax(type, schema, value, false);
     } else if(!validateConst(type, schema, value)) {
         err = ERROR_CONST_MISMATCH;
     } else if(!validateEnum(type, schema, value)) {

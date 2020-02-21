@@ -3,21 +3,22 @@ import {
     TextField
 } from "@material-ui/core";
 import {unstable_trace as trace} from "scheduler/tracing";
-import {beautifyKey} from "@ui-schema/ui-schema";
+import {beautifyKey, updateValue} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
 const StringRenderer = ({
                             type,
                             multiline, rows, rowsMax,
                             storeKeys, ownKey, schema, value, onChange,
-                            showValidity, valid, errors, required
+                            showValidity, valid, errors, required,
+                            InputProps,
                         }) => {
     const format = schema.get('format');
     const fieldType = format === 'date' ? 'date' : type;
 
     return <React.Fragment>
         <TextField
-            label={beautifyKey(ownKey)}
+            label={beautifyKey(ownKey, schema.get('tt'))}
             type={fieldType}
             multiline={multiline}
             required={required}
@@ -27,6 +28,7 @@ const StringRenderer = ({
             fullWidth
             variant={schema.getIn(['view', 'variant'])}
             margin={schema.getIn(['view', 'margin'])}
+            size={schema.getIn(['view', 'dense']) ? 'small' : 'medium'}
             value={value || ''}
             onChange={(e) => trace("textfield onchange", performance.now(), () => {
                 const value = e.target.value;
@@ -36,14 +38,15 @@ const StringRenderer = ({
                             console.error('Invalid Type: input not a number in:', e.target);
                             return;
                         }
-                        onChange(store => store.setIn(storeKeys, value * 1));
+                        onChange(updateValue(storeKeys, value * 1));
                         break;
 
                     default:
-                        onChange(store => store.setIn(storeKeys, value));
+                        onChange(updateValue(storeKeys, value));
                         break;
                 }
             })}
+            InputProps={InputProps}
         />
 
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>

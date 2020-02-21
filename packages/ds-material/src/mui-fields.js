@@ -1,6 +1,8 @@
 import {NumberRenderer, StringRenderer, TextRenderer} from "./Widgets/TextField";
 import {Select, SelectMulti} from "./Widgets/Select";
-import {BoolRenderer, OptionsCheck, OptionsRadio} from "./Widgets/Options";
+import {BoolRenderer} from "./Widgets/OptionsBoolean";
+import {OptionsCheck} from "./Widgets/OptionsCheck";
+import {OptionsRadio} from "./Widgets/OptionsRadio";
 import {Stepper, Step} from "./Widgets/Stepper";
 import {RootRenderer, GroupRenderer} from "./Grid";
 import {widgetStack} from "./widgetStack";

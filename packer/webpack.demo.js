@@ -106,8 +106,8 @@ const demoCommon = {
         }
     },
     // todo: make adjustable by dev/prod
-    devtool: 'eval-cheap-module-source-map',// faster rebuild, not for production
-    // devtool: 'cheap-module-source-map',// slow build, for production
+    //devtool: 'eval-cheap-module-source-map',// faster rebuild, not for production
+    devtool: 'cheap-module-source-map',// slow build, for production
 };
 
 //
@@ -148,6 +148,7 @@ const demoBuild = {...demoCommon};
 demoBuild.mode = 'production';
 demoBuild.minimize = true;
 demoBuild.plugins = [...demoBuild.plugins];
+demoBuild.devtool = false;
 // Inlines the webpack runtime script. This script is too small to warrant
 // a network request.
 // https://github.com/facebook/create-react-app/issues/5358
