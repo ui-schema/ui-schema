@@ -12,7 +12,6 @@ const CombiningRenderer = (props) => {
     const currentStore = storeKeys.size ? store.getIn(storeKeys) : store;
 
     const allOf = schema.get('allOf');
-
     if(allOf) {
         allOf.forEach((subSchema) => {
             schema = mergeSchema(schema, subSchema);
@@ -34,6 +33,7 @@ const CombiningRenderer = (props) => {
             }
         });
     }
+
     return <NextPluginRendererMemo {...props} schema={schema}/>;
 };
 
@@ -41,7 +41,6 @@ const CombiningHandler = (props) => {
     let {schema} = props;
 
     const hasAllOf = schema.get('allOf');
-
     return <React.Fragment>
         {hasAllOf ?
             <CombiningRenderer

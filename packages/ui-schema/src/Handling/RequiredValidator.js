@@ -54,9 +54,7 @@ const RequiredValidator = (props) => {
         ownKey, required, schema, value
     } = props;
 
-    let {errors} = props;
-
-    let {valid} = props;
+    let {errors, valid} = props;
 
     let type = schema.get('type');
 
@@ -66,14 +64,6 @@ const RequiredValidator = (props) => {
     }
 
     if(!isRequired) return <NextPluginRenderer {...props} valid={valid} errors={errors} required={false}/>;
-
-    const valType = typeof value;
-
-    if(valType === 'undefined') {
-        valid = false;
-        errors = errors.push(ERROR_NOT_SET);
-        return <NextPluginRenderer {...props} valid={valid} errors={errors} required/>;
-    }
 
     if(!checkValueExists(type, value)) {
         valid = false;

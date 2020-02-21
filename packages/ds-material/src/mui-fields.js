@@ -12,7 +12,6 @@ const widgets = {
     ErrorFallback: 'todo',
     types: {
         string: StringRenderer,
-        bool: BoolRenderer,
         boolean: BoolRenderer,
         number: NumberRenderer,
     },

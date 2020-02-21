@@ -1,5 +1,6 @@
 import React from "react";
 import {List, Map} from 'immutable';
+import {getDisplayName} from "./getDisplayName";
 
 const compare = (prev, next) => {
     if(List.isList(next) || Map.isMap(next)) {
@@ -38,6 +39,10 @@ function isEqual(prevProps, nextProps) {
  * @param Component
  * @return {function({}): *}
  */
-const memo = Component => React.memo(Component, isEqual);
+const memo = Component => {
+    const Memoized = React.memo(Component, isEqual);
+    Memoized.displayName = getDisplayName(Component);
+    return Memoized;
+};
 
 export {isEqual, memo}

@@ -3,7 +3,7 @@ import {
     FormControl, Checkbox, InputLabel,
     MenuItem, Select as MuiSelect, ListItemText,
 } from "@material-ui/core";
-import {beautifyKey} from "@ui-schema/ui-schema";
+import {beautifyKey, extractValue, memo,} from "@ui-schema/ui-schema";
 import {List} from "immutable";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
@@ -60,8 +60,8 @@ const Select = ({
     </FormControl>;
 };
 
-const SelectMulti = (props) => {
+const SelectMulti = extractValue(memo((props) => {
     return <Select {...props} multiple/>;
-};
+}));
 
 export {Select, SelectMulti};
