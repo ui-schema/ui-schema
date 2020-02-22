@@ -13,6 +13,7 @@
     "@ui-schema/ds-material": "^0.0.8",
     "@ui-schema/ui-schema": "^0.0.8",
     "bootstrap": "^4.4.1",
+    "clsx": "^1.1.0",
     "immutable": "^4.0.0-rc.12",
     "prop-types": "^15.7.2",
     "react": "^16.12",

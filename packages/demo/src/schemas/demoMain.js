@@ -87,6 +87,8 @@ const schemaDemoMain = {
         },
         headline: {
             type: "string",
+            minLength: 2,
+            maxLength: 3,
             /*enum: [
                 'test 1',
                 'test2',
@@ -298,6 +300,8 @@ const schemaUser = createOrderedMap({
     properties: {
         name: {
             type: "string",
+            minLength: 2,
+            maxLength: 3,
             view: {
                 sizeMd: 6,
             }
