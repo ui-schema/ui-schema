@@ -17,6 +17,8 @@ const paths = {
         uiSchema: {
             root: path.resolve(__dirname, 'packages', 'ui-schema'),
             entry: path.resolve(__dirname, 'packages', 'ui-schema/src/'),
+            react: buildExternal("react"),
+            "react-dom": buildExternal("react-dom"),
         },
         dsMaterial: {
             root: path.resolve(__dirname, 'packages', 'ds-material'),
@@ -25,35 +27,20 @@ const paths = {
                 "@ui-schema/ui-schema": buildExternal("@ui-schema/ui-schema"),
                 "@material-ui/core": buildExternal("@material-ui/core"),
                 "@material-ui/icons": buildExternal("@material-ui/icons"),
+                react: buildExternal("react"),
+                "react-dom": buildExternal("react-dom"),
             }
         },
         dsBootstrap: {
             root: path.resolve(__dirname, 'packages', 'ds-bootstrap'),
             entry: path.resolve(__dirname, 'packages', 'ds-bootstrap/src/'),
             externals: {
-                "@ui-schema/ui-schema": buildExternal("@ui-schema/ui-schema")
+                "@ui-schema/ui-schema": buildExternal("@ui-schema/ui-schema"),
+                react: buildExternal("react"),
+                "react-dom": buildExternal("react-dom"),
             }
         },
     }
 };
 
 exports.paths = paths;
-
-const packMods = Object.keys(paths.packages).map(pack => {
-    return path.resolve(paths.packages[pack].root, 'node_modules');
-});
-
-const packEs = Object.keys(paths.packages).map(pack => {
-    return path.resolve(paths.packages[pack].root, 'es');
-});
-
-const packSrc = Object.keys(paths.packages).map(pack => {
-    return path.resolve(paths.packages[pack].root, 'src');
-});
-
-const packRoot = Object.keys(paths.packages).map(pack => paths.packages[pack].root);
-
-exports.packMods = packMods;
-exports.packEs = packEs;
-exports.packSrc = packSrc;
-exports.packRoot = packRoot;

@@ -29,7 +29,9 @@ const StringRenderer = ({
     }
 
     React.useEffect(() => {
-        onValidity(updateValue(storeKeys, Map({'__valid': valid})));
+        if(onValidity) {
+            onValidity(updateValue(storeKeys, Map({'__valid': valid})));
+        }
     }, [valid]);
 
     return <React.Fragment>
@@ -46,7 +48,7 @@ const StringRenderer = ({
             variant={schema.getIn(['view', 'variant'])}
             margin={schema.getIn(['view', 'margin'])}
             size={schema.getIn(['view', 'dense']) ? 'small' : 'medium'}
-            value={value || ''}
+            value={typeof value !== 'undefined' ? value : ''}
             onChange={(e) => trace("textfield onchange", performance.now(), () => {
                 const value = e.target.value;
                 if(type === 'number') {

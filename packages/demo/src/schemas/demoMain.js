@@ -25,7 +25,7 @@ const schemaDemoMain = {
                                 //iconEnd: 'AccountBox'
                             },
                         },
-                        surname: {
+                        email: {
                             type: "string",
                             format: "email",
                             t: 'browser',
@@ -33,7 +33,7 @@ const schemaDemoMain = {
                                 sizeMd: 6
                             }
                         },
-                        surname2: {
+                        phone: {
                             type: "string",
                             format: "tel",
                             // tel must be validated with a pattern
@@ -42,7 +42,7 @@ const schemaDemoMain = {
                                 sizeMd: 6
                             }
                         },
-                        surname3: {
+                        date: {
                             type: "string",
                             format: "date",
                             view: {

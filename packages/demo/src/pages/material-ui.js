@@ -63,6 +63,7 @@ const MainDummy = ({schema}) => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [validity, setValidity] = React.useState(Map({}));
     const [data, setData] = React.useState(() => defaultCreate(schema.get('type')));
+
     return <React.Fragment>
         <SchemaEditor
             schema={schema}
