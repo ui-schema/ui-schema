@@ -1,16 +1,35 @@
 import React from 'react';
 
-import ImmutableEditor from "../component/ImmutableEditor";
-import {useSchemaData} from "@ui-schema/ui-schema";
+import Paper from '@material-ui/core/Paper';
+import useTheme from '@material-ui/core/styles/useTheme';
+import {ImmutableEditor, themeMaterial} from "react-immutable-editor";
+import {SchemaDebug} from "./SchemaDebug";
 
-const MuiSchemaDebug = () => {
-    const {store, schema, onChange} = useSchemaData();
+const MuiJsonEditor = p => {
+    const theme = useTheme();
+    return <Paper
+        square
+        variant={'outlined'}
+        style={{
+            margin: theme.spacing(2) + 'px ' + theme.spacing(1) + 'px',
+            padding: '0 ' + theme.spacing(1) + 'px',
+        }}
+        elevation={0}>
 
-    return <React.Fragment>
-        <ImmutableEditor data={store} onChange={(keys, value) => onChange(store.setIn(keys, value))} getVal={keys => store.getIn(keys)}/>
-        <ImmutableEditor data={schema} onChange={() => console.log('not implemented')} getVal={keys => schema.getIn(keys)}/>
-    </React.Fragment>
+        <ImmutableEditor
+            {...p}
+            theme={{
+                ...themeMaterial,
+                type: theme.palette.type,
+                base00: theme.palette.background.paper,
+                base0D: theme.palette.text.secondary,
+                base0B: theme.palette.text.primary,
+            }}
+        />
+    </Paper>
 };
+
+const MuiSchemaDebug = p => <SchemaDebug StyledEditor={MuiJsonEditor} {...p}/>;
 
 
 export {MuiSchemaDebug}

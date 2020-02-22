@@ -5,9 +5,8 @@ import {schemaGrid} from "../schemas/demoGrid";
 import {widgets,} from "@ui-schema/ds-bootstrap";
 import {SchemaEditor, isInvalid, createOrderedMap, createMap} from "@ui-schema/ui-schema";
 import {browserT} from "../t";
-import {BtSchemaDebug} from "../component/BtSchemaDebug";
+import {BtsSchemaDebug} from "../component/BtsSchemaDebug";
 import clsx from "clsx";
-
 
 const DemoGrid = () => {
     const [data, setData] = React.useState(createOrderedMap({}));
@@ -19,7 +18,7 @@ const DemoGrid = () => {
         widgets={widgets}
         t={browserT}
     >
-        <BtSchemaDebug/>
+        <BtsSchemaDebug/>
     </SchemaEditor>
 };
 
@@ -41,7 +40,7 @@ const MainStore = () => {
             onValidity={setValidity}
             t={browserT}
         >
-            <BtSchemaDebug setSchema={setSchema}/>
+            <BtsSchemaDebug setSchema={setSchema}/>
         </SchemaEditor>
 
         <button className={clsx("btn", "btn-primary", "col-12", "text-uppercase")} onClick={() => setShowValidity(!showValidity)}>validity</button>
