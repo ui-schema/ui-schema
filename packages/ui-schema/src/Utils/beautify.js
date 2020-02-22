@@ -19,11 +19,33 @@ const strReplaceAll = (str, search, replacement) => {
  */
 const beautified = Map();
 
-const beautifyKey = (name) => {
-    let tmp = beautified.get(name);
-    if(tmp) {
-        return tmp;
+const textTransform = (name, tt) => {
+    switch(tt) {
+        case 'ol':
+            if(typeof name === 'number') return (name + 1) + '.';
+            break;
+        case 'upper':
+            if(typeof name === 'string') return name.toUpperCase();
+            break;
+        case 'lower':
+            if(typeof name === 'string') return name.toLowerCase();
+            break;
+        case 'upper-beauty':
+            if(typeof name === 'string') return beauty(name).toUpperCase();
+            break;
+        case 'lower-beauty':
+            if(typeof name === 'string') return beauty(name).toLowerCase();
+            break;
     }
+
+    return name;
+};
+
+const beauty = (name) => {
+    if(typeof name !== 'string') return name;
+
+    let tmp = beautified.get(name);
+    if(tmp) return tmp;
 
     let beauty = strReplaceAll(
         strReplaceAll(
@@ -38,7 +60,20 @@ const beautifyKey = (name) => {
 
     beautified.set(name, beauty);
 
-    return beauty
+    return beauty;
+};
+
+const beautifyKey = (name, tt) => {
+    if(typeof tt === 'undefined') tt = true;
+
+    if(typeof tt === 'string') return textTransform(name, tt);
+
+    // here `tt` must be a boolean or not supported
+
+    // falsy values disables optimistic-beautify
+    if(!tt) return name;
+
+    return beauty(name);
 };
 
 export {beautifyKey, strReplaceAll};

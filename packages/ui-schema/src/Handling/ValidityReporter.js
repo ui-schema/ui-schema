@@ -22,11 +22,11 @@ let ValidityReporter = (props) => {
 
         return () => {
             // delete own validity state on component unmount
-            onValidity(validity => validity ? validity.deleteIn(storeKeys) : Map({}));
+            onValidity(validity => storeKeys.size ? validity.deleteIn(storeKeys) : Map({}));
         };
     }, [valid]);
 
-    return <NextPluginRenderer {...props} valid={valid} errors={errors} showValidity={showValidity}/>;
+    return <NextPluginRenderer {...props} valid={valid} errors={errors} showValidity={showValidity} onValidity={onValidity}/>;
 };
 ValidityReporter = extractValidity(memo(ValidityReporter));
 

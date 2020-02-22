@@ -5,10 +5,12 @@ import {List} from 'immutable'
 
 const LocaleHelperText = ({text, schema, context, error = false}) => {
     return <FormHelperText error={error}>
-        <Trans text={text} context={
-            context ? context.set('type', schema.get('type'))
-                .set('widget', schema.get('widget')) : undefined
-        }/>
+        {schema.get('t') === 'browser' && context && context.get('browserMessage') ?
+            context.get('browserMessage') :
+            <Trans text={text} context={
+                context ? context.set('type', schema.get('type'))
+                    .set('widget', schema.get('widget')) : undefined
+            }/>}
     </FormHelperText>
 };
 

@@ -50,7 +50,7 @@ const withData = (Component) => {
 const extractValue = (Component) => {
     const ExtractValue = p => {
         const {store, onChange} = useSchemaData();
-        return <Component {...p} onChange={onChange} value={store ? store.getIn(p.storeKeys) : undefined}/>
+        return <Component {...p} onChange={onChange} value={p.storeKeys.size ? store ? store.getIn(p.storeKeys) : undefined : store}/>
     };
     ExtractValue.displayName = `ExtractValue(${getDisplayName(Component)})`;
     return ExtractValue;
@@ -92,10 +92,19 @@ const withTrans = (Component) => {
     return WithTans;
 };
 
+/**
+ * Function capable of either updating a deep value in the `store`, or when in e.g. root-level directly the store (string as root-schema)
+ * @param storeKeys
+ * @param value
+ * @return {function(*): *}
+ */
+const updateValue = (storeKeys, value) => store => storeKeys.size ? store.setIn(storeKeys, value) : value;
+
 export {
     useSchemaData, withData, extractValue,
     useSchemaValidity, withValidity, extractValidity,
     useSchemaWidgets, withWidgets,
     useSchemaTrans, withTrans,
     EditorDataProvider, EditorValidityProvider, EditorWidgetsProvider, EditorTransProvider,
+    updateValue,
 };

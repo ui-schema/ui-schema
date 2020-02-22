@@ -3,7 +3,7 @@ import {
     FormControl, Checkbox, InputLabel,
     MenuItem, Select as MuiSelect, ListItemText,
 } from "@material-ui/core";
-import {beautifyKey, extractValue, memo,} from "@ui-schema/ui-schema";
+import {beautifyKey, extractValue, memo, updateValue,} from "@ui-schema/ui-schema";
 import {List} from "immutable";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
@@ -39,13 +39,14 @@ const Select = ({
                     .join(', ') :
                 beautifyKey(selected)}
             onChange={(e) => multiple ?
-                onChange(store => store.setIn(storeKeys, List(e.target.value))) :
-                onChange(store => store.setIn(storeKeys, e.target.value))}
+                onChange(updateValue(storeKeys, List(e.target.value))) :
+                onChange(updateValue(storeKeys, e.target.value))}
         >
             {enum_val ? enum_val.map((enum_name, i) =>
                 <MenuItem
                     key={enum_name + '-' + i}
                     value={enum_name}
+                    dense={schema.getIn(['view', 'dense'])}
                 >{multiple ?
                     <React.Fragment>
                         <Checkbox checked={currentValue.contains(enum_name)}/>

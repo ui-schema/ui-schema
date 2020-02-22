@@ -260,8 +260,9 @@ function getPackageConfig(context, entry, dist, library, libraryTarget, resolve,
         babelPlugins,
         performance: {
             hints: 'warning',
-            maxEntrypointSize: 500000,// 500kb
-            maxAssetSize: 500000,
+            // maxEntrypointSize: 500000,// 500kb
+            maxEntrypointSize: 1000000,// 1000kb
+            maxAssetSize: 1000000,
         },
         resolve,
         minimize: false,

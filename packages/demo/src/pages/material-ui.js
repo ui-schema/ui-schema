@@ -18,6 +18,8 @@ import {SchemaEditor, isInvalid, createOrderedMap, createMap} from "@ui-schema/u
 import {MuiSchemaDebug} from "../component/MuiSchemaDebug";
 import {Map} from 'immutable';
 import {browserT} from "../t";
+import {schemaLists} from "../schemas/demoLists";
+import {schemaNumberSlider} from "../schemas/demoNumberSlider";
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
@@ -61,7 +63,6 @@ const MainDummy = ({schema}) => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [validity, setValidity] = React.useState(Map({}));
     const [data, setData] = React.useState(() => defaultCreate(schema.get('type')));
-
     return <React.Fragment>
         <SchemaEditor
             schema={schema}
@@ -126,6 +127,12 @@ const Main = ({classes = {}}) => {
             <Paper className={classes.paper}>
                 <MainStore/>
             </Paper>
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer id={'schemaNumberSlider'} schema={schemaNumberSlider} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer id={'schemaLists'} schema={schemaLists} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer id={'schemaWCombining'} schema={schemaWCombining} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
