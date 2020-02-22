@@ -1,12 +1,13 @@
 import React from "react";
 import {NextPluginRenderer} from "@ui-schema/ui-schema";
+import clsx from "clsx";
 
 const SchemaGridItem = ({children, schema}) => {
     let classNameArray = [];
     const view = schema ? schema.getIn(['view']) : undefined;
-    classNameArray.push('col-xs-12');
+    classNameArray.push('pl-0');
     if(view && view.get('sizeXs')) {
-        classNameArray.push('col-xs-' + view.get('sizeXs'));
+        classNameArray.push('col-' + view.get('sizeXs'));
     }
     if(view && view.get('sizeSm')) {
         classNameArray.push('col-sm-' + view.get('sizeSm'));
@@ -20,7 +21,9 @@ const SchemaGridItem = ({children, schema}) => {
     if(view && view.get('sizeXl')) {
         classNameArray.push('col-xl-' + view.get('sizeXl'));
     }
-
+    if (classNameArray.length < 1) {
+        classNameArray.push('container-fluid', 'px-0', 'mx-0');
+    }
 
     return <div
         className={classNameArray.join(' ')}
@@ -31,7 +34,7 @@ const SchemaGridItem = ({children, schema}) => {
 
 const RootRenderer = props => <React.Fragment>{props.children}</React.Fragment>;
 
-const GroupRenderer = ({children}) => <div className={'row'}>
+const GroupRenderer = ({children}) => <div className={clsx('row', 'mx-0', 'px-0')}>
     {children}
 </div>;
 

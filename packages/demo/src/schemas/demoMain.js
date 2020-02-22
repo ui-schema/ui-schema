@@ -306,6 +306,8 @@ const schemaUser = createOrderedMap({
     properties: {
         name: {
             type: "string",
+            minLength: 2,
+            maxLength: 3,
             view: {
                 sizeMd: 6,
             }

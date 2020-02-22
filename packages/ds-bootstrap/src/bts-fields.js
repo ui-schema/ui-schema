@@ -1,7 +1,4 @@
-import {NumberRenderer, StringRenderer, TextRenderer} from "./Widgets/TextField";
-import {Select, SelectMulti} from "./Widgets/Select";
-import {BoolRenderer, OptionsCheck, OptionsRadio} from "./Widgets/Options";
-import {Stepper, Step} from "./Widgets/Stepper";
+import {StringRenderer} from "./Widgets/TextField";
 import {RootRenderer, GroupRenderer} from "./Grid";
 import {widgetStack} from "./widgetStack";
 
@@ -11,18 +8,9 @@ const widgets = {
     widgetStack,
     ErrorFallback: 'todo',
     types: {
-         string: StringRenderer, /*
-         boolean: BoolRenderer,
-         number: NumberRenderer,*/
+         string: StringRenderer
     },
-    custom: {
-         Text: TextRenderer/*,
-         OptionsRadio ,
-         Select,
-         SelectMulti,
-         Stepper,
-         Step, */
-    },
+    custom: {},
 };
 
 export {widgets};

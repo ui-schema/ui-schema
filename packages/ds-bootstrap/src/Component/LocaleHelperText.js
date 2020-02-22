@@ -3,7 +3,7 @@ import {Trans} from "@ui-schema/ui-schema";
 import {List} from 'immutable'
 
 const LocaleHelperText = ({text, schema, context}) => {
-    return <div className={"text-danger"}>
+    return <div className={"invalid-feedback"}>
         <Trans text={text}  context={
             context ? context.set('type', schema.get('type'))
                 .set('widget', schema.get('widget')) : undefined

@@ -23,7 +23,7 @@ const BootstrapDashboard = ({children}) => {
             <NavBar/>
             <div className={clsx("row", "h-100")} style={{marginTop: "70px", height: "100% !important"}}>
                 <Sidebar/>
-                <div className={clsx("col-xs-12", "col-sm-9", "px-5", "overflow-auto", "bg-secondary")} style={{height: "100% !important"}}>
+                <div className={clsx("col-12", "col-sm-9", "px-5", "overflow-auto", "bg-secondary")} style={{height: "100% !important"}}>
                     <div className={clsx("row", "justify-content-center")}>
                         <div className={clsx("col-md-10", "py-5", "bg-secondary")}>
                             <div className={clsx("row", "shadow-sm", "px-5", "py-5", "bg-info", "rounded")}>

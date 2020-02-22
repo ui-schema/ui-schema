@@ -173,7 +173,7 @@ const schemaGrid = createOrderedMap({
             view: {
                 sizeXs: 12,
                 sizeMd: 6,
-                sizeLg: 3,
+                sizeLg: 4,
             }
         },
         row_3b: {
@@ -181,14 +181,14 @@ const schemaGrid = createOrderedMap({
             view: {
                 sizeXs: 12,
                 sizeMd: 6,
-                sizeLg: 3,
+                sizeLg: 4,
             }
         },
         row_3c: {
             type: 'string',
             view: {
                 sizeXs: 12,
-                sizeLg: 3,
+                sizeLg: 4,
             }
         },
     }

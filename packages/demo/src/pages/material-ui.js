@@ -22,7 +22,7 @@ const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [validity, setValidity] = React.useState(createMap());
     const [data, setData] = React.useState(createOrderedMap(dataDemoMain));
-    const [schema, setSchema] = React.useState(createOrderedMap(schemaUser));
+    const [schema, setSchema] = React.useState(createOrderedMap(schemaDemoMain));
 
     return <React.Fragment>
         <SchemaEditor
@@ -67,13 +67,13 @@ const MainDummy = ({schema}) => {
     </React.Fragment>
 };
 
-const DemoUser = () => {
+const DemoGrid = () => {
     const [data, setData] = React.useState(createOrderedMap({}));
 
     return <Grid container spacing={3} justify={'center'}>
         <Grid item xs={12} md={6}>
             <SchemaEditor
-                schema={schemaUser}
+                schema={schemaGrid}
                 store={data}
                 onChange={setData}
                 widgets={widgets}
@@ -111,6 +111,7 @@ const Main = ({classes = {}}) => {
     return <React.Fragment>
         <Grid item xs={12} className={'t-' + theme.palette.type}>
             <Paper className={classes.paper}>
+                <DemoGrid/>
                 <MainStore/>
             </Paper>
         </Grid>
