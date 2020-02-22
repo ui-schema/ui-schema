@@ -16,21 +16,43 @@ const schemaDemoMain = {
                     properties: {
                         name: {
                             type: "string",
+                            widget: "StringIcon",
                             minLength: 2,
                             maxLength: 3,
                             view: {
                                 sizeMd: 6,
-                            }
+                                icon: 'AccountBox',
+                                //iconEnd: 'AccountBox'
+                            },
                         },
                         surname: {
                             type: "string",
+                            format: "email",
+                            t: 'browser',
                             view: {
                                 sizeMd: 6
                             }
                         },
+                        surname2: {
+                            type: "string",
+                            format: "tel",
+                            // tel must be validated with a pattern
+                            pattern: "[0-9]{3}-[0-9]{3}-[0-9]{4}",
+                            view: {
+                                sizeMd: 6
+                            }
+                        },
+                        surname3: {
+                            type: "string",
+                            format: "date",
+                            view: {
+                                sizeMd: 6,
+                                shrink: true
+                            }
+                        },
                     },
                     required: [
-                        'surname'
+                        'ssurname'
                     ]
                 },
                 'step-2': {
@@ -230,7 +252,7 @@ const schemaDemoMain = {
             maxItems: 3,
             widget: "SelectMulti",
             view: {
-                sizeMd: 3
+                sizeMd: 3,
             },
             /*
              * input for variable contains must be provided with custom widget/store currently
@@ -252,41 +274,13 @@ const schemaDemoMain = {
             view: {
                 sizeMd: 3
             }
-        },
-        items: {
-            type: "object",
-            widget: "GenericList",
-            view: {
-                axis: "x"
-            },
-            properties: {
-                icon: {
-                    type: "object",
-                    widget: "File",
-                    view: {
-                        sizeMd: 3
-                    }
-                },
-                headline: {
-                    type: "string",
-                    view: {
-                        sizeMd: 3
-                    }
-                },
-                desc: {
-                    type: "object",
-                    widget: "TextRich",
-                    view: {
-                        sizeMd: 3
-                    }
-                }
-            }
         }
     },
     required: [
         'layouts',
         'size',
         'age',
+        'slider_h',
         'ages'
     ]
 };

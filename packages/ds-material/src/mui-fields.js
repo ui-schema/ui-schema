@@ -6,6 +6,10 @@ import {OptionsRadio} from "./Widgets/OptionsRadio";
 import {Stepper, Step} from "./Widgets/Stepper";
 import {RootRenderer, GroupRenderer} from "./Grid";
 import {widgetStack} from "./widgetStack";
+import {NumberIconRenderer, StringIconRenderer, TextIconRenderer} from "./Widgets/TextFieldIcon";
+import {SimpleList} from "./Widgets/SimpleList";
+import {GenericList} from "./Widgets/GenericList";
+import {NumberSlider} from "./Widgets/NumberSlider";
 
 const widgets = {
     RootRenderer,
@@ -19,6 +23,12 @@ const widgets = {
     },
     custom: {
         Text: TextRenderer,
+        StringIcon: StringIconRenderer,
+        TextIcon: TextIconRenderer,
+        NumberIcon: NumberIconRenderer,
+        NumberSlider,
+        SimpleList,
+        GenericList,
         OptionsCheck,
         OptionsRadio,
         Select,
