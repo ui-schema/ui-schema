@@ -1,11 +1,12 @@
 import React from 'react';
+import {List} from 'immutable';
 import AppTheme from '../ds/material-ui/layout/AppTheme';
 import Dashboard from '../ds/material-ui/dashboard/Dashboard';
-
 import {schemaWCombining} from "../schemas/demoCombining";
 import {schemaWConditional, schemaWConditional1} from "../schemas/demoConditional";
 import {schemaWDep, schemaWDep1, schemaWDep2} from "../schemas/demoDependencies";
-import {dataDemoMain, schemaDemoMain} from "../schemas/demoMain";
+import {dataDemoMain, schemaDemoMain, schemaUser} from "../schemas/demoMain";
+import {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect} from "../schemas/demoSimples";
 import {schemaGrid} from "../schemas/demoGrid";
 import {useTheme} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
@@ -44,10 +45,22 @@ const MainStore = () => {
     </React.Fragment>
 };
 
+const defaultCreate = type => {
+    return type === 'array' ?
+        List([]) :
+        type === 'string' ?
+            '' :
+            type === 'number' ?
+                0 :
+                type === 'boolean' ?
+                    false :
+                    Map({})
+};
+
 const MainDummy = ({schema}) => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [validity, setValidity] = React.useState(Map({}));
-    const [data, setData] = React.useState(createOrderedMap({}));
+    const [data, setData] = React.useState(() => defaultCreate(schema.get('type')));
 
     return <React.Fragment>
         <SchemaEditor
@@ -67,13 +80,13 @@ const MainDummy = ({schema}) => {
     </React.Fragment>
 };
 
-const DemoGrid = () => {
+const DemoUser = () => {
     const [data, setData] = React.useState(createOrderedMap({}));
 
     return <Grid container spacing={3} justify={'center'}>
         <Grid item xs={12} md={6}>
             <SchemaEditor
-                schema={schemaGrid}
+                schema={schemaUser}
                 store={data}
                 onChange={setData}
                 widgets={widgets}
@@ -111,7 +124,6 @@ const Main = ({classes = {}}) => {
     return <React.Fragment>
         <Grid item xs={12} className={'t-' + theme.palette.type}>
             <Paper className={classes.paper}>
-                <DemoGrid/>
                 <MainStore/>
             </Paper>
         </Grid>
@@ -135,6 +147,14 @@ const Main = ({classes = {}}) => {
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer id={'schemaGrid'} schema={schemaGrid} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer id={'schemaSimString'} schema={schemaSimString} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+            <DummyRenderer id={'schemaSimBoolean'} schema={schemaSimBoolean} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+            <DummyRenderer id={'schemaSimCheck'} schema={schemaSimCheck} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+            <DummyRenderer id={'schemaSimNumber'} schema={schemaSimNumber} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+            <DummyRenderer id={'schemaSimRadio'} schema={schemaSimRadio} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+            <DummyRenderer id={'schemaSimSelect'} schema={schemaSimSelect} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
         </Grid>
         <Grid item xs={12}>
             <Button style={{marginBottom: 12}} onClick={() => toggleDummy('demoUser')} variant={getDummy('demoUser') ? 'contained' : 'outlined'}>
