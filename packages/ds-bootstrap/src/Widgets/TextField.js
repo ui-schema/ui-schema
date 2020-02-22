@@ -21,7 +21,7 @@ const StringRenderer = ({ownKey, schema, value, multiline, rows, onChange, store
     }
 
     return <form className={classForm.join(' ')}>
-        <div className={"form-group"} novalidate>
+        <div className={"form-group"} noValidate>
             <label htmlFor={ownKey}>{beautifyKey(ownKey)}</label>
             <Renderer
                 className={classFormControl.join(' ')}
