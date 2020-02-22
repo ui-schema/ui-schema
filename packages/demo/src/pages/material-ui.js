@@ -5,7 +5,7 @@ import Dashboard from '../ds/material-ui/dashboard/Dashboard';
 import {schemaWCombining} from "../schemas/demoCombining";
 import {schemaWConditional, schemaWConditional1} from "../schemas/demoConditional";
 import {schemaWDep, schemaWDep1, schemaWDep2} from "../schemas/demoDependencies";
-import {dataDemoMain, schemaDemoMain, schemaUser} from "../schemas/demoMain";
+import {dataDemoMain, schemaDemoMain} from "../schemas/demoMain";
 import {schemaGrid} from "../schemas/demoGrid";
 import {useTheme} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
@@ -14,7 +14,7 @@ import {Button} from "@material-ui/core";
 import Orders from "../ds/material-ui/dashboard/Orders";
 import {widgets,} from "@ui-schema/ds-material";
 import {SchemaEditor, isInvalid, createOrderedMap, createMap} from "@ui-schema/ui-schema";
-import {SchemaDebug} from "../component/SchemaDebug";
+import {MuiSchemaDebug} from "../component/MuiSchemaDebug";
 import {Map} from 'immutable';
 import {browserT} from "../t";
 
@@ -35,7 +35,7 @@ const MainStore = () => {
             onValidity={setValidity}
             t={browserT}
         >
-            <SchemaDebug setSchema={setSchema}/>
+            <MuiSchemaDebug setSchema={setSchema}/>
         </SchemaEditor>
 
         <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
@@ -60,7 +60,7 @@ const MainDummy = ({schema}) => {
             onValidity={setValidity}
             t={browserT}
         >
-            <SchemaDebug/>
+            <MuiSchemaDebug/>
         </SchemaEditor>
         <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
         {isInvalid(validity) ? 'invalid' : 'valid'}
@@ -79,7 +79,7 @@ const DemoGrid = () => {
                 widgets={widgets}
                 t={browserT}
             >
-                <SchemaDebug/>
+                <MuiSchemaDebug/>
             </SchemaEditor>
         </Grid>
     </Grid>

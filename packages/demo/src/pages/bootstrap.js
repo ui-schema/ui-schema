@@ -5,8 +5,8 @@ import {schemaUser, dataDemoMain} from "../schemas/demoMain";
 import {schemaGrid} from "../schemas/demoGrid";
 import {widgets,} from "@ui-schema/ds-bootstrap";
 import {SchemaEditor, isInvalid, createOrderedMap, createMap} from "@ui-schema/ui-schema";
-import {SchemaDebug} from "../component/SchemaDebug";
 import {browserT} from "../t";
+import {BtSchemaDebug} from "../component/BtSchemaDebug";
 
 
 
@@ -20,7 +20,7 @@ const DemoGrid = () => {
         widgets={widgets}
         t={browserT}
     >
-        <SchemaDebug/>
+        <BtSchemaDebug/>
     </SchemaEditor>
 };
 
@@ -42,7 +42,7 @@ const MainStore = () => {
             onValidity={setValidity}
             t={browserT}
         >
-            <SchemaDebug setSchema={setSchema}/>
+            <BtSchemaDebug setSchema={setSchema}/>
         </SchemaEditor>
 
         <button onClick={() => setShowValidity(!showValidity)}>validity</button>

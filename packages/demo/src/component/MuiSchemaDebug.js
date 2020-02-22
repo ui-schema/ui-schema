@@ -3,7 +3,7 @@ import React from 'react';
 import ImmutableEditor from "../component/ImmutableEditor";
 import {useSchemaData} from "@ui-schema/ui-schema";
 
-const SchemaDebug = () => {
+const MuiSchemaDebug = () => {
     const {store, schema, onChange} = useSchemaData();
 
     return <React.Fragment>
@@ -13,4 +13,4 @@ const SchemaDebug = () => {
 };
 
 
-export {SchemaDebug}
+export {MuiSchemaDebug}
