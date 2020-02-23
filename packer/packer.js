@@ -1,17 +1,22 @@
 const fs = require('fs');
 const path = require('path');
+const symlinkDir = require('symlink-dir');
+const argv = require('minimist')(process.argv.slice(2));
+const {apps, packages} = require('../config');
 const {delDir} = require('./tools');
-const {paths} = require('../config');
 const {buildEsModules} = require('./babel');
 const {buildWebpack, serveWebpack} = require('./webpack');
-const symlinkDir = require('symlink-dir');
-const {packsRoot, packages, packagesNames} = require('./webpack.packages');
-const {apps} = require('./webpack.apps');
-const argv = require('minimist')(process.argv.slice(2));
+const {packsRoot, buildersPackages, packagesNames} = require('./webpack.packages');
+const {configApp} = require('./webpack.apps');
 
 const serveId = argv['serve'] === true ? 'demo' : (argv['serve'] || false);
 const doClean = !!argv['clean'];
 const doBuild = !!argv['build'];
+
+const appsConfigs = {};
+for(let app in apps) {
+    appsConfigs[app] = configApp(apps[app]);
+}
 
 if(doClean) {
     // clean dists
@@ -20,7 +25,7 @@ if(doClean) {
     const promises = [];
 
     // todo: all apps automatic
-    promises.push(delDir(paths.demo.dist));
+    promises.push(delDir(apps.demo.dist));
 
     // todo: lib/es should be like configured
     packsRoot.forEach(pack => {
@@ -42,28 +47,28 @@ if(doBuild) {
 
     console.log('');
     console.log('Starting ES6 build for ' + packagesNames.length + ' modules: `' + packagesNames.join(', ') + '`');
-    buildEsModules(paths.packages)
+    buildEsModules(packages)
         .then(() => {
             console.log('');
             console.log('Starting webpack build for apps `' + (Object.keys(apps).join(', ')) + '` and ' + packagesNames.length + ' modules: `' + packagesNames.join(', ') + '`');
             // combine configs to build packages and demo
-            const configs = [...packages];
+            const configs = [...buildersPackages];
             for(let app in apps) {
-                if(!apps[app].build) {
+                if(!appsConfigs[app].build) {
                     console.error('App has no serve config: ', app);
                     process.exit(1);
                 }
 
-                if(typeof apps[app].build === 'function') {
-                    apps[app].build = apps[app].build();
+                if(typeof appsConfigs[app].build === 'function') {
+                    appsConfigs[app].build = appsConfigs[app].build();
                 }
 
-                if(typeof apps[app].build !== 'object') {
-                    console.error('App has invalid serve config: ', app, apps[app].build);
+                if(typeof appsConfigs[app].build !== 'object') {
+                    console.error('App has invalid serve config: ', app, appsConfigs[app].build);
                     process.exit(1);
                 }
 
-                configs.push(apps[app].build);
+                configs.push(appsConfigs[app].build);
             }
 
             configs.forEach((c) => {
@@ -84,17 +89,17 @@ if(serveId) {
         console.error('App not existing: ' + serveId, 'Existing Apps:', Object.keys(apps));
         process.exit(1);
     }
-    if(!apps[serveId].serve) {
+    if(!appsConfigs[serveId].serve) {
         console.error('App has no serve config: ', serveId);
         process.exit(1);
     }
 
-    if(typeof apps[serveId].serve === 'function') {
-        apps[serveId].serve = apps[serveId].serve();
+    if(typeof appsConfigs[serveId].serve === 'function') {
+        appsConfigs[serveId].serve = appsConfigs[serveId].serve();
     }
 
-    if(typeof apps[serveId].serve !== 'object') {
-        console.error('App has invalid serve config: ', serveId, apps[serveId].serve);
+    if(typeof appsConfigs[serveId].serve !== 'object') {
+        console.error('App has invalid serve config: ', serveId, appsConfigs[serveId].serve);
         process.exit(1);
     }
 
@@ -114,5 +119,5 @@ if(serveId) {
         }
     });
 
-    serveWebpack(apps[serveId].serve);
+    serveWebpack(appsConfigs[serveId].serve);
 }

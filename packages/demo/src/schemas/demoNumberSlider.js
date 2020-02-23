@@ -60,7 +60,7 @@ const schemaNumberSlider = createOrderedMap({
         sliders: {
             type: "number",
             widget: "NumberSlider",
-            minimum: -10,
+            minimum: -8,
             maximum: 120,
             multipleOf: 4,
             view: {

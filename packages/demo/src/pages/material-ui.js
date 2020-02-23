@@ -15,11 +15,22 @@ import {Button} from "@material-ui/core";
 import Orders from "../ds/material-ui/dashboard/Orders";
 import {widgets,} from "@ui-schema/ds-material";
 import {SchemaEditor, isInvalid, createOrderedMap, createMap} from "@ui-schema/ui-schema";
+import {Dummy as Dummy1} from "@ui-schema/material-pickers";
+import {Dummy as Dummy2} from "@ui-schema/material-richtext";
+import {Dummy as Dummy3} from "@ui-schema/material-code";
 import {MuiSchemaDebug} from "../component/MuiSchemaDebug";
 import {Map} from 'immutable';
 import {browserT} from "../t";
 import {schemaLists} from "../schemas/demoLists";
 import {schemaNumberSlider} from "../schemas/demoNumberSlider";
+
+const customWidgets = {...widgets};
+customWidgets.custom = {
+    ...widgets.custom,
+    DateTime: Dummy1,
+    RichText: Dummy2,
+    Code: Dummy3,
+};
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);

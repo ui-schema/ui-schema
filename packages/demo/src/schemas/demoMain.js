@@ -52,7 +52,7 @@ const schemaDemoMain = {
                         },
                     },
                     required: [
-                        'ssurname'
+                        'name'
                     ]
                 },
                 'step-2': {

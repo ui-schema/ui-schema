@@ -2,7 +2,7 @@
 
 const path = require('path');
 const {getConfig} = require('./webpack.common');
-const {paths} = require('../config');
+const {packages} = require('../config');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 const babelPresets = [
@@ -58,25 +58,25 @@ function getPackageBuilders(context, entry, dist, library, resolve, externals) {
     return builders;
 }
 
-const packages = [];
+const buildersPackages = [];
 
-Object.keys(paths.packages).forEach(library => {
+Object.keys(packages).forEach(library => {
     let externals = {};
 
-    if(paths.packages[library].externals) {
+    if(packages[library].externals) {
         externals = {
-            ...paths.packages[library].externals
+            ...packages[library].externals
         }
     }
 
-    packages.push(...getPackageBuilders(
-        paths.packages[library].root,
-        paths.packages[library].entry,
-        paths.packages[library].root,
+    buildersPackages.push(...getPackageBuilders(
+        packages[library].root,
+        packages[library].entry,
+        packages[library].root,
         library,
         [
             path.resolve(__dirname, '../', 'node_modules'),
-            path.resolve(paths.packages[library].root, 'node_modules'),
+            path.resolve(packages[library].root, 'node_modules'),
         ],
         {
             ...externals
@@ -84,21 +84,21 @@ Object.keys(paths.packages).forEach(library => {
     ));
 });
 
-exports.packages = packages;
-exports.packagesNames = Object.keys(paths.packages);
+exports.buildersPackages = buildersPackages;
+exports.packagesNames = Object.keys(packages);
 exports.packagesBabelPresets = babelPresets;
 exports.packagesBabelPlugins = babelPlugins;
 
-const packMods = Object.keys(paths.packages).map(pack => {
-    return path.resolve(paths.packages[pack].root, 'node_modules');
+const packMods = Object.keys(packages).map(pack => {
+    return path.resolve(packages[pack].root, 'node_modules');
 });
 
-const packEs = Object.keys(paths.packages).map(pack => {
-    return path.resolve(paths.packages[pack].root, 'es');
+const packEs = Object.keys(packages).map(pack => {
+    return path.resolve(packages[pack].root, 'es');
 });
 
-const packSrc = Object.keys(paths.packages).map(pack => {
-    return path.resolve(paths.packages[pack].root, 'src');
+const packSrc = Object.keys(packages).map(pack => {
+    return path.resolve(packages[pack].root, 'src');
 });
 
 // todo: should be possible to get only paths for packages that the current app needs, `buildAppPair` is already prepared
@@ -108,4 +108,4 @@ exports.crossBuild = {
     src: packSrc,
 };
 
-exports.packsRoot = Object.keys(paths.packages).map(pack => paths.packages[pack].root);
+exports.packsRoot = Object.keys(packages).map(pack => packages[pack].root);

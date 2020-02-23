@@ -3,3 +3,9 @@
 /packages/ds-material/lib
 /packages/ui-schema/es
 /packages/ui-schema/lib
+/packages/material-pickers/es
+/packages/material-pickers/lib
+/packages/material-richtext/es
+/packages/material-richtext/lib
+/packages/material-code/es
+/packages/material-code/lib

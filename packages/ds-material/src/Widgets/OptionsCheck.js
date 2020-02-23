@@ -4,16 +4,16 @@ import {
 } from "@material-ui/core";
 import {List} from "immutable";
 import {beautifyKey, extractValue, memo, updateValue,} from "@ui-schema/ui-schema";
-import {useId} from "react-id-generator";
+import {useUID} from "react-uid";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
 const OptionCheck = ({currentValue, label, onChange}) => {
-    const formId = useId(1, 'ids-')[0];
+    const uid = useUID();
 
     return <FormControlLabel
-        id={formId}
+        id={uid}
         control={<Checkbox
-            id={formId}
+            id={uid}
             value={currentValue}
             checked={currentValue}
             onChange={onChange}

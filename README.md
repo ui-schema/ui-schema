@@ -153,11 +153,15 @@ export {Editor}
 
 Changes from any package are reflected inside the demo package.
 
+Commands:
+
 - Build: `npm run build`
 - Clean node_modules and build dirs: `npm run clean`
 - Clean build dirs: `npm run clean-dist`
 - Add new node_module to one package: `lerna add <npm-package-name> --scope=@ui-schema/demo [--dev] [--peer]`, without `--scope` in all packages
 - Do not change package.json of packages manually, and if Bootstrap [lerna](https://lerna.js.org/): `npm run bootstrap`
+- Add new package `lerna create <name>` and follow on screen, e.g.: `lerna create material-pickers` add package name `@ui-schema/material-picker`, creates folder `./packages/material-pickers`
+
 
 Publish, for main-repo only:
 
@@ -174,7 +178,7 @@ This project is free software distributed under the **MIT License**.
 
 See: [LICENSE](LICENSE).
 
-© 2019 bemit UG (haftungsbeschränkt)
+© 2020 bemit UG (haftungsbeschränkt)
 
 ### License Icons
 
