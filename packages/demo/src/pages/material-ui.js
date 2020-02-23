@@ -1,19 +1,36 @@
 import React from 'react';
+import {List} from 'immutable';
 import AppTheme from '../ds/material-ui/layout/AppTheme';
 import Dashboard from '../ds/material-ui/dashboard/Dashboard';
-
 import {schemaWCombining} from "../schemas/demoCombining";
 import {schemaWConditional, schemaWConditional1} from "../schemas/demoConditional";
 import {schemaWDep, schemaWDep1, schemaWDep2} from "../schemas/demoDependencies";
 import {dataDemoMain, schemaDemoMain, schemaUser} from "../schemas/demoMain";
+import {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect} from "../schemas/demoSimples";
+import {schemaGrid} from "../schemas/demoGrid";
+import {useTheme} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import {Button} from "@material-ui/core";
 import Orders from "../ds/material-ui/dashboard/Orders";
 import {widgets,} from "@ui-schema/ds-material";
 import {SchemaEditor, isInvalid, createOrderedMap, createMap} from "@ui-schema/ui-schema";
-import {SchemaDebug} from "../component/SchemaDebug";
+import {Dummy as Dummy1} from "@ui-schema/material-pickers";
+import {Dummy as Dummy2} from "@ui-schema/material-richtext";
+import {Dummy as Dummy3} from "@ui-schema/material-code";
+import {MuiSchemaDebug} from "../component/MuiSchemaDebug";
 import {Map} from 'immutable';
+import {browserT} from "../t";
+import {schemaLists} from "../schemas/demoLists";
+import {schemaNumberSlider} from "../schemas/demoNumberSlider";
+
+const customWidgets = {...widgets};
+customWidgets.custom = {
+    ...widgets.custom,
+    DateTime: Dummy1,
+    RichText: Dummy2,
+    Code: Dummy3,
+};
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
@@ -30,8 +47,9 @@ const MainStore = () => {
             validity={validity}
             showValidity={showValidity}
             onValidity={setValidity}
+            t={browserT}
         >
-            <SchemaDebug setSchema={setSchema}/>
+            <MuiSchemaDebug setSchema={setSchema}/>
         </SchemaEditor>
 
         <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
@@ -40,10 +58,22 @@ const MainStore = () => {
     </React.Fragment>
 };
 
+const defaultCreate = type => {
+    return type === 'array' ?
+        List([]) :
+        type === 'string' ?
+            '' :
+            type === 'number' ?
+                0 :
+                type === 'boolean' ?
+                    false :
+                    Map({})
+};
+
 const MainDummy = ({schema}) => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [validity, setValidity] = React.useState(Map({}));
-    const [data, setData] = React.useState(createOrderedMap({}));
+    const [data, setData] = React.useState(() => defaultCreate(schema.get('type')));
 
     return <React.Fragment>
         <SchemaEditor
@@ -54,8 +84,9 @@ const MainDummy = ({schema}) => {
             validity={validity}
             showValidity={showValidity}
             onValidity={setValidity}
+            t={browserT}
         >
-            <SchemaDebug/>
+            <MuiSchemaDebug/>
         </SchemaEditor>
         <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
         {isInvalid(validity) ? 'invalid' : 'valid'}
@@ -72,8 +103,9 @@ const DemoUser = () => {
                 store={data}
                 onChange={setData}
                 widgets={widgets}
+                t={browserT}
             >
-                <SchemaDebug/>
+                <MuiSchemaDebug/>
             </SchemaEditor>
         </Grid>
     </Grid>
@@ -91,6 +123,7 @@ const DummyRenderer = ({id, schema, toggleDummy, getDummy, open, classes}) => <R
 
 const Main = ({classes = {}}) => {
     const [showDummy, setShowVDummy] = React.useState({});
+    const theme = useTheme();
 
     const toggleDummy = id => {
         let tmp = {...showDummy};
@@ -102,10 +135,16 @@ const Main = ({classes = {}}) => {
     };
 
     return <React.Fragment>
-        <Grid item xs={12}>
+        <Grid item xs={12} className={'t-' + theme.palette.type}>
             <Paper className={classes.paper}>
                 <MainStore/>
             </Paper>
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer id={'schemaNumberSlider'} schema={schemaNumberSlider} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer id={'schemaLists'} schema={schemaLists} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer id={'schemaWCombining'} schema={schemaWCombining} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
@@ -124,6 +163,17 @@ const Main = ({classes = {}}) => {
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer id={'schemaWDep2'} schema={schemaWDep2} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer id={'schemaGrid'} schema={schemaGrid} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer id={'schemaSimString'} schema={schemaSimString} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+            <DummyRenderer id={'schemaSimBoolean'} schema={schemaSimBoolean} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+            <DummyRenderer id={'schemaSimCheck'} schema={schemaSimCheck} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+            <DummyRenderer id={'schemaSimNumber'} schema={schemaSimNumber} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+            <DummyRenderer id={'schemaSimRadio'} schema={schemaSimRadio} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+            <DummyRenderer id={'schemaSimSelect'} schema={schemaSimSelect} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
         </Grid>
         <Grid item xs={12}>
             <Button style={{marginBottom: 12}} onClick={() => toggleDummy('demoUser')} variant={getDummy('demoUser') ? 'contained' : 'outlined'}>

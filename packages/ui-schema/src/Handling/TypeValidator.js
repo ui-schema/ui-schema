@@ -32,18 +32,14 @@ const validateType = (value, type) => {
 };
 
 const TypeValidator = (props) => {
-    const {
-        schema, value
-    } = props;
-    let {errors} = props;
-
-    let {valid} = props;
+    const {schema, value} = props;
+    let {errors, valid} = props;
 
     let type = schema.get('type');
 
     if(!validateType(value, type)) {
         valid = false;
-        errors = errors.push(ERROR_WRONG_TYPE);
+        errors = errors.push(List([ERROR_WRONG_TYPE, Map({actual: typeof value})]));
     }
 
     return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;

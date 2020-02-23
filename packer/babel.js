@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const {spawn} = require('cross-spawn');
-const {babelPlugins, babelPresets} = require('./webpack.packages');
+const {packagesBabelPlugins, packagesBabelPresets} = require('./webpack.packages');
 
 const spawnBabel = (args) => {
     return spawn(require.resolve('../node_modules/.bin/babel'), args, {stdio: 'inherit'});
@@ -21,8 +21,8 @@ function buildEsModules(packages) {
 
                 if(-1 === process.argv.indexOf('--clean')) {
                     let babelConfig = {
-                        presets: babelPresets,
-                        plugins: babelPlugins,
+                        presets: packagesBabelPresets,
+                        plugins: packagesBabelPlugins,
                     };
 
                     fs.writeFile(babelFile, JSON.stringify(babelConfig, null, 2), err => {

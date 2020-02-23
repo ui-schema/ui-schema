@@ -1,16 +1,14 @@
 import React from 'react';
 import {List} from 'immutable';
 import {
-    EditorDataProvider, EditorValidityProvider, EditorWidgetsProvider,
+    EditorDataProvider, EditorTransProvider, EditorValidityProvider, EditorWidgetsProvider,
     useSchemaData, useSchemaValidity, useSchemaWidgets,
     withWidgets
 } from "./EditorStore";
-import {ValueWidgetRenderer, ValuelessWidgetRenderer} from "./EditorWidget";
-import {ObjectRenderer} from "./EditorObject";
+import {ValueWidgetRenderer} from "./EditorWidget";
 import {memo} from "../Utils/memo";
 
 let SchemaEditorRenderer = ({
-                                widgets,// widgets from HOC for performance reasons
                                 schema, storeKeys = undefined, level = 0, ...props
                             }) => {
     if(!storeKeys) {
@@ -18,25 +16,11 @@ let SchemaEditorRenderer = ({
         storeKeys = List([]);
     }
 
-    const type = schema.get('type');
-    const widget = schema.get('widget');
-    const {GroupRenderer, widgetStack} = widgets;
-
-    // todo: change switching behaviour, every non-scalar value should use `Valueless`
-    // undefined types need to be handled by the valueless widget renderer, it might be a combining/conditional schema
     return schema ?
-        (type !== 'object' && type) || widget ?
-            <ValueWidgetRenderer
-                {...props}
-                schema={schema} storeKeys={storeKeys} level={level}
-            />
-            : <ValuelessWidgetRenderer
-                {...props}
-                GroupRenderer={GroupRenderer}
-                Widget={ObjectRenderer} widgetStack={widgetStack}
-                schema={schema} storeKeys={storeKeys} level={level}
-            />
-        : null;
+        <ValueWidgetRenderer
+            {...props}
+            schema={schema} storeKeys={storeKeys} level={level}
+        /> : null;
 };
 SchemaEditorRenderer = withWidgets(memo(SchemaEditorRenderer));
 
@@ -60,7 +44,7 @@ const SchemaRootRenderer = () => {
     const {widgets} = useSchemaWidgets();
 
     // first root rendering check if needed props are existing
-    if(!schema || !store || !widgets) return null;
+    if(!schema || typeof store === 'undefined' || !widgets) return null;
 
     const {RootRenderer} = widgets;
 
@@ -83,10 +67,11 @@ const SchemaRootRenderer = () => {
  * @param storeKeys
  * @param level
  * @param showValidity
+ * @param {{}} props
  * @return {*}
  * @constructor
  */
-const NestedSchemaEditor = ({schema, parentSchema, storeKeys, showValidity, level = 0}) => {
+const NestedSchemaEditor = ({schema, parentSchema, storeKeys, showValidity, level = 0, ...props}) => {
     const validity = useSchemaValidity();
 
     return <EditorValidityProvider {...validity} showValidity={showValidity || validity.showValidity}>
@@ -95,6 +80,7 @@ const NestedSchemaEditor = ({schema, parentSchema, storeKeys, showValidity, leve
             parentSchema={parentSchema}
             storeKeys={storeKeys}
             level={level}
+            {...props}
         />
     </EditorValidityProvider>
 };
@@ -111,6 +97,7 @@ const NestedSchemaEditor = ({schema, parentSchema, storeKeys, showValidity, leve
  * @param {Map|undefined} validity
  * @param {boolean} showValidity
  * @param {function(function): Map} onValidity
+ * @param {function(string, *): string|React.Component} t
  * @return {*}
  * @constructor
  */
@@ -129,15 +116,17 @@ let SchemaEditorProvider = ({
                                 children,
                                 schema,
                                 store, onChange,
-                                widgets, // t,
+                                widgets, t,
                                 validity, showValidity, onValidity,
                             }) => (
     <EditorWidgetsProvider widgets={widgets}>
-        <EditorValidityProvider validity={validity} showValidity={showValidity} onValidity={onValidity}>
-            <EditorDataProvider store={store} onChange={onChange} schema={schema}>
-                {children}
-            </EditorDataProvider>
-        </EditorValidityProvider>
+        <EditorTransProvider t={t}>
+            <EditorValidityProvider validity={validity} showValidity={showValidity} onValidity={onValidity}>
+                <EditorDataProvider store={store} onChange={onChange} schema={schema}>
+                    {children}
+                </EditorDataProvider>
+            </EditorValidityProvider>
+        </EditorTransProvider>
     </EditorWidgetsProvider>
 );
 

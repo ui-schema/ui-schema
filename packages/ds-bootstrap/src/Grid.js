@@ -1,29 +1,40 @@
 import React from "react";
 import {NextPluginRenderer} from "@ui-schema/ui-schema";
+import clsx from "clsx";
 
-const SchemaGridItem = ({children}) => {
-//const SchemaGridItem = ({schema, children, defaultMd}) => {
-    /*const view = schema ? schema.getIn(['view']) : undefined;
-    const viewXs = view ? (view.getIn(['sizeXs']) || 12) : 12;
-    const viewSm = schema ? schema.getIn(['view', 'sizeSm']) : undefined;
-    const viewMd = schema ? schema.getIn(['view', 'sizeMd']) : defaultMd;
-    const viewLg = schema ? schema.getIn(['view', 'sizeLg']) : undefined;
-    const viewXl = schema ? schema.getIn(['view', 'sizeXl']) : undefined;*/
+const SchemaGridItem = ({children, schema}) => {
+    let classNameArray = [];
+    const view = schema ? schema.getIn(['view']) : undefined;
+    if(view && view.get('sizeXs')) {
+        classNameArray.push('col-' + view.get('sizeXs'));
+    } else {
+        classNameArray.push('col-12');
+    }
+    if(view && view.get('sizeSm')) {
+        classNameArray.push('col-sm-' + view.get('sizeSm'));
+    }
+    if(view && view.get('sizeMd')) {
+        classNameArray.push('col-md-' + view.get('sizeMd'));
+    }
+    if(view && view.get('sizeLg')) {
+        classNameArray.push('col-lg-' + view.get('sizeLg'));
+    }
+    if(view && view.get('sizeXl')) {
+        classNameArray.push('col-xl-' + view.get('sizeXl'));
+    }
 
     return <div
-        className={'col-md-3'}
+        className={classNameArray.join(' ')}
     >
         {children}
     </div>
 };
 
-const RootRenderer = props => <div className={'container-inner'}>{props.children}</div>;
+const RootRenderer = props => <div className={'row'}>{props.children}</div>;
 
-const GroupRenderer = ({schema, children}) => <SchemaGridItem schema={schema}>
-    <div className={'container'}>
-        {children}
-    </div>
-</SchemaGridItem>;
+const GroupRenderer = ({children}) => <div className={clsx('row', 'px-0')}>
+    {children}
+</div>;
 
 const SchemaGridHandler = (props) => {
     const {

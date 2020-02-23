@@ -1,17 +1,33 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import {BootstrapDashboard} from '../ds/bootstrap/layout/Main';
-
-import {schemaDemoMain, dataDemoMain} from "../schemas/demoMain";
+import {schemaUser, dataDemoMain} from "../schemas/demoMain";
+import {schemaGrid} from "../schemas/demoGrid";
 import {widgets,} from "@ui-schema/ds-bootstrap";
 import {SchemaEditor, isInvalid, createOrderedMap, createMap} from "@ui-schema/ui-schema";
-import {SchemaDebug} from "../component/SchemaDebug";
+import {browserT} from "../t";
+import {BtsSchemaDebug} from "../component/BtsSchemaDebug";
+import clsx from "clsx";
+
+const DemoGrid = () => {
+    const [data, setData] = React.useState(createOrderedMap({}));
+
+    return <SchemaEditor
+        schema={schemaGrid}
+        store={data}
+        onChange={setData}
+        widgets={widgets}
+        t={browserT}
+    >
+        <BtsSchemaDebug/>
+    </SchemaEditor>
+};
+
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [validity, setValidity] = React.useState(createMap());
     const [data, setData] = React.useState(createOrderedMap(dataDemoMain));
-    const [schema, setSchema] = React.useState(createOrderedMap(schemaDemoMain));
+    const [schema, setSchema] = React.useState(createOrderedMap(schemaUser));
 
     return <React.Fragment>
         <SchemaEditor
@@ -22,24 +38,27 @@ const MainStore = () => {
             validity={validity}
             showValidity={showValidity}
             onValidity={setValidity}
+            t={browserT}
         >
-            <SchemaDebug setSchema={setSchema}/>
+            <BtsSchemaDebug setSchema={setSchema}/>
         </SchemaEditor>
 
-        <button onClick={() => setShowValidity(!showValidity)}>validity</button>
+        <button className={clsx("btn", "btn-primary", "col-12", "text-uppercase")} onClick={() => setShowValidity(!showValidity)}>validity</button>
         {isInvalid(validity) ? 'invalid' : 'valid'}
 
-        <Link to={'/'}>>to Material</Link>
     </React.Fragment>
 };
 
 const Main = () => <React.Fragment>
-    <MainStore/>
+    <div>
+        <MainStore/>
+        <DemoGrid/>
+    </div>
 </React.Fragment>;
 
 const Bootstrap = () => {
     return <BootstrapDashboard>
-        <Main/>
+        <Main main={Main}/>
     </BootstrapDashboard>
 };
 

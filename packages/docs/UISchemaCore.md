@@ -90,10 +90,10 @@ Example HOC, recommended for memo usage:
 
 ```js
 import React from "react";
-import {withWidgets} from "@ui-schema/ui-schema";
+import {memo, withWidgets} from "@ui-schema/ui-schema";
 
 const Comp = withWidgets(
-    React.memo(
+    memo(
         ({widgets, ...props}) => {
             const RootRenderer = widgets.RootRenderer;
             return <RootRenderer {...props}/>

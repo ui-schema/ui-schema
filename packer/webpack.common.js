@@ -1,41 +1,26 @@
 'use strict';
 
 const path = require('path');
+const merge = require('webpack-merge');
 const isWsl = require('is-wsl');
 const TerserPlugin = require('terser-webpack-plugin');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
-function getConfig({
-                       context,
-                       mode,
-                       entry,
-                       output,
-                       rules = [],
-                       minimize = true,
-                       performance = {
-                           hints: 'warning'
-                       },
-                       babelPresets = [],
-                       babelPlugins = [],
-                       resolve = [],
-                       plugins = [],
-                       externals = {},
-                       splitChunks = false,
-                       devServer = false,
-                       devtool = false,
-                       modules = false,
-                   } = {},
-                   include = []) {
+function getConfig(
+    customConfig = {},
+    {
+        context = '',
+        minimize = true,
+        babelPresets = [],
+        babelPlugins = [],
+        include = [],
+    } = {},
+) {
     const config = {
-        mode: mode,
-        entry: {...entry},
-        output: {...output},
         module: {
             rules: [
                 {
                     enforce: 'pre',
                     test: /\.(js|jsx)$/,
-                    //exclude: /node_modules/,
                     include: [
                         path.join(context, 'src'),
                         ...include,
@@ -44,14 +29,13 @@ function getConfig({
                         cache: true,
                         formatter: require.resolve('react-dev-utils/eslintFormatter'),
                         eslintPath: require.resolve('eslint'),
-                        emitWarning: !(mode === 'production'),
+                        emitWarning: !(customConfig.mode === 'production'),
                         //failOnError: true,
                         //failOnWarning: true,
                     },
                     loader: require.resolve('eslint-loader'),
                 }, {
                     test: /\.(js|jsx)$/,
-                    //exclude: /node_modules/,
                     include: [
                         path.join(context, 'src'),
                         ...include,
@@ -63,17 +47,6 @@ function getConfig({
                                 ...babelPresets,
                             ],
                             plugins: [
-                                /*[
-                                    require.resolve('babel-plugin-named-asset-import'),
-                                    {
-                                        loaderMap: {
-                                            svg: {
-                                                ReactComponent:
-                                                    '@svgr/webpack?-svgo,+titleProp,+ref![path]',
-                                            },
-                                        },
-                                    },
-                                ],*/
                                 ...babelPlugins,
                             ],
                             // This is a feature of `babel-loader` for webpack (not Babel itself).
@@ -144,14 +117,7 @@ function getConfig({
                     // exclude: /node_modules/,
                     loader: "json-loader"
                 },
-                ...rules
             ],
-        },
-        performance: {...performance},
-        resolve: {
-            // options for resolving module requests
-            // (does not apply to resolving to loaders)
-            modules: [...resolve],
         },
         optimization: {
             minimize: minimize,
@@ -205,83 +171,9 @@ function getConfig({
                 sourceMap: true,
             })],
         },
-        plugins: [
-            ...plugins
-        ],
-        externals: {...externals}
     };
 
-    if(context) {
-        //config.context = context;
-    }
-
-    if(splitChunks) {
-        if(typeof splitChunks === 'boolean') {
-            // Automatically split vendor and commons
-            // https://twitter.com/wSokra/status/969633336732905474
-            // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
-            config.optimization.splitChunks = {
-                chunks: 'all',
-                name: false,
-            };
-            // Keep the runtime chunk separated to enable long term caching
-            // https://twitter.com/wSokra/status/969679223278505985
-            // https://github.com/facebook/create-react-app/issues/5358
-            config.optimization.runtimeChunk = {
-                name: entrypoint => `runtime-${entrypoint.name}`,
-            };
-        } else {
-            config.optimization.splitChunks = splitChunks;
-        }
-    }
-
-    if(devServer) {
-        config.devServer = devServer;
-    }
-
-    if(devtool) {
-        // see https://webpack.js.org/configuration/devtool/
-        config.devtool = devtool;
-    }
-
-    return config;
-}
-
-function getPackageConfig(context, entry, dist, library, libraryTarget, resolve, externals, babelPresets, babelPlugins,) {
-    const config = getConfig({
-        context,
-        mode: 'production',
-        entry: {index: entry},
-        output: {
-            filename: '[name].js',
-            path: dist,
-        },
-        babelPresets,
-        babelPlugins,
-        performance: {
-            hints: 'warning',
-            maxEntrypointSize: 500000,// 500kb
-            maxAssetSize: 500000,
-        },
-        resolve,
-        minimize: false,
-        plugins: [
-            new CleanWebpackPlugin(),
-        ],
-        externals,
-        splitChunks: false,
-        modules: false,
-    });
-
-    if(library) {
-        config.output.library = library;
-    }
-    if(libraryTarget) {
-        config.output.libraryTarget = libraryTarget;
-    }
-
-    return config;
+    return merge(config, customConfig);
 }
 
 exports.getConfig = getConfig;
-exports.getPackageConfig = getPackageConfig;

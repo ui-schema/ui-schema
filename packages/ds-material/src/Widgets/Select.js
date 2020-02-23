@@ -1,14 +1,15 @@
 import React from "react";
 import {
-    FormControl, FormHelperText, Checkbox, InputLabel,
+    FormControl, Checkbox, InputLabel,
     MenuItem, Select as MuiSelect, ListItemText,
 } from "@material-ui/core";
-import {beautifyKey} from "@ui-schema/ui-schema";
+import {beautifyKey, extractValue, memo, updateValue,} from "@ui-schema/ui-schema";
 import {List} from "immutable";
+import {ValidityHelperText} from "../Component/LocaleHelperText";
 
 const Select = ({
                     multiple,
-                    ownKey, schema, value, onChange, storeKeys,
+                    storeKeys, ownKey, schema, value, onChange,
                     showValidity, valid, required, errors
                 }) => {
     if(!schema) return null;
@@ -38,13 +39,14 @@ const Select = ({
                     .join(', ') :
                 beautifyKey(selected)}
             onChange={(e) => multiple ?
-                onChange(store => store.setIn(storeKeys, List(e.target.value))) :
-                onChange(store => store.setIn(storeKeys, e.target.value))}
+                onChange(updateValue(storeKeys, List(e.target.value))) :
+                onChange(updateValue(storeKeys, e.target.value))}
         >
             {enum_val ? enum_val.map((enum_name, i) =>
                 <MenuItem
                     key={enum_name + '-' + i}
                     value={enum_name}
+                    dense={schema.getIn(['view', 'dense'])}
                 >{multiple ?
                     <React.Fragment>
                         <Checkbox checked={currentValue.contains(enum_name)}/>
@@ -55,14 +57,12 @@ const Select = ({
             ).valueSeq() : null}
         </MuiSelect>
 
-        {showValidity && errors.size ? errors.map((error, i) =>
-            <FormHelperText key={i}>{Array.isArray(error) ? error[0] : error}</FormHelperText>
-        ).valueSeq() : null}
+        <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </FormControl>;
 };
 
-const SelectMulti = (props) => {
+const SelectMulti = extractValue(memo((props) => {
     return <Select {...props} multiple/>;
-};
+}));
 
 export {Select, SelectMulti};

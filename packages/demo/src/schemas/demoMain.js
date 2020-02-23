@@ -16,21 +16,43 @@ const schemaDemoMain = {
                     properties: {
                         name: {
                             type: "string",
+                            widget: "StringIcon",
                             minLength: 2,
                             maxLength: 3,
                             view: {
                                 sizeMd: 6,
-                            }
+                                icon: 'AccountBox',
+                                //iconEnd: 'AccountBox'
+                            },
                         },
-                        surname: {
+                        email: {
                             type: "string",
+                            format: "email",
+                            t: 'browser',
                             view: {
                                 sizeMd: 6
                             }
                         },
+                        phone: {
+                            type: "string",
+                            format: "tel",
+                            // tel must be validated with a pattern
+                            pattern: "[0-9]{3}-[0-9]{3}-[0-9]{4}",
+                            view: {
+                                sizeMd: 6
+                            }
+                        },
+                        date: {
+                            type: "string",
+                            format: "date",
+                            view: {
+                                sizeMd: 6,
+                                shrink: true
+                            }
+                        },
                     },
                     required: [
-                        'surname'
+                        'name'
                     ]
                 },
                 'step-2': {
@@ -38,7 +60,7 @@ const schemaDemoMain = {
                     widget: "Step",
                     properties: {
                         topics: {
-                            type: "string",
+                            type: "array",
                             widget: "SelectMulti",
                             view: {
                                 sizeMd: 3
@@ -65,6 +87,8 @@ const schemaDemoMain = {
         },
         headline: {
             type: "string",
+            minLength: 2,
+            maxLength: 3,
             /*enum: [
                 'test 1',
                 'test2',
@@ -83,12 +107,14 @@ const schemaDemoMain = {
             type: "number",
             minimum: 2,
             maximum: 10,
+            tt: 'lower',
             view: {
                 sizeMd: 3
             }
         },
         qty2: {
             type: "number",
+            tt: 'upper',
             exclusiveMinimum: 2,
             exclusiveMaximum: 10,
             view: {
@@ -114,7 +140,7 @@ const schemaDemoMain = {
                 sizeMd: 3
             }
         },
-        teeeext: {
+        comment: {
             type: "string",
             widget: "Text",
             view: {
@@ -228,7 +254,7 @@ const schemaDemoMain = {
             maxItems: 3,
             widget: "SelectMulti",
             view: {
-                sizeMd: 3
+                sizeMd: 3,
             },
             /*
              * input for variable contains must be provided with custom widget/store currently
@@ -250,41 +276,13 @@ const schemaDemoMain = {
             view: {
                 sizeMd: 3
             }
-        },
-        items: {
-            type: "object",
-            widget: "GenericList",
-            view: {
-                axis: "x"
-            },
-            properties: {
-                icon: {
-                    type: "object",
-                    widget: "File",
-                    view: {
-                        sizeMd: 3
-                    }
-                },
-                headline: {
-                    type: "string",
-                    view: {
-                        sizeMd: 3
-                    }
-                },
-                desc: {
-                    type: "object",
-                    widget: "TextRich",
-                    view: {
-                        sizeMd: 3
-                    }
-                }
-            }
         }
     },
     required: [
         'layouts',
         'size',
         'age',
+        'slider_h',
         'ages'
     ]
 };
@@ -302,6 +300,8 @@ const schemaUser = createOrderedMap({
     properties: {
         name: {
             type: "string",
+            minLength: 2,
+            maxLength: 3,
             view: {
                 sizeMd: 6,
             }

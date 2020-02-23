@@ -1,21 +1,31 @@
 import React from "react";
 import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 
-const DefaultHandler = (props) => {
-    const {
-        schema, value, onChange, storeKeys
-    } = props;
+const DefaultValueHandler = ({defaultVal, ...props}) => {
+    const {onChange, storeKeys} = props;
+    let {value} = props;
 
-    // todo: add as effect
-    let default_val = schema.get('default');
-    if(typeof value === 'undefined') {
-        if(typeof default_val !== 'undefined') {
-            onChange(store => store.setIn(storeKeys, default_val))
+    React.useEffect(() => {
+        if(typeof value === 'undefined') {
+            onChange(store => store.setIn(storeKeys, defaultVal));
         }
+    }, [onChange, storeKeys, defaultVal]);
+
+    if(typeof value === 'undefined') {
+        value = defaultVal;
     }
 
-    return (typeof value !== 'undefined' && typeof default_val !== 'undefined') || typeof default_val === 'undefined'
-        ? <NextPluginRenderer {...props}/> : null;
+    return <NextPluginRenderer {...props} value={value}/>;
+};
+
+const DefaultHandler = (props) => {
+    const {schema,} = props;
+
+    let defaultVal = schema.get('default');
+
+    return typeof defaultVal !== 'undefined' ?
+        <DefaultValueHandler {...props} defaultVal={defaultVal}/> :
+        <NextPluginRenderer {...props}/>;
 };
 
 export {DefaultHandler}

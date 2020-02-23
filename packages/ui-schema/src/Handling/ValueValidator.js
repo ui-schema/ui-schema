@@ -1,5 +1,5 @@
 import React from "react";
-import {List} from "immutable";
+import {List, Map} from "immutable";
 import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 
 const ERROR_CONST_MISMATCH = 'const-mismatch';
@@ -30,12 +30,8 @@ const validateEnum = (type, schema, value) => {
 };
 
 const ValueValidatorEnum = (props) => {
-    const {
-        schema, value
-    } = props;
-    let {errors} = props;
-
-    let {valid} = props;
+    const {schema, value} = props;
+    let {errors, valid} = props;
 
     let type = schema.get('type');
     /**
@@ -72,12 +68,8 @@ const validateConst = (type, schema, value) => {
 };
 
 const ValueValidatorConst = (props) => {
-    const {
-        schema, value
-    } = props;
-    let {errors} = props;
-
-    let {valid} = props;
+    const {schema, value} = props;
+    let {errors, valid} = props;
 
     let type = schema.get('type');
     let _const = schema.get('const');
@@ -86,7 +78,7 @@ const ValueValidatorConst = (props) => {
 
     if(!validateConst(type, schema, value)) {
         valid = false;
-        errors = errors.push(ERROR_CONST_MISMATCH);
+        errors = errors.push(List([ERROR_CONST_MISMATCH, Map({const: schema.get('const')})]));
     }
 
     return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
