@@ -15,6 +15,7 @@ const StringRenderer = ({
                             InputProps = {},
                         }) => {
     const inputRef = React.useRef();
+
     const format = schema.get('format');
     const currentRef = inputRef.current;
 

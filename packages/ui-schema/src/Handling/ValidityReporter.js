@@ -22,7 +22,9 @@ let ValidityReporter = (props) => {
 
         return () => {
             // delete own validity state on component unmount
-            onValidity(validity => storeKeys.size ? validity.deleteIn(storeKeys) : Map({}));
+            if(onValidity) {
+                onValidity(validity => storeKeys.size ? validity.deleteIn(storeKeys) : Map({}));
+            }
         };
     }, [valid]);
 

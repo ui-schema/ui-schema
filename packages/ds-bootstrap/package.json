@@ -26,7 +26,8 @@
 		"react": "^16.12"
 	},
 	"dependencies": {
-		"react-id-generator": "^3.0.0"
+		"react-id-generator": "^3.0.0",
+		"react-uid": "^2.2.0"
 	},
 	"peerDependencies": {
 		"@ui-schema/ui-schema": "*",

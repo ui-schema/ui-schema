@@ -48,29 +48,14 @@ export const mainListItems = (<div>
     <ListItemLink to={'/bootstrap'} primary="Bootstrap" icon={<ShoppingCartIcon/>}/>
     <ListItemLink to={'/pulse'} primary="Pulse" icon={<PeopleIcon/>}/>
     <ListItemLink to={'/ant'} primary="Ant" icon={<BarChartIcon/>}/>
-    <ListItemLink to={'https://bemit.codes'} primary="Documentation" icon={<LayersIcon/>} normalLink/>
+    <ListItemLink to={'https://ui-schema.bemit.codes'} primary="Documentation" icon={<LayersIcon/>} normalLink/>
 </div>);
 
 export const secondaryListItems = (
     <div>
-        <ListSubheader inset>Example Schemas</ListSubheader>
-        <ListItem button>
-            <ListItemIcon>
-                <AssignmentIcon/>
-            </ListItemIcon>
-            <ListItemText primary="User"/>
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <AssignmentIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Product"/>
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <AssignmentIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Survey"/>
-        </ListItem>
+        <ListSubheader inset>Additional</ListSubheader>
+        <ListItemLink to={'/mui-richtext'} primary="MUI-Rich" icon={<AssignmentIcon/>}/>
+        <ListItemLink to={'/mui-code'} primary="MUI-Code" icon={<AssignmentIcon/>}/>
+        <ListItemLink to={'/mui-pickers'} primary="MUI-Pickers" icon={<AssignmentIcon/>}/>
     </div>
 );

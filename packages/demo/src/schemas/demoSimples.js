@@ -48,4 +48,38 @@ const schemaSimSelect = createOrderedMap({
     }
 });
 
-export {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect}
+const schemaCode = createOrderedMap({
+    type: 'object',
+    properties: {
+        code: {
+            type: 'string',
+            format: 'css',
+            widget: 'Code',
+            view: {
+                sizeXs: 10,
+            }
+        },
+        code_bg: {
+            type: 'string',
+            format: 'css',
+            widget: 'Code',
+            view: {
+                sizeXs: 12,
+                bg: true
+            }
+        },
+        code_2: {
+            type: 'string',
+            format: ['json', 'js', 'html'],
+            widget: 'Code',
+        },
+        normal_string: {
+            type: 'string',
+        },
+    }
+});
+
+export {
+    schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect,
+    schemaCode,
+}

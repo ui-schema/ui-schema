@@ -71,6 +71,7 @@ const FinalWidgetRenderer = ({value, ...props}) => {
             Widget = () => <NoWidget scope={'type'} matching={type}/>;
         }
     }
+
     return Widget ? <Widget {...props} value={type === 'array' || type === 'object' ? undefined : value}/> : null;
 };
 

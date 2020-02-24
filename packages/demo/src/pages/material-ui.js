@@ -1,5 +1,4 @@
 import React from 'react';
-import {List} from 'immutable';
 import AppTheme from '../ds/material-ui/layout/AppTheme';
 import Dashboard from '../ds/material-ui/dashboard/Dashboard';
 import {schemaWCombining} from "../schemas/demoCombining";
@@ -8,29 +7,19 @@ import {schemaWDep, schemaWDep1, schemaWDep2} from "../schemas/demoDependencies"
 import {dataDemoMain, schemaDemoMain, schemaUser} from "../schemas/demoMain";
 import {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect} from "../schemas/demoSimples";
 import {schemaGrid} from "../schemas/demoGrid";
-import {useTheme} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import {Button} from "@material-ui/core";
-import Orders from "../ds/material-ui/dashboard/Orders";
 import {widgets,} from "@ui-schema/ds-material";
 import {SchemaEditor, isInvalid, createOrderedMap, createMap} from "@ui-schema/ui-schema";
-import {Dummy as Dummy1} from "@ui-schema/material-pickers";
-import {Dummy as Dummy2} from "@ui-schema/material-richtext";
-import {Dummy as Dummy3} from "@ui-schema/material-code";
 import {MuiSchemaDebug} from "../component/MuiSchemaDebug";
-import {Map} from 'immutable';
 import {browserT} from "../t";
 import {schemaLists} from "../schemas/demoLists";
 import {schemaNumberSlider} from "../schemas/demoNumberSlider";
+import {createDummyRenderer} from "../component/MuiMainDummy";
+import {useDummy} from "../component/MainDummy";
 
-const customWidgets = {...widgets};
-customWidgets.custom = {
-    ...widgets.custom,
-    DateTime: Dummy1,
-    RichText: Dummy2,
-    Code: Dummy3,
-};
+const DummyRenderer = createDummyRenderer(widgets);
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
@@ -58,41 +47,6 @@ const MainStore = () => {
     </React.Fragment>
 };
 
-const defaultCreate = type => {
-    return type === 'array' ?
-        List([]) :
-        type === 'string' ?
-            '' :
-            type === 'number' ?
-                0 :
-                type === 'boolean' ?
-                    false :
-                    Map({})
-};
-
-const MainDummy = ({schema}) => {
-    const [showValidity, setShowValidity] = React.useState(false);
-    const [validity, setValidity] = React.useState(Map({}));
-    const [data, setData] = React.useState(() => defaultCreate(schema.get('type')));
-
-    return <React.Fragment>
-        <SchemaEditor
-            schema={schema}
-            store={data}
-            onChange={setData}
-            widgets={widgets}
-            validity={validity}
-            showValidity={showValidity}
-            onValidity={setValidity}
-            t={browserT}
-        >
-            <MuiSchemaDebug/>
-        </SchemaEditor>
-        <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
-        {isInvalid(validity) ? 'invalid' : 'valid'}
-    </React.Fragment>
-};
-
 const DemoUser = () => {
     const [data, setData] = React.useState(createOrderedMap({}));
 
@@ -111,31 +65,11 @@ const DemoUser = () => {
     </Grid>
 };
 
-const DummyRenderer = ({id, schema, toggleDummy, getDummy, open, classes}) => <React.Fragment>
-    {open ? null : <Button style={{marginBottom: 12}} onClick={() => toggleDummy(id)} variant={getDummy(id) ? 'contained' : 'outlined'}>
-        {id.replace(/([A-Z0-9])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-    </Button>}
-    {getDummy(id) || open ? <Paper className={classes.paper}>
-        <MainDummy schema={schema}/>
-    </Paper> : null}
-</React.Fragment>;
-
-
 const Main = ({classes = {}}) => {
-    const [showDummy, setShowVDummy] = React.useState({});
-    const theme = useTheme();
-
-    const toggleDummy = id => {
-        let tmp = {...showDummy};
-        tmp[id] = !tmp[id];
-        setShowVDummy(tmp);
-    };
-    const getDummy = id => {
-        return !!showDummy[id];
-    };
+    const {toggleDummy, getDummy} = useDummy();
 
     return <React.Fragment>
-        <Grid item xs={12} className={'t-' + theme.palette.type}>
+        <Grid item xs={12}>
             <Paper className={classes.paper}>
                 <MainStore/>
             </Paper>
@@ -183,18 +117,9 @@ const Main = ({classes = {}}) => {
                 <DemoUser/>
             </Paper> : null}
         </Grid>
-        <Grid item xs={12}>
-            <Paper className={classes.paper}>
-                <Orders/>
-            </Paper>
-        </Grid>
     </React.Fragment>
 };
 
-const MaterialUi = () => {
-    return <AppTheme>
-        <Dashboard main={Main}/>
-    </AppTheme>
-};
-
-export {MaterialUi}
+export default () => <AppTheme>
+    <Dashboard main={Main}/>
+</AppTheme>;
