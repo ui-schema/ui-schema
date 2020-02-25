@@ -56,7 +56,7 @@ const schemaCode = createOrderedMap({
             format: 'css',
             widget: 'Code',
             view: {
-                sizeXs: 10,
+                sizeXs: 12,
             }
         },
         code_bg: {

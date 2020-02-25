@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import {unstable_trace as trace} from "scheduler/tracing";
-import {beautifyKey, updateValue} from "@ui-schema/ui-schema";
+import {beautifyKey, prependKey, updateInternalValue, updateValues,} from "@ui-schema/ui-schema";
 import FormControl from "@material-ui/core/FormControl";
 import {ValidityHelperText} from "@ui-schema/ds-material/es/Component/LocaleHelperText";
 import {styles as inputStyles} from "@material-ui/core/Input/Input";
@@ -20,39 +19,67 @@ import {MarkdownLabel} from "./MarkdownLabel";
 import {EditorControls} from "./EditorControls";
 import {blockRendererFn, editorStateFrom, editorStateTo, getBlockStyle, inlineMap, styleMap} from "./EditorExtends";
 import {RichTextProvider} from "./RichTextProvider";
+import {createMap} from "@ui-schema/ui-schema";
 
 const useInputStyles = makeStyles(inputStyles);
 
 const plugins = [createMarkdownShortcutsPlugin()];
 
 const RichText = ({
-                      storeKeys, ownKey, schema, value, onChange, onlyInline,
+                      storeKeys, ownKey, schema,
                       showValidity, valid, errors, required,
+                      value, onChange, internalValue,
+                      onlyInline,
                   }) => {
+    const prevStoreKeys = React.useRef();
+    const prevInternalValue = React.useRef();
+    React.useEffect(() => {
+        prevStoreKeys.current = storeKeys;
+        prevInternalValue.current = internalValue;
+    });
+
     const [mdFocus, setMdFocus] = React.useState(false);
 
     const topControls = schema.getIn(['view', 'topControls']) !== false;
 
-    const [editorState, setEditorState] = React.useState(
-        EditorState.createEmpty(),
-    );
-
-    const handleChange = (newState) => trace("draftjs handlechange", performance.now(), () => {
-        setEditorState(newState);
-
-        // only update text representation of state when it really changed, onChange gets also triggered when e.g. changing focus
-        if(newState.getCurrentContent() === editorState.getCurrentContent()) {
-            return;
+    let editorState = internalValue;
+    if(!editorState) {
+        if(typeof value !== 'undefined') {
+            editorState = editorStateFrom.markdown(value);
+        } else {
+            editorState = EditorState.createEmpty();
         }
+    }
 
-        onChange(updateValue(storeKeys, editorStateTo.markdown(newState)));
-    });
+    React.useEffect(() => {
+        if(!internalValue && editorState) {
+            onChange(updateInternalValue(storeKeys, editorState));
+        }
+    }, [internalValue, editorState, onChange, storeKeys.equals(prevStoreKeys.current)]);
+
+    const handleChange = React.useCallback((state) => {
+        onChange(store => {
+            let stateHandler = state;
+            if(typeof stateHandler !== 'function') {
+                // DraftJS onChange does not use a function to update the state, but we use it everywhere
+                stateHandler = () => state;
+            }
+
+            const internalValue = storeKeys.size ?
+                (store.get('internals') ? store.getIn(prependKey(storeKeys, 'internals')) : createMap()) :
+                store.get('internals');
+
+            let newState = stateHandler(internalValue);
+            return updateValues(storeKeys, editorStateTo.markdown(newState), newState)(store);
+        });
+    }, [onChange, storeKeys.equals(prevStoreKeys.current)]);
 
     const handleKeyCommand = (command, editorState) => {
         if(onlyInline) return 'handled';
+
         const newState = RichUtils.handleKeyCommand(editorState, command);
         if(newState) {
-            handleChange(newState);
+            handleChange(() => newState);
             return 'handled';
         }
         return 'not-handled';
@@ -60,20 +87,20 @@ const RichText = ({
 
     const onTab = (e) => {
         const maxDepth = 4;// somehow this doesn't restrict the ul/li depth
-        handleChange(RichUtils.onTab(e, editorState, maxDepth));
+        handleChange(editorState => RichUtils.onTab(e, editorState, maxDepth));
     };
 
     const contentState = editorState.getCurrentContent();
     const anyContentExists = contentState.hasText() ||
         contentState.getBlockMap().first().getType() !== 'unstyled';
 
-    // todo: check state convertion performance impact / better way of saving non-string in the schema store that won't get leaked to the endstore
     const sameOrEmpty = (!value && !anyContentExists) ||
         editorStateTo.markdown(editorState) === value;
 
     React.useEffect(() => {
         if(!sameOrEmpty) {
-            handleChange(editorStateFrom.markdown(value));
+            // renew store when content has changed
+            handleChange(() => editorStateFrom.markdown(value));
         }
     }, [sameOrEmpty]);
 

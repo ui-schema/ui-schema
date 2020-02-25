@@ -11,7 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import {Button} from "@material-ui/core";
 import {widgets,} from "@ui-schema/ds-material";
-import {SchemaEditor, isInvalid, createOrderedMap, createMap} from "@ui-schema/ui-schema";
+import {SchemaEditor, isInvalid, createOrderedMap, createMap, createStore, createEmptyStore} from "@ui-schema/ui-schema";
 import {MuiSchemaDebug} from "../component/MuiSchemaDebug";
 import {browserT} from "../t";
 import {schemaLists} from "../schemas/demoLists";
@@ -23,9 +23,9 @@ const DummyRenderer = createDummyRenderer(widgets);
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
-    const [validity, setValidity] = React.useState(createMap());
-    const [data, setData] = React.useState(createOrderedMap(dataDemoMain));
-    const [schema, setSchema] = React.useState(createOrderedMap(schemaDemoMain));
+    const [validity, setValidity] = React.useState(() => createMap());
+    const [data, setData] = React.useState(() => createStore(createMap(dataDemoMain)));
+    const [schema, setSchema] = React.useState(() => createOrderedMap(schemaDemoMain));
 
     return <React.Fragment>
         <SchemaEditor
@@ -48,7 +48,7 @@ const MainStore = () => {
 };
 
 const DemoUser = () => {
-    const [data, setData] = React.useState(createOrderedMap({}));
+    const [data, setData] = React.useState(() => createEmptyStore());
 
     return <Grid container spacing={3} justify={'center'}>
         <Grid item xs={12} md={6}>

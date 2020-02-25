@@ -1,24 +1,12 @@
 import React from "react";
-import {Map, List} from "immutable";
-import {isInvalid, SchemaEditor} from "@ui-schema/ui-schema";
+import {Map} from "immutable";
+import {createEmptyStore, isInvalid, SchemaEditor} from "@ui-schema/ui-schema";
 import {browserT} from "../t";
-
-const defaultCreate = type => {
-    return type === 'array' ?
-        List([]) :
-        type === 'string' ?
-            '' :
-            type === 'number' ?
-                0 :
-                type === 'boolean' ?
-                    false :
-                    Map({})
-};
 
 const MainDummy = ({schema, Debugger, Button, widgets}) => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [validity, setValidity] = React.useState(Map({}));
-    const [data, setData] = React.useState(() => defaultCreate(schema.get('type')));
+    const [data, setData] = React.useState(() => createEmptyStore(schema.get('type')));
 
     return <React.Fragment>
         <SchemaEditor
@@ -57,4 +45,4 @@ const useDummy = () => {
     }
 };
 
-export {MainDummy, defaultCreate, useDummy}
+export {MainDummy, useDummy}

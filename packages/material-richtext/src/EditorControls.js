@@ -10,6 +10,7 @@ import {EditorState,} from 'draft-js';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {useControlStyles,} from "./styles";
 import {RichUtils,} from 'draft-js';
+import {memo} from "@ui-schema/ui-schema";
 import {AccessTooltipIcon} from "@ui-schema/ds-material/es/Component/Tooltip";
 import {useRichText} from "./RichTextProvider";
 
@@ -21,34 +22,56 @@ const buttonStyle = makeStyles(theme => ({
     }
 }));
 
+const ControlButton = memo(({classes, size, inline, toggleInlineStyle, toggleBlockType, Label, style}) => <IconButton
+    classes={classes}
+    size={'small'}
+    style={{
+        margin: size === 'medium' ? '2px 1px' : 'auto 1px',
+        fontSize: size === 'medium' ? '1.25rem' : undefined
+    }}
+    onClick={(e) => {
+        e.preventDefault();
+        if(inline) {
+            toggleInlineStyle(style);
+        } else {
+            toggleBlockType(style);
+        }
+    }}>
+    {typeof Label === 'function' ? <Label/> : Label}
+</IconButton>);
+
 const Button = ({Label, style, inline, size}) => {
     const {editorState, handleChange,} = useRichText();
 
-    const toggleInlineStyle = (inlineStyle) => {
-        let currentState = EditorState.forceSelection(
-            editorState,
-            editorState.getSelection(),
-        );
-        currentState = RichUtils.toggleInlineStyle(
-            currentState,
-            inlineStyle
-        );
-        handleChange(currentState);
-    };
+    const toggleInlineStyle = React.useCallback((inlineStyle) => {
+        handleChange(prevEditorState => {
+            let currentState = EditorState.forceSelection(
+                prevEditorState,
+                prevEditorState.getSelection(),
+            );
+            currentState = RichUtils.toggleInlineStyle(
+                currentState,
+                inlineStyle
+            );
+            return currentState
+        });
+    }, [handleChange]);
+
+    const toggleBlockType = React.useCallback((blockType) => {
+        handleChange(prevEditorState => {
+            let currentState = EditorState.forceSelection(
+                prevEditorState,
+                prevEditorState.getSelection(),
+            );
+            currentState = RichUtils.toggleBlockType(
+                currentState,
+                blockType
+            );
+            return currentState
+        });
+    }, [handleChange]);
 
     let currentInlineStyle = editorState.getCurrentInlineStyle();
-
-    const toggleBlockType = (blockType) => {
-        let currentState = EditorState.forceSelection(
-            editorState,
-            editorState.getSelection(),
-        );
-        currentState = RichUtils.toggleBlockType(
-            currentState,
-            blockType
-        );
-        handleChange(currentState);
-    };
 
     const selection = editorState.getSelection();
     const blockType = editorState
@@ -60,23 +83,16 @@ const Button = ({Label, style, inline, size}) => {
 
     const classes = buttonStyle({active});
 
-    return <IconButton
+    return <ControlButton
         classes={classes}
-        size={'small'}
-        style={{
-            margin: size === 'medium' ? '2px 1px' : 'auto 1px',
-            fontSize: size === 'medium' ? '1.25rem' : undefined
-        }}
-        onClick={(e) => {
-            e.preventDefault();
-            if(inline) {
-                toggleInlineStyle(style);
-            } else {
-                toggleBlockType(style);
-            }
-        }}>
-        {typeof Label === 'function' ? <Label/> : Label}
-    </IconButton>;
+        size={size}
+        inline={inline}
+        handleChange={handleChange}
+        toggleInlineStyle={toggleInlineStyle}
+        toggleBlockType={toggleBlockType}
+        Label={Label}
+        style={style}
+    />;
 };
 
 const BLOCK_TYPES = [
@@ -237,6 +253,6 @@ let EditorControls = ({
         </div>
     </Fade>;
 };
-EditorControls = React.memo(EditorControls);
+EditorControls = memo(EditorControls);
 
 export {EditorControls}

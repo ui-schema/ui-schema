@@ -3,8 +3,9 @@ import {List, Map} from "immutable";
 import {
     TextField
 } from "@material-ui/core";
+import {useUID} from "react-uid";
 import {unstable_trace as trace} from "scheduler/tracing";
-import {beautifyKey, updateValue} from "@ui-schema/ui-schema";
+import {beautifyKey, updateValue, updateValidity} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
 const StringRenderer = ({
@@ -12,9 +13,13 @@ const StringRenderer = ({
                             multiline, rows, rowsMax,
                             storeKeys, ownKey, schema, value, onChange,
                             onValidity, showValidity, valid, errors, required,
-                            InputProps = {},
+                            style,
+                            onClick, onFocus, onBlur, onKeyUp, onKeyDown,
+                            InputProps = {}, inputRef: customInputRef,
                         }) => {
-    const inputRef = React.useRef();
+    const uid = useUID();
+    // todo: this could break law-of-hooks
+    const inputRef = customInputRef || React.useRef();
 
     const format = schema.get('format');
     const currentRef = inputRef.current;
@@ -31,7 +36,7 @@ const StringRenderer = ({
 
     React.useEffect(() => {
         if(onValidity) {
-            onValidity(updateValue(storeKeys, Map({'__valid': valid})));
+            onValidity(updateValidity(storeKeys, valid));
         }
     }, [valid]);
 
@@ -50,6 +55,13 @@ const StringRenderer = ({
             margin={schema.getIn(['view', 'margin'])}
             size={schema.getIn(['view', 'dense']) ? 'small' : 'medium'}
             value={typeof value !== 'undefined' ? value : ''}
+            onClick={onClick}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            onKeyUp={onKeyUp}
+            id={uid}
+            style={style}
+            onKeyDown={onKeyDown}
             onChange={(e) => trace("textfield onchange", performance.now(), () => {
                 const value = e.target.value;
                 if(type === 'number') {

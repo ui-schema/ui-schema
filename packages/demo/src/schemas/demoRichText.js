@@ -20,6 +20,7 @@ const schemaRichText = createOrderedMap({
         text_2a: {
             type: 'string',
             widget: 'RichText',
+            default: 'Something',
             view: {
                 sizeXs: 10,
                 sizeMd: 5,

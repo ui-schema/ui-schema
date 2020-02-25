@@ -31,7 +31,6 @@ const Main = ({classes = {}}) => {
 };
 
 export default () => <AppTheme>
-
     <MuiPickersUtilsProvider utils={LuxonAdapter}>
         <Dashboard main={Main}/>
     </MuiPickersUtilsProvider>

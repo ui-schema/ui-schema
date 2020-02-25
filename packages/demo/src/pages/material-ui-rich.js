@@ -30,3 +30,5 @@ const Main = ({classes = {}}) => {
 export default () => <AppTheme>
     <Dashboard main={Main}/>
 </AppTheme>
+
+export {customWidgets}

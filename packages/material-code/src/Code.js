@@ -1,32 +1,12 @@
 import React from "react";
 import clsx from "clsx";
-import {Map} from "immutable";
-import {beautifyKey, updateValue} from "@ui-schema/ui-schema";
+import {beautifyKey, updateValidity, updateValue} from "@ui-schema/ui-schema";
 import {useUID} from "react-uid";
 import FormLabel from "@material-ui/core/FormLabel";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import useTheme from "@material-ui/core/styles/useTheme";
 import {ValidityHelperText} from "@ui-schema/ds-material/es/Component/LocaleHelperText";
 import {Controlled as CodeMirror} from "react-codemirror2";
-import style from "codemirror/lib/codemirror.css";
-/*import themeMaterial from 'codemirror/theme/material.css';
-import themeMaterial from 'codemirror/theme/3024-day.css';
-import themeMaterial from 'codemirror/theme/3024-night.css';
-import themeMaterial from 'codemirror/theme/base16-dark.css';
-import themeMaterial from 'codemirror/theme/base16-light.css';
-import themeMaterial from 'codemirror/theme/darcula.css';*/
-import themeDark from 'codemirror/theme/duotone-dark.css';
-import themeLight from 'codemirror/theme/duotone-light.css';
-/*import themeMaterial from 'codemirror/theme/gruvbox-dark.css';
-import themeDark from 'codemirror/theme/xq-dark.css';
-import themeLight from 'codemirror/theme/xq-light.css';*/
-
-const useStyle = (styles) => {
-    React.useEffect(() => {
-        styles.use();
-        return () => styles.unuse();
-    }, [styles]);
-};
+import {useWidgetCode} from "./CodeProvider";
 
 const useStyles = makeStyles({
     root: {
@@ -45,29 +25,17 @@ const useStyles = makeStyles({
     },
 });
 
-const useStylesDynamic = makeStyles(({palette}) => ({
-    rootBorder: ({theme}) => ({
-        [`& .cm-s-${theme} .CodeMirror-gutters`]: {
-            borderRight: '1px solid ' + palette.divider
-        },
-    }),
-}));
-
 const Code = ({
                   storeKeys, ownKey, schema, value, onChange,
                   onValidity, showValidity, valid, errors, required,
               }) => {
     const uid = useUID();
-    const {palette} = useTheme();
+    const {theme} = useWidgetCode();
     const [lines, setLines] = React.useState(1);
     const [editor, setEditor] = React.useState();
     const [focused, setFocused] = React.useState(false);
 
-    useStyle(style);
-    useStyle(palette.type === 'dark' ? themeDark : themeLight);
-    const theme = palette.type === 'dark' ? 'duotone-dark' : 'duotone-light';
     const classes = useStyles();
-    const classesDynamic = useStylesDynamic({theme,});
 
     const format = schema.get('format');
     // todo: multi format w/ selection
@@ -75,7 +43,7 @@ const Code = ({
 
     React.useEffect(() => {
         if(onValidity) {
-            onValidity(updateValue(storeKeys, Map({'__valid': valid})));
+            onValidity(updateValidity(storeKeys, valid));
         }
     }, [valid]);
 
@@ -110,9 +78,12 @@ const Code = ({
 
     const options = React.useMemo(() => ({
         mode: format,
-        theme,
         lineNumbers: true
     }), [format]);
+
+    if(theme) {
+        options.theme = theme;
+    }
 
     return <React.Fragment>
         <FormLabel error={!valid && showValidity} style={{marginBottom: 12, display: 'block'}}>
@@ -122,8 +93,6 @@ const Code = ({
             <CodeMirror
                 className={clsx(
                     classes.root, 'uis-' + uid,
-                    classesDynamic.rootBg,
-                    classesDynamic.rootBorder,
                     'MuiInput-underline',
                     focused ? 'Mui-focused' : null
                 )}
