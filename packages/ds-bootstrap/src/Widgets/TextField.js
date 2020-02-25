@@ -1,7 +1,7 @@
 import React from "react";
 
 import {unstable_trace as trace} from "scheduler/tracing";
-import {beautifyKey} from "@ui-schema/ui-schema";
+import {beautifyKey, updateValue} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
 const StringRenderer = ({ownKey, schema, value, multiline, onChange, storeKeys, showValidity, required, errors}) => {
@@ -23,7 +23,7 @@ const StringRenderer = ({ownKey, schema, value, multiline, onChange, storeKeys, 
             value={value || ''}
             onChange={(e) => trace("textfield onchange", performance.now(), () => {
                 const value = e.target.value;
-                onChange(store => store.setIn(storeKeys, value));
+                onChange(updateValue(storeKeys, value));
             })}/>
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </div>;
