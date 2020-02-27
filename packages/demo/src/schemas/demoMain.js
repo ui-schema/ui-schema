@@ -312,6 +312,13 @@ const schemaUser = createOrderedMap({
                 sizeMd: 6
             }
         },
+        center_items: {
+            type: "boolean",
+            default: true,
+            view: {
+                sizeMd: 12
+            }
+        },
         address: {
             type: "object",
             properties: {
