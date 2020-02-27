@@ -1,5 +1,4 @@
 import React from "react";
-
 import {unstable_trace as trace} from "scheduler/tracing";
 import {beautifyKey, updateValue} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
