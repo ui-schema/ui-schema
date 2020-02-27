@@ -3,7 +3,7 @@ import {unstable_trace as trace} from "scheduler/tracing";
 import {beautifyKey, updateValue} from "@ui-schema/ui-schema";
 
 
-const BoolRenderer = ({ownKey, value, onChange, storeKeys, showValidity, valid, required, errors}) => {
+const BoolRenderer = ({ownKey, value, onChange, storeKeys, showValidity, required, errors}) => {
 
     let classForm = ["custom-control", "custom-switch"];
     let classLabel = ["custom-control-label", "text-light"];
