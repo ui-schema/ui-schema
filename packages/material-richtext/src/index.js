@@ -1,3 +1,2 @@
-const Dummy = () => 'dummy';
-
-export {Dummy}
+export * from './RichText'
+export * from './RichTextInline'

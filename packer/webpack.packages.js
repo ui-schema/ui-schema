@@ -32,8 +32,8 @@ function getPackageBuilders(context, entry, dist, library, resolve, externals) {
         performance: {
             hints: 'warning',
             // maxEntrypointSize: 500000,// 500kb
-            maxEntrypointSize: 1000000,// 1000kb
-            maxAssetSize: 1000000,
+            maxEntrypointSize: 2000000,// 1000kb
+            maxAssetSize: 2000000,
         },
         plugins: [
             new CleanWebpackPlugin(),

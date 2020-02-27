@@ -11,9 +11,9 @@ const OptionCheck = ({currentValue, label, onChange}) => {
     const uid = useUID();
 
     return <FormControlLabel
-        id={uid}
+        id={'uis-' + uid}
         control={<Checkbox
-            id={uid}
+            id={'uis-' + uid}
             value={currentValue}
             checked={currentValue}
             onChange={onChange}

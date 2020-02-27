@@ -1,9 +1,27 @@
+import {List, Map} from "immutable";
+import {prependKey, updateValues} from "..";
+
+/**
+ * Map and List compatible 'switch place of item' function
+ * @param value
+ * @param oldI
+ * @param newI
+ * @return {T[]|*}
+ */
 const moveItem = (value, oldI, newI) => {
     if(!value || 0 > newI || value.size < newI) return value;
 
     const srcItem = value.get(oldI);
 
-    return value.splice(oldI, 1).splice(newI, 0, srcItem);
+    if(List.isList(value)) {
+        return value.splice(oldI, 1).splice(newI, 0, srcItem);
+    }
+    if(Map.isMap(value)) {
+        const oldItem = value.get(newI);
+        return value.delete(oldI).delete(newI).set(newI, srcItem).set(oldI, oldItem);
+    }
+
+    return value;
 };
 
 /**
@@ -17,7 +35,12 @@ const storeMoveItem = (onChange, storeKeys, go) => () => {
     onChange(store => {
         const valueStoreKeys = storeKeys.slice(0, -1);
         const index = storeKeys.slice(-1).get(0);
-        return store.setIn(valueStoreKeys, moveItem(store.getIn(valueStoreKeys), index, index + go))
+
+        return updateValues(
+            valueStoreKeys,
+            moveItem(store.getIn(prependKey(valueStoreKeys, 'values')), index, index + go),
+            moveItem(store.getIn(prependKey(valueStoreKeys, 'internals')), index, index + go),
+        )(store);
     })
 };
 
