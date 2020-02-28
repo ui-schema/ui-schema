@@ -18,17 +18,16 @@ const BoolRenderer = ({ownKey, showValidity, required, errors, value, storeKeys,
     let currentChecked = !!value;
 
     return <div className={classForm.join(' ')}>
-        <input type="checkbox" className={classFormControl.join(' ')} id={ownKey}
-               defaultChecked={currentChecked}
-               required={required}
-               onChange={() => trace("textfield onchange", performance.now(), () => {
-                   onChange(updateValue(storeKeys, !currentChecked));
-               })}
-               />
+        <input
+            type="checkbox" className={classFormControl.join(' ')} id={ownKey}
+            checked={currentChecked}
+            required={required}
+            onChange={() => trace("switch onchange", performance.now(), () => {
+                onChange(updateValue(storeKeys, !currentChecked));
+            })}
+        />
         <label className={classLabel.join(' ')} htmlFor={ownKey}>{beautifyKey(ownKey) + (required ? ' *' : '')}</label>
     </div>;
-
-
 };
 
 export {BoolRenderer};
