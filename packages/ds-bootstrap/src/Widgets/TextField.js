@@ -3,7 +3,7 @@ import {unstable_trace as trace} from "scheduler/tracing";
 import {beautifyKey, updateValue} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
-const StringRenderer = ({ownKey, schema, value, multiline, onChange, storeKeys, showValidity, required, errors, type}) => {
+const StringRenderer = ({ownKey, schema, value, multiline, onChange, storeKeys, showValidity, required, errors, type, rows}) => {
     const format = schema.get('format');
 
     let Renderer = 'input';
@@ -20,12 +20,13 @@ const StringRenderer = ({ownKey, schema, value, multiline, onChange, storeKeys, 
         classFormGroup.push('was-validated');
     }
 
-    return <div className={classFormGroup.join(' ')} noValidate>
+    return <div className={classFormGroup.join(' ')}>
         <label htmlFor={ownKey}>{beautifyKey(ownKey)}</label>
         <Renderer
             className={classFormControl.join(' ')}
             type={format || type}
             required={required}
+            rows={rows}
             value={typeof value !== 'undefined' ? value : ''}
             onChange={(e) => trace("textfield onchange", performance.now(), () => {
                 const value = e.target.value;
@@ -49,6 +50,7 @@ const TextRenderer = ({schema, ...props}) => {
         {...props}
         schema={schema}
         rows={schema.getIn(['view', 'rows'])}
+        multiline
     />
 };
 
