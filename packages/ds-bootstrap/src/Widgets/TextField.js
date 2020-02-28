@@ -30,14 +30,13 @@ const StringRenderer = ({ownKey, schema, value, multiline, onChange, storeKeys, 
             onChange={(e) => trace("textfield onchange", performance.now(), () => {
                 const value = e.target.value;
                 const target = e.target;
-                if (type === 'number') {
+                if(type === 'number') {
                     if(isNaN(value * 1)) {
                         console.error('Invalid Type: input not a number in:', target);
                         return;
                     }
                     onChange(updateValue(storeKeys, value * 1));
-                }
-                else {
+                } else {
                     onChange(updateValue(storeKeys, value));
                 }
             })}/>
