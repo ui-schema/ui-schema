@@ -1,4 +1,4 @@
-import {StringRenderer} from "./Widgets/TextField";
+import {StringRenderer, TextRenderer, NumberRenderer} from "./Widgets/TextField";
 import {RootRenderer, GroupRenderer} from "./Grid";
 import {widgetStack} from "./widgetStack";
 
@@ -8,9 +8,12 @@ const widgets = {
     widgetStack,
     ErrorFallback: 'todo',
     types: {
-         string: StringRenderer
+        string: StringRenderer,
+        number: NumberRenderer
     },
-    custom: {},
+    custom: {
+        Text: TextRenderer
+    },
 };
 
 export {widgets};
