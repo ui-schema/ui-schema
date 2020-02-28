@@ -1,8 +1,9 @@
 import React from "react";
-import {beautifyKey} from "@ui-schema/ui-schema";
+import {unstable_trace as trace} from "scheduler/tracing";
+import {beautifyKey, updateValue} from "@ui-schema/ui-schema";
 
 
-const BoolRenderer = ({ownKey, showValidity, required, errors, value}) => {
+const BoolRenderer = ({ownKey, showValidity, required, errors, value, storeKeys, onChange}) => {
 
     let classForm = ["custom-control", "custom-switch"];
     let classLabel = ["custom-control-label", "text-light"];
@@ -14,11 +15,15 @@ const BoolRenderer = ({ownKey, showValidity, required, errors, value}) => {
         classForm.push('was-validated');
     }
 
-    let currentChecked = value ? true : undefined;
+    let currentChecked = !!value;
 
     return <div className={classForm.join(' ')}>
         <input type="checkbox" className={classFormControl.join(' ')} id={ownKey}
                defaultChecked={currentChecked}
+               required={required}
+               onChange={() => trace("textfield onchange", performance.now(), () => {
+                   onChange(updateValue(storeKeys, !currentChecked));
+               })}
                />
         <label className={classLabel.join(' ')} htmlFor={ownKey}>{beautifyKey(ownKey) + (required ? ' *' : '')}</label>
     </div>;
