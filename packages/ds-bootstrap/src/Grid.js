@@ -38,8 +38,12 @@ const GroupRenderer = ({children}) => <div className={clsx('row', 'px-0')}>
 
 const SchemaGridHandler = (props) => {
     const {
-        schema,
+        schema, noGrid
     } = props;
+
+    if(noGrid) {
+        return <NextPluginRenderer {...props}/>;
+    }
 
     return <SchemaGridItem schema={schema}>
         <NextPluginRenderer {...props}/>
