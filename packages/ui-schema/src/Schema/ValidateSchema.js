@@ -5,7 +5,7 @@ import {ERROR_PATTERN, validatePattern} from "../Handling/PatternValidator";
 import {validateMinMax} from "../Handling/MinMaxValidator";
 import {ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum} from "../Handling/ValueValidator";
 import {ERROR_MULTIPLE_OF, validateMultipleOf} from "../Handling/MultipleOfValidator";
-import {ERROR_NOT_SET} from "..";
+import {ERROR_NOT_SET, validateContains} from "..";
 
 /**
  * Return false when valid and string/List for an error
@@ -41,6 +41,9 @@ const validateSchema = (schema, value) => {
         err = ERROR_ENUM_MISMATCH;
     } else if(!validateMultipleOf(type, schema, value)) {
         err = ERROR_MULTIPLE_OF;
+    } else if(validateContains(schema, value).size) {
+        // todo: duplicate validate checks when invalid [performance]
+        err = validateContains(schema, value);
     }
 
     return err;

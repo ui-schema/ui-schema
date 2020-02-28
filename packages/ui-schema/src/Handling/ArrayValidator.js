@@ -26,6 +26,9 @@ const validateArray = (schema, value, find = false) => {
         if(err && !find) {
             break;
         }
+        if(find && (!err || (List.isList(err) && err.size === 0))) {
+            break;
+        }
     }
 
     return err;
@@ -52,6 +55,27 @@ const validateItems = (schema, value) => {
     }
 
     return List([]);
+};
+
+const validateContains = (schema, value) => {
+    let errors = List();
+    if(schema.get('type') !== 'array') return errors;
+
+    const contains = schema.get('contains');
+    let contains_type = contains.get('type');
+    if(!contains_type) return errors;
+
+    // single-validation
+    let item_err = validateArray(contains, value, true);
+    if(List.isList(item_err)) {
+        if(item_err.size) {
+            errors = errors.concat(item_err);
+        }
+    } else if(item_err) {
+        errors = errors.push(item_err);
+    }
+
+    return errors;
 };
 
 const ArrayValidator = (props) => {
@@ -107,27 +131,19 @@ const ArrayValidator = (props) => {
         //    maybe adding a possibility to update the validity for sub-schemas from the parent-component?
         let contains = schema.get('contains');
         if(contains && value) {
-            let contains_type = contains.get('type');
-            if(contains_type) {
-                // single-validation
-                let item_err = validateArray(contains, value, true);
-                if(List.isList(item_err)) {
-                    if(item_err.size) {
-                        valid = false;
-                        errors = errors.concat(item_err);
-                    }
-                } else if(item_err) {
-                    valid = false;
-                    errors = errors.push(item_err);
-                }
-            } else {
+            const containsError = validateContains(schema, value);
+            if(containsError.size) {
+                valid = false;
+                errors = errors.concat(containsError);
+            }
+            /*} else {
                 // tuple validation
                 console.error('`contains` tuple validation not implemented yet');
-            }
+            }*/
         }
     }
 
     return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
 };
 
-export {ArrayValidator, ERROR_DUPLICATE_ITEMS, ERROR_NOT_FOUND_CONTAINS, validateItems}
+export {ArrayValidator, ERROR_DUPLICATE_ITEMS, ERROR_NOT_FOUND_CONTAINS, validateItems, validateContains}

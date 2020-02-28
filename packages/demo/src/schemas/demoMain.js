@@ -37,7 +37,7 @@ const schemaDemoMain = {
                             type: "string",
                             format: "tel",
                             // tel must be validated with a pattern
-                            pattern: "[0-9]{3}-[0-9]{3}-[0-9]{4}",
+                            // pattern: "[0-9]{3}-[0-9]{3}-[0-9]{4}",
                             view: {
                                 sizeMd: 6
                             }

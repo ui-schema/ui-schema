@@ -127,4 +127,94 @@ const schemaWConditional1 = createOrderedMap({
     ]
 });
 
-export {schemaWConditional, schemaWConditional1}
+const schemaWConditional2 = createOrderedMap({
+    "type": "object",
+    "allOf": [
+        {
+            "type": "object",
+            "properties": {
+                "product_groups": {
+                    "type": "array",
+                    "widget": "SelectMulti",
+                    "enum": [
+                        "Apps",
+                        "Homepages",
+                        "Online-Shop",
+                        "Print Design",
+                        "Logo Design"
+                    ]
+                }
+            }
+        }, {
+            "if": {
+                "type": "object",
+                "properties": {
+                    "product_groups": {
+                        "type": "array",
+                        "contains": {
+                            "type": "string",
+                            "const": "Apps"
+                        }
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "group_apps": {
+                        "type": "string",
+                        "widget": "Text"
+                    }
+                }
+            }
+        }, {
+            "if": {
+                "type": "object",
+                "properties": {
+                    "product_groups": {
+                        "type": "array",
+                        "contains": {
+                            "type": "string",
+                            "const": "Homepages"
+                        }
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "group_homepages": {
+                        "type": "string",
+                        "widget": "Select",
+                        "enum": [
+                            "Landing-Page",
+                            "Business-Page"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "type": "object",
+                "properties": {
+                    "product_groups": {
+                        "type": "array",
+                        "contains": {
+                            "type": "string",
+                            "const": "Online-Shop"
+                        }
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "group_shop": {
+                        "type": "string",
+                        "widget": "Text"
+                    }
+                }
+            }
+        }
+    ]
+});
+
+export {schemaWConditional, schemaWConditional1, schemaWConditional2}
