@@ -12,7 +12,7 @@ const StringRenderer = ({
                             type,
                             multiline, rows, rowsMax,
                             storeKeys, ownKey, schema, value, onChange,
-                            onValidity, showValidity, valid, errors, required,
+                            showValidity, valid, errors, required,
                             style,
                             onClick, onFocus, onBlur, onKeyUp, onKeyDown,
                             InputProps = {}, inputRef: customInputRef,
@@ -35,9 +35,7 @@ const StringRenderer = ({
     }
 
     React.useEffect(() => {
-        if(onValidity) {
-            onValidity(updateValidity(storeKeys, valid));
-        }
+        onChange(updateValidity(storeKeys, valid));
     }, [valid]);
 
     return <React.Fragment>

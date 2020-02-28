@@ -1,38 +1,37 @@
 import React from 'react';
 import {List} from 'immutable';
 import {
-    EditorDataProvider, EditorTransProvider, EditorValidityProvider, EditorWidgetsProvider,
-    useSchemaData, useSchemaValidity, useSchemaWidgets,
-    withWidgets
+    EditorStoreProvider, EditorProvider, useEditor,
+    useSchemaStore,
 } from "./EditorStore";
 import {ValueWidgetRenderer} from "./EditorWidget";
 import {memo} from "../Utils/memo";
 
 let SchemaEditorRenderer = ({
-                                schema, storeKeys = undefined, level = 0, ...props
+                                schema, storeKeys, level = 0, ...props
                             }) => {
-    if(!storeKeys) {
-        // todo: check if it can be removed / defaults exists at every call
-        storeKeys = List([]);
-    }
-
     return schema ?
         <ValueWidgetRenderer
             {...props}
             schema={schema} storeKeys={storeKeys} level={level}
         /> : null;
 };
-SchemaEditorRenderer = withWidgets(memo(SchemaEditorRenderer));
+SchemaEditorRenderer = memo(SchemaEditorRenderer);
 
 /**
- * @type {function({rootRenderer: *, schema: *}): *}
+ * @type {function({rootRenderer: *, ...}): *}
  */
-let DumpRootRenderer = ({rootRenderer: RootRenderer, schema}) => {
+let DumpRootRenderer = ({rootRenderer: RootRenderer, ...props}) => {
     return <RootRenderer>
-        <SchemaEditorRenderer schema={schema}/>
+        <SchemaEditorRenderer {...props}/>
     </RootRenderer>;
 };
 DumpRootRenderer = memo(DumpRootRenderer);
+
+const mustBeSet = name => {
+    console.error(name + ' must be set');
+    return null;
+};
 
 /**
  * Initial rendering of root container and invoking the first schema-group with the root-level-data of `schema`
@@ -40,11 +39,23 @@ DumpRootRenderer = memo(DumpRootRenderer);
  * @return {null|*}
  */
 const SchemaRootRenderer = () => {
-    const {schema, store,} = useSchemaData();
-    const {widgets} = useSchemaWidgets();
+    const {
+        // getting the root level schema, all other schemas within an editor are property calculated
+        schema,
+        // store for invalidity checking
+        store,
+    } = useSchemaStore();
+    const {widgets} = useEditor();
 
-    // first root rendering check if needed props are existing
-    if(!schema || typeof store === 'undefined' || !widgets) return null;
+    if(!schema) {
+        return mustBeSet('schema');
+    }
+    if(!store) {
+        return mustBeSet('store');
+    }
+    if(!widgets) {
+        return mustBeSet('widgets');
+    }
 
     const {RootRenderer} = widgets;
 
@@ -53,7 +64,9 @@ const SchemaRootRenderer = () => {
         return null;
     }
 
-    return <DumpRootRenderer rootRenderer={RootRenderer} schema={schema}/>;
+    const storeKeys = List([]);
+
+    return <DumpRootRenderer rootRenderer={RootRenderer} schema={schema} storeKeys={storeKeys}/>;
 };
 
 /**
@@ -72,9 +85,9 @@ const SchemaRootRenderer = () => {
  * @constructor
  */
 const NestedSchemaEditor = ({schema, parentSchema, storeKeys, showValidity, level = 0, ...props}) => {
-    const validity = useSchemaValidity();
+    const editor = useEditor();
 
-    return <EditorValidityProvider {...validity} showValidity={showValidity || validity.showValidity}>
+    return <EditorProvider {...editor} showValidity={showValidity || editor.showValidity}>
         <SchemaEditorRenderer
             schema={schema}
             parentSchema={parentSchema}
@@ -82,7 +95,7 @@ const NestedSchemaEditor = ({schema, parentSchema, storeKeys, showValidity, leve
             level={level}
             {...props}
         />
-    </EditorValidityProvider>
+    </EditorProvider>
 };
 
 /**
@@ -94,17 +107,15 @@ const NestedSchemaEditor = ({schema, parentSchema, storeKeys, showValidity, leve
  * @param {OrderedMap} store
  * @param {function(function): OrderedMap} onChange
  * @param {{}} widgets
- * @param {Map|undefined} validity
  * @param {boolean} showValidity
- * @param {function(function): Map} onValidity
  * @param {function(string, *): string|React.Component} t
  * @return {*}
  * @constructor
  */
-let SchemaEditor = ({
-                        children,
-                        ...props
-                    }) => (
+const SchemaEditor = ({
+                          children,
+                          ...props
+                      }) => (
     <SchemaEditorProvider {...props}>
         <SchemaRootRenderer/>
         {children}
@@ -112,22 +123,18 @@ let SchemaEditor = ({
     </SchemaEditorProvider>
 );
 
-let SchemaEditorProvider = ({
-                                children,
-                                schema,
-                                store, onChange,
-                                widgets, t,
-                                validity, showValidity, onValidity,
-                            }) => (
-    <EditorWidgetsProvider widgets={widgets}>
-        <EditorTransProvider t={t}>
-            <EditorValidityProvider validity={validity} showValidity={showValidity} onValidity={onValidity}>
-                <EditorDataProvider store={store} onChange={onChange} schema={schema}>
-                    {children}
-                </EditorDataProvider>
-            </EditorValidityProvider>
-        </EditorTransProvider>
-    </EditorWidgetsProvider>
+const SchemaEditorProvider = ({
+                                  children,
+                                  schema,
+                                  store, onChange,
+                                  widgets, t,
+                                  showValidity,
+                              }) => (
+    <EditorProvider widgets={widgets} t={t} showValidity={showValidity}>
+        <EditorStoreProvider store={store} onChange={onChange} schema={schema}>
+            {children}
+        </EditorStoreProvider>
+    </EditorProvider>
 );
 
 

@@ -1,31 +1,34 @@
 import React from "react";
-import {Map, List} from "immutable";
+import {Record, Map, List} from "immutable";
 import {getDisplayName} from "../Utils/getDisplayName";
 import {createMap} from "..";
 
-const EditorDataContext = React.createContext({});
-const EditorValidityContext = React.createContext({});
-const EditorWidgetsContext = React.createContext({});
-const EditorTransContext = React.createContext({});
+const EditorStoreContext = React.createContext({});
+const EditorContext = React.createContext({});
 
-let EditorDataProvider = ({children, ...props}) => <EditorDataContext.Provider value={props} children={children}/>;
-let EditorValidityProvider = ({children, ...props}) => <EditorValidityContext.Provider value={props} children={children}/>;
-let EditorWidgetsProvider = ({children, ...props}) => <EditorWidgetsContext.Provider value={props} children={children}/>;
-let EditorTransProvider = ({children, ...props}) => <EditorTransContext.Provider value={props} children={children}/>;
+let EditorStoreProvider = ({children, ...props}) => <EditorStoreContext.Provider value={props} children={children}/>;
+let EditorProvider = ({children, ...props}) => <EditorContext.Provider value={props} children={children}/>;
 
-const useSchemaData = () => {
-    const {store, onChange, schema} = React.useContext(EditorDataContext);
-
-    const valueStore = Map.isMap(store) ? store.get('values') : undefined;
-    const internalStore = Map.isMap(store) ? store.get('internals') : undefined;
-
-    return {store: valueStore, internalStore, onChange, schema};
-};
+const EditorStore = Record({
+    values: undefined,
+    internals: Map({}),
+    validity: Map({}),
+    getValues: function() {
+        return this.get('values')
+    },
+    getInternals: function() {
+        return this.get('internals')
+    },
+    getValidity: function() {
+        return this.get('validity')
+    }
+});
 
 const createStore = (values) => {
-    return Map({
+    return new EditorStore({
         values,
         internals: Map({}),
+        validity: Map({}),
     })
 };
 
@@ -41,31 +44,34 @@ const createEmptyStore = (type = 'object') => createStore(
                     Map({})
 );
 
-const useSchemaValidity = () => {
-    return React.useContext(EditorValidityContext);
-};
+const useSchemaStore = () => {
+    const {store, onChange, schema} = React.useContext(EditorStoreContext);
 
-const useSchemaWidgets = () => {
-    return React.useContext(EditorWidgetsContext);
+    const valueStore = store.getValues();
+    const internalStore = store.getInternals();
+    const validity = store.getValidity();
+
+    return {store: valueStore, internalStore, onChange, schema, validity};
 };
 
 const tDefault = t => t;
 
-const useSchemaTrans = () => {
-    let context = React.useContext(EditorTransContext);
+/**
+ * @return {{
+ *     widgets: {
+ *         RootRenderer,
+ *
+ *     },
+ *     t: function,
+ *     showValidity: boolean,
+ * }}
+ */
+const useEditor = () => {
+    let context = React.useContext(EditorContext);
     if(!context.t) {
         context.t = tDefault;
     }
     return context;
-};
-
-const withData = (Component) => {
-    const WithData = p => {
-        const schemaData = useSchemaData();
-        return <Component {...schemaData} {...p}/>
-    };
-    WithData.displayName = `WithData(${getDisplayName(Component)})`;
-    return WithData;
 };
 
 /**
@@ -75,7 +81,7 @@ const withData = (Component) => {
  */
 const extractValue = (Component) => {
     const ExtractValue = p => {
-        const {store, onChange, internalStore} = useSchemaData();
+        const {store, onChange, internalStore} = useSchemaStore();
         return <Component
             {...p} onChange={onChange}
             value={p.storeKeys.size ? store ? store.getIn(p.storeKeys) : undefined : store}
@@ -88,38 +94,20 @@ const extractValue = (Component) => {
 
 const extractValidity = (Component) => {
     const ExtractValidity = p => {
-        const {validity, onValidity, showValidity} = useSchemaValidity();
-        return <Component {...p} validity={validity ? validity.getIn(p.storeKeys) : undefined} onValidity={onValidity} showValidity={showValidity}/>
+        const {validity, onChange} = useSchemaStore();
+        return <Component {...p} validity={p.storeKeys.size ? validity.getIn(p.storeKeys) : validity} onChange={onChange}/>
     };
     ExtractValidity.displayName = `ExtractValidity(${getDisplayName(Component)})`;
     return ExtractValidity;
 };
 
-const withValidity = (Component) => {
-    const WithValidity = p => {
-        const schemaValidity = useSchemaValidity();
-        return <Component {...p} {...schemaValidity}/>
+const withEditor = (Component) => {
+    const WithEditor = p => {
+        const editor = useEditor();
+        return <Component {...p} {...editor}/>
     };
-    WithValidity.displayName = `WithValidity(${getDisplayName(Component)})`;
-    return WithValidity;
-};
-
-const withWidgets = (Component) => {
-    const WithWidgets = p => {
-        const {widgets} = useSchemaWidgets();
-        return <Component widgets={widgets} {...p}/>
-    };
-    WithWidgets.displayName = `WithWidgets(${getDisplayName(Component)})`;
-    return WithWidgets;
-};
-
-const withTrans = (Component) => {
-    const WithTans = p => {
-        const {t} = useSchemaTrans();
-        return <Component t={t} {...p}/>
-    };
-    WithTans.displayName = `WithTans(${getDisplayName(Component)})`;
-    return WithTans;
+    WithEditor.displayName = `WithEditor(${getDisplayName(Component)})`;
+    return WithEditor;
 };
 
 const hasStoreKeys = storeKeys => (Array.isArray(storeKeys) && storeKeys.length) || storeKeys.size;
@@ -136,6 +124,11 @@ const updateRawValue = (store, storeKeys, key, value) =>
             value
         ) :
         store.set(key, value);
+
+const deleteRawValue = (store, storeKeys, key) =>
+    hasStoreKeys(storeKeys) ?
+        store.deleteIn(prependKey(storeKeys, key)) :
+        store.delete(key);
 
 const updateInternalValue = (storeKeys, internalValue) => store => {
     return updateRawValue(store, storeKeys, 'internals', internalValue);
@@ -170,17 +163,21 @@ const updateValues = (storeKeys, value, internalValue) => store => {
  * @return {function(*): *}
  */
 const updateValidity = (storeKeys, valid) => store => (
-    hasStoreKeys(storeKeys) ?
-        store.setIn(storeKeys, Map({'__valid': valid})) :
-        Map({'__valid': valid})
+    updateRawValue(store, storeKeys.push('__valid'), 'validity', valid)
+);
+
+const cleanUp = (storeKeys, key) => store => (
+    deleteRawValue(store, storeKeys, key)
 );
 
 export {
-    useSchemaData, withData, extractValue,
-    useSchemaValidity, withValidity, extractValidity, updateValidity,
-    useSchemaWidgets, withWidgets,
-    useSchemaTrans, withTrans,
-    EditorDataProvider, EditorValidityProvider, EditorWidgetsProvider, EditorTransProvider,
-    updateValue, updateValues, updateInternalValue, createEmptyStore, createStore,
-    prependKey,
+    withEditor, useEditor,
+
+    useSchemaStore,
+    extractValue, updateValue,
+    updateValues, updateInternalValue,
+    extractValidity, updateValidity,
+    EditorStoreProvider, EditorProvider,
+    createEmptyStore, createStore,
+    cleanUp, prependKey,
 };

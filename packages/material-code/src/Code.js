@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 
 const Code = ({
                   storeKeys, ownKey, schema, value, onChange,
-                  onValidity, showValidity, valid, errors, required,
+                  showValidity, valid, errors, required,
               }) => {
     const uid = useUID();
     const {theme} = useWidgetCode();
@@ -42,9 +42,7 @@ const Code = ({
     if(typeof format !== 'string') return null;
 
     React.useEffect(() => {
-        if(onValidity) {
-            onValidity(updateValidity(storeKeys, valid));
-        }
+        onChange(updateValidity(storeKeys, valid));
     }, [valid]);
 
     React.useEffect(() => {

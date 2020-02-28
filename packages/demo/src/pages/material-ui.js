@@ -23,39 +23,36 @@ const DummyRenderer = createDummyRenderer(widgets);
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
-    const [validity, setValidity] = React.useState(() => createMap());
-    const [data, setData] = React.useState(() => createStore(createMap(dataDemoMain)));
+    const [store, setStore] = React.useState(() => createStore(createMap(dataDemoMain)));
     const [schema, setSchema] = React.useState(() => createOrderedMap(schemaDemoMain));
 
     return <React.Fragment>
         <SchemaEditor
             schema={schema}
-            store={data}
-            onChange={setData}
+            store={store}
+            onChange={setStore}
             widgets={widgets}
-            validity={validity}
             showValidity={showValidity}
-            onValidity={setValidity}
             t={browserT}
         >
             <MuiSchemaDebug setSchema={setSchema}/>
         </SchemaEditor>
 
         <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
-        {isInvalid(validity) ? 'invalid' : 'valid'}
+        {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
 
     </React.Fragment>
 };
 
 const DemoUser = () => {
-    const [data, setData] = React.useState(() => createEmptyStore());
+    const [store, setStore] = React.useState(() => createEmptyStore());
 
     return <Grid container spacing={3} justify={'center'}>
         <Grid item xs={12} md={6}>
             <SchemaEditor
                 schema={schemaUser}
-                store={data}
-                onChange={setData}
+                store={store}
+                onChange={setStore}
                 widgets={widgets}
                 t={browserT}
             >

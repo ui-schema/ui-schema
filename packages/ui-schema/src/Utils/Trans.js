@@ -1,4 +1,4 @@
-import {useSchemaTrans} from "../Schema/EditorStore";
+import {useEditor} from "../Schema/EditorStore";
 import React from "react";
 
 /**
@@ -29,7 +29,7 @@ const t = dictionary =>
  * @constructor
  */
 const Trans = ({text, context}) => {
-    const {t} = useSchemaTrans();
+    const {t} = useEditor();
     const Translated = t(text, context);
 
     return typeof Translated === 'string' || typeof Translated === 'number' || typeof Translated === 'object' ?

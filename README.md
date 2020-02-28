@@ -57,7 +57,7 @@ import React from "react";
 import {ImmutableEditor, themeMaterial} from 'react-immutable-editor';// optional
 
 // Import Schema-Editor
-import {SchemaEditor, isInvalid, createMap, createOrderedMap, createStore, updateValue} from "@ui-schema/ui-schema";
+import {SchemaEditor, isInvalid, createMap, createOrderedMap, createStore, createEmptyStore, updateValue} from "@ui-schema/ui-schema";
 // Get the widgets binding for your design-system
 import {widgets} from "@ui-schema/ds-material";
 
@@ -93,25 +93,23 @@ const Editor = () => {
     const [showValidity, setShowValidity] = React.useState(false);
     
     // needed variables and setters for the SchemaEditor, create where ever you like
-    const [validity, setValidity] = React.useState(() => createMap());
-    const [data, setData] = React.useState(() => createStore(createOrderedMap(data1)));
+    const [store, setStore] = React.useState(() => createStore(createOrderedMap(data1)));
     const [schema, setSchema] = React.useState(() => createOrderedMap(schema1));
     
     return <React.Fragment>
         <SchemaEditor
             schema={schema}
-            store={data}
-            onChange={setData}
+            store={store}
+            onChange={setStore}
 
-            validity={validity}
-            onValidity={setValidity}
             showValidity={showValidity}
             widgets={widgets}
 
-            {/* or write onChange / onValidity like: */}
-            onChange={handler => setData(handler(data))}
-            {/* handler must get the previous state as value, it must be an immutable map, will return updated map */}
-            onValidity={handler => setValidity(handler(validity))}
+            {/* 
+              * or write onChange / onValidity like:
+              * handler must get the previous state as value, it must be an immutable map, will return updated map
+            */}
+            onChange={handler => setStore(handler(data))}
     
             {/* optional, the `Renderer` contains the actual editor, move to the position wanted*/}
         >
@@ -119,7 +117,7 @@ const Editor = () => {
         </SchemaEditor>
         <button
             {/* show the invalidity only at submit (or pass `true` to `showValidity`) */} 
-            onClick={() => isInvalid(validity) ? setShowValidity(true) : doingSomeAction()}
+            onClick={() => isInvalid(store.getValidity()) ? setShowValidity(true) : doingSomeAction()}
         >send!</button>
     </React.Fragment>
 };
@@ -129,7 +127,7 @@ const Editor = () => {
 //     use dynamic code-splitting to not bundle the SchemaDebug
 //     use e.g. `react-loadable`
 const SchemaDebug = ({setSchema}) => {
-     const {store, schema, onChange} = useSchemaData();
+     const {store, schema, onChange} = useSchemaStore();
 
     return <React.Fragment>
         <ImmutableEditor

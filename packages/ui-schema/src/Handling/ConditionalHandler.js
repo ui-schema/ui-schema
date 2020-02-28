@@ -1,7 +1,7 @@
 import React from "react";
 import {NextPluginRenderer, NextPluginRendererMemo} from "../Schema/EditorWidgetStack";
 import {validateSchemaObject} from "../Schema/ValidateSchema";
-import {useSchemaData} from "../Schema/EditorStore";
+import {useSchemaStore} from "../Schema/EditorStore";
 import {mergeSchema} from "../Utils/mergeSchema";
 import {Map} from 'immutable';
 
@@ -29,7 +29,7 @@ const handleIfElseThen = (schema, store, distSchema) => {
 
 const ConditionalRenderer = (props) => {
     let {schema, storeKeys} = props;
-    const {store} = useSchemaData();
+    const {store} = useSchemaStore();
 
     const currentStore = storeKeys.size ? store.getIn(storeKeys) : store;
 
