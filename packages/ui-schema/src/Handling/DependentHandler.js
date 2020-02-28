@@ -8,9 +8,9 @@ import {Map} from 'immutable';
 
 const DependentRenderer = ({dependencies, dependentSchemas, ...props}) => {
     let {schema, storeKeys} = props;
-    const {store} = useSchemaStore();
+    const {valueStore} = useSchemaStore();
 
-    const currentStore = storeKeys.size ? store.getIn(storeKeys) : store;
+    const currentStore = storeKeys.size ? valueStore.getIn(storeKeys) : valueStore;
 
     if(!currentStore) return <NextPluginRendererMemo {...props} schema={schema}/>;
 

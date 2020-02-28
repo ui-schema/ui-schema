@@ -44,6 +44,9 @@ const createEmptyStore = (type = 'object') => createStore(
                     Map({})
 );
 
+/**
+ * @return {{schema: Map, valueStore: *, internalStore: Map, onChange: function, validity: Map}}
+ */
 const useSchemaStore = () => {
     const {store, onChange, schema} = React.useContext(EditorStoreContext);
 
@@ -51,7 +54,7 @@ const useSchemaStore = () => {
     const internalStore = store.getInternals();
     const validity = store.getValidity();
 
-    return {store: valueStore, internalStore, onChange, schema, validity};
+    return {valueStore, internalStore, onChange, schema, validity};
 };
 
 const tDefault = t => t;
@@ -81,10 +84,12 @@ const useEditor = () => {
  */
 const extractValue = (Component) => {
     const ExtractValue = p => {
-        const {store, onChange, internalStore} = useSchemaStore();
+        const {valueStore, onChange, internalStore} = useSchemaStore();
         return <Component
             {...p} onChange={onChange}
-            value={p.storeKeys.size ? store ? store.getIn(p.storeKeys) : undefined : store}
+            value={p.storeKeys.size ?
+                (Map.isMap(valueStore) || List.isList(valueStore) ? valueStore.getIn(p.storeKeys) : undefined)
+                : valueStore}
             internalValue={p.storeKeys.size ? internalStore ? internalStore.getIn(p.storeKeys) : createMap() : internalStore}
         />
     };
@@ -171,7 +176,7 @@ const cleanUp = (storeKeys, key) => store => (
 );
 
 export {
-    withEditor, useEditor,
+    withEditor, useEditor, EditorStore,
 
     useSchemaStore,
     extractValue, updateValue,

@@ -7,9 +7,9 @@ import {handleIfElseThen} from "./ConditionalHandler";
 
 const CombiningRenderer = (props) => {
     let {schema, storeKeys} = props;
-    const {store} = useSchemaStore();
+    const {valueStore} = useSchemaStore();
 
-    const currentStore = storeKeys.size ? store.getIn(storeKeys) : store;
+    const currentStore = storeKeys.size ? valueStore.getIn(storeKeys) : valueStore;
 
     const allOf = schema.get('allOf');
     if(allOf) {

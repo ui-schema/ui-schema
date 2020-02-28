@@ -2,7 +2,7 @@ import React from 'react';
 import {List} from 'immutable';
 import {
     EditorStoreProvider, EditorProvider, useEditor,
-    useSchemaStore,
+    useSchemaStore, EditorStore,
 } from "./EditorStore";
 import {ValueWidgetRenderer} from "./EditorWidget";
 import {memo} from "../Utils/memo";
@@ -42,16 +42,11 @@ const SchemaRootRenderer = () => {
     const {
         // getting the root level schema, all other schemas within an editor are property calculated
         schema,
-        // store for invalidity checking
-        store,
     } = useSchemaStore();
     const {widgets} = useEditor();
 
     if(!schema) {
         return mustBeSet('schema');
-    }
-    if(!store) {
-        return mustBeSet('store');
     }
     if(!widgets) {
         return mustBeSet('widgets');
@@ -129,13 +124,17 @@ const SchemaEditorProvider = ({
                                   store, onChange,
                                   widgets, t,
                                   showValidity,
-                              }) => (
-    <EditorProvider widgets={widgets} t={t} showValidity={showValidity}>
+                              }) => {
+    if(!(store instanceof EditorStore)) {
+        console.error('given store must be a valid EditorStore')
+        return null;
+    }
+    return <EditorProvider widgets={widgets} t={t} showValidity={showValidity}>
         <EditorStoreProvider store={store} onChange={onChange} schema={schema}>
             {children}
         </EditorStoreProvider>
     </EditorProvider>
-);
+};
 
 
 export {SchemaEditor, SchemaEditorProvider, NestedSchemaEditor, SchemaEditorRenderer, SchemaRootRenderer};
