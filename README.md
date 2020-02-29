@@ -156,7 +156,7 @@ export {Editor}
 Changes from any package are reflected inside the demo/docs package.
 
 - Start Documentation: `npm run docs` (needs running demo server)
-    - see [localhost:4200](http://localhost:4201)
+    - see [localhost:4201](http://localhost:4201)
     - write in [packages/docs/src/content/docs](./packages/docs/src/content/docs)
 - or: starting Demo + Docs (after having initialized, hoisted it manually): `npm run serve`
 
