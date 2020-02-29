@@ -82,6 +82,19 @@ const packages = {
             codemirror: buildExternal("codemirror"),
         }
     },
+    materialColor: {
+        root: path.resolve(__dirname, 'packages', 'material-color'),
+        entry: path.resolve(__dirname, 'packages', 'material-color/src/'),
+        externals: {
+            "@ui-schema/ui-schema": buildExternal("@ui-schema/ui-schema"),
+            "@ui-schema/ds-material": buildExternal("@ui-schema/ds-material"),
+            "@material-ui/core": buildExternal("@material-ui/core"),
+            "@material-ui/icons": buildExternal("@material-ui/icons"),
+            react: buildExternal("react"),
+            "react-dom": buildExternal("react-dom"),
+            materialUiColorPicker: buildExternal("material-ui-color-picker")
+        }
+    },
 };
 
 exports.apps = apps;

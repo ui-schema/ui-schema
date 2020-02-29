@@ -1,0 +1,53 @@
+{
+    "name": "@ui-schema/material-color",
+    "version": "0.0.10",
+    "description": "",
+    "homepage": "https://ui-schema.bemit.codes",
+    "author": "Michael Becker <michael@bemit.codes>",
+    "license": "MIT",
+    "main": "./lib/index.js",
+    "module": "./es/index.js",
+    "files": [
+        "es",
+        "lib"
+    ],
+    "keywords": [
+        "ui-schema",
+        "mui",
+        "json-schema"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ui-schema/ui-schema.git",
+        "directory": "packages/material-color"
+    },
+    "bugs": {
+        "url": "https://github.com/ui-schema/ui-schema/issues"
+    },
+    "dependencies": {
+        "react-uid": "^2.2.0",
+        "webpack-merge": "^4.2.2"
+    },
+    "devDependencies": {
+        "@material-ui/core": "^4.8",
+        "@material-ui/icons": "^4.5",
+        "@ui-schema/ds-material": "^0.0.10",
+        "@ui-schema/ui-schema": "^0.0.10",
+        "immutable": "^4.0.0-rc.12",
+        "react": "^16.12",
+        "react-color": "^2.18.0"
+    },
+    "peerDependencies": {
+        "@material-ui/core": "^4.8",
+        "@material-ui/icons": "^4.5",
+        "@ui-schema/ds-material": "0.0.x",
+        "@ui-schema/ui-schema": "0.0.x",
+        "immutable": "^4.0.0-rc.12",
+        "react": "^16.8",
+        "react-color": "^2.0.0"
+    },
+    "scripts": {},
+    "publishConfig": {
+        "access": "public"
+    }
+}
