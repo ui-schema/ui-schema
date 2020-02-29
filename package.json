@@ -5,8 +5,9 @@
     "private": true,
     "main": "index.js",
     "scripts": {
-        "start": "npm run clean-dist && npm run hoist && cross-env NODE_ENV=development node packer/packer.js --serve",
-        "run-docs": "cross-env NODE_ENV=development node packer/packer.js --serve docs",
+        "start": "npm run clean-dist && npm run hoist && npm run serve -- demo",
+        "docs": "npm run serve -- docs",
+        "serve": "cross-env NODE_ENV=development node packer/packer.js --serve",
         "prebuild": "npm run clean-dist && npm run hoist",
         "build": "cross-env NODE_ENV=production CI=true node packer/packer.js --build",
         "clean": "npm run clean-dist && lerna clean -y",

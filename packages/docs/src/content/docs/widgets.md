@@ -1,10 +1,10 @@
 # Widget System
 
->
-> ✔ working, not expected to change (that much) breaking in the near future
->
+> 📌 Here for the [**list of widgets**](/docs/overview#widget-list)?
 
-A widget is responsible to render the UI and either display or make the editing of the data possible, it handles one schema level and may connect to another nested SchemaEditor if it handles a special object/group.
+This document is about creating own widgets, design-system bindings and changing the existing ones.
+
+A widget is responsible to render the UI and either display or make the editing of the data possible, it handles one schema level and may connect to another nested SchemaEditor.
 
 Through the modular approach and easy definition of a new widget, the widget system can be used to create complex, separated UI components, where the orchestration can be done from an external system like some backend API.
 
@@ -20,9 +20,9 @@ Each widget get's a lot of properties provided by the root schema provided or ad
 
 Properties from editor:
 
-- `t` : `{function}` see [translation](./Localization.md#translation)
-- `value` : `{*}` (only for scalar values)
-- `onChange` : `{function}` (only for scalar values)
+- `t` : `{function}` see [translation](/docs/localization#translation)
+- `value` : `{*}` (Plugins receive for any value, Widgets only for scalar values)
+- `onChange` : `{function}` (Plugins receive for any value, Widgets only for scalar values)
 - `storeKeys` : `{List}`
 - `ownKey` : `{string|integer}`
 - `schema` : `{Map}`
@@ -36,7 +36,7 @@ Properties from editor:
 
 See [how to add the custom widgets](#adding--overwriting-widgets).
 
-See [plugins](./WidgetPlugins.md) for the rest of the provided properties.
+See [plugins](/docs/widget-plugins) for the rest of the provided properties.
 
 
 ## Create Design-System Binding
@@ -53,7 +53,7 @@ Create a complete custom or only the components you need.
 - `GroupRenderer` wraps an object that is not a widget, used by the internal `ObjectRenderer` widget
 - `widgetStack` is the widget plugin system, this wraps all widgets individually
     - e.g. used to handle json schema `default`
-    - see [how to create widget plugins](./WidgetPlugins.md)
+    - see [how to create widget plugins](/docs/widget-plugins)
 - `custom` contains widgets mapping with schema's `widget`
 - `types` contains widgets mapping with schema's `type`
     
@@ -214,10 +214,12 @@ export {widgets}
 > ✔ working, not expected to change (that much) breaking in the near future
 >
 
-This example shows how new plugins or widgets can be added, can be used to overwrite also.
+Use the existing exported binding of your design-system and add or overwrite widgets or add new plugins.
 
-- overwriting is only recommended when using the overwritten on the same page
+- overwriting is only recommended when using the overwritten on the same page/app
 - or when using the [lazy-loading widgets](#lazy-loading-bindings)
+
+Simple example of adding a new widget to the binding, can be used for overwriting existing ones:
 
 ```js
 import {widgets,} from "@ui-schema/ds-material";
@@ -225,17 +227,9 @@ import {widgets,} from "@ui-schema/ds-material";
 const CustomNumberRenderer = () => /* todo: implement */ null;
 const CustomSelect = () => /* todo: implement */ null;
 
-const CustomPlugin = () => /* todo: implement */ null;
-
 // Multi Level destructure-merge to overwrite and clone and not change the original ones
-
-const customWidgetStack = [...widgets.widgetStack];
-// insert a custom plugin before the ValidityReporter (last plugin by default)
-customWidgetStack.splice(customWidgetStack.length - 1, 0, CustomPlugin);
-
 const customWidgets = {
     ...widgets,
-    widgetStack: customWidgetStack,
     types: {
         ...widgets.types, 
         number: CustomNumberRenderer,
@@ -249,11 +243,23 @@ const customWidgets = {
 export {customWidgets}
 ```
 
-## Docs
+This example shows how new plugins can be added:
 
-- [Overview](../../README.md)
-- [UI JSON-Schema](./Schema.md)
-- [Widget System](./Widgets.md)
-- [Widget Plugins](./WidgetPlugins.md)
-- [Localization / Translation](./Localization.md)
-- [Performance](./Performance.md)
+```js
+import {widgets,} from "@ui-schema/ds-material";
+
+const CustomPlugin = () => /* todo: implement */ null;
+
+// Multi Level destructure-merge to overwrite and clone and not change the original ones
+
+const customWidgetStack = [...widgets.widgetStack];
+// insert a custom plugin before the ValidityReporter (last plugin by default)
+customWidgetStack.splice(customWidgetStack.length - 1, 0, CustomPlugin);
+
+const customWidgets = {
+    ...widgets,
+    widgetStack: customWidgetStack,
+};
+
+export {customWidgets}
+```

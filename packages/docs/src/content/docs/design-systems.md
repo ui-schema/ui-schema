@@ -2,7 +2,7 @@
 
 Through widgets, the schema can work with any design system or individual component library, just use the properties to build the supported behaviour needed.
 
-For popular design-systems some default bindings exists, like for:
+For some popular design-systems default bindings exists, otherwise see [create your own binding](/docs/widgets#create-design-system-binding) or [overwriting widgets](/docs/widgets#adding--overwriting-widgets).
 
 ## Material-UI
 
@@ -36,9 +36,9 @@ e.g. `lerna create ds-bootstrap` enter as package name `@ui-schema/ds-bootstrap`
 
 Copy/create the basic files for the design system.
 
-Add new package (and needed peer-dependencies) to demo package, see [Contributing - add new package](../../README.md#contributing)
+Add new package (and needed peer-dependencies) to demo package, see [Contributing - add new package](https://github.com/ui-schema/ui-schema#contributing)
 
-Add to build process: [/config.js](../../config.js), add there a nother design-system with namings like the others.
+Add to build process: [/config.js](https://github.com/ui-schema/ui-schema/blob/master/config.js), add there another design-system with namings like the others.
 
 Initialize/bootstrap and hoist the packages: `npm run bootstrap && npm run hoist`
 

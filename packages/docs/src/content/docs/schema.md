@@ -18,7 +18,7 @@ These keywords may be implemented in each widget/design-system:
 Universal Keywords:
 
 - `default` what will be used if the field hasn't existing data ✔
-    - sets the defined value(s) **before** rendering the UI ✔
+    - sets value and renders prop, updates store in effect, the widget will be available directly with the default value ✔
 - `enum` restricts the value to a list of values, used in e.g. select to build the selection ✔
     - [specification](https://json-schema.org/understanding-json-schema/reference/generic.html#enumerated-values)
 - `const` to restrict the value to a single value ✔
@@ -47,12 +47,13 @@ The JSON-Schema gets extended with special only-UI keywords:
 
 - `view` currently only used for the grid system ✔
 - `widget` (see top of page), UI selection ✔
-- `t`, `tt` for [translation](./Localization.md#Translation)
+- `t`, `tt` for [translation](/docs/localization#Translation)
 
 ### View Keyword
 
 - `sizeXs`, `sizeSm`, `sizeMd`, `sizeLg`, `sizeXl` to build responsive UIs ✔
     - takes a number between `1` and `12`
+    - see [GridHandler](/docs/widgets/GridHandler)
 
 ## Types
 
@@ -112,6 +113,8 @@ Type validity reports true when: `typeof value === 'object'` for vanilla-JS and 
 
 Generic Keywords:
 
+#### required Keyword
+
 - `required` an array that contains which properties must be set, the `RequiredValidator` treats empty/false values as `invalid`! ✔
     - invalid are:
         - `array` with a length of `0`, e.g. `[]`, `List([])`
@@ -132,8 +135,8 @@ Validation Keywords:
 - `additionalProperties` when `false` only defined properties are allowed ❌
 - `propertyNames.pattern` regex pattern to limit naming of properties ❌
 - `patternProperties` to restrict names of properties to certain types with regex ❌ 
-- [dependencies, dependentSchemas](./WidgetPlugins.md#dependenthandler) for dynamic sub-schema/properties ✔
-- [if, else, then, allOf](./WidgetPlugins.md#conditionalhandler) for conditional sub-schema ✔
+- [dependencies, dependentSchemas](/docs/widget-plugins#dependenthandler) for dynamic sub-schema/properties ✔
+- [if, else, then, allOf](/docs/widget-plugins#conditionalhandler) for conditional sub-schema ✔
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/object.html)
 
@@ -147,10 +150,13 @@ Validation Keywords:
 - `maxItems` max. number of items ✔
 - `uniqueItems` all items must be of an unique value ✔
 - `items` restricts all items be valid against a sub-schema (one-all) ✔
-    - ❗ only checks some schema: everything [validateSchema](./WidgetPlugins.md#validateschema) supports
+    - ❗ only checks some schema: everything [validateSchema](/docs/widget-plugins#validateschema) supports
     - ❗ no full sub-schema against array items
+    - errors are added with context key `arrayItems`
+        - only get **non** items errors: 
+        - `errors.filter(err => List.isList(err) ? !err.getIn([1, 'arrayItems']) : true)`
 - `contains` one or more items needs to be valid against a sub-schema ✔
-    - ❗ only checks some schema: everything [validateSchema](./WidgetPlugins.md#validateschema) supports
+    - ❗ only checks some schema: everything [validateSchema](/docs/widget-plugins#validateschema) supports
     - ❗ no full sub-schema against array items
 - `items` restricts items to be valid against sub-schemas in an defined order (tuple) ❌
     - `additionalItems` if more props then defined are allowed ❌
@@ -171,13 +177,4 @@ The editor doesn't change the schema, currently it is designed as a property tha
 
 But that's not the whole truth, the schema is manipulated from within the SchemaEditor but the changes are never reflected to the hoisted component.
 
-As the whole rendering is calculated from props/state for each schema-level on it's own, these rendering mechanics may change the schema for it's own or sub-levels. Through this it is e.g. possible to add dynamic properties in the [DependentHandler](./WidgetPlugins.md#dependenthandler).
-
-## Docs
-
-- [Overview](../../README.md)
-- [UI JSON-Schema](./Schema.md)
-- [Widget System](./Widgets.md)
-- [Widget Plugins](./WidgetPlugins.md)
-- [Localization / Translation](./Localization.md)
-- [Performance](./Performance.md)
+As the whole rendering is calculated from props/state for each schema-level on it's own, these rendering mechanics may change the schema for it's own or sub-levels. Through this it is e.g. possible to add dynamic properties in the [DependentHandler](/docs/widget-plugins#dependenthandler).

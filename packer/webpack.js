@@ -20,14 +20,17 @@ function serveWebpack(config) {
 
     console.log('Starting Webpack Dev-Server...');
 
-    const server = new WebpackDevServer(webpack(config), options);
+    return new Promise((resolve, reject) => {
+        const server = new WebpackDevServer(webpack(config), options);
 
-    server.listen(config.devServer.port, 'localhost', function(err) {
-        if(err) {
-            console.log(err);
-            return;
-        }
-        console.log('WebpackDevServer listening at localhost:' + config.devServer.port);
+        server.listen(config.devServer.port, 'localhost', function(err) {
+            if(err) {
+                console.log(err);
+                reject(err)
+            }
+            console.log('WebpackDevServer listening at localhost:' + config.devServer.port);
+            resolve();
+        });
     });
 }
 

@@ -6,10 +6,10 @@ This editor has multiple levels of performance optimization:
 
 - [immutables](https://immutable-js.github.io/immutable-js/) as internal store
     - does not apply to `widgets`, storing memoized components in immutable are a problem 
-- [memoization](https://reactjs.org/docs/hooks-reference.html#usememo) of `setData` and `setSchema` action creators
-    - use [memo](./UISchemaCore.md#memo--isequal), which compares immutable correctly
+- [memoization](https://reactjs.org/docs/hooks-reference.html#usememo) of multiple components which work on the context
+    - use [memo](/docs/core#memo--isequal), which compares immutable correctly
 - no html re-rendering of no-changed scopes
-    - **previously**: e.g. `setData` updates the hook `useSchemaStore`, thus typing in inputs lags
+    - **previously**: e.g. `onChange` updates the hook `useSchemaStore`, thus typing in inputs lags
         - within the core this hook is used to access the context
         - all hook consuming components are re-rendering, you got 100 input fields, all will re-render
     - to **not re-render any HTML** that must not be re-rendered this approach is used:
@@ -29,22 +29,9 @@ This editor has multiple levels of performance optimization:
         - any `types.<Component>`, `custom.<Component>` is wrapped in the memoized `DumpWidgetRenderer`
     - core:
         - `SchemaEditorRenderer` is memoized, receives the widget/widget stack and is the internal entry for starting/nesting the schema
-        - `ValueWidgetRenderer`/`ValuelessWidgetRenderer` wraps `DumpWidgetRenderer` which is the abstraction layer to the final widgets
-            - `ValueWidgetRenderer` uses the hooks to extract the widgets value (not memoized)
-            - `ValuelessWidgetRenderer` doesn't fetch the widgets value, this is used for objects, is memoized, (**currently:** only for objects without a widget)
-            - `DumpWidgetRenderer` is not memoized (not needed)
-        - `DumpWidgetRenderer` either renders the final widget or starts rendering the `widgetStack`
-            - re-renders on changes of **current** widgets properties
-            - additionally receives: `Widget`, `widgetStack`
+        - `ValueWidgetRenderer` wraps `WidgetStackRenderer` which is the abstraction layer to the final widgets
+            - `ValueWidgetRenderer` uses the hooks to extract the widgets value (memoized)
         - `WidgetStackRenderer` initial `widgetStack` render handling (not memoized, but inside `DumpWidgetRenderer`)
+        - `FinalWidgetRenderer` is rendered when the widget-stack is finished, not memoized but extracts the `value` from the props again for non-scalars, thus a object/array component can be memoized and will not re-render when it's items change (memoize widgets your-self when needed) 
 
-Further on to reduce code-size, it is recommended to build your [own ds-binding](./Widgets.md#create-design-system-binding) with only the needed components or use a [lazy-loaded binding](./Widgets.md#lazy-loading-bindings).
-
-## Docs
-
-- [Overview](../../README.md)
-- [UI JSON-Schema](./Schema.md)
-- [Widget System](./Widgets.md)
-- [Widget Plugins](./WidgetPlugins.md)
-- [Localization / Translation](./Localization.md)
-- [Performance](./Performance.md)
+Further on to reduce code-size, it is recommended to build your [own ds-binding](/docs/widgets#create-design-system-binding) with only the needed components or use a [lazy-loaded binding](/docs/widgets#lazy-loading-bindings).

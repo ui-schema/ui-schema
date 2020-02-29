@@ -10,6 +10,15 @@ const apps = {
         main: path.resolve(__dirname, 'packages', 'demo/src/index.js'),
         dist: path.resolve(__dirname, 'dist', 'demo'),
         servedPath: '/'// todo: make package.json homepage dependent
+    },
+    docs: {
+        root: path.resolve(__dirname, 'packages', 'docs'),
+        template: path.resolve(__dirname, 'packages', 'docs/public/index.html'),
+        publicPath: path.resolve(__dirname, 'packages', 'docs/public'),// dev-server
+        port: 4201,
+        main: path.resolve(__dirname, 'packages', 'docs/src/index.js'),
+        dist: path.resolve(__dirname, 'dist', 'docs'),
+        servedPath: '/'
     }
 };
 

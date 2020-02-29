@@ -8,29 +8,23 @@ Components and functions exported by `@ui-schema/ui-schema` for usage within des
 
 All functions/props that are passed to the root `SchemaEditor` are accessible through specific providers.
 
-### Editor Data Provider
+### Editor Store Provider
 
 - Provider: `EditorDataProvider`
-- Hook: `useSchemaData` 
-- HOC: `withData`
+- Hook: `useSchemaStore` 
+- HOC: `withData`, `extractValue`, `extractValidity`
 - Properties/ContextData:
-    - `store` : `{OrderedMap}`
+    - `store` : `{EditorStore}`
     - `onChange` : `{function(function): OrderedMap}`
     - `schema` : `{OrderedMap}`
-
-### Editor Invalidity Provider
-
-- Provider: `EditorValidityProvider`
-- Hook: `useSchemaValidity`
-- HOC: `withValidity`
 - Properties/ContextData:
+    - `valueStore` : `{OrderedMap|*}`
+    - `internalStore` : `{OrderedMap|*}`
     - `validity` : `{Map|undefined}`
     - `onValidity` : `{function(function): Map}`
     - `showValidity` : `{boolean}`
 - Related Plugin: 
-    - [ValidityReporter](./WidgetPlugins.md#validityreporter)
-    
-`onValidity` changes the hoisted state, see [comment in Basic Example](../../README.md#basic-example) on how to set it.
+    - [ValidityReporter](/docs/widget-plugins#validityreporter)
 
 Example Create:
 
@@ -90,10 +84,10 @@ Example HOC, recommended for memo usage:
 
 ```js
 import React from "react";
-import {memo, withWidgets} from "@ui-schema/ui-schema";
+import {withWidgets} from "@ui-schema/ui-schema";
 
 const Comp = withWidgets(
-    memo(
+    React.memo(
         ({widgets, ...props}) => {
             const RootRenderer = widgets.RootRenderer;
             return <RootRenderer {...props}/>
@@ -102,6 +96,14 @@ const Comp = withWidgets(
 );
 ```
 
+### Editor Translation Provider
+
+- Provider: `EditorTransProvider`
+- Hook: `useSchemaTrans`
+- HOC: `withTrans`
+- Properties/ContextData:
+    - `t` : `function` translator function
+    
 ## Main Schema Editor
 
 ### SchemaEditor
@@ -117,6 +119,7 @@ It works with adding the wanted schema and it's storeKeys, this automatically en
 - allows overwriting `showValidity` easily by attaching itself to the parent's validity reporter. 
 - the [widget provider](#editor-widgets-provider) can be used to render other widgets inside the nested as in the parent
 - data/store must not be pushed through
+- any property that `NestedSchemaEditor` receives is available within plugins and widgets
 
 ```js
 import React from "react";
@@ -181,19 +184,25 @@ Connects to the current context and extracts the starting schema, renders the `w
 
 ### ValueWidgetRenderer
 
-### ValuelessWidgetRenderer
-
 ### WidgetStackRenderer
 
 ### NextPluginRenderer
 
-Used for plugin rendering, see: [creating plugins](./WidgetPlugins.md#creating-plugins).
+Used for plugin rendering, see: [creating plugins](/docs/widget-plugins#creating-plugins).
 
 #### NextPluginRendererMemo
 
-Same as NextPluginRenderer, but as memoized function, used in e.g. ObjectPlugins when they are using [useSchemaData](#editor-data-provider), see: [creating plugins](./WidgetPlugins.md#creating-plugins).
+Same as NextPluginRenderer, but as memoized function, used in e.g. ObjectPlugins when they are using [useSchemaData](#editor-data-provider), see: [creating plugins](/docs/widget-plugins#creating-plugins).
 
 ## Utils
+
+## createStore
+
+Creates the initial store out of passed in values.
+
+```js
+const [data, setData] = React.useState(() => createStore(createOrderedMap(initialData)));
+```
 
 ### memo / isEqual
 
@@ -213,7 +222,7 @@ const Comp = memo(props => {
 });
 ```
 
-See [performance](./Performance.md) for the reasons and philosophy behind it.
+See [performance](/docs/performance) for the reasons and philosophy behind it.
 
 ### mergeSchema
 
@@ -229,14 +238,25 @@ Supports merging of these keywords, only does something if existing on `b`:
 - `enum`, b overwrites a
 - `const`, b overwrites a
 - `not`, b overwrites a
-- `allOf`, are ignored, should be resolved by e.g. [combining handler](./WidgetPlugins.md#combininghandler)
-- `if`, `then`, `else` are ignored, should be resolved by e.g. [conditional handler](./WidgetPlugins.md#conditionalhandler), also `if` that are inside `allOf`
+- `allOf`, are ignored, should be resolved by e.g. [combining handler](/docs/widget-plugins#combininghandler)
+- `if`, `then`, `else` are ignored, should be resolved by e.g. [conditional handler](/docs/widget-plugins#conditionalhandler), also `if` that are inside `allOf`
 
-## Docs
+### createMap
 
-- [Overview](../../README.md)
-- [UI JSON-Schema](./Schema.md)
-- [Widget System](./Widgets.md)
-- [Widget Plugins](./WidgetPlugins.md)
-- [Localization / Translation](./Localization.md)
-- [Performance](./Performance.md)
+```js
+let dataMap = createMap({});
+```
+
+### createOrderedMap
+
+```js
+let dataMap = createOrderedMap({});
+```
+
+### fromJSOrdered
+
+Function to deep change an object into an ordered map, will change the objects properties but not the root-object.
+
+```js
+let dataMap = new OrderedMap(fromJSOrdered({}));
+```

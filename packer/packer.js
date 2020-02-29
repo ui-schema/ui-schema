@@ -9,7 +9,7 @@ const {buildWebpack, serveWebpack} = require('./webpack');
 const {packsRoot, buildersPackages, packagesNames} = require('./webpack.packages');
 const {configApp} = require('./webpack.apps');
 
-const serveId = argv['serve'] === true ? 'demo' : (argv['serve'] || false);
+const doServe = argv['serve'] === true ? true : (argv['serve'] || false);
 const doClean = !!argv['clean'];
 const doBuild = !!argv['build'];
 
@@ -84,8 +84,8 @@ if(doBuild) {
         });
 }
 
-if(serveId) {
-    if(!apps[serveId]) {
+if(doServe) {
+    /*if(!apps[serveId]) {
         console.error('App not existing: ' + serveId, 'Existing Apps:', Object.keys(apps));
         process.exit(1);
     }
@@ -101,9 +101,9 @@ if(serveId) {
     if(typeof appsConfigs[serveId].serve !== 'object') {
         console.error('App has invalid serve config: ', serveId, appsConfigs[serveId].serve);
         process.exit(1);
-    }
+    }*/
 
-    console.log('Starting App `' + serveId + '`:');
+    console.log('Starting App `' + doServe + '`:');
 
     // when serve is used it only uses the demo dev-server which also bundles the packages, but their `es` type must be exporter
     packsRoot.forEach(pack => {
@@ -119,5 +119,19 @@ if(serveId) {
         }
     });
 
-    serveWebpack(appsConfigs[serveId].serve);
+    let doServers = doServe !== true ? (Array.isArray(doServe) ? doServe : [doServe]) : false;
+    let servers = [];
+    for(let app in apps) {
+        if(Array.isArray(doServers) && doServers.indexOf(app) === -1) {
+            continue;
+        }
+        if(appsConfigs[app].serve) {
+            if(typeof appsConfigs[app].serve === 'function') {
+                appsConfigs[app].serve = appsConfigs[app].serve();
+            }
+            servers.push(serveWebpack(appsConfigs[app].serve));
+        }
+    }
+
+    Promise.all(servers).then((r) => console.log('Started serving ' + r.length + ' from ' + Object.keys(apps).length + ' apps.'))
 }

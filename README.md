@@ -150,15 +150,16 @@ export {Editor}
 
 1. Fork/Clone Repository
 2. Install root dev-dependencies (like lerna, webpack): `npm i`
-3. Start dev-server: `npm start` (will clean-dist + symlink-es-modules + init & hoist packages)
+3. Start dev-server: `npm start` (will clean-dist + symlink-es-modules + init & hoist packages + starting demo app)
 4. Open browser on [localhost:4200](http://localhost:4200)
 5. Explore [packages](packages)
-6. Code -> Commit -> Pull Request -> Being Awesome!
+6. Start Documentation: `npm run docs` (needs running demo server)
+7. or: starting Demo + Docs (after having initialized, hoisted it manually): `npm run serve`
+7. Code -> Commit -> Pull Request -> Being Awesome!
 
 Changes from any package are reflected inside the demo package.
 
 Commands:
-
 - Build: `npm run build`
 - Clean node_modules and build dirs: `npm run clean`
 - Clean build dirs: `npm run clean-dist`

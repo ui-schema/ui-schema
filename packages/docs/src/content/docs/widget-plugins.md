@@ -21,7 +21,7 @@ Validation plugins also work schema-driven, but are only used for validation of 
 
 | Plugin               | Package              | Validity Fn.         | Handles              | Added Props | Status |
 | :---                 | :---                 | :---                 | :---                 | :---        | :--- |
-| MinMaxValidator      | @ui-schema/ui-schema | validateMinMax       | min/max validity     | `valid`, `errors` | ✔(string,number) ❗ |
+| MinMaxValidator      | @ui-schema/ui-schema | validateMinMax       | min/max validity     | `valid`, `errors` | ✔(string,number,array) ❗ |
 | TypeValidator        | @ui-schema/ui-schema | validateType         | keyword `type`       | `valid`, `errors` | ✔ |
 | ValueValidatorConst  | @ui-schema/ui-schema | validateConst        | keywords `type`, `const` | `valid`, `errors` | ✔ |
 | ValueValidatorEnum   | @ui-schema/ui-schema | validateEnum         | keywords `type`, `enum` | `valid`, `errors` | ✔ |
@@ -33,23 +33,16 @@ Validation plugins also work schema-driven, but are only used for validation of 
 
 - `MinMaxValidator` depends on `RequiredValidator` ✔
     - on render it behaves `strict` only when `required` ✔
-    - validation checking outside is always strict ✔
+    - strictness: `0` is only invalid when `minimum` is `1` **and** it is `required`, etc.
+    - validation checking outside is never strict, this may change (again)
 - sub-schema validation/array validation is done by `validateSchema`  ✔ 
     - (todo: new override-prop/more docs)
-- **important notice**
-    - `type: object` and `type: array` can **not** be handled like the others because of using the [ValuelessWidgetRenderer](./UISchemaCore.md#ValuelessWidgetRenderer)
-    - this is for performance reasons, a nested object otherwise would trigger a full re-render from it's root-object  
-    - use the [schema data provider](./UISchemaCore.md#editor-data-provider) within plugins/widgets that need to access it, build a functional component which wraps a memoized component and only push the values needed further on (or nothing)
-    - arrays and objects should all be valueless and not only "widget-less objects" ❌
-    - arrays should be possible to use `valueless` or `with-value` ❌
-        - good for: full array is handled within one small component
-        - good for: full array is one-level deep and contains only scalar values
 
 ## Plugin List
 
 ### DefaultHandler
 
-Checks if the current schema has a defined `default` keyword and it's value is `undefined`, then it sets the store data and renders further on after it was set.
+Checks if the current schema has a defined `default` keyword and it's value is `undefined`. The value is set directly, the actual store is updated within an effect.
 
 ### ValidityReporter
 
@@ -65,7 +58,7 @@ Supplies function: `isInvalid(validity, scope = [], count = false)` to check if 
 - `scope` : `{Array|List}` with the keys of which schema level should be searched
 - `count` to true will search for the amount of invalids and not end after first invalid
 
-Build around [Editor Invalidity Provider](./UISchemaCore.md#editor-invalidity-provider).
+Build around [Editor Invalidity Provider](/docs/core#editor-invalidity-provider).
 
 #### validateSchema
 
@@ -101,7 +94,7 @@ Enables on-the-fly sub-schema rendering based on single property data and schema
 - changes the schema dynamically on runtime ✔
 - does not re-render the Widget when the dependency matching didn't change ✔
 - ❗ only checks some schema: everything [validateSchema](#validateschema) supports
-- ❗ partly-merge from dyn-schema: everything [mergeSchema](./UISchemaCore.md#mergeschema) supports
+- ❗ partly-merge from dyn-schema: everything [mergeSchema](/docs/core#mergeschema) supports
 - ❗ full feature set needs [ConditionalHandler](#conditionalhandler), [CombiningHandler](#combininghandler), [CombiningNetworkHandler](#combiningnetworkhandler), which are not implemented yet
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/conditionals.html)
@@ -229,7 +222,7 @@ Enables on-the-fly sub-schema rendering based on current objects data.
 - `allOf` list of if/else/then which are evaluated ✔
     - is handled by [CombiningHandler](#combininghandler)
 - ❗ only checks some schema: everything [validateSchema](#validateschema) supports
-- ❗ partly-merge from dyn-schema: everything [mergeSchema](./UISchemaCore.md#mergeschema) supports
+- ❗ partly-merge from dyn-schema: everything [mergeSchema](/docs/core#mergeschema) supports
 
 Examples:
 
@@ -423,7 +416,7 @@ Combining schemas from within one schema with:
 - `oneOf` ❗
 - `anyOf` ❗
 - ❗ only checks some schema: everything [validateSchema](#validateschema) supports
-- ❗ partly-merge from dyn-schema: everything [mergeSchema](./UISchemaCore.md#mergeschema) supports
+- ❗ partly-merge from dyn-schema: everything [mergeSchema](/docs/core#mergeschema) supports
 
 Works in conjunction with the [conditional handler](#conditionalhandler).
 
@@ -500,100 +493,99 @@ const schemaWCombining = createOrderedMap({
 
 Example with multiple `if`, nested `allOf`:
 
-```js
-const schemaWCombining = createOrderedMap({
-    type: "object",
-    properties: {
-        country: {
-            type: "string",
-            widget: 'Select',
-            enum: [
+```ui-schema
+{
+    "type": "object",
+    "properties": {
+        "country": {
+            "type": "string",
+            "widget": "Select",
+            "enum": [
                 "usa",
                 "canada",
                 "eu"
             ],
-            default: "eu"
+            "default": "eu"
         },
-        address: {
-            allOf: [
+        "address": {
+            "allOf": [
                 {
-                    type: "object",
-                    properties: {
-                        street_address: {type: "string"},
-                        city: {type: "string"},
-                        state: {type: "string", widget: "Select", enum: ["rlp", "ny", "other"]}
+                    "type": "object",
+                    "properties": {
+                        "street_address": {"type": "string"},
+                        "city": {"type": "string"},
+                        "state": {"type": "string", "widget": "Select", "enum": ["rlp", "ny", "other"]}
                     },
-                    required: ["street_address", "city", "state"],
-                    allOf: [
+                    "required": ["street_address", "city", "state"],
+                    "allOf": [
                         {
-                            if: {
-                                properties: {
+                            "if": {
+                                "properties": {
                                     "state": {
-                                        type: 'string',
-                                        const: "rlp"
+                                        "type": "string",
+                                        "const": "rlp"
                                     }
                                 }
                             },
-                            then: {
-                                properties: {
+                            "then": {
+                                "properties": {
                                     "zip": {
-                                        type: "number"
+                                        "type": "number"
                                     }
-                                },
-                            },
+                                }
+                            }
                         }, {
-                            properties: {
+                            "properties": {
                                 "accept": {
-                                    type: 'boolean',
+                                    "type": "boolean"
                                 }
                             }
                         }, {
-                            if: {
-                                properties: {
+                            "if": {
+                                "properties": {
                                     "state": {
-                                        type: 'string',
-                                        const: "ny"
+                                        "type": "string",
+                                        "const": "ny"
                                     }
                                 }
                             },
-                            then: {
-                                properties: {
+                            "then": {
+                                "properties": {
                                     "block": {
-                                        type: "string",
-                                        maximum: 15
+                                        "type": "string",
+                                        "maximum": 15
                                     }
-                                },
-                            },
+                                }
+                            }
                         }
-                    ],
+                    ]
                 }, {
-                    type: "object",
-                    properties: {
-                        phone: {type: "string"},
-                        email: {type: "string", format: "email"},
+                    "type": "object",
+                    "properties": {
+                        "phone": {"type": "string"},
+                        "email": {"type": "string", "format": "email"}
                     },
-                    required: ["email"],
-                    if: {
-                        properties: {
+                    "required": ["email"],
+                    "if": {
+                        "properties": {
                             "phone": {
-                                type: 'string',
-                                minLength: 6,
+                                "type": "string",
+                                "minLength": 6
                             }
                         }
                     },
-                    then: {
-                        properties: {
+                    "then": {
+                        "properties": {
                             "phone": {
-                                // only valid for: (888)555-1212 or 555-1212
-                                pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$",
+                                "pattern": "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$"
                             }
-                        },
-                    },
+                        }
+                    }
                 }
             ]
         }
     }
-});
+}
 ```
 
 ### CombiningNetworkHandler
@@ -615,8 +607,8 @@ import React from "react";
 import {NextPluginRenderer} from "@ui-schema/ui-schema";
 
 const NewPlugin = (props) => {
-    // special props which don't reach `Widget`, only for plugins
-    const {current, Widget, widgetStack} = props;
+    // special prop which don't reach `Widget`, only for plugins
+    const {current} = props;
 
     // doing some logic
     const newProp = props.schema.get('keyword') ? 'success' : 'error';
@@ -630,22 +622,11 @@ export {NewPlugin}
 
 - `{current, Widget, widgetStack, ...props}` prop signature of each plugin
 - `current` index/current position in stack
-- `Widget` actual component to render
-- `widgetStack` whole stack that is currently rendered
 - `props` are the props which are getting pushed to the `Widget`
 - recommended: use `<NextPluginRenderer {...props} newProp={false}/>` 
     - automatically render the plugins nested
     - `newProp` is available in the widget and the next plugins
     
 See also:
-- [how to add custom plugins to the binding](./Widgets.md#adding--overwriting-widgets).
-- [Editor hooks and HOCs](./UISchemaCore.md#editorstore) can be used to access any data, keep [performance](./Performance.md) in mind! 
-
-## Docs
-
-- [Overview](../../README.md)
-- [UI JSON-Schema](./Schema.md)
-- [Widget System](./Widgets.md)
-- [Widget Plugins](./WidgetPlugins.md)
-- [Localization / Translation](./Localization.md)
-- [Performance](./Performance.md)
+- [how to add custom plugins to the binding](/docs/widgets#adding--overwriting-widgets).
+- [Editor hooks and HOCs](/docs/core#editorstore) can be used to access any data, keep [performance](/docs/performance) in mind! 
