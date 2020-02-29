@@ -7,6 +7,15 @@ const EditorStoreContext = React.createContext({});
 const EditorContext = React.createContext({});
 
 let EditorStoreProvider = ({children, ...props}) => <EditorStoreContext.Provider value={props} children={children}/>;
+/**
+ *
+ * @param children
+ * @param showValidity
+ * @param widgets
+ * @param t
+ * @return {*}
+ * @constructor
+ */
 let EditorProvider = ({children, ...props}) => <EditorContext.Provider value={props} children={children}/>;
 
 const EditorStore = Record({

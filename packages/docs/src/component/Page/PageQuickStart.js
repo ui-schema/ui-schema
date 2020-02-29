@@ -120,9 +120,9 @@ import {
     createMap, createOrderedMap    // for deep immutables
 } from "@ui-schema/ui-schema";
 
-// Empty Demo Schema & Data
-const schema1 = {};
-const data1 = {};
+// Empty Demo Schema & Data/Values
+const schema = {};
+const values = {};
 
 const Editor = () => {
     // here the state will be added
@@ -177,9 +177,9 @@ import {widgets} from "@ui-schema/ds-bootstrap";
 
             <Paper style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
                 <Markdown content source={`
-## 4. Create Data State, Add Schema
+## 4. Create Store State, Add Schema
 
-Each SchemaEditor needs to receive a \`store\` and \`onChange\` to work with the data. In the store, the data is saved as an [immutable](https://immutable-js.github.io/immutable-js/).
+Each SchemaEditor needs to receive a \`store\` and \`onChange\` to work with the data and have something to save validity and internal values. The store must be an \`EditorStore\`, which is based on a [immutable](https://immutable-js.github.io/immutable-js/) Record.
 
 The schema in this example is bundled with the component and not dynamic, also the schema must be immutable. A minimal valid schema is an empty \`object\` schema.
 `}/>
@@ -189,25 +189,25 @@ The schema in this example is bundled with the component and not dynamic, also t
                         <Markdown content source={`
 \`\`\`jsx
 // Minimal Schema, transformed from JS-Object into deep immutable
-const schema1 = createOrderedMap({
+const schema = createOrderedMap({
     type: 'object',
 });
 
-const data1 = {};
+const values = {};
 
 const Editor = () => {
     // Create a state with the data, transforming into immutable on first mount 
-    const [data, setData] = React.useState(() => createStore(createOrderedMap(data1)));
+    const [store, setStore] = React.useState(() => createStore(createOrderedMap(values)));
     
     // or create empty store, based on the schema type:
-    // const [data, setData] = React.useState(() => createEmptyStore(schema1.get('type'));
+    // const [store, setStore] = React.useState(() => createEmptyStore(schema.get('type'));
    
     return (
         <SchemaEditor
-            schema={schema1}
+            schema={schema}
             
-            store={data}
-            onChange={setData}
+            store={store}
+            onChange={setStore}
 
             widgets={widgets}
         />
@@ -235,7 +235,7 @@ See [schema docs](/docs/schema) for the keywords of each type.
                     <Grid item xs={12}>
                         <Markdown content source={`
 \`\`\`jsx
-const schema1 = createOrderedMap(${JSON.stringify(demoSchema, null, 2)});
+const schema = createOrderedMap(${JSON.stringify(demoSchema, null, 2)});
 \`\`\`
 `}/>
                     </Grid>
@@ -256,43 +256,36 @@ const schema1 = createOrderedMap(${JSON.stringify(demoSchema, null, 2)});
                 <Grid container>
                     <Grid item xs={12}>
                         <Markdown content source={`
-## 6. Add Validity & API Call
+## 6. Add API Call
 
-Now we add the validity store and a button that will send the data of the editor to an API if the form is valid.
+Now we add a button that will send the store of the editor to an API if the form is valid.
 
-We tell the editor also to display invalidity from start on. 
+We tell the editor also to display validity from start on. 
 `}/>
                     </Grid>
                     <Grid item xs={12}>
                         <Markdown content source={`
 \`\`\`jsx
 const Editor = () => {
-    const [data, setData] = React.useState(() => createOrderedMap(data1));
-    
-    // Add also the validity state 
-    const [validity, setValidity] = React.useState(() => createMap());
+    const [store, setStore] = React.useState(() => createOrderedMap(values));
     
     return (
         <React.Fragment>
             <SchemaEditor
-                schema={schema1}
+                schema={schema}
             
-                store={data}
-                onChange={setData}
+                store={store}
+                onChange={setStore}
 
                 widgets={widgets}
-
-                {/* add the validity props */}
-                validity={validity}
-                onValidity={setValidity}
                 
                 showValidity={true}
             />
             {/* add your sending button, in the onClick check for validity and do the needed action */}
             <button 
-                disabled={!!isInvalid(validity)}
+                disabled={!!isInvalid(store.getValidity())}
                 onClick={() => {
-                    if(!isInvalid(validity)) {
+                    if(!isInvalid(isInvalid(store.getValidity())) {
                         // when not invalid, post to an API
                         fetch('https://httpbin.org/post', {
                             method: 'POST',
@@ -301,7 +294,7 @@ const Editor = () => {
                                 'Content-Type': 'application/json'
                             },
                             // here the immutable store is converted back to JS-Object and then to JSON
-                            body: JSON.stringify(data.toJS())
+                            body: JSON.stringify(store.toJS())
                         })
                             .then(r => r.json())
                             .then(answer => console.log(answer))
@@ -324,6 +317,17 @@ Test the demo form below, it will send the entered data to [httpbin.org](https:/
 
                     <Grid item xs={12} md={9} style={{margin: '24px auto 0 auto'}}>
                         <QuickStartEditor/>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <Markdown content source={`
+Next Steps:
+
+- [Adding custom l10n](/docs/localization)
+- [Creating widgets](/docs/widgets#creating-widgets)
+- [Adding / Overwriting Widgets](/docs/widgets#adding--overwriting-widgets)
+- [Advanced Widgets with NestedSchemaEditor](/docs/core#nestedschemaeditor)
+`}/>
                     </Grid>
                 </Grid>
             </Paper>

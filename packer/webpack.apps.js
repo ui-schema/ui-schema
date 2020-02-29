@@ -1,6 +1,7 @@
 'use strict';
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const merge = require('webpack-merge');
 const {getConfig} = require('./webpack.common');
 const {crossBuild} = require('./webpack.packages');
@@ -174,6 +175,9 @@ const buildAppPair = (main, dist, root, template, publicPath, port) => ({
                     runtimeChunk: 'single',
                 },
                 plugins: [
+                    new CopyPlugin([
+                        {from: publicPath, to: dist},
+                    ]),
                     // Inlines the webpack runtime script. This script is too small to warrant
                     // a network request.
                     // https://github.com/facebook/create-react-app/issues/5358

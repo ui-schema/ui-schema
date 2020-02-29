@@ -58,8 +58,6 @@ Supplies function: `isInvalid(validity, scope = [], count = false)` to check if 
 - `scope` : `{Array|List}` with the keys of which schema level should be searched
 - `count` to true will search for the amount of invalids and not end after first invalid
 
-Build around [Editor Invalidity Provider](/docs/core#editor-invalidity-provider).
-
 #### validateSchema
 
 ```js
@@ -78,6 +76,7 @@ Currently includes the handlers of:
 - validateMultipleOf
 - validateConst
 - validateEnum
+- validateContains (array contains min. 1 valid item)
 
 Supports `not` keyword for any validation, see [spec.](https://json-schema.org/understanding-json-schema/reference/combining.html#not). When `not` is specified, it's sub-schema is evaluated and not anything else - (behaviour may change).
 
@@ -629,4 +628,4 @@ export {NewPlugin}
     
 See also:
 - [how to add custom plugins to the binding](/docs/widgets#adding--overwriting-widgets).
-- [Editor hooks and HOCs](/docs/core#editorstore) can be used to access any data, keep [performance](/docs/performance) in mind! 
+- [EditorStore hooks, HOCs and utils](/docs/core#editorstore) can be used to access, udpate, delete, move any data, keep [performance](/docs/performance) in mind! 

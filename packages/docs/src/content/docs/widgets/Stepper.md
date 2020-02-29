@@ -9,7 +9,7 @@ A stepper is a widget that renders a sub-schema after another, it is only possib
 - creates an object out of all
 - the stepper controls it's own `showValidity`, this overwrites an existing `false` to `true`
   - this highlights only the invalid of the stepper, not the containing schema
-  - if the containing schema should display invalidity, the stepper will do it also
+  - if the containing schema should display validity, the stepper will do it also
   - it reset's it's own `showValidity` on switching steps
 - type: `object`
 - widget keywords:

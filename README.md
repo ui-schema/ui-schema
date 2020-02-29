@@ -63,7 +63,7 @@ import {SchemaEditor, isInvalid, createMap, createOrderedMap, createStore, creat
 import {widgets} from "@ui-schema/ds-material";
 
 // could be fetched from some API or bundled with the app
-const schema1 = {
+const schemaBase = {
     type: "object",
     properties: {
         country: {
@@ -87,15 +87,15 @@ const schema1 = {
         "name",
     ],
 };
-const data1 = {};
+const data = {};
 
 const Editor = () => {
-    // optional state for display errors/invalidity
+    // optional state for display errors/validity
     const [showValidity, setShowValidity] = React.useState(false);
     
     // needed variables and setters for the SchemaEditor, create where ever you like
-    const [store, setStore] = React.useState(() => createStore(createOrderedMap(data1)));
-    const [schema, setSchema] = React.useState(() => createOrderedMap(schema1));
+    const [store, setStore] = React.useState(() => createStore(createOrderedMap(data)));
+    const [schema, setSchema] = React.useState(() => createOrderedMap(schemaBase));
     
     return <React.Fragment>
         <SchemaEditor
@@ -107,17 +107,15 @@ const Editor = () => {
             widgets={widgets}
 
             {/* 
-              * or write onChange / onValidity like:
+              * or write onChange like:
               * handler must get the previous state as value, it must be an immutable map, will return updated map
             */}
             onChange={handler => setStore(handler(data))}
-    
-            {/* optional, the `Renderer` contains the actual editor, move to the position wanted*/}
         >
             <SchemaDebug setSchema={setSchema}/>
         </SchemaEditor>
         <button
-            {/* show the invalidity only at submit (or pass `true` to `showValidity`) */} 
+            {/* show the validity only at submit (or pass `true` to `showValidity`) */} 
             onClick={() => isInvalid(store.getValidity()) ? setShowValidity(true) : doingSomeAction()}
         >send!</button>
     </React.Fragment>
@@ -128,13 +126,13 @@ const Editor = () => {
 //     use dynamic code-splitting to not bundle the SchemaDebug
 //     use e.g. `react-loadable`
 const SchemaDebug = ({setSchema}) => {
-     const {store, schema, onChange} = useSchemaStore();
+     const {valueStore, schema, onChange} = useSchemaStore();
 
     return <React.Fragment>
         <ImmutableEditor
             data={store}
             onChange={(keys, value) => onChange(updateValue(keys, value))}
-            getVal={keys => store.getIn(keys)}
+            getVal={keys => valueStore.getIn(keys)}
             theme={themeMaterial}
         />
         <ImmutableEditor
@@ -153,11 +151,15 @@ export {Editor}
 3. Start dev-server: `npm start` (will clean-dist + symlink-es-modules + init & hoist packages + starting demo app)
 4. Open browser on [localhost:4200](http://localhost:4200)
 5. Explore [packages](packages)
-6. Start Documentation: `npm run docs` (needs running demo server)
-7. or: starting Demo + Docs (after having initialized, hoisted it manually): `npm run serve`
-7. Code -> Commit -> Pull Request -> Being Awesome!
+8. Code -> Commit -> Pull Request -> Being Awesome!
 
-Changes from any package are reflected inside the demo package.
+Changes from any package are reflected inside the demo/docs package.
+
+- Start Documentation: `npm run docs` (needs running demo server)
+    - see [localhost:4200](http://localhost:4201)
+    - write in [packages/docs/src/content/docs](./packages/docs/src/content/docs)
+- or: starting Demo + Docs (after having initialized, hoisted it manually): `npm run serve`
+
 
 Commands:
 - Build: `npm run build`

@@ -8,7 +8,7 @@ import {
     Visibility, VisibilityOff,
     FormatSize, FormatShapes, Code, SpaceBar, RestorePage, HorizontalSplit, VerticalSplit
 } from "@material-ui/icons";
-import {isInvalid, createMap, createOrderedMap, SchemaEditorProvider, SchemaRootRenderer, createStore, useSchemaStore} from "@ui-schema/ui-schema";
+import {isInvalid, createOrderedMap, SchemaEditorProvider, SchemaRootRenderer, createStore, useSchemaStore} from "@ui-schema/ui-schema";
 import {widgets} from "@ui-schema/ds-material";
 import {RichCodeEditor, themes} from "../RichCodeEditor";
 import {Markdown} from "../Markdown";
@@ -386,7 +386,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
     const [tabSize, setTabSize] = React.useState(2);
     const [fontSize, setFontSize] = React.useState(13);
     const [showInfo, setInfoBox] = React.useState(true);
-    const [showData, setDataBox] = React.useState(true);
+    const [showStore, setStoreBox] = React.useState(true);
     const [jsonEditHeight, setJsonEditHeight] = React.useState(350);
     const [renderChange, setRenderChange] = React.useState(0);// Ace Editor Re-Size Re-Calc
     const [editorTheme, setEditorTheme] = React.useState('gruvbox');
@@ -394,9 +394,8 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
 
     // default schema state - begin
     const [showValidity, setShowValidity] = React.useState(false);
-    const [validity, setValidity] = React.useState(createMap());
     const [schema, setSchema] = React.useState(() => schemas[activeSchema][1]);
-    const [data, setData] = React.useState(() => createStore(schemas[activeSchema][2]));
+    const [store, setStore] = React.useState(() => createStore(schemas[activeSchema][2]));
     // end - default schema state
 
     const toggleInfoBox = React.useCallback((setter) => {
@@ -407,11 +406,11 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
     }, [setInfoBox, setRenderChange]);
 
     const toggleDataBox = React.useCallback((setter) => {
-        setDataBox(setter);
+        setStoreBox(setter);
         if(setRenderChange) {
             setRenderChange(p => p + 1);
         }
-    }, [setDataBox, setRenderChange]);
+    }, [setStoreBox, setRenderChange]);
 
     const changeSplit = React.useCallback(() => {
         // toggle verticalSplit and change selected in localStorage
@@ -428,11 +427,10 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
         setShowValidity(false);
         setActiveSchema(i);
         setSchema(schemas[i][1]);
-        setData(createStore(schemas[i][2]));
+        setStore(createStore(schemas[i][2]));
         setRenderChange(p => p + 1);
         history.push('/' + i18n.language + '/examples/' + (schemas[i][0].split(' ').join('-')));
-        // `setValidity` is not needed, as it cleans itself on dismounts and fills itself again on new mounts
-    }, [setActiveSchema, i18n, setShowValidity, setSchema, setData, history]);
+    }, [setActiveSchema, i18n, setShowValidity, setSchema, setStore, history]);
 
     React.useEffect(() => {
         if(infoBox.current) {
@@ -457,12 +455,10 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
 
     return <SchemaEditorProvider
         schema={schema}
-        store={data}
-        onChange={setData}
+        store={store}
+        onChange={setStore}
         widgets={widgets}
-        validity={validity}
         showValidity={showValidity}
-        onValidity={setValidity}
     >
         <div style={{display: 'flex', flexGrow: 2, overflow: 'auto', flexDirection: verticalSplit ? 'row' : 'column'}}>
             <div style={{
@@ -528,21 +524,21 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
                     </div>
 
                     <div style={{
-                        height: verticalSplit ? showData ? '30%' : 'auto' : 'auto', display: 'flex', flexDirection: 'column', flexShrink: 1,
-                        width: verticalSplit ? 'auto' : showData ? '33%' : 'auto',
+                        height: verticalSplit ? showStore ? '30%' : 'auto' : 'auto', display: 'flex', flexDirection: 'column', flexShrink: 1,
+                        width: verticalSplit ? 'auto' : showStore ? '33%' : 'auto',
                         paddingLeft: verticalSplit ? 0 : 12, boxSizing: 'border-box',
                     }}>
                         <Button
                             variant={'outlined'} size={'small'}
                             style={{display: 'flex', lineHeight: 2.66, minWidth: 0, flexShrink: 0, color: 'inherit', border: 0, padding: '0 0 0 4px', cursor: 'pointer'}}
                             onClick={() => toggleDataBox(o => !o)} onMouseUp={unFocus}>
-                            {showData || verticalSplit ? 'Data:' : 'D·'}
+                            {showStore || verticalSplit ? 'Data:' : 'D·'}
 
-                            {showData ?
+                            {showStore ?
                                 <VisibilityOff fontSize={'small'} style={{margin: 'auto 0 auto auto'}}/> :
                                 <Visibility fontSize={'small'} style={{margin: 'auto 0 auto auto'}}/>}
                         </Button>
-                        {schemas[activeSchema][3] && showData ?
+                        {schemas[activeSchema][3] && showStore ?
                             <SchemaDataDebug tabSize={tabSize} fontSize={fontSize} richIde={richIde} renderChange={renderChange} theme={editorTheme}/> :
                             null}
                     </div>
@@ -586,7 +582,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
                     typeof schema === 'string' ? null : <Paper style={{margin: 12, padding: 24}}>
                         <SchemaRootRenderer/>
 
-                        <InvalidLabel invalid={isInvalid(validity)} setShowValidity={setShowValidity} showValidity={showValidity}/>
+                        <InvalidLabel invalid={isInvalid(store.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>
                     </Paper>}
 
                 <div style={{height: 24, width: 1, flexShrink: 0}}/>

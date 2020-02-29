@@ -14,25 +14,26 @@ Through the modular approach and easy definition of a new widget, the widget sys
 > ✔ working, not expected to change (that much) breaking in the near future
 >
 
-You need to show content and inputs in a special way? Something not supported (yet)? Just create a widget with the functionality you need! JSON-Schema is handled mostly by the `widgetStack` for you, simply use the provided properties to build the behaviour of the widget.
+JSON-Schema is handled mostly by the `widgetStack` for you, focus on the behaviour of the widget, connect it through the provided properties and the HOC `extractValue` (only non-scalar values).
 
-Each widget get's a lot of properties provided by the root schema provided or added by plugins.
+Each widget get's a lot of properties provided by the root schema renderer or added by plugins.
 
 Properties from editor:
 
 - `t` : `{function}` see [translation](/docs/localization#translation)
 - `value` : `{*}` (Plugins receive for any value, Widgets only for scalar values)
-- `onChange` : `{function}` (Plugins receive for any value, Widgets only for scalar values)
+- `onChange` : `{function}`
 - `storeKeys` : `{List}`
 - `ownKey` : `{string|integer}`
 - `schema` : `{Map}`
 - `parentSchema` : `{Map}`
-- `level` : `{integer}`
-- `required` : `{boolean}` (extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `RequiredValidator`)
-- `valid` : `{boolean}` if this schema level got some error, detected/changed from the widgetStack, 
-- `showValidity` : `{boolean}` added to the props by `InvalidityReporter`
-- `errors` : `{List}` invalidity errors, added from the widgetStack for the current widget/schema-level
-- `dependencies` : `{undefined|Map}` **removed in 0.0.5**
+- `level` : `{integer}` how deep in the schema it is, incremented automatically for native-objects, must be done manually when using `NestedSchemaEditor`
+- `required` : `{boolean}`, extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `RequiredValidator`
+- `valid` : `{boolean}` if this schema level got some error, detected/changed from the widgetStack 
+- `showValidity` : `{boolean}` added to the props by `ValidityReporter`
+- `errors` : `{List}` validation errors, added from the widgetStack for the current widget/schema-level
+
+See [Simplest Text Widget](/docs/core#simplest-text-widget) for a basic widget example.
 
 See [how to add the custom widgets](#adding--overwriting-widgets).
 

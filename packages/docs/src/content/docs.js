@@ -10,6 +10,7 @@ import {demoNumberSlider} from "./docs/widgets/NumberSliderDemo";
 import {demoCode} from "./docs/widgets/CodeDemo";
 import {demoRichText} from "./docs/widgets/RichTextDemo";
 import {demoDateTimePickers} from "./docs/widgets/DateTimePickersDemo";
+import {demoColor} from "./docs/widgets/ColorDemo";
 
 const contentDocs = [
     ['overview', 'Overview'],
@@ -26,7 +27,9 @@ const contentDocsWidgets = [
     ['widgets/Code', 'Code Editor', {
         demoEditor: demoCode
     }],
-    ['widgets/Color', 'Color Picker',],
+    ['widgets/Color', 'Color Picker', {
+        demoEditor: demoColor
+    }],
     ['widgets/DateTimePickers', 'Date + Time Pickers', {
         demoEditor: demoDateTimePickers
     }],

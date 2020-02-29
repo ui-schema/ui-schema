@@ -17,9 +17,9 @@ Including native-objects, native-types and Widgets.
 
 - [Native Types Example](/examples/Simple-Demo)
 - [Stepper Example](/examples/Stepper)
-- [📚 Native Types](https://github.com/ui-schema/ui-schema/blob/master/packages/docs/Schema.md#types)
-- [📚 Widgets](https://github.com/ui-schema/ui-schema/blob/master/packages/docs/Widgets.md)
-- [📚 Design-System Bindings](https://github.com/ui-schema/ui-schema/blob/master/README.md#design-systems)
+- [📚 Native Types](/docs/schema#types)
+- [📚 Widgets](/docs/widgets)
+- [📚 Design-System](/docs/overview#design-systems)
 `],
     ['Simple Demo', schemaUser, dataUser, `
 # Simple Example
@@ -29,7 +29,7 @@ This example illustrates a small schema.
 Including native-objects and native-types.
 
 - native-objects are great for nesting/grouping
-- each can receive it's own [view](https://github.com/ui-schema/ui-schema/blob/master/packages/docs/Schema.md#view-keyword) settings to build responsive grids    
+- each can receive it's own [view](/docs/schema#view-keyword) settings to build responsive grids    
 - specify \`type\` and add other keywords which may influence the behaviour
 
 **Try out** the \`seats\` field only allows a \`maximum\` of 5 seats, uses a \`default\` and a \`minimum\`
@@ -44,17 +44,17 @@ A stepper is a widget that renders a sub-schema after another, it is only possib
 - creates an object out of all
 - the stepper controls it's own \`showValidity\`, this overwrites an existing \`false\` to \`true\`
   - this highlights only the invalid of the stepper, not the containing schema
-  - if the containing schema should display invalidity, the stepper will do it also
+  - if the containing schema should display validity, the stepper will do it also
   - it reset's it's own \`showValidity\` on switching steps 
 
-Custom widgets like steppers are defined per [design-system](https://github.com/ui-schema/ui-schema/blob/master/README.md#design-systems) 
+Custom widgets like steppers are defined per [design-system](/docs/overview#design-systems) 
 `],
     ['Combination Simple', schemaCombining, dataCombining, `
 # Combining Example Simple
 
-Combining sub-schemas is possible with [allOf](https://github.com/ui-schema/ui-schema/blob/master/packages/docs/WidgetPlugins.md#combininghandler), this example shows a combination of multiple simple sub-schemas.
+Combining sub-schemas is possible with [allOf](/docs/widget-plugins#combininghandler), this example shows a combination of multiple simple sub-schemas.
 
-Each defined sub-schema is [merged](https://github.com/ui-schema/ui-schema/blob/master/packages/docs/UISchemaCore.md#mergeschema) together, dynamically creating the schema for the current schema-level.
+Each defined sub-schema is [merged](/docs/core#mergeschema) together, dynamically creating the schema for the current schema-level.
 
 - \`allOf\` is an \`array\` of any valid schemas 
 - nesting of \`allOf\` is possible
@@ -93,7 +93,7 @@ A conditional schema enables on-the-fly schema changing based on schema-validati
 - when valid \`then\` is applied
 - when invalid \`else\` is applied when existing
 - if no \`if\` exists \`then|else\` have no effect
-- if there is something to apply, it is [merged](https://github.com/ui-schema/ui-schema/blob/master/packages/docs/UISchemaCore.md#mergeschema) into the current one
+- if there is something to apply, it is [merged](/docs/core#mergeschema) into the current one
 - this doesn't scale well, if you need to have multiple conditions look into [Conditional Multiple](/examples/Conditional-Multiple)
 
 **Try out** changing the \`country\`, for \`canada\` a new number field is added, for others the \`privacy\` is made required

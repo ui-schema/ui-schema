@@ -23,7 +23,7 @@ It is possible to connect any design system, included or planned support:
 
 A design-system bundles multiple widgets, select the design-system binding you need.
 
-Each widget handles it's own sub-schema, e.g. the `string` type widget only needs to know how to handle it's own string.
+Each widget handles it's own sub-schema, e.g. the `string` type widget only needs to know how to handle it's own string. [Super simple text widget example](/docs/core/#simplest-text-widget)
 
 A match by `widget` supersedes the `type` matching, this is a simple example of a widget binding, the property name in `types` and `custom` is used for matching: 
 
@@ -65,8 +65,8 @@ Widgets for `type`:
 | Type         | Component            | MUI | BTS | ? |
 | :---         | :---                 | ---: | ---: | ---: | 
 | `string`     | [Normal Text + Formats](/docs/widgets/TextField)<br>`*`, `date`, `email`, `tel` | ✅ | ✅ | 🔵 |
-| `number`     | [Number](/docs/widgets/TextField)     | ✅ | [#](https://github.com/ui-schema/ui-schema/issues/5) | 🔵 |
-| `boolean`    | [Switch / Toggle](/docs/widgets/Switch) | ✅ | [#](https://github.com/ui-schema/ui-schema/issues/6) | 🔵 |
+| `number`     | [Number](/docs/widgets/TextField)     | ✅ | ✅ | 🔵 |
+| `boolean`    | [Switch / Toggle](/docs/widgets/Switch) | ✅ | ✅ | 🔵 |
 | `object`, `*` | [Native Objects / Grid](/docs/widgets/GridHandler) | ✅ | ✅ | 🔵 |
 | `array`      | only supported through widgets | - | - | - |
 
@@ -74,7 +74,7 @@ Custom widgets for `widget`, special UIs and specific type handling:
 
 | Widget       | Component | Types | MUI | BTS | ? |
 | :---         | :----     | :----     | :---: | :---: | ---: |
-| `Text`       | [multiline text](/docs/widgets/TextField) | `string` | ✅ | 🔵 | 🔵 |
+| `Text`       | [multiline text](/docs/widgets/TextField) | `string` | ✅ | ✅ | 🔵 |
 | `NumberSlider` | [slider as input](/docs/widgets/NumberSlider) | `number`<br>`array(number)` | ✅ | 🔵 | 🔵 |
 | `Date`       | [date selector](/docs/widgets/DateTimePickers) | `string` | ✅ | 🔵 | 🔵 |
 | `DateTime`   | [date and time selector](/docs/widgets/DateTimePickers) | `string` | ✅ | 🔵 | 🔵 |

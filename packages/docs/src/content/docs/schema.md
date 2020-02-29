@@ -137,6 +137,7 @@ Validation Keywords:
 - `patternProperties` to restrict names of properties to certain types with regex ❌ 
 - [dependencies, dependentSchemas](/docs/widget-plugins#dependenthandler) for dynamic sub-schema/properties ✔
 - [if, else, then, allOf](/docs/widget-plugins#conditionalhandler) for conditional sub-schema ✔
+- [allOf, with conditionals](/docs/widget-plugins#combininghandler) for combining sub-schema (not-all keywords) ✔
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/object.html)
 
@@ -160,6 +161,7 @@ Validation Keywords:
     - ❗ no full sub-schema against array items
 - `items` restricts items to be valid against sub-schemas in an defined order (tuple) ❌
     - `additionalItems` if more props then defined are allowed ❌
+    - currently supported by e.g. `GenericList` widget with validation at render-flow
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/array.html)
 

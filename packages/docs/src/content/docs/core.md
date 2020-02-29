@@ -6,37 +6,39 @@ Components and functions exported by `@ui-schema/ui-schema` for usage within des
 
 ## EditorStore
 
-All functions/props that are passed to the root `SchemaEditor` are accessible through specific providers.
+The props passed to the root `SchemaEditor` are accessible through providers.
 
 ### Editor Store Provider
 
-- Provider: `EditorDataProvider`
-- Hook: `useSchemaStore` 
-- HOC: `withData`, `extractValue`, `extractValidity`
+- Provider: `EditorStoreProvider`
+- Hook: `useSchemaStore`
+    - returns: `{schema: Map, valueStore: *, internalStore: Map, onChange: function, validity: Map}`
+- HOC to get the current widgets values
+    - `extractValue` passes down: `value`, `internalValue`, `onChange`
+    - `extractValidity` passes down: `validity`, `onChange`
 - Properties/ContextData:
-    - `store` : `{EditorStore}`
-    - `onChange` : `{function(function): OrderedMap}`
-    - `schema` : `{OrderedMap}`
+    - `store` : `{EditorStore}` the immutable Record storing the current editor state
+    - `onChange` : `{function(function): OrderedMap}` a function capable of updating the saved store
+    - `schema` : `{OrderedMap}` the full schema as an immutable map
 - Properties/ContextData:
     - `valueStore` : `{OrderedMap|*}`
     - `internalStore` : `{OrderedMap|*}`
     - `validity` : `{Map|undefined}`
-    - `onValidity` : `{function(function): Map}`
     - `showValidity` : `{boolean}`
-- Related Plugin: 
-    - [ValidityReporter](/docs/widget-plugins#validityreporter)
+
+See [core functions to update store](#store-updating-utils).
 
 Example Create:
 
 ```js
 import React from "react";
-import {EditorValidityProvider} from "@ui-schema/ui-schema";
+import {EditorStoreProvider} from "@ui-schema/ui-schema";
 
-const CustomProvider = ({validity, showValidity, onValidity, children}) =>{
-    return <EditorValidityProvider 
-        validity={validity} 
-        showValidity={showValidity}
-        onValidity={onValidity}
+const CustomProvider = ({store, onChange, schema, children}) =>{
+    return <EditorStoreProvider 
+        store={store}
+        onChange={onChange}
+        schema={schema}
         children={children}
     />;
 }
@@ -46,12 +48,13 @@ Example Hook:
 
 ```js
 import React from "react";
-import {isInvalid, useSchemaValidity} from "@ui-schema/ui-schema";
+import {isInvalid, useSchemaStore} from "@ui-schema/ui-schema";
 const Comp = ({storeKeys, ...props}) => {
     const {
-        validity, onValidity, // must be resolved by hook
-        showValidity          // is also added to the props by `ValidityReporter` for ease of access
-    } = useSchemaValidity();
+        onChange, // also passed down in props: `props.onChange`
+        valueStore, internalStore, // better to use the HOC `extractValue`
+        validity,     // better to use the HOC `extractValidity`
+    } = useSchemaStore();
 
     let invalid = isInvalid(validity, storeKeys, false); // Map, List, boolean: <if count>
     
@@ -59,21 +62,77 @@ const Comp = ({storeKeys, ...props}) => {
 };
 ```
 
-### Editor Widgets Provider
+#### Store Updating Utils
 
-- Provider: `EditorWidgetsProvider`
-- Hook: `useSchemaWidgets`
-- HOC: `withWidgets`
+These function must be used when updating the store, internally they work arround the `store`, an instance of the `EditorStore` immutable record.
+
+All return another function, not executing directly, this function is then executed from `onChange` - receiving the current state value, updating the `storeKeys` value with the given value in one of the records entry.
+
+- `updateInternalValue(storeKeys, internalValue)`
+- Function capable of either updating a deep value in the `store`, or when in e.g. root-level directly the store (string as root-schema)
+    - `updateValue(storeKeys, value)` to only update the normal data value
+    - `updateValues(storeKeys, value, internalValue)` to update the internal store value, which should not be published 
+- Function capable of either updating a deep value in the `store`, or when in e.g. root-level directly the store (string as root-schema)
+    - `updateValidity(storeKeys, valid)`
+- `cleanUp(storeKeys, key)` deletes the entry at `storeKeys` in the specified `key` scope, e.g:
+    - `cleanUp(storeKeys, 'validity')` deletes validity entry
+    - `cleanUp(storeKeys, 'internals')` deletes internal store entry
+    - `cleanUp(storeKeys, 'values')` deletes value/data entry
+    
+#### Simplest Text Widget
+
+Updating a value from HTML input:
+
+```js
+import React from 'react';
+import {updateValue, beautifyKey} from '@ui-schema/ui-schema';
+
+const Widget = ({
+                    value, ownKey, storeKeys, onChange,
+                    required, schema,
+                    errors, valid,
+                    ...props
+                }) => {
+    return <>
+        <label>{beautifyKey(ownKey)}</label>
+
+        <input
+            type={'text'}
+            required={required}
+            value={value || ''}
+            onChange={(e) => {
+                onChange(updateValue(storeKeys, e.target.value))
+            }}
+        />
+    </>
+}
+```
+    
+This can be used to delete the current storeKeys entry in the validity scope at unmount of the current widget/widgetstack:
+
+```js
+React.useEffect(() => {
+    return () => cleanUp(storeKeys, 'validity') 
+});
+```
+
+### Editor Provider
+
+- Provider: `EditorProvider`
+- Hook: `useEditor`
+- HOC: `withEditor`
 - Properties/ContextData:
     - `widgets` JS-object
+    - `showValidity` boolean
+    - `t` : `function` translator function
     
 Example Hook:
 
 ```js
 import React from "react";
-import {useSchemaWidgets} from "@ui-schema/ui-schema";
+import {useEditor} from "@ui-schema/ui-schema";
 const Comp = () => {
-    const {widgets} = useSchemaWidgets();
+    const {widgets} = useEditor();
 
     const RootRenderer = widgets.RootRenderer;
     return <RootRenderer {...props}/>
@@ -84,25 +143,17 @@ Example HOC, recommended for memo usage:
 
 ```js
 import React from "react";
-import {withWidgets} from "@ui-schema/ui-schema";
+import {withEditor} from "@ui-schema/ui-schema";
 
-const Comp = withWidgets(
+const Comp = withEditor(
     React.memo(
-        ({widgets, ...props}) => {
+        ({widgets, showValidity, t, ...props}) => {
             const RootRenderer = widgets.RootRenderer;
             return <RootRenderer {...props}/>
         }
     )
 );
 ```
-
-### Editor Translation Provider
-
-- Provider: `EditorTransProvider`
-- Hook: `useSchemaTrans`
-- HOC: `withTrans`
-- Properties/ContextData:
-    - `t` : `function` translator function
     
 ## Main Schema Editor
 
@@ -116,8 +167,7 @@ Automatic nesting schema-editor, uses the parent contexts, starts a SchemaEditor
 
 It works with adding the wanted schema and it's storeKeys, this automatically enables data-binding by `SchemaEditorRenderer`.
 
-- allows overwriting `showValidity` easily by attaching itself to the parent's validity reporter. 
-- the [widget provider](#editor-widgets-provider) can be used to render other widgets inside the nested as in the parent
+- allows overwriting `showValidity`, `widgets`, `t` easily by attaching itself to the parent's editor provider (not store provider). 
 - data/store must not be pushed through
 - any property that `NestedSchemaEditor` receives is available within plugins and widgets
 
@@ -135,6 +185,7 @@ const Box = ({schema, storeKeys, level, showValidity}) => {
             storeKeys={storeKeys}
             schema={schema}
             level={level}
+            noGrid // not a provider property, so pushed to the widgetStack, available for the GridHandler
         />
     </div>
 };
@@ -148,12 +199,12 @@ Provider to position the actual editor in any position, just pass everything dow
 import React from "react";
 import {
     SchemaEditorProvider, SchemaRootRenderer,
-    isInvalid, useSchemaValidity
+    isInvalid, useSchemaStore,
 } from "@ui-schema/ui-schema";
 
 const CustomFooter = ({someCustomProp}) => {
     // access the editor context, also available e.g.: useSchemaWidgets, useSchemaData
-    const {validity} = useSchemaValidity();
+    const {validity} = useSchemaStore();
     
     return <p style={{fontWeight: someCustomProp ? 'bold' : 'normal'}}>
         {isInvalid(validity) ? 'invalid' : 'valid'}
@@ -196,12 +247,12 @@ Same as NextPluginRenderer, but as memoized function, used in e.g. ObjectPlugins
 
 ## Utils
 
-## createStore
+### createStore
 
 Creates the initial store out of passed in values.
 
 ```js
-const [data, setData] = React.useState(() => createStore(createOrderedMap(initialData)));
+const [data, setStore] = React.useState(() => createStore(createOrderedMap(initialData)));
 ```
 
 ### memo / isEqual

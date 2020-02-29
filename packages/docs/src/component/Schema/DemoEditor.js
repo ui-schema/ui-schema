@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Box, Typography, useTheme} from "@material-ui/core";
-import {createMap, createOrderedMap, SchemaEditorProvider, SchemaRootRenderer, isInvalid, createEmptyStore, useSchemaStore} from "@ui-schema/ui-schema";
+import {createOrderedMap, SchemaEditorProvider, SchemaRootRenderer, isInvalid, createEmptyStore, useSchemaStore} from "@ui-schema/ui-schema";
 import {widgets} from "@ui-schema/ds-material";
 import {RichCodeEditor,} from "../RichCodeEditor";
 import {browserT} from "../../t";
@@ -10,10 +10,38 @@ import style from "codemirror/lib/codemirror.css";
 import themeDark from 'codemirror/theme/duotone-dark.css';
 import themeLight from 'codemirror/theme/duotone-light.css';
 import {WidgetCodeProvider} from "@ui-schema/material-code";
+import {
+    Color, ColorDialog,
+    ColorSwatches,
+    ColorCircle, ColorCompact, ColorMaterial,
+    ColorBlock, ColorTwitter, ColorSlider,
+    ColorAlpha, ColorHue, ColorSketch,
+    ColorSliderStatic, ColorStatic,
+    ColorCircleStatic, ColorTwitterStatic,
+    ColorSketchStatic, ColorSketchDialog,
+} from "@ui-schema/material-color";
 
 const customWidgets = {...widgets};
 customWidgets.custom = {
     ...widgets.custom,
+    Color,
+    ColorDialog,
+    ColorStatic,
+    ColorSwatches,
+    ColorCircle,
+    ColorCompact,
+    ColorMaterial,
+    ColorTwitter,
+    ColorBlock,
+    ColorSlider,
+    ColorAlpha,
+    ColorHue,
+    ColorSketch,
+    ColorSliderStatic,
+    ColorCircleStatic,
+    ColorTwitterStatic,
+    ColorSketchStatic,
+    ColorSketchDialog,
     Code: Loadable({
         loader: () => import('@ui-schema/material-code').then(r => r.Code),
         loading: () => <LoadingPageModule title={'Loading Code Widget'}/>,
@@ -94,15 +122,14 @@ const DemoEditor = ({activeSchema, id = 0, onClick, showDebugger = true, split =
 
     // default schema state - begin
     const [showValidity, /*setShowValidity*/] = React.useState(true);
-    const [validity, setValidity] = React.useState(createMap());
     const [schema, setSchema] = React.useState(createOrderedMap(activeSchema));
-    const [data, setData] = React.useState(() => createEmptyStore(schema.get('type')));
+    const [store, setStore] = React.useState(() => createEmptyStore(schema.get('type')));
     // end - default schema state
 
     React.useEffect(() => {
         let schema = createOrderedMap(activeSchema);
         setSchema(schema);
-        setData(createEmptyStore(schema.get('type')));
+        setStore(createEmptyStore(schema.get('type')));
     }, [activeSchema]);
 
     const tabSize = 2;
@@ -111,12 +138,10 @@ const DemoEditor = ({activeSchema, id = 0, onClick, showDebugger = true, split =
     return <WidgetCodeProvider theme={palette.type === 'dark' ? 'duotone-dark' : 'duotone-light'}>
         <SchemaEditorProvider
             schema={schema}
-            store={data}
-            onChange={setData}
+            store={store}
+            onChange={setStore}
             widgets={customWidgets}
-            validity={validity}
             showValidity={showValidity}
-            onValidity={setValidity}
             t={browserT}
         >
             {showDebugger && !split ? <DebugSchemaEditor
@@ -143,9 +168,9 @@ const DemoEditor = ({activeSchema, id = 0, onClick, showDebugger = true, split =
 
                     {onClick ? <Button
                         variant={'contained'}
-                        disabled={!!isInvalid(validity)}
+                        disabled={!!isInvalid(store.getValidity())}
                         style={{marginTop: 12}}
-                        onClick={() => isInvalid(validity) ? undefined : onClick(data)}>Send</Button> : null}
+                        onClick={() => isInvalid(store.getValidity()) ? undefined : onClick(store)}>Send</Button> : null}
                 </div>}
 
             {showDebugger ? <Box style={{display: 'flex', flexWrap: 'wrap', margin: '12px 0 24px 0'}}>

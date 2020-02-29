@@ -58,7 +58,6 @@ const RichText = ({
     }, [internalValue, editorState, onChange, storeKeys.equals(prevStoreKeys.current)]);
 
     const handleChange = React.useCallback((state) => {
-        console.trace('frwefggdfc')
         onChange(store => {
             let stateHandler = state;
             if(typeof stateHandler !== 'function') {

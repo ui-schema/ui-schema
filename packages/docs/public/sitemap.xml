@@ -13,6 +13,42 @@
         <changefreq>monthly</changefreq>
     </url>
     <url>
+        <loc>https://ui-schema.bemit.codes/en/examples/Main-Demo</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/en/examples/Combination-with-Conditional</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/en/examples/Conditional-Multiple</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/en/examples/Dependencies</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/en/examples/Simple-Demo</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/en/examples/Dependencies-Booleans</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/en/examples/Combination-Simple</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/en/examples/Conditional-Simple</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/en/examples/Stepper</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
         <loc>https://ui-schema.bemit.codes/en/docs/overview</loc>
         <changefreq>daily</changefreq>
     </url>
@@ -82,6 +118,18 @@
     </url>
     <url>
         <loc>https://ui-schema.bemit.codes/en/docs/widgets/RichText</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/en/docs/widgets/Color</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/en/docs/widgets/NumberSlider</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/en/docs/widgets/GenericList</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>

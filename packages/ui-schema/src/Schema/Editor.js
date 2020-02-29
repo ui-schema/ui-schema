@@ -79,10 +79,19 @@ const SchemaRootRenderer = () => {
  * @return {*}
  * @constructor
  */
-const NestedSchemaEditor = ({schema, parentSchema, storeKeys, showValidity, level = 0, ...props}) => {
+const NestedSchemaEditor = ({
+                                schema, parentSchema, storeKeys,
+                                showValidity, widgets, t,
+                                level = 0, ...props
+                            }) => {
     const editor = useEditor();
 
-    return <EditorProvider {...editor} showValidity={showValidity || editor.showValidity}>
+    return <EditorProvider
+        {...editor}
+        showValidity={showValidity || editor.showValidity}
+        widgets={widgets || editor.widgets}
+        t={t || editor.t}
+    >
         <SchemaEditorRenderer
             schema={schema}
             parentSchema={parentSchema}
