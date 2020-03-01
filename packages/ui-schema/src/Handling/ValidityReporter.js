@@ -1,12 +1,11 @@
 import React from "react";
 import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 import {Map} from 'immutable';
-import {extractValidity,} from "../Schema/EditorStore";
-import {memo} from "../Utils/memo";
+import {cleanUp, updateValidity,} from "../Schema/EditorStore";
 
 let ValidityReporter = (props) => {
     const {
-        onValidity, showValidity, // from HOC
+        onChange, showValidity,
         storeKeys,
     } = props;
     let {errors, valid} = props;
@@ -14,23 +13,16 @@ let ValidityReporter = (props) => {
     React.useEffect(() => {
         // onValidity always needs to return a `Map`, otherwise it is not set-able again when validity cleared on hoisted component etc.
 
-        if(onValidity) {
-            // todo: only call onValidity when validity really changed and not set? [performance]
-            //   use effect may forget dependencies
-            onValidity(validity => validity ? validity.setIn(storeKeys.push('__valid'), valid) : Map({}));
-        }
+        onChange(updateValidity(storeKeys, valid));
 
         return () => {
             // delete own validity state on component unmount
-            if(onValidity) {
-                onValidity(validity => storeKeys.size ? validity.deleteIn(storeKeys) : Map({}));
-            }
+            onChange(cleanUp(storeKeys, 'validity'));
         };
     }, [valid]);
 
-    return <NextPluginRenderer {...props} valid={valid} errors={errors} showValidity={showValidity} onValidity={onValidity}/>;
+    return <NextPluginRenderer {...props} valid={valid} errors={errors} showValidity={showValidity}/>;
 };
-ValidityReporter = extractValidity(memo(ValidityReporter));
 
 const searchRecursive = (immutable, val, keys, count = false) => {
     if(!immutable) return 0;

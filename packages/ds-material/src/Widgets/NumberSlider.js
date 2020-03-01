@@ -89,7 +89,6 @@ const NumberSliderRenderer = ({
                     if(schema.get('type') === 'array') {
                         onChange(updateValue(storeKeys, List(value)));
                     } else {
-                        console.log('cnum');
                         if(isNaN(value * 1)) {
                             console.error('Invalid Type: input not a number in:', e.target, value);
                             return;

@@ -2,7 +2,7 @@ import React from 'react';
 import AppTheme from '../ds/material-ui/layout/AppTheme';
 import Dashboard from '../ds/material-ui/dashboard/Dashboard';
 import {schemaWCombining} from "../schemas/demoCombining";
-import {schemaWConditional, schemaWConditional1} from "../schemas/demoConditional";
+import {schemaWConditional, schemaWConditional1, schemaWConditional2} from "../schemas/demoConditional";
 import {schemaWDep, schemaWDep1, schemaWDep2} from "../schemas/demoDependencies";
 import {dataDemoMain, schemaDemoMain, schemaUser} from "../schemas/demoMain";
 import {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect} from "../schemas/demoSimples";
@@ -23,39 +23,36 @@ const DummyRenderer = createDummyRenderer(widgets);
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
-    const [validity, setValidity] = React.useState(() => createMap());
-    const [data, setData] = React.useState(() => createStore(createMap(dataDemoMain)));
+    const [store, setStore] = React.useState(() => createStore(createMap(dataDemoMain)));
     const [schema, setSchema] = React.useState(() => createOrderedMap(schemaDemoMain));
 
     return <React.Fragment>
         <SchemaEditor
             schema={schema}
-            store={data}
-            onChange={setData}
+            store={store}
+            onChange={setStore}
             widgets={widgets}
-            validity={validity}
             showValidity={showValidity}
-            onValidity={setValidity}
             t={browserT}
         >
             <MuiSchemaDebug setSchema={setSchema}/>
         </SchemaEditor>
 
         <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
-        {isInvalid(validity) ? 'invalid' : 'valid'}
+        {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
 
     </React.Fragment>
 };
 
 const DemoUser = () => {
-    const [data, setData] = React.useState(() => createEmptyStore());
+    const [store, setStore] = React.useState(() => createEmptyStore());
 
     return <Grid container spacing={3} justify={'center'}>
         <Grid item xs={12} md={6}>
             <SchemaEditor
                 schema={schemaUser}
-                store={data}
-                onChange={setData}
+                store={store}
+                onChange={setStore}
                 widgets={widgets}
                 t={browserT}
             >
@@ -69,6 +66,9 @@ const Main = ({classes = {}}) => {
     const {toggleDummy, getDummy} = useDummy();
 
     return <React.Fragment>
+        <Grid item xs={12}>
+            <DummyRenderer id={'schemaWConditional1'} schema={schemaWConditional2} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+        </Grid>
         <Grid item xs={12}>
             <Paper className={classes.paper}>
                 <MainStore/>

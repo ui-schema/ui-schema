@@ -1,15 +1,15 @@
 import React from "react";
 import {NextPluginRenderer, NextPluginRendererMemo} from "../Schema/EditorWidgetStack";
-import {useSchemaData} from "../Schema/EditorStore";
+import {useSchemaStore} from "../Schema/EditorStore";
 import {mergeSchema} from "../Utils/mergeSchema";
 import {Map} from 'immutable';
 import {handleIfElseThen} from "./ConditionalHandler";
 
 const CombiningRenderer = (props) => {
     let {schema, storeKeys} = props;
-    const {store} = useSchemaData();
+    const {valueStore} = useSchemaStore();
 
-    const currentStore = storeKeys.size ? store.getIn(storeKeys) : store;
+    const currentStore = storeKeys.size ? valueStore.getIn(storeKeys) : valueStore;
 
     const allOf = schema.get('allOf');
     if(allOf) {

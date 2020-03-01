@@ -1,16 +1,16 @@
 import React from "react";
 import {NextPluginRenderer, NextPluginRendererMemo} from "../Schema/EditorWidgetStack";
 import {validateSchema} from "../Schema/ValidateSchema";
-import {useSchemaData} from "../Schema/EditorStore";
+import {useSchemaStore} from "../Schema/EditorStore";
 import {checkValueExists} from "./RequiredValidator";
 import {mergeSchema} from "../Utils/mergeSchema";
 import {Map} from 'immutable';
 
 const DependentRenderer = ({dependencies, dependentSchemas, ...props}) => {
     let {schema, storeKeys} = props;
-    const {store} = useSchemaData();
+    const {valueStore} = useSchemaStore();
 
-    const currentStore = storeKeys.size ? store.getIn(storeKeys) : store;
+    const currentStore = storeKeys.size ? valueStore.getIn(storeKeys) : valueStore;
 
     if(!currentStore) return <NextPluginRendererMemo {...props} schema={schema}/>;
 
