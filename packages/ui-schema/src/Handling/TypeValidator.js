@@ -1,6 +1,4 @@
-import React from "react";
 import {List, Map} from "immutable";
-import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 
 const ERROR_WRONG_TYPE = 'wrong-type';
 
@@ -31,18 +29,17 @@ const validateType = (value, type) => {
     return false;
 };
 
-const TypeValidator = (props) => {
-    const {schema, value} = props;
-    let {errors, valid} = props;
+const TypeValidator = {
+    validate: ({schema, value, errors, valid}) => {
+        let type = schema.get('type');
 
-    let type = schema.get('type');
+        if(!validateType(value, type)) {
+            valid = false;
+            errors = errors.push(List([ERROR_WRONG_TYPE, Map({actual: typeof value})]));
+        }
 
-    if(!validateType(value, type)) {
-        valid = false;
-        errors = errors.push(List([ERROR_WRONG_TYPE, Map({actual: typeof value})]));
+        return {errors, valid}
     }
-
-    return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
 };
 
 export {TypeValidator, ERROR_WRONG_TYPE, validateType}

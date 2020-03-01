@@ -65,10 +65,8 @@ import React from "react";
 import {Grid} from "@material-ui/core";
 import {
     NextPluginRenderer,
-    DefaultHandler, ValidityReporter, DependentHandler,
-    MinMaxValidator, TypeValidator, MultipleOfValidator,
-    ValueValidatorEnum, ValueValidatorConst,
-    RequiredValidator, PatternValidator, ArrayValidator,
+    CombiningHandler, DefaultHandler, DependentHandler, ConditionalHandler,
+    ValidityReporter, Validator, validators,
 } from "@ui-schema/ui-schema";
 
 import {
@@ -102,9 +100,7 @@ const GroupRenderer = ({children}) => <Grid container spacing={2} wrap={'wrap'}>
 </Grid>;
 
 const SchemaGridHandler = (props) => {
-    const {
-        schema,
-    } = props;
+    const {schema,} = props;
 
     return <SchemaGridItem schema={schema}>
         <NextPluginRenderer {...props}/>
@@ -112,24 +108,20 @@ const SchemaGridHandler = (props) => {
 };
 
 const widgetStack = [
-    DependentHandler,
     SchemaGridHandler,
+    CombiningHandler,
     DefaultHandler,
-    RequiredValidator,
-    MinMaxValidator,
-    TypeValidator,
-    MultipleOfValidator,
-    ValueValidatorConst,
-    ValueValidatorEnum,
-    PatternValidator,
-    ArrayValidator,
+    DependentHandler,
+    ConditionalHandler,
+    Validator,
     ValidityReporter,
 ];
 
 const widgets = {
-    RootRenderer,// wraps the whole editor
-    GroupRenderer,// wraps any `object` that has no custom widget
-    widgetStack,// widget plugin system
+    RootRenderer,  // wraps the whole editor
+    GroupRenderer, // wraps any `object` that has no custom widget
+    validators,    // validator functions
+    widgetStack,   // widget plugin system
     types: {
         // supply your needed native-type widgets
         number: NumberRenderer,
@@ -161,15 +153,8 @@ Example with react-loadable
 ```js
 import React from 'react';
 import Loadable from 'react-loadable';
-
-import {
-    DefaultHandler, ValidityReporter, DependentHandler,
-    MinMaxValidator, TypeValidator, MultipleOfValidator,
-    ValueValidatorEnum, ValueValidatorConst,
-    RequiredValidator, PatternValidator, ArrayValidator,
-} from "@ui-schema/ui-schema";
-
-import {SchemaGridHandler} from "@ui-schema/ds-material/es/Grid";
+import {widgetStack} from '@ui-schema/ds-material/es/widgetStack';
+import {validators} from "@ui-schema/ui-schema";
 
 // Build the loadable widgets
 const StringRenderer = Loadable({
@@ -177,25 +162,11 @@ const StringRenderer = Loadable({
     loading: (props) => <p>Loading Widget</p>,// add here your fancy loading component
 });
 
-const widgetStack = [
-    DependentHandler,
-    SchemaGridHandler,
-    DefaultHandler,
-    RequiredValidator,
-    MinMaxValidator,
-    TypeValidator,
-    MultipleOfValidator,
-    ValueValidatorConst,
-    ValueValidatorEnum,
-    PatternValidator,
-    ArrayValidator,
-    ValidityReporter,
-];
-
 const widgets = {
-    RootRenderer,// wraps the whole editor
-    GroupRenderer,// wraps any `object` that has no custom widget
-    widgetStack,// widget plugin system
+    RootRenderer,  // wraps the whole editor
+    GroupRenderer, // wraps any `object` that has no custom widget
+    validators,    // validator functions
+    widgetStack,   // widget plugin system
     types: {
         // supply your needed native-type widgets
         string: StringRenderer,

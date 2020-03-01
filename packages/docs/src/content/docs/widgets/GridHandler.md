@@ -40,10 +40,12 @@ import {
     */
 } from "@ui-schema/ds-material/es/Grid";
 import {widgetStack} from "@ui-schema/ds-material/es/widgetStack";
+import {validators} from "@ui-schema/ui-schema/es/Handling/validators";
 
 const widgets = {
     RootRenderer,
     GroupRenderer,
+    validators,
     widgetStack,
     types: {},
     custom: {},

@@ -10,12 +10,14 @@ import {NumberIconRenderer, StringIconRenderer, TextIconRenderer} from "./Widget
 import {SimpleList} from "./Widgets/SimpleList";
 import {GenericList} from "./Widgets/GenericList";
 import {NumberSlider} from "./Widgets/NumberSlider";
+import {validators} from '@ui-schema/ui-schema';
 
 const widgets = {
     RootRenderer,
     GroupRenderer,
     widgetStack,
     ErrorFallback: 'todo',
+    validators,
     types: {
         string: StringRenderer,
         boolean: BoolRenderer,

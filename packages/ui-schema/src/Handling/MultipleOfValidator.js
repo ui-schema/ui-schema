@@ -1,6 +1,4 @@
-import React from "react";
 import {List, Map} from 'immutable';
-import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 
 const ERROR_MULTIPLE_OF = 'multiple-of';
 
@@ -15,18 +13,17 @@ const validateMultipleOf = (type, schema, value) => {
     return true;
 };
 
-const MultipleOfValidator = (props) => {
-    const {schema, value} = props;
-    let {errors, valid} = props;
+const MultipleOfValidator = {
+    validate: ({schema, value, errors, valid}) => {
+        let type = schema.get('type');
 
-    let type = schema.get('type');
+        if(!validateMultipleOf(type, schema, value)) {
+            valid = false;
+            errors = errors.push(List([ERROR_MULTIPLE_OF, Map({multipleOf: schema.get('multipleOf')})]));
+        }
 
-    if(!validateMultipleOf(type, schema, value)) {
-        valid = false;
-        errors = errors.push(List([ERROR_MULTIPLE_OF, Map({multipleOf: schema.get('multipleOf')})]));
+        return {errors, valid}
     }
-
-    return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
 };
 
 export {MultipleOfValidator, ERROR_MULTIPLE_OF, validateMultipleOf}

@@ -1,23 +1,17 @@
 import {SchemaGridHandler} from "./Grid";
 import {
     DefaultHandler, ValidityReporter, DependentHandler,
-    MinMaxValidator, TypeValidator, MultipleOfValidator,
-    ValueValidatorEnum, ValueValidatorConst,
-    RequiredValidator, PatternValidator, ArrayValidator,
+    Validator,
+    ConditionalHandler, CombiningHandler,
 } from "@ui-schema/ui-schema";
 
 const widgetStack = [
-    DependentHandler,
     SchemaGridHandler,
+    CombiningHandler,
     DefaultHandler,
-    RequiredValidator,
-    MinMaxValidator,
-    TypeValidator,
-    MultipleOfValidator,
-    ValueValidatorConst,
-    ValueValidatorEnum,
-    PatternValidator,
-    ArrayValidator,
+    DependentHandler,
+    ConditionalHandler,
+    Validator,
     ValidityReporter,
 ];
 

@@ -10,6 +10,8 @@ export * from './Utils/Trans';
 export * from './Schema/ValidateSchema';
 export * from './Handling/DefaultHandler';
 export * from './Handling/ValidityReporter';
+export * from './Handling/Validator';
+export * from './Handling/validators';
 export * from './Handling/TypeValidator';
 export * from './Handling/MultipleOfValidator';
 export * from './Handling/MinMaxValidator';
