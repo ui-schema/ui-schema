@@ -1,0 +1,5 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow: /en/docs
+Disallow: /en/impress
+Disallow: /en/privacy

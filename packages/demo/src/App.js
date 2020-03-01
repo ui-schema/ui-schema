@@ -8,6 +8,7 @@ import {asyncComponent} from "./component/AsyncComponent";
 
 const MaterialUi = asyncComponent(() => import('./pages/material-ui'), 'Material-UI', 'page');
 const MaterialUiCode = asyncComponent(() => import('./pages/material-ui-code'), 'Material-UI Code', 'page');
+const MaterialUiColor = asyncComponent(() => import('./pages/material-ui-color'), 'Material-UI Color', 'page');
 const MaterialUiRich = asyncComponent(() => import('./pages/material-ui-rich'), 'Material-UI Rich Text', 'page');
 const MaterialUiPickers = asyncComponent(() => import('./pages/material-ui-pickers'), 'Material-UI Pickers', 'page');
 const Bootstrap = asyncComponent(() => import('./pages/bootstrap').then(module => module.Bootstrap), 'Bootstrap', 'page');
@@ -21,6 +22,7 @@ const App = () => <Router>
             <h1>Ant</h1>
         </Route>
         <Route path="/mui-code" component={MaterialUiCode}/>
+        <Route path="/mui-color" component={MaterialUiColor}/>
         <Route path="/mui-richtext" component={MaterialUiRich}/>
         <Route path="/mui-pickers" component={MaterialUiPickers}/>
         <Route path="/bootstrap" component={Bootstrap}/>

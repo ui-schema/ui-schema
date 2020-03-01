@@ -10,6 +10,15 @@ const apps = {
         main: path.resolve(__dirname, 'packages', 'demo/src/index.js'),
         dist: path.resolve(__dirname, 'dist', 'demo'),
         servedPath: '/'// todo: make package.json homepage dependent
+    },
+    docs: {
+        root: path.resolve(__dirname, 'packages', 'docs'),
+        template: path.resolve(__dirname, 'packages', 'docs/public/index.html'),
+        publicPath: path.resolve(__dirname, 'packages', 'docs/public'),// dev-server
+        port: 4201,
+        main: path.resolve(__dirname, 'packages', 'docs/src/index.js'),
+        dist: path.resolve(__dirname, 'dist', 'docs'),
+        servedPath: '/'
     }
 };
 
@@ -80,6 +89,19 @@ const packages = {
             "react-dom": buildExternal("react-dom"),
             reactCodemirror2: buildExternal("react-codemirror2"),
             codemirror: buildExternal("codemirror"),
+        }
+    },
+    materialColor: {
+        root: path.resolve(__dirname, 'packages', 'material-color'),
+        entry: path.resolve(__dirname, 'packages', 'material-color/src/'),
+        externals: {
+            "@ui-schema/ui-schema": buildExternal("@ui-schema/ui-schema"),
+            "@ui-schema/ds-material": buildExternal("@ui-schema/ds-material"),
+            "@material-ui/core": buildExternal("@material-ui/core"),
+            "@material-ui/icons": buildExternal("@material-ui/icons"),
+            react: buildExternal("react"),
+            "react-dom": buildExternal("react-dom"),
+            materialUiColorPicker: buildExternal("material-ui-color-picker")
         }
     },
 };

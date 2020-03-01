@@ -112,10 +112,6 @@ function getConfig(
                         {loader: 'style-loader', options: {injectType: 'lazySingletonStyleTag'}},
                         'css-loader',
                     ],
-                }, {
-                    test: /\.json$/,
-                    // exclude: /node_modules/,
-                    loader: "json-loader"
                 },
             ],
         },
