@@ -319,6 +319,19 @@ const schemaUser = createOrderedMap({
                 sizeMd: 12
             }
         },
+        sizeDef: {
+            type: "string",
+            widget: "OptionsRadio",
+            default: "middle",
+            view: {
+                sizeMd: 3
+            },
+            enum: [
+                'small',
+                'middle',
+                'big',
+            ],
+        },
         address: {
             type: "object",
             properties: {
