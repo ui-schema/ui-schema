@@ -1,10 +1,36 @@
 import React from "react";
 import {beautifyKey, updateValue,} from "@ui-schema/ui-schema";
 import {unstable_trace as trace} from "scheduler/tracing";
+import {useUID} from "react-uid";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
+
+const RadioInput = ({classForm, enum_name, classLabel, required, classFormControl, value, onChange, storeKeys}) => {
+    const uid = useUID();
+
+    return <div
+        className={classForm.join(' ')}
+        key={enum_name}>
+        <input
+            required={required}
+            id={'uis-' + uid}
+            type="radio"
+            className={classFormControl.join(' ')}
+            checked={enum_name === value}
+            onChange={() => trace("switch onchange", performance.now(), () => {
+                onChange(updateValue(storeKeys, enum_name));
+            })}/>
+        <label
+            className={classLabel.join(' ')}
+            htmlFor={'uis-' + uid}
+        >
+            {beautifyKey(enum_name)}
+        </label>
+    </div>
+};
 
 const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, required, errors, ownKey}) => {
     const enumVal = schema.get('enum');
+
     if(!enumVal) return null;
 
     let classForm = ["custom-control", "custom-radio"];
@@ -17,27 +43,20 @@ const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, require
         classForm.push('was-validated');
     }
 
-    const currentValue = (typeof value !== 'undefined' && value.length > 0) ? value : ((schema.get('default')) ?  schema.get('default') : '');
-    console.log('value: ' + currentValue);
-
     return <React.Fragment>
         {enumVal ? enumVal.map((enum_name) => {
-            return <div className={classForm.join(' ')}
-                        key={enum_name}>
-                <label className={classLabel.join(' ')}
-                       htmlFor={ownKey + '-' + enum_name}>
-                    {beautifyKey(enum_name)}</label>
-                <input required={required}
-                       id={ownKey + '-' + enum_name}
-                       type="radio"
-                       value={enum_name}
-                       name={ownKey}
-                       className={classFormControl.join(' ')}
-                       checked={enum_name === currentValue ? "checked" : undefined}
-                       onChange={() => trace("switch onchange", performance.now(), () => {
-                           onChange(updateValue(storeKeys, enum_name));
-                       })}/>
-            </div>
+            return <RadioInput
+                key={enum_name}
+                classForm={classForm}
+                enum_name={enum_name}
+                classLabel={classLabel}
+                required={required}
+                ownKey={ownKey}
+                classFormControl={classFormControl}
+                value={value}
+                onChange={onChange}
+                storeKeys={storeKeys}
+            />
         }).valueSeq() : null}
 
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
