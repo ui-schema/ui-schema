@@ -1,6 +1,7 @@
 'use strict';
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const merge = require('webpack-merge');
 const {getConfig} = require('./webpack.common');
 const {crossBuild} = require('./webpack.packages');
@@ -48,8 +49,18 @@ const buildAppConfig = (main, dist, root, template, modules) => ({
             loader: 'file-loader'
         }, {
             test: /\.otf(\?.*)?$/,
-            use: 'file-loader?name=/fonts/[name].  [ext]&mimetype=application/font-otf'
-        }],
+            use: 'file-loader?name=/fonts/[name].[ext]&mimetype=application/font-otf'
+        }, {
+            loader: 'file-loader',
+            // Exclude `js` files to keep "css" loader working as it injects
+            // its runtime that would otherwise be processed through "file" loader.
+            // Also exclude `html` and `json` extensions so they get processed
+            // by webpacks internal loaders.
+            exclude: [/\.(js|css|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
+            options: {
+                name: 'static/media/[name].[hash:8].[ext]',
+            },
+        },],
     },
     optimization: {
         splitChunks: {
@@ -131,6 +142,7 @@ const buildAppPair = (main, dist, root, template, publicPath, port) => ({
                 mode: 'development',
                 devServer: {
                     contentBase: publicPath,
+                    publicPath: '/',
                     compress: true,
                     inline: true,
                     hot: true,
@@ -163,6 +175,9 @@ const buildAppPair = (main, dist, root, template, publicPath, port) => ({
                     runtimeChunk: 'single',
                 },
                 plugins: [
+                    new CopyPlugin([
+                        {from: publicPath, to: dist},
+                    ]),
                     // Inlines the webpack runtime script. This script is too small to warrant
                     // a network request.
                     // https://github.com/facebook/create-react-app/issues/5358

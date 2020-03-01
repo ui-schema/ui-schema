@@ -44,7 +44,6 @@ const Main = ({classes = {}}) => {
 
     useStyle(style);
     useStyle(palette.type === 'dark' ? themeDark : themeLight);
-    console.log(palette.type)
 
     return <WidgetCodeProvider theme={palette.type === 'dark' ? 'duotone-dark' : 'duotone-light'}>
         <Grid item xs={12}>

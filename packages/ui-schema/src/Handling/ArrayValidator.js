@@ -105,7 +105,7 @@ const ArrayValidator = (props) => {
 
         /*
          * `items` sub-schema validation is intended for dynamic-inputs like SimpleList or GenericList
-         * - thus the invalidity must also be checked in the components rendering the sub-schema,
+         * - thus the validity must also be checked in the components rendering the sub-schema,
          * - when validation is done here, the parent receives the invalidations instead of the actual component that is invalid
          * - e.g. 2 out of 3 are invalid, only one error is visible on the parent-component
          * - but when the items are not valid, the parent should also know that something is invalid

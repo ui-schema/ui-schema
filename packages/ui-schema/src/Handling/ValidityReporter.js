@@ -11,8 +11,6 @@ let ValidityReporter = (props) => {
     let {errors, valid} = props;
 
     React.useEffect(() => {
-        // onValidity always needs to return a `Map`, otherwise it is not set-able again when validity cleared on hoisted component etc.
-
         onChange(updateValidity(storeKeys, valid));
 
         return () => {
