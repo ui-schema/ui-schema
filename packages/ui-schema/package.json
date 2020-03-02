@@ -21,12 +21,14 @@
     },
     "devDependencies": {
         "immutable": "^4.0.0-rc.12",
+        "react-aria-live": "^2.0.5",
         "react": "^16.12"
     },
     "dependencies": {
         "react-error-boundary": "^1.2.5"
     },
     "peerDependencies": {
+        "react-aria-live": "^2.0.0",
         "immutable": "^4.0.0-rc.12",
         "react": "^16.8"
     },

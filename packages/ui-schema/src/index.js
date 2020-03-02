@@ -1,6 +1,7 @@
 export * from './Schema/Editor';
 export * from './Schema/EditorWidgetStack';
 export * from './Schema/EditorStore';
+export * from './Utils/aria';
 export * from './Utils/beautify';
 export * from './Utils/createMap';
 export * from './Utils/memo';

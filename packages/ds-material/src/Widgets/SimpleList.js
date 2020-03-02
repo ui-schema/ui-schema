@@ -3,15 +3,15 @@ import {
     FormControl, Grid, FormLabel, IconButton
 } from "@material-ui/core";
 import {Add, Remove} from "@material-ui/icons";
-import {NestedSchemaEditor, beautifyKey, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
+import {withMessage, NestedSchemaEditor, beautifyKey, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 import {List} from 'immutable';
 import {AccessTooltipIcon} from "../Component/Tooltip";
 
-const SimpleList = extractValue(memo(({
-                                          storeKeys, ownKey, schema, value, onChange,
-                                          showValidity, valid, errors, required
-                                      }) => {
+const SimpleList = withMessage(extractValue(memo(({
+                                                      storeKeys, ownKey, schema, value, onChange,
+                                                      showValidity, valid, errors, required, announceAssertive
+                                                  }) => {
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
 
     return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
@@ -34,6 +34,7 @@ const SimpleList = extractValue(memo(({
                     <IconButton
                         onClick={() => {
                             onChange(updateValue(storeKeys, value.splice(i, 1)))
+                            announceAssertive('Deleted entry no. ' + (i + 1) + ', now ' + (value.size - 1) + ' entries left');
                         }}
                         size={btnSize}
                         style={{margin: 'auto 6px', flexShrink: 0}}
@@ -49,6 +50,7 @@ const SimpleList = extractValue(memo(({
                 <IconButton
                     onClick={() => {
                         onChange(updateValue(storeKeys, value ? value.push('') : List([''])))
+                        announceAssertive('Added ' + (value.size + 1) + '. entry');
                     }}
                     size={btnSize}
                 >
@@ -66,6 +68,6 @@ const SimpleList = extractValue(memo(({
             </Grid>
         </Grid>
     </FormControl>
-}));
+})));
 
 export {SimpleList,};

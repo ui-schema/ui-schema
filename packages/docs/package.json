@@ -29,6 +29,7 @@
         "luxon": "^1.22.0",
         "react": "^16.12",
         "react-ace": "^7.0.5",
+        "react-aria-live": "^2.0.5",
         "react-codemirror2": "^6.0.0",
         "react-color": "^2.18.0",
         "react-dom": "^16.12",

@@ -1,4 +1,5 @@
 import React from "react";
+import {LiveAnnouncer} from "react-aria-live";
 import {
     BrowserRouter as Router,
     Switch,
@@ -14,20 +15,22 @@ const MaterialUiPickers = asyncComponent(() => import('./pages/material-ui-picke
 const Bootstrap = asyncComponent(() => import('./pages/bootstrap').then(module => module.Bootstrap), 'Bootstrap', 'page');
 
 const App = () => <Router>
-    <Switch>
-        <Route path="/pulse">
-            <h1>Pulse</h1>
-        </Route>
-        <Route path="/ant">
-            <h1>Ant</h1>
-        </Route>
-        <Route path="/mui-code" component={MaterialUiCode}/>
-        <Route path="/mui-color" component={MaterialUiColor}/>
-        <Route path="/mui-richtext" component={MaterialUiRich}/>
-        <Route path="/mui-pickers" component={MaterialUiPickers}/>
-        <Route path="/bootstrap" component={Bootstrap}/>
-        <Route path="/" exact component={MaterialUi}/>
-    </Switch>
+    <LiveAnnouncer>
+        <Switch>
+            <Route path="/pulse">
+                <h1>Pulse</h1>
+            </Route>
+            <Route path="/ant">
+                <h1>Ant</h1>
+            </Route>
+            <Route path="/mui-code" component={MaterialUiCode}/>
+            <Route path="/mui-color" component={MaterialUiColor}/>
+            <Route path="/mui-richtext" component={MaterialUiRich}/>
+            <Route path="/mui-pickers" component={MaterialUiPickers}/>
+            <Route path="/bootstrap" component={Bootstrap}/>
+            <Route path="/" exact component={MaterialUi}/>
+        </Switch>
+    </LiveAnnouncer>
 </Router>;
 
 export {App}
