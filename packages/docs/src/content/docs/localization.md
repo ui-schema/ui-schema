@@ -8,6 +8,8 @@
 
 Supplying the `t` prop to a `SchemaEditor` enables dynamic translations and connection with any translation library, just pass in a function and default widgets get translated.
 
+Native HTML inputs can use [native translations](#native-translation) for some validations.
+
 > In your own widgets of cause any translation lib can be used directly, if publishing we recommend to only use `t`
 
 ```jsx harmony
@@ -47,6 +49,36 @@ const LocaleHelperText = ({text, schema, context}) => {
         />
     </FormHelperText>
 };
+```
+
+### Native Translation
+
+Native browser translation is coupled to native-validation, thus only what browser can test, can be translated this way.
+
+It is helpful for simple forms which don't rely on complexer data models or validations.
+
+Adding the `t` keyword (not property) in a schema with `browser`, enables HTML translations.
+
+Native translation is limited to the following errors, only possible after first manual change, and one-message at all.
+
+- `valueMissing`
+- `typeMismatch`
+- `patternMismatch`
+- `tooLong`
+- `tooShort`
+- `rangeUnderflow`
+- `rangeOverflow`
+- `stepMismatch`
+- `badInput`
+
+Let the browser handle "incorrect email" message:
+
+```json
+{
+    "type": "string",
+    "format": "email",
+    "t": "browser"
+}
 ```
 
 ### Immutable as Dictionary

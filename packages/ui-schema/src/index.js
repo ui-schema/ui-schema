@@ -7,6 +7,7 @@ export * from './Utils/memo';
 export * from './Utils/mergeSchema';
 export * from './Utils/MoveItem';
 export * from './Utils/Trans';
+export * from './Utils/schemaToNative';
 export * from './Schema/ValidateSchema';
 export * from './Handling/DefaultHandler';
 export * from './Handling/ValidityReporter';
