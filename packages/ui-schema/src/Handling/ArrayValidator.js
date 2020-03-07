@@ -1,6 +1,4 @@
-import React from "react";
 import {List, Map} from "immutable";
-import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 import {validateSchema} from "../Schema/ValidateSchema";
 
 const ERROR_DUPLICATE_ITEMS = 'duplicate-items';
@@ -78,13 +76,13 @@ const validateContains = (schema, value) => {
     return errors;
 };
 
-const ArrayValidator = (props) => {
-    const {schema, value} = props;
-    let {errors, valid} = props;
+const ArrayValidator = {
+    should: ({schema}) => {
+        let type = schema.get('type');
 
-    let type = schema.get('type');
-
-    if(type === 'array') {
+        return type === 'array'
+    },
+    validate: ({schema, value, errors, valid}) => {
         // unique-items sub-schema is intended for dynamics and for statics, e.g. Selects could have duplicates but also a SimpleList of strings
         let uniqueItems = schema.get('uniqueItems');
 
@@ -141,9 +139,8 @@ const ArrayValidator = (props) => {
                 console.error('`contains` tuple validation not implemented yet');
             }*/
         }
+        return {errors, valid}
     }
-
-    return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
 };
 
 export {ArrayValidator, ERROR_DUPLICATE_ITEMS, ERROR_NOT_FOUND_CONTAINS, validateItems, validateContains}

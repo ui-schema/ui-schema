@@ -9,7 +9,8 @@ const apps = {
         port: 4200,
         main: path.resolve(__dirname, 'packages', 'demo/src/index.js'),
         dist: path.resolve(__dirname, 'dist', 'demo'),
-        servedPath: '/'// todo: make package.json homepage dependent
+        servedPath: '/',// todo: make package.json homepage dependent,
+        vendors: ['react-error-boundary', 'immutable', '@material-ui/core', '@material-ui/icons'],
     },
     docs: {
         root: path.resolve(__dirname, 'packages', 'docs'),
@@ -18,7 +19,8 @@ const apps = {
         port: 4201,
         main: path.resolve(__dirname, 'packages', 'docs/src/index.js'),
         dist: path.resolve(__dirname, 'dist', 'docs'),
-        servedPath: '/'
+        servedPath: '/',
+        vendors: ['react-error-boundary', 'immutable', '@material-ui/core', '@material-ui/icons'],
     }
 };
 

@@ -1,6 +1,4 @@
-import React from "react";
 import {List, Map} from "immutable";
-import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 
 const ERROR_CONST_MISMATCH = 'const-mismatch';
 const ERROR_ENUM_MISMATCH = 'enum-mismatch';
@@ -29,24 +27,25 @@ const validateEnum = (type, schema, value) => {
     return true;
 };
 
-const ValueValidatorEnum = (props) => {
-    const {schema, value} = props;
-    let {errors, valid} = props;
+const ValueValidatorEnum = {
+    should: ({schema, value}) => {
+        /**
+         * @var {[]|List} _enum
+         */
+        let _enum = schema.get('enum');
 
-    let type = schema.get('type');
-    /**
-     * @var {[]|List} _enum
-     */
-    let _enum = schema.get('enum');
+        return typeof _enum !== 'undefined' && typeof value !== 'undefined'
+    },
+    validate: ({schema, value, errors, valid}) => {
+        let type = schema.get('type');
 
-    if(typeof _enum === 'undefined' || typeof value === 'undefined') return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
+        if(!validateEnum(type, schema, value)) {
+            valid = false;
+            errors = errors.push(ERROR_ENUM_MISMATCH);
+        }
 
-    if(!validateEnum(type, schema, value)) {
-        valid = false;
-        errors = errors.push(ERROR_ENUM_MISMATCH);
+        return {errors, valid}
     }
-
-    return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
 };
 
 /**
@@ -67,21 +66,22 @@ const validateConst = (type, schema, value) => {
     );
 };
 
-const ValueValidatorConst = (props) => {
-    const {schema, value} = props;
-    let {errors, valid} = props;
+const ValueValidatorConst = {
+    should: ({schema, value}) => {
+        let _const = schema.get('const');
 
-    let type = schema.get('type');
-    let _const = schema.get('const');
+        return typeof _const !== 'undefined' && typeof value !== 'undefined'
+    },
+    validate: ({schema, value, errors, valid}) => {
+        let type = schema.get('type');
 
-    if(typeof _const === 'undefined' || typeof value === 'undefined') return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
+        if(!validateConst(type, schema, value)) {
+            valid = false;
+            errors = errors.push(List([ERROR_CONST_MISMATCH, Map({const: schema.get('const')})]));
+        }
 
-    if(!validateConst(type, schema, value)) {
-        valid = false;
-        errors = errors.push(List([ERROR_CONST_MISMATCH, Map({const: schema.get('const')})]));
+        return {errors, valid}
     }
-
-    return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
 };
 
 export {ValueValidatorConst, ValueValidatorEnum, ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum}

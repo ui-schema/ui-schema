@@ -1,11 +1,10 @@
 import React from "react";
-import {List, Map} from "immutable";
 import {
     TextField
 } from "@material-ui/core";
 import {useUID} from "react-uid";
 import {unstable_trace as trace} from "scheduler/tracing";
-import {beautifyKey, updateValue, updateValidity} from "@ui-schema/ui-schema";
+import {beautifyKey, updateValue, updateValidity, mapSchema, checkNativeValidity} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
 const StringRenderer = ({
@@ -15,7 +14,7 @@ const StringRenderer = ({
                             showValidity, valid, errors, required,
                             style,
                             onClick, onFocus, onBlur, onKeyUp, onKeyDown,
-                            InputProps = {}, inputRef: customInputRef,
+                            inputProps = {}, InputProps = {}, inputRef: customInputRef,
                         }) => {
     const uid = useUID();
     // todo: this could break law-of-hooks
@@ -24,18 +23,13 @@ const StringRenderer = ({
     const format = schema.get('format');
     const currentRef = inputRef.current;
 
-    let typeMismatch = false;
-    if(currentRef && format) {
-        // todo: better native-browser error support (only for formats like e.g. email, date, number; otherwise errors would be duplicate)
-        typeMismatch = inputRef.current.validity.typeMismatch;
-        if(typeMismatch) {
-            errors = errors.push(List(['format-mismatch', Map({browserMessage: inputRef.current.validationMessage})]));
-            valid = false;
-        }
-    }
+    inputProps = mapSchema(inputProps, schema);
+    valid = checkNativeValidity(currentRef, valid);
 
     React.useEffect(() => {
-        onChange(updateValidity(storeKeys, valid));
+        if(currentRef) {
+            onChange(updateValidity(storeKeys, valid));
+        }
     }, [valid]);
 
     return <React.Fragment>
@@ -76,9 +70,13 @@ const StringRenderer = ({
             })}
             InputLabelProps={{shrink: schema.getIn(['view', 'shrink'])}}
             InputProps={InputProps}
+            inputProps={inputProps}
         />
 
-        <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
+        <ValidityHelperText
+            errors={errors} showValidity={showValidity} schema={schema}
+            browserError={currentRef ? currentRef.validationMessage : ''}
+        />
     </React.Fragment>
 };
 

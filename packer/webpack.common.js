@@ -5,6 +5,29 @@ const merge = require('webpack-merge');
 const isWsl = require('is-wsl');
 const TerserPlugin = require('terser-webpack-plugin');
 
+const commonBabelPlugins = [
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-transform-react-jsx",
+    "@babel/plugin-transform-template-literals",
+    "@babel/plugin-proposal-export-namespace-from",
+    "@babel/plugin-proposal-export-default-from",
+    "@babel/plugin-transform-runtime",
+    "transform-es2015-template-literals",
+    "es6-promise",
+    "react-loadable/babel",
+    [
+        require.resolve('babel-plugin-named-asset-import'),
+        {
+            loaderMap: {
+                svg: {
+                    ReactComponent:
+                        '@svgr/webpack?-svgo,+titleProp,+ref![path]',
+                },
+            },
+        },
+    ],
+];
+
 function getConfig(
     customConfig = {},
     {
@@ -112,6 +135,14 @@ function getConfig(
                         {loader: 'style-loader', options: {injectType: 'lazySingletonStyleTag'}},
                         'css-loader',
                     ],
+                }, {
+                    test: /\.s[ac]ss$/i,
+                    exclude: [/node_modules/],
+                    use: [
+                        'style-loader',
+                        'css-loader',
+                        'sass-loader',
+                    ],
                 },
             ],
         },
@@ -173,3 +204,4 @@ function getConfig(
 }
 
 exports.getConfig = getConfig;
+exports.commonBabelPlugins = commonBabelPlugins;

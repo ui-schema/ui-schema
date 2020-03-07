@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const {getConfig} = require('./webpack.common');
+const {getConfig, commonBabelPlugins} = require('./webpack.common');
 const {packages} = require('../config');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
@@ -9,11 +9,7 @@ const babelPresets = [
     ['@babel/preset-react', {loose: true}],
 ];
 const babelPlugins = [
-    "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-transform-react-jsx",
-    "@babel/plugin-transform-template-literals",
-    "@babel/plugin-proposal-export-namespace-from",
-    "@babel/plugin-proposal-export-default-from",
+    ...commonBabelPlugins,
     ['@babel/plugin-proposal-object-rest-spread', {useBuiltIns: true,},],
     ['@babel/plugin-proposal-class-properties', {loose: true}],
 ];

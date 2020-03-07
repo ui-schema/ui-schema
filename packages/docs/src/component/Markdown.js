@@ -76,7 +76,7 @@ const renderers = {
     listItem: p => <Typography component={'li'} variant={'body2'} style={{fontWeight: 'bold'}}><span style={{fontWeight: 'normal', display: 'block'}}>{p.children}</span></Typography>,
     link: p => -1 === p.href.indexOf('https://') ?
         <InternalLocaleLink to={p.href} primary={p.children} color={'primary'} style={{fontWeight: 'bold'}}/> :
-        <Link href={p.href} target={'_blank'} color={'primary'} style={{fontWeight: 'bold'}}>
+        <Link href={p.href} target={'_blank'} color={'primary'} style={{fontWeight: 'bold'}} rel='noreferrer noopener'>
             {p.children}
             <OpenInNew fontSize={'small'} style={{transform: 'scale(0.6) translate(-2px,4px)'}}/>
         </Link>,
@@ -94,7 +94,7 @@ const renderersContent = {
     listItem: p => <Typography component={'li'} variant={'body1'} style={{fontWeight: 'bold'}}><span style={{fontWeight: 'normal', display: 'block'}}>{p.children}</span></Typography>,
     link: p => -1 === p.href.indexOf('https://') ?
         <InternalLocaleLink to={p.href} primary={p.children} color={'primary'} style={{fontWeight: 'bold'}}/> :
-        <Link href={p.href} target={'_blank'} color={'primary'} style={{fontWeight: 'bold'}}>
+        <Link href={p.href} target='_blank' color={'primary'} style={{fontWeight: 'bold'}} rel='noreferrer noopener'>
             {p.children}
             <OpenInNew fontSize={'small'} style={{transform: 'scale(0.6) translate(-2px,4px)'}}/>
         </Link>,

@@ -20,12 +20,13 @@ for(let app in apps) {
 
 if(doClean) {
     // clean dists
-
     // todo: a `lerna bootstrap --hoist` is needed afterwards, rimraf seems to break node_modules symlinking
+
     const promises = [];
 
-    // todo: all apps automatic
-    promises.push(delDir(apps.demo.dist));
+    for(let app in apps) {
+        promises.push(delDir(apps[app].dist));
+    }
 
     // todo: lib/es should be like configured
     packsRoot.forEach(pack => {

@@ -1,6 +1,3 @@
-import React from "react";
-import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
-
 const ERROR_PATTERN = 'pattern-not-matching';
 
 /**
@@ -18,19 +15,19 @@ const validatePattern = (type, value, pattern) => {
     return true;
 };
 
-const PatternValidator = (props) => {
-    const {schema, value} = props;
-    let {errors, valid} = props;
+const PatternValidator = {
+    validate: ({schema, value, errors, valid}) => {
+        let type = schema.get('type');
+        let pattern = schema.get('pattern');
 
-    let type = schema.get('type');
-    let pattern = schema.get('pattern');
+        if(!validatePattern(type, value, pattern)) {
+            valid = false;
+            errors = errors.push(ERROR_PATTERN);
+        }
 
-    if(!validatePattern(type, value, pattern)) {
-        valid = false;
-        errors = errors.push(ERROR_PATTERN);
+        return {errors, valid}
     }
-
-    return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
 };
+
 
 export {PatternValidator, ERROR_PATTERN, validatePattern}

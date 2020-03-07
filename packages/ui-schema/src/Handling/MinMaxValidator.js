@@ -1,6 +1,4 @@
-import React from "react";
 import {List, Map} from "immutable";
-import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 
 const ERROR_MIN_LENGTH = 'min-length';
 const ERROR_MAX_LENGTH = 'max-length';
@@ -102,24 +100,18 @@ const validateMinMax = (type, schema, value, strict) => {
     return errors;
 };
 
-const MinMaxValidator = (props) => {
-    const {
-        schema, value,
-        required,
-    } = props;
+const MinMaxValidator = {
+    validate: ({required, schema, value, errors, valid}) => {
+        let type = schema.get('type');
 
-    let {errors, valid} = props;
+        let err = validateMinMax(type, schema, value, required);
 
-    let type = schema.get('type');
-
-    let err = validateMinMax(type, schema, value, required);
-
-    if(err.size) {
-        valid = false;
-        errors = errors.concat(err);
+        if(err.size) {
+            valid = false;
+            errors = errors.concat(err);
+        }
+        return {errors, valid}
     }
-
-    return <NextPluginRenderer {...props} valid={valid} errors={errors}/>;
 };
 
 export {MinMaxValidator, ERROR_MAX_LENGTH, ERROR_MIN_LENGTH, validateMinMax}

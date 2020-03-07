@@ -1,6 +1,4 @@
-import React from "react";
 import {List, Map} from "immutable";
-import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
 
 const ERROR_NOT_SET = 'required-not-set';
 
@@ -49,28 +47,23 @@ const checkValueExists = (type, value) => {
     return true;
 };
 
-const RequiredValidator = (props) => {
-    const {
-        ownKey, required, schema, value
-    } = props;
-
-    let {errors, valid} = props;
-
-    let type = schema.get('type');
-
-    let isRequired = false;
-    if(required && List.isList(required)) {
-        isRequired = required.contains(ownKey);
+const RequiredValidator = {
+    should: ({required, ownKey}) => {
+        let isRequired = false;
+        if(required && List.isList(required)) {
+            isRequired = required.contains(ownKey);
+        }
+        return isRequired;
+    },
+    noValidate: () => ({required: false}),
+    validate: ({schema, value, errors, valid}) => {
+        let type = schema.get('type');
+        if(!checkValueExists(type, value)) {
+            valid = false;
+            errors = errors.push(ERROR_NOT_SET);
+        }
+        return {errors, valid, required: true}
     }
-
-    if(!isRequired) return <NextPluginRenderer {...props} valid={valid} errors={errors} required={false}/>;
-
-    if(!checkValueExists(type, value)) {
-        valid = false;
-        errors = errors.push(ERROR_NOT_SET);
-    }
-
-    return <NextPluginRenderer {...props} valid={valid} errors={errors} required/>;
 };
 
 export {RequiredValidator, ERROR_NOT_SET, checkValueExists}

@@ -3,13 +3,23 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const merge = require('webpack-merge');
-const {getConfig} = require('./webpack.common');
+const {getConfig, commonBabelPlugins} = require('./webpack.common');
 const {crossBuild} = require('./webpack.packages');
 const path = require('path');
 
+const babelPresets = [
+    '@babel/preset-env',
+    '@babel/preset-react',
+];
+const babelPlugins = [
+    ...commonBabelPlugins,
+    '@babel/plugin-proposal-object-rest-spread',
+    '@babel/plugin-proposal-class-properties',
+];
+
 const buildAppConfig = (main, dist, root, template, modules) => ({
     entry: {
-        vendors: ['react', 'react-dom', 'react-error-boundary', 'immutable', '@material-ui/core', '@material-ui/icons'],
+        vendors: ['react', 'react-dom'],
         main: main,
     },
     output: {
@@ -107,24 +117,6 @@ const buildAppConfig = (main, dist, root, template, modules) => ({
     ],
 });
 
-const babelPresets = [
-    '@babel/preset-env',
-    '@babel/preset-react',
-];
-const babelPlugins = [
-    "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-transform-react-jsx",
-    "@babel/plugin-transform-template-literals",
-    "@babel/plugin-proposal-export-namespace-from",
-    "@babel/plugin-proposal-export-default-from",
-    "@babel/plugin-proposal-object-rest-spread",
-    "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-transform-runtime",
-    "transform-es2015-template-literals",
-    "es6-promise",
-    "react-loadable/babel",
-];
-
 /**
  * @param main
  * @param dist
@@ -132,14 +124,18 @@ const babelPlugins = [
  * @param template
  * @param publicPath
  * @param port
+ * @param vendors
  * @return {{build: (function(): (function(...[*]=))|(function(): (*))), dist: *, serve: (function(): (function(...[*]=))|(function(): (*)))}}
  */
-const buildAppPair = (main, dist, root, template, publicPath, port) => ({
+const buildAppPair = (main, dist, root, template, publicPath, port, vendors = []) => ({
     dist,
     serve: () => getConfig(
         merge(
             buildAppConfig(main, dist, root, template, crossBuild.modules), {
                 mode: 'development',
+                entry: {
+                    vendors,
+                },
                 devServer: {
                     contentBase: publicPath,
                     publicPath: '/',
@@ -171,6 +167,9 @@ const buildAppPair = (main, dist, root, template, publicPath, port) => ({
         merge(
             buildAppConfig(main, dist, root, template, crossBuild.modules), {
                 mode: 'production',
+                entry: {
+                    vendors,
+                },
                 optimization: {
                     runtimeChunk: 'single',
                 },
@@ -196,4 +195,4 @@ const buildAppPair = (main, dist, root, template, publicPath, port) => ({
 exports.babelPresets = babelPresets;
 exports.babelPlugins = babelPlugins;
 exports.buildAppPair = buildAppPair;
-exports.configApp = ({main, dist, root, template, publicPath, port}) => buildAppPair(main, dist, root, template, publicPath, port);
+exports.configApp = ({main, dist, root, template, publicPath, port, vendors}) => buildAppPair(main, dist, root, template, publicPath, port, vendors);

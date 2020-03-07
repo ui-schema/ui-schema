@@ -17,7 +17,7 @@ Plugins that work schema-driven are handling the schema in different ways, these
 
 ## Validation Plugins
 
-Validation plugins also work schema-driven, but are only used for validation of the values/schema.
+Validation plugins also work with the schema, but are only used for validation of the values/schema and can not change the render-flow.
 
 | Plugin               | Package              | Validity Fn.         | Handles              | Added Props | Status |
 | :---                 | :---                 | :---                 | :---                 | :---        | :--- |
@@ -35,8 +35,29 @@ Validation plugins also work schema-driven, but are only used for validation of 
     - on render it behaves `strict` only when `required` ✔
     - strictness: `0` is only invalid when `minimum` is `1` **and** it is `required`, etc.
     - validation checking outside is never strict, this may change (again)
-- sub-schema validation/array validation is done by `validateSchema`  ✔ 
+- sub-schema validation/array validation is done by `validateSchema` ✔ 
     - (todo: new override-prop/more docs)
+
+Using default validators:
+
+```js
+import {
+    Validator, validators,
+    ValidityReporter
+} from '@ui-schema/ui-schema';
+
+const widgets = {
+    widgetStack: [
+        // ... other plugins
+        Validator,
+        ValidityReporter, // after `Validator`
+        // ... other plugins
+    ],
+    validators: validators,
+};
+
+export {widgets};
+``` 
 
 ## Plugin List
 
@@ -590,6 +611,33 @@ Example with multiple `if`, nested `allOf`:
 ### CombiningNetworkHandler
 
 Combining schemas from external addressed by using `$id` and `$ref`, [specification](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property)
+
+## Creating Validator Plugins
+
+A validator plugin is a JS-Object which contains multiple functions that can be used for validation. They are not a React component, they can not control the render-flow or using hooks!
+
+Each function receives the props the actual component receives, `noValidate` and `validate` return object is shallow-merged into the current props. Adding e.g. new properties to the actual widget.
+
+- `should`: optional checker if the `validate` function should do something
+- `noValidate`: gets run when it should not be validated, must return object 
+- `validate`: only run when should validate, handles the actual validation, must return object 
+
+```js
+const SomeValidator = {
+    should: (props) => {       
+        return shouldValidate ? true : false;
+    },
+    noValidate: (props) => ({newProp: false}),
+    validate: ({schema, value, errors, valid}) => {
+        let type = schema.get('type');
+        if(!checkValueExists(type, value)) {
+            valid = false;
+            errors = errors.push(ERROR_NOT_SET);
+        }
+        return {errors, valid, required: true}
+    }
+};
+```
 
 ## Creating Plugins
 

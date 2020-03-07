@@ -191,8 +191,38 @@ const schemaWConditional2 = createOrderedMap({
                     }
                 }
             }
-        },
-        {
+        }, {
+            "if": {
+                "type": "object",
+                "properties": {
+                    "product_groups": {
+                        "type": "array",
+                        "contains": {
+                            "type": "string",
+                            "const": "Homepages"
+                        }
+                    },
+                    "group_homepages": {
+                        "type": "string",
+                        "const": "Landing-Page"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "type_of_landing_page": {
+                        "type": "string",
+                        "widget": "Select",
+                        "enum": [
+                            "Business Fair",
+                            "Software Product",
+                            "Service",
+                            "Promotion"
+                        ]
+                    }
+                }
+            }
+        }, {
             "if": {
                 "type": "object",
                 "properties": {
