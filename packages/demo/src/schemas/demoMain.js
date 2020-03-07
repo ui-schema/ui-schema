@@ -332,6 +332,23 @@ const schemaUser = createOrderedMap({
                 'big',
             ],
         },
+        layouts: {
+            type: "array",
+            widget: "OptionsCheck",
+            view: {
+                sizeMd: 3
+            },
+            enum: [
+                'sidebar_left',
+                'sidebar_right',
+                'notice',
+                'content',
+                'footer',
+            ],
+            default: [
+                'sidebar_left'
+            ],
+        },
         address: {
             type: "object",
             properties: {
