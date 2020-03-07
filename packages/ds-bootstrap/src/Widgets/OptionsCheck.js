@@ -1,5 +1,5 @@
 import React from "react";
-import {beautifyKey, extractValue, memo, updateValue,} from "@ui-schema/ui-schema";
+import {beautifyKey, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
 import {List} from "immutable";
 import {useUID} from "react-uid";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
@@ -24,22 +24,23 @@ const CheckInput = ({currentValue, onChange, label, enum_name, classForm, classL
     </div>
 };
 
-const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChange, /*classLabel, classFormControl, classForm */}) => enumVal ?
+const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChange, classLabel, classFormControl, classForm}) => enumVal ?
     enumVal.map((enum_name) => {
         const currentValue = value && value.contains && typeof value.contains(enum_name) !== 'undefined' ? value.contains(enum_name) : false;
 
-        let valueHelper = value ? value : List([]);
+        const valueHelper = value ? (List.isList(value) ? value : value.toList()) : List([]);
 
         return <CheckInput
             key={enum_name}
             value={enum_name}
-            /*classForm={classForm}
+            classForm={classForm}
             classLabel={classLabel}
-            classFormControl={classFormControl} */
+            classFormControl={classFormControl}
             currentValue={currentValue}
             onChange={() => {
                 if(currentValue) {
-                    onChange(updateValue(storeKeys, value.delete(value.findIndex(value.contains(enum_name)))));
+                    onChange(updateValue(storeKeys,
+                        valueHelper.delete(valueHelper.indexOf(enum_name))))
                 } else {
                     onChange(updateValue(
                         storeKeys,
