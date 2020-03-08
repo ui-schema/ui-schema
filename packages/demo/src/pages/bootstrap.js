@@ -25,7 +25,7 @@ const DemoGrid = () => {
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(dataDemoMain)));
-    const [schema, setSchema] = React.useState(createOrderedMap(schemaUser));
+    const [schema, setSchema] = React.useState(schemaUser);
 
     return <React.Fragment>
         <SchemaEditor

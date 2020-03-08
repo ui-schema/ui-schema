@@ -38,11 +38,11 @@ const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChang
             onChange={() => {
                 if(currentValue) {
                     onChange(updateValue(storeKeys,
-                        value.toList().delete(value.toList().indexOf(enum_name))))
+                        value.delete(value.indexOf(enum_name))))
                 } else {
                     onChange(updateValue(
                         storeKeys,
-                        value ? value.toList().push(enum_name) : List([]).push(enum_name))
+                        value ? value.push(enum_name) : List([]).push(enum_name))
                     );
                 }
             }}
