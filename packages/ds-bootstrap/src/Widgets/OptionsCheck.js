@@ -28,8 +28,6 @@ const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChang
     enumVal.map((enum_name) => {
         const currentValue = value && value.contains && typeof value.contains(enum_name) !== 'undefined' ? value.contains(enum_name) : false;
 
-        const valueHelper = value ? (List.isList(value) ? value : value.toList()) : List([]);
-
         return <CheckInput
             key={enum_name}
             value={enum_name}
@@ -40,11 +38,11 @@ const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChang
             onChange={() => {
                 if(currentValue) {
                     onChange(updateValue(storeKeys,
-                        valueHelper.delete(valueHelper.indexOf(enum_name))))
+                        value.toList().delete(value.toList().indexOf(enum_name))))
                 } else {
                     onChange(updateValue(
                         storeKeys,
-                        valueHelper.push(enum_name))
+                        value ? value.toList().push(enum_name) : List([]).push(enum_name))
                     );
                 }
             }}
