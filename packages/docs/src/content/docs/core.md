@@ -225,7 +225,7 @@ const CustomEditor = ({someCustomProp, ...props}) => (
 
 ### SchemaEditorRenderer
 
-Layer to get the needed widget by the current schema and let it render for scalar values with [ValueWidgetRenderer](#valuewidgetrenderer) and for others with [ValuelessWidgetRenderer](#valuewidgetrenderer).
+Layer to get the needed widget by the current schema and let it render with [ValueWidgetRenderer](#valuewidgetrenderer).
 
 ### SchemaRootRenderer
 

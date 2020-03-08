@@ -1,11 +1,5 @@
 # Overview
 
-**UI and Form generator** for **React** using [JSON-Schema](https://json-schema.org/understanding-json-schema/index.html) build around a **powerful widget system**, made for **beautiful and great experiences**!
-
-Widgets are defined per **design-system**, use the ds-binding you need or **create your own** easily.
-
-**JSON-Schema** included keywords are used to describe the data and **create the UI** based on the data-schema and **special UI keywords**. A data-schema with integrated ui-schema enforces the consistency of the UX across different apps and devices.
-
 ## Design Systems
 
 The package `@ui-schema/ui-schema` supports rendering widgets for JSON-schema `type` and individual widgets for any type.

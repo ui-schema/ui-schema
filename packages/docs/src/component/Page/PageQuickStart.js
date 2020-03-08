@@ -267,7 +267,7 @@ We tell the editor also to display validity from start on.
                         <Markdown content source={`
 \`\`\`jsx
 const Editor = () => {
-    const [store, setStore] = React.useState(() => createOrderedMap(values));
+    const [store, setStore] = React.useState(() => createStore(createOrderedMap(values)));
     
     return (
         <React.Fragment>
@@ -319,10 +319,11 @@ Test the demo form below, it will send the entered data to [httpbin.org](https:/
                         <QuickStartEditor/>
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{marginTop: 16}}>
                         <Markdown content source={`
-Next Steps:
+### Next Steps
 
+- [JSON-Schema Guides](https://json-schema.org/understanding-json-schema/)
 - [Adding custom l10n](/docs/localization)
 - [Creating widgets](/docs/widgets#creating-widgets)
 - [Adding / Overwriting Widgets](/docs/widgets#adding--overwriting-widgets)
