@@ -27,7 +27,6 @@ const CheckInput = ({currentValue, onChange, label, enum_name, classForm, classL
 const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChange, classLabel, classFormControl, classForm}) => enumVal ?
     enumVal.map((enum_name) => {
         const currentValue = value && value.contains && typeof value.contains(enum_name) !== 'undefined' ? value.contains(enum_name) : false;
-
         return <CheckInput
             key={enum_name}
             value={enum_name}
@@ -57,7 +56,7 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors}) => {
 
     if(!enumVal) return null;
 
-    let classForm = ["custom-control", "custom-radio"];
+    let classForm = ["custom-control", "custom-checkbox"];
     let classLabel = ["custom-control-label", "text-light"];
     let classFormControl = ["custom-control-input"];
     if(showValidity && errors.size) {
@@ -69,7 +68,7 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors}) => {
 
     return <React.Fragment>
         <OptionsCheckValue
-            className={classForm.join(' ')}
+            classForm={classForm.join(' ')}
             classLabel={classLabel.join(' ')}
             classFormControl={classFormControl.join(' ')}
             enumVal={enumVal} storeKeys={storeKeys}/>
