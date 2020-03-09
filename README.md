@@ -1,4 +1,8 @@
-# UI-Schema
+<p align="center">
+  <a href="https://ui-schema.bemit.codes" rel="noopener noreferrer" target="_blank"><img width="125" src="https://ui-schema.bemit.codes/logo.svg" alt="UI-Schema Logo"></a></p>
+</p>
+
+<h1 align="center">UI-Schema for React</h1>
 
 JSON-Schema form + ui generator for any design system, first-class support for [Material UI React](https://material-ui.com).
 

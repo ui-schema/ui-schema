@@ -5,6 +5,7 @@ import Nav from "../Nav";
 import NavProject from "../NavProject";
 import React from "react";
 import Head from "../Layout/Head";
+import {Logo} from '../../logo'
 
 function PageMain() {
     return (
@@ -14,17 +15,20 @@ function PageMain() {
                 description={'Build complex forms and UIs easily in React! Choose a design-system, write a JSON-Schema, connect the form data to your logic.'}
             />
             <Container maxWidth={'md'} fixed style={{display: 'flex', flexDirection: 'column', flexGrow: 2,}}>
-                <PageTitle title={'UI-Schema'}/>
+                <PageTitle title={<span style={{display: 'flex', alignItems: 'center'}}>
+                    <Logo width={55}/>
+                    <span style={{marginLeft: 16, fontSize: '4rem'}}>Schema</span>
+                </span>}/>
 
                 <Paper style={{margin: 12, padding: 24}}>
                     <Typography component={'p'} variant={'body1'} gutterBottom>
-                        UI-Schema is a UI and form generator for React using JSON-Schema.
+                        <strong>UI and Form generator</strong> for React using JSON-Schema, build around a <strong>powerful widget system</strong>, made for <strong>beautiful and great experiences</strong>!
                     </Typography>
                     <Typography component={'p'} variant={'body1'} gutterBottom>
-                        The core is a widget system which supports creating complex interactions and custom inputs.
+                        Widgets are defined per <strong>design-system</strong>, use the ds-binding you need or <strong>create your own</strong> easily.
                     </Typography>
                     <Typography component={'p'} variant={'body1'} gutterBottom>
-                        Widgets are defined per design-system, use the design-system binding you need or create your own easily.
+                        <strong>JSON-Schema</strong> included keywords are used to describe the data and <strong>create the UI</strong> based on the data-schema and <strong>special UI keywords</strong>.
                     </Typography>
                 </Paper>
 

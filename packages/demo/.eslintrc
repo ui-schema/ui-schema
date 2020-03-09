@@ -7,7 +7,14 @@
   "settings": {
     "react": {
       "version": "detect"
-    }
+    },
+    "linkComponents": [
+      "Hyperlink",
+      {
+        "name": "Link",
+        "linkAttribute": "href"
+      }
+    ]
   },
   "plugins": [
     "react"
@@ -29,6 +36,7 @@
     "react/jsx-no-bind": 0,
     "react/jsx-no-duplicate-props": 1,
     "react/jsx-no-undef": 1,
+    "react/jsx-no-target-blank": 1,
     "react/jsx-pascal-case": 1,
     "react/jsx-uses-react": 1,
     "react/jsx-uses-vars": 1,

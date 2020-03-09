@@ -24,6 +24,14 @@ const dicEN = createMap({
         [ERROR_PATTERN]: 'Input is invalid',// todo: how should the pattern be made human understandable?
         [ERROR_WRONG_TYPE]: (context) => `Wrong type, expected ${context.get('type')} and got ${context.get('actual')}`,
     },
+    widget: {
+        stepper: {
+            "step-1": {
+                email: {title: "Email"},
+                date: {title: "Date"},
+            }
+        }
+    },
     icons,
 });
 
@@ -39,6 +47,14 @@ const dicDE = createMap({
         [ERROR_MULTIPLE_OF]: (context) => `Erwartet ein vielfaches von ${context.get('multipleOf')}`,
         [ERROR_PATTERN]: 'Eingabe ist invalid',// todo: how should the pattern be made human understandable?
         [ERROR_WRONG_TYPE]: (context) => `Falscher typ, erwartet ${context.get('type')} aber ist ${context.get('actual')}`,
+    },
+    widget: {
+        stepper: {
+            "step-1": {
+                email: {title: "E-Mail"},
+                date: {title: "Datum"},
+            }
+        }
     },
     icons,
 });

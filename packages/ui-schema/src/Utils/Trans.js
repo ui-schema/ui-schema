@@ -18,25 +18,28 @@ const t = dictionary =>
             return trans(context);
         }
 
-        return trans || text;
+        return trans;
     };
 
 /**
  * Translation component, supports dot strings, dictionary can be mixed strings, string functions and function components as translation
  * @param text
  * @param context
+ * @param fallback
  * @return {*}
  * @constructor
  */
-const Trans = ({text, context}) => {
+const Trans = ({text, context, fallback}) => {
     const {t} = useEditor();
     const Translated = t(text, context);
 
-    return typeof Translated === 'string' || typeof Translated === 'number' || typeof Translated === 'object' ?
-        Translated :
-        typeof Translated === 'function' ?
-            <Translated/> :
-            text
+    return !Translated ?
+        fallback || text :
+        typeof Translated === 'string' || typeof Translated === 'number' || typeof Translated === 'object' ?
+            Translated :
+            typeof Translated === 'function' ?
+                <Translated/> :
+                text
 };
 
 export {t, Trans}

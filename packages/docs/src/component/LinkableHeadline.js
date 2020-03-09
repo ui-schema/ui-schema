@@ -92,7 +92,7 @@ const HeadlineMenu = ({initial = false}) => {
     const [open, setOpen] = React.useState(initial);
     const [headlines] = useHeadlines();
 
-    return <LinkList>
+    return <LinkList label={'Content Menu'}>
         <Button fullWidth onClick={() => setOpen(o => !o)}>{open ? 'Hide' : 'Show'} Content Menu</Button>
 
         <Collapse in={open} timeout="auto" unmountOnExit>

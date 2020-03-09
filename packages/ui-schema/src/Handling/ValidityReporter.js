@@ -1,5 +1,5 @@
 import React from "react";
-import {NextPluginRenderer} from "../Schema/EditorWidgetStack";
+import {NextPluginRenderer} from "../Schema/EditorPluginStack";
 import {Map} from 'immutable';
 import {cleanUp, updateValidity,} from "../Schema/EditorStore";
 

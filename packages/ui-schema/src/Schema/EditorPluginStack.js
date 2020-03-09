@@ -14,16 +14,16 @@ const MyFallbackComponent = ({componentStack, error, type, widget}) => (
     </div>
 );
 
-const getPlugin = (current, widgetStack) => {
-    return current < widgetStack.length ? widgetStack[current] : false;
+const getPlugin = (current, pluginStack) => {
+    return current < pluginStack.length ? pluginStack[current] : false;
 };
 
-const WidgetStackRenderer = ({current, ...props}) => {
+const PluginStackRenderer = ({current, ...props}) => {
     // plugin layer
     const {widgets, schema} = props;
 
     // first Plugin
-    const Plugin = getPlugin(current, widgets.widgetStack);
+    const Plugin = getPlugin(current, widgets.pluginStack);
 
     const FallbackComponent = React.useCallback(
         p => <MyFallbackComponent {...p} type={schema.get('type')} widget={schema.get('widget')}/>,
@@ -38,9 +38,9 @@ const WidgetStackRenderer = ({current, ...props}) => {
 const NextPluginRenderer = ({current, ...props}) => {
     const {widgets} = props;
     const next = current + 1;
-    const Plugin = getPlugin(next, widgets.widgetStack);
+    const Plugin = getPlugin(next, widgets.pluginStack);
 
-    return next < widgets.widgetStack.length ?
+    return next < widgets.pluginStack.length ?
         Plugin ? <Plugin {...props} current={next}/> : 'plugin-error' :
         <FinalWidgetRenderer {...props}/>;
 };
@@ -76,4 +76,4 @@ const FinalWidgetRenderer = ({value, ...props}) => {
 };
 
 
-export {NextPluginRenderer, NextPluginRendererMemo, WidgetStackRenderer, FinalWidgetRenderer}
+export {NextPluginRenderer, NextPluginRendererMemo, PluginStackRenderer, FinalWidgetRenderer}

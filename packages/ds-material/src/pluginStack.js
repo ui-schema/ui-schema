@@ -5,7 +5,7 @@ import {
     ConditionalHandler, CombiningHandler,
 } from "@ui-schema/ui-schema";
 
-const widgetStack = [
+const pluginStack = [
     SchemaGridHandler,
     CombiningHandler,
     DefaultHandler,
@@ -15,4 +15,4 @@ const widgetStack = [
     ValidityReporter,
 ];
 
-export {widgetStack};
+export {pluginStack};

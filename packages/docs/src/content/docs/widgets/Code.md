@@ -55,7 +55,7 @@ import themeLight from 'codemirror/theme/duotone-light.css';
 import themeMaterial from 'codemirror/theme/material.css';
 import theme3024Day from 'codemirror/theme/3024-day.css';
 import theme3024Night from 'codemirror/theme/3024-night.css';
-import themeBbase16Dark from 'codemirror/theme/base16-dark.css';
+import themeBase16Dark from 'codemirror/theme/base16-dark.css';
 import themeBase16Light from 'codemirror/theme/base16-light.css';
 import themeDarcula from 'codemirror/theme/darcula.css';
 // and more

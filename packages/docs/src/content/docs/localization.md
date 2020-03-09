@@ -10,25 +10,26 @@ Supplying the `t` prop to a `SchemaEditor` enables dynamic translations and conn
 
 Native HTML inputs can use [native translations](#native-translation) for some validations.
 
-> In your own widgets of cause any translation lib can be used directly, if publishing we recommend to only use `t`
+> In your own widgets any translation lib can be used directly, if publishing we recommend to only use `t`
 
 ```jsx harmony
-<SchemaEditor t={(text, context) => translate(key, data)}/>
+<SchemaEditor t={(text, context) => translate(key, context)}/>
 ``` 
 
-- `text` is a string like `error.is-required`
+- `text` is a string like `error.is-required`, `icon.<name>`
 - `context` is optional data which may be used in the sentence
     - is an immutable `Map`
-    - e.g. `context.get('min')` is used in the min-max validation error 
+    - e.g. `context.get('min')` is used in the min-max validation error
         - can be translated with `Minimum Length: 6`
         - value would be `6`
 - **return** of `t` can be:
     - simple `string`
     - a `function` that creates the string
     - a `function` that creates a React component
-    - as example of valid translations see [immutable as dictionary](#immutable-as-dictionary)
+    - as example of valid translations see [immutable as dictionary](#immutable-as-dictionary)\
+    - if nothing is returned, the default value will be used
     
-Translating in your widget can be done using `useSchemaTrans` hook or the `withTrans` HOC.
+Translating in your widget can be done using `const {t} = useEditor();` hook.
  
 Or by simply using the `Trans` component, it also accepts `text` and `context`, inside it connects to the `t` of the parent SchemaEditor.
 
@@ -52,6 +53,8 @@ const LocaleHelperText = ({text, schema, context}) => {
 ```
 
 ### Native Translation
+
+> ❌ concept only added in MUI StringRenderer
 
 Native browser translation is coupled to native-validation, thus only what browser can test, can be translated this way.
 
@@ -83,9 +86,7 @@ Let the browser handle "incorrect email" message:
 
 ### Immutable as Dictionary
 
->
 > ✔ working, not expected to change (that much) breaking in the near future
->
 
 UI-Schema includes a very simple, small and powerful immutable based localization logic, this can be used to bundle your translations with the app or to supply only the default translations.
 
@@ -109,7 +110,10 @@ const dictionary = createMap({
         // usage with function, using the context, producing a React functional component
         [ERROR_MULTIPLE_OF]: (context) =>
                             () => <span>Must be multiple of <u>{context.get('multipleOf')}</u></span>,
-    }
+    },
+    icons: {
+        AccountBox:() => <svg><path/></svg>
+    },
 });
 
 // using `t` to build a function that knows the english dictionary
@@ -124,7 +128,7 @@ export {LocaleEditor}
 
 ### Translation in schema
 
-❌ Concept, not implemented
+> ❌ Concept, not implemented
 
 Keyword `t` is not default JSON-Schema, UI-Schema defines it as an 'string' or 'one or two-dimension object' containing multiple or one language with multiple translation keys.
 

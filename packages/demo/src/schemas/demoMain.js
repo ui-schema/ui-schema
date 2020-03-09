@@ -291,6 +291,74 @@ const dataDemoMain = {
     headline: "Some Demo Headline"
 };
 
+const schemaTestBts = createOrderedMap({
+    type: "object",
+    title: "headline",
+    /*view: {
+        sizeMd: 6,
+    },*/
+    properties: {
+        quote: {
+            type: "string",
+            minLength: 5,
+            maxLength: 30,
+            view: {
+                sizeMd: 6,
+            }
+        },
+        center_items: {
+            type: "boolean",
+            default: true,
+            view: {
+                sizeMd: 12
+            }
+        },
+        birthday: {
+            type: "string",
+            format: "date",
+            view: {
+                sizeMd: 6
+            }
+        },
+        counter: {
+            type: "number",
+            view: {
+                sizeMd: 6
+            }
+        },
+        coffee: {
+            type: "string",
+            widget: "OptionsRadio",
+            default: "middle",
+            view: {
+                sizeMd: 3
+            },
+            enum: [
+                'milk',
+                'sugar',
+                'black',
+            ],
+        },
+        cake: {
+            type: "array",
+            widget: "OptionsCheck",
+            view: {
+                sizeMd: 3
+            },
+            enum: [
+                'chocolate',
+                'almonds',
+                'cream',
+                'apples',
+                'cheese',
+            ],
+            default: [
+                'chocolate'
+            ],
+        },
+    }
+});
+
 const schemaUser = createOrderedMap({
     type: "object",
     title: "headline",
@@ -311,26 +379,6 @@ const schemaUser = createOrderedMap({
             view: {
                 sizeMd: 6
             }
-        },
-        center_items: {
-            type: "boolean",
-            default: true,
-            view: {
-                sizeMd: 12
-            }
-        },
-        sizeDef: {
-            type: "string",
-            widget: "OptionsRadio",
-            default: "middle",
-            view: {
-                sizeMd: 3
-            },
-            enum: [
-                'small',
-                'middle',
-                'big',
-            ],
         },
         address: {
             type: "object",
@@ -377,4 +425,4 @@ const schemaUser = createOrderedMap({
     }
 })
 
-export {schemaDemoMain, dataDemoMain, schemaUser}
+export {schemaDemoMain, dataDemoMain, schemaUser, schemaTestBts}

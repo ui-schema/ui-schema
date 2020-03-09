@@ -3,7 +3,7 @@ import {
     FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox,
 } from "@material-ui/core";
 import {List} from "immutable";
-import {beautifyKey, extractValue, memo, updateValue,} from "@ui-schema/ui-schema";
+import {Trans, beautifyKey, extractValue, memo, updateValue,} from "@ui-schema/ui-schema";
 import {useUID} from "react-uid";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
@@ -39,19 +39,22 @@ const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChang
                     );
                 }
             }}
-            label={beautifyKey(enum_name)}
+            label={<Trans text={storeKeys.insert(0, 'widget').push('enum').push(enum_name).join('.')} fallback={beautifyKey(enum_name)}/>}
         />
     }).valueSeq()
     : null
 ));
 
-const OptionsCheck = ({ownKey, schema, storeKeys, showValidity, valid, required, errors}) => {
+const OptionsCheck = ({
+                          ownKey, schema, storeKeys, showValidity, valid, required, errors,
+                          row
+                      }) => {
     const enumVal = schema.get('enum');
     if(!enumVal) return null;
 
     return <FormControl required={required} error={!valid && showValidity} component="fieldset">
-        <FormLabel component="legend">{beautifyKey(ownKey)}</FormLabel>
-        <FormGroup>
+        <FormLabel component="legend"><Trans text={storeKeys.insert(0, 'widget').push('title').join('.')} fallback={beautifyKey(ownKey, schema.get('tt'))}/></FormLabel>
+        <FormGroup row={row}>
             <OptionsCheckValue enumVal={enumVal} storeKeys={storeKeys}/>
         </FormGroup>
 
