@@ -9,8 +9,8 @@ import {widgetStack} from "./widgetStack";
 const widgets = {
     RootRenderer,
     GroupRenderer,
-    validators,
     widgetStack,
+    validators,
     ErrorFallback: 'todo',
     types: {
         string: StringRenderer,
