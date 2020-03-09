@@ -1,6 +1,6 @@
 import React from 'react';
 import {BootstrapDashboard} from '../ds/bootstrap/layout/Main';
-import {schemaUser, dataDemoMain} from "../schemas/demoMain";
+import {schemaTestBts, dataDemoMain} from "../schemas/demoMain";
 import {schemaGrid} from "../schemas/demoGrid";
 import {widgets,} from "@ui-schema/ds-bootstrap";
 import {SchemaEditor, isInvalid, createOrderedMap, createStore} from "@ui-schema/ui-schema";
@@ -25,7 +25,7 @@ const DemoGrid = () => {
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(dataDemoMain)));
-    const [schema, setSchema] = React.useState(createOrderedMap(schemaUser));
+    const [schema, setSchema] = React.useState(schemaTestBts);
 
     return <React.Fragment>
         <SchemaEditor
