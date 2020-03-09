@@ -108,7 +108,7 @@ const Widget = ({
 }
 ```
     
-This can be used to delete the current storeKeys entry in the validity scope at unmount of the current widget/widgetstack:
+This can be used to delete the current storeKeys entry in the validity scope at unmount of the current widget/pluginStack:
 
 ```js
 React.useEffect(() => {
@@ -185,7 +185,7 @@ const Box = ({schema, storeKeys, level, showValidity}) => {
             storeKeys={storeKeys}
             schema={schema}
             level={level}
-            noGrid // not a provider property, so pushed to the widgetStack, available for the GridHandler
+            noGrid // not a provider property, so pushed to the pluginStack, available for the GridHandler
         />
     </div>
 };
@@ -235,7 +235,7 @@ Connects to the current context and extracts the starting schema, renders the `w
 
 ### ValueWidgetRenderer
 
-### WidgetStackRenderer
+### PluginStackRenderer
 
 ### NextPluginRenderer
 

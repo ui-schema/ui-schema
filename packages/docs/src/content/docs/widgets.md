@@ -14,7 +14,7 @@ Through the modular approach and easy definition of a new widget, the widget sys
 > ✔ working, not expected to change (that much) breaking in the near future
 >
 
-JSON-Schema is handled mostly by the `widgetStack` for you, focus on the behaviour of the widget, connect it through the provided properties and the HOC `extractValue` (only non-scalar values).
+JSON-Schema is handled mostly by the `pluginStack` for you, focus on the behaviour of the widget, connect it through the provided properties and the HOC `extractValue` (only non-scalar values).
 
 Each widget get's a properties provided by the root schema renderer or added by plugins.
 
@@ -29,9 +29,9 @@ Properties from editor:
 - `parentSchema` : `{Map}`
 - `level` : `{integer}` how deep in the schema it is, incremented automatically for native-objects, must be done manually when using `NestedSchemaEditor`
 - `required` : `{boolean}`, extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `RequiredValidator`
-- `valid` : `{boolean}` if this schema level got some error, detected/changed from the widgetStack
+- `valid` : `{boolean}` if this schema level got some error, detected/changed from the pluginStack
 - `showValidity` : `{boolean}` if the errors/success should be visible
-- `errors` : `{List}` validation errors, added from the widgetStack for the current widget/schema-level
+- `errors` : `{List}` validation errors, added from the pluginStack for the current widget/schema-level
 
 See [Simplest Text Widget](/docs/core#simplest-text-widget) for a basic widget example.
 
@@ -52,7 +52,7 @@ Create a complete custom or only the components you need.
 
 - `RootRenderer` main wrapper around everything
 - `GroupRenderer` wraps an object that is not a widget, used by the internal `ObjectRenderer` widget
-- `widgetStack` is the widget plugin system, this wraps all widgets individually
+- `pluginStack` is the widget plugin system, this wraps all widgets individually
     - e.g. used to handle json schema `default`
     - see [how to create widget plugins](/docs/widget-plugins#creating-validator-plugins)
 - `custom` contains widgets mapping with schema's `widget`
@@ -108,7 +108,7 @@ const SchemaGridHandler = (props) => {
     </SchemaGridItem>;
 };
 
-const widgetStack = [
+const pluginStack = [
     SchemaGridHandler,
     CombiningHandler,
     DefaultHandler,
@@ -122,7 +122,7 @@ const widgets = {
     RootRenderer,  // wraps the whole editor
     GroupRenderer, // wraps any `object` that has no custom widget
     validators,    // validator functions
-    widgetStack,   // widget plugin system
+    pluginStack,   // widget plugin system
     types: {
         // supply your needed native-type widgets
         number: NumberRenderer,
@@ -156,7 +156,7 @@ Example with react-loadable
 ```js
 import React from 'react';
 import Loadable from 'react-loadable';
-import {widgetStack} from '@ui-schema/ds-material/es/widgetStack';
+import {pluginStack} from '@ui-schema/ds-material/es/pluginStack';
 import {validators} from "@ui-schema/ui-schema";
 
 // Build the loadable widgets
@@ -169,7 +169,7 @@ const widgets = {
     RootRenderer,  // wraps the whole editor
     GroupRenderer, // wraps any `object` that has no custom widget
     validators,    // validator functions
-    widgetStack,   // widget plugin system
+    pluginStack:pluginStack,   // widget plugin system
     types: {
         // supply your needed native-type widgets
         string: StringRenderer,
@@ -227,13 +227,13 @@ const CustomPlugin = () => /* todo: implement */ null;
 
 // Multi Level destructure-merge to overwrite and clone and not change the original ones
 
-const customWidgetStack = [...widgets.widgetStack];
+const customPluginStack = [...widgets.pluginStack];
 // insert a custom plugin before the ValidityReporter (last plugin by default)
-customWidgetStack.splice(customWidgetStack.length - 1, 0, CustomPlugin);
+customPluginStack.splice(customPluginStack.length - 1, 0, CustomPlugin);
 
 const customWidgets = {
     ...widgets,
-    widgetStack: customWidgetStack,
+    pluginStack: customPluginStack,
 };
 
 export {customWidgets}

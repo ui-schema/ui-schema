@@ -66,7 +66,7 @@ const useSchemaStore = () => {
     return {valueStore, internalStore, onChange, schema, validity};
 };
 
-const tDefault = t => t;
+const tDefault = () => '';
 
 /**
  * @return {{

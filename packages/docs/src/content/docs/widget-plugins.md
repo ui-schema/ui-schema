@@ -47,7 +47,7 @@ import {
 } from '@ui-schema/ui-schema';
 
 const widgets = {
-    widgetStack: [
+    pluginStack: [
         // ... other plugins
         Validator,
         ValidityReporter, // after `Validator`
@@ -667,7 +667,7 @@ const NewPlugin = (props) => {
 export {NewPlugin}
 ```
 
-- `{current, Widget, widgetStack, ...props}` prop signature of each plugin
+- `{current, Widget, pluginStack, ...props}` prop signature of each plugin
 - `current` index/current position in stack
 - `props` are the props which are getting pushed to the `Widget`
 - recommended: use `<NextPluginRenderer {...props} newProp={false}/>` 
