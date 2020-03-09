@@ -16,7 +16,7 @@ Through the modular approach and easy definition of a new widget, the widget sys
 
 JSON-Schema is handled mostly by the `widgetStack` for you, focus on the behaviour of the widget, connect it through the provided properties and the HOC `extractValue` (only non-scalar values).
 
-Each widget get's a lot of properties provided by the root schema renderer or added by plugins.
+Each widget get's a properties provided by the root schema renderer or added by plugins.
 
 Properties from editor:
 
@@ -29,8 +29,8 @@ Properties from editor:
 - `parentSchema` : `{Map}`
 - `level` : `{integer}` how deep in the schema it is, incremented automatically for native-objects, must be done manually when using `NestedSchemaEditor`
 - `required` : `{boolean}`, extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `RequiredValidator`
-- `valid` : `{boolean}` if this schema level got some error, detected/changed from the widgetStack 
-- `showValidity` : `{boolean}` added to the props by `ValidityReporter`
+- `valid` : `{boolean}` if this schema level got some error, detected/changed from the widgetStack
+- `showValidity` : `{boolean}` if the errors/success should be visible
 - `errors` : `{List}` validation errors, added from the widgetStack for the current widget/schema-level
 
 See [Simplest Text Widget](/docs/core#simplest-text-widget) for a basic widget example.
