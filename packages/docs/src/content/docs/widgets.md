@@ -54,7 +54,7 @@ Create a complete custom or only the components you need.
 - `GroupRenderer` wraps an object that is not a widget, used by the internal `ObjectRenderer` widget
 - `widgetStack` is the widget plugin system, this wraps all widgets individually
     - e.g. used to handle json schema `default`
-    - see [how to create widget plugins](/docs/widget-plugins)
+    - see [how to create widget plugins](/docs/widget-plugins#creating-validator-plugins)
 - `custom` contains widgets mapping with schema's `widget`
 - `types` contains widgets mapping with schema's `type`
     
@@ -74,12 +74,13 @@ import {
 } from "@ui-schema/ds-material";
 
 const SchemaGridItem = ({schema, children, defaultMd}) => {
-    const view = schema ? schema.getIn(['view']) : undefined;
-    const viewXs = view ? (view.getIn(['sizeXs']) || 12) : 12;
-    const viewSm = schema ? schema.getIn(['view', 'sizeSm']) : undefined;
-    const viewMd = schema ? schema.getIn(['view', 'sizeMd']) : defaultMd;
-    const viewLg = schema ? schema.getIn(['view', 'sizeLg']) : undefined;
-    const viewXl = schema ? schema.getIn(['view', 'sizeXl']) : undefined;
+    const view = schema ? schema.get('view') : undefined;
+
+    const viewXs = view ? (view.get('sizeXs') || 12) : 12;
+    const viewSm = view ? view.get('sizeSm') : undefined;
+    const viewMd = view ? view.get('sizeMd') : defaultMd;
+    const viewLg = view ? view.get('sizeLg') : undefined;
+    const viewXl = view ? view.get('sizeXl') : undefined;
 
     return <Grid
         item
@@ -135,6 +136,8 @@ const widgets = {
 
 export {widgets}
 ```
+
+[Contributing a new ds-binding?](/docs/design-systems#add-design-system-package)
 
 ### Lazy Loading Bindings
 

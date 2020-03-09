@@ -1,7 +1,7 @@
 import React from "react";
 import {useHistory, useRouteMatch} from "react-router-dom";
 import {contentDocs, contentDocsWidgets} from '../../content/docs'
-import {IconButton, Container, Paper,} from "@material-ui/core";
+import {IconButton, Container, Paper, Link} from "@material-ui/core";
 import {ArrowUpward} from "@material-ui/icons";
 import DemoEditor from '../Schema/DemoEditor';
 import {contentLoader} from "../ContentLoader";
@@ -44,6 +44,12 @@ const DocDetails = ({scrollContainer, id, activeDoc}) => {
         <Paper style={{margin: 12, padding: '0 12px', display: 'flex', flexDirection: 'column', overflowX: 'auto', background: 'transparent'}} elevation={4} variant={'outlined'}>
             <HeadlineMenu/>
         </Paper>
+        <div style={{display: 'block', textAlign: 'right', margin: '0 12px'}}>
+            <Link
+                target={'_blank'} rel='noreferrer noopener nofollow'
+                href={'https://github.com/ui-schema/ui-schema/tree/master/packages/docs/src/content/docs/' + id + '.md'}
+            >Edit Page</Link>
+        </div>
         <Paper style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
             <ErrorBoundary FallbackComponent={MyFallbackComponent}>
                 {loadedDoc === 0 ?
@@ -55,6 +61,13 @@ const DocDetails = ({scrollContainer, id, activeDoc}) => {
                         </React.Fragment>}
             </ErrorBoundary>
         </Paper>
+        {loadedDoc && activeDoc[2] && activeDoc[2].demoEditor ?
+            <div style={{display: 'block', textAlign: 'right', margin: '0 12px'}}>
+                <Link
+                    target={'_blank'} rel='noreferrer noopener nofollow'
+                    href={'https://github.com/ui-schema/ui-schema/tree/master/packages/docs/src/content/docs/' + id + 'Demo.js'}
+                >Edit Demos</Link>
+            </div> : null}
         {loadedDoc && activeDoc[2] && activeDoc[2].demoEditor ?
             <Paper style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
                 <Markdown
