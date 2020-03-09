@@ -46,6 +46,9 @@ Components:
 import {
     OptionsRadio
 } from "@ui-schema/ds-bootstrap/es/Widgets/OptionsRadio";
+import {
+    OptionsCheck
+} from "@ui-schema/ds-bootstrap/es/Widgets/OptionsCheck";
 
 const widgets = {
     custom: {
