@@ -44,6 +44,7 @@ const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, require
     }
 
     return <React.Fragment>
+        <div>{beautifyKey(ownKey)}</div>
         {enumVal ? enumVal.map((enum_name) => {
             return <RadioInput
                 key={enum_name}

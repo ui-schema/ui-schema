@@ -16,8 +16,8 @@ const widgets = {
     RootRenderer,
     GroupRenderer,
     widgetStack,
-    ErrorFallback: 'todo',
     validators,
+    ErrorFallback: 'todo',
     types: {
         string: StringRenderer,
         boolean: BoolRenderer,

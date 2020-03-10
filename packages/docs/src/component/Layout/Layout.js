@@ -21,6 +21,7 @@ import {LoadingCircular} from "../LoadingCircular";
 import Loadable from "react-loadable";
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import LuxonAdapter from "@date-io/luxon";
+import {Logo} from "../../logo";
 
 const containerStyle = makeStyles(theme => ({
     root: {
@@ -62,6 +63,10 @@ const Header = ({title}) => {
                     <MenuIcon className={classes.badgeIcon}/>
                 </AccessTooltipIcon>
             </IconButton>
+
+            <RouterLink to={'/'}>
+                <Logo width={26} style={{marginLeft: 6, display: 'block'}}/>
+            </RouterLink>
 
             {title ? <Typography component="h1" variant="h6" style={{flexShrink: 0, margin: '0 auto'}}>
                 {title}

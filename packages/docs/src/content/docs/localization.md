@@ -10,7 +10,7 @@ Supplying the `t` prop to a `SchemaEditor` enables dynamic translations and conn
 
 Native HTML inputs can use [native translations](#native-translation) for some validations.
 
-> In your own widgets of cause any translation lib can be used directly, if publishing we recommend to only use `t`
+> In your own widgets any translation lib can be used directly, if publishing we recommend to only use `t`
 
 ```jsx harmony
 <SchemaEditor t={(text, context) => translate(key, data)}/>

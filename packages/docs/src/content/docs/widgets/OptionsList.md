@@ -46,10 +46,14 @@ Components:
 import {
     OptionsRadio
 } from "@ui-schema/ds-bootstrap/es/Widgets/OptionsRadio";
+import {
+    OptionsCheck
+} from "@ui-schema/ds-bootstrap/es/Widgets/OptionsCheck";
 
 const widgets = {
     custom: {
         OptionsRadio,
+        OptionsCheck
     },
 };
 ```
@@ -58,3 +62,7 @@ Components:
 
 - `OptionsRadio` radio inputs
     - produces `string` containing the selected value
+    
+- `OptionsCheck` multiple check boxes
+    - use `enum` to specify array of values
+    - produces `array` with selected values
