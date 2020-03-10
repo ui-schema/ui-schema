@@ -51,14 +51,14 @@ const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChang
     : null
 ));
 
-const OptionsCheck = ({schema, storeKeys, showValidity, errors}) => {
+const OptionsCheck = ({schema, storeKeys, showValidity, errors, ownKey}) => {
     const enumVal = schema.get('enum');
 
     if(!enumVal) return null;
 
     let classForm = ["custom-control", "custom-checkbox"];
     let classLabel = ["custom-control-label", "text-light"];
-    let classFormControl = ["custom-control-input"];
+    let classFormControl = ["custom-control-input", "checkbox-inline"];
     if(showValidity && errors.size) {
         classFormControl.push('is-invalid');
     }
@@ -67,6 +67,7 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors}) => {
     }
 
     return <React.Fragment>
+        <div>{beautifyKey(ownKey)}</div>
         <OptionsCheckValue
             classForm={classForm.join(' ')}
             classLabel={classLabel.join(' ')}

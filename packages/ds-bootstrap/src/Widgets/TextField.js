@@ -2,9 +2,11 @@ import React from "react";
 import {unstable_trace as trace} from "scheduler/tracing";
 import {beautifyKey, updateValue} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
+import {useUID} from "react-uid";
 
 const StringRenderer = ({ownKey, schema, value, multiline, onChange, storeKeys, showValidity, required, errors, type, rows}) => {
     const format = schema.get('format');
+    const uid = useUID();
 
     let Renderer = 'input';
     if(multiline) {
@@ -21,7 +23,7 @@ const StringRenderer = ({ownKey, schema, value, multiline, onChange, storeKeys, 
     }
 
     return <div className={classFormGroup.join(' ')}>
-        <label htmlFor={ownKey}>{beautifyKey(ownKey)}</label>
+        <label htmlFor={'uis-' + uid}>{beautifyKey(ownKey)}</label>
         <Renderer
             className={classFormControl.join(' ')}
             type={format || type}
