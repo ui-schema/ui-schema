@@ -6,32 +6,84 @@
 > ✔ working, not expected to change (that much) breaking in the near future
 >
 
-Supplying the `t` prop to a `SchemaEditor` enables dynamic translations and connection with any translation library, just pass in a function and default widgets get translated.
+Supplying the `t` prop to a `SchemaEditor` enables dynamic translations and connecting any translation library.
 
 Native HTML inputs can use [native translations](#native-translation) for some validations.
 
-> In your own widgets any translation lib can be used directly, if publishing we recommend to only use `t`
+> In your own widgets any translation lib can be used directly, if publishing it is recommended to use `t` / `Trans`
 
 ```jsx harmony
-<SchemaEditor t={(text, context) => translate(key, context)}/>
+// for handling the schema keyword `t`
+import {relT} from '@ui-schema/ui-schema';
+
+const translate = (text, context, schema) => {
+
+    // locale can be empty or the string of the current locale    
+    const schemaT = relT(schema, context, locale);
+    if(schemaT) return schemaT;
+   
+    // your custom translator 
+    return translator(text, context)
+};
+
+<SchemaEditor t={translate}/>
 ``` 
 
-- `text` is a string like `error.is-required`, `icon.<name>`
+- `text` is a string like 
+    - `error.is-required` for error labels
+    - `icon.<name>` for icons
+    - `widgets.<storeKeys>.title` for widget titles and e.g. `widgets.<storeKeys>.enum.<value>` for enum (e.g. select values)
 - `context` is optional data which may be used in the sentence
     - is an immutable `Map`
     - e.g. `context.get('min')` is used in the min-max validation error
         - can be translated with `Minimum Length: 6`
         - value would be `6`
+    - widgets title/value translation have the context `relative`, which contains e.g. `title` or `enum.<value>`
+- `schema` is the content of the schema keyword `t`
 - **return** of `t` can be:
     - simple `string`
     - a `function` that creates the string
     - a `function` that creates a React component
-    - as example of valid translations see [immutable as dictionary](#immutable-as-dictionary)\
-    - if nothing is returned, the default value will be used
+    - as example of valid translations see [immutable as dictionary](#immutable-as-dictionary)
+    - falsy value / undefined if e.g. `Trans` `fallback` should be used
     
-Translating in your widget can be done using `const {t} = useEditor();` hook.
+Translating widgets can be done using `const {t} = useEditor();` hook directly, but recommended is the `Trans` component.
+
+### Trans Component
  
-Or by simply using the `Trans` component, it also accepts `text` and `context`, inside it connects to the `t` of the parent SchemaEditor.
+The `Trans` component, accepts `text`:`{string}`, `context`:`{Map|undefined}` and `schema`:`{Map|undefined}`, connects to the `t` function of the parent SchemaEditor.
+
+#### Example Widget Translation
+
+Translating a widgets title, supporting a custom translation library, schema `t` and `tt` keywords:
+
+```jsx harmony
+import React from "react";
+import {Map, List} from "immutable";
+import {Trans, beautifyKey} from '@ui-schema/ui-schema';
+
+const DemoWidget = ({ownKey, schema, storeKeys,}) => {
+    return <Trans
+        schema={schema.get('t')}
+        text={storeKeys.insert(0, 'widget').push('title').join('.')}
+        context={Map({'relative': List(['title'])})}
+        fallback={beautifyKey(ownKey, schema.get('tt'))}
+    />
+};
+```
+
+The above example can be used to translate enum and anything, as titles are often used and offer a generic way, the component `TransTitle` can be used also:
+
+```jsx harmony
+import React from "react";
+import {TransTitle} from '@ui-schema/ui-schema';
+
+const DemoWidget = ({ownKey, schema, storeKeys,}) => {
+    return <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+};
+``` 
+
+#### Example Error Translation
 
 ```jsx harmony
 import React from "react";
@@ -47,6 +99,7 @@ const LocaleHelperText = ({text, schema, context}) => {
                 context.set('type', schema.get('type'))
                     .set('widget', schema.get('widget'))
             }
+            // errors need no fallback and no schema keyword `t` or `tt` support
         />
     </FormHelperText>
 };
@@ -88,7 +141,7 @@ Let the browser handle "incorrect email" message:
 
 > ✔ working, not expected to change (that much) breaking in the near future
 
-UI-Schema includes a very simple, small and powerful immutable based localization logic, this can be used to bundle your translations with the app or to supply only the default translations.
+UI-Schema includes a very simple, small and powerful **immutable based localization** logic, this can be used to **bundle your translations** with the app or to supply only the **default translations**.
 
 ```jsx harmony
 import React from "react";
@@ -117,7 +170,8 @@ const dictionary = createMap({
 });
 
 // using `t` to build a function that knows the english dictionary
-const tEN = t(dictionary);
+//   and can work with the schema `t` keyword
+const tEN = t(dictionary, 'en');
 
 // this editor is using english translations for e.g. error messages
 const LocaleEditor = p =>
@@ -128,25 +182,16 @@ export {LocaleEditor}
 
 ### Translation in schema
 
-> ❌ Concept, not implemented
+> ✔ working, not expected to change (that much) breaking in the near future
 
-Keyword `t` is not default JSON-Schema, UI-Schema defines it as an 'string' or 'one or two-dimension object' containing multiple or one language with multiple translation keys.
+Keyword `t` is not default JSON-Schema, it is a `object` containing multiple or one language with multiple translation keys, which may be nested. 
 
-- if `t` is `browser`, when existing the e.g. browser error messages will be used 
-
-> must work with dynamic properties
-
-```json
-{
-  "t": "Some english text"
-}
-```
+> should work with dynamic properties/values in the future
 
 ```json
 {
   "t": {
-    "de": "Irgendein deutscher Text",
-    "en": "Some english text"
+    "title":  "Some english text"
   }
 }
 ```
@@ -164,7 +209,7 @@ Keyword `t` is not default JSON-Schema, UI-Schema defines it as an 'string' or '
 }
 ```
 
-## List of used keys
+### List of used keys
 
 In some widgets labels are included by default, also default error messages are existing, those should be translated for each usage.
 
@@ -189,13 +234,13 @@ import {
 
 ## LTR - RTL
 
-Currently only LTR is supported by the bindings, RTL will be added in the future - happy for pull requests!
+❌ Currently only LTR is supported by the bindings, RTL will be added in the future - happy for pull requests!
 
 Design systems should support both, the Material-UI library supports it.
 
 ## Text Transform
 
-When no translation should be used, but e.g. the property names should simply be in uppercase, `tt` influence the text-transformation.
+When no translation should be used, but e.g. the property names should simply be in uppercase, `tt` influence the text-transformation - primary for the widget title (and not widget values).
 
 - `tt: true` uses `beautifyKey` for optimistic beautification (default) ✔
 - `tt: false | 0 | ''` disables optimistic beautification, `undefined` doesn't! ✔
@@ -216,9 +261,10 @@ The process is as follows:
 
 - if not string, don't do anything
 - replace:
-    - `__` against a ` ` space
-    - `_` against a ` ` space
-    - `.` against a ` ` space
-    - `-` against a ` ` space
+    - `__` with a space
+    - `_` with a space
+    - `.` with a space
+    - `-` with a space
 - find words, anything that is separated by spaces
 - uppercase the first letter of each found word
+- removing duplicate spaces

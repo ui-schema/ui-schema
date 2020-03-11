@@ -54,17 +54,23 @@ const dicDE = createMap({
                 email: {title: "E-Mail"},
                 date: {title: "Datum"},
             }
+        },
+        layouts: {
+            enum: {
+                notice: "Notiz"
+            },
         }
     },
     icons,
 });
 
-const tEN = t(dicEN);
-const tDE = t(dicDE);
+const tEN = t(dicEN, 'en');
+const tDE = t(dicDE, 'de');
 
-const browserT = (text, context) => {
+const browserT = (text, context, schema) => {
     const locale = window.localStorage.getItem('locale') || navigator.language;
-    return locale === 'de' ? tDE(text, context) : tEN(text, context);
+
+    return locale === 'de' ? tDE(text, context, schema) : tEN(text, context, schema);
 };
 
 export {browserT}

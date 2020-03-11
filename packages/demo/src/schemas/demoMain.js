@@ -208,6 +208,18 @@ const schemaDemoMain = {
             default: [
                 'sidebar_left'
             ],
+            t: {
+                de: {
+                    enum: {
+                        sidebar_left: 'Linke Sidebar'
+                    },
+                },
+                en: {
+                    enum: {
+                        sidebar_left: 'Left Sidebar'
+                    }
+                }
+            }
         },
         size: {
             type: "string",

@@ -1,7 +1,7 @@
 import React from "react";
 import {Record, Map, List} from "immutable";
 import {getDisplayName} from "../Utils/getDisplayName";
-import {createMap} from "..";
+import {createMap, relT} from "..";
 
 const EditorStoreContext = React.createContext({});
 const EditorContext = React.createContext({});
@@ -66,7 +66,8 @@ const useSchemaStore = () => {
     return {valueStore, internalStore, onChange, schema, validity};
 };
 
-const tDefault = () => '';
+const tDefault = (text, context = {}, schema) =>
+    relT(schema, context);
 
 /**
  * @return {{

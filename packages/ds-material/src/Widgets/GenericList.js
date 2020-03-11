@@ -3,7 +3,7 @@ import {
     FormControl, Grid, FormLabel, IconButton, Typography, Divider,
 } from "@material-ui/core";
 import {Add, Delete, KeyboardArrowUp, KeyboardArrowDown} from "@material-ui/icons";
-import {NestedSchemaEditor, beautifyKey, extractValue, memo, storeMoveItem, updateValue} from "@ui-schema/ui-schema";
+import {NestedSchemaEditor, TransTitle, extractValue, memo, storeMoveItem, updateValue} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 import {List, Map} from 'immutable';
 import {AccessTooltipIcon} from "../Component/Tooltip";
@@ -17,7 +17,7 @@ const GenericList = extractValue(memo(({
     return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <FormLabel component="legend">{beautifyKey(ownKey)}</FormLabel>
+                <FormLabel component="legend"><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></FormLabel>
             </Grid>
 
             {value ? value.map((val, i) =>
