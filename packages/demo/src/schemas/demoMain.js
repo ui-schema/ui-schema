@@ -380,6 +380,7 @@ const schemaTestBts = createOrderedMap({
                 '20%',
                 '50%',
             ],
+            default: '10%'
         },
     }
 });
