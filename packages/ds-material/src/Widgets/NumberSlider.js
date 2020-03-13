@@ -7,7 +7,7 @@ import Slider from "@material-ui/core/Slider";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import {unstable_trace as trace} from "scheduler/tracing";
-import {beautifyKey, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
+import {TransTitle, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 import {AccessTooltipIcon} from "../Component/Tooltip";
 
@@ -64,7 +64,7 @@ const NumberSliderRenderer = ({
 
     return <React.Fragment>
         <Typography id={"discrete-slider-" + ownKey} gutterBottom color={!valid && showValidity ? 'error' : 'initial'}>
-            {beautifyKey(ownKey, schema.get('tt'))}{required ? ' *' : null}
+            <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>{required ? ' *' : null}
         </Typography>
 
         <Box style={{display: 'flex'}} mt={schema.getIn(['view', 'mt'])} mb={schema.getIn(['view', 'mb'])}>

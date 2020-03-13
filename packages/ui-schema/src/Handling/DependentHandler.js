@@ -1,5 +1,5 @@
 import React from "react";
-import {NextPluginRenderer, NextPluginRendererMemo} from "../Schema/EditorWidgetStack";
+import {NextPluginRenderer, NextPluginRendererMemo} from "../Schema/EditorPluginStack";
 import {validateSchema} from "../Schema/ValidateSchema";
 import {useSchemaStore} from "../Schema/EditorStore";
 import {checkValueExists} from "./RequiredValidator";

@@ -5,7 +5,7 @@ import {OptionsCheck} from "./Widgets/OptionsCheck";
 import {OptionsRadio} from "./Widgets/OptionsRadio";
 import {Stepper, Step} from "./Widgets/Stepper";
 import {RootRenderer, GroupRenderer} from "./Grid";
-import {widgetStack} from "./widgetStack";
+import {pluginStack} from "./pluginStack";
 import {NumberIconRenderer, StringIconRenderer, TextIconRenderer} from "./Widgets/TextFieldIcon";
 import {SimpleList} from "./Widgets/SimpleList";
 import {GenericList} from "./Widgets/GenericList";
@@ -15,7 +15,7 @@ import {validators} from '@ui-schema/ui-schema';
 const widgets = {
     RootRenderer,
     GroupRenderer,
-    widgetStack,
+    pluginStack: pluginStack,
     validators,
     ErrorFallback: 'todo',
     types: {

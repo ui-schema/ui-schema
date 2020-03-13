@@ -25,7 +25,7 @@ const SchemaGridItem = ({schema, children, defaultMd}) => {
 
 const RootRenderer = props => <Grid container spacing={0}>{props.children}</Grid>;
 
-const GroupRenderer = ({children}) => <Grid container spacing={2} wrap={'wrap'}>
+const GroupRenderer = ({schema, children}) => <Grid container spacing={schema.getIn(['view', 'spacing']) || 2} wrap={'wrap'}>
     {children}
 </Grid>;
 

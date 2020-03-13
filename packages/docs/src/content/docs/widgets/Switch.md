@@ -30,4 +30,4 @@ const widgets = {
 
 Components:
 
-- `BoolRenderer` single [mui switch component](https://material-ui.com/components/switches/#switches-with-formcontrollabel)
+- `BoolRenderer` single [mui switch component](https://material-ui.com/components/switches#switches-with-formcontrollabel)

@@ -47,8 +47,8 @@ function ListItemLink({icon, primary, to, dense, style, onClick, classes = {}, s
     </ListItem>;
 }
 
-const LinkList = ({children}) => {
-    return <List component="nav" aria-label="main mailbox folders">{children}</List>
+const LinkList = ({children, label}) => {
+    return <List component="nav" aria-label={label}>{children}</List>
 };
 
 const Link = ({primary, ...props}) => <MuiLink component={RouterLink} {...props} children={primary}/>;

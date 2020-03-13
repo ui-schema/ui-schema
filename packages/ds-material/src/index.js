@@ -1,5 +1,5 @@
 export {widgets} from './mui-fields';
-export {widgetStack} from './widgetStack';
+export {pluginStack} from './pluginStack';
 export * from './Widgets/GenericList';
 export * from './Widgets/NumberSlider';
 export * from './Widgets/OptionsBoolean';

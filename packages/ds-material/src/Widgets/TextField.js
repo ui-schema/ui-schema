@@ -4,7 +4,7 @@ import {
 } from "@material-ui/core";
 import {useUID} from "react-uid";
 import {unstable_trace as trace} from "scheduler/tracing";
-import {beautifyKey, updateValue, updateValidity, mapSchema, checkNativeValidity} from "@ui-schema/ui-schema";
+import {TransTitle, updateValue, updateValidity, mapSchema, checkNativeValidity} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
 const StringRenderer = ({
@@ -34,7 +34,7 @@ const StringRenderer = ({
 
     return <React.Fragment>
         <TextField
-            label={beautifyKey(ownKey, schema.get('tt'))}
+            label={<TransTitle schema={schema.set('sd',true)} storeKeys={storeKeys} ownKey={ownKey}/>}
             type={format || type}
             multiline={multiline}
             required={required}

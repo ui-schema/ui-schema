@@ -4,12 +4,12 @@ import {BoolRenderer} from "./Widgets/OptionsBoolean";
 import {OptionsRadio} from "./Widgets/OptionsRadio";
 import {OptionsCheck} from "./Widgets/OptionsCheck";
 import {RootRenderer, GroupRenderer} from "./Grid";
-import {widgetStack} from "./widgetStack";
+import {pluginStack} from "./pluginStack";
 
 const widgets = {
     RootRenderer,
     GroupRenderer,
-    widgetStack,
+    pluginStack: pluginStack,
     validators,
     ErrorFallback: 'todo',
     types: {
@@ -19,8 +19,8 @@ const widgets = {
     },
     custom: {
         Text: TextRenderer,
+        OptionsCheck,
         OptionsRadio,
-        OptionsCheck
     },
 };
 

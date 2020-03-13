@@ -3,7 +3,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {grey} from "@material-ui/core/colors";
-import {beautifyKey, updateValue} from "@ui-schema/ui-schema";
+import {TransTitle, updateValue} from "@ui-schema/ui-schema";
 
 const switchStyle = makeStyles(theme => ({
     switchBase: {
@@ -15,7 +15,7 @@ const switchStyle = makeStyles(theme => ({
     },
 }));
 
-const BoolRenderer = ({ownKey, value, onChange, storeKeys, showValidity, valid, required}) => {
+const BoolRenderer = ({ownKey, value, onChange, schema, storeKeys, showValidity, valid, required}) => {
     const currentVal = !!value;
 
     const classes = switchStyle({error: !valid && showValidity});
@@ -28,7 +28,7 @@ const BoolRenderer = ({ownKey, value, onChange, storeKeys, showValidity, valid, 
                 onChange={() => onChange(updateValue(storeKeys, !currentVal))}
             />
         }
-        label={beautifyKey(ownKey) + (required ? ' *' : '')}
+        label={<><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>{required ? ' *' : ''}</>}
     />;
 };
 

@@ -15,7 +15,10 @@ function PageMain() {
                 description={'Build complex forms and UIs easily in React! Choose a design-system, write a JSON-Schema, connect the form data to your logic.'}
             />
             <Container maxWidth={'md'} fixed style={{display: 'flex', flexDirection: 'column', flexGrow: 2,}}>
-                <PageTitle title={<span style={{display: 'flex'}}><Logo width={30}/> <span style={{marginLeft: 8}}>Schema</span></span>}/>
+                <PageTitle title={<span style={{display: 'flex', alignItems: 'center'}}>
+                    <Logo width={55}/>
+                    <span style={{marginLeft: 16, fontSize: '4rem'}}>Schema</span>
+                </span>}/>
 
                 <Paper style={{margin: 12, padding: 24}}>
                     <Typography component={'p'} variant={'body1'} gutterBottom>

@@ -2,7 +2,7 @@ import React from "react";
 import {
     makeStyles, Stepper as MuiStepper, Step as MuiStep, StepLabel, Button, Typography,
 } from "@material-ui/core";
-import {beautifyKey, NestedSchemaEditor, isInvalid, memo, extractValidity} from "@ui-schema/ui-schema";
+import {TransTitle, NestedSchemaEditor, isInvalid, memo, extractValidity} from "@ui-schema/ui-schema";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -60,7 +60,7 @@ const Stepper = extractValidity(memo(
                     const labelProps = {};
                     return (
                         <MuiStep key={name} {...stepProps}>
-                            <StepLabel {...labelProps}>{beautifyKey(name)}</StepLabel>
+                            <StepLabel {...labelProps}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={name}/></StepLabel>
                         </MuiStep>
                     );
                 }).valueSeq()}
@@ -77,7 +77,7 @@ const Stepper = extractValidity(memo(
                     </div>
                 ) : (
                     <div>
-                        <Typography className={classes.instructions}>{beautifyKey(stepOrder.get(activeStep))}</Typography>
+                        <Typography className={classes.instructions}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={stepOrder.get(activeStep)}/></Typography>
 
                         <NestedSchemaEditor
                             showValidity={showValidity}

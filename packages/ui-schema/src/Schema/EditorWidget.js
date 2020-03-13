@@ -1,7 +1,7 @@
 import React from "react";
 import {List} from "immutable";
 import {extractValue, withEditor,} from "./EditorStore";
-import {WidgetStackRenderer} from "./EditorWidgetStack";
+import {PluginStackRenderer} from "./EditorPluginStack";
 import {memo} from "../Utils/memo";
 
 let ValueWidgetRenderer = ({
@@ -15,7 +15,7 @@ let ValueWidgetRenderer = ({
         }
     }
 
-    return <WidgetStackRenderer
+    return <PluginStackRenderer
         current={0}
         // all others are getting pushed to Widget
         {...props}
