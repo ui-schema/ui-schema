@@ -368,6 +368,19 @@ const schemaTestBts = createOrderedMap({
                 'chocolate'
             ],
         },
+        discount: {
+            type: "string",
+            widget: "Select",
+            //default: "adult",
+            view: {
+                sizeMd: 12
+            },
+            enum: [
+                '10%',
+                '20%',
+                '50%',
+            ],
+        },
     }
 });
 

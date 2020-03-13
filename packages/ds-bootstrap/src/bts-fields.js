@@ -3,6 +3,7 @@ import {StringRenderer, TextRenderer, NumberRenderer} from "./Widgets/TextField"
 import {BoolRenderer} from "./Widgets/OptionsBoolean";
 import {OptionsRadio} from "./Widgets/OptionsRadio";
 import {OptionsCheck} from "./Widgets/OptionsCheck";
+import {Select} from "./Widgets/Select";
 import {RootRenderer, GroupRenderer} from "./Grid";
 import {pluginStack} from "./pluginStack";
 
@@ -21,6 +22,8 @@ const widgets = {
         Text: TextRenderer,
         OptionsCheck,
         OptionsRadio,
+        OptionsCheck,
+        Select
     },
 };
 
