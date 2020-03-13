@@ -382,6 +382,28 @@ const schemaTestBts = createOrderedMap({
             ],
             default: '10%'
         },
+        ages: {
+            type: "array",
+            minItems: 2,
+            maxItems: 3,
+            widget: "SelectMulti",
+            view: {
+                sizeMd: 3,
+            },
+            /*
+             * input for variable contains must be provided with custom widget/store currently
+            contains: {
+                type: 'number',
+                minimum: 2,
+            },*/
+            uniqueItems: true,
+            enum: [
+                'child',
+                'teen',
+                'adult',
+                '50plus',
+            ],
+        },
     }
 });
 
