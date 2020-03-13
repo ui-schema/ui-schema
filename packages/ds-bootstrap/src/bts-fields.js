@@ -20,7 +20,6 @@ const widgets = {
     },
     custom: {
         Text: TextRenderer,
-        OptionsCheck,
         OptionsRadio,
         OptionsCheck,
         Select
