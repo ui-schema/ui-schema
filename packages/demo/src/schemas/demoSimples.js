@@ -2,6 +2,7 @@ import {createOrderedMap} from "@ui-schema/ui-schema";
 
 const schemaSimString = createOrderedMap({
     type: 'string',
+    title: 'Simple Text',
     view: {
         sizeXs: 12,
     }
@@ -9,6 +10,7 @@ const schemaSimString = createOrderedMap({
 
 const schemaSimNumber = createOrderedMap({
     type: 'number',
+    title: 'titles.simple-number',
     view: {
         sizeXs: 12,
     }

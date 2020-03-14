@@ -11,8 +11,8 @@ This JSON-Schema vocabulary is used within the included widget-matching:
 These keywords may be implemented in each widget/design-system:
 
 - `format` e.g. `date` for the `type` `string`
-- `title` what should be used as title, passed to translation
-- `description` what should be used as description, passed to translation
+- `title` what should be used as title, supported by [TransTitle](/docs/localization)
+- `description` should be used as description (e.g. alt description)
 - `$comment` is recommended to leave maintaining notes
 
 Universal Keywords:
