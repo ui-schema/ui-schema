@@ -281,6 +281,24 @@ const schemaDemoMain = {
                 'adult',
                 '50plus',
             ],
+            t: {
+                de: {
+                    enum: {
+                        child: 'Kind',
+                        teen: 'Jugendlicher',
+                        adult: 'Erwachsener',
+                        '50plus': 'Senior',
+                    }
+                },
+                en: {
+                    enum: {
+                        child: 'Child',
+                        teen: 'Teenager',
+                        adult: 'Adult',
+                        '50plus': 'Senior',
+                    }
+                }
+            },
         },
         desc: {
             type: "object",
