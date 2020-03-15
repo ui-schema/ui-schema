@@ -76,7 +76,7 @@ const validateContains = (schema, value) => {
     return errors;
 };
 
-const ArrayValidator = {
+const arrayValidator = {
     should: ({schema}) => {
         let type = schema.get('type');
 
@@ -143,4 +143,4 @@ const ArrayValidator = {
     }
 };
 
-export {ArrayValidator, ERROR_DUPLICATE_ITEMS, ERROR_NOT_FOUND_CONTAINS, validateItems, validateContains}
+export {arrayValidator, ERROR_DUPLICATE_ITEMS, ERROR_NOT_FOUND_CONTAINS, validateItems, validateContains}

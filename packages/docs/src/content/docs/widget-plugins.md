@@ -21,17 +21,17 @@ Validation plugins also work with the schema, but are only used for validation o
 
 | Plugin               | Package              | Validity Fn.         | Handles              | Added Props | Status |
 | :---                 | :---                 | :---                 | :---                 | :---        | :--- |
-| MinMaxValidator      | @ui-schema/ui-schema | validateMinMax       | min/max validity     | `valid`, `errors` | ✔(string,number,array) ❗ |
-| TypeValidator        | @ui-schema/ui-schema | validateType         | keyword `type`       | `valid`, `errors` | ✔ |
-| ValueValidatorConst  | @ui-schema/ui-schema | validateConst        | keywords `type`, `const` | `valid`, `errors` | ✔ |
-| ValueValidatorEnum   | @ui-schema/ui-schema | validateEnum         | keywords `type`, `enum` | `valid`, `errors` | ✔ |
-| PatternValidator     | @ui-schema/ui-schema | validatePattern      | keywords `type:string`, `pattern` | `valid`, `errors` | ✔ |
-| MultipleOfValidator  | @ui-schema/ui-schema | validateMultipleOf   | keywords `type:number,integer`, `multipleOf` | `valid`, `errors` | ✔ |
-| ArrayValidator       | @ui-schema/ui-schema |                      | `type:array`          | `valid`, `errors` | ✔(partial sub-schema for single sub-schema) ❗ |
+| minMaxValidator      | @ui-schema/ui-schema | validateMinMax       | min/max validity     | `valid`, `errors` | ✔(string,number,array) ❗ |
+| typeValidator        | @ui-schema/ui-schema | validateType         | keyword `type`       | `valid`, `errors` | ✔ |
+| valueValidatorConst  | @ui-schema/ui-schema | validateConst        | keywords `type`, `const` | `valid`, `errors` | ✔ |
+| valueValidatorEnum   | @ui-schema/ui-schema | validateEnum         | keywords `type`, `enum` | `valid`, `errors` | ✔ |
+| patternValidator     | @ui-schema/ui-schema | validatePattern      | keywords `type:string`, `pattern` | `valid`, `errors` | ✔ |
+| multipleOfValidator  | @ui-schema/ui-schema | validateMultipleOf   | keywords `type:number,integer`, `multipleOf` | `valid`, `errors` | ✔ |
+| arrayValidator       | @ui-schema/ui-schema |                      | `type:array`          | `valid`, `errors` | ✔(partial sub-schema for single sub-schema) ❗ |
 | ObjectValidator      | @ui-schema/ui-schema |                      | `type:object`         | ... | ❌ |
-| RequiredValidator    | @ui-schema/ui-schema | checkValueExists     | keywords `type:object`, `required` | `valid`, `errors`, `required` | ✔ |
+| requiredValidator    | @ui-schema/ui-schema | checkValueExists     | keywords `type:object`, `required` | `valid`, `errors`, `required` | ✔ |
 
-- `MinMaxValidator` depends on `RequiredValidator` ✔
+- `minMaxValidator` depends on `requiredValidator` ✔
     - on render it behaves `strict` only when `required` ✔
     - strictness: `0` is only invalid when `minimum` is `1` **and** it is `required`, etc.
     - validation checking outside is never strict, this may change (again)

@@ -57,7 +57,7 @@ Properties from editor:
 - `schema` : `{Map}` the schema of the current widget
 - `parentSchema` : `{Map}` the schema of the parent widget
 - `level` : `{integer}` how deep in the schema it is, incremented automatically for native-objects, must be done manually when using `NestedSchemaEditor`
-- `required` : `{boolean}`, extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `RequiredValidator`
+- `required` : `{boolean}`, extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `requiredValidator`
 - `valid` : `{boolean}` if this schema level got some error, detected/changed from the pluginStack
 - `showValidity` : `{boolean}` if the errors/success should be visible
 - `errors` : `{List}` validation errors, added from the pluginStack for the current widget/schema-level

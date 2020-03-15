@@ -1,0 +1,58 @@
+<IfModule mod_headers.c>
+	FileETag MTime Size
+	<FilesMatch "\.(js|css|svg|svgz)$">
+		# remove for compressed files
+		Header unset ETag
+	</FilesMatch>
+</IfModule>
+
+<IfModule mod_expires.c>
+	ExpiresActive On
+	# don't expire images until cache buster is added for customer-files
+	#ExpiresByType image/jpg "access 2 week"
+	#ExpiresByType image/jpeg "access 2 week"
+	#ExpiresByType image/gif "access 2 week"
+	#ExpiresByType image/png "access 2 week"
+	ExpiresByType image/svg+xml "access 1 week"
+	ExpiresByType text/css "access 1 week"
+	ExpiresByType text/html "access 1 week"
+	ExpiresByType application/pdf "access 1 day"
+	ExpiresByType text/x-javascript "access 1 day"
+	ExpiresByType image/x-icon "access 1 month"
+	ExpiresDefault "access 1 day"
+</IfModule>
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+	AddOutputFilterByType DEFLATE application/xml application/xhtml+xml application/rss+xml
+	AddOutputFilterByType DEFLATE application/json application/javascript application/x-javascript
+	AddOutputFilterByType DEFLATE application/vnd.ms-fontobject application/font-ttf application/font-woff application/font-otf
+	AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# everything should be utf-8
+AddCharset utf-8 .html .php .css .js
+
+<IfModule mod_rewrite.c>
+    Options +FollowSymlinks
+    Options -MultiViews
+
+    RewriteEngine On
+
+	RewriteRule ^$ /en [R=301,L]
+
+    # removes trailing slashes
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [R=301,L]
+
+	RewriteCond %{REQUEST_URI} ^/schema/
+	RewriteRule ^([^\.]+)$ $1.json [NC,L]
+
+	RewriteRule ^schema\/(.+)\/meta\/(.*) schema/$1/vocab/$2
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} !^/index.html
+    RewriteRule ^(.*)$ /index.html [QSA,L]
+</IfModule>

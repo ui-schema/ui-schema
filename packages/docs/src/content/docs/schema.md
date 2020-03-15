@@ -115,7 +115,7 @@ Generic Keywords:
 
 #### required Keyword
 
-- `required` an array that contains which properties must be set, the `RequiredValidator` treats empty/false values as `invalid`! ✔
+- `required` an array that contains which properties must be set, the `requiredValidator` treats empty/false values as `invalid`! ✔
     - invalid are:
         - `array` with a length of `0`, e.g. `[]`, `List([])`
         - `object` where the keys array has a length of `0`, e.g. `{}`, `Map({})`

@@ -13,7 +13,7 @@ const validateMultipleOf = (type, schema, value) => {
     return true;
 };
 
-const MultipleOfValidator = {
+const multipleOfValidator = {
     validate: ({schema, value, errors, valid}) => {
         let type = schema.get('type');
 
@@ -26,4 +26,4 @@ const MultipleOfValidator = {
     }
 };
 
-export {MultipleOfValidator, ERROR_MULTIPLE_OF, validateMultipleOf}
+export {multipleOfValidator, ERROR_MULTIPLE_OF, validateMultipleOf}

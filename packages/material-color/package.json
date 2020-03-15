@@ -14,7 +14,8 @@
     "keywords": [
         "ui-schema",
         "mui",
-        "json-schema"
+        "json-schema",
+        "color-picker"
     ],
     "repository": {
         "type": "git",
