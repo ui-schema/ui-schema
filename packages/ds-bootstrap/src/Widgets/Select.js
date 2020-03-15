@@ -21,7 +21,6 @@ const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChang
     let currentValue = undefined;
     if(multiple) {
         currentValue = typeof value !== 'undefined' ? value : (List(schema.get('default')) || List([]));
-        console.log(currentValue.toArray())
     } else {
         currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '');
     }

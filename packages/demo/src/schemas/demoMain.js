@@ -341,7 +341,7 @@ const schemaTestBts = createOrderedMap({
         coffee: {
             type: "string",
             widget: "OptionsRadio",
-            default: "middle",
+            default: "milk",
             view: {
                 sizeMd: 3
             },
