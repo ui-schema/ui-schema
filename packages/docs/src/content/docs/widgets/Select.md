@@ -38,13 +38,16 @@ const widgets = {
 
 Components:
 
-- `Select` radio inputs
-- `SelectMulti` multiple check boxes
+- `Select` select single value
+    - produces `string` containing the selected value
+- `SelectMulti` select multiple values
+    - use `enum` to specify array of values
+    - produces `array` with selected values
 - supported extra keywords:
     - `view.dense` : `boolean` for a smaller select popup
 - See also [mui select component](https://material-ui.com/components/selects/)
 
-### Boottrap
+### Bootstrap
 
 ```js
 import {
@@ -61,5 +64,8 @@ const widgets = {
 
 Components:
 
-- `Select` radio inputs
-- `SelectMulti` multiple check boxes
+- `Select` select single value
+    - produces `string` containing the selected value
+- `SelectMulti` select multiple values
+    - use `enum` to specify array of values
+    - produces `array` with selected values

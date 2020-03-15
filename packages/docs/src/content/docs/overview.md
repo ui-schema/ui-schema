@@ -91,10 +91,10 @@ Custom widgets for `widget`, special UIs and specific type handling:
 | `GenericList` | [objects/array as list](/docs/widgets/SimpleList) | `array({*})` | ✅ | 🔵 | 🔵 |
 | | | | | | |
 | **Selection** | | | | | |
-| `OptionsCheck` | [checkboxes](/docs/widgets/OptionsList)  | `array` | ✅ | 🔵 | 🔵 |
-| `OptionsRadio` | [radio buttons](/docs/widgets/OptionsList) | `string` | ✅ | 🔵 | 🔵 |
-| `Select`     | [select one value](/docs/widgets/Select) | `string` | ✅ | 🔵 | 🔵 |
-| `SelectMulti`  | [select n values](/docs/widgets/Select) | `array` | ✅ | 🔵 | 🔵 |
+| `OptionsCheck` | [checkboxes](/docs/widgets/OptionsList)  | `array` | ✅ | ✅ | 🔵 |
+| `OptionsRadio` | [radio buttons](/docs/widgets/OptionsList) | `string` | ✅ | ✅ | 🔵 |
+| `Select`     | [select one value](/docs/widgets/Select) | `string` | ✅ | ✅ | 🔵 |
+| `SelectMulti`  | [select n values](/docs/widgets/Select) | `array` | ✅ | ✅ | 🔵 |
 | `SelectGroup`  |    | | 🔵 | 🔵 | 🔵 |
 | | | | | | |
 | **Media** | | | | | |
