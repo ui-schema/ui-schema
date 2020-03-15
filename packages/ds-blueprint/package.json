@@ -1,6 +1,6 @@
 {
 	"name": "@ui-schema/ds-blueprint",
-	"version": "0.0.13",
+	"version": "0.0.14",
 	"description": "Blueprint Binding for UI-Schema",
 	"homepage": "https://ui-schema.bemit.codes",
 	"author": "Michael Becker <michael@bemit.codes>",

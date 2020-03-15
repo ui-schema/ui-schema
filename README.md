@@ -53,16 +53,43 @@ JSON-Schema included keywords are used to describe the data and create the UI ba
 
 *[Schema Documentation](https://ui-schema.bemit.codes/en/docs/schema)*
 
+## Features
+
+- add any design-system and custom widget
+- translation of widgets
+    - with any library
+    - (optional) integrated translation library
+    - include translation in schema
+    - single or multi-language
+- modular core
+    - add own validator plugins
+    - add own schema-driven plugins
+    - use what you need
+- performance optimized, only updates HTML which must re-render, perfect for big schemas
+- supports code-splitting (with custom widget mappings, lazy-loading widgets)
+- includes helper functions for store handling
+- conditional and combining schemas
+- easy nesting of editor for object/array widgets
+- supports JSON-Schema 2019-09 / draft-8
+
+*[Design-System and Widgets Overview](https://ui-schema.bemit.codes/en/docs/overview)*
+
 ## Basic Example
 
 This example show all available props. First time? [Take the quick-start](https://ui-schema.bemit.codes/en/quick-start) or take a look into the [create-react-app UI-Schema example](https://github.com/ui-schema/demo-cra).
 
 ```js
 import React from "react";
-import {ImmutableEditor, themeMaterial} from 'react-immutable-editor';// optional
 
 // Import Schema-Editor
-import {SchemaEditor, isInvalid, createMap, createOrderedMap, createStore, createEmptyStore, updateValue} from "@ui-schema/ui-schema";
+import {
+    SchemaEditor,
+    isInvalid,
+    createOrderedMap, createStore, 
+    createMap, createEmptyStore,
+    updateValue
+} from "@ui-schema/ui-schema";
+
 // Get the widgets binding for your design-system
 import {widgets} from "@ui-schema/ds-material";
 
@@ -72,7 +99,7 @@ const schemaBase = {
     properties: {
         country: {
             type: "string",
-            widget: 'Select',
+            widget: "Select",
             enum: [
                 "usa",
                 "canada",
@@ -82,8 +109,7 @@ const schemaBase = {
         },
         name: {
             type: "string",
-            minimum: 2,
-            maximum: 1,
+            maxLength: 20,
         }
     },
     required: [
@@ -91,15 +117,16 @@ const schemaBase = {
         "name",
     ],
 };
+
 const data = {};
 
 const Editor = () => {
     // optional state for display errors/validity
     const [showValidity, setShowValidity] = React.useState(false);
     
-    // needed variables and setters for the SchemaEditor, create where ever you like
+    // needed variables and setters for the SchemaEditor, create wherever you like
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(data)));
-    const [schema, setSchema] = React.useState(() => createOrderedMap(schemaBase));
+    const [schema/*, setSchema*/] = React.useState(() => createOrderedMap(schemaBase));
     
     return <React.Fragment>
         <SchemaEditor
@@ -116,32 +143,17 @@ const Editor = () => {
             */}
             onChange={handler => setStore(handler(data))}
         >
-            <SchemaDebug setSchema={setSchema}/>
+            {/* (optional) add components which use the context of the Editor here */}
         </SchemaEditor>
+
         <button
             {/* show the validity only at submit (or pass `true` to `showValidity`) */} 
-            onClick={() => isInvalid(store.getValidity()) ? setShowValidity(true) : doingSomeAction()}
+            onClick={() => 
+                isInvalid(store.getValidity()) ?
+                    setShowValidity(true) :
+                    doingSomeAction()
+            }
         >send!</button>
-    </React.Fragment>
-};
-
-// Developer tool for live data and schema display and manipulation, optional
-// Recommended for production:
-//     use dynamic code-splitting to not bundle the SchemaDebug
-//     use e.g. `react-loadable`
-const SchemaDebug = ({setSchema}) => {
-     const {valueStore, schema, onChange} = useSchemaStore();
-
-    return <React.Fragment>
-        <ImmutableEditor
-            data={store}
-            onChange={(keys, value) => onChange(updateValue(keys, value))}
-            getVal={keys => valueStore.getIn(keys)}
-            theme={themeMaterial}
-        />
-        <ImmutableEditor
-            data={schema} onChange={setSchema} getVal={keys => schema.getIn(keys)}
-            theme={themeMaterial}/>
     </React.Fragment>
 };
 

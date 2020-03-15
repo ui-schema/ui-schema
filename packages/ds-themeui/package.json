@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ds-themeui",
-    "version": "0.0.13",
+    "version": "0.0.14",
     "description": "",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -34,8 +34,8 @@
     },
     "peerDependencies": {
         "@ui-schema/ui-schema": "0.0.x",
-        "theme-ui": "^0.3.0",
-        "react": "^16.8"
+        "react": "^16.8",
+        "theme-ui": "^0.3.0"
     },
     "publishConfig": {
         "access": "public"

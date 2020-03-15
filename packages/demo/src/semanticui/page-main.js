@@ -1,10 +1,11 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {NavLink as Link} from 'react-router-dom';
 import {schemaGrid} from "../schemas/demoGrid";
 import {widgets,} from "@ui-schema/ds-semanticui";
 import {SchemaEditor, isInvalid, createOrderedMap, createStore} from "@ui-schema/ui-schema";
 import {browserT} from "../t";
 import styles from "semantic-ui-css/semantic.css";
+import {routesThemes} from "../routes";
 
 const useStyle = () => {
     React.useEffect(() => {
@@ -43,24 +44,9 @@ export default () => {
 
     return <div style={{display: 'flex'}}>
         <ul style={{paddingRight: 16, flexShrink: 0}}>
-            <li>
-                <Link to={'/'}>Material</Link>
-            </li>
-            <li>
-                <Link to={'/bootstrap'}>Bootstrap</Link>
-            </li>
-            <li>
-                <Link to={'/blueprint'}>Blueprint</Link>
-            </li>
-            <li>
-                <Link to={'/antd'}>AntD</Link>
-            </li>
-            <li>
-                <Link to={'/semantic-ui'}>Semantic UI</Link>
-            </li>
-            <li>
-                <Link to={'/theme-ui'}>Theme UI</Link>
-            </li>
+            {routesThemes.map(route => <li key={route[0]}>
+                <Link to={route[0]}>{route[1]}</Link>
+            </li>)}
         </ul>
         <div>
             <MainStore/>
