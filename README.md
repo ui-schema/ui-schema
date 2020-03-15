@@ -183,6 +183,11 @@ Publish, for main-repo only:
     - this leads to: `lerna publish from-package --no-git-reset --yes`
 4. **todo:** automate version bump by git-tags w/ publish, and switch to independent lerna versioning
 
+Templates for monorepo packages:
+
+- [Additional DS Module](./tools/template-package)
+- [Design-System](./tools/template-ds)
+
 ## License
 
 This project is free software distributed under the **MIT License**.

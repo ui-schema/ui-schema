@@ -7,9 +7,7 @@ import ListItemIc from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
+import WidgetsIcon from '@material-ui/icons/Widgets';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import {makeStyles} from "@material-ui/core";
@@ -45,9 +43,11 @@ function ListItemLink(props) {
 
 export const mainListItems = (<div>
     <ListItemLink to={'/'} primary="Material-UI" icon={<DashboardIcon/>}/>
-    <ListItemLink to={'/bootstrap'} primary="Bootstrap" icon={<ShoppingCartIcon/>}/>
-    <ListItemLink to={'/pulse'} primary="Pulse" icon={<PeopleIcon/>}/>
-    <ListItemLink to={'/ant'} primary="Ant" icon={<BarChartIcon/>}/>
+    <ListItemLink to={'/bootstrap'} primary="Bootstrap" icon={<WidgetsIcon/>}/>
+    <ListItemLink to={'/blueprint'} primary="Blueprint" icon={<WidgetsIcon/>}/>
+    <ListItemLink to={'/antd'} primary="Ant" icon={<WidgetsIcon/>}/>
+    <ListItemLink to={'/semantic-ui'} primary="Semantic UI" icon={<WidgetsIcon/>}/>
+    <ListItemLink to={'/theme-ui'} primary="Theme UI" icon={<WidgetsIcon/>}/>
     <ListItemLink to={'https://ui-schema.bemit.codes'} primary="Documentation" icon={<LayersIcon/>} normalLink/>
 </div>);
 

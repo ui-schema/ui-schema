@@ -1,44 +1,43 @@
 {
-    "name": "@ui-schema/ui-schema",
-    "version": "0.0.13",
-    "description": "UI and Form Generator for React using JSON-Schema for any Design-System",
-    "homepage": "https://ui-schema.bemit.codes",
-    "author": "Michael Becker <michael@bemit.codes>",
-    "license": "MIT",
-    "main": "./lib/index.js",
-    "module": "./es/index.js",
-    "files": [
-        "es",
-        "lib"
-    ],
-    "keywords": [
-        "ui-schema",
-        "json-schema",
-        "form-generator",
-        "react",
-        "design-system"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ui-schema/ui-schema.git",
-        "directory": "packages/ui-schema"
-    },
-    "bugs": {
-        "url": "https://github.com/ui-schema/ui-schema/issues"
-    },
-    "devDependencies": {
-        "immutable": "^4.0.0-rc.12",
-        "react": "^16.12"
-    },
-    "dependencies": {
-        "react-error-boundary": "^1.2.5"
-    },
-    "peerDependencies": {
-        "immutable": "^4.0.0-rc.12",
-        "react": "^16.8"
-    },
-    "scripts": {},
-    "publishConfig": {
-        "access": "public"
-    }
+	"name": "@ui-schema/ui-schema",
+	"version": "0.0.13",
+	"description": "UI and Form Generator for React using JSON-Schema for any Design-System",
+	"homepage": "https://ui-schema.bemit.codes",
+	"author": "Michael Becker <michael@bemit.codes>",
+	"license": "MIT",
+	"main": "./lib/index.js",
+	"module": "./es/index.js",
+	"files": [
+		"es",
+		"lib"
+	],
+	"keywords": [
+		"ui-schema",
+		"json-schema",
+		"form-generator",
+		"react",
+		"design-system"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ui-schema/ui-schema.git",
+		"directory": "packages/ui-schema"
+	},
+	"bugs": {
+		"url": "https://github.com/ui-schema/ui-schema/issues"
+	},
+	"devDependencies": {
+		"immutable": "^4.0.0-rc.12",
+		"react": "^16.12"
+	},
+	"dependencies": {
+		"react-error-boundary": "^1.2.5"
+	},
+	"peerDependencies": {
+		"immutable": "^4.0.0-rc.12",
+		"react": "^16.8"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
 }
