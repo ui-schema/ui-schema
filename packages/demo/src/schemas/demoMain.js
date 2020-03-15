@@ -387,6 +387,7 @@ const schemaTestBts = createOrderedMap({
             minItems: 2,
             maxItems: 3,
             widget: "SelectMulti",
+            title: 'title.ages',
             view: {
                 sizeMd: 3,
             },
@@ -403,6 +404,24 @@ const schemaTestBts = createOrderedMap({
                 'adult',
                 '50plus',
             ],
+            t: {
+                de: {
+                    enum: {
+                        child: 'Kind',
+                        teen: 'Jugendlicher',
+                        adult: 'Erwachsener',
+                        '50plus': 'Senior',
+                    }
+                },
+                en: {
+                    enum: {
+                        child: 'Child',
+                        teen: 'Teenager',
+                        adult: 'Adult',
+                        '50plus': 'Senior',
+                    }
+                }
+            },
         },
     }
 });

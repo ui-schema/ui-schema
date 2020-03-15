@@ -1,6 +1,6 @@
 import React from "react";
-import {beautifyKey, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
-import {List} from "immutable";
+import {TransTitle, beautifyKey, useEditor, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
+import {List, Map} from "immutable";
 import {useUID} from "react-uid";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
@@ -24,12 +24,18 @@ const CheckInput = ({currentValue, onChange, label, enum_name, classForm, classL
     </div>
 };
 
-const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChange, classLabel, classFormControl, classForm}) => enumVal ?
+const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChange, classLabel, classFormControl, classForm, schema}) => enumVal ?
     enumVal.map((enum_name) => {
         const currentValue = value && value.contains && typeof value.contains(enum_name) !== 'undefined' ? value.contains(enum_name) : false;
+        const {t} = useEditor();
+        const s = enum_name + '';
+        const Translated = t(s, Map({relative: List(['enum', s])}), schema.get('t'));
+
         return <CheckInput
             key={enum_name}
-            value={enum_name}
+            value={typeof Translated === 'string' || typeof Translated === 'number' ?
+                Translated :
+                beautifyKey(s)}
             classForm={classForm}
             classLabel={classLabel}
             classFormControl={classFormControl}
@@ -67,12 +73,12 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors, ownKey}) => {
     }
 
     return <React.Fragment>
-        <div>{beautifyKey(ownKey)}</div>
+        <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
         <OptionsCheckValue
             classForm={classForm.join(' ')}
             classLabel={classLabel.join(' ')}
             classFormControl={classFormControl.join(' ')}
-            enumVal={enumVal} storeKeys={storeKeys}/>
+            enumVal={enumVal} storeKeys={storeKeys} schema={schema}/>
 
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </React.Fragment>

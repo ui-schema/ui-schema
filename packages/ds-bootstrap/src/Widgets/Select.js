@@ -1,10 +1,11 @@
 import React from "react";
-import {beautifyKey, updateValue, extractValue, memo} from "@ui-schema/ui-schema";
-import {List} from "immutable";
+import {TransTitle, useEditor, beautifyKey, updateValue, extractValue, memo} from "@ui-schema/ui-schema";
+import {List, Map} from "immutable";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
 const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChange, multiple = false}) => {
     const enum_val = schema.get('enum');
+    const {t} = useEditor();
 
     if(!enum_val) return null;
     if(!schema) return null;
@@ -25,7 +26,7 @@ const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChang
         currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '');
     }
     return <div className={classFormParent.join(' ')}>
-        <label>{beautifyKey(ownKey)}</label>
+        <label><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></label>
         <select
             value={multiple ? currentValue.toArray() : currentValue}
             className={classForm.join(' ')}
@@ -38,10 +39,16 @@ const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChang
                 }
             }}>
             {enum_val ? enum_val.map((enum_name) => {
+                const s = enum_name + '';
+                const Translated = t(s, Map({relative: List(['enum', s])}), schema.get('t'));
+
                 return <option
                     key={enum_name}
+                    value={enum_name}
                     defaultValue={multiple ? currentValue.toArray().includes(enum_name) : currentValue === enum_name}>
-                    {enum_name}
+                    {typeof Translated === 'string' || typeof Translated === 'number' ?
+                        Translated :
+                        beautifyKey(s)}
                 </option>
 
             }).valueSeq() : null}
