@@ -12,7 +12,7 @@ import InvertColorsIcon from '@material-ui/icons/InvertColors';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import {AppDrawer} from "../layout/Drawer";
 import {Main} from "../layout/Main";
-import {useThemer} from "../../../component/Theme";
+import {useThemer} from "../component/Theme";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import {blueGrey} from "@material-ui/core/colors";
 

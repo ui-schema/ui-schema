@@ -3,7 +3,7 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import useTheme from '@material-ui/core/styles/useTheme';
 import {ImmutableEditor, themeMaterial} from "react-immutable-editor";
-import {SchemaDebug} from "./SchemaDebug";
+import {SchemaDebug} from "../../component/SchemaDebug";
 
 const MuiJsonEditor = p => {
     const theme = useTheme();

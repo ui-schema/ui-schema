@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Head from './Head';
 import {createMuiTheme} from "@material-ui/core";
-import {ThemerProvider} from "../../../component/Theme";
+import {ThemerProvider} from "../component/Theme";
 
 const themeDark = createMuiTheme({
     palette: {

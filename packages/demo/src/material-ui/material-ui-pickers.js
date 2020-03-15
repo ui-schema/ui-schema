@@ -1,11 +1,11 @@
 import React from 'react';
-import AppTheme from '../ds/material-ui/layout/AppTheme';
-import Dashboard from '../ds/material-ui/dashboard/Dashboard';
+import AppTheme from './layout/AppTheme';
+import Dashboard from './dashboard/Dashboard';
 import Grid from "@material-ui/core/Grid";
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import {widgets,} from "@ui-schema/ds-material";
 import {TimePicker, DatePicker, DateTimePicker} from "@ui-schema/material-pickers";
-import {createDummyRenderer} from "../component/MuiMainDummy";
+import {createDummyRenderer} from "./component/MuiMainDummy";
 import {schemaDatePickers} from "../schemas/demoDatePickers";
 import {useDummy} from "../component/MainDummy";
 import LuxonAdapter from "@date-io/luxon";

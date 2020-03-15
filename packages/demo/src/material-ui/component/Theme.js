@@ -11,10 +11,10 @@ const withThemer = Component => props => {
     return <Component {...props} theme={theme}/>
 };
 
-let choosen_theme = window.localStorage.getItem(store_item);
+let chosen_theme = window.localStorage.getItem(store_item);
 
 const ThemerProvider = ({themes, initial, children} = {}) => {
-    const [theme, setTheme] = React.useState(choosen_theme || initial || false);
+    const [theme, setTheme] = React.useState(chosen_theme || initial || false);
 
     const switchTheme = React.useCallback(() => {
         let themeSort = Object.keys(themes);
