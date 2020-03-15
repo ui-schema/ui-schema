@@ -48,4 +48,4 @@ const widgets = {
 
 Components:
 
-- `BoolRenderer` 
+- `BoolRenderer`: produces boolean 
