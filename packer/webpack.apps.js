@@ -125,9 +125,10 @@ const buildAppConfig = (main, dist, root, template, modules) => ({
  * @param publicPath
  * @param port
  * @param vendors
+ * @param copy
  * @return {{build: (function(): (function(...[*]=))|(function(): (*))), dist: *, serve: (function(): (function(...[*]=))|(function(): (*)))}}
  */
-const buildAppPair = (main, dist, root, template, publicPath, port, vendors = []) => ({
+const buildAppPair = ({main, dist, root, template, publicPath, port, vendors = [], copy = []}) => ({
     dist,
     serve: () => getConfig(
         merge(
@@ -149,6 +150,9 @@ const buildAppPair = (main, dist, root, template, publicPath, port, vendors = []
                     runtimeChunk: 'single',
                     namedModules: true,
                 },
+                plugins: [
+                    new CopyPlugin(copy),
+                ],
                 //devtool: 'eval-cheap-module-source-map',// faster rebuild, not for production
                 devtool: 'cheap-module-source-map',// slow build, for production
             }
@@ -176,6 +180,7 @@ const buildAppPair = (main, dist, root, template, publicPath, port, vendors = []
                 plugins: [
                     new CopyPlugin([
                         {from: publicPath, to: dist},
+                        ...copy
                     ]),
                     // Inlines the webpack runtime script. This script is too small to warrant
                     // a network request.
@@ -195,4 +200,3 @@ const buildAppPair = (main, dist, root, template, publicPath, port, vendors = []
 exports.babelPresets = babelPresets;
 exports.babelPlugins = babelPlugins;
 exports.buildAppPair = buildAppPair;
-exports.configApp = ({main, dist, root, template, publicPath, port, vendors}) => buildAppPair(main, dist, root, template, publicPath, port, vendors);

@@ -268,7 +268,7 @@ Design systems should support both, the Material-UI library supports it.
 When no translation should be used, but e.g. the property names should simply be in uppercase, `tt` influence the text-transformation - primary for the widget title (and not widget values).
 
 - `tt: true` uses `beautifyKey` for optimistic beautification (default) ✔
-- `tt: false | 0 | ''` disables optimistic beautification, `undefined` doesn't! ✔
+- `tt: false | ''` disables optimistic beautification, `undefined` doesn't! ✔
 - `tt: 'ol'` the property name must be a `number`, increments it and adds a `.` dot at the end, useful for array/list labeling ✔
 - `tt: 'upper'` turns all letters in UPPERCASE ✔
 - `tt: 'lower'` turns all letters in lowercase ✔

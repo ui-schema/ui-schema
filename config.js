@@ -21,6 +21,7 @@ const apps = {
         dist: path.resolve(__dirname, 'dist', 'docs'),
         servedPath: '/',
         vendors: ['react-error-boundary', 'immutable', '@material-ui/core', '@material-ui/icons'],
+        copy: [{from: path.resolve(__dirname, 'schema'), to: path.resolve(__dirname, 'dist', 'docs', 'schema')}]
     }
 };
 

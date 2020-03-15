@@ -1,0 +1,35 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "https://ui-schema.bemit.codes/schema/2019-09/meta/translation",
+    "$vocabulary": {
+        "https://ui-schema.bemit.codes/schema/2019-09/vocab/translation": true
+    },
+    "$recursiveAnchor": true,
+    "title": "Translation and text-transform vocabulary",
+    "type": [
+        "object",
+        "boolean"
+    ],
+    "properties": {
+        "t": {
+            "type": "object",
+            "$comment": "enables in-schema translation"
+        },
+        "tt": {
+            "type": [
+                "boolean",
+                "string"
+            ],
+            "$comment": "Text-transformation for the `title` keyword or it's translated equivalent",
+            "enum": [
+                true,
+                false,
+                "ol",
+                "upper",
+                "lower",
+                "upper-beauty",
+                "lower-beauty"
+            ]
+        }
+    }
+}
