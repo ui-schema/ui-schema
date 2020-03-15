@@ -1,37 +1,13 @@
 import React from "react";
-import {beautifyKey, updateValue} from "@ui-schema/ui-schema";
+import {beautifyKey, updateValue, extractValue, memo} from "@ui-schema/ui-schema";
 import {List} from "immutable";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
-const Option = ({currentValue, innerValue}) => {
-    return <React.Fragment>
-        <option
-            selected={currentValue}>
-            {innerValue}
-        </option>
-    </React.Fragment>
-};
-
-
-const SelectValue = ({schema, currentValue, enum_val}) => {
-    if(!schema) return null;
-
-    return <React.Fragment>
-        {enum_val ? enum_val.map((enum_name) => {
-            return <Option
-                key={enum_name}
-                innerValue={enum_name}
-                selected={enum_name === currentValue}
-            />
-        }).valueSeq() : null}
-    </React.Fragment>;
-};
-
-
-const SelectFrame = ({schema, storeKeys, showValidity, errors, ownKey, value, onChange, multiple = false, currentValue}) => {
+const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChange, multiple = false}) => {
     const enum_val = schema.get('enum');
 
     if(!enum_val) return null;
+    if(!schema) return null;
 
     let classForm = ["selectpicker", "custom-select"];
     let classFormParent = ["form-group"];
@@ -41,53 +17,42 @@ const SelectFrame = ({schema, storeKeys, showValidity, errors, ownKey, value, on
     if(showValidity && !errors.size) {
         classFormParent.push('was-validated');
     }
-
+    let currentValue = undefined;
+    if(multiple) {
+        currentValue = typeof value !== 'undefined' ? value : (List(schema.get('default')) || List([]));
+        console.log(currentValue.toArray())
+    } else {
+        currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '');
+    }
     return <div className={classFormParent.join(' ')}>
         <label>{beautifyKey(ownKey)}</label>
-        <select value={value ? value : ''}
+        <select
+            value={multiple ? currentValue.toArray() : currentValue}
             className={classForm.join(' ')}
+            multiple={multiple}
             onChange={(e) => {
-                    if(multiple) {
-                        onChange(updateValue(storeKeys, List(e.target.value)))
-                    } else {
-                        onChange(updateValue(storeKeys, e.target.value));
-                    }
-                }}>
-            <SelectValue
-                enum_val={enum_val}
-                storeKeys={storeKeys}
-                schema={schema}
-                currentValue={currentValue}/>
+                if(multiple) {
+                    onChange(updateValue(storeKeys, List([...e.target.options].filter(o => o.selected).map(o => o.value))))
+                } else {
+                    onChange(updateValue(storeKeys, e.target.value));
+                }
+            }}>
+            {enum_val ? enum_val.map((enum_name) => {
+                return <option
+                    key={enum_name}
+                    defaultValue={multiple ? currentValue.toArray().includes(enum_name) : currentValue === enum_name}>
+                    {enum_name}
+                </option>
+
+            }).valueSeq() : null}
         </select>
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </div>
 };
 
-const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChange}) => {
-    let currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '');
 
-    return <SelectFrame
-        schema={schema}
-        storeKeys={storeKeys}
-        showValidity={showValidity}
-        errors={errors}
-        ownKey={ownKey}
-        onChange={onChange}
-        currentValue={currentValue}/>
-};
-
-const SelectMulti = ({schema, storeKeys, showValidity, errors, ownKey, value, onChange, multiple}) => {
-    let currentValue = typeof value !== 'undefined' ? value : (List(schema.get('default')) || List());
-
-    return <SelectFrame
-        schema={schema}
-        storeKeys={storeKeys}
-        showValidity={showValidity}
-        errors={errors}
-        ownKey={ownKey}
-        onChange={onChange}
-        multiple={multiple}
-        currentValue={currentValue}/>
-};
+const SelectMulti = extractValue(memo((props) => {
+    return <Select {...props} multiple/>;
+}));
 
 export {Select, SelectMulti};
