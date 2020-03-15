@@ -1,0 +1,36 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "https://ui-schema.bemit.codes/schema/2019-09/meta/view",
+    "$vocabulary": {
+        "https://ui-schema.bemit.codes/schema/2019-09/vocab/view": true
+    },
+    "$recursiveAnchor": true,
+    "title": "View / Grid vocabulary",
+    "type": [
+        "object",
+        "boolean"
+    ],
+    "properties": {
+        "view": {
+            "type": "object",
+            "$comment": "enables in-schema translation",
+            "properties": {
+                "sizeXs": {
+                    "type": "number"
+                },
+                "sizeSm": {
+                    "type": "number"
+                },
+                "sizeMd": {
+                    "type": "number"
+                },
+                "sizeLg": {
+                    "type": "number"
+                },
+                "sizeXl": {
+                    "type": "number"
+                }
+            }
+        }
+    }
+}

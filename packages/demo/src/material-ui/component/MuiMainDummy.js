@@ -2,7 +2,7 @@ import React from "react";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import {MuiSchemaDebug} from "./MuiSchemaDebug";
-import {MainDummy} from "./MainDummy";
+import {MainDummy} from "../../component/MainDummy";
 
 const createDummyRenderer = widgets => ({id, schema, toggleDummy, getDummy, open, classes}) => <React.Fragment>
     {open ? null : <Button style={{marginBottom: 12}} onClick={() => toggleDummy(id)} variant={getDummy(id) ? 'contained' : 'outlined'}>

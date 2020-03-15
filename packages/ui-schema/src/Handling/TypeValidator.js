@@ -29,7 +29,7 @@ const validateType = (value, type) => {
     return false;
 };
 
-const TypeValidator = {
+const typeValidator = {
     validate: ({schema, value, errors, valid}) => {
         let type = schema.get('type');
 
@@ -42,4 +42,4 @@ const TypeValidator = {
     }
 };
 
-export {TypeValidator, ERROR_WRONG_TYPE, validateType}
+export {typeValidator, ERROR_WRONG_TYPE, validateType}

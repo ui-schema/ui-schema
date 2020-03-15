@@ -15,7 +15,7 @@ const validatePattern = (type, value, pattern) => {
     return true;
 };
 
-const PatternValidator = {
+const patternValidator = {
     validate: ({schema, value, errors, valid}) => {
         let type = schema.get('type');
         let pattern = schema.get('pattern');
@@ -30,4 +30,4 @@ const PatternValidator = {
 };
 
 
-export {PatternValidator, ERROR_PATTERN, validatePattern}
+export {patternValidator, ERROR_PATTERN, validatePattern}

@@ -1,7 +1,5 @@
 import React from "react";
-import {
-    TextField
-} from "@material-ui/core";
+import {TextField} from "@material-ui/core";
 import {useUID} from "react-uid";
 import {unstable_trace as trace} from "scheduler/tracing";
 import {TransTitle, updateValue, updateValidity, mapSchema, checkNativeValidity} from "@ui-schema/ui-schema";
@@ -34,7 +32,7 @@ const StringRenderer = ({
 
     return <React.Fragment>
         <TextField
-            label={<TransTitle schema={schema.set('sd',true)} storeKeys={storeKeys} ownKey={ownKey}/>}
+            label={<TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>}
             type={format || type}
             multiline={multiline}
             required={required}

@@ -11,6 +11,13 @@
         "es",
         "lib"
     ],
+    "keywords": [
+        "ui-schema",
+        "json-schema",
+        "mui",
+        "material",
+        "material-ui"
+    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/ui-schema/ui-schema.git",

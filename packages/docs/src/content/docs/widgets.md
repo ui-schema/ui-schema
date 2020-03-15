@@ -50,15 +50,14 @@ Each widget get's properties provided by the root schema renderer or added from 
 
 Properties from editor:
 
-- `t` : `{function}` see [translation](/docs/localization#translation)
 - `value` : `{*}` Plugins receive for any value, Widgets only for scalar
-- `onChange` : `{function}`
+- `onChange` : `{function}` store updater function, see [updating utils](/docs/core#store-updating-utils)
 - `storeKeys` : `{List}`
 - `ownKey` : `{string|integer}`
-- `schema` : `{Map}`
-- `parentSchema` : `{Map}`
+- `schema` : `{Map}` the schema of the current widget
+- `parentSchema` : `{Map}` the schema of the parent widget
 - `level` : `{integer}` how deep in the schema it is, incremented automatically for native-objects, must be done manually when using `NestedSchemaEditor`
-- `required` : `{boolean}`, extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `RequiredValidator`
+- `required` : `{boolean}`, extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `requiredValidator`
 - `valid` : `{boolean}` if this schema level got some error, detected/changed from the pluginStack
 - `showValidity` : `{boolean}` if the errors/success should be visible
 - `errors` : `{List}` validation errors, added from the pluginStack for the current widget/schema-level
@@ -76,91 +75,21 @@ Each SchemaEditor receives an `widgets` object containing all HTML components an
 Create a complete custom binding or only `import` the components you need and optimize your bundle size!
 
 - `RootRenderer` main wrapper around everything
-- `GroupRenderer` wraps an object that is not a widget, used by the internal `ObjectRenderer` widget
+- `GroupRenderer` wraps any object that is not a widget
 - `pluginStack` is the widget plugin system, this wraps all widgets individually
     - e.g. used to handle json schema `default`
-    - see [how to create widget plugins](/docs/widget-plugins#creating-validator-plugins)
+    - see [how to create schema-driven plugins](/docs/widget-plugins#creating-plugins)
+- `validators` the validator plugins
+    - see [how to create validator plugins](/docs/widget-plugins#creating-validator-plugins)
 - `custom` contains widgets mapping with schema's `widget`
 - `types` contains widgets mapping with schema's `type`
     
-Example default binding `material-ui`:
+Example default binding for `material-ui` can be used as template:
 
-```js
-import React from "react";
-import {Grid} from "@material-ui/core";
-import {
-    NextPluginRenderer,
-    CombiningHandler, DefaultHandler, DependentHandler, ConditionalHandler,
-    ValidityReporter, Validator, validators,
-} from "@ui-schema/ui-schema";
-
-import {
-    StringRenderer, NumberRenderer, TextRenderer, /* and more widgets */
-} from "@ui-schema/ds-material";
-
-const SchemaGridItem = ({schema, children, defaultMd}) => {
-    const view = schema ? schema.get('view') : undefined;
-
-    const viewXs = view ? (view.get('sizeXs') || 12) : 12;
-    const viewSm = view ? view.get('sizeSm') : undefined;
-    const viewMd = view ? view.get('sizeMd') : defaultMd;
-    const viewLg = view ? view.get('sizeLg') : undefined;
-    const viewXl = view ? view.get('sizeXl') : undefined;
-
-    return <Grid
-        item
-        xs={viewXs}
-        sm={viewSm}
-        md={viewMd}
-        lg={viewLg}
-        xl={viewXl}
-    >
-        {children}
-    </Grid>
-};
-
-const RootRenderer = props => <Grid container spacing={0}>{props.children}</Grid>;
-
-const GroupRenderer = ({children}) => <Grid container spacing={2} wrap={'wrap'}>
-    {children}
-</Grid>;
-
-const SchemaGridHandler = (props) => {
-    const {schema,} = props;
-
-    return <SchemaGridItem schema={schema}>
-        <NextPluginRenderer {...props}/>
-    </SchemaGridItem>;
-};
-
-const pluginStack = [
-    SchemaGridHandler,
-    CombiningHandler,
-    DefaultHandler,
-    DependentHandler,
-    ConditionalHandler,
-    Validator,
-    ValidityReporter,
-];
-
-const widgets = {
-    RootRenderer,  // wraps the whole editor
-    GroupRenderer, // wraps any `object` that has no custom widget
-    validators,    // validator functions
-    pluginStack,   // widget plugin system
-    types: {
-        // supply your needed native-type widgets
-        number: NumberRenderer,
-        string: StringRenderer,
-    },
-    custom: {
-        // supply your needed custom widgets
-        Text: TextRenderer,
-    },
-};
-
-export {widgets}
-```
+- [Grid Widgets](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/Grid.js) - all special widgets responsible for the grid
+- [pluginStack Definition](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/pluginStack.js) - binding of plugins for each individual widget
+- [Widgets Base Definition](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/widgetsBase.js) - binding of pluginStack, validators and root-grid
+- [Widgets Default Definition](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/widgets.js) - adds binding of default mui widgets to `widgetsBase`
 
 [Contributing a new ds-binding?](/docs/design-systems#add-design-system-package)
 
@@ -176,11 +105,12 @@ export {widgets}
 
 Lazy bindings are only loading the needed widgets when really rendering, this can be achieved with code-splitting, through dynamic imports and e.g. `React.lazy` or `react-loadable`.
 
-It is only recommended for bigger widgets, using it for e.g. `types` is mostly unneeded as used anywhere and a lot small network-requests.
+It is only recommended for bigger widgets, using it for e.g. `types` is mostly unneeded as used anywhere and would produce a lot small network-requests.
 
-Example with react-loadable
+#### Example with react-loadable
 
 ```js
+import {widgetsBase} from "@ui-schema/ds-material/es/widgetsBase";
 import Loadable from 'react-loadable';
 
 // Build the loadable widgets
@@ -189,17 +119,16 @@ const StringRenderer = Loadable({
     loading: (props) => 'Loading Widget',// add here your fancy loading component
 });
 
-const widgets = {
+// widgetsBase includes only the grid widgets and all plugins
+const widgets = {...widgetsBase};
 
-    // for the other special root widgets, see `Creating Design-System Binding` above!
+widgets.types = {
+    // supply your needed native-type widgets
+    string: StringRenderer,
+};
 
-    types: {
-        // supply your needed native-type widgets
-        string: StringRenderer,
-    },
-    custom: {
-        // supply your needed custom widgets
-    },
+widgets.custom = {
+    // supply your needed custom widgets
 };
 
 export {widgets}

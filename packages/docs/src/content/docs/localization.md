@@ -55,7 +55,9 @@ The `Trans` component, accepts `text`:`{string}`, `context`:`{Map|undefined}` an
 
 #### Example Widget Translation
 
-Translating a widgets title, supporting a custom translation library, schema `t` and `tt` keywords:
+First example `DemoWidget` is translating a widgets title, supporting a custom translation library, schema `title`, `t` and `tt` keywords, see also [TransTitle](#example-transtitle).
+
+Second example `DemoEnumWidget` is translating a widgets enum values, supporting a custom translation library.
 
 ```jsx harmony
 import React from "react";
@@ -65,25 +67,48 @@ import {Trans, beautifyKey} from '@ui-schema/ui-schema';
 const DemoWidget = ({ownKey, schema, storeKeys,}) => {
     return <Trans
         schema={schema.get('t')}
-        text={storeKeys.insert(0, 'widget').push('title').join('.')}
+        text={schema.get('title') || storeKeys.insert(0, 'widget').push('title').join('.')}
         context={Map({'relative': List(['title'])})}
-        fallback={beautifyKey(ownKey, schema.get('tt'))}
+        fallback={schema.get('title') || beautifyKey(ownKey, schema.get('tt'))}
     />
+};
+
+const DemoEnumWidget = ({ownKey, schema, storeKeys,}) => {
+    const enum_val = schema.get('enum');
+    return enum_val.map((enum_name, i) =>{
+        const relative = List(['enum', enum_name]);
+        return <span key={i}>
+            <Trans
+                schema={schema.get('t')}
+                text={storeKeys.insert(0, 'widget').concat(relative).join('.')}
+                context={Map({'relative': relative})}
+                fallback={beautifyKey(enum_name)}
+            />
+        </span>
+    }).valueSeq() // as `enum_val` is an immutable list, this converts the map to an array compatible structure
 };
 ```
 
-The above example can be used to translate enum and anything, as titles are often used and offer a generic way, the component `TransTitle` can be used also:
+#### Example TransTitle
+
+The above example can be used to translate enum and anything, as titles are often used and offer a generic way, the component `TransTitle` can be used also.
 
 ```jsx harmony
 import React from "react";
 import {TransTitle} from '@ui-schema/ui-schema';
 
 const DemoWidget = ({ownKey, schema, storeKeys,}) => {
-    return <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+    return <TransTitle
+        schema={schema}
+        storeKeys={storeKeys}
+        ownKey={ownKey}
+    />
 };
 ``` 
 
 #### Example Error Translation
+
+Each design-system includes helper component for error translations, this way you can build your own:
 
 ```jsx harmony
 import React from "react";
@@ -243,7 +268,7 @@ Design systems should support both, the Material-UI library supports it.
 When no translation should be used, but e.g. the property names should simply be in uppercase, `tt` influence the text-transformation - primary for the widget title (and not widget values).
 
 - `tt: true` uses `beautifyKey` for optimistic beautification (default) ✔
-- `tt: false | 0 | ''` disables optimistic beautification, `undefined` doesn't! ✔
+- `tt: false | ''` disables optimistic beautification, `undefined` doesn't! ✔
 - `tt: 'ol'` the property name must be a `number`, increments it and adds a `.` dot at the end, useful for array/list labeling ✔
 - `tt: 'upper'` turns all letters in UPPERCASE ✔
 - `tt: 'lower'` turns all letters in lowercase ✔

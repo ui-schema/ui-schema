@@ -1,10 +1,10 @@
 import React from 'react';
-import AppTheme from '../ds/material-ui/layout/AppTheme';
-import Dashboard from '../ds/material-ui/dashboard/Dashboard';
+import AppTheme from './layout/AppTheme';
+import Dashboard from './dashboard/Dashboard';
 import Grid from "@material-ui/core/Grid";
 import {widgets,} from "@ui-schema/ds-material";
 import {RichText, RichTextInline} from "@ui-schema/material-richtext";
-import {createDummyRenderer} from "../component/MuiMainDummy";
+import {createDummyRenderer} from "./component/MuiMainDummy";
 import {useDummy} from "../component/MainDummy";
 import {schemaRichText} from "../schemas/demoRichText";
 

@@ -64,20 +64,31 @@ const Comp = ({storeKeys, ...props}) => {
 
 #### Store Updating Utils
 
-These function must be used when updating the store, internally they work arround the `store`, an instance of the `EditorStore` immutable record.
+These function must be used when updating the store, internally they work around the `store`, an instance of the `EditorStore` immutable record.
 
 All return another function, not executing directly, this function is then executed from `onChange` - receiving the current state value, updating the `storeKeys` value with the given value in one of the records entry.
 
-- `updateInternalValue(storeKeys, internalValue)`
-- Function capable of either updating a deep value in the `store`, or when in e.g. root-level directly the store (string as root-schema)
+The functions are capable of either updating a deep value in the `store`, or when in e.g. root-level directly the store (e.g. `type: 'string'` as root-schema).
+
+- use for updating values:
     - `updateValue(storeKeys, value)` to only update the normal data value
-    - `updateValues(storeKeys, value, internalValue)` to update the internal store value, which should not be published 
-- Function capable of either updating a deep value in the `store`, or when in e.g. root-level directly the store (string as root-schema)
+    - `updateValues(storeKeys, value, internalValue)` to update the normal data value and internal store value, should be used when the widget relies on data to work - that is not like the schema type
+    - `updateInternalValue(storeKeys, internalValue)` to update only the internal store value
+- update the `validity` entry:
     - `updateValidity(storeKeys, valid)`
 - `cleanUp(storeKeys, key)` deletes the entry at `storeKeys` in the specified `key` scope, e.g:
     - `cleanUp(storeKeys, 'validity')` deletes validity entry
     - `cleanUp(storeKeys, 'internals')` deletes internal store entry
     - `cleanUp(storeKeys, 'values')` deletes value/data entry
+    
+    
+```js
+import {
+    updateValue, updateValues, updateInternalValue,
+    updateValidity,
+    cleanUp
+} from "@ui-schema/ui-schema";
+```
     
 #### Simplest Text Widget
 
@@ -85,7 +96,7 @@ Updating a value from HTML input:
 
 ```js
 import React from 'react';
-import {updateValue, beautifyKey} from '@ui-schema/ui-schema';
+import {updateValue, TransTitle} from '@ui-schema/ui-schema';
 
 const Widget = ({
                     value, ownKey, storeKeys, onChange,
@@ -94,7 +105,7 @@ const Widget = ({
                     ...props
                 }) => {
     return <>
-        <label>{beautifyKey(ownKey)}</label>
+        <label><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></label>
 
         <input
             type={'text'}

@@ -30,7 +30,10 @@ const dicEN = createMap({
                 email: {title: "Email"},
                 date: {title: "Date"},
             }
-        }
+        },
+    },
+    titles: {
+        'simple-number': 'Simple Number'
     },
     icons,
 });
@@ -59,7 +62,10 @@ const dicDE = createMap({
             enum: {
                 notice: "Notiz"
             },
-        }
+        },
+    },
+    titles: {
+        'simple-number': 'Einfache Nummer'
     },
     icons,
 });

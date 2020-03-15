@@ -100,7 +100,7 @@ const validateMinMax = (type, schema, value, strict) => {
     return errors;
 };
 
-const MinMaxValidator = {
+const minMaxValidator = {
     validate: ({required, schema, value, errors, valid}) => {
         let type = schema.get('type');
 
@@ -114,4 +114,4 @@ const MinMaxValidator = {
     }
 };
 
-export {MinMaxValidator, ERROR_MAX_LENGTH, ERROR_MIN_LENGTH, validateMinMax}
+export {minMaxValidator, ERROR_MAX_LENGTH, ERROR_MIN_LENGTH, validateMinMax}

@@ -7,7 +7,7 @@ const {delDir} = require('./tools');
 const {buildEsModules} = require('./babel');
 const {buildWebpack, serveWebpack} = require('./webpack');
 const {packsRoot, buildersPackages, packagesNames} = require('./webpack.packages');
-const {configApp} = require('./webpack.apps');
+const {buildAppPair} = require('./webpack.apps');
 
 const doServe = argv['serve'] === true ? true : (argv['serve'] || false);
 const doClean = !!argv['clean'];
@@ -15,7 +15,7 @@ const doBuild = !!argv['build'];
 
 const appsConfigs = {};
 for(let app in apps) {
-    appsConfigs[app] = configApp(apps[app]);
+    appsConfigs[app] = buildAppPair(apps[app]);
 }
 
 if(doClean) {

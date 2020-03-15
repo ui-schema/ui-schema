@@ -27,7 +27,7 @@ const validateEnum = (type, schema, value) => {
     return true;
 };
 
-const ValueValidatorEnum = {
+const valueValidatorEnum = {
     should: ({schema, value}) => {
         /**
          * @var {[]|List} _enum
@@ -66,7 +66,7 @@ const validateConst = (type, schema, value) => {
     );
 };
 
-const ValueValidatorConst = {
+const valueValidatorConst = {
     should: ({schema, value}) => {
         let _const = schema.get('const');
 
@@ -84,4 +84,4 @@ const ValueValidatorConst = {
     }
 };
 
-export {ValueValidatorConst, ValueValidatorEnum, ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum}
+export {valueValidatorConst, valueValidatorEnum, ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum}

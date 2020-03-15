@@ -4,7 +4,7 @@ import {
     FormControl, Checkbox, InputLabel,
     MenuItem, Select as MuiSelect, ListItemText,
 } from "@material-ui/core";
-import {TransTitle, Trans, beautifyKey, updateValue, extractValue, memo,} from "@ui-schema/ui-schema";
+import {TransTitle, Trans, beautifyKey, updateValue, extractValue, memo, useEditor} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
 const Select = ({
@@ -12,6 +12,8 @@ const Select = ({
                     storeKeys, ownKey, schema, value, onChange,
                     showValidity, valid, required, errors
                 }) => {
+    const {t} = useEditor();
+
     if(!schema) return null;
 
     const enum_val = schema.get('enum');
@@ -31,14 +33,16 @@ const Select = ({
             id={"demo-simple-select" + ownKey}
             value={multiple ? currentValue.toArray() : currentValue}
             multiple={multiple}
-            renderValue={selected => multiple ?
-                selected.map(
-                    // todo: this must also support translation
-                    s => typeof s === 'string' ?
-                        beautifyKey(s) :
-                        s + ''
-                ).join(', ') :
-                beautifyKey(selected)}
+            renderValue={selected => {
+                const sel = multiple ? selected : [selected];
+                return sel.map(s => {
+                    s = s + '';
+                    const Translated = t(s, Map({relative: List(['enum', s])}), schema.get('t'));
+                    return typeof Translated === 'string' || typeof Translated === 'number' ?
+                        Translated :
+                        beautifyKey(s);
+                }).join(', ')
+            }}
             onChange={(e) => multiple ?
                 onChange(updateValue(storeKeys, List(e.target.value))) :
                 onChange(updateValue(storeKeys, e.target.value))}

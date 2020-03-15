@@ -72,9 +72,9 @@ const Trans = ({text, context, schema, fallback}) => {
  */
 const TransTitle = ({schema, storeKeys, ownKey}) => <Trans
     schema={schema.get('t')}
-    text={storeKeys.insert(0, 'widget').push('title').join('.')}
+    text={schema.get('title') || storeKeys.insert(0, 'widget').push('title').join('.')}
     context={Map({'relative': List(['title'])})}
-    fallback={beautifyKey(ownKey, schema.get('tt'))}
+    fallback={schema.get('title') || beautifyKey(ownKey, schema.get('tt'))}
 />;
 
 export {t, Trans, TransTitle, relT}

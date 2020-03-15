@@ -47,7 +47,7 @@ const checkValueExists = (type, value) => {
     return true;
 };
 
-const RequiredValidator = {
+const requiredValidator = {
     should: ({required, ownKey}) => {
         let isRequired = false;
         if(required && List.isList(required)) {
@@ -66,4 +66,4 @@ const RequiredValidator = {
     }
 };
 
-export {RequiredValidator, ERROR_NOT_SET, checkValueExists}
+export {requiredValidator, ERROR_NOT_SET, checkValueExists}
