@@ -2,40 +2,48 @@
 
 Components and functions exported by `@ui-schema/ui-schema` for usage within design systems, plugins and widgets.
 
-> todo: further detailed docs
+The props passed to the `SchemaEditor`, `NestedSchemaEditor` are accessible through providers.
 
 ## EditorStore
 
-The props passed to the root `SchemaEditor` are accessible through providers.
+Values are stored in `EditorStore`, an immutable record, created with [createStore](#createstore) or [createEmptyStore](#createemptystore):
 
-### Editor Store Provider
+- `EditorStore.values`:`{undefined|string|boolean|number|OrderedMap|List}`
+- `EditorStore.internals`:`{Map}`
+- `EditorStore.validity`:`{Map}`
+- `EditorStore.getValues`:`{*}` returns the values
+- `EditorStore.getInternals`:`{Map}` returns the internal values
+- `EditorStore.getValidity`:`{Map}` returns the validity
+
+Use the [updater functions](#store-updating-utils) for store changes from widgets.
+
+For best performance in non-scalar widgets use the [HOCs](https://reactjs.org/docs/higher-order-components.html) `extractValue`, `extractValidity` for getting the values, together with [memo](#memo--isequal).
+
+### EditorStoreProvider
+
+Saves and provides the store, onChange and schema.
 
 - Provider: `EditorStoreProvider`
 - Hook: `useSchemaStore`
-    - returns: `{schema: Map, valueStore: *, internalStore: Map, onChange: function, validity: Map}`
-- HOC to get the current widgets values
+    - returns: `{schema: OrderedMap, valueStore: *, internalStore: Map, onChange: function, validity: Map}`
+- HOC to get the current widgets values by `storeKeys`:
     - `extractValue` passes down: `value`, `internalValue`, `onChange`
     - `extractValidity` passes down: `validity`, `onChange`
-- Properties/ContextData:
-    - `store` : `{EditorStore}` the immutable Record storing the current editor state
+- Properties:
+    - `store` : `{EditorStore}` the immutable record storing the current editor state
     - `onChange` : `{function(function): OrderedMap}` a function capable of updating the saved store
     - `schema` : `{OrderedMap}` the full schema as an immutable map
-- Properties/ContextData:
-    - `valueStore` : `{OrderedMap|*}`
-    - `internalStore` : `{OrderedMap|*}`
-    - `validity` : `{Map|undefined}`
-    - `showValidity` : `{boolean}`
 
 See [core functions to update store](#store-updating-utils).
 
-Example Create:
+Example creating the provider:
 
 ```js
 import React from "react";
 import {EditorStoreProvider} from "@ui-schema/ui-schema";
 
 const CustomProvider = ({store, onChange, schema, children}) =>{
-    return <EditorStoreProvider 
+    return <EditorStoreProvider
         store={store}
         onChange={onChange}
         schema={schema}
@@ -127,7 +135,9 @@ React.useEffect(() => {
 });
 ```
 
-### Editor Provider
+## EditorProvider
+
+Saves additional functions and meta-data for the editor.
 
 - Provider: `EditorProvider`
 - Hook: `useEditor`
@@ -135,7 +145,7 @@ React.useEffect(() => {
 - Properties/ContextData:
     - `widgets` JS-object
     - `showValidity` boolean
-    - `t` : `function` translator function
+    - `t` : `function` translator function, see [translation](/docs/localization#translation)
     
 Example Hook:
 
@@ -264,6 +274,14 @@ Creates the initial store out of passed in values.
 
 ```js
 const [data, setStore] = React.useState(() => createStore(createOrderedMap(initialData)));
+```
+
+### createEmptyStore
+
+Creates an empty store out of the schema type.
+
+```js
+const [data, setStore] = React.useState(() => createEmptyStore(schema.get('type')));
 ```
 
 ### memo / isEqual

@@ -76,7 +76,9 @@ JSON-Schema included keywords are used to describe the data and create the UI ba
 
 ## Basic Example
 
-This example show all available props. First time? [Take the quick-start](https://ui-schema.bemit.codes/en/quick-start) or take a look into the [create-react-app UI-Schema example](https://github.com/ui-schema/demo-cra).
+This example shows the available props.
+
+First time? [Take the quick-start](https://ui-schema.bemit.codes/en/quick-start) or take a look into the [create-react-app UI-Schema example](https://github.com/ui-schema/demo-cra).
 
 ```js
 import React from "react";
@@ -136,12 +138,15 @@ const Editor = () => {
 
             showValidity={showValidity}
             widgets={widgets}
+        
+            t={(text, context, schema) => {/* add translations */}}
 
             {/* 
-              * or write onChange like:
-              * handler must get the previous state as value, it must be an immutable map, will return updated map
+              * or custom onChange, e.g. save-on-update:
+              * - handler gets the previous store 
+              * - returns updated store
             */}
-            onChange={handler => setStore(handler(data))}
+            onChange={handler => setStore(data => handler(data))}
         >
             {/* (optional) add components which use the context of the Editor here */}
         </SchemaEditor>
