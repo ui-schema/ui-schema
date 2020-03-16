@@ -341,7 +341,7 @@ const schemaTestBts = createOrderedMap({
             default: true,
             view: {
                 sizeMd: 12
-            }
+            },
         },
         birthday: {
             type: "string",
@@ -368,6 +368,22 @@ const schemaTestBts = createOrderedMap({
                 'sugar',
                 'black',
             ],
+            t: {
+                de: {
+                    enum: {
+                        milk: 'Milch',
+                        sugar: 'Zucker',
+                        black: 'Schwarz'
+                    }
+                },
+                en: {
+                    enum: {
+                        milk: 'Milch',
+                        sugar: 'Zucker',
+                        black: 'Schwarz'
+                    }
+                }
+            },
         },
         cake: {
             type: "array",
@@ -385,6 +401,26 @@ const schemaTestBts = createOrderedMap({
             default: [
                 'chocolate'
             ],
+            t: {
+                de: {
+                    enum: {
+                        chocolate: 'Schokolade',
+                        almonds: 'Mandeln',
+                        cream: 'Sahne',
+                        apples: 'Äpfel',
+                        cheese: 'Käse'
+                    }
+                },
+                en: {
+                    enum: {
+                        chocolate: 'chocolate',
+                        almonds: 'almonds',
+                        cream: 'cream',
+                        apples: 'apples',
+                        cheese: 'cheese'
+                    }
+                }
+            },
         },
         discount: {
             type: "string",
@@ -398,7 +434,7 @@ const schemaTestBts = createOrderedMap({
                 '20%',
                 '50%',
             ],
-            default: '10%'
+            default: '10%',
         },
         ages: {
             type: "array",

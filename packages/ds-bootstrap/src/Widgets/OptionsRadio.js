@@ -1,11 +1,11 @@
 import React from "react";
-import {TransTitle, beautifyKey, updateValue, useEditor} from "@ui-schema/ui-schema";
+import {TransTitle, Trans, beautifyKey, updateValue} from "@ui-schema/ui-schema";
 import {unstable_trace as trace} from "scheduler/tracing";
 import {useUID} from "react-uid";
 import {List, Map} from "immutable";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
-const RadioInput = ({classForm, enum_name, classLabel, required, classFormControl, value, onChange, storeKeys}) => {
+const RadioInput = ({classForm, enum_name, classLabel, required, classFormControl, value, onChange, storeKeys, label}) => {
     const uid = useUID();
 
     return <div
@@ -24,7 +24,7 @@ const RadioInput = ({classForm, enum_name, classLabel, required, classFormContro
             className={classLabel.join(' ')}
             htmlFor={'uis-' + uid}
         >
-            {beautifyKey(enum_name)}
+            {label}
         </label>
     </div>
 };
@@ -32,8 +32,6 @@ const RadioInput = ({classForm, enum_name, classLabel, required, classFormContro
 const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, required, errors, ownKey}) => {
     const enumVal = schema.get('enum');
     if(!enumVal) return null;
-
-    const {t} = useEditor();
 
     let classForm = ["custom-control", "custom-radio"];
     let classLabel = ["custom-control-label", "text-light"];
@@ -48,14 +46,10 @@ const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, require
     return <React.Fragment>
         <label><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></label>
         {enumVal ? enumVal.map((enum_name) => {
-            const s = enum_name + '';
-            const Translated = t(s, Map({relative: List(['enum', s])}), schema.get('t'));
             return <RadioInput
                 key={enum_name}
                 classForm={classForm}
-                enum_name={typeof Translated === 'string' || typeof Translated === 'number' ?
-                    Translated :
-                    beautifyKey(s)}
+                enum_name={enum_name}
                 classLabel={classLabel}
                 required={required}
                 ownKey={ownKey}
@@ -63,6 +57,12 @@ const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, require
                 value={value}
                 onChange={onChange}
                 storeKeys={storeKeys}
+                label={<Trans
+                    schema={schema.get('t')}
+                    text={storeKeys.insert(0, 'widget').concat(List(['enum', enum_name])).join('.')}
+                    context={Map({'relative': List(['enum', enum_name])})}
+                    fallback={beautifyKey(enum_name)}
+                />}
             />
         }).valueSeq() : null}
 
