@@ -359,7 +359,7 @@ const schemaTestBts = createOrderedMap({
         coffee: {
             type: "string",
             widget: "OptionsRadio",
-            default: "middle",
+            default: "milk",
             view: {
                 sizeMd: 3
             },
@@ -385,6 +385,61 @@ const schemaTestBts = createOrderedMap({
             default: [
                 'chocolate'
             ],
+        },
+        discount: {
+            type: "string",
+            widget: "Select",
+            //default: "adult",
+            view: {
+                sizeMd: 12
+            },
+            enum: [
+                '10%',
+                '20%',
+                '50%',
+            ],
+            default: '10%'
+        },
+        ages: {
+            type: "array",
+            minItems: 2,
+            maxItems: 3,
+            widget: "SelectMulti",
+            title: 'title.ages',
+            view: {
+                sizeMd: 3,
+            },
+            /*
+             * input for variable contains must be provided with custom widget/store currently
+            contains: {
+                type: 'number',
+                minimum: 2,
+            },*/
+            uniqueItems: true,
+            enum: [
+                'child',
+                'teen',
+                'adult',
+                '50plus',
+            ],
+            t: {
+                de: {
+                    enum: {
+                        child: 'Kind',
+                        teen: 'Jugendlicher',
+                        adult: 'Erwachsener',
+                        '50plus': 'Senior',
+                    }
+                },
+                en: {
+                    enum: {
+                        child: 'Child',
+                        teen: 'Teenager',
+                        adult: 'Adult',
+                        '50plus': 'Senior',
+                    }
+                }
+            },
         },
     }
 });

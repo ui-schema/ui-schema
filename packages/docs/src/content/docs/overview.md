@@ -12,8 +12,8 @@ It is possible to connect any design system, included or planned support:
 | `@ui-schema/ds-bootstrap` | [bootstrap (BTS)](https://getbootstrap.com/) semantic HTMLs to use with any Bootstrap theme | ✅ | 
 | `@ui-schema/ds-blueprint` | [blueprintjs (BPT)](https://blueprintjs.com/docs/) | 🔵 | 
 | `@ui-schema/ds-semanticui` | [semantic-ui (SUI)](https://react.semantic-ui.com/usage/) | 🔵 | 
-| `@ui-schema/ds-antdesign` | [Ant Design (ATD)](https://ant.design/docs/react/introduce) | 🔵 | 
-| `@ui-schema/ds-pulse` | [.pulse (PLS)](https://pulse.heartbeat.ua/components/box) | 🔵 |
+| `@ui-schema/ds-antdesign` | [Ant Design (ATD)](https://ant.design/docs/react/introduce) | 🔵 |
+| `@ui-schema/ds-themeui` | [Theme UI (TUI)](https://theme-ui.com) | 🔵 |
 
 📚 [Quick-Start](/quick-start), [Details about Design Systems](/docs/design-systems)
 
@@ -91,10 +91,10 @@ Custom widgets for `widget`, special UIs and specific type handling:
 | `GenericList` | [objects/array as list](/docs/widgets/SimpleList) | `array({*})` | ✅ | 🔵 | 🔵 |
 | | | | | | |
 | **Selection** | | | | | |
-| `OptionsCheck` | [checkboxes](/docs/widgets/OptionsList)  | `array` | ✅ | 🔵 | 🔵 |
-| `OptionsRadio` | [radio buttons](/docs/widgets/OptionsList) | `string` | ✅ | 🔵 | 🔵 |
-| `Select`     | [select one value](/docs/widgets/Select) | `string` | ✅ | 🔵 | 🔵 |
-| `SelectMulti`  | [select n values](/docs/widgets/Select) | `array` | ✅ | 🔵 | 🔵 |
+| `OptionsCheck` | [checkboxes](/docs/widgets/OptionsList)  | `array` | ✅ | ✅ | 🔵 |
+| `OptionsRadio` | [radio buttons](/docs/widgets/OptionsList) | `string` | ✅ | ✅ | 🔵 |
+| `Select`     | [select one value](/docs/widgets/Select) | `string` | ✅ | ✅ | 🔵 |
+| `SelectMulti`  | [select n values](/docs/widgets/Select) | `array` | ✅ | ✅ | 🔵 |
 | `SelectGroup`  |    | | 🔵 | 🔵 | 🔵 |
 | | | | | | |
 | **Media** | | | | | |

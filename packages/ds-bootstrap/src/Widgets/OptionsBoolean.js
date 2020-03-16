@@ -1,9 +1,9 @@
 import React from "react";
 import {unstable_trace as trace} from "scheduler/tracing";
-import {beautifyKey, updateValue} from "@ui-schema/ui-schema";
+import {TransTitle, updateValue} from "@ui-schema/ui-schema";
 
 
-const BoolRenderer = ({ownKey, showValidity, required, errors, value, storeKeys, onChange}) => {
+const BoolRenderer = ({ownKey, showValidity, required, errors, value, storeKeys, onChange, schema}) => {
 
     let classForm = ["custom-control", "custom-switch"];
     let classLabel = ["custom-control-label", "text-light"];
@@ -26,7 +26,7 @@ const BoolRenderer = ({ownKey, showValidity, required, errors, value, storeKeys,
                 onChange(updateValue(storeKeys, !currentChecked));
             })}
         />
-        <label className={classLabel.join(' ')} htmlFor={ownKey}>{beautifyKey(ownKey) + (required ? ' *' : '')}</label>
+        <label className={classLabel.join(' ')} htmlFor={ownKey}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>{(required ? ' *' : '')}</label>
     </div>;
 };
 

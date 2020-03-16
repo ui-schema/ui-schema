@@ -12,7 +12,7 @@ const DemoGrid = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap({})));
 
     return <SchemaEditor
-        schema={schemaGrid}
+        schema={schemaGrid(12)}
         store={store}
         onChange={setStore}
         widgets={widgets}

@@ -54,6 +54,46 @@ const packages = {
             "react-dom": buildExternal("react-dom"),
         }
     },
+    dsBlueprint: {
+        root: path.resolve(__dirname, 'packages', 'ds-blueprint'),
+        entry: path.resolve(__dirname, 'packages', 'ds-blueprint/src/'),
+        externals: {
+            "@ui-schema/ui-schema": buildExternal("@ui-schema/ui-schema"),
+            "@blueprintjs/core": buildExternal("@blueprintjs/core"),
+            react: buildExternal("react"),
+            "react-dom": buildExternal("react-dom"),
+        }
+    },
+    dsSemanticui: {
+        root: path.resolve(__dirname, 'packages', 'ds-semanticui'),
+        entry: path.resolve(__dirname, 'packages', 'ds-semanticui/src/'),
+        externals: {
+            "@ui-schema/ui-schema": buildExternal("@ui-schema/ui-schema"),
+            "semantic-ui-react": buildExternal("semantic-ui-react"),
+            react: buildExternal("react"),
+            "react-dom": buildExternal("react-dom"),
+        }
+    },
+    dsAntdesign: {
+        root: path.resolve(__dirname, 'packages', 'ds-antdesign'),
+        entry: path.resolve(__dirname, 'packages', 'ds-antdesign/src/'),
+        externals: {
+            "@ui-schema/ui-schema": buildExternal("@ui-schema/ui-schema"),
+            "antd": buildExternal("antd"),
+            react: buildExternal("react"),
+            "react-dom": buildExternal("react-dom"),
+        }
+    },
+    dsThemeui: {
+        root: path.resolve(__dirname, 'packages', 'ds-themeui'),
+        entry: path.resolve(__dirname, 'packages', 'ds-themeui/src/'),
+        externals: {
+            "@ui-schema/ui-schema": buildExternal("@ui-schema/ui-schema"),
+            "theme-ui": buildExternal("theme-ui"),
+            react: buildExternal("react"),
+            "react-dom": buildExternal("react-dom"),
+        }
+    },
     materialPickers: {
         root: path.resolve(__dirname, 'packages', 'material-pickers'),
         entry: path.resolve(__dirname, 'packages', 'material-pickers/src/'),

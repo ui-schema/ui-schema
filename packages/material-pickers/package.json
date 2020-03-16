@@ -1,54 +1,51 @@
 {
-    "name": "@ui-schema/material-pickers",
-    "version": "0.0.13",
-    "description": "Date+Time Pickers for UI-Schema with Material-UI",
-    "homepage": "https://ui-schema.bemit.codes",
-    "author": "Michael Becker <michael@bemit.codes>",
-    "license": "MIT",
-    "main": "./lib/index.js",
-    "module": "./es/index.js",
-    "files": [
-        "es",
-        "lib"
-    ],
-    "keywords": [
-        "ui-schema",
-        "mui",
-        "json-schema",
-        "date-time-pickers",
-        "form"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ui-schema/ui-schema.git",
-        "directory": "packages/material-pickers"
-    },
-    "bugs": {
-        "url": "https://github.com/ui-schema/ui-schema/issues"
-    },
-    "dependencies": {
-        "react-uid": "^2.2.0"
-    },
-    "devDependencies": {
-        "@material-ui/core": "^4.8",
-        "@material-ui/icons": "^4.8",
-        "@material-ui/pickers": "^3.2.10",
-        "@ui-schema/ds-material": "^0.0.13",
-        "@ui-schema/ui-schema": "^0.0.13",
-        "immutable": "^4.0.0-rc.12",
-        "react": "^16.12"
-    },
-    "peerDependencies": {
-        "@material-ui/core": "^4.5.1",
-        "@material-ui/icons": "^4.5.1",
-        "@material-ui/pickers": "^3.0.0",
-        "@ui-schema/ds-material": "0.0.x",
-        "@ui-schema/ui-schema": "0.0.x",
-        "immutable": "^4.0.0-rc.12",
-        "react": "^16.8"
-    },
-    "scripts": {},
-    "publishConfig": {
-        "access": "public"
-    }
+	"name": "@ui-schema/material-pickers",
+	"version": "0.0.14",
+	"description": "Date+Time Pickers for UI-Schema with Material-UI",
+	"homepage": "https://ui-schema.bemit.codes",
+	"author": "Michael Becker <michael@bemit.codes>",
+	"license": "MIT",
+	"main": "./lib/index.js",
+	"module": "./es/index.js",
+	"files": [
+		"es",
+		"lib"
+	],
+	"keywords": [
+		"ui-schema",
+		"mui",
+		"json-schema",
+		"date-time-pickers",
+		"form"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ui-schema/ui-schema.git",
+		"directory": "packages/material-pickers"
+	},
+	"bugs": {
+		"url": "https://github.com/ui-schema/ui-schema/issues"
+	},
+	"dependencies": {
+		"react-uid": "^2.2.0"
+	},
+	"devDependencies": {
+		"@material-ui/core": "^4.8",
+		"@material-ui/icons": "^4.8",
+		"@material-ui/pickers": "^3.2.10",
+		"immutable": "^4.0.0-rc.12",
+		"react": "^16.12"
+	},
+	"peerDependencies": {
+		"@material-ui/core": "^4.5.1",
+		"@material-ui/icons": "^4.5.1",
+		"@material-ui/pickers": "^3.0.0",
+		"@ui-schema/ds-material": "0.0.x",
+		"@ui-schema/ui-schema": "0.0.x",
+		"immutable": "^4.0.0-rc.12",
+		"react": "^16.8"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
 }

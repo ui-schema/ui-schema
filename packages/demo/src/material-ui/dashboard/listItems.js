@@ -1,18 +1,15 @@
 import React from 'react';
-import {
-    Link
-} from "react-router-dom";
+import {NavLink as Link} from 'react-router-dom';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIc from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
+import WidgetsIcon from '@material-ui/icons/Widgets';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import {makeStyles} from "@material-ui/core";
+import {routesThemes} from "../../routes";
 
 const useListItemStyles = makeStyles(theme => ({
     root: {
@@ -44,10 +41,13 @@ function ListItemLink(props) {
 }
 
 export const mainListItems = (<div>
-    <ListItemLink to={'/'} primary="Material-UI" icon={<DashboardIcon/>}/>
-    <ListItemLink to={'/bootstrap'} primary="Bootstrap" icon={<ShoppingCartIcon/>}/>
-    <ListItemLink to={'/pulse'} primary="Pulse" icon={<PeopleIcon/>}/>
-    <ListItemLink to={'/ant'} primary="Ant" icon={<BarChartIcon/>}/>
+    {routesThemes.map(route =>
+        <ListItemLink
+            key={route[0]}
+            to={route[0]}
+            primary={route[1]} icon={route[0] === '/' ? <DashboardIcon/> : <WidgetsIcon/>}
+        />
+    )}
     <ListItemLink to={'https://ui-schema.bemit.codes'} primary="Documentation" icon={<LayersIcon/>} normalLink/>
 </div>);
 
