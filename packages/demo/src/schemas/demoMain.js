@@ -328,12 +328,20 @@ const schemaTestBts = createOrderedMap({
         sizeMd: 6,
     },*/
     properties: {
-        quote: {
+        headline: {
             type: "string",
             minLength: 5,
             maxLength: 30,
             view: {
                 sizeMd: 6,
+            },
+            t: {
+                en: {
+                    title: 'Headline'
+                },
+                de: {
+                    title: 'Überschrift'
+                }
             }
         },
         center_items: {
@@ -341,6 +349,14 @@ const schemaTestBts = createOrderedMap({
             default: true,
             view: {
                 sizeMd: 12
+            },
+            t: {
+                en: {
+                    title: 'Center Items'
+                },
+                de: {
+                    title: 'Elemente zentrieren'
+                }
             }
         },
         birthday: {
@@ -348,12 +364,28 @@ const schemaTestBts = createOrderedMap({
             format: "date",
             view: {
                 sizeMd: 6
+            },
+            t: {
+                en: {
+                    title: 'Birthday'
+                },
+                de: {
+                    title: 'Geburtstag'
+                }
             }
         },
         counter: {
             type: "number",
             view: {
                 sizeMd: 6
+            },
+            t: {
+                en: {
+                    title: 'Counter'
+                },
+                de: {
+                    title: 'Counter'
+                }
             }
         },
         coffee: {
@@ -368,6 +400,24 @@ const schemaTestBts = createOrderedMap({
                 'sugar',
                 'black',
             ],
+            t: {
+                de: {
+                    title: 'Kaffee',
+                    enum: {
+                        milk: 'Milch',
+                        sugar: 'Zucker',
+                        black: 'Schwarz'
+                    }
+                },
+                en: {
+                    title: 'Coffee',
+                    enum: {
+                        milk: 'milk',
+                        sugar: 'sugar',
+                        black: 'black'
+                    }
+                }
+            },
         },
         cake: {
             type: "array",
@@ -385,6 +435,28 @@ const schemaTestBts = createOrderedMap({
             default: [
                 'chocolate'
             ],
+            t: {
+                de: {
+                    title: 'Kuchen',
+                    enum: {
+                        chocolate: 'Schokolade',
+                        almonds: 'Mandeln',
+                        cream: 'Sahne',
+                        apples: 'Äpfel',
+                        cheese: 'Käse'
+                    }
+                },
+                en: {
+                    title: 'Cake',
+                    enum: {
+                        chocolate: 'chocolate',
+                        almonds: 'almonds',
+                        cream: 'cream',
+                        apples: 'apples',
+                        cheese: 'cheese'
+                    }
+                }
+            },
         },
         discount: {
             type: "string",
@@ -398,14 +470,32 @@ const schemaTestBts = createOrderedMap({
                 '20%',
                 '50%',
             ],
-            default: '10%'
+            default: '10%',
+            t: {
+                de: {
+                    title: 'Rabatte',
+                    enum: {
+                        '10%': '10% Rabatt',
+                        '20%': '20% Rabatt',
+                        '50%': '50% Rabatt',
+                    }
+                },
+                en: {
+                    title: 'Discounts',
+                    enum: {
+                        '10%': '10% discount',
+                        '20%': '20% discount',
+                        '50%': '50% discount',
+                    }
+                }
+            },
         },
         ages: {
             type: "array",
             minItems: 2,
             maxItems: 3,
             widget: "SelectMulti",
-            title: 'title.ages',
+            // title: 'title.ages',
             view: {
                 sizeMd: 3,
             },
@@ -424,6 +514,7 @@ const schemaTestBts = createOrderedMap({
             ],
             t: {
                 de: {
+                    title: 'Alter',
                     enum: {
                         child: 'Kind',
                         teen: 'Jugendlicher',
@@ -432,6 +523,7 @@ const schemaTestBts = createOrderedMap({
                     }
                 },
                 en: {
+                    title: 'Ages',
                     enum: {
                         child: 'Child',
                         teen: 'Teenager',
@@ -440,7 +532,7 @@ const schemaTestBts = createOrderedMap({
                     }
                 }
             },
-        },
+        }
     }
 });
 
