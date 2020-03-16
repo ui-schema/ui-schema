@@ -435,6 +435,22 @@ const schemaTestBts = createOrderedMap({
                 '50%',
             ],
             default: '10%',
+            t: {
+                de: {
+                    enum: {
+                        '10%': '10% Rabatt',
+                        '20%': '20% Rabatt',
+                        '50%': '50% Rabatt',
+                    }
+                },
+                en: {
+                    enum: {
+                        '10%': '10% discount',
+                        '20%': '20% discount',
+                        '50%': '50% discount',
+                    }
+                }
+            },
         },
         ages: {
             type: "array",
