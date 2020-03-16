@@ -21,8 +21,12 @@ Widgets for multiple options, either as 'select 1 from n' or 'select n from n'.
 
 ```js
 import {
-    OptionsCheck, OptionsRadio
-} from "@ui-schema/ds-material/es/Widgets/Options";
+    OptionsRadio
+} from "@ui-schema/ds-material/es/Widgets/OptionsRadio";
+
+import {
+    OptionsCheck
+} from "@ui-schema/ds-material/es/Widgets/OptionsCheck";
 
 const widgets = {
     custom: {

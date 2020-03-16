@@ -5,20 +5,20 @@ import {useUID} from "react-uid";
 import {List, Map} from "immutable";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
-const RadioInput = ({classForm, enum_name, classLabel, required, classFormControl, value, onChange, storeKeys, label}) => {
+const RadioInput = ({classForm, enumName, classLabel, required, classFormControl, value, onChange, storeKeys, label}) => {
     const uid = useUID();
 
     return <div
         className={classForm.join(' ')}
-        key={enum_name}>
+        key={enumName}>
         <input
             required={required}
             id={'uis-' + uid}
             type="radio"
             className={classFormControl.join(' ')}
-            checked={enum_name === value}
+            checked={enumName === value}
             onChange={() => trace("switch onchange", performance.now(), () => {
-                onChange(updateValue(storeKeys, enum_name));
+                onChange(updateValue(storeKeys, enumName));
             })}/>
         <label
             className={classLabel.join(' ')}
@@ -49,7 +49,7 @@ const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, require
             return <RadioInput
                 key={enum_name}
                 classForm={classForm}
-                enum_name={enum_name}
+                enumName={enum_name}
                 classLabel={classLabel}
                 required={required}
                 ownKey={ownKey}

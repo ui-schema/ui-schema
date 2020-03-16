@@ -4,7 +4,7 @@ import {List, Map} from "immutable";
 import {useUID} from "react-uid";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
-const CheckInput = ({currentValue, onChange, label, enum_name, classForm, classLabel, classFormControl}) => {
+const CheckInput = ({currentValue, onChange, label, value, classForm, classLabel, classFormControl}) => {
     const uid = useUID();
 
     return <div className={classForm}>
@@ -12,7 +12,7 @@ const CheckInput = ({currentValue, onChange, label, enum_name, classForm, classL
             id={'uis-' + uid}
             type="checkbox"
             className={classFormControl}
-            value={enum_name}
+            value={value}
             checked={currentValue}
             onChange={onChange}/>
         <label
@@ -85,5 +85,3 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors, ownKey}) => {
 };
 
 export {OptionsCheck};
-
-
