@@ -328,12 +328,20 @@ const schemaTestBts = createOrderedMap({
         sizeMd: 6,
     },*/
     properties: {
-        quote: {
+        headline: {
             type: "string",
             minLength: 5,
             maxLength: 30,
             view: {
                 sizeMd: 6,
+            },
+            t: {
+               en: {
+                   title: 'Headline'
+               },
+               de: {
+                   title: 'Überschrift'
+               }
             }
         },
         center_items: {
@@ -342,18 +350,42 @@ const schemaTestBts = createOrderedMap({
             view: {
                 sizeMd: 12
             },
+            t: {
+                en: {
+                    title: 'Center Items'
+                },
+                de: {
+                    title: 'Elemente zentrieren'
+                }
+            }
         },
         birthday: {
             type: "string",
             format: "date",
             view: {
                 sizeMd: 6
+            },
+            t: {
+                en: {
+                    title: 'Birthday'
+                },
+                de: {
+                    title: 'Geburtstag'
+                }
             }
         },
         counter: {
             type: "number",
             view: {
                 sizeMd: 6
+            },
+            t: {
+                en: {
+                    title: 'Counter'
+                },
+                de: {
+                    title: 'Counter'
+                }
             }
         },
         coffee: {
