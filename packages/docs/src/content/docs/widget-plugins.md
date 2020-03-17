@@ -97,6 +97,7 @@ Currently includes the handlers of:
 - validateMultipleOf
 - validateConst
 - validateEnum
+- validateObject (additionalProperties, propertyNames)
 - validateContains (array contains min. 1 valid item)
 
 Supports `not` keyword for any validation, see [spec.](https://json-schema.org/understanding-json-schema/reference/combining.html#not). When `not` is specified, it's sub-schema is evaluated and not anything else - (behaviour may change).

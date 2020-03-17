@@ -1,31 +1,61 @@
 import {List, Map} from "immutable";
 import {validateSchema} from "../Schema/ValidateSchema";
+import {ERROR_WRONG_TYPE} from "./TypeValidator";
 
 const ERROR_DUPLICATE_ITEMS = 'duplicate-items';
 const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains';
+const ERROR_ADDITIONAL_ITEMS = 'additional-items';
 
 let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== index);
 
 /**
  * Return false when valid and string for an error
  *
- * @param schema
+ * @param schemaItems
  * @param value
+ * @param additionalItems
  * @param find
  * @return {boolean}
  */
-const validateArray = (schema, value, find = false) => {
+const validateArray = (schemaItems, value, additionalItems, find = false) => {
     // setting err results in: a) return false by default when validate, b) return ERROR_NOT_FOUND_CONTAINS by default when find
     // for a: after one fail err will be <string>
     // for b: after one full valid successful found err will be false
     let err = find ? ERROR_NOT_FOUND_CONTAINS : false;
     for(let val of value) {
-        err = validateSchema(schema, val);
-        if(err && !find) {
-            break;
-        }
-        if(find && (!err || (List.isList(err) && err.size === 0))) {
-            break;
+        if(List.isList(schemaItems)) {
+            // tuple validation
+            if(List.isList(val)) {
+                // for tuples, the actual item must be an array/list also
+                // todo: add values as array support
+                // todo: implement tuple validation
+                //   actually, only `additionalItems` should be needed to be validated here, the other values should be validated when the input for them is rendered
+                //   as "only what is mounted can be entered and validated"
+                //   but they must be usable for within conditional schemas
+                /*schemaItems.forEach(() => {
+                });*/
+                if(additionalItems === false && val.size > schemaItems.size) {
+                    if(!List.isList(err)) {
+                        err = List([err])
+                    }
+                    // todo: add index of erroneous item; or at all as one context list, only one error instead of multiple?
+                    err = err.push(List([ERROR_ADDITIONAL_ITEMS, Map({})]));
+                }
+            } else {
+                if(!List.isList(err)) {
+                    err = List([err])
+                }
+                err = err.push(List([ERROR_WRONG_TYPE, Map({actual: typeof value, arrayTupleValidation: true})]));
+            }
+        } else {
+            // single-validation
+            err = validateSchema(schemaItems, val);
+            if(err && !find) {
+                break;
+            }
+            if(find && (!err || (List.isList(err) && err.size === 0))) {
+                break;
+            }
         }
     }
 
@@ -35,20 +65,13 @@ const validateArray = (schema, value, find = false) => {
 const validateItems = (schema, value) => {
     let items = schema.get('items');
     if(items && value) {
-        let item_type = items.get('type');
-        if(item_type) {
-            // single-validation
-            let item_err = validateArray(items, value);
-            if(List.isList(item_err)) {
-                if(item_err.size) {
-                    return item_err;
-                }
-            } else if(item_err) {
+        let item_err = validateArray(items, value, schema.get('additionalItems'));
+        if(List.isList(item_err)) {
+            if(item_err.size) {
                 return item_err;
             }
-        } else {
-            // tuple validation
-            console.error('`items` tuple validation not implemented yet');
+        } else if(item_err) {
+            return item_err;
         }
     }
 
@@ -63,8 +86,7 @@ const validateContains = (schema, value) => {
     let contains_type = contains.get('type');
     if(!contains_type) return errors;
 
-    // single-validation
-    let item_err = validateArray(contains, value, true);
+    let item_err = validateArray(contains, value, undefined, true);
     if(List.isList(item_err)) {
         if(item_err.size) {
             errors = errors.concat(item_err);
@@ -134,10 +156,6 @@ const arrayValidator = {
                 valid = false;
                 errors = errors.concat(containsError);
             }
-            /*} else {
-                // tuple validation
-                console.error('`contains` tuple validation not implemented yet');
-            }*/
         }
         return {errors, valid}
     }
