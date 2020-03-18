@@ -1,6 +1,6 @@
 import React from 'react';
 import {BootstrapDashboard} from '../ds/bootstrap/layout/Main';
-import {schemaTestBts, dataDemoMain} from "../schemas/demoMain";
+import {schemaTestBts, dataDemoMain} from "../schemas/demoBts";
 import {schemaGrid} from "../schemas/demoGrid";
 import {widgets,} from "@ui-schema/ds-bootstrap";
 import {SchemaEditor, isInvalid, createOrderedMap, createStore} from "@ui-schema/ui-schema";
