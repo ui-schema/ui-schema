@@ -58,6 +58,50 @@ const schemaLists = createOrderedMap({
                 }
             },
         },
+        addresses: {
+            type: "array",
+            widget: "GenericList",
+            view: {
+                sizeXs: 12,
+                sizeMd: 12,
+                btnSize: 'small'
+            },
+            items: [
+                {
+                    type: "number",
+                    title: "Street No.",
+                    view: {
+                        sizeXs: 6
+                    },
+                },
+                {
+                    type: "string",
+                    title: "Street",
+                    view: {
+                        sizeXs: 6
+                    },
+                },
+                {
+                    type: "string",
+                    widget: "Select",
+                    title: "Street Type",
+                    enum: ["Street", "Avenue", "Boulevard"],
+                    view: {
+                        sizeXs: 6
+                    },
+                },
+                {
+                    type: "string",
+                    widget: "Select",
+                    title: "Direction",
+                    enum: ["NW", "NE", "SW", "SE"],
+                    view: {
+                        sizeXs: 6
+                    },
+                }
+            ],
+            additionalItems: false,
+        },
         labels: {
             type: "array",
             widget: "SimpleList",

@@ -5,6 +5,7 @@ import {multipleOfValidator} from "./MultipleOfValidator";
 import {valueValidatorConst, valueValidatorEnum} from "./ValueValidator";
 import {patternValidator} from "./PatternValidator";
 import {arrayValidator} from "./ArrayValidator";
+import {objectValidator} from "./ObjectValidator";
 
 export const validators = [
     requiredValidator,
@@ -15,4 +16,5 @@ export const validators = [
     valueValidatorEnum,
     patternValidator,
     arrayValidator,
+    objectValidator,
 ];

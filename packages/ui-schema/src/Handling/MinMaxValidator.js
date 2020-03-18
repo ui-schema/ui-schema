@@ -62,6 +62,35 @@ const validateMinMax = (type, schema, value, strict) => {
         }
     }
 
+    if(type === 'object') {
+        let minProperties = schema.get('minProperties');
+        let maxProperties = schema.get('maxProperties');
+
+        if(minProperties) {
+            if(Map.isMap(value)) {
+                if(!(!strict && 0 === value.keySeq().size) && value.keySeq().size < minProperties) {
+                    errors = errors.push(List([ERROR_MIN_LENGTH, Map({min: minProperties})]));
+                }
+            } else if(typeof value === 'object') {
+                if(!(!strict && 0 === Object.keys(value).length) && Object.keys(value).length < minProperties) {
+                    errors = errors.push(List([ERROR_MIN_LENGTH, Map({min: minProperties})]));
+                }
+            }
+        }
+
+        if(maxProperties) {
+            if(Map.isMap(value)) {
+                if(!(!strict && 0 === value.keySeq().size) && value.keySeq().size > maxProperties) {
+                    errors = errors.push(List([ERROR_MAX_LENGTH, Map({max: maxProperties})]));
+                }
+            } else if(typeof value === 'object') {
+                if(!(!strict && 0 === Object.keys(value).length) && Object.keys(value).length > maxProperties) {
+                    errors = errors.push(List([ERROR_MAX_LENGTH, Map({max: maxProperties})]));
+                }
+            }
+        }
+    }
+
     if(type === 'number') {
         let minimum = schema.get('minimum');
         let exclusiveMinimum = schema.get('exclusiveMinimum');

@@ -6,6 +6,7 @@ import {validateMinMax} from "../Handling/MinMaxValidator";
 import {ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum} from "../Handling/ValueValidator";
 import {ERROR_MULTIPLE_OF, validateMultipleOf} from "../Handling/MultipleOfValidator";
 import {ERROR_NOT_SET, validateContains} from "..";
+import {validateObject} from "../Handling/ObjectValidator";
 
 /**
  * Return false when valid and string/List for an error
@@ -28,6 +29,7 @@ const validateSchema = (schema, value) => {
 
     let err = false;
 
+    // todoL performance optimizes at validateMinMax, validateObject, validateContains
     if(!validateType(value, type)) {
         err = ERROR_WRONG_TYPE;
     } else if(!validatePattern(type, value, pattern)) {
@@ -41,6 +43,8 @@ const validateSchema = (schema, value) => {
         err = ERROR_ENUM_MISMATCH;
     } else if(!validateMultipleOf(type, schema, value)) {
         err = ERROR_MULTIPLE_OF;
+    } else if(validateObject(schema, value)) {
+        err = validateObject(schema, value);
     } else if(validateContains(schema, value).size) {
         // todo: duplicate validate checks when invalid [performance]
         err = validateContains(schema, value);
