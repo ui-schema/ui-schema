@@ -4,6 +4,7 @@ import {BoolRenderer} from "./Widgets/OptionsBoolean";
 import {OptionsRadio} from "./Widgets/OptionsRadio";
 import {OptionsCheck} from "./Widgets/OptionsCheck";
 import {Select, SelectMulti} from "./Widgets/Select";
+import {SimpleList} from "./Widgets/SimpleList";
 import {RootRenderer, GroupRenderer} from "./Grid";
 import {pluginStack} from "./pluginStack";
 
@@ -23,7 +24,8 @@ const widgets = {
         OptionsRadio,
         OptionsCheck,
         Select,
-        SelectMulti
+        SelectMulti,
+        SimpleList
     },
 };
 
