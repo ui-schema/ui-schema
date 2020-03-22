@@ -5,7 +5,6 @@ import {widgets} from "@ui-schema/ds-material";
 import {RichCodeEditor,} from "../RichCodeEditor";
 import {browserT} from "../../t";
 import Loadable from "react-loadable";
-import {LoadingPageModule} from "../Layout/Layout";
 import style from "codemirror/lib/codemirror.css";
 import themeDark from 'codemirror/theme/duotone-dark.css';
 import themeLight from 'codemirror/theme/duotone-light.css';
@@ -20,6 +19,7 @@ import {
     ColorCircleStatic, ColorTwitterStatic,
     ColorSketchStatic, ColorSketchDialog,
 } from "@ui-schema/material-color";
+import {LoadingCircular} from "@control-ui/core/es/LoadingCircular";
 
 const customWidgets = {...widgets};
 customWidgets.custom = {
@@ -44,27 +44,27 @@ customWidgets.custom = {
     ColorSketchDialog,
     Code: Loadable({
         loader: () => import('@ui-schema/material-code').then(r => r.Code),
-        loading: () => <LoadingPageModule title={'Loading Code Widget'}/>,
+        loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
     }),
     DateTime: Loadable({
         loader: () => import('@ui-schema/material-pickers').then(r => r.DateTimePicker),
-        loading: () => <LoadingPageModule title={'Loading DateTime Widget'}/>,
+        loading: () => <LoadingCircular title={'Loading DateTime Widget'}/>,
     }),
     Date: Loadable({
         loader: () => import('@ui-schema/material-pickers').then(r => r.DatePicker),
-        loading: () => <LoadingPageModule title={'Loading Date Widget'}/>,
+        loading: () => <LoadingCircular title={'Loading Date Widget'}/>,
     }),
     Time: Loadable({
         loader: () => import('@ui-schema/material-pickers').then(r => r.TimePicker),
-        loading: () => <LoadingPageModule title={'Loading Time Widget'}/>,
+        loading: () => <LoadingCircular title={'Loading Time Widget'}/>,
     }),
     RichText: Loadable({
         loader: () => import('@ui-schema/material-richtext/es/RichText').then(r => r.RichText),
-        loading: () => <LoadingPageModule title={'Loading RichText Widget'}/>,
+        loading: () => <LoadingCircular title={'Loading RichText Widget'}/>,
     }),
     RichTextInline: Loadable({
         loader: () => import('@ui-schema/material-richtext/es/RichTextInline').then(r => r.RichTextInline),
-        loading: () => <LoadingPageModule title={'Loading RichText Widget'}/>,
+        loading: () => <LoadingCircular title={'Loading RichText Widget'}/>,
     })
 };
 

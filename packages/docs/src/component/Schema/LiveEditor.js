@@ -12,7 +12,7 @@ import {isInvalid, createOrderedMap, SchemaEditorProvider, SchemaRootRenderer, c
 import {widgets} from "@ui-schema/ds-material";
 import {RichCodeEditor, themes} from "../RichCodeEditor";
 import {Markdown} from "../Markdown";
-import {PageNotFound} from "../Page/PageNotFound";
+import PageNotFound from "../../page/PageNotFound";
 import {useTranslation} from "react-i18next";
 import {schemas} from "../../schemas/_list";
 

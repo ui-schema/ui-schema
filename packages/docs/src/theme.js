@@ -1,7 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import {ThemeProvider} from "./Theme";
 
 const universal = {
     typography: {
@@ -90,23 +87,7 @@ const themeLight = createMuiTheme({
     ...universal,
 });
 
-const themes = {
+export const themes = {
     dark: themeDark,
     light: themeLight,
-};
-
-export default function AppTheme(props) {
-    const {children} = props;
-
-    return (
-        <ThemeProvider themes={themes} initial={
-            window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-        }>
-            {children}
-        </ThemeProvider>
-    );
-}
-
-AppTheme.propTypes = {
-    children: PropTypes.element.isRequired,
 };

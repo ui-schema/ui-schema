@@ -1,14 +1,13 @@
 import React from "react";
-import {Typography, Box, Grid, Button, Container, Paper,} from "@material-ui/core";
-import {containerStyle, Layout} from "../Layout/Layout";
-import Head from "../Layout/Head";
-import {Markdown} from "../Markdown";
-import DemoEditor from "../Schema/DemoEditor";
-import {RichCodeEditor} from "../RichCodeEditor";
-import {LoadingCircular} from "../LoadingCircular";
-import {HeadlineMenu} from "../LinkableHeadline";
+import {Typography, Box, Grid, Button, Paper,} from "@material-ui/core";
+import {Markdown} from "../component/Markdown";
+import DemoEditor from "../component/Schema/DemoEditor";
+import {RichCodeEditor} from "../component/RichCodeEditor";
 import {useHistory} from "react-router-dom";
-
+import {HeadlineMenu} from "@control-ui/docs/es/LinkableHeadline";
+import Head from "@control-ui/core/es/Head";
+import {PageBox, PageContent} from "@control-ui/core/es/PageContent";
+import {LoadingCircular} from "@control-ui/core/es/LoadingCircular";
 
 const demoSchema = {
     type: 'object',
@@ -32,7 +31,6 @@ const demoSchema = {
 };
 
 const PageQuickStart = () => {
-    const classes = containerStyle();
     const history = useHistory();
     const [ds, setDS] = React.useState('mui');
 
@@ -46,13 +44,13 @@ const PageQuickStart = () => {
         }
     }, [hash]);
 
-    return <Layout>
+    return <>
         <Head
             title={'Quick-Start UI-Schema'}
             description={'In 6 Steps to a React form which sends the data to an API! Build with JSON-Schema and Material-UI or Bootstrap'}
         />
-        <Container maxWidth={'md'} fixed className={classes.root}>
-            <Paper style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+        <PageContent>
+            <PageBox style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}}>
                 <Markdown content source={`
 # Quick-Start UI-Schema
 
@@ -63,7 +61,7 @@ UI-Schema works with JSON-Schema and multiple design-systems, each design-system
 See the [**list of widgets**](/docs/overview#widget-list) for the different design-system support.
 `}/>
                 <HeadlineMenu initial/>
-            </Paper>
+            </PageBox>
 
             <Paper style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
                 <Markdown content source={`
@@ -332,8 +330,8 @@ Test the demo form below, it will send the entered data to [httpbin.org](https:/
                     </Grid>
                 </Grid>
             </Paper>
-        </Container>
-    </Layout>;
+        </PageContent>
+    </>;
 };
 
 const QuickStartEditor = () => {

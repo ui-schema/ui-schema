@@ -1,7 +1,7 @@
 import Typography from "@material-ui/core/Typography";
-import {Link} from "./Link";
 import React from "react";
-import {useTranslation} from "../lib/I18n";
+import {useTranslation} from "@control-ui/core/es/Provider/I18n";
+import {Link} from "@control-ui/core/es/Link";
 
 export default () => {
     const {i18n} = useTranslation();

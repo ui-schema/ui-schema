@@ -1,20 +1,19 @@
-import {Layout} from "../Layout/Layout";
-import {Container, Paper, Typography} from "@material-ui/core";
-import {PageTitle} from "../Layout/PageContent";
-import Nav from "../Nav";
-import NavProject from "../NavProject";
 import React from "react";
-import Head from "../Layout/Head";
-import {Logo} from '../../logo'
+import {Paper, Typography} from "@material-ui/core";
+import {PageTitle, PageContent} from "@control-ui/core/es/PageContent";
+import NavProject from "../component/NavProject";
+import Head from "@control-ui/core/es/Head";
+import {Logo} from '../asset/logo'
+import Nav from "../component/Nav";
 
-function PageMain() {
+export default function PageMain() {
     return (
-        <Layout>
+        <>
             <Head
                 title={'UI-Schema · Form Generator and Widget System with JSON-Schema'}
                 description={'Build complex forms and UIs easily in React! Choose a design-system, write a JSON-Schema, connect the form data to your logic.'}
             />
-            <Container maxWidth={'md'} fixed style={{display: 'flex', flexDirection: 'column', flexGrow: 2,}}>
+            <PageContent>
                 <PageTitle title={<span style={{display: 'flex', alignItems: 'center'}}>
                     <Logo width={55}/>
                     <span style={{marginLeft: 16, fontSize: '4rem'}}>Schema</span>
@@ -39,9 +38,7 @@ function PageMain() {
                 <Paper style={{margin: 12, padding: 24}}>
                     <NavProject/>
                 </Paper>
-            </Container>
-        </Layout>
+            </PageContent>
+        </>
     );
 }
-
-export default PageMain

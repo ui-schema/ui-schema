@@ -5,7 +5,7 @@
     "private": true,
     "main": "index.js",
     "scripts": {
-        "start": "npm run clean-dist && npm run hoist && npm run serve -- demo",
+        "start": "npm run clean-dist && npm run hoist && npm run serve -- docs",
         "docs": "npm run serve -- docs",
         "serve": "cross-env NODE_ENV=development node packer/packer.js --serve",
         "prebuild": "npm run clean-dist && npm run hoist",

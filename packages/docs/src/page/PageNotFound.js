@@ -1,18 +1,17 @@
-import {Layout} from "../Layout/Layout";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import {PageTitle} from "../Layout/PageContent";
-import Nav from "../Nav";
+import {PageTitle} from "@control-ui/core/es/PageContent";
 import React from "react";
-import Head from "../Layout/Head";
-import {Link} from "../Link";
-import {useTranslation} from "../../lib/I18n";
+import Head from "@control-ui/core/es/Head";
+import {Link} from "@control-ui/core/es/Link";
+import Nav from "../component/Nav";
+import {useTranslation} from "@control-ui/core/es/Provider/I18n";
 
 function PageNotFound() {
     const {i18n} = useTranslation();
     return (
-        <Layout>
+        <>
             <Head
                 title={'Page Not Found · UI-Schema'}
                 description={''}
@@ -28,8 +27,8 @@ function PageNotFound() {
                     <Nav/>
                 </Paper>
             </Container>
-        </Layout>
+        </>
     );
 }
 
-export {PageNotFound}
+export default PageNotFound

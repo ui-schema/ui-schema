@@ -1,18 +1,17 @@
 import React from "react";
-import {Container, Paper,} from "@material-ui/core";
-import {Layout} from "../Layout/Layout";
-import Head from "../Layout/Head";
+import {Paper,} from "@material-ui/core";
+import {PageContent} from "@control-ui/core/es/PageContent";
+import Head from "@control-ui/core/es/Head";
 
 const DocsHandler = ({children}) => {
-
-    return <Layout>
+    return <>
         <Head title={'UI-Schema'}/>
-        <Container maxWidth={'md'} fixed style={{display: 'flex', flexDirection: 'column', flexGrow: 2,}}>
-            <Paper style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+        <PageContent>
+            <Paper elevation={4} style={{margin: 12, padding: 24}}>
                 {children}
             </Paper>
-        </Container>
-    </Layout>;
+        </PageContent>
+    </>;
 };
 
 const PageImpress = () => <DocsHandler>
