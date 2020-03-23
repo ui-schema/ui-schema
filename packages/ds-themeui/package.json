@@ -27,6 +27,7 @@
     },
     "devDependencies": {
         "react": "^16.12",
+        "@ui-schema/ui-schema": "0.0.14",
         "theme-ui": "^0.3.0"
     },
     "dependencies": {

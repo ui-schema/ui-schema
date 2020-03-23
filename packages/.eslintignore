@@ -1,0 +1,12 @@
+/dist
+/ds-material/es
+/ds-material/lib
+/ui-schema/es
+/ui-schema/lib
+/material-pickers/es
+/material-pickers/lib
+/material-richtext/es
+/material-richtext/lib
+/material-code/es
+/material-code/lib
+/&.d.ts

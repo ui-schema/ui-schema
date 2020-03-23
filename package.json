@@ -5,7 +5,7 @@
     "private": true,
     "main": "index.js",
     "scripts": {
-        "start": "npm run clean-dist && npm run hoist && npm run serve -- docs",
+        "start": "npm run clean-dist && npm run hoist && npm run serve -- demo",
         "docs": "npm run serve -- docs",
         "serve": "cross-env NODE_ENV=development node packer/packer.js --serve",
         "prebuild": "npm run clean-dist && npm run hoist",
@@ -79,6 +79,7 @@
         "webpack-split-chunks": "^0.2.1"
     },
     "dependencies": {
-        "cross-env": "^6.0.3"
+        "cross-env": "^6.0.3",
+        "dtslint": "^3.3.0"
     }
 }

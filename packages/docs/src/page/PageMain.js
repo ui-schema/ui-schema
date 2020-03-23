@@ -13,7 +13,7 @@ export default function PageMain() {
                 title={'UI-Schema · Form Generator and Widget System with JSON-Schema'}
                 description={'Build complex forms and UIs easily in React! Choose a design-system, write a JSON-Schema, connect the form data to your logic.'}
             />
-            <PageContent>
+            <PageContent maxWidth={'md'}>
                 <PageTitle title={<span style={{display: 'flex', alignItems: 'center'}}>
                     <Logo width={55}/>
                     <span style={{marginLeft: 16, fontSize: '4rem'}}>Schema</span>

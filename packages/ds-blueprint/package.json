@@ -28,6 +28,7 @@
 	},
 	"devDependencies": {
 		"@blueprintjs/core": "^3.24.0",
+		"@ui-schema/ui-schema": "0.0.14",
 		"react": "^16.12"
 	},
 	"dependencies": {

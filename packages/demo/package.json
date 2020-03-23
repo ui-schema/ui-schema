@@ -22,7 +22,7 @@
         "@ui-schema/material-color": "^0.0.14",
         "@ui-schema/material-pickers": "^0.0.14",
         "@ui-schema/material-richtext": "^0.0.14",
-        "@ui-schema/ui-schema": "^0.0.14",
+        "@ui-schema/ui-schema": "0.0.14",
         "antd": "^4.0.0",
         "bootstrap": "^4.4.1",
         "clsx": "^1.1.0",

@@ -1,0 +1,34 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "es5",
+        "lib": [
+            "es6",
+            "dom"
+        ],
+        "jsx": "preserve",
+        "moduleResolution": "node",
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "noEmit": true,
+        "experimentalDecorators": true,
+        "baseUrl": "../",
+        "allowSyntheticDefaultImports": true,
+        "noErrorTruncation": true,
+        "allowJs": true,
+        "paths": {
+            "@ui-schema/ui-schema": [
+                "./packages/ui-schema/src"
+            ],
+            "@ui-schema/ds-material": [
+                "./packages/ds-material/src"
+            ],
+            "@ui-schema/ds-bootstrap": [
+                "./packages/ds-bootstrap/src"
+            ]
+        }
+    },
+    "exclude": [
+        "**/build/"
+    ]
+}

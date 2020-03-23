@@ -13,7 +13,7 @@
         "@ui-schema/material-color": "^0.0.14",
         "@ui-schema/material-pickers": "^0.0.14",
         "@ui-schema/material-richtext": "^0.0.14",
-        "@ui-schema/ui-schema": "^0.0.14",
+        "@ui-schema/ui-schema": "0.0.14",
         "@control-ui/core": "0.0.3",
         "@control-ui/layouts": "0.0.3",
         "@control-ui/docs": "0.0.3",

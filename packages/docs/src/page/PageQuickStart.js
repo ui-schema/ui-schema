@@ -49,7 +49,7 @@ const PageQuickStart = () => {
             title={'Quick-Start UI-Schema'}
             description={'In 6 Steps to a React form which sends the data to an API! Build with JSON-Schema and Material-UI or Bootstrap'}
         />
-        <PageContent>
+        <PageContent maxWidth={'md'}>
             <PageBox style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}}>
                 <Markdown content source={`
 # Quick-Start UI-Schema
