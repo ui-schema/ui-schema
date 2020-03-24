@@ -5,13 +5,13 @@
     "private": true,
     "main": "index.js",
     "scripts": {
-        "start": "npm run clean-dist && npm run hoist && node packer.js --link && npm run serve -- docs",
+        "start": "npm run clean-dist && npm run hoist && npm run serve -- docs",
         "docs": "npm run serve -- docs",
-        "serve": "cross-env NODE_ENV=development node packer.js --serve",
-        "sssprebuild": "npm run clean-dist && npm run hoist",
-        "build": "cross-env NODE_ENV=production CI=true node packer.js --build",
+        "serve": "cross-env NODE_ENV=development node packerConfig.js --serve",
+        "prebuild": "npm run clean-dist && npm run hoist",
+        "build": "cross-env NODE_ENV=production CI=true node packerConfig.js --build",
         "clean": "npm run clean-dist && lerna clean -y",
-        "clean-dist": "node packer.js --clean",
+        "clean-dist": "node packerConfig.js --clean",
         "bootstrap": "lerna bootstrap",
         "hoist": "lerna bootstrap --hoist",
         "release": "lerna publish from-package --no-git-reset"

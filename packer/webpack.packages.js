@@ -2,6 +2,7 @@
 
 const path = require('path');
 const {getConfig, commonBabelPlugins} = require('./webpack.common');
+const CopyPlugin = require('copy-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 const babelPresets = [
@@ -14,44 +15,15 @@ const babelPlugins = [
 ];
 
 function getPackageBuilder(context, entry, dist, library, resolve, externals) {
-    return getConfig({
-        mode: 'production',
-        entry: {index: entry},
-        output: {
-            filename: '[name].js',
-            path: path.resolve(dist, 'build', 'cjs'),
-            library,
-            libraryTarget: 'umd',
-        },
-        performance: {
-            hints: 'warning',
-            // maxEntrypointSize: 500000,// 500kb
-            maxEntrypointSize: 2000000,// 1000kb
-            maxAssetSize: 2000000,
-        },
-        plugins: [
-            new CleanWebpackPlugin(),
-        ],
-        externals,
-        resolve: resolve ? {
-            modules: resolve,
-        } : undefined
-    }, {
-        context,
-        babelPresets: [
-            ['@babel/preset-env', {loose: true}],
-            ...babelPresets,
-        ],
-        babelPlugin: [
-            ...babelPlugins,
-            '@babel/plugin-transform-modules-commonjs'
-        ],
-        minimize: false,
-    });
 }
 
 const getPackagesConfig = (packages) => {
     const getPackagesConfig = [];
+
+    const alias = Object.values(packages).reduce((aliases, {name, root}) => {
+        aliases[name] = root + '/build'
+        return aliases;
+    }, {});
 
     Object.keys(packages).forEach(library => {
         let externals = {};
@@ -62,19 +34,51 @@ const getPackagesConfig = (packages) => {
             }
         }
 
-        getPackagesConfig.push(getPackageBuilder(
-            packages[library].root,
-            packages[library].entry,
-            packages[library].root,
-            library,
-            [
-                path.resolve(__dirname, '../', 'node_modules'),
-                path.resolve(packages[library].root, 'node_modules'),
-            ],
-            {
-                ...externals
+        getPackagesConfig.push(getConfig({
+            mode: 'production',
+            entry: {index: packages[library].entry},
+            /*output: {
+                filename: '[name].js',
+                path: path.resolve(packages[library].root, 'build', 'cjs'),
+                library,
+                libraryTarget: 'umd',
+            },*/
+            performance: {
+                hints: 'warning',
+                // maxEntrypointSize: 500000,// 500kb
+                maxEntrypointSize: 2000000,// 1000kb
+                maxAssetSize: 2000000,
             },
-        ));
+            plugins: [
+                new CleanWebpackPlugin(),
+                new CopyPlugin([
+                    {
+                        from: '**/*.d.ts',
+                        to: path.resolve(packages[library].root, 'build/'),
+                        context: path.resolve(packages[library].root, 'src'),
+                    },
+                ]),
+            ],
+            externals: externals,
+            resolve: {
+                modules: [
+                    path.resolve(__dirname, '../', 'node_modules'),
+                    path.resolve(packages[library].root, 'node_modules'),
+                ],
+                alias,
+            }
+        }, {
+            context: packages[library].root,
+            babelPresets: [
+                ['@babel/preset-env', {loose: true}],
+                ...babelPresets,
+            ],
+            babelPlugin: [
+                ...babelPlugins,
+                '@babel/plugin-transform-modules-commonjs'
+            ],
+            minimize: false,
+        }));
     });
     return getPackagesConfig;
 }
@@ -82,5 +86,3 @@ const getPackagesConfig = (packages) => {
 exports.getPackagesConfig = getPackagesConfig;
 exports.packagesBabelPresets = babelPresets;
 exports.packagesBabelPlugins = babelPlugins;
-
-exports.getPackagesRoot = packages => Object.keys(packages).map(pack => packages[pack].root);

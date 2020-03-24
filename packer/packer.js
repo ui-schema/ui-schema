@@ -4,7 +4,7 @@ const argv = require('minimist')(process.argv.slice(2));
 const {delDir} = require('./tools');
 const {buildEsModules} = require('./babel');
 const {buildWebpack, serveWebpack} = require('./webpack');
-const {getPackagesRoot, getPackagesConfig,} = require('./webpack.packages');
+const {getPackagesConfig,} = require('./webpack.packages');
 const {buildAppPair} = require('./webpack.apps');
 
 const packer = (apps, packages) => {
@@ -20,7 +20,7 @@ const packer = (apps, packages) => {
     const webpackPartialRoot = path.join(__dirname, '../packages');
     const webpackPartialFile = path.join(webpackPartialRoot, 'webpackPartialConfig.js');
     const webpackPartial = `
-    const path = require('path');
+const path = require('path');
 
 module.exports = {
     resolve: {
@@ -48,8 +48,13 @@ module.exports = {
         }
 
         // todo: lib/es should be like configured
-        getPackagesRoot(packages).forEach(pack => {
-            let pack_mod = path.resolve(pack, 'build');
+        Object.values(packages).forEach(({name, noClean, root}) => {
+            if(noClean) {
+                console.log('Skip deleting build of ' + name)
+                return;
+            }
+
+            let pack_mod = path.resolve(root, 'build');
             promises.push(delDir(pack_mod));
 
             /*let pack_mod = path.resolve(pack, 'lib');
@@ -61,7 +66,7 @@ module.exports = {
                 .then((e) => e.length === promises.length ?
                     promises.length ? console.log('deleted all dists!') : console.log('no dists exists.')
                     : undefined);
-        });
+        })
     }
 
     if(doBuild) {

@@ -7,17 +7,20 @@ const spawnBabel = (args) => {
     return spawn(require.resolve('../node_modules/.bin/babel'), args, {stdio: 'inherit'});
 };
 
-function buildEsModules(packages, args = [[]]) {
+function buildEsModules(packages, targets = [
+    {distSuffix: '', args: ['--env-name', 'cjs']},
+    {distSuffix: '/esm', args: []},
+]) {
     let babels = [];
     const babelFile = path.join(__dirname, '../', 'babel.config.json');
 
     return new Promise((resolve, reject) => {
         Object.keys(packages).forEach(pack => {
-            babels.push(...args.map(arg => (resolve, reject) => {
+            babels.push(...targets.map(target => new Promise((resolve, reject) => {
                 const entry = packages[pack].entry;
-                const dist = path.resolve(packages[pack].root, 'build');
+                const dist = path.resolve(packages[pack].root, 'build' + target.distSuffix);
 
-                let args = [entry, ...arg, '--out-dir', dist];
+                let args = [entry, ...target.args, '--out-dir', dist];
 
                 if(-1 === process.argv.indexOf('--clean')) {
                     let babelConfig = {
@@ -38,7 +41,7 @@ function buildEsModules(packages, args = [[]]) {
                         });
                     });
                 }
-            }));
+            })));
         });
 
         Promise.all(babels)

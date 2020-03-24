@@ -2,7 +2,7 @@ const path = require('path');
 const {buildExternal} = require('./packer/tools');
 
 const apps = {
-    /*demo: {
+    demo: {
         root: path.resolve(__dirname, 'packages', 'demo'),
         template: path.resolve(__dirname, 'packages', 'demo/public/index.html'),
         publicPath: path.resolve(__dirname, 'packages', 'demo/public'),// dev-server
@@ -11,7 +11,7 @@ const apps = {
         dist: path.resolve(__dirname, 'dist', 'demo'),
         servedPath: '/',// todo: make package.json homepage dependent,
         vendors: ['react-error-boundary', 'immutable', '@material-ui/core', '@material-ui/icons'],
-    },*/
+    },
     docs: {
         root: path.resolve(__dirname, 'packages', 'docs'),
         template: path.resolve(__dirname, 'packages', 'docs/public/index.html'),
@@ -36,6 +36,7 @@ const packages = {
         "react-dom": buildExternal("react-dom"),
     },
     dsMaterial: {
+        // noClean: true,
         name: '@ui-schema/ds-material',
         root: path.resolve(__dirname, 'packages', 'ds-material'),
         entry: path.resolve(__dirname, 'packages', 'ds-material/src/'),
@@ -57,7 +58,8 @@ const packages = {
             "react-dom": buildExternal("react-dom"),
         }
     },
-    /*dsBlueprint: {
+    dsBlueprint: {
+        name: '@ui-schema/ds-blueprint',
         root: path.resolve(__dirname, 'packages', 'ds-blueprint'),
         entry: path.resolve(__dirname, 'packages', 'ds-blueprint/src/'),
         externals: {
@@ -68,6 +70,7 @@ const packages = {
         }
     },
     dsSemanticui: {
+        name: '@ui-schema/ds-semanticui',
         root: path.resolve(__dirname, 'packages', 'ds-semanticui'),
         entry: path.resolve(__dirname, 'packages', 'ds-semanticui/src/'),
         externals: {
@@ -78,6 +81,7 @@ const packages = {
         }
     },
     dsAntdesign: {
+        name: '@ui-schema/ds-antdesign',
         root: path.resolve(__dirname, 'packages', 'ds-antdesign'),
         entry: path.resolve(__dirname, 'packages', 'ds-antdesign/src/'),
         externals: {
@@ -88,6 +92,7 @@ const packages = {
         }
     },
     dsThemeui: {
+        name: '@ui-schema/ds-themeui',
         root: path.resolve(__dirname, 'packages', 'ds-themeui'),
         entry: path.resolve(__dirname, 'packages', 'ds-themeui/src/'),
         externals: {
@@ -96,7 +101,7 @@ const packages = {
             react: buildExternal("react"),
             "react-dom": buildExternal("react-dom"),
         }
-    },*/
+    },
     materialPickers: {
         name: '@ui-schema/material-pickers',
         root: path.resolve(__dirname, 'packages', 'material-pickers'),
@@ -157,7 +162,7 @@ const packages = {
 };
 
 
-const packer = require('./packer/packer')
+const packerConfig = require('./packer/packer')
 
-packer(apps, packages)
+packerConfig(apps, packages)
 
