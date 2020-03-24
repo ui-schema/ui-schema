@@ -1,6 +1,6 @@
 import React from "react";
 import {NextPluginRenderer, NextPluginRendererMemo} from "../Schema/EditorPluginStack";
-import {validateSchema} from "../Validation/ValidateSchema";
+import {validateSchema} from "../Validation/validateSchema";
 import {useSchemaStore} from "../Schema/EditorStore";
 import {checkValueExists} from "../Validators/RequiredValidator";
 import {mergeSchema} from "../Utils/mergeSchema";

@@ -1,5 +1,5 @@
 import {List, Map} from "immutable";
-import {validateSchema} from "../Validation/ValidateSchema";
+import {validateSchema} from "../Validation/validateSchema";
 import {ERROR_WRONG_TYPE} from "./TypeValidator";
 
 const ERROR_DUPLICATE_ITEMS = 'duplicate-items';

@@ -1,6 +1,6 @@
 import React from "react";
 import {NextPluginRenderer, NextPluginRendererMemo} from "../Schema/EditorPluginStack";
-import {validateSchemaObject} from "../Validation/ValidateSchema";
+import {validateSchemaObject} from "../Validation/validateSchema";
 import {useSchemaStore} from "../Schema/EditorStore";
 import {mergeSchema} from "../Utils/mergeSchema";
 import {Map} from 'immutable';

@@ -9,7 +9,7 @@ export * from './Utils/MoveItem';
 export * from './Utils/Trans';
 export * from './Utils/schemaToNative';
 export * from './Plugins/DefaultHandler';
-export * from './Validation/ValidateSchema';
+export * from './Validation/validateSchema';
 export * from './Validation/ValidityReporter';
 export * from './Validation/ValidatorStack';
 export * from './Validators/validators';
