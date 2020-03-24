@@ -4,7 +4,7 @@ import {beautifyKey, updateValidity, updateValue} from "@ui-schema/ui-schema";
 import {useUID} from "react-uid";
 import FormLabel from "@material-ui/core/FormLabel";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {ValidityHelperText} from "@ui-schema/ds-material/es/Component/LocaleHelperText";
+import {ValidityHelperText} from "@ui-schema/ds-material/Component/LocaleHelperText";
 import {Controlled as CodeMirror} from "react-codemirror2";
 import {useWidgetCode} from "./CodeProvider";
 

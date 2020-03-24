@@ -5,8 +5,6 @@
 	"homepage": "https://ui-schema.bemit.codes",
 	"author": "Michael Becker <michael@bemit.codes>",
 	"license": "MIT",
-	"main": "./lib/index.js",
-	"module": "./es/index.js",
 	"files": [
 		"es",
 		"lib"

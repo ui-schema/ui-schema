@@ -2,7 +2,6 @@
 
 const path = require('path');
 const {getConfig, commonBabelPlugins} = require('./webpack.common');
-const {packages} = require('../config');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 const babelPresets = [
@@ -14,14 +13,13 @@ const babelPlugins = [
     ['@babel/plugin-proposal-class-properties', {loose: true}],
 ];
 
-function getPackageBuilders(context, entry, dist, library, resolve, externals) {
-    const builders = [];
-    builders.push(getConfig({
+function getPackageBuilder(context, entry, dist, library, resolve, externals) {
+    return getConfig({
         mode: 'production',
         entry: {index: entry},
         output: {
             filename: '[name].js',
-            path: path.resolve(dist, 'lib'),
+            path: path.resolve(dist, 'build', 'cjs'),
             library,
             libraryTarget: 'umd',
         },
@@ -49,59 +47,40 @@ function getPackageBuilders(context, entry, dist, library, resolve, externals) {
             '@babel/plugin-transform-modules-commonjs'
         ],
         minimize: false,
-    }));
-
-    return builders;
+    });
 }
 
-const buildersPackages = [];
+const getPackagesConfig = (packages) => {
+    const getPackagesConfig = [];
 
-Object.keys(packages).forEach(library => {
-    let externals = {};
+    Object.keys(packages).forEach(library => {
+        let externals = {};
 
-    if(packages[library].externals) {
-        externals = {
-            ...packages[library].externals
+        if(packages[library].externals) {
+            externals = {
+                ...packages[library].externals
+            }
         }
-    }
 
-    buildersPackages.push(...getPackageBuilders(
-        packages[library].root,
-        packages[library].entry,
-        packages[library].root,
-        library,
-        [
-            path.resolve(__dirname, '../', 'node_modules'),
-            path.resolve(packages[library].root, 'node_modules'),
-        ],
-        {
-            ...externals
-        },
-    ));
-});
+        getPackagesConfig.push(getPackageBuilder(
+            packages[library].root,
+            packages[library].entry,
+            packages[library].root,
+            library,
+            [
+                path.resolve(__dirname, '../', 'node_modules'),
+                path.resolve(packages[library].root, 'node_modules'),
+            ],
+            {
+                ...externals
+            },
+        ));
+    });
+    return getPackagesConfig;
+}
 
-exports.buildersPackages = buildersPackages;
-exports.packagesNames = Object.keys(packages);
+exports.getPackagesConfig = getPackagesConfig;
 exports.packagesBabelPresets = babelPresets;
 exports.packagesBabelPlugins = babelPlugins;
 
-const packMods = Object.keys(packages).map(pack => {
-    return path.resolve(packages[pack].root, 'node_modules');
-});
-
-const packEs = Object.keys(packages).map(pack => {
-    return path.resolve(packages[pack].root, 'es');
-});
-
-const packSrc = Object.keys(packages).map(pack => {
-    return path.resolve(packages[pack].root, 'src');
-});
-
-// todo: should be possible to get only paths for packages that the current app needs, `buildAppPair` is already prepared
-exports.crossBuild = {
-    modules: packMods,
-    esModules: packEs,
-    src: packSrc,
-};
-
-exports.packsRoot = Object.keys(packages).map(pack => packages[pack].root);
+exports.getPackagesRoot = packages => Object.keys(packages).map(pack => packages[pack].root);

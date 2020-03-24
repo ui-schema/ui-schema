@@ -59,11 +59,11 @@ customWidgets.custom = {
         loading: () => <LoadingCircular title={'Loading Time Widget'}/>,
     }),
     RichText: Loadable({
-        loader: () => import('@ui-schema/material-richtext/es/RichText').then(r => r.RichText),
+        loader: () => import('@ui-schema/material-richtext/RichText').then(r => r.RichText),
         loading: () => <LoadingCircular title={'Loading RichText Widget'}/>,
     }),
     RichTextInline: Loadable({
-        loader: () => import('@ui-schema/material-richtext/es/RichTextInline').then(r => r.RichTextInline),
+        loader: () => import('@ui-schema/material-richtext/RichTextInline').then(r => r.RichTextInline),
         loading: () => <LoadingCircular title={'Loading RichText Widget'}/>,
     })
 };

@@ -1,6 +1,6 @@
 import {RootRenderer, GroupRenderer} from "./Grid";
 import {pluginStack} from "./pluginStack";
-import {validators} from '@ui-schema/ui-schema/es/Validators/validators';
+import {validators} from '@ui-schema/ui-schema/Validators/validators';
 
 export const widgetsBase = {
     ErrorFallback: 'todo',

@@ -2,7 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import {beautifyKey, prependKey, updateInternalValue, updateValues,} from "@ui-schema/ui-schema";
 import FormControl from "@material-ui/core/FormControl";
-import {ValidityHelperText} from "@ui-schema/ds-material/es/Component/LocaleHelperText";
+import {ValidityHelperText} from "@ui-schema/ds-material/Component/LocaleHelperText";
 import {styles as inputStyles} from "@material-ui/core/Input/Input";
 
 import InputLabel from "@material-ui/core/InputLabel";

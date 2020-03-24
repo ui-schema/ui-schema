@@ -7,17 +7,17 @@ const spawnBabel = (args) => {
     return spawn(require.resolve('../node_modules/.bin/babel'), args, {stdio: 'inherit'});
 };
 
-function buildEsModules(packages) {
+function buildEsModules(packages, args = [[]]) {
     let babels = [];
     const babelFile = path.join(__dirname, '../', 'babel.config.json');
 
     return new Promise((resolve, reject) => {
         Object.keys(packages).forEach(pack => {
-            babels.push(new Promise((resolve, reject) => {
+            babels.push(...args.map(arg => (resolve, reject) => {
                 const entry = packages[pack].entry;
-                const dist = path.resolve(packages[pack].root, 'es');
+                const dist = path.resolve(packages[pack].root, 'build');
 
-                let args = [entry, '--out-dir', dist];
+                let args = [entry, ...arg, '--out-dir', dist];
 
                 if(-1 === process.argv.indexOf('--clean')) {
                     let babelConfig = {

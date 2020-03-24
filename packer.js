@@ -2,7 +2,7 @@ const path = require('path');
 const {buildExternal} = require('./packer/tools');
 
 const apps = {
-    demo: {
+    /*demo: {
         root: path.resolve(__dirname, 'packages', 'demo'),
         template: path.resolve(__dirname, 'packages', 'demo/public/index.html'),
         publicPath: path.resolve(__dirname, 'packages', 'demo/public'),// dev-server
@@ -11,7 +11,7 @@ const apps = {
         dist: path.resolve(__dirname, 'dist', 'demo'),
         servedPath: '/',// todo: make package.json homepage dependent,
         vendors: ['react-error-boundary', 'immutable', '@material-ui/core', '@material-ui/icons'],
-    },
+    },*/
     docs: {
         root: path.resolve(__dirname, 'packages', 'docs'),
         template: path.resolve(__dirname, 'packages', 'docs/public/index.html'),
@@ -29,12 +29,14 @@ const packages = {
     // the keys are the commonjs names that is applied to externals
     // this is the same as `@babel/plugin-transform-modules-commonjs` applies
     uiSchema: {
+        name: '@ui-schema/ui-schema',
         root: path.resolve(__dirname, 'packages', 'ui-schema'),
         entry: path.resolve(__dirname, 'packages', 'ui-schema/src/'),
         react: buildExternal("react"),
         "react-dom": buildExternal("react-dom"),
     },
     dsMaterial: {
+        name: '@ui-schema/ds-material',
         root: path.resolve(__dirname, 'packages', 'ds-material'),
         entry: path.resolve(__dirname, 'packages', 'ds-material/src/'),
         externals: {
@@ -46,6 +48,7 @@ const packages = {
         }
     },
     dsBootstrap: {
+        name: '@ui-schema/ds-bootstrap',
         root: path.resolve(__dirname, 'packages', 'ds-bootstrap'),
         entry: path.resolve(__dirname, 'packages', 'ds-bootstrap/src/'),
         externals: {
@@ -54,7 +57,7 @@ const packages = {
             "react-dom": buildExternal("react-dom"),
         }
     },
-    dsBlueprint: {
+    /*dsBlueprint: {
         root: path.resolve(__dirname, 'packages', 'ds-blueprint'),
         entry: path.resolve(__dirname, 'packages', 'ds-blueprint/src/'),
         externals: {
@@ -93,8 +96,9 @@ const packages = {
             react: buildExternal("react"),
             "react-dom": buildExternal("react-dom"),
         }
-    },
+    },*/
     materialPickers: {
+        name: '@ui-schema/material-pickers',
         root: path.resolve(__dirname, 'packages', 'material-pickers'),
         entry: path.resolve(__dirname, 'packages', 'material-pickers/src/'),
         externals: {
@@ -107,6 +111,7 @@ const packages = {
         }
     },
     materialRichtext: {
+        name: '@ui-schema/material-richtext',
         root: path.resolve(__dirname, 'packages', 'material-richtext'),
         entry: path.resolve(__dirname, 'packages', 'material-richtext/src/'),
         externals: {
@@ -121,6 +126,7 @@ const packages = {
         }
     },
     materialCode: {
+        name: '@ui-schema/material-code',
         root: path.resolve(__dirname, 'packages', 'material-code'),
         entry: path.resolve(__dirname, 'packages', 'material-code/src/'),
         externals: {
@@ -135,6 +141,7 @@ const packages = {
         }
     },
     materialColor: {
+        name: '@ui-schema/material-color',
         root: path.resolve(__dirname, 'packages', 'material-color'),
         entry: path.resolve(__dirname, 'packages', 'material-color/src/'),
         externals: {
@@ -149,6 +156,8 @@ const packages = {
     },
 };
 
-exports.apps = apps;
-exports.packages = packages;
+
+const packer = require('./packer/packer')
+
+packer(apps, packages)
 
