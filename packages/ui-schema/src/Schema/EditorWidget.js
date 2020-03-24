@@ -4,9 +4,9 @@ import {extractValue, withEditor,} from "./EditorStore";
 import {PluginStackRenderer} from "./EditorPluginStack";
 import {memo} from "../Utils/memo";
 
-let ValueWidgetRenderer = ({
-                               parentSchema, storeKeys, ...props
-                           }) => {
+const WidgetRendererBase = ({
+                                parentSchema, storeKeys, ...props
+                            }) => {
     let required = List([]);
     if(parentSchema) {
         let tmp_required = parentSchema.get('required');
@@ -25,6 +25,4 @@ let ValueWidgetRenderer = ({
         parentSchema={parentSchema}
     />;
 };
-ValueWidgetRenderer = withEditor(extractValue(memo(ValueWidgetRenderer)));
-
-export {ValueWidgetRenderer}
+export const WidgetRenderer = withEditor(extractValue(memo(WidgetRendererBase)));

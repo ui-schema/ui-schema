@@ -91,10 +91,10 @@ const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, r
 };
 
 const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme, maxLines}) => {
-    const {valueStore} = useSchemaStore();
+    const {store} = useSchemaStore();
 
     return <RichCodeEditor
-        value={typeof valueStore !== 'string' && typeof valueStore !== 'number' && typeof valueStore !== 'boolean' && valueStore ? JSON.stringify(valueStore.toJS(), null, tabSize) : valueStore}
+        value={typeof store.getValues() !== 'string' && typeof store.getValues() !== 'number' && typeof store.getValues() !== 'boolean' && store.getValues() ? JSON.stringify(store.getValues().toJS(), null, tabSize) : store.getValues()}
         theme={theme}
         tabSize={tabSize}
         fontSize={fontSize}

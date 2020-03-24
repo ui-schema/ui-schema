@@ -42,15 +42,15 @@ Using default validators:
 
 ```js
 import {
-    Validator, validators,
+    ValidatorStack, validators,
     ValidityReporter
 } from '@ui-schema/ui-schema';
 
 const widgets = {
     pluginStack: [
         // ... other plugins
-        Validator,
-        ValidityReporter, // after `Validator`
+        ValidatorStack,
+        ValidityReporter, // after `ValidatorStack`
         // ... other plugins
     ],
     validators: validators,

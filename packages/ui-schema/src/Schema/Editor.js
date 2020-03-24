@@ -4,19 +4,19 @@ import {
     EditorStoreProvider, EditorProvider, useEditor,
     useSchemaStore, EditorStore,
 } from "./EditorStore";
-import {ValueWidgetRenderer} from "./EditorWidget";
+import {WidgetRenderer} from "./EditorWidget";
 import {memo} from "../Utils/memo";
 
-let SchemaEditorRenderer = ({
-                                schema, storeKeys, level = 0, ...props
-                            }) => {
+const SchemaEditorRendererBase = ({
+                                      schema, storeKeys, level = 0, ...props
+                                  }) => {
     return schema ?
-        <ValueWidgetRenderer
+        <WidgetRenderer
             {...props}
             schema={schema} storeKeys={storeKeys} level={level}
         /> : null;
 };
-SchemaEditorRenderer = memo(SchemaEditorRenderer);
+export const SchemaEditorRenderer = memo(SchemaEditorRendererBase);
 
 /**
  * @type {function({rootRenderer: *, ...}): *}
@@ -38,7 +38,7 @@ const mustBeSet = name => {
  *
  * @return {null|*}
  */
-const SchemaRootRenderer = () => {
+export const SchemaRootRenderer = () => {
     const {
         // getting the root level schema, all other schemas within an editor are property calculated
         schema,
@@ -68,22 +68,12 @@ const SchemaRootRenderer = () => {
  * Simple nested-schema renderer, begins directly at `group`/`widget` level and reuses the context/hooks of the parent SchemaEditor
  *
  * @todo it should be possible to also attach on `onChange` of store
- * @todo it should be possible to overwrite parent `widgets`
- *
- * @param schema
- * @param parentSchema
- * @param storeKeys
- * @param level
- * @param showValidity
- * @param {{}} props
- * @return {*}
- * @constructor
  */
-const NestedSchemaEditor = ({
-                                schema, parentSchema, storeKeys,
-                                showValidity, widgets, t,
-                                level = 0, ...props
-                            }) => {
+export const NestedSchemaEditor = ({
+                                       schema, parentSchema, storeKeys,
+                                       showValidity, widgets, t,
+                                       level = 0, ...props
+                                   }) => {
     const editor = useEditor();
 
     return <EditorProvider
@@ -104,22 +94,11 @@ const NestedSchemaEditor = ({
 
 /**
  * Main Component to create a schema based UI generator
- *
- * @param {*} children
- * @param {React.ReactNode} children
- * @param {OrderedMap} schema
- * @param {OrderedMap} store
- * @param {function(function): OrderedMap} onChange
- * @param {{}} widgets
- * @param {boolean} showValidity
- * @param {function(string, *): string|React.Component} t
- * @return {*}
- * @constructor
  */
-const SchemaEditor = ({
-                          children,
-                          ...props
-                      }) => (
+export const SchemaEditor = ({
+                                 children,
+                                 ...props
+                             }) => (
     <SchemaEditorProvider {...props}>
         <SchemaRootRenderer/>
         {children}
@@ -127,13 +106,13 @@ const SchemaEditor = ({
     </SchemaEditorProvider>
 );
 
-const SchemaEditorProvider = ({
-                                  children,
-                                  schema,
-                                  store, onChange,
-                                  widgets, t,
-                                  showValidity,
-                              }) => {
+export const SchemaEditorProvider = ({
+                                         children,
+                                         schema,
+                                         store, onChange,
+                                         widgets, t,
+                                         showValidity,
+                                     }) => {
     if(!(store instanceof EditorStore)) {
         console.error('given store must be a valid EditorStore')
         return null;
@@ -144,6 +123,3 @@ const SchemaEditorProvider = ({
         </EditorStoreProvider>
     </EditorProvider>
 };
-
-
-export {SchemaEditor, SchemaEditorProvider, NestedSchemaEditor, SchemaEditorRenderer, SchemaRootRenderer};

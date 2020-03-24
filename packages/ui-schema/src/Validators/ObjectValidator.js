@@ -1,5 +1,5 @@
 import {List, Map} from "immutable";
-import {validateSchema} from "../Schema/ValidateSchema";
+import {validateSchema} from "../Validation/ValidateSchema";
 
 const ERROR_ADDITIONAL_PROPERTIES = 'additional-properties';
 

@@ -1,12 +1,13 @@
 import {List} from 'immutable';
-import {validateType} from "../Handling/TypeValidator";
-import {ERROR_WRONG_TYPE} from "../Handling/TypeValidator";
-import {ERROR_PATTERN, validatePattern} from "../Handling/PatternValidator";
-import {validateMinMax} from "../Handling/MinMaxValidator";
-import {ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum} from "../Handling/ValueValidator";
-import {ERROR_MULTIPLE_OF, validateMultipleOf} from "../Handling/MultipleOfValidator";
-import {ERROR_NOT_SET, validateContains} from "..";
-import {validateObject} from "../Handling/ObjectValidator";
+import {validateType} from "../Validators/TypeValidator";
+import {ERROR_WRONG_TYPE} from "../Validators/TypeValidator";
+import {ERROR_PATTERN, validatePattern} from "../Validators/PatternValidator";
+import {validateMinMax} from "../Validators/MinMaxValidator";
+import {ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum} from "../Validators/ValueValidator";
+import {ERROR_MULTIPLE_OF, validateMultipleOf} from "../Validators/MultipleOfValidator";
+import {validateContains} from "../Validators/ArrayValidator";
+import {ERROR_NOT_SET} from "../Validators/RequiredValidator";
+import {validateObject} from "../Validators/ObjectValidator";
 
 /**
  * Return false when valid and string/List for an error

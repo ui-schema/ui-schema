@@ -6,19 +6,11 @@ import {createMap, relT} from "..";
 const EditorStoreContext = React.createContext({});
 const EditorContext = React.createContext({});
 
-let EditorStoreProvider = ({children, ...props}) => <EditorStoreContext.Provider value={props} children={children}/>;
-/**
- *
- * @param children
- * @param showValidity
- * @param widgets
- * @param t
- * @return {*}
- * @constructor
- */
-let EditorProvider = ({children, ...props}) => <EditorContext.Provider value={props} children={children}/>;
+export const EditorStoreProvider = ({children, ...props}) => <EditorStoreContext.Provider value={props} children={children}/>;
 
-const EditorStore = Record({
+export const EditorProvider = ({children, ...props}) => <EditorContext.Provider value={props} children={children}/>;
+
+export const EditorStore = Record({
     values: undefined,
     internals: Map({}),
     validity: Map({}),
@@ -33,7 +25,7 @@ const EditorStore = Record({
     }
 });
 
-const createStore = (values) => {
+export const createStore = (values) => {
     return new EditorStore({
         values,
         internals: Map({}),
@@ -41,7 +33,7 @@ const createStore = (values) => {
     })
 };
 
-const createEmptyStore = (type = 'object') => createStore(
+export const createEmptyStore = (type = 'object') => createStore(
     type === 'array' ?
         List([]) :
         type === 'string' ?
@@ -53,33 +45,16 @@ const createEmptyStore = (type = 'object') => createStore(
                     Map({})
 );
 
-/**
- * @return {{schema: Map, valueStore: *, internalStore: Map, onChange: function, validity: Map}}
- */
-const useSchemaStore = () => {
+export const useSchemaStore = () => {
     const {store, onChange, schema} = React.useContext(EditorStoreContext);
 
-    const valueStore = store.getValues();
-    const internalStore = store.getInternals();
-    const validity = store.getValidity();
-
-    return {valueStore, internalStore, onChange, schema, validity};
+    return {store, onChange, schema};
 };
 
 const tDefault = (text, context = {}, schema) =>
     relT(schema, context);
 
-/**
- * @return {{
- *     widgets: {
- *         RootRenderer,
- *
- *     },
- *     t: function,
- *     showValidity: boolean,
- * }}
- */
-const useEditor = () => {
+export const useEditor = () => {
     let context = React.useContext(EditorContext);
     if(!context.t) {
         context.t = tDefault;
@@ -89,34 +64,32 @@ const useEditor = () => {
 
 /**
  * HOC to extract the value with the storeKeys, pushing only the component's value and onChange to it, not the whole store
- * @param Component
- * @return {function(*): *}
  */
-const extractValue = (Component) => {
+export const extractValue = (Component) => {
     const ExtractValue = p => {
-        const {valueStore, onChange, internalStore} = useSchemaStore();
+        const {store, onChange} = useSchemaStore();
         return <Component
             {...p} onChange={onChange}
             value={p.storeKeys.size ?
-                (Map.isMap(valueStore) || List.isList(valueStore) ? valueStore.getIn(p.storeKeys) : undefined)
-                : valueStore}
-            internalValue={p.storeKeys.size ? internalStore ? internalStore.getIn(p.storeKeys) : createMap() : internalStore}
+                (Map.isMap(store.getValues()) || List.isList(store.getValues()) ? store.getValues().getIn(p.storeKeys) : undefined)
+                : store.getValues()}
+            internalValue={p.storeKeys.size ? store.getInternals() ? store.getInternals().getIn(p.storeKeys) : createMap() : store.getInternals()}
         />
     };
     ExtractValue.displayName = `ExtractValue(${getDisplayName(Component)})`;
     return ExtractValue;
 };
 
-const extractValidity = (Component) => {
+export const extractValidity = (Component) => {
     const ExtractValidity = p => {
-        const {validity, onChange} = useSchemaStore();
-        return <Component {...p} validity={p.storeKeys.size ? validity.getIn(p.storeKeys) : validity} onChange={onChange}/>
+        const {store, onChange} = useSchemaStore();
+        return <Component {...p} validity={p.storeKeys.size ? store.getValidity().getIn(p.storeKeys) : store.getValidity()} onChange={onChange}/>
     };
     ExtractValidity.displayName = `ExtractValidity(${getDisplayName(Component)})`;
     return ExtractValidity;
 };
 
-const withEditor = (Component) => {
+export const withEditor = (Component) => {
     const WithEditor = p => {
         const editor = useEditor();
         return <Component {...p} {...editor}/>
@@ -127,12 +100,12 @@ const withEditor = (Component) => {
 
 const hasStoreKeys = storeKeys => (Array.isArray(storeKeys) && storeKeys.length) || storeKeys.size;
 
-const prependKey = (storeKeys, key) =>
+export const prependKey = (storeKeys, key) =>
     Array.isArray(storeKeys) ?
         [key, ...storeKeys] :
         storeKeys.splice(0, 0, key);
 
-const updateRawValue = (store, storeKeys, key, value) =>
+export const updateRawValue = (store, storeKeys, key, value) =>
     hasStoreKeys(storeKeys) ?
         store.setIn(
             prependKey(storeKeys, key),
@@ -140,59 +113,34 @@ const updateRawValue = (store, storeKeys, key, value) =>
         ) :
         store.set(key, value);
 
-const deleteRawValue = (store, storeKeys, key) =>
+export const deleteRawValue = (store, storeKeys, key) =>
     hasStoreKeys(storeKeys) ?
         store.deleteIn(prependKey(storeKeys, key)) :
         store.delete(key);
 
-const updateInternalValue = (storeKeys, internalValue) => store => {
+export const updateInternalValue = (storeKeys, internalValue) => store => {
     return updateRawValue(store, storeKeys, 'internals', internalValue);
 };
 
 /**
  * Function capable of either updating a deep value in the `store`, or when in e.g. root-level directly the store (string as root-schema)
- * @param storeKeys
- * @param value
- * @return {function(*): *}
  */
-const updateValue = (storeKeys, value,) => store => {
+export const updateValue = (storeKeys, value,) => store => {
     return updateRawValue(store, storeKeys, 'values', value)
 };
 
-/**
- *
- * @param storeKeys
- * @param value
- * @param internalValue
- * @return {function(*=): *}
- */
-const updateValues = (storeKeys, value, internalValue) => store => {
+export const updateValues = (storeKeys, value, internalValue) => store => {
     store = updateRawValue(store, storeKeys, 'internals', internalValue);
     return updateRawValue(store, storeKeys, 'values', value)
 };
 
 /**
  * Function capable of either updating a deep value in the `store`, or when in e.g. root-level directly the store (string as root-schema)
- * @param storeKeys
- * @param valid
- * @return {function(*): *}
  */
-const updateValidity = (storeKeys, valid) => store => (
+export const updateValidity = (storeKeys, valid) => store => (
     updateRawValue(store, storeKeys.push('__valid'), 'validity', valid)
 );
 
-const cleanUp = (storeKeys, key) => store => (
+export const cleanUp = (storeKeys, key) => store => (
     deleteRawValue(store, storeKeys, key)
 );
-
-export {
-    withEditor, useEditor, EditorStore,
-
-    useSchemaStore,
-    extractValue, updateValue,
-    updateValues, updateInternalValue,
-    extractValidity, updateValidity,
-    EditorStoreProvider, EditorProvider,
-    createEmptyStore, createStore,
-    cleanUp, prependKey,
-};

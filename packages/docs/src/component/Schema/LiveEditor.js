@@ -316,10 +316,10 @@ const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, r
 };
 
 const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme}) => {
-    const {valueStore} = useSchemaStore();
+    const {store} = useSchemaStore();
 
     return <RichCodeEditor
-        value={Map.isMap(valueStore) || List.isList(valueStore) ? JSON.stringify(valueStore.toJS(), null, tabSize) : valueStore}
+        value={Map.isMap(store.getValues()) || List.isList(store.getValues()) ? JSON.stringify(store.getValues().toJS(), null, tabSize) : store.getValues()}
         theme={theme}
         tabSize={tabSize}
         fontSize={fontSize}

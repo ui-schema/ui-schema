@@ -1,7 +1,7 @@
 import React from "react";
 import {NextPluginRenderer} from "../Schema/EditorPluginStack";
 
-const Validator = (props) => {
+export const ValidatorStack = (props) => {
     if(props.widgets.validators && Array.isArray(props.widgets.validators)) {
         props.widgets.validators.forEach(validator => {
             if(typeof validator.validate !== 'function') {
@@ -23,5 +23,3 @@ const Validator = (props) => {
 
     return <NextPluginRenderer {...props}/>;
 };
-
-export {Validator}

@@ -1,6 +1,6 @@
 import React from "react";
 import {NextPluginRenderer, NextPluginRendererMemo} from "../Schema/EditorPluginStack";
-import {validateSchemaObject} from "../Schema/ValidateSchema";
+import {validateSchemaObject} from "../Validation/ValidateSchema";
 import {useSchemaStore} from "../Schema/EditorStore";
 import {mergeSchema} from "../Utils/mergeSchema";
 import {Map} from 'immutable';
@@ -29,9 +29,9 @@ const handleIfElseThen = (schema, store, distSchema) => {
 
 const ConditionalRenderer = (props) => {
     let {schema, storeKeys} = props;
-    const {valueStore} = useSchemaStore();
+    const {store} = useSchemaStore();
 
-    const currentStore = storeKeys.size ? valueStore.getIn(storeKeys) : valueStore;
+    const currentStore = storeKeys.size ? store.getValues().getIn(storeKeys) : store.getValues();
 
     // when current schema does not have a type, it's a pure combining schema and it's conditionals can not be checked
     //   this can come from a state where the combining schema has not been resolved (yet)
