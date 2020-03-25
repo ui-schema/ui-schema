@@ -1,46 +1,45 @@
 {
-	"name": "@ui-schema/ds-material",
-	"version": "0.0.14",
-	"description": "Material-UI Binding for UI-Schema",
-	"homepage": "https://ui-schema.bemit.codes",
-	"author": "Michael Becker <michael@bemit.codes>",
-	"license": "MIT",
-	"main": "./lib/index.js",
-	"module": "./es/index.js",
-	"files": [
-		"es",
-		"lib"
-	],
-	"keywords": [
-		"ui-schema",
-		"json-schema",
-		"mui",
-		"material",
-		"material-ui"
-	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/ui-schema/ui-schema.git",
-		"directory": "packages/ds-material"
-	},
-	"bugs": {
-		"url": "https://github.com/ui-schema/ui-schema/issues"
-	},
-	"devDependencies": {
-		"@material-ui/core": "^4.8",
-		"@material-ui/icons": "^4.8",
-		"react": "^16.12"
-	},
-	"dependencies": {
-		"react-uid": "^2.2.0"
-	},
-	"peerDependencies": {
-		"@material-ui/core": "^4.5.1",
-		"@material-ui/icons": "^4.5.1",
-		"@ui-schema/ui-schema": "0.0.x",
-		"react": "^16.8"
-	},
-	"publishConfig": {
-		"access": "public"
-	}
+    "name": "@ui-schema/ds-material",
+    "version": "0.0.14",
+    "description": "Material-UI Binding for UI-Schema",
+    "homepage": "https://ui-schema.bemit.codes",
+    "author": "Michael Becker <michael@bemit.codes>",
+    "license": "MIT",
+    "files": [
+        "es",
+        "lib"
+    ],
+    "keywords": [
+        "ui-schema",
+        "json-schema",
+        "mui",
+        "material",
+        "material-ui"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ui-schema/ui-schema.git",
+        "directory": "packages/ds-material"
+    },
+    "bugs": {
+        "url": "https://github.com/ui-schema/ui-schema/issues"
+    },
+    "devDependencies": {
+        "@material-ui/core": "^4.8",
+        "@material-ui/icons": "^4.8",
+        "@ui-schema/ui-schema": "0.0.14",
+        "react": "^16.12"
+    },
+    "dependencies": {
+        "react-uid": "^2.2.0"
+    },
+    "peerDependencies": {
+        "@material-ui/core": "^4.5.1",
+        "@material-ui/icons": "^4.5.1",
+        "@ui-schema/ui-schema": "0.0.x",
+        "react": "^16.8"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
 }

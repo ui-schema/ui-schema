@@ -2,7 +2,7 @@
 
 const path = require('path');
 const {getConfig, commonBabelPlugins} = require('./webpack.common');
-const {packages} = require('../config');
+const CopyPlugin = require('copy-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 const babelPresets = [
@@ -14,94 +14,75 @@ const babelPlugins = [
     ['@babel/plugin-proposal-class-properties', {loose: true}],
 ];
 
-function getPackageBuilders(context, entry, dist, library, resolve, externals) {
-    const builders = [];
-    builders.push(getConfig({
-        mode: 'production',
-        entry: {index: entry},
-        output: {
-            filename: '[name].js',
-            path: path.resolve(dist, 'lib'),
-            library,
-            libraryTarget: 'umd',
-        },
-        performance: {
-            hints: 'warning',
-            // maxEntrypointSize: 500000,// 500kb
-            maxEntrypointSize: 2000000,// 1000kb
-            maxAssetSize: 2000000,
-        },
-        plugins: [
-            new CleanWebpackPlugin(),
-        ],
-        externals,
-        resolve: resolve ? {
-            modules: resolve,
-        } : undefined
-    }, {
-        context,
-        babelPresets: [
-            ['@babel/preset-env', {loose: true}],
-            ...babelPresets,
-        ],
-        babelPlugin: [
-            ...babelPlugins,
-            '@babel/plugin-transform-modules-commonjs'
-        ],
-        minimize: false,
-    }));
-
-    return builders;
+function getPackageBuilder(context, entry, dist, library, resolve, externals) {
 }
 
-const buildersPackages = [];
+const getPackagesConfig = (packages) => {
+    const getPackagesConfig = [];
 
-Object.keys(packages).forEach(library => {
-    let externals = {};
+    const alias = Object.values(packages).reduce((aliases, {name, root}) => {
+        aliases[name] = root + '/build'
+        return aliases;
+    }, {});
 
-    if(packages[library].externals) {
-        externals = {
-            ...packages[library].externals
+    Object.keys(packages).forEach(library => {
+        let externals = {};
+
+        if(packages[library].externals) {
+            externals = {
+                ...packages[library].externals
+            }
         }
-    }
 
-    buildersPackages.push(...getPackageBuilders(
-        packages[library].root,
-        packages[library].entry,
-        packages[library].root,
-        library,
-        [
-            path.resolve(__dirname, '../', 'node_modules'),
-            path.resolve(packages[library].root, 'node_modules'),
-        ],
-        {
-            ...externals
-        },
-    ));
-});
+        getPackagesConfig.push(getConfig({
+            mode: 'production',
+            entry: {index: packages[library].entry},
+            /*output: {
+                filename: '[name].js',
+                path: path.resolve(packages[library].root, 'build', 'cjs'),
+                library,
+                libraryTarget: 'umd',
+            },*/
+            performance: {
+                hints: 'warning',
+                // maxEntrypointSize: 500000,// 500kb
+                maxEntrypointSize: 2000000,// 1000kb
+                maxAssetSize: 2000000,
+            },
+            plugins: [
+                new CleanWebpackPlugin(),
+                new CopyPlugin([
+                    {
+                        from: '**/*.d.ts',
+                        to: path.resolve(packages[library].root, 'build/'),
+                        context: path.resolve(packages[library].root, 'src'),
+                    },
+                ]),
+            ],
+            externals: externals,
+            resolve: {
+                modules: [
+                    path.resolve(__dirname, '../', 'node_modules'),
+                    path.resolve(packages[library].root, 'node_modules'),
+                ],
+                alias,
+            }
+        }, {
+            context: packages[library].root,
+            babelPresets: [
+                ['@babel/preset-env', {loose: true}],
+                ...babelPresets,
+            ],
+            babelPlugin: [
+                ...babelPlugins,
+                '@babel/plugin-transform-modules-commonjs'
+            ],
+            minimize: false,
+        }));
+    });
+    return getPackagesConfig;
+}
 
-exports.buildersPackages = buildersPackages;
-exports.packagesNames = Object.keys(packages);
+exports.getPackagesConfig = getPackagesConfig;
 exports.packagesBabelPresets = babelPresets;
 exports.packagesBabelPlugins = babelPlugins;
-
-const packMods = Object.keys(packages).map(pack => {
-    return path.resolve(packages[pack].root, 'node_modules');
-});
-
-const packEs = Object.keys(packages).map(pack => {
-    return path.resolve(packages[pack].root, 'es');
-});
-
-const packSrc = Object.keys(packages).map(pack => {
-    return path.resolve(packages[pack].root, 'src');
-});
-
-// todo: should be possible to get only paths for packages that the current app needs, `buildAppPair` is already prepared
-exports.crossBuild = {
-    modules: packMods,
-    esModules: packEs,
-    src: packSrc,
-};
-
-exports.packsRoot = Object.keys(packages).map(pack => packages[pack].root);

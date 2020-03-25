@@ -4,7 +4,6 @@ const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const merge = require('webpack-merge');
 const {getConfig, commonBabelPlugins} = require('./webpack.common');
-const {crossBuild} = require('./webpack.packages');
 const path = require('path');
 
 const babelPresets = [
@@ -17,7 +16,7 @@ const babelPlugins = [
     '@babel/plugin-proposal-class-properties',
 ];
 
-const buildAppConfig = (main, dist, root, template, modules) => ({
+const buildAppConfig = (main, dist, root, template) => ({
     entry: {
         vendors: ['react', 'react-dom'],
         main: main,
@@ -38,7 +37,6 @@ const buildAppConfig = (main, dist, root, template, modules) => ({
         modules: [
             path.resolve(root, 'node_modules'),
             "node_modules",
-            ...modules,
         ],
     },
     module: {
@@ -66,7 +64,7 @@ const buildAppConfig = (main, dist, root, template, modules) => ({
             // its runtime that would otherwise be processed through "file" loader.
             // Also exclude `html` and `json` extensions so they get processed
             // by webpacks internal loaders.
-            exclude: [/\.(js|css|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
+            exclude: [/\.(js|css|s[ac]ss|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
             options: {
                 name: 'static/media/[name].[hash:8].[ext]',
             },
@@ -126,16 +124,23 @@ const buildAppConfig = (main, dist, root, template, modules) => ({
  * @param port
  * @param vendors
  * @param copy
+ * @param packages
  * @return {{build: (function(): (function(...[*]=))|(function(): (*))), dist: *, serve: (function(): (function(...[*]=))|(function(): (*)))}}
  */
-const buildAppPair = ({main, dist, root, template, publicPath, port, vendors = [], copy = []}) => ({
+const buildAppPair = ({main, dist, root, template, publicPath, port, vendors = [], copy = []}, packages) => ({
     dist,
     serve: () => getConfig(
         merge(
-            buildAppConfig(main, dist, root, template, crossBuild.modules), {
+            buildAppConfig(main, dist, root, template), {
                 mode: 'development',
                 entry: {
                     vendors,
+                },
+                resolve: {
+                    alias: Object.values(packages).reduce((aliases, {name, entry}) => {
+                        aliases[name] = entry
+                        return aliases;
+                    }, {})
                 },
                 devServer: {
                     contentBase: publicPath,
@@ -162,17 +167,27 @@ const buildAppPair = ({main, dist, root, template, publicPath, port, vendors = [
             babelPlugins,
             babelPresets,
             include: [
-                ...crossBuild.esModules,
-                ...crossBuild.src,// seems like sym-linked are also checked against the true folder path, so can't exclude the src folder and only allowing the sym-linked
+                /*Object.values(packages).map(({root}) =>
+                    path.resolve(root, 'es')
+                ),*/
+                Object.values(packages).map(({root}) =>
+                    path.resolve(root, 'src')
+                ),
             ],
         }
     ),
     build: () => getConfig(
         merge(
-            buildAppConfig(main, dist, root, template, crossBuild.modules), {
+            buildAppConfig(main, dist, root, template), {
                 mode: 'production',
                 entry: {
                     vendors,
+                },
+                resolve: {
+                    alias: Object.values(packages).reduce((aliases, {name, root}) => {
+                        aliases[name] = root + '/build'
+                        return aliases;
+                    }, {})
                 },
                 optimization: {
                     runtimeChunk: 'single',

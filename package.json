@@ -5,13 +5,13 @@
     "private": true,
     "main": "index.js",
     "scripts": {
-        "start": "npm run clean-dist && npm run hoist && npm run serve -- demo",
+        "start": "npm run clean-dist && npm run hoist && npm run serve -- docs",
         "docs": "npm run serve -- docs",
-        "serve": "cross-env NODE_ENV=development node packer/packer.js --serve",
+        "serve": "cross-env NODE_ENV=development node packerConfig.js --serve",
         "prebuild": "npm run clean-dist && npm run hoist",
-        "build": "cross-env NODE_ENV=production CI=true node packer/packer.js --build",
+        "build": "cross-env NODE_ENV=production CI=true node packerConfig.js --build",
         "clean": "npm run clean-dist && lerna clean -y",
-        "clean-dist": "node packer/packer.js --clean",
+        "clean-dist": "node packerConfig.js --clean",
         "bootstrap": "lerna bootstrap",
         "hoist": "lerna bootstrap --hoist",
         "release": "lerna publish from-package --no-git-reset"
@@ -79,6 +79,7 @@
         "webpack-split-chunks": "^0.2.1"
     },
     "dependencies": {
-        "cross-env": "^6.0.3"
+        "cross-env": "^6.0.3",
+        "dtslint": "^3.3.0"
     }
 }

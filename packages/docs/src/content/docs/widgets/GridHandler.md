@@ -40,7 +40,7 @@ import {
     */
 } from "@ui-schema/ds-material/es/Grid";
 import {pluginStack} from "@ui-schema/ds-material/es/pluginStack";
-import {validators} from "@ui-schema/ui-schema/es/Handling/validators";
+import {validators} from "@ui-schema/ui-schema/Validators/validators";
 
 const widgets = {
     RootRenderer,
