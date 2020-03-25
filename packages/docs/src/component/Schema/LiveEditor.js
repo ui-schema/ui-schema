@@ -12,7 +12,7 @@ import {isInvalid, createOrderedMap, SchemaEditorProvider, SchemaRootRenderer, c
 import {widgets} from "@ui-schema/ds-material";
 import {RichCodeEditor, themes} from "../RichCodeEditor";
 import {Markdown} from "../Markdown";
-import {PageNotFound} from "../Page/PageNotFound";
+import PageNotFound from "../../page/PageNotFound";
 import {useTranslation} from "react-i18next";
 import {schemas} from "../../schemas/_list";
 
@@ -316,10 +316,10 @@ const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, r
 };
 
 const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme}) => {
-    const {valueStore} = useSchemaStore();
+    const {store} = useSchemaStore();
 
     return <RichCodeEditor
-        value={Map.isMap(valueStore) || List.isList(valueStore) ? JSON.stringify(valueStore.toJS(), null, tabSize) : valueStore}
+        value={Map.isMap(store.getValues()) || List.isList(store.getValues()) ? JSON.stringify(store.getValues().toJS(), null, tabSize) : store.getValues()}
         theme={theme}
         tabSize={tabSize}
         fontSize={fontSize}

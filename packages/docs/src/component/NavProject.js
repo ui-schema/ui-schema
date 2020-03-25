@@ -1,5 +1,5 @@
 import React from "react";
-import GithubLogo from "./GithubLogo";
+import GithubLogo from "../asset/GithubLogo";
 import {Link, Typography} from "@material-ui/core";
 import {Markdown} from "./Markdown";
 

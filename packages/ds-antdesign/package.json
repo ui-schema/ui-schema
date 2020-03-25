@@ -5,8 +5,7 @@
 	"homepage": "https://ui-schema.bemit.codes",
 	"author": "Michael Becker <michael@bemit.codes>",
 	"license": "MIT",
-	"main": "./lib/index.js",
-	"module": "./es/index.js",
+
 	"files": [
 		"es",
 		"lib"
@@ -27,6 +26,7 @@
 	},
 	"devDependencies": {
 		"antd": "^4.0.0",
+		"@ui-schema/ui-schema": "0.0.14",
 		"react": "^16.12"
 	},
 	"dependencies": {

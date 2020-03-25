@@ -29,8 +29,8 @@
     "devDependencies": {
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
-        "@ui-schema/ds-material": "^0.0.9",
-        "@ui-schema/ui-schema": "^0.0.9",
+        "@ui-schema/ds-material": "0.0.9",
+        "@ui-schema/ui-schema": "0.0.9",
         "immutable": "^4.0.0-rc.12",
         "react": "^16.12"
     },

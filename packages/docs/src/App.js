@@ -1,68 +1,58 @@
 import React from 'react';
-import './App.css';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-} from "react-router-dom";
-import {PageNotFound} from "./component/Page/PageNotFound";
-import {I18nProvider} from "./lib/I18n";
-import AppTheme from "./lib/AppTheme";
-import {I18nRedir} from "./lib/I18nRedir";
-import {PageLoader} from "./component/Layout/Layout";
-import {DrawerProvider} from "./component/Layout/Drawer";
-import {HeadlinesProvider} from "./component/LinkableHeadline";
+import Loadable from 'react-loadable';
+import {Switch, Route} from 'react-router-dom';
+import App from "@control-ui/layouts/es/App";
+import {routes} from "./routes";
+import {Layout} from "@control-ui/layouts/es/default/Layout";
+import {CustomDrawer, CustomHeader} from "./component/Layout";
+import {LoadingCircular} from "@control-ui/core/es/LoadingCircular";
+import {DocsProvider} from "@control-ui/docs/es/DocsProvider";
+import {HeadlinesProvider} from "@control-ui/docs/es/LinkableHeadline";
+import {I18nRedir} from "./component/I18nRedir";
 
-const pages = {
-    Home: PageLoader(() => import('./component/Page/PageMain'), 'Loading Page'),
-    LiveEdit: PageLoader(() => import('./component/Page/PageLiveEdit'), 'Loading Live-Editor'),
-    DocsOverview: PageLoader(() => import('./component/Docs/DocsOverview'), 'Loading Docs'),
-    Impress: PageLoader(() => import('./component/Page/PageLaw').then(r => r.PageImpress), 'Loading Page'),
-    Privacy: PageLoader(() => import('./component/Page/PageLaw').then(r => r.PagePrivacy), 'Loading Page'),
-    QuickStart: PageLoader(() => import('./component/Page/PageQuickStart'), 'Loading Quick Start'),
+const Provider = ({children}) => (
+    <>
+        <Switch>
+            <Route exact path={'/'} component={I18nRedir}/>
+            <Route path={'/examples'} exact render={() => <I18nRedir to={'examples'}/>}/>
+            <Route path={'/quick-start'} exact render={() => <I18nRedir to={'quick-start'}/>}/>
+            <Route path={'/docs'} exact render={() => <I18nRedir to={'docs'}/>}/>
+        </Switch>
+        <DocsProvider loader={(file) => import('./content/docs/' + file + '.md')}>
+            <HeadlinesProvider>
+                {children}
+            </HeadlinesProvider>
+        </DocsProvider>
+    </>
+);
+
+const PageNotFound = Loadable({
+    loader: () => import('./page/PageNotFound'),
+    loading: () => <LoadingCircular title={'Not Found'}/>,
+});
+
+const CustomLayout = () => <Layout
+    Header={CustomHeader}
+    Drawer={CustomDrawer}
+    NotFound={PageNotFound}
+/>;
+
+const i18n = {
+    allLanguages: {
+        en: '0.1',
+    },
+    detection: ['path', 'localStorage'],
+    defaultLanguage: 'en',
+    pathIndex: 0,
+    loader: (url) => import ('./locales/' + url + '.json'),
+    l10n: {ns: {de: {}}}
 };
 
-const PageRoutes = ({match}) => <Switch>
-    <Route path={"/" + match.params.lng + "/examples/:schema?"} component={pages.LiveEdit}/>
-    <Route path={"/" + match.params.lng + "/docs/(.*)?"} component={pages.DocsOverview}/>
-    <Route path={"/" + match.params.lng + "/quick-start"} component={pages.QuickStart}/>
-    <Route path={"/" + match.params.lng + "/impress"} component={pages.Impress}/>
-    <Route path={"/" + match.params.lng + "/privacy"} component={pages.Privacy}/>
-    <Route path={"/" + match.params.lng} exact component={pages.Home}/>
-    <Route path={"/" + match.params.lng} component={PageNotFound}/>
-</Switch>;
+const CustomApp = () => <App
+    routes={routes}
+    Layout={CustomLayout}
+    i18n={i18n}
+    Provider={Provider}
+/>;
 
-function App() {
-    return <Router basename={'/'}>
-        <I18nProvider
-            allLanguages={['en', 'de', 'it', 'es', 'fr', 'pl']}
-            defaultLanguage={'en'}
-            pathIndex={0}
-            // eslint-disable-next-line
-            expiration={process.env.NODE_ENV === 'production' ? 2 * 24 * 60 * 60 * 1000 : 100}
-            debug={false}
-            l10n={{ns: {de: {}}}}
-        >
-            <React.Suspense fallback={null}>
-                <Switch>
-                    <Route exact path={'/'} component={I18nRedir}/>
-                    <Route path={'/examples'} exact render={() => <I18nRedir to={'examples'}/>}/>
-                    <Route path={'/quick-start'} exact render={() => <I18nRedir to={'quick-start'}/>}/>
-                    <Route path={'/docs'} exact render={() => <I18nRedir to={'docs'}/>}/>
-                </Switch>
-            </React.Suspense>
-
-            <DrawerProvider>
-                <HeadlinesProvider>
-                    <AppTheme>
-                        <React.Suspense fallback={null}>
-                            <Route path="/:lng" component={PageRoutes}/>
-                        </React.Suspense>
-                    </AppTheme>
-                </HeadlinesProvider>
-            </DrawerProvider>
-        </I18nProvider>
-    </Router>
-}
-
-export default App;
+export default CustomApp;

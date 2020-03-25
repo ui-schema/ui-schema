@@ -11,7 +11,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {useControlStyles,} from "./styles";
 import {RichUtils,} from 'draft-js';
 import {memo} from "@ui-schema/ui-schema";
-import {AccessTooltipIcon} from "@ui-schema/ds-material/es/Component/Tooltip";
+import {AccessTooltipIcon} from "@ui-schema/ds-material/Component/Tooltip";
 import {useRichText} from "./RichTextProvider";
 
 const buttonStyle = makeStyles(theme => ({
