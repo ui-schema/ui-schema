@@ -14,11 +14,11 @@ const MyFallbackComponent = ({componentStack, error, type, widget}) => (
     </div>
 );
 
-const getPlugin = (current, pluginStack) => {
+export const getPlugin = (current, pluginStack) => {
     return current < pluginStack.length ? pluginStack[current] : false;
 };
 
-const PluginStackRenderer = ({current, ...props}) => {
+export const PluginStackRenderer = ({current, ...props}) => {
     // plugin layer
     const {widgets, schema} = props;
 
@@ -35,7 +35,7 @@ const PluginStackRenderer = ({current, ...props}) => {
     </ErrorBoundary>;
 };
 
-const NextPluginRenderer = ({current, ...props}) => {
+export const NextPluginRenderer = ({current, ...props}) => {
     const {widgets} = props;
     const next = current + 1;
     const Plugin = getPlugin(next, widgets.pluginStack);
@@ -44,11 +44,11 @@ const NextPluginRenderer = ({current, ...props}) => {
         Plugin ? <Plugin {...props} current={next}/> : 'plugin-error' :
         <FinalWidgetRenderer {...props}/>;
 };
-const NextPluginRendererMemo = memo(NextPluginRenderer);
+export const NextPluginRendererMemo = memo(NextPluginRenderer);
 
 const NoWidget = ({scope, matching}) => <React.Fragment>missing-{scope}-{matching}</React.Fragment>;
 
-const FinalWidgetRenderer = ({value, ...props}) => {
+export const FinalWidgetRenderer = ({value, ...props}) => {
     const {schema, widgets} = props;
     const type = schema.get('type');
     const widget_name = schema.get('widget');
@@ -74,6 +74,3 @@ const FinalWidgetRenderer = ({value, ...props}) => {
 
     return Widget ? <Widget {...props} value={type === 'array' || type === 'object' ? undefined : value}/> : null;
 };
-
-
-export {NextPluginRenderer, NextPluginRendererMemo, PluginStackRenderer, FinalWidgetRenderer}
