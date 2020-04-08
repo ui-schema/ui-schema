@@ -211,7 +211,26 @@ const schemaTestBts = createOrderedMap({
                     }
                 }
             },
-        }
+        },
+        tags: {
+            type: "array",
+            widget: "SimpleList",
+            view: {
+                sizeXs: 12,
+                sizeMd: 12,
+                btnSize: 'medium'
+            },
+            minItems: 2,
+            items: {
+                type: 'string',
+                tt: 'ol',
+                minLength: 3,
+                maxLength: 5,
+                view: {
+                    dense: true
+                },
+            },
+        },
     }
 });
 

@@ -45,16 +45,12 @@ const MainStore = () => {
     </React.Fragment>
 };
 
-const Main = () => <React.Fragment>
-    <div>
-        <MainStore/>
-        <DemoGrid/>
-    </div>
-</React.Fragment>;
-
 const Bootstrap = () => {
     return <BootstrapDashboard>
-        <Main main={Main}/>
+        <div>
+            <MainStore/>
+            <DemoGrid/>
+        </div>
     </BootstrapDashboard>
 };
 
