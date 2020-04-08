@@ -1,7 +1,7 @@
 import React from "react";
 import {NestedSchemaEditor, TransTitle, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
 import {List} from 'immutable';
-import {ValidityHelperText} from "../../../ds-material/src/Component/LocaleHelperText";
+import {ValidityHelperText} from "../Component/LocaleHelperText";
 
 
 const SimpleList = extractValue(memo(({
