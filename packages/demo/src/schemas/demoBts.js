@@ -212,7 +212,7 @@ const schemaTestBts = createOrderedMap({
                 }
             },
         },
-        labels: {
+        tags: {
             type: "array",
             widget: "SimpleList",
             view: {

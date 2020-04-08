@@ -9,4 +9,4 @@
 /material-richtext/lib
 /material-code/es
 /material-code/lib
-/&.d.ts
+*.d.ts
