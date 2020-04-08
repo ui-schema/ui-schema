@@ -37,7 +37,7 @@ const CombiningRenderer = (props) => {
     return <NextPluginRendererMemo {...props} schema={schema}/>;
 };
 
-const CombiningHandler = (props) => {
+export const CombiningHandler = (props) => {
     let {schema} = props;
 
     const hasAllOf = schema.get('allOf');
@@ -48,5 +48,3 @@ const CombiningHandler = (props) => {
             : <NextPluginRenderer {...props}/>}
     </React.Fragment>;
 };
-
-export {CombiningHandler}
