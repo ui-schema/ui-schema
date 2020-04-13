@@ -14,7 +14,7 @@ export interface WidgetRendererProps {
     errors: string[]
 }
 
-export interface WidgetRendererPropsExtended {
+export interface WidgetRendererPropsExtended extends WidgetRendererProps{
     value: boolean
     required: boolean
 }
