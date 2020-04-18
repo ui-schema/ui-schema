@@ -1,11 +1,13 @@
 import React from "react";
 import styles from 'bootstrap/dist/css/bootstrap.css';
+import "bootstrap";
+import $ from "jquery";
 import clsx from "clsx";
 import Sidebar from "./Sidebar";
 import NavBar from "./NavBar";
 import Copyright from "./Copyright";
 
-
+window.$ = $;
 const BootstrapStyle = () => {
     React.useEffect(() => {
         styles.use();
