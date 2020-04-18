@@ -3,9 +3,6 @@ import {unstable_trace as trace} from "scheduler/tracing";
 import {TransTitle, updateValue} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 import {useUID} from "react-uid";
-// @ts-check
-/** @type {import("TextField")} */
-//import * as StringRendererTest from 'TextField'
 
 const StringRenderer = ({ownKey, schema, value, multiline = false, onChange, storeKeys, showValidity, required, errors, type, rows}) => {
     const format = schema.get('format');

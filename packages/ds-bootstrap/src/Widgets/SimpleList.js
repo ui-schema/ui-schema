@@ -2,26 +2,26 @@ import React from "react";
 import {NestedSchemaEditor, TransTitle, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
 import {List} from 'immutable';
 import {ValidityHelperText} from "../Component/LocaleHelperText";
+import {IconPlus, IconMinus} from "@ui-schema/ds-bootstrap/Component/Icons";
 
 
 const SimpleList = extractValue(memo(({
                                           storeKeys, ownKey, schema, value, onChange,
                                           showValidity, errors, required
                                       }) => {
-    let btnPx = 32;
-    const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
-    switch(btnSize) {
+    let btnSize = 1;
+    const btnSizeSchema = schema.getIn(['view', 'btnSize']) || 'small';
+    switch(btnSizeSchema) {
         case("small"):
-            btnPx = 18;
+            btnSize = 0.5;
             break;
         case("medium"):
-            btnPx = 24;
+            btnSize = 1;
             break;
         case("big"):
-            btnPx = 42;
+            btnSize = 2;
             break;
     }
-
 
     let classFormGroup = ["form-group", "d-flex", "align-items-center"];
     let classFormControl = ["form-control"];
@@ -47,22 +47,22 @@ const SimpleList = extractValue(memo(({
                         required={required}
                         noGrid
                     />
-                    <svg className={["bi", "bi-dash-circle", "mx-3"].join(' ')} width={btnPx} height={btnPx} viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                        onClick={() => {
-                             onChange(updateValue(storeKeys, value.splice(i, 1)))
-                         }}>
-                        <path fillRule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clipRule="evenodd"/>
-                        <path fillRule="evenodd" d="M3.5 8a.5.5 0 01.5-.5h8a.5.5 0 010 1H4a.5.5 0 01-.5-.5z" clipRule="evenodd"/>
-                    </svg>
+                    <div>
+                        <IconMinus
+                            btnSize={btnSize}
+                            onClick={() => {
+                                onChange(updateValue(storeKeys, value.splice(i, 1)))
+                            }}/>
+                    </div>
                 </div>
             ).valueSeq() : null}
-            <svg className="bi bi-plus" width={btnPx} height={btnPx} viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+            <div>
+            <IconPlus
+                btnSize={btnSize}
                 onClick={() => {
-                     onChange(updateValue(storeKeys, value ? value.push('') : List([''])))
-                 }}>
-                <path fillRule="evenodd" d="M10 5.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H6a.5.5 0 010-1h3.5V6a.5.5 0 01.5-.5z" clipRule="evenodd"/>
-                <path fillRule="evenodd" d="M9.5 10a.5.5 0 01.5-.5h4a.5.5 0 010 1h-3.5V14a.5.5 0 01-1 0v-4z" clipRule="evenodd"/>
-            </svg>
+                    onChange(updateValue(storeKeys, value ? value.push('') : List([''])))
+                }}/>
+            </div>
         </div>
         <ValidityHelperText
             /* only pass down errors which are not for a specific sub-schema */
@@ -71,8 +71,6 @@ const SimpleList = extractValue(memo(({
             schema={schema}
         />
     </React.Fragment>
-
-    /*  */
 }));
 
-export {SimpleList,};
+export {SimpleList};
