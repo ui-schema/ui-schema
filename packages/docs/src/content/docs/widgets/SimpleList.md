@@ -61,3 +61,38 @@ Supports extra keywords:
 Components:
 
 - `SimpleList` for list of multine-line, single-line texts or numbers
+
+
+Needed other Component:
+
+- `Icon`
+The SimpleList widget uses icons, which have a tooltip and a translation for the tooltip:
+
+```js
+<button type="button" className={classNameArray}
+                   data-toggle="tooltip" data-placement="right" title={t(label)} onClick={onClick}>
+```
+
+The tooltip need jQuery to be imported from node-modules to bootstrap parent component:
+
+- in `Main.js`:
+
+```js
+import "bootstrap";
+import $ from "jquery";
+
+window.$ = $;
+```
+
+- the function `.tooltip()` must be called in the `Icon` - Component:
+
+```js
+    React.useEffect(() => {
+        window.$('[data-toggle="tooltip"]').tooltip()
+    }, []);
+```
+
+
+
+
+
