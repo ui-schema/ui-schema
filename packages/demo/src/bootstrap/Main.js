@@ -18,10 +18,10 @@ const BootstrapStyle = () => {
     return null;
 };
 
-const BootstrapDashboard = ({children}) => {
+export default ({children}) => {
     return <React.Fragment>
         <BootstrapStyle/>
-        <div className={clsx("container-fluid", "text-light")} >
+        <div className={clsx("container-fluid", "text-light")}>
             <NavBar/>
             <div className={clsx("row", "h-100")} style={{marginTop: "70px", height: "100%"}}>
                 <Sidebar/>
@@ -40,5 +40,3 @@ const BootstrapDashboard = ({children}) => {
         </div>
     </React.Fragment>
 };
-
-export {BootstrapDashboard}

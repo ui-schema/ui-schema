@@ -58,50 +58,6 @@ const packages = {
             "react-dom": buildExternal("react-dom"),
         }
     },
-    dsBlueprint: {
-        name: '@ui-schema/ds-blueprint',
-        root: path.resolve(__dirname, 'packages', 'ds-blueprint'),
-        entry: path.resolve(__dirname, 'packages', 'ds-blueprint/src/'),
-        externals: {
-            "@ui-schema/ui-schema": buildExternal("@ui-schema/ui-schema"),
-            "@blueprintjs/core": buildExternal("@blueprintjs/core"),
-            react: buildExternal("react"),
-            "react-dom": buildExternal("react-dom"),
-        }
-    },
-    dsSemanticui: {
-        name: '@ui-schema/ds-semanticui',
-        root: path.resolve(__dirname, 'packages', 'ds-semanticui'),
-        entry: path.resolve(__dirname, 'packages', 'ds-semanticui/src/'),
-        externals: {
-            "@ui-schema/ui-schema": buildExternal("@ui-schema/ui-schema"),
-            "semantic-ui-react": buildExternal("semantic-ui-react"),
-            react: buildExternal("react"),
-            "react-dom": buildExternal("react-dom"),
-        }
-    },
-    dsAntdesign: {
-        name: '@ui-schema/ds-antdesign',
-        root: path.resolve(__dirname, 'packages', 'ds-antdesign'),
-        entry: path.resolve(__dirname, 'packages', 'ds-antdesign/src/'),
-        externals: {
-            "@ui-schema/ui-schema": buildExternal("@ui-schema/ui-schema"),
-            "antd": buildExternal("antd"),
-            react: buildExternal("react"),
-            "react-dom": buildExternal("react-dom"),
-        }
-    },
-    dsThemeui: {
-        name: '@ui-schema/ds-themeui',
-        root: path.resolve(__dirname, 'packages', 'ds-themeui'),
-        entry: path.resolve(__dirname, 'packages', 'ds-themeui/src/'),
-        externals: {
-            "@ui-schema/ui-schema": buildExternal("@ui-schema/ui-schema"),
-            "theme-ui": buildExternal("theme-ui"),
-            react: buildExternal("react"),
-            "react-dom": buildExternal("react-dom"),
-        }
-    },
     materialPickers: {
         name: '@ui-schema/material-pickers',
         root: path.resolve(__dirname, 'packages', 'material-pickers'),

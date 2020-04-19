@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import {NavLink as Link} from 'react-router-dom';
-import {routesThemes} from "../../../routes";
+import {routesThemes} from "../routes";
 
 export default function Sidebar() {
 
