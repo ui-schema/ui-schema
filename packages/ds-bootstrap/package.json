@@ -8,12 +8,6 @@
     "contributors": [
         "Carolin Holat"
     ],
-    "main": "./lib/index.js",
-    "module": "./es/index.js",
-    "files": [
-        "es",
-        "lib"
-    ],
     "keywords": [
         "ui-schema",
         "json-schema",
@@ -27,6 +21,9 @@
     },
     "bugs": {
         "url": "https://github.com/ui-schema/ui-schema/issues"
+    },
+    "scripts": {
+        "release": "npm publish build"
     },
     "devDependencies": {
         "@ui-schema/ui-schema": "^0.0.15",

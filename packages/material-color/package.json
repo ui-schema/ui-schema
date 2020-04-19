@@ -5,12 +5,6 @@
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
     "license": "MIT",
-    "main": "./lib/index.js",
-    "module": "./es/index.js",
-    "files": [
-        "es",
-        "lib"
-    ],
     "keywords": [
         "ui-schema",
         "mui",
@@ -24,6 +18,9 @@
     },
     "bugs": {
         "url": "https://github.com/ui-schema/ui-schema/issues"
+    },
+    "scripts": {
+        "release": "npm publish build"
     },
     "dependencies": {
         "react-uid": "^2.2.0",
@@ -47,7 +44,6 @@
         "react": "^16.8",
         "react-color": "^2.0.0"
     },
-    "scripts": {},
     "publishConfig": {
         "access": "public"
     }
