@@ -22,7 +22,7 @@
         "url": "https://github.com/ui-schema/ui-schema/issues"
     },
     "scripts": {
-        "release": "cp package.json build/ && cp package-lock.json build/ &&  cp README.md build/ && npm publish build"
+        "__release": "cp package.json build/ && cp package-lock.json build/ &&  cp README.md build/ && npm publish build"
     },
     "dependencies": {
         "draft-js-export-html": "~1.4.1",

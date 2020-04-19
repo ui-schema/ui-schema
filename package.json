@@ -14,8 +14,8 @@
         "clean-dist": "node packerConfig.js --clean",
         "bootstrap": "lerna bootstrap",
         "hoist": "lerna bootstrap --hoist",
-        "release": "lerna run release --stream",
-        "release_": "lerna publish from-package --no-git-reset"
+        "__release": "lerna run release --stream",
+        "release": "lerna publish from-package --contents build --no-git-reset"
     },
     "author": "",
     "license": "MIT",
