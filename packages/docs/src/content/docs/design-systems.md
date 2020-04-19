@@ -26,6 +26,15 @@ Use with `bootstrap` package:
 npm i --save @ui-schema/ui-schema @ui-schema/ds-bootstrap immutable bootstrap
 ```
 
+Bootstrap has jQuery as dependency. To access it, the following imports are necessary in the parent-bootstrap-component (`Main.js`):
+
+```js
+import "bootstrap";
+import $ from "jquery";
+```
+
+jQuery must be assigned to window like: `window.$`
+
 ## Add Design System Package
 
 > For contributors - useless for users
