@@ -20,6 +20,8 @@ import {
     ColorSketchStatic, ColorSketchDialog,
 } from "@ui-schema/material-color";
 import {LoadingCircular} from "@control-ui/core/es/LoadingCircular";
+import LuxonAdapter from "@date-io/luxon";
+import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 
 const customWidgets = {...widgets};
 customWidgets.custom = {
@@ -136,62 +138,64 @@ const DemoEditor = ({activeSchema, id = 0, onClick, showDebugger = true, split =
     const fontSize = 13;
 
     return <WidgetCodeProvider theme={palette.type === 'dark' ? 'duotone-dark' : 'duotone-light'}>
-        <SchemaEditorProvider
-            schema={schema}
-            store={store}
-            onChange={setStore}
-            widgets={customWidgets}
-            showValidity={showValidity}
-            t={browserT}
-        >
-            {showDebugger && !split ? <DebugSchemaEditor
-                schema={schema} setSchema={setSchema}
-                setJsonError={setJsonError} richIde
-                enableShowAll={!split} split={split}
-                id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
-            /> : null}
-
-            {jsonError ?
-                <Box style={{margin: '0 12px 0 12px'}}>
-                    <Typography component={'h2'} variant={'h6'} color={'error'}>
-                        JSON-Error:
-                    </Typography>
-
-                    <Typography component={'p'} variant={'subtitle1'}>
-                        {jsonError.replace('SyntaxError: JSON.parse: ', '')}
-                    </Typography>
-                </Box> :
-                typeof schema === 'string' ? null : <div style={uiStyle}>
-
-                    {/* ! this is the actual editor component ! */}
-                    <SchemaRootRenderer/>
-
-                    {onClick ? <Button
-                        variant={'contained'}
-                        disabled={!!isInvalid(store.getValidity())}
-                        style={{marginTop: 12}}
-                        onClick={() => isInvalid(store.getValidity()) ? undefined : onClick(store)}>Send</Button> : null}
-                </div>}
-
-            {showDebugger ? <Box style={{display: 'flex', flexWrap: 'wrap', margin: '12px 0 24px 0'}}>
-                {split ? <DebugSchemaEditor
+        <MuiPickersUtilsProvider utils={LuxonAdapter}>
+            <SchemaEditorProvider
+                schema={schema}
+                store={store}
+                onChange={setStore}
+                widgets={customWidgets}
+                showValidity={showValidity}
+                t={browserT}
+            >
+                {showDebugger && !split ? <DebugSchemaEditor
                     schema={schema} setSchema={setSchema}
                     setJsonError={setJsonError} richIde
                     enableShowAll={!split} split={split}
                     id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
                 /> : null}
 
-                <Box style={{width: split ? '50%' : '100%', paddingLeft: split ? 6 : 0}}>
-                    <Typography component={'p'} variant={'overline'} style={{paddingLeft: 4}}>
-                        Data:
-                    </Typography>
-                    <SchemaDataDebug
-                        richIde
+                {jsonError ?
+                    <Box style={{margin: '0 12px 0 12px'}}>
+                        <Typography component={'h2'} variant={'h6'} color={'error'}>
+                            JSON-Error:
+                        </Typography>
+
+                        <Typography component={'p'} variant={'subtitle1'}>
+                            {jsonError.replace('SyntaxError: JSON.parse: ', '')}
+                        </Typography>
+                    </Box> :
+                    typeof schema === 'string' ? null : <div style={uiStyle}>
+
+                        {/* ! this is the actual editor component ! */}
+                        <SchemaRootRenderer/>
+
+                        {onClick ? <Button
+                            variant={'contained'}
+                            disabled={!!isInvalid(store.getValidity())}
+                            style={{marginTop: 12}}
+                            onClick={() => isInvalid(store.getValidity()) ? undefined : onClick(store)}>Send</Button> : null}
+                    </div>}
+
+                {showDebugger ? <Box style={{display: 'flex', flexWrap: 'wrap', margin: '12px 0 24px 0'}}>
+                    {split ? <DebugSchemaEditor
+                        schema={schema} setSchema={setSchema}
+                        setJsonError={setJsonError} richIde
+                        enableShowAll={!split} split={split}
                         id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
-                    />
-                </Box>
-            </Box> : null}
-        </SchemaEditorProvider>
+                    /> : null}
+
+                    <Box style={{width: split ? '50%' : '100%', paddingLeft: split ? 6 : 0}}>
+                        <Typography component={'p'} variant={'overline'} style={{paddingLeft: 4}}>
+                            Data:
+                        </Typography>
+                        <SchemaDataDebug
+                            richIde
+                            id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
+                        />
+                    </Box>
+                </Box> : null}
+            </SchemaEditorProvider>
+        </MuiPickersUtilsProvider>
     </WidgetCodeProvider>;
 };
 

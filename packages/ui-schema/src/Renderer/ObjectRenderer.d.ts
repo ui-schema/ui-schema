@@ -1,6 +1,6 @@
 import * as React from "react"
 import { OrderedMap } from 'immutable'
-import { StoreKeys } from "./EditorStore"
+import { StoreKeys } from "../Editor/EditorStore"
 
 export interface ObjectRendererProps {
     schema: OrderedMap<{}, undefined>

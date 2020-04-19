@@ -23,7 +23,7 @@ Widgets for native HTML text inputs to fill an array, usable for `string` (singl
 ### Material-UI
 
 ```js
-import {SimpleList} from "@ui-schema/ds-material/es/Widgets/SimpleList";
+import {SimpleList} from "@ui-schema/ds-material/Widgets/SimpleList";
 
 const widgets = {
     custom: {

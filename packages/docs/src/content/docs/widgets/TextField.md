@@ -27,10 +27,10 @@ Widgets for native HTML text inputs, usable for `string` (single/multiline), `nu
 ```js
 import {
     TextRenderer, NumberRenderer, StringRenderer
-} from "@ui-schema/ds-material/es/Widgets/TextField";
+} from "@ui-schema/ds-material/Widgets/TextField";
 import {
     TextIconRenderer, NumberIconRenderer, StringIconRenderer
-} from "@ui-schema/ds-material/es/Widgets/TextFieldIcon";
+} from "@ui-schema/ds-material/Widgets/TextFieldIcon";
 
 const widgets = {
     types: {
@@ -106,7 +106,7 @@ const dicEN = createMap({
 ```js
 import {
     TextRenderer, NumberRenderer, StringRenderer
-} from "@ui-schema/ds-bootstrap/es/Widgets/TextField";
+} from "@ui-schema/ds-bootstrap/Widgets/TextField";
 
 const widgets = {
     types: {

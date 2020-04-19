@@ -1,5 +1,5 @@
 import React from "react";
-import {NextPluginRenderer} from "../Schema/EditorPluginStack";
+import {NextPluginRenderer} from "../Editor/EditorPluginStack";
 import {updateValue} from "..";
 
 const DefaultValueHandler = ({defaultVal, ...props}) => {

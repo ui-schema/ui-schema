@@ -1,7 +1,8 @@
 import React from "react";
 import {Record, Map, List} from "immutable";
 import {getDisplayName} from "../Utils/getDisplayName";
-import {createMap, relT} from "..";
+import {createMap} from "../Utils/createMap";
+import {relT} from "../Utils/Trans/relT";
 
 const EditorStoreContext = React.createContext({});
 const EditorContext = React.createContext({});

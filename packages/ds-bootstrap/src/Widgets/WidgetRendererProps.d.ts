@@ -1,6 +1,5 @@
-import React from 'react'
 import { OrderedMap } from 'immutable'
-import { EditorStore, StoreKeys } from "@ui-schema/ui-schema/Schema/EditorStore"
+import { EditorStore, StoreKeys } from "@ui-schema/ui-schema/Editor/EditorStore"
 
 export type onChangeHandler = (store: EditorStore<any>) => EditorStore<any>
 export type onChange = (handler: onChangeHandler) => void

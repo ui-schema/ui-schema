@@ -162,7 +162,7 @@ const packages = {
 };
 
 
-const packerConfig = require('./packer/packer')
+const packer = require('./packer/packer')
 
-packerConfig(apps, packages)
+packer(apps, packages)
 

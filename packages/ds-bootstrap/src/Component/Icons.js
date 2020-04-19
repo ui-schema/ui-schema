@@ -21,8 +21,9 @@ const Icon = ({onClick, label, iconName, btnSize}) => {
             break;
     }
 
-    return <button type="button" className={["btn", "btn-transparent"].join(' ')} style={{transform: "scale(" + btnScale + ", " + btnScale + ")"}}
-                   data-toggle="tooltip" data-placement="right" title={t(label)} onClick={onClick}>
+    return <button
+        type="button" className={["btn", "btn-transparent"].join(' ')} style={{transform: "scale(" + btnScale + ", " + btnScale + ")"}}
+        data-toggle="tooltip" data-placement="right" title={t(label)} onClick={onClick}>
         <Trans text={iconName}/>
     </button>;
 }

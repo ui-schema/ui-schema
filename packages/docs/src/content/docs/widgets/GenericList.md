@@ -22,7 +22,7 @@ Widgets for complex structures in arrays.
 ### Material-UI
 
 ```js
-import {GenericList} from "@ui-schema/ds-material/es/Widgets/GenericList";
+import {GenericList} from "@ui-schema/ds-material/Widgets/GenericList";
 
 const widgets = {
     custom: {

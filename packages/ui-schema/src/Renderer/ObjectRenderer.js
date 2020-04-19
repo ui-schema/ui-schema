@@ -1,6 +1,6 @@
 import React from "react";
-import {SchemaEditorRenderer} from "./Editor";
 import {memo} from "../Utils/memo";
+import {WidgetRenderer} from "./WidgetRenderer";
 
 let ObjectRenderer = ({
                           widgets, level, schema, storeKeys, ...props
@@ -17,7 +17,7 @@ let ObjectRenderer = ({
     //   e.g. combining/conditional schemas which are currently not applied (e.g. a condition fails)
     return properties ? <GroupRenderer level={level} schema={schema}>
         {properties.map((childSchema, childKey) =>
-            <SchemaEditorRenderer
+            <WidgetRenderer
                 key={childKey}
                 {...props}
                 schema={childSchema} parentSchema={schema}

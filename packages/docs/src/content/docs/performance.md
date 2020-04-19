@@ -29,8 +29,9 @@ This editor has multiple levels of performance optimization:
         - `GroupRenderer` is wrapped inside the memoized renderer `ObjectRenderer`
         - any `types.<Component>`, `custom.<Component>` is wrapped in the memoized `DumpWidgetRenderer`
     - core:
-        - `SchemaEditorRenderer` is memoized, receives the widget/widget stack and is the internal entry for starting/nesting the schema
-        - `WidgetRenderer` wraps `PluginStackRenderer` which is the abstraction layer to the final widgets
+        - `SchemaEditorRenderer` , 
+        - `WidgetRenderer`, is memoized, receives the widget/widget stack and is the internal entry for starting/nesting the schema
+            - wraps `PluginStackRenderer` which is the abstraction layer to the final widget(s)
         - `PluginStackRenderer` initial `pluginStack` render handling (not memoized, but inside `DumpWidgetRenderer`)
         - `FinalWidgetRenderer` is rendered when the widget-stack is finished, not memoized but extracts the `value` from the props again for non-scalars, thus a object/array component can be memoized and will not re-render when it's items change (memoize widgets your-self when needed) 
 

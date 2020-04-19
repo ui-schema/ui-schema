@@ -28,7 +28,7 @@ Widgets for selecting one, two or multiple numbers from a specified range, with 
 ### Material-UI
 
 ```js
-import {NumberSlider} from "@ui-schema/ds-material/es/Widgets/NumberSlider";
+import {NumberSlider} from "@ui-schema/ds-material/Widgets/NumberSlider";
 
 const widgets = {
     custom: {

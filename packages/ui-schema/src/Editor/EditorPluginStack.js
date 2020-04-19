@@ -2,7 +2,7 @@ import React from "react";
 import {List} from "immutable";
 import ErrorBoundary from "react-error-boundary";
 import {memo} from "../Utils/memo";
-import {ObjectRenderer} from "./EditorObject";
+import {ObjectRenderer} from "../Renderer/ObjectRenderer";
 
 const MyFallbackComponent = ({componentStack, error, type, widget}) => (
     <div>

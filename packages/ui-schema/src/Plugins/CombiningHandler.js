@@ -1,6 +1,6 @@
 import React from "react";
-import {NextPluginRenderer, NextPluginRendererMemo} from "../Schema/EditorPluginStack";
-import {useSchemaStore} from "../Schema/EditorStore";
+import {NextPluginRenderer, NextPluginRendererMemo} from "../Editor/EditorPluginStack";
+import {useSchemaStore} from "../Editor/EditorStore";
 import {mergeSchema} from "../Utils/mergeSchema";
 import {Map} from 'immutable';
 import {handleIfElseThen} from "./ConditionalHandler";

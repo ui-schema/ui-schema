@@ -1,5 +1,6 @@
 import React from 'react'
 import { Record, OrderedMap, Map, List } from 'immutable'
+import { translator } from "../Utils/Trans/t"
 
 // EditorStoreContext
 
@@ -24,7 +25,7 @@ export function EditorStoreProvider(
 
 export interface EditorContext<> {
     widgets: {}
-    t?: Function
+    t?: translator
     showValidity?: boolean
 }
 

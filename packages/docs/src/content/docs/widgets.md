@@ -110,12 +110,12 @@ It is only recommended for bigger widgets, using it for e.g. `types` is mostly u
 #### Example with react-loadable
 
 ```js
-import {widgetsBase} from "@ui-schema/ds-material/es/widgetsBase";
+import {widgetsBase} from "@ui-schema/ds-material/widgetsBase";
 import Loadable from 'react-loadable';
 
 // Build the loadable widgets
 const StringRenderer = Loadable({
-    loader: () => import('@ui-schema/ds-material/es/Widgets/TextField').then(module => module.StringRenderer),
+    loader: () => import('@ui-schema/ds-material/Widgets/TextField').then(module => module.StringRenderer),
     loading: (props) => 'Loading Widget',// add here your fancy loading component
 });
 

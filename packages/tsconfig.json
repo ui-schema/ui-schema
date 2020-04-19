@@ -1,11 +1,7 @@
 {
     "compilerOptions": {
         "module": "esnext",
-        "target": "es5",
-        "lib": [
-            "es6",
-            "dom"
-        ],
+        "target": "es6",
         "jsx": "preserve",
         "moduleResolution": "node",
         "forceConsistentCasingInFileNames": true,
@@ -17,14 +13,47 @@
         "noErrorTruncation": true,
         "allowJs": true,
         "paths": {
-            "@ui-schema/ui-schema": [
-                "./packages/ui-schema/src"
+            "@ui-schema/ds-bootstrap": [
+                "packages/ds-bootstrap/src"
+            ],
+            "@ui-schema/ds-bootstrap/*": [
+                "packages/ds-bootstrap/src/*"
             ],
             "@ui-schema/ds-material": [
-                "./packages/ds-material/src"
+                "packages/ds-material/src"
             ],
-            "@ui-schema/ds-bootstrap": [
-                "./packages/ds-bootstrap/src"
+            "@ui-schema/ds-material/*": [
+                "packages/ds-material/src/*"
+            ],
+            "@ui-schema/material-code": [
+                "packages/material-code/src"
+            ],
+            "@ui-schema/material-code/*": [
+                "packages/material-code/src/*"
+            ],
+            "@ui-schema/material-color": [
+                "packages/material-color/src"
+            ],
+            "@ui-schema/material-color/*": [
+                "packages/material-color/src/*"
+            ],
+            "@ui-schema/material-pickers": [
+                "packages/material-pickers/src"
+            ],
+            "@ui-schema/material-pickers/*": [
+                "packages/material-pickers/src/*"
+            ],
+            "@ui-schema/material-richtext": [
+                "packages/material-richtext/src"
+            ],
+            "@ui-schema/material-richtext/*": [
+                "packages/material-richtext/src/*"
+            ],
+            "@ui-schema/ui-schema": [
+                "packages/ui-schema/src"
+            ],
+            "@ui-schema/ui-schema/*": [
+                "packages/ui-schema/src/*"
             ]
         }
     },

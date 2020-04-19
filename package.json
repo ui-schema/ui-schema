@@ -5,7 +5,7 @@
     "private": true,
     "main": "index.js",
     "scripts": {
-        "start": "npm run clean-dist && npm run hoist && npm run serve -- docs",
+        "start": "npm run clean-dist && npm run hoist && npm run serve -- demo",
         "docs": "npm run serve -- docs",
         "serve": "cross-env NODE_ENV=development node packerConfig.js --serve",
         "prebuild": "npm run clean-dist && npm run hoist",
@@ -80,6 +80,8 @@
     },
     "dependencies": {
         "cross-env": "^6.0.3",
-        "dtslint": "^3.3.0"
+        "dtslint": "^3.3.0",
+        "tslint": "^6.1.1",
+        "typescript": "^3.8.3"
     }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import {NextPluginRenderer} from "../Schema/EditorPluginStack";
+import {NextPluginRenderer} from "../Editor/EditorPluginStack";
 
 export const ValidatorStack = (props) => {
     if(props.widgets.validators && Array.isArray(props.widgets.validators)) {

@@ -22,9 +22,9 @@ const buildAppConfig = (main, dist, root, template) => ({
         main: main,
     },
     output: {
-        filename: 'assets/[name].js',
+        filename: 'assets/[name].[hash:8].js',
         path: dist,
-        chunkFilename: 'assets/[name].chunk.js',
+        chunkFilename: 'assets/[name].chunk.[hash:8].js',
         futureEmitAssets: true,
     },
     performance: {
@@ -66,7 +66,7 @@ const buildAppConfig = (main, dist, root, template) => ({
             // by webpacks internal loaders.
             exclude: [/\.(js|css|s[ac]ss|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
             options: {
-                name: 'static/media/[name].[hash:8].[ext]',
+                name: 'assets/media/[name].[hash:8].[ext]',
             },
         },],
     },
