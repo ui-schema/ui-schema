@@ -5,7 +5,7 @@ echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >.npmrc
 # todo: not manual resetting the file here
 git checkout -- packages/webpackPartialConfig.js
 
-cd ../packages
+cd ./packages
 
 cd ui-schema
 cp package.json build/ && cp package-lock.json build/ &&  cp README.md build/ && npm publish build
