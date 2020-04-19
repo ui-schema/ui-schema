@@ -8,12 +8,20 @@ const Icon = ({onClick, label, iconName, btnSize}) => {
         window.$('[data-toggle="tooltip"]').tooltip()
     }, []);
 
-    let style = document.createElement('style');
-    style.innerHTML = '.cssClass {transform: scale(' + btnSize + ', ' + btnSize + ');}';
-    document.getElementsByTagName('head')[0].appendChild(style);
-    let classNameArray = ["btn", "btn-transparent", "cssClass"].join(' ');
+    let btnScale = 1;
+    switch(btnSize) {
+        case("small"):
+            btnScale = 0.5;
+            break;
+        case("medium"):
+            btnScale = 1;
+            break;
+        case("big"):
+            btnScale = 2;
+            break;
+    }
 
-    return <button type="button" className={classNameArray}
+    return <button type="button" className={["btn", "btn-transparent"].join(' ')} style={{transform: "scale(" + btnScale + ", " + btnScale + ")"}}
                    data-toggle="tooltip" data-placement="right" title={t(label)} onClick={onClick}>
         <Trans text={iconName}/>
     </button>;

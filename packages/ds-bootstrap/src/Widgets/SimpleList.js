@@ -9,19 +9,8 @@ const SimpleList = extractValue(memo(({
                                           storeKeys, ownKey, schema, value, onChange,
                                           showValidity, errors, required
                                       }) => {
-    let btnSize = 1;
-    const btnSizeSchema = schema.getIn(['view', 'btnSize']) || 'small';
-    switch(btnSizeSchema) {
-        case("small"):
-            btnSize = 0.5;
-            break;
-        case("medium"):
-            btnSize = 1;
-            break;
-        case("big"):
-            btnSize = 2;
-            break;
-    }
+
+    let btnSize = schema.getIn(['view', 'btnSize']) || 'small';
 
     let classFormGroup = ["form-group", "d-flex", "align-items-center"];
     let classFormControl = ["form-control"];

@@ -33,11 +33,7 @@ import "bootstrap";
 import $ from "jquery";
 ```
 
-Then, window.$ must be defined in order to use it in all widgets using parent-bootstrap-component:
-
-```js
-$.window = $;
-```
+jQuery must be assigned to window like: `window.$`
 
 ## Add Design System Package
 

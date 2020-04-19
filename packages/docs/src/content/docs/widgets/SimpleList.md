@@ -66,12 +66,14 @@ Components:
 Needed other Component:
 
 - `Icon`
-The SimpleList widget uses icons, which have a tooltip and a translation for the tooltip:
+
+The SimpleList widget uses icons (`Plus` and `Minus`), which have a tooltip and a translation for the tooltip. The translation component must be imported:
 
 ```js
-<button type="button" className={classNameArray}
-                   data-toggle="tooltip" data-placement="right" title={t(label)} onClick={onClick}>
+import {Trans, useEditor} from "@ui-schema/ui-schema";
 ```
+
+The translated text can be inserted with: `labels.add`and `labels.remove`
 
 The tooltip need jQuery to be imported from node-modules to bootstrap parent component:
 
@@ -82,14 +84,6 @@ import "bootstrap";
 import $ from "jquery";
 
 window.$ = $;
-```
-
-- the function `.tooltip()` must be called in the `Icon` - Component:
-
-```js
-    React.useEffect(() => {
-        window.$('[data-toggle="tooltip"]').tooltip()
-    }, []);
 ```
 
 
