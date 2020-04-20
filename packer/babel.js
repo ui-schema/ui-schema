@@ -26,6 +26,14 @@ function buildEsModules(packages, targets = [
                     let babelConfig = {
                         presets: packagesBabelPresets,
                         plugins: packagesBabelPlugins,
+                        env: {
+                            cjs: {
+                                presets: [
+                                    ['@babel/preset-env', {loose: true}],
+                                    ...packagesBabelPresets,
+                                ],
+                            },
+                        },
                     };
 
                     fs.writeFile(babelFile, JSON.stringify(babelConfig, null, 2), err => {

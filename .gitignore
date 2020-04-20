@@ -20,6 +20,8 @@ node_modules
 
 lerna-debug.log
 
+babel.config.json
+
 #
 ## JetBrains IDE's
 
