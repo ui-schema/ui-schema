@@ -1,7 +1,7 @@
 import React from "react";
-import {NextPluginRenderer} from "../Editor/EditorPluginStack";
+import {NextPluginRenderer} from "../EditorPluginStack";
 import {Map} from 'immutable';
-import {cleanUp, updateValidity,} from "../Editor/EditorStore";
+import {cleanUp, updateValidity,} from "../EditorStore";
 
 let ValidityReporter = (props) => {
     const {

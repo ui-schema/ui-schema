@@ -8,7 +8,7 @@
         "start": "npm run clean-dist && npm run hoist && npm run serve -- demo",
         "docs": "npm run serve -- docs",
         "serve": "cross-env NODE_ENV=development node packerConfig.js --serve",
-        "prebuild": "npm run clean-dist && npm run hoist",
+        "_prebuild": "npm run clean-dist && npm run hoist",
         "build": "cross-env NODE_ENV=production CI=true node packerConfig.js --build",
         "clean": "npm run clean-dist && lerna clean -y",
         "clean-dist": "node packerConfig.js --clean",

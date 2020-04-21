@@ -6,7 +6,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 const babelPresets = [
-    ['@babel/preset-react', {loose: true}],
+    ['@babel/preset-react', {loose: false}],
 ];
 const babelPlugins = [
     ...commonBabelPlugins,

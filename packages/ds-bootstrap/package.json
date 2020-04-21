@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ds-bootstrap",
-    "version": "0.0.18",
+    "version": "0.0.19",
     "description": "Bootstrap Binding for UI-Schema",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -22,11 +22,13 @@
     "bugs": {
         "url": "https://github.com/ui-schema/ui-schema/issues"
     },
+    "main": "index.js",
+    "module": "esm/index.js",
     "scripts": {
         "__release": "cp package.json build/ && cp package-lock.json build/ &&  cp README.md build/ && npm publish build"
     },
     "devDependencies": {
-        "@ui-schema/ui-schema": "^0.0.18",
+        "@ui-schema/ui-schema": "^0.0.19",
         "react": "^16.12"
     },
     "dependencies": {

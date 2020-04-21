@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-color",
-    "version": "0.0.18",
+    "version": "0.0.19",
     "description": "",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -19,6 +19,8 @@
     "bugs": {
         "url": "https://github.com/ui-schema/ui-schema/issues"
     },
+    "main": "index.js",
+    "module": "esm/index.js",
     "scripts": {
         "__release": "cp package.json build/ && cp package-lock.json build/ &&  cp README.md build/ && npm publish build"
     },
@@ -29,8 +31,8 @@
     "devDependencies": {
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
-        "@ui-schema/ds-material": "^0.0.18",
-        "@ui-schema/ui-schema": "^0.0.18",
+        "@ui-schema/ds-material": "^0.0.19",
+        "@ui-schema/ui-schema": "^0.0.19",
         "immutable": "^4.0.0-rc.12",
         "react": "^16.12",
         "react-color": "^2.18.0"
