@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
@@ -54,8 +56,16 @@ function buildWebpack(config, cb) {
             process.exit(1);
         } else {
             logStats(stats);
-            if(cb) {
-                cb();
+            if(config.profile) {
+                fs.writeFile(path.join(__dirname, '../', 'profile.json'), JSON.stringify(stats.toJson(), null, 4), () => {
+                    if(cb) {
+                        cb();
+                    }
+                })
+            } else {
+                if(cb) {
+                    cb();
+                }
             }
         }
     });
