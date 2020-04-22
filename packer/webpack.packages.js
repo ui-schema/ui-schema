@@ -14,9 +14,6 @@ const babelPlugins = [
     ['@babel/plugin-proposal-class-properties', {loose: true}],
 ];
 
-function getPackageBuilder(context, entry, dist, library, resolve, externals) {
-}
-
 const getPackagesConfig = (packages) => {
     const getPackagesConfig = [];
 
@@ -43,6 +40,7 @@ const getPackagesConfig = (packages) => {
                 library,
                 libraryTarget: 'umd',
             },*/
+            profile: !!packages[library].profile,
             performance: {
                 hints: 'warning',
                 // maxEntrypointSize: 500000,// 500kb

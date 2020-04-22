@@ -1,26 +1,4 @@
-import React from "react";
-import {NextPluginRenderer} from "../EditorPluginStack";
 import {Map} from 'immutable';
-import {cleanUp, updateValidity,} from "../EditorStore";
-
-let ValidityReporter = (props) => {
-    const {
-        onChange, showValidity,
-        storeKeys,
-    } = props;
-    let {errors, valid} = props;
-
-    React.useEffect(() => {
-        onChange(updateValidity(storeKeys, valid));
-
-        return () => {
-            // delete own validity state on component unmount
-            onChange(cleanUp(storeKeys, 'validity'));
-        };
-    }, [valid]);
-
-    return <NextPluginRenderer {...props} valid={valid} errors={errors} showValidity={showValidity}/>;
-};
 
 const searchRecursive = (immutable, val, keys, count = false) => {
     if(!immutable) return 0;
@@ -66,10 +44,8 @@ const searchRecursive = (immutable, val, keys, count = false) => {
     return found;
 };
 
-const isInvalid = (validity, scope = [], count = false) => {
+export const isInvalid = (validity, scope = [], count = false) => {
     if(!validity) return 0;
 
     return searchRecursive(validity.getIn(scope), false, ['__valid'], count);
 };
-
-export {ValidityReporter, isInvalid, searchRecursive}

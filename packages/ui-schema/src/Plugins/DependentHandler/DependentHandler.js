@@ -1,6 +1,6 @@
 import React from "react";
 import {NextPluginRenderer, NextPluginRendererMemo} from "../../EditorPluginStack";
-import {validateSchema} from "../../Validation/validateSchema";
+import {validateSchema} from "../../validateSchema";
 import {useSchemaStore} from "../../EditorStore";
 import {checkValueExists} from "../../Validators/RequiredValidator";
 import {mergeSchema} from "../../Utils/mergeSchema";
@@ -60,7 +60,7 @@ const DependentRenderer = ({dependencies, dependentSchemas, ...props}) => {
     return <NextPluginRendererMemo {...props} schema={schema}/>;
 };
 
-const DependentHandler = (props) => {
+export const DependentHandler = (props) => {
     let {storeKeys, ownKey, schema} = props;
 
     const dependencies = schema.get('dependencies');
@@ -77,5 +77,3 @@ const DependentHandler = (props) => {
             : <NextPluginRenderer {...props}/>}
     </React.Fragment>;
 };
-
-export {DependentHandler}

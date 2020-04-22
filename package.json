@@ -10,7 +10,7 @@
         "serve": "cross-env NODE_ENV=development node packerConfig.js --serve",
         "prebuild": "npm run clean-dist && npm run hoist",
         "build": "cross-env NODE_ENV=production CI=true node packerConfig.js --build",
-        "profile": "cross-env NODE_OPTIONS='--max-old-space-size=4096' NODE_ENV=production node packerConfig.js --build",
+        "profile": "cross-env NODE_OPTIONS='--max-old-space-size=4096' NODE_ENV=production node packerConfig.js --build --profile",
         "clean": "npm run clean-dist && lerna clean -y",
         "clean-dist": "node packerConfig.js --clean",
         "bootstrap": "lerna bootstrap",

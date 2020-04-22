@@ -16,7 +16,7 @@ import {validateObject} from "../Validators/ObjectValidator";
  * @param value
  * @return {boolean|string|List}
  */
-const validateSchema = (schema, value) => {
+export const validateSchema = (schema, value) => {
     let type = schema.get('type');
     let pattern = schema.get('pattern');
 
@@ -63,7 +63,7 @@ const validateSchema = (schema, value) => {
  * @param {Map} value
  * @return {List<*>}
  */
-const validateSchemaObject = (schema, value) => {
+export const validateSchemaObject = (schema, value) => {
     let err = List([]);
     let properties = schema.get('properties');
     if(!properties) return err;
@@ -83,5 +83,3 @@ const validateSchemaObject = (schema, value) => {
 
     return err;
 };
-
-export {validateSchema, validateSchemaObject}

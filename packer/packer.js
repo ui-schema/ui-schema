@@ -11,6 +11,7 @@ const packer = (apps, packages) => {
     const doServe = argv['serve'] === true ? true : (argv['serve'] || false);
     const doClean = !!argv['clean'];
     const doBuild = !!argv['build'];
+    const withProfile = !!argv['profile'];
 
     const appsConfigs = {};
     for(let app in apps) {
@@ -106,6 +107,7 @@ module.exports = {
                     // console.log(c.module.rules);
                     // console.log(Object.keys(c.entry));
                 });
+                configs.profile = withProfile;
                 buildWebpack(configs);
             })
             .catch(err => {
