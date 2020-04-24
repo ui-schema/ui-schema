@@ -4,7 +4,7 @@ import {TransTitle, updateValue} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 import {useUID} from "react-uid";
 
-const StringRenderer = ({ownKey, schema, value, multiline, onChange, storeKeys, showValidity, required, errors, type, rows}) => {
+const StringRenderer = ({ownKey, schema, value, multiline = false, onChange, storeKeys, showValidity, required, errors, type, rows}) => {
     const format = schema.get('format');
     const uid = useUID();
 

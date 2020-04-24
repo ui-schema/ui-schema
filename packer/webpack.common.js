@@ -39,6 +39,9 @@ function getConfig(
     } = {},
 ) {
     const config = {
+        resolve: {
+            extensions: ['.js']
+        },
         module: {
             rules: [
                 {

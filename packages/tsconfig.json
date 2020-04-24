@@ -1,0 +1,63 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "es6",
+        "jsx": "preserve",
+        "moduleResolution": "node",
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "noEmit": true,
+        "experimentalDecorators": true,
+        "baseUrl": "../",
+        "allowSyntheticDefaultImports": true,
+        "noErrorTruncation": true,
+        "allowJs": true,
+        "paths": {
+            "@ui-schema/ds-bootstrap": [
+                "packages/ds-bootstrap/src"
+            ],
+            "@ui-schema/ds-bootstrap/*": [
+                "packages/ds-bootstrap/src/*"
+            ],
+            "@ui-schema/ds-material": [
+                "packages/ds-material/src"
+            ],
+            "@ui-schema/ds-material/*": [
+                "packages/ds-material/src/*"
+            ],
+            "@ui-schema/material-code": [
+                "packages/material-code/src"
+            ],
+            "@ui-schema/material-code/*": [
+                "packages/material-code/src/*"
+            ],
+            "@ui-schema/material-color": [
+                "packages/material-color/src"
+            ],
+            "@ui-schema/material-color/*": [
+                "packages/material-color/src/*"
+            ],
+            "@ui-schema/material-pickers": [
+                "packages/material-pickers/src"
+            ],
+            "@ui-schema/material-pickers/*": [
+                "packages/material-pickers/src/*"
+            ],
+            "@ui-schema/material-richtext": [
+                "packages/material-richtext/src"
+            ],
+            "@ui-schema/material-richtext/*": [
+                "packages/material-richtext/src/*"
+            ],
+            "@ui-schema/ui-schema": [
+                "packages/ui-schema/src"
+            ],
+            "@ui-schema/ui-schema/*": [
+                "packages/ui-schema/src/*"
+            ]
+        }
+    },
+    "exclude": [
+        "**/build/"
+    ]
+}

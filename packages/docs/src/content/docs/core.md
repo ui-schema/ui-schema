@@ -25,7 +25,7 @@ Saves and provides the store, onChange and schema.
 
 - Provider: `EditorStoreProvider`
 - Hook: `useSchemaStore`
-    - returns: `{schema: OrderedMap, valueStore: *, internalStore: Map, onChange: function, validity: Map}`
+    - returns: `{store: EditorStore, onChange: function, schema: OrderedMap}`
 - HOC to get the current widgets values by `storeKeys`:
     - `extractValue` passes down: `value`, `internalValue`, `onChange`
     - `extractValidity` passes down: `validity`, `onChange`
@@ -60,9 +60,12 @@ import {isInvalid, useSchemaStore} from "@ui-schema/ui-schema";
 const Comp = ({storeKeys, ...props}) => {
     const {
         onChange, // also passed down in props: `props.onChange`
-        valueStore, internalStore, // better to use the HOC `extractValue`
-        validity,     // better to use the HOC `extractValidity`
+        store,
     } = useSchemaStore();
+
+    store.getValidity();  // better to use the HOC `extractValidity`
+    store.getInternals(); // better to use the HOC `extractValue`
+    store.getValues();    // better to use the HOC `extractValue`
 
     let invalid = isInvalid(validity, storeKeys, false); // Map, List, boolean: <if count>
     
@@ -225,10 +228,10 @@ import {
 
 const CustomFooter = ({someCustomProp}) => {
     // access the editor context, also available e.g.: useSchemaWidgets, useSchemaData
-    const {validity} = useSchemaStore();
+    const {store} = useSchemaStore();
     
     return <p style={{fontWeight: someCustomProp ? 'bold' : 'normal'}}>
-        {isInvalid(validity) ? 'invalid' : 'valid'}
+        {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
     </p>
 }
 
@@ -246,7 +249,7 @@ const CustomEditor = ({someCustomProp, ...props}) => (
 
 ### SchemaEditorRenderer
 
-Layer to get the needed widget by the current schema and let it render with [ValueWidgetRenderer](#valuewidgetrenderer).
+Layer to get the needed widget by the current schema and let it render with [WidgetRenderer](#widgetRenderer).
 
 ### SchemaRootRenderer
 
@@ -254,7 +257,7 @@ Connects to the current context and extracts the starting schema, renders the `w
 
 ## Widget Renderer
 
-### ValueWidgetRenderer
+### WidgetRenderer
 
 ### PluginStackRenderer
 

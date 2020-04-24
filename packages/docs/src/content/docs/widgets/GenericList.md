@@ -12,6 +12,7 @@ Widgets for complex structures in arrays.
 - works with the `items` keyword of arrays
     - can be any sub-schema
     - can be any widget
+    - can be a list of sub-schemas (array-tuple)
 
 - [Type Properties](/docs/schema#type-array)
 - [View Keywords](/docs/schema#view-keyword)
@@ -21,7 +22,7 @@ Widgets for complex structures in arrays.
 ### Material-UI
 
 ```js
-import {GenericList} from "@ui-schema/ds-material/es/Widgets/GenericList";
+import {GenericList} from "@ui-schema/ds-material/Widgets/GenericList";
 
 const widgets = {
     custom: {

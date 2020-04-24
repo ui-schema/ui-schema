@@ -51,11 +51,23 @@ const GenericList = extractValue(memo(({
                             </Grid>
 
                             <Grid item style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
-                                <NestedSchemaEditor
-                                    showValidity={showValidity}
-                                    storeKeys={storeKeys.push(i)}
-                                    schema={schema.get('items')}
-                                />
+                                {List.isList(schema.get('items')) ?
+                                    /*
+                                     * todo: tuple schemas do not support correct view/grid
+                                     *   must it really be a nested schema for each entry
+                                     */
+                                    schema.get('items').map((item, j) => <NestedSchemaEditor
+                                        key={j}
+                                        showValidity={showValidity}
+                                        storeKeys={storeKeys.push(i).push(j)}
+                                        schema={item}
+                                        noGrid
+                                    />).valueSeq() :
+                                    <NestedSchemaEditor
+                                        showValidity={showValidity}
+                                        storeKeys={storeKeys.push(i)}
+                                        schema={schema.get('items')}
+                                    />}
                             </Grid>
 
                             <Grid item style={{display: 'flex', flexShrink: 0}}>
@@ -80,7 +92,9 @@ const GenericList = extractValue(memo(({
             <Grid item xs={12}>
                 <IconButton
                     onClick={() => {
-                        onChange(updateValue(storeKeys, value ? value.push(Map({})) : List([Map({})])))
+                        onChange(updateValue(storeKeys, value ?
+                            value.push(List.isList(schema.get('items')) ? List([]) : Map({})) :
+                            List([List.isList(schema.get('items')) ? List([]) : Map({end_checks: true})])))
                     }}
                     size={btnSize}
                 >
@@ -90,7 +104,10 @@ const GenericList = extractValue(memo(({
                 </IconButton>
 
                 <ValidityHelperText
-                    /* only pass down errors which are not for a specific sub-schema */
+                    /*
+                     * only pass down errors which are not for a specific sub-schema
+                     * todo: check if all needed are passed down
+                     */
                     errors={errors.filter(err => List.isList(err) ? !err.getIn([1, 'arrayItems']) : true)}
                     showValidity={showValidity}
                     schema={schema}

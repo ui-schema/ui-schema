@@ -27,7 +27,7 @@ A stepper is a widget that renders a sub-schema after another, it is only possib
 ```js
 import {
     Stepper, Step,
-} from "@ui-schema/ds-material/es/Widgets/Stepper";
+} from "@ui-schema/ds-material/Widgets/Stepper";
 
 const widgets = {
     custom: {

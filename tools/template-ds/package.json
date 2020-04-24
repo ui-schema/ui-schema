@@ -28,7 +28,8 @@
         "react": "^16.12"
     },
     "dependencies": {
-        "react-uid": "^2.2.0"
+        "react-uid": "^2.2.0",
+        "@ui-schema/ui-schema": "0.0.14"
     },
     "peerDependencies": {
         "@ui-schema/ui-schema": "0.0.x",

@@ -5,7 +5,6 @@ import {widgets} from "@ui-schema/ds-material";
 import {RichCodeEditor,} from "../RichCodeEditor";
 import {browserT} from "../../t";
 import Loadable from "react-loadable";
-import {LoadingPageModule} from "../Layout/Layout";
 import style from "codemirror/lib/codemirror.css";
 import themeDark from 'codemirror/theme/duotone-dark.css';
 import themeLight from 'codemirror/theme/duotone-light.css';
@@ -20,6 +19,9 @@ import {
     ColorCircleStatic, ColorTwitterStatic,
     ColorSketchStatic, ColorSketchDialog,
 } from "@ui-schema/material-color";
+import {LoadingCircular} from "@control-ui/core/es/LoadingCircular";
+import LuxonAdapter from "@date-io/luxon";
+import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 
 const customWidgets = {...widgets};
 customWidgets.custom = {
@@ -44,27 +46,27 @@ customWidgets.custom = {
     ColorSketchDialog,
     Code: Loadable({
         loader: () => import('@ui-schema/material-code').then(r => r.Code),
-        loading: () => <LoadingPageModule title={'Loading Code Widget'}/>,
+        loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
     }),
     DateTime: Loadable({
         loader: () => import('@ui-schema/material-pickers').then(r => r.DateTimePicker),
-        loading: () => <LoadingPageModule title={'Loading DateTime Widget'}/>,
+        loading: () => <LoadingCircular title={'Loading DateTime Widget'}/>,
     }),
     Date: Loadable({
         loader: () => import('@ui-schema/material-pickers').then(r => r.DatePicker),
-        loading: () => <LoadingPageModule title={'Loading Date Widget'}/>,
+        loading: () => <LoadingCircular title={'Loading Date Widget'}/>,
     }),
     Time: Loadable({
         loader: () => import('@ui-schema/material-pickers').then(r => r.TimePicker),
-        loading: () => <LoadingPageModule title={'Loading Time Widget'}/>,
+        loading: () => <LoadingCircular title={'Loading Time Widget'}/>,
     }),
     RichText: Loadable({
-        loader: () => import('@ui-schema/material-richtext/es/RichText').then(r => r.RichText),
-        loading: () => <LoadingPageModule title={'Loading RichText Widget'}/>,
+        loader: () => import('@ui-schema/material-richtext/RichText').then(r => r.RichText),
+        loading: () => <LoadingCircular title={'Loading RichText Widget'}/>,
     }),
     RichTextInline: Loadable({
-        loader: () => import('@ui-schema/material-richtext/es/RichTextInline').then(r => r.RichTextInline),
-        loading: () => <LoadingPageModule title={'Loading RichText Widget'}/>,
+        loader: () => import('@ui-schema/material-richtext/RichTextInline').then(r => r.RichTextInline),
+        loading: () => <LoadingCircular title={'Loading RichText Widget'}/>,
     })
 };
 
@@ -91,10 +93,10 @@ const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, r
 };
 
 const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme, maxLines}) => {
-    const {valueStore} = useSchemaStore();
+    const {store} = useSchemaStore();
 
     return <RichCodeEditor
-        value={typeof valueStore !== 'string' && typeof valueStore !== 'number' && typeof valueStore !== 'boolean' && valueStore ? JSON.stringify(valueStore.toJS(), null, tabSize) : valueStore}
+        value={typeof store.getValues() !== 'string' && typeof store.getValues() !== 'number' && typeof store.getValues() !== 'boolean' && store.getValues() ? JSON.stringify(store.getValues().toJS(), null, tabSize) : store.getValues()}
         theme={theme}
         tabSize={tabSize}
         fontSize={fontSize}
@@ -136,62 +138,64 @@ const DemoEditor = ({activeSchema, id = 0, onClick, showDebugger = true, split =
     const fontSize = 13;
 
     return <WidgetCodeProvider theme={palette.type === 'dark' ? 'duotone-dark' : 'duotone-light'}>
-        <SchemaEditorProvider
-            schema={schema}
-            store={store}
-            onChange={setStore}
-            widgets={customWidgets}
-            showValidity={showValidity}
-            t={browserT}
-        >
-            {showDebugger && !split ? <DebugSchemaEditor
-                schema={schema} setSchema={setSchema}
-                setJsonError={setJsonError} richIde
-                enableShowAll={!split} split={split}
-                id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
-            /> : null}
-
-            {jsonError ?
-                <Box style={{margin: '0 12px 0 12px'}}>
-                    <Typography component={'h2'} variant={'h6'} color={'error'}>
-                        JSON-Error:
-                    </Typography>
-
-                    <Typography component={'p'} variant={'subtitle1'}>
-                        {jsonError.replace('SyntaxError: JSON.parse: ', '')}
-                    </Typography>
-                </Box> :
-                typeof schema === 'string' ? null : <div style={uiStyle}>
-
-                    {/* ! this is the actual editor component ! */}
-                    <SchemaRootRenderer/>
-
-                    {onClick ? <Button
-                        variant={'contained'}
-                        disabled={!!isInvalid(store.getValidity())}
-                        style={{marginTop: 12}}
-                        onClick={() => isInvalid(store.getValidity()) ? undefined : onClick(store)}>Send</Button> : null}
-                </div>}
-
-            {showDebugger ? <Box style={{display: 'flex', flexWrap: 'wrap', margin: '12px 0 24px 0'}}>
-                {split ? <DebugSchemaEditor
+        <MuiPickersUtilsProvider utils={LuxonAdapter}>
+            <SchemaEditorProvider
+                schema={schema}
+                store={store}
+                onChange={setStore}
+                widgets={customWidgets}
+                showValidity={showValidity}
+                t={browserT}
+            >
+                {showDebugger && !split ? <DebugSchemaEditor
                     schema={schema} setSchema={setSchema}
                     setJsonError={setJsonError} richIde
                     enableShowAll={!split} split={split}
                     id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
                 /> : null}
 
-                <Box style={{width: split ? '50%' : '100%', paddingLeft: split ? 6 : 0}}>
-                    <Typography component={'p'} variant={'overline'} style={{paddingLeft: 4}}>
-                        Data:
-                    </Typography>
-                    <SchemaDataDebug
-                        richIde
+                {jsonError ?
+                    <Box style={{margin: '0 12px 0 12px'}}>
+                        <Typography component={'h2'} variant={'h6'} color={'error'}>
+                            JSON-Error:
+                        </Typography>
+
+                        <Typography component={'p'} variant={'subtitle1'}>
+                            {jsonError.replace('SyntaxError: JSON.parse: ', '')}
+                        </Typography>
+                    </Box> :
+                    typeof schema === 'string' ? null : <div style={uiStyle}>
+
+                        {/* ! this is the actual editor component ! */}
+                        <SchemaRootRenderer/>
+
+                        {onClick ? <Button
+                            variant={'contained'}
+                            disabled={!!isInvalid(store.getValidity())}
+                            style={{marginTop: 12}}
+                            onClick={() => isInvalid(store.getValidity()) ? undefined : onClick(store)}>Send</Button> : null}
+                    </div>}
+
+                {showDebugger ? <Box style={{display: 'flex', flexWrap: 'wrap', margin: '12px 0 24px 0'}}>
+                    {split ? <DebugSchemaEditor
+                        schema={schema} setSchema={setSchema}
+                        setJsonError={setJsonError} richIde
+                        enableShowAll={!split} split={split}
                         id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
-                    />
-                </Box>
-            </Box> : null}
-        </SchemaEditorProvider>
+                    /> : null}
+
+                    <Box style={{width: split ? '50%' : '100%', paddingLeft: split ? 6 : 0}}>
+                        <Typography component={'p'} variant={'overline'} style={{paddingLeft: 4}}>
+                            Data:
+                        </Typography>
+                        <SchemaDataDebug
+                            richIde
+                            id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
+                        />
+                    </Box>
+                </Box> : null}
+            </SchemaEditorProvider>
+        </MuiPickersUtilsProvider>
     </WidgetCodeProvider>;
 };
 

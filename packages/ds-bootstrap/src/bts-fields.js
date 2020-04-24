@@ -1,30 +1,26 @@
-import {validators} from "@ui-schema/ui-schema";
 import {StringRenderer, TextRenderer, NumberRenderer} from "./Widgets/TextField";
 import {BoolRenderer} from "./Widgets/OptionsBoolean";
 import {OptionsRadio} from "./Widgets/OptionsRadio";
 import {OptionsCheck} from "./Widgets/OptionsCheck";
 import {Select, SelectMulti} from "./Widgets/Select";
-import {RootRenderer, GroupRenderer} from "./Grid";
-import {pluginStack} from "./pluginStack";
+import {SimpleList} from "./Widgets/SimpleList";
+import {widgetsBase} from "./widgetsBase";
 
-const widgets = {
-    RootRenderer,
-    GroupRenderer,
-    pluginStack: pluginStack,
-    validators,
-    ErrorFallback: 'todo',
-    types: {
+const widgets = {...widgetsBase};
+
+widgets.types = {
         string: StringRenderer,
         number: NumberRenderer,
         boolean: BoolRenderer,
-    },
-    custom: {
+};
+
+widgets.custom = {
         Text: TextRenderer,
         OptionsRadio,
         OptionsCheck,
         Select,
-        SelectMulti
-    },
+        SelectMulti,
+        SimpleList
 };
 
 export {widgets};

@@ -1,0 +1,191 @@
+/*.App {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}*/
+
+.refresh-spin {
+    animation: refresh-spin infinite 1s linear;
+}
+
+/*@media (prefers-reduced-motion: no-preference) {
+    // leads to no-spin when FF uses too much RAM
+}*/
+
+#root {
+    overflow: auto;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/*
+.App-main {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.25rem;
+    font-weight: bold;
+    max-width: 900px;
+    margin: 12px auto;
+    padding: 0 18px;
+    min-height: 60vh;
+}*/
+
+.hide-sm {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/*
+@media (min-width: 800px) {
+    .App-main {
+        min-height: auto;
+    }
+}*/
+
+@media (min-width: 400px) {
+    .hide-sm {
+        position: static;
+        width: initial;
+        height: initial;
+        padding: initial;
+        margin: initial;
+        overflow: initial;
+        clip: initial;
+        border: initial;
+    }
+}
+
+/*
+.App-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    margin: 12px auto;
+    overflow: auto;
+    width: 100%;
+    flex-shrink: 0;
+}*/
+
+
+@keyframes refresh-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+button {
+    background: transparent;
+    transition: 0.4s ease-out background-color;
+}
+
+button:hover {
+    background: rgba(20, 20, 20, 0.1);
+}
+
+button:focus {
+    background: rgba(20, 20, 20, 0.25);
+    transition: 0.15s ease-out background-color;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-spaces;
+    line-height: 1.75;
+    padding: 8px 8px;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace !important;
+    padding: 2px 2px;
+    font-size: 0.875rem !important;
+}
+
+td > code {
+    display: inline-block;
+}
+
+td > code:first-child:last-child {
+    margin-bottom: 0;
+}
+
+input[type="number"].no-spin::-webkit-outer-spin-button,
+input[type="number"].no-spin::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"].no-spin {
+    -moz-appearance: textfield;
+}
+
+blockquote:before {
+    content: "“";
+    position: absolute;
+    font-size: 3rem;
+    line-height: 2rem;
+    opacity: 0.6;
+    left: 6px;
+}
+
+nav:first-child + h1,
+nav:first-child + h2,
+nav:first-child + h3,
+nav:first-child + h4,
+nav:first-child + h5,
+nav:first-child + h6,
+h1 + h2,
+h2 + h3,
+h3 + h4,
+h4 + h5,
+h5 + h6,
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child {
+    margin-top: 0 !important;
+}
+
+h1 + .MuiPaper-root,
+h2 + .MuiPaper-root,
+h3 + .MuiPaper-root,
+h4 + .MuiPaper-root,
+h5 + .MuiPaper-root,
+h6 + .MuiPaper-root {
+    margin-top: -12px !important;
+}

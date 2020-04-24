@@ -130,11 +130,11 @@ Generic Keywords:
 
 Validation Keywords:
 
-- `minProperties` min. number of properties ❌
-- `maxProperties` max. number of properties ❌
-- `additionalProperties` when `false` only defined properties are allowed ❌
-- `propertyNames.pattern` regex pattern to limit naming of properties ❌
-- `patternProperties` to restrict names of properties to certain types with regex ❌ 
+- `minProperties` min. number of properties ✔
+- `maxProperties` max. number of properties ✔
+- `additionalProperties` when `false` only defined properties are allowed ✔
+- `propertyNames` sub-schema to limit naming of properties ✔
+- `patternProperties` automatic sub-schema applied to a property when property-name matches regex ❌ 
 - [dependencies, dependentSchemas](/docs/widget-plugins#dependenthandler) for dynamic sub-schema/properties ✔
 - [if, else, then, allOf](/docs/widget-plugins#conditionalhandler) for conditional sub-schema ✔
 - [allOf, with conditionals](/docs/widget-plugins#combininghandler) for combining sub-schema (not-all keywords) ✔
@@ -150,18 +150,19 @@ Validation Keywords:
 - `minItems` min. number of items ✔
 - `maxItems` max. number of items ✔
 - `uniqueItems` all items must be of an unique value ✔
+- `contains` one or more items needs to be valid against a sub-schema ✔
+    - ❗ only checks some schema: everything [validateSchema](/docs/widget-plugins#validateschema) supports
+    - ❗ no full sub-schema against array items
 - `items` restricts all items be valid against a sub-schema (one-all) ✔
     - ❗ only checks some schema: everything [validateSchema](/docs/widget-plugins#validateschema) supports
     - ❗ no full sub-schema against array items
     - errors are added with context key `arrayItems`
         - only get **non** items errors: 
         - `errors.filter(err => List.isList(err) ? !err.getIn([1, 'arrayItems']) : true)`
-- `contains` one or more items needs to be valid against a sub-schema ✔
-    - ❗ only checks some schema: everything [validateSchema](/docs/widget-plugins#validateschema) supports
-    - ❗ no full sub-schema against array items
-- `items` restricts items to be valid against sub-schemas in an defined order (tuple) ❌
-    - `additionalItems` if more props then defined are allowed ❌
-    - currently supported by e.g. `GenericList` widget with validation at render-flow
+- `items` restricts items to be valid against sub-schemas in an defined order (tuple)  ✔
+    - `additionalItems` if more props then defined are allowed ✔
+    - ❗ currently the individual items must be validated in their actual widgets (validation in render flow)
+    - supported by e.g. [GenericList](/docs/widgets/GenericList)
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/array.html)
 

@@ -1,16 +1,10 @@
 {
     "name": "@ui-schema/material-richtext",
-    "version": "0.0.14",
+    "version": "0.0.19",
     "description": "Rich-Text Input for UI-Schema with Material-UI",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
     "license": "MIT",
-    "main": "./lib/index.js",
-    "module": "./es/index.js",
-    "files": [
-        "es",
-        "lib"
-    ],
     "keywords": [
         "ui-schema",
         "mui",
@@ -27,18 +21,23 @@
     "bugs": {
         "url": "https://github.com/ui-schema/ui-schema/issues"
     },
+    "main": "index.js",
+    "module": "esm/index.js",
+    "scripts": {
+        "__release": "cp package.json build/ && cp package-lock.json build/ &&  cp README.md build/ && npm publish build"
+    },
     "dependencies": {
         "draft-js-export-html": "~1.4.1",
         "draft-js-import-html": "~1.4.1",
-        "draft-js-md-keyboard-plugin": "~0.6.1",
+        "draft-js-md-keyboard-plugin": "~0.6.3",
         "markdown-draft-js": "~2.2.0",
         "react-uid": "^2.2.0"
     },
     "devDependencies": {
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
-        "@ui-schema/ds-material": "^0.0.14",
-        "@ui-schema/ui-schema": "^0.0.14",
+        "@ui-schema/ds-material": "^0.0.19",
+        "@ui-schema/ui-schema": "^0.0.19",
         "draft-js": "~0.11.4",
         "draft-js-plugins-editor": "~3.0.0",
         "immutable": "^4.0.0-rc.12",

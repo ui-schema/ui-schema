@@ -42,15 +42,15 @@ Using default validators:
 
 ```js
 import {
-    Validator, validators,
+    ValidatorStack, validators,
     ValidityReporter
 } from '@ui-schema/ui-schema';
 
 const widgets = {
     pluginStack: [
         // ... other plugins
-        Validator,
-        ValidityReporter, // after `Validator`
+        ValidatorStack,
+        ValidityReporter, // after `ValidatorStack`
         // ... other plugins
     ],
     validators: validators,
@@ -97,6 +97,7 @@ Currently includes the handlers of:
 - validateMultipleOf
 - validateConst
 - validateEnum
+- validateObject (additionalProperties, propertyNames)
 - validateContains (array contains min. 1 valid item)
 
 Supports `not` keyword for any validation, see [spec.](https://json-schema.org/understanding-json-schema/reference/combining.html#not). When `not` is specified, it's sub-schema is evaluated and not anything else - (behaviour may change).

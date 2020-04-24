@@ -1,10 +1,10 @@
 import React from "react";
-import {TransTitle, beautifyKey, useEditor, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
+import {TransTitle, Trans, beautifyKey, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
 import {List, Map} from "immutable";
 import {useUID} from "react-uid";
 import {ValidityHelperText} from "../Component/LocaleHelperText";
 
-const CheckInput = ({currentValue, onChange, label, enum_name, classForm, classLabel, classFormControl}) => {
+const CheckInput = ({currentValue, onChange, label, value, classForm, classLabel, classFormControl}) => {
     const uid = useUID();
 
     return <div className={classForm}>
@@ -12,7 +12,7 @@ const CheckInput = ({currentValue, onChange, label, enum_name, classForm, classL
             id={'uis-' + uid}
             type="checkbox"
             className={classFormControl}
-            value={enum_name}
+            value={value}
             checked={currentValue}
             onChange={onChange}/>
         <label
@@ -27,15 +27,10 @@ const CheckInput = ({currentValue, onChange, label, enum_name, classForm, classL
 const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChange, classLabel, classFormControl, classForm, schema}) => enumVal ?
     enumVal.map((enum_name) => {
         const currentValue = value && value.contains && typeof value.contains(enum_name) !== 'undefined' ? value.contains(enum_name) : false;
-        const {t} = useEditor();
-        const s = enum_name + '';
-        const Translated = t(s, Map({relative: List(['enum', s])}), schema.get('t'));
 
         return <CheckInput
             key={enum_name}
-            value={typeof Translated === 'string' || typeof Translated === 'number' ?
-                Translated :
-                beautifyKey(s)}
+            value={enum_name}
             classForm={classForm}
             classLabel={classLabel}
             classFormControl={classFormControl}
@@ -51,7 +46,12 @@ const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChang
                     );
                 }
             }}
-            label={beautifyKey(enum_name)}
+            label={<Trans
+                schema={schema.get('t')}
+                text={storeKeys.insert(0, 'widget').concat(List(['enum', enum_name])).join('.')}
+                context={Map({'relative': List(['enum', enum_name])})}
+                fallback={beautifyKey(enum_name)}
+            />}
         />
     }).valueSeq()
     : null
@@ -85,5 +85,3 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors, ownKey}) => {
 };
 
 export {OptionsCheck};
-
-

@@ -15,10 +15,17 @@
 # NodeJS
 node_modules
 
+lerna-debug.log
+
+# Temporary created by packer
+babel.config.json
+
+# Webpack profiling
+profile.json
+
+
 # Mac
 .DS_Store
-
-lerna-debug.log
 
 #
 ## JetBrains IDE's
