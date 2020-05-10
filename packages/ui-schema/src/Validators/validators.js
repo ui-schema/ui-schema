@@ -1,11 +1,11 @@
-import {requiredValidator} from "./RequiredValidator";
-import {minMaxValidator} from "./MinMaxValidator";
-import {typeValidator} from "./TypeValidator";
-import {multipleOfValidator} from "./MultipleOfValidator";
-import {valueValidatorConst, valueValidatorEnum} from "./ValueValidator";
-import {patternValidator} from "./PatternValidator";
-import {arrayValidator} from "./ArrayValidator";
-import {objectValidator} from "./ObjectValidator";
+import {requiredValidator} from "./RequiredValidator/RequiredValidator";
+import {minMaxValidator} from "./MinMaxValidator/MinMaxValidator";
+import {typeValidator} from "./TypeValidator/TypeValidator";
+import {multipleOfValidator} from "./MultipleOfValidator/MultipleOfValidator";
+import {valueValidatorConst, valueValidatorEnum} from "./ValueValidator/ValueValidator";
+import {patternValidator} from "./PatternValidator/PatternValidator";
+import {arrayValidator} from "./ArrayValidator/ArrayValidator";
+import {objectValidator} from "./ObjectValidator/ObjectValidator";
 
 export const validators = [
     requiredValidator,
