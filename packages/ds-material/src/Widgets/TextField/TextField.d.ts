@@ -1,24 +1,25 @@
 import React from 'react'
-import { WidgetRendererPropsExtendedCheckValid, rows, rowsMax } from '../../../../ui-schema/src/WidgetRendererProps'
+import { WidgetExtendedCheckValid } from '@ui-schema/ui-schema/Widget'
+import { rows, rowsMax, style, multiline, type } from '@ui-schema/ui-schema/CommonTypings'
 
-export interface StringRendererProps extends WidgetRendererPropsExtendedCheckValid {
-    multiline?: boolean
-    type: string
+export interface StringRendererProps extends WidgetExtendedCheckValid {
+    multiline?: multiline
+    type: type
     rows?: rows
     rowsMax?: rowsMax
-    style: string
-    onClick: Function
-    onFocus: Function
-    onBlur: Function
-    onKeyUp: Function
-    onKeyDown: Function
+    style: style
+    onClick: React.MouseEvent
+    onFocus: React.MouseEvent
+    onBlur: React.MouseEvent
+    onKeyUp: React.MouseEvent
+    onKeyDown: React.MouseEvent
     inputProps: any
     InputProps: any
     inputRef: any
 }
 
 export interface NumberRendererProps extends StringRendererProps {
-    type: string
+    type: type
 }
 
 export interface TextRendererProps extends StringRendererProps {

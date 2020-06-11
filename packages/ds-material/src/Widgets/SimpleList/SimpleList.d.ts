@@ -1,8 +1,9 @@
 import * as React from 'react'
-import { WidgetRendererPropsExtended } from '../../../../ui-schema/src/WidgetRendererProps'
+import { WidgetPropsExtended } from '@ui-schema/ui-schema/Widget'
+import { valid } from '@ui-schema/ui-schema/CommonTypings'
 
-export interface SimpleListProps extends WidgetRendererPropsExtended {
-    valid: boolean
+export interface SimpleListProps extends WidgetPropsExtended {
+    valid: valid
 }
 
 export function SimpleList<P extends SimpleListProps>(props: P): React.Component<P>

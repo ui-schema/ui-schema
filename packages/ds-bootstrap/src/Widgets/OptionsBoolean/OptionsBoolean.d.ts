@@ -1,4 +1,8 @@
 import * as React from 'react'
-import { WidgetRendererPropsExtended } from '../../../../ui-schema/src/WidgetRendererProps'
+import { WidgetPropsExtended } from '@ui-schema/ui-schema/Widget'
 
-export function BoolRenderer<P extends WidgetRendererPropsExtended>(props: P): React.Component<P>
+export interface WidgetPropsBoolean extends WidgetPropsExtended {
+    value: boolean
+}
+
+export function BoolRenderer<P extends WidgetPropsBoolean>(props: P): React.Component<P>

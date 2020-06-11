@@ -1,4 +1,4 @@
 import * as React from 'react'
-import { WidgetRendererProps } from '../../../../ui-schema/src/WidgetRendererProps'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 
-export function OptionsCheck<P extends WidgetRendererProps>(props: P): React.Component<P>
+export function OptionsCheck<P extends WidgetProps>(props: P): React.Component<P>

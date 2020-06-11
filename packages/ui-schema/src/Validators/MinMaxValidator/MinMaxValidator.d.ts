@@ -1,6 +1,5 @@
-import * as React from "react"
 import { OrderedMap, List } from 'immutable'
-import { validatorPlugin } from '@ui-schema/ui-schema/Validators/validate'
+import { validatorPlugin } from '../../Validators/validate'
 
 export type ERROR_MAX_LENGTH = string
 export type ERROR_MIN_LENGTH = string

@@ -1,6 +1,5 @@
-import * as React from 'react'
 import { OrderedMap, List } from 'immutable'
-import { validatorPluginExtended } from '@ui-schema/ui-schema/Validators/validate'
+import { validatorPluginExtended } from '../../Validators/validate'
 
 export type ERROR_DUPLICATE_ITEMS = string
 export type ERROR_NOT_FOUND_CONTAINS = string

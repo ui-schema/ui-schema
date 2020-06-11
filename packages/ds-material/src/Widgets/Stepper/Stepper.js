@@ -2,7 +2,8 @@ import React from "react";
 import {
     makeStyles, Stepper as MuiStepper, Step as MuiStep, StepLabel, Button, Typography,
 } from "@material-ui/core";
-import {TransTitle, NestedSchemaEditor, isInvalid, memo, extractValidity} from "@ui-schema/ui-schema";
+import {NestedSchemaEditor, isInvalid, memo, extractValidity} from "@ui-schema/ui-schema";
+import {TransTitle} from "@ui-schema/ui-schema/Translate/TransTitle";
 
 const useStyles = makeStyles(theme => ({
     root: {

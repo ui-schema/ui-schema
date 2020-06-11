@@ -1,5 +1,4 @@
-import React from "react"
-import { validatorPlugin } from '@ui-schema/ui-schema/Validators/validate'
+import { validatorPlugin } from '../../Validators/validate'
 
 export type ERROR_WRONG_TYPE = string
 

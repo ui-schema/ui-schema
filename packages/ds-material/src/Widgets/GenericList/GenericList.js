@@ -4,9 +4,9 @@ import {
 } from "@material-ui/core";
 import {Add, Delete, KeyboardArrowUp, KeyboardArrowDown} from "@material-ui/icons";
 import {NestedSchemaEditor, TransTitle, extractValue, memo, storeMoveItem, updateValue} from "@ui-schema/ui-schema";
-import {ValidityHelperText} from "../../Component/LocaleHelperText";
+import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
 import {List, Map} from 'immutable';
-import {AccessTooltipIcon} from "../../Component/Tooltip";
+import {AccessTooltipIcon} from "../../Component/Tooltip/Tooltip";
 
 const GenericList = extractValue(memo(({
                                            storeKeys, ownKey, schema, value, onChange,

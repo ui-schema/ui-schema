@@ -1,17 +1,17 @@
 import * as React from 'react'
-import { OrderedMap } from 'immutable'
-import { StoreKeys } from '../../../../ui-schema/src/EditorStore'
-import { NextPluginRendererProps } from '../../../../ui-schema/src/EditorPluginStack'
+import { StoreKeys } from '@ui-schema/ui-schema/EditorStore'
+import { NextPluginRendererProps } from '@ui-schema/ui-schema/EditorPluginStack'
+import { schema } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface StepperProps {
     validity: boolean
     storeKeys: StoreKeys
-    schema: OrderedMap<{}, undefined>
+    schema: schema
 }
 
 export interface StepInterface {
     storeKeys: StoreKeys
-    schema: OrderedMap<{}, undefined>
+    schema: schema
     level: number
     p: any
 }

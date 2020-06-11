@@ -3,7 +3,7 @@ import {TextField} from "@material-ui/core";
 import {useUID} from "react-uid";
 import {unstable_trace as trace} from "scheduler/tracing";
 import {TransTitle, updateValue, updateValidity, mapSchema, checkNativeValidity} from "@ui-schema/ui-schema";
-import {ValidityHelperText} from "../../Component/LocaleHelperText";
+import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
 
 const StringRenderer = ({
                             type,

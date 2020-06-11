@@ -1,9 +1,9 @@
 import React from 'react'
-import { OrderedMap } from 'immutable'
 import { StoreKeys } from "../EditorStore"
+import { schema } from '../CommonTypings'
 
 export interface WidgetRendererProps<> {
-    parentSchema: OrderedMap<{}, undefined>
+    parentSchema: schema
     storeKeys: StoreKeys
     level: number
 }

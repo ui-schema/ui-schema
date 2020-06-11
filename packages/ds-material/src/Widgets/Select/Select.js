@@ -5,7 +5,7 @@ import {
     MenuItem, Select as MuiSelect, ListItemText,
 } from "@material-ui/core";
 import {TransTitle, Trans, beautifyKey, updateValue, extractValue, memo, useEditor} from "@ui-schema/ui-schema";
-import {ValidityHelperText} from "../../Component/LocaleHelperText";
+import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
 
 const Select = ({
                     multiple,

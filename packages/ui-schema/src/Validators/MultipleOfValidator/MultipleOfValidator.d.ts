@@ -1,6 +1,5 @@
-import React from "react"
-import { OrderedMap, List } from 'immutable'
-import { validatorPlugin } from '@ui-schema/ui-schema/Validators/validate'
+import { OrderedMap } from 'immutable'
+import { validatorPlugin } from '../../Validators/validate'
 
 export type ERROR_MULTIPLE_OF = string
 

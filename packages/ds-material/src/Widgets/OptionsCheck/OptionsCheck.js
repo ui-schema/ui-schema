@@ -5,7 +5,7 @@ import {
 import {Map, List} from "immutable";
 import {TransTitle, Trans, beautifyKey, extractValue, memo, updateValue,} from "@ui-schema/ui-schema";
 import {useUID} from "react-uid";
-import {ValidityHelperText} from "../../Component/LocaleHelperText";
+import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
 
 const OptionCheck = ({currentValue, label, onChange}) => {
     const uid = useUID();

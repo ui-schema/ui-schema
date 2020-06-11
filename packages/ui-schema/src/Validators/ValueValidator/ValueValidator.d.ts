@@ -1,5 +1,4 @@
-import React from "react"
-import { validatorPluginExtended } from '@ui-schema/ui-schema/Validators/validate'
+import { validatorPluginExtended } from '../../Validators/validate'
 import { OrderedMap } from 'immutable'
 
 export type ERROR_CONST_MISMATCH = string

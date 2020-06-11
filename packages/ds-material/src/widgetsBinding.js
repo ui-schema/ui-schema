@@ -1,13 +1,13 @@
-import {NumberRenderer, StringRenderer, TextRenderer} from "./Widgets/TextField/TextField";
-import {Select, SelectMulti} from "./Widgets/Select/Select";
-import {BoolRenderer} from "./Widgets/OptionsBoolean/OptionsBoolean";
-import {OptionsCheck} from "./Widgets/OptionsCheck/OptionsCheck";
-import {OptionsRadio} from "./Widgets/OptionsRadio/OptionsRadio";
-import {Stepper, Step} from "./Widgets/Stepper/Stepper";
-import {NumberIconRenderer, StringIconRenderer, TextIconRenderer} from "./Widgets/TextFieldIcon/TextFieldIcon";
-import {SimpleList} from "./Widgets/SimpleList/SimpleList";
-import {GenericList} from "./Widgets/GenericList/GenericList";
-import {NumberSlider} from "./Widgets/NumberSlider/NumberSlider";
+import {NumberRenderer, StringRenderer, TextRenderer} from "./Widgets/TextField";
+import {Select, SelectMulti} from "./Widgets/Select";
+import {BoolRenderer} from "./Widgets/OptionsBoolean";
+import {OptionsCheck} from "./Widgets/OptionsCheck";
+import {OptionsRadio} from "./Widgets/OptionsRadio";
+import {Stepper, Step} from "./Widgets/Stepper";
+import {NumberIconRenderer, StringIconRenderer, TextIconRenderer} from "./Widgets/TextFieldIcon";
+import {SimpleList} from "./Widgets/SimpleList";
+import {GenericList} from "./Widgets/GenericList";
+import {NumberSlider} from "./Widgets/NumberSlider";
 import {widgetsBase} from "./widgetsBase";
 
 const widgets = {...widgetsBase};

@@ -2,13 +2,5 @@ export {widgets} from './widgetsBinding';
 export {widgetsBase} from './widgetsBase';
 export {pluginStack} from './pluginStack';
 export * from './Grid';
-export * from './Widgets/GenericList/GenericList';
-export * from './Widgets/NumberSlider/NumberSlider';
-export * from './Widgets/OptionsBoolean/OptionsBoolean';
-export * from './Widgets/OptionsCheck/OptionsCheck';
-export * from './Widgets/OptionsRadio/OptionsRadio';
-export * from './Widgets/Select/Select';
-export * from './Widgets/SimpleList/SimpleList';
-export * from './Widgets/Stepper/Stepper';
-export * from './Widgets/TextField/TextField';
-export * from './Widgets/TextFieldIcon/TextFieldIcon';
+export * from './Widgets';
+

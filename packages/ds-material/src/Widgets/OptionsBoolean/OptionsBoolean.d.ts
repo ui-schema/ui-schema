@@ -1,16 +1,15 @@
 import * as React from 'react'
-import { onChange } from '../../../../ui-schema/src/WidgetRendererProps'
-import { OrderedMap } from 'immutable'
-import { StoreKeys } from "'../../../../ui-schema/src/EditorStore/EditorStore"
+import { StoreKeys, onChange } from "@ui-schema/ui-schema/EditorStore"
+import { ownKey, schema, showValidity, valid, required } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface WidgetRendererPropsWithoutErrors {
-    ownKey: string
-    schema: OrderedMap<{}, undefined>
+    ownKey: ownKey
+    schema: schema
     onChange: onChange
     storeKeys: StoreKeys
-    showValidity: boolean
-    value: any
-    valid: boolean
-    required: boolean
+    showValidity: showValidity
+    value: boolean
+    valid: valid
+    required: required
 }
 export function BoolRenderer<P extends WidgetRendererPropsWithoutErrors>(props: P): React.Component<P>

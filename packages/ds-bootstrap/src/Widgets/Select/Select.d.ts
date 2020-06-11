@@ -1,18 +1,17 @@
 import * as React from 'react'
-
 export * from './Select'
-import { WidgetRendererProps } from '../../../../ui-schema/src/WidgetRendererProps'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 
-export interface WidgetRendererSelectInterface extends WidgetRendererProps {
-    value: any
+export interface WidgetSelectInterface extends WidgetProps {
+    value: string | number | boolean
     multiple: false
 }
 
-export interface WidgetRendererSelectMultiInterface extends WidgetRendererProps {
-    value: any
+export interface WidgetSelectMultiInterface extends WidgetProps {
+    value: string | number | boolean
     multiple: true
 }
 
-export function Select<P extends WidgetRendererSelectInterface>(props: P): React.Component<P>
+export function Select<P extends WidgetSelectInterface>(props: P): React.Component<P>
 
-export function SelectMulti<P extends WidgetRendererSelectMultiInterface>(props: P): React.Component<P>
+export function SelectMulti<P extends WidgetSelectMultiInterface>(props: P): React.Component<P>

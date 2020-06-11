@@ -1,5 +1,4 @@
-import React from "react"
-import { validatorPluginNoValidate } from '@ui-schema/ui-schema/Validators/validate'
+import { validatorPluginNoValidate } from '../../Validators/validate'
 
 export type ERROR_NOT_SET = string
 

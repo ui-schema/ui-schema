@@ -1,6 +1,6 @@
 import React from 'react'
 import { OrderedMap } from 'immutable'
-import { StringRendererProps, NumberRendererProps, TextRendererProps } from './../../Widgets/TextField'
+import { StringRendererProps, NumberRendererProps, TextRendererProps } from '../TextField'
 
 export type computeIcon = (schema: OrderedMap<{}, undefined>) => React.Component[]
 

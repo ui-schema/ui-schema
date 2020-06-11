@@ -1,5 +1,5 @@
 import React from "react"
-import { NextPluginRendererProps } from '../../ui-schema/src/EditorPluginStack'
+import { NextPluginRendererProps } from './EditorPluginStack'
 import { OrderedMap } from 'immutable'
 
 export interface SchemaGridItemHelperProps {

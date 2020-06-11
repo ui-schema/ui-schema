@@ -4,7 +4,7 @@ import {
     FormControl, FormLabel, FormControlLabel, RadioGroup, Radio,
 } from "@material-ui/core";
 import {TransTitle, Trans, beautifyKey, updateValue,} from "@ui-schema/ui-schema";
-import {ValidityHelperText} from "../../Component/LocaleHelperText";
+import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
 
 const OptionsRadio = ({
                           ownKey, schema, value, onChange, storeKeys, showValidity, valid, required, errors,

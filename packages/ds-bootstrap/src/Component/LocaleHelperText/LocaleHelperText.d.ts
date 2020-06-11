@@ -1,15 +1,15 @@
 import * as React from 'react'
-import { OrderedMap, List } from 'immutable'
+import { showValidity, errors, schema } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface ValidityHelperTextProps {
-    showValidity: boolean
-    errors?: List<string>
-    schema: OrderedMap<{}, undefined>
+    showValidity: showValidity
+    errors?: errors
+    schema: schema
 }
 
 export interface LocaleHelperTextProps {
     text: string
-    schema: OrderedMap<{}, undefined>
+    schema: schema
     context: any
     className: string
 }

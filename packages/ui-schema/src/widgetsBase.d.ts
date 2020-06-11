@@ -1,13 +1,14 @@
 import React from "react"
+import { EditorPluginProps } from '@ui-schema/ui-schema/EditorPlugin'
 
 export interface widgetsBase {
-    ErrorFallback: React.Component
+    ErrorFallback: React.ComponentType<any>
     // wraps the whole editor
-    RootRenderer: React.Component
+    RootRenderer: React.ComponentType<any>
     // wraps any `object` that has no custom widget
-    GroupRenderer: React.Component
+    GroupRenderer: React.ComponentType<any>
     // widget plugin system
-    pluginStack: React.Component[]
+    pluginStack: Array<React.ComponentType<EditorPluginProps>>
     // validator functions
     validators: []
     // define native JSON-schema type widgets

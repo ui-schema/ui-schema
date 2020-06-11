@@ -1,10 +1,11 @@
 import * as React from 'react'
-import { WidgetRendererProps } from '../../../../ui-schema/src/WidgetRendererProps'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { valid, required } from '@ui-schema/ui-schema/CommonTypings'
 
-export interface OptionsCheckRendererProps extends WidgetRendererProps {
-    valid: boolean
+export interface OptionsCheckRendererProps extends WidgetProps {
+    valid: valid
     row: boolean
-    required: boolean
+    required: required
 }
 
 export function OptionsCheck<P extends OptionsCheckRendererProps>(props: P): React.Component<P>
