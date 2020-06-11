@@ -1,6 +1,6 @@
 # UI-Schema: DS Bootstrap
 
-[![Travis (.org) branch](https://img.shields.io/travis/ui-schema/ui-schema/master?style=flat-square)](https://travis-ci.org/ui-schema/ui-schema)
+[![Travis (.org) branch](https://img.shields.io/travis/ui-schema/ui-schema/master?style=flat-square)](https://travis-ci.org/ui-schema/ds-bootstrap)
 [![react compatibility](https://img.shields.io/badge/React-%3E%3D16.8-success?style=flat-square&logo=react)](https://reactjs.org/)
 [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-bootstrap?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-bootstrap)
 [![MIT license](https://img.shields.io/npm/l/@ui-schema/ds-bootstrap?style=flat-square)](https://github.com/ui-schema/ui-schema/blob/master/LICENSE)

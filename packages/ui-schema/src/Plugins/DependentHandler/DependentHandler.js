@@ -2,7 +2,7 @@ import React from "react";
 import {NextPluginRenderer, NextPluginRendererMemo} from "../../EditorPluginStack";
 import {validateSchema} from "../../validateSchema";
 import {useSchemaStore} from "../../EditorStore";
-import {checkValueExists} from "../../Validators/RequiredValidator";
+import {checkValueExists} from "../../Validators/RequiredValidator/RequiredValidator";
 import {mergeSchema} from "../../Utils/mergeSchema";
 import {Map} from 'immutable';
 

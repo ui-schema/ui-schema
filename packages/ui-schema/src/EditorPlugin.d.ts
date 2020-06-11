@@ -1,9 +1,8 @@
-import * as React from "react"
-import { OrderedMap } from 'immutable'
-import { widgetsBase } from "./widgetsBase"
+import * as React from 'react'
+import { widgetsBase } from './widgetsBase'
+import { WidgetRendererProps } from './WidgetRenderer'
 
-export interface EditorPluginProps {
-    schema: OrderedMap<{}, undefined>
+export interface EditorPluginProps extends WidgetRendererProps {
     widgets: widgetsBase
 }
 

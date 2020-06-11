@@ -1,5 +1,5 @@
 import { OrderedMap } from "immutable"
-import { translation } from "./t"
+import { translation } from "@ui-schema/ui-schema/Translate/t"
 
 export type relT = (
     schema: OrderedMap<{}, undefined>,

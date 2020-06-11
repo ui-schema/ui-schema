@@ -28,4 +28,3 @@ export interface FinalWidgetRendererProps {
 }
 
 export function FinalWidgetRenderer<P extends FinalWidgetRendererProps>(props: P): React.Component<P>
-

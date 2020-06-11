@@ -1,2 +1,1 @@
-export {widgets} from './bts-fields';
-
+export { widgets } from './bts-fields'

@@ -1,13 +1,13 @@
 import {List} from 'immutable';
-import {validateType} from "../Validators/TypeValidator";
-import {ERROR_WRONG_TYPE} from "../Validators/TypeValidator";
-import {ERROR_PATTERN, validatePattern} from "../Validators/PatternValidator";
-import {validateMinMax} from "../Validators/MinMaxValidator";
-import {ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum} from "../Validators/ValueValidator";
-import {ERROR_MULTIPLE_OF, validateMultipleOf} from "../Validators/MultipleOfValidator";
-import {validateContains} from "../Validators/ArrayValidator";
-import {ERROR_NOT_SET} from "../Validators/RequiredValidator";
-import {validateObject} from "../Validators/ObjectValidator";
+import {validateType} from "../Validators/TypeValidator/TypeValidator";
+import {ERROR_WRONG_TYPE} from "../Validators/TypeValidator/TypeValidator";
+import {ERROR_PATTERN, validatePattern} from "../Validators/PatternValidator/PatternValidator";
+import {validateMinMax} from "../Validators/MinMaxValidator/MinMaxValidator";
+import {ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum} from "../Validators/ValueValidator/ValueValidator";
+import {ERROR_MULTIPLE_OF, validateMultipleOf} from "../Validators/MultipleOfValidator/MultipleOfValidator";
+import {validateContains} from "../Validators/ArrayValidator/ArrayValidator";
+import {ERROR_NOT_SET} from "../Validators/RequiredValidator/RequiredValidator";
+import {validateObject} from "../Validators/ObjectValidator/ObjectValidator";
 
 /**
  * Return false when valid and string/List for an error
