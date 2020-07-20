@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { WidgetPropsExtended } from '@ui-schema/ui-schema/Widget'
+import { WidgetPropsWithValue } from '@ui-schema/ui-schema/Widget'
 
-export interface WidgetPropsRadio extends WidgetPropsExtended {
+export interface WidgetPropsRadio extends WidgetPropsWithValue {
     value: string
 }
 

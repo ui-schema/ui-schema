@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { WidgetPropsExtended } from '@ui-schema/ui-schema/Widget'
+import { WidgetPropsWithValue } from '@ui-schema/ui-schema/Widget'
 import { valid } from '@ui-schema/ui-schema/CommonTypings'
 
-export interface SimpleListProps extends WidgetPropsExtended {
+export interface SimpleListProps extends WidgetPropsWithValue {
     valid: valid
 }
 
