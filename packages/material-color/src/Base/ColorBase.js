@@ -4,7 +4,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Palette from "@material-ui/icons/Palette";
 import {StringRenderer} from "@ui-schema/ds-material";
 import converters from "./transformers";
-import merge from 'webpack-merge'
+import merge from "deepmerge";
 
 /**
  * To close the picker dialog on blur change

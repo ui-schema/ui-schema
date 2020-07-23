@@ -1,5 +1,5 @@
 import {SketchPicker} from 'react-color';
-import merge from 'webpack-merge';
+import merge from "deepmerge";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {ColorBase} from "./Base/ColorBase";
 import React from "react";

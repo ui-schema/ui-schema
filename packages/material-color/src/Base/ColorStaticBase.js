@@ -1,7 +1,7 @@
 import React from "react";
 import {updateValue} from "@ui-schema/ui-schema";
 import converters from "./transformers";
-import merge from 'webpack-merge'
+import merge from "deepmerge";
 
 const ColorStaticBase = ({
                              storeKeys, schema, value, onChange, ColorPicker,

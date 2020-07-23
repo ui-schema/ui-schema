@@ -2,7 +2,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const merge = require('webpack-merge');
+const {merge} = require('webpack-merge');
 const {getConfig, commonBabelPlugins} = require('./webpack.common');
 const path = require('path');
 
