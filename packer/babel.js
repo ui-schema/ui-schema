@@ -62,13 +62,14 @@ function buildEsModules(packages, targets = [
                     );
                     Promise.all(packs).then((e) => {
                         if(e.length === packs.length) {
-                            fs.unlink(babelFile, unlinkError => {
+                            /*fs.unlink(babelFile, unlinkError => {
                                 if(unlinkError) {
                                     reject(unlinkError);
                                 } else {
                                     resolve();
                                 }
-                            });
+                            });*/
+                            resolve();
                         }
                     })
                 }

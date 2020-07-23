@@ -33,7 +33,7 @@
         "react": "^16.12",
         "react-ace": "^7.0.5",
         "react-codemirror2": "^6.0.0",
-        "react-color": "^2.18.0",
+        "react-color": "^2.18.1",
         "react-dom": "^16.12",
         "react-error-boundary": "^1.2.5",
         "react-helmet": "^5.2.1",
@@ -43,6 +43,6 @@
         "react-markdown": "^4.3.1",
         "react-router-dom": "^5.1.2",
         "react-uid": "^2.2.0",
-        "webpack-merge": "^4.2.2"
+        "webpack-merge": "^5.0.9"
     }
 }

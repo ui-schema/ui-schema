@@ -16,7 +16,8 @@ const commonBabelPlugins = [
     "es6-promise",
     "react-loadable/babel",
     [
-        require.resolve('babel-plugin-named-asset-import'),
+        //require.resolve('babel-plugin-named-asset-import'),
+        'babel-plugin-named-asset-import',
         {
             loaderMap: {
                 svg: {
@@ -70,12 +71,12 @@ function getConfig(
                     use: [{
                         loader: "babel-loader",
                         options: {
-                            presets: [
+                            /*presets: [
                                 ...babelPresets,
                             ],
                             plugins: [
                                 ...babelPlugins,
-                            ],
+                            ],*/
                             // This is a feature of `babel-loader` for webpack (not Babel itself).
                             // It enables caching results in ./node_modules/.cache/babel-loader/
                             // directory for faster rebuilds.

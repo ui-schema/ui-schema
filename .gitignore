@@ -33,3 +33,5 @@ profile.json
 .idea/
 *.iml
 *.iws
+
+/coverage

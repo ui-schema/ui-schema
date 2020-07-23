@@ -1,6 +1,6 @@
 import React from "react"
 import { OrderedMap } from "immutable"
-import { translation } from "./t"
+import { translation } from "../t"
 
 export interface TransProps {
     text: string,
