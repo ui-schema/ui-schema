@@ -1,0 +1,66 @@
+{
+    "presets": [
+        [
+            "@babel/preset-react",
+            {
+                "loose": false
+            }
+        ]
+    ],
+    "plugins": [
+        "@babel/plugin-syntax-dynamic-import",
+        "@babel/plugin-transform-react-jsx",
+        "@babel/plugin-transform-template-literals",
+        "@babel/plugin-proposal-export-namespace-from",
+        "@babel/plugin-proposal-export-default-from",
+        "@babel/plugin-transform-runtime",
+        "transform-es2015-template-literals",
+        "es6-promise",
+        "react-loadable/babel",
+        [
+            "babel-plugin-named-asset-import",
+            {
+                "loaderMap": {
+                    "svg": {
+                        "ReactComponent": "@svgr/webpack?-svgo,+titleProp,+ref![path]"
+                    }
+                }
+            }
+        ],
+        [
+            "@babel/plugin-proposal-object-rest-spread",
+            {
+                "useBuiltIns": true
+            }
+        ],
+        [
+            "@babel/plugin-proposal-class-properties",
+            {
+                "loose": true
+            }
+        ]
+    ],
+    "env": {
+        "cjs": {
+            "presets": [
+                [
+                    "@babel/preset-env",
+                    {
+                        "loose": false
+                    }
+                ],
+                [
+                    "@babel/preset-react",
+                    {
+                        "loose": false
+                    }
+                ]
+            ]
+        },
+        "test": {
+            "plugins": [
+                "@babel/plugin-transform-modules-commonjs"
+            ]
+        }
+    }
+}
