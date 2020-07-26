@@ -3,7 +3,7 @@ import {restrictColors} from "../Base/restrictColors";
 import {ColorBase} from "../Base/ColorBase/ColorBase";
 import {CirclePicker} from 'react-color';
 import React from "react";
-import merge from "webpack-merge";
+import merge from "deepmerge";
 import {ColorStaticBase} from "../Base/ColorStaticBase/ColorStaticBase";
 
 const styles = ({palette, circleSpacing}) => ({
