@@ -1,10 +1,26 @@
-import { validatorPluginExtended } from '../../Validators/validate'
-import { type } from "@ui-schema/ui-schema/CommonTypings"
+import { errors, schema, type } from "@ui-schema/ui-schema/CommonTypings"
+import { List } from "immutable"
 
 export const ERROR_CONST_MISMATCH = 'const-mismatch'
 
 export function validateConst(type: type, _const?: string | number | boolean, value?: any): boolean
 
-// tslint:disable-next-line:no-empty-interface
-export interface valueValidatorConst extends validatorPluginExtended {
+export interface valueValidatorConst  {
+    should: (
+        {schema, value}: {
+            schema: schema
+            value: any
+        }
+    ) => boolean,
+    validate: (
+        {schema, value, errors, valid}: {
+            schema: schema
+            value: any
+            errors: errors
+            valid: boolean
+        }
+    ) => {
+        errors: List<any>,
+        valid: boolean
+    }
 }

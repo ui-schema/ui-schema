@@ -9,6 +9,7 @@ JSON-Schema form + ui generator for any design system, first-class support for [
 [![Travis (.org) branch](https://img.shields.io/travis/ui-schema/ui-schema/master?style=flat-square)](https://travis-ci.org/ui-schema/ui-schema)
 [![react compatibility](https://img.shields.io/badge/React-%3E%3D16.8-success?style=flat-square&logo=react)](https://reactjs.org/)
 [![MIT license](https://img.shields.io/npm/l/@ui-schema/ui-schema?style=flat-square)](https://github.com/ui-schema/ui-schema/blob/master/LICENSE)
+[![Coverage Status](https://img.shields.io/codecov/c/github/ui-schema/ui-schema/master.svg?style=flat-square)](https://codecov.io/gh/ui-schema/ui-schema/branch/master)
 
 - @ui-schema/ui-schema [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ui-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ui-schema) 
 - @ui-schema/ds-material [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-material?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-material)
@@ -169,8 +170,10 @@ export {Editor}
 
 1. Fork/Clone Repository
 2. Install root dev-dependencies (like lerna, webpack): `npm i`
-3. Start dev-server: `npm start` (will clean-dist + symlink-es-modules + init & hoist packages + starting demo app)
-4. Open browser on [localhost:4200](http://localhost:4200)
+3. Start dev-server: `npm start`
+    - (will clean-dist + symlink-es-modules + init & hoist packages + starting demo app)
+    - `npm start -- --serve docs` also starts docs app
+4. Open browser on [localhost:4200](http://localhost:4200) for demo, [localhost:4201](http://localhost:4201) for docs
 5. Explore [packages](packages)
 8. Code -> Commit -> Pull Request -> Being Awesome!
 
@@ -179,17 +182,22 @@ Changes from any package are reflected inside the demo/docs package.
 - Start Documentation: `npm run docs` (needs running demo server)
     - see [localhost:4201](http://localhost:4201)
     - write in [packages/docs/src/content/docs](./packages/docs/src/content/docs)
-- or: starting Demo + Docs (after having initialized, hoisted it manually): `npm run serve`
-
+- Faster start, needs manual bootstrapping, hoisting and update handling 
+    - `npm run serve` start all configured apps
+    - `npm run serve -- demo --serve docs` start specific apps (docs and demo here)
 
 Commands:
+- Developing test driven: `npm run tdd`
+    - needs manual bootstrapping, hoisting and update handling
+- Testing: `npm test` 
+    - needs manual bootstrapping, hoisting and update handling
 - Build: `npm run build`
+    - needs manual bootstrapping and update handling
 - Clean node_modules and build dirs: `npm run clean`
 - Clean build dirs: `npm run clean-dist`
 - Add new node_module to one package: `lerna add <npm-package-name> --scope=@ui-schema/demo [--dev] [--peer]`, without `--scope` in all packages
-- Do not change package.json of packages manually, and if Bootstrap [lerna](https://lerna.js.org/): `npm run bootstrap`
+- Do not change `package.json` of packages manually, and if Bootstrap [lerna](https://lerna.js.org/): `npm run bootstrap` (maybe delete `package-lock.json`), or simply open an issue
 - Add new package `lerna create <name>` and follow on screen, e.g.: `lerna create material-pickers` add package name `@ui-schema/material-pickerss`, creates folder `./packages/material-pickers`
-
 
 Publish, for main-repo only:
 
