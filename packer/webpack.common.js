@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const merge = require('webpack-merge');
+const {merge} = require('webpack-merge');
 const isWsl = require('is-wsl');
 const TerserPlugin = require('terser-webpack-plugin');
 
@@ -16,7 +16,8 @@ const commonBabelPlugins = [
     "es6-promise",
     "react-loadable/babel",
     [
-        require.resolve('babel-plugin-named-asset-import'),
+        //require.resolve('babel-plugin-named-asset-import'),
+        'babel-plugin-named-asset-import',
         {
             loaderMap: {
                 svg: {
@@ -47,6 +48,7 @@ function getConfig(
                 {
                     enforce: 'pre',
                     test: /\.(js|jsx)$/,
+                    //test: /\.(js|jsx|d\.ts)$/,
                     include: [
                         path.join(context, 'src'),
                         ...include,
@@ -69,12 +71,12 @@ function getConfig(
                     use: [{
                         loader: "babel-loader",
                         options: {
-                            presets: [
+                            /*presets: [
                                 ...babelPresets,
                             ],
                             plugins: [
                                 ...babelPlugins,
-                            ],
+                            ],*/
                             // This is a feature of `babel-loader` for webpack (not Babel itself).
                             // It enables caching results in ./node_modules/.cache/babel-loader/
                             // directory for faster rebuilds.

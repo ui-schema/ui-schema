@@ -30,9 +30,7 @@ This editor has multiple levels of performance optimization:
         - any `types.<Component>`, `custom.<Component>` is wrapped in the memoized `DumpWidgetRenderer`
     - core:
         - `SchemaEditorRenderer` , 
-        - `WidgetRenderer`, is memoized, receives the widget/widget stack and is the internal entry for starting/nesting the schema
-            - wraps `PluginStackRenderer` which is the abstraction layer to the final widget(s)
-        - `PluginStackRenderer` initial `pluginStack` render handling (not memoized, but inside `DumpWidgetRenderer`)
+        - `WidgetRenderer`, is memoized, receives the widget/widget stack and is the internal entry for starting/nesting the schema with rendering the first `Plugin`
         - `FinalWidgetRenderer` is rendered when the widget-stack is finished, not memoized but extracts the `value` from the props again for non-scalars, thus a object/array component can be memoized and will not re-render when it's items change (memoize widgets your-self when needed) 
 
 Further on to reduce code-size, it is recommended to build your [own ds-binding](/docs/widgets#create-design-system-binding) with only the needed components or use a [lazy-loaded binding](/docs/widgets#lazy-loading-bindings).

@@ -1,8 +1,8 @@
 import {List, Map} from "immutable";
 
-const ERROR_WRONG_TYPE = 'wrong-type';
+export const ERROR_WRONG_TYPE = 'wrong-type';
 
-const validateType = (value, type) => {
+export const validateType = (value, type) => {
     const isInvalidType = (value, type) => {
         return typeof value !== type && typeof value !== 'undefined';
     };
@@ -23,13 +23,14 @@ const validateType = (value, type) => {
         return !(!(Array.isArray(value) || List.isList(value)) && typeof value !== 'undefined');
     }
     if(type === 'object') {
-        return !(!(typeof value === 'object' || Map.isMap(value)) && typeof value !== 'undefined');
+        return !(!(typeof value === 'object' || Map.isMap(value)) && typeof value !== 'undefined') &&
+            !(Array.isArray(value) || List.isList(value));
     }
 
     return false;
 };
 
-const typeValidator = {
+export const typeValidator = {
     validate: ({schema, value, errors, valid}) => {
         let type = schema.get('type');
 
@@ -41,5 +42,3 @@ const typeValidator = {
         return {errors, valid}
     }
 };
-
-export {typeValidator, ERROR_WRONG_TYPE, validateType}

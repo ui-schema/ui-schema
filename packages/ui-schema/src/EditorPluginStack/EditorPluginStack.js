@@ -1,38 +1,9 @@
 import React from "react";
-import {List} from "immutable";
-import ErrorBoundary from "react-error-boundary";
 import {memo} from "../Utils/memo";
 import {ObjectRenderer} from "../ObjectRenderer";
 
-const MyFallbackComponent = ({componentStack, error, type, widget}) => (
-    <div>
-        <p><strong>Error in Widget!</strong></p>
-        <p><strong>Type:</strong> {type}</p>
-        <p><strong>Widget:</strong> {widget}</p>
-        <p><strong>Error:</strong> {error.toString()}</p>
-        <p><strong>Stacktrace:</strong> {componentStack}</p>
-    </div>
-);
-
 export const getPlugin = (current, pluginStack) => {
     return current < pluginStack.length ? pluginStack[current] : false;
-};
-
-export const PluginStackRenderer = ({current, ...props}) => {
-    // plugin layer
-    const {widgets, schema} = props;
-
-    // first Plugin
-    const Plugin = getPlugin(current, widgets.pluginStack);
-
-    const FallbackComponent = React.useCallback(
-        p => <MyFallbackComponent {...p} type={schema.get('type')} widget={schema.get('widget')}/>,
-        [schema]
-    );
-
-    return <ErrorBoundary FallbackComponent={FallbackComponent}>
-        {Plugin ? <Plugin {...props} valid errors={List()} current={current}/> : 'plugin-stack-error'}
-    </ErrorBoundary>;
 };
 
 export const NextPluginRenderer = ({current, ...props}) => {
@@ -46,7 +17,7 @@ export const NextPluginRenderer = ({current, ...props}) => {
 };
 export const NextPluginRendererMemo = memo(NextPluginRenderer);
 
-const NoWidget = ({scope, matching}) => <React.Fragment>missing-{scope}-{matching}</React.Fragment>;
+const NoWidget = ({scope, matching}) => <>missing-{scope}-{matching}</>;
 
 export const FinalWidgetRenderer = ({value, ...props}) => {
     const {schema, widgets} = props;

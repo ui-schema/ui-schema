@@ -17,9 +17,6 @@ node_modules
 
 lerna-debug.log
 
-# Temporary created by packer
-babel.config.json
-
 # Webpack profiling
 profile.json
 
@@ -33,3 +30,5 @@ profile.json
 .idea/
 *.iml
 *.iws
+
+/coverage

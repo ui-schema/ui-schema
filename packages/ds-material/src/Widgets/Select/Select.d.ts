@@ -1,12 +1,12 @@
 import * as React from 'react'
-import { WidgetPropsExtended } from '@ui-schema/ui-schema/Widget'
+import { WidgetPropsWithValue } from '@ui-schema/ui-schema/Widget'
 import { multiple } from '@ui-schema/ui-schema/CommonTypings'
 
-export interface SelectProps extends WidgetPropsExtended {
+export interface SelectProps extends WidgetPropsWithValue {
     multiple: multiple
 }
 
-export interface SelectPropsMulti extends WidgetPropsExtended {
+export interface SelectPropsMulti extends WidgetPropsWithValue {
     multiple: true
 }
 

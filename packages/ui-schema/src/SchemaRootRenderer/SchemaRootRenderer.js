@@ -45,7 +45,5 @@ export const SchemaRootRenderer = () => {
         return null;
     }
 
-    const storeKeys = List([]);
-
-    return <DumpRootRenderer rootRenderer={RootRenderer} schema={schema} storeKeys={storeKeys}/>;
+    return <DumpRootRenderer rootRenderer={RootRenderer} schema={schema} storeKeys={List([])}/>;
 };

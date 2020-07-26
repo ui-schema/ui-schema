@@ -12,7 +12,7 @@ function buildEsModules(packages, targets = [
     {distSuffix: '', args: ['--env-name', 'cjs']},
     {distSuffix: '/esm', args: []},
 ]) {
-    const babelFile = path.join(__dirname, '../', 'babel.config.json');
+    //const babelFile = path.join(__dirname, '../', 'babel.config.json');
 
     const babels = [];
     Object.keys(packages).forEach(pack => {
@@ -23,7 +23,7 @@ function buildEsModules(packages, targets = [
             let args = [entry, ...target.args, '--out-dir', dist];
 
             if(-1 === process.argv.indexOf('--clean')) {
-                let babelConfig = {
+                /*let babelConfig = {
                     presets: packagesBabelPresets,
                     plugins: packagesBabelPlugins,
                     env: {
@@ -34,19 +34,19 @@ function buildEsModules(packages, targets = [
                             ],
                         },
                     },
-                };
+                };*/
 
-                fs.writeFile(babelFile, JSON.stringify(babelConfig, null, 2), err => {
+                /*fs.writeFile(babelFile, JSON.stringify(babelConfig, null, 2), err => {
                     if(err) return console.log(err);
 
-                    let babel = spawnBabel(args);
-                    babel.on('exit', code => {
-                        if(code !== 0) {
-                            reject('Babel transpilation failed: ' + code);
-                        } else {
-                            resolve();
-                        }
-                    });
+                });*/
+                let babel = spawnBabel(args);
+                babel.on('exit', code => {
+                    if(code !== 0) {
+                        reject('Babel transpilation failed: ' + code);
+                    } else {
+                        resolve();
+                    }
                 });
             }
         })));
@@ -62,13 +62,14 @@ function buildEsModules(packages, targets = [
                     );
                     Promise.all(packs).then((e) => {
                         if(e.length === packs.length) {
-                            fs.unlink(babelFile, unlinkError => {
+                            /*fs.unlink(babelFile, unlinkError => {
                                 if(unlinkError) {
                                     reject(unlinkError);
                                 } else {
                                     resolve();
                                 }
-                            });
+                            });*/
+                            resolve();
                         }
                     })
                 }

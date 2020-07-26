@@ -24,6 +24,15 @@ Universal Keywords:
 - `const` to restrict the value to a single value ✔
     - when `object` or `array` only works correctly with immutable `List` or `Map`, the initially provided schema and data props are already compatible
     - [specification](https://json-schema.org/understanding-json-schema/reference/generic.html#constant-values)
+- `readOnly` restricts that the a value can not be changed ❌
+    - how does this influence `default`?
+    - text fields need to support `disabled`, but what for e.g. `GenericList`
+    - should the store be `readOnly` aware? so it simply is impossible to change those values?
+        - but this could be a really tricky thing with `allOf` and `default`
+    - should it be possible to render something completely different for read only?
+        - e.g. a table would make sense for a read only `GenericList`/`SimpleList` 
+- `writeOnly` restricts that the widget does not display it's value, but can change it ❌
+    - should the widget get the value or only something like `isNotEmpty`   
 
 Usage scenario needs to be created:
 

@@ -1,17 +1,20 @@
 language: node_js
 node_js:
-  - 12
+    - 12
 install:
-  - npm ci
-  - npm run bootstrap
+    - npm install -g codecov
+    - npm ci
+    - npm run bootstrap && npm run hoist
 script:
-  - npm run build
+    - npm test
+    - codecov -f coverage/*.json
+    - npm run build
 deploy:
-  - provider: script
-    skip_cleanup: true
-    script: bash packer/deploy.sh
-    on:
-      tags: true
+    -   provider: script
+        skip_cleanup: true
+        script: bash packer/deploy.sh
+        on:
+            tags: true
 env:
-  global:
-    secure: V5yFkvl96kopueXm0eqNjrts0UT8q6QtvLqj4ZUtaHxii6W1mKqaKpllctqTcGFWLdPxR0a7NK4sBCf7ttNLloLrBZ+SnaFbYrgVi1VqI6l0Y0UcVqGxFZOFJY1C/mpQHSqVMLMwcWg7qSVGekygdPWBU4fsgcuauz6qXG/q0/DKs3/GnhWszW92wbqMsmN//SXDt1/76CC7SWQ8cnyzURtFds86oU+cy0GMNIJcvNF9p39pHo03rfxiMkk3PB30eF7TB18bL3hcvdVOBn1FTtcVrO0QUapqSNtWpxl0dnnZrMPGEVrbWAG5ZsrHwBWgEqf6FPneQnVHZ/N8bdEneEX77/e3lPTfvJNeOTbgGlYT9yEOjFKgKeEjEMa+KvhUqxeOgu+b0yDzX89YvxA65ymx0TdHeskvQpCpOUAO8zQx+khX+nfKqi7CGTOsaIgYO/pBM2INq3BenXjafqQhS9xQYumap+GCbG2St6SRPd6cMg51nkAXjFLoGvMBZNc5iIatsWv1nASuhu01pUuWMgAWxNK9+NEiu0hzNOcZSOkynQexh2KPi8sjzGsGGOV/VfrDtC4/EgJC4k1tAG/YMw4dEvxCfMxqtYk+a/z6DwMxz4jH1SVoAt6P22PXJynuojeNgKRhm/Mw4kH6sIUgqSH67NwvigJ3maTQwoNa0DU=
+    global:
+        secure: V5yFkvl96kopueXm0eqNjrts0UT8q6QtvLqj4ZUtaHxii6W1mKqaKpllctqTcGFWLdPxR0a7NK4sBCf7ttNLloLrBZ+SnaFbYrgVi1VqI6l0Y0UcVqGxFZOFJY1C/mpQHSqVMLMwcWg7qSVGekygdPWBU4fsgcuauz6qXG/q0/DKs3/GnhWszW92wbqMsmN//SXDt1/76CC7SWQ8cnyzURtFds86oU+cy0GMNIJcvNF9p39pHo03rfxiMkk3PB30eF7TB18bL3hcvdVOBn1FTtcVrO0QUapqSNtWpxl0dnnZrMPGEVrbWAG5ZsrHwBWgEqf6FPneQnVHZ/N8bdEneEX77/e3lPTfvJNeOTbgGlYT9yEOjFKgKeEjEMa+KvhUqxeOgu+b0yDzX89YvxA65ymx0TdHeskvQpCpOUAO8zQx+khX+nfKqi7CGTOsaIgYO/pBM2INq3BenXjafqQhS9xQYumap+GCbG2St6SRPd6cMg51nkAXjFLoGvMBZNc5iIatsWv1nASuhu01pUuWMgAWxNK9+NEiu0hzNOcZSOkynQexh2KPi8sjzGsGGOV/VfrDtC4/EgJC4k1tAG/YMw4dEvxCfMxqtYk+a/z6DwMxz4jH1SVoAt6P22PXJynuojeNgKRhm/Mw4kH6sIUgqSH67NwvigJ3maTQwoNa0DU=

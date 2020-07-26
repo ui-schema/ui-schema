@@ -27,7 +27,7 @@
         "luxon": "^1.22.0",
         "prop-types": "^15.7.2",
         "react": "^16.12",
-        "react-color": "^2.18.0",
+        "react-color": "^2.18.1",
         "react-dom": "^16.12",
         "react-error-boundary": "^1.2.5",
         "react-helmet": "^5.2.1",
