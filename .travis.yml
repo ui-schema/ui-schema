@@ -6,6 +6,7 @@ install:
   - npm run bootstrap && npm run hoist
 script:
   - npm test
+  - codecov -f coverage/*.json
   - npm run build
 deploy:
   - provider: script
