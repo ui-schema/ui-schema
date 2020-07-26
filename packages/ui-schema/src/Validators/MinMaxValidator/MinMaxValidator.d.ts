@@ -4,7 +4,7 @@ import { errors, schema } from "@ui-schema/ui-schema/CommonTypings"
 export type ERROR_MAX_LENGTH = 'min-length'
 export type ERROR_MIN_LENGTH = 'max-length'
 
-export function validateMinMax(type: string, schema: OrderedMap<{}, undefined>, value: any, strict: boolean): List<any>
+export function validateMinMax(schema: OrderedMap<{}, undefined>, value: any, strict: boolean): List<any>
 
 export interface minMaxValidator {
     validate: (

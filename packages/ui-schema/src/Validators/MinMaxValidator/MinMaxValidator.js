@@ -11,7 +11,8 @@ const ERROR_MAX_LENGTH = 'max-length';
  * @param strict
  * @return {List<any>}
  */
-const validateMinMax = (type, schema, value, strict) => {
+const validateMinMax = (schema, value, strict) => {
+    const type = schema.get('type');
     let errors = List();
     if(type === 'string') {
         let minLength = schema.get('minLength');
@@ -131,9 +132,7 @@ const validateMinMax = (type, schema, value, strict) => {
 
 const minMaxValidator = {
     validate: ({required, schema, value, errors, valid}) => {
-        let type = schema.get('type');
-
-        let err = validateMinMax(type, schema, value, required);
+        let err = validateMinMax(schema, value, required);
 
         if(err.size) {
             valid = false;

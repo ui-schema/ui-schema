@@ -2,13 +2,13 @@ import { OrderedMap, List, Map } from "immutable"
 import {
     validateMinMax, minMaxValidator, ERROR_MAX_LENGTH, ERROR_MIN_LENGTH
 } from '@ui-schema/ui-schema/Validators/MinMaxValidator'
-import { jsonSchema } from "@ui-schema/ui-schema/CommonTypings"
 import { createMap, createOrderedMap } from "@ui-schema/ui-schema/Utils"
+import { JsonSchema } from "@ui-schema/ui-schema/JsonSchema"
 
 describe('validateMinMax', () => {
     type validateMinMaxTest = [
         // schema:
-        jsonSchema,
+        JsonSchema,
         // value:
         any,
         // strict:
@@ -215,7 +215,7 @@ describe('validateMinMax', () => {
         'validateMinMax(%j, %j)',
         (schema, value, strict, expected) => {
             const orderedSchema = createOrderedMap(schema)
-            expect(validateMinMax(orderedSchema.get('type') || '', orderedSchema, value, strict).size).toBe(expected)
+            expect(validateMinMax(orderedSchema, value, strict).size).toBe(expected)
         }
     )
 })
@@ -223,7 +223,7 @@ describe('validateMinMax', () => {
 describe('minMaxValidator', () => {
     type minMaxValidatorTest = [
         // schema:
-        jsonSchema,
+        JsonSchema,
         // value:
         any,
         // error:

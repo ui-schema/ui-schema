@@ -35,14 +35,14 @@ export const validateSchema = (schema, value) => {
         err = ERROR_WRONG_TYPE;
     } else if(!validatePattern(type, value, pattern)) {
         err = ERROR_PATTERN;
-    } else if(validateMinMax(type, schema, value, false).size) {
+    } else if(validateMinMax(schema, value, false).size) {
         // todo: duplicate validate checks when invalid [performance]
-        err = validateMinMax(type, schema, value, false);
+        err = validateMinMax(schema, value, false);
     } else if(!validateConst(type, schema.get('const'), value)) {
         err = ERROR_CONST_MISMATCH;
     } else if(!validateEnum(type, schema.get('enum'), value)) {
         err = ERROR_ENUM_MISMATCH;
-    } else if(!validateMultipleOf(type, schema, value)) {
+    } else if(!validateMultipleOf(schema, value)) {
         err = ERROR_MULTIPLE_OF;
     } else if(validateObject(schema, value)) {
         err = validateObject(schema, value);
