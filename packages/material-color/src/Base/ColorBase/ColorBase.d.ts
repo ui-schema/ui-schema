@@ -5,8 +5,8 @@ import { ColorPicker, PickerContainer } from '@ui-schema/ui-schema/CommonTypings
 export interface ColorBaseInterface extends StringRendererProps {
     value: string
     styles: object
-    refocus: true
-    forceIcon: false
+    refocus: boolean | true
+    forceIcon: boolean | false
     pickerProps: object
     PickerContainer: PickerContainer
     ColorPicker: ColorPicker
