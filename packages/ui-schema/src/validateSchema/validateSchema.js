@@ -3,7 +3,7 @@ import {validateType} from "../Validators/TypeValidator/TypeValidator";
 import {ERROR_WRONG_TYPE} from "../Validators/TypeValidator/TypeValidator";
 import {ERROR_PATTERN, validatePattern} from "../Validators/PatternValidator/PatternValidator";
 import {validateMinMax} from "../Validators/MinMaxValidator/MinMaxValidator";
-import {ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum} from "../Validators/ValueValidator/ValueValidator";
+import {ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum} from "../Validators/ValueValidator";
 import {ERROR_MULTIPLE_OF, validateMultipleOf} from "../Validators/MultipleOfValidator/MultipleOfValidator";
 import {validateContains} from "../Validators/ArrayValidator/ArrayValidator";
 import {ERROR_NOT_SET} from "../Validators/RequiredValidator/RequiredValidator";
@@ -38,9 +38,9 @@ export const validateSchema = (schema, value) => {
     } else if(validateMinMax(type, schema, value, false).size) {
         // todo: duplicate validate checks when invalid [performance]
         err = validateMinMax(type, schema, value, false);
-    } else if(!validateConst(type, schema, value)) {
+    } else if(!validateConst(type, schema.get('const'), value)) {
         err = ERROR_CONST_MISMATCH;
-    } else if(!validateEnum(type, schema, value)) {
+    } else if(!validateEnum(type, schema.get('enum'), value)) {
         err = ERROR_ENUM_MISMATCH;
     } else if(!validateMultipleOf(type, schema, value)) {
         err = ERROR_MULTIPLE_OF;

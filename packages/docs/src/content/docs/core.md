@@ -259,8 +259,6 @@ Connects to the current context and extracts the starting schema, renders the `w
 
 ### WidgetRenderer
 
-### PluginStackRenderer
-
 ### NextPluginRenderer
 
 Used for plugin rendering, see: [creating plugins](/docs/widget-plugins#creating-plugins).

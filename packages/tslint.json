@@ -15,6 +15,7 @@
             "spaces",
             4
         ],
+        "no-trailing-whitespace": false,
         "trailing-comma": [
             true,
             {

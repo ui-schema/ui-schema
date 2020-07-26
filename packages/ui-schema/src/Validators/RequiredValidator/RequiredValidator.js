@@ -10,7 +10,7 @@ const checkValueExists = (type, value) => {
     }
 
     if(type === 'string') {
-        return (valType === 'string' && value.trim().length);
+        return !!(valType === 'string' && value.trim().length);
     } else if(type === 'number' || type === 'integer') {
         // 0 is also a valid number, so not checking for false here
         return (valType === 'number')

@@ -7,6 +7,9 @@ module.exports = {
         '<rootDir>/src',
         '<rootDir>/tests',
     ],
+    moduleNameMapper: {
+        "^@ui-schema/ui-schema(.*)$": "<rootDir>/src$1",
+    },
     name: pack.name,
     displayName: pack.name
 };

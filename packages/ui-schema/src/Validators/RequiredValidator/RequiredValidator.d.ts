@@ -7,7 +7,7 @@ export interface checkValueExistsProps {
     value: any
 }
 
-export function checkValueExists(props: checkValueExistsProps): boolean
+export function checkValueExists(type: string, value: any): boolean
 
 // tslint:disable-next-line:no-empty-interface
 export interface requiredValidator extends validatorPluginNoValidate {

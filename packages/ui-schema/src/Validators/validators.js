@@ -2,7 +2,7 @@ import {requiredValidator} from "./RequiredValidator/RequiredValidator";
 import {minMaxValidator} from "./MinMaxValidator/MinMaxValidator";
 import {typeValidator} from "./TypeValidator/TypeValidator";
 import {multipleOfValidator} from "./MultipleOfValidator/MultipleOfValidator";
-import {valueValidatorConst, valueValidatorEnum} from "./ValueValidator/ValueValidator";
+import {valueValidatorConst, valueValidatorEnum} from "./ValueValidator";
 import {patternValidator} from "./PatternValidator/PatternValidator";
 import {arrayValidator} from "./ArrayValidator/ArrayValidator";
 import {objectValidator} from "./ObjectValidator/ObjectValidator";
