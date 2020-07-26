@@ -20,7 +20,10 @@ export const TimePicker = ({
     if(keyboard) {
         additionalProps['KeyboardButtonProps'] = KeyboardButtonProps;
     }
-    additionalProps = addAdditionalProps(additionalProps, schema);
+    additionalProps = {
+        additionalProps,
+        ...addAdditionalProps(schema)
+    };
 
     return <DateTimeBase
         dateFormat={dateFormat}

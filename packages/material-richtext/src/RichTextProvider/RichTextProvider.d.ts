@@ -1,6 +1,13 @@
 import * as React from 'react'
+import { Map } from 'immutable'
 
-export type RichTextContext = React.Context<{}>
+export interface RichTextProps {
+    editorState: Map<any, any>
+    handleChange: Function
+}
 
-export type RichTextProvider = (props: React.PropsWithChildren<RichTextContext>) => React.Component
-export function useRichText(): RichTextContext
+export type RichTextContext = React.Context<RichTextProps>
+
+export type RichTextProvider = (props: React.PropsWithChildren<RichTextProps>) => React.Component
+
+export function useRichText(): RichTextProps

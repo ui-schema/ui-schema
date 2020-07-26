@@ -23,5 +23,3 @@ export type defaultVal = number
 export type minItems = number
 export type maxItems = number
 export type multiple = boolean
-export type ColorPicker = React.Component
-export type PickerContainer = React.Component

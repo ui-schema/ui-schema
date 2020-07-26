@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { StringRendererProps } from '@ui-schema/ds-material/Widgets'
-import { ColorPicker, PickerContainer } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface ColorBaseInterface extends StringRendererProps {
     value: string
@@ -8,8 +7,8 @@ export interface ColorBaseInterface extends StringRendererProps {
     refocus: boolean | true
     forceIcon: boolean | false
     pickerProps: object
-    PickerContainer: PickerContainer
-    ColorPicker: ColorPicker
+    PickerContainer: React.Component
+    ColorPicker: React.Component
 }
 
 export function ColorBase<P extends ColorBaseInterface>(props: P): React.Component<P>

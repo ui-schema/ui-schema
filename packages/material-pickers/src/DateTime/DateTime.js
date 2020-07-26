@@ -8,8 +8,8 @@ const KeyboardButtonProps = {
 };
 
 export const DateTimePicker = ({
-                            schema, ...props
-                        }) => {
+                                   schema, ...props
+                               }) => {
     const dateFormat = schema.getIn(['date', 'format']) || 'yyyy-MM-dd HH:mm';
     const dateFormatData = schema.getIn(['date', 'formatData']) || dateFormat;
 
@@ -20,7 +20,10 @@ export const DateTimePicker = ({
     if(keyboard) {
         additionalProps['KeyboardButtonProps'] = KeyboardButtonProps;
     }
-    additionalProps = addAdditionalProps(additionalProps, schema);
+    additionalProps = {
+        additionalProps,
+        ...addAdditionalProps(schema)
+    };
 
     return <DateTimeBase
         dateFormat={dateFormat}

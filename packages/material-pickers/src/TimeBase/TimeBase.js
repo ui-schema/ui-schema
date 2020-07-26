@@ -1,4 +1,5 @@
-const addAdditionalProps = (additionalProps, schema) => {
+const addAdditionalProps = (schema) => {
+    let additionalProps = {};
     additionalProps['hideTabs'] = schema.getIn(['date', 'tabs']) !== true;
     additionalProps['ampm'] = schema.getIn(['date', 'ampm']) !== false;
     additionalProps['minutesStep'] = schema.getIn(['date', 'minutesStep']);

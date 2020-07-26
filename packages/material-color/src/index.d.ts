@@ -1,3 +1,6 @@
+import * as React from 'react'
+
+export * from './Base'
 export * from './Color'
 export * from './Alpha'
 export * from './Block'
@@ -10,4 +13,7 @@ export * from './Sketch'
 export * from './Slider'
 export * from './Swatches'
 export * from './Twitter'
+
+export type ColorPicker = React.Component
+export type PickerContainer = React.Component
 export type styleWrapper = (palette: object, spacing: Function) => object
