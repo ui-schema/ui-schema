@@ -1,6 +1,6 @@
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
-const useEditorStyles = makeStyles(theme => ({
+export const useEditorStyles = makeStyles(theme => ({
     wrapper: {
         display: 'flex',
         flexDirection: 'column',
@@ -50,7 +50,7 @@ const useEditorStyles = makeStyles(theme => ({
     },
 }));
 
-const useControlStyles = makeStyles(theme => ({
+export const useControlStyles = makeStyles(theme => ({
     wrapper: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -80,5 +80,3 @@ const useControlStyles = makeStyles(theme => ({
         margin: '0 auto',
     },
 }));
-
-export {useEditorStyles, useControlStyles}
