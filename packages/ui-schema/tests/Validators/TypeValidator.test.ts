@@ -3,6 +3,8 @@ import { ERROR_WRONG_TYPE, typeValidator, validateType } from '@ui-schema/ui-sch
 
 describe('validateType', () => {
     test.each([
+        // unknown types are never valid
+        ['text1', 'stringiiii', false],
         ['text1', 'string', true],
         [undefined, 'string', true],
         [1, 'string', false],

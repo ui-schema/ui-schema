@@ -15,11 +15,14 @@ describe('checkValueExists', () => {
         // [false, 'boolean', true],
         [undefined, 'boolean', false],
         [[''], 'array', true],
+        [[], 'array', false],
         [List(['']), 'array', true],
+        [List([]), 'array', false],
         [undefined, 'array', false],
         [{text: ''}, 'object', true],
         [undefined, 'object', false],
         [Map({text: ''}), 'object', true],
+        [Map({}), 'object', false],
         [OrderedMap({text: ''}), 'object', true],
         [[], 'object', false]
     ])('checkValueExists(%j, %s)', (value, type, expected) => {
