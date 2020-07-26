@@ -1,18 +1,22 @@
-import { OrderedMap, List } from 'immutable'
-import { validatorPlugin } from '../../Validators/validate'
+import { List, OrderedMap } from 'immutable'
+import { errors, schema } from "@ui-schema/ui-schema/CommonTypings"
 
-export type ERROR_MAX_LENGTH = string
-export type ERROR_MIN_LENGTH = string
+export type ERROR_MAX_LENGTH = 'min-length'
+export type ERROR_MIN_LENGTH = 'max-length'
 
-export interface validateMinMaxProps {
-    type: string
-    schema: OrderedMap<{}, undefined>
-    value: any
-    strict: boolean
-}
+export function validateMinMax(type: string, schema: OrderedMap<{}, undefined>, value: any, strict: boolean): List<any>
 
-export function validateMinMax<P extends validateMinMaxProps>(props: P): List<P>
-
-// tslint:disable-next-line:no-empty-interface
-export interface minMaxValidator extends validatorPlugin {
+export interface minMaxValidator {
+    validate: (
+        {required, schema, value, errors, valid}: {
+            required: boolean
+            schema: schema
+            value: any
+            errors: errors
+            valid: boolean
+        }
+    ) => {
+        errors: List<any>,
+        valid: boolean
+    },
 }

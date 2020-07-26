@@ -91,7 +91,7 @@ const validateMinMax = (type, schema, value, strict) => {
         }
     }
 
-    if(type === 'number') {
+    if(type === 'number' || type === 'integer') {
         let minimum = schema.get('minimum');
         let exclusiveMinimum = schema.get('exclusiveMinimum');
         let maximum = schema.get('maximum');

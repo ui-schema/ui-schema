@@ -23,3 +23,25 @@ export type defaultVal = number
 export type minItems = number
 export type maxItems = number
 export type multiple = boolean
+
+export type jsonSchema = {
+    type: 'string',
+    minLength?: number,
+    maxLength?: number
+} | {
+    type: 'array',
+    minItems?: number,
+    maxItems?: number
+} | {
+    type: 'object',
+    minProperties?: number,
+    maxProperties?: number
+} | {
+    type: 'number' | 'integer',
+    minimum?: number,
+    maximum?: number,
+    exclusiveMinimum?: number,
+    exclusiveMaximum?: number
+} | {
+    type: 'null'
+}
