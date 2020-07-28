@@ -7,7 +7,8 @@ export interface schemas {
     array: {
         type: 'array',
         minItems?: number,
-        maxItems?: number
+        maxItems?: number,
+        items: JsonSchema | JsonSchema[]
     },
     object: {
         type: 'object',
