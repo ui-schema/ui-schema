@@ -20,7 +20,6 @@ let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== in
  */
 export const validateArrayContent = (schema, value, additionalItems = true, find = false) => {
     let err = List([]);
-    let i = 0;
     for(let val of value) {
         let tmpErr = List([]);
         if(List.isList(schema)) {
@@ -66,7 +65,6 @@ export const validateArrayContent = (schema, value, additionalItems = true, find
             break;
         }
         err = err.concat(tmpErr);
-        i++;
     }
 
     return err;
