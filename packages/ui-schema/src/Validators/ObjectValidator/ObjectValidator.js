@@ -1,36 +1,35 @@
 import {List, Map} from "immutable";
 import {validateSchema} from "../../validateSchema/index";
 
-const ERROR_ADDITIONAL_PROPERTIES = 'additional-properties';
+export const ERROR_ADDITIONAL_PROPERTIES = 'additional-properties';
 
 /**
  * Return false when valid and string for an error
  *
  * @param schema
  * @param value
- * @return {boolean|List}
+ * @return {List}
  */
-const validateObject = (schema, value) => {
-    let err = false;
+export const validateObject = (schema, value) => {
+    let err = List([]);
     if(schema.get('additionalProperties') === false && schema.get('properties') && typeof value === 'object') {
         let hasAdditional = false;
         const keys = Map.isMap(value) ? value.keySeq() : Object.keys(value);
+        const schemaKeys = schema.get('properties').keySeq();
         keys.forEach(key => {
             // todo: add all invalid additional or change to `for key of value` to break after first invalid
-            if(keys.indexOf(key) === -1) hasAdditional = true;
+            if(schemaKeys.indexOf(key) === -1) hasAdditional = true;
         });
         if(hasAdditional) {
-            if(!err) err = List([]);
             err = err.push(List([ERROR_ADDITIONAL_PROPERTIES]));
         }
     }
 
-    if(schema.get('propertyNames') && schema.get('properties') && typeof value === 'object') {
+    if(schema.get('propertyNames') && typeof value === 'object') {
         const keys = Map.isMap(value) ? value.keySeq() : Object.keys(value);
         keys.forEach(key => {
             let tmp_err = validateSchema(schema.get('propertyNames').set('type', 'string'), key);
             if(typeof tmp_err === 'string' || (List.isList(tmp_err) && tmp_err.size)) {
-                if(!err) err = List([]);
                 if(List.isList(tmp_err)) {
                     err = err.concat(tmp_err);
                 } else {
@@ -43,7 +42,7 @@ const validateObject = (schema, value) => {
     return err;
 };
 
-const objectValidator = {
+export const objectValidator = {
     should: ({schema}) => {
         let type = schema.get('type');
 
@@ -51,9 +50,7 @@ const objectValidator = {
     },
     validate: ({schema, value, errors, valid}) => {
         errors = validateObject(schema, value,);
-        if(errors) valid = false;
+        if(errors.size) valid = false;
         return {errors, valid}
     }
 };
-
-export {objectValidator, validateObject}

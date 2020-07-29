@@ -44,7 +44,8 @@ export const validateSchema = (schema, value) => {
         err = ERROR_ENUM_MISMATCH;
     } else if(!validateMultipleOf(schema, value)) {
         err = ERROR_MULTIPLE_OF;
-    } else if(validateObject(schema, value)) {
+    } else if(validateObject(schema, value).size) {
+        // todo: duplicate validate checks when invalid [performance]
         err = validateObject(schema, value);
     } else if(validateContains(schema, value).size) {
         // todo: duplicate validate checks when invalid [performance]
