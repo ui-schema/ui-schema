@@ -14,7 +14,7 @@ export interface multipleOfValidator {
             valid: boolean
         }
     ) => {
-        errors: List<any>,
+        errors: List<any>
         valid: boolean
     }
 }

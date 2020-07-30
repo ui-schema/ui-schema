@@ -8,7 +8,7 @@ export function validateObject(schema: schema, value: any): List<any>
 export interface objectValidator {
     should: (
         {schema}: { schema: schema }
-    ) => boolean,
+    ) => boolean
     validate: (
         {schema, value, errors, valid}: {
             schema: schema
@@ -17,7 +17,7 @@ export interface objectValidator {
             valid: boolean
         }
     ) => {
-        errors: List<any>,
+        errors: List<any>
         valid: boolean
     }
 }

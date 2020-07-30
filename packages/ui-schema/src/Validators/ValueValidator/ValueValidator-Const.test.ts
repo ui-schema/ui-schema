@@ -1,6 +1,6 @@
 import { OrderedMap, List, Map } from "immutable"
 import {
-    validateConst, valueValidatorConst, ERROR_CONST_MISMATCH
+    validateConst, valueValidatorConst, ERROR_CONST_MISMATCH,
 } from '@ui-schema/ui-schema/Validators/ValueValidator'
 
 describe('validateConst', () => {
@@ -24,24 +24,24 @@ describe('valueValidatorConst', () => {
         [
             {const: ''},
             'text1',
-            true
+            true,
         ], [
             {},
             'text1',
-            false
+            false,
         ], [
             {const: ''},
             undefined,
-            false
-        ]
+            false,
+        ],
     ])(
         '.should(%j, %s)',
         (schema, value, expected) => {
             expect(valueValidatorConst.should({
                 schema: OrderedMap(schema),
-                value
+                value,
             })).toBe(expected)
-        }
+        },
     )
 
     type valueValidatorConstTest = [
@@ -63,20 +63,20 @@ describe('valueValidatorConst', () => {
             'text1',
             List([ERROR_CONST_MISMATCH, Map({const: 'text1'})]),
             true,
-            false
+            false,
         ], [
             {type: 'string', const: 'text1'},
             'text3',
             List([ERROR_CONST_MISMATCH, Map({const: 'text1'})]),
             false,
-            true
+            true,
         ], [
             {type: 'string'},
             'text3',
             List([ERROR_CONST_MISMATCH, Map({const: 'text1'})]),
             true,
-            false
-        ]
+            false,
+        ],
     ]
 
     test.each(valueValidatorConstTestValues)(
@@ -86,10 +86,10 @@ describe('valueValidatorConst', () => {
                 schema: OrderedMap(schema),
                 value,
                 errors: List([]),
-                valid: true
+                valid: true,
             })
             expect(result.valid).toBe(expectedValid)
             expect(result.errors.contains(error)).toBe(expectedError)
-        }
+        },
     )
 })

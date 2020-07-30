@@ -2,7 +2,7 @@ import { OrderedMap, List } from 'immutable'
 import { EditorPluginProps } from '@ui-schema/ui-schema/EditorPlugin'
 
 export interface validateReturn {
-    errors: List<[]>,
+    errors: List<[]>
     valid: boolean
 }
 

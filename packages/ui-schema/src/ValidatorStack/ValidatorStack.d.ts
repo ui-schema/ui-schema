@@ -9,5 +9,4 @@ export interface ValidatorStackProps {
 export type nextPluginRendererProps = (props: ValidatorStackProps) => NextPluginRendererProps
 
 // tslint:disable-next-line:no-empty-interface
-export interface ValidatorStack extends  nextPluginRendererProps {
-}
+export type ValidatorStack = nextPluginRendererProps

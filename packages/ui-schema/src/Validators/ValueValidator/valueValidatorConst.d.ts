@@ -11,7 +11,7 @@ export interface valueValidatorConst  {
             schema: schema
             value: any
         }
-    ) => boolean,
+    ) => boolean
     validate: (
         {schema, value, errors, valid}: {
             schema: schema
@@ -20,7 +20,7 @@ export interface valueValidatorConst  {
             valid: boolean
         }
     ) => {
-        errors: List<any>,
+        errors: List<any>
         valid: boolean
     }
 }

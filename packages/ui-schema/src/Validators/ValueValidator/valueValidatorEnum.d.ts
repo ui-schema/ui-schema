@@ -12,7 +12,7 @@ export interface valueValidatorEnum {
             schema: schema
             value: any
         }
-    ) => boolean,
+    ) => boolean
     validate: (
         {schema, value, errors, valid}: {
             schema: schema
@@ -21,7 +21,7 @@ export interface valueValidatorEnum {
             valid: boolean
         }
     ) => {
-        errors: List<any>,
+        errors: List<any>
         valid: boolean
     }
 }

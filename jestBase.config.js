@@ -1,5 +1,5 @@
 module.exports = {
-    testRegex: '(/tests/.*.(test|spec)).(jsx?|tsx?)$',
+    testRegex: '(/(tests|src)/.*.(test|spec)).(jsx?|tsx?)$',
     transformIgnorePatterns: [
         "node_modules/?!(@ui-schema)"
     ],

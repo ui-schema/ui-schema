@@ -9,7 +9,7 @@ export interface requiredValidator {
     should: (
         {required, ownKey}:
             { required: List<any>, ownKey: string }
-    ) => boolean,
+    ) => boolean
     validate: (
         {schema, value, errors, valid}: {
             schema: schema
@@ -18,9 +18,9 @@ export interface requiredValidator {
             valid: boolean
         }
     ) => {
-        errors: List<any>,
-        valid: boolean,
+        errors: List<any>
+        valid: boolean
         required: true
-    },
+    }
     noValidate: () => { required: false }
 }

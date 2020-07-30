@@ -1,26 +1,26 @@
 export interface schemas {
     string: {
-        type: 'string',
-        minLength?: number,
+        type: 'string'
+        minLength?: number
         maxLength?: number
-    },
+    }
     array: {
-        type: 'array',
-        minItems?: number,
-        maxItems?: number,
+        type: 'array'
+        minItems?: number
+        maxItems?: number
         items: JsonSchema | JsonSchema[]
-    },
+    }
     object: {
-        type: 'object',
-        minProperties?: number,
+        type: 'object'
+        minProperties?: number
         maxProperties?: number
-    },
+    }
     number: {
-        type: 'number' | 'integer',
-        minimum?: number,
-        maximum?: number,
-        exclusiveMinimum?: number,
-        exclusiveMaximum?: number,
+        type: 'number' | 'integer'
+        minimum?: number
+        maximum?: number
+        exclusiveMinimum?: number
+        exclusiveMaximum?: number
         multipleOf?: number
     }
 }

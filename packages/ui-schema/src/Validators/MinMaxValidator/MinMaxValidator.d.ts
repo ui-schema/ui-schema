@@ -16,7 +16,7 @@ export interface minMaxValidator {
             valid: boolean
         }
     ) => {
-        errors: List<any>,
+        errors: List<any>
         valid: boolean
-    },
+    }
 }

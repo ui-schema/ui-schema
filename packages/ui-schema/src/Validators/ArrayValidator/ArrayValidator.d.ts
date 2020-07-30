@@ -28,7 +28,7 @@ export function validateUniqueItems(schema: OrderedMap<{}, undefined>, value: Li
 export interface arrayValidator {
     should: (
         {schema}: { schema: schema }
-    ) => boolean,
+    ) => boolean
     validate: (
         {schema, value, errors, valid}: {
             schema: schema
@@ -37,7 +37,7 @@ export interface arrayValidator {
             valid: boolean
         }
     ) => {
-        errors: List<any>,
+        errors: List<any>
         valid: boolean
     }
 }

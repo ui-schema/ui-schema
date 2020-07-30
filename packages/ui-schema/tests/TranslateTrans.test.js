@@ -1,6 +1,6 @@
 import React from 'react';
-import {it, expect} from '@jest/globals';
-import {fireEvent, render} from '@testing-library/react';
+import {it, expect, describe, test} from '@jest/globals';
+import {render} from '@testing-library/react';
 import {
     toBeInTheDocument,
     toHaveClass,
@@ -53,7 +53,7 @@ const SchemaMocker = ({children}) => {
 
 describe('Translate\\Trans', () => {
     it('Text', async () => {
-        const {findByText, container, queryByText} = render(
+        const {findByText, queryByText} = render(
             <SchemaMocker>
                 <Trans text={'titles.simple-number'}/>
             </SchemaMocker>
@@ -65,7 +65,7 @@ describe('Translate\\Trans', () => {
     });
 
     test('Function', async () => {
-        const {findByText, container, queryByText} = render(
+        const {findByText, queryByText} = render(
             <SchemaMocker>
                 <Trans text={'error.' + ERROR_MIN_LENGTH} context={Map({min: 2})}/>
             </SchemaMocker>
