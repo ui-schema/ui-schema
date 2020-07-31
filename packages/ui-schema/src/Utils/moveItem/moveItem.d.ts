@@ -1,15 +1,15 @@
-import { OrderedMap, Map, List } from 'immutable'
+import { List } from 'immutable'
 import { onChange, StoreKeys } from "../../EditorStore"
 
-export function moveItem<K extends {} | [], V>(
-    value: Map<K, V> | OrderedMap<K, V> | List<K>,
-    oldI: number,
-    newI: number
-): Map<K, V> | OrderedMap<K, V> | List<K>
+export function moveItem(
+    value: List<any>,
+    oldI: string | number,
+    newI: string | number
+): List<any>
 
 export type handleStoreMove = () => void
 
-export function storeMoveItem<K extends {} | [], V>(
+export function storeMoveItem(
     onChange: onChange,
     storeKeys: StoreKeys,
     go: number

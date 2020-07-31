@@ -1,4 +1,4 @@
-const mapSchema = (inputProps = {}, schema) => {
+export const mapSchema = (inputProps = {}, schema) => {
     if(schema.get('minLength')) {
         inputProps['minLength'] = schema.get('minLength');
     }
@@ -23,7 +23,7 @@ const mapSchema = (inputProps = {}, schema) => {
     return inputProps;
 };
 
-const checkNativeValidity = (currentRef, valid) => {
+export const checkNativeValidity = (currentRef, valid) => {
     if(currentRef) {
         for(let error in currentRef.validity) {
             if(error === 'valid') continue;
@@ -33,5 +33,3 @@ const checkNativeValidity = (currentRef, valid) => {
 
     return valid;
 };
-
-export {mapSchema, checkNativeValidity}

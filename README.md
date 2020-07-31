@@ -189,7 +189,7 @@ Changes from any package are reflected inside the demo/docs package.
 Commands:
 - Developing test driven: `npm run tdd`
     - needs manual bootstrapping, hoisting and update handling
-    - `npm run tdd -- -u --testPathPattern=tests/Validators`
+    - `npm run tdd -- -u --testPathPattern=src/Validators`
         - with `-u|--update` for snapshot update testing 
         - with `--testPathPattern` to run all tests in a specific folder / path 
 - Testing: `npm test` 

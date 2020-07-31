@@ -4,7 +4,7 @@ import {
     validateContains,
     validateUniqueItems,
     validateArrayContent,
-    ERROR_DUPLICATE_ITEMS, ERROR_ADDITIONAL_ITEMS, ERROR_NOT_FOUND_CONTAINS,
+    ERROR_DUPLICATE_ITEMS,
     arrayValidator,
 } from '@ui-schema/ui-schema/Validators/ArrayValidator'
 import { createOrderedMap } from "@ui-schema/ui-schema/Utils"

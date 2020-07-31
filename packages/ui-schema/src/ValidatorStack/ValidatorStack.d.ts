@@ -1,4 +1,3 @@
-import * as React from "react"
 import { widgetsBase } from "../widgetsBase"
 import { NextPluginRendererProps } from '../EditorPluginStack'
 

@@ -1,48 +1,48 @@
 /**
- * @param {Map} schema
- * @param {Map} dyn_schema
+ * Merges schema `b` into `a`
+ * @param {Map} aSchema
+ * @param {Map} bSchema
  * @return {*}
  */
-const mergeSchema = (schema, dyn_schema) => {
-    if(dyn_schema.get('type')) {
-        schema = schema.set('type', dyn_schema.get('type'));
+export const mergeSchema = (aSchema, bSchema) => {
+    if(bSchema.get('type')) {
+        aSchema = aSchema.set('type', bSchema.get('type'));
     }
-    if(dyn_schema.get('format')) {
-        schema = schema.set('format', dyn_schema.get('format'));
+    if(bSchema.get('format')) {
+        aSchema = aSchema.set('format', bSchema.get('format'));
     }
 
-    if(dyn_schema.get('properties')) {
-        if(schema.get('properties')) {
-            schema = schema.set('properties', schema.get('properties').mergeDeep(dyn_schema.get('properties')));
+    if(bSchema.get('properties')) {
+        if(aSchema.get('properties')) {
+            aSchema = aSchema.set('properties', aSchema.get('properties').mergeDeep(bSchema.get('properties')));
         } else {
-            schema = schema.set('properties', dyn_schema.get('properties'));
+            aSchema = aSchema.set('properties', bSchema.get('properties'));
         }
     }
 
-    if(dyn_schema.get('required')) {
-        if(schema.get('required')) {
-            schema = schema.set('required', schema.get('required').concat(dyn_schema.get('required')));
+    if(bSchema.get('required')) {
+        if(aSchema.get('required')) {
+            aSchema = aSchema.set('required', aSchema.get('required').concat(bSchema.get('required')));
         } else {
-            schema = schema.set('required', dyn_schema.get('required'));
+            aSchema = aSchema.set('required', bSchema.get('required'));
         }
     }
 
-    if(dyn_schema.get('widget')) {
-        schema = schema.set('widget', dyn_schema.get('widget'));
+    if(bSchema.get('widget')) {
+        aSchema = aSchema.set('widget', bSchema.get('widget'));
     }
-    if(dyn_schema.get('enum')) {
-        schema = schema.set('enum', dyn_schema.get('enum'));
+    if(bSchema.get('enum')) {
+        aSchema = aSchema.set('enum', bSchema.get('enum'));
     }
-    if(dyn_schema.get('const')) {
-        schema = schema.set('const', dyn_schema.get('const'));
+    if(bSchema.get('const')) {
+        aSchema = aSchema.set('const', bSchema.get('const'));
     }
-    if(dyn_schema.get('not')) {
-        schema = schema.set('not', dyn_schema.get('not'));
+    if(bSchema.get('not')) {
+        aSchema = aSchema.set('not', bSchema.get('not'));
     }
 
+    // todo: should all of the current merged, like they are merged
     // todo: which more keywords of the matched `nestedSchema` should be merged into the `schema`?
 
-    return schema;
+    return aSchema;
 };
-
-export {mergeSchema}
