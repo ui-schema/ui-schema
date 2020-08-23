@@ -15,7 +15,7 @@ const compare = (prev, next) => {
     return prev === next;
 };
 
-function isEqual(prevProps, nextProps) {
+export const isEqual = (prevProps, nextProps) => {
     const prevKeys = Object.keys(prevProps);
     const nextKeys = Object.keys(nextProps);
     if(
@@ -39,10 +39,8 @@ function isEqual(prevProps, nextProps) {
  * @param Component
  * @return {function({}): *}
  */
-const memo = Component => {
+export const memo = Component => {
     const Memoized = React.memo(Component, isEqual);
     Memoized.displayName = getDisplayName(Component);
     return Memoized;
 };
-
-export {isEqual, memo}

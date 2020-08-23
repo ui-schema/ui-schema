@@ -1,9 +1,9 @@
 import { List } from 'immutable'
-import { errors, schema, type } from "@ui-schema/ui-schema/CommonTypings"
+import { errors, schema } from "@ui-schema/ui-schema/CommonTypings"
 
 export const ERROR_ENUM_MISMATCH = 'enum-mismatch'
 
-export function validateEnum<T>(type: type, _enum?: List<any> | T[], value?: any): boolean
+export function validateEnum<T>(type: string, _enum?: List<any> | T[], value?: any): boolean
 
 // tslint:disable-next-line:no-empty-interface
 export interface valueValidatorEnum {
@@ -12,7 +12,7 @@ export interface valueValidatorEnum {
             schema: schema
             value: any
         }
-    ) => boolean,
+    ) => boolean
     validate: (
         {schema, value, errors, valid}: {
             schema: schema
@@ -21,7 +21,7 @@ export interface valueValidatorEnum {
             valid: boolean
         }
     ) => {
-        errors: List<any>,
+        errors: List<any>
         valid: boolean
     }
 }

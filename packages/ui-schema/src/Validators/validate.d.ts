@@ -2,7 +2,7 @@ import { OrderedMap, List } from 'immutable'
 import { EditorPluginProps } from '@ui-schema/ui-schema/EditorPlugin'
 
 export interface validateReturn {
-    errors: List<{}>,
+    errors: List<[]>
     valid: boolean
 }
 
@@ -13,7 +13,7 @@ export type should = (props: EditorPluginProps) => boolean
 export function validateExtended(
     schema: OrderedMap<{}, undefined>,
     value: any,
-    errors: List<{}>,
+    errors: List<[]>,
     valid: boolean,
     required: boolean
 ): validateReturn

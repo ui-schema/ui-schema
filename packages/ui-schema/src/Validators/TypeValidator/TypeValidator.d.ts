@@ -14,7 +14,7 @@ export interface typeValidator  {
             valid: boolean
         }
     ) => {
-        errors: List<any>,
+        errors: List<any>
         valid: boolean
     }
 }

@@ -14,11 +14,11 @@ test('patternValidator', () => {
     const trueResult = patternValidator.validate({
         schema: OrderedMap({
             type: 'string',
-            pattern: '^[bla]*$'
+            pattern: '^[bla]*$',
         }),
         value: 'blabla',
         errors: List([]),
-        valid: true
+        valid: true,
     })
     expect(trueResult.valid).toBe(true)
     expect(trueResult.errors.contains(ERROR_PATTERN)).toBe(false)
@@ -26,11 +26,11 @@ test('patternValidator', () => {
     const falseResult = patternValidator.validate({
         schema: OrderedMap({
             type: 'string',
-            pattern: '^[bla]*$'
+            pattern: '^[bla]*$',
         }),
         value: 'wawawa',
         errors: List([]),
-        valid: true
+        valid: true,
     })
     expect(falseResult.valid).toBe(false)
     expect(falseResult.errors.contains(ERROR_PATTERN)).toBe(true)

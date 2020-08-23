@@ -3,8 +3,8 @@ import { OrderedMap } from "immutable"
 import { translation } from "../t"
 
 export interface TransProps {
-    text: string,
-    context?: Map<{}, undefined>,
+    text: string
+    context?: Map<{}, undefined>
     schema?: OrderedMap<{}, undefined>
     fallback?: translation
 }

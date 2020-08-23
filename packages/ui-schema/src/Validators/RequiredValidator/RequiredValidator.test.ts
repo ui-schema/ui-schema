@@ -15,13 +15,16 @@ describe('checkValueExists', () => {
         // [false, 'boolean', true],
         [undefined, 'boolean', false],
         [[''], 'array', true],
+        [[], 'array', false],
         [List(['']), 'array', true],
+        [List([]), 'array', false],
         [undefined, 'array', false],
         [{text: ''}, 'object', true],
         [undefined, 'object', false],
         [Map({text: ''}), 'object', true],
+        [Map({}), 'object', false],
         [OrderedMap({text: ''}), 'object', true],
-        [[], 'object', false]
+        [[], 'object', false],
     ])('checkValueExists(%j, %s)', (value, type, expected) => {
         expect(checkValueExists(type, value)).toBe(expected)
     })
@@ -31,15 +34,15 @@ describe('requiredValidator', () => {
     test.each([
         [['name'], 'name', true],
         [['name'], 'street', false],
-        [undefined, 'name', false]
+        [undefined, 'name', false],
     ])(
         '.should(%j, %s)',
         (required, ownKey, expectedValid) => {
             expect(requiredValidator.should({
                 required: List(required),
-                ownKey
+                ownKey,
             })).toBe(expectedValid)
-        }
+        },
     )
 
     test.each([
@@ -48,32 +51,32 @@ describe('requiredValidator', () => {
             'text1',
             ERROR_NOT_SET,
             true,
-            false
+            false,
         ], [
             'string',
             2,
             ERROR_NOT_SET,
             false,
-            true
+            true,
         ], [
             'string',
             '',
             ERROR_NOT_SET,
             false,
-            true
+            true,
         ], [
             'string',
             false,
             ERROR_NOT_SET,
             false,
-            true
+            true,
         ], [
             'string',
             '2',
             ERROR_NOT_SET,
             true,
-            false
-        ]
+            false,
+        ],
     ])(
         '.validate(%j, %s)',
         (type, value, error, expectedValid, expectedError) => {
@@ -81,11 +84,11 @@ describe('requiredValidator', () => {
                 schema: OrderedMap({type}),
                 value,
                 errors: List([]),
-                valid: true
+                valid: true,
             })
             expect(result.valid).toBe(expectedValid)
             expect(result.errors.contains(error)).toBe(expectedError)
-        }
+        },
     )
 
     test(
@@ -93,6 +96,6 @@ describe('requiredValidator', () => {
         () => {
             const result = requiredValidator.noValidate()
             expect(result.required).toBe(false)
-        }
+        },
     )
 })

@@ -1,9 +1,9 @@
 import * as React from 'react'
 
 export interface Icon {
-    onClick: Function,
-    label: string,
-    iconName: string,
+    onClick: Function
+    label: string
+    iconName: string
     btnSize: string
 }
 

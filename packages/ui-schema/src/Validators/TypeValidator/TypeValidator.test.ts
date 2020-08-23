@@ -3,6 +3,8 @@ import { ERROR_WRONG_TYPE, typeValidator, validateType } from '@ui-schema/ui-sch
 
 describe('validateType', () => {
     test.each([
+        // unknown types are never valid
+        ['text1', 'stringiiii', false],
         ['text1', 'string', true],
         [undefined, 'string', true],
         [1, 'string', false],
@@ -38,26 +40,26 @@ describe('typeValidator', () => {
             'text1',
             List([ERROR_WRONG_TYPE, Map({actual: typeof 'text1'})]),
             true,
-            false
+            false,
         ], [
             'string',
             2,
             List([ERROR_WRONG_TYPE, Map({actual: typeof 2})]),
             false,
-            true
+            true,
         ], [
             'string',
             false,
             List([ERROR_WRONG_TYPE, Map({actual: typeof false})]),
             false,
-            true
+            true,
         ], [
             'string',
             '2',
             List([ERROR_WRONG_TYPE, Map({actual: typeof '2'})]),
             true,
-            false
-        ]
+            false,
+        ],
     ])(
         '.should(%j, %s)',
         (type, value, error, expectedValid, expectedError) => {
@@ -65,10 +67,10 @@ describe('typeValidator', () => {
                 schema: OrderedMap({type}),
                 value,
                 errors: List([]),
-                valid: true
+                valid: true,
             })
             expect(result.valid).toBe(expectedValid)
             expect(result.errors.contains(error)).toBe(expectedError)
-        }
+        },
     )
 })

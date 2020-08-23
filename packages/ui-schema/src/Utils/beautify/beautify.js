@@ -17,7 +17,7 @@ export const strReplaceAll = (str, search, replacement) => {
  *
  * @type {Map}
  */
-const beautified = Map();
+let beautified = Map();
 
 const textTransform = (name, tt) => {
     switch(tt) {
@@ -58,20 +58,16 @@ const beauty = (name) => {
         .map((s) => s.charAt(0).toUpperCase() + s.slice(1))// make first letter uppercase
         .join(' ');
 
-    beautified.set(name, beauty);
+    beautified = beautified.set(name, beauty);
 
     return beauty;
 };
 
-export const beautifyKey = (name, tt) => {
-    if(typeof tt === 'undefined') tt = true;
-
-    if(typeof tt === 'string') return textTransform(name, tt);
-
-    // here `tt` must be a boolean or not supported
-
+export const beautifyKey = (name, tt = true) => {
     // falsy values disables optimistic-beautify
     if(!tt) return name;
+
+    if(typeof tt === 'string') return textTransform(name, tt);
 
     return beauty(name);
 };

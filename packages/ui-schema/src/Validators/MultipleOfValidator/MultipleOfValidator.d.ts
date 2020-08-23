@@ -1,9 +1,9 @@
 import { OrderedMap, List } from 'immutable'
 import { errors, schema } from '@ui-schema/ui-schema/CommonTypings'
 
-export type ERROR_MULTIPLE_OF = string
+export type ERROR_MULTIPLE_OF = 'multiple-of'
 
-export function validateMultipleOf(type: string, schema: OrderedMap<{}, undefined>, value: any): boolean
+export function validateMultipleOf(schema: OrderedMap<{}, undefined>, value: any): boolean
 
 export interface multipleOfValidator {
     validate: (
@@ -14,7 +14,7 @@ export interface multipleOfValidator {
             valid: boolean
         }
     ) => {
-        errors: List<any>,
+        errors: List<any>
         valid: boolean
     }
 }

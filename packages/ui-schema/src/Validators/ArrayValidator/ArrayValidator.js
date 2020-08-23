@@ -1,92 +1,111 @@
 import {List, Map} from "immutable";
 import {validateSchema} from "../../validateSchema/index";
-import {ERROR_WRONG_TYPE} from "../TypeValidator/TypeValidator";
+import {ERROR_WRONG_TYPE} from "@ui-schema/ui-schema/Validators/TypeValidator/TypeValidator";
 
-const ERROR_DUPLICATE_ITEMS = 'duplicate-items';
-const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains';
-const ERROR_ADDITIONAL_ITEMS = 'additional-items';
+export const ERROR_DUPLICATE_ITEMS = 'duplicate-items';
+export const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains';
+export const ERROR_ADDITIONAL_ITEMS = 'additional-items';
 
 let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== index);
 
 /**
+ * This function
  * Return false when valid and string for an error
  *
- * @param schemaItems
+ * @param schema single schema or tuple schema
  * @param value
  * @param additionalItems
  * @param find
- * @return {boolean}
+ * @return {boolean|List}
  */
-const validateArray = (schemaItems, value, additionalItems, find = false) => {
-    // setting err results in: a) return false by default when validate, b) return ERROR_NOT_FOUND_CONTAINS by default when find
-    // for a: after one fail err will be <string>
-    // for b: after one full valid successful found err will be false
-    let err = find ? ERROR_NOT_FOUND_CONTAINS : false;
+export const validateArrayContent = (schema, value, additionalItems = true, find = false) => {
+    let err = List([]);
     for(let val of value) {
-        if(List.isList(schemaItems)) {
+        let tmpErr = List([]);
+        if(List.isList(schema)) {
             // tuple validation
-            if(List.isList(val)) {
+            if(List.isList(val) || Array.isArray(val)) {
                 // for tuples, the actual item must be an array/list also
+                /*if(typeof schema.get(i) !== 'undefined') {
+                    let tmpErr2 = validateSchema(schema.get(i), val);
+                    if(tmpErr2) {
+                        // todo: support errors as list
+                        tmpErr = tmpErr.push(tmpErr2)
+                    }
+                } else {
+                    if(!validateAdditionalItems(additionalItems, val, schema)) {
+                        // todo: add index of erroneous item; or at all as one context list, only one error instead of multiple?
+                        tmpErr = tmpErr.push(List([ERROR_ADDITIONAL_ITEMS, Map({})]));
+                    }
+                }*/
                 // todo: add values as array support
                 // todo: implement tuple validation
                 //   actually, only `additionalItems` should be needed to be validated here, the other values should be validated when the input for them is rendered
                 //   as "only what is mounted can be entered and validated"
                 //   but they must be usable for within conditional schemas
-                /*schemaItems.forEach(() => {
-                });*/
-                if(additionalItems === false && val.size > schemaItems.size) {
-                    if(!List.isList(err)) {
-                        err = List([err])
-                    }
+                if(!validateAdditionalItems(additionalItems, val, schema)) {
                     // todo: add index of erroneous item; or at all as one context list, only one error instead of multiple?
-                    err = err.push(List([ERROR_ADDITIONAL_ITEMS, Map({})]));
+                    tmpErr = tmpErr.push(List([ERROR_ADDITIONAL_ITEMS, Map({})]));
                 }
             } else {
-                if(!List.isList(err)) {
-                    err = List([err])
-                }
-                err = err.push(List([ERROR_WRONG_TYPE, Map({actual: typeof value, arrayTupleValidation: true})]));
+                // when tuple schema but no-tuple value
+                tmpErr = tmpErr.push(List([ERROR_WRONG_TYPE, Map({actual: typeof value, arrayTupleValidation: true})]));
             }
         } else {
             // single-validation
-            err = validateSchema(schemaItems, val);
-            if(err && !find) {
-                break;
-            }
-            if(find && (!err || (List.isList(err) && err.size === 0))) {
-                break;
+            // Cite from json-schema.org: When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
+            let tmpErr2 = validateSchema(schema, val);
+            if(tmpErr2) {
+                // todo: support errors as list
+                tmpErr = tmpErr.push(tmpErr2)
             }
         }
+        if(find && tmpErr.size === 0) {
+            err = tmpErr;
+            break;
+        }
+        err = err.concat(tmpErr);
     }
 
     return err;
 };
 
-const validateItems = (schema, value) => {
+export const validateAdditionalItems = (additionalItems, value, schema) => {
+    return additionalItems === true || (
+        additionalItems === false && (
+            (List.isList(value) && value.size <= schema.size) ||
+            (Array.isArray(value) && value.length <= schema.size)
+        )
+    )
+}
+
+export const validateItems = (schema, value) => {
     let items = schema.get('items');
     if(items && value) {
-        let item_err = validateArray(items, value, schema.get('additionalItems'));
+        let item_err = validateArrayContent(items, value, schema.get('additionalItems'));
         if(List.isList(item_err)) {
             if(item_err.size) {
                 return item_err;
             }
         } else if(item_err) {
-            return item_err;
+            return List([item_err]);
         }
     }
 
     return List([]);
 };
 
-const validateContains = (schema, value) => {
-    let errors = List();
+export const validateContains = (schema, value) => {
+    let errors = List([]);
     if(schema.get('type') !== 'array') return errors;
 
     const contains = schema.get('contains');
+    if(!contains) return errors;
     let contains_type = contains.get('type');
     if(!contains_type) return errors;
 
-    let item_err = validateArray(contains, value, undefined, true);
+    let item_err = validateArrayContent(contains, value, undefined, true);
+
     if(List.isList(item_err)) {
         if(item_err.size) {
             errors = errors.concat(item_err);
@@ -95,10 +114,27 @@ const validateContains = (schema, value) => {
         errors = errors.push(item_err);
     }
 
+    if((Array.isArray(value) && value.length === 0) || (List.isList(value) && value.size === 0)) {
+        errors = errors.push(ERROR_NOT_FOUND_CONTAINS);
+    }
+
     return errors;
 };
 
-const arrayValidator = {
+export const validateUniqueItems = (schema, value) => {
+    let uniqueItems = schema.get('uniqueItems');
+    if(uniqueItems && value) {
+        let duplicates = findDuplicates(value);
+        if(Array.isArray(duplicates)) {
+            return duplicates.length === 0;
+        } else if(List.isList(duplicates)) {
+            return duplicates.size === 0;
+        }
+    }
+    return true;
+}
+
+export const arrayValidator = {
     should: ({schema}) => {
         let type = schema.get('type');
 
@@ -107,19 +143,10 @@ const arrayValidator = {
     validate: ({schema, value, errors, valid}) => {
         // unique-items sub-schema is intended for dynamics and for statics, e.g. Selects could have duplicates but also a SimpleList of strings
         let uniqueItems = schema.get('uniqueItems');
-
         if(uniqueItems && value) {
-            let duplicates = findDuplicates(value);
-            if(Array.isArray(duplicates)) {
-                if(duplicates.length) {
-                    valid = false;
-                    errors = errors.push(ERROR_DUPLICATE_ITEMS);
-                }
-            } else if(List.isList(duplicates)) {
-                if(duplicates.size) {
-                    valid = false;
-                    errors = errors.push(ERROR_DUPLICATE_ITEMS);
-                }
+            if(!validateUniqueItems(schema, value)) {
+                valid = false;
+                errors = errors.push(ERROR_DUPLICATE_ITEMS);
             }
         }
 
@@ -160,5 +187,3 @@ const arrayValidator = {
         return {errors, valid}
     }
 };
-
-export {arrayValidator, ERROR_DUPLICATE_ITEMS, ERROR_NOT_FOUND_CONTAINS, validateItems, validateContains}

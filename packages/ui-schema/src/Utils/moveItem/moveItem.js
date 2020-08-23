@@ -1,4 +1,4 @@
-import {List, Map} from "immutable";
+import {List} from "immutable";
 import {prependKey, updateValues} from "../../EditorStore";
 
 /**
@@ -6,19 +6,19 @@ import {prependKey, updateValues} from "../../EditorStore";
  * @param value
  * @param oldI
  * @param newI
- * @return {T[]|*}
+ * @return {[]|*}
  */
-const moveItem = (value, oldI, newI) => {
-    if(!value || 0 > newI || value.size < newI) return value;
+export const moveItem = (value, oldI, newI) => {
+    if(
+        !value ||
+        newI < 0 || value.size <= newI |
+        oldI < 0 || value.size <= oldI
+    ) return value;
 
     const srcItem = value.get(oldI);
 
     if(List.isList(value)) {
         return value.splice(oldI, 1).splice(newI, 0, srcItem);
-    }
-    if(Map.isMap(value)) {
-        const oldItem = value.get(newI);
-        return value.delete(oldI).delete(newI).set(newI, srcItem).set(oldI, oldItem);
     }
 
     return value;
@@ -31,7 +31,7 @@ const moveItem = (value, oldI, newI) => {
  * @param {int} go if positive will move the number further e.g.: `2` positions further: old is 1, new is 3, go is `2`; when negative will move back: old is 3, new is 1, go is `-2`
  * @return {function(...[*]=)}
  */
-const storeMoveItem = (onChange, storeKeys, go) => () => {
+export const storeMoveItem = (onChange, storeKeys, go) => () => {
     onChange(store => {
         const valueStoreKeys = storeKeys.slice(0, -1);
         const index = storeKeys.slice(-1).get(0);
@@ -43,5 +43,3 @@ const storeMoveItem = (onChange, storeKeys, go) => () => {
         )(store);
     })
 };
-
-export {moveItem, storeMoveItem}

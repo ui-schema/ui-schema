@@ -1,6 +1,6 @@
-import { OrderedMap, Map } from 'immutable'
+import { schema } from "@ui-schema/ui-schema/CommonTypings"
 
-export function mergeSchema<K extends {}, V>(
-    schema: Map<K, V> | OrderedMap<K, V>,
-    dyn_schema: Map<K, V> | OrderedMap<K, V>
-): Map<K, V> | OrderedMap<K, V>
+export function mergeSchema(
+    aSchema: schema,
+    bSchema: schema
+): schema

@@ -1,9 +1,9 @@
-import { errors, schema, type } from "@ui-schema/ui-schema/CommonTypings"
+import { errors, schema } from "@ui-schema/ui-schema/CommonTypings"
 import { List } from "immutable"
 
 export const ERROR_CONST_MISMATCH = 'const-mismatch'
 
-export function validateConst(type: type, _const?: string | number | boolean, value?: any): boolean
+export function validateConst(type: string, _const?: string | number | boolean, value?: any): boolean
 
 export interface valueValidatorConst  {
     should: (
@@ -11,7 +11,7 @@ export interface valueValidatorConst  {
             schema: schema
             value: any
         }
-    ) => boolean,
+    ) => boolean
     validate: (
         {schema, value, errors, valid}: {
             schema: schema
@@ -20,7 +20,7 @@ export interface valueValidatorConst  {
             valid: boolean
         }
     ) => {
-        errors: List<any>,
+        errors: List<any>
         valid: boolean
     }
 }
