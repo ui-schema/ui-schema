@@ -2,7 +2,14 @@
 
 Plugins are wrapped around each widget/json-schema level and are used to add logic to all. Each plugin should decide if it should do something according to it's props/schema.
 
-## Schema Driven
+- [Schema Plugins](#schema-plugins)
+- [Validation Plugins](#validation-plugins)
+- [Plugin List](#plugin-list)
+- [Create Plugins](#create-plugins)
+    - [Creating a Widget Plugin](#create-a-widget-plugin)
+    - [Creating a Validator Plugin](#create-a-validator-plugin)
+
+## Schema Plugins
 
 Plugins that work schema-driven are handling the schema in different ways, these are not used for validation but for creating functionality around the schema - which may influence the validations.
 
@@ -31,11 +38,7 @@ Validation plugins also work with the schema, but are only used for validation o
 | ObjectValidator      | @ui-schema/ui-schema |                      | `type:object`         | ... | ❌ |
 | requiredValidator    | @ui-schema/ui-schema | checkValueExists     | keywords `type:object`, `required` | `valid`, `errors`, `required` | ✔ |
 
-- `minMaxValidator` depends on `requiredValidator` ✔
-    - on render it behaves `strict` only when `required` ✔
-    - strictness: `0` is only invalid when `minimum` is `1` **and** it is `required`, etc.
-    - validation checking outside is never strict, this may change (again)
-- sub-schema validation/array validation is done by `validateSchema` ✔ 
+- sub-schema validation/array validation is done by `validateSchema` 
     - (todo: new override-prop/more docs)
 
 Using default validators:
@@ -61,11 +64,26 @@ export {widgets};
 
 ## Plugin List
 
+- [DefaultHandler](#defaulthandler)
+- [ValidityReporter](#validityreporter)
+- [DependentHandler](#dependenthandler)
+- [ConditionalHandler](#conditionalhandler)
+- [CombiningHandler](#combininghandler)
+- [CombiningNetworkHandler](#combiningnetworkhandler)
+
 ### DefaultHandler
+
+```js
+import { DefaultHandler } from '@ui-schema/ui-schema/Plugins/DefaultHandler';
+````
 
 Checks if the current schema has a defined `default` keyword and it's value is `undefined`. The value is set directly, the actual store is updated within an effect.
 
 ### ValidityReporter
+
+```js
+import { ValidityReporter, isInvalid } from '@ui-schema/ui-schema/ValidityReporter';
+````
 
 Submits the validity of each widget up to the state hoisted component when it changes.
 
@@ -82,7 +100,7 @@ Supplies function: `isInvalid(validity, scope = [], count = false)` to check if 
 #### validateSchema
 
 ```js
-import {validateSchema} from '@ui-schema/ui-schema';
+import {validateSchema} from '@ui-schema/ui-schema/validateSchema';
 ```
 
 Exports the validation functions used by the plugins for usage outside of the render tree.
@@ -104,16 +122,20 @@ Supports `not` keyword for any validation, see [spec.](https://json-schema.org/u
 
 ### DependentHandler
 
+```js
+import { DependentHandler } from '@ui-schema/ui-schema/Plugins/DependentHandler';
+````
+
 Enables on-the-fly sub-schema rendering based on single property data and schema, see also [ConditionalHandler](#conditionalhandler).
 
 - keyword `dependencies`, `dependentSchemas`
     - property dependencies, handled as dynamic "is-not-empty then required" [spec](https://json-schema.org/understanding-json-schema/reference/object.html#property-dependencies) ❌
-    - schema dependencies [spec](https://json-schema.org/understanding-json-schema/reference/object.html#schema-dependencies) ✔
+    - schema dependencies [spec](https://json-schema.org/understanding-json-schema/reference/object.html#schema-dependencies)
         - simple: extend the schema when a value is not empty (using `not-empty` instead of `property exists`)
         - `oneOf`: if one of the sub-schemas match, this one is applied, think about it as an `switch`
             - not JSON-Schema standard, for compatibility with [react-jsonschema-form](https://react-jsonschema-form.readthedocs.io/en/latest/dependencies/#dynamic)
-- changes the schema dynamically on runtime ✔
-- does not re-render the Widget when the dependency matching didn't change ✔
+- changes the schema dynamically on runtime
+- does not re-render the Widget when the dependency matching didn't change
 - ❗ only checks some schema: everything [validateSchema](#validateschema) supports
 - ❗ partly-merge from dyn-schema: everything [mergeSchema](/docs/core#mergeschema) supports
 - ❗ full feature set needs [ConditionalHandler](#conditionalhandler), [CombiningHandler](#combininghandler), [CombiningNetworkHandler](#combiningnetworkhandler), which are not implemented yet
@@ -234,13 +256,17 @@ Specifications:
 
 ### ConditionalHandler
 
+```js
+import { ConditionalHandler } from '@ui-schema/ui-schema/Plugins/ConditionalHandler';
+````
+
 Enables on-the-fly sub-schema rendering based on current objects data.
 
-- `if` the sub-schema against which the object is validated ✔
-- `else` when valid, else is applied ✔
-- `then` when invalid, then is applied ✔
-- `not` sub-schema that must be invalid ✔
-- `allOf` list of if/else/then which are evaluated ✔
+- `if` the sub-schema against which the object is validated
+- `else` when valid, else is applied
+- `then` when invalid, then is applied
+- `not` sub-schema that must be invalid
+- `allOf` list of if/else/then which are evaluated
     - is handled by [CombiningHandler](#combininghandler)
 - ❗ only checks some schema: everything [validateSchema](#validateschema) supports
 - ❗ partly-merge from dyn-schema: everything [mergeSchema](/docs/core#mergeschema) supports
@@ -423,12 +449,16 @@ const schemaWConditional = createOrderedMap({
 
 ### CombiningHandler
 
+```js
+import { CombiningHandler } from '@ui-schema/ui-schema/Plugins/CombiningHandler';
+````
+
 Combining schemas from within one schema with:
 
 - `definition` ❌
 - `$id` ❌ 
 - `$ref` ❌
-- `allOf` ✔
+- `allOf`
     - all defined schemas are merged together
     - each `if/else/then` is applied separately to the instance created or existing
         - uses the merged schema (if something is there to merge)
@@ -611,9 +641,13 @@ Example with multiple `if`, nested `allOf`:
 
 ### CombiningNetworkHandler
 
+> ❌ todo: implementation 
+
 Combining schemas from external addressed by using `$id` and `$ref`, [specification](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property)
 
-## Creating Validator Plugins
+## Create Plugins
+
+### Create a Validator Plugin
 
 A validator plugin is a JS-Object which contains multiple functions that can be used for validation. They are not a React component, they can not control the render-flow or using hooks!
 
@@ -640,11 +674,7 @@ const SomeValidator = {
 };
 ```
 
-## Creating Plugins
-
->
-> ✔ working, not expected to change (that much) breaking in the near future
->
+### Create a Widget Plugin
 
 Each plugin can change or add properties to the final widget in an easy way, the render behaviour can be changed, even asynchronous actions could be applied schema driven.
 
@@ -668,7 +698,7 @@ const NewPlugin = (props) => {
 export {NewPlugin}
 ```
 
-- `{current, Widget, pluginStack, ...props}` prop signature of each plugin
+- `{current, ...props}` prop signature of each plugin
 - `current` index/current position in stack
 - `props` are the props which are getting pushed to the `Widget`
 - recommended: use `<NextPluginRenderer {...props} newProp={false}/>` 

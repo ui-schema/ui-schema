@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { WidgetExtendedCheckValid } from '@ui-schema/ui-schema/Widget'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { canDelete, children, multipleOf, min, max, enumVal, constVal, defaultVal, minItems, maxItems } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface ThumbComponentProps {
@@ -11,7 +11,7 @@ export interface ThumbComponentProps {
 
 export function ThumbComponent<P extends ThumbComponentProps>(props: P): React.Component<P>
 
-export interface NumberSliderRendererProps extends WidgetExtendedCheckValid {
+export interface NumberSliderRendererProps extends WidgetProps {
     multipleOf: multipleOf
     min: min
     max: max

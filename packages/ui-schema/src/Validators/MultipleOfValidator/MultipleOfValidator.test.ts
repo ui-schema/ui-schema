@@ -3,12 +3,12 @@ import {
     validateMultipleOf, multipleOfValidator, ERROR_MULTIPLE_OF,
 } from '@ui-schema/ui-schema/Validators/MultipleOfValidator'
 import { createOrderedMap } from "@ui-schema/ui-schema/Utils"
-import { schemas } from "@ui-schema/ui-schema/JsonSchema"
+import { Schemas } from "@ui-schema/ui-schema/JsonSchema"
 
 describe('validateMultipleOf', () => {
     type validateMultipleOfTest = [
         // schema:
-        schemas['number'],
+        Schemas['number'],
         // value:
         any,
         // expected:
@@ -69,7 +69,7 @@ describe('validateMultipleOf', () => {
 describe('multipleOfValidator', () => {
     type multipleOfValidatorTest = [
         // schema:
-        schemas['number'],
+        Schemas['number'],
         // value:
         any,
         // error:
@@ -100,7 +100,6 @@ describe('multipleOfValidator', () => {
         '.validate(%j, %s)',
         (schema, value, error, expectedValid, expectedError) => {
             const result = multipleOfValidator.validate({
-                required: true,
                 schema: OrderedMap(schema),
                 value,
                 errors: List([]),

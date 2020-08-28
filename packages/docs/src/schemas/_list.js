@@ -52,7 +52,7 @@ Custom widgets like steppers are defined per [design-system](/docs/overview#desi
     ['Combination Simple', schemaCombining, dataCombining, `
 # Combining Example Simple
 
-Combining sub-schemas is possible with [allOf](/docs/widget-plugins#combininghandler), this example shows a combination of multiple simple sub-schemas.
+Combining sub-schemas is possible with [allOf](/docs/plugins#combininghandler), this example shows a combination of multiple simple sub-schemas.
 
 Each defined sub-schema is [merged](/docs/core#mergeschema) together, dynamically creating the schema for the current schema-level.
 

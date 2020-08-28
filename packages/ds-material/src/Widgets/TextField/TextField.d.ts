@@ -1,8 +1,8 @@
 import React from 'react'
-import { WidgetExtendedCheckValid } from '@ui-schema/ui-schema/Widget'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { rows, rowsMax, style, multiline, type } from '@ui-schema/ui-schema/CommonTypings'
 
-export interface StringRendererProps extends WidgetExtendedCheckValid {
+export interface StringRendererProps extends WidgetProps {
     multiline?: multiline
     type: type
     rows?: rows

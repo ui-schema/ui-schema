@@ -13,6 +13,7 @@ JSON-Schema form + ui generator for any design system, first-class support for [
 
 - @ui-schema/ui-schema [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ui-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ui-schema) 
 - @ui-schema/ds-material [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-material?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-material)
+- @ui-schema/native-material **soon**
 - @ui-schema/ds-bootstrap [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-bootstrap?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-bootstrap)
 
 - Additional Material-UI Widgets:
@@ -41,13 +42,6 @@ JSON-Schema form + ui generator for any design system, first-class support for [
 
 ---
 
->
-> ⚠️Work in progress!
->
-> UI-Schema is an extract and rewrite of the form-generator logic used internally by our admin panel.
-> 
-> The fundamentals are working, but a lot of JSON-schema stuff, code testing and widgets needs to be done.
-
 ## Schema
 
 JSON-Schema included keywords are used to describe the data and create the UI based on the data-schema and special UI keywords. A data-schema with integrated ui-schema enforces the consistency of the UX across different apps and devices.
@@ -62,7 +56,7 @@ JSON-Schema included keywords are used to describe the data and create the UI ba
     - (optional) integrated translation library
     - include translation in schema
     - single or multi-language
-- modular core
+- modular, extensible and slim core
     - add own validator plugins
     - add own schema-driven plugins
     - use what you need
@@ -77,47 +71,44 @@ JSON-Schema included keywords are used to describe the data and create the UI ba
 
 ## Basic Example
 
-This example shows the available props.
-
 First time? [Take the quick-start](https://ui-schema.bemit.codes/en/quick-start) or take a look into the [create-react-app UI-Schema example](https://github.com/ui-schema/demo-cra).
 
+Example setup of a editor, followed by a simple text widget. 
+
 ```js
-import React from "react";
+import React from 'react';
 
 // Import Schema-Editor
 import {
-    SchemaEditor,
-    isInvalid,
-    createOrderedMap, createStore, 
-    createMap, createEmptyStore,
-    updateValue
-} from "@ui-schema/ui-schema";
+    SchemaEditor, isInvalid, createOrderedMap, createStore, 
+} from '@ui-schema/ui-schema';
 
 // Get the widgets binding for your design-system
-import {widgets} from "@ui-schema/ds-material";
+import {widgets} from '@ui-schema/ds-material';
 
 // could be fetched from some API or bundled with the app
 const schemaBase = {
-    type: "object",
+    type: 'object',
     properties: {
         country: {
-            type: "string",
-            widget: "Select",
+            type: 'string',
+            widget: 'Select',
             enum: [
-                "usa",
-                "canada",
-                "eu"
+                'usa',
+                'canada',
+                'eu'
             ],
-            default: "eu"
+            default: 'eu',
+            tt: 'upper'
         },
         name: {
-            type: "string",
+            type: 'string',
             maxLength: 20,
         }
     },
     required: [
-        "country",
-        "name",
+        'country',
+        'name',
     ],
 };
 
@@ -154,16 +145,42 @@ const Editor = () => {
 
         <button
             {/* show the validity only at submit (or pass `true` to `showValidity`) */} 
-            onClick={() => 
-                isInvalid(store.getValidity()) ?
-                    setShowValidity(true) :
-                    doingSomeAction()
-            }
+            onClick={() => isInvalid(
+                store.getValidity()) ? setShowValidity(true) :
+                console.log('doingSomeAction:', store.getValues().toJS()
+            )}
         >send!</button>
     </React.Fragment>
 };
 
 export {Editor}
+```
+
+Easily create new widgets, this is all for a simple text (`type=string`) widget:
+
+```typescript jsx
+import React from 'react';
+import {updateValue, TransTitle, WidgetProps, WithValue} from '@ui-schema/ui-schema';
+
+const Widget = ({
+                    value, ownKey, storeKeys, onChange,
+                    required, schema,
+                    errors, valid,
+                    ...props
+                }: WidgetProps & WithValue) => {
+    return <>
+        <label><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></label>
+
+        <input
+            type={'text'}
+            required={required}
+            value={value || ''}
+            onChange={(e) => {
+                onChange(updateValue(storeKeys, e.target.value, required, schema.get('type')))
+            }}
+        />
+    </>
+}
 ```
 
 ## Contributing

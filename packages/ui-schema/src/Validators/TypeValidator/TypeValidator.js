@@ -3,28 +3,35 @@ import {List, Map} from "immutable";
 export const ERROR_WRONG_TYPE = 'wrong-type';
 
 export const validateType = (value, type) => {
-    const isInvalidType = (value, type) => {
-        return typeof value !== type && typeof value !== 'undefined';
+    if(typeof value === 'undefined') return true;
+
+    const isValidType = (value, type) => {
+        return typeof value === type;
     };
 
     if(type === 'string') {
-        return !isInvalidType(value, 'string');
+        return isValidType(value, 'string');
     }
     if(type === 'number') {
-        return !isInvalidType(value, 'number');
+        return isValidType(value, 'number');
     }
     if(type === 'integer') {
-        return !(!Number.isInteger(value) && typeof value !== 'undefined');
+        return !isNaN(value) && Number.isInteger(value);
     }
     if(type === 'boolean') {
-        return !isInvalidType(value, 'boolean');
+        return isValidType(value, 'boolean');
     }
     if(type === 'array') {
-        return !(!(Array.isArray(value) || List.isList(value)) && typeof value !== 'undefined');
+        return Array.isArray(value) || List.isList(value);
     }
     if(type === 'object') {
-        return !(!(typeof value === 'object' || Map.isMap(value)) && typeof value !== 'undefined') &&
-            !(Array.isArray(value) || List.isList(value));
+        return null !== value && (
+            (typeof value === 'object' || Map.isMap(value)) &&
+            !(Array.isArray(value) || List.isList(value))
+        );
+    }
+    if(type === 'null') {
+        return null === value;
     }
 
     return false;

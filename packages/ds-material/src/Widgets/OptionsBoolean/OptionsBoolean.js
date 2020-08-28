@@ -25,7 +25,7 @@ const BoolRenderer = ({ownKey, value, onChange, schema, storeKeys, showValidity,
                 classes={classes}
                 required={required}
                 checked={currentVal}
-                onChange={() => onChange(updateValue(storeKeys, !currentVal))}
+                onChange={() => onChange(updateValue(storeKeys, !currentVal, required, schema.get('type')))}
             />
         }
         label={<><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>{required ? ' *' : ''}</>}

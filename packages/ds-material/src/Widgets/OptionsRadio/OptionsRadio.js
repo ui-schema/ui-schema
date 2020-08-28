@@ -24,7 +24,7 @@ const OptionsRadio = ({
                     control={<Radio
                         value={enum_name}
                         checked={enum_name === isActive}
-                        onChange={() => onChange(updateValue(storeKeys, enum_name))}
+                        onChange={() => onChange(updateValue(storeKeys, enum_name, required, schema.get('type')))}
                     />}
                     label={<Trans
                         schema={schema.get('t')}

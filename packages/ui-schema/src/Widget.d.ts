@@ -13,12 +13,9 @@ export interface WidgetProps {
     showValidity: showValidity
     errors: errors
     required: required
+    valid: valid
 }
 
 export interface WidgetPropsWithValue extends WidgetProps {
     value: any
-}
-
-export interface WidgetExtendedCheckValid extends WidgetPropsWithValue {
-    valid: valid
 }

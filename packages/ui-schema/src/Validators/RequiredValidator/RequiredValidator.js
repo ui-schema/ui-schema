@@ -1,4 +1,4 @@
-import {List, Map} from "immutable";
+import {List} from "immutable";
 
 const ERROR_NOT_SET = 'required-not-set';
 
@@ -9,40 +9,21 @@ const checkValueExists = (type, value) => {
         return false;
     }
 
-    if(type === 'string') {
-        return !!(valType === 'string' && value.trim().length);
-    } else if(type === 'number' || type === 'integer') {
+    if(type === 'string' && valType === 'string') {
+        return value !== '';
+    } else if(valType === 'string' && (type === 'number' || type === 'integer')) {
         // 0 is also a valid number, so not checking for false here
-        return (valType === 'number')
-    } else if(type === 'boolean') {
-        // a required boolean property must be `true` to be considered set
-        return (valType === 'boolean' && value);
+        return value !== ''
+    } /*else if(type === 'boolean') {
+        //
     } else if(type === 'array') {
         // not checking content of array here, only if one item exists
-        if(Array.isArray(value)) {
-            if(!value.length) {
-                return false;
-            }
-        } else if(List.isList(value)) {
-            if(!value.size) {
-                return false;
-            }
-        }
-
+        // todo: really check type here?
+        // return List.isList(value) || Array.isArray(value)
     } else if(type === 'object') {
-        if(Map.isMap(value)) {
-            /**
-             * @var {Map} value
-             */
-            if(!value.keySeq().size) {
-                return false;
-            }
-        } else if(valType === 'object') {
-            if(!Object.keys(value).length) {
-                return false;
-            }
-        }
-    }
+        // todo: really check type here?
+        // return valType === 'object' || Map.isMap(value)
+    }*/
 
     return true;
 };

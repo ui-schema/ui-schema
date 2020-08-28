@@ -1,9 +1,9 @@
 import { OrderedMap, List } from 'immutable'
 import { errors, schema } from "@ui-schema/ui-schema/CommonTypings"
 
-export type ERROR_DUPLICATE_ITEMS = 'duplicate-items'
-export type ERROR_NOT_FOUND_CONTAINS = 'not-found-contains'
-export type ERROR_ADDITIONAL_ITEMS = 'additional-items'
+export const ERROR_DUPLICATE_ITEMS = 'duplicate-items'
+export const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains'
+export const ERROR_ADDITIONAL_ITEMS = 'additional-items'
 
 export function validateArrayContent(schema: OrderedMap<{}, undefined> | List<any>, value: any, additionalItems?: boolean, find?: boolean): List<any>
 
@@ -25,7 +25,7 @@ export function validateContains(schema: OrderedMap<{}, undefined>, value: List<
  */
 export function validateUniqueItems(schema: OrderedMap<{}, undefined>, value: List<any> | any[]): boolean
 
-export interface arrayValidator {
+export const arrayValidator: {
     should: (
         {schema}: { schema: schema }
     ) => boolean

@@ -6,36 +6,36 @@ describe('checkValueExists', () => {
         ['text1', 'string', true],
         ['', 'string', false],
         [undefined, 'string', false],
-        [1, 'number', true],
-        // ['1', 'number', false],
-        [undefined, 'number', false],
-        [1, 'integer', true],
-        [undefined, 'integer', false],
+        [0, 'string', true],
+        [true, 'string', true],
+        [[], 'string', true],
+        [{}, 'string', true],
+        [0, 'number', true],
+        ['', 'number', false],
+        ['', 'number', false],
+        [0, 'integer', true],
+        ['', 'integer', false],
+        ['', 'integer', false],
         [true, 'boolean', true],
-        // [false, 'boolean', true],
+        [false, 'boolean', true],
         [undefined, 'boolean', false],
-        [[''], 'array', true],
-        [[], 'array', false],
-        [List(['']), 'array', true],
-        [List([]), 'array', false],
+        [[], 'array', true],
+        ['', 'array', true],
         [undefined, 'array', false],
-        [{text: ''}, 'object', true],
+        [{}, 'object', true],
+        ['', 'object', true],
         [undefined, 'object', false],
-        [Map({text: ''}), 'object', true],
-        [Map({}), 'object', false],
-        [OrderedMap({text: ''}), 'object', true],
-        [[], 'object', false],
-    ])('checkValueExists(%j, %s)', (value, type, expected) => {
+    ] as [any, string, boolean][])('checkValueExists(%j, %s)', (value, type, expected) => {
         expect(checkValueExists(type, value)).toBe(expected)
     })
 })
 
 describe('requiredValidator', () => {
-    test.each([
+    test.each(([
         [['name'], 'name', true],
         [['name'], 'street', false],
         [undefined, 'name', false],
-    ])(
+    ]) as [string[], string, boolean][])(
         '.should(%j, %s)',
         (required, ownKey, expectedValid) => {
             expect(requiredValidator.should({
@@ -56,8 +56,14 @@ describe('requiredValidator', () => {
             'string',
             2,
             ERROR_NOT_SET,
-            false,
             true,
+            false,
+        ], [
+            'string',
+            '2',
+            ERROR_NOT_SET,
+            true,
+            false,
         ], [
             'string',
             '',
@@ -66,16 +72,10 @@ describe('requiredValidator', () => {
             true,
         ], [
             'string',
-            false,
+            undefined,
             ERROR_NOT_SET,
             false,
             true,
-        ], [
-            'string',
-            '2',
-            ERROR_NOT_SET,
-            true,
-            false,
         ],
     ])(
         '.validate(%j, %s)',

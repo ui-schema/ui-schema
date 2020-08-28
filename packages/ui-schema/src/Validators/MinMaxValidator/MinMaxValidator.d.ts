@@ -1,15 +1,14 @@
 import { List, OrderedMap } from 'immutable'
 import { errors, schema } from "@ui-schema/ui-schema/CommonTypings"
 
-export type ERROR_MAX_LENGTH = 'min-length'
-export type ERROR_MIN_LENGTH = 'max-length'
+export const ERROR_MAX_LENGTH = 'min-length'
+export const ERROR_MIN_LENGTH = 'max-length'
 
-export function validateMinMax(schema: OrderedMap<{}, undefined>, value: any, strict: boolean): List<any>
+export function validateMinMax(schema: OrderedMap<{}, undefined>, value: any): List<any>
 
-export interface minMaxValidator {
+export const minMaxValidator: {
     validate: (
-        {required, schema, value, errors, valid}: {
-            required: boolean
+        {schema, value, errors, valid}: {
             schema: schema
             value: any
             errors: errors

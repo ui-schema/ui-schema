@@ -30,11 +30,11 @@ export const routesDocs = {
         createDoc('overview', 'Overview',),
         createDoc('schema', 'Schema',),
         createDoc('design-systems', 'Design-Systems',),
-        createDoc('widgets', 'Widgets',),
-        createDoc('widget-plugins', 'Widget Plugins',),
-        createDoc('performance', 'Performance',),
-        createDoc('localization', 'Localization',),
         createDoc('core', 'Core',),
+        createDoc('widgets', 'Widgets',),
+        createDoc('plugins', 'Plugins',),
+        createDoc('localization', 'Localization',),
+        createDoc('performance', 'Performance',),
     ]
 };
 

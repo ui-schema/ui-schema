@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { WidgetExtendedCheckValid } from '@ui-schema/ui-schema/Widget'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 
-export interface OptionsRadioRendererProps extends WidgetExtendedCheckValid {
+export interface OptionsRadioRendererProps extends WidgetProps {
     row: boolean
     value: string
 }

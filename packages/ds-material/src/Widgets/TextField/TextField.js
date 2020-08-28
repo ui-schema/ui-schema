@@ -11,7 +11,7 @@ const StringRenderer = ({
                             storeKeys, ownKey, schema, value, onChange,
                             showValidity, valid, errors, required,
                             style,
-                            onClick, onFocus, onBlur, onKeyUp, onKeyDown,
+                            onClick, onFocus, onBlur, onKeyUp, onKeyDown, onKeyPress,
                             inputProps = {}, InputProps = {}, inputRef: customInputRef,
                         }) => {
     const uid = useUID();
@@ -49,7 +49,8 @@ const StringRenderer = ({
             onFocus={onFocus}
             onBlur={onBlur}
             onKeyUp={onKeyUp}
-            id={uid}
+            onKeyPress={onKeyPress}
+            id={'uis-' + uid}
             style={style}
             onKeyDown={onKeyDown}
             onChange={(e) => trace("textfield onchange", performance.now(), () => {
@@ -59,12 +60,12 @@ const StringRenderer = ({
                         console.error('Invalid Type: input not a number in:', e.target);
                         return;
                     }
-                    onChange(updateValue(storeKeys, value * 1));
+                    onChange(updateValue(storeKeys, value === '' ? '' : value * 1), required, type || schema.get('type'));
 
                     return;
                 }
 
-                onChange(updateValue(storeKeys, value));
+                onChange(updateValue(storeKeys, value, required, type || schema.get('type')));
             })}
             InputLabelProps={{shrink: schema.getIn(['view', 'shrink'])}}
             InputProps={InputProps}

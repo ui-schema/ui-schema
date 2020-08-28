@@ -11,7 +11,7 @@ import {prependKey, updateValues} from "../../EditorStore";
 export const moveItem = (value, oldI, newI) => {
     if(
         !value ||
-        newI < 0 || value.size <= newI |
+        newI < 0 || value.size <= newI ||
         oldI < 0 || value.size <= oldI
     ) return value;
 

@@ -5,8 +5,7 @@ export const ERROR_ENUM_MISMATCH = 'enum-mismatch'
 
 export function validateEnum<T>(type: string, _enum?: List<any> | T[], value?: any): boolean
 
-// tslint:disable-next-line:no-empty-interface
-export interface valueValidatorEnum {
+export const valueValidatorEnum: {
     should: (
         {schema, value}: {
             schema: schema

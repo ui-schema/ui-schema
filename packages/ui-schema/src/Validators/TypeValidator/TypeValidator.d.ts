@@ -1,11 +1,11 @@
 import { List } from "immutable"
 import { errors, schema } from "@ui-schema/ui-schema/CommonTypings"
 
-export type ERROR_WRONG_TYPE = 'wrong-type'
+export const ERROR_WRONG_TYPE = 'wrong-type'
 
-export function validateType(type: string, value: any): boolean
+export function validateType(value: any, type: string): boolean
 
-export interface typeValidator  {
+export const typeValidator: {
     validate: (
         {schema, value, errors, valid}: {
             schema: schema

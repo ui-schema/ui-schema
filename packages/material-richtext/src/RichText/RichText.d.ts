@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Map, List } from 'immutable'
-import { WidgetExtendedCheckValid } from '@ui-schema/ui-schema/Widget'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 
-export interface RichTextInterface extends WidgetExtendedCheckValid {
+export interface RichTextInterface extends WidgetProps {
     internalValue: Map<{}, undefined> | List<[]>
     onlyInline: boolean
 }

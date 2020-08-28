@@ -5,12 +5,12 @@ import {useUtils,} from '@material-ui/pickers';
 import {List} from "immutable";
 
 export const DateTimeBase = ({
-                          storeKeys, ownKey, value, onChange, schema,
-                          showValidity, valid, /*errors,*/
-                          required,
-                          additionalProps, dateFormat, dateFormatData,
-                          Component, keyboard,
-                      }) => {
+                                 storeKeys, ownKey, value, onChange, schema,
+                                 showValidity, valid, /*errors,*/
+                                 required,
+                                 additionalProps, dateFormat, dateFormatData,
+                                 Component, keyboard,
+                             }) => {
     const date = useUtils();
     const uid = useUID();
 
@@ -54,9 +54,9 @@ export const DateTimeBase = ({
             : null}
         onChange={(e) => {
             if(e) {
-                onChange(updateValue(storeKeys, date.format(e, dateFormatData)))
+                onChange(updateValue(storeKeys, date.format(e, dateFormatData), required, schema.get('type')))
             } else {
-                onChange(updateValue(storeKeys, null))
+                onChange(updateValue(storeKeys, null, required, schema.get('type')))
             }
         }}
         {...additionalProps}

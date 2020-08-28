@@ -1,11 +1,18 @@
 import { List } from "immutable"
 import { errors, schema } from "@ui-schema/ui-schema/CommonTypings"
 
-export type ERROR_NOT_SET = 'required-not-set'
+export const ERROR_NOT_SET = 'required-not-set'
 
+/**
+ *
+ * @param type
+ * @param value
+ *
+ * @return boolean false when value does not exist per definition for this type, it still may be empty another way
+ */
 export function checkValueExists(type: string, value: any): boolean
 
-export interface requiredValidator {
+export const requiredValidator: {
     should: (
         {required, ownKey}:
             { required: List<any>, ownKey: string }

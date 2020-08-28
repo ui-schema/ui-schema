@@ -26,9 +26,9 @@ const useStyles = makeStyles({
 });
 
 export const Code = ({
-                  storeKeys, ownKey, schema, value, onChange,
-                  showValidity, valid, errors, required,
-              }) => {
+                         storeKeys, ownKey, schema, value, onChange,
+                         showValidity, valid, errors, required,
+                     }) => {
     const uid = useUID();
     const {theme} = useWidgetCode();
     const [lines, setLines] = React.useState(1);
@@ -70,9 +70,11 @@ export const Code = ({
         }
     }, [setLines, lines]);
 
+    const type = schema.get('type');
     const handleBeforeChange = React.useCallback((editor, data, value) => {
-        onChange(updateValue(storeKeys, value));
-    }, [onChange, storeKeys]);
+        onChange(updateValue(storeKeys, value, required, type));
+        // todo: check if that applies to storeKeys/List() also
+    }, [onChange, storeKeys, required, type]);
 
     const options = React.useMemo(() => ({
         mode: format,

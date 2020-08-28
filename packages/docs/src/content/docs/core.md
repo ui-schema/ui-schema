@@ -21,7 +21,7 @@ For best performance in non-scalar widgets use the [HOCs](https://reactjs.org/do
 
 ### EditorStoreProvider
 
-Saves and provides the store, onChange and schema.
+Saves and provides the `store`, `onChange` and `schema`.
 
 - Provider: `EditorStoreProvider`
 - Hook: `useSchemaStore`
@@ -82,8 +82,8 @@ All return another function, not executing directly, this function is then execu
 The functions are capable of either updating a deep value in the `store`, or when in e.g. root-level directly the store (e.g. `type: 'string'` as root-schema).
 
 - use for updating values:
-    - `updateValue(storeKeys, value)` to only update the normal data value
-    - `updateValues(storeKeys, value, internalValue)` to update the normal data value and internal store value, should be used when the widget relies on data to work - that is not like the schema type
+    - `updateValue(storeKeys, value, required?: boolean, type?: string)` to only update the normal data value
+    - `updateValues(storeKeys, value, internalValue, required?: boolean, type?: string)` to update the normal data value and internal store value, should be used when the widget relies on data to work - that is not like the schema type
     - `updateInternalValue(storeKeys, internalValue)` to update only the internal store value
 - update the `validity` entry:
     - `updateValidity(storeKeys, valid)`
@@ -105,16 +105,16 @@ import {
 
 Updating a value from HTML input:
 
-```js
+```typescript jsx
 import React from 'react';
-import {updateValue, TransTitle} from '@ui-schema/ui-schema';
+import {updateValue, TransTitle, WidgetProps, WithValue} from '@ui-schema/ui-schema';
 
 const Widget = ({
                     value, ownKey, storeKeys, onChange,
                     required, schema,
                     errors, valid,
                     ...props
-                }) => {
+                }: WidgetProps & WithValue) => {
     return <>
         <label><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></label>
 
@@ -123,7 +123,7 @@ const Widget = ({
             required={required}
             value={value || ''}
             onChange={(e) => {
-                onChange(updateValue(storeKeys, e.target.value))
+                onChange(updateValue(storeKeys, e.target.value, required, schema.get('type')))
             }}
         />
     </>
@@ -247,25 +247,33 @@ const CustomEditor = ({someCustomProp, ...props}) => (
 );
 ```
 
-### SchemaEditorRenderer
-
-Layer to get the needed widget by the current schema and let it render with [WidgetRenderer](#widgetRenderer).
-
 ### SchemaRootRenderer
 
-Connects to the current context and extracts the starting schema, renders the `widgets.RootRenderer` 
+Connects to the current context and uses the schema the first time, renders the `widgets.RootRenderer`. 
+
+The `RootRenderer` is rendered in a memo component, starts the first rendering of a widget, this is the `children` of `RootRenderer`, done with [WidgetRenderer](#widgetRenderer).
 
 ## Widget Renderer
 
 ### WidgetRenderer
 
+Entry point into widget and plugin rendering, uses the `props` to start the render tree of all registered plugins, with finally the actual widget.
+
 ### NextPluginRenderer
 
-Used for plugin rendering, see: [creating plugins](/docs/widget-plugins#creating-plugins).
+Used for plugin rendering, see: [creating plugins](/docs/plugins#creating-plugins).
+
+Handles the switching between `FinalWidgetRenderer` and a `Plugin` (if there is still one which was not executed). 
 
 #### NextPluginRendererMemo
 
-Same as NextPluginRenderer, but as memoized function, used in e.g. ObjectPlugins when they are using [useSchemaData](#editor-data-provider), see: [creating plugins](/docs/widget-plugins#creating-plugins).
+Same as NextPluginRenderer, but as memoized function, used in e.g. object widgets when they are using [useSchemaStore](#editorStoreProvider), see: [creating plugins](/docs/plugins#creating-plugins).
+
+### FinalWidgetRenderer
+
+Finds the actual widget in the mapping by the then defined schema, renders the widget and passes down all accumulated props (e.g. everything the plugins have added).
+
+If no widget was found, renders nothing / `null`, but the plugins may have already rendered something! (like the grid)
 
 ## Utils
 
@@ -319,8 +327,8 @@ Supports merging of these keywords, only does something if existing on `b`:
 - `enum`, b overwrites a
 - `const`, b overwrites a
 - `not`, b overwrites a
-- `allOf`, are ignored, should be resolved by e.g. [combining handler](/docs/widget-plugins#combininghandler)
-- `if`, `then`, `else` are ignored, should be resolved by e.g. [conditional handler](/docs/widget-plugins#conditionalhandler), also `if` that are inside `allOf`
+- `allOf`, are ignored, should be resolved by e.g. [combining handler](/docs/plugins#combininghandler)
+- `if`, `then`, `else` are ignored, should be resolved by e.g. [conditional handler](/docs/plugins#conditionalhandler), also `if` that are inside `allOf`
 
 ### createMap
 

@@ -79,7 +79,7 @@ const NumberSliderRenderer = ({
                 max={max}
                 ThumbComponent={hasMulti ? p => <ThumbComponent
                     {...p}
-                    onClick={(index) => onChange(updateValue(storeKeys, value.splice(index, 1)))}
+                    onClick={(index) => onChange(updateValue(storeKeys, value.splice(index, 1), required, schema.get('type')))}
                     canDelete={value && value.size > minItems}
                 /> : undefined}
                 value={(schema.get('type') === 'array' ?
@@ -87,19 +87,19 @@ const NumberSliderRenderer = ({
                     typeof value === 'number' ? value : defaultVal)}
                 onChange={(e, value) => trace("numberslider onchange", performance.now(), () => {
                     if(schema.get('type') === 'array') {
-                        onChange(updateValue(storeKeys, List(value)));
+                        onChange(updateValue(storeKeys, List(value), required, schema.get('type')));
                     } else {
                         if(isNaN(value * 1)) {
                             console.error('Invalid Type: input not a number in:', e.target, value);
                             return;
                         }
-                        onChange(updateValue(storeKeys, value * 1));
+                        onChange(updateValue(storeKeys, value * 1, required, schema.get('type')));
                     }
                 })}
             />
             {hasMulti ? <IconButton
                 size={'small'} disabled={!canAdd} style={{margin: 'auto 6px'}}
-                onClick={() => onChange(updateValue(storeKeys, value ? value.push(min) : List(defaultVal).push(min)))}
+                onClick={() => onChange(updateValue(storeKeys, value ? value.push(min) : List(defaultVal).push(min), required, schema.get('type')))}
             >
                 <AccessTooltipIcon title={'Add Number'}>
                     <Add fontSize={'inherit'}/>

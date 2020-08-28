@@ -4,13 +4,9 @@
 
 This document is about **creating own widgets and design-system bindings** or changing existing ones.
 
-A widget is responsible to render the UI and either display or make the editing of the data possible, it **handles one schema level** and may connect to another nested SchemaEditor.
+A widget is responsible to render the UI and either display or make the editing of the data possible, it **handles one schema level** and may connect to another NestedSchemaEditor.
 
 Through the **modular approach** and easy definition of a new widget, the widget system can be used to create **complex, separated UI components**, where the orchestration can be done **from an external system** like some backend API.
-
->
-> ✔ working, not expected to change (that much) breaking in the near future
->
 
 ## Widget Composition
 
@@ -66,7 +62,7 @@ See [simplest Text Widget](/docs/core#simplest-text-widget) for a basic widget e
 
 See [how to add the custom widgets](#adding--overwriting-widgets).
 
-See [plugins](/docs/widget-plugins) for the rest of the provided properties.
+See [plugins](/docs/plugins) for the rest of the provided properties.
 
 ## Create Design-System Binding
 
@@ -78,9 +74,9 @@ Create a complete custom binding or only `import` the components you need and op
 - `GroupRenderer` wraps any object that is not a widget
 - `pluginStack` is the widget plugin system, this wraps all widgets individually
     - e.g. used to handle json schema `default`
-    - see [how to create schema-driven plugins](/docs/widget-plugins#creating-plugins)
+    - see [how to create schema-driven plugins](/docs/plugins#creating-plugins)
 - `validators` the validator plugins
-    - see [how to create validator plugins](/docs/widget-plugins#creating-validator-plugins)
+    - see [how to create validator plugins](/docs/plugins#creating-validator-plugins)
 - `custom` contains widgets mapping with schema's `widget`
 - `types` contains widgets mapping with schema's `type`
     

@@ -1,11 +1,11 @@
 import { List } from 'immutable'
 import { errors, schema } from "@ui-schema/ui-schema/CommonTypings"
 
-export type ERROR_ADDITIONAL_PROPERTIES = 'additional-properties'
+export const ERROR_ADDITIONAL_PROPERTIES = 'additional-properties'
 
 export function validateObject(schema: schema, value: any): List<any>
 
-export interface objectValidator {
+export const objectValidator: {
     should: (
         {schema}: { schema: schema }
     ) => boolean

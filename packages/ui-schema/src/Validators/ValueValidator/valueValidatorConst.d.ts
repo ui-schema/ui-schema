@@ -5,7 +5,7 @@ export const ERROR_CONST_MISMATCH = 'const-mismatch'
 
 export function validateConst(type: string, _const?: string | number | boolean, value?: any): boolean
 
-export interface valueValidatorConst  {
+export const valueValidatorConst: {
     should: (
         {schema, value}: {
             schema: schema
