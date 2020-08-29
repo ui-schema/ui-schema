@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { WidgetPropsWithValue } from '@ui-schema/ui-schema/Widget'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 
-export interface WidgetPropsBoolean extends WidgetPropsWithValue {
+export interface WidgetPropsBoolean extends WidgetProps {
     value: boolean
 }
 

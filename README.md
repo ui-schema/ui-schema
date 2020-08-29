@@ -4,7 +4,7 @@
 
 <h1 align="center">UI-Schema for React</h1>
 
-JSON-Schema form + ui generator for any design system, first-class support for [Material UI React](https://material-ui.com).
+JSON-Schema form + UI generator for any design system, first-class support for [Material UI React](https://material-ui.com), easily create own widgets and plugins.
 
 [![Travis (.org) branch](https://img.shields.io/travis/ui-schema/ui-schema/master?style=flat-square)](https://travis-ci.org/ui-schema/ui-schema)
 [![react compatibility](https://img.shields.io/badge/React-%3E%3D16.8-success?style=flat-square&logo=react)](https://reactjs.org/)
@@ -44,7 +44,7 @@ JSON-Schema form + ui generator for any design system, first-class support for [
 
 ## Schema
 
-JSON-Schema included keywords are used to describe the data and create the UI based on the data-schema and special UI keywords. A data-schema with integrated ui-schema enforces the consistency of the UX across different apps and devices.
+JSON-Schema keywords are used to validate the data, the UI is created from the data-schema and special UI keywords. A data-schema with integrated ui-schema enforces the consistency of data and UI across different apps and devices. Schemas are speeding up development, especially for admin portals which work primary CRUD, API first projects which need a good way to validate data, anything which needs fast changes of forms or dynamically generated forms.
 
 *[Schema Documentation](https://ui-schema.bemit.codes/en/docs/schema)*
 

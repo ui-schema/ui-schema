@@ -68,6 +68,8 @@ More about [UI-Schema keywords](#ui-schema-keywords).
 
 ## Types
 
+The JSON-Schema keywords which are only available on a specific type, for official docs and examples see 'specification' at each block.
+
 - [String](#type-string)
 - [Number / Int](#type-number)
 - [Boolean](#type-boolean)
@@ -126,7 +128,7 @@ Generic Keywords:
 
 #### required Keyword
 
-- `required`, array that contains which properties must be set!
+- `required`, array that contains which properties must be set
     - provides a more native feeling of HTML form validation and error display, the internal store updater `updateValue` uses the `required` value to delete the whole property from the object on e.g. an empty string, instead of just saving the empty string 
         - as in a browser: an empty string is wrong for a required text input
     - when required, value "deletion" is triggered by:

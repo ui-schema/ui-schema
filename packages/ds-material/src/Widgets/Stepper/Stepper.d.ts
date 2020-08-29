@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { StoreKeys } from '@ui-schema/ui-schema/EditorStore'
-import { NextPluginRendererProps } from '@ui-schema/ui-schema/EditorPluginStack'
 import { schema } from '@ui-schema/ui-schema/CommonTypings'
+import { EditorPluginProps } from "@ui-schema/ui-schema/EditorPlugin"
 
 export interface StepperProps {
     validity: boolean
@@ -16,7 +16,7 @@ export interface StepInterface {
     p: any
 }
 
-export type nextPluginRendererHandler = (handler: NextPluginRendererProps) => NextPluginRendererProps
+export type nextPluginRendererHandler = (handler: EditorPluginProps) => EditorPluginProps
 
 export interface NextPluginRendererProvider {
     children: nextPluginRendererHandler

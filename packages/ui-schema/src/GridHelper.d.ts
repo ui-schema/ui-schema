@@ -1,6 +1,6 @@
 import React from "react"
-import { NextPluginRendererProps } from './EditorPluginStack'
 import { OrderedMap } from 'immutable'
+import { WidgetProps } from "@ui-schema/ui-schema/Widget"
 
 export interface SchemaGridItemHelperProps {
     children: React.ReactNode
@@ -23,10 +23,4 @@ export interface SchemaGridHandlerProps2 {
     noGrid?: noGridType
 }
 
-export interface SchemaGridHandlerProps {
-    children: nextPluginRendererHandler
-}
-
-export type nextPluginRendererHandler = (handler: NextPluginRendererProps) => NextPluginRendererProps
-
-export function SchemaGridHandler<P extends SchemaGridHandlerProps | nextPluginRendererHandler>(props: P): React.Component<P>
+export function SchemaGridHandler<P extends WidgetProps>(props: P): React.ComponentType<P>

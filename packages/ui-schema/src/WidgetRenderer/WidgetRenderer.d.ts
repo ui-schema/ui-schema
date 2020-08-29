@@ -1,14 +1,15 @@
 import React from 'react'
-import { StoreKeys } from "../EditorStore"
-import { schema } from '../CommonTypings'
-import { WidgetProps } from "@ui-schema/ui-schema/Widget"
+import { EditorPluginProps } from "@ui-schema/ui-schema/EditorPlugin"
+import { schema } from "@ui-schema/ui-schema/CommonTypings"
+import { StoreKeys } from "@ui-schema/ui-schema/EditorStore"
 
-export interface WidgetRendererProps<> {
+export interface WidgetRendererProps {
+    level?: number
+    schema: schema
     parentSchema: schema
     storeKeys: StoreKeys
-    level: number
 }
 
 export function WidgetRenderer(
     props: WidgetRendererProps
-): React.Component<WidgetProps>
+): React.Component<EditorPluginProps>
