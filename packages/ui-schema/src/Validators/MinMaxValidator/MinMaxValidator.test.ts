@@ -4,11 +4,12 @@ import {
 } from '@ui-schema/ui-schema/Validators/MinMaxValidator'
 import { createMap, createOrderedMap } from "@ui-schema/ui-schema/Utils"
 import { JsonSchema } from "@ui-schema/ui-schema/JsonSchema"
+import { UISchema } from "@ui-schema/ui-schema/UISchema"
 
 describe('validateMinMax', () => {
     type validateMinMaxTest = [
         // schema:
-        JsonSchema,
+        JsonSchema & UISchema,
         // value:
         any,
         // expected qty of errors:
@@ -177,7 +178,7 @@ describe('validateMinMax', () => {
 describe('minMaxValidator', () => {
     type minMaxValidatorTest = [
         // schema:
-        JsonSchema,
+        JsonSchema & UISchema,
         // value:
         any,
         // error:

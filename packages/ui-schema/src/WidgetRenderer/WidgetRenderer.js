@@ -38,7 +38,8 @@ const WidgetRendererBase = (props) => {
             {...props}
             level={level}
             ownKey={storeKeys.get(storeKeys.count() - 1)}
-            required={required}
+            requiredList={required}
+            required={false}
             errors={List()}
             valid
         />

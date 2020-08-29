@@ -129,8 +129,8 @@ Generic Keywords:
 #### required Keyword
 
 - `required`, array that contains which properties must be set
-    - provides a more native feeling of HTML form validation and error display, the internal store updater `updateValue` uses the `required` value to delete the whole property from the object on e.g. an empty string, instead of just saving the empty string 
-        - as in a browser: an empty string is wrong for a required text input
+    - this library provides a more native feeling of HTML form validation and error display, the internal store updater `updateValue` uses the `required` value to delete the whole property from the object on e.g. an empty string, instead of just saving the empty string 
+        - as in a browser: an empty string is wrong for a required text input - whereas in json-schema an empty string is valid
     - when required, value "deletion" is triggered by:
         - `array` with a length of `0`, e.g. `[]`, `List([])`
         - `object` where the keys array has a length of `0`, e.g. `{}`, `Map({})`
@@ -147,7 +147,7 @@ Validation Keywords:
 - `propertyNames` sub-schema to limit naming of properties
 - `patternProperties` automatic sub-schema applied to a property when property-name matches regex ❌ 
 - [dependencies, dependentSchemas](/docs/plugins#dependenthandler) for dynamic sub-schema/properties
-- [if, else, then, allOf](/docs/plugins#conditionalhandler) for conditional sub-schema
+- [if, else, then, not, allOf](/docs/plugins#conditionalhandler) for conditional sub-schema
 - [allOf, with conditionals](/docs/plugins#combininghandler) for combining sub-schema (not-all keywords)
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/object.html)
@@ -194,7 +194,7 @@ Support is JSON-Schema [Draft 2019-09](https://json-schema.org/draft/2019-09/rel
 | `general`   | | | 
 |            | `readOnly` | per ds |
 |            | `writeOnly` | per ds |
-|            | `definition` | ❌ |
+|            | `definitions` | ❌ |
 |            | `$id` | ❌ |
 |            | `$ref` | ❌ |
 | `type`     | | ✅ | 
@@ -225,7 +225,7 @@ Support is JSON-Schema [Draft 2019-09](https://json-schema.org/draft/2019-09/rel
 |            | `minProperties` | ✅ | 
 |            | `maxProperties` | ✅ | 
 |            | `additionalProperties` | ✅ | 
-|            | `patternProperties` | ✅ | 
+|            | `patternProperties` | ❌ | 
 |            | `propertyNames` | ✅ | 
 |            | `dependencies` | ✅ | 
 |            | `dependencies.oneOf` | ✅ <small>non standard</small> | 

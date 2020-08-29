@@ -1,4 +1,4 @@
-import { List, Map, OrderedMap } from "immutable"
+import { List, OrderedMap } from "immutable"
 import { checkValueExists, ERROR_NOT_SET, requiredValidator } from '@ui-schema/ui-schema/Validators/RequiredValidator'
 
 describe('checkValueExists', () => {
@@ -37,9 +37,9 @@ describe('requiredValidator', () => {
         [undefined, 'name', false],
     ]) as [string[], string, boolean][])(
         '.should(%j, %s)',
-        (required, ownKey, expectedValid) => {
+        (requiredList, ownKey, expectedValid) => {
             expect(requiredValidator.should({
-                required: List(required),
+                requiredList: List(requiredList),
                 ownKey,
             })).toBe(expectedValid)
         },

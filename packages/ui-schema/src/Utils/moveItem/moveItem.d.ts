@@ -1,5 +1,6 @@
 import { List } from 'immutable'
-import { onChange, StoreKeys } from "../../EditorStore"
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { onChange, StoreKeys } from "@ui-schema/ui-schema/EditorStore"
 
 export function moveItem(
     value: List<any>,

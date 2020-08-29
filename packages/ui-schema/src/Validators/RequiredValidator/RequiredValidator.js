@@ -29,12 +29,11 @@ const checkValueExists = (type, value) => {
 };
 
 const requiredValidator = {
-    should: ({required, ownKey}) => {
-        let isRequired = false;
-        if(required && List.isList(required)) {
-            isRequired = required.contains(ownKey);
+    should: ({requiredList, ownKey}) => {
+        if(requiredList && List.isList(requiredList)) {
+            return requiredList.contains(ownKey);
         }
-        return isRequired;
+        return false
     },
     noValidate: () => ({required: false}),
     validate: ({schema, value, errors, valid}) => {

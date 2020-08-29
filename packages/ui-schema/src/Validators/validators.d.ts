@@ -1,3 +1,3 @@
-import { validatorPlugin, validatorPluginExtended, validatorPluginNoValidate } from "@ui-schema/ui-schema/Validators/validate"
+import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators/ValidatorPlugin"
 
-export const validators: validatorPlugin[] | validatorPluginExtended[] | validatorPluginNoValidate[]
+export const validators: ValidatorPlugin[]

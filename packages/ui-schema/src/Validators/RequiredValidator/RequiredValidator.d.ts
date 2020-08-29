@@ -1,5 +1,6 @@
 import { List } from "immutable"
-import { errors, schema } from "@ui-schema/ui-schema/CommonTypings"
+import { EditorPluginProps } from "@ui-schema/ui-schema/EditorPlugin"
+import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators"
 
 export const ERROR_NOT_SET = 'required-not-set'
 
@@ -12,18 +13,10 @@ export const ERROR_NOT_SET = 'required-not-set'
  */
 export function checkValueExists(type: string, value: any): boolean
 
-export const requiredValidator: {
-    should: (
-        {required, ownKey}:
-            { required: List<any>, ownKey: string }
-    ) => boolean
+export interface RequiredValidatorType extends ValidatorPlugin {
+    should: ({requiredList, ownKey}: Partial<EditorPluginProps>) => boolean
     validate: (
-        {schema, value, errors, valid}: {
-            schema: schema
-            value: any
-            errors: errors
-            valid: boolean
-        }
+        {schema, value, errors, valid}: Partial<EditorPluginProps>
     ) => {
         errors: List<any>
         valid: boolean
@@ -31,3 +24,5 @@ export const requiredValidator: {
     }
     noValidate: () => { required: false }
 }
+
+export const requiredValidator: RequiredValidatorType

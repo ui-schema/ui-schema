@@ -43,6 +43,7 @@ export interface EditorStore<D extends {
     values: any
     internals: Map<{}, undefined>
     validity: Map<{}, undefined>
+    // @ts-ignore
 }> extends Record<D> {
     values: undefined
     internals: Map<{}, undefined>

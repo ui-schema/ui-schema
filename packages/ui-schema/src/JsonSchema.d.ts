@@ -1,5 +1,3 @@
-import { UISchema } from "@ui-schema/ui-schema/UISchema"
-
 export interface Schemas {
     all: {
         readOnly?: boolean
@@ -34,6 +32,9 @@ export interface Schemas {
         exclusiveMaximum?: number
         multipleOf?: number
     }
+    null: {
+        type: 'null'
+    }
 }
 
 export type JsonSchema =
@@ -42,6 +43,5 @@ export type JsonSchema =
     | Schemas['object']
     | Schemas['number']
     | Schemas['boolean']
-    | { type: 'null' }
+    | Schemas['null']
     & Schemas['all']
-    & UISchema
