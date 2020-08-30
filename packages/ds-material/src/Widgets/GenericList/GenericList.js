@@ -73,7 +73,7 @@ const GenericList = extractValue(memo(({
                             <Grid item style={{display: 'flex', flexShrink: 0}}>
                                 <IconButton
                                     onClick={() => {
-                                        onChange(updateValue(storeKeys, value.splice(i, 1)))
+                                        onChange(updateValue(storeKeys, value.splice(i, 1), required, schema.get('type')))
                                     }}
                                     size={btnSize}
                                     style={{margin: '0 0 auto 0'}}
@@ -92,9 +92,12 @@ const GenericList = extractValue(memo(({
             <Grid item xs={12}>
                 <IconButton
                     onClick={() => {
-                        onChange(updateValue(storeKeys, value ?
-                            value.push(List.isList(schema.get('items')) ? List([]) : Map({})) :
-                            List([List.isList(schema.get('items')) ? List([]) : Map({end_checks: true})])))
+                        onChange(updateValue(
+                            storeKeys, value ?
+                                value.push(List.isList(schema.get('items')) ? List([]) : Map({})) :
+                                List([List.isList(schema.get('items')) ? List([]) : Map({end_checks: true})]),
+                            required, schema.get('type')
+                        ))
                     }}
                     size={btnSize}
                 >

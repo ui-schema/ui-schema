@@ -1,3 +1,4 @@
 import * as React from 'react'
 
-export function AccessTooltipIcon(title: string, children: Node): React.Component
+// render the `icon` simply as `children`, must allow to accept refs
+export function AccessTooltipIcon(props: React.PropsWithChildren<{ title: string }>): React.Component

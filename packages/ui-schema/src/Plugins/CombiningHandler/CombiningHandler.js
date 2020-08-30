@@ -43,8 +43,7 @@ export const CombiningHandler = (props) => {
     const hasAllOf = schema.get('allOf');
     return <React.Fragment>
         {hasAllOf ?
-            <CombiningRenderer
-                {...props}/>
-            : <NextPluginRenderer {...props}/>}
+            <CombiningRenderer {...props}/> :
+            <NextPluginRenderer {...props}/>}
     </React.Fragment>;
 };

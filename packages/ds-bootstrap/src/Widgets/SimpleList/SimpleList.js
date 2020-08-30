@@ -4,7 +4,6 @@ import {List} from 'immutable';
 import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
 import {IconPlus, IconMinus} from "@ui-schema/ds-bootstrap/Component/Icons/Icons";
 
-
 const SimpleList = extractValue(memo(({
                                           storeKeys, ownKey, schema, value, onChange,
                                           showValidity, errors, required
@@ -46,11 +45,11 @@ const SimpleList = extractValue(memo(({
                 </div>
             ).valueSeq() : null}
             <div>
-            <IconPlus
-                btnSize={btnSize}
-                onClick={() => {
-                    onChange(updateValue(storeKeys, value ? value.push('') : List([''])))
-                }}/>
+                <IconPlus
+                    btnSize={btnSize}
+                    onClick={() => {
+                        onChange(updateValue(storeKeys, value ? value.push('') : List([''])))
+                    }}/>
             </div>
         </div>
         <ValidityHelperText

@@ -22,7 +22,7 @@ const LinkInternalLocale = (p) => {
 // see: https://github.com/rexxars/react-markdown#node-types
 const renderers = baseRenderers(true);
 renderers.paragraph = p => <Typography {...p} component={'p'} variant={'body2'} gutterBottom/>;
-renderers.inlineCode = p => <MdInlineCode variant={'body2'} {...p}/>;
+renderers.inlineCode = p => <MdInlineCode variant={'body1'} {...p}/>;
 renderers.code = p => <Code variant={'body2'} {...p}/>;
 renderers.heading = ({level, ...p}) => <Typography {...p} component={'h' + (level + 1)} variant={'subtitle' + (level)} style={{textDecoration: 'underline', marginTop: 48 / level}} gutterBottom/>;
 renderers.listItem = p => <Typography component={'li'} variant={'body2'} style={{fontWeight: 'bold'}}><span style={{fontWeight: 'normal', display: 'block'}}>{p.children}</span></Typography>;
@@ -30,6 +30,7 @@ renderers.link = LinkInternalLocale;
 
 const renderersContent = baseRenderers(false);
 renderersContent.code = p => <Code variant={'body1'} {...p}/>;
+renderersContent.inlineCode = p => <MdInlineCode variant={'body1'} {...p}/>;
 renderersContent.heading = LinkableHeadline;
 renderersContent.link = LinkInternalLocale;
 

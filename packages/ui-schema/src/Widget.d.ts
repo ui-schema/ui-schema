@@ -1,24 +1,22 @@
 import { onChange, StoreKeys } from '@ui-schema/ui-schema/EditorStore'
 import { ownKey, showValidity, errors, required, valid, schema } from './CommonTypings'
+import { widgetsBase } from "@ui-schema/ui-schema/widgetsBase"
 
 export interface WidgetProps {
     onChange: onChange
-    ownKey: ownKey
     schema: schema
     parentSchema: schema
     level: number
-    // the indices of the current widget
+    // the last index of the current widget
+    ownKey: ownKey
+    // all indices of the current widget
     storeKeys: StoreKeys
     // if the widget should show the validity
     showValidity: showValidity
     errors: errors
     required: required
-}
-
-export interface WidgetPropsWithValue extends WidgetProps {
-    value: any
-}
-
-export interface WidgetExtendedCheckValid extends WidgetPropsWithValue {
     valid: valid
+    widgets: widgetsBase
+    // contains the value for non-scalar items, for objects/array it is undefined
+    value: string | number | boolean | undefined
 }

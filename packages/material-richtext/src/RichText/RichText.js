@@ -26,11 +26,11 @@ const useInputStyles = makeStyles(inputStyles);
 const plugins = [createMarkdownShortcutsPlugin()];
 
 export const RichText = ({
-                      storeKeys, ownKey, schema,
-                      showValidity, valid, errors, required,
-                      value, onChange, internalValue,
-                      onlyInline,
-                  }) => {
+                             storeKeys, ownKey, schema,
+                             showValidity, valid, errors, required,
+                             value, onChange, internalValue,
+                             onlyInline,
+                         }) => {
     const prevStoreKeys = React.useRef();
     const prevInternalValue = React.useRef();
     React.useEffect(() => {
@@ -57,6 +57,7 @@ export const RichText = ({
         }
     }, [internalValue, editorState, onChange, storeKeys.equals(prevStoreKeys.current)]);
 
+    const type = schema.get('type');
     const handleChange = React.useCallback((state) => {
         onChange(store => {
             let stateHandler = state;
@@ -70,9 +71,9 @@ export const RichText = ({
                 store.get('internals');
 
             let newState = stateHandler(internalValue);
-            return updateValues(storeKeys, editorStateTo.markdown(newState), newState)(store);
+            return updateValues(storeKeys, editorStateTo.markdown(newState), newState, required, type)(store);
         });
-    }, [onChange, storeKeys.equals(prevStoreKeys.current)]);
+    }, [onChange, storeKeys.equals(prevStoreKeys.current), required, type]);
 
     const handleKeyCommand = (command, editorState) => {
         if(onlyInline) return 'handled';

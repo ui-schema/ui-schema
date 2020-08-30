@@ -39,6 +39,7 @@
         "@ui-schema/ds-material": "^0.0.19",
         "@ui-schema/ui-schema": "^0.0.19",
         "draft-js": "~0.11.4",
+        "@types/draft-js": "^0.10.44",
         "draft-js-plugins-editor": "~3.0.0",
         "immutable": "^4.0.0-rc.12",
         "react": "^16.12"

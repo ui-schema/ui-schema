@@ -47,7 +47,7 @@ function getConfig(
             rules: [
                 {
                     enforce: 'pre',
-                    test: /\.(ts|js|jsx)$/,
+                    test: /\.(ts|js|jsx|tsx)$/,
                     //test: /\.(js|jsx|d\.ts)$/,
                     include: [
                         path.join(context, 'src'),

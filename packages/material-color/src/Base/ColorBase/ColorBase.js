@@ -30,11 +30,11 @@ const PickerPosition = ({children}) => <div style={{position: 'relative',}}>
 </div>;
 
 export const ColorBase = ({
-                       storeKeys, schema, value, onChange, PickerContainer, ColorPicker,
-                       styles: customStyles = {}, refocus = true, forceIcon = false,
-                       pickerProps = {},
-                       ...props
-                   }) => {
+                              storeKeys, schema, value, onChange, required, PickerContainer, ColorPicker,
+                              styles: customStyles = {}, refocus = true, forceIcon = false,
+                              pickerProps = {},
+                              ...props
+                          }) => {
     const inputRef = React.useRef();
     const [hasFocus, setHasFocus] = React.useState(false);
     const [inputType, setInputType] = React.useState('');
@@ -78,7 +78,8 @@ export const ColorBase = ({
             }
             onChange={(color, e) => {
                 setInputType(e && e.type);
-                onChange(updateValue(storeKeys,
+                onChange(updateValue(
+                    storeKeys,
                     format === 'hex' ?
                         converters.hex(color) :
                         format === 'rgb' ?
@@ -87,7 +88,8 @@ export const ColorBase = ({
                                 converters.rgba_rgb(color) :
                                 format === 'rgba' ?
                                     converters.rgba(color) :
-                                    converters.rgba_hex(color)
+                                    converters.rgba_hex(color),
+                    required, schema.get('type')
                 ))
             }}
             onChangeComplete={() => {

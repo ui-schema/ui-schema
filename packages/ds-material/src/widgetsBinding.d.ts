@@ -1,25 +1,25 @@
 import React from "react"
-import { widgetsBase } from "./widgetsBase"
+import { widgetsBaseInterface } from "./widgetsBase"
 
-export interface widgets extends widgetsBase {
+export const widgets: {
     types: {
-        string: React.Component
-        boolean: React.Component
-        number: React.Component
+        string: React.ComponentType
+        boolean: React.ComponentType
+        number: React.ComponentType
     }
     custom: {
-        Text: React.Component
-        StringIcon: React.Component
-        TextIcon: React.Component
-        NumberIcon: React.Component
-        NumberSlider: React.Component
-        SimpleList: React.Component
-        GenericList: React.Component
-        OptionsCheck: React.Component
-        OptionsRadio: React.Component
-        Select: React.Component
-        SelectMulti: React.Component
-        Stepper: React.Component
-        Step: React.Component
+        Text: React.ComponentType
+        StringIcon: React.ComponentType
+        TextIcon: React.ComponentType
+        NumberIcon: React.ComponentType
+        NumberSlider: React.ComponentType
+        SimpleList: React.ComponentType
+        GenericList: React.ComponentType
+        OptionsCheck: React.ComponentType
+        OptionsRadio: React.ComponentType
+        Select: React.ComponentType
+        SelectMulti: React.ComponentType
+        Stepper: React.ComponentType
+        Step: React.ComponentType
     }
-}
+} & widgetsBaseInterface

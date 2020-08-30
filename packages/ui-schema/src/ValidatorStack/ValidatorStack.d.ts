@@ -1,11 +1,4 @@
-import { widgetsBase } from "../widgetsBase"
-import { NextPluginRendererProps } from '../EditorPluginStack'
+import React from 'react'
+import { EditorPluginProps } from "@ui-schema/ui-schema/EditorPlugin"
 
-export interface ValidatorStackProps {
-    widgets: widgetsBase
-}
-
-export type nextPluginRendererProps = (props: ValidatorStackProps) => NextPluginRendererProps
-
-// tslint:disable-next-line:no-empty-interface
-export type ValidatorStack = nextPluginRendererProps
+export function ValidatorStack(props: EditorPluginProps): React.ComponentType<EditorPluginProps>

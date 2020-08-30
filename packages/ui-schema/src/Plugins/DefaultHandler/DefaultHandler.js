@@ -3,21 +3,29 @@ import {NextPluginRenderer} from "../../EditorPluginStack";
 import {updateValue} from "../../EditorStore";
 
 const DefaultValueHandler = ({defaultVal, ...props}) => {
+    const [defaultHandled, setDefaultHandled] = React.useState(false);
     const {onChange, storeKeys} = props;
     let {value} = props;
 
-    const initialValue = value;
     React.useEffect(() => {
-        if(typeof initialValue === 'undefined') {
+        if(typeof value === 'undefined' && !defaultHandled) {
+            setDefaultHandled(true);
             onChange(updateValue(storeKeys, defaultVal));
         }
-    }, [onChange, storeKeys, defaultVal, initialValue]);
+    }, [onChange, storeKeys, defaultVal, value, defaultHandled]);
 
-    if(typeof value === 'undefined') {
-        value = defaultVal;
+    React.useEffect(() => {
+        if(defaultHandled) {
+            setDefaultHandled(false);
+        }
+    }, [onChange, storeKeys, defaultVal]);
+
+    let nextValue = value;
+    if(typeof value === 'undefined' && !defaultHandled) {
+        nextValue = defaultVal;
     }
 
-    return <NextPluginRenderer {...props} value={value}/>;
+    return <NextPluginRenderer {...props} value={nextValue}/>;
 };
 
 const DefaultHandler = (props) => {

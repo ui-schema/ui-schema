@@ -1,27 +1,19 @@
 import { List } from 'immutable'
-import { errors, schema } from "@ui-schema/ui-schema/CommonTypings"
+import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators"
+import { EditorPluginProps } from "@ui-schema/ui-schema/EditorPlugin"
 
 export const ERROR_ENUM_MISMATCH = 'enum-mismatch'
 
 export function validateEnum<T>(type: string, _enum?: List<any> | T[], value?: any): boolean
 
-// tslint:disable-next-line:no-empty-interface
-export interface valueValidatorEnum {
-    should: (
-        {schema, value}: {
-            schema: schema
-            value: any
-        }
-    ) => boolean
+export interface ValueValidatorEnumType extends ValidatorPlugin {
+    should: ({schema, value}: Partial<EditorPluginProps>) => boolean
     validate: (
-        {schema, value, errors, valid}: {
-            schema: schema
-            value: any
-            errors: errors
-            valid: boolean
-        }
+        {schema, value, errors, valid}: Partial<EditorPluginProps>
     ) => {
         errors: List<any>
         valid: boolean
     }
 }
+
+export const valueValidatorEnum: ValueValidatorEnumType

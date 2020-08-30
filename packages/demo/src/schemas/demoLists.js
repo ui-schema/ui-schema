@@ -2,6 +2,9 @@ import {createOrderedMap} from "@ui-schema/ui-schema";
 
 const schemaLists = createOrderedMap({
     type: "object",
+    required: [
+        'events'
+    ],
     properties: {
         events: {
             type: "array",

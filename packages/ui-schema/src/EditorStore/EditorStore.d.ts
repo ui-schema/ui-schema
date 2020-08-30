@@ -43,6 +43,7 @@ export interface EditorStore<D extends {
     values: any
     internals: Map<{}, undefined>
     validity: Map<{}, undefined>
+    // @ts-ignore
 }> extends Record<D> {
     values: undefined
     internals: Map<{}, undefined>
@@ -78,9 +79,7 @@ export interface WithValue {
     onChange: onChange
 }
 
-export function extractValue(
-    WrappedComponent: React.ComponentType<WithValue>
-): React.ComponentType<WithValue>
+export function extractValue<P extends WithValue>(Wrapped: React.ComponentType<P>): React.FunctionComponent<P>
 
 export interface WithValidity {
     validity: any
@@ -101,15 +100,15 @@ export type StoreKeys<T = string[] | number[]> = List<T>
 
 export function prependKey(storeKeys: StoreKeys, key: string | number): StoreKeys
 
-export function updateRawValue(store: EditorStore<any>, storeKeys: StoreKeys, key: string | number, value: any): EditorStore<any>
+//export function updateRawValue(store: EditorStore<any>, storeKeys: StoreKeys, key: string | number, value: any): EditorStore<any>
 
-export function deleteRawValue(store: EditorStore<any>, storeKeys: StoreKeys, key: string | number): EditorStore<any>
+//export function deleteRawValue(store: EditorStore<any>, storeKeys: StoreKeys, key: string | number): EditorStore<any>
 
 export function updateInternalValue(storeKeys: StoreKeys, internalValue: any): onChangeHandler
 
-export function updateValue(storeKeys: StoreKeys, value: any): onChangeHandler
+export function updateValue(storeKeys: StoreKeys, value: any, required?: boolean, type?: string): onChangeHandler
 
-export function updateValues(storeKeys: StoreKeys, value: any, internalValue: any): onChangeHandler
+export function updateValues(storeKeys: StoreKeys, value: any, internalValue: any, required?: boolean, type?: string): onChangeHandler
 
 export function updateValidity(storeKeys: StoreKeys, valid: boolean): onChangeHandler
 

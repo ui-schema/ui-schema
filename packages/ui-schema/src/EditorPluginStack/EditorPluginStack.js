@@ -3,7 +3,7 @@ import {memo} from "../Utils/memo";
 import {ObjectRenderer} from "../ObjectRenderer";
 
 export const getPlugin = (current, pluginStack) => {
-    return current < pluginStack.length ? pluginStack[current] : false;
+    return current < pluginStack.length ? pluginStack[current] : undefined;
 };
 
 export const NextPluginRenderer = ({current, ...props}) => {

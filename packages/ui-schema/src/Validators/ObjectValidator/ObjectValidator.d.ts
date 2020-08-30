@@ -1,23 +1,21 @@
 import { List } from 'immutable'
-import { errors, schema } from "@ui-schema/ui-schema/CommonTypings"
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { schema } from "@ui-schema/ui-schema/CommonTypings"
+import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators"
+import { EditorPluginProps } from "@ui-schema/ui-schema/EditorPlugin"
 
-export type ERROR_ADDITIONAL_PROPERTIES = 'additional-properties'
+export const ERROR_ADDITIONAL_PROPERTIES = 'additional-properties'
 
 export function validateObject(schema: schema, value: any): List<any>
 
-export interface objectValidator {
-    should: (
-        {schema}: { schema: schema }
-    ) => boolean
+export interface ObjectValidatorType extends ValidatorPlugin {
+    should: ({schema}: Partial<EditorPluginProps>) => boolean
     validate: (
-        {schema, value, errors, valid}: {
-            schema: schema
-            value: any
-            errors: errors
-            valid: boolean
-        }
+        {schema, value, errors, valid}: Partial<EditorPluginProps>
     ) => {
         errors: List<any>
         valid: boolean
     }
 }
+
+export const objectValidator: ObjectValidatorType

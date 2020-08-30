@@ -5,7 +5,7 @@ import merge from "deepmerge";
 
 export const ColorStaticBase = ({
                                     storeKeys, schema, value, onChange, ColorPicker,
-                                    styles: customStyles = {},
+                                    styles: customStyles = {}, required,
                                     pickerProps = {},
                                 }) => {
     const styles = merge({}, customStyles);
@@ -19,7 +19,8 @@ export const ColorStaticBase = ({
             format === 'rgb'
         }
         onChange={(color) => {
-            onChange(updateValue(storeKeys,
+            onChange(updateValue(
+                storeKeys,
                 format === 'hex' ?
                     converters.hex(color) :
                     format === 'rgb' ?
@@ -28,7 +29,8 @@ export const ColorStaticBase = ({
                             converters.rgba_rgb(color) :
                             format === 'rgba' ?
                                 converters.rgba(color) :
-                                converters.rgba_hex(color)
+                                converters.rgba_hex(color),
+                required, schema.get('type')
             ))
         }}
         styles={styles}

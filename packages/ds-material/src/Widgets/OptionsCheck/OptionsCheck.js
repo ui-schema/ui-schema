@@ -22,34 +22,40 @@ const OptionCheck = ({currentValue, label, onChange}) => {
     />;
 };
 
-const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChange, trans}) => enumVal ?
-    enumVal.map((enum_name) => {
-        const isActive = value && value.contains && typeof value.contains(enum_name) !== 'undefined' ? value.contains(enum_name) : false;
+const OptionsCheckValue = extractValue(memo(({
+                                                 enumVal, storeKeys, value, onChange, trans,
+                                                 required, type,
+                                             }) =>
+    enumVal ?
+        enumVal.map((enum_name) => {
+            const isActive = value && value.contains && typeof value.contains(enum_name) !== 'undefined' ? value.contains(enum_name) : false;
 
-        const relativeT = List(['enum', enum_name]);
+            const relativeT = List(['enum', enum_name]);
 
-        return <OptionCheck
-            key={enum_name}
-            currentValue={isActive}
-            onChange={() => {
-                if(isActive) {
-                    onChange(updateValue(storeKeys, value.delete(value.indexOf(enum_name))));
-                } else {
-                    onChange(updateValue(
-                        storeKeys,
-                        value ? value.push(enum_name) : List([]).push(enum_name))
-                    );
-                }
-            }}
-            label={<Trans
-                schema={trans}
-                text={storeKeys.insert(0, 'widget').concat(relativeT).join('.')}
-                context={Map({'relative': relativeT})}
-                fallback={beautifyKey(enum_name)}
-            />}
-        />
-    }).valueSeq()
-    : null
+            return <OptionCheck
+                key={enum_name}
+                currentValue={isActive}
+                onChange={() => {
+                    if(isActive) {
+                        onChange(updateValue(storeKeys, value.delete(value.indexOf(enum_name)), required, type));
+                    } else {
+                        onChange(updateValue(
+                            storeKeys,
+                            value ? value.push(enum_name) : List([]).push(enum_name)),
+                            required,
+                            type
+                        );
+                    }
+                }}
+                label={<Trans
+                    schema={trans}
+                    text={storeKeys.insert(0, 'widget').concat(relativeT).join('.')}
+                    context={Map({'relative': relativeT})}
+                    fallback={beautifyKey(enum_name)}
+                />}
+            />
+        }).valueSeq()
+        : null
 ));
 
 const OptionsCheck = ({
@@ -64,7 +70,7 @@ const OptionsCheck = ({
             <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
         </FormLabel>
         <FormGroup row={row}>
-            <OptionsCheckValue enumVal={enumVal} storeKeys={storeKeys} trans={schema.get('t')}/>
+            <OptionsCheckValue enumVal={enumVal} storeKeys={storeKeys} trans={schema.get('t')} required={required} type={schema.get('type')}/>
         </FormGroup>
 
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>

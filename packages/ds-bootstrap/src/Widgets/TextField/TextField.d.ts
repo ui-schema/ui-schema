@@ -1,8 +1,8 @@
 import React from 'react'
-import { WidgetPropsWithValue } from '@ui-schema/ui-schema/Widget'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { rows, multiline, type } from '@ui-schema/ui-schema/CommonTypings'
 
-export interface StringRendererProps extends WidgetPropsWithValue {
+export interface StringRendererProps extends WidgetProps {
     // contains the index of the current schema level
     multiline?: multiline
     type: type
@@ -10,7 +10,7 @@ export interface StringRendererProps extends WidgetPropsWithValue {
     value: string
 }
 
-export interface NumberRendererProps extends WidgetPropsWithValue {
+export interface NumberRendererProps extends WidgetProps {
     type: type
     value: number
 }

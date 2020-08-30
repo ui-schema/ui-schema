@@ -3,32 +3,42 @@ import { ERROR_WRONG_TYPE, typeValidator, validateType } from '@ui-schema/ui-sch
 
 describe('validateType', () => {
     test.each([
-        // unknown types are never valid
+        // unknown types are never valid, but on value `undefined`
         ['text1', 'stringiiii', false],
+        [undefined, 'stringiiii', true],
+
         ['text1', 'string', true],
         [undefined, 'string', true],
         [1, 'string', false],
+        [null, 'string', false],
+
         [1, 'number', true],
         [1.1, 'number', true],
         ['1', 'number', false],
+
         [1, 'integer', true],
         [1.1, 'integer', false],
         ['1', 'integer', false],
+
         [true, 'boolean', true],
+        [false, 'boolean', true],
         [0, 'boolean', false],
         ['0', 'boolean', false],
         [[], 'boolean', false],
+
         [[], 'array', true],
         [List([]), 'array', true],
         ['text', 'array', false],
         [{}, 'array', false],
+
         [{}, 'object', true],
         [undefined, 'object', true],
         [Map({}), 'object', true],
         [OrderedMap({}), 'object', true],
         ['text', 'object', false],
         [[], 'object', false],
-    ])('validateType(%j, %s)', (value, type, expected) => {
+
+    ])('validateType(%j, %s): %j', (value, type, expected) => {
         expect(validateType(value, type)).toBe(expected)
     })
 })

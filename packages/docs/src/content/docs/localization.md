@@ -2,10 +2,6 @@
 
 ## Translation
 
->
-> ✔ working, not expected to change (that much) breaking in the near future
->
-
 Supplying the `t` prop to a `SchemaEditor` enables dynamic translations and connecting any translation library.
 
 Native HTML inputs can use [native translations](#native-translation) for some validations.
@@ -164,8 +160,6 @@ Let the browser handle "incorrect email" message:
 
 ### Immutable as Dictionary
 
-> ✔ working, not expected to change (that much) breaking in the near future
-
 UI-Schema includes a very simple, small and powerful **immutable based localization** logic, this can be used to **bundle your translations** with the app or to supply only the **default translations**.
 
 ```jsx harmony
@@ -206,8 +200,6 @@ export {LocaleEditor}
 ```
 
 ### Translation in schema
-
-> ✔ working, not expected to change (that much) breaking in the near future
 
 Keyword `t` is not default JSON-Schema, it is a `object` containing multiple or one language with multiple translation keys, which may be nested. 
 
@@ -267,13 +259,13 @@ Design systems should support both, the Material-UI library supports it.
 
 When no translation should be used, but e.g. the property names should simply be in uppercase, `tt` influence the text-transformation - primary for the widget title (and not widget values).
 
-- `tt: true` uses `beautifyKey` for optimistic beautification (default) ✔
-- `tt: false | ''` disables optimistic beautification, `undefined` doesn't! ✔
-- `tt: 'ol'` the property name must be a `number`, increments it and adds a `.` dot at the end, useful for array/list labeling ✔
-- `tt: 'upper'` turns all letters in UPPERCASE ✔
-- `tt: 'lower'` turns all letters in lowercase ✔
-- `tt: 'upper-beauty'` applies optimistic-beautification and turns all letters in UPPERCASE ✔
-- `tt: 'lower-beauty'` applies optimistic-beautification and turns all letters in lowercase ✔
+- `tt: true` uses `beautifyKey` for optimistic beautification (default)
+- `tt: false | ''` disables optimistic beautification, `undefined` doesn't!
+- `tt: 'ol'` the property name must be a `number`, increments it and adds a `.` dot at the end, useful for array/list labeling
+- `tt: 'upper'` turns all letters in UPPERCASE
+- `tt: 'lower'` turns all letters in lowercase
+- `tt: 'upper-beauty'` applies optimistic-beautification and turns all letters in UPPERCASE
+- `tt: 'lower-beauty'` applies optimistic-beautification and turns all letters in lowercase
 - `tt: 'no-special'` will only print normal a-Z 0-9 chars ❌
 - `tt` should support `boolean`, `string` and `array|List` ❌
 - `tt` should support inheritance through the schema (define one-time per schema) ❌

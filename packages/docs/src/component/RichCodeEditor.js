@@ -101,7 +101,7 @@ const RichCodeEditor = ({
             theme={palette.type === 'light' ? themesLight[0] : theme}
             value={typeof value !== 'string' && value ? value.toString() : value || ''}
             onChange={onChange}
-            name={uid}
+            name={'uis-' + uid}
             editorProps={{$blockScrolling: true}}
             showGutter
             showPrintMargin={false}

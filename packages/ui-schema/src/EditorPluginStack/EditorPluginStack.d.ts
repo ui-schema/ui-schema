@@ -1,23 +1,12 @@
 import * as React from "react"
-import { OrderedMap } from 'immutable'
-import { EditorStore } from "../EditorStore"
-import { widgetsBase } from "../widgetsBase"
+import { EditorPluginProps, EditorPluginType } from "@ui-schema/ui-schema/EditorPlugin"
 
-export function getPlugin(current: number, pluginStack: []): EditorStore<any>
+export function getPlugin(current: number, pluginStack: []): EditorPluginType | undefined
 
-export interface NextPluginRendererProps {
-    current: number
-    widgets: widgetsBase
-}
+export function NextPluginRenderer<P extends EditorPluginProps>(props: P): React.ComponentType<P>
 
-export function NextPluginRenderer<P extends NextPluginRendererProps>(props: P): React.Component<P>
+export function NextPluginRendererMemo<P extends EditorPluginProps>(props: P): React.ComponentType<P>
 
-export function NextPluginRendererMemo<P extends NextPluginRendererProps>(props: P): React.Component<P>
-
-export interface FinalWidgetRendererProps {
-    value: any
-    schema: OrderedMap<{}, undefined>
-    widgets: widgetsBase
-}
-
-export function FinalWidgetRenderer<P extends FinalWidgetRendererProps>(props: P): React.Component<P>
+export function FinalWidgetRenderer<P extends Pick<EditorPluginProps,
+    "level" & "errors" & "onChange" & "ownKey" & "parentSchema" & "required" & "schema" &
+    "showValidity" & "storeKeys" & "value" & "valid" & "widgets">>(props: P): React.ComponentType<P>

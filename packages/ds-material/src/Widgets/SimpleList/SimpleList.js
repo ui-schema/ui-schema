@@ -33,7 +33,7 @@ const SimpleList = extractValue(memo(({
 
                     <IconButton
                         onClick={() => {
-                            onChange(updateValue(storeKeys, value.splice(i, 1)))
+                            onChange(updateValue(storeKeys, value.splice(i, 1), required, schema.get('type')))
                         }}
                         size={btnSize}
                         style={{margin: 'auto 6px', flexShrink: 0}}
@@ -48,7 +48,8 @@ const SimpleList = extractValue(memo(({
             <Grid item xs={12}>
                 <IconButton
                     onClick={() => {
-                        onChange(updateValue(storeKeys, value ? value.push('') : List([''])))
+                        // todo: initial/new value of list should be like the schema `type`
+                        onChange(updateValue(storeKeys, value ? value.push('') : List(['']), required, schema.get('type')))
                     }}
                     size={btnSize}
                 >
