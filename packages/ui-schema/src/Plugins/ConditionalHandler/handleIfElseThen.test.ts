@@ -262,33 +262,4 @@ describe('handleIfElseThen', () => {
             expect(handleIfElseThen(schema, store, distSchema).equals(expectedSchema)).toBe(expected)
         },
     )
-    /*const distSchema = createMap({if: { test: 'string2'}, then: { test: 'string2'},else: {}})
-    const correctStore = createMap({if: { test: 'string2'}, then: { test: 'string2'},else: {}})
-    const incorrectStore = createMap({if: { test: 3}, then: {test: 2},else: {test: 1}})
-    const demoSchema = createMap({if: { test: 'string'}, then: { test: 'string'},else: {} })
-    const validateSchemaObjectFn = validateSchemaObject(demoSchema, emptySchema)*/
-    /*const validateSchemaObjectFnFalse = validateSchemaObject(demoSchema, incorrectStore) */
-
-    /*test('!if', () => {
-        const emptySchema = createMap({})
-        handleIfElseThen(emptySchema, emptySchema, emptySchema)
-        // expect(validateSchemaObject(demoSchema, emptySchema)).not.toHaveBeenCalled()
-        expect(handleIfElseThen(emptySchema, emptySchema, createMap({'dummy': {}}))).toMatchObject(createMap({'dummy': {}}))
-    })*/
-
-    /*test('if && then', () => {
-        const result = handleIfElseThen(demoSchema, correctStore, distSchema)
-        expect(validateSchemaObject(demoSchema, correctStore).size).toEqual(0)
-        // @ts-ignore
-        expect(validateSchemaObject(demoSchema, incorrectStore).size).toBeGreaterThan(0)
-        const validateSchemaObjectFn = jest.fn()
-        expect(validateSchemaObjectFn).toHaveBeenCalled()
-        // expect(result).toEqual(createMap({if: { test: 'string2'}, then: { test: 'string'},else: {}}))
-        expect(result).toEqual(mergeSchema(distSchema, demoSchema.get('then')))
-    })*/
-    /*test('if && !then', () => {
-        const result2 = handleIfElseThen(createMap({if: { test: 'string'}}), correctStore, distSchema)
-        // expect(validateSchemaObject(createMap({if: { test: 'string'}}), correctStore)).toHaveBeenCalled()
-        expect(result2).toMatchObject(distSchema)
-    })*/
 })
