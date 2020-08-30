@@ -24,7 +24,7 @@ const CheckInput = ({currentValue, onChange, label, value, classForm, classLabel
     </div>
 };
 
-const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChange, classLabel, classFormControl, classForm, schema}) => enumVal ?
+const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChange, classLabel, classFormControl, classForm, schema, required, type}) => enumVal ?
     enumVal.map((enum_name) => {
         const currentValue = value && value.contains && typeof value.contains(enum_name) !== 'undefined' ? value.contains(enum_name) : false;
 
@@ -37,13 +37,19 @@ const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChang
             currentValue={currentValue}
             onChange={() => {
                 if(currentValue) {
-                    onChange(updateValue(storeKeys,
-                        value.delete(value.indexOf(enum_name))))
+                    onChange(updateValue(
+                        storeKeys,
+                        value.delete(value.indexOf(enum_name)),
+                        required,
+                        type
+                    ))
                 } else {
                     onChange(updateValue(
                         storeKeys,
-                        value ? value.push(enum_name) : List([]).push(enum_name))
-                    );
+                        value ? value.push(enum_name) : List([]).push(enum_name),
+                        required,
+                        type
+                    ));
                 }
             }}
             label={<Trans
@@ -57,7 +63,7 @@ const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChang
     : null
 ));
 
-const OptionsCheck = ({schema, storeKeys, showValidity, errors, ownKey}) => {
+const OptionsCheck = ({schema, storeKeys, showValidity, errors, ownKey, required}) => {
     const enumVal = schema.get('enum');
 
     if(!enumVal) return null;
@@ -75,6 +81,8 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors, ownKey}) => {
     return <React.Fragment>
         <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
         <OptionsCheckValue
+            required={required}
+            type={schema.get('type')}
             classForm={classForm.join(' ')}
             classLabel={classLabel.join(' ')}
             classFormControl={classFormControl.join(' ')}
