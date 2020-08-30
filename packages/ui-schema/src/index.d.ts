@@ -15,7 +15,6 @@ export * from './WidgetRenderer'
 // files:
 export * from './CommonTypings'
 export * from './EditorPlugin'
-export * from './GridHelper'
 export * from './JsonSchema'
 export * from './UISchema'
 export * from './Widget'

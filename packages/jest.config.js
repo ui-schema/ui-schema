@@ -20,6 +20,7 @@ const base = {
     ],
     moduleNameMapper: {
         '^@ui-schema/ui-schema(.*)$': '<rootDir>/ui-schema/src$1',
+        '^@ui-schema/ds-bootstrap(.*)$': '<rootDir>/ds-bootstrap/src$1',
     },
     moduleFileExtensions: [
         'ts',

@@ -1,4 +1,5 @@
 import React from 'react'
-import { EditorPluginProps } from "@ui-schema/ui-schema/EditorPlugin"
+import { EditorPluginProps } from '@ui-schema/ui-schema/EditorPlugin'
 
-export function ValidatorStack(props: EditorPluginProps): React.ComponentType<EditorPluginProps>
+export function ValidatorStack<P extends EditorPluginProps>(props: P): React.ComponentType<P>
+

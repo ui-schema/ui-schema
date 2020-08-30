@@ -2,7 +2,7 @@ import React from "react";
 import {NextPluginRenderer} from "@ui-schema/ui-schema";
 import clsx from "clsx";
 
-const SchemaGridItem = ({children, schema}) => {
+export const getGridClasses = (schema) => {
     let classNameArray = [];
     const view = schema ? schema.getIn(['view']) : undefined;
     if(view && view.get('sizeXs')) {
@@ -22,9 +22,13 @@ const SchemaGridItem = ({children, schema}) => {
     if(view && view.get('sizeXl')) {
         classNameArray.push('col-xl-' + view.get('sizeXl'));
     }
+    return classNameArray
+}
+
+const SchemaGridItem = ({children, schema}) => {
 
     return <div
-        className={classNameArray.join(' ')}
+        className={getGridClasses(schema).join(' ')}
     >
         {children}
     </div>

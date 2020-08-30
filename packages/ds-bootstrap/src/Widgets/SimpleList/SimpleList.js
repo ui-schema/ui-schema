@@ -39,7 +39,7 @@ const SimpleList = extractValue(memo(({
                         <IconMinus
                             btnSize={btnSize}
                             onClick={() => {
-                                onChange(updateValue(storeKeys, value.splice(i, 1)))
+                                onChange(updateValue(storeKeys, value.splice(i, 1), required, schema.get('type')))
                             }}/>
                     </div>
                 </div>
@@ -48,7 +48,7 @@ const SimpleList = extractValue(memo(({
                 <IconPlus
                     btnSize={btnSize}
                     onClick={() => {
-                        onChange(updateValue(storeKeys, value ? value.push('') : List([''])))
+                        onChange(updateValue(storeKeys, value ? value.push('') : List(['']), required, schema.get('type')))
                     }}/>
             </div>
         </div>

@@ -38,9 +38,9 @@ const StringRenderer = ({ownKey, schema, value, multiline = false, onChange, sto
                         console.error('Invalid Type: input not a number in:', target);
                         return;
                     }
-                    onChange(updateValue(storeKeys, value * 1));
+                    onChange(updateValue(storeKeys, value === '' ? '' : value * 1, required, type || schema.get('type')));
                 } else {
-                    onChange(updateValue(storeKeys, value));
+                    onChange(updateValue(storeKeys, value, required, type || schema.get('type')));
                 }
             })}/>
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>

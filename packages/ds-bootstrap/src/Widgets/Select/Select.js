@@ -3,7 +3,7 @@ import {TransTitle, useEditor, beautifyKey, updateValue, extractValue, memo} fro
 import {List, Map} from "immutable";
 import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
 
-const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChange, multiple = false}) => {
+const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChange, multiple = false, required}) => {
     const enum_val = schema.get('enum');
     const {t} = useEditor();
 
@@ -32,9 +32,14 @@ const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChang
             multiple={multiple}
             onChange={(e) => {
                 if(multiple) {
-                    onChange(updateValue(storeKeys, List([...e.target.options].filter(o => o.selected).map(o => o.value))))
+                    onChange(updateValue(
+                        storeKeys,
+                        List([...e.target.options].filter(o => o.selected).map(o => o.value)),
+                        required,
+                        schema.get('type')
+                    ))
                 } else {
-                    onChange(updateValue(storeKeys, e.target.value));
+                    onChange(updateValue(storeKeys, e.target.value, required, schema.get('type')));
                 }
             }}>
             {enum_val ? enum_val.map((enum_name) => {

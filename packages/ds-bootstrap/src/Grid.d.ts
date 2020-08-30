@@ -1,11 +1,13 @@
-import React from "react"
-import { SchemaGridItemHelperProps, SchemaGridItemProps } from '@ui-schema/ui-schema/GridHelper'
-import { WidgetProps } from "@ui-schema/ui-schema/Widget"
+import React from 'react'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { schema } from '@ui-schema/ui-schema/CommonTypings'
 
-export function SchemGridItem<P extends SchemaGridItemProps>(props: P): React.Component<P>
+export function SchemaGridItem(props: React.PropsWithChildren<{ schema: schema }>): React.Component
+
+export function getGridClasses(schema: schema): string[]
 
 export function RootRenderer<P>(props: P): React.Component<P>
 
-export function GroupRenderer<P extends SchemaGridItemHelperProps>(props: P): React.Component<P>
+export function GroupRenderer<P>(props: P): React.Component<P>
 
 export function SchemaGridHandler<P extends WidgetProps>(props: P): React.Component<P>
