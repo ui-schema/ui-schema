@@ -114,8 +114,6 @@ Define multiple conditional schemas in an \`allOf\`.
 
 Dependencies relate to one property, if this property is a not falsy value, the sub-schema is applied.
 
-Spec. uses 'property exists' where this library checks for 'not-empty' (like [required](/docs/schema#required-keyword)) to have a more natural form validation.
-
 **Try out** enter something in the \`credit_card\` field, this requires a new \`billing_address\` text field
 
 [📚 spec](https://json-schema.org/understanding-json-schema/reference/object.html#schema-dependencies)

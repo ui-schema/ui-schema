@@ -4,9 +4,14 @@ import { EditorPluginProps } from "@ui-schema/ui-schema/EditorPlugin"
 
 export const ERROR_DUPLICATE_ITEMS = 'duplicate-items'
 export const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains'
+export const ERROR_MIN_CONTAINS = 'min-contains'
+export const ERROR_MAX_CONTAINS = 'max-contains'
 export const ERROR_ADDITIONAL_ITEMS = 'additional-items'
 
-export function validateArrayContent(schema: OrderedMap<{}, undefined> | List<any>, value: any, additionalItems?: boolean, find?: boolean): List<any>
+export function validateArrayContent(schema: OrderedMap<{}, undefined> | List<any>, value: any, additionalItems?: boolean/*, find?: boolean*/): {
+    err: List<any>
+    found: number
+}
 
 /**
  * @param {boolean} additionalItems if additional items in a tuple are allowed, or not

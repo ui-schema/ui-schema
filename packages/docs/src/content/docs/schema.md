@@ -4,12 +4,14 @@ JSON-Schema together with UI-Schema are making it possible to validate data in f
 
 This page covers the support for JSON-Schema within the core, validators or from plugins.
 
+**JSON Schema versions supported:** Draft 2019-09 / Draft-08, Draft-07, Draft-06, Draft-04
+
 ## Widget Matching
 
 For matching a widget to a schema, these keywords are used:
  
 - `type` valid types: `string`, `number`, `integer`, `boolean`, `object`, `array`
-    - multi-type support for one schema ❌
+    - multiple types support ❌
     - full support `null` as type ❌
 - `widget`, non-standard JSON-Schema to select a specific UI
 
@@ -43,14 +45,12 @@ Usage scenario needs to be created:
     - [schema-id](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property) with `$id` and use `$ref` with `$id` to load partial sub-schemas lazily or include relatively ❌
     
 >
-> target support is JSON-Schema [Draft 2019-09](https://json-schema.org/draft/2019-09/release-notes.html)
->
 > extended with non-standard vocabulary for [UI purposes](#ui-schema-extension-of-json-schema)
 >
 > more about [JSON-Schema keyword support](#json-schema-keyword-support).
 >
     
-## UI-Schema Extension of JSON-Schema
+## UI-Schema, the visual part for JSON-Schema
 
 The JSON-Schema gets extended with special only-UI keywords, take a look a each [widget page](/docs/overview#widget-list) for individual settings and more.
 
@@ -187,65 +187,91 @@ Validates true for `null` value but property exists. ❌
 
 ## JSON-Schema Keyword Support
 
-Support is JSON-Schema [Draft 2019-09](https://json-schema.org/draft/2019-09/release-notes.html), the possibility to change between versions will be added.
+Supported JSON-Schema versions and what currently isn't supported.
 
-| Group      | Keyword         | Status |
-| :---       | :---            | :--- | 
-| `general`   | | | 
-|            | `readOnly` | per ds |
-|            | `writeOnly` | per ds |
-|            | `definitions` | ❌ |
-|            | `$id` | ❌ |
-|            | `$ref` | ❌ |
-| `type`     | | ✅ | 
-|            | `string` | ✅ | 
-|            | `number` | ✅ | 
-|            | `integer` | ✅ | 
-|            | `boolean` | ✅ | 
-|            | `array` | ✅ | 
-|            | `object` | ✅ |
-|            | `null` | 🔵 | 
-| **Types** | | |  
-| `string`   | | ✅ | 
-|            | `format` | ✅ | 
-|            | `pattern` | ✅ | 
-|            | `minLength` | ✅ | 
-|            | `maxLength` | ✅ | 
-| `number`/`integer` | | ✅ | 
-|            | `multipleOf` | ✅ | 
-|            | `minimum` | ✅ | 
-|            | `exclusiveMinimum` | ✅ | 
-|            | `maximum` | ✅ | 
-|            | `exclusiveMaximum` | ✅ | 
-| `boolean`  | | ✅ | 
-| | only general| | 
-| `object`   | | ✅ | 
-|            | `properties` | ✅ | 
-|            | `required` | ✅ | 
-|            | `minProperties` | ✅ | 
-|            | `maxProperties` | ✅ | 
-|            | `additionalProperties` | ✅ | 
-|            | `patternProperties` | ❌ | 
-|            | `propertyNames` | ✅ | 
-|            | `dependencies` | ✅ | 
-|            | `dependencies.oneOf` | ✅ <small>non standard</small> | 
-|            | `dependentSchemas` | ✅ | 
-|            | `if` | ✅ | 
-|            | `else` | ✅ | 
-|            | `then` | ✅ | 
-|            | `allOf` | ✅ | 
-|            | `allOf.if`/`allOf.not` | ✅ | 
-|            | `if.not`/`else.not`/`then.not`/`allOf.not` | ✅ | 
-|            | `oneOf` | ❌ | 
-|            | `anyOf` | ❌ | 
-| `array`   | | ✅ | 
-|            | `items` | ✅ | 
-|            | `minItems` | ✅ | 
-|            | `maxItems` | ✅ | 
-|            | `uniqueItems` | ✅ | 
-|            | `contains` | ✅ | 
-|            | `additionalItems` | ✅ | 
-| `null`   | | 🔵 |
+- [Draft 2019-09 / Draft-08](https://json-schema.org/draft/2019-09/release-notes.html) **latest**
+    - link resolution for multiple of draft-07 is incompatible to 2019-09, but currently not implemented at all
+- [Draft-07](https://json-schema.org/draft-07/json-schema-release-notes.html)
+- [Draft-06](https://json-schema.org/draft-06/json-schema-release-notes.html)
+- [Draft-04](https://json-schema.org/draft-06/json-schema-release-notes.html)
+    - defines `exclusiveMaximum`, `exclusiveMinimum` as boolean, then works together with `minimum`/`maximum`
+    - defines `integer` as true integer, whereas from Draft-06 onwards also `1.0` is valid, currently always like Draft-06 ❌
+    
+Validators for latest version are used by default, incompatible changes are solved from the validator (e.g. different namings), the possibility to change/replace validators completely will be added.
+
+| Spec. | Group      | Keyword         | Status |
+| :---  | :---       | :---            | :--- | 
+| [json-schema-core](https://json-schema.org/draft/2019-09/json-schema-core.html) <br> [json-schema-validation](https://json-schema.org/draft/2019-09/json-schema-validation.html) | | | nearly complete | 
+| core |            | `$comment` | |
+| validation |            | `readOnly` | per widget |
+| validation |            | `writeOnly` | per widget |
+| core, till draft-07 |            | `id`/`$id` | ❌ |
+| core, from 2019-09 |            | `$anchor` | ❌ |
+| core |            | `$ref` | ❌ | 
+| core |            | `$recursiveAnchor` | ❌ | 
+| core |            | `$recursiveRef` | ❌ | 
+| validation |            | `enum` | ✅ | 
+| validation |            | `const` | ✅ | 
+| validation |            | `default` | ✅ | 
+| validation | `type`     | | ✅ | 
+| |            | `string` | ✅ | 
+| |            | `number` | ✅ | 
+| |            | `integer` | ✅ | 
+| |            | `boolean` | ✅ | 
+| |            | `array` | ✅ | 
+| |            | `object` | ✅ |
+| |            | `null` | ❌ | 
+| | **Types** | | |  
+| | `string`   | | ✅ | 
+| validation |            | `format` | per widget | 
+| validation |            | `pattern` | ✅ | 
+| validation |            | `minLength` | ✅ | 
+| validation |            | `maxLength` | ✅ | 
+| core |            | `contentEncoding` | per widget | 
+| core |            | `contentMediaType` | per widget | 
+| | `number`/`integer` | | | 
+| validation |            | `multipleOf` | ✅ | 
+| validation |            | `minimum` | ✅ | 
+| validation |            | `exclusiveMinimum` | ✅ | 
+| validation |            | `maximum` | ✅ | 
+| validation |            | `exclusiveMaximum` | ✅ | 
+| | `boolean`  | | | 
+| | | no type specific keywords | | 
+| | `object`   | | | 
+| core |            | `properties` | ✅ | 
+| validation |            | `required` | ✅ | 
+| validation |            | `minProperties` | ✅ | 
+| validation |            | `maxProperties` | ✅ | 
+| core |            | `additionalProperties` | ✅ | 
+| core |            | `patternProperties` | ❌ | 
+| core |            | `unevaluatedProperties` | ❌ | 
+| core |            | `propertyNames` | ✅ | 
+| validation, till draft-07 |            | `dependencies` | ✅ | 
+| [non-standard](https://react-jsonschema-form.readthedocs.io/en/latest/usage/dependencies/#dynamic) |            | `dependencies.oneOf` | ✅ | 
+| core, from 2019-09 |            | `dependentSchemas` | ✅ | 
+| core, from 2019-09 |            | `dependentRequired` | ✅ | 
+| core |            | `if` | ✅ | 
+| core |            | `else` | ✅ | 
+| core |            | `then` | ✅ | 
+| core |            | `allOf` | ✅ | 
+| core |            | `allOf.if`/`allOf.not` | ✅ | 
+| core |            | `if.not`/`else.not`/`then.not`/`allOf.not` | ✅ | 
+| core |            | `oneOf` | ❌ | 
+| core |            | `anyOf` | ❌ | 
+| | `array`    | |  | 
+| core |            | `items` | ✅ | 
+| core |            | `unevaluatedItems` | ❌ | 
+| validation |            | `minItems` | ✅ | 
+| validation |            | `maxItems` | ✅ | 
+| validation |            | `uniqueItems` | ✅ | 
+| validation |            | `maxContains` | ✅ | 
+| validation |            | `minContains` | ✅ | 
+| core |            | `contains` | ✅ | 
+| core |            | `additionalItems` | ✅ | 
+| | `null`   | | ❌ |
+| [JSON-Schema Hypermedia](https://json-schema.org/draft/2019-09/json-schema-hypermedia.html) | | | ❌ |
+
+❌ = not implemented, ✅ = done
 
 ## UI-Schema Keywords
 

@@ -60,7 +60,7 @@ const StringRenderer = ({
                         console.error('Invalid Type: input not a number in:', e.target);
                         return;
                     }
-                    onChange(updateValue(storeKeys, value === '' ? '' : value * 1), required, type || schema.get('type'));
+                    onChange(updateValue(storeKeys, value === '' ? '' : value * 1, required, type || schema.get('type')));
 
                     return;
                 }

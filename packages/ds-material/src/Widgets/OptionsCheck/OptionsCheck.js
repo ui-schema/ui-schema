@@ -41,10 +41,10 @@ const OptionsCheckValue = extractValue(memo(({
                     } else {
                         onChange(updateValue(
                             storeKeys,
-                            value ? value.push(enum_name) : List([]).push(enum_name)),
+                            value ? value.push(enum_name) : List([]).push(enum_name),
                             required,
-                            type
-                        );
+                            type,
+                        ));
                     }
                 }}
                 label={<Trans

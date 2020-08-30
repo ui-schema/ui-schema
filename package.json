@@ -16,7 +16,6 @@
         "clean-dist": "node packerConfig.js --clean",
         "bootstrap": "lerna bootstrap",
         "hoist": "lerna bootstrap --hoist",
-        "12test": "cd packages && jest",
         "test": "jest -c=\"packages/jest.config.js\"",
         "tdd": "npm test -- --watch --watchman --coverage=false",
         "__release": "lerna run release --stream",

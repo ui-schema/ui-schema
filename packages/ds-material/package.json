@@ -10,7 +10,14 @@
         "json-schema",
         "mui",
         "material",
-        "material-ui"
+        "material-ui",
+        "react",
+        "reactjs",
+        "react-component",
+        "design-system",
+        "ui-library",
+        "ux",
+        "ui"
     ],
     "repository": {
         "type": "git",

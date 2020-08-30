@@ -111,15 +111,16 @@ const shouldHandleRequired = (value, required, type) => {
     if(!required) return false
 
     switch(type) {
-        case 'string' || 'number':
-            return value === '' || typeof value === "undefined" || (typeof value === "string" && 0 === value.trim().length) || value === null
+        case 'string':
+        case 'number':
+        case 'integer':
+            return value === '' || typeof value === "undefined" || (typeof value === "string" && 0 === value.trim().length)
         case 'boolean':
             return !value
         case 'array':
             return (List.isList(value) && value.size === 0) || (Array.isArray(value) && value.length === 0)
         case 'object':
             return (Map.isMap(value) && value.keySeq().size === 0) || (typeof value === 'object' && Object.keys(value).length === 0)
-        // todo: rest of types
     }
 
     return false;

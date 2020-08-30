@@ -23,13 +23,11 @@ export const validateMinMax = (schema, value) => {
         if(typeof value === 'string') {
             if(minLength) {
                 if(value.length < minLength) {
-                    // when not `strict` and empty string it is okay
                     errors = errors.push(List([ERROR_MIN_LENGTH, Map({min: minLength})]));
                 }
             }
             if(maxLength) {
                 if(value.length > maxLength) {
-                    // when not `strict` and empty string it is okay
                     errors = errors.push(List([ERROR_MAX_LENGTH, Map({max: maxLength})]));
                 }
             }
@@ -102,27 +100,31 @@ export const validateMinMax = (schema, value) => {
 
         if(typeof value === 'number') {
             if(typeof minimum === 'number') {
-                // when not `strict` and value is zero it is okay
                 if(value < minimum) {
                     errors = errors.push(List([ERROR_MIN_LENGTH, Map({min: minimum})]));
                 }
             }
             if(typeof exclusiveMinimum === 'number') {
-                // when not `strict` and value is zero it is okay
                 if(value <= exclusiveMinimum) {
                     errors = errors.push(List([ERROR_MIN_LENGTH, Map({exclMin: exclusiveMinimum})]));
                 }
+            } else if(typeof exclusiveMinimum === 'boolean' && typeof maximum === 'number') {
+                if(value < exclusiveMinimum) {
+                    errors = errors.push(List([ERROR_MIN_LENGTH, Map({exclMin: minimum})]));
+                }
             }
             if(typeof maximum === 'number') {
-                // when not `strict` and value is zero it is okay
                 if(value > maximum) {
                     errors = errors.push(List([ERROR_MAX_LENGTH, Map({max: maximum})]));
                 }
             }
             if(typeof exclusiveMaximum === 'number') {
-                // when not `strict` and value is zero it is okay
                 if(value >= exclusiveMaximum) {
                     errors = errors.push(List([ERROR_MAX_LENGTH, Map({exclMax: exclusiveMaximum})]));
+                }
+            } else if(typeof exclusiveMaximum === 'boolean' && typeof maximum === 'number') {
+                if(value > maximum) {
+                    errors = errors.push(List([ERROR_MAX_LENGTH, Map({exclMax: maximum})]));
                 }
             }
         }
