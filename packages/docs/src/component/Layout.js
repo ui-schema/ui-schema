@@ -84,7 +84,7 @@ export const CustomDrawer = ({closeOnClick}) => {
                     {schemas.map((schema, i) => (
                         <ListItemLink
                             key={i} to={'/' + i18n.language + '/examples/' + (schemas[i][0].split(' ').join('-'))}
-                            primary={schema[0]} style={{paddingLeft: 36}} dense showActive onClick={closeOnClick}/>
+                            primary={schema[0]} style={{paddingLeft: 24}} dense showActive onClick={closeOnClick}/>
                     ))}
                 </List>
             </CollapseDrawer>

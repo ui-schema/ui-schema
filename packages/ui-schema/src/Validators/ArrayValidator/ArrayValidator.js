@@ -1,9 +1,11 @@
 import {List, Map} from "immutable";
-import {validateSchema} from "../../validateSchema/index";
+import {validateSchema} from "@ui-schema/ui-schema/validateSchema";
 import {ERROR_WRONG_TYPE} from "@ui-schema/ui-schema/Validators/TypeValidator/TypeValidator";
 
 export const ERROR_DUPLICATE_ITEMS = 'duplicate-items';
 export const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains';
+export const ERROR_MIN_CONTAINS = 'min-contains';
+export const ERROR_MAX_CONTAINS = 'max-contains';
 export const ERROR_ADDITIONAL_ITEMS = 'additional-items';
 
 let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== index);
@@ -15,11 +17,11 @@ let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== in
  * @param schema single schema or tuple schema
  * @param value
  * @param additionalItems
- * @param find
- * @return {boolean|List}
+ * @return {{err: List, found: number}}
  */
-export const validateArrayContent = (schema, value, additionalItems = true, find = false) => {
+export const validateArrayContent = (schema, value, additionalItems = true) => {
     let err = List([]);
+    let found = 0;
     for(let val of value) {
         let tmpErr = List([]);
         if(List.isList(schema)) {
@@ -60,14 +62,17 @@ export const validateArrayContent = (schema, value, additionalItems = true, find
                 tmpErr = tmpErr.push(tmpErr2)
             }
         }
-        if(find && tmpErr.size === 0) {
-            err = tmpErr;
-            break;
+        if(tmpErr.size === 0) {
+            found++
+        } else {
+            err = err.concat(tmpErr);
         }
-        err = err.concat(tmpErr);
     }
 
-    return err;
+    return {
+        err,
+        found,
+    };
 };
 
 export const validateAdditionalItems = (additionalItems, value, schema) => {
@@ -83,12 +88,12 @@ export const validateItems = (schema, value) => {
     let items = schema.get('items');
     if(items && value) {
         let item_err = validateArrayContent(items, value, schema.get('additionalItems'));
-        if(List.isList(item_err)) {
-            if(item_err.size) {
-                return item_err;
+        if(List.isList(item_err.err)) {
+            if(item_err.err.size) {
+                return item_err.err;
             }
-        } else if(item_err) {
-            return List([item_err]);
+        } else if(item_err.err) {
+            return List([item_err.err]);
         }
     }
 
@@ -104,17 +109,36 @@ export const validateContains = (schema, value) => {
     let contains_type = contains.get('type');
     if(!contains_type) return errors;
 
-    let item_err = validateArrayContent(contains, value, undefined, true);
+    let minContains = schema.get('minContains');
+    let maxContains = schema.get('maxContains');
 
-    if(List.isList(item_err)) {
-        if(item_err.size) {
-            errors = errors.concat(item_err);
+    let item_err = validateArrayContent(contains, value, undefined);
+
+    if(
+        (item_err.found < 1 && typeof minContains === 'undefined' && typeof maxContains === 'undefined') ||
+        (typeof minContains === 'number' && minContains > item_err.found) ||
+        (typeof maxContains === 'number' && maxContains < item_err.found)
+    ) {
+        if(List.isList(item_err.err)) {
+            if(item_err.err.size) {
+                errors = errors.concat(item_err.err);
+            }
+        } else if(item_err.err) {
+            errors = errors.push(item_err.err);
         }
-    } else if(item_err) {
-        errors = errors.push(item_err);
     }
 
-    if((Array.isArray(value) && value.length === 0) || (List.isList(value) && value.size === 0)) {
+    if(typeof minContains === 'number' && minContains > item_err.found) {
+        errors = errors.push(ERROR_MIN_CONTAINS);
+    }
+    if(typeof maxContains === 'number' && maxContains < item_err.found) {
+        errors = errors.push(ERROR_MAX_CONTAINS);
+    }
+
+    if(
+        minContains !== 0 &&
+        ((Array.isArray(value) && value.length === 0) || (List.isList(value) && value.size === 0))
+    ) {
         errors = errors.push(ERROR_NOT_FOUND_CONTAINS);
     }
 

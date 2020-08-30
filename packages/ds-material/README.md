@@ -1,9 +1,14 @@
-# UI-Schema: DS Material UI
+<p align="center">
+  <a href="https://ui-schema.bemit.codes" rel="noopener noreferrer" target="_blank"><img width="125" src="https://ui-schema.bemit.codes/logo.svg" alt="UI Schema Logo"></a>
+</p>
+
+<h1 align="center">Design System: Material-UI</h1>
 
 [![Travis (.org) branch](https://img.shields.io/travis/ui-schema/ui-schema/master?style=flat-square)](https://travis-ci.org/ui-schema/ui-schema)
 [![react compatibility](https://img.shields.io/badge/React-%3E%3D16.8-success?style=flat-square&logo=react)](https://reactjs.org/)
 [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-material?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-material)
 [![MIT license](https://img.shields.io/npm/l/@ui-schema/ds-material?style=flat-square)](https://github.com/ui-schema/ui-schema/blob/master/LICENSE)
+![Typed with TypeScript](https://flat.badgen.net/badge/icon/Typed?icon=typescript&label&labelColor=blue&color=555555)
 
 [Material Design](https://material.io) binding to work with [@ui-schema/ui-schema](https://github.com/ui-schema/ui-schema), using [@material-ui](https://github.com/mui-org/material-ui/).
 
@@ -24,6 +29,12 @@
 [![Run on Repl.it](https://img.shields.io/badge/repl.it-grey?labelColor=fff&style=for-the-badge&logo=repl.it)](https://repl.it/@elbakerino/ui-schema-cra) [![Clone on Repl.it](https://img.shields.io/badge/repl.it%20clone-grey?labelColor=fff&style=for-the-badge)](https://repl.it/github/ui-schema/demo-cra)
 
 *[Demo Source](https://github.com/ui-schema/demo-cra)*
+
+- Additional Material-UI Widgets:
+    - Date-Time Picker: `@ui-schema/material-pickers` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/material-pickers?style=flat-square)](https://www.npmjs.com/package/@ui-schema/material-pickers) [![Component Documentation](https://img.shields.io/badge/Docs-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](https://ui-schema.bemit.codes/en/docs/widgets/DateTimePickers)
+    - Codemirror as Material Input: `@ui-schema/material-code` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/material-code?style=flat-square)](https://www.npmjs.com/package/@ui-schema/material-code) [![Component Documentation](https://img.shields.io/badge/Docs-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](https://ui-schema.bemit.codes/en/docs/widgets/Code)
+    - DraftJS as Material TextField: `@ui-schema/material-richtext` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/material-richtext?style=flat-square)](https://www.npmjs.com/package/@ui-schema/material-richtext) [![Component Documentation](https://img.shields.io/badge/Docs-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](https://ui-schema.bemit.codes/en/docs/widgets/RichText)
+    - Color Pickers: `@ui-schema/material-color` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/material-color?style=flat-square)](https://www.npmjs.com/package/@ui-schema/material-color) [![Component Documentation](https://img.shields.io/badge/Docs-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](https://ui-schema.bemit.codes/en/docs/widgets/Color)
 
 ---
 

@@ -1,15 +1,16 @@
 <p align="center">
-  <a href="https://ui-schema.bemit.codes" rel="noopener noreferrer" target="_blank"><img width="125" src="https://ui-schema.bemit.codes/logo.svg" alt="UI-Schema Logo"></a>
+  <a href="https://ui-schema.bemit.codes" rel="noopener noreferrer" target="_blank"><img width="125" src="https://ui-schema.bemit.codes/logo.svg" alt="UI Schema Logo"></a>
 </p>
 
-<h1 align="center">UI-Schema for React</h1>
+<h1 align="center">UI Schema for React</h1>
 
-JSON-Schema form + UI generator for any design system, first-class support for [Material UI React](https://material-ui.com), easily create own widgets and plugins.
+JSON Schema form + UI generator for any design system, first-class support for [Material UI React](https://material-ui.com), easily create own widgets and plugins.
 
 [![Travis (.org) branch](https://img.shields.io/travis/ui-schema/ui-schema/master?style=flat-square)](https://travis-ci.org/ui-schema/ui-schema)
 [![react compatibility](https://img.shields.io/badge/React-%3E%3D16.8-success?style=flat-square&logo=react)](https://reactjs.org/)
 [![MIT license](https://img.shields.io/npm/l/@ui-schema/ui-schema?style=flat-square)](https://github.com/ui-schema/ui-schema/blob/master/LICENSE)
 [![Coverage Status](https://img.shields.io/codecov/c/github/ui-schema/ui-schema/master.svg?style=flat-square)](https://codecov.io/gh/ui-schema/ui-schema/branch/master)
+![Typed with TypeScript](https://flat.badgen.net/badge/icon/Typed?icon=typescript&label&labelColor=blue&color=555555)
 
 - @ui-schema/ui-schema [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ui-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ui-schema) 
 - @ui-schema/ds-material [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-material?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-material)
@@ -30,7 +31,7 @@ JSON-Schema form + UI generator for any design system, first-class support for [
 
 [![Chat on Spectrum](https://img.shields.io/badge/Chat%20on%20Spectrum-blue?labelColor=fff&logoColor=505050&color=7B16FF&style=for-the-badge&logo=spectrum)](https://spectrum.chat/ui-schema)
 
-**🚀 Demo: UI-Schema + Material Design + CRA**
+**🚀 Demo: UI Schema + Material Design + CRA**
 
 [![Fullscreen Demo](https://img.shields.io/badge/Fullscreen%20Demo-green?labelColor=fff&color=1e970c&style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACRUlEQVR4nO3aTYiNUQDG8Z/xWRSFBRZYYSGSZCdFiZ0sFSuTjbJUdqMslGIhlmI3shGRJnZYkQVWZjNZmPIRNfIxr8Xt1JivO/ed95zzXvf917N/nn/3drvnHBoaGhoaGjphIU7iJq7jYNY2iVmCIRST8hDbMvZKxllTx4f8whWsytYuAY/NLCBkFKe1vir/Hc+1FxDyGvvz1IxHJwJC7mJzjrIxKCOgwA9cxIr0laulrICQDziBBamLV8V8BYS8wN7E3SuhKgEFxnEL65MumCdVCgj5jvNYlnBHaWIICBnGsXRTyhFTQMgT7Eg1qFNSCCjwBzewJs2suZNKQMhnrf8fi1OMmwupBYS8xaEE+9qSS0DIfWyJvnIWcgso8BOXsTLy1mmpg4CQjziFvqiLJ1EnASEvsS/m6InUUUDIIDbGm96izgIKjGEAy3tVQMgIDvSygPBp2NrLAgpc7XUB93pdwKVeFvBVhJ/FbhHwBrurHt8NAj7hDBbFGF9nAb9xDatjDQ/UUcAQtsccPZE6CXiPo3HnTqUOAr7hHJZG3jotOQWMa71KWRd95SzkEvAMexLsa0tqASM4rkaXqakEjOGCiP/ry5JCwCA2JdrTMTEFvJLwbK8sMQSMol/i092yVCkgnO931bO6qgQ8kPmGpyzzFfAOh5O3rpCyAr6o2S1vWToVEO751+YoG4NOBDzFziwtI/JI++HDuuCtT1n6zTy8q157laUPd/w7fBy3sSFjr+Qc0TpzH8CuzF0aGhoaGhoayvEXCYka61umCF0AAAAASUVORK5CYII=)](https://ui-schema-build.elbakerino.repl.co)
 
@@ -44,7 +45,7 @@ JSON-Schema form + UI generator for any design system, first-class support for [
 
 ## Schema
 
-JSON-Schema keywords are used to validate the data, the UI is created from the data-schema and special UI keywords. A data-schema with integrated ui-schema enforces the consistency of data and UI across different apps and devices. Schemas are speeding up development, especially for admin portals which work primary CRUD, API first projects which need a good way to validate data, anything which needs fast changes of forms or dynamically generated forms.
+JSON Schema keywords are used to validate the data, the UI is created from the data-schema and special UI keywords. A data-schema with integrated ui-schema enforces the consistency of data and UI across different apps and devices. Schemas are speeding up development, especially for admin portals which work primary CRUD, API first projects which need a good way to validate data, anything which needs fast changes of forms or dynamically generated forms.
 
 *[Schema Documentation](https://ui-schema.bemit.codes/en/docs/schema)*
 
@@ -65,13 +66,14 @@ JSON-Schema keywords are used to validate the data, the UI is created from the d
 - includes helper functions for store handling
 - conditional and combining schemas
 - easy nesting of editor for object/array widgets
-- supports JSON-Schema 2019-09 / draft-8
+- Typescript definitions for core, validators, JSON Schema and UI Schema
+- **JSON Schema versions** supported: Draft 2019-09 / Draft-08, Draft-07, Draft-06, Draft-04
 
 *[Design-System and Widgets Overview](https://ui-schema.bemit.codes/en/docs/overview)*
 
 ## Basic Example
 
-First time? [Take the quick-start](https://ui-schema.bemit.codes/en/quick-start) or take a look into the [create-react-app UI-Schema example](https://github.com/ui-schema/demo-cra).
+First time? [Take the quick-start](https://ui-schema.bemit.codes/en/quick-start) or take a look into the [create-react-app UI Schema example](https://github.com/ui-schema/demo-cra).
 
 Example setup of a editor, followed by a simple text widget. 
 

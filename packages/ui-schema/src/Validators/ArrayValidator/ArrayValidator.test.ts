@@ -15,16 +15,16 @@ describe('validateArrayContent', () => {
     test.each([
         [createOrderedMap({
             type: 'number',
-        }), [1, 2, 3], undefined, false, 0],
+        }), [1, 2, 3], undefined, 0],
         [createOrderedMap({
             type: 'number',
-        }), ['1'], undefined, false, 1],
+        }), ['1'], undefined, 1],
         [createOrderedMap({
             type: 'number',
-        }), [1, 2, 3], undefined, false, 0],
+        }), [1, 2, 3], undefined, 0],
         [createOrderedMap({
             type: 'number',
-        }), ['1'], undefined, false, 1],
+        }), ['1'], undefined, 1],
         [List([
             createOrderedMap({
                 type: 'number',
@@ -35,7 +35,7 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'number',
             }),
-        ]), [[1, 2, 3], [1, 2, 3], [1, 2, 3]], false, undefined, 0],
+        ]), [[1, 2, 3], [1, 2, 3], [1, 2, 3]], false, 0],
         [List([
             createOrderedMap({
                 type: 'number',
@@ -46,7 +46,7 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'number',
             }),
-        ]), ['no-tuple', [1, 2, 3], [1, 2, 3]], false, undefined, 1],
+        ]), ['no-tuple', [1, 2, 3], [1, 2, 3]], false, 1],
         [List([
             createOrderedMap({
                 type: 'number',
@@ -57,7 +57,7 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'number',
             }),
-        ]), ['no-tuple', [1, 2, 3], 'no-tuple'], false, undefined, 2],
+        ]), ['no-tuple', [1, 2, 3], 'no-tuple'], false, 2],
         [List([
             createOrderedMap({
                 type: 'number',
@@ -68,7 +68,7 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'number',
             }),
-        ]), [[1, 2, 3], [1, 2, 3], [1, 2, 3]], true, undefined, 0],
+        ]), [[1, 2, 3], [1, 2, 3], [1, 2, 3]], true, 0],
         [List([
             createOrderedMap({
                 type: 'number',
@@ -79,7 +79,7 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'number',
             }),
-        ]), [[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]], false, undefined, 3],
+        ]), [[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]], false, 3],
         [List([
             createOrderedMap({
                 type: 'number',
@@ -90,7 +90,7 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'number',
             }),
-        ]), [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], false, undefined, 1],
+        ]), [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], false, 1],
         /*
         `validateArrayContent` is only responsible for tuple validation `additionalItems` and checking if a tuple is really a tuple
         deep-schema validation is not it's responsible
@@ -172,9 +172,9 @@ describe('validateArrayContent', () => {
                 type: 'boolean'
             })
         ]), [1, 'text', true], true, false, 0],*/
-    ])('validateArrayContent(%j, %j, %s, %s)', (schema, value, additionalItems, find, expected) => {
-        const r = validateArrayContent(schema, value, additionalItems, find)
-        expect(r.size).toBe(expected)
+    ])('validateArrayContent(%j, %j, %s): %s', (schema, value, additionalItems, expected) => {
+        const r = validateArrayContent(schema, value, additionalItems)
+        expect(r.err.size).toBe(expected)
     })
 })
 
@@ -259,6 +259,109 @@ describe('validateContains', () => {
                 type: 'number',
             },
         }, [1, '2', '3'], 0],
+        [{
+            type: 'array',
+            contains: {
+                type: 'number',
+            },
+        }, [1], 0],
+        [{
+            type: 'array',
+            contains: {
+                type: 'number',
+            },
+            minContains: 2,
+        }, [1], 1],
+        [{
+            type: 'array',
+            contains: {
+                type: 'number',
+            },
+            minContains: 2,
+        }, [1, 2], 0],
+        [{
+            type: 'array',
+            contains: {
+                type: 'number',
+            },
+            minContains: 0,
+        }, [], 0],
+        [{
+            type: 'array',
+            contains: {
+                type: 'number',
+            },
+            minContains: 2,
+            maxContains: 4,
+        }, [1], 1],
+        [{
+            type: 'array',
+            contains: {
+                type: 'number',
+            },
+            minContains: 2,
+            maxContains: 4,
+        }, [1, 2], 0],
+        [{
+            type: 'array',
+            contains: {
+                type: 'number',
+            },
+            minContains: 2,
+            maxContains: 4,
+        }, [1, 2, 3], 0],
+        [{
+            type: 'array',
+            contains: {
+                type: 'number',
+            },
+            minContains: 2,
+            maxContains: 4,
+        }, [1, 2, 3, 4], 0],
+        [{
+            type: 'array',
+            contains: {
+                type: 'number',
+            },
+            minContains: 2,
+            maxContains: 4,
+        }, [1, 2, 3, 4, 5], 1],
+        [{
+            type: 'array',
+            contains: {
+                type: 'number',
+            },
+            minContains: 0,
+            maxContains: 1,
+        }, [], 0],
+        [{
+            type: 'array',
+            contains: {
+                type: 'number',
+            },
+            maxContains: 2,
+        }, [1, 2, 3], 1],
+        [{
+            type: 'array',
+            contains: {
+                type: 'number',
+            },
+            maxContains: 2,
+        }, [1, 2, 3, "3"], 2],
+        [{
+            type: 'array',
+            contains: {
+                type: 'number',
+            },
+            maxContains: 2,
+        }, [1, 2], 0],
+        [{
+            type: 'array',
+            contains: {
+                type: 'number',
+            },
+            maxContains: 2,
+        }, [], 1],
         [{
             type: 'array',
             contains: {

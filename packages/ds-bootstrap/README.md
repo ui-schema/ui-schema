@@ -1,9 +1,14 @@
-# UI-Schema: DS Bootstrap
+<p align="center">
+  <a href="https://ui-schema.bemit.codes" rel="noopener noreferrer" target="_blank"><img width="125" src="https://ui-schema.bemit.codes/logo.svg" alt="UI Schema Logo"></a>
+</p>
+
+<h1 align="center">Design System: Bootstrap</h1>
 
 [![Travis (.org) branch](https://img.shields.io/travis/ui-schema/ui-schema/master?style=flat-square)](https://travis-ci.org/ui-schema/ds-bootstrap)
 [![react compatibility](https://img.shields.io/badge/React-%3E%3D16.8-success?style=flat-square&logo=react)](https://reactjs.org/)
 [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-bootstrap?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-bootstrap)
 [![MIT license](https://img.shields.io/npm/l/@ui-schema/ds-bootstrap?style=flat-square)](https://github.com/ui-schema/ui-schema/blob/master/LICENSE)
+![Typed with TypeScript](https://flat.badgen.net/badge/icon/Typed?icon=typescript&label&labelColor=blue&color=555555)
 
 [Bootstrap](https://getbootstrap.com/) binding to work with [@ui-schema/ui-schema](https://github.com/ui-schema/ui-schema), using native HTML.
 

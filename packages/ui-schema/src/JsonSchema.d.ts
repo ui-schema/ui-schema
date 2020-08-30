@@ -1,5 +1,20 @@
+import { UISchema } from "@ui-schema/ui-schema/UISchema"
+
+export interface SchemasDraft04 {
+    number: {
+        exclusiveMinimum?: boolean
+        exclusiveMaximum?: boolean
+    } | {
+        exclusiveMinimum: true
+        minimum: number
+    } | {
+        exclusiveMaximum: true
+        maximum: number
+    }
+}
+
 export interface Schemas {
-    all: {
+    general: {
         readOnly?: boolean
     }
     string: {
@@ -23,6 +38,18 @@ export interface Schemas {
         properties?: {
             [key: string]: JsonSchema
         }
+        if?: JsonSchema | {
+            not: JsonSchema
+        }
+        else?: JsonSchema | {
+            not: JsonSchema
+        }
+        then?: JsonSchema | {
+            not: JsonSchema
+        }
+        allOf?: JsonSchema[] | {
+            not: JsonSchema
+        }[]
     }
     number: {
         type: 'number' | 'integer'
@@ -44,4 +71,5 @@ export type JsonSchema =
     | Schemas['number']
     | Schemas['boolean']
     | Schemas['null']
-    & Schemas['all']
+    & Schemas['general']
+    & UISchema
