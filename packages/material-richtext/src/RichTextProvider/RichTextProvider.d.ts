@@ -8,6 +8,6 @@ export interface RichTextProps {
 
 export type RichTextContext = React.Context<RichTextProps>
 
-export type RichTextProvider = (props: React.PropsWithChildren<RichTextProps>) => React.Component
+export function RichTextProvider(props: React.PropsWithChildren<RichTextProps>): React.ReactElement
 
 export function useRichText(): RichTextProps

@@ -1,10 +1,10 @@
 import * as React from "react"
-import { OrderedMap } from 'immutable'
 import { EditorContext, StoreKeys } from "../EditorStore"
+import { StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
 
 export interface NestedSchemaEditorProps {
     // the whole schema for this level
-    schema: OrderedMap<{}, undefined>
+    schema: StoreSchemaType
     storeKeys: StoreKeys
     level?: number
     widgets?: EditorContext['widgets']
@@ -12,4 +12,4 @@ export interface NestedSchemaEditorProps {
     showValidity?: EditorContext['showValidity']
 }
 
-export function NestedSchemaEditor<P extends NestedSchemaEditorProps>(props: P): React.Component
+export function NestedSchemaEditor<P extends NestedSchemaEditorProps>(props: P): React.ReactElement

@@ -6,6 +6,6 @@ export interface ColorCircleInterface {
     circleSize: number
 }
 
-export function ColorCircle(props: ColorCircleInterface & ColorBaseInterface): React.Component
+export function ColorCircle(props: ColorCircleInterface & ColorBaseInterface): React.ReactElement
 
-export function ColorCircleStatic(props: ColorCircleInterface & ColorStaticBaseInterface): React.Component
+export function ColorCircleStatic(props: ColorCircleInterface & ColorStaticBaseInterface): React.ReactElement

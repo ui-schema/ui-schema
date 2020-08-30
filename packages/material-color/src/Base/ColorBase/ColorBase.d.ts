@@ -7,8 +7,8 @@ export interface ColorBaseInterface extends StringRendererProps {
     refocus: boolean | true
     forceIcon: boolean | false
     pickerProps: object
-    PickerContainer: React.Component
-    ColorPicker: React.Component
+    PickerContainer: React.ComponentType
+    ColorPicker: React.ComponentType
 }
 
-export function ColorBase<P extends ColorBaseInterface>(props: P): React.Component<P>
+export function ColorBase<P extends ColorBaseInterface>(props: P): React.ReactElement<P>

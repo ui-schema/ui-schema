@@ -1,11 +1,11 @@
-import { onChange, StoreKeys } from '@ui-schema/ui-schema/EditorStore'
-import { ownKey, showValidity, errors, required, valid, schema } from './CommonTypings'
+import { onChange, ownKey, StoreKeys } from '@ui-schema/ui-schema/EditorStore'
+import { showValidity, errors, required, valid, StoreSchemaType } from './CommonTypings'
 import { widgetsBase } from "@ui-schema/ui-schema/widgetsBase"
 
 export interface WidgetProps {
     onChange: onChange
-    schema: schema
-    parentSchema: schema
+    schema: StoreSchemaType
+    parentSchema: StoreSchemaType
     level: number
     // the last index of the current widget
     ownKey: ownKey
@@ -18,5 +18,5 @@ export interface WidgetProps {
     valid: valid
     widgets: widgetsBase
     // contains the value for non-scalar items, for objects/array it is undefined
-    value: string | number | boolean | undefined
+    value: string | number | boolean | undefined | null
 }

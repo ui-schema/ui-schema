@@ -8,4 +8,4 @@ export interface OptionsCheckRendererProps extends WidgetProps {
     required: required
 }
 
-export function OptionsCheck<P extends OptionsCheckRendererProps>(props: P): React.Component<P>
+export function OptionsCheck<P extends OptionsCheckRendererProps>(props: P): React.ReactElement<P>

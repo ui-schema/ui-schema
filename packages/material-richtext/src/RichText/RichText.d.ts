@@ -7,4 +7,4 @@ export interface RichTextInterface extends WidgetProps {
     onlyInline: boolean
 }
 
-export function RichText<P extends RichTextInterface>(props: P): React.Component<P>
+export function RichText<P extends RichTextInterface>(props: P): React.ReactElement<P>

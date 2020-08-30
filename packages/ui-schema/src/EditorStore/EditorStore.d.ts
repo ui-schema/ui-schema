@@ -1,71 +1,55 @@
 import React from 'react'
-import { Record, OrderedMap, Map, List } from 'immutable'
-import { translator } from "../Translate/t"
+import { Record, OrderedMap, Map, List } from 'immutable/dist/immutable-nonambient'
+import { Translator } from "../Translate/t"
+import { StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
 
 // EditorStoreContext
 
-export type onChangeHandler = (store: EditorStore<any>) => EditorStore<any>
+export type onChangeHandler = (store: EditorStoreType<any>) => EditorStoreType<any>
 export type onChange = (handler: onChangeHandler) => void
 
 export interface EditorStoreContext<> {
-    store: EditorStore<any>
+    store: EditorStoreType<any>
     onChange: onChange
-    schema: OrderedMap<{}, undefined>
-}
-
-export interface EditorStoreProviderProps<> extends EditorStoreContext {
-    children: React.ReactNode
+    schema: StoreSchemaType
 }
 
 export function EditorStoreProvider(
-    props: EditorStoreProviderProps
+    props: React.PropsWithChildren<EditorStoreContext>
 ): React.ReactElement
 
 // EditorContext
 
 export interface EditorContext<> {
     widgets: {}
-    t?: translator
+    t?: Translator
     showValidity?: boolean
 }
 
-export interface EditorProviderProps<> extends EditorContext {
-    children: React.ReactNode
-}
-
 export function EditorProvider(
-    props: EditorProviderProps
+    props: React.PropsWithChildren<EditorContext>
 ): React.ReactElement
 
 // EditorStore
 
-export interface EditorStore<D extends {
-    values: any
+export type Values<V> = List<V> | string | number | boolean | Map<V, any> | OrderedMap<V, any>
+
+export interface EditorStoreState<D> {
+    values: D
     internals: Map<{}, undefined>
     validity: Map<{}, undefined>
-    // @ts-ignore
-}> extends Record<D> {
-    values: undefined
-    internals: Map<{}, undefined>
-    validity: Map<{}, undefined>
-    getValues: () => any
-    getInternals: () => any
+    getValues: () => Values<any>
+    getInternals: () => Values<any>
     getValidity: () => Map<{}, undefined>
 }
 
-export type Values<V> = List<V> | string | number | boolean | Map<V, any> | OrderedMap<V, any>
+export type EditorStoreType<D = undefined> = Record<EditorStoreState<D>> & EditorStoreState<D>
 
-export function createStore<D = any>(data: D): EditorStore<{
-    values: Values<D>
-    internals: Map<{}, undefined>
-    validity: Map<{}, undefined>
-}>
+export const EditorStore: EditorStoreType
 
-export function createEmptyStore(type?: string): EditorStore<{
-    values: Values<[] | '' | 0 | false | {}>
-    internals: Map<{}, undefined>
-    validity: Map<{}, undefined>
-}>
+export function createStore<D = any>(data: D): EditorStoreType<Values<D>>
+
+export function createEmptyStore(type?: string): EditorStoreType<Values<[] | '' | 0 | false | {}>>
 
 export function useSchemaStore(): EditorStoreContext
 
@@ -79,7 +63,7 @@ export interface WithValue {
     onChange: onChange
 }
 
-export function extractValue<P extends WithValue>(Wrapped: React.ComponentType<P>): React.FunctionComponent<P>
+export function extractValue<P extends WithValue>(Wrapped: React.ComponentType<P>): React.ComponentType<P>
 
 export interface WithValidity {
     validity: any
@@ -96,13 +80,15 @@ export function withEditor(
 
 // EditorStore / Immutable Manipulation Functions
 
-export type StoreKeys<T = string[] | number[]> = List<T>
+export type ownKey = string | number
+
+export type StoreKeys<T = ownKey[]> = List<T>
 
 export function prependKey(storeKeys: StoreKeys, key: string | number): StoreKeys
 
-//export function updateRawValue(store: EditorStore<any>, storeKeys: StoreKeys, key: string | number, value: any): EditorStore<any>
+//export function updateRawValue(store: EditorStoreType<any>, storeKeys: StoreKeys, key: string | number, value: any): EditorStoreType<any>
 
-//export function deleteRawValue(store: EditorStore<any>, storeKeys: StoreKeys, key: string | number): EditorStore<any>
+//export function deleteRawValue(store: EditorStoreType<any>, storeKeys: StoreKeys, key: string | number): EditorStoreType<any>
 
 export function updateInternalValue(storeKeys: StoreKeys, internalValue: any): onChangeHandler
 

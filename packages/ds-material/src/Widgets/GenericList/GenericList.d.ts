@@ -7,4 +7,4 @@ export interface GenericListInterface extends WidgetProps {
     required: required
 }
 
-export function GenericList<P extends GenericListInterface>(props: P): React.Component<P>
+export function GenericList<P extends GenericListInterface>(props: P): React.ReactElement<P>

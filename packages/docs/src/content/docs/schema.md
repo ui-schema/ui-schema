@@ -146,7 +146,7 @@ Validation Keywords:
 - `additionalProperties` when `false` only defined properties are allowed
 - `propertyNames` sub-schema to limit naming of properties
 - `patternProperties` automatic sub-schema applied to a property when property-name matches regex ❌ 
-- [dependencies, dependentSchemas](/docs/plugins#dependenthandler) for dynamic sub-schema/properties
+- [dependencies, dependentSchemas, dependentRequired](/docs/plugins#dependenthandler) for dynamic sub-schema/properties
 - [if, else, then, not, allOf](/docs/plugins#conditionalhandler) for conditional sub-schema
 - [allOf, with conditionals](/docs/plugins#combininghandler) for combining sub-schema (not-all keywords)
 
@@ -202,14 +202,15 @@ Validators for latest version are used by default, incompatible changes are solv
 | Spec. | Group      | Keyword         | Status |
 | :---  | :---       | :---            | :--- | 
 | [json-schema-core](https://json-schema.org/draft/2019-09/json-schema-core.html) <br> [json-schema-validation](https://json-schema.org/draft/2019-09/json-schema-validation.html) | | | nearly complete | 
-| core |            | `$comment` | |
+| core |                  | `$comment` | |
 | validation |            | `readOnly` | per widget |
 | validation |            | `writeOnly` | per widget |
-| core, till draft-07 |            | `id`/`$id` | ❌ |
-| core, from 2019-09 |            | `$anchor` | ❌ |
-| core |            | `$ref` | ❌ | 
-| core |            | `$recursiveAnchor` | ❌ | 
-| core |            | `$recursiveRef` | ❌ | 
+| core |                  | `definitions`/`$def` | ❌ |
+| core, till draft-07 |   | `id`/`$id` | ❌ |
+| core, from 2019-09 |    | `$anchor` | ❌ |
+| core |                  | `$ref` | ❌ | 
+| core |                  | `$recursiveAnchor` | ❌ | 
+| core |                  | `$recursiveRef` | ❌ | 
 | validation |            | `enum` | ✅ | 
 | validation |            | `const` | ✅ | 
 | validation |            | `default` | ✅ | 
@@ -227,8 +228,8 @@ Validators for latest version are used by default, incompatible changes are solv
 | validation |            | `pattern` | ✅ | 
 | validation |            | `minLength` | ✅ | 
 | validation |            | `maxLength` | ✅ | 
-| core |            | `contentEncoding` | per widget | 
-| core |            | `contentMediaType` | per widget | 
+| core |                  | `contentEncoding` | per widget | 
+| core |                  | `contentMediaType` | per widget | 
 | | `number`/`integer` | | | 
 | validation |            | `multipleOf` | ✅ | 
 | validation |            | `minimum` | ✅ | 
@@ -238,14 +239,14 @@ Validators for latest version are used by default, incompatible changes are solv
 | | `boolean`  | | | 
 | | | no type specific keywords | | 
 | | `object`   | | | 
-| core |            | `properties` | ✅ | 
+| core |                  | `properties` | ✅ | 
 | validation |            | `required` | ✅ | 
 | validation |            | `minProperties` | ✅ | 
 | validation |            | `maxProperties` | ✅ | 
-| core |            | `additionalProperties` | ✅ | 
-| core |            | `patternProperties` | ❌ | 
-| core |            | `unevaluatedProperties` | ❌ | 
-| core |            | `propertyNames` | ✅ | 
+| core |                  | `additionalProperties` | ✅ | 
+| core |                  | `patternProperties` | ❌ | 
+| core |                  | `unevaluatedProperties` | ❌ | 
+| core |                  | `propertyNames` | ✅ | 
 | validation, till draft-07 |            | `dependencies` | ✅ | 
 | [non-standard](https://react-jsonschema-form.readthedocs.io/en/latest/usage/dependencies/#dynamic) |            | `dependencies.oneOf` | ✅ | 
 | core, from 2019-09 |            | `dependentSchemas` | ✅ | 

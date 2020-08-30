@@ -9,7 +9,7 @@ import {relT} from "../relT";
  *
  * @param {Map} dictionary imputable map with translations for one language
  * @param {string} locale
- * @return {function(string, {}): string|React.Component}
+ * @return {function(string, {}): string|React.ComponentType}
  */
 export const t = (dictionary, locale = '') =>
     (text, context = {}, schema) => {

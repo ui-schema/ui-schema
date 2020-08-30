@@ -1,22 +1,21 @@
 import React from 'react'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
-import { rows, multiline, type } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface StringRendererProps extends WidgetProps {
     // contains the index of the current schema level
-    multiline?: multiline
-    type: type
-    rows?: rows
+    multiline?: boolean
+    type?: string
+    rows?: number
     value: string
 }
 
 export interface NumberRendererProps extends WidgetProps {
-    type: type
+    type: string
     value: number
 }
 
-export function StringRenderer<P extends StringRendererProps>(props: P): React.Component<P>
+export function StringRenderer<P extends StringRendererProps>(props: P): React.ReactElement<P>
 
-export function NumberRenderer<P extends NumberRendererProps>(props: P): React.Component<P>
+export function NumberRenderer<P extends NumberRendererProps>(props: P): React.ReactElement<P>
 
-export function TextRenderer<P extends StringRendererProps>(props: P): React.Component<P>
+export function TextRenderer<P extends StringRendererProps>(props: P): React.ReactElement<P>

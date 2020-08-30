@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { schema } from '@ui-schema/ui-schema/CommonTypings'
+import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface additionalProps {
     hideTabs: boolean
@@ -7,4 +7,4 @@ export interface additionalProps {
     minutesStep: number
 }
 
-export function addAdditionalProps(schema: schema): additionalProps
+export function addAdditionalProps(schema: StoreSchemaType): additionalProps

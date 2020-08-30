@@ -14,6 +14,6 @@ export * from './Slider'
 export * from './Swatches'
 export * from './Twitter'
 
-export type ColorPicker = React.Component
-export type PickerContainer = React.Component
+export type ColorPicker = React.ComponentType
+export type PickerContainer = React.ReactElement
 export type styleWrapper = (palette: object, spacing: Function) => object

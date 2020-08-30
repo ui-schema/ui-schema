@@ -7,6 +7,6 @@ export interface Icon {
     btnSize: string
 }
 
-export function IconPlus<P extends Icon>(props: P): React.Component<P>
+export function IconPlus<P extends Icon>(props: P): React.ReactElement<P>
 
-export function IconMinus<P extends Icon>(props: P): React.Component<P>
+export function IconMinus<P extends Icon>(props: P): React.ReactElement<P>

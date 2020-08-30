@@ -1,27 +1,25 @@
 import * as React from 'react'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
-import { canDelete, children, multipleOf, min, max, enumVal, constVal, defaultVal, minItems, maxItems } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface ThumbComponentProps {
     onClick: React.MouseEvent
-    canDelete: canDelete
-    children: children
+    canDelete: boolean
     p: any
 }
 
-export function ThumbComponent<P extends ThumbComponentProps>(props: P): React.Component<P>
+export function ThumbComponent<P extends React.PropsWithChildren<ThumbComponentProps>>(props: P): React.ReactElement<P>
 
 export interface NumberSliderRendererProps extends WidgetProps {
-    multipleOf: multipleOf
-    min: min
-    max: max
-    enumVal: enumVal
-    constVal: constVal
-    defaultVal: defaultVal
-    minItems: minItems
-    maxItems: maxItems
+    multipleOf: number
+    min: number
+    max: number
+    enumVal: number
+    constVal: number
+    defaultVal: number
+    minItems: number
+    maxItems: number
 }
 
-export function NumberSliderRenderer<P extends NumberSliderRendererProps>(props: P): React.Component<P>
+export function NumberSliderRenderer<P extends NumberSliderRendererProps>(props: P): React.ReactElement<P>
 
-export function NumberSlider<P extends NumberSliderRendererProps>(props: P): React.Component<P>
+export function NumberSlider<P extends NumberSliderRendererProps>(props: P): React.ReactElement<P>

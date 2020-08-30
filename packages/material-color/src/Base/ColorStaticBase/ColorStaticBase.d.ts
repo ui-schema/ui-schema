@@ -1,14 +1,14 @@
 import { StoreKeys, onChange } from '@ui-schema/ui-schema/EditorStore'
-import { schema } from '@ui-schema/ui-schema/CommonTypings'
+import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface ColorStaticBaseInterface {
     storeKeys: StoreKeys
-    schema: schema
+    schema: StoreSchemaType
     value: string
     onChange: onChange
-    ColorPicker: React.Component
+    ColorPicker: React.ComponentType
     styles: object
     pickerProps: object
 }
 
-export function ColorStaticBase(props: ColorStaticBaseInterface): React.Component
+export function ColorStaticBase(props: ColorStaticBaseInterface): React.ReactElement

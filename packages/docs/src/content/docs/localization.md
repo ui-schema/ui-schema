@@ -9,17 +9,17 @@ Native HTML inputs can use [native translations](#native-translation) for some v
 > In your own widgets any translation lib can be used directly, if publishing it is recommended to use `t` / `Trans`
 
 ```jsx harmony
-// for handling the schema keyword `t`
 import {relT} from '@ui-schema/ui-schema';
 
 const translate = (text, context, schema) => {
 
     // locale can be empty or the string of the current locale    
+    // for handling the schema keyword `t`
     const schemaT = relT(schema, context, locale);
     if(schemaT) return schemaT;
    
-    // your custom translator 
-    return translator(text, context)
+    // your custom translator function 
+    return translator(text, context, schema)
 };
 
 <SchemaEditor t={translate}/>

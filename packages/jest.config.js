@@ -1,4 +1,4 @@
-const packages = ['ui-schema', 'ds-bootstrap'];
+const packages = ['ui-schema', 'ds-bootstrap', 'ds-material', 'material-code', 'material-color', 'material-pickers', 'material-richtext'];
 
 const testMatches = []
 const testMatchesLint = []

@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-code",
-    "version": "0.0.19",
+    "version": "0.0.20",
     "description": "Code Input for UI-Schema with Material-UI",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -36,8 +36,8 @@
     "devDependencies": {
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
-        "@ui-schema/ds-material": "^0.0.19",
-        "@ui-schema/ui-schema": "^0.0.19",
+        "@ui-schema/ds-material": "^0.0.20",
+        "@ui-schema/ui-schema": "^0.0.20",
         "codemirror": "^5.52.0",
         "immutable": "^4.0.0-rc.12",
         "react": "^16.12",

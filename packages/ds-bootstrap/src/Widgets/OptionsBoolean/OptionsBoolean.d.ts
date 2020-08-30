@@ -5,4 +5,4 @@ export interface WidgetPropsBoolean extends WidgetProps {
     value: boolean
 }
 
-export function BoolRenderer<P extends WidgetPropsBoolean>(props: P): React.Component<P>
+export function BoolRenderer<P extends WidgetPropsBoolean>(props: P): React.ReactElement<P>

@@ -4,4 +4,4 @@ export interface MarkdownLabelInterface {
     setFocus: Function
 }
 
-export function MarkdownLabel<P extends MarkdownLabelInterface>(props: P): React.Component<P>
+export function MarkdownLabel<P extends MarkdownLabelInterface>(props: P): React.ReactElement<P>

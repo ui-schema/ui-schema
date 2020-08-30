@@ -1,5 +1,5 @@
-import { onChange, StoreKeys } from '@ui-schema/ui-schema/EditorStore'
-import { ownKey, required, schema, showValidity, valid } from '@ui-schema/ui-schema/CommonTypings'
+import { onChange, ownKey, StoreKeys } from '@ui-schema/ui-schema/EditorStore'
+import { required, StoreSchemaType, showValidity, valid } from '@ui-schema/ui-schema/CommonTypings'
 import { additionalProps } from '@ui-schema/material-pickers/TimeBase'
 
 export interface DateTimeBaseInterface {
@@ -7,15 +7,15 @@ export interface DateTimeBaseInterface {
     ownKey: ownKey
     value: string
     onChange: onChange
-    schema: schema
+    schema: StoreSchemaType
     showValidity: showValidity
     valid: valid
     required: required
     additionalProps: additionalProps
     dateFormat: string
     dateFormatData: string
-    Component: React.Component
+    Component: React.ComponentType
     keyboard: boolean
 }
 
-export function DateTimeBase<P extends DateTimeBaseInterface>(props: P): React.Component<P>
+export function DateTimeBase<P extends DateTimeBaseInterface>(props: P): React.ReactElement<P>
