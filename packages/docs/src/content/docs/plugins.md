@@ -1,6 +1,8 @@
-# Widget Plugins
+# Plugins
 
 Plugins are wrapped around each widget/json-schema level and are used to add logic to all. Each plugin should decide if it should do something according to it's props/schema.
+
+There are two types of plugins: Schema Plugins and Validation Plugins.
 
 - [Schema Plugins](#schema-plugins)
 - [Validation Plugins](#validation-plugins)
@@ -13,6 +15,10 @@ Plugins are wrapped around each widget/json-schema level and are used to add log
 
 Plugins that work schema-driven are handling the schema in different ways, these are not used for validation but for creating functionality around the schema - which may influence the validations.
 
+```typescript jsx
+import { EditorPluginProps, EditorPluginType } from "@ui-schema/ui-schema/EditorPlugin"
+```
+
 | Plugin                                              | Package              | Handles              | Added Props | Status |
 | :---                                                | :---                 | :---                 | :---        | :--- |
 | [DefaultHandler](#defaulthandler)                   | @ui-schema/ui-schema | keyword `default`    | - | ✔ |
@@ -23,6 +29,10 @@ Plugins that work schema-driven are handling the schema in different ways, these
 | [CombiningNetworkHandler](#combiningnetworkhandler) | @ui-schema/ui-schema | ... | ... | ❌ |
 
 ## Validation Plugins
+
+```typescript
+import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators"
+```
 
 Validation plugins also work with the schema, but are only used for validation of the values/schema and can not change the render-flow.
 

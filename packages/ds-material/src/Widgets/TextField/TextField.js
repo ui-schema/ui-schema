@@ -60,12 +60,12 @@ const StringRenderer = ({
                         console.error('Invalid Type: input not a number in:', e.target);
                         return;
                     }
-                    onChange(updateValue(storeKeys, value === '' ? '' : value * 1, required, type || schema.get('type')));
+                    onChange(updateValue(storeKeys, value === '' ? '' : value * 1, required, schema.get('type')));
 
                     return;
                 }
 
-                onChange(updateValue(storeKeys, value, required, type || schema.get('type')));
+                onChange(updateValue(storeKeys, value, required, schema.get('type')));
             })}
             InputLabelProps={{shrink: schema.getIn(['view', 'shrink'])}}
             InputProps={InputProps}
@@ -89,10 +89,9 @@ const TextRenderer = ({schema, ...props}) => {
     />
 };
 
-const NumberRenderer = ({schema, ...props}) => {
+const NumberRenderer = (props) => {
     return <StringRenderer
         {...props}
-        schema={schema}
         type={'number'}
     />
 };

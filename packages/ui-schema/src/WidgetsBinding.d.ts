@@ -3,7 +3,7 @@ import { EditorPluginType } from '@ui-schema/ui-schema/EditorPlugin'
 import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators/ValidatorPlugin"
 import { StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
 
-export interface widgetsBase {
+export interface WidgetsBindingBase {
     ErrorFallback: React.ComponentType<any>
     // wraps the whole editor
     RootRenderer: React.ComponentType<{}>

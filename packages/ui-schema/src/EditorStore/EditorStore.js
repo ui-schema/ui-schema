@@ -15,6 +15,12 @@ export const EditorStore = Record({
     values: undefined,
     internals: Map({}),
     validity: Map({}),
+    valuesToJS: function() {
+        const values = this.get('values')
+        if(Map.isMap(values) || List.isList(values)) return values.toJS()
+
+        return values
+    },
     getValues: function() {
         return this.get('values')
     },

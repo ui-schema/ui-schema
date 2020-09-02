@@ -6,7 +6,13 @@ This document is about **creating own widgets and design-system bindings** or ch
 
 A widget is responsible to render the UI and either display or make the editing of the data possible, it **handles one schema level** and may connect to another NestedSchemaEditor.
 
-Through the **modular approach** and easy definition of a new widget, the widget system can be used to create **complex, separated UI components**, where the orchestration can be done **from an external system** like some backend API.
+Through the **modular approach** and easy definition of a new widget, the widget system can be used to create **complex, separated UI components**, where the orchestration can be done **from an external system**, like some backend API.
+
+
+```typescript jsx
+// Typings of widgets:
+import { WidgetProps } from "@ui-schema/ui-schema/Widget"
+```
 
 ## Widget Composition
 
@@ -42,7 +48,7 @@ See also [adding or overwriting widgets](#adding--overwriting-widgets)
 
 JSON-Schema is handled mostly by the `pluginStack` for you, focus on the behaviour of the widget, connect it through the provided properties and the HOC `extractValue` (only non-scalar values).
 
-Each widget get's properties provided by the root schema renderer or added from plugins.
+Each widget gets properties provided by the root schema renderer or added from plugins.
 
 Properties from editor:
 
@@ -58,11 +64,36 @@ Properties from editor:
 - `showValidity` : `{boolean}` if the errors/success should be visible
 - `errors` : `{List}` validation errors, added from the pluginStack for the current widget/schema-level
 
-See [simplest Text Widget](/docs/core#simplest-text-widget) for a basic widget example.
+See [how to add custom widgets](#adding--overwriting-widgets) to a binding.
 
-See [how to add the custom widgets](#adding--overwriting-widgets).
+### Simplest Text Widget
 
-See [plugins](/docs/plugins) for the rest of the provided properties.
+Example of a really simple text widget (in typescript):
+
+```typescript jsx
+import React from 'react';
+import {updateValue, TransTitle, WidgetProps} from '@ui-schema/ui-schema';
+
+const Widget = ({
+                    value, ownKey, storeKeys, onChange,
+                    required, schema,
+                    errors, valid,
+                    ...props
+                }: WidgetProps) => {
+    return <>
+        <label><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></label>
+
+        <input
+            type={'text'}
+            required={required}
+            value={value || ''}
+            onChange={(e) => {
+                onChange(updateValue(storeKeys, e.target.value, required, schema.get('type')))
+            }}
+        />
+    </>
+}
+```
 
 ## Create Design-System Binding
 
@@ -74,18 +105,17 @@ Create a complete custom binding or only `import` the components you need and op
 - `GroupRenderer` wraps any object that is not a widget
 - `pluginStack` is the widget plugin system, this wraps all widgets individually
     - e.g. used to handle json schema `default`
-    - see [how to create schema-driven plugins](/docs/plugins#creating-plugins)
+    - see [how to create widget plugins](/docs/plugins#create-a-widget-plugin)
 - `validators` the validator plugins
-    - see [how to create validator plugins](/docs/plugins#creating-validator-plugins)
+    - see [how to create validator plugins](/docs/plugins#create-a-validator-plugin)
 - `custom` contains widgets mapping with schema's `widget`
 - `types` contains widgets mapping with schema's `type`
     
 Example default binding for `material-ui` can be used as template:
 
 - [Grid Widgets](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/Grid.js) - all special widgets responsible for the grid
-- [pluginStack Definition](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/pluginStack.js) - binding of plugins for each individual widget
-- [Widgets Base Definition](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/widgetsBase.js) - binding of pluginStack, validators and root-grid
-- [Widgets Default Definition](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/widgets.js) - adds binding of default mui widgets to `widgetsBase`
+- [pluginStack Definition](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/pluginStack.js) - binding of plugin
+- [Widgets Base Definition](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/widgetsBinding.js) - binding of pluginStack, validators and root-grid and the actual widgets for a design-system
 
 [Contributing a new ds-binding?](/docs/design-systems#add-design-system-package)
 
@@ -97,17 +127,18 @@ Example default binding for `material-ui` can be used as template:
 
 - needs more exports/splits from ui-schema/each ds ❌
 - needs react-loadable/react.lazy support (deep testing is missing) ❌
-- import should work without `/es` ❌
 
 Lazy bindings are only loading the needed widgets when really rendering, this can be achieved with code-splitting, through dynamic imports and e.g. `React.lazy` or `react-loadable`.
 
-It is only recommended for bigger widgets, using it for e.g. `types` is mostly unneeded as used anywhere and would produce a lot small network-requests.
+It is only recommended for bigger widgets, using it for e.g. `type` widget is mostly unneeded - as used anywhere and would produce a lot small network-requests.
 
 #### Example with react-loadable
 
 ```js
-import {widgetsBase} from "@ui-schema/ds-material/widgetsBase";
 import Loadable from 'react-loadable';
+import {RootRenderer, GroupRenderer} from "@ui-schema/ui-schema/Grid";
+import {pluginStack} from "@ui-schema/ui-schema/pluginStack";
+import {validators} from '@ui-schema/ui-schema/Validators/validators';
 
 // Build the loadable widgets
 const StringRenderer = Loadable({
@@ -115,19 +146,19 @@ const StringRenderer = Loadable({
     loading: (props) => 'Loading Widget',// add here your fancy loading component
 });
 
-// widgetsBase includes only the grid widgets and all plugins
-const widgets = {...widgetsBase};
-
-widgets.types = {
-    // supply your needed native-type widgets
-    string: StringRenderer,
-};
-
-widgets.custom = {
-    // supply your needed custom widgets
-};
-
-export {widgets}
+export const widgets = {
+    ErrorFallback: 'todo',
+    RootRenderer,
+    GroupRenderer,
+    pluginStack,
+    validators,
+    types: {
+        // supply your needed native-type widgets
+        string: StringRenderer,
+    },
+    custom: {
+    }
+}
 ```
 
 ## Adding / Overwriting Widgets
@@ -137,16 +168,16 @@ Use the existing exported binding of your design-system and add or overwrite wid
 - overwriting is recommended for composition widgets or when using the overwritten in the same page/app
 - or when using the [lazy-loading widgets](#lazy-loading-bindings)
 
-Simple example of adding a new widget to the binding, can be used for overwriting existing ones:
+Simple example of adding a new widget to the binding:
 
 ```js
-import {widgets,} from "@ui-schema/ds-material";
+import { widgets } from "@ui-schema/ds-material/widgetsBinding";
 
 const CustomNumberRenderer = () => /* todo: implement */ null;
 const CustomSelect = () => /* todo: implement */ null;
 
 // Multi Level destructure-merge to overwrite and clone and not change the original ones (shallow-copy)
-const customWidgets = {
+export const customWidgets = {
     ...widgets,
     types: {
         ...widgets.types, 
@@ -157,8 +188,40 @@ const customWidgets = {
         Select: CustomSelect,
     },
 };
+```
 
-export {customWidgets}
+Example widget binding with typings:
+
+```typescript
+import React from "react";
+import { widgets, MuiWidgetBinding } from "@ui-schema/ds-material/widgetsBinding";
+import { WidgetProps } from "@ui-schema/ui-schema";
+
+const CustomNumberRenderer = (props: WidgetProps) => /* todo: implement */ null;
+const CustomSelect = (props: WidgetProps) => /* todo: implement */ null;
+
+export interface CustomWidgetsType {
+    types: {
+        integer: React.ComponentType<WidgetProps>
+        number: React.ComponentType<WidgetProps>
+    }
+    custom: {
+        CustomSelect: React.ComponentType<WidgetProps>
+    }
+}
+
+export const customWidgets: CustomWidgetsType & MuiWidgetBinding = {
+    ...widgets,
+    types: {
+        ...widgets.types,
+        integer: CustomNumberRenderer,
+        number: CustomNumberRenderer,
+    },
+    custom: {
+        ...widgets.custom,
+        CustomSelect: CustomSelect,
+    }
+}
 ```
 
 This example shows how new plugins can be added:

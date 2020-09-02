@@ -3,6 +3,26 @@ import { Record, OrderedMap, Map, List } from 'immutable/dist/immutable-nonambie
 import { Translator } from "../Translate/t"
 import { StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
 
+// EditorStore
+
+export type Values<V> = List<V> | string | number | boolean | Map<V, any> | OrderedMap<V, any>
+export type ValuesJS = any[] | string | number | boolean | Object
+
+export interface EditorStoreState<D> {
+    values: Values<D>
+    internals: Map<{}, undefined>
+    validity: Map<{}, undefined>
+    // returns the values in `values` as pure JS, even when saved as `Map` or `List`
+    valuesToJS: () => ValuesJS
+    getValues: () => Values<D>
+    getInternals: () => any
+    getValidity: () => Map<{}, undefined>
+}
+
+export type EditorStoreType<D = undefined> = Record<EditorStoreState<D>> & EditorStoreState<D>
+
+export const EditorStore: EditorStoreType
+
 // EditorStoreContext
 
 export type onChangeHandler = (store: EditorStoreType<any>) => EditorStoreType<any>
@@ -30,26 +50,11 @@ export function EditorProvider(
     props: React.PropsWithChildren<EditorContext>
 ): React.ReactElement
 
-// EditorStore
+// Hooks & HOCs
 
-export type Values<V> = List<V> | string | number | boolean | Map<V, any> | OrderedMap<V, any>
+export function createStore<D = any>(data: D): EditorStoreType<D>
 
-export interface EditorStoreState<D> {
-    values: D
-    internals: Map<{}, undefined>
-    validity: Map<{}, undefined>
-    getValues: () => Values<any>
-    getInternals: () => Values<any>
-    getValidity: () => Map<{}, undefined>
-}
-
-export type EditorStoreType<D = undefined> = Record<EditorStoreState<D>> & EditorStoreState<D>
-
-export const EditorStore: EditorStoreType
-
-export function createStore<D = any>(data: D): EditorStoreType<Values<D>>
-
-export function createEmptyStore(type?: string): EditorStoreType<Values<[] | '' | 0 | false | {}>>
+export function createEmptyStore(type?: string): EditorStoreType<[] | '' | 0 | false | {}>
 
 export function useSchemaStore(): EditorStoreContext
 
@@ -82,7 +87,7 @@ export function withEditor(
 
 export type ownKey = string | number
 
-export type StoreKeys<T = ownKey[]> = List<T>
+export type StoreKeys<T = ownKey> = List<T>
 
 export function prependKey(storeKeys: StoreKeys, key: string | number): StoreKeys
 

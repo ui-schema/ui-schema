@@ -270,7 +270,9 @@ Validators for latest version are used by default, incompatible changes are solv
 | core |            | `contains` | ✅ | 
 | core |            | `additionalItems` | ✅ | 
 | | `null`   | | ❌ |
-| [JSON-Schema Hypermedia](https://json-schema.org/draft/2019-09/json-schema-hypermedia.html) | | | ❌ |
+| [JSON-Schema Hypermedia](https://json-schema.org/draft/2019-09/json-schema-hypermedia.html) [examples](https://json-schema.org/draft/2019-09/json-schema-hypermedia.html#examples) | | | ❌ |
+| hyper |            | `base` | ❌ | 
+| hyper |            | `links` | ❌ | 
 
 ❌ = not implemented, ✅ = done
 

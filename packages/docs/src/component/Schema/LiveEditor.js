@@ -319,7 +319,7 @@ const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme}) => {
     const {store} = useSchemaStore();
 
     return <RichCodeEditor
-        value={Map.isMap(store.getValues()) || List.isList(store.getValues()) ? JSON.stringify(store.getValues().toJS(), null, tabSize) : store.getValues()}
+        value={Map.isMap(store.getValues()) || List.isList(store.getValues()) ? JSON.stringify(store.valuesToJS(), null, tabSize) : store.valuesToJS()}
         theme={theme}
         tabSize={tabSize}
         fontSize={fontSize}

@@ -5,14 +5,14 @@ export interface ValidityHelperTextProps {
     showValidity: showValidity
     errors: errors
     schema: StoreSchemaType
-    browserError: Node
+    browserError?: Node | React.ReactElement
 }
 
 export interface LocaleHelperTextProps {
     text: string
     schema: StoreSchemaType
-    context: any
-    error: false
+    context?: any
+    error?: boolean
 }
 
 export function ValidityHelperText<P extends ValidityHelperTextProps>(props: P): React.ReactElement

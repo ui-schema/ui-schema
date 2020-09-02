@@ -7,7 +7,7 @@ install:
     - npm run bootstrap && npm run hoist
 script:
     - npm test
-    - codecov -f coverage/*.json
+    - codecov -f coverage/*.json --disable=gcov
     - npm run build
 deploy:
     -   provider: script

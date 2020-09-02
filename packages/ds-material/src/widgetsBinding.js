@@ -8,30 +8,35 @@ import {NumberIconRenderer, StringIconRenderer, TextIconRenderer} from "./Widget
 import {SimpleList} from "./Widgets/SimpleList";
 import {GenericList} from "./Widgets/GenericList";
 import {NumberSlider} from "./Widgets/NumberSlider";
-import {widgetsBase} from "./widgetsBase";
+import {RootRenderer, GroupRenderer} from "./Grid";
+import {pluginStack} from "./pluginStack";
+import {validators} from '@ui-schema/ui-schema/Validators/validators';
 
-const widgets = {...widgetsBase};
-
-widgets.types = {
-    string: StringRenderer,
-    boolean: BoolRenderer,
-    number: NumberRenderer,
-};
-
-widgets.custom = {
-    Text: TextRenderer,
-    StringIcon: StringIconRenderer,
-    TextIcon: TextIconRenderer,
-    NumberIcon: NumberIconRenderer,
-    NumberSlider,
-    SimpleList,
-    GenericList,
-    OptionsCheck,
-    OptionsRadio,
-    Select,
-    SelectMulti,
-    Stepper,
-    Step,
-};
-
-export {widgets};
+export const widgets = {
+    ErrorFallback: 'todo',
+    RootRenderer,
+    GroupRenderer,
+    pluginStack,
+    validators,
+    types: {
+        string: StringRenderer,
+        boolean: BoolRenderer,
+        number: NumberRenderer,
+        integer: NumberRenderer,
+    },
+    custom: {
+        Text: TextRenderer,
+        StringIcon: StringIconRenderer,
+        TextIcon: TextIconRenderer,
+        NumberIcon: NumberIconRenderer,
+        NumberSlider,
+        SimpleList,
+        GenericList,
+        OptionsCheck,
+        OptionsRadio,
+        Select,
+        SelectMulti,
+        Stepper,
+        Step,
+    }
+}

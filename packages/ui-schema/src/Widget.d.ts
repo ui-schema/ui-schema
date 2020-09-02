@@ -1,6 +1,6 @@
 import { onChange, ownKey, StoreKeys } from '@ui-schema/ui-schema/EditorStore'
 import { showValidity, errors, required, valid, StoreSchemaType } from './CommonTypings'
-import { widgetsBase } from "@ui-schema/ui-schema/widgetsBase"
+import { WidgetsBindingBase } from "@ui-schema/ui-schema/WidgetsBinding"
 
 export interface WidgetProps {
     onChange: onChange
@@ -16,7 +16,7 @@ export interface WidgetProps {
     errors: errors
     required: required
     valid: valid
-    widgets: widgetsBase
+    widgets: WidgetsBindingBase
     // contains the value for non-scalar items, for objects/array it is undefined
     value: string | number | boolean | undefined | null
 }

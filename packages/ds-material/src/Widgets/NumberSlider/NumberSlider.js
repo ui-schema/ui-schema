@@ -83,7 +83,7 @@ const NumberSliderRenderer = ({
                     canDelete={value && value.size > minItems}
                 /> : undefined}
                 value={(schema.get('type') === 'array' ?
-                    value && value.size ? value.toJS() : defaultVal :
+                    value && value.size ? value.valuesToJS() : defaultVal :
                     typeof value === 'number' ? value : defaultVal)}
                 onChange={(e, value) => trace("numberslider onchange", performance.now(), () => {
                     if(schema.get('type') === 'array') {

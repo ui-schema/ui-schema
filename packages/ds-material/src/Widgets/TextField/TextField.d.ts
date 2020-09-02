@@ -1,34 +1,24 @@
 import React, { CSSProperties } from 'react'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 
-export interface StringRendererProps extends WidgetProps {
+export interface StringRendererProps {
     multiline?: boolean
     type?: string
     rows?: number
     rowsMax?: number
     style?: CSSProperties
-    onClick: React.MouseEvent
-    onFocus: React.MouseEvent
-    onBlur: React.MouseEvent
-    onKeyUp: React.MouseEvent
-    onKeyDown: React.MouseEvent
-    inputProps: any
-    InputProps: any
-    inputRef: any
+    onClick?: React.MouseEvent
+    onFocus?: React.MouseEvent
+    onBlur?: React.MouseEvent
+    onKeyUp?: React.MouseEvent
+    onKeyDown?: React.MouseEvent
+    inputProps?: any
+    InputProps?: any
+    inputRef?: any
 }
 
-export interface NumberRendererProps extends StringRendererProps {
-    type: string
-}
+export function StringRenderer<P extends StringRendererProps & WidgetProps>(props: P): React.ReactElement<P>
 
-export interface TextRendererProps extends StringRendererProps {
-    multiline: true
-    rows: number
-    rowsMax: number
-}
+export function NumberRenderer<P extends StringRendererProps & WidgetProps>(props: P): React.ReactElement<P>
 
-export function StringRenderer<P extends StringRendererProps>(props: P): React.ReactElement<P>
-
-export function NumberRenderer<P extends NumberRendererProps>(props: P): React.ReactElement<P>
-
-export function TextRenderer<P extends TextRendererProps>(props: P): React.ReactElement<P>
+export function TextRenderer<P extends StringRendererProps & WidgetProps>(props: P): React.ReactElement<P>

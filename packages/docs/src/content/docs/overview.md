@@ -19,7 +19,7 @@ It is possible to connect any design system, included or planned support:
 
 A design-system bundles multiple widgets, select the design-system binding you need.
 
-Each widget handles it's own sub-schema, e.g. the `string` type widget only needs to know how to handle it's own string. [Super simple text widget example](/docs/core#simplest-text-widget)
+Each widget handles it's own sub-schema, e.g. the `string` type widget only needs to know how to handle it's own string.
 
 A match by `widget` supersedes the `type` matching, this is a simple example of a widget binding, the property name in `types` and `custom` is used for matching: 
 
@@ -121,7 +121,5 @@ Custom widgets for `widget`, special UIs and specific type handling:
 | `NumberButton` | | | 🔵 | 🔵 | 🔵 |
 
 ... more to follow
-
-✅ only means some working example is existing during the current dev-state.
 
 📚 [more on providing/overriding Widgets](/docs/widgets)
