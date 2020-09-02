@@ -1,15 +1,15 @@
 import React from "react"
 import { Map, OrderedMap } from "immutable"
 
-export type translation = string | number | undefined | Function | React.Component
+export type translation = string | number | undefined | Function | React.ComponentType
 
-export type translator = (
+export type Translator = (
     text: string,
     context?: Map<{}, undefined>,
     schema?: OrderedMap<{}, undefined>
 ) => translation
 
-export type t = (
+export const t: (
     dictionary: Map<{}, undefined>,
     locale: string
-) => translator
+) => Translator

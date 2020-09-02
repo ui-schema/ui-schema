@@ -3,4 +3,11 @@ export interface UISchema {
     api?: {
         endpoint: string
     }
+    view?: {
+        sizeXs?: number
+        sizeSm?: number
+        sizeMd?: number
+        sizeLg?: number
+        sizeXl?: number
+    }
 }

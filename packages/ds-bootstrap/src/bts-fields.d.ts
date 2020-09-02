@@ -2,15 +2,15 @@ import React from "react"
 
 export interface widgets {
     types: {
-        string: React.Component
-        boolean: React.Component
-        number: React.Component
+        string: React.ComponentType
+        boolean: React.ComponentType
+        number: React.ComponentType
     }
     custom: {
-        Text: React.Component
-        OptionsCheck: React.Component
-        OptionsRadio: React.Component
-        Select: React.Component
-        SelectMulti: React.Component
+        Text: React.ComponentType
+        OptionsCheck: React.ComponentType
+        OptionsRadio: React.ComponentType
+        Select: React.ComponentType
+        SelectMulti: React.ComponentType
     }
 }

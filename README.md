@@ -149,7 +149,7 @@ const Editor = () => {
             {/* show the validity only at submit (or pass `true` to `showValidity`) */} 
             onClick={() => isInvalid(
                 store.getValidity()) ? setShowValidity(true) :
-                console.log('doingSomeAction:', store.getValues().toJS()
+                console.log('doingSomeAction:', store.valuesToJS()
             )}
         >send!</button>
     </React.Fragment>

@@ -5,6 +5,8 @@ import DemoEditor from "./Schema/DemoEditor";
 
 const languageMapping = {
     js: 'javascript',
+    typescript: 'typescript',
+    bash: 'powershell',
     'ui-schema': 'json',
 };
 
@@ -20,6 +22,10 @@ const Code = ({variant, ...p}) => {
             console.error(e);
         }
         return <div style={{marginTop: 24}}><DemoEditor uiStyle={{margin: 12}} activeSchema={value} id={'ui-schema'} split={false}/></div>;
+    }
+
+    if(supportedModes.indexOf(currentMode) === -1) {
+        console.log('unsupported', currentMode, supportedModes)
     }
 
     return supportedModes.indexOf(currentMode) === -1 ?

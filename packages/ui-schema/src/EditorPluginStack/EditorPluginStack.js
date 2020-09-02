@@ -19,7 +19,13 @@ export const NextPluginRendererMemo = memo(NextPluginRenderer);
 
 const NoWidget = ({scope, matching}) => <>missing-{scope}-{matching}</>;
 
-export const FinalWidgetRenderer = ({value, ...props}) => {
+export const FinalWidgetRenderer = ({
+                                        value,
+                                        // as we want to extract `requiredList` from the props passed to the final widget
+                                        // eslint-disable-next-line no-unused-vars
+                                        requiredList,
+                                        ...props
+                                    }) => {
     const {schema, widgets} = props;
     const type = schema.get('type');
     const widget_name = schema.get('widget');

@@ -3,7 +3,7 @@ import { WidgetProps } from "@ui-schema/ui-schema/Widget"
 import { List } from "immutable"
 
 export interface EditorPluginProps extends WidgetProps {
-    // must be transformed from list to boolean `required` by a prop
+    // must be transformed from list to boolean `required` by a plugin
     requiredList: List<any>
     // current number of plugin in the stack
     current: number
@@ -13,4 +13,4 @@ export interface EditorPluginProps extends WidgetProps {
 
 export type EditorPluginType = React.ComponentType<EditorPluginProps>
 
-export function EditorPlugin<P extends EditorPluginProps>(props: P): React.ComponentType<P>
+export function EditorPlugin<P extends EditorPluginProps>(props: P): React.ReactElement<P>

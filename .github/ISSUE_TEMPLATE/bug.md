@@ -3,11 +3,16 @@ name: Bug report
 about: Notice us about a bug in UI-Schema
 ---
 
-<!-- Add a general summary in the title above  -->
-<!-- Selected checkbox is [X] -->
+<!--
+    Add a general summary in the title above
 
-- [] The issue is present in the latest release.
-- [] I have searched the [issues](https://github.com/ui-schema/ui-schema/issues) of this repository and believe that this is not a duplicate.
+    - Is the issue is present in the latest release?
+    - You have searched the [issues](https://github.com/ui-schema/ui-schema/issues) of this repository and believe that this is not a duplicate.
+    
+    Selected checkbox is [X]
+-->
+
+
 
 ## Current Behavior
 

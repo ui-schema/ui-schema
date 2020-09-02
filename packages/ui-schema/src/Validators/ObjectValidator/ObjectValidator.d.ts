@@ -1,12 +1,12 @@
 import { List } from 'immutable'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { schema } from "@ui-schema/ui-schema/CommonTypings"
+import { StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
 import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators"
 import { EditorPluginProps } from "@ui-schema/ui-schema/EditorPlugin"
 
 export const ERROR_ADDITIONAL_PROPERTIES = 'additional-properties'
 
-export function validateObject(schema: schema, value: any): List<any>
+export function validateObject(schema: StoreSchemaType, value: any): List<any>
 
 export interface ObjectValidatorType extends ValidatorPlugin {
     should: ({schema}: Partial<EditorPluginProps>) => boolean

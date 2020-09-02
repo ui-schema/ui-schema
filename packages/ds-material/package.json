@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ds-material",
-    "version": "0.0.19",
+    "version": "0.0.21",
     "description": "Material-UI Binding for UI-Schema",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -35,7 +35,7 @@
     "devDependencies": {
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
-        "@ui-schema/ui-schema": "^0.0.19",
+        "@ui-schema/ui-schema": "^0.0.21",
         "react": "^16.12"
     },
     "dependencies": {

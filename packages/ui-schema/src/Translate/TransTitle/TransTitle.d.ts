@@ -1,11 +1,11 @@
 import React from "react"
-import { OrderedMap } from "immutable"
-import { StoreKeys } from "@ui-schema/ui-schema/EditorStore"
+import { ownKey, StoreKeys } from "@ui-schema/ui-schema/EditorStore"
+import { StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
 
 export interface TransTitleProps {
-    schema: OrderedMap<{}, undefined>
+    schema: StoreSchemaType
     storeKeys: StoreKeys
-    ownKey: string | number
+    ownKey: ownKey
 }
 
-export function TransTitle<P extends TransTitleProps>(props: P): React.ComponentType<P>
+export function TransTitle<P extends TransTitleProps>(props: P): React.ReactElement

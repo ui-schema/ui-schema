@@ -6,4 +6,4 @@ export interface OptionsRadioRendererProps extends WidgetProps {
     value: string
 }
 
-export function OptionsRadio<P extends OptionsRadioRendererProps>(props: P): React.Component<P>
+export function OptionsRadio<P extends OptionsRadioRendererProps>(props: P): React.ReactElement<P>

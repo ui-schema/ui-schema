@@ -1,6 +1,6 @@
-import { schema } from "@ui-schema/ui-schema/CommonTypings"
+import { StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
 
 export function mergeSchema(
-    aSchema: schema,
-    bSchema: schema
-): schema
+    aSchema: StoreSchemaType,
+    bSchema: StoreSchemaType
+): StoreSchemaType

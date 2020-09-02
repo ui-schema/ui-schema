@@ -292,7 +292,7 @@ const Editor = () => {
                                 'Content-Type': 'application/json'
                             },
                             // here the immutable store is converted back to JS-Object and then to JSON
-                            body: JSON.stringify(store.toJS())
+                            body: JSON.stringify(store.valuesToJS())
                         })
                             .then(r => r.json())
                             .then(answer => console.log(answer))
@@ -349,7 +349,7 @@ const QuickStartEditor = () => {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(store.toJS())
+                    body: JSON.stringify(store.valuesToJS())
                 })
                     .then(r => r.json())
                     .then(setSending)

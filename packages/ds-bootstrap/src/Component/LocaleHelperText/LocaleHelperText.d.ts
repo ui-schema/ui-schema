@@ -1,19 +1,19 @@
 import * as React from 'react'
-import { showValidity, errors, schema } from '@ui-schema/ui-schema/CommonTypings'
+import { showValidity, errors, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface ValidityHelperTextProps {
     showValidity: showValidity
     errors?: errors
-    schema: schema
+    schema: StoreSchemaType
 }
 
 export interface LocaleHelperTextProps {
     text: string
-    schema: schema
+    schema: StoreSchemaType
     context: any
     className: string
 }
 
-export function ValidityHelperText<P extends ValidityHelperTextProps>(props: P): React.Component<P>
+export function ValidityHelperText<P extends ValidityHelperTextProps>(props: P): React.ReactElement<P>
 
-export function LocaleHelperText<P extends LocaleHelperTextProps>(props: P): React.Component<P>
+export function LocaleHelperText<P extends LocaleHelperTextProps>(props: P): React.ReactElement<P>

@@ -8,4 +8,4 @@ export interface EditorControlsInterface {
     btnSize: number
 }
 
-export function EditorControls<P extends EditorControlsInterface>(props: P): React.Component<P>
+export function EditorControls<P extends EditorControlsInterface>(props: P): React.ReactElement<P>

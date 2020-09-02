@@ -7,7 +7,4 @@ export interface ColorDialogDialogInterface {
     children: React.ReactChildren
 }
 
-export type CustomDialog = React.Component
-export type ColorPicker = React.Component
-
-export function ColorDialogBase(props: ColorBaseInterface & ColorPicker & CustomDialog & ColorDialogDialogInterface): React.Component
+export function ColorDialogBase(props: ColorBaseInterface & ColorDialogDialogInterface): React.ReactElement

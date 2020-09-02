@@ -1,12 +1,4 @@
 import * as React from "react"
-import { OrderedMap } from 'immutable'
-import { StoreKeys } from "../EditorStore"
+import { WidgetProps } from "@ui-schema/ui-schema/Widget"
 
-export interface ObjectRendererProps {
-    schema: OrderedMap<{}, undefined>
-    storeKeys: StoreKeys
-    level: number
-    widgets: {}
-}
-
-export function ObjectRenderer<P extends ObjectRendererProps>(props: P): React.Component<P>
+export function ObjectRenderer<P extends WidgetProps>(props: P): React.ReactElement

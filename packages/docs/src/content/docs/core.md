@@ -11,13 +11,20 @@ Values are stored in `EditorStore`, an immutable record, created with [createSto
 - `EditorStore.values`:`{undefined|string|boolean|number|OrderedMap|List}`
 - `EditorStore.internals`:`{Map}`
 - `EditorStore.validity`:`{Map}`
-- `EditorStore.getValues`:`{*}` returns the values
-- `EditorStore.getInternals`:`{Map}` returns the internal values
-- `EditorStore.getValidity`:`{Map}` returns the validity
+- `EditorStore.valuesToJS()`:`{*}` returns the values, but as JS compatible object, turning `Map`/`List` into `{}`/`[]`
+- `EditorStore.getValues()`:`{*}` returns the values
+- `EditorStore.getInternals()`:`{Map}` returns the internal values
+- `EditorStore.getValidity()`:`{Map}` returns the validity
 
 Use the [updater functions](#store-updating-utils) for store changes from widgets.
 
 For best performance in non-scalar widgets use the [HOCs](https://reactjs.org/docs/higher-order-components.html) `extractValue`, `extractValidity` for getting the values, together with [memo](#memo--isequal).
+
+General typings of the store:
+
+```typescript jsx
+import { EditorStoreType } from '@ui-schema/ui-schema/EditorStore'
+```
 
 ### EditorStoreProvider
 
@@ -91,8 +98,7 @@ The functions are capable of either updating a deep value in the `store`, or whe
     - `cleanUp(storeKeys, 'validity')` deletes validity entry
     - `cleanUp(storeKeys, 'internals')` deletes internal store entry
     - `cleanUp(storeKeys, 'values')` deletes value/data entry
-    
-    
+
 ```js
 import {
     updateValue, updateValues, updateInternalValue,
@@ -100,35 +106,8 @@ import {
     cleanUp
 } from "@ui-schema/ui-schema";
 ```
-    
-#### Simplest Text Widget
 
-Updating a value from HTML input:
-
-```typescript jsx
-import React from 'react';
-import {updateValue, TransTitle, WidgetProps, WithValue} from '@ui-schema/ui-schema';
-
-const Widget = ({
-                    value, ownKey, storeKeys, onChange,
-                    required, schema,
-                    errors, valid,
-                    ...props
-                }: WidgetProps & WithValue) => {
-    return <>
-        <label><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></label>
-
-        <input
-            type={'text'}
-            required={required}
-            value={value || ''}
-            onChange={(e) => {
-                onChange(updateValue(storeKeys, e.target.value, required, schema.get('type')))
-            }}
-        />
-    </>
-}
-```
+See [simplest Text Widget](/docs/widgets#simplest-text-widget) for a basic widget example.
     
 This can be used to delete the current storeKeys entry in the validity scope at unmount of the current widget/pluginStack:
 

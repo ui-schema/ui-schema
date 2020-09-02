@@ -96,7 +96,7 @@ const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme, maxLi
     const {store} = useSchemaStore();
 
     return <RichCodeEditor
-        value={typeof store.getValues() !== 'string' && typeof store.getValues() !== 'number' && typeof store.getValues() !== 'boolean' && store.getValues() ? JSON.stringify(store.getValues().toJS(), null, tabSize) : store.getValues()}
+        value={typeof store.getValues() !== 'string' && typeof store.getValues() !== 'number' && typeof store.getValues() !== 'boolean' && store.getValues() ? JSON.stringify(store.valuesToJS(), null, tabSize) : store.getValues()}
         theme={theme}
         tabSize={tabSize}
         fontSize={fontSize}

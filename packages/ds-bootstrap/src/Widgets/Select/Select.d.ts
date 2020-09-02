@@ -12,6 +12,6 @@ export interface WidgetSelectMultiInterface extends WidgetProps {
     multiple: true
 }
 
-export function Select<P extends WidgetSelectInterface>(props: P): React.Component<P>
+export function Select<P extends WidgetSelectInterface>(props: P): React.ReactElement<P>
 
-export function SelectMulti<P extends WidgetSelectMultiInterface>(props: P): React.Component<P>
+export function SelectMulti<P extends WidgetSelectMultiInterface>(props: P): React.ReactElement<P>

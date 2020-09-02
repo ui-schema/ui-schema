@@ -13,6 +13,7 @@ import 'brace/mode/css';
 import 'brace/mode/dockerfile';
 import 'brace/mode/html';
 import 'brace/mode/javascript';
+import 'brace/mode/typescript';
 import 'brace/mode/jsx';
 import 'brace/mode/mysql';
 import 'brace/mode/php';
@@ -55,7 +56,7 @@ import "ace-builds/src-noconflict/theme-monokai";
 ace.config.set("basePath", "https://cdn.jsdelivr.net/npm/ace-builds@1.4.8/src-noconflict/");
 ace.config.setModuleUrl('ace/mode/javascript_worker', "https://cdn.jsdelivr.net/npm/ace-builds@1.4.8/src-noconflict/worker-javascript.js");*/
 
-const supportedModes = ['json', 'css', 'dockerfile', 'html', 'javascript', 'jsx', 'mysql', 'php', 'powershell', 'scss', 'yaml'];
+const supportedModes = ['json', 'css', 'dockerfile', 'html', 'javascript', 'jsx', 'typescript', 'typescript jsx', 'mysql', 'php', 'powershell', 'scss', 'yaml'];
 const themes = ['clouds_midnight', 'cobalt', 'gruvbox', 'monokai',];
 
 const themesLight = ['chrome', 'github'];

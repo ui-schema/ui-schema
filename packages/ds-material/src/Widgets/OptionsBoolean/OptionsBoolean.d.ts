@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { StoreKeys, onChange } from "@ui-schema/ui-schema/EditorStore"
-import { ownKey, schema, showValidity, valid, required } from '@ui-schema/ui-schema/CommonTypings'
+import { StoreKeys, onChange, ownKey } from "@ui-schema/ui-schema/EditorStore"
+import { StoreSchemaType, showValidity, valid, required } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface WidgetRendererPropsWithoutErrors {
     ownKey: ownKey
-    schema: schema
+    schema: StoreSchemaType
     onChange: onChange
     storeKeys: StoreKeys
     showValidity: showValidity
@@ -12,4 +12,4 @@ export interface WidgetRendererPropsWithoutErrors {
     valid: valid
     required: required
 }
-export function BoolRenderer<P extends WidgetRendererPropsWithoutErrors>(props: P): React.Component<P>
+export function BoolRenderer<P extends WidgetRendererPropsWithoutErrors>(props: P): React.ReactElement<P>

@@ -1,6 +1,6 @@
-export {widgets} from './widgetsBinding';
-export {widgetsBase} from './widgetsBase';
-export {pluginStack} from './pluginStack';
-export * from './Grid';
+export * from './Component';
 export * from './Widgets';
+export * from './Grid';
+export * from './pluginStack';
+export * from './widgetsBinding';
 
