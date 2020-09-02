@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ds-bootstrap",
-    "version": "0.0.20",
+    "version": "0.0.21",
     "description": "Bootstrap Binding for UI-Schema",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -35,7 +35,7 @@
         "__release": "cp package.json build/ && cp package-lock.json build/ &&  cp README.md build/ && npm publish build"
     },
     "devDependencies": {
-        "@ui-schema/ui-schema": "^0.0.20",
+        "@ui-schema/ui-schema": "^0.0.21",
         "react": "^16.12"
     },
     "dependencies": {
