@@ -1,4 +1,13 @@
-import React from 'react'
-import { EditorPluginProps } from '@ui-schema/ui-schema/EditorPlugin'
+import { EditorPluginType } from '@ui-schema/ui-schema/EditorPlugin'
 
-export type pluginStack = Array<React.ComponentType<EditorPluginProps>>
+/**
+ * Plugin stack contains:
+ * - SchemaGridHandler
+ * - CombiningHandler
+ * - DefaultHandler
+ * - DependentHandler
+ * - ConditionalHandler
+ * - ValidatorStack
+ * - ValidityReporter
+ */
+export const pluginStack: Array<EditorPluginType>

@@ -113,7 +113,7 @@ const NumberSliderRenderer = ({
 
 const ValueNumberSliderRenderer = extractValue(memo(NumberSliderRenderer));
 
-const NumberSlider = ({
+export const NumberSlider = ({
                           schema, ...props
                       }) => {
     let min = 0;
@@ -166,5 +166,3 @@ const NumberSlider = ({
         {...props}
     />
 };
-
-export {NumberSlider}

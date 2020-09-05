@@ -1,8 +1,12 @@
 import React from 'react'
-import { StringRendererProps, NumberRendererProps, TextRendererProps } from '../TextField'
+import { StringRendererProps } from '@ui-schema/ds-material/Widgets'
 
-export function StringIconRenderer<P extends StringRendererProps>(props: P): React.ReactElement<P>
+export interface TextFieldIconProps extends StringRendererProps {
+    InputProps?: undefined
+}
 
-export function TextIconRenderer<P extends TextRendererProps>(props: P): React.ReactElement<P>
+export function StringIconRenderer<P extends TextFieldIconProps>(props: P): React.ReactElement<P>
 
-export function NumberIconRenderer<P extends NumberRendererProps>(props: P): React.ReactElement<P>
+export function TextIconRenderer<P extends TextFieldIconProps>(props: P): React.ReactElement<P>
+
+export function NumberIconRenderer<P extends TextFieldIconProps>(props: P): React.ReactElement<P>
