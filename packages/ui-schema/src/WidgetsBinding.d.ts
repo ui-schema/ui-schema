@@ -4,7 +4,7 @@ import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators/ValidatorPlugin
 import { StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
 
 export interface WidgetsBindingBase {
-    ErrorFallback: React.ComponentType<any>
+    ErrorFallback?: React.ComponentType<any>
     // wraps the whole editor
     RootRenderer: React.ComponentType<{}>
     // wraps any `object` that has no custom widget

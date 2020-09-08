@@ -14,7 +14,7 @@ const DocContent = ({content, id, progress, activeDoc}) => {
 
     return <>
         <PageContent maxWidth={'md'}>
-            <Paper style={{margin: 12, padding: '0 12px', display: 'flex', flexDirection: 'column', overflowX: 'auto', flexShrink: 0, background: 'transparent'}} elevation={4} variant={'outlined'}>
+            <Paper style={{margin: '12px 0', padding: '0 12px', display: 'flex', flexDirection: 'column', overflowX: 'auto', flexShrink: 0, background: 'transparent'}} elevation={4} variant={'outlined'}>
                 <HeadlineMenu/>
             </Paper>
             <div style={{display: 'block', textAlign: 'right', margin: '0 12px'}}>
@@ -23,7 +23,7 @@ const DocContent = ({content, id, progress, activeDoc}) => {
                     href={'https://github.com/ui-schema/ui-schema/tree/master/packages/docs/src/content/docs/' + id + '.md'}
                 >Edit Page</Link>
             </div>
-            <Paper style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column',}} elevation={4}>
+            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column',}} elevation={4}>
                 {progress === PROCESS_START || progress === PROCESS_PROGRESS ?
                     <LoadingCircular title={'Loading Docs'}/> :
                     progress === PROCESS_ERROR ?
@@ -40,7 +40,7 @@ const DocContent = ({content, id, progress, activeDoc}) => {
                     >Edit Demos</Link>
                 </div> : null}
             {progress === PROCESS_SUCCESS && activeDoc.context && activeDoc.context.demoEditor ?
-                <Paper style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column',}} elevation={4}>
+                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column',}} elevation={4}>
                     <Markdown
                         source={`
 ## Demo Editor

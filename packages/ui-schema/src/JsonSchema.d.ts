@@ -14,8 +14,21 @@ export interface SchemasDraft04 {
 }
 
 export interface Schemas {
+    root: {
+        '$id': string
+        '$schema': string
+        '$ref'?: string
+    }
     general: {
         readOnly?: boolean
+        '$id'?: string
+        '$schema'?: string
+        '$ref'?: string
+    }
+    conditionals: {
+        allOf: JsonSchema[] | {
+            not: JsonSchema
+        }[]
     }
     string: {
         type: 'string'
@@ -62,6 +75,22 @@ export interface Schemas {
     null: {
         type: 'null'
     }
+    hyper: {
+        base?: string
+    } | {
+        base: string
+        links: {
+            rel: string | 'self' | 'collection' | 'item' | 'about'
+            href: string
+            contextUri?: string
+            contextPointer?: string
+            targetUri?: string
+            targetSchema?: { '$ref': string }
+            submissionSchema?: { '$ref': string }
+            templateRequired?: string[]
+            attachmentPointer?: string
+        }[]
+    }
 }
 
 export type JsonSchema =
@@ -71,5 +100,7 @@ export type JsonSchema =
     | Schemas['number']
     | Schemas['boolean']
     | Schemas['null']
+    | Schemas['conditionals']
+    | Schemas['root']
     & Schemas['general']
     & UISchema

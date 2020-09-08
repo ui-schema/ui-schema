@@ -16,7 +16,7 @@ function PageNotFound() {
                 title={'Page Not Found · UI-Schema'}
                 description={''}
             />
-            <Container maxWidth={'md'} fixed style={{display: 'flex', flexDirection: 'column', flexGrow: 2,}}>
+            <Container maxWidth={'md'} fixed style={{display: 'flex', flexDirection: 'column', flexGrow: 2, padding: 8}}>
                 <PageTitle title={'404 Not Found'}/>
 
                 <Paper style={{margin: 12, padding: 24}}>

@@ -1,3 +1,4 @@
+import React from "react";
 import {NumberRenderer, StringRenderer, TextRenderer} from "./Widgets/TextField";
 import {Select, SelectMulti} from "./Widgets/Select";
 import {BoolRenderer} from "./Widgets/OptionsBoolean";
@@ -12,8 +13,16 @@ import {RootRenderer, GroupRenderer} from "./Grid";
 import {pluginStack} from "./pluginStack";
 import {validators} from '@ui-schema/ui-schema/Validators/validators';
 
+const MyFallbackComponent = ({type, widget}) => (
+    <div>
+        <p><strong>System Error in Widget!</strong></p>
+        <p><strong>Type:</strong> {type}</p>
+        <p><strong>Widget:</strong> {widget}</p>
+    </div>
+);
+
 export const widgets = {
-    ErrorFallback: 'todo',
+    ErrorFallback: MyFallbackComponent,
     RootRenderer,
     GroupRenderer,
     pluginStack,

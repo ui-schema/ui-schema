@@ -35,9 +35,6 @@
         "immutable": "^4.0.0-rc.12",
         "react": "^16.12"
     },
-    "dependencies": {
-        "react-error-boundary": "^1.2.5"
-    },
     "peerDependencies": {
         "immutable": "^4.0.0-rc.12",
         "react": "^16.8"

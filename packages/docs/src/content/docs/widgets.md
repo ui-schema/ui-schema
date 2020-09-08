@@ -101,6 +101,7 @@ Each SchemaEditor receives an `widgets` object containing all HTML components an
 
 Create a complete custom binding or only `import` the components you need and optimize your bundle size!
 
+- `ErrorFallback` shows error for exceptions during of a widget rendering, when not set turns of the error boundary
 - `RootRenderer` main wrapper around everything
 - `GroupRenderer` wraps any object that is not a widget
 - `pluginStack` is the widget plugin system, this wraps all widgets individually
@@ -135,6 +136,7 @@ It is only recommended for bigger widgets, using it for e.g. `type` widget is mo
 #### Example with react-loadable
 
 ```js
+import React from "react";
 import Loadable from 'react-loadable';
 import {RootRenderer, GroupRenderer} from "@ui-schema/ui-schema/Grid";
 import {pluginStack} from "@ui-schema/ui-schema/pluginStack";
@@ -146,8 +148,16 @@ const StringRenderer = Loadable({
     loading: (props) => 'Loading Widget',// add here your fancy loading component
 });
 
+const MyFallbackComponent = ({type, widget}) => (
+    <div>
+        <p><strong>Error in Widget!</strong></p>
+        <p><strong>Type:</strong> {type}</p>
+        <p><strong>Widget:</strong> {widget}</p>
+    </div>
+);
+
 export const widgets = {
-    ErrorFallback: 'todo',
+    ErrorFallback: MyFallbackComponent,
     RootRenderer,
     GroupRenderer,
     pluginStack,

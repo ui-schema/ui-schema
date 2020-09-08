@@ -1,22 +1,36 @@
 import React from "react";
 import {List} from "immutable";
-import ErrorBoundary from "react-error-boundary";
 import {extractValue, withEditor,} from "../EditorStore";
 import {memo} from "../Utils/memo";
 import {NextPluginRenderer} from "@ui-schema/ui-schema/EditorPluginStack/EditorPluginStack";
 
-const MyFallbackComponent = ({componentStack, error, type, widget}) => (
-    <div>
-        <p><strong>Error in Widget!</strong></p>
-        <p><strong>Type:</strong> {type}</p>
-        <p><strong>Widget:</strong> {widget}</p>
-        <p><strong>Error:</strong> {error.toString()}</p>
-        <p><strong>Stacktrace:</strong> {componentStack}</p>
-    </div>
-);
+class WidgetErrorBoundary extends React.Component {
+    state = {
+        error: null
+    }
+
+    static getDerivedStateFromError(error) {
+        return {error: error};
+    }
+
+    componentDidCatch(error, info) {
+        console.error(error, info);
+    }
+
+    render() {
+        if(this.state.error) {
+            const FallbackComponent = this.props.FallbackComponent;
+            return <FallbackComponent error={this.state.error} type={this.props.type} widget={this.props.widget}/>;
+        }
+        return this.props.children;
+    }
+}
 
 const WidgetRendererBase = (props) => {
-    const {level = 0, parentSchema, storeKeys, schema} = props;
+    const {
+        level = 0, parentSchema,
+        storeKeys, schema, widgets,
+    } = props;
 
     let required = List([]);
     if(parentSchema) {
@@ -26,12 +40,13 @@ const WidgetRendererBase = (props) => {
         }
     }
 
-    const FallbackComponent = React.useCallback(
-        p => <MyFallbackComponent {...p} type={schema.get('type')} widget={schema.get('widget')}/>,
-        [schema]
-    );
+    const ErrorBoundary = widgets.ErrorFallback ? WidgetErrorBoundary : React.Fragment;
 
-    return props.schema ? <ErrorBoundary FallbackComponent={FallbackComponent}>
+    return props.schema ? <ErrorBoundary
+        FallbackComponent={widgets.ErrorFallback}
+        type={schema.get('type')}
+        widget={schema.get('widget')}
+    >
         <NextPluginRenderer
             current={-1}
             // all others are getting pushed to Widget
