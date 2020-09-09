@@ -54,7 +54,7 @@ const SimpleList = extractValue(memo(({
         </div>
         <ValidityHelperText
             /* only pass down errors which are not for a specific sub-schema */
-            errors={errors.filter(err => List.isList(err) ? !err.getIn([1, 'arrayItems']) : true)}
+            errors={errors}
             showValidity={showValidity}
             schema={schema}
         />

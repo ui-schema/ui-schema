@@ -7,7 +7,7 @@ export const handleIfElseThen = (schema, store, distSchema) => {
     const keyElse = schema.get('else');
 
     if(keyIf) {
-        if(0 === validateSchemaObject(keyIf, store).size) {
+        if(0 === validateSchemaObject(keyIf, store).errCount) {
             // no errors in schema found, `then` should be rendered
             if(keyThen) {
                 distSchema = mergeSchema(distSchema, keyThen);

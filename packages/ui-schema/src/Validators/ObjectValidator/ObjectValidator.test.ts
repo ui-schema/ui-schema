@@ -1,9 +1,10 @@
-import { List, OrderedMap } from "immutable"
+import { OrderedMap } from "immutable"
 import {
     validateObject, objectValidator, ERROR_ADDITIONAL_PROPERTIES,
 } from '@ui-schema/ui-schema/Validators/ObjectValidator'
 import { createMap, createOrderedMap } from "@ui-schema/ui-schema/Utils"
 import { ERROR_PATTERN } from "@ui-schema/ui-schema/Validators/PatternValidator/PatternValidator"
+import { createValidatorErrors } from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors"
 
 describe('validateObject', () => {
     test.each([
@@ -73,6 +74,15 @@ describe('validateObject', () => {
                     pattern: '^((?!user).)*$',
                 },
             },
+            createMap({name: 'abc'}),
+            0,
+        ], [
+            {
+                type: 'object',
+                propertyNames: {
+                    pattern: '^((?!user).)*$',
+                },
+            },
             {name: 'abc'},
             0,
         ], [
@@ -87,7 +97,7 @@ describe('validateObject', () => {
         ],
     ])('validateObject(%j, %j)', (schema, value, expected) => {
         const r = validateObject(createOrderedMap(schema), value)
-        expect(r.size).toBe(expected)
+        expect(r.errCount).toBe(expected)
     })
 })
 
@@ -107,7 +117,7 @@ describe('objectValidator', () => {
         [
             {type: 'object'},
             {},
-            List([ERROR_ADDITIONAL_PROPERTIES]),
+            ERROR_ADDITIONAL_PROPERTIES,
             true,
             false,
         ], [
@@ -121,7 +131,7 @@ describe('objectValidator', () => {
                 },
             },
             {name: 'demo'},
-            List([ERROR_ADDITIONAL_PROPERTIES]),
+            ERROR_ADDITIONAL_PROPERTIES,
             true,
             false,
         ], [
@@ -135,7 +145,7 @@ describe('objectValidator', () => {
                 },
             },
             {name: 'demo', street: 'long-street'},
-            List([ERROR_ADDITIONAL_PROPERTIES]),
+            ERROR_ADDITIONAL_PROPERTIES,
             false,
             true,
         ], [
@@ -167,11 +177,11 @@ describe('objectValidator', () => {
             const result = objectValidator.validate({
                 schema: createOrderedMap(schema),
                 value,
-                errors: List([]),
+                errors: createValidatorErrors(),
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            expect(result.errors.contains(error)).toBe(expectedError)
+            expect(result.errors.hasError(error)).toBe(expectedError)
         },
     )
 })

@@ -1,6 +1,7 @@
-import { OrderedMap, List } from "immutable"
+import { OrderedMap } from "immutable"
 import { test, expect } from '@jest/globals'
 import { validatePattern, patternValidator, ERROR_PATTERN } from '@ui-schema/ui-schema/Validators/PatternValidator'
+import { createValidatorErrors } from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors"
 
 test('validatePattern', () => {
     expect(validatePattern('string', 'blabla', '^[bla]*$')).toBe(true)
@@ -17,11 +18,11 @@ test('patternValidator', () => {
             pattern: '^[bla]*$',
         }),
         value: 'blabla',
-        errors: List([]),
+        errors: createValidatorErrors(),
         valid: true,
     })
     expect(trueResult.valid).toBe(true)
-    expect(trueResult.errors.contains(ERROR_PATTERN)).toBe(false)
+    expect(trueResult.errors.hasError(ERROR_PATTERN)).toBe(false)
 
     const falseResult = patternValidator.validate({
         schema: OrderedMap({
@@ -29,9 +30,9 @@ test('patternValidator', () => {
             pattern: '^[bla]*$',
         }),
         value: 'wawawa',
-        errors: List([]),
+        errors: createValidatorErrors(),
         valid: true,
     })
     expect(falseResult.valid).toBe(false)
-    expect(falseResult.errors.contains(ERROR_PATTERN)).toBe(true)
+    expect(falseResult.errors.hasError(ERROR_PATTERN)).toBe(true)
 })

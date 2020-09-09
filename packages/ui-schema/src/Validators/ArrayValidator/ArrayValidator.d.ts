@@ -1,6 +1,7 @@
 import { OrderedMap, List } from 'immutable'
 import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators/ValidatorPlugin"
 import { EditorPluginProps } from "@ui-schema/ui-schema/EditorPlugin"
+import { errors } from "@ui-schema/ui-schema/CommonTypings"
 
 export const ERROR_DUPLICATE_ITEMS = 'duplicate-items'
 export const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains'
@@ -9,7 +10,7 @@ export const ERROR_MAX_CONTAINS = 'max-contains'
 export const ERROR_ADDITIONAL_ITEMS = 'additional-items'
 
 export function validateArrayContent(schema: OrderedMap<{}, undefined> | List<any>, value: any, additionalItems?: boolean/*, find?: boolean*/): {
-    err: List<any>
+    err: errors
     found: number
 }
 
@@ -20,9 +21,9 @@ export function validateArrayContent(schema: OrderedMap<{}, undefined> | List<an
  */
 export function validateAdditionalItems(additionalItems: boolean, value: List<any> | any[], schema: List<any>): boolean
 
-export function validateItems(schema: OrderedMap<{}, undefined>, value: any): List<any>
+export function validateItems(schema: OrderedMap<{}, undefined>, value: any): errors
 
-export function validateContains(schema: OrderedMap<{}, undefined>, value: List<any> | any[]): List<any>
+export function validateContains(schema: OrderedMap<{}, undefined>, value: List<any> | any[]): errors
 
 /**
  * Returns `true` when valid (no duplicates) or `false` when found duplicate
@@ -36,7 +37,7 @@ export interface ArrayValidatorType extends ValidatorPlugin {
     validate: (
         {schema, value, errors, valid}: Partial<EditorPluginProps>
     ) => {
-        errors: List<any>
+        errors: errors
         valid: boolean
     }
 }

@@ -1,7 +1,6 @@
 import React from "react";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import {Trans} from "@ui-schema/ui-schema";
-import {List} from 'immutable'
 
 const LocaleHelperText = ({text, schema, context, error = false}) => {
     return <FormHelperText error={error}>
@@ -12,18 +11,29 @@ const LocaleHelperText = ({text, schema, context, error = false}) => {
     </FormHelperText>
 };
 
+/**
+ *
+ * @param showValidity
+ * @param errors
+ * @param schema
+ * @param browserError
+ * @return {JSX.Element|Immutable.Seq.Indexed<any>|null}
+ * @constructor
+ */
 const ValidityHelperText = ({showValidity, errors, schema, browserError}) =>
     schema.get('t') === 'browser' && browserError ?
         <FormHelperText error>
             {browserError}
         </FormHelperText> :
-        showValidity && errors.size ?
-            errors.map((error, i) =>
-                <LocaleHelperText
-                    key={i} schema={schema} error
-                    text={'error.' + (List.isList(error) ? error.get(0) : error)}
-                    context={List.isList(error) ? error.get(1) : undefined}
-                />
+        showValidity && errors.hasError() ?
+            errors.getErrors().keySeq().map((type) =>
+                errors.getError(type).map((err, i) =>
+                    <LocaleHelperText
+                        key={type + '.' + i} schema={schema} error
+                        text={'error.' + type}
+                        context={err}
+                    />
+                )
             ).valueSeq()
             : null;
 

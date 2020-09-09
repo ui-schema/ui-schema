@@ -1,4 +1,4 @@
-import {List, Map} from 'immutable';
+import {Map} from 'immutable';
 
 const ERROR_MULTIPLE_OF = 'multiple-of';
 
@@ -18,7 +18,7 @@ const multipleOfValidator = {
     validate: ({schema, value, errors, valid}) => {
         if(!validateMultipleOf(schema, value)) {
             valid = false;
-            errors = errors.push(List([ERROR_MULTIPLE_OF, Map({multipleOf: schema.get('multipleOf')})]));
+            errors = errors.addError(ERROR_MULTIPLE_OF, Map({multipleOf: schema.get('multipleOf')}));
         }
 
         return {errors, valid}

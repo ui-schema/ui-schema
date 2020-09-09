@@ -1,5 +1,6 @@
 import { List, OrderedMap } from "immutable"
 import { checkValueExists, ERROR_NOT_SET, requiredValidator } from '@ui-schema/ui-schema/Validators/RequiredValidator'
+import { createValidatorErrors } from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors"
 
 describe('checkValueExists', () => {
     test.each([
@@ -32,14 +33,15 @@ describe('checkValueExists', () => {
 
 describe('requiredValidator', () => {
     test.each(([
-        [['name'], 'name', true],
-        [['name'], 'street', false],
+        [List(['name']), 'name', true],
+        [List(['name']), 'street', false],
         [undefined, 'name', false],
-    ]) as [string[], string, boolean][])(
+        [undefined, 'name', false],
+    ]) as [List<string> | undefined, string, boolean][])(
         '.should(%j, %s)',
         (requiredList, ownKey, expectedValid) => {
             expect(requiredValidator.should({
-                requiredList: List(requiredList),
+                requiredList: requiredList,
                 ownKey,
             })).toBe(expectedValid)
         },
@@ -83,11 +85,11 @@ describe('requiredValidator', () => {
             const result = requiredValidator.validate({
                 schema: OrderedMap({type}),
                 value,
-                errors: List([]),
+                errors: createValidatorErrors(),
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            expect(result.errors.contains(error)).toBe(expectedError)
+            expect(result.errors.hasError(error)).toBe(expectedError)
         },
     )
 

@@ -62,7 +62,7 @@ Properties from editor:
 - `required` : `{boolean}`, extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `requiredValidator`
 - `valid` : `{boolean}` if this schema level got some error, detected/changed from the pluginStack
 - `showValidity` : `{boolean}` if the errors/success should be visible
-- `errors` : `{List}` validation errors, added from the pluginStack for the current widget/schema-level
+- `errors` : `{ValidatorErrorsType}` validation errors, added from the pluginStack for the current widget/schema-level
 
 See [how to add custom widgets](#adding--overwriting-widgets) to a binding.
 

@@ -3,6 +3,7 @@ import {List} from "immutable";
 import {extractValue, withEditor,} from "../EditorStore";
 import {memo} from "../Utils/memo";
 import {NextPluginRenderer} from "@ui-schema/ui-schema/EditorPluginStack/EditorPluginStack";
+import {createValidatorErrors} from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors";
 
 class WidgetErrorBoundary extends React.Component {
     state = {
@@ -55,7 +56,7 @@ const WidgetRendererBase = (props) => {
             ownKey={storeKeys.get(storeKeys.count() - 1)}
             requiredList={required}
             required={false}
-            errors={List()}
+            errors={createValidatorErrors()}
             valid
         />
     </ErrorBoundary> : null;

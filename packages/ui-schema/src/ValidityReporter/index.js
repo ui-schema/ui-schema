@@ -1,2 +1,3 @@
-export * from './ValidityReporter'
 export * from './isInvalid'
+export * from './ValidatorErrors'
+export * from './ValidityReporter'

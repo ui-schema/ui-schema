@@ -35,7 +35,7 @@ export const valueValidatorEnum = {
 
         if(!validateEnum(type, schema.get('enum'), value)) {
             valid = false;
-            errors = errors.push(ERROR_ENUM_MISMATCH);
+            errors = errors.addError(ERROR_ENUM_MISMATCH);
         }
 
         return {errors, valid}

@@ -1,19 +1,12 @@
 import {List, Map} from "immutable";
+import {createValidatorErrors} from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors";
 
 export const ERROR_MIN_LENGTH = 'min-length';
 export const ERROR_MAX_LENGTH = 'max-length';
 
-/**
- *
- * @param type
- * @param schema
- * @param value
- * @param strict
- * @return {List<any>}
- */
 export const validateMinMax = (schema, value) => {
     const type = schema.get('type');
-    let errors = List();
+    let errors = createValidatorErrors();
     if(typeof value === 'undefined') return errors
 
     if(type === 'string') {
@@ -23,12 +16,12 @@ export const validateMinMax = (schema, value) => {
         if(typeof value === 'string') {
             if(minLength) {
                 if(value.length < minLength) {
-                    errors = errors.push(List([ERROR_MIN_LENGTH, Map({min: minLength})]));
+                    errors = errors.addError(ERROR_MIN_LENGTH, Map({min: minLength}));
                 }
             }
             if(maxLength) {
                 if(value.length > maxLength) {
-                    errors = errors.push(List([ERROR_MAX_LENGTH, Map({max: maxLength})]));
+                    errors = errors.addError(ERROR_MAX_LENGTH, Map({max: maxLength}));
                 }
             }
         }
@@ -41,11 +34,11 @@ export const validateMinMax = (schema, value) => {
         if(minItems) {
             if(List.isList(value)) {
                 if(value.size < minItems) {
-                    errors = errors.push(List([ERROR_MIN_LENGTH, Map({min: minItems})]));
+                    errors = errors.addError(ERROR_MIN_LENGTH, Map({min: minItems}));
                 }
             } else if(Array.isArray(value)) {
                 if(value.length < minItems) {
-                    errors = errors.push(List([ERROR_MIN_LENGTH, Map({min: minItems})]));
+                    errors = errors.addError(ERROR_MIN_LENGTH, Map({min: minItems}));
                 }
             }
         }
@@ -53,11 +46,11 @@ export const validateMinMax = (schema, value) => {
         if(maxItems) {
             if(List.isList(value)) {
                 if(value.size > maxItems) {
-                    errors = errors.push(List([ERROR_MAX_LENGTH, Map({max: maxItems})]));
+                    errors = errors.addError(ERROR_MAX_LENGTH, Map({max: maxItems}));
                 }
             } else if(Array.isArray(value)) {
                 if(value.length > maxItems) {
-                    errors = errors.push(List([ERROR_MAX_LENGTH, Map({max: maxItems})]));
+                    errors = errors.addError(ERROR_MAX_LENGTH, Map({max: maxItems}));
                 }
             }
         }
@@ -70,11 +63,11 @@ export const validateMinMax = (schema, value) => {
         if(minProperties) {
             if(Map.isMap(value)) {
                 if(value.keySeq().size < minProperties) {
-                    errors = errors.push(List([ERROR_MIN_LENGTH, Map({min: minProperties})]));
+                    errors = errors.addError(ERROR_MIN_LENGTH, Map({min: minProperties}));
                 }
             } else if(typeof value === 'object') {
                 if(Object.keys(value).length < minProperties) {
-                    errors = errors.push(List([ERROR_MIN_LENGTH, Map({min: minProperties})]));
+                    errors = errors.addError(ERROR_MIN_LENGTH, Map({min: minProperties}));
                 }
             }
         }
@@ -82,11 +75,11 @@ export const validateMinMax = (schema, value) => {
         if(maxProperties) {
             if(Map.isMap(value)) {
                 if(value.keySeq().size > maxProperties) {
-                    errors = errors.push(List([ERROR_MAX_LENGTH, Map({max: maxProperties})]));
+                    errors = errors.addError(ERROR_MAX_LENGTH, Map({max: maxProperties}));
                 }
             } else if(typeof value === 'object') {
                 if(Object.keys(value).length > maxProperties) {
-                    errors = errors.push(List([ERROR_MAX_LENGTH, Map({max: maxProperties})]));
+                    errors = errors.addError(ERROR_MAX_LENGTH, Map({max: maxProperties}));
                 }
             }
         }
@@ -100,31 +93,32 @@ export const validateMinMax = (schema, value) => {
 
         if(typeof value === 'number') {
             if(typeof minimum === 'number') {
-                if(value < minimum) {
-                    errors = errors.push(List([ERROR_MIN_LENGTH, Map({min: minimum})]));
+                if(typeof exclusiveMinimum === 'boolean') {
+                    if(exclusiveMinimum && value <= minimum) {
+                        errors = errors.addError(ERROR_MIN_LENGTH, Map({exclMin: minimum}));
+                    }
+                } else if(value < minimum) {
+                    errors = errors.addError(ERROR_MIN_LENGTH, Map({min: minimum}));
                 }
             }
+
             if(typeof exclusiveMinimum === 'number') {
                 if(value <= exclusiveMinimum) {
-                    errors = errors.push(List([ERROR_MIN_LENGTH, Map({exclMin: exclusiveMinimum})]));
-                }
-            } else if(typeof exclusiveMinimum === 'boolean' && typeof maximum === 'number') {
-                if(value < exclusiveMinimum) {
-                    errors = errors.push(List([ERROR_MIN_LENGTH, Map({exclMin: minimum})]));
+                    errors = errors.addError(ERROR_MIN_LENGTH, Map({exclMin: exclusiveMinimum}));
                 }
             }
             if(typeof maximum === 'number') {
-                if(value > maximum) {
-                    errors = errors.push(List([ERROR_MAX_LENGTH, Map({max: maximum})]));
+                if(typeof exclusiveMaximum === 'boolean') {
+                    if(value >= maximum) {
+                        errors = errors.addError(ERROR_MAX_LENGTH, Map({exclMax: maximum}));
+                    }
+                } else if(value > maximum) {
+                    errors = errors.addError(ERROR_MAX_LENGTH, Map({max: maximum}));
                 }
             }
             if(typeof exclusiveMaximum === 'number') {
                 if(value >= exclusiveMaximum) {
-                    errors = errors.push(List([ERROR_MAX_LENGTH, Map({exclMax: exclusiveMaximum})]));
-                }
-            } else if(typeof exclusiveMaximum === 'boolean' && typeof maximum === 'number') {
-                if(value > maximum) {
-                    errors = errors.push(List([ERROR_MAX_LENGTH, Map({exclMax: maximum})]));
+                    errors = errors.addError(ERROR_MAX_LENGTH, Map({exclMax: exclusiveMaximum}));
                 }
             }
         }
@@ -137,9 +131,9 @@ export const minMaxValidator = {
     validate: ({schema, value, errors, valid}) => {
         let err = validateMinMax(schema, value);
 
-        if(err.size) {
+        if(err.hasError()) {
             valid = false;
-            errors = errors.concat(err);
+            errors = errors.addErrors(err);
         }
         return {errors, valid}
     }

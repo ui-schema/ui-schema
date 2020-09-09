@@ -1,4 +1,3 @@
-import {List} from 'immutable';
 import {validateType} from "../Validators/TypeValidator/TypeValidator";
 import {ERROR_WRONG_TYPE} from "../Validators/TypeValidator/TypeValidator";
 import {ERROR_PATTERN, validatePattern} from "../Validators/PatternValidator/PatternValidator";
@@ -8,48 +7,51 @@ import {ERROR_MULTIPLE_OF, validateMultipleOf} from "../Validators/MultipleOfVal
 import {validateContains} from "../Validators/ArrayValidator/ArrayValidator";
 import {ERROR_NOT_SET} from "../Validators/RequiredValidator/RequiredValidator";
 import {validateObject} from "../Validators/ObjectValidator/ObjectValidator";
+import {createValidatorErrors} from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors";
 
 /**
  * Return false when valid and string/List for an error
  *
  * @param schema
  * @param value
- * @return {boolean|string|List}
+ * @return {ValidatorErrorsType}
  */
 export const validateSchema = (schema, value) => {
     let type = schema.get('type');
     let pattern = schema.get('pattern');
 
+    let err = createValidatorErrors();
     let not = schema.get('not');
     if(not) {
         // supporting `not` for any validations
         // https://json-schema.org/understanding-json-schema/reference/combining.html#not
         let tmpNot = validateSchema(not, value);
-        return (0 === tmpNot.size || false === tmpNot) ? 'not-is-valid' : false;
+        return tmpNot.hasError() ? tmpNot.addError('not-is-valid') : err;
     }
 
-    let err = false;
-
-    // todoL performance optimizes at validateMinMax, validateObject, validateContains
     if(!validateType(value, type)) {
-        err = ERROR_WRONG_TYPE;
+        err = err.addError(ERROR_WRONG_TYPE);
     } else if(!validatePattern(type, value, pattern)) {
-        err = ERROR_PATTERN;
-    } else if(validateMinMax(schema, value, false).size) {
-        // todo: duplicate validate checks when invalid [performance]
-        err = validateMinMax(schema, value, false);
+        err = err.addError(ERROR_PATTERN);
     } else if(!validateConst(type, schema.get('const'), value)) {
-        err = ERROR_CONST_MISMATCH;
+        err = err.addError(ERROR_CONST_MISMATCH);
     } else if(!validateEnum(type, schema.get('enum'), value)) {
-        err = ERROR_ENUM_MISMATCH;
+        err = err.addError(ERROR_ENUM_MISMATCH);
     } else if(!validateMultipleOf(schema, value)) {
-        err = ERROR_MULTIPLE_OF;
-    } else if(validateObject(schema, value).size) {
-        // todo: duplicate validate checks when invalid [performance]
-        err = validateObject(schema, value);
-    } else if(validateContains(schema, value).size) {
-        // todo: duplicate validate checks when invalid [performance]
-        err = validateContains(schema, value);
+        err = err.addError(ERROR_MULTIPLE_OF);
+    } else {
+        const errMinMax = validateMinMax(schema, value);
+        if(errMinMax.hasError()) {
+            return errMinMax;
+        }
+        const errObj = validateObject(schema, value);
+        if(errObj.hasError()) {
+            return errObj;
+        }
+        const errContains = validateContains(schema, value);
+        if(errContains.hasError()) {
+            return errContains;
+        }
     }
 
     return err;
@@ -65,20 +67,20 @@ export const validateSchema = (schema, value) => {
  * @return {List<*>}
  */
 export const validateSchemaObject = (schema, value) => {
-    let err = List([]);
+    let err = createValidatorErrors();
     let properties = schema.get('properties');
     if(!properties) return err;
 
     properties.forEach((subSchema, key) => {
         let val = value.get(key);
         if(typeof val === 'undefined') {
-            err = err.push(ERROR_NOT_SET);
+            err = err.addError(ERROR_NOT_SET);
             return;
         }
 
         let t = validateSchema(subSchema, val);
-        if(t) {
-            err = err.push(t);
+        if(t.hasError()) {
+            err = err.addErrors(t);
         }
     });
 

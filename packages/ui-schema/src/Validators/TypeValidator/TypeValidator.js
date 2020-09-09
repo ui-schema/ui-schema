@@ -43,7 +43,7 @@ export const typeValidator = {
 
         if(!validateType(value, type)) {
             valid = false;
-            errors = errors.push(List([ERROR_WRONG_TYPE, Map({actual: typeof value})]));
+            errors = errors.addError(ERROR_WRONG_TYPE, Map({actual: typeof value}));
         }
 
         return {errors, valid}

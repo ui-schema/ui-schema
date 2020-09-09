@@ -107,6 +107,54 @@ Supplies function: `isInvalid(validity, scope = [], count = false)` to check if 
 - `scope` : `{Array|List}` with the keys of which schema level should be searched
 - `count` to true will search for the amount of invalids and not end after first invalid
 
+#### ValidationErrors
+
+Is a Record containing all errors for the current widget/plugin stack, each new widget-tree receives a new instance - thus containing only the errors for the current widget.
+
+Except e.g. `array`, where errors for keyword `items` are also on the `array` not only on the single item widgets.
+
+The `errors` property is an instance of this type.
+
+- `errCount`: `number`
+- `errors`: `Map<{}, undefined>`
+- `childErrors`: `Map<{}, undefined>`
+- `errorsToJS`: `() => any`
+- `getErrors`: `() => Map<{ [key: string]: List<any> }, undefined>`
+- `addError`: `(type: string, context?: Map<any, any>) => ValidatorErrorsType`
+- `addErrors`: `(errors: ValidatorErrorsType) => ValidatorErrorsType`
+- `addChildError`: `(errors: ValidatorErrorsType) => ValidatorErrorsType`
+- `hasError`: `(type?: string) => boolean`
+- `getError`: `(type: string) => List<any>`
+
+```js
+import {Map} from "immutable"
+import {createValidatorErrors, ERROR_NOT_SET} from "@ui-schema/ui-schema"
+
+errors = errors.addError(ERROR_NOT_SET)
+
+// with context, e.g. for detailed error messages
+errors = errors.addError(ERROR_NOT_SET, Map({}))
+
+errors.hasError(ERROR_NOT_SET) // true!
+errors.hasError('custom-error') // false!
+
+typeErrors = errors.getError(ERROR_NOT_SET)
+
+console.log(errors.errCount) // 2
+
+typeErrors.forEach(errorContext => {
+    // multiple errors for the same type
+    // maybe different contexts, the context is a `Map`, even when empty
+    let info = errorContext.get('info')
+    if(info) {
+    } else {
+    }
+})
+
+let tmpError = createValidatorErrors() // create an empty Record
+tmpError.addErrors(errors) // add the errors of e.g. another validation function to the actual errors
+``` 
+
 #### validateSchema
 
 ```js
@@ -115,9 +163,9 @@ import {validateSchema} from '@ui-schema/ui-schema/validateSchema';
 
 Exports the validation functions used by the plugins for usage outside of the render tree.
 
-Returns `false` when **no error** was found, otherwise `true` or `List` with errors.
+`errors` and the return value is `ValidatorErrorsType`, initialized by `createValidatorErrors`, check e.g. with `errors.hasError()`
 
-Currently includes the handlers of:
+Includes the handlers of:
 
 - validateType
 - validatePattern
@@ -677,7 +725,7 @@ const SomeValidator = {
         let type = schema.get('type');
         if(!checkValueExists(type, value)) {
             valid = false;
-            errors = errors.push(ERROR_NOT_SET);
+            errors = errors.addError(ERROR_NOT_SET);
         }
         return {errors, valid, required: true}
     }
