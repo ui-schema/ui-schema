@@ -5,11 +5,12 @@ import {
 import { createMap, createOrderedMap } from "@ui-schema/ui-schema/Utils"
 import { JsonSchema } from "@ui-schema/ui-schema/JsonSchema"
 import { UISchema } from "@ui-schema/ui-schema/UISchema"
+import { createValidatorErrors } from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors"
 
 describe('validateMinMax', () => {
     type validateMinMaxTest = [
         // schema:
-        JsonSchema & UISchema,
+            JsonSchema & UISchema,
         // value:
         any,
         // expected qty of errors:
@@ -37,12 +38,24 @@ describe('validateMinMax', () => {
             'te',
             0,
         ], [
+            {type: 'string', maxLength: 2},
+            111,
+            0,
+        ], [
             {type: 'array', minItems: 2},
             ['text1'],
             1,
         ], [
             {type: 'array', minItems: 2},
             ['text1', 'text2'],
+            0,
+        ], [
+            {type: 'array', minItems: 2},
+            'not-an-array',
+            0,
+        ], [
+            {type: 'array', maxItems: 2},
+            'not-an-array',
             0,
         ], [
             {type: 'array', maxItems: 2},
@@ -75,6 +88,14 @@ describe('validateMinMax', () => {
         ], [
             {type: 'object', minProperties: 2},
             {a: 'text1', b: 'text2'},
+            0,
+        ], [
+            {type: 'object', minProperties: 2},
+            'not-an-object',
+            0,
+        ], [
+            {type: 'object', maxProperties: 2},
+            'not-an-object',
             0,
         ], [
             {type: 'object', maxProperties: 2},
@@ -164,13 +185,37 @@ describe('validateMinMax', () => {
             {type: 'integer', exclusiveMaximum: 2},
             2,
             1,
+        ], [
+            // @ts-ignore draft-04 check
+            {type: 'integer', exclusiveMinimum: true, minimum: 2},
+            2,
+            1,
+        ], [
+            // @ts-ignore draft-04 check
+            {type: 'integer', exclusiveMinimum: true, minimum: 2},
+            3,
+            0,
+        ], [
+            // @ts-ignore draft-04 check
+            {type: 'integer', exclusiveMaximum: true, maximum: 2},
+            1,
+            0,
+        ], [
+            // @ts-ignore draft-04 check
+            {type: 'integer', exclusiveMaximum: true, maximum: 2},
+            2,
+            1,
+        ], [
+            {type: 'integer', maximum: 2},
+            undefined,
+            0,
         ],
     ]
     test.each(validateMinMaxTestValues)(
         'validateMinMax(%j, %j)',
         (schema, value, expected) => {
             const orderedSchema = createOrderedMap(schema)
-            expect(validateMinMax(orderedSchema, value).size).toBe(expected)
+            expect(validateMinMax(orderedSchema, value).errCount).toBe(expected)
         },
     )
 })
@@ -178,7 +223,7 @@ describe('validateMinMax', () => {
 describe('minMaxValidator', () => {
     type minMaxValidatorTest = [
         // schema:
-        JsonSchema & UISchema,
+            JsonSchema & UISchema,
         // value:
         any,
         // error:
@@ -223,11 +268,14 @@ describe('minMaxValidator', () => {
             const result = minMaxValidator.validate({
                 schema: OrderedMap(schema),
                 value,
-                errors: List([]),
+                errors: createValidatorErrors(),
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            expect(result.errors.contains(error)).toBe(expectedError)
+            expect(result.errors.hasError(error.get(0))).toBe(expectedError)
+            if (result.errors.hasError(error.get(0))) {
+                expect(result.errors.getError(error.get(0)).get(0).equals(error.get(1))).toBe(expectedError)
+            }
         },
     )
 })

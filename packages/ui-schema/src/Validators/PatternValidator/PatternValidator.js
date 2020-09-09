@@ -16,13 +16,21 @@ const validatePattern = (type, value, pattern) => {
 };
 
 const patternValidator = {
+    /**
+     *
+     * @param schema
+     * @param value
+     * @param ValidatorErrorsType errors
+     * @param valid
+     * @return {{valid: boolean, errors: *}}
+     */
     validate: ({schema, value, errors, valid}) => {
         let type = schema.get('type');
         let pattern = schema.get('pattern');
 
         if(!validatePattern(type, value, pattern)) {
             valid = false;
-            errors = errors.push(ERROR_PATTERN);
+            errors = errors.addError(ERROR_PATTERN);
         }
 
         return {errors, valid}

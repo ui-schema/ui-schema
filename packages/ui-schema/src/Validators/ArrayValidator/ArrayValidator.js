@@ -1,6 +1,7 @@
 import {List, Map} from "immutable";
 import {validateSchema} from "@ui-schema/ui-schema/validateSchema";
 import {ERROR_WRONG_TYPE} from "@ui-schema/ui-schema/Validators/TypeValidator/TypeValidator";
+import {createValidatorErrors} from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors";
 
 export const ERROR_DUPLICATE_ITEMS = 'duplicate-items';
 export const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains';
@@ -17,13 +18,13 @@ let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== in
  * @param schema single schema or tuple schema
  * @param value
  * @param additionalItems
- * @return {{err: List, found: number}}
+ * @return {{err: ValidatorErrorsType, found: number}}
  */
 export const validateArrayContent = (schema, value, additionalItems = true) => {
-    let err = List([]);
+    let err = createValidatorErrors();
     let found = 0;
     for(let val of value) {
-        let tmpErr = List([]);
+        let tmpErr = createValidatorErrors();
         if(List.isList(schema)) {
             // tuple validation
             if(List.isList(val) || Array.isArray(val)) {
@@ -47,25 +48,24 @@ export const validateArrayContent = (schema, value, additionalItems = true) => {
                 //   but they must be usable for within conditional schemas
                 if(!validateAdditionalItems(additionalItems, val, schema)) {
                     // todo: add index of erroneous item; or at all as one context list, only one error instead of multiple?
-                    tmpErr = tmpErr.push(List([ERROR_ADDITIONAL_ITEMS, Map({})]));
+                    tmpErr = tmpErr.addError(ERROR_ADDITIONAL_ITEMS, Map({}));
                 }
             } else {
                 // when tuple schema but no-tuple value
-                tmpErr = tmpErr.push(List([ERROR_WRONG_TYPE, Map({actual: typeof value, arrayTupleValidation: true})]));
+                tmpErr = tmpErr.addError(ERROR_WRONG_TYPE, Map({actual: typeof value, arrayTupleValidation: true}));
             }
         } else {
             // single-validation
             // Cite from json-schema.org: When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
             let tmpErr2 = validateSchema(schema, val);
-            if(tmpErr2) {
-                // todo: support errors as list
-                tmpErr = tmpErr.push(tmpErr2)
+            if(tmpErr2.hasError()) {
+                tmpErr = tmpErr.addErrors(tmpErr2)
             }
         }
-        if(tmpErr.size === 0) {
+        if(tmpErr.errCount === 0) {
             found++
         } else {
-            err = err.concat(tmpErr);
+            err = err.addErrors(tmpErr);
         }
     }
 
@@ -88,20 +88,14 @@ export const validateItems = (schema, value) => {
     let items = schema.get('items');
     if(items && value) {
         let item_err = validateArrayContent(items, value, schema.get('additionalItems'));
-        if(List.isList(item_err.err)) {
-            if(item_err.err.size) {
-                return item_err.err;
-            }
-        } else if(item_err.err) {
-            return List([item_err.err]);
-        }
+        return item_err.err
     }
 
-    return List([]);
+    return createValidatorErrors();
 };
 
 export const validateContains = (schema, value) => {
-    let errors = List([]);
+    let errors = createValidatorErrors();
     if(schema.get('type') !== 'array') return errors;
 
     const contains = schema.get('contains');
@@ -119,27 +113,23 @@ export const validateContains = (schema, value) => {
         (typeof minContains === 'number' && minContains > item_err.found) ||
         (typeof maxContains === 'number' && maxContains < item_err.found)
     ) {
-        if(List.isList(item_err.err)) {
-            if(item_err.err.size) {
-                errors = errors.concat(item_err.err);
-            }
-        } else if(item_err.err) {
-            errors = errors.push(item_err.err);
+        if(item_err.err.errCount !== 0) {
+            errors = errors.addErrors(item_err.err);
         }
     }
 
     if(typeof minContains === 'number' && minContains > item_err.found) {
-        errors = errors.push(ERROR_MIN_CONTAINS);
+        errors = errors.addError(ERROR_MIN_CONTAINS);
     }
     if(typeof maxContains === 'number' && maxContains < item_err.found) {
-        errors = errors.push(ERROR_MAX_CONTAINS);
+        errors = errors.addError(ERROR_MAX_CONTAINS);
     }
 
     if(
         minContains !== 0 &&
         ((Array.isArray(value) && value.length === 0) || (List.isList(value) && value.size === 0))
     ) {
-        errors = errors.push(ERROR_NOT_FOUND_CONTAINS);
+        errors = errors.addError(ERROR_NOT_FOUND_CONTAINS);
     }
 
     return errors;
@@ -170,7 +160,7 @@ export const arrayValidator = {
         if(uniqueItems && value) {
             if(!validateUniqueItems(schema, value)) {
                 valid = false;
-                errors = errors.push(ERROR_DUPLICATE_ITEMS);
+                errors = errors.addError(ERROR_DUPLICATE_ITEMS);
             }
         }
 
@@ -186,14 +176,11 @@ export const arrayValidator = {
         let items = schema.get('items');
         if(items && value) {
             let items_err = validateItems(schema, value);
-            if(items_err.size) {
+            if(items_err.hasError()) {
                 valid = false;
-                errors = errors.concat(items_err.map(err =>
-                    // updating error context with `items` to be able to distinct between
-                    List.isList(err) ?
-                        err.setIn([1, 'arrayItems'], true) :
-                        List([err, Map({arrayItems: true})])
-                ));
+                errors = errors.addErrors(items_err);
+                // todo: here actually `addChildError` should be used an not addErrors
+                // errors = errors.addChildError(items_err);
             }
         }
 
@@ -203,9 +190,9 @@ export const arrayValidator = {
         let contains = schema.get('contains');
         if(contains && value) {
             const containsError = validateContains(schema, value);
-            if(containsError.size) {
+            if(containsError.hasError()) {
                 valid = false;
-                errors = errors.concat(containsError);
+                errors = errors.addErrors(containsError);
             }
         }
         return {errors, valid}

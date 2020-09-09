@@ -40,7 +40,7 @@ const requiredValidator = {
         let type = schema.get('type');
         if(!checkValueExists(type, value)) {
             valid = false;
-            errors = errors.push(ERROR_NOT_SET);
+            errors = errors.addError(ERROR_NOT_SET);
         }
         return {errors, valid, required: true}
     }

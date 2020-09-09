@@ -2,6 +2,7 @@ import { OrderedMap, List, Map } from "immutable"
 import {
     validateConst, valueValidatorConst, ERROR_CONST_MISMATCH,
 } from '@ui-schema/ui-schema/Validators/ValueValidator'
+import { createValidatorErrors } from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors"
 
 describe('validateConst', () => {
     test('validateConst', () => {
@@ -85,11 +86,14 @@ describe('valueValidatorConst', () => {
             const result = valueValidatorConst.validate({
                 schema: OrderedMap(schema),
                 value,
-                errors: List([]),
+                errors: createValidatorErrors(),
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            expect(result.errors.contains(error)).toBe(expectedError)
+            expect(result.errors.hasError(error.get(0))).toBe(expectedError)
+            if (result.errors.hasError(error.get(0))) {
+                expect(result.errors.getError(error.get(0)).get(0).equals(error.get(1))).toBe(expectedError)
+            }
         },
     )
 })

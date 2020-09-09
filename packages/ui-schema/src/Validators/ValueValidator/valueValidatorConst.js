@@ -1,4 +1,4 @@
-import {List, Map} from "immutable";
+import {Map} from "immutable";
 
 export const ERROR_CONST_MISMATCH = 'const-mismatch';
 
@@ -30,7 +30,7 @@ export const valueValidatorConst = {
 
         if(!validateConst(type, schema.get('const'), value)) {
             valid = false;
-            errors = errors.push(List([ERROR_CONST_MISMATCH, Map({const: schema.get('const')})]));
+            errors = errors.addError(ERROR_CONST_MISMATCH, Map({const: schema.get('const')}));
         }
 
         return {errors, valid}

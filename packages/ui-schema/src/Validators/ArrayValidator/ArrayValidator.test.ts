@@ -10,6 +10,7 @@ import {
 import { createOrderedMap } from "@ui-schema/ui-schema/Utils"
 import { validateAdditionalItems } from "@ui-schema/ui-schema/Validators/ArrayValidator/ArrayValidator"
 import { ERROR_WRONG_TYPE } from "@ui-schema/ui-schema/Validators/TypeValidator/TypeValidator"
+import { createValidatorErrors } from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors"
 
 describe('validateArrayContent', () => {
     test.each([
@@ -174,7 +175,7 @@ describe('validateArrayContent', () => {
         ]), [1, 'text', true], true, false, 0],*/
     ])('validateArrayContent(%j, %j, %s): %s', (schema, value, additionalItems, expected) => {
         const r = validateArrayContent(schema, value, additionalItems)
-        expect(r.err.size).toBe(expected)
+        expect(r.err.errCount).toBe(expected)
     })
 })
 
@@ -216,8 +217,11 @@ describe('validateItems', () => {
                 type: 'number',
             },
         }, List(['1', '2', 3]), 2],
+        [{
+            type: 'array',
+        }, List(['1', '2', 3]), 0],
     ])('validateItems(%j, %j)', (schema, value, expected) => {
-        expect(validateItems(createOrderedMap(schema), value).size).toBe(expected)
+        expect(validateItems(createOrderedMap(schema), value).errCount).toBe(expected)
     })
 })
 
@@ -374,8 +378,15 @@ describe('validateContains', () => {
                 type: 'number',
             },
         }, List([]), 1],
+        [{
+            type: 'array',
+        }, List([]), 0],
+        [{
+            type: 'array',
+            contains: {},
+        }, List([]), 0],
     ])('validateContains(%j, %j)', (schema, value, expected) => {
-        expect(validateContains(createOrderedMap(schema), value).size).toBe(expected)
+        expect(validateContains(createOrderedMap(schema), value).errCount).toBe(expected)
     })
 })
 
@@ -494,13 +505,13 @@ describe('arrayValidator', () => {
         [
             {type: 'array', uniqueItems: true},
             ['text1'],
-            ERROR_DUPLICATE_ITEMS,
+            List([ERROR_DUPLICATE_ITEMS, Map()]),
             true,
             false,
         ], [
             {type: 'array', uniqueItems: true},
             ['text1', 'text1'],
-            ERROR_DUPLICATE_ITEMS,
+            List([ERROR_DUPLICATE_ITEMS, Map()]),
             false,
             true,
         ], [
@@ -511,7 +522,7 @@ describe('arrayValidator', () => {
                 },
             },
             [1, 2],
-            List([ERROR_WRONG_TYPE, Map({arrayItems: true})]),
+            List([ERROR_WRONG_TYPE, Map()]),
             true,
             false,
         ], [
@@ -522,7 +533,7 @@ describe('arrayValidator', () => {
                 },
             },
             ['1', 2],
-            List([ERROR_WRONG_TYPE, Map({arrayItems: true})]),
+            List([ERROR_WRONG_TYPE, Map()]),
             false,
             true,
         ], [
@@ -533,7 +544,7 @@ describe('arrayValidator', () => {
                 },
             },
             ['1', 2],
-            List([ERROR_WRONG_TYPE, Map({arrayItems: true})]),
+            List([ERROR_WRONG_TYPE, Map()]),
             true,
             false,
         ], [
@@ -544,7 +555,7 @@ describe('arrayValidator', () => {
                 },
             },
             ['1'],
-            ERROR_WRONG_TYPE,
+            List([ERROR_WRONG_TYPE, Map()]),
             false,
             true,
         ],
@@ -554,11 +565,14 @@ describe('arrayValidator', () => {
             const result = arrayValidator.validate({
                 schema: createOrderedMap(schema),
                 value,
-                errors: List([]),
+                errors: createValidatorErrors(),
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            expect(result.errors.contains(error)).toBe(expectedError)
+            expect(result.errors.hasError(error.get(0))).toBe(expectedError)
+            if (result.errors.hasError(error.get(0))) {
+                expect(result.errors.getError(error.get(0)).get(0).equals(error.get(1))).toBe(expectedError)
+            }
         },
     )
 })

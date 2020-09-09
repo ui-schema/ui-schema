@@ -1,6 +1,6 @@
-import { List } from "immutable"
 import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators"
 import { EditorPluginProps } from "@ui-schema/ui-schema/EditorPlugin"
+import { errors } from "@ui-schema/ui-schema/CommonTypings"
 
 export const ERROR_WRONG_TYPE = 'wrong-type'
 
@@ -10,7 +10,7 @@ export interface TypeValidatorType extends ValidatorPlugin {
     validate: (
         {schema, value, errors, valid}: Partial<EditorPluginProps>
     ) => {
-        errors: List<any>
+        errors: errors
         valid: boolean
     }
 }

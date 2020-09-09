@@ -1,19 +1,19 @@
-# UI JSON-Schema
+# UI JSON Schema
 
-JSON-Schema together with UI-Schema are making it possible to validate data in frontend and backend, create user interfaces and more from a single source of truth.
+JSON Schema together with UI Schema are making it possible to validate data in frontend and backend, create user interfaces and more from a single source of truth.
 
-This page covers the support for JSON-Schema within the core, validators or from plugins.
+This page covers the support for JSON Schema within the core, validators or from plugins.
 
 **JSON Schema versions supported:** Draft 2019-09 / Draft-08, Draft-07, Draft-06, Draft-04
 
 ## Widget Matching
 
-For matching a widget to a schema, these keywords are used:
+Matches the rendered widget, keywords used:
  
 - `type` valid types: `string`, `number`, `integer`, `boolean`, `object`, `array`
     - multiple types support ❌
     - full support `null` as type ❌
-- `widget`, non-standard JSON-Schema to select a specific UI
+- `widget` non-standard JSON-Schema to select a specific UI
 
 ## Universal Keywords
 
@@ -45,26 +45,10 @@ Usage scenario needs to be created:
     - [schema-id](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property) with `$id` and use `$ref` with `$id` to load partial sub-schemas lazily or include relatively ❌
     
 >
-> extended with non-standard vocabulary for [UI purposes](#ui-schema-extension-of-json-schema)
+> extended with non-standard vocabulary for [UI purposes](#ui-schema-keywords)
 >
 > more about [JSON-Schema keyword support](#json-schema-keyword-support).
 >
-    
-## UI-Schema, the visual part for JSON-Schema
-
-The JSON-Schema gets extended with special only-UI keywords, take a look a each [widget page](/docs/overview#widget-list) for individual settings and more.
-
-- `view` currently only used for the grid system
-- `widget` (see top of page), UI selection
-- `t`, `tt` for [translation](/docs/localization#Translation)
-
-More about [UI-Schema keywords](#ui-schema-keywords).
-
-### View Keyword
-
-- `sizeXs`, `sizeSm`, `sizeMd`, `sizeLg`, `sizeXl` to build responsive UIs
-    - takes a `number` between `1` and `12`
-    - see [GridHandler](/docs/widgets/GridHandler)
 
 ## Types
 
@@ -169,7 +153,7 @@ Validation Keywords:
     - ❗ no full sub-schema against array items
     - errors are added with context key `arrayItems`
         - only get **non** items errors: 
-        - `errors.filter(err => List.isList(err) ? !err.getIn([1, 'arrayItems']) : true)`
+        - `errors.getErrors()`, `errors.getChildErrors()`
 - `items` restricts items to be valid against sub-schemas in an defined order (tuple) 
     - `additionalItems` if more props then defined are allowed
     - ❗ currently the individual items must be validated in their actual widgets (validation in render flow)
@@ -278,6 +262,12 @@ Validators for latest version are used by default, incompatible changes are solv
 
 ## UI-Schema Keywords
 
+UI Schema extends JSON Schema with special only-UI keywords, take a look a each [widget page](/docs/overview#widget-list) for individual settings and more.
+
+- `view` used for the grid system
+- `widget` (see top of page), UI selection / widget matching
+- `t`, `tt` for [translation](/docs/localization#Translation)
+
 Typings:
 
 - [`import {JsonSchema} from '@ui-schema/ui-schema'`](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/JsonSchema.d.ts)
@@ -289,6 +279,12 @@ Vocabularies:
 - [Widget](https://github.com/ui-schema/ui-schema/blob/master/schema/2019-09/meta/widget.json)
 - [Translation](https://github.com/ui-schema/ui-schema/blob/master/schema/2019-09/meta/translation.json)
 - ...
+
+### View Keyword
+
+- `sizeXs`, `sizeSm`, `sizeMd`, `sizeLg`, `sizeXl` to build responsive UIs
+    - takes a `number` between `1` and `12`
+    - see [GridHandler](/docs/widgets/GridHandler)
 
 ## Schema is Read-Only
 

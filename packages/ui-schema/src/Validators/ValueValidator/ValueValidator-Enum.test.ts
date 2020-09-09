@@ -2,6 +2,7 @@ import { OrderedMap, List } from "immutable"
 import {
     validateEnum, valueValidatorEnum, ERROR_ENUM_MISMATCH,
 } from '@ui-schema/ui-schema/Validators/ValueValidator'
+import { createValidatorErrors } from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors"
 
 describe('validateEnum', () => {
     test('validateEnum', () => {
@@ -66,6 +67,11 @@ describe('validateEnum', () => {
         )).toBe(true)
         expect(validateEnum(
             'array',
+            [],
+            [],
+        )).toBe(true)
+        expect(validateEnum(
+            'array',
         )).toBe(true)
         expect(validateEnum('string', undefined, 'text1')).toBe(true)
         expect(validateEnum('string')).toBe(true)
@@ -123,11 +129,11 @@ describe('valueValidatorEnum', () => {
             const result = valueValidatorEnum.validate({
                 schema: OrderedMap(schema),
                 value,
-                errors: List([]),
+                errors: createValidatorErrors(),
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            expect(result.errors.contains(error)).toBe(expectedError)
+            expect(result.errors.hasError(error)).toBe(expectedError)
         },
     )
 })

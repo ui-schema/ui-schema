@@ -63,7 +63,7 @@ See the [**list of widgets**](/docs/overview#widget-list) for the different desi
                 <HeadlineMenu initial/>
             </PageBox>
 
-            <Paper style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
                 <Markdown content source={`
 ## 1. Install
 
@@ -95,7 +95,7 @@ npm i --save @ui-schema/ui-schema immutable @ui-schema/ds-bootstrap bootstrap
                 </Grid>
             </Paper>
 
-            <Paper style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
                 <Markdown content source={`
 ## 2. Create Demo Editor
 
@@ -139,7 +139,7 @@ export {Editor}
                 </Grid>
             </Paper>
 
-            <Paper style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
                 <Markdown content source={`
 ## 3. Import Design-System Widgets
 
@@ -173,7 +173,7 @@ import {widgets} from "@ui-schema/ds-bootstrap";
                 </Grid>
             </Paper>
 
-            <Paper style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
                 <Markdown content source={`
 ## 4. Create Store State, Add Schema
 
@@ -217,7 +217,7 @@ const Editor = () => {
                 </Grid>
             </Paper>
 
-            <Paper style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
                 <Grid container>
                     <Grid item xs={12}>
                         <Markdown content source={`
@@ -250,7 +250,7 @@ const schema = createOrderedMap(${JSON.stringify(demoSchema, null, 2)});
                 </Grid>
             </Paper>
 
-            <Paper style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
                 <Grid container>
                     <Grid item xs={12}>
                         <Markdown content source={`
@@ -349,7 +349,7 @@ const QuickStartEditor = () => {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(store.valuesToJS())
+                        body: JSON.stringify(store.valuesToJS())
                 })
                     .then(r => r.json())
                     .then(setSending)

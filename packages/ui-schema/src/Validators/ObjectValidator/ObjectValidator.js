@@ -1,5 +1,6 @@
-import {List, Map} from "immutable";
+import {Map} from "immutable";
 import {validateSchema} from "../../validateSchema/index";
+import {createValidatorErrors} from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors";
 
 export const ERROR_ADDITIONAL_PROPERTIES = 'additional-properties';
 
@@ -11,7 +12,7 @@ export const ERROR_ADDITIONAL_PROPERTIES = 'additional-properties';
  * @return {List}
  */
 export const validateObject = (schema, value) => {
-    let err = List([]);
+    let err = createValidatorErrors();
     if(schema.get('additionalProperties') === false && schema.get('properties') && typeof value === 'object') {
         let hasAdditional = false;
         const keys = Map.isMap(value) ? value.keySeq() : Object.keys(value);
@@ -21,7 +22,7 @@ export const validateObject = (schema, value) => {
             if(schemaKeys.indexOf(key) === -1) hasAdditional = true;
         });
         if(hasAdditional) {
-            err = err.push(List([ERROR_ADDITIONAL_PROPERTIES]));
+            err = err.addError(ERROR_ADDITIONAL_PROPERTIES);
         }
     }
 
@@ -29,13 +30,16 @@ export const validateObject = (schema, value) => {
         const keys = Map.isMap(value) ? value.keySeq() : Object.keys(value);
         keys.forEach(key => {
             let tmp_err = validateSchema(schema.get('propertyNames').set('type', 'string'), key);
-            if(typeof tmp_err === 'string' || (List.isList(tmp_err) && tmp_err.size)) {
+            if(tmp_err.hasError()) {
+                err = err.addErrors(tmp_err);
+            }
+            /*if(typeof tmp_err === 'string' || (List.isList(tmp_err) && tmp_err.size)) {
                 if(List.isList(tmp_err)) {
                     err = err.concat(tmp_err);
                 } else {
                     err = err.push(tmp_err);
                 }
-            }
+            }*/
         });
     }
 
@@ -50,7 +54,7 @@ export const objectValidator = {
     },
     validate: ({schema, value, errors, valid}) => {
         errors = validateObject(schema, value,);
-        if(errors.size) valid = false;
+        if(errors.hasError()) valid = false;
         return {errors, valid}
     }
 };

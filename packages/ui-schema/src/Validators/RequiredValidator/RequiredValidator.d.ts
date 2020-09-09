@@ -1,6 +1,6 @@
-import { List } from "immutable"
 import { EditorPluginProps } from "@ui-schema/ui-schema/EditorPlugin"
 import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators"
+import { errors } from "@ui-schema/ui-schema/CommonTypings"
 
 export const ERROR_NOT_SET = 'required-not-set'
 
@@ -18,7 +18,7 @@ export interface RequiredValidatorType extends ValidatorPlugin {
     validate: (
         {schema, value, errors, valid}: Partial<EditorPluginProps>
     ) => {
-        errors: List<any>
+        errors: errors
         valid: boolean
         required: true
     }

@@ -1,5 +1,6 @@
 import { List, Map, OrderedMap } from "immutable"
 import { ERROR_WRONG_TYPE, typeValidator, validateType } from '@ui-schema/ui-schema/Validators/TypeValidator'
+import { createValidatorErrors } from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors"
 
 describe('validateType', () => {
     test.each([
@@ -37,6 +38,8 @@ describe('validateType', () => {
         [OrderedMap({}), 'object', true],
         ['text', 'object', false],
         [[], 'object', false],
+        [null, 'null', true],
+        ['null', 'null', false],
 
     ])('validateType(%j, %s): %j', (value, type, expected) => {
         expect(validateType(value, type)).toBe(expected)
@@ -76,11 +79,14 @@ describe('typeValidator', () => {
             const result = typeValidator.validate({
                 schema: OrderedMap({type}),
                 value,
-                errors: List([]),
+                errors: createValidatorErrors(),
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            expect(result.errors.contains(error)).toBe(expectedError)
+            expect(result.errors.hasError(error.get(0))).toBe(expectedError)
+            if (result.errors.hasError(error.get(0))) {
+                expect(result.errors.getError(error.get(0)).get(0).equals(error.get(1))).toBe(expectedError)
+            }
         },
     )
 })

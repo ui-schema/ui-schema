@@ -211,6 +211,7 @@ Commands:
     - `npm run tdd -- -u --testPathPattern=src/Validators`
         - with `-u|--update` for snapshot update testing 
         - with `--testPathPattern` to run all tests in a specific folder / path 
+    - `npm run tdd -- --testPathPattern=PatternValidator -t patternValidator` for only one test and mostly one file
 - Testing: `npm test` 
     - needs manual bootstrapping, hoisting and update handling
 - Build: `npm run build`

@@ -19,7 +19,7 @@ export default function PageMain() {
                     <span style={{marginLeft: 16, fontSize: '4rem'}}>Schema</span>
                 </span>}/>
 
-                <Paper style={{margin: 12, padding: 24}}>
+                <Paper style={{margin: '12px 0', padding: 24}}>
                     <Typography component={'p'} variant={'body1'} gutterBottom>
                         <strong>UI and Form generator</strong> for React using JSON-Schema, build around a <strong>powerful widget system</strong>, made for <strong>beautiful and great experiences</strong>!
                     </Typography>
@@ -31,11 +31,11 @@ export default function PageMain() {
                     </Typography>
                 </Paper>
 
-                <Paper style={{margin: 12, padding: 24}}>
+                <Paper style={{margin: '12px 0', padding: 24}}>
                     <Nav/>
                 </Paper>
 
-                <Paper style={{margin: 12, padding: 24}}>
+                <Paper style={{margin: '12px 0', padding: 24}}>
                     <NavProject/>
                 </Paper>
             </PageContent>

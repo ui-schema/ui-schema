@@ -4,6 +4,8 @@ Components and functions exported by `@ui-schema/ui-schema` for usage within des
 
 The props passed to the `SchemaEditor`, `NestedSchemaEditor` are accessible through providers.
 
+Basic [flowchart](#flowchart) of the SchemaEditor to Widget logic.
+
 ## EditorStore
 
 Values are stored in `EditorStore`, an immutable record, created with [createStore](#createstore) or [createEmptyStore](#createemptystore):
@@ -328,3 +330,7 @@ Function to deep change an object into an ordered map, will change the objects p
 ```js
 let dataMap = new OrderedMap(fromJSOrdered({}));
 ```
+
+## Flowchart
+
+[![flowchart](/Flowchart-SchemaEditor.svg)](https://ui-schema.bemit.codes/Flowchart-SchemaEditor.svg)
