@@ -429,7 +429,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
         setSchema(schemas[i][1]);
         setStore(createStore(schemas[i][2]));
         setRenderChange(p => p + 1);
-        history.push('/' + i18n.language + '/examples/' + (schemas[i][0].split(' ').join('-')));
+        history.push('/examples/' + (schemas[i][0].split(' ').join('-')));
     }, [setActiveSchema, i18n, setShowValidity, setSchema, setStore, history]);
 
     React.useEffect(() => {

@@ -1,13 +1,12 @@
-import React from "react";
-import {Typography,} from "@material-ui/core";
-import Loadable from "react-loadable";
+import React from 'react';
+import {Typography} from '@material-ui/core';
+import Loadable from 'react-loadable';
 import {Markdown as MarkdownBase, allowHtml} from '@control-ui/docs/es/Markdown/Markdown'
 import {renderers as baseRenderers} from '@control-ui/docs/es/Markdown/MarkdownRenderers'
-import {MdInlineCode} from "@control-ui/docs/es/Markdown/InlineCode";
-import {MdLink} from "@control-ui/docs/es/Markdown/Link";
-import {LinkableHeadline} from "@control-ui/docs/es";
-import {LoadingCircular} from "@control-ui/core/es/LoadingCircular";
-import {useTranslation} from "@control-ui/core/es/Provider/I18n";
+import {MdInlineCode} from '@control-ui/docs/es/Markdown/InlineCode';
+import {MdLink} from '@control-ui/docs/es/Markdown/Link';
+import {LinkableHeadline} from '@control-ui/docs/es';
+import {LoadingCircular} from '@control-ui/core/es/LoadingCircular';
 
 const Code = Loadable({
     loader: () => import('./MarkdownCode'),
@@ -15,8 +14,7 @@ const Code = Loadable({
 });
 
 const LinkInternalLocale = (p) => {
-    const {i18n} = useTranslation();
-    return <MdLink {...p} href={0 !== p.href.indexOf('#') && -1 === p.href.indexOf('https://') && -1 === p.href.indexOf('http://') ? i18n.language + p.href : p.href}/>
+    return <MdLink {...p} href={0 !== p.href.indexOf('#') && -1 === p.href.indexOf('https://') && -1 === p.href.indexOf('http://') ? p.href.substr(1) : p.href}/>
 };
 
 // see: https://github.com/rexxars/react-markdown#node-types

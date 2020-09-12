@@ -16,7 +16,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import {ExpandLess, ExpandMore} from "@material-ui/icons";
 import {Divider, List, Collapse,} from "@material-ui/core";
 import ListItem from "@material-ui/core/ListItem";
-import {useTranslation} from "@control-ui/core/es/Provider/I18n";
 import {NavListNested} from "@control-ui/core/es/NavList";
 import {routesDocs, routesWidgets} from "../content/docs";
 
@@ -61,12 +60,11 @@ const CollapseDrawer = ({toggle, icon, children, dense, initial = true, style = 
 };
 
 export const CustomDrawer = ({closeOnClick}) => {
-    const {i18n} = useTranslation();
     return <Drawer drawerWidth={260}>
         <List>
-            <ListItemLink to={'/' + i18n.language} primary={'Home'} dense showActive onClick={closeOnClick}/>
-            <ListItemLink to={'/' + i18n.language + '/quick-start'} primary={'Quick-Start'} dense showActive onClick={closeOnClick}/>
-            <ListItemLink to={'/' + i18n.language + '/examples'} primary={'Live Editor'} dense showActive onClick={closeOnClick}/>
+            <ListItemLink to={'/'} primary={'Home'} dense showActive onClick={closeOnClick}/>
+            <ListItemLink to={'/quick-start'} primary={'Quick-Start'} dense showActive onClick={closeOnClick}/>
+            <ListItemLink to={'/examples'} primary={'Live Editor'} dense showActive onClick={closeOnClick}/>
 
             <NavListNested
                 routes={[routesDocs]}
@@ -83,14 +81,14 @@ export const CustomDrawer = ({closeOnClick}) => {
                 <List component="div" disablePadding style={{overflow: 'auto'}}>
                     {schemas.map((schema, i) => (
                         <ListItemLink
-                            key={i} to={'/' + i18n.language + '/examples/' + (schemas[i][0].split(' ').join('-'))}
+                            key={i} to={'/examples/' + (schemas[i][0].split(' ').join('-'))}
                             primary={schema[0]} style={{paddingLeft: 24}} dense showActive onClick={closeOnClick}/>
                     ))}
                 </List>
             </CollapseDrawer>
             <Divider/>
-            <ListItemLink to={'/' + i18n.language + '/impress'} primary={'Impress'} dense showActive onClick={closeOnClick}/>
-            <ListItemLink to={'/' + i18n.language + '/privacy'} primary={'Privacy Policy'} dense showActive onClick={closeOnClick}/>
+            <ListItemLink to={'/impress'} primary={'Impress'} dense showActive onClick={closeOnClick}/>
+            <ListItemLink to={'/privacy'} primary={'Privacy Policy'} dense showActive onClick={closeOnClick}/>
             <Divider/>
         </List>
     </Drawer>;

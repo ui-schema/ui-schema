@@ -16,7 +16,7 @@ const createDoc = (path, label, prefix, context) => ({
     doc: path,
     path: prefix + '/' + path,
     nav: {
-        to: '/en/docs/' + path,
+        to: '/docs/' + path,
         label,
     },
     context,
