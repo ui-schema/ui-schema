@@ -8,7 +8,7 @@ const I18nRedir = ({to}) => {
     const history = useHistory();
 
     // we can't trust i18n's current language
-    // we wan't to redirect short urls like `/admin` to `/en/admin`
+    // we wan't to redirect short urls like `/admin` to `/admin`
     // but `/admin` lead to `admin` as current language
 
     let estimatedLanguage = loadLang && loadLang.length === 2 ? loadLang : i18n.options.defaultLanguage;

@@ -6,7 +6,7 @@ import {routesDocs, routesWidgets} from "./content/docs";
 export const routes = {
     routes: [
         {
-            path: '/:lng',
+            path: '/',
             nav: {
                 to: '/',
                 label: 'Home',
@@ -19,7 +19,7 @@ export const routes = {
                 })
             }
         }, {
-            path: '/:lng/docs/:docId+',
+            path: '/docs/:docId+',
             nav: {
                 to: '/docs',
                 label: 'Documentation',
@@ -36,7 +36,7 @@ export const routes = {
                 ...routesWidgets.routes,
             ]
         }, {
-            path: '/:lng/examples/:schema?',
+            path: '/examples/:schema?',
             nav: {
                 to: '/docs',
                 label: 'Live-Editor',
@@ -48,7 +48,7 @@ export const routes = {
                 })
             },
         }, {
-            path: '/:lng/quick-start',
+            path: '/quick-start',
             nav: {
                 to: '/quick-start',
                 label: 'Quick-Start',
@@ -60,7 +60,7 @@ export const routes = {
                 })
             },
         }, {
-            path: '/:lng/impress',
+            path: '/impress',
             content: {
                 component: Loadable({
                     loader: () => import('./page/PageLaw').then(m => m.PageImpress),
@@ -68,7 +68,7 @@ export const routes = {
                 })
             },
         }, {
-            path: '/:lng/privacy',
+            path: '/privacy',
             content: {
                 component: Loadable({
                     loader: () => import('./page/PageLaw').then(m => m.PagePrivacy),

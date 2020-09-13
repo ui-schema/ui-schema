@@ -1,6 +1,6 @@
-import React from "react";
-import {Grid} from "@material-ui/core";
-import {NextPluginRenderer} from "@ui-schema/ui-schema";
+import React from 'react';
+import {Grid} from '@material-ui/core';
+import {NextPluginRenderer} from '@ui-schema/ui-schema';
 
 const SchemaGridItem = ({schema, children, defaultMd}) => {
     const view = schema ? schema.get('view') : undefined;
@@ -25,16 +25,16 @@ const SchemaGridItem = ({schema, children, defaultMd}) => {
 
 const RootRenderer = props => <Grid container spacing={0}>{props.children}</Grid>;
 
-const GroupRenderer = ({schema, children}) => <Grid container spacing={schema.getIn(['view', 'spacing']) || 2} wrap={'wrap'}>
+const GroupRenderer = ({schema, children}) => <Grid container spacing={typeof schema.getIn(['view', 'spacing']) === 'number' ? schema.getIn(['view', 'spacing']) : 2} wrap={'wrap'}>
     {children}
 </Grid>;
 
 const SchemaGridHandler = (props) => {
     const {
-        schema, noGrid
+        schema, noGrid,
     } = props;
 
-    if(noGrid) {
+    if(noGrid || schema.getIn(['view', 'noGrid'])) {
         return <NextPluginRenderer {...props}/>;
     }
 

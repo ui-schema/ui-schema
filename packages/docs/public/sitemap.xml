@@ -5,135 +5,135 @@
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/quick-start</loc>
+        <loc>https://ui-schema.bemit.codes/quick-start</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/examples</loc>
+        <loc>https://ui-schema.bemit.codes/examples</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/examples/Main-Demo</loc>
+        <loc>https://ui-schema.bemit.codes/examples/Main-Demo</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/examples/Combination-with-Conditional</loc>
+        <loc>https://ui-schema.bemit.codes/examples/Combination-with-Conditional</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/examples/Conditional-Multiple</loc>
+        <loc>https://ui-schema.bemit.codes/examples/Conditional-Multiple</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/examples/Dependencies</loc>
+        <loc>https://ui-schema.bemit.codes/examples/Dependencies</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/examples/Simple-Demo</loc>
+        <loc>https://ui-schema.bemit.codes/examples/Simple-Demo</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/examples/Dependencies-Booleans</loc>
+        <loc>https://ui-schema.bemit.codes/examples/Dependencies-Booleans</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/examples/Combination-Simple</loc>
+        <loc>https://ui-schema.bemit.codes/examples/Combination-Simple</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/examples/Conditional-Simple</loc>
+        <loc>https://ui-schema.bemit.codes/examples/Conditional-Simple</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/examples/Stepper</loc>
+        <loc>https://ui-schema.bemit.codes/examples/Stepper</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/overview</loc>
+        <loc>https://ui-schema.bemit.codes/docs/overview</loc>
         <changefreq>daily</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/schema</loc>
+        <loc>https://ui-schema.bemit.codes/docs/schema</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/design-systems</loc>
+        <loc>https://ui-schema.bemit.codes/docs/design-systems</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/widgets</loc>
+        <loc>https://ui-schema.bemit.codes/docs/widgets</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/plugins</loc>
+        <loc>https://ui-schema.bemit.codes/docs/plugins</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/performance</loc>
+        <loc>https://ui-schema.bemit.codes/docs/performance</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/localization</loc>
+        <loc>https://ui-schema.bemit.codes/docs/localization</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/core</loc>
+        <loc>https://ui-schema.bemit.codes/docs/core</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/widgets/GridHandler</loc>
+        <loc>https://ui-schema.bemit.codes/docs/widgets/GridHandler</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/widgets/OptionsList</loc>
+        <loc>https://ui-schema.bemit.codes/docs/widgets/OptionsList</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/widgets/Select</loc>
+        <loc>https://ui-schema.bemit.codes/docs/widgets/Select</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/widgets/SimpleList</loc>
+        <loc>https://ui-schema.bemit.codes/docs/widgets/SimpleList</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/widgets/Stepper</loc>
+        <loc>https://ui-schema.bemit.codes/docs/widgets/Stepper</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/widgets/Switch</loc>
+        <loc>https://ui-schema.bemit.codes/docs/widgets/Switch</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/widgets/TextField</loc>
+        <loc>https://ui-schema.bemit.codes/docs/widgets/TextField</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/widgets/Code</loc>
+        <loc>https://ui-schema.bemit.codes/docs/widgets/Code</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/widgets/DateTimePickers</loc>
+        <loc>https://ui-schema.bemit.codes/docs/widgets/DateTimePickers</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/widgets/RichText</loc>
+        <loc>https://ui-schema.bemit.codes/docs/widgets/RichText</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/widgets/Color</loc>
+        <loc>https://ui-schema.bemit.codes/docs/widgets/Color</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/widgets/NumberSlider</loc>
+        <loc>https://ui-schema.bemit.codes/docs/widgets/NumberSlider</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/widgets/GenericList</loc>
+        <loc>https://ui-schema.bemit.codes/docs/widgets/GenericList</loc>
         <changefreq>monthly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/en/docs/widgets/Color</loc>
+        <loc>https://ui-schema.bemit.codes/docs/widgets/Color</loc>
         <changefreq>monthly</changefreq>
     </url>
 </urlset>

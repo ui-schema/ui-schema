@@ -9,7 +9,7 @@ This page covers the support for JSON Schema within the core, validators or from
 ## Widget Matching
 
 Matches the rendered widget, keywords used:
- 
+
 - `type` valid types: `string`, `number`, `integer`, `boolean`, `object`, `array`
     - multiple types support ❌
     - full support `null` as type ❌
@@ -34,16 +34,15 @@ Matches the rendered widget, keywords used:
     - should the store be `readOnly` aware? so it simply is impossible to change those values?
         - but this could be a really tricky thing with `allOf` and `default`
     - should it be possible to render something completely different for read only?
-        - e.g. a table would make sense for a read only `GenericList`/`SimpleList` 
+        - e.g. a table would make sense for a read only `GenericList`/`SimpleList`
 - `writeOnly` restricts that the widget does not display it's value, but can change it ❌
-    - should the widget get the value or only something like `isNotEmpty`   
+    - should the widget get the value or only something like `isNotEmpty`
+- [structuring, reuse, extension](https://json-schema.org/understanding-json-schema/structuring.html#recursion)
+    - recursive with `$ref`
+    - schema-id with `$id` and use `$ref` with `$id`
+        - to load partial sub-schemas lazily ❌
+        - include relatively
 
-Usage scenario needs to be created:
-
-- structuring, reuse, extension
-    - [recursive](https://json-schema.org/understanding-json-schema/structuring.html#recursion) with `$ref` ❌
-    - [schema-id](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property) with `$id` and use `$ref` with `$id` to load partial sub-schemas lazily or include relatively ❌
-    
 >
 > extended with non-standard vocabulary for [UI purposes](#ui-schema-keywords)
 >
@@ -113,7 +112,7 @@ Generic Keywords:
 #### required Keyword
 
 - `required`, array that contains which properties must be set
-    - this library provides a more native feeling of HTML form validation and error display, the internal store updater `updateValue` uses the `required` value to delete the whole property from the object on e.g. an empty string, instead of just saving the empty string 
+    - this library provides a more native feeling of HTML form validation and error display, the internal store updater `updateValue` uses the `required` value to delete the whole property from the object on e.g. an empty string, instead of just saving the empty string
         - as in a browser: an empty string is wrong for a required text input - whereas in json-schema an empty string is valid
     - when required, value "deletion" is triggered by:
         - `array` with a length of `0`, e.g. `[]`, `List([])`
@@ -129,7 +128,7 @@ Validation Keywords:
 - `maxProperties` max. number of properties
 - `additionalProperties` when `false` only defined properties are allowed
 - `propertyNames` sub-schema to limit naming of properties
-- `patternProperties` automatic sub-schema applied to a property when property-name matches regex ❌ 
+- `patternProperties` automatic sub-schema applied to a property when property-name matches regex ❌
 - [dependencies, dependentSchemas, dependentRequired](/docs/plugins#dependenthandler) for dynamic sub-schema/properties
 - [if, else, then, not, allOf](/docs/plugins#conditionalhandler) for conditional sub-schema
 - [allOf, with conditionals](/docs/plugins#combininghandler) for combining sub-schema (not-all keywords)
@@ -152,9 +151,9 @@ Validation Keywords:
     - ❗ only checks some schema: everything [validateSchema](/docs/plugins#validateschema) supports
     - ❗ no full sub-schema against array items
     - errors are added with context key `arrayItems`
-        - only get **non** items errors: 
+        - only get **non** items errors:
         - `errors.getErrors()`, `errors.getChildErrors()`
-- `items` restricts items to be valid against sub-schemas in an defined order (tuple) 
+- `items` restricts items to be valid against sub-schemas in an defined order (tuple)
     - `additionalItems` if more props then defined are allowed
     - ❗ currently the individual items must be validated in their actual widgets (validation in render flow)
     - supported by e.g. [GenericList](/docs/widgets/GenericList)
@@ -180,83 +179,83 @@ Supported JSON-Schema versions and what currently isn't supported.
 - [Draft-04](https://json-schema.org/draft-06/json-schema-release-notes.html)
     - defines `exclusiveMaximum`, `exclusiveMinimum` as boolean, then works together with `minimum`/`maximum`
     - defines `integer` as true integer, whereas from Draft-06 onwards also `1.0` is valid, currently always like Draft-06 ❌
-    
+
 Validators for latest version are used by default, incompatible changes are solved from the validator (e.g. different namings), the possibility to change/replace validators completely will be added.
 
 | Spec. | Group      | Keyword         | Status |
-| :---  | :---       | :---            | :--- | 
-| [json-schema-core](https://json-schema.org/draft/2019-09/json-schema-core.html) <br> [json-schema-validation](https://json-schema.org/draft/2019-09/json-schema-validation.html) | | | nearly complete | 
+| :---  | :---       | :---            | :--- |
+| [json-schema-core](https://json-schema.org/draft/2019-09/json-schema-core.html) <br> [json-schema-validation](https://json-schema.org/draft/2019-09/json-schema-validation.html) | | | nearly complete |
 | core |                  | `$comment` | |
 | validation |            | `readOnly` | per widget |
 | validation |            | `writeOnly` | per widget |
-| core |                  | `definitions`/`$def` | ❌ |
-| core, till draft-07 |   | `id`/`$id` | ❌ |
-| core, from 2019-09 |    | `$anchor` | ❌ |
-| core |                  | `$ref` | ❌ | 
-| core |                  | `$recursiveAnchor` | ❌ | 
-| core |                  | `$recursiveRef` | ❌ | 
-| validation |            | `enum` | ✅ | 
-| validation |            | `const` | ✅ | 
-| validation |            | `default` | ✅ | 
-| validation | `type`     | | ✅ | 
-| |            | `string` | ✅ | 
-| |            | `number` | ✅ | 
-| |            | `integer` | ✅ | 
-| |            | `boolean` | ✅ | 
-| |            | `array` | ✅ | 
+| core |                  | `definitions`/`$def` | ✅ |
+| core, till draft-07 |   | `id`/`$id`<br>only relative | ✅ |
+| core, from 2019-09 |    | `$anchor` | ✅ |
+| core |                  | `$ref`<br>only relative | ✅ |
+| core |                  | `$recursiveAnchor` | ❌ |
+| core |                  | `$recursiveRef` | ❌ |
+| validation |            | `enum` | ✅ |
+| validation |            | `const` | ✅ |
+| validation |            | `default` | ✅ |
+| validation | `type`     | | ✅ |
+| |            | `string` | ✅ |
+| |            | `number` | ✅ |
+| |            | `integer` | ✅ |
+| |            | `boolean` | ✅ |
+| |            | `array` | ✅ |
 | |            | `object` | ✅ |
-| |            | `null` | ❌ | 
-| | **Types** | | |  
-| | `string`   | | ✅ | 
-| validation |            | `format` | per widget | 
-| validation |            | `pattern` | ✅ | 
-| validation |            | `minLength` | ✅ | 
-| validation |            | `maxLength` | ✅ | 
-| core |                  | `contentEncoding` | per widget | 
-| core |                  | `contentMediaType` | per widget | 
-| | `number`/`integer` | | | 
-| validation |            | `multipleOf` | ✅ | 
-| validation |            | `minimum` | ✅ | 
-| validation |            | `exclusiveMinimum` | ✅ | 
-| validation |            | `maximum` | ✅ | 
-| validation |            | `exclusiveMaximum` | ✅ | 
-| | `boolean`  | | | 
-| | | no type specific keywords | | 
-| | `object`   | | | 
-| core |                  | `properties` | ✅ | 
-| validation |            | `required` | ✅ | 
-| validation |            | `minProperties` | ✅ | 
-| validation |            | `maxProperties` | ✅ | 
-| core |                  | `additionalProperties` | ✅ | 
-| core |                  | `patternProperties` | ❌ | 
-| core |                  | `unevaluatedProperties` | ❌ | 
-| core |                  | `propertyNames` | ✅ | 
-| validation, till draft-07 |            | `dependencies` | ✅ | 
-| [non-standard](https://react-jsonschema-form.readthedocs.io/en/latest/usage/dependencies/#dynamic) |            | `dependencies.oneOf` | ✅ | 
-| core, from 2019-09 |            | `dependentSchemas` | ✅ | 
-| core, from 2019-09 |            | `dependentRequired` | ✅ | 
-| core |            | `if` | ✅ | 
-| core |            | `else` | ✅ | 
-| core |            | `then` | ✅ | 
-| core |            | `allOf` | ✅ | 
-| core |            | `allOf.if`/`allOf.not` | ✅ | 
-| core |            | `if.not`/`else.not`/`then.not`/`allOf.not` | ✅ | 
-| core |            | `oneOf` | ❌ | 
-| core |            | `anyOf` | ❌ | 
-| | `array`    | |  | 
-| core |            | `items` | ✅ | 
-| core |            | `unevaluatedItems` | ❌ | 
-| validation |            | `minItems` | ✅ | 
-| validation |            | `maxItems` | ✅ | 
-| validation |            | `uniqueItems` | ✅ | 
-| validation |            | `maxContains` | ✅ | 
-| validation |            | `minContains` | ✅ | 
-| core |            | `contains` | ✅ | 
-| core |            | `additionalItems` | ✅ | 
+| |            | `null` | ❌ |
+| | **Types** | | |
+| | `string`   | | ✅ |
+| validation |            | `format` | per widget |
+| validation |            | `pattern` | ✅ |
+| validation |            | `minLength` | ✅ |
+| validation |            | `maxLength` | ✅ |
+| core |                  | `contentEncoding` | per widget |
+| core |                  | `contentMediaType` | per widget |
+| | `number`/`integer` | | |
+| validation |            | `multipleOf` | ✅ |
+| validation |            | `minimum` | ✅ |
+| validation |            | `exclusiveMinimum` | ✅ |
+| validation |            | `maximum` | ✅ |
+| validation |            | `exclusiveMaximum` | ✅ |
+| | `boolean`  | | |
+| | | no type specific keywords | |
+| | `object`   | | |
+| core |                  | `properties` | ✅ |
+| validation |            | `required` | ✅ |
+| validation |            | `minProperties` | ✅ |
+| validation |            | `maxProperties` | ✅ |
+| core |                  | `additionalProperties` | ✅ |
+| core |                  | `patternProperties` | ❌ |
+| core |                  | `unevaluatedProperties` | ❌ |
+| core |                  | `propertyNames` | ✅ |
+| validation, till draft-07 |            | `dependencies` | ✅ |
+| [non-standard](https://react-jsonschema-form.readthedocs.io/en/latest/usage/dependencies/#dynamic) |            | `dependencies.oneOf` | ✅ |
+| core, from 2019-09 |            | `dependentSchemas` | ✅ |
+| core, from 2019-09 |            | `dependentRequired` | ✅ |
+| core |            | `if` | ✅ |
+| core |            | `else` | ✅ |
+| core |            | `then` | ✅ |
+| core |            | `allOf` | ✅ |
+| core |            | `allOf.if`/`allOf.not` | ✅ |
+| core |            | `if.not`/`else.not`/`then.not`/`allOf.not` | ✅ |
+| core |            | `oneOf` | ❌ |
+| core |            | `anyOf` | ❌ |
+| | `array`    | |  |
+| core |            | `items` | ✅ |
+| core |            | `unevaluatedItems` | ❌ |
+| validation |            | `minItems` | ✅ |
+| validation |            | `maxItems` | ✅ |
+| validation |            | `uniqueItems` | ✅ |
+| validation |            | `maxContains` | ✅ |
+| validation |            | `minContains` | ✅ |
+| core |            | `contains` | ✅ |
+| core |            | `additionalItems` | ✅ |
 | | `null`   | | ❌ |
 | [JSON-Schema Hypermedia](https://json-schema.org/draft/2019-09/json-schema-hypermedia.html) [examples](https://json-schema.org/draft/2019-09/json-schema-hypermedia.html#examples) | | | ❌ |
-| hyper |            | `base` | ❌ | 
-| hyper |            | `links` | ❌ | 
+| hyper |            | `base` | ❌ |
+| hyper |            | `links` | ❌ |
 
 ❌ = not implemented, ✅ = done
 

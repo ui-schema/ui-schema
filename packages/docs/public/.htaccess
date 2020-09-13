@@ -39,7 +39,7 @@ AddCharset utf-8 .html .php .css .js
 
     RewriteEngine On
 
-	RewriteRule ^$ /en [R=301,L]
+	#RewriteRule ^$ /en [R=301,L]
 
     # removes trailing slashes
     RewriteCond %{REQUEST_FILENAME} !-d

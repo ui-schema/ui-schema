@@ -9,5 +9,6 @@ export interface UISchema {
         sizeMd?: number
         sizeLg?: number
         sizeXl?: number
+        noGrid?: boolean
     }
 }

@@ -7,11 +7,11 @@ The package `@ui-schema/ui-schema` supports rendering widgets for JSON-schema `t
 It is possible to connect any design system, included or planned support:
 
 | Package      | Based on            | Status |
-| :---         | :---                 | ---: | 
-| `@ui-schema/ds-material`  | [@material-ui/core (MUI)](https://material-ui.com/) to use [Material Design](https://material.io/) | ✅ | 
-| `@ui-schema/ds-bootstrap` | [bootstrap (BTS)](https://getbootstrap.com/) semantic HTMLs to use with any Bootstrap theme | ✅ | 
-| `@ui-schema/ds-blueprint` | [blueprintjs (BPT)](https://blueprintjs.com/docs/) | 🔵 | 
-| `@ui-schema/ds-semanticui` | [semantic-ui (SUI)](https://react.semantic-ui.com/usage/) | 🔵 | 
+| :---         | :---                 | ---: |
+| `@ui-schema/ds-material`  | [@material-ui/core (MUI)](https://material-ui.com/) to use [Material Design](https://material.io/) | ✅ |
+| `@ui-schema/ds-bootstrap` | [bootstrap (BTS)](https://getbootstrap.com/) semantic HTMLs to use with any Bootstrap theme | ✅ |
+| `@ui-schema/ds-blueprint` | [blueprintjs (BPT)](https://blueprintjs.com/docs/) | 🔵 |
+| `@ui-schema/ds-semanticui` | [semantic-ui (SUI)](https://react.semantic-ui.com/usage/) | 🔵 |
 | `@ui-schema/ds-antdesign` | [Ant Design (ATD)](https://ant.design/docs/react/introduce) | 🔵 |
 | `@ui-schema/ds-themeui` | [Theme UI (TUI)](https://theme-ui.com) | 🔵 |
 
@@ -21,7 +21,7 @@ A design-system bundles multiple widgets, select the design-system binding you n
 
 Each widget handles it's own sub-schema, e.g. the `string` type widget only needs to know how to handle it's own string.
 
-A match by `widget` supersedes the `type` matching, this is a simple example of a widget binding, the property name in `types` and `custom` is used for matching: 
+A match by `widget` supersedes the `type` matching, this is a simple example of a widget binding, the property name in `types` and `custom` is used for matching:
 
 ```js
 import {StringRenderer, OptionsCheck} from "@ui-schema/ds-material";
@@ -59,7 +59,7 @@ Here is an overview of all widgets/types, the first column contains the default 
 Widgets for `type`:
 
 | Type         | Component            | MUI | BTS | ? |
-| :---         | :---                 | ---: | ---: | ---: | 
+| :---         | :---                 | ---: | ---: | ---: |
 | `string`     | [Normal Text + Formats](/docs/widgets/TextField)<br>`*`, `date`, `email`, `tel` | ✅ | ✅ | 🔵 |
 | `number`     | [Number](/docs/widgets/TextField)     | ✅ | ✅ | 🔵 |
 | `boolean`    | [Switch / Toggle](/docs/widgets/Switch) | ✅ | ✅ | 🔵 |
@@ -110,7 +110,8 @@ Custom widgets for `widget`, special UIs and specific type handling:
 | **Misc** | | | | | |
 | `Table`      | table editor  | | 🔵 | 🔵 | 🔵 |
 | `Grid`       | drag-drop grid  | | 🔵 | 🔵 | 🔵 |
-| `Card` | card with headline and any sub-schema  | | 🔵 | 🔵 | 🔵 |
+| `Accordions` | accordion with headline, built for `object` | | ✅ | 🔵 | 🔵 |
+| `Cards` | card with headline and any sub-schema  | | 🔵 | 🔵 | 🔵 |
 | `ExpansionPanel` | list headlines and sub-schema  | | 🔵 | 🔵 | 🔵 |
 | `Stepper`    | list with [sub-schema as steps](/docs/widgets/Stepper) | | ✅ | 🔵 | 🔵 |
 | `Tabs`       | list with sub-schema as tabs | | 🔵 | 🔵 | 🔵 |

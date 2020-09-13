@@ -1,3 +1,4 @@
+export * from './Accordions'
 export * from './GenericList'
 export * from './NumberSlider'
 export * from './OptionsBoolean'

@@ -29,10 +29,12 @@ const DependentRenderer = ({dependencies, dependentSchemas, dependentRequired, .
 
                 // todo: how to behave when self value is not defined in it's own `oneOf` dependency?
                 if(ownValidation) {
-                    if(false === validateSchema(
-                        ownValidation.set('type', schema.getIn(['properties', key, 'type'])),
-                        currentValues.get(key)
-                    )) {
+                    if(
+                        !validateSchema(
+                            ownValidation.set('type', schema.getIn(['properties', key, 'type'])),
+                            currentValues.get(key)
+                        ).hasError()
+                    ) {
                         // no errors in schema found, this should be rendered now dynamically
 
                         nestedSchema = nestedSchema.deleteIn(['properties', key]);

@@ -94,8 +94,8 @@ const GenericList = extractValue(memo(({
                     onClick={() => {
                         onChange(updateValue(
                             storeKeys, value ?
-                                value.push(List.isList(schema.get('items')) ? List([]) : Map({})) :
-                                List([List.isList(schema.get('items')) ? List([]) : Map({end_checks: true})]),
+                                value.push(List.isList(schema.get('items')) ? List() : Map()) :
+                                List([List.isList(schema.get('items')) ? List() : Map()]),
                             required, schema.get('type')
                         ))
                     }}
