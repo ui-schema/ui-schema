@@ -1,8 +1,8 @@
-import React from "react";
-import {Record, Map, List} from "immutable";
-import {getDisplayName} from "../Utils/memo/getDisplayName";
-import {createMap} from "../Utils/createMap";
-import {relT} from "../Translate/relT";
+import React from 'react';
+import {Record, Map, List} from 'immutable';
+import {getDisplayName} from '../Utils/memo/getDisplayName';
+import {createMap} from '../Utils/createMap';
+import {relT} from '../Translate/relT';
 
 const EditorStoreContext = React.createContext({});
 const EditorContext = React.createContext({});
@@ -29,7 +29,7 @@ export const EditorStore = Record({
     },
     getValidity: function() {
         return this.get('validity')
-    }
+    },
 });
 
 export const createStore = (values) => {
@@ -49,7 +49,7 @@ export const createEmptyStore = (type = 'object') => createStore(
                 0 :
                 type === 'boolean' ?
                     false :
-                    Map({})
+                    Map({}),
 );
 
 export const useSchemaStore = () => {
@@ -120,7 +120,7 @@ const shouldHandleRequired = (value, required, type) => {
         case 'string':
         case 'number':
         case 'integer':
-            return value === '' || typeof value === "undefined" || (typeof value === "string" && 0 === value.trim().length)
+            return value === '' || typeof value === 'undefined' || (typeof value === 'string' && 0 === value.trim().length)
         case 'boolean':
             return !value
         case 'array':
@@ -138,7 +138,7 @@ const updateRawValue = (store, storeKeys, key, value, required = undefined, type
     }
     return store.setIn(
         hasStoreKeys(storeKeys) ? prependKey(storeKeys, key) : [key],
-        value
+        value,
     );
 }
 const deleteRawValue = (store, storeKeys, key) =>

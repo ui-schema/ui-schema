@@ -1,23 +1,24 @@
 import React from 'react';
 import AppTheme from './layout/AppTheme';
 import Dashboard from './dashboard/Dashboard';
-import {schemaWCombining} from "../schemas/demoCombining";
-import {schemaWConditional, schemaWConditional1, schemaWConditional2} from "../schemas/demoConditional";
-import {schemaWDep, schemaWDep1, schemaWDep2} from "../schemas/demoDependencies";
-import {dataDemoMain, schemaDemoMain, schemaUser} from "../schemas/demoMain";
-import {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect} from "../schemas/demoSimples";
-import {schemaGrid} from "../schemas/demoGrid";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import {Button} from "@material-ui/core";
-import {widgets,} from "@ui-schema/ds-material";
-import {SchemaEditor, isInvalid, createOrderedMap, createMap, createStore, createEmptyStore} from "@ui-schema/ui-schema";
-import {MuiSchemaDebug} from "./component/MuiSchemaDebug";
-import {browserT} from "../t";
-import {schemaLists} from "../schemas/demoLists";
-import {schemaNumberSlider} from "../schemas/demoNumberSlider";
-import {createDummyRenderer} from "./component/MuiMainDummy";
-import {useDummy} from "../component/MainDummy";
+import {schemaWCombining} from '../schemas/demoCombining';
+import {schemaWConditional, schemaWConditional1, schemaWConditional2} from '../schemas/demoConditional';
+import {schemaWDep, schemaWDep1, schemaWDep2} from '../schemas/demoDependencies';
+import {dataDemoMain, schemaDemoMain, schemaUser} from '../schemas/demoMain';
+import {schemaDemoReferencing} from '../schemas/demoReferencing';
+import {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect} from '../schemas/demoSimples';
+import {schemaGrid} from '../schemas/demoGrid';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import {Button} from '@material-ui/core';
+import {widgets} from '@ui-schema/ds-material';
+import {SchemaEditor, isInvalid, createOrderedMap, createMap, createStore, createEmptyStore} from '@ui-schema/ui-schema';
+import {MuiSchemaDebug} from './component/MuiSchemaDebug';
+import {browserT} from '../t';
+import {schemaLists} from '../schemas/demoLists';
+import {schemaNumberSlider} from '../schemas/demoNumberSlider';
+import {createDummyRenderer} from './component/MuiMainDummy';
+import {useDummy} from '../component/MainDummy';
 
 const DummyRenderer = createDummyRenderer(widgets);
 
@@ -67,12 +68,12 @@ const Main = ({classes = {}}) => {
 
     return <React.Fragment>
         <Grid item xs={12}>
-            <DummyRenderer id={'schemaWConditional1'} schema={schemaWConditional2} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
-        </Grid>
-        <Grid item xs={12}>
             <Paper className={classes.paper}>
                 <MainStore/>
             </Paper>
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer id={'schemaReferencing'} schema={schemaDemoReferencing} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes} stylePaper={{background: 'transparent'}} variant={'outlined'} open/>
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer id={'schemaNumberSlider'} schema={schemaNumberSlider} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
@@ -88,6 +89,9 @@ const Main = ({classes = {}}) => {
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer id={'schemaWConditional1'} schema={schemaWConditional1} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer id={'schemaWConditional2'} schema={schemaWConditional2} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer id={'schemaWDep'} schema={schemaWDep} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>

@@ -60,8 +60,6 @@ export const validateSchema = (schema, value) => {
 /**
  * Validating the value, property for property.
  *
- * @todo: add required support, currently treating everything as required (needed for if/else/then logic)
- * @todo: add `object-validator` at last position
  * @param {Map} schema
  * @param {Map} value
  * @return {List<*>}

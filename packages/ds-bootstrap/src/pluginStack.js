@@ -4,8 +4,10 @@ import {
     ValidatorStack,
     ConditionalHandler, CombiningHandler,
 } from "@ui-schema/ui-schema";
+import {ReferencingHandler} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
 
 const pluginStack = [
+    ReferencingHandler,
     SchemaGridHandler,
     CombiningHandler,
     DefaultHandler,

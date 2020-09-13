@@ -1,3 +1,4 @@
+import {demoAccordions} from "./docs/widgets/AccordionsDemo";
 import {demoCode} from "./docs/widgets/CodeDemo";
 import {demoColor} from "./docs/widgets/ColorDemo";
 import {demoDateTimePickers} from "./docs/widgets/DateTimePickersDemo";
@@ -43,6 +44,9 @@ export const routesWidgets = {
         label: 'Widgets',
     },
     routes: [
+        createDoc('widgets/Accordions', 'Accordions', '', {
+            demoEditor: demoAccordions
+        }),
         createDoc('widgets/Code', 'Code Editor', '', {
             demoEditor: demoCode
         }),

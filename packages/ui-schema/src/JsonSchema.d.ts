@@ -17,10 +17,11 @@ export interface Schemas {
     root: {
         '$id': string
         '$schema': string
-        '$ref'?: string
     }
     general: {
         readOnly?: boolean
+        'id'?: string
+        '$anchor'?: string
         '$id'?: string
         '$schema'?: string
         '$ref'?: string
@@ -43,6 +44,11 @@ export interface Schemas {
         minItems?: number
         maxItems?: number
         items?: JsonSchema | JsonSchema[]
+        uniqueItems?: boolean
+        maxContains?: number
+        minContains?: number
+        contains?: JsonSchema
+        additionalItems?: boolean
     }
     object: {
         type: 'object'
@@ -63,6 +69,9 @@ export interface Schemas {
         allOf?: JsonSchema[] | {
             not: JsonSchema
         }[]
+        required?: string[]
+        additionalProperties?: boolean
+        propertyNames?: JsonSchema
     }
     number: {
         type: 'number' | 'integer'
@@ -94,13 +103,13 @@ export interface Schemas {
 }
 
 export type JsonSchema =
-    Schemas['string']
-    | Schemas['array']
-    | Schemas['object']
-    | Schemas['number']
-    | Schemas['boolean']
-    | Schemas['null']
-    | Schemas['conditionals']
-    | Schemas['root']
-    & Schemas['general']
-    & UISchema
+        Schemas['string']
+        | Schemas['array']
+        | Schemas['object']
+        | Schemas['number']
+        | Schemas['boolean']
+        | Schemas['null']
+        | Schemas['conditionals']
+        | Schemas['root']
+        & Schemas['general']
+        & UISchema
