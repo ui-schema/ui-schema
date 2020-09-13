@@ -1,14 +1,11 @@
-import { StoreKeys, onChange } from '@ui-schema/ui-schema/EditorStore'
-import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import * as React from 'react'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { CSSProperties } from 'react'
 
-export interface ColorStaticBaseInterface {
-    storeKeys: StoreKeys
-    schema: StoreSchemaType
-    value: string
-    onChange: onChange
+export interface ColorStaticBaseProps extends WidgetProps{
     ColorPicker: React.ComponentType
-    styles: object
+    styles: CSSProperties
     pickerProps: object
 }
 
-export function ColorStaticBase(props: ColorStaticBaseInterface): React.ReactElement
+export function ColorStaticBase<P extends ColorStaticBaseProps>(props: P): React.ReactElement<P>

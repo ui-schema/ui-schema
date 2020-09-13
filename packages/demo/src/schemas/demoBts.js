@@ -6,6 +6,7 @@ const schemaTestBts = createOrderedMap({
     /*view: {
         sizeMd: 6,
     },*/
+    required: ['center_items'],
     properties: {
         headline: {
             type: "string",
@@ -25,7 +26,6 @@ const schemaTestBts = createOrderedMap({
         },
         center_items: {
             type: "boolean",
-            default: true,
             view: {
                 sizeMd: 12
             },
