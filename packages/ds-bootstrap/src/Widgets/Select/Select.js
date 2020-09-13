@@ -12,11 +12,11 @@ const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChang
 
     let classForm = ["selectpicker", "custom-select"];
     let classFormParent = ["form-group"];
-    if(showValidity && errors.size) {
-        classFormParent.push('is-invalid');
+    if(showValidity && errors.hasError()) {
+        classForm.push('is-invalid');
     }
-    if(showValidity && !errors.size) {
-        classFormParent.push('was-validated');
+    if(showValidity && !errors.hasError()) {
+        classForm.push('was-validated');
     }
     let currentValue = undefined;
     if(multiple) {

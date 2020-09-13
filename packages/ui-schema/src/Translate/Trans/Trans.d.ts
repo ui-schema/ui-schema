@@ -1,7 +1,7 @@
-import React from "react"
+import React from 'react'
 import { Map } from 'immutable/dist/immutable-nonambient'
-import { translation } from "../t"
-import { StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
+import { translation } from '../t'
+import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface TransProps {
     text: string

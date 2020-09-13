@@ -36,10 +36,10 @@ const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, require
     let classForm = ["custom-control", "custom-radio"];
     let classLabel = ["custom-control-label", "text-light"];
     let classFormControl = ["custom-control-input"];
-    if(showValidity && errors.size) {
+    if(showValidity && errors.hasError()) {
         classFormControl.push('is-invalid');
     }
-    if(showValidity && !errors.size) {
+    if(showValidity && !errors.hasError()) {
         classForm.push('was-validated');
     }
 
