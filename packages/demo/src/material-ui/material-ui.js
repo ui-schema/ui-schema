@@ -73,7 +73,7 @@ const Main = ({classes = {}}) => {
             </Paper>
         </Grid>
         <Grid item xs={12}>
-            <DummyRenderer id={'schemaReferencing'} schema={schemaDemoReferencing} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes} stylePaper={{background: 'transparent'}} variant={'outlined'} open/>
+            <DummyRenderer id={'schemaReferencing'} schema={schemaDemoReferencing} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes} stylePaper={{background: 'transparent'}} variant={'outlined'}/>
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer id={'schemaNumberSlider'} schema={schemaNumberSlider} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
