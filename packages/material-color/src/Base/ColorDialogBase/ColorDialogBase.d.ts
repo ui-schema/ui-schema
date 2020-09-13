@@ -1,10 +1,9 @@
 import * as React from 'react'
-import { ColorBaseInterface } from '@ui-schema/material-color/Base/ColorBase'
+import { ColorBaseProps } from '@ui-schema/material-color/Base/ColorBase'
 
-export interface ColorDialogDialogInterface {
+export interface ColorDialogBaseProps extends ColorBaseProps {
     hasFocus: boolean
     setFocus: Function
-    children: React.ReactChildren
 }
 
-export function ColorDialogBase(props: ColorBaseInterface & ColorDialogDialogInterface): React.ReactElement
+export function ColorDialogBase<P extends React.PropsWithChildren<ColorDialogBaseProps>>(props: P): React.ReactElement<P>

@@ -1,4 +1,4 @@
 import * as React from 'react'
-import { ColorBaseInterface } from '@ui-schema/material-color/Base'
+import { ColorBaseProps } from '@ui-schema/material-color/Base'
 
-export function ColorMaterial<P extends ColorBaseInterface>(props: P): React.ReactElement<P>
+export function ColorMaterial<P extends ColorBaseProps>(props: P): React.ReactElement<P>

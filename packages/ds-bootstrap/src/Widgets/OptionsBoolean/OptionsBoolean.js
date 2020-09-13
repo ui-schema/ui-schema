@@ -1,6 +1,7 @@
 import React from "react";
 import {unstable_trace as trace} from "scheduler/tracing";
 import {TransTitle, updateValue} from "@ui-schema/ui-schema";
+import {ValidityHelperText} from "@ui-schema/ds-material/Component";
 
 
 const BoolRenderer = ({ownKey, showValidity, required, errors, value, storeKeys, onChange, schema}) => {
@@ -8,10 +9,10 @@ const BoolRenderer = ({ownKey, showValidity, required, errors, value, storeKeys,
     let classForm = ["custom-control", "custom-switch"];
     let classLabel = ["custom-control-label", "text-light"];
     let classFormControl = ["custom-control-input"];
-    if(showValidity && errors.size) {
+    if(showValidity && errors.hasError()) {
         classFormControl.push('is-invalid');
     }
-    if(showValidity && !errors.size) {
+    if(showValidity && !errors.hasError()) {
         classForm.push('was-validated');
     }
 
@@ -27,6 +28,7 @@ const BoolRenderer = ({ownKey, showValidity, required, errors, value, storeKeys,
             })}
         />
         <label className={classLabel.join(' ')} htmlFor={ownKey}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>{(required ? ' *' : '')}</label>
+        <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </div>;
 };
 

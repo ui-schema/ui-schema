@@ -1,6 +1,5 @@
-import React from "react";
-import {Trans} from "@ui-schema/ui-schema";
-import {List} from 'immutable'
+import React from 'react';
+import {Trans} from '@ui-schema/ui-schema';
 
 const LocaleHelperText = ({text, schema, context, className}) => {
     return <div className={className}>
@@ -12,13 +11,17 @@ const LocaleHelperText = ({text, schema, context, className}) => {
 };
 
 const ValidityHelperText = ({showValidity, errors, schema}) =>
-    showValidity && errors.size ?
-        errors.map((error, i) =>
-            <LocaleHelperText
-                key={i} schema={schema} className={"invalid-feedback"}
-                text={'error.' + (List.isList(error) ? error.get(0) : error)}
-                context={List.isList(error) ? error.get(1) : undefined}
-            />
+    showValidity && errors.hasError() ?
+        errors.getErrors().keySeq().map((type) =>
+            errors.getError(type).map((err, i) =>
+                <LocaleHelperText
+                    key={type + '.' + i}
+                    schema={schema}
+                    className={'invalid-feedback'}
+                    text={'error.' + type}
+                    context={err}
+                />,
+            ),
         ).valueSeq()
         : null;
 

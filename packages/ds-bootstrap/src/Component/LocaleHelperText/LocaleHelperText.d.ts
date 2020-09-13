@@ -1,8 +1,9 @@
 import * as React from 'react'
-import { showValidity, errors, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { errors, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import Map from 'immutable'
 
 export interface ValidityHelperTextProps {
-    showValidity: showValidity
+    showValidity: boolean
     errors?: errors
     schema: StoreSchemaType
 }
@@ -10,8 +11,8 @@ export interface ValidityHelperTextProps {
 export interface LocaleHelperTextProps {
     text: string
     schema: StoreSchemaType
-    context: any
-    className: string
+    context?: Map<any, undefined>
+    className?: string
 }
 
 export function ValidityHelperText<P extends ValidityHelperTextProps>(props: P): React.ReactElement<P>

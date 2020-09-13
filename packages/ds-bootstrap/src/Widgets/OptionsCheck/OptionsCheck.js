@@ -71,10 +71,10 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors, ownKey, required
     let classForm = ["custom-control", "custom-checkbox"];
     let classLabel = ["custom-control-label", "text-light"];
     let classFormControl = ["custom-control-input", "checkbox-inline"];
-    if(showValidity && errors.size) {
+    if(showValidity && errors.hasError()) {
         classFormControl.push('is-invalid');
     }
-    if(showValidity && !errors.size) {
+    if(showValidity && !errors.hasError()) {
         classForm.push('was-validated');
     }
 

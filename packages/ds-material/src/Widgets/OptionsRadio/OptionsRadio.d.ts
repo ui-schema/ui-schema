@@ -1,9 +1,8 @@
 import * as React from 'react'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 
-export interface OptionsRadioRendererProps extends WidgetProps {
-    row: boolean
-    value: string
+export interface OptionsRadioProps extends WidgetProps {
+    row?: boolean
 }
 
-export function OptionsRadio<P extends OptionsRadioRendererProps>(props: P): React.ReactElement<P>
+export function OptionsRadio<P extends OptionsRadioProps>(props: P): React.ReactElement<P>

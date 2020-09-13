@@ -18,11 +18,11 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const Step = ({schema, storeKeys, level, ...p}) => {
+export const Step = ({schema, storeKeys, level, ...p}) => {
     return <NestedSchemaEditor storeKeys={storeKeys} schema={schema.delete('widget')} level={level + 1} {...p}/>
 };
 
-const Stepper = extractValidity(memo(
+export const Stepper = extractValidity(memo(
     ({
          schema, storeKeys, validity,
      }) => {
@@ -106,5 +106,3 @@ const Stepper = extractValidity(memo(
         </div>;
     }
 ));
-
-export {Stepper, Step};

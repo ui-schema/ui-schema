@@ -15,10 +15,10 @@ const StringRenderer = ({ownKey, schema, value, multiline = false, onChange, sto
 
     let classFormGroup = ["form-group"];
     let classFormControl = ["form-control"];
-    if(showValidity && errors.size) {
+    if(showValidity && errors.hasError()) {
         classFormControl.push('is-invalid');
     }
-    if(showValidity && !errors.size) {
+    if(showValidity && !errors.hasError()) {
         classFormGroup.push('was-validated');
     }
 

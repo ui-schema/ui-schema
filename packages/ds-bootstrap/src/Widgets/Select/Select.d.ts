@@ -2,16 +2,10 @@ import * as React from 'react'
 export * from './Select'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 
-export interface WidgetSelectInterface extends WidgetProps {
-    value: string | number | boolean
-    multiple: false
+export interface SelectProps extends WidgetProps {
+    multiple?: boolean
 }
 
-export interface WidgetSelectMultiInterface extends WidgetProps {
-    value: string | number | boolean
-    multiple: true
-}
+export function Select<P extends SelectProps>(props: P): React.ReactElement<P>
 
-export function Select<P extends WidgetSelectInterface>(props: P): React.ReactElement<P>
-
-export function SelectMulti<P extends WidgetSelectMultiInterface>(props: P): React.ReactElement<P>
+export function SelectMulti<P extends WidgetProps>(props: P): React.ReactElement<P>
