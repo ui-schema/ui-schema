@@ -1,4 +1,4 @@
-import { beautifyKey, tt, strReplaceAll } from "@ui-schema/ui-schema/Utils/beautify"
+import { beautifyKey, tt, strReplaceAll } from '@ui-schema/ui-schema/Utils/beautify'
 
 describe('strReplaceAll', () => {
     test.each(([
@@ -27,6 +27,11 @@ describe('beautifyKey', () => {
         ['user_NAME', 'lower-beauty', 'user name'],
         ['user_name', 'upper', 'USER_NAME'],
         ['user_name', 'upper-beauty', 'USER NAME'],
+        [10, 'lower', 10],
+        [10, 'lower-beauty', 10],
+        [10, 'upper', 10],
+        [10, 'upper-beauty', 10],
+        ['text', 'ol', 'text'],
         [0, 'ol', '1.'],
         [1, 'ol', '2.'],
         ['user_name', 'ol', 'user_name'],

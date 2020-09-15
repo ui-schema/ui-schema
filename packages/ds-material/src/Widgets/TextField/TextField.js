@@ -1,19 +1,19 @@
-import React from "react";
-import {TextField} from "@material-ui/core";
-import {useUID} from "react-uid";
-import {unstable_trace as trace} from "scheduler/tracing";
-import {TransTitle, updateValue, updateValidity, mapSchema, checkNativeValidity} from "@ui-schema/ui-schema";
-import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
+import React from 'react';
+import {TextField} from '@material-ui/core';
+import {useUID} from 'react-uid';
+import {unstable_trace as trace} from 'scheduler/tracing';
+import {TransTitle, updateValue, updateValidity, mapSchema, checkNativeValidity} from '@ui-schema/ui-schema';
+import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
-const StringRenderer = ({
-                            type,
-                            multiline, rows, rowsMax,
-                            storeKeys, ownKey, schema, value, onChange,
-                            showValidity, valid, errors, required,
-                            style,
-                            onClick, onFocus, onBlur, onKeyUp, onKeyDown, onKeyPress,
-                            inputProps = {}, InputProps = {}, inputRef: customInputRef,
-                        }) => {
+export const StringRenderer = ({
+                                   type,
+                                   multiline, rows, rowsMax,
+                                   storeKeys, ownKey, schema, value, onChange,
+                                   showValidity, valid, errors, required,
+                                   style,
+                                   onClick, onFocus, onBlur, onKeyUp, onKeyDown, onKeyPress,
+                                   inputProps = {}, InputProps = {}, inputRef: customInputRef,
+                               }) => {
     const uid = useUID();
     // todo: this could break law-of-hooks
     const inputRef = customInputRef || React.useRef();
@@ -53,7 +53,7 @@ const StringRenderer = ({
             id={'uis-' + uid}
             style={style}
             onKeyDown={onKeyDown}
-            onChange={(e) => trace("textfield onchange", performance.now(), () => {
+            onChange={(e) => trace('textfield onchange', performance.now(), () => {
                 const value = e.target.value;
                 if(type === 'number') {
                     if(isNaN(value * 1)) {
@@ -79,7 +79,7 @@ const StringRenderer = ({
     </React.Fragment>
 };
 
-const TextRenderer = ({schema, ...props}) => {
+export const TextRenderer = ({schema, ...props}) => {
     return <StringRenderer
         {...props}
         schema={schema}
@@ -89,11 +89,9 @@ const TextRenderer = ({schema, ...props}) => {
     />
 };
 
-const NumberRenderer = (props) => {
+export const NumberRenderer = (props) => {
     return <StringRenderer
         {...props}
         type={'number'}
     />
 };
-
-export {StringRenderer, NumberRenderer, TextRenderer};

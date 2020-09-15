@@ -1,8 +1,9 @@
-import { moveItem } from "@ui-schema/ui-schema/Utils/moveItem/moveItem"
-import { List } from "immutable"
+import { moveItem } from '@ui-schema/ui-schema/Utils/moveItem/moveItem'
+import { List } from 'immutable'
 
 describe('moveItem', () => {
     test.each([
+        [{equals: () => 'no-list'}, 1, 0, '', 'no-list'],
         [List(['a', 'b']), 1, 0, List(['b', 'a']), true],
         [List(['b', 'a']), 0, 1, List(['a', 'b']), true],
         [List(['a', 'b']), 1, 0, List(['a', 'b']), false],

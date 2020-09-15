@@ -1,8 +1,8 @@
-import React from "react";
-import {NextPluginRenderer} from "../EditorPluginStack";
+import React from 'react';
+import {NextPluginRenderer} from '../EditorPluginStack';
 
-export const ValidatorStack = (props) => {
-    if(props.widgets.validators && Array.isArray(props.widgets.validators)) {
+export const handleValidatorStack = (props) => {
+    if(props.widgets && props.widgets.validators && Array.isArray(props.widgets.validators)) {
         props.widgets.validators.forEach(validator => {
             if(typeof validator.validate !== 'function') {
                 return;
@@ -21,5 +21,8 @@ export const ValidatorStack = (props) => {
         });
     }
 
-    return <NextPluginRenderer {...props}/>;
-};
+    return props;
+}
+
+export const ValidatorStack = (props) =>
+    <NextPluginRenderer {...handleValidatorStack(props)}/>;

@@ -1,5 +1,5 @@
-import {List} from "immutable";
-import {prependKey, updateValues} from "../../EditorStore";
+import {List} from 'immutable';
+import {prependKey, updateValues} from '../../EditorStore';
 
 /**
  * Map and List compatible 'switch place of item' function
@@ -15,9 +15,8 @@ export const moveItem = (value, oldI, newI) => {
         oldI < 0 || value.size <= oldI
     ) return value;
 
-    const srcItem = value.get(oldI);
-
     if(List.isList(value)) {
+        const srcItem = value.get(oldI);
         return value.splice(oldI, 1).splice(newI, 0, srcItem);
     }
 
