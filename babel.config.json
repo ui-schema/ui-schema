@@ -5,7 +5,8 @@
             {
                 "loose": false
             }
-        ]
+        ],
+        "@babel/preset-typescript"
     ],
     "plugins": [
         "@babel/plugin-syntax-dynamic-import",
@@ -51,6 +52,12 @@
                 ],
                 [
                     "@babel/preset-react",
+                    {
+                        "loose": false
+                    }
+                ],
+                [
+                    "@babel/preset-typescript",
                     {
                         "loose": false
                     }

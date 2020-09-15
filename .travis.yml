@@ -12,7 +12,7 @@ script:
 deploy:
     -   provider: script
         skip_cleanup: true
-        script: bash packer/deploy.sh
+        script: bash deploy.sh
         on:
             tags: true
 env:
