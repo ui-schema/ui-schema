@@ -19,6 +19,6 @@ describe('isEqual', () => {
         'isEqual(%j, %s)',
         (prevProps, nextProps, expectedValid) => {
             expect(isEqual(prevProps, nextProps)).toBe(expectedValid)
-        },
+        }
     )
 })

@@ -15,6 +15,6 @@ describe('mapSchema', () => {
         'mapSchema(%j, %j)',
         (inputProps, schema, compare, expected) => {
             expect(compare(mapSchema(inputProps, schema))).toBe(expected)
-        },
+        }
     )
 })

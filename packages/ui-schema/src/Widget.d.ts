@@ -1,11 +1,12 @@
 import { onChange, ownKey, StoreKeys } from '@ui-schema/ui-schema/EditorStore'
 import { showValidity, errors, required, valid, StoreSchemaType } from './CommonTypings'
-import { WidgetsBindingBase } from "@ui-schema/ui-schema/WidgetsBinding"
+import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
 
 export interface WidgetProps {
     onChange: onChange
     schema: StoreSchemaType
     parentSchema: StoreSchemaType
+    // the current level in the schema, e.g. `0` for root, `1` for the first properties
     level: number
     // the last index of the current widget
     ownKey: ownKey

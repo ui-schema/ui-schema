@@ -44,7 +44,7 @@ describe('requiredValidator', () => {
                 requiredList: requiredList,
                 ownKey,
             })).toBe(expectedValid)
-        },
+        }
     )
 
     test.each([
@@ -90,7 +90,7 @@ describe('requiredValidator', () => {
             })
             expect(result.valid).toBe(expectedValid)
             expect(result.errors.hasError(error)).toBe(expectedError)
-        },
+        }
     )
 
     test(
@@ -98,6 +98,6 @@ describe('requiredValidator', () => {
         () => {
             const result = requiredValidator.noValidate()
             expect(result.required).toBe(false)
-        },
+        }
     )
 })

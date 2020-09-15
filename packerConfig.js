@@ -1,5 +1,4 @@
 const path = require('path');
-//const {buildExternal} = require('./packer/tools');
 const {buildExternal, packer} = require('lerna-packer');
 
 const apps = {
@@ -117,8 +116,5 @@ const packages = {
         },
     },
 };
-
-//const packer = require('./packer/packer')
-//packer(apps, packages)
 
 packer(apps, packages, __dirname);

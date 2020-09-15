@@ -18,7 +18,7 @@ import { WidgetProps } from "@ui-schema/ui-schema/Widget"
 
 To change the behaviour or design of a widget, wrap it and use properties, overwrite it in the widget mapping.
 
-See the widget documentation for your design-system for available properties, todo: add those docs.
+See the widget documentation for your design-system for available properties.
 
 This example changes the `OptionsCheck` widget through composition and overwrites it in the widget mapping:
 
@@ -26,7 +26,7 @@ This example changes the `OptionsCheck` widget through composition and overwrite
 import React from 'react';
 import {widgets, OptionsCheck} from "@ui-schema/ds-material";
 
-// Using a `x-Axis` flow for the checkboxes, instead of `y-Axis` / flex-direction row instead of column 
+// Using a `x-Axis` flow for the checkboxes, instead of `y-Axis` / flex-direction row instead of column
 const OptionsCheckCustom = props => <OptionsCheck {...props} row={true}/>
 
 const customWidgets = {
@@ -111,7 +111,7 @@ Create a complete custom binding or only `import` the components you need and op
     - see [how to create validator plugins](/docs/plugins#create-a-validator-plugin)
 - `custom` contains widgets mapping with schema's `widget`
 - `types` contains widgets mapping with schema's `type`
-    
+
 Example default binding for `material-ui` can be used as template:
 
 - [Grid Widgets](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/Grid.js) - all special widgets responsible for the grid
@@ -190,7 +190,7 @@ const CustomSelect = () => /* todo: implement */ null;
 export const customWidgets = {
     ...widgets,
     types: {
-        ...widgets.types, 
+        ...widgets.types,
         number: CustomNumberRenderer,
     },
     custom: {

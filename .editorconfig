@@ -11,9 +11,9 @@ indent_size = 4
 max_line_length = 120
 tab_width = 4
 trim_trailing_whitespace = true
-ij_continuation_indent_size = 8
+ij_continuation_indent_size = 4
 
-[{*.cjs,*.js}]
+[{*.cjs,*.js,*.ts,*.jsx,*.tsx}]
 max_line_length = 240
 ij_continuation_indent_size = 4
 ij_javascript_align_imports = false

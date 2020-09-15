@@ -63,7 +63,7 @@ describe('validateMultipleOf', () => {
         (schema, value, expected) => {
             const orderedSchema = createOrderedMap(schema)
             expect(validateMultipleOf(orderedSchema, value)).toBe(expected)
-        },
+        }
     )
 })
 
@@ -111,6 +111,6 @@ describe('multipleOfValidator', () => {
             if (result.errors.hasError(error.get(0))) {
                 expect(result.errors.getError(error.get(0)).get(0).equals(error.get(1))).toBe(expectedError)
             }
-        },
+        }
     )
 })

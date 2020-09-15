@@ -110,7 +110,7 @@ describe('objectValidator', () => {
         '.should(%j, %s)',
         (schema, expectedValid) => {
             expect(objectValidator.should({schema})).toBe(expectedValid)
-        },
+        }
     )
 
     test.each([
@@ -182,6 +182,6 @@ describe('objectValidator', () => {
             })
             expect(result.valid).toBe(expectedValid)
             expect(result.errors.hasError(error)).toBe(expectedError)
-        },
+        }
     )
 })

@@ -2,6 +2,7 @@ import React from 'react'
 import { Record, OrderedMap, Map, List } from 'immutable/dist/immutable-nonambient'
 import { Translator } from "../Translate/t"
 import { StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
+import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
 
 // EditorStore
 
@@ -41,7 +42,7 @@ export function EditorStoreProvider(
 // EditorContext
 
 export interface EditorContext<> {
-    widgets: {}
+    widgets: WidgetsBindingBase
     t?: Translator
     showValidity?: boolean
 }

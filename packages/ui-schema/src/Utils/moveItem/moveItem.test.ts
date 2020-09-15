@@ -12,6 +12,6 @@ describe('moveItem', () => {
         'moveItem(%j, %s, %s)',
         (value, oldI, newI, expected, expectedCompare) => {
             expect(moveItem(value, oldI, newI).equals(expected)).toBe(expectedCompare)
-        },
+        }
     )
 })

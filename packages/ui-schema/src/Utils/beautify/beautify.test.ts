@@ -8,7 +8,7 @@ describe('strReplaceAll', () => {
         'strReplaceAll(%s, %s, %s)',
         (str, search, replacement, expected) => {
             expect(strReplaceAll(str, search, replacement)).toBe(expected)
-        },
+        }
     )
 })
 
@@ -34,6 +34,6 @@ describe('beautifyKey', () => {
         'beautifyKey(%j, %s)',
         (name, tt, expected) => {
             expect(beautifyKey(name, tt)).toBe(expected)
-        },
+        }
     )
 })

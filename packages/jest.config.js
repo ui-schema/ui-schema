@@ -5,12 +5,12 @@ const testMatchesLint = []
 
 packages.forEach(pkg => {
     testMatches.push(...[
-        '<rootDir>/' + pkg + '/src/**/*.(test|spec).(js|ts)',
-        '<rootDir>/' + pkg + '/tests/**/*.(test|spec).(js|ts)',
+        '<rootDir>/' + pkg + '/src/**/*.(test|spec).(js|ts|tsx)',
+        '<rootDir>/' + pkg + '/tests/**/*.(test|spec).(js|ts|tsx)',
     ])
     testMatchesLint.push(...[
-        '<rootDir>/' + pkg + '/src/**/*.(test|spec|d).(js|ts)',
-        '<rootDir>/' + pkg + '/tests/**/*.(test|spec|d).(js|ts)',
+        '<rootDir>/' + pkg + '/src/**/*.(test|spec|d).(js|ts|tsx)',
+        '<rootDir>/' + pkg + '/tests/**/*.(test|spec|d).(js|ts|tsx)',
     ])
 })
 

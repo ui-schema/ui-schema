@@ -1,4 +1,4 @@
-import { List, Map, OrderedMap } from "immutable"
+import { List, Map, OrderedMap } from 'immutable'
 import {
     validateItems,
     validateContains,
@@ -7,10 +7,10 @@ import {
     ERROR_DUPLICATE_ITEMS,
     arrayValidator,
 } from '@ui-schema/ui-schema/Validators/ArrayValidator'
-import { createOrderedMap } from "@ui-schema/ui-schema/Utils"
-import { validateAdditionalItems } from "@ui-schema/ui-schema/Validators/ArrayValidator/ArrayValidator"
-import { ERROR_WRONG_TYPE } from "@ui-schema/ui-schema/Validators/TypeValidator/TypeValidator"
-import { createValidatorErrors } from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors"
+import { createOrderedMap } from '@ui-schema/ui-schema/Utils'
+import { validateAdditionalItems } from '@ui-schema/ui-schema/Validators/ArrayValidator/ArrayValidator'
+import { ERROR_WRONG_TYPE } from '@ui-schema/ui-schema/Validators/TypeValidator/TypeValidator'
+import { createValidatorErrors } from '@ui-schema/ui-schema/ValidityReporter/ValidatorErrors'
 
 describe('validateArrayContent', () => {
     test.each([
@@ -351,7 +351,7 @@ describe('validateContains', () => {
                 type: 'number',
             },
             maxContains: 2,
-        }, [1, 2, 3, "3"], 2],
+        }, [1, 2, 3, '3'], 2],
         [{
             type: 'array',
             contains: {
@@ -498,7 +498,7 @@ describe('arrayValidator', () => {
         '.should(%j, %s)',
         (schema, expectedValid) => {
             expect(arrayValidator.should({schema})).toBe(expectedValid)
-        },
+        }
     )
 
     test.each([
@@ -573,6 +573,6 @@ describe('arrayValidator', () => {
             if (result.errors.hasError(error.get(0))) {
                 expect(result.errors.getError(error.get(0)).get(0).equals(error.get(1))).toBe(expectedError)
             }
-        },
+        }
     )
 })

@@ -1,7 +1,7 @@
-import React from "react"
+import React from 'react'
 import { EditorPluginType } from '@ui-schema/ui-schema/EditorPlugin'
-import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators/ValidatorPlugin"
-import { StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
+import { ValidatorPlugin } from '@ui-schema/ui-schema/Validators/ValidatorPlugin'
+import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface WidgetsBindingBase {
     ErrorFallback?: React.ComponentType<any>
@@ -14,7 +14,7 @@ export interface WidgetsBindingBase {
     // validator functions
     validators: ValidatorPlugin[]
     // define native JSON-schema type widgets
-    types: {}
+    types: { [key: string]: any }
     // define custom widgets
-    custom: {}
+    custom: { [key: string]: any }
 }

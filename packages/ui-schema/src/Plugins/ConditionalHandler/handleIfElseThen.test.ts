@@ -260,6 +260,6 @@ describe('handleIfElseThen', () => {
         'handleIfElseThen(%j, store, distSchema)',
         (schema, store, distSchema, expectedSchema, expected) => {
             expect(handleIfElseThen(schema, store, distSchema).equals(expectedSchema)).toBe(expected)
-        },
+        }
     )
 })

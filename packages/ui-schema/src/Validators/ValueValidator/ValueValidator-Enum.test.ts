@@ -9,69 +9,69 @@ describe('validateEnum', () => {
         expect(validateEnum(
             'string',
             List(['text1', 'text2']),
-            'text1',
+            'text1'
         )).toBe(true)
         expect(validateEnum(
             'string',
             List(['text1', 'text2']),
-            'text3',
+            'text3'
         )).toBe(false)
         expect(validateEnum(
             'string',
             ['text1', 'text2'],
-            'text1',
+            'text1'
         )).toBe(true)
         expect(validateEnum(
             'string',
             ['text1', 'text2'],
-            'text3',
+            'text3'
         )).toBe(false)
 
         expect(validateEnum(
             'number',
             List([1, 2]),
-            1,
+            1
         )).toBe(true)
         expect(validateEnum(
             'number',
             List([1, 2]),
-            3,
+            3
         )).toBe(false)
 
         expect(validateEnum(
             'integer',
             List([1, 2]),
-            1,
+            1
         )).toBe(true)
         expect(validateEnum(
             'integer',
             List([1, 2]),
-            3,
+            3
         )).toBe(false)
 
         expect(validateEnum(
             'boolean',
             List([true]),
-            true,
+            true
         )).toBe(true)
         expect(validateEnum(
             'boolean',
             List([true]),
-            false,
+            false
         )).toBe(false)
 
         expect(validateEnum(
             'array',
             List([]),
-            [],
+            []
         )).toBe(true)
         expect(validateEnum(
             'array',
             [],
-            [],
+            []
         )).toBe(true)
         expect(validateEnum(
-            'array',
+            'array'
         )).toBe(true)
         expect(validateEnum('string', undefined, 'text1')).toBe(true)
         expect(validateEnum('string')).toBe(true)
@@ -100,7 +100,7 @@ describe('valueValidatorEnum', () => {
                 schema: OrderedMap(schema),
                 value,
             })).toBe(expected)
-        },
+        }
     )
 
     test.each([
@@ -134,6 +134,6 @@ describe('valueValidatorEnum', () => {
             })
             expect(result.valid).toBe(expectedValid)
             expect(result.errors.hasError(error)).toBe(expectedError)
-        },
+        }
     )
 })
