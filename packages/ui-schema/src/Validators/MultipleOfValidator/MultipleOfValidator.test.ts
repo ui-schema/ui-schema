@@ -1,15 +1,16 @@
-import { OrderedMap, List, Map } from "immutable"
+import { OrderedMap, List, Map } from 'immutable'
 import {
     validateMultipleOf, multipleOfValidator, ERROR_MULTIPLE_OF,
 } from '@ui-schema/ui-schema/Validators/MultipleOfValidator'
-import { createOrderedMap } from "@ui-schema/ui-schema/Utils"
-import { Schemas } from "@ui-schema/ui-schema/JsonSchema"
-import { createValidatorErrors } from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors"
+import { createOrderedMap } from '@ui-schema/ui-schema/Utils'
+import { JsonSchemaNumber } from '@ui-schema/ui-schema/JsonSchema'
+import { createValidatorErrors } from '@ui-schema/ui-schema/ValidityReporter/ValidatorErrors'
+import { UISchema } from '@ui-schema/ui-schema'
 
 describe('validateMultipleOf', () => {
     type validateMultipleOfTest = [
         // schema:
-        Schemas['number'],
+        (JsonSchemaNumber & UISchema),
         // value:
         any,
         // expected:

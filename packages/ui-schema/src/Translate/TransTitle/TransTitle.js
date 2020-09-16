@@ -5,11 +5,6 @@ import {Trans} from "../Trans";
 
 /**
  * Reusable title translation component
- * @param {Map} schema
- * @param {Map} storeKeys
- * @param {string} ownKey
- * @return {*}
- * @constructor
  */
 export const TransTitle = ({schema, storeKeys, ownKey}) => <Trans
     schema={schema.get('t')}

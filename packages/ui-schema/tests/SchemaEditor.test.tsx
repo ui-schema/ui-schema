@@ -87,26 +87,26 @@ const TestSchemaEditor = (props: {
 
     // needed variables and setters for the SchemaEditor, create wherever you like
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(props.data || {demo_string: ''})))
-    // @ts-ignore
+
     const [schema/*, setSchema*/] = React.useState(() => createOrderedMap({
         type: 'object',
-        // @ts-ignore
         $def: {
-            // @ts-ignore
             demo_number_def: {
                 $anchor: 'demo_number',
                 type: 'number',
                 multipleOf: 5,
                 maximum: 50,
             },
-            // @ts-ignore
             type_string: {
                 $id: '#type_string',
             },
             person: {
                 type: 'object',
                 properties: {
-                    name: {type: 'string'},
+                    // todo: workaround if IDE doesn't correctly match the typing to a deeply nested property
+                    name: {
+                        type: 'string',
+                    } as JsonSchema,
                     children: {
                         type: 'array',
                         items: {$ref: '#/definitions/person'},
@@ -117,7 +117,6 @@ const TestSchemaEditor = (props: {
                     properties: {
                         name: {
                             type: 'string',
-                            // @ts-ignore
                             const: 'Musterman',
                         },
                     },
@@ -156,14 +155,11 @@ const TestSchemaEditor = (props: {
             },
             person: {$ref: '#/definitions/person'},
         },
-        // @ts-ignore
         allOf: [{
-            // @ts-ignore
             if: {
                 properties: {
                     demo_string: {
                         type: 'string',
-                        // @ts-ignore
                         const: 'test',
                     },
                 },
@@ -180,6 +176,7 @@ const TestSchemaEditor = (props: {
             demo_number: {
                 properties: {
                     demo_string: {
+                        type: 'string',
                         minLength: 2,
                     },
                 },

@@ -1,4 +1,4 @@
-import { UISchema } from "@ui-schema/ui-schema/UISchema"
+import { UISchema } from '@ui-schema/ui-schema/UISchema'
 
 export interface SchemasDraft04 {
     number: {
@@ -13,103 +13,137 @@ export interface SchemasDraft04 {
     }
 }
 
-export interface Schemas {
-    root: {
-        '$id': string
-        '$schema': string
+export interface JsonSchemaGeneral {
+    readOnly?: boolean
+    id?: string
+    $id?: string
+    $ref?: string
+    $anchor?: string
+    default?: any
+    definitions?: {
+        [key: string]: JsonSchema
     }
-    general: {
-        readOnly?: boolean
-        'id'?: string
-        '$anchor'?: string
-        '$id'?: string
-        '$schema'?: string
-        '$ref'?: string
+    $def?: {
+        [key: string]: JsonSchema
     }
-    conditionals: {
-        allOf: JsonSchema[] | {
-            not: JsonSchema
-        }[]
+    dependencies?: JsonSchemaGeneral['dependentSchemas'] | JsonSchemaGeneral['dependentRequired']
+    dependentSchemas?: {
+        [key: string]: JsonSchema
     }
-    string: {
-        type: 'string'
-        minLength?: number
-        maxLength?: number
-    }
-    boolean: {
-        type: 'boolean'
-    }
-    array: {
-        type: 'array'
-        minItems?: number
-        maxItems?: number
-        items?: JsonSchema | JsonSchema[]
-        uniqueItems?: boolean
-        maxContains?: number
-        minContains?: number
-        contains?: JsonSchema
-        additionalItems?: boolean
-    }
-    object: {
-        type: 'object'
-        minProperties?: number
-        maxProperties?: number
-        properties?: {
-            [key: string]: JsonSchema
-        }
-        if?: JsonSchema | {
-            not: JsonSchema
-        }
-        else?: JsonSchema | {
-            not: JsonSchema
-        }
-        then?: JsonSchema | {
-            not: JsonSchema
-        }
-        allOf?: JsonSchema[] | {
-            not: JsonSchema
-        }[]
-        required?: string[]
-        additionalProperties?: boolean
-        propertyNames?: JsonSchema
-    }
-    number: {
-        type: 'number' | 'integer'
-        minimum?: number
-        maximum?: number
-        exclusiveMinimum?: number
-        exclusiveMaximum?: number
-        multipleOf?: number
-    }
-    null: {
-        type: 'null'
-    }
-    hyper: {
-        base?: string
-    } | {
-        base: string
-        links: {
-            rel: string | 'self' | 'collection' | 'item' | 'about'
-            href: string
-            contextUri?: string
-            contextPointer?: string
-            targetUri?: string
-            targetSchema?: { '$ref': string }
-            submissionSchema?: { '$ref': string }
-            templateRequired?: string[]
-            attachmentPointer?: string
-        }[]
-    }
+    dependentRequired?: string[]
+    'const'?: any | string | number
+    'enum'?: any[]
 }
 
-export type JsonSchema =
-        Schemas['string']
-        | Schemas['array']
-        | Schemas['object']
-        | Schemas['number']
-        | Schemas['boolean']
-        | Schemas['null']
-        | Schemas['conditionals']
-        | Schemas['root']
-        & Schemas['general']
-        & UISchema
+export interface JsonSchemaConditionals {
+    if?: JsonSchema | {
+        not: JsonSchema
+    }
+    else?: JsonSchema | {
+        not: JsonSchema
+    }
+    then?: JsonSchema | {
+        not: JsonSchema
+    }
+    allOf?: JsonSchema[] | {
+        not: JsonSchema
+    }[]
+}
+
+export interface JsonSchemaObject extends JsonSchemaConditionals, JsonSchemaGeneral {
+    type: 'object'
+    minProperties?: number
+    maxProperties?: number
+    properties?: {
+        [key: string]: JsonSchema
+    }
+    required?: string[]
+    additionalProperties?: boolean
+    propertyNames?: JsonSchema
+}
+
+export interface JsonSchemaRoot extends JsonSchemaConditionals, JsonSchemaGeneral {
+    id?: string
+    $id?: string
+    $schema?: string
+    $ref?: string
+}
+
+export interface JsonSchemaString extends JsonSchemaGeneral {
+    type: 'string'
+    minLength?: number
+    maxLength?: number
+}
+
+export interface JsonSchemaBoolean extends JsonSchemaGeneral {
+    type: 'boolean'
+}
+
+export type JsonSchemaItemsSchema = JsonSchema | JsonSchema[]
+
+export interface JsonSchemaArray extends JsonSchemaGeneral {
+    type: 'array'
+    minItems?: number
+    maxItems?: number
+    items?: JsonSchemaItemsSchema
+    uniqueItems?: boolean
+    maxContains?: number
+    minContains?: number
+    contains?: JsonSchema
+    additionalItems?: boolean
+}
+
+export interface JsonSchemaNumber extends JsonSchemaGeneral {
+    type: 'number' | 'integer'
+    minimum?: number
+    maximum?: number
+    exclusiveMinimum?: number
+    exclusiveMaximum?: number
+    multipleOf?: number
+}
+
+export interface JsonSchemaNull extends JsonSchemaGeneral {
+    type: 'null'
+}
+
+export interface JsonSchemaHyperGeneral {
+    base?: string
+    links?: {
+        rel: string | 'self' | 'collection' | 'item' | 'about' | 'up'
+        href: string
+        anchor?: string
+        contextUri?: string
+        contextPointer?: string
+        targetUri?: string
+        targetSchema?: JsonHyperSchema | { '$ref': string | '#' }
+        submissionSchema?: JsonHyperSchema | { '$ref': string | '#' }
+        attachmentPointer?: string
+        templateRequired?: string[]
+        templatePointers?: {
+            [key: string]: string
+        }
+    }[]
+}
+
+export interface JsonSchemaHyperRoot extends JsonSchemaRoot {
+    base?: string
+}
+
+export type JsonSchemaPure =
+    JsonSchemaString |
+    JsonSchemaArray |
+    JsonSchemaObject |
+    JsonSchemaNumber |
+    JsonSchemaBoolean |
+    JsonSchemaNull |
+    JsonSchemaConditionals |
+    JsonSchemaRoot
+
+//
+// The two main typings for json schema & ui schema
+//
+
+// todo: passing down that HyperSchema is used at recursive declarations, instead of JsonSchema, e.g. `Conditionals.if: JsonSchema` or `Object.properties` etc.
+export type JsonHyperSchema = JsonSchemaPure & JsonSchemaHyperGeneral & UISchema
+
+export type JsonSchema = JsonSchemaPure & UISchema

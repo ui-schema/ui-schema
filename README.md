@@ -112,6 +112,7 @@ const schemaBase = {
     ],
 };
 
+// or fetch from API
 const data = {};
 
 const Editor = () => {
@@ -133,18 +134,18 @@ const Editor = () => {
 
             t={(text, context, schema) => {/* add translations */}}
 
-            {/*
-              * or custom onChange, e.g. save-on-update:
-              * - handler gets the previous store
-              * - returns updated store
-            */}
+            /*
+             * or custom onChange, e.g. save-on-update:
+             * - handler gets the previous store
+             * - returns updated store
+             */
             onChange={handler => setStore(data => handler(data))}
         >
             {/* (optional) add components which use the context of the Editor here */}
         </SchemaEditor>
 
         <button
-            {/* show the validity only at submit (or pass `true` to `showValidity`) */}
+            /* show the validity only at submit (or pass `true` to `showValidity`) */
             onClick={() => isInvalid(
                 store.getValidity()) ? setShowValidity(true) :
                 console.log('doingSomeAction:', store.valuesToJS()

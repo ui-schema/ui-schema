@@ -106,8 +106,6 @@ export const withEditor = (Component) => {
     return WithEditor;
 };
 
-const hasStoreKeys = storeKeys => (Array.isArray(storeKeys) && storeKeys.length) || storeKeys.size;
-
 export const prependKey = (storeKeys, key) =>
     Array.isArray(storeKeys) ?
         [key, ...storeKeys] :
@@ -134,15 +132,15 @@ const shouldHandleRequired = (value, required, type) => {
 
 const updateRawValue = (store, storeKeys, key, value, required = undefined, type = undefined) => {
     if(shouldHandleRequired(value, required, type)) {
-        return store.deleteIn(hasStoreKeys(storeKeys) ? prependKey(storeKeys, key) : [key]);
+        return store.deleteIn(storeKeys.size ? prependKey(storeKeys, key) : [key]);
     }
     return store.setIn(
-        hasStoreKeys(storeKeys) ? prependKey(storeKeys, key) : [key],
+        storeKeys.size ? prependKey(storeKeys, key) : [key],
         value,
     );
 }
 const deleteRawValue = (store, storeKeys, key) =>
-    hasStoreKeys(storeKeys) ?
+    storeKeys.size ?
         store.deleteIn(prependKey(storeKeys, key)) :
         store.delete(key);
 

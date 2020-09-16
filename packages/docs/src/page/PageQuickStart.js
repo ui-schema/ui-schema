@@ -124,10 +124,10 @@ const values = {};
 
 const Editor = () => {
     // here the state will be added
-   
+
     return (
         <SchemaEditor
-            {/* here the props will be added */}
+            /* here the props will be added */
         />
     )
 };
@@ -194,16 +194,16 @@ const schema = createOrderedMap({
 const values = {};
 
 const Editor = () => {
-    // Create a state with the data, transforming into immutable on first mount 
+    // Create a state with the data, transforming into immutable on first mount
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(values)));
-    
+
     // or create empty store, based on the schema type:
     // const [store, setStore] = React.useState(() => createEmptyStore(schema.get('type'));
-   
+
     return (
         <SchemaEditor
             schema={schema}
-            
+
             store={store}
             onChange={setStore}
 
@@ -227,7 +227,7 @@ Each \`object\` can have multiple \`properties\`, each can be of a different typ
 
 Properties defined in \`required\` must be filled out, see what is [invalid for required](/docs/schema#required-keyword).
 
-See [schema docs](/docs/schema) for the keywords of each type. 
+See [schema docs](/docs/schema) for the keywords of each type.
 `}/>
                     </Grid>
                     <Grid item xs={12}>
@@ -258,7 +258,7 @@ const schema = createOrderedMap(${JSON.stringify(demoSchema, null, 2)});
 
 Now we add a button that will send the store of the editor to an API if the form is valid.
 
-We tell the editor also to display validity from start on. 
+We tell the editor also to display validity from start on.
 `}/>
                     </Grid>
                     <Grid item xs={12}>
@@ -266,21 +266,21 @@ We tell the editor also to display validity from start on.
 \`\`\`jsx
 const Editor = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(values)));
-    
+
     return (
         <React.Fragment>
             <SchemaEditor
                 schema={schema}
-            
+
                 store={store}
                 onChange={setStore}
 
                 widgets={widgets}
-                
+
                 showValidity={true}
             />
             {/* add your sending button, in the onClick check for validity and do the needed action */}
-            <button 
+            <button
                 disabled={!!isInvalid(store.getValidity())}
                 onClick={() => {
                     if(!isInvalid(isInvalid(store.getValidity())) {
@@ -309,7 +309,7 @@ const Editor = () => {
 
                     <Grid item xs={12}>
                         <Markdown content source={`
-Test the demo form below, it will send the entered data to [httpbin.org](https://httpbin.org) with \`POST\` and display the response after the form. 
+Test the demo form below, it will send the entered data to [httpbin.org](https://httpbin.org) with \`POST\` and display the response after the form.
 `}/>
                     </Grid>
 

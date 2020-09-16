@@ -1,13 +1,13 @@
-import React from "react";
-import {List} from "immutable";
-import {extractValue, withEditor,} from "../EditorStore";
-import {memo} from "../Utils/memo";
-import {NextPluginRenderer} from "@ui-schema/ui-schema/EditorPluginStack/EditorPluginStack";
-import {createValidatorErrors} from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors";
+import React from 'react';
+import {List} from 'immutable';
+import {extractValue, withEditor} from '../EditorStore';
+import {memo} from '../Utils/memo';
+import {NextPluginRenderer} from '@ui-schema/ui-schema/EditorPluginStack/EditorPluginStack';
+import {createValidatorErrors} from '@ui-schema/ui-schema/ValidityReporter/ValidatorErrors';
 
 class WidgetErrorBoundary extends React.Component {
     state = {
-        error: null
+        error: null,
     }
 
     static getDerivedStateFromError(error) {
@@ -21,7 +21,10 @@ class WidgetErrorBoundary extends React.Component {
     render() {
         if(this.state.error) {
             const FallbackComponent = this.props.FallbackComponent;
-            return <FallbackComponent error={this.state.error} type={this.props.type} widget={this.props.widget}/>;
+            if(FallbackComponent) {
+                return <FallbackComponent error={this.state.error} type={this.props.type} widget={this.props.widget}/>;
+            }
+            return 'error-' + this.props.type + '-' + this.props.widget
         }
         return this.props.children;
     }
