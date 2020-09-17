@@ -139,6 +139,30 @@ export type JsonSchemaPure =
     JsonSchemaConditionals |
     JsonSchemaRoot
 
+export type JsonSchemaKeyValue<K> =
+    JsonSchemaString[K] |
+    JsonSchemaArray[K] |
+    JsonSchemaObject[K] |
+    JsonSchemaNumber[K] |
+    JsonSchemaBoolean[K] |
+    JsonSchemaNull[K] //|
+// todo: somehow those two crash the `K` to value typing resolution
+// JsonSchemaConditionals[K] //|
+// JsonSchemaRoot[K]
+
+export type JsonSchemaKeys =
+    keyof JsonSchemaString |
+    keyof JsonSchemaArray |
+    keyof JsonSchemaObject |
+    keyof JsonSchemaNumber |
+    keyof JsonSchemaBoolean |
+    keyof JsonSchemaNull |
+    keyof JsonSchemaConditionals |
+    keyof JsonSchemaGeneral |
+    keyof JsonSchemaHyperGeneral |
+    keyof UISchema |
+    keyof JsonSchemaRoot
+
 //
 // The two main typings for json schema & ui schema
 //
