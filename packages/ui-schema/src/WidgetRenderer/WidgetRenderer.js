@@ -1,67 +1,37 @@
 import React from 'react';
-import {List} from 'immutable';
-import {extractValue, withEditor} from '../EditorStore';
-import {memo} from '../Utils/memo';
-import {NextPluginRenderer} from '@ui-schema/ui-schema/EditorPluginStack/EditorPluginStack';
-import {createValidatorErrors} from '@ui-schema/ui-schema/ValidityReporter/ValidatorErrors';
+import {ObjectRenderer} from '@ui-schema/ui-schema/ObjectRenderer';
 
-class WidgetErrorBoundary extends React.Component {
-    state = {
-        error: null,
-    }
+const NoWidget = ({scope, matching}) => <>missing-{scope}-{matching}</>;
 
-    static getDerivedStateFromError(error) {
-        return {error: error};
-    }
+export const WidgetRenderer = ({
+                                        value,
+                                        // as we want to extract `requiredList` from the props passed to the final widget
+                                        // eslint-disable-next-line no-unused-vars
+                                        requiredList,
+                                        ...props
+                                    }) => {
+    const {schema, widgets} = props;
+    const type = schema.get('type');
+    const widget_name = schema.get('widget');
 
-    componentDidCatch(error, info) {
-        console.error(error, info);
-    }
+    // getting the to-render component based on if it finds a custom object-widget or a widget extending native-types
+    let Widget = null;
 
-    render() {
-        if(this.state.error) {
-            const FallbackComponent = this.props.FallbackComponent;
-            if(FallbackComponent) {
-                return <FallbackComponent error={this.state.error} type={this.props.type} widget={this.props.widget}/>;
-            }
-            return 'error-' + this.props.type + '-' + this.props.widget
+    if(widget_name && widgets.custom) {
+        if(widgets.custom[widget_name]) {
+            Widget = widgets.custom[widget_name];
+        } else {
+            Widget = () => <NoWidget scope={'custom'} matching={widget_name}/>;
         }
-        return this.props.children;
-    }
-}
-
-const WidgetRendererBase = (props) => {
-    const {
-        level = 0, parentSchema,
-        storeKeys, schema, widgets,
-    } = props;
-
-    let required = List([]);
-    if(parentSchema) {
-        let tmp_required = parentSchema.get('required');
-        if(tmp_required) {
-            required = tmp_required;
+    } else if(type && widgets.types) {
+        if(type === 'object') {
+            Widget = ObjectRenderer;
+        } else if(widgets.types[type]) {
+            Widget = widgets.types[type];
+        } else {
+            Widget = () => <NoWidget scope={'type'} matching={type}/>;
         }
     }
 
-    const ErrorBoundary = widgets.ErrorFallback ? WidgetErrorBoundary : React.Fragment;
-
-    return props.schema ? <ErrorBoundary
-        FallbackComponent={widgets.ErrorFallback}
-        type={schema.get('type')}
-        widget={schema.get('widget')}
-    >
-        <NextPluginRenderer
-            current={-1}
-            // all others are getting pushed to Widget
-            {...props}
-            level={level}
-            ownKey={storeKeys.get(storeKeys.count() - 1)}
-            requiredList={required}
-            required={false}
-            errors={createValidatorErrors()}
-            valid
-        />
-    </ErrorBoundary> : null;
+    return Widget ? <Widget {...props} value={type === 'array' || type === 'object' ? undefined : value}/> : null;
 };
-export const WidgetRenderer = withEditor(extractValue(memo(WidgetRendererBase)));

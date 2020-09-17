@@ -7,5 +7,4 @@ export * from './TypeValidator'
 export * from './RequiredValidator'
 export * from './ValueValidator'
 // files
-export * from './ValidatorPlugin'
 export * from './validators'

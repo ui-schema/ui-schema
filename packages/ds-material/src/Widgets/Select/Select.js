@@ -4,7 +4,7 @@ import {
     FormControl, Checkbox, InputLabel,
     MenuItem, Select as MuiSelect, ListItemText,
 } from "@material-ui/core";
-import {TransTitle, Trans, beautifyKey, updateValue, extractValue, memo, useEditor} from "@ui-schema/ui-schema";
+import {TransTitle, Trans, beautifyKey, updateValue, extractValue, memo, useUIMeta} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
 
 const Select = ({
@@ -12,7 +12,7 @@ const Select = ({
                     storeKeys, ownKey, schema, value, onChange,
                     showValidity, valid, required, errors
                 }) => {
-    const {t} = useEditor();
+    const {t} = useUIMeta();
 
     if(!schema) return null;
 

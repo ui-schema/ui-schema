@@ -1,4 +1,4 @@
-import { EditorPluginType } from '@ui-schema/ui-schema/EditorPlugin'
+import { PluginType } from '@ui-schema/ui-schema/PluginStack/Plugin'
 
 /**
  * Plugin stack contains:
@@ -10,4 +10,4 @@ import { EditorPluginType } from '@ui-schema/ui-schema/EditorPlugin'
  * - ValidatorStack
  * - ValidityReporter
  */
-export const pluginStack: Array<EditorPluginType>
+export const pluginStack: Array<PluginType>

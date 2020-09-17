@@ -1,6 +1,6 @@
 import React from 'react';
 import {List, Map} from 'immutable';
-import {NextPluginRenderer} from '@ui-schema/ui-schema/EditorPluginStack';
+import {NextPluginRenderer} from '@ui-schema/ui-schema/PluginStack';
 
 const DefinitionsContext = React.createContext(undefined);
 

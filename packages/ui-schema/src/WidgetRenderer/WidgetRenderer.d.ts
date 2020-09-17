@@ -1,15 +1,6 @@
 import React from 'react'
-import { EditorPluginProps } from "@ui-schema/ui-schema/EditorPlugin"
-import { StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
-import { StoreKeys } from "@ui-schema/ui-schema/EditorStore"
+import { PluginProps } from "@ui-schema/ui-schema/PluginStack/Plugin"
 
-export interface WidgetRendererProps {
-    level?: number
-    schema: StoreSchemaType
-    parentSchema: StoreSchemaType
-    storeKeys: StoreKeys
-}
-
-export function WidgetRenderer(
-    props: WidgetRendererProps
-): React.ReactElement<EditorPluginProps>
+export function WidgetRenderer<P extends Pick<PluginProps,
+    "level" | "errors" | "onChange" | "ownKey" | "parentSchema" | "required" | "requiredList" | "schema" |
+    "showValidity" | "storeKeys" | "value" | "valid" | "widgets">>(props: P): React.ReactElement<P>

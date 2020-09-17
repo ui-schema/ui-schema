@@ -1,7 +1,7 @@
 import React from "react";
 import {Typography, useTheme,} from "@material-ui/core";
 import {RichCodeEditor, supportedModes} from "./RichCodeEditor";
-import DemoEditor from "./Schema/DemoEditor";
+import DemoUIGenerator from "./Schema/DemoUIGenerator";
 
 const languageMapping = {
     js: 'javascript',
@@ -21,7 +21,7 @@ const Code = ({variant, ...p}) => {
         } catch(e) {
             console.error(e);
         }
-        return <div style={{marginTop: 24}}><DemoEditor uiStyle={{margin: 12}} activeSchema={value} id={'ui-schema'} split={false}/></div>;
+        return <div style={{marginTop: 24}}><DemoUIGenerator uiStyle={{margin: 12}} activeSchema={value} id={'ui-schema'} split={false}/></div>;
     }
 
     if(supportedModes.indexOf(currentMode) === -1) {

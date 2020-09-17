@@ -1,5 +1,5 @@
 import React from "react"
-import { ownKey, StoreKeys } from "@ui-schema/ui-schema/EditorStore"
+import { ownKey, StoreKeys } from "@ui-schema/ui-schema/UIStore"
 import { StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
 
 export interface TransTitleProps {

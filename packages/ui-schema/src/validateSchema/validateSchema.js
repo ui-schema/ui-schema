@@ -7,7 +7,7 @@ import {ERROR_MULTIPLE_OF, validateMultipleOf} from "../Validators/MultipleOfVal
 import {validateContains} from "../Validators/ArrayValidator/ArrayValidator";
 import {ERROR_NOT_SET} from "../Validators/RequiredValidator/RequiredValidator";
 import {validateObject} from "../Validators/ObjectValidator/ObjectValidator";
-import {createValidatorErrors} from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors";
+import {createValidatorErrors} from "@ui-schema/ui-schema/ValidatorStack/ValidatorErrors";
 
 /**
  * Return false when valid and string/List for an error

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useUID } from 'react-uid'
-import { ownKey, StoreSchemaType, TransTitle, WidgetProps, WidgetRenderer } from '@ui-schema/ui-schema'
+import { ownKey, StoreSchemaType, TransTitle, WidgetProps, PluginStack } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '../../Component/LocaleHelperText/LocaleHelperText'
 
 import Accordion from '@material-ui/core/Accordion'
@@ -29,7 +29,7 @@ export const AccordionsRenderer = (
                 </Typography>
             </AccordionSummary>
             <AccordionDetails>
-                <WidgetRenderer
+                <PluginStack
                     {...props}
                     schema={childSchema} parentSchema={schema}
                     storeKeys={storeKeys.push(childKey)} level={level + 1}

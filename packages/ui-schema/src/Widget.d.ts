@@ -1,4 +1,4 @@
-import { onChange, ownKey, StoreKeys } from '@ui-schema/ui-schema/EditorStore'
+import { onChange, ownKey, StoreKeys } from '@ui-schema/ui-schema/UIStore'
 import { showValidity, errors, required, valid, StoreSchemaType } from './CommonTypings'
 import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
 

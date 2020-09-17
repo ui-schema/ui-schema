@@ -1,7 +1,7 @@
 import {List, Map} from "immutable";
 import {validateSchema} from "@ui-schema/ui-schema/validateSchema";
 import {ERROR_WRONG_TYPE} from "@ui-schema/ui-schema/Validators/TypeValidator/TypeValidator";
-import {createValidatorErrors} from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors";
+import {createValidatorErrors} from "@ui-schema/ui-schema/ValidatorStack/ValidatorErrors";
 
 export const ERROR_DUPLICATE_ITEMS = 'duplicate-items';
 export const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains';
@@ -171,7 +171,7 @@ export const arrayValidator = {
          * - e.g. 2 out of 3 are invalid, only one error is visible on the parent-component
          * - but when the items are not valid, the parent should also know that something is invalid
          * - providing context `arrayItems = true` for errors makes it possible to distinct the errors in the parent-component
-         * - full sub-schema validation is done (and possible) if the sub-schema is rendered through e.g. NestedSchemaEditor
+         * - full sub-schema validation is done (and possible) if the sub-schema is rendered through e.g. UIGeneratorNested
          */
         let items = schema.get('items');
         if(items && value) {

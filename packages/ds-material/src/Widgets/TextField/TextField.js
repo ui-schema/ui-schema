@@ -5,6 +5,17 @@ import {unstable_trace as trace} from 'scheduler/tracing';
 import {TransTitle, updateValue, updateValidity, mapSchema, checkNativeValidity} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
+export const convertStringToNumber = (value, type) => {
+    if(type === 'number') {
+        if(isNaN(value * 1)) {
+            console.error('Invalid Type: input not a number in');
+            return;
+        }
+        return value === '' ? '' : value * 1
+    }
+    return value
+}
+
 export const StringRenderer = ({
                                    type,
                                    multiline, rows, rowsMax,
@@ -54,18 +65,7 @@ export const StringRenderer = ({
             style={style}
             onKeyDown={onKeyDown}
             onChange={(e) => trace('textfield onchange', performance.now(), () => {
-                const value = e.target.value;
-                if(type === 'number') {
-                    if(isNaN(value * 1)) {
-                        console.error('Invalid Type: input not a number in:', e.target);
-                        return;
-                    }
-                    onChange(updateValue(storeKeys, value === '' ? '' : value * 1, required, schema.get('type')));
-
-                    return;
-                }
-
-                onChange(updateValue(storeKeys, value, required, schema.get('type')));
+                onChange(updateValue(storeKeys, convertStringToNumber(e.target.value), required, schema.get('type')));
             })}
             InputLabelProps={{shrink: schema.getIn(['view', 'shrink'])}}
             InputProps={InputProps}

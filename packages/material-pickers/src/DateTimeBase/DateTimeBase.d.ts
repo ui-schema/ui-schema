@@ -1,4 +1,4 @@
-import { onChange, ownKey, StoreKeys } from '@ui-schema/ui-schema/EditorStore'
+import { onChange, ownKey, StoreKeys } from '@ui-schema/ui-schema/UIStore'
 import { required, StoreSchemaType, showValidity, valid } from '@ui-schema/ui-schema/CommonTypings'
 import { additionalProps } from '@ui-schema/material-pickers/TimeBase'
 

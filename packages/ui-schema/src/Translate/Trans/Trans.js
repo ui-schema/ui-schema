@@ -1,11 +1,11 @@
 import React from "react";
-import {useEditor} from "../../EditorStore";
+import {useUIMeta} from "../../UIStore";
 
 /**
  * Translation component, supports dot strings, dictionary can be mixed strings, string functions and function components as translation
  */
 export const Trans = ({text, context, schema, fallback}) => {
-    const {t} = useEditor();
+    const {t} = useUIMeta();
     const Translated = t(text, context, schema);
 
     return !Translated ?

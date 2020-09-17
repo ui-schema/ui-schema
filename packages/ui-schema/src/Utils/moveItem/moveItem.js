@@ -1,5 +1,5 @@
 import {List} from 'immutable';
-import {prependKey, updateValues} from '../../EditorStore';
+import {prependKey, updateValues} from '../../UIStore';
 
 /**
  * Map and List compatible 'switch place of item' function

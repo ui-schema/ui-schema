@@ -45,46 +45,46 @@ export const routesWidgets = {
     },
     routes: [
         createDoc('widgets/Accordions', 'Accordions', '', {
-            demoEditor: demoAccordions
+            demoUIGenerator: demoAccordions
         }),
         createDoc('widgets/Code', 'Code Editor', '', {
-            demoEditor: demoCode
+            demoUIGenerator: demoCode
         }),
         createDoc('widgets/Color', 'Color Picker', '', {
-            demoEditor: demoColor
+            demoUIGenerator: demoColor
         }),
         createDoc('widgets/DateTimePickers', 'Date + Time Pickers', '', {
-            demoEditor: demoDateTimePickers
+            demoUIGenerator: demoDateTimePickers
         }),
         createDoc('widgets/GenericList', 'Generic List', '', {
-            demoEditor: demoGenericList
+            demoUIGenerator: demoGenericList
         }),
         createDoc('widgets/GridHandler', 'Grid Handler', '', {
-            demoEditor: demoGridHandler
+            demoUIGenerator: demoGridHandler
         }),
         createDoc('widgets/OptionsList', 'Options List', '', {
-            demoEditor: demoOptionsList
+            demoUIGenerator: demoOptionsList
         }),
         createDoc('widgets/RichText', 'RichText / WYSIWYG', '', {
-            demoEditor: demoRichText
+            demoUIGenerator: demoRichText
         }),
         createDoc('widgets/NumberSlider', 'Number Slider', '', {
-            demoEditor: demoNumberSlider
+            demoUIGenerator: demoNumberSlider
         }),
         createDoc('widgets/Select', 'Select', '', {
-            demoEditor: demoSelect
+            demoUIGenerator: demoSelect
         }),
         createDoc('widgets/SimpleList', 'Simple List', '', {
-            demoEditor: demoSimpleList
+            demoUIGenerator: demoSimpleList
         }),
         createDoc('widgets/Stepper', 'Stepper', '', {
-            demoEditor: demoStepper
+            demoUIGenerator: demoStepper
         }),
         createDoc('widgets/Switch', 'Switch', '', {
-            demoEditor: demoSwitch
+            demoUIGenerator: demoSwitch
         }),
         createDoc('widgets/TextField', 'TextField', '', {
-            demoEditor: demoTextField
+            demoUIGenerator: demoTextField
         }),
     ]
 };

@@ -2,11 +2,11 @@
 
 These components are the wire/grid in which the widgets are rendered.
 
-[![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-editor) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui)
+[![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-ui-generator) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui)
 
 - `RootRenderer`, defined as special widget: `widgets.RootRenderer`
-    - the first component that is rendered for the editor, containing the root-level
-    - not applied for `NestedSchemaEditor`, this starts directly at schema-level
+    - the first component that is rendered for the generator, containing the root-level
+    - not applied for `UIGeneratorNested`, this starts directly at schema-level
 - `GroupRenderer`, defined as special widget: `widgets.GroupRenderer`
     - has the GridHandler as children
     - each native-object is wrapped with this (default), each property of an `object` results in a new child
@@ -17,10 +17,10 @@ These components are the wire/grid in which the widgets are rendered.
     - added to the widget-stack
         - thus each widget is automatically wrapped with the needed grid handler to build responsive grid
 
-Disabling the GridHandler with `noGrid` can - for example - be done by passing it down from `NestedSchemaEditor`:
+Disabling the GridHandler with `noGrid` can - for example - be done by passing it down from `UIGeneratorNested`:
 
 ```js
-<NestedSchemaEditor
+<UIGeneratorNested
     showValidity={showValidity}
     storeKeys={storeKeys.push(i)}
     schema={schema.get('items')}

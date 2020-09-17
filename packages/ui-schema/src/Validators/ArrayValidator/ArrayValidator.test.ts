@@ -10,7 +10,7 @@ import {
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils'
 import { validateAdditionalItems } from '@ui-schema/ui-schema/Validators/ArrayValidator/ArrayValidator'
 import { ERROR_WRONG_TYPE } from '@ui-schema/ui-schema/Validators/TypeValidator/TypeValidator'
-import { createValidatorErrors } from '@ui-schema/ui-schema/ValidityReporter/ValidatorErrors'
+import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
 
 describe('validateArrayContent', () => {
     test.each([

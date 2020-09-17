@@ -3,7 +3,7 @@ import {
     FormControl, Grid, FormLabel, IconButton, Typography, Divider,
 } from "@material-ui/core";
 import {Add, Delete, KeyboardArrowUp, KeyboardArrowDown} from "@material-ui/icons";
-import {NestedSchemaEditor, TransTitle, extractValue, memo, storeMoveItem, updateValue} from "@ui-schema/ui-schema";
+import {UIGeneratorNested, TransTitle, extractValue, memo, storeMoveItem, updateValue} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
 import {List, Map} from 'immutable';
 import {AccessTooltipIcon} from "../../Component/Tooltip/Tooltip";
@@ -56,14 +56,14 @@ const GenericList = extractValue(memo(({
                                      * todo: tuple schemas do not support correct view/grid
                                      *   must it really be a nested schema for each entry
                                      */
-                                    schema.get('items').map((item, j) => <NestedSchemaEditor
+                                    schema.get('items').map((item, j) => <UIGeneratorNested
                                         key={j}
                                         showValidity={showValidity}
                                         storeKeys={storeKeys.push(i).push(j)}
                                         schema={item}
                                         noGrid
                                     />).valueSeq() :
-                                    <NestedSchemaEditor
+                                    <UIGeneratorNested
                                         showValidity={showValidity}
                                         storeKeys={storeKeys.push(i)}
                                         schema={schema.get('items')}

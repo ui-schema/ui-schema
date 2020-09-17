@@ -4,7 +4,7 @@ import {
 } from '@ui-schema/ui-schema/Validators/ObjectValidator'
 import { createMap, createOrderedMap } from "@ui-schema/ui-schema/Utils"
 import { ERROR_PATTERN } from "@ui-schema/ui-schema/Validators/PatternValidator/PatternValidator"
-import { createValidatorErrors } from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors"
+import { createValidatorErrors } from "@ui-schema/ui-schema/ValidatorStack/ValidatorErrors"
 
 describe('validateObject', () => {
     test.each([

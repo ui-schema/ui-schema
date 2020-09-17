@@ -1,5 +1,5 @@
 import React from "react";
-import {NestedSchemaEditor, TransTitle, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
+import {UIGeneratorNested, TransTitle, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
 import {List} from 'immutable';
 import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
 import {IconPlus, IconMinus} from "@ui-schema/ds-bootstrap/Component/Icons/Icons";
@@ -27,7 +27,7 @@ const SimpleList = extractValue(memo(({
                 <div
                     key={i}
                     className={classFormGroup.join(' ')}>
-                    <NestedSchemaEditor
+                    <UIGeneratorNested
                         className={classFormControl.join(' ')}
                         showValidity={showValidity}
                         storeKeys={storeKeys.push(i)}

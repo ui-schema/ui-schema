@@ -1,8 +1,8 @@
 import React from 'react'
 import { Translator } from '@ui-schema/ui-schema/Translate/t'
-import { createEmptyStore } from '@ui-schema/ui-schema/EditorStore'
+import { createEmptyStore } from '@ui-schema/ui-schema/UIStore'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap'
-import { SchemaEditorProvider } from '@ui-schema/ui-schema/SchemaEditor/SchemaEditor'
+import { UIProvider } from '@ui-schema/ui-schema/UIGenerator/UIGenerator'
 import { StoreSchemaType, WidgetsBindingBase } from '@ui-schema/ui-schema'
 
 export const MockWidgets: WidgetsBindingBase = {
@@ -26,12 +26,12 @@ export const MockSchemaProvider = (
 ) => {
     const [store, setStore] = React.useState(() => createEmptyStore(schema && schema.get('type')))
 
-    return <SchemaEditorProvider
+    return <UIProvider
         schema={schema}
         store={store}
         onChange={setStore}
         // @ts-ignore
         widgets={widgets}
         t={t}
-    >{children}</SchemaEditorProvider>
+    >{children}</UIProvider>
 }

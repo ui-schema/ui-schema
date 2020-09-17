@@ -2,13 +2,13 @@
 
 Widgets for native HTML text inputs, usable for `string` (single/multiline), `number` types and browser supported formats.
 
-[![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-editor) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui) [![supports Bootstrap Binding](https://img.shields.io/badge/Bootstrap-green?labelColor=3C2B57&color=563D7C&logoColor=ffffff&style=flat-square&logo=bootstrap)](#bootstrap)
+[![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-ui-generator) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui) [![supports Bootstrap Binding](https://img.shields.io/badge/Bootstrap-green?labelColor=3C2B57&color=563D7C&logoColor=ffffff&style=flat-square&logo=bootstrap)](#bootstrap)
 
 - type: `string`, `number`, `integer`
 - formats:
     - `date`
     - `email`
-    - `tel`, must also be validated with `pattern`, as there is no tel-format worldwide specified 
+    - `tel`, must also be validated with `pattern`, as there is no tel-format worldwide specified
 - widget keywords:
     - `Text` for multi-line text
     - `StringIcon` for single-line text with icon
@@ -52,7 +52,7 @@ Supports extra keywords:
     - `variant`
     - `margin`
     - `dense` if `true` applies size `small`
-    - `shrink` to `true` to always have the label up, e.g. native-date may look wrong otherwise in some browsers (use @ui-schema/material-pickers for best date/time support) 
+    - `shrink` to `true` to always have the label up, e.g. native-date may look wrong otherwise in some browsers (use @ui-schema/material-pickers for best date/time support)
 - `formats`
     - supports browser based translations for format mismatch, schema key: `t: 'browser''` (will be moved to another way)
 
@@ -69,9 +69,9 @@ Components:
     - `NumberIconRenderer` supports an icon additionally
 - `StringRenderer` base component used by both others and for `string`
     - `StringIconRenderer` supports an icon additionally
-    
+
 ## TextField Icons
-    
+
 Regarding icons, they are resolved by the `view` keywords `icon`, `iconEnd` and the [translation](/docs/localization) definition.
 
 ```ui-schema

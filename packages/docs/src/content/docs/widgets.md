@@ -4,7 +4,7 @@
 
 This document is about **creating own widgets and design-system bindings** or changing existing ones.
 
-A widget is responsible to render the UI and either display or make the editing of the data possible, it **handles one schema level** and may connect to another NestedSchemaEditor.
+A widget is responsible to render the UI and either display or make the editing of the data possible, it **handles one schema level** and may connect to another UIGeneratorNested.
 
 Through the **modular approach** and easy definition of a new widget, the widget system can be used to create **complex, separated UI components**, where the orchestration can be done **from an external system**, like some backend API.
 
@@ -50,7 +50,7 @@ JSON-Schema is handled mostly by the `pluginStack` for you, focus on the behavio
 
 Each widget gets properties provided by the root schema renderer or added from plugins.
 
-Properties from editor:
+Properties from `WidgetRenderer`:
 
 - `value` : `{*}` Plugins receive for any value, Widgets only for scalar
 - `onChange` : `{function}` store updater function, see [updating utils](/docs/core#store-updating-utils)
@@ -58,7 +58,7 @@ Properties from editor:
 - `ownKey` : `{string|integer}`
 - `schema` : `{Map}` the schema of the current widget
 - `parentSchema` : `{Map}` the schema of the parent widget
-- `level` : `{integer}` how deep in the schema it is, incremented automatically for native-objects, must be done manually when using `NestedSchemaEditor`
+- `level` : `{integer}` how deep in the schema it is, incremented automatically for native-objects, must be done manually when using `UIGeneratorNested`
 - `required` : `{boolean}`, extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `requiredValidator`
 - `valid` : `{boolean}` if this schema level got some error, detected/changed from the pluginStack
 - `showValidity` : `{boolean}` if the errors/success should be visible
@@ -97,7 +97,7 @@ const Widget = ({
 
 ## Create Design-System Binding
 
-Each SchemaEditor receives an `widgets` object containing all HTML components and the plugins that should be used for rendering and validation.
+Each UIGenerator receives an `widgets` object containing all HTML components and the plugins that should be used for rendering and validation.
 
 Create a complete custom binding or only `import` the components you need and optimize your bundle size!
 

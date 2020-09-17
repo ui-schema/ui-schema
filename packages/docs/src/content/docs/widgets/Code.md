@@ -2,14 +2,14 @@
 
 Widgets for code editing, design-system implementation.
 
-[![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-editor) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui)
+[![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-ui-generator) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui)
 
 - type: `string`
 - widget keywords:
     - `Code`
 - `format` keyword is used to select which language
 - todo: multiple languages need to be saved as object/array: content including the selected language
-    
+
 ## Design System
 
 ### Material-UI
@@ -41,7 +41,7 @@ In this example we use the style-load with `lazySingletonStyleTag` to be able to
 ```js
 import React from 'react';
 
-import {SchemaEditor} from "@ui-schema/ui-schema";
+import {UIGenerator} from "@ui-schema/ui-schema";
 import {WidgetCodeProvider} from "@ui-schema/material-code";
 
 import "codemirror/mode/css/css";
@@ -74,7 +74,7 @@ const StyledCodeEditor = props => {
     useStyle(palette.type === 'dark' ? themeDark : themeLight);
 
     return <WidgetCodeProvider theme={palette.type === 'dark' ? 'duotone-dark' : 'duotone-light'}>
-        <SchemaEditor {...props}/>
+        <UIGenerator {...props}/>
     </WidgetCodeProvider>
 }
 

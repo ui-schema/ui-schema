@@ -1,11 +1,11 @@
 import React from "react";
-import {TransTitle, useEditor, beautifyKey, updateValue, extractValue, memo} from "@ui-schema/ui-schema";
+import {TransTitle, useUIMeta, beautifyKey, updateValue, extractValue, memo} from "@ui-schema/ui-schema";
 import {List, Map} from "immutable";
 import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
 
 const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChange, multiple = false, required}) => {
     const enum_val = schema.get('enum');
-    const {t} = useEditor();
+    const {t} = useUIMeta();
 
     if(!enum_val) return null;
     if(!schema) return null;

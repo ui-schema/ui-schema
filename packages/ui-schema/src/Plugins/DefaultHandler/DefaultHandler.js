@@ -1,6 +1,6 @@
 import React from 'react';
-import {NextPluginRenderer} from '../../EditorPluginStack';
-import {updateValue} from '../../EditorStore';
+import {NextPluginRenderer} from '../../PluginStack';
+import {updateValue} from '../../UIStore';
 
 const DefaultValueHandler = ({defaultVal, ...props}) => {
     const storeKeysPrev = React.useRef(undefined);

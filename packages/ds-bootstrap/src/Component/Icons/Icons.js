@@ -1,8 +1,8 @@
 import React from "react";
-import {Trans, useEditor} from "@ui-schema/ui-schema";
+import {Trans, useUIMeta} from "@ui-schema/ui-schema";
 
 const Icon = ({onClick, label, iconName, btnSize}) => {
-    const {t} = useEditor();
+    const {t} = useUIMeta();
 
     React.useEffect(() => {
         window.$('[data-toggle="tooltip"]').tooltip()

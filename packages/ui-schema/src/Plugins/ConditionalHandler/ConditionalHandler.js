@@ -1,12 +1,12 @@
 import React from "react";
 import {Map} from 'immutable';
-import {NextPluginRenderer, NextPluginRendererMemo} from "../../EditorPluginStack";
-import {useSchemaStore} from "../../EditorStore";
+import {NextPluginRenderer, NextPluginRendererMemo} from "../../PluginStack";
+import {useUI} from "../../UIStore";
 import {handleIfElseThen} from "./handleIfElseThen";
 
 const ConditionalRenderer = (props) => {
     let {schema, storeKeys} = props;
-    const {store} = useSchemaStore();
+    const {store} = useUI();
 
     const currentStore = storeKeys.size ? store.getValues().getIn(storeKeys) : store.getValues();
 

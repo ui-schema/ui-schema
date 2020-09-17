@@ -13,7 +13,7 @@ Matches the rendered widget, keywords used:
 - `type` valid types: `string`, `number`, `integer`, `boolean`, `object`, `array`
     - multiple types support ❌
     - full support `null` as type ❌
-- `widget` non-standard JSON-Schema to select a specific UI
+- `widget` non-standard JSON-Schema to select a specific UI widget
 
 ## Universal Keywords
 
@@ -287,8 +287,8 @@ Vocabularies:
 
 ## Schema is Read-Only
 
-The editor doesn't change the schema, currently it is designed as a property that is considered read-only.
+The generator doesn't change the schema, currently it is designed as a property that is considered read-only.
 
-But that's not the whole truth, the schema is manipulated from within the SchemaEditor but the changes are never reflected to the hoisted component.
+But that's not the whole truth, the schema is manipulated from within the UIGenerator but the changes are never reflected to the hoisted component.
 
 As the whole rendering is calculated from props/state for each schema-level on it's own, these rendering mechanics may change the schema for it's own or sub-levels. Through this it is e.g. possible to add dynamic properties in the [DependentHandler](/docs/plugins#dependenthandler).

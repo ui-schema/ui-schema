@@ -2,13 +2,13 @@
 
 Widgets for color picking, design-system implementation.
 
-[![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-editor) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui)
+[![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-ui-generator) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui)
 
 - type: `string`
 - main widget keywords:
     - `Color`
     - `ColorDialog`
-    
+
 ## Design System
 
 ### Material-UI
@@ -33,14 +33,14 @@ npm i --save @ui-schema/material-color
 - 11 themes, up to three different modes:
     - `Color<Name>` uses material-ui textfield and opens the picker on focus
     - `Color<Name>Dialog` uses material-ui textfield and opens the picker on focus as full-page dialog
-    - `Color<Name>Static` shows only the picker the whole time 
+    - `Color<Name>Static` shows only the picker the whole time
 - ChromePicker, default and recommended
-    - widgets: `Color`, `ColorDialog`, `ColorStatic` 
+    - widgets: `Color`, `ColorDialog`, `ColorStatic`
 - SwatchesPicker
     - widgets: `ColorSwatches`
     - supports `view.colors` to select shown colors, or:
     - supports `enum` to restrict colors
-    - todo: support color-groups from schema 
+    - todo: support color-groups from schema
 - CirclePicker
     - widgets: `ColorCircle`, `ColorCircleStatic`
     - supports `view.colors` to select shown colors, or:
@@ -65,5 +65,5 @@ npm i --save @ui-schema/material-color
 - HuePicker
     - widgets: `ColorHue`
 - SketchPicker
-    - widgets: `ColorSketch`, `ColorSketchStatic`, `ColorSketchDialog` 
+    - widgets: `ColorSketch`, `ColorSketchStatic`, `ColorSketchDialog`
     - supports `view.colors` to select shown colors

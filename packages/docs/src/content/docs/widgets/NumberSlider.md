@@ -2,7 +2,7 @@
 
 Widgets for selecting one, two or multiple numbers from a specified range, with specified steps.
 
-[![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-editor) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui)
+[![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-ui-generator) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui)
 
 - type: `number`, `integer`, `array`
 - widget keyword:
@@ -16,7 +16,7 @@ Widgets for selecting one, two or multiple numbers from a specified range, with 
     - `maximum`, `exclusiveMaximum` defines the maximum selectable
     - `enum` or `const` restricts selection to values defined in `enum/const`
 - type `array` gets the number validation keywords from the array keyword `items`
-    - `minItems` controls the initial thumb quantity, `2` default, a minimum of `2` are needed 
+    - `minItems` controls the initial thumb quantity, `2` default, a minimum of `2` are needed
     - `maxItems` controls the maximum thumb quantity, if set controls max thumbs that can be added
         - if the same as `minItems` does not allow adding/removing items
 
@@ -46,12 +46,12 @@ const widgets = {
         - `[1, 2, 4]`, these values now get combined with `view.markslabel` to e.g. `1°C`
     - `view.marksLabel` label for accessibility and marks
         - e.g. `°C` will be added as `15°C`, (space/blank)` cm` as `15 cm`
-    - `view.tooltip` optional, `auto` enables tooltip on hover or `on` for permanent 
+    - `view.tooltip` optional, `auto` enables tooltip on hover or `on` for permanent
     - when restricted with `enum/const`
         - `view.marksLabel` is used also to label the track
         - `view.marks` is ignored
-    - `view.track`:`string|boolean` to control the track highlighting 
+    - `view.track`:`string|boolean` to control the track highlighting
         - `false` the track is turned off
         - `inverted` inverts the tracks and when range set's one initial to the end
     - `view.mt`:`number` for spacing top, e.g. `2` is recommended for multi
-    - `view.mb`:`number` for spacing bottom, e.g. `2` is recommended for multi 
+    - `view.mb`:`number` for spacing bottom, e.g. `2` is recommended for multi

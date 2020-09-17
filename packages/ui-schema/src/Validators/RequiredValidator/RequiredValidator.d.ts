@@ -1,4 +1,4 @@
-import { EditorPluginProps } from "@ui-schema/ui-schema/EditorPlugin"
+import { PluginProps } from "@ui-schema/ui-schema/PluginStack/Plugin"
 import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators"
 import { errors } from "@ui-schema/ui-schema/CommonTypings"
 
@@ -14,9 +14,9 @@ export const ERROR_NOT_SET = 'required-not-set'
 export function checkValueExists(type: string, value: any): boolean
 
 export interface RequiredValidatorType extends ValidatorPlugin {
-    should: ({requiredList, ownKey}: Partial<EditorPluginProps>) => boolean
+    should: ({requiredList, ownKey}: Partial<PluginProps>) => boolean
     validate: (
-        {schema, value, errors, valid}: Partial<EditorPluginProps>
+        {schema, value, errors, valid}: Partial<PluginProps>
     ) => {
         errors: errors
         valid: boolean

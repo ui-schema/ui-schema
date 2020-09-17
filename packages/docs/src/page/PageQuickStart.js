@@ -1,7 +1,7 @@
 import React from "react";
 import {Typography, Box, Grid, Button, Paper,} from "@material-ui/core";
 import {Markdown} from "../component/Markdown";
-import DemoEditor from "../component/Schema/DemoEditor";
+import DemoUIGenerator from "../component/Schema/DemoUIGenerator";
 import {RichCodeEditor} from "../component/RichCodeEditor";
 import {useHistory} from "react-router-dom";
 import {HeadlineMenu} from "@control-ui/docs/es/LinkableHeadline";
@@ -97,11 +97,11 @@ npm i --save @ui-schema/ui-schema immutable @ui-schema/ds-bootstrap bootstrap
 
             <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
                 <Markdown content source={`
-## 2. Create Demo Editor
+## 2. Create Demo Generator
 
-Create a file which serves as demo: \`DemoEditor.js\`
+Create a file which serves as demo: \`DemoGenerator.js\`
 
-Create an empty editor component in the file:
+Create an empty generator component in the file:
 `}/>
 
                 <Grid container>
@@ -110,9 +110,9 @@ Create an empty editor component in the file:
 \`\`\`jsx
 import React from "react";
 
-// Import Schema-Editor
+// Import UI Generator
 import {
-    SchemaEditor,                  // main component
+    UIGenerator,                  // main component
     isInvalid,                     // for validity checking
     createEmptyStore, createStore, // for initial data-store creation
     createMap, createOrderedMap    // for deep immutables
@@ -122,17 +122,15 @@ import {
 const schema = {};
 const values = {};
 
-const Editor = () => {
+export const Generator = () => {
     // here the state will be added
 
     return (
-        <SchemaEditor
+        <UIGenerator
             /* here the props will be added */
         />
     )
 };
-
-export {Editor}
 \`\`\`
 `}/>
                     </Grid>
@@ -143,7 +141,7 @@ export {Editor}
                 <Markdown content source={`
 ## 3. Import Design-System Widgets
 
-Import the widgets for your selected design-system and add them to the SchemaEditor:
+Import the widgets for your selected design-system and add them to the UIGenerator:
 `}/>
 
                 <Grid container>
@@ -164,7 +162,7 @@ import {widgets} from "@ui-schema/ds-bootstrap";
                     <Grid item xs={12}>
                         <Markdown content source={`
 \`\`\`jsx
-<SchemaEditor
+<UIGenerator
     widgets={widgets}
 />
 \`\`\`
@@ -177,7 +175,7 @@ import {widgets} from "@ui-schema/ds-bootstrap";
                 <Markdown content source={`
 ## 4. Create Store State, Add Schema
 
-Each SchemaEditor needs to receive a \`store\` and \`onChange\` to work with the data and have something to save validity and internal values. The store must be an \`EditorStore\`, which is based on a [immutable](https://immutable-js.github.io/immutable-js/) Record.
+Each UIGenerator needs to receive a \`store\` and \`onChange\` to work with the data and have something to save validity and internal values. The store must be an \`UIStore\`, which is based on a [immutable](https://immutable-js.github.io/immutable-js/) Record.
 
 The schema in this example is bundled with the component and not dynamic, also the schema must be immutable. A minimal valid schema is an empty \`object\` schema.
 `}/>
@@ -201,7 +199,7 @@ const Editor = () => {
     // const [store, setStore] = React.useState(() => createEmptyStore(schema.get('type'));
 
     return (
-        <SchemaEditor
+        <UIGenerator
             schema={schema}
 
             store={store}
@@ -246,7 +244,7 @@ const schema = createOrderedMap(${JSON.stringify(demoSchema, null, 2)});
 `}/>
                 </Grid>
                 <Grid item xs={12} md={9} style={{margin: '0 auto'}}>
-                    <DemoEditor activeSchema={demoSchema} id={'qs-demo'}/>
+                    <DemoUIGenerator activeSchema={demoSchema} id={'qs-demo'}/>
                 </Grid>
             </Paper>
 
@@ -269,7 +267,7 @@ const Editor = () => {
 
     return (
         <React.Fragment>
-            <SchemaEditor
+            <UIGenerator
                 schema={schema}
 
                 store={store}
@@ -325,7 +323,7 @@ Test the demo form below, it will send the entered data to [httpbin.org](https:/
 - [Adding custom l10n](/docs/localization)
 - [Creating widgets](/docs/widgets#creating-widgets)
 - [Adding / Overwriting Widgets](/docs/widgets#adding--overwriting-widgets)
-- [Advanced Widgets with NestedSchemaEditor](/docs/core#nestedschemaeditor)
+- [Advanced Widgets with UIGeneratorNested](/docs/core#uigeneratornested)
 `}/>
                     </Grid>
                 </Grid>
@@ -338,7 +336,7 @@ const QuickStartEditor = () => {
     const [sending, setSending] = React.useState(0);
 
     return <React.Fragment>
-        <DemoEditor
+        <DemoUIGenerator
             activeSchema={demoSchema}
             id={'qs-demo-send'}
             onClick={(store) => {

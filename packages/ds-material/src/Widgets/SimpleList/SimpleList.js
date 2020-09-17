@@ -3,7 +3,7 @@ import {
     FormControl, Grid, FormLabel, IconButton
 } from "@material-ui/core";
 import {Add, Remove} from "@material-ui/icons";
-import {NestedSchemaEditor, TransTitle, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
+import {UIGeneratorNested, TransTitle, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
 import {List} from 'immutable';
 import {AccessTooltipIcon} from "../../Component/Tooltip/Tooltip";
@@ -23,7 +23,7 @@ const SimpleList = extractValue(memo(({
             {value ? value.map((val, i) =>
                 <Grid key={i} item xs={12} style={{display: 'flex'}}>
                     <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
-                        <NestedSchemaEditor
+                        <UIGeneratorNested
                             showValidity={showValidity}
                             storeKeys={storeKeys.push(i)}
                             schema={schema.get('items')}

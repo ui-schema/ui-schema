@@ -8,7 +8,7 @@ import {
     Visibility, VisibilityOff,
     FormatSize, FormatShapes, Code, SpaceBar, RestorePage, HorizontalSplit, VerticalSplit
 } from "@material-ui/icons";
-import {isInvalid, createOrderedMap, SchemaEditorProvider, SchemaRootRenderer, createStore, useSchemaStore} from "@ui-schema/ui-schema";
+import {isInvalid, createOrderedMap, UIProvider, UIRootRenderer, createStore, useUI} from "@ui-schema/ui-schema";
 import {widgets} from "@ui-schema/ds-material";
 import {RichCodeEditor, themes} from "../RichCodeEditor";
 import {Markdown} from "../Markdown";
@@ -316,7 +316,7 @@ const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, r
 };
 
 const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme}) => {
-    const {store} = useSchemaStore();
+    const {store} = useUI();
 
     return <RichCodeEditor
         value={Map.isMap(store.getValues()) || List.isList(store.getValues()) ? JSON.stringify(store.valuesToJS(), null, tabSize) : store.valuesToJS()}
@@ -453,7 +453,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
         }
     }, [matchedSchema, changeSchema, activeSchema]);
 
-    return <SchemaEditorProvider
+    return <UIProvider
         schema={schema}
         store={store}
         onChange={setStore}
@@ -580,7 +580,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
                         </Typography>
                     </Paper> :
                     typeof schema === 'string' ? null : <Paper style={{margin: 12, padding: 24}}>
-                        <SchemaRootRenderer/>
+                        <UIRootRenderer/>
 
                         <InvalidLabel invalid={isInvalid(store.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>
                     </Paper>}
@@ -588,7 +588,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
                 <div style={{height: 24, width: 1, flexShrink: 0}}/>
             </main>
         </div>
-    </SchemaEditorProvider>;
+    </UIProvider>;
 };
 
 const Editor = () => {

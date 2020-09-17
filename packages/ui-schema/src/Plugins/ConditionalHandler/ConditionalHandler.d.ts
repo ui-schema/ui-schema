@@ -1,4 +1,4 @@
 import * as React from "react"
-import { EditorPluginProps } from "../../EditorPlugin"
+import { PluginProps } from "../../PluginStack/Plugin"
 
-export function ConditionalHandler<P extends EditorPluginProps>(props: P): React.ReactElement<P>
+export function ConditionalHandler<P extends PluginProps>(props: P): React.ReactElement<P>

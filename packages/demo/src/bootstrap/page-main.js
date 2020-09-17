@@ -3,7 +3,7 @@ import {Dashboard} from './Dashboard';
 import {schemaTestBts, dataDemoMain} from "../schemas/demoBts";
 import {schemaGrid} from "../schemas/demoGrid";
 import {widgets,} from "@ui-schema/ds-bootstrap";
-import {SchemaEditor, isInvalid, createOrderedMap, createStore} from "@ui-schema/ui-schema";
+import {UIGenerator, isInvalid, createOrderedMap, createStore} from "@ui-schema/ui-schema";
 import {browserT} from "../t";
 import {BtsSchemaDebug} from "../component/BtsSchemaDebug";
 import clsx from "clsx";
@@ -11,7 +11,7 @@ import clsx from "clsx";
 const DemoGrid = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap({})));
 
-    return <SchemaEditor
+    return <UIGenerator
         schema={schemaGrid(12)}
         store={store}
         onChange={setStore}
@@ -19,7 +19,7 @@ const DemoGrid = () => {
         t={browserT}
     >
         <BtsSchemaDebug/>
-    </SchemaEditor>
+    </UIGenerator>
 };
 
 const MainStore = () => {
@@ -28,7 +28,7 @@ const MainStore = () => {
     const [schema, setSchema] = React.useState(schemaTestBts);
 
     return <React.Fragment>
-        <SchemaEditor
+        <UIGenerator
             schema={schema}
             store={store}
             onChange={setStore}
@@ -37,7 +37,7 @@ const MainStore = () => {
             t={browserT}
         >
             <BtsSchemaDebug setSchema={setSchema}/>
-        </SchemaEditor>
+        </UIGenerator>
 
         <button className={clsx("btn", "btn-primary", "col-12", "text-uppercase")} onClick={() => setShowValidity(!showValidity)}>validity</button>
         {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}

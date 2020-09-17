@@ -1,13 +1,13 @@
 import React from "react";
-import {NextPluginRenderer, NextPluginRendererMemo} from "../../EditorPluginStack";
+import {NextPluginRenderer, NextPluginRendererMemo} from "../../PluginStack";
 import {validateSchema} from "../../validateSchema";
-import {useSchemaStore} from "../../EditorStore";
+import {useUI} from "../../UIStore";
 import {mergeSchema} from "../../Utils/mergeSchema";
 import {List, Map} from 'immutable';
 
 const DependentRenderer = ({dependencies, dependentSchemas, dependentRequired, ...props}) => {
     let {schema, storeKeys} = props;
-    const {store} = useSchemaStore();
+    const {store} = useUI();
 
     const currentValues = storeKeys.size ? store.getValues().getIn(storeKeys) : store.getValues();
 
@@ -59,9 +59,9 @@ const DependentRenderer = ({dependencies, dependentSchemas, dependentRequired, .
                     // value for dependency exist, so it should be used
                     const currentRequired = schema.get('required') || List();
                     if(List.isList(key_dependencies)) {
-                        schema = schema.setIn('required', currentRequired.concat(key_dependencies));
+                        schema = schema.set('required', currentRequired.concat(key_dependencies));
                     } else {
-                        schema = schema.setIn('required', currentRequired.concat(key_dependentRequired));
+                        schema = schema.set('required', currentRequired.concat(key_dependentRequired));
                     }
                 }
             }

@@ -1,6 +1,6 @@
 import { OrderedMap, List } from 'immutable'
-import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators/ValidatorPlugin"
-import { EditorPluginProps } from "@ui-schema/ui-schema/EditorPlugin"
+import { ValidatorPlugin } from "@ui-schema/ui-schema/ValidatorStack/ValidatorPlugin"
+import { PluginProps } from "@ui-schema/ui-schema/PluginStack/Plugin"
 import { errors } from "@ui-schema/ui-schema/CommonTypings"
 
 export const ERROR_DUPLICATE_ITEMS = 'duplicate-items'
@@ -33,9 +33,9 @@ export function validateContains(schema: OrderedMap<{}, undefined>, value: List<
 export function validateUniqueItems(schema: OrderedMap<{}, undefined>, value: List<any> | any[]): boolean
 
 export interface ArrayValidatorType extends ValidatorPlugin {
-    should: ({schema}: Partial<EditorPluginProps>) => boolean
+    should: ({schema}: Partial<PluginProps>) => boolean
     validate: (
-        {schema, value, errors, valid}: Partial<EditorPluginProps>
+        {schema, value, errors, valid}: Partial<PluginProps>
     ) => {
         errors: errors
         valid: boolean

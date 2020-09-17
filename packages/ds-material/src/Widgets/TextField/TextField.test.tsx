@@ -7,10 +7,21 @@ import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap
 import { StringRenderer } from './TextField'
 import { List } from 'immutable'
 import { createValidatorErrors } from '@ui-schema/ui-schema'
+import { convertStringToNumber } from './TextField'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 
 describe('StringRenderer', () => {
+    it('convertStringToNumber', async () => {
+        console.error = jest.fn()
+        expect(convertStringToNumber('10', 'number')).toBe(10)
+        expect(convertStringToNumber('010', 'number')).toBe(10)
+        expect(convertStringToNumber('0', 'number')).toBe(0)
+        expect(convertStringToNumber(0, 'number')).toBe(0)
+        expect(convertStringToNumber('', 'number')).toBe('')
+        expect(convertStringToNumber('010', 'string')).toBe('010')
+        expect(convertStringToNumber('a010', 'number')).toBe(undefined)
+    })
     it('renders html', async () => {
         const {container} = render(
             <StringRenderer

@@ -1,4 +1,4 @@
 import * as React from "react"
-import { EditorPluginProps } from "@ui-schema/ui-schema/EditorPlugin"
+import { PluginProps } from "@ui-schema/ui-schema/PluginStack/Plugin"
 
-export function ValidityReporter<P extends EditorPluginProps>(props: P): React.ReactElement<P>
+export function ValidityReporter<P extends PluginProps>(props: P): React.ReactElement<P>

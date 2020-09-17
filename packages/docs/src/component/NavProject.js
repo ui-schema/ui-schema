@@ -6,7 +6,7 @@ import {Markdown} from "./Markdown";
 export default () => <React.Fragment>
     <Markdown content source={`
 - [![Travis (.org) branch](https://img.shields.io/travis/ui-schema/ui-schema/master?style=flat-square)](https://travis-ci.org/ui-schema/ui-schema) [![react compatibility](https://img.shields.io/badge/React-%3E%3D16.8-success?style=flat-square&logo=react)](https://reactjs.org/) [![MIT license](https://img.shields.io/npm/l/@ui-schema/ui-schema?style=flat-square)](https://github.com/ui-schema/ui-schema/blob/master/LICENSE)
-- @ui-schema/ui-schema [![npm (@ui-schema/ui-schema)](https://img.shields.io/npm/v/@ui-schema/ui-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ui-schema) 
+- @ui-schema/ui-schema [![npm (@ui-schema/ui-schema)](https://img.shields.io/npm/v/@ui-schema/ui-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ui-schema)
 - @ui-schema/ds-material [![npm (@ui-schema/ds-material)](https://img.shields.io/npm/v/@ui-schema/ds-material?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-material)
 - @ui-schema/ds-bootstrap [![npm (@ui-schema/ds-bootstrap)](https://img.shields.io/npm/v/@ui-schema/ds-bootstrap?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-bootstrap)
 
@@ -32,6 +32,6 @@ export default () => <React.Fragment>
     <hr style={{opacity: 0.1, margin: '4px 0 4px 26px'}}/>
     <Typography component={'p'} variant={'body1'}>
         <span role={'img'} aria-label={'Quick Evaluate'}>🚀</span>{' '}
-        <Link href={'https://codesandbox.io/s/github/ui-schema/demo-cra/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2FSchema%2FDemoEditor.js'}>Example on CodeSandbox</Link>
+        <Link href={'https://codesandbox.io/s/github/ui-schema/demo-cra/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2FSchema%2FDemoUIGenerator.js'}>Example on CodeSandbox</Link>
     </Typography>
 </React.Fragment>;

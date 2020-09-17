@@ -1,5 +1,5 @@
 import { Map } from 'immutable'
-import { StoreKeys } from "@ui-schema/ui-schema/EditorStore"
+import { StoreKeys } from "@ui-schema/ui-schema/UIStore"
 
 /**
  * Checks if the `scope` is valid,

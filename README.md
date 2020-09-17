@@ -35,7 +35,7 @@ JSON Schema form + UI generator for any design system, first-class support for [
 
 [![Fullscreen Demo](https://img.shields.io/badge/Fullscreen%20Demo-green?labelColor=fff&color=1e970c&style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACRUlEQVR4nO3aTYiNUQDG8Z/xWRSFBRZYYSGSZCdFiZ0sFSuTjbJUdqMslGIhlmI3shGRJnZYkQVWZjNZmPIRNfIxr8Xt1JivO/ed95zzXvf917N/nn/3drvnHBoaGhoaGjphIU7iJq7jYNY2iVmCIRST8hDbMvZKxllTx4f8whWsytYuAY/NLCBkFKe1vir/Hc+1FxDyGvvz1IxHJwJC7mJzjrIxKCOgwA9cxIr0laulrICQDziBBamLV8V8BYS8wN7E3SuhKgEFxnEL65MumCdVCgj5jvNYlnBHaWIICBnGsXRTyhFTQMgT7Eg1qFNSCCjwBzewJs2suZNKQMhnrf8fi1OMmwupBYS8xaEE+9qSS0DIfWyJvnIWcgso8BOXsTLy1mmpg4CQjziFvqiLJ1EnASEvsS/m6InUUUDIIDbGm96izgIKjGEAy3tVQMgIDvSygPBp2NrLAgpc7XUB93pdwKVeFvBVhJ/FbhHwBrurHt8NAj7hDBbFGF9nAb9xDatjDQ/UUcAQtsccPZE6CXiPo3HnTqUOAr7hHJZG3jotOQWMa71KWRd95SzkEvAMexLsa0tqASM4rkaXqakEjOGCiP/ry5JCwCA2JdrTMTEFvJLwbK8sMQSMol/i092yVCkgnO931bO6qgQ8kPmGpyzzFfAOh5O3rpCyAr6o2S1vWToVEO751+YoG4NOBDzFziwtI/JI++HDuuCtT1n6zTy8q157laUPd/w7fBy3sSFjr+Qc0TpzH8CuzF0aGhoaGhoayvEXCYka61umCF0AAAAASUVORK5CYII=)](https://hnpux.csb.app/)
 
-[![Run on CodeSandbox](https://img.shields.io/badge/run%20on%20CodeSandbox-blue?labelColor=fff&logoColor=505050&style=for-the-badge&logo=codesandbox)](https://codesandbox.io/s/github/ui-schema/demo-cra/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2FSchema%2FDemoEditor.js)
+[![Run on CodeSandbox](https://img.shields.io/badge/run%20on%20CodeSandbox-blue?labelColor=fff&logoColor=505050&style=for-the-badge&logo=codesandbox)](https://codesandbox.io/s/github/ui-schema/demo-cra/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2FSchema%2FDemoUIGenerator.js)
 
 *[Demo Source](https://github.com/ui-schema/demo-cra)*
 
@@ -63,7 +63,7 @@ JSON Schema keywords are used to validate the data, the UI is created from the d
 - supports code-splitting (with custom widget mappings, lazy-loading widgets)
 - includes helper functions for store handling
 - conditional and combining schemas
-- easy nesting of editor for object/array widgets
+- easy nesting of ui-generator for object/array widgets
 - Typescript definitions for core, validators, JSON Schema and UI Schema
 - **JSON Schema versions** supported: Draft 2019-09 / Draft-08, Draft-07, Draft-06, Draft-04
 
@@ -73,14 +73,14 @@ JSON Schema keywords are used to validate the data, the UI is created from the d
 
 First time? [Take the quick-start](https://ui-schema.bemit.codes/quick-start) or take a look into the [create-react-app UI Schema example](https://github.com/ui-schema/demo-cra).
 
-Example setup of a editor, followed by a simple text widget.
+Example setup of a generator, followed by a simple text widget.
 
 ```js
 import React from 'react';
 
-// Import Schema-Editor
+// Import Schema UI Generator
 import {
-    SchemaEditor, isInvalid, createOrderedMap, createStore,
+    UIGenerator, isInvalid, createOrderedMap, createStore,
 } from '@ui-schema/ui-schema';
 
 // Get the widgets binding for your design-system
@@ -115,16 +115,16 @@ const schemaBase = {
 // or fetch from API
 const data = {};
 
-const Editor = () => {
+export const DemoForm = () => {
     // optional state for display errors/validity
     const [showValidity, setShowValidity] = React.useState(false);
 
-    // needed variables and setters for the SchemaEditor, create wherever you like
+    // needed variables and setters for the UIGenerator, create wherever you like
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(data)));
     const [schema/*, setSchema*/] = React.useState(() => createOrderedMap(schemaBase));
 
     return <React.Fragment>
-        <SchemaEditor
+        <UIGenerator
             schema={schema}
             store={store}
             onChange={setStore}
@@ -141,8 +141,8 @@ const Editor = () => {
              */
             onChange={handler => setStore(data => handler(data))}
         >
-            {/* (optional) add components which use the context of the Editor here */}
-        </SchemaEditor>
+            {/* (optional) add components which use the context of the generator here */}
+        </UIGenerator>
 
         <button
             /* show the validity only at submit (or pass `true` to `showValidity`) */
@@ -153,8 +153,6 @@ const Editor = () => {
         >send!</button>
     </React.Fragment>
 };
-
-export {Editor}
 ```
 
 Easily create new widgets, this is all for a simple text (`type=string`) widget:

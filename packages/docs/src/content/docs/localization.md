@@ -2,7 +2,7 @@
 
 ## Translation
 
-Supplying the `t` prop to a `SchemaEditor` enables dynamic translations and connecting any translation library.
+Supplying the `t` prop to a `UIGenerator` enables dynamic translations and connecting any translation library.
 
 Native HTML inputs can use [native translations](#native-translation) for some validations.
 
@@ -13,19 +13,19 @@ import {relT} from '@ui-schema/ui-schema';
 
 const translate = (text, context, schema) => {
 
-    // locale can be empty or the string of the current locale    
+    // locale can be empty or the string of the current locale
     // for handling the schema keyword `t`
     const schemaT = relT(schema, context, locale);
     if(schemaT) return schemaT;
-   
-    // your custom translator function 
+
+    // your custom translator function
     return translator(text, context, schema)
 };
 
-<SchemaEditor t={translate}/>
-``` 
+<UIGenerator t={translate}/>
+```
 
-- `text` is a string like 
+- `text` is a string like
     - `error.is-required` for error labels
     - `icon.<name>` for icons
     - `widgets.<storeKeys>.title` for widget titles and e.g. `widgets.<storeKeys>.enum.<value>` for enum (e.g. select values)
@@ -42,12 +42,12 @@ const translate = (text, context, schema) => {
     - a `function` that creates a React component
     - as example of valid translations see [immutable as dictionary](#immutable-as-dictionary)
     - falsy value / undefined if e.g. `Trans` `fallback` should be used
-    
-Translating widgets can be done using `const {t} = useEditor();` hook directly, but recommended is the `Trans` component.
+
+Translating widgets can be done using `const {t} = useUIMeta();` hook directly, but recommended is the `Trans` component.
 
 ### Trans Component
- 
-The `Trans` component, accepts `text`:`{string}`, `context`:`{Map|undefined}` and `schema`:`{Map|undefined}`, connects to the `t` function of the parent SchemaEditor.
+
+The `Trans` component, accepts `text`:`{string}`, `context`:`{Map|undefined}` and `schema`:`{Map|undefined}`, connects to the `t` function of the parent UIGenerator.
 
 #### Example Widget Translation
 
@@ -100,7 +100,7 @@ const DemoWidget = ({ownKey, schema, storeKeys,}) => {
         ownKey={ownKey}
     />
 };
-``` 
+```
 
 #### Example Error Translation
 
@@ -165,7 +165,7 @@ UI-Schema includes a very simple, small and powerful **immutable based localizat
 ```jsx harmony
 import React from "react";
 import {
-    t, createMap, SchemaEditor,
+    t, createMap, UIGenerator,
     ERROR_NOT_SET,
 } from "@ui-schema/ui-schema";
 
@@ -175,7 +175,7 @@ const dictionary = createMap({
 
         // usage with string
         [ERROR_NOT_SET]: 'Please fill out this field',
-        
+
         // usage with function that generates the string, using the context
         [ERROR_MULTIPLE_OF]: (context) => `Must be multiple of ${context.get('multipleOf')}`,
 
@@ -192,16 +192,15 @@ const dictionary = createMap({
 //   and can work with the schema `t` keyword
 const tEN = t(dictionary, 'en');
 
-// this editor is using english translations for e.g. error messages
-const LocaleEditor = p =>
-    <SchemaEditor t={tEN} {...p}/>
+// this generator is using english translations for e.g. error messages
+export const LocaleGenerator = p =>
+    <UIGenerator t={tEN} {...p}/>
 
-export {LocaleEditor}
 ```
 
 ### Translation in schema
 
-Keyword `t` is not default JSON-Schema, it is a `object` containing multiple or one language with multiple translation keys, which may be nested. 
+Keyword `t` is not default JSON-Schema, it is a `object` containing multiple or one language with multiple translation keys, which may be nested.
 
 > should work with dynamic properties/values in the future
 

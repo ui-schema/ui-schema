@@ -1,7 +1,7 @@
 import { OrderedMap } from "immutable"
 import { test, expect } from '@jest/globals'
 import { validatePattern, patternValidator, ERROR_PATTERN } from '@ui-schema/ui-schema/Validators/PatternValidator'
-import { createValidatorErrors } from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors"
+import { createValidatorErrors } from "@ui-schema/ui-schema/ValidatorStack/ValidatorErrors"
 
 test('validatePattern', () => {
     expect(validatePattern('string', 'blabla', '^[bla]*$')).toBe(true)

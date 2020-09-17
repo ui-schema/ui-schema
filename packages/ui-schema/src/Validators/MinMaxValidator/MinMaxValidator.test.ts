@@ -5,7 +5,7 @@ import {
 import { createMap, createOrderedMap } from "@ui-schema/ui-schema/Utils"
 import { JsonSchema } from "@ui-schema/ui-schema/JsonSchema"
 import { UISchema } from "@ui-schema/ui-schema/UISchema"
-import { createValidatorErrors } from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors"
+import { createValidatorErrors } from "@ui-schema/ui-schema/ValidatorStack/ValidatorErrors"
 
 describe('validateMinMax', () => {
     type validateMinMaxTest = [

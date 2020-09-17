@@ -2,7 +2,7 @@
 
 Widgets for date, datetime, time selection, design-system implementation.
 
-[![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-editor) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui)
+[![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-ui-generator) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui)
 
 - widget keywords:
     - `Date`
@@ -14,7 +14,7 @@ Widgets for date, datetime, time selection, design-system implementation.
     - `format` date-time format string, controls how the value is displayed
         - is not set defaults to `yyyy-MM-dd` for Date, `yyyy-MM-dd HH:mm` for DateTime and `HH:mm` for Time
     - `formatData` date-time format string, controls how the value is saved, when not set, `format` is used
-    
+
 ## Design System
 
 ### Material-UI
@@ -62,11 +62,11 @@ npm i --save @date-io/luxon@1 luxon
 ```
 
 Wrap the editor some where with the pickers provider and add the widgets:
-    
+
 ```jsx harmony
 import React from 'react';
 
-import {SchemaEditor} from "@ui-schema/ui-schema";
+import {UIGenerator} from "@ui-schema/ui-schema";
 import {widgets} from "@ui-schema/ds-material";
 import {TimePicker, DatePicker, DateTimePicker} from "@ui-schema/material-pickers";
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
@@ -80,9 +80,9 @@ customWidgets.custom = {
     Time: TimePicker,
 };
 
-// Exporting a schema editor that can use the pickers
+// Exporting a ui generator that can use the pickers
 export default (props) => <MuiPickersUtilsProvider utils={LuxonAdapter}>
-    <SchemaEditor
+    <UIGenerator
         widgets={customWidgets}
         {...props}
     />

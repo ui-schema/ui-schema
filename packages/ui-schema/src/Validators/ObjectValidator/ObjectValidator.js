@@ -1,6 +1,6 @@
 import {Map} from "immutable";
 import {validateSchema} from "../../validateSchema/index";
-import {createValidatorErrors} from "@ui-schema/ui-schema/ValidityReporter/ValidatorErrors";
+import {createValidatorErrors} from "@ui-schema/ui-schema/ValidatorStack/ValidatorErrors";
 
 export const ERROR_ADDITIONAL_PROPERTIES = 'additional-properties';
 

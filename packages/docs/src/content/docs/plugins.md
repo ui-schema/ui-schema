@@ -16,7 +16,7 @@ There are two types of plugins: Schema Plugins and Validation Plugins.
 Plugins that work schema-driven are handling the schema in different ways, these are not used for validation but for creating functionality around the schema - which may influence the validations.
 
 ```typescript jsx
-import { EditorPluginProps, EditorPluginType } from "@ui-schema/ui-schema/EditorPlugin"
+import { PluginProps, PluginType } from "@ui-schema/ui-schema/PluginStack/Plugin"
 ```
 
 | Plugin                                              | Package              | Handles              | Added Props | Status |
@@ -48,7 +48,7 @@ Validation plugins also work with the schema, but are only used for validation o
 | ObjectValidator      | @ui-schema/ui-schema |                      | `type:object`         | ... | ❌ |
 | requiredValidator    | @ui-schema/ui-schema | checkValueExists     | keywords `type:object`, `required` | `valid`, `errors`, `required` | ✔ |
 
-- sub-schema validation/array validation is done by `validateSchema` 
+- sub-schema validation/array validation is done by `validateSchema`
     - (todo: new override-prop/more docs)
 
 Using default validators:
@@ -70,7 +70,7 @@ const widgets = {
 };
 
 export {widgets};
-``` 
+```
 
 ## Plugin List
 
@@ -153,7 +153,7 @@ typeErrors.forEach(errorContext => {
 
 let tmpError = createValidatorErrors() // create an empty Record
 tmpError.addErrors(errors) // add the errors of e.g. another validation function to the actual errors
-``` 
+```
 
 #### validateSchema
 
@@ -233,7 +233,7 @@ let schema = {
             oneOf: [
                 // oneOf supports multiple sub-schema, the schema that matches first is used
                 {
-                    // do nothing when `usa` is selected 
+                    // do nothing when `usa` is selected
                     properties: {
                         country: {
                             const: "usa"
@@ -514,7 +514,7 @@ import { CombiningHandler } from '@ui-schema/ui-schema/Plugins/CombiningHandler'
 Combining schemas from within one schema with:
 
 - `definition` ❌
-- `$id` ❌ 
+- `$id` ❌
 - `$ref` ❌
 - `allOf`
     - all defined schemas are merged together
@@ -699,7 +699,7 @@ Example with multiple `if`, nested `allOf`:
 
 ### CombiningNetworkHandler
 
-> ❌ todo: implementation 
+> ❌ todo: implementation
 
 Combining schemas from external addressed by using `$id` and `$ref`, [specification](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property)
 
@@ -712,12 +712,12 @@ A validator plugin is a JS-Object which contains multiple functions that can be 
 Each function receives the props the actual component receives, `noValidate` and `validate` return object is shallow-merged into the current props. Adding e.g. new properties to the actual widget.
 
 - `should`: optional checker if the `validate` function should do something
-- `noValidate`: gets run when it should not be validated, must return object 
-- `validate`: only run when should validate, handles the actual validation, must return object 
+- `noValidate`: gets run when it should not be validated, must return object
+- `validate`: only run when should validate, handles the actual validation, must return object
 
 ```js
 const SomeValidator = {
-    should: (props) => {       
+    should: (props) => {
         return shouldValidate ? true : false;
     },
     noValidate: (props) => ({newProp: false}),
@@ -759,10 +759,10 @@ export {NewPlugin}
 - `{current, ...props}` prop signature of each plugin
 - `current` index/current position in stack
 - `props` are the props which are getting pushed to the `Widget`
-- recommended: use `<NextPluginRenderer {...props} newProp={false}/>` 
+- recommended: use `<NextPluginRenderer {...props} newProp={false}/>`
     - automatically render the plugins nested
     - `newProp` is available in the widget and the next plugins
-    
+
 See also:
 - [how to add custom plugins to the binding](/docs/widgets#adding--overwriting-widgets).
-- [EditorStore hooks, HOCs and utils](/docs/core#editorstore) can be used to access, udpate, delete, move any data, keep [performance](/docs/performance) in mind! 
+- [UIStore hooks, HOCs and utils](/docs/core#uistore) can be used to access, udpate, delete, move any data, keep [performance](/docs/performance) in mind!

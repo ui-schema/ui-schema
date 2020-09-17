@@ -12,7 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import {Button} from '@material-ui/core';
 import {widgets} from '@ui-schema/ds-material';
-import {SchemaEditor, isInvalid, createOrderedMap, createMap, createStore, createEmptyStore} from '@ui-schema/ui-schema';
+import {UIGenerator, isInvalid, createOrderedMap, createMap, createStore, createEmptyStore} from '@ui-schema/ui-schema';
 import {MuiSchemaDebug} from './component/MuiSchemaDebug';
 import {browserT} from '../t';
 import {schemaLists} from '../schemas/demoLists';
@@ -28,7 +28,7 @@ const MainStore = () => {
     const [schema, setSchema] = React.useState(() => createOrderedMap(schemaDemoMain));
 
     return <React.Fragment>
-        <SchemaEditor
+        <UIGenerator
             schema={schema}
             store={store}
             onChange={setStore}
@@ -37,7 +37,7 @@ const MainStore = () => {
             t={browserT}
         >
             <MuiSchemaDebug setSchema={setSchema}/>
-        </SchemaEditor>
+        </UIGenerator>
 
         <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
         {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
@@ -50,7 +50,7 @@ const DemoUser = () => {
 
     return <Grid container spacing={3} justify={'center'}>
         <Grid item xs={12} md={6}>
-            <SchemaEditor
+            <UIGenerator
                 schema={schemaUser}
                 store={store}
                 onChange={setStore}
@@ -58,7 +58,7 @@ const DemoUser = () => {
                 t={browserT}
             >
                 <MuiSchemaDebug/>
-            </SchemaEditor>
+            </UIGenerator>
         </Grid>
     </Grid>
 };
