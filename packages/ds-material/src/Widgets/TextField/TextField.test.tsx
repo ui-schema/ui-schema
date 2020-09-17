@@ -24,9 +24,9 @@ describe('StringRenderer', () => {
     })
     it('renders html', async () => {
         const {container} = render(
+            // @ts-ignore
             <StringRenderer
-                schema={createOrderedMap()}
-                // @ts-ignore
+                schema={createOrderedMap({})}
                 storeKeys={List()}
                 valid={false}
                 showValidity={false}
@@ -42,9 +42,9 @@ describe('StringRenderer', () => {
 
     it('renders html error', async () => {
         const {container} = render(
+            // @ts-ignore
             <StringRenderer
-                schema={createOrderedMap()}
-                // @ts-ignore
+                schema={createOrderedMap({})}
                 storeKeys={List()}
                 valid={false}
                 showValidity

@@ -9,7 +9,8 @@ packages.forEach(pkg => {
         '<rootDir>/' + pkg + '/tests/**/*.(test|spec).(js|ts|tsx)',
     ])
     testMatchesLint.push(...[
-        '<rootDir>/' + pkg + '/src/**/*.(test|spec|d).(js|ts|tsx)',
+        '<rootDir>/' + pkg + '/src/**/*.(js|ts|tsx)',
+        // '<rootDir>/' + pkg + '/src/**/*.(test|spec|d).(js|ts|tsx)',
         '<rootDir>/' + pkg + '/tests/**/*.(test|spec|d).(js|ts|tsx)',
     ])
 })

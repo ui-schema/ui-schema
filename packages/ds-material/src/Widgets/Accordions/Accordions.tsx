@@ -18,26 +18,34 @@ export const AccordionsRenderer = (
     const uid = useUID()
     const properties = schema.get('properties')
 
-    return properties ? properties.map((childSchema: StoreSchemaType, childKey: ownKey) =>
-        <Accordion key={childKey} style={{width: '100%'}}>
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon/>}
-                id={'uis-' + uid}
-            >
-                <Typography>
-                    <TransTitle schema={childSchema} storeKeys={storeKeys.push(childKey)} ownKey={childKey}/>
-                </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-                <PluginStack
-                    {...props}
-                    schema={childSchema} parentSchema={schema}
-                    storeKeys={storeKeys.push(childKey)} level={level + 1}
-                />
-                <ValidityHelperText
-                    errors={errors} showValidity={showValidity} schema={schema}
-                />
-            </AccordionDetails>
-        </Accordion>
-    ).valueSeq() : null
+    // todo: without the fragment, typings won't be correct
+    return <>
+        {properties ?
+            // @ts-ignore
+            properties.map((childSchema: StoreSchemaType, childKey: ownKey): React.ReactElement =>
+                <Accordion key={childKey} style={{width: '100%'}}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon/>}
+                        id={'uis-' + uid}
+                    >
+                        <Typography>
+                            <TransTitle schema={childSchema} storeKeys={storeKeys.push(childKey)} ownKey={childKey}/>
+                        </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <PluginStack
+                            {...props}
+                            schema={childSchema} parentSchema={schema}
+                            storeKeys={storeKeys.push(childKey)} level={level + 1}
+                        />
+                        <ValidityHelperText
+                            errors={errors} showValidity={showValidity} schema={schema}
+                        />
+                    </AccordionDetails>
+                </Accordion>
+            )
+                .valueSeq()
+                .toArray()
+            : null}
+    </>
 }

@@ -1,4 +1,4 @@
-import { List, Map, Record } from "immutable/dist/immutable-nonambient"
+import { List, Map, Record } from "immutable"
 
 export interface ValidatorErrors {
     errCount: number

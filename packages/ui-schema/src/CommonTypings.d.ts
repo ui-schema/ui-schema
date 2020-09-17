@@ -1,17 +1,34 @@
-import { List, OrderedMap } from 'immutable/dist/immutable-nonambient'
+import { Map, List, OrderedMap } from 'immutable'
 import { ValidatorErrorsType } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
-import { JsonSchema, JsonSchemaKeys, JsonSchemaKeyValue } from '@ui-schema/ui-schema/JsonSchema'
+// import { JsonSchema, JsonSchemaKeys, JsonSchemaKeyValue } from '@ui-schema/ui-schema/JsonSchema'
 
 export type showValidity = boolean
 export type errors = ValidatorErrorsType
 export type required = boolean
 export type valid = boolean
 
+
+export type StoreSchemaType = OrderedMap<string, StoreSchemaType | string | number | boolean | null | List<any> | Map<any, any> | any[]>
+
+//export type StoreSchemaType = OrderedMapTyping<string, StoreSchemaType | string>
+
+/*export interface StoreSchemaType extends OrderedMapTyping<string, StoreSchemaType | string> {
+    get<K extends JsonSchemaKeys>(key: K): {
+        properties: StoreSchemaType
+    }
+}*/
+
+/*export interface StoreSchemaType extends OrderedMapTyping<string, StoreSchemaType> {
+    toJS<K>(): K[]
+    // toJS(): Array<any>;
+}*/
+
+/*
 export interface StoreSchemaTypeValue {
     items: StoreSchemaType | List<StoreSchemaType>
 }
 
-export interface StoreSchemaType extends OrderedMap {
+export interface StoreSchemaType extends OrderedMap<string, {}> {
     toJS(): JsonSchema
 
     has<K extends JsonSchemaKeys>(key: K): boolean
@@ -47,3 +64,4 @@ export interface StoreSchemaType extends OrderedMap {
 
     updateIn<K extends JsonSchemaKeys>(keyPath: Iterable<K>, updater: (value: any) => any): this
 }
+*/

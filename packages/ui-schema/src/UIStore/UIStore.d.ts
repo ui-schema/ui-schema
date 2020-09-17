@@ -1,5 +1,5 @@
 import React from 'react'
-import { Record, OrderedMap, Map, List } from 'immutable/dist/immutable-nonambient'
+import { Record, OrderedMap, Map, List } from 'immutable'
 import { Translator } from "../Translate/t"
 import { StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
 import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
