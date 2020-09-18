@@ -1,6 +1,5 @@
 import React from "react";
 import {TransTitle, Trans, beautifyKey, updateValue} from "@ui-schema/ui-schema";
-import {unstable_trace as trace} from "scheduler/tracing";
 import {useUID} from "react-uid";
 import {List, Map} from "immutable";
 import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
@@ -17,9 +16,10 @@ const RadioInput = ({classForm, enumName, classLabel, required, classFormControl
             type="radio"
             className={classFormControl.join(' ')}
             checked={enumName === value}
-            onChange={() => trace("switch onchange", performance.now(), () => {
-                onChange(updateValue(storeKeys, enumName, required, schema.get('type')));
-            })}/>
+            onChange={() =>
+                onChange(updateValue(storeKeys, enumName, required, schema.get('type')))
+            }
+        />
         <label
             className={classLabel.join(' ')}
             htmlFor={'uis-' + uid}

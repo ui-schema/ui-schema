@@ -1,5 +1,4 @@
 import React from "react";
-import {unstable_trace as trace} from "scheduler/tracing";
 import {TransTitle, updateValue} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "@ui-schema/ds-material/Component";
 
@@ -23,9 +22,9 @@ const BoolRenderer = ({ownKey, showValidity, required, errors, value, storeKeys,
             type="checkbox" className={classFormControl.join(' ')} id={ownKey}
             checked={currentChecked}
             required={required}
-            onChange={() => trace("switch onchange", performance.now(), () => {
-                onChange(updateValue(storeKeys, !currentChecked, required, schema.get('type')));
-            })}
+            onChange={() =>
+                onChange(updateValue(storeKeys, !currentChecked, required, schema.get('type')))
+            }
         />
         <label className={classLabel.join(' ')} htmlFor={ownKey}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>{(required ? ' *' : '')}</label>
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>

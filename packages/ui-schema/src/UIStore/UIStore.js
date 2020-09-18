@@ -114,7 +114,7 @@ export const prependKey = (storeKeys, key) =>
         storeKeys.splice(0, 0, key);
 
 const shouldHandleRequired = (value, required, type) => {
-    if(!required) return false
+    if(!required && type !== 'number') return false
 
     switch(type) {
         case 'string':

@@ -172,7 +172,7 @@ const TestUIRenderer = (props: {
                 },
             },
         }],
-        dependencies: {
+        dependentSchemas: {
             demo_number: {
                 properties: {
                     demo_string: {

@@ -1,60 +1,5 @@
 import {createOrderedMap} from "@ui-schema/ui-schema";
 
-const schemaWDep = createOrderedMap({
-    type: "object",
-    properties: {
-        country: {
-            type: "string",
-            widget: 'Select',
-            enum: [
-                "usa",
-                "canada",
-                "eu"
-            ],
-            default: "eu"
-        }
-    },
-    required: [
-        "country"
-    ],
-    dependencies: {
-        "country": {
-            oneOf: [
-                {
-                    properties: {
-                        "country": {
-                            const: "usa"
-                        }
-                    }
-                },
-                {
-                    properties: {
-                        "country": {
-                            const: "canada"
-                        },
-                        "maple_trees": {
-                            type: "number"
-                        }
-                    }
-                },
-                {
-                    properties: {
-                        "country": {
-                            const: "eu"
-                        },
-                        "privacy": {
-                            type: "boolean"
-                        }
-                    },
-                    required: [
-                        "privacy"
-                    ]
-                }
-            ]
-        }
-    }
-});
-
 const schemaWDep1 = createOrderedMap({
     "type": "object",
 
@@ -114,4 +59,4 @@ const schemaWDep2 = createOrderedMap({
     }
 });
 
-export {schemaWDep, schemaWDep1, schemaWDep2}
+export {schemaWDep1, schemaWDep2}

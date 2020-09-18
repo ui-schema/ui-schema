@@ -231,7 +231,6 @@ Validators for latest version are used by default, incompatible changes are solv
 | core |                  | `unevaluatedProperties` | ❌ |
 | core |                  | `propertyNames` | ✅ |
 | validation, till draft-07 |            | `dependencies` | ✅ |
-| [non-standard](https://react-jsonschema-form.readthedocs.io/en/latest/usage/dependencies/#dynamic) |            | `dependencies.oneOf` | ✅ |
 | core, from 2019-09 |            | `dependentSchemas` | ✅ |
 | core, from 2019-09 |            | `dependentRequired` | ✅ |
 | core |            | `if` | ✅ |

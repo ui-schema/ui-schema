@@ -1,8 +1,7 @@
-import React from "react";
-import {NextPluginRenderer, NextPluginRendererMemo} from "../../PluginStack";
-import {validateSchema} from "../../validateSchema";
-import {useUI} from "../../UIStore";
-import {mergeSchema} from "../../Utils/mergeSchema";
+import React from 'react';
+import {NextPluginRenderer, NextPluginRendererMemo} from '../../PluginStack';
+import {useUI} from '../../UIStore';
+import {mergeSchema} from '../../Utils/mergeSchema';
 import {List, Map} from 'immutable';
 
 const DependentRenderer = ({dependencies, dependentSchemas, dependentRequired, ...props}) => {
@@ -22,47 +21,25 @@ const DependentRenderer = ({dependencies, dependentSchemas, dependentRequired, .
         //   what to remove?
         //   what to keep? when keeping e.g. `const` it could destroy `enum`s
 
-        if(key_dependencies && key_dependencies.get('oneOf')) {
-            const oneOf = key_dependencies.get('oneOf');
-            for(let nestedSchema of oneOf) {
-                const ownValidation = nestedSchema.getIn(['properties', key]);
-
-                // todo: how to behave when self value is not defined in it's own `oneOf` dependency?
-                if(ownValidation) {
-                    if(
-                        !validateSchema(
-                            ownValidation.set('type', schema.getIn(['properties', key, 'type'])),
-                            currentValues.get(key)
-                        ).hasError()
-                    ) {
-                        // no errors in schema found, this should be rendered now dynamically
-
-                        nestedSchema = nestedSchema.deleteIn(['properties', key]);
-                        schema = mergeSchema(schema, nestedSchema);
-                    }
+        // "if property is present", must not use "if correct type"
+        if(typeof currentValues.get(key) !== 'undefined') {
+            if(Map.isMap(key_dependencies) || Map.isMap(key_dependentSchemas)) {
+                // schema-dependencies
+                // value for dependency exist, so it should be used
+                if(Map.isMap(key_dependencies)) {
+                    schema = mergeSchema(schema, key_dependencies);
+                } else {
+                    schema = mergeSchema(schema, key_dependentSchemas);
                 }
             }
-        } else {
-            // "if property is present", must not use "if correct type"
-            if(typeof currentValues.get(key) !== 'undefined') {
-                if(Map.isMap(key_dependencies) || Map.isMap(key_dependentSchemas)) {
-                    // schema-dependencies
-                    // value for dependency exist, so it should be used
-                    if(Map.isMap(key_dependencies)) {
-                        schema = mergeSchema(schema, key_dependencies);
-                    } else {
-                        schema = mergeSchema(schema, key_dependentSchemas);
-                    }
-                }
-                if(List.isList(key_dependencies) || List.isList(key_dependentRequired)) {
-                    // property-dependencies
-                    // value for dependency exist, so it should be used
-                    const currentRequired = schema.get('required') || List();
-                    if(List.isList(key_dependencies)) {
-                        schema = schema.set('required', currentRequired.concat(key_dependencies));
-                    } else {
-                        schema = schema.set('required', currentRequired.concat(key_dependentRequired));
-                    }
+            if(List.isList(key_dependencies) || List.isList(key_dependentRequired)) {
+                // property-dependencies
+                // value for dependency exist, so it should be used
+                const currentRequired = schema.get('required') || List();
+                if(List.isList(key_dependencies)) {
+                    schema = schema.set('required', currentRequired.concat(key_dependencies));
+                } else {
+                    schema = schema.set('required', currentRequired.concat(key_dependentRequired));
                 }
             }
         }

@@ -6,7 +6,6 @@ import Box from "@material-ui/core/Box";
 import Slider from "@material-ui/core/Slider";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import {unstable_trace as trace} from "scheduler/tracing";
 import {TransTitle, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
 import {AccessTooltipIcon} from "../../Component/Tooltip/Tooltip";
@@ -85,7 +84,7 @@ const NumberSliderRenderer = ({
                 value={(schema.get('type') === 'array' ?
                     value && value.size ? value.toJS() : defaultVal :
                     typeof value === 'number' ? value : defaultVal)}
-                onChange={(e, value) => trace("numberslider onchange", performance.now(), () => {
+                onChange={(e, value) => {
                     if(schema.get('type') === 'array') {
                         onChange(updateValue(storeKeys, List(value), required, schema.get('type')));
                     } else {
@@ -95,7 +94,7 @@ const NumberSliderRenderer = ({
                         }
                         onChange(updateValue(storeKeys, value * 1, required, schema.get('type')));
                     }
-                })}
+                }}
             />
             {hasMulti ? <IconButton
                 size={'small'} disabled={!canAdd} style={{margin: 'auto 6px'}}

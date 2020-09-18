@@ -1,5 +1,4 @@
 import React from "react";
-import {unstable_trace as trace} from "scheduler/tracing";
 import {TransTitle, updateValue} from "@ui-schema/ui-schema";
 import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
 import {useUID} from "react-uid";
@@ -30,7 +29,7 @@ const StringRenderer = ({ownKey, schema, value, multiline = false, onChange, sto
             required={required}
             rows={rows}
             value={typeof value !== 'undefined' ? value : ''}
-            onChange={(e) => trace("textfield onchange", performance.now(), () => {
+            onChange={(e) => {
                 const value = e.target.value;
                 const target = e.target;
                 if(type === 'number') {
@@ -42,7 +41,8 @@ const StringRenderer = ({ownKey, schema, value, multiline = false, onChange, sto
                 } else {
                     onChange(updateValue(storeKeys, value, required, type || schema.get('type')));
                 }
-            })}/>
+            }}
+        />
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </div>;
 };

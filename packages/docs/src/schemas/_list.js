@@ -29,7 +29,7 @@ This example illustrates a small schema.
 Including native-objects and native-types.
 
 - native-objects are great for nesting/grouping
-- each can receive it's own [view](/docs/schema#view-keyword) settings to build responsive grids    
+- each can receive it's own [view](/docs/schema#view-keyword) settings to build responsive grids
 - specify \`type\` and add other keywords which may influence the behaviour
 
 **Try out** the \`seats\` field only allows a \`maximum\` of 5 seats, uses a \`default\` and a \`minimum\`
@@ -45,9 +45,9 @@ A stepper is a widget that renders a sub-schema after another, it is only possib
 - the stepper controls it's own \`showValidity\`, this overwrites an existing \`false\` to \`true\`
   - this highlights only the invalid of the stepper, not the containing schema
   - if the containing schema should display validity, the stepper will do it also
-  - it reset's it's own \`showValidity\` on switching steps 
+  - it reset's it's own \`showValidity\` on switching steps
 
-Custom widgets like steppers are defined per [design-system](/docs/overview#design-systems) 
+Custom widgets like steppers are defined per [design-system](/docs/overview#design-systems)
 `],
     ['Combination Simple', schemaCombining, dataCombining, `
 # Combining Example Simple
@@ -56,7 +56,7 @@ Combining sub-schemas is possible with [allOf](/docs/plugins#combininghandler), 
 
 Each defined sub-schema is [merged](/docs/core#mergeschema) together, dynamically creating the schema for the current schema-level.
 
-- \`allOf\` is an \`array\` of any valid schemas 
+- \`allOf\` is an \`array\` of any valid schemas
 - nesting of \`allOf\` is possible
 - combined into the schema of the current level, if one exists
 - [conditional](/examples/Conditional-Simple) sub-schemas are possible
@@ -101,11 +101,11 @@ A conditional schema enables on-the-fly schema changing based on schema-validati
     ['Conditional Multiple', schemaConditionalAllOf, dataConditionalAllOf, `
 # Conditional Multiple
 
-Define multiple conditional schemas in an \`allOf\`.  
+Define multiple conditional schemas in an \`allOf\`.
 
 - each defined \`if/else/then\` get's evaluated separately against the current data.
 - if there is a unconditional part in the conditional schema, it is combined normally
-- see also [simple condition example](/examples/Conditional-Simple) 
+- see also [simple condition example](/examples/Conditional-Simple)
 
 **Try out** changing the \`country\`, a new \`number\` field is applied for \`canada\`, for \`de\` the privacy toggle is made required, for \`usa\` a text-field is applied
 `],
@@ -127,17 +127,6 @@ When the property value changes to \`true\` the dependency is applied.
 
 **Try out** toggling the switches applies a sub-schema with a text field, number field, or makes - if it exists - the number field required
 `],
-    /*    ['Dependencies oneOf', schemaDependenciesBooleans, dataDependenciesBooleans, `
-    This not JSON-Schema standard way enables a property-based switch-case behaviour.
-
-    Define a dependency for the property which's value should be checked, add 'oneOf' with multiple sub-schemas.
-
-    Define the dependency property also in this sub-schema, this part of the schema is not merged into the actual schema.
-
-    - if the dependency validates against one of the sub-schemas, this sub-schema is applied
-    - if the first one matches, the others are ignored
-    - if the first and second are invalid, and the third is valid, the third is applied, etc.
-    `],*/
 ];
 
 export {schemas}

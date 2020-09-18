@@ -4,12 +4,12 @@ import {ObjectRenderer} from '@ui-schema/ui-schema/ObjectRenderer';
 const NoWidget = ({scope, matching}) => <>missing-{scope}-{matching}</>;
 
 export const WidgetRenderer = ({
-                                        value,
-                                        // as we want to extract `requiredList` from the props passed to the final widget
-                                        // eslint-disable-next-line no-unused-vars
-                                        requiredList,
-                                        ...props
-                                    }) => {
+                                   value,
+                                   // as we want to extract `requiredList` from the props passed to the final widget
+                                   // eslint-disable-next-line no-unused-vars
+                                   requiredList,
+                                   ...props
+                               }) => {
     const {schema, widgets} = props;
     const type = schema.get('type');
     const widget_name = schema.get('widget');
@@ -22,6 +22,7 @@ export const WidgetRenderer = ({
             Widget = widgets.custom[widget_name];
         } else {
             Widget = () => <NoWidget scope={'custom'} matching={widget_name}/>;
+            Widget.displayName = 'NoWidgetCustom'
         }
     } else if(type && widgets.types) {
         if(type === 'object') {
@@ -30,6 +31,7 @@ export const WidgetRenderer = ({
             Widget = widgets.types[type];
         } else {
             Widget = () => <NoWidget scope={'type'} matching={type}/>;
+            Widget.displayName = 'NoWidgetType'
         }
     }
 

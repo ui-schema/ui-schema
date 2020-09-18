@@ -1,9 +1,10 @@
 import React from 'react';
+import {unstable_trace as trace} from 'scheduler/tracing';
 import AppTheme from './layout/AppTheme';
 import Dashboard from './dashboard/Dashboard';
 import {schemaWCombining} from '../schemas/demoCombining';
 import {schemaWConditional, schemaWConditional1, schemaWConditional2} from '../schemas/demoConditional';
-import {schemaWDep, schemaWDep1, schemaWDep2} from '../schemas/demoDependencies';
+import {schemaWDep1, schemaWDep2} from '../schemas/demoDependencies';
 import {dataDemoMain, schemaDemoMain, schemaUser} from '../schemas/demoMain';
 import {schemaDemoReferencing} from '../schemas/demoReferencing';
 import {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect} from '../schemas/demoSimples';
@@ -27,11 +28,20 @@ const MainStore = () => {
     const [store, setStore] = React.useState(() => createStore(createMap(dataDemoMain)));
     const [schema, setSchema] = React.useState(() => createOrderedMap(schemaDemoMain));
 
+    const onChange = React.useCallback(store =>
+        // todo: the interactions from `trace` are not visible in dev tools
+            trace('onchange', performance.now(), () => {
+                console.log('onChange')
+                return setStore(store)
+            }),
+        [setStore],
+    )
+
     return <React.Fragment>
         <UIGenerator
             schema={schema}
             store={store}
-            onChange={setStore}
+            onChange={onChange}
             widgets={widgets}
             showValidity={showValidity}
             t={browserT}
@@ -92,9 +102,6 @@ const Main = ({classes = {}}) => {
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer id={'schemaWConditional2'} schema={schemaWConditional2} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
-        </Grid>
-        <Grid item xs={12}>
-            <DummyRenderer id={'schemaWDep'} schema={schemaWDep} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer id={'schemaWDep1'} schema={schemaWDep1} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
