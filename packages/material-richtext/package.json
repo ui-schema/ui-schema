@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-richtext",
-    "version": "0.1.0-rc",
+    "version": "0.1.0-rc1",
     "description": "Rich-Text Input for UI-Schema with Material-UI",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -42,8 +42,8 @@
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
         "@types/draft-js": "^0.10.44",
-        "@ui-schema/ds-material": "^0.1.0-rc",
-        "@ui-schema/ui-schema": "^0.1.0-rc",
+        "@ui-schema/ds-material": "^0.1.0-rc1",
+        "@ui-schema/ui-schema": "^0.1.0-rc1",
         "draft-js": "~0.11.4",
         "draft-js-plugins-editor": "~3.0.0",
         "immutable": "^4.0.0-rc.12",

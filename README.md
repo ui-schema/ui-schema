@@ -50,24 +50,40 @@ JSON Schema keywords are used to validate the data, the UI is created from the d
 ## Features
 
 - add any design-system and custom widget
-- translation of widgets
+    - easily create isolated and atomic widgets
+    - customize design system behaviour with e.g. widget compositions
+    - easy binding of own design systems
+- flexible translation of widgets
     - with any library
     - (optional) integrated translation library
-    - include translation in schema
+    - supports translations in schema
     - single or multi-language
+    - for labels, titles, errors, icons...
 - modular, extensible and slim core
-    - add own validator plugins
-    - add own schema-driven plugins
+    - add own validators
+    - add own plugins
     - use what you need
 - performance optimized, only updates HTML which must re-render, perfect for big schemas
-- supports code-splitting (with custom widget mappings, lazy-loading widgets)
-- includes helper functions for store handling
-- conditional and combining schemas
+- code-splitting, with custom widget mappings / lazy-loading widgets
+- includes helper functions for store and immutable handling
 - easy nesting of ui-generator for object/array widgets
+- handle the store updates from where ever wanted, with [#63](https://github.com/ui-schema/ui-schema/issues/63) even more customizable and interoperable
+- extensive documentations of core, widgets and use case examples
 - Typescript definitions for core, validators, JSON Schema and UI Schema
+- complex conditionals schemas
+- definitions, (recursion) references in schemas
+- JSON Schema extension: UI Schema, change design and even behaviour of widgets
 - **JSON Schema versions** supported: Draft 2019-09 / Draft-08, Draft-07, Draft-06, Draft-04
 
+> Professional service & support available: request by [issue](https://github.com/ui-schema/ui-schema/issues/new/choose) or [email](mailto:project@bemit.codes?subject=Support%20Request%20UI%20Schema&body=Please%20send%20us%20more%20details%20about%20your%20project%2C%20issues%20or%20feedback%21%0D%0A%0D%0AWe%20will%20reply%20as%20soon%20as%20possible%20and%20propose%20an%20individual%20offer.%0D%0A%0D%0AYour%20request%20is%20treated%20confidential%2C%20you%20wish%20a%20non-disclosure%20agreement%3F%20Our%20privacy%20policy%20in%20german%3A%20bemit.eu%2Fdatenschutz%0D%0A%0D%0A-%20do%20not%20change%20the%20email%20subject%20-%0D%0A%0D%0A%0D%0A)
+
 *[Design-System and Widgets Overview](https://ui-schema.bemit.codes/docs/overview)*
+
+## Versions
+
+For updates see [github release notes](https://github.com/ui-schema/ui-schema/releases).
+
+This project adheres to [semver](https://semver.org/), until `1.0.0` and beginning with `0.1.0`: all `0.x.0` releases are like MAJOR releases and all `0.0.x` like MINOR or PATCH.
 
 ## Basic Example
 
@@ -184,7 +200,7 @@ const Widget = ({
 
 ## Contributing
 
-1. Fork/Clone Repository
+1. Fork/Clone Repository, use branch `develop`
 2. Install root dev-dependencies (like lerna, webpack): `npm i`
 3. Start dev-server: `npm start`
     - (will clean-dist + symlink-es-modules + init & hoist packages + starting demo app)
@@ -216,12 +232,12 @@ Commands:
 - Clean node_modules and build dirs: `npm run clean`
 - Clean build dirs: `npm run clean-dist`
 - Add new node_module to one package: `lerna add <npm-package-name> --scope=@ui-schema/demo [--dev] [--peer]`, without `--scope` in all packages
-- Do not change `package.json` of packages manually, and if Bootstrap [lerna](https://lerna.js.org/): `npm run bootstrap` (maybe delete `package-lock.json`), or simply open an issue
+- Do not change `package.json` of packages manually, and if Bootstrap [lerna](https://lerna.js.org/): `npm run bootstrap` (maybe delet e `package-lock.json`), or simply open an issue
 - Add new package `lerna create <name>` and follow on screen, e.g.: `lerna create material-pickers` add package name `@ui-schema/material-pickerss`, creates folder `./packages/material-pickers`
 
 Publish, for main-repo only:
 
-1. Currently manually `lerna version <semver> --no-git-tag-version` is needed
+1. Manual `lerna version <semver> --no-git-tag-version` is needed
     - like `lerna version 0.0.2 --no-git-tag-version`, see [docs](https://github.com/lerna/lerna/tree/master/commands/version#lifecycle-scripts)
 2. Then tag the commit with the same version
 3. Push, CI will publish to npm using `npm run release -- --yes`
