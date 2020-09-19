@@ -1,6 +1,6 @@
 import { PluginProps } from "@ui-schema/ui-schema/PluginStack/Plugin"
 import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators"
-import { errors } from "@ui-schema/ui-schema/CommonTypings"
+import { Errors } from "@ui-schema/ui-schema/CommonTypings"
 
 export const ERROR_NOT_SET = 'required-not-set'
 
@@ -18,7 +18,7 @@ export interface RequiredValidatorType extends ValidatorPlugin {
     validate: (
         {schema, value, errors, valid}: Partial<PluginProps>
     ) => {
-        errors: errors
+        errors: Errors
         valid: boolean
         required: true
     }

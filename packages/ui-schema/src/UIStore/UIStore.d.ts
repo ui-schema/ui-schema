@@ -1,7 +1,7 @@
 import React from 'react'
 import { Record, OrderedMap, Map, List } from 'immutable'
-import { Translator } from "../Translate/t"
-import { StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
+import { Translator } from '../Translate/t'
+import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
 
 // UIStore
@@ -11,13 +11,14 @@ export type ValuesJS = any[] | string | number | boolean | Object
 
 export interface UIStoreState<D> {
     values: Values<D>
-    internals: Map<{}, undefined>
-    validity: Map<{}, undefined>
+    internals: Map<string | number, any>
+    validity: Map<string | number, any>
     // returns the values in `values` as pure JS, even when saved as `Map` or `List`
     valuesToJS: () => ValuesJS
+    // todo: correct typing `getValues` return value
     getValues: () => Values<D>
     getInternals: () => any
-    getValidity: () => Map<{}, undefined>
+    getValidity: () => Map<string | number, any>
 }
 
 export type UIStoreType<D = undefined> = Record<UIStoreState<D>> & UIStoreState<D>
@@ -86,9 +87,9 @@ export function withUIMeta(
 
 // UIStore / Immutable Manipulation Functions
 
-export type ownKey = string | number
+export type OwnKey = string | number
 
-export type StoreKeys<T = ownKey> = List<T>
+export type StoreKeys<T = OwnKey> = List<T>
 
 export function prependKey(storeKeys: StoreKeys, key: string | number): StoreKeys
 

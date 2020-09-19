@@ -1,16 +1,16 @@
-import { OrderedMap, List, Map } from "immutable"
+import { OrderedMap, List, Map } from 'immutable'
 import {
     validateMinMax, minMaxValidator, ERROR_MAX_LENGTH, ERROR_MIN_LENGTH,
 } from '@ui-schema/ui-schema/Validators/MinMaxValidator'
-import { createMap, createOrderedMap } from "@ui-schema/ui-schema/Utils"
-import { JsonSchema } from "@ui-schema/ui-schema/JsonSchema"
-import { UISchema } from "@ui-schema/ui-schema/UISchema"
-import { createValidatorErrors } from "@ui-schema/ui-schema/ValidatorStack/ValidatorErrors"
+import { createMap, createOrderedMap } from '@ui-schema/ui-schema/Utils'
+import { JsonSchema } from '@ui-schema/ui-schema/JsonSchema'
+import { UISchema } from '@ui-schema/ui-schema/UISchema'
+import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
 
 describe('validateMinMax', () => {
     type validateMinMaxTest = [
         // schema:
-            JsonSchema & UISchema,
+        JsonSchema,
         // value:
         any,
         // expected qty of errors:
@@ -274,7 +274,7 @@ describe('minMaxValidator', () => {
             expect(result.valid).toBe(expectedValid)
             expect(result.errors.hasError(error.get(0))).toBe(expectedError)
             if (result.errors.hasError(error.get(0))) {
-                expect(result.errors.getError(error.get(0)).get(0).equals(error.get(1))).toBe(expectedError)
+                expect(result.errors.getError(error.get(0)).get(0)?.equals(error.get(1))).toBe(expectedError)
             }
         }
     )

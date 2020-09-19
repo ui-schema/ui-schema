@@ -1,6 +1,7 @@
 import { Map } from 'immutable'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
 import { handleIfElseThen } from '@ui-schema/ui-schema/Plugins/ConditionalHandler/handleIfElseThen'
+import { StoreSchemaType } from '@ui-schema/ui-schema'
 
 describe('handleIfElseThen', () => {
     test.each([
@@ -177,8 +178,7 @@ describe('handleIfElseThen', () => {
             false,// expected
         ],
         [
-            createOrderedMap({
-            }/* as JsonSchema*/),
+            createOrderedMap({}/* as JsonSchema*/),
             createOrderedMap({
                 country: 'canada',
             }),
@@ -256,7 +256,7 @@ describe('handleIfElseThen', () => {
             }),// expectedSchema
             true,// expected
         ],
-    ] as [Map<any, undefined>, Map<any, undefined>, Map<any, undefined>, Map<any, undefined>, boolean][])(
+    ] as [StoreSchemaType, Map<string, string | number>, StoreSchemaType, StoreSchemaType, boolean][])(
         'handleIfElseThen(%j, store, distSchema)',
         (schema, store, distSchema, expectedSchema, expected) => {
             expect(handleIfElseThen(schema, store, distSchema).equals(expectedSchema)).toBe(expected)

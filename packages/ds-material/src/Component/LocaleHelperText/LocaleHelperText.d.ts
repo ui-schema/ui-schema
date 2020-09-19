@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { showValidity, errors, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { showValidity, Errors, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface ValidityHelperTextProps {
     showValidity: showValidity
-    errors: errors
+    errors: Errors
     schema: StoreSchemaType
     browserError?: Node | React.ReactElement
 }

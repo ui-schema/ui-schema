@@ -1,14 +1,18 @@
 import { Map, List, OrderedMap } from 'immutable'
 import { ValidatorErrorsType } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
+import { OwnKey } from '@ui-schema/ui-schema/UIStore'
 // import { JsonSchema, JsonSchemaKeys, JsonSchemaKeyValue } from '@ui-schema/ui-schema/JsonSchema'
 
 export type showValidity = boolean
-export type errors = ValidatorErrorsType
+export type Errors = ValidatorErrorsType
 export type required = boolean
 export type valid = boolean
 
+export type StoreSchemaTypeValuesJS = string | number | boolean | null | any[] | undefined | { [key: string]: StoreSchemaTypeValuesJS }
 
-export type StoreSchemaType = OrderedMap<string, StoreSchemaType | string | number | boolean | null | List<any> | Map<any, any> | any[]>
+export type StoreSchemaTypeValues = StoreSchemaType | List<any> | Map<any, any> | StoreSchemaTypeValuesJS
+
+export type StoreSchemaType = OrderedMap<OwnKey, StoreSchemaTypeValues>
 
 //export type StoreSchemaType = OrderedMapTyping<string, StoreSchemaType | string>
 

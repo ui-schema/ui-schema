@@ -1,4 +1,4 @@
-import { errors, StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
+import { Errors, StoreSchemaType } from "@ui-schema/ui-schema/CommonTypings"
 import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators"
 import { PluginProps } from "@ui-schema/ui-schema/PluginStack/Plugin"
 import { ValidatorErrorsType } from "@ui-schema/ui-schema/ValidityReporter"
@@ -12,7 +12,7 @@ export interface ObjectValidatorType extends ValidatorPlugin {
     validate: (
         {schema, value, errors, valid}: Partial<PluginProps>
     ) => {
-        errors: errors
+        errors: Errors
         valid: boolean
     }
 }

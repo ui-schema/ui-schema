@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { errors, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { Errors, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import Map from 'immutable'
 
 export interface ValidityHelperTextProps {
     showValidity: boolean
-    errors?: errors
+    errors?: Errors
     schema: StoreSchemaType
 }
 

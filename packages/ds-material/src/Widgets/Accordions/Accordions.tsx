@@ -1,6 +1,6 @@
 import React from 'react'
 import { useUID } from 'react-uid'
-import { ownKey, StoreSchemaType, TransTitle, WidgetProps, PluginStack } from '@ui-schema/ui-schema'
+import { OwnKey, StoreSchemaType, TransTitle, WidgetProps, PluginStack } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '../../Component/LocaleHelperText/LocaleHelperText'
 
 import Accordion from '@material-ui/core/Accordion'
@@ -22,7 +22,7 @@ export const AccordionsRenderer = (
     return <>
         {properties ?
             // @ts-ignore
-            properties.map((childSchema: StoreSchemaType, childKey: ownKey): React.ReactElement =>
+            properties.map((childSchema: StoreSchemaType, childKey: OwnKey): React.ReactElement =>
                 <Accordion key={childKey} style={{width: '100%'}}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon/>}

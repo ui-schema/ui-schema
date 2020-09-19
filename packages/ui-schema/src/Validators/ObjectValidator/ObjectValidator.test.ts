@@ -1,10 +1,10 @@
-import { OrderedMap } from "immutable"
+import { OrderedMap } from 'immutable'
 import {
     validateObject, objectValidator, ERROR_ADDITIONAL_PROPERTIES,
 } from '@ui-schema/ui-schema/Validators/ObjectValidator'
-import { createMap, createOrderedMap } from "@ui-schema/ui-schema/Utils"
-import { ERROR_PATTERN } from "@ui-schema/ui-schema/Validators/PatternValidator/PatternValidator"
-import { createValidatorErrors } from "@ui-schema/ui-schema/ValidatorStack/ValidatorErrors"
+import { createMap, createOrderedMap } from '@ui-schema/ui-schema/Utils'
+import { ERROR_PATTERN } from '@ui-schema/ui-schema/Validators/PatternValidator/PatternValidator'
+import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
 
 describe('validateObject', () => {
     test.each([
@@ -105,7 +105,7 @@ describe('objectValidator', () => {
     test.each([
         [OrderedMap({type: 'object'}), true],
         [OrderedMap({type: 'string'}), false],
-        [OrderedMap({}), false],
+        [OrderedMap<string, {}>({}), false],
     ])(
         '.should(%j, %s)',
         (schema, expectedValid) => {

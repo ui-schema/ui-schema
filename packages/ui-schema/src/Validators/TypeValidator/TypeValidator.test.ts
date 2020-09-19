@@ -85,7 +85,7 @@ describe('typeValidator', () => {
             expect(result.valid).toBe(expectedValid)
             expect(result.errors.hasError(error.get(0))).toBe(expectedError)
             if (result.errors.hasError(error.get(0))) {
-                expect(result.errors.getError(error.get(0)).get(0).equals(error.get(1))).toBe(expectedError)
+                expect(result.errors.getError(error.get(0)).get(0)?.equals(error.get(1))).toBe(expectedError)
             }
         }
     )

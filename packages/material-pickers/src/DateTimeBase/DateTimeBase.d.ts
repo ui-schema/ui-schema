@@ -1,10 +1,10 @@
-import { onChange, ownKey, StoreKeys } from '@ui-schema/ui-schema/UIStore'
+import { onChange, OwnKey, StoreKeys } from '@ui-schema/ui-schema/UIStore'
 import { required, StoreSchemaType, showValidity, valid } from '@ui-schema/ui-schema/CommonTypings'
 import { additionalProps } from '@ui-schema/material-pickers/TimeBase'
 
 export interface DateTimeBaseInterface {
     storeKeys: StoreKeys
-    ownKey: ownKey
+    ownKey: OwnKey
     value: string
     onChange: onChange
     schema: StoreSchemaType

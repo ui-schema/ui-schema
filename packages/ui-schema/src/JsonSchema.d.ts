@@ -73,6 +73,7 @@ export interface JsonSchemaString extends JsonSchemaGeneral {
     type: 'string'
     minLength?: number
     maxLength?: number
+    pattern?: string
 }
 
 export interface JsonSchemaBoolean extends JsonSchemaGeneral {

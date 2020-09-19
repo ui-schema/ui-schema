@@ -1,12 +1,13 @@
 import { OrderedMap, Map } from 'immutable'
-import { ValidatorErrorsType } from "@ui-schema/ui-schema/ValidityReporter"
+import { ValidatorErrorsType } from '@ui-schema/ui-schema/ValidityReporter'
+import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 
-export function validateSchema<K>(
-    schema: Map<K, undefined> | OrderedMap<K, undefined>,
-    value: Map<K, undefined> | OrderedMap<K, undefined>
+export function validateSchema(
+    schema: StoreSchemaType,
+    value: Map<string | number, any> | OrderedMap<string | number, any>
 ): ValidatorErrorsType
 
-export function validateSchemaObject<K>(
-    schema: Map<K, undefined> | OrderedMap<K, undefined>,
-    value: Map<K, undefined> | OrderedMap<K, undefined>
+export function validateSchemaObject(
+    schema: StoreSchemaType,
+    value: Map<string | number, any> | OrderedMap<string | number, any>
 ): ValidatorErrorsType

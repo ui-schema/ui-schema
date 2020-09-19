@@ -1,16 +1,19 @@
-import { List, Map, Record } from "immutable"
+import { List, Map, Record } from 'immutable'
+
+export type ValidatorErrorsSingle = List<Map<string, any>>
+export type ValidatorErrorsValue = Map<string, ValidatorErrorsSingle>
 
 export interface ValidatorErrors {
     errCount: number
-    errors: Map<{}, undefined>
-    childErrors: Map<{}, undefined>
-    errorsToJS: () => any
-    getErrors: () => Map<{ [key: string]: List<any> }, undefined>
+    errors: ValidatorErrorsValue
+    childErrors: Map<string, any>
+    errorsToJS: () => { [key: string]: { [key: string]: any }[] }
+    getErrors: () => ValidatorErrorsValue
     addError: (type: string, context?: Map<any, any>) => ValidatorErrorsType
     addErrors: (errors: ValidatorErrorsType) => ValidatorErrorsType
     addChildError: (errors: ValidatorErrorsType) => ValidatorErrorsType
     hasError: (type?: string) => boolean
-    getError: (type: string) => List<any>
+    getError: (type: string) => ValidatorErrorsSingle
 }
 
 export type ValidatorErrorsType = Record<ValidatorErrors> & ValidatorErrors

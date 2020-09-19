@@ -491,9 +491,9 @@ describe('validateUniqueItems', () => {
 
 describe('arrayValidator', () => {
     test.each([
-        [OrderedMap({type: 'array'}), true],
-        [OrderedMap({type: 'string'}), false],
-        [OrderedMap({}), false],
+        [OrderedMap<'type', string>({type: 'array'}), true],
+        [OrderedMap<'type', string>({type: 'string'}), false],
+        [OrderedMap<string, string>({}), false],
     ])(
         '.should(%j, %s)',
         (schema, expectedValid) => {
@@ -571,7 +571,7 @@ describe('arrayValidator', () => {
             expect(result.valid).toBe(expectedValid)
             expect(result.errors.hasError(error.get(0))).toBe(expectedError)
             if (result.errors.hasError(error.get(0))) {
-                expect(result.errors.getError(error.get(0)).get(0).equals(error.get(1))).toBe(expectedError)
+                expect(result.errors.getError(error.get(0)).get(0)?.equals(error.get(1))).toBe(expectedError)
             }
         }
     )
