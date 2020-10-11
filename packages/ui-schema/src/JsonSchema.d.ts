@@ -140,14 +140,16 @@ export type JsonSchemaPure =
     JsonSchemaConditionals |
     JsonSchemaRoot
 
-export type JsonSchemaKeyValue<K> =
-    JsonSchemaString[K] |
-    JsonSchemaArray[K] |
-    JsonSchemaObject[K] |
-    JsonSchemaNumber[K] |
-    JsonSchemaBoolean[K] |
-    JsonSchemaNull[K] //|
-// todo: somehow those two crash the `K` to value typing resolution
+// todo: this export breaks the build in external pure tsc (not babel/webpack) builds
+//       m.b. note: like in the [private] orbiter-publish app
+//export type JsonSchemaKeyValue<K> =
+//    JsonSchemaString[K] |
+//     JsonSchemaArray[K] |
+//     JsonSchemaObject[K] |
+//     JsonSchemaNumber[K] |
+//     JsonSchemaBoolean[K] |
+//     JsonSchemaNull[K] //|
+// todo: somehow those two crash the `K` to value typing resolution for the IDE
 // JsonSchemaConditionals[K] //|
 // JsonSchemaRoot[K]
 

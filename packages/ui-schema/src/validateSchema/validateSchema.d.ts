@@ -1,5 +1,5 @@
 import { OrderedMap, Map } from 'immutable'
-import { ValidatorErrorsType } from '@ui-schema/ui-schema/ValidityReporter'
+import { ValidatorErrorsType } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 
 export function validateSchema(

@@ -73,7 +73,7 @@ const themeLight = createMuiTheme({
             dark: "#002634",
         },
         background: {
-            paper: '#e8e8e8',
+            paper: '#fcfcfc',
             default: '#cecece',
         },
         text: {

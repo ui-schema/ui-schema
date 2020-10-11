@@ -3,7 +3,7 @@ import { Map, List } from 'immutable'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 
 export interface RichTextInterface extends WidgetProps {
-    internalValue: Map<{}, undefined> | List<[]>
+    internalValue: Map<string|numebr, any> | List<[]>
     onlyInline: boolean
 }
 

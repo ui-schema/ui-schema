@@ -1,7 +1,7 @@
 import {Map} from 'immutable';
 
 const searchRecursive = (immutable, val, keys, count = false) => {
-    if(!immutable) return 0;
+    if(!immutable || immutable.size === 0) return 0;
 
     let found = 0;
 

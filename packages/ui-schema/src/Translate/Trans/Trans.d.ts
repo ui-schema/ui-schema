@@ -1,11 +1,10 @@
 import React from 'react'
-import { Map } from 'immutable/dist/immutable-nonambient'
-import { translation } from '../t'
+import { translation, TranslatorContext } from '../t'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface TransProps {
     text: string
-    context?: Map<{}, undefined>
+    context?: TranslatorContext
     schema?: StoreSchemaType
     fallback?: translation
 }
