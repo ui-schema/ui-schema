@@ -21,7 +21,7 @@ export const TimePicker = ({
         additionalProps['KeyboardButtonProps'] = KeyboardButtonProps;
     }
     additionalProps = {
-        additionalProps,
+        ...additionalProps,
         ...addAdditionalProps(schema)
     };
 

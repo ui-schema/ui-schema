@@ -1,5 +1,5 @@
-import React from "react";
-import {useUIMeta} from "../../UIStore";
+import React from 'react';
+import {useUIMeta} from '../../UIStore';
 
 /**
  * Translation component, supports dot strings, dictionary can be mixed strings, string functions and function components as translation

@@ -21,7 +21,7 @@ export const DateTimePicker = ({
         additionalProps['KeyboardButtonProps'] = KeyboardButtonProps;
     }
     additionalProps = {
-        additionalProps,
+        ...additionalProps,
         ...addAdditionalProps(schema)
     };
 
