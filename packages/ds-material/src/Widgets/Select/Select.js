@@ -1,11 +1,11 @@
-import React from "react";
-import {Map, List} from "immutable";
+import React from 'react';
+import {Map, List} from 'immutable';
 import {
     FormControl, Checkbox, InputLabel,
     MenuItem, Select as MuiSelect, ListItemText,
-} from "@material-ui/core";
-import {TransTitle, Trans, beautifyKey, updateValue, extractValue, memo} from "@ui-schema/ui-schema";
-import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
+} from '@material-ui/core';
+import {TransTitle, Trans, beautifyKey, updateValue, extractValue, memo} from '@ui-schema/ui-schema';
+import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
 const Select = ({
                     multiple,
@@ -25,10 +25,10 @@ const Select = ({
     }
 
     return <FormControl required={required} error={!valid && showValidity} fullWidth>
-        <InputLabel id={"demo-simple-select-label" + ownKey}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></InputLabel>
+        <InputLabel id={'demo-simple-select-label' + ownKey}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></InputLabel>
         <MuiSelect
-            labelId={"demo-simple-select-label" + ownKey}
-            id={"demo-simple-select" + ownKey}
+            labelId={'demo-simple-select-label' + ownKey}
+            id={'demo-simple-select' + ownKey}
             value={multiple ? currentValue.toArray() : currentValue}
             multiple={multiple}
             renderValue={selected => {
@@ -38,7 +38,7 @@ const Select = ({
                     const Translated = t(s, Map({relative: List(['enum', s])}), schema.get('t'));
                     return typeof Translated === 'string' || typeof Translated === 'number' ?
                         Translated :
-                        beautifyKey(s);
+                        beautifyKey(s, schema.get('tt')) + '';
                 }).join(', ')
             }}
             onChange={(e) => multiple ?
@@ -57,16 +57,16 @@ const Select = ({
                             schema={schema.get('t')}
                             text={storeKeys.insert(0, 'widget').concat(List(['enum', enum_name])).join('.')}
                             context={Map({'relative': List(['enum', enum_name])})}
-                            fallback={beautifyKey(enum_name)}
+                            fallback={beautifyKey(enum_name, schema.get('tt')) + ''}
                         />}/>
                     </React.Fragment>
                     : <Trans
                         schema={schema.get('t')}
                         text={storeKeys.insert(0, 'widget').concat(List(['enum', enum_name])).join('.')}
                         context={Map({'relative': List(['enum', enum_name])})}
-                        fallback={beautifyKey(enum_name)}
+                        fallback={beautifyKey(enum_name, schema.get('tt')) + ''}
                     />}
-                </MenuItem>
+                </MenuItem>,
             ).valueSeq() : null}
         </MuiSelect>
 

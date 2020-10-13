@@ -5,8 +5,8 @@ import {NextPluginRenderer} from '@ui-schema/ui-schema/PluginStack';
 const DefinitionsContext = React.createContext(undefined);
 
 const handleReference = (ref, schema, definitions) => {
-    if(ref.indexOf('#/definitions/') === 0 || ref.indexOf('#/$def/') === 0) {
-        const refId = ref.replace(/^#\/definitions\//, '').replace(/^#\/\$def\//, '');
+    if(ref.indexOf('#/definitions/') === 0 || ref.indexOf('#/$defs/') === 0) {
+        const refId = ref.replace(/^#\/definitions\//, '').replace(/^#\/\$defs\//, '');
         if(!definitions) {
             console.error('definitions needed for $ref resolution', ref)
         } else if(definitions.get(refId)) {
@@ -118,7 +118,7 @@ const ReferencingRenderer = (props) => {
 export const ReferencingHandler = (props) => {
     let {schema} = props;
 
-    const definitions = schema.get('definitions') || schema.get('$def')
+    const definitions = schema.get('definitions') || schema.get('$defs')
 
     return <React.Fragment>
         {definitions ?

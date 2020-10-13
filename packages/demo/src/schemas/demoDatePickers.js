@@ -1,15 +1,26 @@
-import {createOrderedMap} from "@ui-schema/ui-schema";
+import {createOrderedMap} from '@ui-schema/ui-schema';
 
 const schemaDatePickers = createOrderedMap({
     type: 'object',
     properties: {
+        timeInMs: {
+            'type': 'string',
+            'format': 'date+time',
+            'widget': 'DateTime',
+            'date': {
+                'variant': 'inline',
+                'clearable': true,
+                'toolbar': true,
+                'format': 'yyyy-MM-ddTZZ',
+                'formatData': 'x',
+            },
+        },
         time: {
             type: 'string',
             format: 'time',
             widget: 'Time',
             date: {
                 variant: 'inline',
-                clearable: true,
                 format: 'HH.mm',
                 formatData: 'HH:mm',
                 ampm: false,
@@ -17,7 +28,7 @@ const schemaDatePickers = createOrderedMap({
             view: {
                 sizeXs: 12,
                 sizeMd: 4,
-            }
+            },
         },
         time_mobile: {
             type: 'string',
@@ -33,7 +44,7 @@ const schemaDatePickers = createOrderedMap({
             view: {
                 sizeXs: 12,
                 sizeMd: 4,
-            }
+            },
         },
         time_view: {
             type: 'string',
@@ -46,7 +57,7 @@ const schemaDatePickers = createOrderedMap({
             view: {
                 sizeXs: 12,
                 sizeMd: 4,
-            }
+            },
         },
         time_static_l: {
             type: 'string',
@@ -62,7 +73,7 @@ const schemaDatePickers = createOrderedMap({
                 sizeXs: 12,
                 sizeMd: 6,
                 justify: 'center',
-            }
+            },
         },
         time_static_p: {
             type: 'string',
@@ -81,7 +92,7 @@ const schemaDatePickers = createOrderedMap({
                 sizeXs: 12,
                 sizeMd: 6,
                 justify: 'right',
-            }
+            },
         },
         datetime: {
             type: 'string',
@@ -96,7 +107,7 @@ const schemaDatePickers = createOrderedMap({
             view: {
                 sizeXs: 12,
                 sizeMd: 4,
-            }
+            },
         },
         datetime_mobile: {
             type: 'string',
@@ -112,7 +123,7 @@ const schemaDatePickers = createOrderedMap({
             view: {
                 sizeXs: 12,
                 sizeMd: 4,
-            }
+            },
         },
         datetime_view: {
             type: 'string',
@@ -125,7 +136,7 @@ const schemaDatePickers = createOrderedMap({
             view: {
                 sizeXs: 12,
                 sizeMd: 4,
-            }
+            },
         },
         datetime_static_l: {
             type: 'string',
@@ -141,7 +152,7 @@ const schemaDatePickers = createOrderedMap({
                 sizeXs: 12,
                 sizeMd: 6,
                 justify: 'center',
-            }
+            },
         },
         datetime_static_p: {
             type: 'string',
@@ -161,7 +172,7 @@ const schemaDatePickers = createOrderedMap({
                 sizeXs: 12,
                 sizeMd: 6,
                 justify: 'right',
-            }
+            },
         },
         date: {
             type: 'string',
@@ -174,7 +185,7 @@ const schemaDatePickers = createOrderedMap({
             view: {
                 sizeXs: 12,
                 sizeMd: 4,
-            }
+            },
         },
         year_mobile: {
             type: 'string',
@@ -190,7 +201,7 @@ const schemaDatePickers = createOrderedMap({
             view: {
                 sizeXs: 12,
                 sizeMd: 4,
-            }
+            },
         },
         date_view: {
             type: 'string',
@@ -204,7 +215,7 @@ const schemaDatePickers = createOrderedMap({
             view: {
                 sizeXs: 12,
                 sizeMd: 4,
-            }
+            },
         },
         date_static_l: {
             type: 'string',
@@ -220,7 +231,7 @@ const schemaDatePickers = createOrderedMap({
             view: {
                 sizeXs: 12,
                 sizeMd: 7,
-            }
+            },
         },
         date_static_p: {
             type: 'string',
@@ -240,9 +251,9 @@ const schemaDatePickers = createOrderedMap({
             view: {
                 sizeXs: 12,
                 sizeMd: 5,
-            }
+            },
         },
-    }
+    },
 });
 
 export {schemaDatePickers}

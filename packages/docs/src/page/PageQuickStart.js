@@ -281,7 +281,7 @@ const Editor = () => {
             <button
                 disabled={!!isInvalid(store.getValidity())}
                 onClick={() => {
-                    if(!isInvalid(isInvalid(store.getValidity())) {
+                    if(!isInvalid(store.getValidity())) {
                         // when not invalid, post to an API
                         fetch('https://httpbin.org/post', {
                             method: 'POST',

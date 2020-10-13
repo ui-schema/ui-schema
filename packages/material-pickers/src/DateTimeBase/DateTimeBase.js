@@ -1,8 +1,14 @@
-import React from "react";
-import {beautifyKey, updateValue} from "@ui-schema/ui-schema";
-import {useUID} from "react-uid";
-import {useUtils,} from '@material-ui/pickers';
-import {List} from "immutable";
+import React from 'react';
+import {beautifyKey, updateValue} from '@ui-schema/ui-schema';
+import {useUID} from 'react-uid';
+import {useUtils} from '@material-ui/pickers';
+import {List} from 'immutable';
+
+function fromSeconds(secs) {
+    const t = new Date(1970, 0, 1);
+    t.setSeconds(secs);
+    return t;
+}
 
 export const DateTimeBase = ({
                                  storeKeys, ownKey, value, onChange, schema,
@@ -30,14 +36,14 @@ export const DateTimeBase = ({
     return <div style={{
         display: 'flex',
         justifyContent: justify === 'left' ? 'flex-start' :
-            justify === 'right' ? 'flex-end' : 'center'
+            justify === 'right' ? 'flex-end' : 'center',
     }}><Component
         error={!valid && showValidity}
         required={required}
         id={'uis-' + uid}
         views={views}
         format={dateFormat}
-        label={beautifyKey(ownKey,)}
+        label={beautifyKey(ownKey, schema.get('tt'))}
         margin={schema.getIn(['view', 'dense'])}
         disableToolbar={schema.getIn(['date', 'toolbar']) !== true}
         autoOk={schema.getIn(['date', 'autoOk']) !== false}
@@ -50,7 +56,10 @@ export const DateTimeBase = ({
         disableFuture={schema.getIn(['date', 'disableFuture'])}
         disablePast={schema.getIn(['date', 'disablePast'])}
         value={value ?
-            value === 'now' ? new Date() : date.parse(value, dateFormatData)
+            value === 'now' ? new Date() :
+                dateFormatData === 'X' ? fromSeconds(value) :
+                    dateFormatData === 'x' ? fromSeconds(value / 1000) :
+                        date.parse(value, dateFormatData)
             : null}
         onChange={(e) => {
             if(e) {

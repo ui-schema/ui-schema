@@ -61,7 +61,8 @@ widgets.types.array = extractValue((props: WidgetProps & WithValue): React.React
     return <>
         <span>array-renderer</span>
         <span><TransTitle schema={props.schema} ownKey={props.ownKey} storeKeys={props.storeKeys}/></span>
-        {List.isList(props.value) ? props.value.map((val: any, i: number) =>
+        {/* @ts-ignore */}
+        {List.isList(props.value) ? props.value.map((val, i: number) =>
             <div key={i}>
                 <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
                     <UIGeneratorNested
@@ -90,7 +91,7 @@ const TestUIRenderer = (props: {
 
     const [schema/*, setSchema*/] = React.useState(() => createOrderedMap({
         type: 'object',
-        $def: {
+        $defs: {
             demo_number_def: {
                 $anchor: 'demo_number',
                 type: 'number',
@@ -198,7 +199,6 @@ const TestUIRenderer = (props: {
         t={props.notT ? undefined : (text: string) => text}
     >
         {/* (optional) add components which use the context of the Editor here */}
-        {/* @ts-ignore */}
         <div>schema-is-{isInvalid(store.getValidity()) ? 'invalid' : 'correct'}</div>
     </UIGenerator>
 }

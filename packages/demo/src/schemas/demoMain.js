@@ -1,22 +1,22 @@
-import {createOrderedMap} from "@ui-schema/ui-schema";
+import {createOrderedMap} from '@ui-schema/ui-schema';
 
 const schemaDemoMain = {
-    type: "object",
-    title: "headline",
+    type: 'object',
+    title: 'headline',
     /*view: {
         sizeMd: 6,
     },*/
     properties: {
         stepper: {
-            type: "object",
-            widget: "Stepper",
+            type: 'object',
+            widget: 'Stepper',
             properties: {
                 'step-1': {
-                    type: "object",
+                    type: 'object',
                     properties: {
                         name: {
-                            type: "string",
-                            widget: "StringIcon",
+                            type: 'string',
+                            widget: 'StringIcon',
                             minLength: 2,
                             maxLength: 3,
                             view: {
@@ -26,44 +26,44 @@ const schemaDemoMain = {
                             },
                         },
                         email: {
-                            type: "string",
-                            format: "email",
+                            type: 'string',
+                            format: 'email',
                             t: 'browser',
                             view: {
-                                sizeMd: 6
-                            }
+                                sizeMd: 6,
+                            },
                         },
                         phone: {
-                            type: "string",
-                            format: "tel",
+                            type: 'string',
+                            format: 'tel',
                             // tel must be validated with a pattern
                             // pattern: "[0-9]{3}-[0-9]{3}-[0-9]{4}",
                             view: {
-                                sizeMd: 6
-                            }
+                                sizeMd: 6,
+                            },
                         },
                         date: {
-                            type: "string",
-                            format: "date",
+                            type: 'string',
+                            format: 'date',
                             view: {
                                 sizeMd: 6,
-                                shrink: true
-                            }
+                                shrink: true,
+                            },
                         },
                     },
                     required: [
-                        'name'
-                    ]
+                        'name',
+                    ],
                 },
                 'step-2': {
-                    type: "object",
-                    widget: "Step",
+                    type: 'object',
+                    widget: 'Step',
                     properties: {
                         topics: {
-                            type: "array",
-                            widget: "SelectMulti",
+                            type: 'array',
+                            widget: 'SelectMulti',
                             view: {
-                                sizeMd: 3
+                                sizeMd: 3,
                             },
                             enum: [
                                 'theater',
@@ -72,21 +72,21 @@ const schemaDemoMain = {
                                 'horror',
                             ],
                         },
-                    }
+                    },
                 },
                 'step-3': {
-                    type: "object",
-                    widget: "Step",
+                    type: 'object',
+                    widget: 'Step',
                     properties: {
                         accepted: {
-                            type: "boolean",
+                            type: 'boolean',
                         },
-                    }
+                    },
                 },
-            }
+            },
         },
         headline: {
-            type: "string",
+            type: 'string',
             minLength: 2,
             maxLength: 3,
             /*enum: [
@@ -101,102 +101,102 @@ const schemaDemoMain = {
                 sizeMd: 6,
                 sizeLg: 6,
                 sizeLx: 6,
-            }
+            },
         },
         qty: {
-            type: "number",
+            type: 'number',
             minimum: 2,
             maximum: 10,
             tt: 'lower',
             view: {
-                sizeMd: 3
-            }
+                sizeMd: 3,
+            },
         },
         qty2: {
-            type: "number",
+            type: 'number',
             tt: 'upper',
             exclusiveMinimum: 2,
             exclusiveMaximum: 10,
             view: {
-                sizeMd: 3
-            }
+                sizeMd: 3,
+            },
         },
         info: {
-            type: "string",
+            type: 'string',
             view: {
-                sizeMd: 6
-            }
+                sizeMd: 6,
+            },
         },
         outro: {
-            type: "string",
+            type: 'string',
             view: {
-                sizeMd: 3
-            }
+                sizeMd: 3,
+            },
         },
         length: {
-            type: "number",
+            type: 'number',
             multipleOf: 2,
             view: {
-                sizeMd: 3
-            }
+                sizeMd: 3,
+            },
         },
         comment: {
-            type: "string",
-            widget: "Text",
+            type: 'string',
+            widget: 'Text',
             view: {
                 sizeMd: 6,
                 //variant: 'filled',
                 //margin: 'none',
                 //margin: 'dense',
                 //margin: 'normal',
-            }
+            },
         },
         usaPhone: {
-            type: "string",
+            type: 'string',
             // only valid for: (888)555-1212 or 555-1212
-            pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$",
+            pattern: '^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$',
             view: {
-                sizeMd: 3
-            }
+                sizeMd: 3,
+            },
         },
         stock: {
-            type: "number",
+            type: 'number',
             const: 50,
             view: {
-                sizeMd: 3
-            }
+                sizeMd: 3,
+            },
         },
         style: {
-            type: "object",
+            type: 'object',
             minProperties: 2,
             maxProperties: 3,
             view: {
-                sizeMd: 3
+                sizeMd: 3,
             },
             properties: {
                 center_items: {
-                    type: "boolean",
+                    type: 'boolean',
                     default: true,
                     view: {
-                        sizeMd: 12
-                    }
+                        sizeMd: 12,
+                    },
                 },
                 center_item_content: {
-                    type: "boolean",
+                    type: 'boolean',
                     view: {
-                        sizeMd: 12
-                    }
-                }
+                        sizeMd: 12,
+                    },
+                },
             },
             required: [
-                'center_item_content'
-            ]
+                'center_item_content',
+            ],
         },
         layouts: {
-            type: "array",
-            widget: "OptionsCheck",
+            type: 'array',
+            widget: 'OptionsCheck',
             view: {
-                sizeMd: 3
+                sizeMd: 3,
             },
             enum: [
                 'sidebar_left',
@@ -206,26 +206,26 @@ const schemaDemoMain = {
                 'footer',
             ],
             default: [
-                'sidebar_left'
+                'sidebar_left',
             ],
             t: {
                 de: {
                     enum: {
-                        sidebar_left: 'Linke Sidebar'
+                        sidebar_left: 'Linke Sidebar',
                     },
                 },
                 en: {
                     enum: {
-                        sidebar_left: 'Left Sidebar'
-                    }
-                }
-            }
+                        sidebar_left: 'Left Sidebar',
+                    },
+                },
+            },
         },
         size: {
-            type: "string",
-            widget: "OptionsRadio",
+            type: 'string',
+            widget: 'OptionsRadio',
             view: {
-                sizeMd: 3
+                sizeMd: 3,
             },
             enum: [
                 'small',
@@ -234,11 +234,11 @@ const schemaDemoMain = {
             ],
         },
         sizeDef: {
-            type: "string",
-            widget: "OptionsRadio",
-            default: "middle",
+            type: 'string',
+            widget: 'OptionsRadio',
+            default: 'middle',
             view: {
-                sizeMd: 3
+                sizeMd: 3,
             },
             enum: [
                 'small',
@@ -247,11 +247,11 @@ const schemaDemoMain = {
             ],
         },
         age: {
-            type: "string",
-            widget: "Select",
+            type: 'string',
+            widget: 'Select',
             //default: "adult",
             view: {
-                sizeMd: 3
+                sizeMd: 3,
             },
             enum: [
                 'child',
@@ -261,10 +261,10 @@ const schemaDemoMain = {
             ],
         },
         ages: {
-            type: "array",
+            type: 'array',
             minItems: 2,
             maxItems: 3,
-            widget: "SelectMulti",
+            widget: 'SelectMulti',
             view: {
                 sizeMd: 3,
             },
@@ -288,7 +288,7 @@ const schemaDemoMain = {
                         teen: 'Jugendlicher',
                         adult: 'Erwachsener',
                         '50plus': 'Senior',
-                    }
+                    },
                 },
                 en: {
                     enum: {
@@ -296,96 +296,146 @@ const schemaDemoMain = {
                         teen: 'Teenager',
                         adult: 'Adult',
                         '50plus': 'Senior',
-                    }
-                }
+                    },
+                },
             },
         },
-        desc: {
-            type: "object",
-            widget: "TextRich",
+        select_numbers1: {
             view: {
-                sizeMd: 3
-            }
-        }
+                sizeMd: 3,
+            },
+            'type': 'string',
+            'widget': 'Select',
+            't': {
+                de: {
+                    'enum': {
+                        '0': 'Null',
+                        '1': 'Eins',
+                        '-1': 'Negative Eins',
+                    },
+                },
+                en: {
+                    'enum': {
+                        '0': 'Zero',
+                        '1': 'One',
+                        '-1': 'Negative One',
+                    },
+                },
+            },
+            'enum': ['-1', '-2', '0', '1', '2', '_abc', '__H', 'h'],
+        },
+        select_numbers2: {
+            view: {
+                sizeMd: 3,
+            },
+            'type': 'number',
+            'widget': 'Select',
+            'enum': [-1, -2, 0, 1, 2],
+        },
+        select_numbers3: {
+            view: {
+                sizeMd: 3,
+            },
+            tt: false,
+            'type': 'string',
+            'widget': 'Select',
+            'enum': ['-1', '-2', '0', '1', '2', '_abc', '__H', 'h'],
+        },
+        select_numbers4: {
+            view: {
+                sizeMd: 3,
+            },
+            tt: false,
+            'type': 'number',
+            'widget': 'Select',
+            'enum': [-1, -2, 0, 1, 2],
+        },
+        desc: {
+            type: 'object',
+            widget: 'TextRich',
+            view: {
+                sizeMd: 3,
+            },
+        },
     },
     required: [
         'layouts',
         'size',
         'age',
         'slider_h',
-        'ages'
-    ]
+        'ages',
+    ],
 };
 
 const dataDemoMain = {
-    headline: "Some Demo Headline"
+    headline: 'Some Demo Headline',
 };
 
 
 const schemaUser = createOrderedMap({
-    type: "object",
-    title: "headline",
+    type: 'object',
+    title: 'headline',
     /*view: {
         sizeMd: 6,
     },*/
     properties: {
         name: {
-            type: "string",
+            type: 'string',
             minLength: 2,
             maxLength: 3,
             view: {
                 sizeMd: 6,
-            }
+            },
         },
         surname: {
-            type: "string",
+            type: 'string',
             view: {
-                sizeMd: 6
-            }
+                sizeMd: 6,
+            },
         },
         address: {
-            type: "object",
+            type: 'object',
             properties: {
                 street: {
-                    type: "string",
+                    type: 'string',
                     view: {
-                        sizeMd: 9
-                    }
+                        sizeMd: 9,
+                    },
                 },
                 street_no: {
-                    type: "string",
+                    type: 'string',
                     view: {
-                        sizeMd: 3
-                    }
+                        sizeMd: 3,
+                    },
                 },
                 city: {
-                    type: "string",
+                    type: 'string',
                     view: {
-                        sizeMd: 12
-                    }
+                        sizeMd: 12,
+                    },
                 },
                 country: {
-                    type: "string",
+                    type: 'string',
                     view: {
-                        sizeMd: 12
-                    }
+                        sizeMd: 12,
+                    },
                 },
-            }
+            },
         },
         birthday: {
-            type: "string",
-            format: "date",
+            type: 'string',
+            format: 'date',
             view: {
-                sizeMd: 6
-            }
+                sizeMd: 6,
+            },
         },
         quantity: {
-            type: "number",
+            type: 'number',
             view: {
-                sizeMd: 6
-            }
+                sizeMd: 6,
+            },
         },
-    }
+    },
 })
 
 export {schemaDemoMain, dataDemoMain, schemaUser}

@@ -1,5 +1,5 @@
 import { PluginProps } from "@ui-schema/ui-schema/PluginStack/Plugin"
-import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators"
+import { ValidatorPlugin } from "@ui-schema/ui-schema/ValidatorStack/ValidatorPlugin"
 import { Errors } from "@ui-schema/ui-schema/CommonTypings"
 
 export const ERROR_CONST_MISMATCH = 'const-mismatch'

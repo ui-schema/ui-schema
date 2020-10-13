@@ -23,7 +23,7 @@
         "__release": "lerna run release --stream",
         "release": "lerna publish from-package --contents build --no-git-reset"
     },
-    "author": "",
+    "author": "Michael Becker, https://mlbr.xyz",
     "license": "MIT",
     "devDependencies": {
         "@types/react-loadable": "^5.5.3",

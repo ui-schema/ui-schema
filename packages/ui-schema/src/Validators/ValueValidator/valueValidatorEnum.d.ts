@@ -1,5 +1,5 @@
 import { List } from 'immutable'
-import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators"
+import { ValidatorPlugin } from "@ui-schema/ui-schema/ValidatorStack/ValidatorPlugin"
 import { PluginProps } from "@ui-schema/ui-schema/PluginStack/Plugin"
 import { Errors } from "@ui-schema/ui-schema/CommonTypings"
 

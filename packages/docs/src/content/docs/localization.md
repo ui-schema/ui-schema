@@ -78,7 +78,7 @@ const DemoEnumWidget = ({ownKey, schema, storeKeys,}) => {
                 schema={schema.get('t')}
                 text={storeKeys.insert(0, 'widget').concat(relative).join('.')}
                 context={Map({'relative': relative})}
-                fallback={beautifyKey(enum_name)}
+                fallback={beautifyKey(enum_name, schema.get('tt'))}
             />
         </span>
     }).valueSeq() // as `enum_val` is an immutable list, this converts the map to an array compatible structure

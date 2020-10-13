@@ -138,8 +138,8 @@ It is only recommended for bigger widgets, using it for e.g. `type` widget is mo
 ```js
 import React from "react";
 import Loadable from 'react-loadable';
-import {RootRenderer, GroupRenderer} from "@ui-schema/ui-schema/Grid";
-import {pluginStack} from "@ui-schema/ui-schema/pluginStack";
+import {RootRenderer, GroupRenderer} from "@ui-schema/ds-material/Grid";
+import {pluginStack} from "@ui-schema/ds-material/pluginStack";
 import {validators} from '@ui-schema/ui-schema/Validators/validators';
 
 // Build the loadable widgets
