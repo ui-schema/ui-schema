@@ -178,7 +178,7 @@ Supported JSON-Schema versions and what currently isn't supported.
 - [Draft-06](https://json-schema.org/draft-06/json-schema-release-notes.html)
 - [Draft-04](https://json-schema.org/draft-06/json-schema-release-notes.html)
     - defines `exclusiveMaximum`, `exclusiveMinimum` as boolean, then works together with `minimum`/`maximum`
-    - defines `integer` as true integer, whereas from Draft-06 onwards also `1.0` is valid, currently always like Draft-06 ❌
+    - defines `integer` as true integer, whereas from Draft-06 onwards also `1.0` is valid, currently always like Draft-06, but JS internally saves `1.0` also only as `1` ❌
 
 Validators for latest version are used by default, incompatible changes are solved from the validator (e.g. different namings), the possibility to change/replace validators completely will be added.
 
@@ -188,7 +188,7 @@ Validators for latest version are used by default, incompatible changes are solv
 | core |                  | `$comment` | |
 | validation |            | `readOnly` | per widget |
 | validation |            | `writeOnly` | per widget |
-| core |                  | `definitions`/`$def` | ✅ |
+| core |                  | `definitions`/`$defs` | ✅ |
 | core, till draft-07 |   | `id`/`$id`<br>only relative | ✅ |
 | core, from 2019-09 |    | `$anchor` | ✅ |
 | core |                  | `$ref`<br>only relative | ✅ |

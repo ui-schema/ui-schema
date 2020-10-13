@@ -23,7 +23,7 @@ const OptionCheck = ({currentValue, label, onChange}) => {
 };
 
 const OptionsCheckValue = extractValue(memo(({
-                                                 enumVal, storeKeys, value, onChange, trans,
+                                                 enumVal, storeKeys, value, onChange, trans,tt,
                                                  required, type,
                                              }) =>
     enumVal ?
@@ -51,7 +51,7 @@ const OptionsCheckValue = extractValue(memo(({
                     schema={trans}
                     text={storeKeys.insert(0, 'widget').concat(relativeT).join('.')}
                     context={Map({'relative': relativeT})}
-                    fallback={beautifyKey(enum_name)}
+                    fallback={beautifyKey(enum_name, tt)}
                 />}
             />
         }).valueSeq()
@@ -70,7 +70,7 @@ const OptionsCheck = ({
             <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
         </FormLabel>
         <FormGroup row={row}>
-            <OptionsCheckValue enumVal={enumVal} storeKeys={storeKeys} trans={schema.get('t')} required={required} type={schema.get('type')}/>
+            <OptionsCheckValue enumVal={enumVal} storeKeys={storeKeys} trans={schema.get('t')} tt={schema.get('tt')} required={required} type={schema.get('type')}/>
         </FormGroup>
 
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>

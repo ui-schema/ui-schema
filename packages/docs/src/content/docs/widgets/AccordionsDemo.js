@@ -7,7 +7,7 @@ export const demoAccordions = [
             '$id': 'http://localhost:4200/schemas/demoReferencing.json',
             type: 'object',
             widget: 'Accordions',
-            // $def: {
+            // $defs: {
             definitions: {
                 country_0: {
                     type: 'string',

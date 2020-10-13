@@ -46,9 +46,9 @@ const dicDE = createMap({
 const tEN = t(dicEN);
 const tDE = t(dicDE);
 
-const browserT = (text, context) => {
+const browserT = (text, context, schema) => {
     const locale = window.localStorage.getItem('locale') || navigator.language;
-    return locale === 'de' ? tDE(text, context) : tEN(text, context);
+    return locale === 'de' ? tDE(text, context, schema) : tEN(text, context, schema);
 };
 
 export {browserT}

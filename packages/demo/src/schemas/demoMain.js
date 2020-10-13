@@ -306,6 +306,22 @@ const schemaDemoMain = {
             },
             'type': 'string',
             'widget': 'Select',
+            't': {
+                de: {
+                    'enum': {
+                        '0': 'Null',
+                        '1': 'Eins',
+                        '-1': 'Negative Eins',
+                    },
+                },
+                en: {
+                    'enum': {
+                        '0': 'Zero',
+                        '1': 'One',
+                        '-1': 'Negative One',
+                    },
+                },
+            },
             'enum': ['-1', '-2', '0', '1', '2', '_abc', '__H', 'h'],
         },
         select_numbers2: {

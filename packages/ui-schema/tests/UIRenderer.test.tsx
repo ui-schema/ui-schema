@@ -91,7 +91,7 @@ const TestUIRenderer = (props: {
 
     const [schema/*, setSchema*/] = React.useState(() => createOrderedMap({
         type: 'object',
-        $def: {
+        $defs: {
             demo_number_def: {
                 $anchor: 'demo_number',
                 type: 'number',

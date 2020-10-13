@@ -23,7 +23,7 @@ export interface JsonSchemaGeneral {
     definitions?: {
         [key: string]: JsonSchema
     }
-    $def?: {
+    $defs?: {
         [key: string]: JsonSchema
     }
     dependencies?: JsonSchemaGeneral['dependentSchemas'] | JsonSchemaGeneral['dependentRequired']
@@ -46,6 +46,9 @@ export interface JsonSchemaConditionals {
         not: JsonSchema
     }
     allOf?: JsonSchema[] | {
+        not: JsonSchema
+    }[]
+    oneOf?: JsonSchema[] | {
         not: JsonSchema
     }[]
 }

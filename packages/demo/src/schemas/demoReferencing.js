@@ -12,7 +12,7 @@ export const schemaDemoReferencing = createOrderedMap({
     /*view: {
         sizeMd: 6,
     },*/
-    // $def: {
+    // $defs: {
     definitions: {
         country_0: {
             type: 'string',

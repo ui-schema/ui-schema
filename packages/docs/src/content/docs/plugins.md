@@ -440,7 +440,7 @@ import { CombiningHandler } from '@ui-schema/ui-schema/Plugins/CombiningHandler'
 
 Combining schemas from within one schema with:
 
-- `definition` ❌
+- `definition`/`$defs`
 - `$id` ❌
 - `$ref` ❌
 - `allOf`
