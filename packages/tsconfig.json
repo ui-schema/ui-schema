@@ -55,6 +55,18 @@
             "@ui-schema/material-richtext/*": [
                 "material-richtext/src/*"
             ],
+            "@ui-schema/material-editorjs": [
+                "material-editorjs/src"
+            ],
+            "@ui-schema/material-editorjs/*": [
+                "material-editorjs/src/*"
+            ],
+            "@ui-schema/material-dnd": [
+                "material-dnd/src"
+            ],
+            "@ui-schema/material-dnd/*": [
+                "material-dnd/src/*"
+            ],
             "@ui-schema/ui-schema": [
                 "ui-schema/src"
             ],

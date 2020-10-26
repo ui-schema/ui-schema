@@ -129,6 +129,36 @@ const packages = {
             materialUiColorPicker: buildExternal('material-ui-color-picker'),
         },
     },
+    materialEditorJs: {
+        name: '@ui-schema/material-editorjs',
+        root: path.resolve(__dirname, 'packages', 'material-editorjs'),
+        entry: path.resolve(__dirname, 'packages', 'material-editorjs/src/'),
+        externals: {
+            '@ui-schema/ui-schema': buildExternal('@ui-schema/ui-schema'),
+            '@ui-schema/ds-material': buildExternal('@ui-schema/ds-material'),
+            '@material-ui/core': buildExternal('@material-ui/core'),
+            '@material-ui/icons': buildExternal('@material-ui/icons'),
+            react: buildExternal('react'),
+            'react-dom': buildExternal('react-dom'),
+            'react-editor-js': buildExternal('react-editor-js'),
+            '@editorjs/editorjs': buildExternal('@editorjs/editorjs'),
+            '@editorjs/paragraph': buildExternal('@editorjs/paragraph'),
+        },
+    },
+    materialDnd: {
+        name: '@ui-schema/material-dnd',
+        root: path.resolve(__dirname, 'packages', 'material-dnd'),
+        entry: path.resolve(__dirname, 'packages', 'material-dnd/src/'),
+        externals: {
+            '@ui-schema/ui-schema': buildExternal('@ui-schema/ui-schema'),
+            '@ui-schema/ds-material': buildExternal('@ui-schema/ds-material'),
+            '@material-ui/core': buildExternal('@material-ui/core'),
+            '@material-ui/icons': buildExternal('@material-ui/icons'),
+            react: buildExternal('react'),
+            'react-dom': buildExternal('react-dom'),
+            'react-beautiful-dnd': buildExternal('react-beautiful-dnd'),
+        },
+    },
 };
 
 packer(apps, packages, __dirname);

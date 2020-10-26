@@ -1,41 +1,54 @@
 {
-    "name": "@ui-schema/pro",
-    "version": "0.0.1",
-    "description": "Enterprise Components and Utilities for UI Schema, an advanced JSON-Schema Form Generator.",
-    "homepage": "https://ui-schema.bemit.codes/docs/pro",
+    "name": "@ui-schema/material-dnd",
+    "version": "0.1.1",
+    "description": "Drag and Drop Tools and Formbuilder for UI-Schema with Material-UI by EditorJS",
+    "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
     "license": "MIT",
     "keywords": [
         "ui-schema",
         "json-schema",
+        "mui",
+        "material",
+        "material-ui",
         "react",
         "reactjs",
         "react-component",
-        "ui-library",
-        "ux",
-        "ui",
-        "form-generator",
-        "react"
+        "form",
+        "form-builder"
     ],
     "repository": {
         "type": "git",
         "url": "https://github.com/ui-schema/ui-schema.git",
-        "directory": "packages/ui-schema-pro"
+        "directory": "packages/material-dnd"
     },
     "bugs": {
         "url": "https://github.com/ui-schema/ui-schema/issues"
     },
+    "main": "index.js",
+    "module": "esm/index.js",
     "scripts": {
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
+    "dependencies": {
+        "react-uid": "^2.2.0"
+    },
     "devDependencies": {
+        "@material-ui/core": "^4.8",
+        "@material-ui/icons": "^4.8",
+        "@ui-schema/ds-material": "~0.1.0",
         "@ui-schema/ui-schema": "~0.1.0",
+        "react-beautiful-dnd": "^13.0.0",
         "immutable": "^4.0.0-rc.12",
         "react": "^16.12"
     },
     "peerDependencies": {
-        "immutable": "^4.0.0-rc.12",
+        "@material-ui/core": "^4.8",
+        "@material-ui/icons": "^4.8",
+        "@ui-schema/ds-material": "~0.1.0",
         "@ui-schema/ui-schema": "~0.1.0",
+        "react-beautiful-dnd": "^13.0.0",
+        "immutable": "^4.0.0-rc.12",
         "react": "^16.8"
     },
     "publishConfig": {
