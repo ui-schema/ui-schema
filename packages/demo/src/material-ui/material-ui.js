@@ -6,7 +6,7 @@ import {schemaWCombining} from '../schemas/demoCombining';
 import {schemaWConditional, schemaWConditional1, schemaWConditional2} from '../schemas/demoConditional';
 import {schemaWDep1, schemaWDep2} from '../schemas/demoDependencies';
 import {dataDemoMain, schemaDemoMain, schemaUser} from '../schemas/demoMain';
-import {schemaDemoReferencing} from '../schemas/demoReferencing';
+import {schemaDemoReferencing, schemaDemoReferencingNetwork} from '../schemas/demoReferencing';
 import {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect} from '../schemas/demoSimples';
 import {schemaGrid} from '../schemas/demoGrid';
 import Grid from '@material-ui/core/Grid';
@@ -20,7 +20,12 @@ import {schemaLists} from '../schemas/demoLists';
 import {schemaNumberSlider} from '../schemas/demoNumberSlider';
 import {createDummyRenderer} from './component/MuiMainDummy';
 import {useDummy} from '../component/MainDummy';
+import {UIApiProvider} from '@ui-schema/ui-schema/UIApi/UIApi';
+import {ReferencingNetworkHandler} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
 
+const pluginStack = [...widgets.pluginStack]
+pluginStack.splice(1, 0, ReferencingNetworkHandler)
+widgets.pluginStack = pluginStack
 const DummyRenderer = createDummyRenderer(widgets);
 
 const MainStore = () => {
@@ -29,9 +34,9 @@ const MainStore = () => {
     const [schema, setSchema] = React.useState(() => createOrderedMap(schemaDemoMain));
 
     const onChange = React.useCallback(store =>
-        // todo: the interactions from `trace` are not visible in dev tools
+            // todo: the interactions from `trace` are not visible in dev tools
             trace('onchange', performance.now(), () => {
-                console.log('onChange')
+                //console.log('onChange')
                 return setStore(store)
             }),
         [setStore],
@@ -73,6 +78,10 @@ const DemoUser = () => {
     </Grid>
 };
 
+const loadSchema = (url) => {
+    return fetch(url).then(r => r.json())
+}
+
 const Main = ({classes = {}}) => {
     const {toggleDummy, getDummy} = useDummy();
 
@@ -81,6 +90,15 @@ const Main = ({classes = {}}) => {
             <Paper className={classes.paper}>
                 <MainStore/>
             </Paper>
+        </Grid>
+        <Grid item xs={12}>
+            <UIApiProvider loadSchema={loadSchema}>
+                <DummyRenderer
+                    id={'schemaReferencingNetwork'} schema={schemaDemoReferencingNetwork}
+                    toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
+                    stylePaper={{background: 'transparent'}} variant={'outlined'}
+                />
+            </UIApiProvider>
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer id={'schemaReferencing'} schema={schemaDemoReferencing} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes} stylePaper={{background: 'transparent'}} variant={'outlined'}/>

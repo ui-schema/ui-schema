@@ -38,10 +38,11 @@ Matches the rendered widget, keywords used:
 - `writeOnly` restricts that the widget does not display it's value, but can change it ❌
     - should the widget get the value or only something like `isNotEmpty`
 - [structuring, reuse, extension](https://json-schema.org/understanding-json-schema/structuring.html#recursion)
-    - recursive with `$ref`
+    - in-schema reuse with `$defs`/`definitions`, `$id`, `$ref` etc. [ReferencingHandler](/docs/plugins#referencinghandler)
+        - support json-pointer for non-definition location ❌
     - schema-id with `$id` and use `$ref` with `$id`
-        - to load partial sub-schemas lazily ❌
-        - include relatively
+        - to load partial sub-schemas lazily [ReferencingNetworkHandler](/docs/plugins#referencingnetworkhandler)
+        - support for include relatively/partial ❌
 
 >
 > extended with non-standard vocabulary for [UI purposes](#ui-schema-keywords)

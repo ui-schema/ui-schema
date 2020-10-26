@@ -72,6 +72,7 @@ JSON Schema keywords are used to validate the data, the UI is created from the d
 - extensive documentations of core, widgets and use case examples
 - Typescript definitions for core, validators, JSON Schema and UI Schema
 - complex conditionals schemas
+- loading / referencing schemas by URL, connect any API or e.g. babel dynamic loading instead
 - definitions, (recursion) references in schemas
 - JSON Schema extension: UI Schema, change design and even behaviour of widgets
 - **JSON Schema versions** supported: Draft 2019-09 / Draft-08, Draft-07, Draft-06, Draft-04

@@ -26,7 +26,8 @@ import { PluginProps, PluginType } from "@ui-schema/ui-schema/PluginStack/Plugin
 | [DependentHandler](#dependenthandler)               | @ui-schema/ui-schema | keywords `dependencies`, `dependentSchemas` | - | ✔(without property-dependencies) |
 | [ConditionalHandler](#conditionalhandler)           | @ui-schema/ui-schema | keywords `allOf`, `if`, `else`, `then` | - | ✔ |
 | [CombiningHandler](#combininghandler)               | @ui-schema/ui-schema | keyword `allOf`, `oneOf`, `anyOf`, ... | - | ✔(allOf) ❗ |
-| [CombiningNetworkHandler](#combiningnetworkhandler) | @ui-schema/ui-schema | ... | ... | ❌ |
+| [ReferencingHandler](#referencinghandler) | @ui-schema/ui-schema | keywords `$defs`, `$anchor`, `$id`, `$ref` ... | ... | ✔(only relative) |
+| [ReferencingNetworkHandler](#referencingnetworkhandler) | @ui-schema/ui-schema | keywords `$ref` | ... | ✔(only absolute/non-fragment) |
 
 ## Validation Plugins
 
@@ -79,7 +80,8 @@ export {widgets};
 - [DependentHandler](#dependenthandler)
 - [ConditionalHandler](#conditionalhandler)
 - [CombiningHandler](#combininghandler)
-- [CombiningNetworkHandler](#combiningnetworkhandler)
+- [ReferencingHandler](#referencinghandler)
+- [ReferencingNetworkHandler](#referencingnetworkhandler)
 
 ### DefaultHandler
 
@@ -194,7 +196,7 @@ Enables on-the-fly sub-schema rendering based on single property data and schema
 - does not re-render the Widget when the dependency matching didn't change
 - ❗ only checks some schema: everything [validateSchema](#validateschema) supports
 - ❗ partly-merge from dyn-schema: everything [mergeSchema](/docs/core#mergeschema) supports
-- ❗ full feature set needs [ConditionalHandler](#conditionalhandler), [CombiningHandler](#combininghandler), [CombiningNetworkHandler](#combiningnetworkhandler), which are not implemented yet
+- ❗ full feature set needs [ConditionalHandler](#conditionalhandler), [CombiningHandler](#combininghandler), [ReferencingHandler](#referencinghandler), [ReferencingNetworkHandler](#referencingnetworkhandler), which are not implemented yet
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/conditionals.html)
 
@@ -440,9 +442,6 @@ import { CombiningHandler } from '@ui-schema/ui-schema/Plugins/CombiningHandler'
 
 Combining schemas from within one schema with:
 
-- `definition`/`$defs`
-- `$id` ❌
-- `$ref` ❌
 - `allOf`
     - all defined schemas are merged together
     - each `if/else/then` is applied separately to the instance created or existing
@@ -624,11 +623,44 @@ Example with multiple `if`, nested `allOf`:
 }
 ```
 
-### CombiningNetworkHandler
+### ReferencingHandler
 
-> ❌ todo: implementation
+> ❗ supports only relative in-schema, for `$defs`/`definitions`
 
-Combining schemas from external addressed by using `$id` and `$ref`, [specification](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property)
+Combining schemas from inside a schema by using references, [specification](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property).
+
+Supports:
+
+- `definition`/`$defs` to define schemas with identification keywords `$id`, `id`, `$anchor`
+- `$ref` as selector for `$defs`
+
+Supports conditionals up to three levels, otherwise when the conditional get's rendered it supports endless recursion. Only renders the next level when no data exists, allows recursive usage without endless loops.
+
+Not yet implemented: referencing by `$ref` to a non-definitions location.
+
+### ReferencingNetworkHandler
+
+> ❗ currently only absolute urls
+>
+> ❗ currently only rendered schemas, nothing in conditionals
+>
+> not added in default `pluginStack` as it needs the additional provider `UIApiProvider`
+
+Plugin allows loading schemas from external APIs, uses the [UIApi](/docs/core/#uiapi) component to handle the schema loading and caching.
+
+Add to plugin stack:
+
+```jsx
+const pluginStack = [...widgets.pluginStack]
+pluginStack.splice(1, 0, ReferencingNetworkHandler)
+widgets.pluginStack = pluginStack
+```
+
+With this variable you get the used cache key in the `localStorage`
+
+```jsx
+import {schemaLocalCachePath} from '@ui-schema/ui-schema/UIApi/UIApi'
+```
 
 ## Create Plugins
 

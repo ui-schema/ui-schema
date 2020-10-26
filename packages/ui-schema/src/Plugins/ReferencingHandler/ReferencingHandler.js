@@ -17,9 +17,9 @@ const handleReference = (ref, schema, definitions) => {
     } else if(ref.indexOf('#') === 0) {
         const def = definitions.find(def => {
             return (
-                // till draft-06, no `$`, fragment in id
+                // till draft-06, no `$`, hashtag in id
                 def.get('id') === ref ||
-                // till draft-07, fragment in id
+                // till draft-07, hashtag in id
                 def.get('$id') === ref ||
                 // from 2019-09, fragment in anchor, without leading hashtag
                 def.get('$anchor') === ref.substr(1)
@@ -32,7 +32,8 @@ const handleReference = (ref, schema, definitions) => {
             console.error('definition not found for $ref', ref)
         }
     } else {
-        // $id when full-url id
+        // see $ref with urls in the ReferencingNetworkHandler plugin
+        // relative non-$defs / JSON-pointer
         // $recursiveRef
         // $recursiveAnchor
     }

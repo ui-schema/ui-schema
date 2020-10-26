@@ -1,0 +1,13 @@
+{
+    "$id": "http://localhost:4200/api/demo-referencing.json",
+    "type": "object",
+    "view": {
+        "spacing": 0,
+        "noGrid": true
+    },
+    "properties": {
+        "address": {
+            "$ref": "http://localhost:4200/api/address-schema.json"
+        }
+    }
+}

@@ -101,3 +101,19 @@ export const schemaDemoReferencing = createOrderedMap({
         person: {$ref: '#/definitions/person'},
     },
 });
+
+export const schemaDemoReferencingNetwork = createOrderedMap({
+    '$id': 'http://localhost:4200/api/demo-referencing.json',
+    type: 'object',
+    view: {
+        spacing: 0,
+        noGrid: true,
+    },
+    /*view: {
+        sizeMd: 6,
+    },*/
+    // $defs: {
+    properties: {
+        address: {$ref: 'http://localhost:4200/api/address-schema.json'},
+    },
+});
