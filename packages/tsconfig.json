@@ -60,6 +60,12 @@
             ],
             "@ui-schema/ui-schema/*": [
                 "ui-schema/src/*"
+            ],
+            "@ui-schema/pro": [
+                "ui-schema-pro/src"
+            ],
+            "@ui-schema/pro/*": [
+                "ui-schema-pro/src/*"
             ]
         }
     },

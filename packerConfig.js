@@ -32,8 +32,22 @@ const packages = {
         name: '@ui-schema/ui-schema',
         root: path.resolve(__dirname, 'packages', 'ui-schema'),
         entry: path.resolve(__dirname, 'packages', 'ui-schema/src/'),
-        react: buildExternal('react'),
-        'react-dom': buildExternal('react-dom'),
+        externals: {
+            react: buildExternal('react'),
+            immutable: buildExternal('immutable'),
+            'react-dom': buildExternal('react-dom'),
+        },
+    },
+    uiSchemaPro: {
+        name: '@ui-schema/pro',
+        root: path.resolve(__dirname, 'packages', 'ui-schema-pro'),
+        entry: path.resolve(__dirname, 'packages', 'ui-schema-pro/src/'),
+        externals: {
+            react: buildExternal('react'),
+            immutable: buildExternal('immutable'),
+            'react-dom': buildExternal('react-dom'),
+            '@ui-schema/ui-schema': buildExternal('@ui-schema/ui-schema'),
+        },
     },
     dsMaterial: {
         // noClean: true,
