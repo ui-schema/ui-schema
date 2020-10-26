@@ -64,8 +64,9 @@ Components:
             - `rows` minimum rows visible
             - `rowsMax` maximum rows visible
             - if both are set, the `textarea` grows until `rowsMax` is reached
+            - `hideTitle` does not show the title, but will use it as aria-label
     - `TextIconRenderer` supports an icon additionally
-- `NumberRenderer` supports numbers
+- `NumberRenderer` supports number
     - `NumberIconRenderer` supports an icon additionally
 - `StringRenderer` base component used by both others and for `string`
     - `StringIconRenderer` supports an icon additionally

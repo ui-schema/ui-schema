@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextField} from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
 import {useUID} from 'react-uid';
 import {TransTitle, updateValue, updateValidity, mapSchema, checkNativeValidity} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
@@ -40,9 +40,12 @@ export const StringRenderer = ({
         }
     }, [valid]);
 
+    const hideTitle = schema.getIn(['view', 'hideTitle'])
+
     return <React.Fragment>
         <TextField
-            label={<TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>}
+            label={hideTitle ? undefined : <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>}
+            aria-label={hideTitle ? <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/> : undefined}
             type={format || type}
             multiline={multiline}
             required={required}

@@ -2,7 +2,7 @@ import React from 'react';
 import {Grid} from '@material-ui/core';
 import {NextPluginRenderer} from '@ui-schema/ui-schema';
 
-const SchemaGridItem = ({schema, children, defaultMd}) => {
+const SchemaGridItem = ({schema, children, defaultMd, style, className, classes}) => {
     const view = schema ? schema.get('view') : undefined;
 
     const viewXs = view ? (view.get('sizeXs') || 12) : 12;
@@ -18,6 +18,9 @@ const SchemaGridItem = ({schema, children, defaultMd}) => {
         md={viewMd}
         lg={viewLg}
         xl={viewXl}
+        style={style}
+        className={className}
+        classes={classes}
     >
         {children}
     </Grid>
