@@ -13,6 +13,7 @@ import {AccordionsRenderer} from '@ui-schema/ds-material/Widgets/Accordions';
 import {RootRenderer, GroupRenderer} from './Grid';
 import {pluginStack} from './pluginStack';
 import {validators} from '@ui-schema/ui-schema/Validators/validators';
+import {CardRenderer, FormGroup, LabelBox} from '@ui-schema/ds-material/Widgets';
 
 const MyFallbackComponent = ({type, widget}) => (
     <div>
@@ -49,5 +50,8 @@ export const widgets = {
         SelectMulti,
         Stepper,
         Step,
+        Card: CardRenderer,
+        LabelBox,
+        FormGroup,
     },
 }

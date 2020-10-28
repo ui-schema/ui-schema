@@ -272,7 +272,7 @@ Typings:
 - [`import {JsonSchema} from '@ui-schema/ui-schema'`](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/JsonSchema.d.ts)
 - [`import {UISchema} from '@ui-schema/ui-schema'`](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/UISchema.d.ts)
 
-Vocabularies:
+Vocabularies (**not up to date**):
 
 - [View](https://github.com/ui-schema/ui-schema/blob/master/schema/2019-09/meta/view.json)
 - [Widget](https://github.com/ui-schema/ui-schema/blob/master/schema/2019-09/meta/widget.json)
