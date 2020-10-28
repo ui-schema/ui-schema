@@ -86,7 +86,7 @@ const Main = ({classes = {}}) => {
     const {toggleDummy, getDummy} = useDummy();
 
     return <React.Fragment>
-        <Grid item xs={12}>
+        <Grid item xs={12} style={{display: 'none'}}>
             <Paper className={classes.paper}>
                 <MainStore/>
             </Paper>
@@ -94,7 +94,7 @@ const Main = ({classes = {}}) => {
         <Grid item xs={12}>
             <UIApiProvider loadSchema={loadSchema}>
                 <DummyRenderer
-                    id={'schemaReferencingNetwork'} schema={schemaDemoReferencingNetwork}
+                    id={'schemaReferencingNetwork'} schema={schemaDemoReferencingNetwork} open
                     toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
                     stylePaper={{background: 'transparent'}} variant={'outlined'}
                 />

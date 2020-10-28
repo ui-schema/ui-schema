@@ -1,7 +1,7 @@
 import {createOrderedMap} from '@ui-schema/ui-schema';
 
 export const schemaDemoReferencing = createOrderedMap({
-    '$id': 'http://localhost:4200/schemas/demoReferencing.json',
+    '$id': 'http://localhost:4200/api/demo-referencing.json',
     type: 'object',
     widget: 'Accordions',
     title: 'headline',
@@ -103,17 +103,11 @@ export const schemaDemoReferencing = createOrderedMap({
 });
 
 export const schemaDemoReferencingNetwork = createOrderedMap({
-    '$id': 'http://localhost:4200/api/demo-referencing.json',
+    '$id': 'http://localhost:4200/api/demo-referencing-network.json',
     type: 'object',
-    view: {
-        spacing: 0,
-        noGrid: true,
-    },
-    /*view: {
-        sizeMd: 6,
-    },*/
-    // $defs: {
     properties: {
         address: {$ref: 'http://localhost:4200/api/address-schema.json'},
+        shipping_address: {$ref: 'address-schema.json'},
+        business_country: {$ref: 'address-schema.json/#properties/country'},
     },
 });

@@ -1,8 +1,7 @@
 import React from 'react';
 import {List, Map} from 'immutable';
 import {NextPluginRenderer} from '@ui-schema/ui-schema/PluginStack';
-
-const DefinitionsContext = React.createContext(undefined);
+import {useRefs, ReferencingProvider} from './ReferencingProvider';
 
 const handleReference = (ref, schema, definitions) => {
     if(ref.indexOf('#/definitions/') === 0 || ref.indexOf('#/$defs/') === 0) {
@@ -100,12 +99,12 @@ const parseSchemaReferences = (schema, definitions, doRecursive = 0) => {
 
 const ReferencingRenderer = (props) => {
     let {schema} = props;
-    const definitions = React.useContext(DefinitionsContext);
+    const {definitions} = useRefs();
 
     const schemaRefPrev = React.useRef(undefined);
     const schemaRef = React.useRef(undefined);
 
-    if(schemaRef.current && schemaRefPrev.current && schemaRefPrev.current.equals(schema)) {
+    if(schemaRef.current && schemaRefPrev.current?.equals(schema)) {
         schema = schemaRef.current;
     } else {
         schemaRefPrev.current = schema;
@@ -119,13 +118,14 @@ const ReferencingRenderer = (props) => {
 export const ReferencingHandler = (props) => {
     let {schema} = props;
 
+    const id = schema.get('$id')
     const definitions = schema.get('definitions') || schema.get('$defs')
 
     return <React.Fragment>
-        {definitions ?
-            <DefinitionsContext.Provider value={definitions}>
+        {definitions || id ?
+            <ReferencingProvider definitions={definitions} id={id}>
                 <ReferencingRenderer {...props}/>
-            </DefinitionsContext.Provider> :
+            </ReferencingProvider> :
             <ReferencingRenderer {...props}/>}
     </React.Fragment>;
 };

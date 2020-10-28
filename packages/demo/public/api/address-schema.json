@@ -1,5 +1,6 @@
 {
     "type": "object",
+    "widget": "FormGroup",
     "properties": {
         "street_address": {
             "type": "string"
@@ -9,11 +10,19 @@
         },
         "state": {
             "type": "string"
+        },
+        "country": {
+            "type": "string",
+            "widget": "Select",
+            "enum": [
+                "Germany",
+                "France",
+                "Italy"
+            ]
         }
     },
     "required": [
-        "street_address",
         "city",
-        "state"
+        "country"
     ]
 }
