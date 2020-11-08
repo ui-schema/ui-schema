@@ -6,9 +6,8 @@ describe('JSONPointer', () => {
     test.each(testCases)(
         'pointerToKeySeq() %j',
         (testData) => {
-            const keySeq = pointerToKeySeq(testData.selector)
-            // @ts-ignore
-            expect(keySeq.equals(testData.listSelector)).toBe(true)
+            const keySeq = pointerToKeySeq(testData.pointer)
+            expect(keySeq.equals(testData.keySeqPointer)).toBe(true)
         }
     )
 })

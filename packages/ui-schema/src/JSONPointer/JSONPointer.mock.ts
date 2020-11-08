@@ -1,99 +1,113 @@
 import { List } from 'immutable'
 
 export const testCases: {
-    description: string
-    selector: string
-    listSelector?: List<string>
+    pointer: string
+    keySeqPointer?: List<string | number>
     data: Object
     value: string
 }[] = [
     // testCases and description from:
     // https://github.com/json-schema-org/JSON-Schema-Test-Suite/blob/aa71850ef93c7e6e9bb2f7e36d084cf0c45d8be1/tests/draft2019-09/optional/format/json-pointer.json
     {
-        'description': 'a valid JSON-pointer',
-        'selector': '/foo/bar~0/baz~1/%a',
+        // a valid JSON-pointer
+        pointer: '/foo/bar~0/baz~1/%a',
+        keySeqPointer: List(['foo', 'bar~', 'baz/', '%a']),
         data: {
             foo: {'bar~': {'baz/': {'%a': 'value'}}},
         },
         value: 'value',
     },/*
     {
-        'description': 'valid JSON-pointer with empty segment',
-        'selector': '/foo//bar',
+        // valid JSON-pointer with empty segment
+        pointer: '/foo//bar',
     },
     {
-        'description': 'valid JSON-pointer with the last empty segment',
-        'selector': '/foo/bar/',
+        // valid JSON-pointer with the last empty segment
+        pointer: '/foo/bar/',
     },*/
     {
-        'description': 'valid JSON-pointer as stated in RFC 6901 #1',
-        'selector': '',
-        data: {
-            foo: {'bar~': {'baz/': {'%a': 'value'}}},
-        },
+        // valid JSON-pointer as stated in RFC 6901 #1
+        pointer: '',
+        keySeqPointer: List([]),
+        data: 'value',
         value: 'value',
     },
     {
-        'description': 'valid JSON-pointer as stated in RFC 6901 #2',
-        'selector': '/foo',
+        // valid JSON-pointer as stated in RFC 6901 #2
+        pointer: '/foo',
+        keySeqPointer: List(['foo']),
         data: {
             foo: 'value',
         },
         value: 'value',
     },
     {
-        'description': 'valid JSON-pointer as stated in RFC 6901 #3',
-        'selector': '/foo/0',
+        // valid JSON-pointer as stated in RFC 6901 #3
+        pointer: '/foo/0',
+        keySeqPointer: List(['foo', 0]),
         data: {
             foo: ['bar', 'baz'],
         },
         value: 'bar',
     },
     {
-        'description': 'valid JSON-pointer as stated in RFC 6901 #4',
-        'selector': '/',
-        data: {
-            foo: 'bar',
-        },
+        // valid JSON-pointer as stated in RFC 6901 #4
+        pointer: '/',
+        keySeqPointer: List([]),
+        data: 'bar',
         value: 'bar',
     },
     {
-        'description': 'valid JSON-pointer as stated in RFC 6901 #9',
-        'selector': '/i\\j',
+        // valid JSON-pointer as stated in RFC 6901 #9
+        pointer: '/i\\j',
+        keySeqPointer: List(['i\\j']),
         data: {
             'i\\j': 'value',
         },
         value: 'value',
     },
     {
-        'description': 'valid JSON-pointer as stated in RFC 6901 #11',
-        'selector': '/ ',
+        // valid JSON-pointer as stated in RFC 6901 #11
+        pointer: '/ ',
+        keySeqPointer: List([' ']),
         data: {
             ' ': 'value',
         },
         value: 'value',
     },
     /*{
-        'description': 'valid JSON-pointer used adding to the last array position',
-        'selector': '/foo/-',
+        // valid JSON-pointer used adding to the last array position
+        pointer: '/foo/-',
         data: {
             'foo': ['bar', 'baz'],
         },
         value: 'value',
     },*/
     {
-        'description': 'valid JSON-pointer (- used as object member name)',
-        'selector': '/foo/-/bar',
+        // valid JSON-pointer (- used as object member name)
+        pointer: '/foo/-/bar',
+        keySeqPointer: List(['foo', '-', 'bar']),
         data: {
             'foo': {
                 '-': {'bar': 'a', 'baz': 'b'},
             },
         },
         value: 'a',
+    },
+    {
+        // valid JSON-pointer (float used as object member name)
+        pointer: '/foo/1.0',
+        keySeqPointer: List(['foo', '1.0']),
+        data: {
+            'foo': {
+                '1.0': 'var',
+            },
+        },
+        value: 'var',
     },/*
     {
-        'description': 'Fragment / URI encoded selectors',
-        'selector': '#/c%d',
-        'selectorUri': '#/c%25d',// uri encoded
+        // Fragment / URI encoded pointers
+        pointer: '#/c%d',
+        'pointerUri': '#/c%25d',// uri encoded
     },*/
 ]

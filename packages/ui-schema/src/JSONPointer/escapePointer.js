@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-export const escapePointer = (selector) => {
-    return ''
+export const escapePointer = (pointer) => {
+    return pointer.replace(/~/g, '~0').replace(/\//g, '~1')
 }

@@ -1,2 +1,2 @@
-export function unescapePointer(selector): string
+export function unescapePointer(pointer): string
 

@@ -8,8 +8,8 @@ describe('JSONPointer', () => {
         'resolvePointer() %j',
         (testData) => {
             expect(
-                resolvePointer(testData.selector, fromJS(testData.data)) === testData.value
-            ).toBe(true)
+                resolvePointer(testData.pointer, fromJS(testData.data))
+            ).toBe(testData.value)
         }
     )
 })

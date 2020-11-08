@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 export const unescapePointer = (pointer) => {
-    return ''
+    return pointer.replace(/~1/g, '/').replace(/~0/g, '~')
 }
