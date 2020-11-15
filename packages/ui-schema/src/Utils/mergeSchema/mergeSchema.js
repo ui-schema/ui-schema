@@ -1,10 +1,12 @@
+import {List, Map} from 'immutable';
+
 /**
  * Merges schema `b` into `a`
  * @param {Map} aSchema
  * @param {Map} bSchema
  * @return {*}
  */
-export const mergeSchema = (aSchema, bSchema) => {
+export const mergeSchema = (aSchema, bSchema = Map()) => {
     if(bSchema.get('type')) {
         aSchema = aSchema.set('type', bSchema.get('type'));
     }
@@ -14,7 +16,19 @@ export const mergeSchema = (aSchema, bSchema) => {
 
     if(bSchema.get('properties')) {
         if(aSchema.get('properties')) {
-            aSchema = aSchema.set('properties', aSchema.get('properties').mergeDeep(bSchema.get('properties')));
+            aSchema = aSchema.update(
+                'properties', properties => {
+                    properties = properties.merge(
+                        bSchema.get('properties').map(
+                            (prop, key) =>
+                                properties.get(key) ? mergeSchema(properties.get(key), prop) : prop
+                            ,
+                        ),
+                    )
+
+                    return properties
+                },
+            )
         } else {
             aSchema = aSchema.set('properties', bSchema.get('properties'));
         }
@@ -32,7 +46,7 @@ export const mergeSchema = (aSchema, bSchema) => {
         aSchema = aSchema.set('widget', bSchema.get('widget'));
     }
     if(bSchema.get('enum')) {
-        aSchema = aSchema.set('enum', bSchema.get('enum'));
+        aSchema = aSchema.update('enum', (enum_ = List()) => enum_.concat(bSchema.get('enum')).toSet().toList());
     }
     if(bSchema.get('const')) {
         aSchema = aSchema.set('const', bSchema.get('const'));
