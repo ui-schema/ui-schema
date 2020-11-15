@@ -1,7 +1,6 @@
 import React from 'react';
 
 const ReferencingContext = React.createContext({
-    id: '',
     definitions: undefined,
 });
 
@@ -53,18 +52,13 @@ export const makeUrlFromRef = (schemaRef, id) => {
     return schemaUrl
 }
 
-export const ReferencingProvider = ({id, definitions, children}) => {
-    // todo: it could be, for e.g. dynamically included schemas,
-    //  that they introduce a new schema $id, $defs and so on,
-    //  the subschema must use those, instead of the root-schema,
-    //  but it should maybe inherit `$defs`, check spec.!
+export const ReferencingProvider = ({definitions, children}) => {
     const prevDef = React.useRef(undefined)
     const sameDef = prevDef.current?.equals(definitions)
 
     const context = React.useMemo(() => ({
-        id,
         definitions,
-    }), [id, sameDef])
+    }), [sameDef])
 
     return <ReferencingContext.Provider value={context}>
         {children}

@@ -111,3 +111,29 @@ export const schemaDemoReferencingNetwork = createOrderedMap({
         business_country: {$ref: 'address-schema.json/#properties/country'},
     },
 });
+
+export const schemaDemoReferencingNetworkB = createOrderedMap({
+    '$id': 'http://localhost:4200/api/demo-referencing-network-b.json',
+    type: 'object',
+    properties: {
+        address: {
+            type: 'object',
+            allOf: [
+                {$ref: 'http://localhost:4200/api/address-schema.json'},
+                {
+                    properties: {
+                        country: {
+                            'enum': [
+                                'United-Kingdom',
+                                'Scotland',
+                                'Ireland',
+                                'Wales',
+                            ],
+                        },
+                    },
+                },
+                {$ref: 'http://localhost:4200/api/user-schema.json'},
+            ],
+        },
+    },
+});

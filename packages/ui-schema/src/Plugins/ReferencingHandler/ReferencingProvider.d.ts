@@ -1,9 +1,9 @@
 import React from 'react'
 import { OrderedMap } from 'immutable'
+import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface ReferencingContext {
-    id: string
-    definitions?: OrderedMap<string, any>
+    definitions?: OrderedMap<string, StoreSchemaType>
 }
 
 export function ReferencingProvider({id, definitions}: React.PropsWithChildren<ReferencingContext>)

@@ -6,7 +6,7 @@ import {schemaWCombining} from '../schemas/demoCombining';
 import {schemaWConditional, schemaWConditional1, schemaWConditional2} from '../schemas/demoConditional';
 import {schemaWDep1, schemaWDep2} from '../schemas/demoDependencies';
 import {dataDemoMain, schemaDemoMain, schemaUser} from '../schemas/demoMain';
-import {schemaDemoReferencing, schemaDemoReferencingNetwork} from '../schemas/demoReferencing';
+import {schemaDemoReferencing, schemaDemoReferencingNetwork, schemaDemoReferencingNetworkB} from '../schemas/demoReferencing';
 import {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect} from '../schemas/demoSimples';
 import {schemaGrid} from '../schemas/demoGrid';
 import Grid from '@material-ui/core/Grid';
@@ -24,7 +24,11 @@ import {UIApiProvider} from '@ui-schema/ui-schema/UIApi/UIApi';
 import {ReferencingNetworkHandler} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
 
 const pluginStack = [...widgets.pluginStack]
-pluginStack.splice(1, 0, ReferencingNetworkHandler)
+// the referencing network handler should be at first position
+// must be before the `ReferencingHandler`, thus if the root schema for the level is a network schema,
+// the network handler can download it, and the normal referencing handler may handle references inside of e.g. `if`
+// maybe the network handlers adds a generic prop `resolveNetworkRef`, to request network schema inside e.g. an `if` from inside the ReferencingHandler
+pluginStack.splice(0, 0, ReferencingNetworkHandler)
 widgets.pluginStack = pluginStack
 const DummyRenderer = createDummyRenderer(widgets);
 
@@ -86,19 +90,24 @@ const Main = ({classes = {}}) => {
     const {toggleDummy, getDummy} = useDummy();
 
     return <React.Fragment>
-        <Grid item xs={12} style={{display: 'none'}}>
+        <Grid item xs={12}>
             <Paper className={classes.paper}>
                 <MainStore/>
             </Paper>
         </Grid>
         <Grid item xs={12}>
-            <UIApiProvider loadSchema={loadSchema}>
-                <DummyRenderer
-                    id={'schemaReferencingNetwork'} schema={schemaDemoReferencingNetwork} open
-                    toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
-                    stylePaper={{background: 'transparent'}} variant={'outlined'}
-                />
-            </UIApiProvider>
+            <DummyRenderer
+                id={'schemaReferencingNetwork'} schema={schemaDemoReferencingNetwork} open
+                toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
+                stylePaper={{background: 'transparent'}} variant={'outlined'}
+            />
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer
+                id={'schemaReferencingNetworkB'} schema={schemaDemoReferencingNetworkB} open
+                toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
+                stylePaper={{background: 'transparent'}} variant={'outlined'}
+            />
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer id={'schemaReferencing'} schema={schemaDemoReferencing} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes} stylePaper={{background: 'transparent'}} variant={'outlined'}/>
@@ -150,5 +159,7 @@ const Main = ({classes = {}}) => {
 };
 
 export default () => <AppTheme>
-    <Dashboard main={Main}/>
+    <UIApiProvider loadSchema={loadSchema}>
+        <Dashboard main={Main}/>
+    </UIApiProvider>
 </AppTheme>;
