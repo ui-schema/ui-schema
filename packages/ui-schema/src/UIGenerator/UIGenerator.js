@@ -19,7 +19,7 @@ export const UIGenerator = ({
 export const UIProvider = ({
                                children,
                                schema,
-                               store, onChange,
+                               store, onChange, onChangeNext,
                                widgets, t,
                                showValidity,
                            }) => {
@@ -27,7 +27,7 @@ export const UIProvider = ({
         console.error('given store must be a valid UIStore')
         return null;
     }
-    return <UIStoreProvider store={store} onChange={onChange} schema={schema}>
+    return <UIStoreProvider store={store} onChange={onChange} onChangeNext={onChangeNext} schema={schema}>
         <UIMetaProvider widgets={widgets} t={t} showValidity={showValidity}>
             {children}
         </UIMetaProvider>

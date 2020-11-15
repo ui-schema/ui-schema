@@ -13,7 +13,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import {Button} from '@material-ui/core';
 import {widgets} from '@ui-schema/ds-material';
-import {UIGenerator, isInvalid, createOrderedMap, createMap, createStore, createEmptyStore} from '@ui-schema/ui-schema';
+import {UIGenerator, isInvalid, createOrderedMap, createMap, createStore, createEmptyStore, prependKey} from '@ui-schema/ui-schema';
 import {MuiSchemaDebug} from './component/MuiSchemaDebug';
 import {browserT} from '../t';
 import {schemaLists} from '../schemas/demoLists';
@@ -22,6 +22,7 @@ import {createDummyRenderer} from './component/MuiMainDummy';
 import {useDummy} from '../component/MainDummy';
 import {UIApiProvider} from '@ui-schema/ui-schema/UIApi/UIApi';
 import {ReferencingNetworkHandler} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
+import {shouldDeleteOnEmpty} from '@ui-schema/ui-schema/UIStore/UIStore';
 
 const pluginStack = [...widgets.pluginStack]
 // the referencing network handler should be at first position
@@ -31,6 +32,47 @@ const pluginStack = [...widgets.pluginStack]
 pluginStack.splice(0, 0, ReferencingNetworkHandler)
 widgets.pluginStack = pluginStack
 const DummyRenderer = createDummyRenderer(widgets);
+
+const storeUpdater = (storeKeys, values, deleteOnEmpty, type) =>
+    store => {
+        const {value, internalValue} = values
+
+        if(value) {
+            let deleteValue = false
+            store = store.updateIn(
+                storeKeys.size ? prependKey(storeKeys, 'values') : 'values',
+                oldValue => {
+                    oldValue = value(oldValue)
+                    if(shouldDeleteOnEmpty(oldValue, deleteOnEmpty, type)) {
+                        deleteValue = true
+                    }
+                    return oldValue
+                },
+            )
+            if(deleteValue) {
+                store = store.deleteIn(storeKeys.size ? prependKey(storeKeys, 'values') : ['values']);
+            }
+        }
+        if(internalValue) {
+            let deleteInternalValue = false
+            store = store.updateIn(
+                storeKeys.size ? prependKey(storeKeys, 'internals') : 'internals',
+                oldValue => {
+                    oldValue = internalValue(oldValue)
+                    if(shouldDeleteOnEmpty(oldValue, deleteOnEmpty, type)) {
+                        deleteInternalValue = true
+                    }
+                    return oldValue
+                },
+            )
+            if(deleteInternalValue) {
+                store = store.deleteIn(storeKeys.size ? prependKey(storeKeys, 'internals') : ['internals']);
+            }
+        }
+
+        return store
+    }
+
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
@@ -46,11 +88,20 @@ const MainStore = () => {
         [setStore],
     )
 
+    const onChangeNext = React.useCallback((storeKeys, values, deleteOnEmpty, type) => {
+        setStore(prevStore => {
+            const newStore = storeUpdater(storeKeys, values, deleteOnEmpty, type)(prevStore)
+            console.log(newStore.getIn(prependKey(storeKeys, 'values')), prevStore.getIn(prependKey(storeKeys, 'values')), storeKeys.toJS(), deleteOnEmpty, type)
+            return newStore
+        })
+    }, [setStore])
+
     return <React.Fragment>
         <UIGenerator
             schema={schema}
             store={store}
             onChange={onChange}
+            onChangeNext={onChangeNext}
             widgets={widgets}
             showValidity={showValidity}
             t={browserT}

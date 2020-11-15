@@ -1,6 +1,6 @@
-import React from "react";
-import {createEmptyStore, isInvalid, UIGenerator} from "@ui-schema/ui-schema";
-import {browserT} from "../t";
+import React from 'react';
+import {createEmptyStore, isInvalid, UIGenerator} from '@ui-schema/ui-schema';
+import {browserT} from '../t';
 
 const MainDummy = ({schema, Debugger, Button, widgets}) => {
     const [showValidity, setShowValidity] = React.useState(false);
@@ -37,7 +37,7 @@ const useDummy = () => {
     };
 
     return {
-        toggleDummy, getDummy
+        toggleDummy, getDummy,
     }
 };
 

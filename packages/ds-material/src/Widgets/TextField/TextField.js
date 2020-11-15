@@ -18,7 +18,7 @@ export const convertStringToNumber = (value, type) => {
 export const StringRenderer = ({
                                    type,
                                    multiline, rows, rowsMax,
-                                   storeKeys, ownKey, schema, value, onChange,
+                                   storeKeys, ownKey, schema, value, onChange, onChangeNext,
                                    showValidity, valid, errors, required,
                                    style,
                                    onClick, onFocus, onBlur, onKeyUp, onKeyDown, onKeyPress,
@@ -66,9 +66,18 @@ export const StringRenderer = ({
             id={'uis-' + uid}
             style={style}
             onKeyDown={onKeyDown}
-            onChange={(e) =>
-                onChange(updateValue(storeKeys, convertStringToNumber(e.target.value, schema.get('type')), schema.get('deleteOnEmpty') || required, schema.get('type')))
-            }
+            onChange={(e) => {
+                const val = e.target.value
+                if(onChangeNext) {
+                    onChangeNext(
+                        storeKeys, {value: () => convertStringToNumber(val, schema.get('type'))},
+                        schema.get('deleteOnEmpty') || required,
+                        schema.get('type'),
+                    )
+                } else {
+                    onChange(updateValue(storeKeys, convertStringToNumber(e.target.value, schema.get('type')), schema.get('deleteOnEmpty') || required, schema.get('type')))
+                }
+            }}
             InputLabelProps={{shrink: schema.getIn(['view', 'shrink'])}}
             InputProps={InputProps}
             inputProps={inputProps}

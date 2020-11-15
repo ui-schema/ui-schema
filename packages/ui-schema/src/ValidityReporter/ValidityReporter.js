@@ -15,11 +15,17 @@ export const ValidityReporter = (props) => {
 
     React.useEffect(() => {
         // todo: use `errors` instead of `valid`, but only if not `valid` and `hasErrors`
-        onChange(updateValidity(storeKeysPrev.current, valid));
-
-        // delete own validity state on component unmount
-        return () => onChange(cleanUp(storeKeysPrev.current, 'validity'));
+        if(sameStoreKeys) {
+            onChange(updateValidity(storeKeysPrev.current, valid));
+        }
     }, [valid, onChange, sameStoreKeys, storeKeysPrev]);
+
+    React.useEffect(() => {
+        // delete own validity state on component unmount
+        return sameStoreKeys ? () => {
+            onChange(cleanUp(storeKeysPrev.current, 'validity'));
+        } : undefined
+    }, [onChange, sameStoreKeys, storeKeysPrev]);
 
     return <NextPluginRenderer {...props} valid={valid} showValidity={showValidity}/>;
 };

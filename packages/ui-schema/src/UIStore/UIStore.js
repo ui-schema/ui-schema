@@ -60,9 +60,9 @@ export const createEmptyStore = (type = 'object') => createStore(
 );
 
 export const useUI = () => {
-    const {store, onChange, schema} = React.useContext(UIStoreContext);
+    const {store, onChange, onChangeNext, schema} = React.useContext(UIStoreContext);
 
-    return {store, onChange, schema};
+    return {store, onChange, onChangeNext, schema};
 };
 
 // todo: remove relT here, so Trans is fully optional
@@ -82,9 +82,10 @@ export const useUIMeta = () => {
  */
 export const extractValue = (Component) => {
     const ExtractValue = p => {
-        const {store, onChange} = useUI();
+        const {store, onChange, onChangeNext} = useUI();
+
         return <Component
-            {...p} onChange={onChange}
+            {...p} onChange={onChange} onChangeNext={onChangeNext}
             value={p.storeKeys.size ?
                 (Map.isMap(store.getValues()) || List.isList(store.getValues()) ? store.getValues().getIn(p.storeKeys) : undefined)
                 : store.getValues()}
@@ -118,8 +119,9 @@ export const prependKey = (storeKeys, key) =>
         [key, ...storeKeys] :
         storeKeys.splice(0, 0, key);
 
-const shouldHandleRequired = (value, required, type) => {
-    if(!required && type !== 'number') return false
+const shouldHandleRequired = (value, force, type) => {
+    // todo: why is the type number check here
+    if(!force && type !== 'number') return false
 
     switch(type) {
         case 'string':
@@ -136,6 +138,8 @@ const shouldHandleRequired = (value, required, type) => {
 
     return false;
 };
+
+export const shouldDeleteOnEmpty = shouldHandleRequired
 
 const updateRawValue = (store, storeKeys, key, value, required = undefined, type = undefined) => {
     if(shouldHandleRequired(value, required, type)) {

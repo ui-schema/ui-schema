@@ -359,6 +359,7 @@ const schemaDemoMain = {
         },
     },
     required: [
+        'info',
         'layouts',
         'size',
         'age',
