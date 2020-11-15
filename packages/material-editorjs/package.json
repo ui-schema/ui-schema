@@ -1,0 +1,63 @@
+{
+    "name": "@ui-schema/material-editorjs",
+    "version": "0.0.1",
+    "description": "EditorJS for UI-Schema with Material-UI",
+    "homepage": "https://ui-schema.bemit.codes",
+    "author": "Michael Becker <michael@bemit.codes>",
+    "license": "MIT",
+    "keywords": [
+        "ui-schema",
+        "json-schema",
+        "mui",
+        "material",
+        "material-ui",
+        "react",
+        "reactjs",
+        "react-component",
+        "editorjs",
+        "editor-js",
+        "react-editor-js",
+        "form"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ui-schema/ui-schema.git",
+        "directory": "packages/material-editorjs"
+    },
+    "bugs": {
+        "url": "https://github.com/ui-schema/ui-schema/issues"
+    },
+    "main": "index.js",
+    "module": "esm/index.js",
+    "scripts": {
+        "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
+    },
+    "dependencies": {
+        "react-uid": "^2.2.0"
+    },
+    "devDependencies": {
+        "@material-ui/core": "^4.8",
+        "@material-ui/icons": "^4.8",
+        "react-editor-js": "^1.6.0",
+        "@editorjs/editorjs": "^2.19.0",
+        "@editorjs/paragraph": "^2.8.0",
+        "@ui-schema/ds-material": "~0.1.0",
+        "@ui-schema/ui-schema": "~0.1.0",
+        "immutable": "^4.0.0-rc.12",
+        "react": "^16.12"
+    },
+    "peerDependencies": {
+        "@material-ui/core": "^4.8",
+        "@material-ui/icons": "^4.8",
+        "@ui-schema/ds-material": "~0.1.0",
+        "@ui-schema/ui-schema": "~0.1.0",
+        "immutable": "^4.0.0-rc.12",
+        "react-editor-js": "^1.6.0",
+        "@editorjs/editorjs": "^2.19.0",
+        "@editorjs/paragraph": "^2.8.0",
+        "react": "^16.8"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

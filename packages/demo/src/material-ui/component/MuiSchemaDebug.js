@@ -1,5 +1,4 @@
 import React from 'react';
-
 import Paper from '@material-ui/core/Paper';
 import useTheme from '@material-ui/core/styles/useTheme';
 import {ImmutableEditor, themeMaterial} from "react-immutable-editor";
@@ -29,7 +28,4 @@ const MuiJsonEditor = p => {
     </Paper>
 };
 
-const MuiSchemaDebug = p => <SchemaDebug StyledEditor={MuiJsonEditor} {...p}/>;
-
-
-export {MuiSchemaDebug}
+export const MuiSchemaDebug = p => <SchemaDebug StyledEditor={MuiJsonEditor} {...p}/>;

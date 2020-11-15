@@ -3,29 +3,29 @@ import {NextPluginRenderer} from '../PluginStack';
 import {cleanUp, updateValidity} from '../UIStore';
 
 export const ValidityReporter = (props) => {
-    //const storeKeysPrev = React.useRef(undefined);
-    const {
-        onChange, showValidity,
-        storeKeys,
-    } = props;
-    let {errors, valid} = props;
+    const {onChange, showValidity, storeKeys, valid} = props;
 
-    // todo: somehow validity for e.g. stepper is not set correctly when effect uses sameStoreKeys
-    //const sameStoreKeys = storeKeysPrev.current && storeKeysPrev.current.equals(storeKeys);
+    const storeKeysPrev = React.useRef(storeKeys);
 
-    //if(!sameStoreKeys) {
-        //storeKeysPrev.current = storeKeys;
-    //}
+    const sameStoreKeys = storeKeysPrev.current?.equals(storeKeys);
+
+    if(!sameStoreKeys) {
+        storeKeysPrev.current = storeKeys;
+    }
 
     React.useEffect(() => {
-        // todo: use `errors` instead of `valid`, but only if `valid` and `hasErrors`
-        onChange(updateValidity(storeKeys, valid));
+        // todo: use `errors` instead of `valid`, but only if not `valid` and `hasErrors`
+        if(sameStoreKeys) {
+            onChange(updateValidity(storeKeysPrev.current, valid));
+        }
+    }, [valid, onChange, sameStoreKeys, storeKeysPrev]);
 
-        return () => {
-            // delete own validity state on component unmount
-            onChange(cleanUp(storeKeys, 'validity'));
-        };
-    }, [valid/*, sameStoreKeys*/]);
+    React.useEffect(() => {
+        // delete own validity state on component unmount
+        return sameStoreKeys ? () => {
+            onChange(cleanUp(storeKeysPrev.current, 'validity'));
+        } : undefined
+    }, [onChange, sameStoreKeys, storeKeysPrev]);
 
-    return <NextPluginRenderer {...props} valid={valid} errors={errors} showValidity={showValidity}/>;
+    return <NextPluginRenderer {...props} valid={valid} showValidity={showValidity}/>;
 };

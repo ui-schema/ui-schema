@@ -1,1 +1,1 @@
-export * from './PluginStack'
+export * from './WidgetRenderer'

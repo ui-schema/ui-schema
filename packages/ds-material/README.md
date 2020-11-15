@@ -8,7 +8,7 @@
 [![react compatibility](https://img.shields.io/badge/React-%3E%3D16.8-success?style=flat-square&logo=react)](https://reactjs.org/)
 [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-material?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-material)
 [![MIT license](https://img.shields.io/npm/l/@ui-schema/ds-material?style=flat-square)](https://github.com/ui-schema/ui-schema/blob/master/LICENSE)
-![Typed with TypeScript](https://flat.badgen.net/badge/icon/Typed?icon=typescript&label&labelColor=blue&color=555555)
+![Typed](https://flat.badgen.net/badge/icon/Typed?icon=typescript&label&labelColor=blue&color=555555)
 
 [Material Design](https://material.io) binding to work with [@ui-schema/ui-schema](https://github.com/ui-schema/ui-schema), using [@material-ui](https://github.com/mui-org/material-ui/) to generate UI and forms out of JSON Schema.
 

@@ -1,14 +1,14 @@
-import React from "react";
-import {Map, List} from "immutable";
+import React from 'react';
+import {Map, List} from 'immutable';
 import {
     FormControl, FormLabel, FormControlLabel, RadioGroup, Radio,
-} from "@material-ui/core";
-import {TransTitle, Trans, beautifyKey, updateValue,} from "@ui-schema/ui-schema";
-import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
+} from '@material-ui/core';
+import {TransTitle, Trans, beautifyKey, updateValue} from '@ui-schema/ui-schema';
+import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
 const OptionsRadio = ({
                           ownKey, schema, value, onChange, storeKeys, showValidity, valid, required, errors,
-                          row
+                          row,
                       }) => {
     const enumVal = schema.get('enum');
     if(!enumVal) return null;
@@ -24,7 +24,7 @@ const OptionsRadio = ({
                     control={<Radio
                         value={enum_name}
                         checked={enum_name === isActive}
-                        onChange={() => onChange(updateValue(storeKeys, enum_name, required, schema.get('type')))}
+                        onChange={() => onChange(updateValue(storeKeys, enum_name, schema.get('deleteOnEmpty') || required, schema.get('type')))}
                     />}
                     label={<Trans
                         schema={schema.get('t')}
@@ -40,4 +40,4 @@ const OptionsRadio = ({
     </FormControl>
 };
 
-export {OptionsRadio,};
+export {OptionsRadio};

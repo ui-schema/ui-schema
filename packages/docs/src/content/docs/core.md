@@ -234,6 +234,23 @@ Connects to the current context and uses the schema the first time, renders the 
 
 The `RootRenderer` is rendered in a memo component, starts the first rendering of a widget, this is the `children` of `RootRenderer`, done with [PluginStack](#pluginStack).
 
+## UIApi
+
+> ❗ Only for loading schemas currently
+
+Add the `UIApiProvider`, should be above all `UIGenerator` to not load the same schema multiple times.
+
+The `loadSchema` property needs a function which accepts the url and must return the schema in json. If the api fails, either don't catch or re-throw the error. This way the internal caching can correctly allow retries for errors.
+
+```jsx
+const loadSchema = (url) => {
+    return fetch(url).then(r => r.json())
+}
+const Provider = ({children}) => <UIApiProvider loadSchema={loadSchema}>
+    {children}
+</UIApiProvider>
+```
+
 ## Widget Renderer
 
 ### PluginStack

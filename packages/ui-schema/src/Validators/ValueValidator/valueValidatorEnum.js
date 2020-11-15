@@ -6,7 +6,6 @@ export const validateEnum = (type, _enum, value) => {
     if(typeof _enum === 'undefined' || typeof value === 'undefined') return true;
 
     if(type === 'string' || type === 'number' || type === 'integer' || type === 'boolean') {
-        // todo: should enum respect required?
         if(List.isList(_enum)) {
             if(!_enum.contains(value)) {
                 return false;

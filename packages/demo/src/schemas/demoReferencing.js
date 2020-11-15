@@ -1,7 +1,7 @@
 import {createOrderedMap} from '@ui-schema/ui-schema';
 
 export const schemaDemoReferencing = createOrderedMap({
-    '$id': 'http://localhost:4200/schemas/demoReferencing.json',
+    '$id': 'http://localhost:4200/api/demo-referencing.json',
     type: 'object',
     widget: 'Accordions',
     title: 'headline',
@@ -99,5 +99,41 @@ export const schemaDemoReferencing = createOrderedMap({
         },
         support_request: {'$ref': 'definitions.json#/support_request'},
         person: {$ref: '#/definitions/person'},
+    },
+});
+
+export const schemaDemoReferencingNetwork = createOrderedMap({
+    '$id': 'http://localhost:4200/api/demo-referencing-network.json',
+    type: 'object',
+    properties: {
+        address: {$ref: 'http://localhost:4200/api/address-schema.json'},
+        shipping_address: {$ref: 'address-schema.json'},
+        business_country: {$ref: 'address-schema.json/#properties/country'},
+    },
+});
+
+export const schemaDemoReferencingNetworkB = createOrderedMap({
+    '$id': 'http://localhost:4200/api/demo-referencing-network-b.json',
+    type: 'object',
+    properties: {
+        address: {
+            type: 'object',
+            allOf: [
+                {$ref: 'http://localhost:4200/api/address-schema.json'},
+                {
+                    properties: {
+                        country: {
+                            'enum': [
+                                'United-Kingdom',
+                                'Scotland',
+                                'Ireland',
+                                'Wales',
+                            ],
+                        },
+                    },
+                },
+                {$ref: 'http://localhost:4200/api/user-schema.json'},
+            ],
+        },
     },
 });

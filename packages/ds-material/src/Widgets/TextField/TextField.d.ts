@@ -1,4 +1,5 @@
 import React, { CSSProperties } from 'react'
+import { InputProps } from '@material-ui/core/Input'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 
 export interface StringRendererProps {
@@ -12,8 +13,8 @@ export interface StringRendererProps {
     onBlur?: React.MouseEvent
     onKeyUp?: React.MouseEvent
     onKeyDown?: React.MouseEvent
-    inputProps?: any
-    InputProps?: any
+    inputProps?: InputProps['inputProps']
+    InputProps?: Partial<InputProps>
     inputRef?: any
 }
 

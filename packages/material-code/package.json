@@ -28,7 +28,7 @@
     "main": "index.js",
     "module": "esm/index.js",
     "scripts": {
-        "__release": "cp package.json build/ && cp package-lock.json build/ &&  cp README.md build/ && npm publish build"
+        "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "dependencies": {
         "react-uid": "^2.2.0"

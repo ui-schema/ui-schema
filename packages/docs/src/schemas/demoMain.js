@@ -241,7 +241,8 @@ const schemaUser = createOrderedMap({
             type: "string",
             format: "date",
             view: {
-                sizeMd: 6
+                sizeMd: 6,
+                shrink: true,
             }
         },
         seats: {

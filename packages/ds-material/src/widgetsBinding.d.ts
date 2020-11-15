@@ -1,6 +1,6 @@
-import React from "react"
-import { WidgetProps } from "@ui-schema/ui-schema/Widget"
-import { WidgetsBindingBase } from "@ui-schema/ui-schema/WidgetsBinding"
+import React from 'react'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
 
 export interface MuiWidgetBinding extends WidgetsBindingBase {
     types: {
@@ -23,6 +23,9 @@ export interface MuiWidgetBinding extends WidgetsBindingBase {
         SelectMulti: React.ComponentType<WidgetProps>
         Stepper: React.ComponentType<WidgetProps>
         Step: React.ComponentType<WidgetProps>
+        Card: React.ComponentType<WidgetProps>
+        LabelBox: React.ComponentType<WidgetProps>
+        FormGroup: React.ComponentType<WidgetProps>
     }
 }
 

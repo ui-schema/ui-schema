@@ -1,0 +1,21 @@
+# env variables
+.env
+
+# build dirs
+/es
+/lib
+/build
+
+
+# NodeJS
+node_modules
+
+# Mac
+.DS_Store
+
+#
+## JetBrains IDE's
+
+.idea/
+*.iml
+*.iws

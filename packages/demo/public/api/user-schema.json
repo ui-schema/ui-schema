@@ -1,0 +1,15 @@
+{
+    "type": "object",
+    "widget": "FormGroup",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "nickname": {
+            "type": "string"
+        },
+        "email": {
+            "type": "string"
+        }
+    }
+}

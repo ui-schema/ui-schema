@@ -1,23 +1,27 @@
 import React from 'react';
 import {ObjectRenderer} from '@ui-schema/ui-schema/ObjectRenderer';
+import {VirtualWidgetRenderer} from '@ui-schema/ui-schema/WidgetRenderer/VirtualWidgetRenderer';
 
 const NoWidget = ({scope, matching}) => <>missing-{scope}-{matching}</>;
 
 export const WidgetRenderer = ({
                                    value,
-                                   // as we want to extract `requiredList` from the props passed to the final widget
+                                   // we do not want `requiredList` to be passed to the final widget
                                    // eslint-disable-next-line no-unused-vars
                                    requiredList,
+                                   // `props` contains all props accumulated in the PluginStack, UIRootRenderer, UIGeneratorNested etc.
                                    ...props
                                }) => {
-    const {schema, widgets} = props;
+    const {schema, widgets, isVirtual} = props;
     const type = schema.get('type');
     const widget_name = schema.get('widget');
 
     // getting the to-render component based on if it finds a custom object-widget or a widget extending native-types
     let Widget = null;
 
-    if(widget_name && widgets.custom) {
+    if(isVirtual) {
+        Widget = VirtualWidgetRenderer
+    } else if(widget_name && widgets.custom) {
         if(widgets.custom[widget_name]) {
             Widget = widgets.custom[widget_name];
         } else {
@@ -35,5 +39,5 @@ export const WidgetRenderer = ({
         }
     }
 
-    return Widget ? <Widget {...props} value={type === 'array' || type === 'object' ? undefined : value}/> : null;
+    return Widget ? <Widget {...props} value={!isVirtual && (type === 'array' || type === 'object') ? undefined : value}/> : null;
 };

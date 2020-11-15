@@ -2,7 +2,7 @@ import React from 'react';
 import {Grid} from '@material-ui/core';
 import {NextPluginRenderer} from '@ui-schema/ui-schema';
 
-const SchemaGridItem = ({schema, children, defaultMd}) => {
+const SchemaGridItem = ({schema, children, defaultMd, style, className, classes}) => {
     const view = schema ? schema.get('view') : undefined;
 
     const viewXs = view ? (view.get('sizeXs') || 12) : 12;
@@ -18,6 +18,9 @@ const SchemaGridItem = ({schema, children, defaultMd}) => {
         md={viewMd}
         lg={viewLg}
         xl={viewXl}
+        style={style}
+        className={className}
+        classes={classes}
     >
         {children}
     </Grid>
@@ -25,16 +28,19 @@ const SchemaGridItem = ({schema, children, defaultMd}) => {
 
 const RootRenderer = props => <Grid container spacing={0}>{props.children}</Grid>;
 
-const GroupRenderer = ({schema, children}) => <Grid container spacing={typeof schema.getIn(['view', 'spacing']) === 'number' ? schema.getIn(['view', 'spacing']) : 2} wrap={'wrap'}>
-    {children}
-</Grid>;
+const GroupRenderer = ({schema, noGrid, children}) =>
+    noGrid ? children :
+        <Grid
+            container wrap={'wrap'}
+            spacing={typeof schema.getIn(['view', 'spacing']) === 'number' ? schema.getIn(['view', 'spacing']) : 2}
+        >
+            {children}
+        </Grid>;
 
 const SchemaGridHandler = (props) => {
-    const {
-        schema, noGrid,
-    } = props;
+    const {schema, noGrid, isVirtual} = props;
 
-    if(noGrid || schema.getIn(['view', 'noGrid'])) {
+    if(noGrid || isVirtual || schema.getIn(['view', 'noGrid'])) {
         return <NextPluginRenderer {...props}/>;
     }
 

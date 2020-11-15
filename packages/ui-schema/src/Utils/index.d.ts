@@ -1,5 +1,6 @@
 export * from './beautify'
 export * from './createMap'
+export * from './isImmutableDeep'
 export * from './memo'
 export * from './mergeSchema'
 export * from './moveItem'

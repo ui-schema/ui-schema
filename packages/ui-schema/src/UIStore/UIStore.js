@@ -13,24 +13,29 @@ export const UIStoreProvider = ({children, ...props}) => <UIStoreContext.Provide
 // with widgets, t, showValidity
 export const UIMetaProvider = ({children, ...props}) => <UIMetaContext.Provider value={props} children={children}/>;
 
+// only to enable better minification, DO NOT EXPORT
+const STR_INTERNALS = 'internals'
+const STR_VALUES = 'values'
+const STR_VALIDITY = 'validity'
+
 export const UIStore = Record({
     values: undefined,
     internals: Map({}),
     validity: Map({}),
     valuesToJS: function() {
-        const values = this.get('values')
+        const values = this.get(STR_VALUES)
         if(Map.isMap(values) || List.isList(values)) return values.toJS()
 
         return values
     },
     getValues: function() {
-        return this.get('values')
+        return this.get(STR_VALUES)
     },
     getInternals: function() {
-        return this.get('internals')
+        return this.get(STR_INTERNALS)
     },
     getValidity: function() {
-        return this.get('validity')
+        return this.get(STR_VALIDITY)
     },
 });
 
@@ -55,9 +60,9 @@ export const createEmptyStore = (type = 'object') => createStore(
 );
 
 export const useUI = () => {
-    const {store, onChange, schema} = React.useContext(UIStoreContext);
+    const {store, onChange, onChangeNext, schema} = React.useContext(UIStoreContext);
 
-    return {store, onChange, schema};
+    return {store, onChange, onChangeNext, schema};
 };
 
 // todo: remove relT here, so Trans is fully optional
@@ -77,9 +82,10 @@ export const useUIMeta = () => {
  */
 export const extractValue = (Component) => {
     const ExtractValue = p => {
-        const {store, onChange} = useUI();
+        const {store, onChange, onChangeNext} = useUI();
+
         return <Component
-            {...p} onChange={onChange}
+            {...p} onChange={onChange} onChangeNext={onChangeNext}
             value={p.storeKeys.size ?
                 (Map.isMap(store.getValues()) || List.isList(store.getValues()) ? store.getValues().getIn(p.storeKeys) : undefined)
                 : store.getValues()}
@@ -113,8 +119,9 @@ export const prependKey = (storeKeys, key) =>
         [key, ...storeKeys] :
         storeKeys.splice(0, 0, key);
 
-const shouldHandleRequired = (value, required, type) => {
-    if(!required && type !== 'number') return false
+const shouldHandleRequired = (value, force, type) => {
+    // todo: why is the type number check here
+    if(!force && type !== 'number') return false
 
     switch(type) {
         case 'string':
@@ -132,6 +139,8 @@ const shouldHandleRequired = (value, required, type) => {
     return false;
 };
 
+export const shouldDeleteOnEmpty = shouldHandleRequired
+
 const updateRawValue = (store, storeKeys, key, value, required = undefined, type = undefined) => {
     if(shouldHandleRequired(value, required, type)) {
         return store.deleteIn(storeKeys.size ? prependKey(storeKeys, key) : [key]);
@@ -147,26 +156,26 @@ const deleteRawValue = (store, storeKeys, key) =>
         store.delete(key);
 
 export const updateInternalValue = (storeKeys, internalValue) => store => {
-    return updateRawValue(store, storeKeys, 'internals', internalValue);
+    return updateRawValue(store, storeKeys, STR_INTERNALS, internalValue);
 };
 
 /**
  * Function capable of either updating a deep value in the `store`, or when in e.g. root-level directly the store (string as root-schema)
  */
 export const updateValue = (storeKeys, value, required = undefined, type = undefined) => store => {
-    return updateRawValue(store, storeKeys, 'values', value, required, type)
+    return updateRawValue(store, storeKeys, STR_VALUES, value, required, type)
 };
 
 export const updateValues = (storeKeys, value, internalValue, required = undefined, type = undefined) => store => {
-    store = updateRawValue(store, storeKeys, 'internals', internalValue, required, type);
-    return updateRawValue(store, storeKeys, 'values', value, required, type)
+    store = updateRawValue(store, storeKeys, STR_INTERNALS, internalValue, required, type);
+    return updateRawValue(store, storeKeys, STR_VALUES, value, required, type)
 };
 
 /**
  * Function capable of either updating a deep value in the `store`, or when in e.g. root-level directly the store (string as root-schema)
  */
 export const updateValidity = (storeKeys, valid) => store => (
-    updateRawValue(store, storeKeys.push('__valid'), 'validity', valid)
+    updateRawValue(store, storeKeys.push('__valid'), STR_VALIDITY, valid)
 );
 
 export const cleanUp = (storeKeys, key) => store => (

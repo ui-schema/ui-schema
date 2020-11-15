@@ -42,8 +42,8 @@ const Select = ({
                 }).join(', ')
             }}
             onChange={(e) => multiple ?
-                onChange(updateValue(storeKeys, List(e.target.value), required, schema.get('type'))) :
-                onChange(updateValue(storeKeys, e.target.value, required, schema.get('type')))}
+                onChange(updateValue(storeKeys, List(e.target.value), schema.get('deleteOnEmpty') || required, schema.get('type'))) :
+                onChange(updateValue(storeKeys, e.target.value, schema.get('deleteOnEmpty') || required, schema.get('type')))}
         >
             {enum_val ? enum_val.map((enum_name, i) =>
                 <MenuItem

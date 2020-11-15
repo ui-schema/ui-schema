@@ -1,0 +1,44 @@
+{
+    "name": "@ui-schema/pro",
+    "version": "0.0.1",
+    "description": "Enterprise Components and Utilities for UI Schema, an advanced JSON-Schema Form Generator.",
+    "homepage": "https://ui-schema.bemit.codes/docs/pro",
+    "author": "Michael Becker <michael@bemit.codes>",
+    "license": "MIT",
+    "keywords": [
+        "ui-schema",
+        "json-schema",
+        "react",
+        "reactjs",
+        "react-component",
+        "ui-library",
+        "ux",
+        "ui",
+        "form-generator",
+        "react"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ui-schema/ui-schema.git",
+        "directory": "packages/ui-schema-pro"
+    },
+    "bugs": {
+        "url": "https://github.com/ui-schema/ui-schema/issues"
+    },
+    "scripts": {
+        "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
+    },
+    "devDependencies": {
+        "@ui-schema/ui-schema": "~0.1.0",
+        "immutable": "^4.0.0-rc.12",
+        "react": "^16.12"
+    },
+    "peerDependencies": {
+        "immutable": "^4.0.0-rc.12",
+        "@ui-schema/ui-schema": "~0.1.0",
+        "react": "^16.8"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

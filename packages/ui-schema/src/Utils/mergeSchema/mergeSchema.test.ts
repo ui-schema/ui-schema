@@ -144,7 +144,7 @@ describe('mergeSchema', () => {
             enum: ['muster'],
         }))
         expect(createOrderedMap({
-            enum: ['muster'],
+            enum: ['demo', 'muster'],
         }).equals(merged)).toEqual(true)
     })
     test('enum 2', () => {

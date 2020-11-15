@@ -110,8 +110,10 @@ Custom widgets for `widget`, special UIs and specific type handling:
 | **Misc** | | | | | |
 | `Table`      | table editor  | | 🔵 | 🔵 | 🔵 |
 | `Grid`       | drag-drop grid  | | 🔵 | 🔵 | 🔵 |
-| `Accordions` | accordion with headline, built for `object` | | ✅ | 🔵 | 🔵 |
-| `Cards` | card with headline and any sub-schema  | | 🔵 | 🔵 | 🔵 |
+| `Accordions` | [accordion drop-downs](/docs/widgets/Accordions) for object properties with headline | `object` | ✅ | 🔵 | 🔵 |
+| `Card` | card with headline for object root and any sub-schema | `object` | ✅ | 🔵 | 🔵 |
+| `LabelBox` | box with label for object root and any sub-schema, without any styling | `object` | ✅ | 🔵 | 🔵 |
+| `FormGroup` | form group (fieldset) with label | `object` | ✅ | 🔵 | 🔵 |
 | `ExpansionPanel` | list headlines and sub-schema  | | 🔵 | 🔵 | 🔵 |
 | `Stepper`    | list with [sub-schema as steps](/docs/widgets/Stepper) | | ✅ | 🔵 | 🔵 |
 | `Tabs`       | list with sub-schema as tabs | | 🔵 | 🔵 | 🔵 |

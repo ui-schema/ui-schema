@@ -23,10 +23,11 @@ import { PluginProps, PluginType } from "@ui-schema/ui-schema/PluginStack/Plugin
 | :---                                                | :---                 | :---                 | :---        | :--- |
 | [DefaultHandler](#defaulthandler)                   | @ui-schema/ui-schema | keyword `default`    | - | ✔ |
 | [ValidityReporter](#validityreporter)               | @ui-schema/ui-schema | setting validity changes | - | ✔ |
-| [DependentHandler](#dependenthandler)               | @ui-schema/ui-schema | keywords `dependencies`, `dependentSchemas` | - | ✔(without property-dependencies) |
-| [ConditionalHandler](#conditionalhandler)           | @ui-schema/ui-schema | keywords `allOf`, `if`, `else`, `then` | - | ✔ |
+| [DependentHandler](#dependenthandler)               | @ui-schema/ui-schema | keywords `dependencies`, `dependentSchemas`, `dependentRequired` | - | ✔ |
+| [ConditionalHandler](#conditionalhandler)           | @ui-schema/ui-schema | keywords `allOf`, `if`, `else`, `then`, `not` | - | ✔ |
 | [CombiningHandler](#combininghandler)               | @ui-schema/ui-schema | keyword `allOf`, `oneOf`, `anyOf`, ... | - | ✔(allOf) ❗ |
-| [CombiningNetworkHandler](#combiningnetworkhandler) | @ui-schema/ui-schema | ... | ... | ❌ |
+| [ReferencingHandler](#referencinghandler) | @ui-schema/ui-schema | keywords `$defs`, `$anchor`, `$id`, `$ref` ... | ... | ✔ |
+| [ReferencingNetworkHandler](#referencingnetworkhandler) | @ui-schema/ui-schema | keywords `$ref` | ... | ✔ |
 
 ## Validation Plugins
 
@@ -36,17 +37,17 @@ import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators"
 
 Validation plugins also work with the schema, but are only used for validation of the values/schema and can not change the render-flow.
 
-| Plugin               | Package              | Validity Fn.         | Handles              | Added Props | Status |
-| :---                 | :---                 | :---                 | :---                 | :---        | :--- |
-| minMaxValidator      | @ui-schema/ui-schema | validateMinMax       | min/max validity     | `valid`, `errors` | ✔(string,number,array) ❗ |
-| typeValidator        | @ui-schema/ui-schema | validateType         | keyword `type`       | `valid`, `errors` | ✔ |
-| valueValidatorConst  | @ui-schema/ui-schema | validateConst        | keywords `type`, `const` | `valid`, `errors` | ✔ |
-| valueValidatorEnum   | @ui-schema/ui-schema | validateEnum         | keywords `type`, `enum` | `valid`, `errors` | ✔ |
-| patternValidator     | @ui-schema/ui-schema | validatePattern      | keywords `type:string`, `pattern` | `valid`, `errors` | ✔ |
-| multipleOfValidator  | @ui-schema/ui-schema | validateMultipleOf   | keywords `type:number,integer`, `multipleOf` | `valid`, `errors` | ✔ |
-| arrayValidator       | @ui-schema/ui-schema |                      | `type:array`          | `valid`, `errors` | ✔(partial sub-schema for single sub-schema) ❗ |
-| ObjectValidator      | @ui-schema/ui-schema |                      | `type:object`         | ... | ❌ |
-| requiredValidator    | @ui-schema/ui-schema | checkValueExists     | keywords `type:object`, `required` | `valid`, `errors`, `required` | ✔ |
+| Plugin               | Package              | Validity Fn.         | Handles              | Added Props |
+| :---                 | :---                 | :---                 | :---                 | :---        |
+| minMaxValidator      | @ui-schema/ui-schema | validateMinMax       | min/max validity     | `valid`, `errors` |
+| typeValidator        | @ui-schema/ui-schema | validateType         | keyword `type`       | `valid`, `errors` |
+| valueValidatorConst  | @ui-schema/ui-schema | validateConst        | keywords `type`, `const` | `valid`, `errors` |
+| valueValidatorEnum   | @ui-schema/ui-schema | validateEnum         | keywords `type`, `enum` | `valid`, `errors` |
+| patternValidator     | @ui-schema/ui-schema | validatePattern      | keywords `type:string`, `pattern` | `valid`, `errors` |
+| multipleOfValidator  | @ui-schema/ui-schema | validateMultipleOf   | keywords `type:number,integer`, `multipleOf` | `valid`, `errors` |
+| arrayValidator       | @ui-schema/ui-schema |                      | `type:array`          | `valid`, `errors` |
+| objectValidator      | @ui-schema/ui-schema |                      | `type:object`, `additionalProperties`, `propertyNames` | `valid`, `errors` |
+| requiredValidator    | @ui-schema/ui-schema | checkValueExists     | keywords `type:object`, `required` | `valid`, `errors`, `required` |
 
 - sub-schema validation/array validation is done by `validateSchema`
     - (todo: new override-prop/more docs)
@@ -79,7 +80,8 @@ export {widgets};
 - [DependentHandler](#dependenthandler)
 - [ConditionalHandler](#conditionalhandler)
 - [CombiningHandler](#combininghandler)
-- [CombiningNetworkHandler](#combiningnetworkhandler)
+- [ReferencingHandler](#referencinghandler)
+- [ReferencingNetworkHandler](#referencingnetworkhandler)
 
 ### DefaultHandler
 
@@ -169,12 +171,12 @@ Includes the handlers of:
 
 - validateType
 - validatePattern
-- validateMinMax
-- validateMultipleOf
 - validateConst
 - validateEnum
-- validateObject (additionalProperties, propertyNames)
-- validateContains (array contains min. 1 valid item)
+- validateMinMax
+- validateMultipleOf
+- validateObject
+- validateContains
 
 Supports `not` keyword for any validation, see [spec.](https://json-schema.org/understanding-json-schema/reference/combining.html#not). When `not` is specified, it's sub-schema is evaluated and not anything else - (behaviour may change).
 
@@ -186,15 +188,13 @@ import { DependentHandler } from '@ui-schema/ui-schema/Plugins/DependentHandler'
 
 Enables on-the-fly sub-schema rendering based on single property data and schema, see also [ConditionalHandler](#conditionalhandler).
 
-- keyword `dependencies`, `dependentSchemas`
-    - property dependencies, handled as dynamic "is-not-empty then required" [spec](https://json-schema.org/understanding-json-schema/reference/object.html#property-dependencies) ❌
+- keyword `dependencies`, `dependentSchemas`, `dependentRequired`
+    - property dependencies [spec](https://json-schema.org/understanding-json-schema/reference/object.html#property-dependencies)
     - schema dependencies [spec](https://json-schema.org/understanding-json-schema/reference/object.html#schema-dependencies)
-        - simple: extend the schema when a value is not empty (using `not-empty` instead of `property exists`)
+        - simple: extend the schema when a value is not set (using `property exists` check enforces usage of `deleteOnEmpty` or `required` keywords)
 - changes the schema dynamically on runtime
 - does not re-render the Widget when the dependency matching didn't change
 - ❗ only checks some schema: everything [validateSchema](#validateschema) supports
-- ❗ partly-merge from dyn-schema: everything [mergeSchema](/docs/core#mergeschema) supports
-- ❗ full feature set needs [ConditionalHandler](#conditionalhandler), [CombiningHandler](#combininghandler), [CombiningNetworkHandler](#combiningnetworkhandler), which are not implemented yet
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/conditionals.html)
 
@@ -254,7 +254,6 @@ Enables on-the-fly sub-schema rendering based on current objects data.
 - `allOf` list of if/else/then which are evaluated
     - is handled by [CombiningHandler](#combininghandler)
 - ❗ only checks some schema: everything [validateSchema](#validateschema) supports
-- ❗ partly-merge from dyn-schema: everything [mergeSchema](/docs/core#mergeschema) supports
 
 Examples:
 
@@ -440,9 +439,6 @@ import { CombiningHandler } from '@ui-schema/ui-schema/Plugins/CombiningHandler'
 
 Combining schemas from within one schema with:
 
-- `definition`/`$defs`
-- `$id` ❌
-- `$ref` ❌
 - `allOf`
     - all defined schemas are merged together
     - each `if/else/then` is applied separately to the instance created or existing
@@ -452,7 +448,6 @@ Combining schemas from within one schema with:
 - `oneOf` ❗
 - `anyOf` ❗
 - ❗ only checks some schema: everything [validateSchema](#validateschema) supports
-- ❗ partly-merge from dyn-schema: everything [mergeSchema](/docs/core#mergeschema) supports
 
 Works in conjunction with the [conditional handler](#conditionalhandler).
 
@@ -624,11 +619,46 @@ Example with multiple `if`, nested `allOf`:
 }
 ```
 
-### CombiningNetworkHandler
+### ReferencingHandler
 
-> ❌ todo: implementation
+Combining schemas from inside a schema by using references, [specification](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property).
 
-Combining schemas from external addressed by using `$id` and `$ref`, [specification](https://json-schema.org/understanding-json-schema/structuring.html#the-id-property)
+> Network references require the additional provider `UIApiProvider`
+
+Supports:
+
+- `definition`/`$defs` to define schemas with identification keywords `$id`, `id`, `$anchor`
+- `$ref` as selector for `$defs`
+- `$ref` with relative (needs `$id/id` above) and absolute URLs
+- `$ref` with JSON-Pointer selectors
+
+Supports conditionals up to three levels, otherwise when the conditional get's rendered it supports endless recursion. Only renders the next level when no data exists, allows recursive usage without endless loops.
+
+Uses the `ReferencingNetworkHandler` hook `useNetworkRef` to handle resolving, which uses `UIApi` to load the schema.
+
+> ❗ Currently nested root-schemas with relative-url references are not supported, only the first found absolute `$id` is used for relative-url resolving, will be fixed till v2
+
+### ReferencingNetworkHandler
+
+> A recommended plugin, loads the first/root reference of a schema level, also done by ReferencingHandler, but not beforehand parsing.
+>
+> Not added in default `pluginStack`, needs the additional provider `UIApiProvider`
+
+Plugin allows loading schemas from external APIs, uses the [UIApi](/docs/core/#uiapi) component to handle the schema loading and caching.
+
+Add to plugin stack:
+
+```jsx
+const pluginStack = [...widgets.pluginStack]
+pluginStack.splice(1, 0, ReferencingNetworkHandler)
+widgets.pluginStack = pluginStack
+```
+
+With this variable you get the used cache key in the `localStorage`
+
+```jsx
+import {schemaLocalCachePath} from '@ui-schema/ui-schema/UIApi/UIApi'
+```
 
 ## Create Plugins
 
