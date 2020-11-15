@@ -9,6 +9,8 @@ export interface PluginProps extends WidgetProps {
     current: number
     // contains the value for any items (scalar/objects/array)
     value: any
+    // new prop for specifying hidden inputs / virtual lists
+    isVirtual?: boolean
 }
 
 export type PluginType = React.ComponentType<PluginProps>

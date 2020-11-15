@@ -1,16 +1,18 @@
 import React from 'react';
 import {List} from 'immutable';
-import {useUIMeta, useUI} from "../UIStore";
-import {PluginStack} from "../PluginStack";
-import {memo} from "../Utils/memo";
+import {useUIMeta, useUI} from '../UIStore';
+import {PluginStack} from '../PluginStack';
+import {memo} from '../Utils/memo';
 
 /**
  * @type {function({rootRenderer: *, ...}): *}
  */
 let DumpRootRenderer = ({rootRenderer: RootRenderer, ...props}) => {
-    return <RootRenderer>
-        <PluginStack {...props}/>
-    </RootRenderer>;
+    return props.isVirtual ?
+        <PluginStack {...props}/> :
+        <RootRenderer>
+            <PluginStack {...props}/>
+        </RootRenderer>;
 };
 DumpRootRenderer = memo(DumpRootRenderer);
 
@@ -25,10 +27,8 @@ const mustBeSet = name => {
  * @return {null|*}
  */
 export const UIRootRenderer = () => {
-    const {
-        // getting the root level schema, all other schemas within an editor are property calculated
-        schema,
-    } = useUI();
+    // getting the root level schema, all other schemas within an editor are property calculated
+    const {schema} = useUI();
     const {widgets} = useUIMeta();
 
     if(!schema) {
@@ -45,5 +45,8 @@ export const UIRootRenderer = () => {
         return null;
     }
 
-    return <DumpRootRenderer rootRenderer={RootRenderer} schema={schema} storeKeys={List([])}/>;
+    return <DumpRootRenderer
+        rootRenderer={RootRenderer} isVirtual={schema?.get('hidden')}
+        schema={schema} storeKeys={List([])}
+    />;
 };

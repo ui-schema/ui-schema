@@ -41,11 +41,9 @@ const GroupRenderer = ({children}) => <div className={clsx('row', 'px-0')}>
 </div>;
 
 const SchemaGridHandler = (props) => {
-    const {
-        schema, noGrid
-    } = props;
+    const {schema, noGrid, isVirtual} = props;
 
-    if(noGrid) {
+    if(noGrid || isVirtual || schema.getIn(['view', 'noGrid'])) {
         return <NextPluginRenderer {...props}/>;
     }
 

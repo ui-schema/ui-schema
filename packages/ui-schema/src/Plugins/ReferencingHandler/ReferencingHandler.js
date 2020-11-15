@@ -7,7 +7,7 @@ import {useNetworkRef} from '@ui-schema/ui-schema/Plugins/ReferencingHandler/Ref
 import {NextPluginRendererMemo} from '@ui-schema/ui-schema/PluginStack/PluginStack';
 
 const ReferencingRenderer = (props) => {
-    let {schema} = props;
+    let {schema, isVirtual} = props;
     const {definitions} = useRefs();
     const {schema: rootSchema} = useSchemaRoot()
     const {getSchema, loadSchema} = useNetworkRef()
@@ -44,7 +44,7 @@ const ReferencingRenderer = (props) => {
     //       this way nested refs can be resolved correctly against the, maybe, other-base url (the $id of the $ref, not from this level)
 
     return refPending && refPending.size > 0 ?
-        <Trans text={'labels.loading'} fallback={'Loading'}/> :
+        isVirtual ? null : <Trans text={'labels.loading'} fallback={'Loading'}/> :
         <NextPluginRendererMemo {...props} schema={schema}/>;
 };
 

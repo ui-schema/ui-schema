@@ -68,6 +68,7 @@ JSON Schema keywords are used to validate the data, the UI is created from the d
 - code-splitting, with custom widget mappings / lazy-loading widgets
 - includes helper functions for store and immutable handling
 - easy nesting of ui-generator for object/array widgets
+- validate hidden/auto-generated values, virtualize schema levels
 - handle the store updates from where ever wanted, with [#63](https://github.com/ui-schema/ui-schema/issues/63) even more customizable and interoperable
 - extensive documentations of core, widgets and use case examples
 - Typescript definitions for core, validators, JSON Schema and UI Schema

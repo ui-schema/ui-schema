@@ -4,7 +4,7 @@ JSON Schema together with UI Schema are making it possible to validate data in f
 
 This page covers the support for JSON Schema within the core, validators or from plugins.
 
-**JSON Schema versions supported:** Draft 2019-09 / Draft-08, Draft-07, Draft-06, Draft-04
+**JSON Schema versions supported:** Draft 2019-09 / Draft-08, Draft-07, Draft-06, Draft-04, [keyword support table](#json-schema-keyword-support).
 
 ## Widget Matching
 
@@ -172,11 +172,12 @@ Supported JSON-Schema versions and what currently isn't supported.
 
 - [Draft 2019-09 / Draft-08](https://json-schema.org/draft/2019-09/release-notes.html) **latest**
     - link resolution for multiple of draft-07 is incompatible to 2019-09, but currently not implemented at all
-- [Draft-07](https://json-schema.org/draft-07/json-schema-release-notes.html)
-- [Draft-06](https://json-schema.org/draft-06/json-schema-release-notes.html)
+- [Draft-07](https://json-schema.org/draft-07/json-schema-release-notes.html) differences marked in table
+- [Draft-06](https://json-schema.org/draft-06/json-schema-release-notes.html) differences marked in table
 - [Draft-04](https://json-schema.org/draft-06/json-schema-release-notes.html)
     - defines `exclusiveMaximum`, `exclusiveMinimum` as boolean, then works together with `minimum`/`maximum`
-    - defines `integer` as true integer, whereas from Draft-06 onwards also `1.0` is valid, currently always like Draft-06, but JS internally saves `1.0` also only as `1` ❌
+    - defines `integer` as true integer, whereas from Draft-06 onwards also `1.0` is valid, currently always like Draft-06, but JS internally saves `1.0` also only as `1`, thus correct saving and display of values even when received wrong
+    - defines any-where usage of `$ref`, e.g. properties can't be named `$ref` as it should resolve, only supports `$ref` where a schema is expected (like from draft-06 onwards) ❌
 
 Validators for latest version are used by default, incompatible changes are solved from the validator (e.g. different namings), the possibility to change/replace validators completely will be added.
 
@@ -187,7 +188,7 @@ Validators for latest version are used by default, incompatible changes are solv
 | validation |            | `readOnly` | per widget |
 | validation |            | `writeOnly` | per widget |
 | core |                  | `definitions`/`$defs` | ✅ |
-| core, till draft-07 |   | `id`/`$id` | ✅ |
+| core, till draft-06, till draft-07 for anything |   | `id`/`$id` | ✅ |
 | core, from 2019-09 |    | `$anchor` | ✅ |
 | core |                  | `$ref` | ✅ |
 | core |                  | `$recursiveAnchor` | ❌ |
@@ -260,9 +261,11 @@ Validators for latest version are used by default, incompatible changes are solv
 
 UI Schema extends JSON Schema with special only-UI keywords, take a look a each [widget page](/docs/overview#widget-list) for individual settings and more.
 
-- `view` used for the grid system
+
+- `view` used for the grid and visual settings, see [view keyword](#view-keyword) and each widget
 - `widget` (see top of page), UI selection / widget matching
 - `t`, `tt` for [translation](/docs/localization#Translation)
+- `hidden` for virtualization see [hidden keyword](#hidden-keyword--virtualization)
 
 Typings:
 
@@ -281,6 +284,16 @@ Vocabularies (**not up to date**):
 - `sizeXs`, `sizeSm`, `sizeMd`, `sizeLg`, `sizeXl` to build responsive UIs
     - takes a `number` between `1` and `12`
     - see [GridHandler](/docs/widgets/GridHandler)
+
+### Hidden Keyword / Virtualization
+
+When the `hidden: true` keyword is applied to any schema, the `UIGenerator` doesn't render any HTML, producing no output in the page, but still renders and executes the plugins and validators - thus rendering it virtually.
+
+The prop `isVirtual` can be passed to the per schema-level components, like `PluginStack`, `UIGeneratorNested`, `WidgetRenderer` to render them virtual from within an e.g. widget.
+
+The `SchemaGridHandler` plugin of the design-system and any other plugin needs to support it, the official provided design systems and plugins are compatible.
+
+An internal switch activates the `VirtualWidgetRenderer`, currently it is not possible to overwrite the base components for virtual rendering, e.g. it does not render your custom string widget, but simply `null`. This is hardcoded, but expected to change in the future, pull requests welcome!
 
 ## Schema is Read-Only
 

@@ -28,14 +28,19 @@ const SchemaGridItem = ({schema, children, defaultMd, style, className, classes}
 
 const RootRenderer = props => <Grid container spacing={0}>{props.children}</Grid>;
 
-const GroupRenderer = ({schema, noGrid, children}) => noGrid ? children : <Grid container spacing={typeof schema.getIn(['view', 'spacing']) === 'number' ? schema.getIn(['view', 'spacing']) : 2} wrap={'wrap'}>
-    {children}
-</Grid>;
+const GroupRenderer = ({schema, noGrid, children}) =>
+    noGrid ? children :
+        <Grid
+            container wrap={'wrap'}
+            spacing={typeof schema.getIn(['view', 'spacing']) === 'number' ? schema.getIn(['view', 'spacing']) : 2}
+        >
+            {children}
+        </Grid>;
 
 const SchemaGridHandler = (props) => {
-    const {schema, noGrid} = props;
+    const {schema, noGrid, isVirtual} = props;
 
-    if(noGrid || schema.getIn(['view', 'noGrid'])) {
+    if(noGrid || isVirtual || schema.getIn(['view', 'noGrid'])) {
         return <NextPluginRenderer {...props}/>;
     }
 

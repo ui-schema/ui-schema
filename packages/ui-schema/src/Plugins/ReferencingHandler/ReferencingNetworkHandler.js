@@ -56,7 +56,7 @@ export const useNetworkRef = () => {
 }
 
 const RefLoader = (props) => {
-    let {schema, schemaRef} = props
+    let {schema, schemaRef, isVirtual} = props
     const {loadSchema, getSchema} = useNetworkRef()
 
     const loadedSchema = getSchema(schemaRef)
@@ -73,7 +73,7 @@ const RefLoader = (props) => {
 
     return !loaded ?
         // todo: remove `fallback` with a very very small svg component
-        <Trans text={'labels.loading'} fallback={'Loading'}/> :
+        isVirtual ? null : <Trans text={'labels.loading'} fallback={'Loading'}/> :
         <NextPluginRenderer {...props} schema={schema}/>
 }
 

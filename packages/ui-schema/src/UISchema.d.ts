@@ -13,6 +13,8 @@ export interface UISchema {
     api?: {
         endpoint: string
     }
+    // keyword to render the schema level virtual, without HTML, only validators etc.
+    hidden?: boolean
     view?: {
         sizeXs?: number
         sizeSm?: number

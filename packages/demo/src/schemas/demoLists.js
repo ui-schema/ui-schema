@@ -1,18 +1,33 @@
-import {createOrderedMap} from "@ui-schema/ui-schema";
+import {createOrderedMap} from '@ui-schema/ui-schema';
 
 const schemaLists = createOrderedMap({
-    type: "object",
+    type: 'object',
+    //hidden: true,
     required: [
-        'events'
+        'events',
     ],
     properties: {
+        id: {
+            type: 'string',
+            //default: 'demo',
+            hidden: true,
+        },
         events: {
-            type: "array",
-            widget: "GenericList",
+            type: 'array',
+            widget: 'GenericList',
+            /*hidden: true,
+            default: [{
+                'info': {
+                    'name': 'Michael',
+                    'location': 'Mainz',
+                },
+                'max_guests': 4,
+                'end_check': true,
+            }],*/
             view: {
                 sizeXs: 12,
                 sizeMd: 12,
-                btnSize: 'small'
+                btnSize: 'small',
             },
             items: {
                 type: 'object',
@@ -24,94 +39,94 @@ const schemaLists = createOrderedMap({
                                 type: 'string',
                                 view: {
                                     sizeXs: 6,
-                                }
+                                },
                             },
                             location: {
                                 type: 'string',
                                 view: {
                                     sizeXs: 6,
-                                }
+                                },
                             },
                             date: {
                                 type: 'string',
                                 view: {
                                     sizeXs: 12,
-                                }
+                                },
                             },
-                        }
+                        },
                     },
                     max_guests: {
                         type: 'number',
                         view: {
                             sizeXs: 4,
-                        }
+                        },
                     },
                     booked: {
                         type: 'number',
                         view: {
                             sizeXs: 4,
-                        }
+                        },
                     },
                     end_check: {
                         type: 'boolean',
                         view: {
                             sizeXs: 4,
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             },
         },
         addresses: {
-            type: "array",
-            widget: "GenericList",
+            type: 'array',
+            widget: 'GenericList',
             view: {
                 sizeXs: 12,
                 sizeMd: 12,
-                btnSize: 'small'
+                btnSize: 'small',
             },
             items: [
                 {
-                    type: "number",
-                    title: "Street No.",
+                    type: 'number',
+                    title: 'Street No.',
                     view: {
-                        sizeMd: 6
+                        sizeMd: 6,
                     },
                 },
                 {
-                    type: "string",
-                    title: "Street",
+                    type: 'string',
+                    title: 'Street',
                     view: {
-                        sizeMd: 6
+                        sizeMd: 6,
                     },
                 },
                 {
-                    type: "string",
-                    widget: "Select",
-                    title: "Street Type",
-                    enum: ["Street", "Avenue", "Boulevard"],
+                    type: 'string',
+                    widget: 'Select',
+                    title: 'Street Type',
+                    enum: ['Street', 'Avenue', 'Boulevard'],
                     view: {
-                        sizeMd: 6
+                        sizeMd: 6,
                     },
                 },
                 {
-                    type: "string",
-                    widget: "Select",
-                    title: "Direction",
-                    enum: ["NW", "NE", "SW", "SE"],
+                    type: 'string',
+                    widget: 'Select',
+                    title: 'Direction',
+                    enum: ['NW', 'NE', 'SW', 'SE'],
                     view: {
-                        sizeMd: 6
+                        sizeMd: 6,
                     },
-                }
+                },
             ],
             additionalItems: false,
         },
         labels: {
-            type: "array",
-            widget: "SimpleList",
+            type: 'array',
+            widget: 'SimpleList',
             view: {
                 sizeXs: 12,
                 sizeMd: 12,
-                btnSize: 'small'
+                btnSize: 'small',
             },
             minItems: 2,
             items: {
@@ -120,7 +135,7 @@ const schemaLists = createOrderedMap({
                 minLength: 3,
                 maxLength: 5,
                 view: {
-                    dense: true
+                    dense: true,
                 },
             },
         },

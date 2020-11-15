@@ -39,6 +39,7 @@ export const PluginStackBase = (props) => {
 
     // till draft-06, no `$`, hashtag in id
     const id = schema?.get('$id') || schema?.get('id')
+    const isVirtual = Boolean(props.isVirtual || schema?.get('hidden'))
     let required = List([]);
     if(parentSchema) {
         let tmp_required = parentSchema.get('required');
@@ -58,6 +59,7 @@ export const PluginStackBase = (props) => {
         requiredList={required}
         required={false}
         errors={createValidatorErrors()}
+        isVirtual={isVirtual}
         valid
     />
 
