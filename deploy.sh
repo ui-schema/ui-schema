@@ -13,6 +13,10 @@ cd ui-schema
 cp package.json build/ && cp package-lock.json build/ && cp README.md build/
 cd ../
 
+cd ui-schema-pro
+cp package.json build/ && cp package-lock.json build/ && cp README.md build/
+cd ../
+
 cd ds-bootstrap
 cp package.json build/ && cp package-lock.json build/ && cp README.md build/
 cd ../
@@ -26,6 +30,14 @@ cp package.json build/ && cp package-lock.json build/ && cp README.md build/
 cd ../
 
 cd material-color
+cp package.json build/ && cp package-lock.json build/ && cp README.md build/
+cd ../
+
+cd material-dnd
+cp package.json build/ && cp package-lock.json build/ && cp README.md build/
+cd ../
+
+cd material-editorjs
 cp package.json build/ && cp package-lock.json build/ && cp README.md build/
 cd ../
 
