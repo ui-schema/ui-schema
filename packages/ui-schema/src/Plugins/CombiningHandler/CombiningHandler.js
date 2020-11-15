@@ -1,15 +1,11 @@
-import React from "react";
+import React from 'react';
 import {Map} from 'immutable';
-import {NextPluginRenderer, NextPluginRendererMemo} from "../../PluginStack";
-import {useUI} from "../../UIStore";
-import {mergeSchema} from "../../Utils/mergeSchema";
-import {handleIfElseThen} from "../ConditionalHandler";
+import {NextPluginRenderer} from '../../PluginStack';
+import {mergeSchema} from '../../Utils/mergeSchema';
+import {handleIfElseThen} from '../ConditionalHandler';
 
 const CombiningRenderer = (props) => {
-    let {schema, storeKeys} = props;
-    const {store,} = useUI();
-
-    const currentStore = storeKeys.size ? store.getValues().getIn(storeKeys) : store.getValues();
+    let {schema, value} = props;
 
     const allOf = schema.get('allOf');
     if(allOf) {
@@ -17,8 +13,8 @@ const CombiningRenderer = (props) => {
             schema = mergeSchema(schema, subSchema);
             const allOf = subSchema.get('allOf');
 
-            if(currentStore && Map.isMap(currentStore)) {
-                schema = handleIfElseThen(subSchema, currentStore, schema);
+            if(value && Map.isMap(value)) {
+                schema = handleIfElseThen(subSchema, value, schema);
             }
 
             if(allOf) {
@@ -26,24 +22,23 @@ const CombiningRenderer = (props) => {
                 allOf.forEach((subSchema1) => {
                     schema = mergeSchema(schema, subSchema1);
 
-                    if(currentStore && Map.isMap(currentStore)) {
-                        schema = handleIfElseThen(subSchema1, currentStore, schema);
+                    if(value && Map.isMap(value)) {
+                        schema = handleIfElseThen(subSchema1, value, schema);
                     }
                 })
             }
         });
     }
 
-    return <NextPluginRendererMemo {...props} schema={schema}/>;
+    return <NextPluginRenderer {...props} schema={schema}/>;
 };
 
 export const CombiningHandler = (props) => {
     let {schema} = props;
 
     const hasAllOf = schema.get('allOf');
-    return <React.Fragment>
-        {hasAllOf ?
-            <CombiningRenderer {...props}/> :
-            <NextPluginRenderer {...props}/>}
-    </React.Fragment>;
+
+    return hasAllOf ?
+        <CombiningRenderer {...props}/> :
+        <NextPluginRenderer {...props}/>
 };

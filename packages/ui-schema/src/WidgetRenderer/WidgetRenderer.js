@@ -5,9 +5,10 @@ const NoWidget = ({scope, matching}) => <>missing-{scope}-{matching}</>;
 
 export const WidgetRenderer = ({
                                    value,
-                                   // as we want to extract `requiredList` from the props passed to the final widget
+                                   // we do not want `requiredList` to be passed to the final widget
                                    // eslint-disable-next-line no-unused-vars
                                    requiredList,
+                                   // `props` contains all props accumulated in the PluginStack, UIRootRenderer, UIGeneratorNested etc.
                                    ...props
                                }) => {
     const {schema, widgets} = props;

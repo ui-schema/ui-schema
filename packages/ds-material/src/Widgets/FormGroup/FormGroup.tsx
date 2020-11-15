@@ -1,5 +1,5 @@
 import React from 'react'
-import { PluginStack, TransTitle, WidgetProps } from '@ui-schema/ui-schema'
+import { WidgetRenderer, TransTitle, WidgetProps } from '@ui-schema/ui-schema'
 
 import FormLabel from '@material-ui/core/FormLabel'
 import FormControl from '@material-ui/core/FormControl'
@@ -31,7 +31,7 @@ export const FormGroup = (props: WidgetProps): React.ReactElement => {
                 marginBottom: spacing(1),
             }}
         >
-            <PluginStack {...props} schema={schema}/>
+            <WidgetRenderer {...props} schema={schema}/>
         </MuiFormGroup>
         {/*<FormHelperText>Be careful</FormHelperText>*/}
     </FormControl>

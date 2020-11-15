@@ -1,6 +1,6 @@
 import React from 'react'
 import {Map} from 'immutable'
-import {fromJSOrdered} from '@ui-schema/ui-schema'
+import {createOrderedMap} from '@ui-schema/ui-schema/Utils/createMap/createMap';
 
 export const PROGRESS_NONE = false
 export const PROGRESS_START = 'start'
@@ -28,7 +28,7 @@ const initialState = () => {
         }
     }
 
-    return Map({schemas: (cached ? fromJSOrdered(cached) : Map())})
+    return Map({schemas: (cached ? createOrderedMap(cached) : Map())})
 }
 
 /**
@@ -40,7 +40,7 @@ function reducer(state = initialState(), action = {}) {
     switch(action.type) {
         case 'SCHEMA_LOADED':
             return (() => {
-                let tmpState = state.setIn(['schemas', action.id], fromJSOrdered(action.value))
+                let tmpState = state.setIn(['schemas', action.id], createOrderedMap(action.value))
                 window?.localStorage?.setItem(schemaLocalCachePath, JSON.stringify(tmpState.get('schemas').toJS()))
                 return tmpState
             })()

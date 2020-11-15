@@ -2,7 +2,7 @@ import {List} from 'immutable'
 import {unescapePointer} from '@ui-schema/ui-schema/JSONPointer/unescapePointer';
 
 function isInt(value) {
-    var x;
+    let x;
     if(isNaN(value)) {
         return false;
     }
@@ -11,7 +11,8 @@ function isInt(value) {
 }
 
 export const pointerToKeySeq = (pointer) => {
-    // todo: take # fragment pointers into account
+    // todo: take # fragment pointers into account for correct descaping (URI decode)
+    // if(pointer.indexOf('#/') === 0) {}
     let pointerPoints = pointer.split('/')
     pointerPoints.splice(0, 1)
     pointerPoints = pointerPoints.map(point => {

@@ -4,6 +4,7 @@ import {List} from 'immutable';
 import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorStack';
 import {extractValue, withUIMeta} from '@ui-schema/ui-schema/UIStore';
 import {WidgetRenderer} from '@ui-schema/ui-schema/WidgetRenderer/WidgetRenderer';
+import {SchemaRootProvider} from '@ui-schema/ui-schema/SchemaRootProvider/SchemaRootProvider';
 
 class PluginStackErrorBoundary extends React.Component {
     state = {
@@ -36,6 +37,7 @@ export const PluginStackBase = (props) => {
         storeKeys, schema, widgets,
     } = props;
 
+    const id = schema?.get('$id')
     let required = List([]);
     if(parentSchema) {
         let tmp_required = parentSchema.get('required');
@@ -46,22 +48,29 @@ export const PluginStackBase = (props) => {
 
     const ErrorBoundary = widgets.ErrorFallback ? PluginStackErrorBoundary : React.Fragment;
 
+    const pluginTree = <NextPluginRenderer
+        current={-1}
+        // all others are getting pushed to Widget
+        {...props}
+        level={level}
+        ownKey={storeKeys.get(storeKeys.count() - 1)}
+        requiredList={required}
+        required={false}
+        errors={createValidatorErrors()}
+        valid
+    />
+
     return props.schema ? <ErrorBoundary
         FallbackComponent={widgets.ErrorFallback}
         type={schema.get('type')}
         widget={schema.get('widget')}
     >
-        <NextPluginRenderer
-            current={-1}
-            // all others are getting pushed to Widget
-            {...props}
-            level={level}
-            ownKey={storeKeys.get(storeKeys.count() - 1)}
-            requiredList={required}
-            required={false}
-            errors={createValidatorErrors()}
-            valid
-        />
+        {id && id.indexOf('#') !== 0 ?
+            // TODO: check spec. for: uses root `id`s only, those which are not in the same document/e.g. excludes $anchors from `$defs`
+            <SchemaRootProvider id={id} schema={schema}>
+                {pluginTree}
+            </SchemaRootProvider> :
+            pluginTree}
     </ErrorBoundary> : null;
 };
 export const PluginStack = withUIMeta(extractValue(memo(PluginStackBase)));
