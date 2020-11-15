@@ -17,10 +17,11 @@ const getUrls = (schemaRef, id) => {
 }
 
 export const useNetworkRef = () => {
+    const prevSchemas = React.useRef()
     const {loadSchema: loader, schemas} = useUIApi()
     const {id} = useSchemaRoot()
 
-    const loadSchema = (ref) => {
+    const loadSchema = React.useCallback((ref) => {
         const {schemaUrl} = getUrls(ref, id)
         if(loader && schemaUrl) {
             loader(schemaUrl).then()
@@ -28,24 +29,28 @@ export const useNetworkRef = () => {
         if(!loader) {
             console.error('ReferencingNetworkLoader `loadSchema` not defined, maybe missing `UIApiProvider`')
         }
+    }, [id, loader])
+
+    let same = true
+    if(!prevSchemas.current || !prevSchemas.current.equals(schemas)) {
+        same = false
+        prevSchemas.current = schemas
     }
 
-    // todo: memoize, overwritable `id`
-    const getSchema = (ref) => {
+    // todo: overwritable `id`
+    const getSchema = React.useCallback((ref) => {
         const {cleanUrl, schemaUrl} = getUrls(ref, id)
         let schema
-        if(schemaUrl && schemas?.has(cleanUrl)) {
-            let tmpSchema = schemas?.get(cleanUrl)
+        if(schemaUrl && prevSchemas.current?.has(cleanUrl)) {
+            let tmpSchema = prevSchemas.current?.get(cleanUrl)
             const fragment = getFragmentFromUrl(schemaUrl)
             if(fragment) {
-                // todo: add correct JSON Pointer parser for refs/urls with `#` in it
-                //tmpSchema = tmpSchema.getIn(fragment.split('/'))
                 tmpSchema = resolvePointer('#/' + fragment, tmpSchema)
             }
             schema = tmpSchema
         }
         return schema;
-    }
+    }, [id, same, prevSchemas])
 
     return {getSchema, loadSchema}
 }

@@ -44,7 +44,6 @@ export const mergeSchema = (aSchema, bSchema = Map()) => {
     bSchemaTmp = bSchemaTmp.deleteAll(['properties', 'required', 'enum'])
     aSchema = aSchema.mergeDeep(bSchemaTmp)
     // todo: should all of the current merged, like they are merged
-    // todo: which more keywords of the matched `nestedSchema` should be merged into the `schema`?
 
     return aSchema;
 };

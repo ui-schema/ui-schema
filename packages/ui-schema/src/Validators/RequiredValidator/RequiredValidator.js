@@ -14,16 +14,7 @@ const checkValueExists = (type, value) => {
     } else if(valType === 'string' && (type === 'number' || type === 'integer')) {
         // 0 is also a valid number, so not checking for false here
         return value !== ''
-    } /*else if(type === 'boolean') {
-        //
-    } else if(type === 'array') {
-        // not checking content of array here, only if one item exists
-        // todo: really check type here?
-        // return List.isList(value) || Array.isArray(value)
-    } else if(type === 'object') {
-        // todo: really check type here?
-        // return valType === 'object' || Map.isMap(value)
-    }*/
+    }
 
     return true;
 };

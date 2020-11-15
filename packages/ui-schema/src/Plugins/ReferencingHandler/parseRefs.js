@@ -46,10 +46,10 @@ const parseRefsInRenderingKeywords = (schema, context, recursive, pending = Map(
 
     // items is either a schema or a list of schemas,
     // here one-schema for all items
-    const items = schema.get('items')
+    const items = res.schema.get('items')
     if(items && Map.isMap(items)) {
         const itemsSchema = parseRefs(items, context, recursive, res.pending)
-        res.schema = itemsSchema.schema
+        res.schema = res.schema.set('items', itemsSchema.schema)
         res.pending = itemsSchema.pending
     }
 
@@ -92,10 +92,10 @@ const parseRefsInConditionalKeywords = (schema, context, recursive = false, pend
     let res = {schema, pending}
 
     Object.keys(checkSchema).forEach(keyword => {
-        const schemaCond = schema.get(keyword)
+        const schemaCond = res.schema.get(keyword)
         if(schemaCond && Map.isMap(schemaCond)) {
             const resCheckSchema = parseRefs(schemaCond, context, checkSchema[keyword] || recursive, res.pending)
-            res.schema = schema.set(keyword, resCheckSchema.schema);
+            res.schema = res.schema.set(keyword, resCheckSchema.schema);
             res.pending = resCheckSchema.pending
         }
     })
@@ -113,7 +113,6 @@ const parseRefsInConditionalKeywords = (schema, context, recursive = false, pend
     return res
 }
 
-// todo: for JSON pointer resolving additionally, the root-schema or a `resolvePointer` callable, param will be needed
 export const parseRefs = (schema, context, recursive = false, pending = Map()) => {
     const ref = schema.get('$ref')
     if(ref) {

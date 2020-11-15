@@ -8,7 +8,8 @@ const schemaDependencies = createOrderedMap({
             "type": "string"
         },
         "credit_card": {
-            "type": "string"
+            "type": "string",
+            deleteOnEmpty: true,
         }
     },
 
@@ -31,12 +32,15 @@ const schemaDependenciesBooleans = createOrderedMap({
     properties: {
         extra_text: {
             type: "boolean",
+            deleteOnEmpty: true,
         },
         extra_number: {
             type: "boolean",
+            deleteOnEmpty: true,
         },
         required_number: {
             type: "boolean",
+            deleteOnEmpty: true,
         }
     },
     dependencies: {

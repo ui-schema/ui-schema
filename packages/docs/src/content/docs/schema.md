@@ -39,10 +39,8 @@ Matches the rendered widget, keywords used:
     - should the widget get the value or only something like `isNotEmpty`
 - [structuring, reuse, extension](https://json-schema.org/understanding-json-schema/structuring.html#recursion)
     - in-schema reuse with `$defs`/`definitions`, `$id`, `$ref` etc. [ReferencingHandler](/docs/plugins#referencinghandler)
-        - support json-pointer for non-definition location ❌
     - schema-id with `$id` and use `$ref` with `$id`
-        - to load partial sub-schemas lazily [ReferencingNetworkHandler](/docs/plugins#referencingnetworkhandler)
-        - support for include relatively/partial ❌
+    - load schemas lazily from any API, [ReferencingNetworkHandler](/docs/plugins#referencingnetworkhandler)
 
 >
 > extended with non-standard vocabulary for [UI purposes](#ui-schema-keywords)
@@ -148,15 +146,14 @@ Validation Keywords:
 - `contains` one or more items needs to be valid against a sub-schema
     - ❗ only checks some schema: everything [validateSchema](/docs/plugins#validateschema) supports
     - ❗ no full sub-schema against array items
-- `items` restricts all items be valid against a sub-schema (one-all)
+- `items` restricts all items be valid against a sub-schema (one schema for all or tuples)
     - ❗ only checks some schema: everything [validateSchema](/docs/plugins#validateschema) supports
-    - ❗ no full sub-schema against array items
     - errors are added with context key `arrayItems`
         - only get **non** items errors:
         - `errors.getErrors()`, `errors.getChildErrors()`
-- `items` restricts items to be valid against sub-schemas in an defined order (tuple)
+    - restrict items to be valid against sub-schemas in a defined order (tuple)
     - `additionalItems` if more props then defined are allowed
-    - ❗ currently the individual items must be validated in their actual widgets (validation in render flow)
+    - the individual items must be validated in their actual widgets, e.g. done in the `PluginStack` per item rendered by `GenericList`
     - supported by e.g. [GenericList](/docs/widgets/GenericList)
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/array.html)
@@ -190,9 +187,9 @@ Validators for latest version are used by default, incompatible changes are solv
 | validation |            | `readOnly` | per widget |
 | validation |            | `writeOnly` | per widget |
 | core |                  | `definitions`/`$defs` | ✅ |
-| core, till draft-07 |   | `id`/`$id`<br>only relative | ✅ |
+| core, till draft-07 |   | `id`/`$id` | ✅ |
 | core, from 2019-09 |    | `$anchor` | ✅ |
-| core |                  | `$ref`<br>only relative | ✅ |
+| core |                  | `$ref` | ✅ |
 | core |                  | `$recursiveAnchor` | ❌ |
 | core |                  | `$recursiveRef` | ❌ |
 | validation |            | `enum` | ✅ |

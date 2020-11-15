@@ -11,7 +11,6 @@ export const ERROR_CONST_MISMATCH = 'const-mismatch';
  */
 export const validateConst = (type, _const, value) => {
 
-    // todo: should const respect required?
     return typeof _const === 'undefined' || typeof value === 'undefined' || (
         (type === 'string' || type === 'number' || type === 'integer' || type === 'boolean')
         &&

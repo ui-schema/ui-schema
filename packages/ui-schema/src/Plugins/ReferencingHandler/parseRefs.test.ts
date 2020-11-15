@@ -131,7 +131,16 @@ describe('parseRefs', () => {
             OrderedMap({propertyNames: mockDefinitions.get('country')}) as StoreSchemaType,
         ], [
             /*
-             * dependencies must be resolved, recursively, todo: really recursively
+             * empty fragment test, must resolve to root
+             */
+            OrderedMap({'$ref': '#'}) as StoreSchemaType,
+            {
+                schema: createOrderedMap({type: 'object', properties: {user_id: {type: 'number'}, sub_user: {'$ref': '#'}}}),
+            },
+            createOrderedMap({type: 'object', properties: {user_id: {type: 'number'}, sub_user: {'$ref': '#'}}}) as StoreSchemaType,
+        ], [
+            /*
+             * dependencies must be resolved, recursively
              */
             OrderedMap({
                 type: 'object',
@@ -156,7 +165,7 @@ describe('parseRefs', () => {
             }) as StoreSchemaType,
         ], [
             /*
-             * dependentSchemas must be resolved, recursively, todo: really recursively
+             * dependentSchemas must be resolved, recursively
              */
             OrderedMap({
                 type: 'object',
@@ -301,8 +310,40 @@ describe('parseRefs', () => {
                     OrderedMap({type: 'number'}),
                 ]),
             }) as StoreSchemaType,
-        ],*/
-        // todo: tests for non-recursives, if they are inside `if` and must resolve recursive
+        ],*/ [
+            /*
+             * tests for non-recursives, if they are inside `if` and must resolve recursive
+             */
+            createOrderedMap({
+                if: {items: {'$ref': '#/$defs/country'}},
+            }) as StoreSchemaType,
+            {defs: OrderedMap({country: mockDefinitions.get('country')})},
+            OrderedMap({
+                if: OrderedMap({items: mockDefinitions.get('country')}),
+            }) as StoreSchemaType,
+        ], [
+            /*
+             * tests for non-recursives, if they are inside `if` and must resolve recursive
+             */
+            createOrderedMap({
+                if: {items: [{'$ref': '#/$defs/country'}, {'$ref': '#/$defs/country'}]},
+            }) as StoreSchemaType,
+            {defs: OrderedMap({country: mockDefinitions.get('country')})},
+            createOrderedMap({
+                if: {items: [mockDefinitions.get('country').toJS(), mockDefinitions.get('country').toJS()]},
+            }) as StoreSchemaType,
+        ], [
+            /*
+             * tests for non-recursives, if they are inside `if` and must resolve recursive
+             */
+            createOrderedMap({
+                if: {properties: {country: {'$ref': '#/$defs/country'}}},
+            }) as StoreSchemaType,
+            {defs: OrderedMap({country: mockDefinitions.get('country')})},
+            createOrderedMap({
+                if: {properties: {country: mockDefinitions.get('country').toJS()}},
+            }) as StoreSchemaType,
+        ],
     ] as [
         StoreSchemaType, {
             defs: OrderedMap<string, any>
@@ -314,7 +355,7 @@ describe('parseRefs', () => {
             const res = parseRefs(schema, context)
             const r = res.schema.equals(expectedSchema)
             if (!r) {
-                console.error(res.schema.toJS())
+                console.error(res.schema.toJS(), expectedSchema.toJS())
             }
             expect(r).toBe(true)
         }

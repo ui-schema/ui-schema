@@ -97,14 +97,14 @@ const Main = ({classes = {}}) => {
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer
-                id={'schemaReferencingNetwork'} schema={schemaDemoReferencingNetwork} open
+                id={'schemaReferencingNetwork'} schema={schemaDemoReferencingNetwork}
                 toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
                 stylePaper={{background: 'transparent'}} variant={'outlined'}
             />
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer
-                id={'schemaReferencingNetworkB'} schema={schemaDemoReferencingNetworkB} open
+                id={'schemaReferencingNetworkB'} schema={schemaDemoReferencingNetworkB}
                 toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
                 stylePaper={{background: 'transparent'}} variant={'outlined'}
             />

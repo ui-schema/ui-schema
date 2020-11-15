@@ -74,14 +74,14 @@ const schemaLists = createOrderedMap({
                     type: "number",
                     title: "Street No.",
                     view: {
-                        sizeXs: 6
+                        sizeMd: 6
                     },
                 },
                 {
                     type: "string",
                     title: "Street",
                     view: {
-                        sizeXs: 6
+                        sizeMd: 6
                     },
                 },
                 {
@@ -90,7 +90,7 @@ const schemaLists = createOrderedMap({
                     title: "Street Type",
                     enum: ["Street", "Avenue", "Boulevard"],
                     view: {
-                        sizeXs: 6
+                        sizeMd: 6
                     },
                 },
                 {
@@ -99,7 +99,7 @@ const schemaLists = createOrderedMap({
                     title: "Direction",
                     enum: ["NW", "NE", "SW", "SE"],
                     view: {
-                        sizeXs: 6
+                        sizeMd: 6
                     },
                 }
             ],

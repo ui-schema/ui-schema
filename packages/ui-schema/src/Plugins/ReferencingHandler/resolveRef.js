@@ -26,7 +26,7 @@ export const resolveRef = (ref, context) => {
             console.error('definition not found for $ref', ref, refId)
         }
 
-    } else if(ref.indexOf('#/') === 0) {
+    } else if(ref.indexOf('#/') === 0 || ref === '#') {
         // JSON Pointer
 
         if(!rootSchema) {
@@ -45,7 +45,6 @@ export const resolveRef = (ref, context) => {
         if(!defs) {
             console.error('definitions needed for $ref resolution', ref)
         } else {
-            // todo: is `def` resolving by using `ref` with `id` and json pointer needed? check spec.
             const def = defs.find(def => {
                 return (
                     // till draft-06, no `$`, hashtag in id

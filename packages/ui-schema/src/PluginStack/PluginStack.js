@@ -37,7 +37,8 @@ export const PluginStackBase = (props) => {
         storeKeys, schema, widgets,
     } = props;
 
-    const id = schema?.get('$id')
+    // till draft-06, no `$`, hashtag in id
+    const id = schema?.get('$id') || schema?.get('id')
     let required = List([]);
     if(parentSchema) {
         let tmp_required = parentSchema.get('required');

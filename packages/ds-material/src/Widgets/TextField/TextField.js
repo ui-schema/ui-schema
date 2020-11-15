@@ -67,7 +67,7 @@ export const StringRenderer = ({
             style={style}
             onKeyDown={onKeyDown}
             onChange={(e) =>
-                onChange(updateValue(storeKeys, convertStringToNumber(e.target.value, schema.get('type')), required, schema.get('type')))
+                onChange(updateValue(storeKeys, convertStringToNumber(e.target.value, schema.get('type')), schema.get('deleteOnEmpty') || required, schema.get('type')))
             }
             InputLabelProps={{shrink: schema.getIn(['view', 'shrink'])}}
             InputProps={InputProps}
