@@ -30,6 +30,8 @@
 
 *[Demo Source](https://github.com/ui-schema/demo-cra)*
 
+> 🔥 **Professional service & support available, [reach out now](https://bemit.codes/get-quote)!**
+
 Additional Material-UI Widgets:
 
 - Date-Time Picker: `@ui-schema/material-pickers` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/material-pickers?style=flat-square)](https://www.npmjs.com/package/@ui-schema/material-pickers) [![Component Documentation](https://img.shields.io/badge/Docs-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](https://ui-schema.bemit.codes/docs/widgets/DateTimePickers)

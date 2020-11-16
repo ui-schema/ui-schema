@@ -11,7 +11,7 @@ export interface ValidatorErrors {
     getErrors: () => ValidatorErrorsValue
     addError: (type: string, context?: Map<any, any>) => ValidatorErrorsType
     addErrors: (errors: ValidatorErrorsType) => ValidatorErrorsType
-    addChildError: (errors: ValidatorErrorsType) => ValidatorErrorsType
+    addChildErrors: (errors: ValidatorErrorsType) => ValidatorErrorsType
     hasError: (type?: string) => boolean
     getError: (type: string) => ValidatorErrorsSingle
 }
