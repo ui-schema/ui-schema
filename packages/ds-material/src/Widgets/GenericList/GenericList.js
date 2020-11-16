@@ -3,12 +3,13 @@ import {
     FormControl, Grid, FormLabel, IconButton, Typography, Divider,
 } from '@material-ui/core';
 import {Add, Delete, KeyboardArrowUp, KeyboardArrowDown} from '@material-ui/icons';
-import {UIGeneratorNested, TransTitle, extractValue, memo, storeMoveItem, updateValue} from '@ui-schema/ui-schema';
+import {UIGeneratorNested, TransTitle, extractValue, memo} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 import {List, Map} from 'immutable';
 import {AccessTooltipIcon} from '../../Component/Tooltip/Tooltip';
+import {moveItem} from '@ui-schema/ui-schema/Utils/moveItem/moveItem';
 
-let GenericListItem = ({index, listSize, listNoSelf, itemsSchema, showValidity, onChange, storeKeys, btnSize}) => {
+let GenericListItem = ({index, listSize, itemsSchema, deleteOnEmpty, showValidity, onChange, storeKeys, btnSize}) => {
     const ownKeys = storeKeys.push(index)
     return <React.Fragment>
         <Grid item xs={12} style={{display: 'flex'}}>
@@ -17,7 +18,18 @@ let GenericListItem = ({index, listSize, listNoSelf, itemsSchema, showValidity, 
 
                     {index > 0 ? <IconButton
                         size={btnSize} style={{margin: '0 auto'}}
-                        onClick={storeMoveItem(onChange, ownKeys, -1)}>
+                        onClick={() =>
+                            onChange(
+                                storeKeys, {
+                                    value: (list) => moveItem(list, index, index - 1),
+                                    internals: (list) => moveItem(list, index, index - 1),
+                                    // todo: also moveItem in `valid`? that should be handled automatically atm. and is not needed !i think!
+                                },
+                                deleteOnEmpty,
+                                'array',
+                            )
+                        }
+                    >
                         <AccessTooltipIcon title={`Move to ${(index + 1) - 1}. position`}>
                             <KeyboardArrowUp fontSize={'inherit'}/>
                         </AccessTooltipIcon>
@@ -31,7 +43,18 @@ let GenericListItem = ({index, listSize, listNoSelf, itemsSchema, showValidity, 
 
                     {index < listSize - 1 ? <IconButton
                         size={btnSize} style={{margin: '0 auto'}}
-                        onClick={storeMoveItem(onChange, ownKeys, 1)}>
+                        onClick={() =>
+                            onChange(
+                                storeKeys, {
+                                    value: (list) => moveItem(list, index, index + 1),
+                                    internals: (list) => moveItem(list, index, index + 1),
+                                    // todo: also moveItem in `valid`? that should be handled automatically atm. and is not needed !i think!
+                                },
+                                deleteOnEmpty,
+                                'array',
+                            )
+                        }
+                    >
                         <AccessTooltipIcon title={`Move to ${(index + 1) + 1}. position`}>
                             <KeyboardArrowDown fontSize={'inherit'}/>
                         </AccessTooltipIcon>
@@ -59,9 +82,13 @@ let GenericListItem = ({index, listSize, listNoSelf, itemsSchema, showValidity, 
 
                 <Grid item style={{display: 'flex', flexShrink: 0}}>
                     <IconButton
-                        onClick={() => {
-                            onChange(updateValue(storeKeys, listNoSelf))
-                        }}
+                        onClick={() =>
+                            onChange(
+                                storeKeys, {value: (list) => list.splice(index, 1)},
+                                deleteOnEmpty,
+                                'array',
+                            )
+                        }
                         size={btnSize}
                         style={{margin: '0 0 auto 0'}}
                     >
@@ -77,9 +104,8 @@ let GenericListItem = ({index, listSize, listNoSelf, itemsSchema, showValidity, 
 }
 GenericListItem = memo(GenericListItem)
 
-
 const GenericList = extractValue(memo(({
-                                           storeKeys, ownKey, schema, value: list, onChange,
+                                           storeKeys, ownKey, schema, value: list, onChangeNext: onChange,
                                            showValidity, valid, errors, required,
                                        }) => {
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
@@ -92,8 +118,8 @@ const GenericList = extractValue(memo(({
 
             {list ? list.map((val, i) =>
                 <GenericListItem
-                    key={i} index={i} listSize={list.size} listNoSelf={list.splice(i, 1)}
-                    btnSize={btnSize} storeKeys={storeKeys}
+                    key={i} index={i} listSize={list.size}
+                    btnSize={btnSize} storeKeys={storeKeys} deleteOnEmpty={schema.get('deleteOnEmpty') || required}
                     itemsSchema={schema.get('items')} onChange={onChange}
                 />,
             ).valueSeq() : null}
@@ -101,12 +127,11 @@ const GenericList = extractValue(memo(({
             <Grid item xs={12}>
                 <IconButton
                     onClick={() => {
-                        onChange(updateValue(
-                            storeKeys, list ?
-                                list.push(List.isList(schema.get('items')) ? List() : Map()) :
-                                List([List.isList(schema.get('items')) ? List() : Map()]),
-                            required, schema.get('type'),
-                        ))
+                        onChange(
+                            storeKeys, {value: (list = List()) => list.push(List.isList(schema.get('items')) ? List() : Map())},
+                            schema.get('deleteOnEmpty') || required,
+                            schema.get('type'),
+                        )
                     }}
                     size={btnSize}
                 >

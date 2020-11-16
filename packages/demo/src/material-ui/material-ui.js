@@ -1,5 +1,5 @@
 import React from 'react';
-import {unstable_trace as trace} from 'scheduler/tracing';
+import {isImmutable} from 'immutable';
 import AppTheme from './layout/AppTheme';
 import Dashboard from './dashboard/Dashboard';
 import {schemaWCombining} from '../schemas/demoCombining';
@@ -22,7 +22,7 @@ import {createDummyRenderer} from './component/MuiMainDummy';
 import {useDummy} from '../component/MainDummy';
 import {UIApiProvider} from '@ui-schema/ui-schema/UIApi/UIApi';
 import {ReferencingNetworkHandler} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
-import {shouldDeleteOnEmpty} from '@ui-schema/ui-schema/UIStore/UIStore';
+import {storeUpdater} from '@ui-schema/ui-schema/UIStore/storeUpdater';
 
 const pluginStack = [...widgets.pluginStack]
 // the referencing network handler should be at first position
@@ -33,65 +33,22 @@ pluginStack.splice(0, 0, ReferencingNetworkHandler)
 widgets.pluginStack = pluginStack
 const DummyRenderer = createDummyRenderer(widgets);
 
-const storeUpdater = (storeKeys, values, deleteOnEmpty, type) =>
-    store => {
-        const {value, internalValue} = values
-
-        if(value) {
-            let deleteValue = false
-            store = store.updateIn(
-                storeKeys.size ? prependKey(storeKeys, 'values') : 'values',
-                oldValue => {
-                    oldValue = value(oldValue)
-                    if(shouldDeleteOnEmpty(oldValue, deleteOnEmpty, type)) {
-                        deleteValue = true
-                    }
-                    return oldValue
-                },
-            )
-            if(deleteValue) {
-                store = store.deleteIn(storeKeys.size ? prependKey(storeKeys, 'values') : ['values']);
-            }
-        }
-        if(internalValue) {
-            let deleteInternalValue = false
-            store = store.updateIn(
-                storeKeys.size ? prependKey(storeKeys, 'internals') : 'internals',
-                oldValue => {
-                    oldValue = internalValue(oldValue)
-                    if(shouldDeleteOnEmpty(oldValue, deleteOnEmpty, type)) {
-                        deleteInternalValue = true
-                    }
-                    return oldValue
-                },
-            )
-            if(deleteInternalValue) {
-                store = store.deleteIn(storeKeys.size ? prependKey(storeKeys, 'internals') : ['internals']);
-            }
-        }
-
-        return store
-    }
-
-
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [store, setStore] = React.useState(() => createStore(createMap(dataDemoMain)));
     const [schema, setSchema] = React.useState(() => createOrderedMap(schemaDemoMain));
 
-    const onChange = React.useCallback(store =>
-            // todo: the interactions from `trace` are not visible in dev tools
-            trace('onchange', performance.now(), () => {
-                //console.log('onChange')
-                return setStore(store)
-            }),
-        [setStore],
-    )
-
     const onChangeNext = React.useCallback((storeKeys, values, deleteOnEmpty, type) => {
         setStore(prevStore => {
             const newStore = storeUpdater(storeKeys, values, deleteOnEmpty, type)(prevStore)
-            console.log(newStore.getIn(prependKey(storeKeys, 'values')), prevStore.getIn(prependKey(storeKeys, 'values')), storeKeys.toJS(), deleteOnEmpty, type)
+            const newValue = newStore.getIn(prependKey(storeKeys, 'values'))
+            const prevValue = prevStore.getIn(prependKey(storeKeys, 'values'))
+            console.log(
+                isImmutable(newValue) ? newValue.toJS() : newValue,
+                isImmutable(prevValue) ? prevValue.toJS() : prevValue,
+                storeKeys.toJS(),
+                deleteOnEmpty, type,
+            )
             return newStore
         })
     }, [setStore])
@@ -100,7 +57,6 @@ const MainStore = () => {
         <UIGenerator
             schema={schema}
             store={store}
-            onChange={onChange}
             onChangeNext={onChangeNext}
             widgets={widgets}
             showValidity={showValidity}

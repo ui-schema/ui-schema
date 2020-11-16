@@ -3,11 +3,11 @@ import {Map, List} from 'immutable';
 import {
     FormControl, FormLabel, FormControlLabel, RadioGroup, Radio,
 } from '@material-ui/core';
-import {TransTitle, Trans, beautifyKey, updateValue} from '@ui-schema/ui-schema';
+import {TransTitle, Trans, beautifyKey} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
 const OptionsRadio = ({
-                          ownKey, schema, value, onChange, storeKeys, showValidity, valid, required, errors,
+                          ownKey, schema, value, onChangeNext: onChange, storeKeys, showValidity, valid, required, errors,
                           row,
                       }) => {
     const enumVal = schema.get('enum');
@@ -24,7 +24,13 @@ const OptionsRadio = ({
                     control={<Radio
                         value={enum_name}
                         checked={enum_name === isActive}
-                        onChange={() => onChange(updateValue(storeKeys, enum_name, schema.get('deleteOnEmpty') || required, schema.get('type')))}
+                        onChange={() =>
+                            onChange(
+                                storeKeys, {value: () => enum_name},
+                                schema.get('deleteOnEmpty') || required,
+                                schema.get('type'),
+                            )
+                        }
                     />}
                     label={<Trans
                         schema={schema.get('t')}

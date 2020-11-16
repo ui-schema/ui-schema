@@ -4,12 +4,13 @@ import {
     FormControl, Checkbox, InputLabel,
     MenuItem, Select as MuiSelect, ListItemText,
 } from '@material-ui/core';
-import {TransTitle, Trans, beautifyKey, updateValue, extractValue, memo} from '@ui-schema/ui-schema';
+import {TransTitle, Trans, beautifyKey, extractValue, memo} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {sortScalarList} from '@ui-schema/ui-schema/Utils/sortScalarList';
 
 const Select = ({
                     multiple,
-                    storeKeys, ownKey, schema, value, onChange,
+                    storeKeys, ownKey, schema, value, onChangeNext: onChange,
                     showValidity, valid, required, errors, t,
                 }) => {
     if(!schema) return null;
@@ -41,9 +42,18 @@ const Select = ({
                         beautifyKey(s, schema.get('tt')) + '';
                 }).join(', ')
             }}
-            onChange={(e) => multiple ?
-                onChange(updateValue(storeKeys, List(e.target.value), schema.get('deleteOnEmpty') || required, schema.get('type'))) :
-                onChange(updateValue(storeKeys, e.target.value, schema.get('deleteOnEmpty') || required, schema.get('type')))}
+            onChange={(e) =>
+                onChange(
+                    storeKeys,
+                    {
+                        value: () => multiple ?
+                            sortScalarList(List(e.target.value)) :
+                            e.target.value,
+                    },
+                    schema.get('deleteOnEmpty') || required,
+                    schema.get('type'),
+                )
+            }
         >
             {enum_val ? enum_val.map((enum_name, i) =>
                 <MenuItem

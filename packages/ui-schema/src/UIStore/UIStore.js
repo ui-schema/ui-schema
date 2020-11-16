@@ -3,12 +3,22 @@ import {Record, Map, List} from 'immutable';
 import {getDisplayName} from '../Utils/memo/getDisplayName';
 import {createMap} from '../Utils/createMap';
 import {relT} from '../Translate/relT';
+import {onChangeCompat, onChangeNextCompat} from '@ui-schema/ui-schema/UIStore/storeUpdater';
 
 const UIStoreContext = React.createContext({});
 const UIMetaContext = React.createContext({});
 
 // with store, onChange, schema
-export const UIStoreProvider = ({children, ...props}) => <UIStoreContext.Provider value={props} children={children}/>;
+export const UIStoreProvider = ({children, ...props}) => {
+    // todo: remove onChange compat before releasing v0.2.0
+    if(!props.onChange) {
+        props.onChange = onChangeCompat(props.onChangeNext)
+    }
+    if(!props.onChangeNext) {
+        props.onChangeNext = onChangeNextCompat(props.onChange)
+    }
+    return <UIStoreContext.Provider value={props} children={children}/>
+};
 
 // with widgets, t, showValidity
 export const UIMetaProvider = ({children, ...props}) => <UIMetaContext.Provider value={props} children={children}/>;
@@ -120,7 +130,7 @@ export const prependKey = (storeKeys, key) =>
         storeKeys.splice(0, 0, key);
 
 const shouldHandleRequired = (value, force, type) => {
-    // todo: why is the type number check here
+    // todo: mv number out here, enforces that numbers can be cleared, but should only be forced for the `""` value in number types
     if(!force && type !== 'number') return false
 
     switch(type) {
