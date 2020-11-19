@@ -27,7 +27,9 @@ export const ValidatorErrors = Record({
             typeErrors = new List()
         }
         typeErrors = typeErrors.push(context)
-        return this.setIn(['childErrors', type], typeErrors)//.set('errCount', this.errCount + 1)
+        return this.setIn(['childErrors', type], typeErrors)
+            // incrementing the global errCount not the children
+            .set('errCount', this.errCount + 1)
     },
     addChildErrors: function(errors) {
         let currentErr = this;
@@ -36,7 +38,6 @@ export const ValidatorErrors = Record({
                 currentErr = currentErr.addChildError(type, error)
             })
         })
-        //return this.setIn(['childErrors'], errors).set('errCount', this.errCount + 1)
         return currentErr
     },
     addErrors: function(errors) {

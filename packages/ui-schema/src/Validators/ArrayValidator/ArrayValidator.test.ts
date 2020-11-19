@@ -533,7 +533,8 @@ describe('arrayValidator', () => {
                 },
             },
             ['1', 2],
-            List([ERROR_WRONG_TYPE, Map()]),
+            // has error, but childError, thus empty errors
+            List(),
             false,
             true,
         ], [
@@ -569,9 +570,13 @@ describe('arrayValidator', () => {
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            expect(result.errors.hasError(error.get(0))).toBe(expectedError)
-            if (result.errors.hasError(error.get(0))) {
-                expect(result.errors.getError(error.get(0)).get(0)?.equals(error.get(1))).toBe(expectedError)
+            if (error.size) {
+                expect(result.errors.hasError(error.get(0))).toBe(expectedError)
+                if (result.errors.hasError(error.get(0))) {
+                    expect(result.errors.getError(error.get(0)).get(0)?.equals(error.get(1))).toBe(expectedError)
+                }
+            } else {
+                // todo: test childErrors for array items
             }
         }
     )
