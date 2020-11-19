@@ -1,6 +1,6 @@
-import { StoreSchemaType } from '@ui-schema/ui-schema'
+import { ParseRefsContent, StoreSchemaType } from '@ui-schema/ui-schema'
 
 export class SchemaRefPending extends Error {
 }
 
-export function resolveRef(ref, context): StoreSchemaType
+export function resolveRef(ref: string, context: ParseRefsContent): StoreSchemaType

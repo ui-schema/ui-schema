@@ -1,8 +1,8 @@
 import { expect, describe } from '@jest/globals'
-import { List, OrderedMap } from 'immutable'
-import { StoreSchemaType } from '@ui-schema/ui-schema'
+import { List, OrderedMap, Map } from 'immutable'
+import { ParseRefsContent, StoreSchemaType } from '@ui-schema/ui-schema'
 import { parseRefs } from './parseRefs'
-import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
+import { createMap, createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
 
 const mockDefinitions = createOrderedMap({
     country: {type: 'string', enum: ['fr', 'de', 'it']},
@@ -135,7 +135,7 @@ describe('parseRefs', () => {
              */
             OrderedMap({'$ref': '#'}) as StoreSchemaType,
             {
-                schema: createOrderedMap({type: 'object', properties: {user_id: {type: 'number'}, sub_user: {'$ref': '#'}}}),
+                root: createOrderedMap({type: 'object', properties: {user_id: {type: 'number'}, sub_user: {'$ref': '#'}}}),
             },
             createOrderedMap({type: 'object', properties: {user_id: {type: 'number'}, sub_user: {'$ref': '#'}}}) as StoreSchemaType,
         ], [
@@ -259,7 +259,7 @@ describe('parseRefs', () => {
             }) as StoreSchemaType,
             {
                 defs: OrderedMap({country: mockDefinitions.get('country')}),
-                schema: createOrderedMap({
+                root: createOrderedMap({
                     type: 'object',
                     properties: {
                         address: {
@@ -290,7 +290,7 @@ describe('parseRefs', () => {
             }) as StoreSchemaType,
             {
                 defs: OrderedMap({country: mockDefinitions.get('country')}),
-                schema: createOrderedMap({
+                root: createOrderedMap({
                     type: 'object',
                     properties: {
                         address: {
@@ -343,12 +343,52 @@ describe('parseRefs', () => {
             createOrderedMap({
                 if: {properties: {country: mockDefinitions.get('country').toJS()}},
             }) as StoreSchemaType,
+        ], [
+            /*
+             * tests for nested root schema
+             */
+            createOrderedMap({
+                if: {
+                    properties: {
+                        location: {
+                            $id: 'https://localhost',
+                            type: 'object',
+                            $defs: {
+                                country: {type: 'string', enum: ['fr', 'de', 'it', 'es']},
+                            },
+                            properties: {
+                                // this $ref needs to use the $defs of this level
+                                country: {'$ref': '#/$defs/country'},
+                            },
+                        },
+                        // this $ref needs to use the $defs of the known root-schema
+                        country: {'$ref': '#/$defs/country'},
+                    },
+                },
+            }) as StoreSchemaType,
+            {defs: OrderedMap({country: mockDefinitions.get('country')})},
+            createOrderedMap({
+                if: {
+                    properties: {
+                        location: {
+                            $id: 'https://localhost',
+                            type: 'object',
+                            $defs: {
+                                country: {type: 'string', enum: ['fr', 'de', 'it', 'es']},
+                            },
+                            properties: {
+                                country: {type: 'string', enum: ['fr', 'de', 'it', 'es']},
+                            },
+                        },
+                        country: mockDefinitions.get('country').toJS(),
+                    },
+                },
+            }) as StoreSchemaType,
         ],
     ] as [
-        StoreSchemaType, {
-            defs: OrderedMap<string, any>
-        },
-        StoreSchemaType
+        StoreSchemaType,
+        ParseRefsContent,
+        StoreSchemaType,
     ][])(
         'parseRefs(%j, %j): %j',
         (schema, context, expectedSchema) => {
@@ -356,6 +396,79 @@ describe('parseRefs', () => {
             const r = res.schema.equals(expectedSchema)
             if (!r) {
                 console.error(res.schema.toJS(), expectedSchema.toJS())
+            }
+            expect(r).toBe(true)
+        }
+    )
+
+    test.each([
+        [
+            createOrderedMap({
+                if: {
+                    properties: {
+                        location: {
+                            $id: 'https://localhost:8080/root-2.json',
+                            type: 'object',
+                            properties: {
+                                // this $ref needs to use the $id of this level
+                                country: {'$ref': 'dummy-1a.json'},
+                            },
+                        },
+                        // this $ref needs to use the $defs of the known root-schema
+                        country: {'$ref': 'https://localhost:3000/dummy-2.json'},
+                        state: {'$ref': 'dummy-3.json'},
+                    },
+                },
+            }) as StoreSchemaType,
+            {},
+            createMap({
+                'https://localhost:8080/root-2.json': {
+                    'dummy-1a.json': ['*'],
+                },
+                '#': {
+                    'https://localhost:3000/dummy-2.json': ['*'],
+                    'dummy-3.json': ['*'],
+                },
+            }) as unknown as Map<string, Map<string, any>>,
+        ], [
+            createOrderedMap({
+                if: {
+                    properties: {
+                        location: {
+                            $id: 'https://localhost:8080/root-2.json',
+                            type: 'object',
+                            properties: {
+                                // this $ref needs to use the $id of this level
+                                country: {'$ref': 'dummy-1a.json'},
+                            },
+                        },
+                        // this $ref needs to use the $defs of the known root-schema
+                        country: {'$ref': 'https://localhost:3000/dummy-2.json'},
+                        state: {'$ref': 'dummy-3.json'},
+                    },
+                },
+            }) as StoreSchemaType,
+            {fetchSchema: (ref) => ref === 'dummy-3.json' ? Map() : undefined},
+            createMap({
+                'https://localhost:8080/root-2.json': {
+                    'dummy-1a.json': ['*'],
+                },
+                '#': {
+                    'https://localhost:3000/dummy-2.json': ['*'],
+                },
+            }) as unknown as Map<string, Map<string, any>>,
+        ],
+    ] as [
+        StoreSchemaType,
+        ParseRefsContent,
+        Map<string, Map<string, any>>,
+    ][])(
+        'pending: parseRefs(%j, %j): %j',
+        (schema, context, expectedPending) => {
+            const res = parseRefs(schema, context)
+            const r = res.pending.equals(expectedPending)
+            if (!r) {
+                console.error(res.pending.toJS(), expectedPending.toJS())
             }
             expect(r).toBe(true)
         }

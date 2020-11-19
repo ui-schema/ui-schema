@@ -4,7 +4,8 @@ import {List} from 'immutable';
 import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorStack';
 import {extractValue, withUIMeta} from '@ui-schema/ui-schema/UIStore';
 import {WidgetRenderer} from '@ui-schema/ui-schema/WidgetRenderer/WidgetRenderer';
-import {SchemaRootProvider} from '@ui-schema/ui-schema/SchemaRootProvider/SchemaRootProvider';
+import {isRootSchema, SchemaRootProvider} from '@ui-schema/ui-schema/SchemaRootProvider/SchemaRootProvider';
+import {getSchemaId} from '@ui-schema/ui-schema/Utils/getSchema';
 
 class PluginStackErrorBoundary extends React.Component {
     state = {
@@ -38,7 +39,7 @@ export const PluginStackBase = (props) => {
     } = props;
 
     // till draft-06, no `$`, hashtag in id
-    const id = schema?.get('$id') || schema?.get('id')
+    const id = getSchemaId(schema)
     const isVirtual = Boolean(props.isVirtual || schema?.get('hidden'))
     let required = List([]);
     if(parentSchema) {
@@ -68,7 +69,7 @@ export const PluginStackBase = (props) => {
         type={schema.get('type')}
         widget={schema.get('widget')}
     >
-        {id && id.indexOf('#') !== 0 ?
+        {isRootSchema(schema) ?
             // TODO: check spec. for: uses root `id`s only, those which are not in the same document/e.g. excludes $anchors from `$defs`
             <SchemaRootProvider id={id} schema={schema}>
                 {pluginTree}

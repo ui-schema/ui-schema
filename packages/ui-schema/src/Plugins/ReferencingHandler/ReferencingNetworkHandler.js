@@ -21,8 +21,8 @@ export const useNetworkRef = () => {
     const {loadSchema: loader, schemas} = useUIApi()
     const {id} = useSchemaRoot()
 
-    const loadSchema = React.useCallback((ref) => {
-        const {schemaUrl} = getUrls(ref, id)
+    const loadSchema = React.useCallback((ref, rootId = '#') => {
+        const {schemaUrl} = getUrls(ref, rootId === '#' ? id : rootId)
         if(loader && schemaUrl) {
             loader(schemaUrl).then()
         }
@@ -37,9 +37,8 @@ export const useNetworkRef = () => {
         prevSchemas.current = schemas
     }
 
-    // todo: overwritable `id`
-    const getSchema = React.useCallback((ref) => {
-        const {cleanUrl, schemaUrl} = getUrls(ref, id)
+    const getSchema = React.useCallback((ref, rootId = '#') => {
+        const {cleanUrl, schemaUrl} = getUrls(ref, rootId === '#' ? id : rootId)
         let schema
         if(schemaUrl && prevSchemas.current?.has(cleanUrl)) {
             let tmpSchema = prevSchemas.current?.get(cleanUrl)
