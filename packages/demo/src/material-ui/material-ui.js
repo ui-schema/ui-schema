@@ -6,7 +6,7 @@ import {schemaWConditional, schemaWConditional1, schemaWConditional2} from '../s
 import {schemaWDep1, schemaWDep2} from '../schemas/demoDependencies';
 import {dataDemoMain, schemaDemoMain, schemaUser} from '../schemas/demoMain';
 import {schemaDemoReferencing, schemaDemoReferencingNetwork, schemaDemoReferencingNetworkB} from '../schemas/demoReferencing';
-import {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect} from '../schemas/demoSimples';
+import {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect, schemaNull} from '../schemas/demoSimples';
 import {schemaGrid} from '../schemas/demoGrid';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -30,6 +30,7 @@ const pluginStack = [...widgets.pluginStack]
 // maybe the network handlers adds a generic prop `resolveNetworkRef`, to request network schema inside e.g. an `if` from inside the ReferencingHandler
 pluginStack.splice(0, 0, ReferencingNetworkHandler)
 widgets.pluginStack = pluginStack
+//widgets.types.null = () => 'null'
 const DummyRenderer = createDummyRenderer(widgets);
 
 const MainStore = () => {
@@ -152,6 +153,9 @@ const Main = ({classes = {}}) => {
             <DummyRenderer id={'schemaSimNumber'} schema={schemaSimNumber} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
             <DummyRenderer id={'schemaSimRadio'} schema={schemaSimRadio} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
             <DummyRenderer id={'schemaSimSelect'} schema={schemaSimSelect} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer id={'schemaNull'} schema={schemaNull} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes} stylePaper={{background: 'transparent'}} variant={'outlined'}/>
         </Grid>
         <Grid item xs={12}>
             <Button style={{marginBottom: 12}} onClick={() => toggleDummy('demoUser')} variant={getDummy('demoUser') ? 'contained' : 'outlined'}>

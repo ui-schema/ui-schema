@@ -33,6 +33,8 @@ export const WidgetRenderer = ({
             Widget = ObjectRenderer;
         } else if(widgets.types[type]) {
             Widget = widgets.types[type];
+        } else if(type === 'null') {
+            Widget = null;
         } else {
             Widget = () => <NoWidget scope={'type'} matching={type}/>;
             Widget.displayName = 'NoWidgetType'

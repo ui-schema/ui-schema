@@ -1,11 +1,11 @@
-import {List} from "immutable";
+import {List} from 'immutable';
 
 export const ERROR_ENUM_MISMATCH = 'enum-mismatch';
 
 export const validateEnum = (type, _enum, value) => {
     if(typeof _enum === 'undefined' || typeof value === 'undefined') return true;
 
-    if(type === 'string' || type === 'number' || type === 'integer' || type === 'boolean') {
+    if(type === 'string' || type === 'number' || type === 'integer' || type === 'boolean' || type === 'null') {
         if(List.isList(_enum)) {
             if(!_enum.contains(value)) {
                 return false;
@@ -38,5 +38,5 @@ export const valueValidatorEnum = {
         }
 
         return {errors, valid}
-    }
+    },
 };

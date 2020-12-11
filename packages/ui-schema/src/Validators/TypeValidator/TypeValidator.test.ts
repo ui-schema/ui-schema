@@ -1,6 +1,6 @@
-import { List, Map, OrderedMap } from "immutable"
+import { List, Map, OrderedMap } from 'immutable'
 import { ERROR_WRONG_TYPE, typeValidator, validateType } from '@ui-schema/ui-schema/Validators/TypeValidator'
-import { createValidatorErrors } from "@ui-schema/ui-schema/ValidatorStack/ValidatorErrors"
+import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
 
 describe('validateType', () => {
     test.each([

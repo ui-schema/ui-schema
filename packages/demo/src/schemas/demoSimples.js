@@ -1,11 +1,32 @@
-import {createOrderedMap} from "@ui-schema/ui-schema";
+import {createOrderedMap} from '@ui-schema/ui-schema';
+
+export const schemaNull = createOrderedMap({
+    type: 'object',
+    title: 'Type Null',
+    view: {
+        sizeXs: 12,
+    },
+    properties: {
+        is_null: {
+            type: 'null',
+        },
+        is_null_def: {
+            type: 'null',
+            default: null,
+        },
+        is_null_inv: {
+            type: 'null',
+            //default: 'noll',
+        },
+    },
+});
 
 const schemaSimString = createOrderedMap({
     type: 'string',
     title: 'Simple Text',
     view: {
         sizeXs: 12,
-    }
+    },
 });
 
 const schemaSimNumber = createOrderedMap({
@@ -13,14 +34,14 @@ const schemaSimNumber = createOrderedMap({
     title: 'titles.simple-number',
     view: {
         sizeXs: 12,
-    }
+    },
 });
 
 const schemaSimBoolean = createOrderedMap({
     type: 'boolean',
     view: {
         sizeXs: 12,
-    }
+    },
 });
 
 const schemaSimRadio = createOrderedMap({
@@ -29,7 +50,7 @@ const schemaSimRadio = createOrderedMap({
     enum: ['left', 'center', 'right'],
     view: {
         sizeXs: 12,
-    }
+    },
 });
 
 const schemaSimCheck = createOrderedMap({
@@ -38,7 +59,7 @@ const schemaSimCheck = createOrderedMap({
     enum: ['left', 'center', 'right'],
     view: {
         sizeXs: 12,
-    }
+    },
 });
 
 const schemaSimSelect = createOrderedMap({
@@ -47,7 +68,7 @@ const schemaSimSelect = createOrderedMap({
     enum: ['left', 'center', 'right'],
     view: {
         sizeXs: 12,
-    }
+    },
 });
 
 const schemaCode = createOrderedMap({
@@ -59,7 +80,7 @@ const schemaCode = createOrderedMap({
             widget: 'Code',
             view: {
                 sizeXs: 12,
-            }
+            },
         },
         code_bg: {
             type: 'string',
@@ -67,8 +88,8 @@ const schemaCode = createOrderedMap({
             widget: 'Code',
             view: {
                 sizeXs: 12,
-                bg: true
-            }
+                bg: true,
+            },
         },
         code_2: {
             type: 'string',
@@ -78,7 +99,7 @@ const schemaCode = createOrderedMap({
         normal_string: {
             type: 'string',
         },
-    }
+    },
 });
 
 export {

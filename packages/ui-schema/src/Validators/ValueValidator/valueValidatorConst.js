@@ -1,4 +1,4 @@
-import {Map} from "immutable";
+import {Map} from 'immutable';
 
 export const ERROR_CONST_MISMATCH = 'const-mismatch';
 
@@ -12,7 +12,7 @@ export const ERROR_CONST_MISMATCH = 'const-mismatch';
 export const validateConst = (type, _const, value) => {
 
     return typeof _const === 'undefined' || typeof value === 'undefined' || (
-        (type === 'string' || type === 'number' || type === 'integer' || type === 'boolean')
+        (type === 'string' || type === 'number' || type === 'integer' || type === 'boolean' || type === 'null')
         &&
         (value === _const)
     );
@@ -33,5 +33,5 @@ export const valueValidatorConst = {
         }
 
         return {errors, valid}
-    }
+    },
 };

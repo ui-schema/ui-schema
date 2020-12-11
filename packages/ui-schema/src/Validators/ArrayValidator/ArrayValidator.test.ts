@@ -196,6 +196,18 @@ describe('validateItems', () => {
         [{
             type: 'array',
             items: {
+                type: 'null',
+            },
+        }, [null, null, null], 0],
+        [{
+            type: 'array',
+            items: {
+                type: 'null',
+            },
+        }, [null, 0, null], 1],
+        [{
+            type: 'array',
+            items: {
                 type: 'number',
             },
         }, ['1', '2', 3], 2],
@@ -239,6 +251,18 @@ describe('validateContains', () => {
                 type: 'number',
             },
         }, ['1', '2', '3'], 3],
+        [{
+            type: 'array',
+            contains: {
+                type: 'null',
+            },
+        }, [1, 2, 3], 3],
+        [{
+            type: 'array',
+            contains: {
+                type: 'null',
+            },
+        }, [null, null, null], 0],
         [{
             type: 'array',
             contains: {

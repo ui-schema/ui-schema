@@ -1,8 +1,8 @@
-import { OrderedMap, List } from "immutable"
+import { OrderedMap, List } from 'immutable'
 import {
     validateEnum, valueValidatorEnum, ERROR_ENUM_MISMATCH,
 } from '@ui-schema/ui-schema/Validators/ValueValidator'
-import { createValidatorErrors } from "@ui-schema/ui-schema/ValidatorStack/ValidatorErrors"
+import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
 
 describe('validateEnum', () => {
     test('validateEnum', () => {
@@ -58,6 +58,17 @@ describe('validateEnum', () => {
             'boolean',
             List([true]),
             false
+        )).toBe(false)
+
+        expect(validateEnum(
+            'null',
+            List([null]),
+            null
+        )).toBe(true)
+        expect(validateEnum(
+            'null',
+            List([null]),
+            'null'
         )).toBe(false)
 
         expect(validateEnum(
