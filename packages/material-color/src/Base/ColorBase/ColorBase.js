@@ -1,10 +1,9 @@
-import React from "react";
-import {updateValue} from "@ui-schema/ui-schema";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Palette from "@material-ui/icons/Palette";
-import {StringRenderer} from "@ui-schema/ds-material";
-import converters from "../transformers";
-import merge from "deepmerge";
+import React from 'react';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Palette from '@material-ui/icons/Palette';
+import {StringRenderer} from '@ui-schema/ds-material';
+import {convertColor} from '../transformers';
+import merge from 'deepmerge';
 
 /**
  * To close the picker dialog on blur change
@@ -22,9 +21,9 @@ const ColorCloser = ({setHasFocus}) => <button
     onBlur={() => setHasFocus(false)}
 />;
 
-const PickerPosition = ({children}) => <div style={{position: 'relative',}}>
+const PickerPosition = ({children}) => <div style={{position: 'relative'}}>
     <div
-        style={{position: 'absolute', zIndex: 2,}}
+        style={{position: 'absolute', zIndex: 2}}
         children={children}
     />
 </div>;
@@ -42,7 +41,7 @@ export const ColorBase = ({
     const InputProps = hasFocus || value || forceIcon || schema.getIn(['view', 'iconOn']) ? {
         startAdornment: <InputAdornment position="start" style={{cursor: 'pointer'}}>
             <Palette style={{fill: value}}/>
-        </InputAdornment>
+        </InputAdornment>,
     } : {};
 
     const styles = merge({}, customStyles);
@@ -78,19 +77,12 @@ export const ColorBase = ({
             }
             onChange={(color, e) => {
                 setInputType(e && e.type);
-                onChange(updateValue(
-                    storeKeys,
-                    format === 'hex' ?
-                        converters.hex(color) :
-                        format === 'rgb' ?
-                            converters.rgb(color) :
-                            format === 'rgb+a' ?
-                                converters.rgba_rgb(color) :
-                                format === 'rgba' ?
-                                    converters.rgba(color) :
-                                    converters.rgba_hex(color),
-                    required, schema.get('type')
-                ))
+                onChange(
+                    storeKeys, ['value'],
+                    () => ({value: convertColor(color, format)}),
+                    schema.get('deleteOnEmpty') || required,
+                    schema.get('type'),
+                )
             }}
             onChangeComplete={() => {
                 let type = inputType;

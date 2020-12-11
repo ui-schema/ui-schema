@@ -3,20 +3,12 @@ import {Record, Map, List} from 'immutable';
 import {getDisplayName} from '../Utils/memo/getDisplayName';
 import {createMap} from '../Utils/createMap';
 import {relT} from '../Translate/relT';
-import {onChangeCompat, onChangeNextCompat} from '@ui-schema/ui-schema/UIStore/storeUpdater';
 
 const UIStoreContext = React.createContext({});
 const UIMetaContext = React.createContext({});
 
 // with store, onChange, schema
 export const UIStoreProvider = ({children, ...props}) => {
-    // todo: remove onChange compat before releasing v0.2.0
-    if(!props.onChange) {
-        props.onChange = onChangeCompat(props.onChangeNext)
-    }
-    if(!props.onChangeNext) {
-        props.onChangeNext = onChangeNextCompat(props.onChange)
-    }
     return <UIStoreContext.Provider value={props} children={children}/>
 };
 
@@ -70,9 +62,9 @@ export const createEmptyStore = (type = 'object') => createStore(
 );
 
 export const useUI = () => {
-    const {store, onChange, onChangeNext, schema} = React.useContext(UIStoreContext);
+    const {store, onChange, schema} = React.useContext(UIStoreContext);
 
-    return {store, onChange, onChangeNext, schema};
+    return {store, onChange, schema};
 };
 
 // todo: remove relT here, so Trans is fully optional
@@ -92,10 +84,10 @@ export const useUIMeta = () => {
  */
 export const extractValue = (Component) => {
     const ExtractValue = p => {
-        const {store, onChange, onChangeNext} = useUI();
+        const {store, onChange} = useUI();
 
         return <Component
-            {...p} onChange={onChange} onChangeNext={onChangeNext}
+            {...p} onChange={onChange}
             value={p.storeKeys.size ?
                 (Map.isMap(store.getValues()) || List.isList(store.getValues()) ? store.getValues().getIn(p.storeKeys) : undefined)
                 : store.getValues()}
@@ -150,44 +142,3 @@ const shouldHandleRequired = (value, force, type) => {
 };
 
 export const shouldDeleteOnEmpty = shouldHandleRequired
-
-const updateRawValue = (store, storeKeys, key, value, required = undefined, type = undefined) => {
-    if(shouldHandleRequired(value, required, type)) {
-        return store.deleteIn(storeKeys.size ? prependKey(storeKeys, key) : [key]);
-    }
-    return store.setIn(
-        storeKeys.size ? prependKey(storeKeys, key) : [key],
-        value,
-    );
-}
-const deleteRawValue = (store, storeKeys, key) =>
-    storeKeys.size ?
-        store.deleteIn(prependKey(storeKeys, key)) :
-        store.delete(key);
-
-export const updateInternalValue = (storeKeys, internalValue) => store => {
-    return updateRawValue(store, storeKeys, STR_INTERNALS, internalValue);
-};
-
-/**
- * Function capable of either updating a deep value in the `store`, or when in e.g. root-level directly the store (string as root-schema)
- */
-export const updateValue = (storeKeys, value, required = undefined, type = undefined) => store => {
-    return updateRawValue(store, storeKeys, STR_VALUES, value, required, type)
-};
-
-export const updateValues = (storeKeys, value, internalValue, required = undefined, type = undefined) => store => {
-    store = updateRawValue(store, storeKeys, STR_INTERNALS, internalValue, required, type);
-    return updateRawValue(store, storeKeys, STR_VALUES, value, required, type)
-};
-
-/**
- * Function capable of either updating a deep value in the `store`, or when in e.g. root-level directly the store (string as root-schema)
- */
-export const updateValidity = (storeKeys, valid) => store => (
-    updateRawValue(store, storeKeys.push('__valid'), STR_VALIDITY, valid)
-);
-
-export const cleanUp = (storeKeys, key) => store => (
-    deleteRawValue(store, storeKeys, key)
-);

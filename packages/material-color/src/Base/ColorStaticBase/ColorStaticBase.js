@@ -1,7 +1,6 @@
-import React from "react";
-import {updateValue} from "@ui-schema/ui-schema";
-import converters from "../transformers";
-import merge from "deepmerge";
+import React from 'react';
+import {convertColor} from '../transformers';
+import merge from 'deepmerge';
 
 export const ColorStaticBase = ({
                                     storeKeys, schema, value, onChange, ColorPicker,
@@ -19,19 +18,12 @@ export const ColorStaticBase = ({
             format === 'rgb'
         }
         onChange={(color) => {
-            onChange(updateValue(
-                storeKeys,
-                format === 'hex' ?
-                    converters.hex(color) :
-                    format === 'rgb' ?
-                        converters.rgb(color) :
-                        format === 'rgb+a' ?
-                            converters.rgba_rgb(color) :
-                            format === 'rgba' ?
-                                converters.rgba(color) :
-                                converters.rgba_hex(color),
-                required, schema.get('type')
-            ))
+            onChange(
+                storeKeys, ['value'],
+                () => ({value: convertColor(color, format)}),
+                schema.get('deleteOnEmpty') || required,
+                schema.get('type'),
+            )
         }}
         styles={styles}
         {...pickerProps}

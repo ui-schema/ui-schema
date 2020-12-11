@@ -25,7 +25,7 @@ const ThumbComponent = ({onClick, canDelete, children, ...p}) => {
 
 const NumberSliderRenderer = ({
                                   multipleOf, min, max, enumVal, constVal, defaultVal,
-                                  storeKeys, ownKey, schema, value, onChangeNext: onChange,
+                                  storeKeys, ownKey, schema, value, onChange,
                                   showValidity, valid, errors, required,
                                   minItems, maxItems,
                               }) => {
@@ -80,7 +80,8 @@ const NumberSliderRenderer = ({
                     {...p}
                     onClick={(index) =>
                         onChange(
-                            storeKeys, {value: (val) => val.splice(index, 1)},
+                            storeKeys, ['value'],
+                            ({value}) => ({value: value.splice(index, 1)}),
                             schema.get('deleteOnEmpty') || required, schema.get('type'),
                         )
                     }
@@ -95,12 +96,8 @@ const NumberSliderRenderer = ({
                         return;
                     }
                     onChange(
-                        storeKeys,
-                        {
-                            value: () =>
-                                schema.get('type') === 'array' ? List(value) : value * 1,
-
-                        },
+                        storeKeys, ['value'],
+                        () => ({value: schema.get('type') === 'array' ? List(value) : value * 1}),
                         schema.get('deleteOnEmpty') || required,
                         schema.get('type'),
                     )
@@ -110,7 +107,8 @@ const NumberSliderRenderer = ({
                 size={'small'} disabled={!canAdd} style={{margin: 'auto 6px'}}
                 onClick={() =>
                     onChange(
-                        storeKeys, {value: (val) => val ? val.push(min) : List(defaultVal).push(min)},
+                        storeKeys, ['value'],
+                        ({value}) => ({value: value ? value.push(min) : List(defaultVal).push(min)}),
                         schema.get('deleteOnEmpty') || required, schema.get('type'),
                     )
                 }

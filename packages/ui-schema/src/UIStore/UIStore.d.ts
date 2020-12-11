@@ -28,6 +28,7 @@ export const UIStore: UIStoreType
 // UIStoreContext
 
 export type onChangeHandler = (store: UIStoreType<any>) => UIStoreType<any>
+// todo: replace with new type
 export type onChange = (handler: onChangeHandler) => void
 
 export interface UIStoreContext<> {
@@ -93,16 +94,4 @@ export type StoreKeys<T = OwnKey> = List<T>
 
 export function prependKey(storeKeys: StoreKeys, key: string | number): StoreKeys
 
-//export function updateRawValue(store: UIStoreType<any>, storeKeys: StoreKeys, key: string | number, value: any): UIStoreType<any>
-
-//export function deleteRawValue(store: UIStoreType<any>, storeKeys: StoreKeys, key: string | number): UIStoreType<any>
-
-export function updateInternalValue(storeKeys: StoreKeys, internalValue: any): onChangeHandler
-
-export function updateValue(storeKeys: StoreKeys, value: any, required?: boolean, type?: string): onChangeHandler
-
-export function updateValues(storeKeys: StoreKeys, value: any, internalValue: any, required?: boolean, type?: string): onChangeHandler
-
-export function updateValidity(storeKeys: StoreKeys, valid: boolean): onChangeHandler
-
-export function cleanUp(storeKeys: StoreKeys, key: string): onChangeHandler
+export function shouldDeleteOnEmpty(value: any, force?: boolean, type?: string): boolean

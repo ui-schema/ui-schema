@@ -86,38 +86,9 @@ const Comp = ({storeKeys, ...props}) => {
 
 These function must be used when updating the store, internally they work around the `store`, an instance of the `UIStore` immutable record.
 
-All return another function, not executing directly, this function is then executed from `onChange` - receiving the current state value, updating the `storeKeys` value with the given value in one of the records entry.
-
-The functions are capable of either updating a deep value in the `store`, or when in e.g. root-level directly the store (e.g. `type: 'string'` as root-schema).
-
-- use for updating values:
-    - `updateValue(storeKeys, value, required?: boolean, type?: string)` to only update the normal data value
-    - `updateValues(storeKeys, value, internalValue, required?: boolean, type?: string)` to update the normal data value and internal store value, should be used when the widget relies on data to work - that is not like the schema type
-    - `updateInternalValue(storeKeys, internalValue)` to update only the internal store value
-- update the `validity` entry:
-    - `updateValidity(storeKeys, valid)`
-- `cleanUp(storeKeys, key)` deletes the entry at `storeKeys` in the specified `key` scope, e.g:
-    - `cleanUp(storeKeys, 'validity')` deletes validity entry
-    - `cleanUp(storeKeys, 'internals')` deletes internal store entry
-    - `cleanUp(storeKeys, 'values')` deletes value/data entry
-
-```js
-import {
-    updateValue, updateValues, updateInternalValue,
-    updateValidity,
-    cleanUp
-} from "@ui-schema/ui-schema";
-```
-
 See [simplest Text Widget](/docs/widgets#simplest-text-widget) for a basic widget example.
 
-This can be used to delete the current storeKeys entry in the validity scope at unmount of the current widget/pluginStack:
-
-```js
-React.useEffect(() => {
-    return () => cleanUp(storeKeys, 'validity')
-});
-```
+> todo: add docs for new onChange handler
 
 ## UIMetaProvider
 

@@ -7,7 +7,7 @@ import {TransTitle, Trans, beautifyKey} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
 const OptionsRadio = ({
-                          ownKey, schema, value, onChangeNext: onChange, storeKeys, showValidity, valid, required, errors,
+                          ownKey, schema, value, onChange, storeKeys, showValidity, valid, required, errors,
                           row,
                       }) => {
     const enumVal = schema.get('enum');
@@ -26,7 +26,8 @@ const OptionsRadio = ({
                         checked={enum_name === isActive}
                         onChange={() =>
                             onChange(
-                                storeKeys, {value: () => enum_name},
+                                storeKeys, ['value'],
+                                () => ({value: enum_name}),
                                 schema.get('deleteOnEmpty') || required,
                                 schema.get('type'),
                             )

@@ -18,7 +18,7 @@ export const convertStringToNumber = (value, type) => {
 export const StringRenderer = ({
                                    type,
                                    multiline, rows, rowsMax,
-                                   storeKeys, ownKey, schema, value, onChangeNext: onChange,
+                                   storeKeys, ownKey, schema, value, onChange,
                                    showValidity, valid, errors, required,
                                    style,
                                    onClick, onFocus, onBlur, onKeyUp, onKeyDown, onKeyPress,
@@ -36,7 +36,7 @@ export const StringRenderer = ({
 
     React.useEffect(() => {
         if(currentRef) {
-            onChange(storeKeys, {valid: () => valid})
+            onChange(storeKeys, ['valid'], () => ({valid: valid}))
         }
         // todo: aren't `storeKeys` missing in deps?
     }, [onChange, valid]);
@@ -70,7 +70,8 @@ export const StringRenderer = ({
             onChange={(e) => {
                 const val = e.target.value
                 onChange(
-                    storeKeys, {value: () => convertStringToNumber(val, schema.get('type'))},
+                    storeKeys, ['value'],
+                    () => ({value: convertStringToNumber(val, schema.get('type'))}),
                     schema.get('deleteOnEmpty') || required,
                     schema.get('type'),
                 )

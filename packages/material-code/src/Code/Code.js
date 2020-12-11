@@ -1,12 +1,12 @@
-import React from "react";
-import clsx from "clsx";
-import {beautifyKey, updateValidity, updateValue} from "@ui-schema/ui-schema";
-import {useUID} from "react-uid";
-import FormLabel from "@material-ui/core/FormLabel";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import {ValidityHelperText} from "@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText";
-import {Controlled as CodeMirror} from "react-codemirror2";
-import {useWidgetCode} from "../CodeProvider/CodeProvider";
+import React from 'react';
+import clsx from 'clsx';
+import {beautifyKey} from '@ui-schema/ui-schema';
+import {useUID} from 'react-uid';
+import FormLabel from '@material-ui/core/FormLabel';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
+import {Controlled as CodeMirror} from 'react-codemirror2';
+import {useWidgetCode} from '../CodeProvider/CodeProvider';
 
 const useStyles = makeStyles({
     root: {
@@ -42,8 +42,9 @@ export const Code = ({
     if(typeof format !== 'string') return null;
 
     React.useEffect(() => {
-        onChange(updateValidity(storeKeys, valid));
-    }, [valid]);
+        // todo: aren't `storeKeys` missing in deps?
+        onChange(storeKeys, ['valid'], () => ({valid: valid}))
+    }, [onChange, valid]);
 
     React.useEffect(() => {
         if(editor && editor.refresh) {
@@ -64,21 +65,24 @@ export const Code = ({
         }
     }
 
-    const handleOnChange = React.useCallback((editor,) => {
+    const handleOnChange = React.useCallback((editor) => {
         if(editor.doc.size !== lines) {
             setLines(editor.doc.size);
         }
     }, [setLines, lines]);
 
     const type = schema.get('type');
+    const deleteOnEmpty = schema.get('deleteOnEmpty') || required;
     const handleBeforeChange = React.useCallback((editor, data, value) => {
-        onChange(updateValue(storeKeys, value, required, type));
-        // todo: check if that applies to storeKeys/List() also
-    }, [onChange, storeKeys, required, type]);
+        onChange(
+            storeKeys, ['value'], () => ({value: value}),
+            deleteOnEmpty, type,
+        )
+    }, [onChange, storeKeys, deleteOnEmpty, type]);
 
     const options = React.useMemo(() => ({
         mode: format,
-        lineNumbers: true
+        lineNumbers: true,
     }), [format]);
 
     if(theme) {
@@ -94,7 +98,7 @@ export const Code = ({
                 className={clsx(
                     classes.root, 'uis-' + uid,
                     'MuiInput-underline',
-                    focused ? 'Mui-focused' : null
+                    focused ? 'Mui-focused' : null,
                 )}
                 editorDidMount={setEditor}
                 value={value}

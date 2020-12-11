@@ -1,5 +1,4 @@
 import React from 'react';
-import {isImmutable} from 'immutable';
 import AppTheme from './layout/AppTheme';
 import Dashboard from './dashboard/Dashboard';
 import {schemaWCombining} from '../schemas/demoCombining';
@@ -13,7 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import {Button} from '@material-ui/core';
 import {widgets} from '@ui-schema/ds-material';
-import {UIGenerator, isInvalid, createOrderedMap, createMap, createStore, createEmptyStore, prependKey} from '@ui-schema/ui-schema';
+import {UIGenerator, isInvalid, createOrderedMap, createMap, createStore, createEmptyStore} from '@ui-schema/ui-schema';
 import {MuiSchemaDebug} from './component/MuiSchemaDebug';
 import {browserT} from '../t';
 import {schemaLists} from '../schemas/demoLists';
@@ -38,17 +37,17 @@ const MainStore = () => {
     const [store, setStore] = React.useState(() => createStore(createMap(dataDemoMain)));
     const [schema, setSchema] = React.useState(() => createOrderedMap(schemaDemoMain));
 
-    const onChangeNext = React.useCallback((storeKeys, values, deleteOnEmpty, type) => {
+    const onChangeNext = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
         setStore(prevStore => {
-            const newStore = storeUpdater(storeKeys, values, deleteOnEmpty, type)(prevStore)
-            const newValue = newStore.getIn(prependKey(storeKeys, 'values'))
+            const newStore = storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
+            /*const newValue = newStore.getIn(prependKey(storeKeys, 'values'))
             const prevValue = prevStore.getIn(prependKey(storeKeys, 'values'))
             console.log(
                 isImmutable(newValue) ? newValue.toJS() : newValue,
                 isImmutable(prevValue) ? prevValue.toJS() : prevValue,
                 storeKeys.toJS(),
                 deleteOnEmpty, type,
-            )
+            )*/
             return newStore
         })
     }, [setStore])
@@ -57,7 +56,7 @@ const MainStore = () => {
         <UIGenerator
             schema={schema}
             store={store}
-            onChangeNext={onChangeNext}
+            onChange={onChangeNext}
             widgets={widgets}
             showValidity={showValidity}
             t={browserT}

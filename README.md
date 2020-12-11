@@ -99,7 +99,7 @@ import React from 'react';
 
 // Import Schema UI Generator
 import {
-    UIGenerator, isInvalid, createOrderedMap, createStore,
+    UIGenerator, isInvalid, createOrderedMap, createStore, storeUpdater,
 } from '@ui-schema/ui-schema';
 
 // Get the widgets binding for your design-system
@@ -142,33 +142,31 @@ export const DemoForm = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(data)));
     const [schema/*, setSchema*/] = React.useState(() => createOrderedMap(schemaBase));
 
+    const onChange = React.useCallback((storeKeys, scopes, values, deleteOnEmpty, type) => {
+        setStore(storeUpdater(storeKeys, scopes, values, deleteOnEmpty, type))
+    }, [setStore])
+
     return <React.Fragment>
         <UIGenerator
             schema={schema}
             store={store}
-            onChange={setStore}
+            onChange={onChange}
 
             showValidity={showValidity}
             widgets={widgets}
 
             t={(text, context, schema) => {/* add translations */}}
-
-            /*
-             * or custom onChange, e.g. save-on-update:
-             * - handler gets the previous store
-             * - returns updated store
-             */
-            onChange={handler => setStore(data => handler(data))}
         >
             {/* (optional) add components which use the context of the generator here */}
         </UIGenerator>
 
         <button
             /* show the validity only at submit (or pass `true` to `showValidity`) */
-            onClick={() => isInvalid(
-                store.getValidity()) ? setShowValidity(true) :
-                console.log('doingSomeAction:', store.valuesToJS()
-            )}
+            onClick={() =>
+                isInvalid(store.getValidity()) ?
+                    setShowValidity(true) :
+                    console.log('doingSomeAction:', store.valuesToJS())
+            }
         >send!</button>
     </React.Fragment>
 };
@@ -178,7 +176,7 @@ Easily create new widgets, this is all for a simple text (`type=string`) widget:
 
 ```typescript jsx
 import React from 'react';
-import {updateValue, TransTitle, WidgetProps, WithValue} from '@ui-schema/ui-schema';
+import {TransTitle, WidgetProps, WithValue} from '@ui-schema/ui-schema';
 
 const Widget = ({
                     value, ownKey, storeKeys, onChange,
@@ -194,7 +192,12 @@ const Widget = ({
             required={required}
             value={value || ''}
             onChange={(e) => {
-                onChange(updateValue(storeKeys, e.target.value, required, schema.get('type')))
+                onChange(
+                    storeKeys, ['value'],
+                    ({value: oldValue}) => ({value: e.target.value}),
+                    schema.get('deleteOnEmpty') || required,
+                    schema.get('type'),
+                )
             }}
         />
     </>

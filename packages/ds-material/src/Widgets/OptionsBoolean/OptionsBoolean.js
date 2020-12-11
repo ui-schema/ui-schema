@@ -16,7 +16,7 @@ const switchStyle = makeStyles(theme => ({
     },
 }));
 
-const BoolRenderer = ({ownKey, value, onChangeNext: onChange, schema, storeKeys, showValidity, valid, required, errors}) => {
+const BoolRenderer = ({ownKey, value, onChange, schema, storeKeys, showValidity, valid, required, errors}) => {
     const currentVal = !!value;
 
     const classes = switchStyle({error: !valid && showValidity});
@@ -29,7 +29,8 @@ const BoolRenderer = ({ownKey, value, onChangeNext: onChange, schema, storeKeys,
                     checked={currentVal}
                     onChange={() =>
                         onChange(
-                            storeKeys, {value: (curr) => !curr},
+                            storeKeys, ['value'],
+                            ({value}) => ({value: !value}),
                             schema.get('deleteOnEmpty') || required,
                             schema.get('type'),
                         )

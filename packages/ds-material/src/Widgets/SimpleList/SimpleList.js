@@ -9,7 +9,7 @@ import {List} from 'immutable';
 import {AccessTooltipIcon} from '../../Component/Tooltip/Tooltip';
 
 const SimpleList = extractValue(memo(({
-                                          storeKeys, ownKey, schema, value, onChangeNext: onChange,
+                                          storeKeys, ownKey, schema, value, onChange,
                                           showValidity, valid, errors, required,
                                       }) => {
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
@@ -34,7 +34,8 @@ const SimpleList = extractValue(memo(({
                     <IconButton
                         onClick={() => {
                             onChange(
-                                storeKeys, {value: (val) => val.splice(i, 1)},
+                                storeKeys, ['value'],
+                                ({value: val}) => ({value: val.splice(i, 1)}),
                                 schema.get('deleteOnEmpty') || required,
                                 schema.get('type'),
                             )
@@ -54,7 +55,8 @@ const SimpleList = extractValue(memo(({
                     onClick={() => {
                         // todo: initial/new value of list should be like the schema `type`
                         onChange(
-                            storeKeys, {value: (val = List()) => val.push('')},
+                            storeKeys, ['value'],
+                            ({value: val = List()}) => ({value: val.push('')}),
                             schema.get('deleteOnEmpty') || required,
                             schema.get('type'),
                         )

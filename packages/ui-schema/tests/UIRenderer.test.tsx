@@ -15,6 +15,7 @@ import { ReferencingHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHand
 import { validators } from '@ui-schema/ui-schema/Validators/validators'
 import { NextPluginRenderer } from '@ui-schema/ui-schema/PluginStack/PluginStack'
 import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter/isInvalid'
+import { storeUpdater } from '@ui-schema/ui-schema/UIStore/storeUpdater'
 
 /**
  * This file serves as general integration test
@@ -189,10 +190,14 @@ const TestUIRenderer = (props: {
         required: ['demo_number'],
     } as JsonSchema))
 
+    const onChange = React.useCallback((storeKeys, scopes, values, deleteOnEmpty, type) => {
+        setStore(storeUpdater(storeKeys, scopes, values, deleteOnEmpty, type))
+    }, [setStore])
+
     return <UIGenerator
         schema={schema}
         store={store}
-        onChange={setStore}
+        onChange={onChange}
 
         showValidity
         widgets={widgets}

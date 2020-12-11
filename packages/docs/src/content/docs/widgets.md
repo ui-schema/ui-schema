@@ -72,7 +72,7 @@ Example of a really simple text widget (in typescript):
 
 ```typescript jsx
 import React from 'react';
-import {updateValue, TransTitle, WidgetProps} from '@ui-schema/ui-schema';
+import {TransTitle, WidgetProps} from '@ui-schema/ui-schema';
 
 const Widget = ({
                     value, ownKey, storeKeys, onChange,
@@ -88,7 +88,12 @@ const Widget = ({
             required={required}
             value={value || ''}
             onChange={(e) => {
-                onChange(updateValue(storeKeys, e.target.value, required, schema.get('type')))
+                onChange(
+                    storeKeys, ['value'],
+                    ({value: oldValue}) => ({value: e.target.value}),
+                    schema.get('deleteOnEmpty') || required,
+                    schema.get('type'),
+                )
             }}
         />
     </>

@@ -20,11 +20,12 @@ let GenericListItem = ({index, listSize, itemsSchema, deleteOnEmpty, showValidit
                         size={btnSize} style={{margin: '0 auto'}}
                         onClick={() =>
                             onChange(
-                                storeKeys, {
-                                    value: (list) => moveItem(list, index, index - 1),
-                                    internals: (list) => moveItem(list, index, index - 1),
+                                storeKeys, ['value', 'internal'],
+                                ({value, internal}) => ({
+                                    value: moveItem(value, index, index - 1),
+                                    internals: moveItem(internal, index, index - 1),
                                     // todo: also moveItem in `valid`? that should be handled automatically atm. and is not needed !i think!
-                                },
+                                }),
                                 deleteOnEmpty,
                                 'array',
                             )
@@ -45,11 +46,10 @@ let GenericListItem = ({index, listSize, itemsSchema, deleteOnEmpty, showValidit
                         size={btnSize} style={{margin: '0 auto'}}
                         onClick={() =>
                             onChange(
-                                storeKeys, {
-                                    value: (list) => moveItem(list, index, index + 1),
-                                    internals: (list) => moveItem(list, index, index + 1),
-                                    // todo: also moveItem in `valid`? that should be handled automatically atm. and is not needed !i think!
-                                },
+                                storeKeys, ['value', 'internal'], ({value, internal}) => ({
+                                    value: moveItem(value, index, index + 1),
+                                    internals: moveItem(internal, index, index + 1),
+                                }),
                                 deleteOnEmpty,
                                 'array',
                             )
@@ -84,7 +84,10 @@ let GenericListItem = ({index, listSize, itemsSchema, deleteOnEmpty, showValidit
                     <IconButton
                         onClick={() =>
                             onChange(
-                                storeKeys, {value: (list) => list.splice(index, 1)},
+                                storeKeys, ['value'],
+                                ({value}) => ({
+                                    value: value.splice(index, 1),
+                                }),
                                 deleteOnEmpty,
                                 'array',
                             )
@@ -105,7 +108,7 @@ let GenericListItem = ({index, listSize, itemsSchema, deleteOnEmpty, showValidit
 GenericListItem = memo(GenericListItem)
 
 const GenericList = extractValue(memo(({
-                                           storeKeys, ownKey, schema, value: list, onChangeNext: onChange,
+                                           storeKeys, ownKey, schema, value: list, onChange,
                                            showValidity, valid, errors, required,
                                        }) => {
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
@@ -128,7 +131,9 @@ const GenericList = extractValue(memo(({
                 <IconButton
                     onClick={() => {
                         onChange(
-                            storeKeys, {value: (list = List()) => list.push(List.isList(schema.get('items')) ? List() : Map())},
+                            storeKeys, ['value', 'internal'], ({value = List()}) => ({
+                                value: value.push(List.isList(schema.get('items')) ? List() : Map()),
+                            }),
                             schema.get('deleteOnEmpty') || required,
                             schema.get('type'),
                         )

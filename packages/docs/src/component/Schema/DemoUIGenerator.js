@@ -1,14 +1,14 @@
 import React from 'react';
-import {Button, Box, Typography, useTheme} from "@material-ui/core";
-import {createOrderedMap, UIProvider, UIRootRenderer, isInvalid, createEmptyStore, useUI} from "@ui-schema/ui-schema";
-import {widgets} from "@ui-schema/ds-material";
-import {RichCodeEditor,} from "../RichCodeEditor";
-import {browserT} from "../../t";
-import Loadable from "react-loadable";
-import style from "codemirror/lib/codemirror.css";
+import {Button, Box, Typography, useTheme} from '@material-ui/core';
+import {createOrderedMap, UIProvider, UIRootRenderer, isInvalid, createEmptyStore, useUI, storeUpdater} from '@ui-schema/ui-schema';
+import {widgets} from '@ui-schema/ds-material';
+import {RichCodeEditor} from '../RichCodeEditor';
+import {browserT} from '../../t';
+import Loadable from 'react-loadable';
+import style from 'codemirror/lib/codemirror.css';
 import themeDark from 'codemirror/theme/duotone-dark.css';
 import themeLight from 'codemirror/theme/duotone-light.css';
-import {WidgetCodeProvider} from "@ui-schema/material-code";
+import {WidgetCodeProvider} from '@ui-schema/material-code';
 import {
     Color, ColorDialog,
     ColorSwatches,
@@ -18,10 +18,10 @@ import {
     ColorSliderStatic, ColorStatic,
     ColorCircleStatic, ColorTwitterStatic,
     ColorSketchStatic, ColorSketchDialog,
-} from "@ui-schema/material-color";
-import {LoadingCircular} from "@control-ui/core/es/LoadingCircular";
-import LuxonAdapter from "@date-io/luxon";
-import {MuiPickersUtilsProvider} from "@material-ui/pickers";
+} from '@ui-schema/material-color';
+import {LoadingCircular} from '@control-ui/core/es/LoadingCircular';
+import LuxonAdapter from '@date-io/luxon';
+import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 
 const customWidgets = {...widgets};
 customWidgets.custom = {
@@ -67,7 +67,7 @@ customWidgets.custom = {
     RichTextInline: Loadable({
         loader: () => import('@ui-schema/material-richtext/RichTextInline').then(r => r.RichTextInline),
         loading: () => <LoadingCircular title={'Loading RichText Widget'}/>,
-    })
+    }),
 };
 
 const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, richIde, renderChange, theme, maxLines, enableShowAll}) => {
@@ -116,14 +116,14 @@ const useStyle = (styles) => {
 
 const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, split = true, uiStyle}) => {
     const [jsonError, setJsonError] = React.useState(false);
-    const [maxLines, /*setMaxLines*/] = React.useState(15);
+    const [maxLines /*setMaxLines*/] = React.useState(15);
     const {palette} = useTheme();
 
     useStyle(style);
     useStyle(palette.type === 'dark' ? themeDark : themeLight);
 
     // default schema state - begin
-    const [showValidity, /*setShowValidity*/] = React.useState(true);
+    const [showValidity /*setShowValidity*/] = React.useState(true);
     const [schema, setSchema] = React.useState(createOrderedMap(activeSchema));
     const [store, setStore] = React.useState(() => createEmptyStore(schema.get('type')));
     // end - default schema state
@@ -134,6 +134,12 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
         setStore(createEmptyStore(schema.get('type')));
     }, [activeSchema]);
 
+    const onChange = React.useCallback((storeKeys, scopes, values, deleteOnEmpty, type) => {
+        setStore(prevStore => {
+            return storeUpdater(storeKeys, scopes, values, deleteOnEmpty, type)(prevStore)
+        })
+    }, [setStore]);
+
     const tabSize = 2;
     const fontSize = 13;
 
@@ -142,7 +148,7 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
             <UIProvider
                 schema={schema}
                 store={store}
-                onChange={setStore}
+                onChange={onChange}
                 widgets={customWidgets}
                 showValidity={showValidity}
                 t={browserT}

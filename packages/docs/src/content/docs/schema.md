@@ -111,7 +111,7 @@ Generic Keywords:
 #### required Keyword
 
 - `required`, array that contains which properties must be set
-    - this library provides a more native feeling of HTML form validation and error display, the internal store updater `updateValue` uses the `required` value to delete the whole property from the object on e.g. an empty string, instead of just saving the empty string
+    - this library provides a more native feeling of HTML form validation and error display, the store updater uses the `required` keyword and `type` to delete the whole property from the object on e.g. an empty string, instead of just saving the empty string
         - as in a browser: an empty string is wrong for a required text input - whereas in json-schema an empty string is valid
     - when required, value "deletion" is triggered by:
         - `array` with a length of `0`, e.g. `[]`, `List([])`

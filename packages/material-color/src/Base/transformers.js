@@ -14,7 +14,18 @@ export const converters = {
     hex: c => c.hex.toUpperCase(),
 
     rgba_rgb: c => c.rgb.a === 1 ? converters.rgb(c) : converters.rgba(c),
-    rgba_hex: c => c.rgb.a === 1 ? converters.hex(c) : converters.rgba(c)
+    rgba_hex: c => c.rgb.a === 1 ? converters.hex(c) : converters.rgba(c),
 };
 
 export default converters
+
+export const convertColor = (color, format) =>
+    format === 'hex' ?
+        converters.hex(color) :
+        format === 'rgb' ?
+            converters.rgb(color) :
+            format === 'rgb+a' ?
+                converters.rgba_rgb(color) :
+                format === 'rgba' ?
+                    converters.rgba(color) :
+                    converters.rgba_hex(color)

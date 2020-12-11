@@ -1,7 +1,18 @@
-import React from "react";
-import {TransTitle, updateValue} from "@ui-schema/ui-schema";
-import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
-import {useUID} from "react-uid";
+import React from 'react';
+import {TransTitle} from '@ui-schema/ui-schema';
+import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {useUID} from 'react-uid';
+
+export const convertStringToNumber = (value, type) => {
+    if(type === 'number') {
+        if(isNaN(value * 1)) {
+            console.error('Invalid Type: input not a number in');
+            return;
+        }
+        return value === '' ? '' : value * 1
+    }
+    return value
+}
 
 const StringRenderer = ({ownKey, schema, value, multiline = false, onChange, storeKeys, showValidity, required, errors, type, rows}) => {
     const format = schema.get('format');
@@ -12,8 +23,8 @@ const StringRenderer = ({ownKey, schema, value, multiline = false, onChange, sto
         Renderer = 'textarea';
     }
 
-    let classFormGroup = ["form-group"];
-    let classFormControl = ["form-control"];
+    let classFormGroup = ['form-group'];
+    let classFormControl = ['form-control'];
     if(showValidity && errors.hasError()) {
         classFormControl.push('is-invalid');
     }
@@ -30,17 +41,13 @@ const StringRenderer = ({ownKey, schema, value, multiline = false, onChange, sto
             rows={rows}
             value={typeof value !== 'undefined' ? value : ''}
             onChange={(e) => {
-                const value = e.target.value;
-                const target = e.target;
-                if(type === 'number') {
-                    if(isNaN(value * 1)) {
-                        console.error('Invalid Type: input not a number in:', target);
-                        return;
-                    }
-                    onChange(updateValue(storeKeys, value === '' ? '' : value * 1, required, type || schema.get('type')));
-                } else {
-                    onChange(updateValue(storeKeys, value, required, type || schema.get('type')));
-                }
+                const val = e.target.value
+                onChange(
+                    storeKeys, ['value'],
+                    () => ({value: convertStringToNumber(val, schema.get('type'))}),
+                    schema.get('deleteOnEmpty') || required,
+                    schema.get('type'),
+                )
             }}
         />
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>

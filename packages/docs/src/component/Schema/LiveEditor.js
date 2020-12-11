@@ -8,7 +8,7 @@ import {
     Visibility, VisibilityOff,
     FormatSize, FormatShapes, Code, SpaceBar, RestorePage, HorizontalSplit, VerticalSplit
 } from "@material-ui/icons";
-import {isInvalid, createOrderedMap, UIProvider, UIRootRenderer, createStore, useUI} from "@ui-schema/ui-schema";
+import {isInvalid, createOrderedMap, UIProvider, UIRootRenderer, createStore, useUI, storeUpdater} from '@ui-schema/ui-schema';
 import {widgets} from "@ui-schema/ds-material";
 import {RichCodeEditor, themes} from "../RichCodeEditor";
 import {Markdown} from "../Markdown";
@@ -453,10 +453,16 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
         }
     }, [matchedSchema, changeSchema, activeSchema]);
 
+    const onChange = React.useCallback((storeKeys, scopes, values, deleteOnEmpty, type) => {
+        setStore(prevStore => {
+            return storeUpdater(storeKeys, scopes, values, deleteOnEmpty, type)(prevStore)
+        })
+    }, [setStore]);
+
     return <UIProvider
         schema={schema}
         store={store}
-        onChange={setStore}
+        onChange={onChange}
         widgets={widgets}
         showValidity={showValidity}
     >

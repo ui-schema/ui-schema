@@ -10,7 +10,7 @@ import {sortScalarList} from '@ui-schema/ui-schema/Utils/sortScalarList';
 
 const Select = ({
                     multiple,
-                    storeKeys, ownKey, schema, value, onChangeNext: onChange,
+                    storeKeys, ownKey, schema, value, onChange,
                     showValidity, valid, required, errors, t,
                 }) => {
     if(!schema) return null;
@@ -44,12 +44,12 @@ const Select = ({
             }}
             onChange={(e) =>
                 onChange(
-                    storeKeys,
-                    {
-                        value: () => multiple ?
+                    storeKeys, ['value'],
+                    () => ({
+                        value: multiple ?
                             sortScalarList(List(e.target.value)) :
                             e.target.value,
-                    },
+                    }),
                     schema.get('deleteOnEmpty') || required,
                     schema.get('type'),
                 )

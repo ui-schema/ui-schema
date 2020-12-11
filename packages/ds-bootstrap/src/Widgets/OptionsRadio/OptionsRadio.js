@@ -1,8 +1,8 @@
-import React from "react";
-import {TransTitle, Trans, beautifyKey, updateValue} from "@ui-schema/ui-schema";
-import {useUID} from "react-uid";
-import {List, Map} from "immutable";
-import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
+import React from 'react';
+import {TransTitle, Trans, beautifyKey} from '@ui-schema/ui-schema';
+import {useUID} from 'react-uid';
+import {List, Map} from 'immutable';
+import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
 const RadioInput = ({classForm, enumName, classLabel, required, classFormControl, value, onChange, storeKeys, label, schema}) => {
     const uid = useUID();
@@ -17,7 +17,12 @@ const RadioInput = ({classForm, enumName, classLabel, required, classFormControl
             className={classFormControl.join(' ')}
             checked={enumName === value}
             onChange={() =>
-                onChange(updateValue(storeKeys, enumName, required, schema.get('type')))
+                onChange(
+                    storeKeys, ['value'],
+                    () => ({value: enumName}),
+                    schema.get('deleteOnEmpty') || required,
+                    schema.get('type'),
+                )
             }
         />
         <label
@@ -33,9 +38,9 @@ const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, require
     const enumVal = schema.get('enum');
     if(!enumVal) return null;
 
-    let classForm = ["custom-control", "custom-radio"];
-    let classLabel = ["custom-control-label", "text-light"];
-    let classFormControl = ["custom-control-input"];
+    let classForm = ['custom-control', 'custom-radio'];
+    let classLabel = ['custom-control-label', 'text-light'];
+    let classFormControl = ['custom-control-input'];
     if(showValidity && errors.hasError()) {
         classFormControl.push('is-invalid');
     }

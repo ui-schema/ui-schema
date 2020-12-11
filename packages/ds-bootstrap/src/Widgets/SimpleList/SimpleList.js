@@ -1,18 +1,18 @@
-import React from "react";
-import {UIGeneratorNested, TransTitle, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
+import React from 'react';
+import {UIGeneratorNested, TransTitle, extractValue, memo} from '@ui-schema/ui-schema';
 import {List} from 'immutable';
-import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
-import {IconPlus, IconMinus} from "@ui-schema/ds-bootstrap/Component/Icons/Icons";
+import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {IconPlus, IconMinus} from '@ui-schema/ds-bootstrap/Component/Icons/Icons';
 
 const SimpleList = extractValue(memo(({
                                           storeKeys, ownKey, schema, value, onChange,
-                                          showValidity, errors, required
+                                          showValidity, errors, required,
                                       }) => {
 
     let btnSize = schema.getIn(['view', 'btnSize']) || 'small';
 
-    let classFormGroup = ["form-group", "d-flex", "align-items-center"];
-    let classFormControl = ["form-control"];
+    let classFormGroup = ['form-group', 'd-flex', 'align-items-center'];
+    let classFormControl = ['form-control'];
     if(showValidity && errors.hasError()) {
         classFormControl.push('is-invalid');
     }
@@ -39,16 +39,26 @@ const SimpleList = extractValue(memo(({
                         <IconMinus
                             btnSize={btnSize}
                             onClick={() => {
-                                onChange(updateValue(storeKeys, value.splice(i, 1), required, schema.get('type')))
+                                onChange(
+                                    storeKeys, ['value'],
+                                    ({value: val}) => ({value: val.splice(i, 1)}),
+                                    schema.get('deleteOnEmpty') || required,
+                                    schema.get('type'),
+                                )
                             }}/>
                     </div>
-                </div>
+                </div>,
             ).valueSeq() : null}
             <div>
                 <IconPlus
                     btnSize={btnSize}
                     onClick={() => {
-                        onChange(updateValue(storeKeys, value ? value.push('') : List(['']), required, schema.get('type')))
+                        onChange(
+                            storeKeys, ['value'],
+                            ({value: val = List()}) => ({value: val.push('')}),
+                            schema.get('deleteOnEmpty') || required,
+                            schema.get('type'),
+                        )
                     }}/>
             </div>
         </div>

@@ -1,59 +1,61 @@
 import {prependKey, shouldDeleteOnEmpty} from '@ui-schema/ui-schema/UIStore/UIStore';
-import {List} from 'immutable';
-import React from 'react';
 
-const updateStoreScope = (store, scope, storeKeys, updater, deleteOnEmpty, type) => {
-    let deleteValue = false
-    store = store.updateIn(
-        storeKeys.size ? prependKey(storeKeys, scope) : scope,
-        oldValue => {
-            oldValue = updater(oldValue)
-            if(shouldDeleteOnEmpty(oldValue, deleteOnEmpty, type)) {
-                deleteValue = true
-            }
-            return oldValue
-        },
-    )
-    if(deleteValue) {
+const updateStoreScope = (store, scope, storeKeys, oldValue, newValue, deleteOnEmpty, type) => {
+    if(shouldDeleteOnEmpty(newValue, deleteOnEmpty, type)) {
         store = store.deleteIn(storeKeys.size ? prependKey(storeKeys, scope) : [scope]);
+        return store
     }
+
+    store = store.setIn(
+        storeKeys.size ? prependKey(storeKeys, scope) : [scope],
+        newValue,
+    )
     return store
 }
 
-export const storeUpdater = (storeKeys, values, deleteOnEmpty, type) =>
-    store => {
-        const {value, valid, internalValue, _deprecated_compat} = values
+const getScopedValue = (storeKeys, scope, store) => store.getIn(storeKeys.size ? prependKey(storeKeys, scope) : [scope])
 
-        if(value) {
-            store = updateStoreScope(store, 'values', storeKeys, value, deleteOnEmpty, type)
+export const storeUpdater = (storeKeys, scopes, updater, deleteOnEmpty, type) =>
+    store => {
+        const doValue = scopes.indexOf('value') !== -1
+        const doInternal = scopes.indexOf('internal') !== -1
+        const doValidity = scopes.indexOf('valid') !== -1
+        const values = {}
+        if(doValue) {
+            values.value = getScopedValue(storeKeys, 'values', store)
         }
-        if(internalValue) {
-            store = updateStoreScope(store, 'internals', storeKeys, internalValue, deleteOnEmpty, type)
+        if(doInternal) {
+            values.internal = getScopedValue(storeKeys, 'internals', store)
         }
-        if(valid) {
-            store = updateStoreScope(store, 'validity', storeKeys.push('__valid'), valid, false)
+        if(doValidity) {
+            values.valid = getScopedValue(storeKeys, 'validity', store)
         }
-        // will be removed in 0.2.0
-        if(_deprecated_compat) {
-            store = _deprecated_compat(store)
+        const res = updater({...values})
+        if(doValue) {
+            store = updateStoreScope(
+                store, 'values', storeKeys,
+                values.value, res.value,
+                deleteOnEmpty, type,
+            )
+        }
+        if(doInternal) {
+            store = updateStoreScope(
+                store, 'internals', storeKeys,
+                values.internal, res.internal,
+                deleteOnEmpty, type,
+            )
+        }
+        if(doValidity) {
+            if(typeof res.valid === 'undefined') {
+                store = store.deleteIn(prependKey(storeKeys.push('__valid'), 'validity'))
+            } else {
+                store = updateStoreScope(
+                    store, 'validity', storeKeys.push('__valid'),
+                    values.valid, res.valid,
+                    deleteOnEmpty, type,
+                )
+            }
         }
 
         return store
     }
-/**
- * @deprecated will be removed in 0.2.0
- * @param onChangeNext
- * @return {function(*): void}
- */
-export const onChangeCompat = onChangeNext => React.useCallback((handler) => {
-    onChangeNext(List([]), {_deprecated_compat: (store) => handler(store)})
-}, [onChangeNext])
-
-/**
- * @deprecated will be removed in 0.2.0
- * @param onChange
- * @return {function(...[*]): void}
- */
-export const onChangeNextCompat = onChange => React.useCallback((...args) => {
-    onChange(storeUpdater(...args))
-}, [onChange])
