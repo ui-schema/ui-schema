@@ -89,7 +89,6 @@ const parseRefsInConditionalKeywords = (schema, context, recursive = false, pend
     // - e.g. if `then` should be applied, this schema is merged into the current one, if it is only a reference
     //   and another `then` is applied and also just a reference, the first reference will be overwritten from the second one and is lost.
     //   when resolving the root ref in the `then`s, those schemas are merged into each other
-    //   todo: how to handle references within `then` if they are nested, the specific references should use it's own `id` - but this would be lost after merging
 
     let res = {schema, pending}
 
