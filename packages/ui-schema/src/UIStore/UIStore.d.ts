@@ -3,8 +3,7 @@ import { Record, OrderedMap, Map, List } from 'immutable'
 import { Translator } from '../Translate/t'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
-
-// UIStore
+import { updaterFn, updateScope } from './storeUpdater'
 
 export type Values<V> = List<V> | string | number | boolean | Map<V, any> | OrderedMap<V, any>
 export type ValuesJS = any[] | string | number | boolean | Object
@@ -25,11 +24,15 @@ export type UIStoreType<D = undefined> = Record<UIStoreState<D>> & UIStoreState<
 
 export const UIStore: UIStoreType
 
-// UIStoreContext
+export function onChangeHandler(
+    storeKeys: StoreKeys,
+    scopes: updateScope[],
+    updater: updaterFn,
+    deleteOnEmpty?: boolean,
+    type?: string,
+): void
 
-export type onChangeHandler = (store: UIStoreType<any>) => UIStoreType<any>
-// todo: replace with new type
-export type onChange = (handler: onChangeHandler) => void
+export type onChange = typeof onChangeHandler
 
 export interface UIStoreContext<> {
     store: UIStoreType<any>

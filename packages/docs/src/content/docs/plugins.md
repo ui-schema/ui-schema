@@ -50,7 +50,6 @@ Validation plugins also work with the schema, but are only used for validation o
 | requiredValidator    | @ui-schema/ui-schema | checkValueExists     | keywords `type:object`, `required` | `valid`, `errors`, `required` |
 
 - sub-schema validation/array validation is done by `validateSchema`
-    - (todo: new override-prop/more docs)
 
 Using default validators:
 

@@ -7,9 +7,9 @@ const MainDummy = ({schema, Debugger, Button, widgets}) => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [store, setStore] = React.useState(() => createEmptyStore(schema.get('type')));
 
-    const onChangeNext = React.useCallback((storeKeys, scopes, values, deleteOnEmpty, type) => {
+    const onChangeNext = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
         setStore(prevStore => {
-            const newStore = storeUpdater(storeKeys, scopes, values, deleteOnEmpty, type)(prevStore)
+            const newStore = storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
             /*const newValue = newStore.getIn(prependKey(storeKeys, 'values'))
             const prevValue = prevStore.getIn(prependKey(storeKeys, 'values'))
             console.log(

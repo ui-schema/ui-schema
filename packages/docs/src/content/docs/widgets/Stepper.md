@@ -4,6 +4,8 @@ A stepper is a widget that renders a sub-schema after another, it is only possib
 
 [![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-ui-generator) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui)
 
+> this is currently just a "stub-component", to use as example
+
 - each property/sub-schema of a stepper is used as a step
 - validation of whole stepper is completed after all steps have been rendered
 - creates an object out of all

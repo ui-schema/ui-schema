@@ -142,8 +142,8 @@ export const DemoForm = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(data)));
     const [schema/*, setSchema*/] = React.useState(() => createOrderedMap(schemaBase));
 
-    const onChange = React.useCallback((storeKeys, scopes, values, deleteOnEmpty, type) => {
-        setStore(storeUpdater(storeKeys, scopes, values, deleteOnEmpty, type))
+    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+        setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
     }, [setStore])
 
     return <React.Fragment>
@@ -194,7 +194,8 @@ const Widget = ({
             onChange={(e) => {
                 onChange(
                     storeKeys, ['value'],
-                    ({value: oldValue}) => ({value: e.target.value}),
+                    // oldValue => newValue
+                    ({value}) => ({value: e.target.value}),
                     schema.get('deleteOnEmpty') || required,
                     schema.get('type'),
                 )

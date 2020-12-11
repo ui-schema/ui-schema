@@ -53,7 +53,7 @@ Each widget gets properties provided by the root schema renderer or added from p
 Properties from `WidgetRenderer`:
 
 - `value` : `{*}` Plugins receive for any value, Widgets only for scalar
-- `onChange` : `{function}` store updater function, see [updating utils](/docs/core#store-updating-utils)
+- `onChange` : `{function}` store updater function, see [updating utils](/docs/core#store-updating--onchange)
 - `storeKeys` : `{List}`
 - `ownKey` : `{string|integer}`
 - `schema` : `{Map}` the schema of the current widget

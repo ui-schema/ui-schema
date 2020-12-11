@@ -134,9 +134,9 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
         setStore(createEmptyStore(schema.get('type')));
     }, [activeSchema]);
 
-    const onChange = React.useCallback((storeKeys, scopes, values, deleteOnEmpty, type) => {
+    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
         setStore(prevStore => {
-            return storeUpdater(storeKeys, scopes, values, deleteOnEmpty, type)(prevStore)
+            return storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
         })
     }, [setStore]);
 

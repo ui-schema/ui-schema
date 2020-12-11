@@ -190,8 +190,8 @@ const TestUIRenderer = (props: {
         required: ['demo_number'],
     } as JsonSchema))
 
-    const onChange = React.useCallback((storeKeys, scopes, values, deleteOnEmpty, type) => {
-        setStore(storeUpdater(storeKeys, scopes, values, deleteOnEmpty, type))
+    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+        setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
     }, [setStore])
 
     return <UIGenerator

@@ -198,8 +198,8 @@ const Editor = () => {
     // or create empty store, based on the schema type:
     // const [store, setStore] = React.useState(() => createEmptyStore(schema.get('type'));
 
-    const onChange = React.useCallback((storeKeys, scopes, values, deleteOnEmpty, type) => {
-        setStore(storeUpdater(storeKeys, scopes, values, deleteOnEmpty, type))
+    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+        setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
     }, [setStore])
 
     return (
@@ -269,8 +269,8 @@ We tell the editor also to display validity from start on.
 const Editor = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(values)));
 
-    const onChange = React.useCallback((storeKeys, scopes, values, deleteOnEmpty, type) => {
-        setStore(storeUpdater(storeKeys, scopes, values, deleteOnEmpty, type))
+    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+        setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
     }, [setStore])
 
     return (
