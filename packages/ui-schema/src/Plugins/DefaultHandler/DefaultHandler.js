@@ -1,6 +1,5 @@
 import React from 'react';
 import {NextPluginRenderer} from '../../PluginStack';
-import {updateValue} from '../../UIStore';
 
 const DefaultValueHandler = ({defaultVal, ...props}) => {
     const storeKeysPrev = React.useRef(undefined);
@@ -18,12 +17,12 @@ const DefaultValueHandler = ({defaultVal, ...props}) => {
         if(defaultHandled && !sameStoreKeys) {
             setDefaultHandled(false);
         }
-    }, [onChange, sameStoreKeys, defaultVal]);
+    }, [defaultHandled, sameStoreKeys, defaultVal]);
 
     React.useEffect(() => {
         if(typeof value === 'undefined' && !defaultHandled) {
             setDefaultHandled(true);
-            onChange(updateValue(storeKeys, defaultVal));
+            onChange(storeKeys, ['value'], () => ({value: defaultVal}))
         }
     }, [onChange, sameStoreKeys, defaultVal, value, defaultHandled]);
 

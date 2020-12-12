@@ -29,13 +29,13 @@
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "devDependencies": {
-        "@ui-schema/ui-schema": "~0.1.0",
+        "@ui-schema/ui-schema": ">=0.2.0-alpha",
         "immutable": "^4.0.0-rc.12",
         "react": "^16.12"
     },
     "peerDependencies": {
         "immutable": "^4.0.0-rc.12",
-        "@ui-schema/ui-schema": "~0.1.0",
+        "@ui-schema/ui-schema": ">=0.2.0-alpha",
         "react": "^16.8"
     },
     "publishConfig": {

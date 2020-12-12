@@ -2,9 +2,10 @@ import React from 'react';
 import {useRefs, ReferencingProvider} from './ReferencingProvider';
 import {parseRefs} from '@ui-schema/ui-schema/Plugins/ReferencingHandler/parseRefs';
 import {Trans} from '@ui-schema/ui-schema/Translate';
-import {useSchemaRoot} from '@ui-schema/ui-schema/SchemaRootProvider/SchemaRootProvider';
+import {isRootSchema, SchemaRootProvider, useSchemaRoot} from '@ui-schema/ui-schema/SchemaRootProvider/SchemaRootProvider';
 import {useNetworkRef} from '@ui-schema/ui-schema/Plugins/ReferencingHandler/ReferencingNetworkHandler';
 import {NextPluginRendererMemo} from '@ui-schema/ui-schema/PluginStack/PluginStack';
+import {getSchemaId} from '@ui-schema/ui-schema/Utils/getSchema';
 
 const ReferencingRenderer = (props) => {
     let {schema, isVirtual} = props;
@@ -20,7 +21,7 @@ const ReferencingRenderer = (props) => {
         schema = schemaRef.current;
     } else {
         const parseRes = parseRefs(schema, {
-            defs: definitions, schema: rootSchema,
+            defs: definitions, root: rootSchema,
             fetchSchema: getSchema,
         });
         refPending = parseRes.pending
@@ -34,18 +35,21 @@ const ReferencingRenderer = (props) => {
 
     React.useEffect(() => {
         if(refPending && refPending.size > 0) {
-            refPending.forEach((versions, id) => {
-                loadSchema(id)
+            refPending.forEach((refs, rootId) => {
+                refs.forEach((versions, refId) => {
+                    loadSchema(refId, rootId)
+                })
             })
         }
     }, [refPending])
 
-    // todo: if this schema-level got a `$ref` in the root, it must render the schema-root provider again,
-    //       this way nested refs can be resolved correctly against the, maybe, other-base url (the $id of the $ref, not from this level)
-
     return refPending && refPending.size > 0 ?
         isVirtual ? null : <Trans text={'labels.loading'} fallback={'Loading'}/> :
-        <NextPluginRendererMemo {...props} schema={schema}/>;
+        isRootSchema(schema) ?
+            <SchemaRootProvider id={getSchemaId(schema)} schema={schema}>
+                <NextPluginRendererMemo {...props} schema={schema}/>
+            </SchemaRootProvider> :
+            <NextPluginRendererMemo {...props} schema={schema}/>;
 };
 
 export const ReferencingHandler = (props) => {

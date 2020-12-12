@@ -10,3 +10,5 @@ export interface SchemaRootContext {
 export function SchemaRootProvider({id}: React.PropsWithChildren<SchemaRootContext>)
 
 export function useSchemaRoot(): ReferencingContext
+
+export function isRootSchema(schema: StoreSchemaType): boolean

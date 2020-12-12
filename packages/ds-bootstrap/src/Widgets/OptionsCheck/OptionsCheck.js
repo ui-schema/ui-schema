@@ -1,8 +1,8 @@
-import React from "react";
-import {TransTitle, Trans, beautifyKey, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
-import {List, Map} from "immutable";
-import {useUID} from "react-uid";
-import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
+import React from 'react';
+import {TransTitle, Trans, beautifyKey, extractValue, memo, sortScalarList} from '@ui-schema/ui-schema';
+import {List, Map} from 'immutable';
+import {useUID} from 'react-uid';
+import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
 const CheckInput = ({currentValue, onChange, label, value, classForm, classLabel, classFormControl}) => {
     const uid = useUID();
@@ -23,10 +23,11 @@ const CheckInput = ({currentValue, onChange, label, value, classForm, classLabel
         </label>
     </div>
 };
+const checkActive = (list, name) => list && list.contains && typeof list.contains(name) !== 'undefined' ? list.contains(name) : false;
 
 const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChange, classLabel, classFormControl, classForm, schema, required, type}) => enumVal ?
     enumVal.map((enum_name) => {
-        const currentValue = value && value.contains && typeof value.contains(enum_name) !== 'undefined' ? value.contains(enum_name) : false;
+        const isActive = checkActive(value, enum_name)
 
         return <CheckInput
             key={enum_name}
@@ -34,23 +35,19 @@ const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChang
             classForm={classForm}
             classLabel={classLabel}
             classFormControl={classFormControl}
-            currentValue={currentValue}
+            currentValue={isActive}
             onChange={() => {
-                if(currentValue) {
-                    onChange(updateValue(
-                        storeKeys,
-                        value.delete(value.indexOf(enum_name)),
-                        required,
-                        type
-                    ))
-                } else {
-                    onChange(updateValue(
-                        storeKeys,
-                        value ? value.push(enum_name) : List([]).push(enum_name),
-                        required,
-                        type
-                    ));
-                }
+                onChange(
+                    storeKeys, ['value'],
+                    ({value: val = List()}) =>
+                        ({
+                            value: sortScalarList(checkActive(val, enum_name) ?
+                                val.delete(val.indexOf(enum_name)) :
+                                val.push(enum_name)),
+                        }),
+                    required,
+                    type,
+                )
             }}
             label={<Trans
                 schema={schema.get('t')}
@@ -60,7 +57,7 @@ const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChang
             />}
         />
     }).valueSeq()
-    : null
+    : null,
 ));
 
 const OptionsCheck = ({schema, storeKeys, showValidity, errors, ownKey, required}) => {
@@ -68,9 +65,9 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors, ownKey, required
 
     if(!enumVal) return null;
 
-    let classForm = ["custom-control", "custom-checkbox"];
-    let classLabel = ["custom-control-label", "text-light"];
-    let classFormControl = ["custom-control-input", "checkbox-inline"];
+    let classForm = ['custom-control', 'custom-checkbox'];
+    let classLabel = ['custom-control-label', 'text-light'];
+    let classFormControl = ['custom-control-input', 'checkbox-inline'];
     if(showValidity && errors.hasError()) {
         classFormControl.push('is-invalid');
     }

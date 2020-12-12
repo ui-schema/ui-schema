@@ -1,6 +1,7 @@
-import Typography from "@material-ui/core/Typography";
-import React from "react";
-import {Link} from "@control-ui/core/es/Link";
+import Typography from '@material-ui/core/Typography';
+import MuiLink from '@material-ui/core/Link';
+import React from 'react';
+import {Link} from '@control-ui/core/es/Link';
 
 export default () => {
     return <React.Fragment>
@@ -18,6 +19,10 @@ export default () => {
         <hr style={{opacity: 0.1, margin: '4px 0 4px 26px'}}/>
         <Typography component={'p'} variant={'body1'}>
             <span role={'img'} aria-label={'Documentation Icon'}>📚</span> <Link to={'/docs'} primary={'Documentation'} style={{display: 'inline-block'}}/>
+        </Typography>
+        <hr style={{opacity: 0.1, margin: '4px 0 4px 26px'}}/>
+        <Typography component={'p'} variant={'body1'}>
+            <span role={'img'} aria-label={'Professional service Icon'}>🔥</span> Professional service available, <MuiLink href={'https://bemit.codes/get-quote'}>reach out now!</MuiLink>
         </Typography>
     </React.Fragment>
 };

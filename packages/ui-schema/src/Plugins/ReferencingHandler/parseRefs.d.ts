@@ -1,13 +1,24 @@
 import { List, Map } from 'immutable'
 import { getSchema, ReferencingContext, StoreSchemaType } from '@ui-schema/ui-schema'
 
-export type SchemaRefsPending = Map<string, List<string>>
+/**
+ * Pending references, grouped by root id, with requested versions per-schema,
+ * `#` for no-custom context `$id`:
+ * @example
+ * {
+ *     '#': {'ref-url': ['*', 'version']},
+ *     'http://localhost/schema-1.json': {'schema-1b.json': ['*', '1.2']},
+ * }
+ */
+export type SchemaRefsPending = Map<string, Map<string, List<string>>>
 
 export interface ParseRefsContent {
+    // the active root-id
+    id?: string
     // the definitions, could be get from ReferencingProvider
-    defs: ReferencingContext['definitions']
+    defs?: ReferencingContext['definitions']
     // the root schema, could be get from SchemaRootProvider
-    schema?: StoreSchemaType
+    root?: StoreSchemaType
     // try to get a loaded schema
     fetchSchema?: getSchema
 }

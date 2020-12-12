@@ -18,7 +18,7 @@ Values are stored in `UIStore`, an immutable record, created with [createStore](
 - `UIStore.getInternals()`:`{Map}` returns the internal values
 - `UIStore.getValidity()`:`{Map}` returns the validity
 
-Use the [updater functions](#store-updating-utils) for store changes from widgets.
+Use the [updater functions](#store-updating--onchange) for store changes from widgets.
 
 For best performance in non-scalar widgets use the [HOCs](https://reactjs.org/docs/higher-order-components.html) `extractValue`, `extractValidity` for getting the values, together with [memo](#memo--isequal).
 
@@ -39,11 +39,11 @@ Saves and provides the `store`, `onChange` and `schema`.
     - `extractValue` passes down: `value`, `internalValue`, `onChange`
     - `extractValidity` passes down: `validity`, `onChange`
 - Properties:
-    - `store`: `{UIStore}` the immutable record storing the current ui generator state
-    - `onChange`: `{function(function): OrderedMap}` a function capable of updating the saved store
-    - `schema`: `{OrderedMap}` the full schema as an immutable map
+    - `store`: `UIStore` the immutable record storing the current ui generator state
+    - `onChange`: `function(storeKeys, scopes, updater, deleteOnEmpty, type): void` a function capable of updating the saved store
+    - `schema`: `OrderedMap` the full schema as an immutable map
 
-See [core functions to update store](#store-updating-utils).
+See [core functions to update store](#store-updating--onchange).
 
 Example creating the provider:
 
@@ -82,42 +82,54 @@ const Comp = ({storeKeys, ...props}) => {
 };
 ```
 
-#### Store Updating Utils
+#### Store Updating / onChange
 
-These function must be used when updating the store, internally they work around the `store`, an instance of the `UIStore` immutable record.
-
-All return another function, not executing directly, this function is then executed from `onChange` - receiving the current state value, updating the `storeKeys` value with the given value in one of the records entry.
-
-The functions are capable of either updating a deep value in the `store`, or when in e.g. root-level directly the store (e.g. `type: 'string'` as root-schema).
-
-- use for updating values:
-    - `updateValue(storeKeys, value, required?: boolean, type?: string)` to only update the normal data value
-    - `updateValues(storeKeys, value, internalValue, required?: boolean, type?: string)` to update the normal data value and internal store value, should be used when the widget relies on data to work - that is not like the schema type
-    - `updateInternalValue(storeKeys, internalValue)` to update only the internal store value
-- update the `validity` entry:
-    - `updateValidity(storeKeys, valid)`
-- `cleanUp(storeKeys, key)` deletes the entry at `storeKeys` in the specified `key` scope, e.g:
-    - `cleanUp(storeKeys, 'validity')` deletes validity entry
-    - `cleanUp(storeKeys, 'internals')` deletes internal store entry
-    - `cleanUp(storeKeys, 'values')` deletes value/data entry
-
-```js
-import {
-    updateValue, updateValues, updateInternalValue,
-    updateValidity,
-    cleanUp
-} from "@ui-schema/ui-schema";
-```
+The UIGenerator needs a `onChange` function which is used from within widgets to update the store, an instance of the `UIStore` immutable record.
 
 See [simplest Text Widget](/docs/widgets#simplest-text-widget) for a basic widget example.
 
-This can be used to delete the current storeKeys entry in the validity scope at unmount of the current widget/pluginStack:
+The `onChange` is responsible to update different parts of the [store](#uistore), individually or all at once. It can be used to update validity, values and non-standard elements with only one execution of `setStore` - which can be fully controlled by the using component.
+
+Parameters:
+
+- `storeKeys`: `List<string>`, the keys of the value to update
+- `scopes`: `string[]`, which scope to update, uses singular: `value`, `valid`, `internal`
+- `updater`, a function receiving the scope values and returning the updated values
+    - `function({value, valid, internal}: {value: any, valid: any, internal: any}): {value: any, valid: any, internal: any}`
+- `deleteOnEmpty`: `boolean | undefined`, if the property should be deleted at all, treating [empty like in required HTML-inputs](/docs/schema#required-keyword)
+    - from widgets the required property/keyword turns this to `true`
+- `type`: `string | undefined`, the type of the value, may be unknown on some edge cases (like only updating validity), is needed for `deleteOnEmpty`
+
+Does not return anything.
 
 ```js
-React.useEffect(() => {
-    return () => cleanUp(storeKeys, 'validity')
-});
+import React from 'react';
+import {UIGenerator, createOrderedMap, createStore} from '@ui-schema/ui-schema';
+import {storeUpdater} from '@ui-schema/ui-schema/UIStore/storeUpdater';
+import {widgets} from '@ui-schema/ds-material';
+
+const Demo = () => {
+    const [store, setStore] = React.useState(() => createStore(createOrderedMap({})));
+
+    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+        setStore(prevStore => {
+            return storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
+        })
+    }, [setStore])
+
+    return <UIGenerator
+        store={store}
+        onChange={onChange}
+        // add other props here
+    />
+};
 ```
+
+##### storeUpdater
+
+The internal function to update the store, implements the `deleteOnEmpty` logic and handling the execution of `updater` and the updating of the store with the results.
+
+Returns a function which must receive the current store and will return the updated store.
 
 ## UIMetaProvider
 

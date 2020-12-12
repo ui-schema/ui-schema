@@ -1,7 +1,7 @@
-import React from "react";
-import {TransTitle, useUIMeta, beautifyKey, updateValue, extractValue, memo} from "@ui-schema/ui-schema";
-import {List, Map} from "immutable";
-import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
+import React from 'react';
+import {TransTitle, useUIMeta, beautifyKey, extractValue, memo, sortScalarList} from '@ui-schema/ui-schema';
+import {List, Map} from 'immutable';
+import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
 const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChange, multiple = false, required}) => {
     const enum_val = schema.get('enum');
@@ -10,8 +10,8 @@ const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChang
     if(!enum_val) return null;
     if(!schema) return null;
 
-    let classForm = ["selectpicker", "custom-select"];
-    let classFormParent = ["form-group"];
+    let classForm = ['selectpicker', 'custom-select'];
+    let classFormParent = ['form-group'];
     if(showValidity && errors.hasError()) {
         classForm.push('is-invalid');
     }
@@ -31,16 +31,17 @@ const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChang
             className={classForm.join(' ')}
             multiple={multiple}
             onChange={(e) => {
-                if(multiple) {
-                    onChange(updateValue(
-                        storeKeys,
-                        List([...e.target.options].filter(o => o.selected).map(o => o.value)),
-                        required,
-                        schema.get('type')
-                    ))
-                } else {
-                    onChange(updateValue(storeKeys, e.target.value, required, schema.get('type')));
-                }
+                const target = e.target
+                onChange(
+                    storeKeys, ['value'],
+                    () => ({
+                        value: multiple ?
+                            sortScalarList(List([...target.options].filter(o => o.selected).map(o => o.value))) :
+                            target.value,
+                    }),
+                    schema.get('deleteOnEmpty') || required,
+                    schema.get('type'),
+                )
             }}>
             {enum_val ? enum_val.map((enum_name) => {
                 const s = enum_name + '';

@@ -115,11 +115,43 @@ export const schemaDemoReferencingNetwork = createOrderedMap({
 export const schemaDemoReferencingNetworkB = createOrderedMap({
     '$id': 'http://localhost:4200/api/demo-referencing-network-b.json',
     type: 'object',
+    $defs: {
+        country: {
+            type: 'string',
+            '$anchor': 'country',
+            widget: 'Select',
+            enum: ['Germany', 'Austria', 'Ireland'],
+        },
+    },
     properties: {
         address: {
+            $id: 'http://localhost:4200/non-existing-schema.json',
             type: 'object',
             allOf: [
-                {$ref: 'http://localhost:4200/api/address-schema.json'},
+                {
+                    properties: {
+                        manager: {
+                            $id: 'http://localhost:4200/api/non-existing-schema.json',
+                            type: 'object',
+                            widget: 'FormGroup',
+                            $defs: {
+                                country: {
+                                    type: 'string',
+                                    '$anchor': 'country',
+                                    widget: 'Select',
+                                    enum: ['ES', 'AT', 'CH', 'UK'],
+                                },
+                            },
+                            properties: {
+                                person: {$ref: 'user-schema.json'},
+                                country: {$ref: '#country'},
+                            },
+                        },
+                    },
+                },
+                {
+                    $ref: 'api/address-schema.json',
+                },
                 {
                     properties: {
                         country: {
@@ -130,6 +162,7 @@ export const schemaDemoReferencingNetworkB = createOrderedMap({
                                 'Wales',
                             ],
                         },
+                        business_country: {$ref: '#country'},
                     },
                 },
                 {$ref: 'http://localhost:4200/api/user-schema.json'},

@@ -10,9 +10,8 @@ This page covers the support for JSON Schema within the core, validators or from
 
 Matches the rendered widget, keywords used:
 
-- `type` valid types: `string`, `number`, `integer`, `boolean`, `object`, `array`
+- `type` valid types: `string`, `number`, `integer`, `boolean`, `object`, `array`, `null`
     - multiple types support ❌
-    - full support `null` as type ❌
 - `widget` non-standard JSON-Schema to select a specific UI widget
 
 ## Universal Keywords
@@ -111,7 +110,7 @@ Generic Keywords:
 #### required Keyword
 
 - `required`, array that contains which properties must be set
-    - this library provides a more native feeling of HTML form validation and error display, the internal store updater `updateValue` uses the `required` value to delete the whole property from the object on e.g. an empty string, instead of just saving the empty string
+    - this library provides a more native feeling of HTML form validation and error display, the store updater uses the `required` keyword and `type` to delete the whole property from the object on e.g. an empty string, instead of just saving the empty string
         - as in a browser: an empty string is wrong for a required text input - whereas in json-schema an empty string is valid
     - when required, value "deletion" is triggered by:
         - `array` with a length of `0`, e.g. `[]`, `List([])`
@@ -162,7 +161,9 @@ Validation Keywords:
 
 Can be used to render some only-text/display widget that will not provide any entry in the resulting data.
 
-Validates true for `null` value but property exists. ❌
+Validates true for `null` values.
+
+Renders `null`, really nothing, but can be overwritten `widgets.types.null` to render anything. The plugins will still render, e.g. the grid plugin.
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/null.html)
 
@@ -203,7 +204,7 @@ Validators for latest version are used by default, incompatible changes are solv
 | |            | `boolean` | ✅ |
 | |            | `array` | ✅ |
 | |            | `object` | ✅ |
-| |            | `null` | ❌ |
+| |            | `null` | ✅ |
 | | **Types** | | |
 | | `string`   | | ✅ |
 | validation |            | `format` | per widget |
@@ -250,7 +251,7 @@ Validators for latest version are used by default, incompatible changes are solv
 | validation |            | `minContains` | ✅ |
 | core |            | `contains` | ✅ |
 | core |            | `additionalItems` | ✅ |
-| | `null`   | | ❌ |
+| | `null`   | | ✅ |
 | [JSON-Schema Hypermedia](https://json-schema.org/draft/2019-09/json-schema-hypermedia.html) [examples](https://json-schema.org/draft/2019-09/json-schema-hypermedia.html#examples) | | | ❌ |
 | hyper |            | `base` | ❌ |
 | hyper |            | `links` | ❌ |

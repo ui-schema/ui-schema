@@ -50,7 +50,6 @@ Validation plugins also work with the schema, but are only used for validation o
 | requiredValidator    | @ui-schema/ui-schema | checkValueExists     | keywords `type:object`, `required` | `valid`, `errors`, `required` |
 
 - sub-schema validation/array validation is done by `validateSchema`
-    - (todo: new override-prop/more docs)
 
 Using default validators:
 
@@ -121,12 +120,15 @@ The `errors` property is an instance of this type.
 - `errors`: `Map<{}, undefined>`
 - `childErrors`: `Map<{}, undefined>`
 - `errorsToJS`: `() => any`
-- `getErrors`: `() => Map<{ [key: string]: List<any> }, undefined>`
+- `hasError`: `(type?: string) => boolean`
 - `addError`: `(type: string, context?: Map<any, any>) => ValidatorErrorsType`
 - `addErrors`: `(errors: ValidatorErrorsType) => ValidatorErrorsType`
-- `addChildError`: `(errors: ValidatorErrorsType) => ValidatorErrorsType`
-- `hasError`: `(type?: string) => boolean`
 - `getError`: `(type: string) => List<any>`
+- `getErrors`: `() => Map<{ [key: string]: List<any> }, undefined>`
+- `addChildError`: `(type: string, context?: Map<any, any>) => ValidatorErrorsType`
+- `addChildErrors`: `(errors: ValidatorErrorsType) => ValidatorErrorsType`
+- `getChildError`: `(type: string) => List<any>`
+- `getChildErrors`: `() => Map<{ [key: string]: List<any> }, undefined>`
 
 ```js
 import {Map} from "immutable"

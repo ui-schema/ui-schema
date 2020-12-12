@@ -78,7 +78,7 @@ JSON Schema keywords are used to validate the data, the UI is created from the d
 - JSON Schema extension: UI Schema, change design and even behaviour of widgets
 - **JSON Schema versions** supported: Draft 2019-09 / Draft-08, Draft-07, Draft-06, Draft-04
 
-> Professional service & support available: request by [issue](https://github.com/ui-schema/ui-schema/issues/new/choose) or [email](mailto:project@bemit.codes?subject=Support%20Request%20UI%20Schema&body=Please%20send%20us%20more%20details%20about%20your%20project%2C%20issues%20or%20feedback%21%0D%0A%0D%0AWe%20will%20reply%20as%20soon%20as%20possible%20and%20propose%20an%20individual%20offer.%0D%0A%0D%0AYour%20request%20is%20treated%20confidential%2C%20you%20wish%20a%20non-disclosure%20agreement%3F%20Our%20privacy%20policy%20in%20german%3A%20bemit.eu%2Fdatenschutz%0D%0A%0D%0A-%20do%20not%20change%20the%20email%20subject%20-%0D%0A%0D%0A%0D%0A)
+> 🔥 **Professional service & support available, [reach out now](https://bemit.codes/get-quote)!**
 
 *[Design-System and Widgets Overview](https://ui-schema.bemit.codes/docs/overview)*
 
@@ -99,7 +99,7 @@ import React from 'react';
 
 // Import Schema UI Generator
 import {
-    UIGenerator, isInvalid, createOrderedMap, createStore,
+    UIGenerator, isInvalid, createOrderedMap, createStore, storeUpdater,
 } from '@ui-schema/ui-schema';
 
 // Get the widgets binding for your design-system
@@ -142,33 +142,31 @@ export const DemoForm = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(data)));
     const [schema/*, setSchema*/] = React.useState(() => createOrderedMap(schemaBase));
 
+    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+        setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
+    }, [setStore])
+
     return <React.Fragment>
         <UIGenerator
             schema={schema}
             store={store}
-            onChange={setStore}
+            onChange={onChange}
 
             showValidity={showValidity}
             widgets={widgets}
 
             t={(text, context, schema) => {/* add translations */}}
-
-            /*
-             * or custom onChange, e.g. save-on-update:
-             * - handler gets the previous store
-             * - returns updated store
-             */
-            onChange={handler => setStore(data => handler(data))}
         >
             {/* (optional) add components which use the context of the generator here */}
         </UIGenerator>
 
         <button
             /* show the validity only at submit (or pass `true` to `showValidity`) */
-            onClick={() => isInvalid(
-                store.getValidity()) ? setShowValidity(true) :
-                console.log('doingSomeAction:', store.valuesToJS()
-            )}
+            onClick={() =>
+                isInvalid(store.getValidity()) ?
+                    setShowValidity(true) :
+                    console.log('doingSomeAction:', store.valuesToJS())
+            }
         >send!</button>
     </React.Fragment>
 };
@@ -178,7 +176,7 @@ Easily create new widgets, this is all for a simple text (`type=string`) widget:
 
 ```typescript jsx
 import React from 'react';
-import {updateValue, TransTitle, WidgetProps, WithValue} from '@ui-schema/ui-schema';
+import {TransTitle, WidgetProps, WithValue} from '@ui-schema/ui-schema';
 
 const Widget = ({
                     value, ownKey, storeKeys, onChange,
@@ -194,7 +192,13 @@ const Widget = ({
             required={required}
             value={value || ''}
             onChange={(e) => {
-                onChange(updateValue(storeKeys, e.target.value, required, schema.get('type')))
+                onChange(
+                    storeKeys, ['value'],
+                    // oldValue => newValue
+                    ({value}) => ({value: e.target.value}),
+                    schema.get('deleteOnEmpty') || required,
+                    schema.get('type'),
+                )
             }}
         />
     </>

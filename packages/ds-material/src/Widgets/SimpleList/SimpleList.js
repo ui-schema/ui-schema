@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react';
 import {
-    FormControl, Grid, FormLabel, IconButton
-} from "@material-ui/core";
-import {Add, Remove} from "@material-ui/icons";
-import {UIGeneratorNested, TransTitle, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
-import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
+    FormControl, Grid, FormLabel, IconButton,
+} from '@material-ui/core';
+import {Add, Remove} from '@material-ui/icons';
+import {UIGeneratorNested, TransTitle, extractValue, memo} from '@ui-schema/ui-schema';
+import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 import {List} from 'immutable';
-import {AccessTooltipIcon} from "../../Component/Tooltip/Tooltip";
+import {AccessTooltipIcon} from '../../Component/Tooltip/Tooltip';
 
 const SimpleList = extractValue(memo(({
                                           storeKeys, ownKey, schema, value, onChange,
-                                          showValidity, valid, errors, required
+                                          showValidity, valid, errors, required,
                                       }) => {
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
 
@@ -33,7 +33,12 @@ const SimpleList = extractValue(memo(({
 
                     <IconButton
                         onClick={() => {
-                            onChange(updateValue(storeKeys, value.splice(i, 1), required, schema.get('type')))
+                            onChange(
+                                storeKeys, ['value'],
+                                ({value: val}) => ({value: val.splice(i, 1)}),
+                                schema.get('deleteOnEmpty') || required,
+                                schema.get('type'),
+                            )
                         }}
                         size={btnSize}
                         style={{margin: 'auto 6px', flexShrink: 0}}
@@ -42,14 +47,19 @@ const SimpleList = extractValue(memo(({
                             <Remove fontSize={'inherit'}/>
                         </AccessTooltipIcon>
                     </IconButton>
-                </Grid>
+                </Grid>,
             ).valueSeq() : null}
 
             <Grid item xs={12}>
                 <IconButton
                     onClick={() => {
                         // todo: initial/new value of list should be like the schema `type`
-                        onChange(updateValue(storeKeys, value ? value.push('') : List(['']), required, schema.get('type')))
+                        onChange(
+                            storeKeys, ['value'],
+                            ({value: val = List()}) => ({value: val.push('')}),
+                            schema.get('deleteOnEmpty') || required,
+                            schema.get('type'),
+                        )
                     }}
                     size={btnSize}
                 >
@@ -69,4 +79,4 @@ const SimpleList = extractValue(memo(({
     </FormControl>
 }));
 
-export {SimpleList,};
+export {SimpleList};

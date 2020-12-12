@@ -3,8 +3,7 @@ import { Record, OrderedMap, Map, List } from 'immutable'
 import { Translator } from '../Translate/t'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
-
-// UIStore
+import { updaterFn, updateScope } from './storeUpdater'
 
 export type Values<V> = List<V> | string | number | boolean | Map<V, any> | OrderedMap<V, any>
 export type ValuesJS = any[] | string | number | boolean | Object
@@ -25,10 +24,15 @@ export type UIStoreType<D = undefined> = Record<UIStoreState<D>> & UIStoreState<
 
 export const UIStore: UIStoreType
 
-// UIStoreContext
+export function onChangeHandler(
+    storeKeys: StoreKeys,
+    scopes: updateScope[],
+    updater: updaterFn,
+    deleteOnEmpty?: boolean,
+    type?: string,
+): void
 
-export type onChangeHandler = (store: UIStoreType<any>) => UIStoreType<any>
-export type onChange = (handler: onChangeHandler) => void
+export type onChange = typeof onChangeHandler
 
 export interface UIStoreContext<> {
     store: UIStoreType<any>
@@ -93,16 +97,4 @@ export type StoreKeys<T = OwnKey> = List<T>
 
 export function prependKey(storeKeys: StoreKeys, key: string | number): StoreKeys
 
-//export function updateRawValue(store: UIStoreType<any>, storeKeys: StoreKeys, key: string | number, value: any): UIStoreType<any>
-
-//export function deleteRawValue(store: UIStoreType<any>, storeKeys: StoreKeys, key: string | number): UIStoreType<any>
-
-export function updateInternalValue(storeKeys: StoreKeys, internalValue: any): onChangeHandler
-
-export function updateValue(storeKeys: StoreKeys, value: any, required?: boolean, type?: string): onChangeHandler
-
-export function updateValues(storeKeys: StoreKeys, value: any, internalValue: any, required?: boolean, type?: string): onChangeHandler
-
-export function updateValidity(storeKeys: StoreKeys, valid: boolean): onChangeHandler
-
-export function cleanUp(storeKeys: StoreKeys, key: string): onChangeHandler
+export function shouldDeleteOnEmpty(value: any, force?: boolean, type?: string): boolean

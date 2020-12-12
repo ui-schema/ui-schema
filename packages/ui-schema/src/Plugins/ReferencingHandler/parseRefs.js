@@ -1,5 +1,7 @@
 import {List, Map} from 'immutable';
 import {resolveRef, SchemaRefPending} from '@ui-schema/ui-schema/Plugins/ReferencingHandler/resolveRef';
+import {isRootSchema} from '@ui-schema/ui-schema/SchemaRootProvider';
+import {getSchemaId} from '@ui-schema/ui-schema/Utils/getSchema';
 
 const handleResolve = (keywords, condition, schema, context, recursive, pending) => {
     Object.keys(keywords).forEach(keyword => {
@@ -87,7 +89,6 @@ const parseRefsInConditionalKeywords = (schema, context, recursive = false, pend
     // - e.g. if `then` should be applied, this schema is merged into the current one, if it is only a reference
     //   and another `then` is applied and also just a reference, the first reference will be overwritten from the second one and is lost.
     //   when resolving the root ref in the `then`s, those schemas are merged into each other
-    //   todo: how to handle references within `then` if they are nested, the specific references should use it's own `id` - but this would be lost after merging
 
     let res = {schema, pending}
 
@@ -122,7 +123,8 @@ export const parseRefs = (schema, context, recursive = false, pending = Map()) =
             schema = resolveRef(ref, context) || schema
         } catch(e) {
             if(e instanceof SchemaRefPending) {
-                pending = pending.update(ref, (refPref = List()) => {
+                const id = context.id || '#'
+                pending = pending.updateIn([id, ref], (refPref = List()) => {
                     const v = schema.get('version') || '*'
                     if(!refPref.contains(v)) {
                         refPref = refPref.push(v)
@@ -133,6 +135,15 @@ export const parseRefs = (schema, context, recursive = false, pending = Map()) =
                 throw e
             }
         }
+    }
+
+    if(isRootSchema(schema)) {
+        // change context if new root schema
+        // enforces this before going deeper when nested/recursive
+        context = {...context}
+        context.id = getSchemaId(schema)
+        context.root = schema
+        context.defs = schema.get('definitions') || schema.get('$defs')
     }
 
     let res = {schema, pending}

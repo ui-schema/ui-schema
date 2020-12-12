@@ -1,14 +1,14 @@
-import React from "react";
-import {List} from "immutable";
-import Add from "@material-ui/icons/Add";
-import Delete from "@material-ui/icons/Delete";
-import Box from "@material-ui/core/Box";
-import Slider from "@material-ui/core/Slider";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import {TransTitle, extractValue, memo, updateValue} from "@ui-schema/ui-schema";
-import {ValidityHelperText} from "../../Component/LocaleHelperText/LocaleHelperText";
-import {AccessTooltipIcon} from "../../Component/Tooltip/Tooltip";
+import React from 'react';
+import {List} from 'immutable';
+import Add from '@material-ui/icons/Add';
+import Delete from '@material-ui/icons/Delete';
+import Box from '@material-ui/core/Box';
+import Slider from '@material-ui/core/Slider';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import {TransTitle, extractValue, memo} from '@ui-schema/ui-schema';
+import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {AccessTooltipIcon} from '../../Component/Tooltip/Tooltip';
 
 const ThumbComponent = ({onClick, canDelete, children, ...p}) => {
     return <span {...p}>
@@ -62,14 +62,14 @@ const NumberSliderRenderer = ({
     }
 
     return <React.Fragment>
-        <Typography id={"discrete-slider-" + ownKey} gutterBottom color={!valid && showValidity ? 'error' : 'initial'}>
+        <Typography id={'discrete-slider-' + ownKey} gutterBottom color={!valid && showValidity ? 'error' : 'initial'}>
             <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>{required ? ' *' : null}
         </Typography>
 
         <Box style={{display: 'flex'}} mt={schema.getIn(['view', 'mt'])} mb={schema.getIn(['view', 'mb'])}>
             <Slider
                 getAriaValueText={valuetext}
-                aria-labelledby={"discrete-slider-" + ownKey}
+                aria-labelledby={'discrete-slider-' + ownKey}
                 valueLabelDisplay={schema.getIn(['view', 'tooltip'])}
                 step={typeof enumVal !== 'undefined' || typeof constVal !== 'undefined' ? null : multipleOf}
                 track={schema.getIn(['view', 'track'])}
@@ -78,27 +78,40 @@ const NumberSliderRenderer = ({
                 max={max}
                 ThumbComponent={hasMulti ? p => <ThumbComponent
                     {...p}
-                    onClick={(index) => onChange(updateValue(storeKeys, value.splice(index, 1), required, schema.get('type')))}
+                    onClick={(index) =>
+                        onChange(
+                            storeKeys, ['value'],
+                            ({value}) => ({value: value.splice(index, 1)}),
+                            schema.get('deleteOnEmpty') || required, schema.get('type'),
+                        )
+                    }
                     canDelete={value && value.size > minItems}
                 /> : undefined}
                 value={(schema.get('type') === 'array' ?
                     value && value.size ? value.toJS() : defaultVal :
                     typeof value === 'number' ? value : defaultVal)}
                 onChange={(e, value) => {
-                    if(schema.get('type') === 'array') {
-                        onChange(updateValue(storeKeys, List(value), required, schema.get('type')));
-                    } else {
-                        if(isNaN(value * 1)) {
-                            console.error('Invalid Type: input not a number in:', e.target, value);
-                            return;
-                        }
-                        onChange(updateValue(storeKeys, value * 1, required, schema.get('type')));
+                    if(schema.get('type') !== 'array' && isNaN(value * 1)) {
+                        console.error('Invalid Type: input not a number in:', e.target, value);
+                        return;
                     }
+                    onChange(
+                        storeKeys, ['value'],
+                        () => ({value: schema.get('type') === 'array' ? List(value) : value * 1}),
+                        schema.get('deleteOnEmpty') || required,
+                        schema.get('type'),
+                    )
                 }}
             />
             {hasMulti ? <IconButton
                 size={'small'} disabled={!canAdd} style={{margin: 'auto 6px'}}
-                onClick={() => onChange(updateValue(storeKeys, value ? value.push(min) : List(defaultVal).push(min), required, schema.get('type')))}
+                onClick={() =>
+                    onChange(
+                        storeKeys, ['value'],
+                        ({value}) => ({value: value ? value.push(min) : List(defaultVal).push(min)}),
+                        schema.get('deleteOnEmpty') || required, schema.get('type'),
+                    )
+                }
             >
                 <AccessTooltipIcon title={'Add Number'}>
                     <Add fontSize={'inherit'}/>
@@ -113,8 +126,8 @@ const NumberSliderRenderer = ({
 const ValueNumberSliderRenderer = extractValue(memo(NumberSliderRenderer));
 
 export const NumberSlider = ({
-                          schema, ...props
-                      }) => {
+                                 schema, ...props
+                             }) => {
     let min = 0;
     let max = 100;
     let defaultVal = min;

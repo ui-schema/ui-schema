@@ -1,7 +1,7 @@
-import {List, Map} from "immutable";
-import {validateSchema} from "@ui-schema/ui-schema/validateSchema";
-import {ERROR_WRONG_TYPE} from "@ui-schema/ui-schema/Validators/TypeValidator/TypeValidator";
-import {createValidatorErrors} from "@ui-schema/ui-schema/ValidatorStack/ValidatorErrors";
+import {List, Map} from 'immutable';
+import {validateSchema} from '@ui-schema/ui-schema/validateSchema';
+import {ERROR_WRONG_TYPE} from '@ui-schema/ui-schema/Validators/TypeValidator/TypeValidator';
+import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors';
 
 export const ERROR_DUPLICATE_ITEMS = 'duplicate-items';
 export const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains';
@@ -178,9 +178,7 @@ export const arrayValidator = {
             let items_err = validateItems(schema, value);
             if(items_err.hasError()) {
                 valid = false;
-                errors = errors.addErrors(items_err);
-                // todo: here actually `addChildError` should be used an not addErrors
-                // errors = errors.addChildError(items_err);
+                errors = errors.addChildErrors(items_err);
             }
         }
 
@@ -196,5 +194,5 @@ export const arrayValidator = {
             }
         }
         return {errors, valid}
-    }
+    },
 };

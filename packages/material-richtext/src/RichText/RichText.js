@@ -1,11 +1,11 @@
-import React from "react";
-import clsx from "clsx";
-import {beautifyKey, prependKey, updateInternalValue, updateValues,} from "@ui-schema/ui-schema";
-import FormControl from "@material-ui/core/FormControl";
-import {ValidityHelperText} from "@ui-schema/ds-material/Component/LocaleHelperText";
-import {styles as inputStyles} from "@material-ui/core/Input/Input";
+import React from 'react';
+import clsx from 'clsx';
+import {beautifyKey} from '@ui-schema/ui-schema';
+import FormControl from '@material-ui/core/FormControl';
+import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText';
+import {styles as inputStyles} from '@material-ui/core/Input/Input';
 
-import InputLabel from "@material-ui/core/InputLabel";
+import InputLabel from '@material-ui/core/InputLabel';
 import DraftEditor from 'draft-js-plugins-editor';
 import {
     DefaultDraftBlockRenderMap,
@@ -14,12 +14,12 @@ import {
 } from 'draft-js';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createMarkdownShortcutsPlugin from 'draft-js-md-keyboard-plugin';
-import {useEditorStyles,} from "../styles";
-import {MarkdownLabel} from "../MarkdownLabel/MarkdownLabel";
-import {EditorControls} from "../EditorControls/EditorControls";
-import {blockRendererFn, editorStateFrom, editorStateTo, getBlockStyle, inlineMap, styleMap} from "../EditorExtends/EditorExtends";
-import {RichTextProvider} from "../RichTextProvider";
-import {createMap} from "@ui-schema/ui-schema";
+import {useEditorStyles} from '../styles';
+import {MarkdownLabel} from '../MarkdownLabel/MarkdownLabel';
+import {EditorControls} from '../EditorControls/EditorControls';
+import {blockRendererFn, editorStateFrom, editorStateTo, getBlockStyle, inlineMap, styleMap} from '../EditorExtends/EditorExtends';
+import {RichTextProvider} from '../RichTextProvider';
+import {createMap} from '@ui-schema/ui-schema';
 
 const useInputStyles = makeStyles(inputStyles);
 
@@ -53,26 +53,30 @@ export const RichText = ({
 
     React.useEffect(() => {
         if(!internalValue && editorState) {
-            onChange(updateInternalValue(storeKeys, editorState));
+            onChange(storeKeys, ['internal'], () => ({internal: editorState}))
         }
     }, [internalValue, editorState, onChange, storeKeys.equals(prevStoreKeys.current)]);
 
     const type = schema.get('type');
     const handleChange = React.useCallback((state) => {
-        onChange(store => {
-            let stateHandler = state;
-            if(typeof stateHandler !== 'function') {
-                // DraftJS onChange does not use a function to update the state, but we use it everywhere
-                stateHandler = () => state;
-            }
+        onChange(
+            storeKeys, ['value', 'internal'],
+            (store) => {
+                let stateHandler = state;
+                if(typeof stateHandler !== 'function') {
+                    // DraftJS onChange does not use a function to update the state, but we use it everywhere
+                    stateHandler = () => state;
+                }
 
-            const internalValue = storeKeys.size ?
-                (store.get('internals') ? store.getIn(prependKey(storeKeys, 'internals')) : createMap()) :
-                store.get('internals');
-
-            let newState = stateHandler(internalValue);
-            return updateValues(storeKeys, editorStateTo.markdown(newState), newState, required, type)(store);
-        });
+                let newState = stateHandler(store.internal || createMap());
+                return {
+                    value: editorStateTo.markdown(newState),
+                    internal: newState,
+                }
+            },
+            schema.get('deleteOnEmpty') || required,
+            type,
+        )
     }, [onChange, storeKeys.equals(prevStoreKeys.current), required, type]);
 
     const handleKeyCommand = (command, editorState) => {

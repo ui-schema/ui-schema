@@ -53,7 +53,7 @@ Each widget gets properties provided by the root schema renderer or added from p
 Properties from `WidgetRenderer`:
 
 - `value` : `{*}` Plugins receive for any value, Widgets only for scalar
-- `onChange` : `{function}` store updater function, see [updating utils](/docs/core#store-updating-utils)
+- `onChange` : `{function}` store updater function, see [updating utils](/docs/core#store-updating--onchange)
 - `storeKeys` : `{List}`
 - `ownKey` : `{string|integer}`
 - `schema` : `{Map}` the schema of the current widget
@@ -72,7 +72,7 @@ Example of a really simple text widget (in typescript):
 
 ```typescript jsx
 import React from 'react';
-import {updateValue, TransTitle, WidgetProps} from '@ui-schema/ui-schema';
+import {TransTitle, WidgetProps} from '@ui-schema/ui-schema';
 
 const Widget = ({
                     value, ownKey, storeKeys, onChange,
@@ -88,7 +88,12 @@ const Widget = ({
             required={required}
             value={value || ''}
             onChange={(e) => {
-                onChange(updateValue(storeKeys, e.target.value, required, schema.get('type')))
+                onChange(
+                    storeKeys, ['value'],
+                    ({value: oldValue}) => ({value: e.target.value}),
+                    schema.get('deleteOnEmpty') || required,
+                    schema.get('type'),
+                )
             }}
         />
     </>

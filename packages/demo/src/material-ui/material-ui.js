@@ -1,5 +1,4 @@
 import React from 'react';
-import {unstable_trace as trace} from 'scheduler/tracing';
 import AppTheme from './layout/AppTheme';
 import Dashboard from './dashboard/Dashboard';
 import {schemaWCombining} from '../schemas/demoCombining';
@@ -7,13 +6,13 @@ import {schemaWConditional, schemaWConditional1, schemaWConditional2} from '../s
 import {schemaWDep1, schemaWDep2} from '../schemas/demoDependencies';
 import {dataDemoMain, schemaDemoMain, schemaUser} from '../schemas/demoMain';
 import {schemaDemoReferencing, schemaDemoReferencingNetwork, schemaDemoReferencingNetworkB} from '../schemas/demoReferencing';
-import {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect} from '../schemas/demoSimples';
+import {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect, schemaNull} from '../schemas/demoSimples';
 import {schemaGrid} from '../schemas/demoGrid';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import {Button} from '@material-ui/core';
 import {widgets} from '@ui-schema/ds-material';
-import {UIGenerator, isInvalid, createOrderedMap, createMap, createStore, createEmptyStore, prependKey} from '@ui-schema/ui-schema';
+import {UIGenerator, isInvalid, createOrderedMap, createMap, createStore, createEmptyStore} from '@ui-schema/ui-schema';
 import {MuiSchemaDebug} from './component/MuiSchemaDebug';
 import {browserT} from '../t';
 import {schemaLists} from '../schemas/demoLists';
@@ -22,7 +21,7 @@ import {createDummyRenderer} from './component/MuiMainDummy';
 import {useDummy} from '../component/MainDummy';
 import {UIApiProvider} from '@ui-schema/ui-schema/UIApi/UIApi';
 import {ReferencingNetworkHandler} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
-import {shouldDeleteOnEmpty} from '@ui-schema/ui-schema/UIStore/UIStore';
+import {storeUpdater} from '@ui-schema/ui-schema/UIStore/storeUpdater';
 
 const pluginStack = [...widgets.pluginStack]
 // the referencing network handler should be at first position
@@ -31,67 +30,25 @@ const pluginStack = [...widgets.pluginStack]
 // maybe the network handlers adds a generic prop `resolveNetworkRef`, to request network schema inside e.g. an `if` from inside the ReferencingHandler
 pluginStack.splice(0, 0, ReferencingNetworkHandler)
 widgets.pluginStack = pluginStack
+//widgets.types.null = () => 'null'
 const DummyRenderer = createDummyRenderer(widgets);
-
-const storeUpdater = (storeKeys, values, deleteOnEmpty, type) =>
-    store => {
-        const {value, internalValue} = values
-
-        if(value) {
-            let deleteValue = false
-            store = store.updateIn(
-                storeKeys.size ? prependKey(storeKeys, 'values') : 'values',
-                oldValue => {
-                    oldValue = value(oldValue)
-                    if(shouldDeleteOnEmpty(oldValue, deleteOnEmpty, type)) {
-                        deleteValue = true
-                    }
-                    return oldValue
-                },
-            )
-            if(deleteValue) {
-                store = store.deleteIn(storeKeys.size ? prependKey(storeKeys, 'values') : ['values']);
-            }
-        }
-        if(internalValue) {
-            let deleteInternalValue = false
-            store = store.updateIn(
-                storeKeys.size ? prependKey(storeKeys, 'internals') : 'internals',
-                oldValue => {
-                    oldValue = internalValue(oldValue)
-                    if(shouldDeleteOnEmpty(oldValue, deleteOnEmpty, type)) {
-                        deleteInternalValue = true
-                    }
-                    return oldValue
-                },
-            )
-            if(deleteInternalValue) {
-                store = store.deleteIn(storeKeys.size ? prependKey(storeKeys, 'internals') : ['internals']);
-            }
-        }
-
-        return store
-    }
-
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [store, setStore] = React.useState(() => createStore(createMap(dataDemoMain)));
     const [schema, setSchema] = React.useState(() => createOrderedMap(schemaDemoMain));
 
-    const onChange = React.useCallback(store =>
-            // todo: the interactions from `trace` are not visible in dev tools
-            trace('onchange', performance.now(), () => {
-                //console.log('onChange')
-                return setStore(store)
-            }),
-        [setStore],
-    )
-
-    const onChangeNext = React.useCallback((storeKeys, values, deleteOnEmpty, type) => {
+    const onChangeNext = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
         setStore(prevStore => {
-            const newStore = storeUpdater(storeKeys, values, deleteOnEmpty, type)(prevStore)
-            console.log(newStore.getIn(prependKey(storeKeys, 'values')), prevStore.getIn(prependKey(storeKeys, 'values')), storeKeys.toJS(), deleteOnEmpty, type)
+            const newStore = storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
+            /*const newValue = newStore.getIn(prependKey(storeKeys, 'values'))
+            const prevValue = prevStore.getIn(prependKey(storeKeys, 'values'))
+            console.log(
+                isImmutable(newValue) ? newValue.toJS() : newValue,
+                isImmutable(prevValue) ? prevValue.toJS() : prevValue,
+                storeKeys.toJS(),
+                deleteOnEmpty, type,
+            )*/
             return newStore
         })
     }, [setStore])
@@ -100,8 +57,7 @@ const MainStore = () => {
         <UIGenerator
             schema={schema}
             store={store}
-            onChange={onChange}
-            onChangeNext={onChangeNext}
+            onChange={onChangeNext}
             widgets={widgets}
             showValidity={showValidity}
             t={browserT}
@@ -197,6 +153,9 @@ const Main = ({classes = {}}) => {
             <DummyRenderer id={'schemaSimNumber'} schema={schemaSimNumber} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
             <DummyRenderer id={'schemaSimRadio'} schema={schemaSimRadio} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
             <DummyRenderer id={'schemaSimSelect'} schema={schemaSimSelect} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer id={'schemaNull'} schema={schemaNull} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes} stylePaper={{background: 'transparent'}} variant={'outlined'}/>
         </Grid>
         <Grid item xs={12}>
             <Button style={{marginBottom: 12}} onClick={() => toggleDummy('demoUser')} variant={getDummy('demoUser') ? 'contained' : 'outlined'}>

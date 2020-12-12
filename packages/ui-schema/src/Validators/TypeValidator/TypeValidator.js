@@ -1,4 +1,4 @@
-import {List, Map} from "immutable";
+import {List, Map} from 'immutable';
 
 export const ERROR_WRONG_TYPE = 'wrong-type';
 
@@ -30,6 +30,7 @@ export const validateType = (value, type) => {
             !(Array.isArray(value) || List.isList(value))
         );
     }
+
     if(type === 'null') {
         return null === value;
     }
@@ -47,5 +48,5 @@ export const typeValidator = {
         }
 
         return {errors, valid}
-    }
+    },
 };

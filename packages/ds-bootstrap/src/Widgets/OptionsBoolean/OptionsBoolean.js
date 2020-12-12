@@ -1,13 +1,12 @@
-import React from "react";
-import {TransTitle, updateValue} from "@ui-schema/ui-schema";
-import {ValidityHelperText} from "@ui-schema/ds-material/Component";
-
+import React from 'react';
+import {TransTitle} from '@ui-schema/ui-schema';
+import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
 const BoolRenderer = ({ownKey, showValidity, required, errors, value, storeKeys, onChange, schema}) => {
 
-    let classForm = ["custom-control", "custom-switch"];
-    let classLabel = ["custom-control-label", "text-light"];
-    let classFormControl = ["custom-control-input"];
+    let classForm = ['custom-control', 'custom-switch'];
+    let classLabel = ['custom-control-label', 'text-light'];
+    let classFormControl = ['custom-control-input'];
     if(showValidity && errors.hasError()) {
         classFormControl.push('is-invalid');
     }
@@ -23,7 +22,12 @@ const BoolRenderer = ({ownKey, showValidity, required, errors, value, storeKeys,
             checked={currentChecked}
             required={required}
             onChange={() =>
-                onChange(updateValue(storeKeys, !currentChecked, required, schema.get('type')))
+                onChange(
+                    storeKeys, ['value'],
+                    ({value}) => ({value: !value}),
+                    schema.get('deleteOnEmpty') || required,
+                    schema.get('type'),
+                )
             }
         />
         <label className={classLabel.join(' ')} htmlFor={ownKey}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>{(required ? ' *' : '')}</label>

@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import {useUID} from 'react-uid';
-import {TransTitle, updateValue, updateValidity, mapSchema, checkNativeValidity} from '@ui-schema/ui-schema';
+import {TransTitle, mapSchema, checkNativeValidity} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
 export const convertStringToNumber = (value, type) => {
@@ -18,7 +18,7 @@ export const convertStringToNumber = (value, type) => {
 export const StringRenderer = ({
                                    type,
                                    multiline, rows, rowsMax,
-                                   storeKeys, ownKey, schema, value, onChange, onChangeNext,
+                                   storeKeys, ownKey, schema, value, onChange,
                                    showValidity, valid, errors, required,
                                    style,
                                    onClick, onFocus, onBlur, onKeyUp, onKeyDown, onKeyPress,
@@ -36,9 +36,10 @@ export const StringRenderer = ({
 
     React.useEffect(() => {
         if(currentRef) {
-            onChange(updateValidity(storeKeys, valid));
+            onChange(storeKeys, ['valid'], () => ({valid: valid}))
         }
-    }, [valid]);
+        // todo: aren't `storeKeys` missing in deps?
+    }, [onChange, valid]);
 
     const hideTitle = schema.getIn(['view', 'hideTitle'])
 
@@ -68,15 +69,12 @@ export const StringRenderer = ({
             onKeyDown={onKeyDown}
             onChange={(e) => {
                 const val = e.target.value
-                if(onChangeNext) {
-                    onChangeNext(
-                        storeKeys, {value: () => convertStringToNumber(val, schema.get('type'))},
-                        schema.get('deleteOnEmpty') || required,
-                        schema.get('type'),
-                    )
-                } else {
-                    onChange(updateValue(storeKeys, convertStringToNumber(e.target.value, schema.get('type')), schema.get('deleteOnEmpty') || required, schema.get('type')))
-                }
+                onChange(
+                    storeKeys, ['value'],
+                    () => ({value: convertStringToNumber(val, schema.get('type'))}),
+                    schema.get('deleteOnEmpty') || required,
+                    schema.get('type'),
+                )
             }}
             InputLabelProps={{shrink: schema.getIn(['view', 'shrink'])}}
             InputProps={InputProps}

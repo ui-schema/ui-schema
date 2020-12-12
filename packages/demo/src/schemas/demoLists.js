@@ -123,6 +123,7 @@ const schemaLists = createOrderedMap({
         labels: {
             type: 'array',
             widget: 'SimpleList',
+            deleteOnEmpty: true,
             view: {
                 sizeXs: 12,
                 sizeMd: 12,

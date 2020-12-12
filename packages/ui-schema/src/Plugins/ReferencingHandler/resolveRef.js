@@ -8,7 +8,7 @@ export const resolveRef = (ref, context) => {
         // the definitions, could be get from ReferencingProvider
         defs,
         // the root schema, could be get from SchemaRootProvider
-        schema: rootSchema,
+        root: rootSchema,
         // try to get a loaded schema
         fetchSchema,
     } = context
@@ -70,13 +70,15 @@ export const resolveRef = (ref, context) => {
         // handle network referenced schemas,
         // `fetchSchema` may be coming from `useNetworkRef`, which relies on the `UIApiProvider`
         // but could also be otherwise passed down with the context from a custom `ReferencingHandler` implementation
-
-        const loadedSchema = fetchSchema(ref)
-        if(loadedSchema) {
-            schema = loadedSchema
-        } else {
-            throw new SchemaRefPending(ref)
+        if(fetchSchema) {
+            const loadedSchema = fetchSchema(ref)
+            if(loadedSchema) {
+                return loadedSchema
+            }
+        } else if(process.env.NODE_ENV === 'development') {
+            console.error('fetchSchema does not exist in resolveRef, maybe UIApiProvider missing?')
         }
+        throw new SchemaRefPending(ref)
     }
 
     return schema

@@ -1,4 +1,4 @@
-import {updateValue, useUI} from '@ui-schema/ui-schema';
+import {useUI} from '@ui-schema/ui-schema';
 import React from 'react';
 import {List} from 'immutable';
 
@@ -8,9 +8,13 @@ export const SchemaDebug = ({StyledEditor}) => {
     return <React.Fragment>
         <StyledEditor
             data={store.getValues()}
-            onChange={(keys, value) =>
-                onChange(updateValue(List(keys), value, false))
-            }
+            onChange={(keys, value) => {
+                onChange(
+                    List(keys), ['value'],
+                    () => ({value: value}),
+                    false,
+                )
+            }}
             getVal={keys => store.getValues().getIn(keys)}
         />
         <StyledEditor data={schema} onChange={() => console.log('not implemented')} getVal={keys => schema.getIn(keys)}/>

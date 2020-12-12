@@ -1,6 +1,5 @@
 import React from 'react';
 import {NextPluginRenderer} from '../PluginStack';
-import {cleanUp, updateValidity} from '../UIStore';
 
 export const ValidityReporter = (props) => {
     const {onChange, showValidity, storeKeys, valid} = props;
@@ -16,14 +15,14 @@ export const ValidityReporter = (props) => {
     React.useEffect(() => {
         // todo: use `errors` instead of `valid`, but only if not `valid` and `hasErrors`
         if(sameStoreKeys) {
-            onChange(updateValidity(storeKeysPrev.current, valid));
+            onChange(storeKeysPrev.current, ['valid'], () => ({valid: valid}))
         }
     }, [valid, onChange, sameStoreKeys, storeKeysPrev]);
 
     React.useEffect(() => {
         // delete own validity state on component unmount
         return sameStoreKeys ? () => {
-            onChange(cleanUp(storeKeysPrev.current, 'validity'));
+            onChange(storeKeys, ['valid'], () => ({valid: undefined}))
         } : undefined
     }, [onChange, sameStoreKeys, storeKeysPrev]);
 

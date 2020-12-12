@@ -1,4 +1,11 @@
 import React from 'react'
+import {getSchemaId} from '@ui-schema/ui-schema/Utils/getSchema';
+
+export const isRootSchema = (schema) => {
+    const id = getSchemaId(schema)
+    // todo: is this "no fragment beginning" really the correct root for everything? e.g. $defs?
+    return id && id.indexOf('#') !== 0
+}
 
 const SchemaRootContext = React.createContext({
     id: '',
