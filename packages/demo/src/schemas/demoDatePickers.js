@@ -3,6 +3,30 @@ import {createOrderedMap} from '@ui-schema/ui-schema';
 const schemaDatePickers = createOrderedMap({
     type: 'object',
     properties: {
+        timeInMs1: {
+            'type': 'string',
+            'format': 'date+time',
+            'widget': 'DateTime',
+            'default': 'now',
+            'date': {
+                'keyboard': false,
+                'clearable': true,
+                'toolbar': true,
+                'views': [
+                    'year',
+                    'month',
+                    'date',
+                    'hours',
+                    'minutes',
+                ],
+                'format': 'dd.MM.yyyy HH:mm z',
+                'formatData': 'X',
+            },
+            'view': {
+                'sizeXs': 12,
+                'sizeMd': 4,
+            },
+        },
         timeInMs: {
             'type': 'string',
             'format': 'date+time',
