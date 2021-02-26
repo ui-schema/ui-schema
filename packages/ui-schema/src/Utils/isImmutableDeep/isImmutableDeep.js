@@ -3,7 +3,9 @@ import {List, Map, Seq} from 'immutable';
 export function isImmutableDeep(maybeImmutable, curr = true) {
     if(typeof maybeImmutable !== 'object' || maybeImmutable === null) {
         if(typeof maybeImmutable !== 'string' && typeof maybeImmutable !== 'boolean' && typeof maybeImmutable !== 'number') {
-            console.warn('not convertable found', maybeImmutable)
+            if(process.env.NODE_ENV === 'development') {
+                console.warn('is immutable, non convertible found', maybeImmutable)
+            }
             curr = false
         }
     } else {
@@ -12,7 +14,9 @@ export function isImmutableDeep(maybeImmutable, curr = true) {
         } else if(Map.isMap(maybeImmutable)) {
             Seq(maybeImmutable).forEach(e => curr = isImmutableDeep(e, curr))
         } else {
-            console.warn('not converted found', maybeImmutable)
+            if(process.env.NODE_ENV === 'development') {
+                console.warn('is immutable, not converted found', maybeImmutable)
+            }
             curr = false
         }
     }

@@ -9,7 +9,15 @@ let ObjectRenderer = ({
     const properties = schema.get('properties');
 
     if(!widgets.GroupRenderer) {
-        console.error('Widget GroupRenderer not existing');
+        if(process.env.NODE_ENV === 'development') {
+            console.error('Widget GroupRenderer not existing');
+        }
+        return null;
+    }
+    if(!properties) {
+        if(process.env.NODE_ENV === 'development') {
+            console.error('not rendering object, missing `properties`');
+        }
         return null;
     }
     const GroupRenderer = widgets.GroupRenderer;
@@ -26,7 +34,7 @@ let ObjectRenderer = ({
     // no-properties could come from
     //   e.g. combining/conditional schemas which are currently not applied (e.g. a condition fails)
     return isVirtual ? propertyTree :
-        properties ? <GroupRenderer level={level} schema={schema} noGrid={props.noGrid} isVirtual={isVirtual}>
+        properties ? <GroupRenderer level={level} schema={schema} noGrid={props.noGrid}>
             {propertyTree}
         </GroupRenderer> : null
 };

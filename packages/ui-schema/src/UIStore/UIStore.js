@@ -121,7 +121,7 @@ export const prependKey = (storeKeys, key) =>
         [key, ...storeKeys] :
         storeKeys.splice(0, 0, key);
 
-const shouldHandleRequired = (value, force, type) => {
+export const shouldDeleteOnEmpty = (value, force, type) => {
     // todo: mv number out here, enforces that numbers can be cleared, but should only be forced for the `""` value in number types
     if(!force && type !== 'number') return false
 
@@ -140,5 +140,3 @@ const shouldHandleRequired = (value, force, type) => {
 
     return false;
 };
-
-export const shouldDeleteOnEmpty = shouldHandleRequired

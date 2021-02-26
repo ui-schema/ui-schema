@@ -46,7 +46,7 @@ export const makeUrlFromRef = (schemaRef, id) => {
         const revIdNoFragment = removeFragmentFromRevUrl(revId)
         const uriBase = [...revIdNoFragment.substr(revIdNoFragment.indexOf('/'))].reverse().join('')
         schemaUrl = uriBase + schemaRef
-    } else {
+    } else if(process.env.NODE_ENV === 'development') {
         console.warn('relative uri ref without root id', schemaRef)
     }
     return schemaUrl

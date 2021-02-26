@@ -131,7 +131,8 @@ const GenericList = extractValue(memo(({
                 <IconButton
                     onClick={() => {
                         onChange(
-                            storeKeys, ['value', 'internal'], ({value = List()}) => ({
+                            storeKeys, ['value', 'internal'],
+                            ({value = List()}) => ({
                                 value: value.push(List.isList(schema.get('items')) ? List() : Map()),
                             }),
                             schema.get('deleteOnEmpty') || required,

@@ -468,7 +468,9 @@ describe('parseRefs', () => {
             const res = parseRefs(schema, context)
             const r = res.pending.equals(expectedPending)
             if (!r) {
-                console.error(res.pending.toJS(), expectedPending.toJS())
+                if (process.env.NODE_ENV === 'development') {
+                    console.error(res.pending.toJS(), expectedPending.toJS())
+                }
             }
             expect(r).toBe(true)
         }

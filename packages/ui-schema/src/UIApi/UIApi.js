@@ -24,7 +24,9 @@ const initialState = () => {
         try {
             cached = JSON.parse(cachedRaw)
         } catch(e) {
-            console.error('invalid localStorage schema cache', e)
+            if(process.env.NODE_ENV === 'development') {
+                console.error('invalid localStorage schema cache', e)
+            }
         }
     }
 
@@ -51,6 +53,7 @@ function reducer(state = initialState(), action = {}) {
 
 const schemasLoaded = {schemas: {}}
 
+// todo: check why this is not used anymore, so version-cache-invalidation doens't work
 export const isLoaded = (schemas, ref, version) => {
     return !ref ? false : (
         ref && schemas?.get(ref) && (

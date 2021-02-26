@@ -19,31 +19,41 @@ export const resolveRef = (ref, context) => {
         // intercept JSON Pointer for definitions
         const refId = ref.replace(/^#\/definitions\//, '').replace(/^#\/\$defs\//, '');
         if(!defs) {
-            console.error('definitions needed for $ref resolution', ref)
+            if(process.env.NODE_ENV === 'development') {
+                console.error('definitions needed for $ref resolution', ref)
+            }
         } else if(defs.get(refId)) {
             schema = resolvePointer('#/' + refId, defs);
         } else {
-            console.error('definition not found for $ref', ref, refId)
+            if(process.env.NODE_ENV === 'development') {
+                console.error('definition not found for $ref', ref, refId)
+            }
         }
 
     } else if(ref.indexOf('#/') === 0 || ref === '#') {
         // JSON Pointer
 
         if(!rootSchema) {
-            console.error('rootSchema needed for $ref resolution', ref)
+            if(process.env.NODE_ENV === 'development') {
+                console.error('rootSchema needed for $ref resolution', ref)
+            }
         } else {
             const targeted = resolvePointer(ref, rootSchema)
             if(targeted) {
                 schema = targeted
             } else {
-                console.error('JSON Pointer target schema not found for $ref', ref, rootSchema?.toJS())
+                if(process.env.NODE_ENV === 'development') {
+                    console.error('JSON Pointer target schema not found for $ref', ref, rootSchema?.toJS())
+                }
             }
         }
     } else if(ref.indexOf('#') === 0) {
         // get by `$id` or since 2019-09 by `$anchor` in definitions
 
         if(!defs) {
-            console.error('definitions needed for $ref resolution', ref)
+            if(process.env.NODE_ENV === 'development') {
+                console.error('definitions needed for $ref resolution', ref)
+            }
         } else {
             const def = defs.find(def => {
                 return (
@@ -59,7 +69,9 @@ export const resolveRef = (ref, context) => {
             if(def) {
                 schema = def
             } else {
-                console.error('definition not found for $ref', ref)
+                if(process.env.NODE_ENV === 'development') {
+                    console.error('definition not found for $ref', ref)
+                }
             }
         }
     } else {

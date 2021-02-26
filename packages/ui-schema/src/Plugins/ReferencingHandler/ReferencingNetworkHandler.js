@@ -27,7 +27,9 @@ export const useNetworkRef = () => {
             loader(schemaUrl).then()
         }
         if(!loader) {
-            console.error('ReferencingNetworkLoader `loadSchema` not defined, maybe missing `UIApiProvider`')
+            if(process.env.NODE_ENV === 'development') {
+                console.error('ReferencingNetworkLoader `loadSchema` not defined, maybe missing `UIApiProvider`')
+            }
         }
     }, [id, loader])
 

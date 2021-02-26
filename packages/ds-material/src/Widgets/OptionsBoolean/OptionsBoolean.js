@@ -17,7 +17,7 @@ const switchStyle = makeStyles(theme => ({
 }));
 
 const BoolRenderer = ({ownKey, value, onChange, schema, storeKeys, showValidity, valid, required, errors}) => {
-    const currentVal = !!value;
+    const currentVal = Boolean(value);
 
     const classes = switchStyle({error: !valid && showValidity});
     return <>

@@ -1,8 +1,10 @@
-import {Seq, List, Map, OrderedMap, fromJS} from "immutable";
+import {Seq, List, Map, OrderedMap, fromJS} from 'immutable';
 
 export function fromJSOrdered(js) {
     if(Map.isMap(js) || OrderedMap.isOrderedMap(js) || List.isList(js)) {
-        console.warn('converting immutable to immutable may lead to wrong types');
+        if(process.env.NODE_ENV === 'development') {
+            console.warn('converting immutable to immutable may lead to wrong types');
+        }
     }
 
     return typeof js !== 'object' || js === null ? js :
