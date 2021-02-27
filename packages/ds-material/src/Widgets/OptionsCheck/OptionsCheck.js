@@ -8,7 +8,7 @@ import {useUID} from 'react-uid';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 import {sortScalarList} from '@ui-schema/ui-schema/Utils/sortScalarList';
 
-const OptionCheck = ({currentValue, label, onChange}) => {
+const OptionCheck = ({disabled, currentValue, label, onChange}) => {
     const uid = useUID();
 
     return <FormControlLabel
@@ -18,7 +18,9 @@ const OptionCheck = ({currentValue, label, onChange}) => {
             value={currentValue}
             checked={currentValue}
             onChange={onChange}
+            disabled={disabled}
         />}
+        disabled={disabled}
         label={label}
     />;
 };
@@ -27,7 +29,7 @@ const checkActive = (list, name) => list && list.contains && typeof list.contain
 
 const OptionsCheckValue = extractValue(memo(({
                                                  enumVal, storeKeys, value, onChange, trans, tt,
-                                                 required, type,
+                                                 required, type, disabled,
                                              }) =>
     enumVal ?
         enumVal.map((enum_name) => {
@@ -38,6 +40,7 @@ const OptionsCheckValue = extractValue(memo(({
             return <OptionCheck
                 key={enum_name}
                 currentValue={isActive}
+                disabled={disabled}
                 onChange={() => {
                     onChange(
                         storeKeys, ['value'],
@@ -74,7 +77,12 @@ const OptionsCheck = ({
             <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
         </FormLabel>
         <FormGroup row={row}>
-            <OptionsCheckValue enumVal={enumVal} storeKeys={storeKeys} trans={schema.get('t')} tt={schema.get('tt')} required={required} type={schema.get('type')}/>
+            <OptionsCheckValue
+                enumVal={enumVal} storeKeys={storeKeys}
+                trans={schema.get('t')} tt={schema.get('tt')}
+                required={required} type={schema.get('type')}
+                disabled={schema.get('readOnly')}
+            />
         </FormGroup>
 
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>

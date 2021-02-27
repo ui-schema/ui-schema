@@ -95,6 +95,9 @@ const NumberSliderRenderer = ({
                         console.error('Invalid Type: input not a number in:', e.target, value);
                         return;
                     }
+                    if(schema.get('readOnly')) {
+                        return
+                    }
                     onChange(
                         storeKeys, ['value'],
                         () => ({value: schema.get('type') === 'array' ? List(value) : value * 1}),
@@ -103,7 +106,7 @@ const NumberSliderRenderer = ({
                     )
                 }}
             />
-            {hasMulti ? <IconButton
+            {!schema.get('readOnly') && hasMulti ? <IconButton
                 size={'small'} disabled={!canAdd} style={{margin: 'auto 6px'}}
                 onClick={() =>
                     onChange(

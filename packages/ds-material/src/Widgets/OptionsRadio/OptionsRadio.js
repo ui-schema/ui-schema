@@ -25,6 +25,7 @@ const OptionsRadio = ({
                         value={enum_name}
                         checked={enum_name === isActive}
                         onChange={() =>
+                            !schema.get('readOnly') &&
                             onChange(
                                 storeKeys, ['value'],
                                 () => ({value: enum_name}),

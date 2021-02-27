@@ -48,6 +48,7 @@ export const StringRenderer = ({
             label={hideTitle ? undefined : <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>}
             aria-label={hideTitle ? <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/> : undefined}
             type={format || type}
+            disabled={schema.get('readOnly')}
             multiline={multiline}
             required={required}
             error={!valid && showValidity}

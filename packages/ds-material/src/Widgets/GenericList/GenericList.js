@@ -9,14 +9,16 @@ import {List, Map} from 'immutable';
 import {AccessTooltipIcon} from '../../Component/Tooltip/Tooltip';
 import {moveItem} from '@ui-schema/ui-schema/Utils/moveItem/moveItem';
 
-let GenericListItem = ({index, listSize, itemsSchema, deleteOnEmpty, showValidity, onChange, storeKeys, btnSize}) => {
+let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, onChange, storeKeys, btnSize}) => {
     const ownKeys = storeKeys.push(index)
+    const itemsSchema = schema.get('items')
+    const readOnly = schema.get('readOnly')
     return <React.Fragment>
         <Grid item xs={12} style={{display: 'flex'}}>
             <Grid container spacing={2} wrap={'nowrap'}>
                 <Grid item style={{display: 'flex', flexDirection: 'column', flexShrink: 0}}>
 
-                    {index > 0 ? <IconButton
+                    {!readOnly && index > 0 ? <IconButton
                         size={btnSize} style={{margin: '0 auto'}}
                         onClick={() =>
                             onChange(
@@ -42,7 +44,7 @@ let GenericListItem = ({index, listSize, itemsSchema, deleteOnEmpty, showValidit
                         {index + 1}.
                     </Typography>
 
-                    {index < listSize - 1 ? <IconButton
+                    {!readOnly && index < listSize - 1 ? <IconButton
                         size={btnSize} style={{margin: '0 auto'}}
                         onClick={() =>
                             onChange(
@@ -71,6 +73,7 @@ let GenericListItem = ({index, listSize, itemsSchema, deleteOnEmpty, showValidit
                                 showValidity={showValidity}
                                 storeKeys={ownKeys.push(j)}
                                 schema={item}
+                                parentSchema={schema}
                             />).valueSeq()}
                         </Grid>
                     </Grid> :
@@ -78,9 +81,10 @@ let GenericListItem = ({index, listSize, itemsSchema, deleteOnEmpty, showValidit
                         showValidity={showValidity}
                         storeKeys={ownKeys}
                         schema={itemsSchema}
+                        parentSchema={schema}
                     />}
 
-                <Grid item style={{display: 'flex', flexShrink: 0}}>
+                {!readOnly ? <Grid item style={{display: 'flex', flexShrink: 0}}>
                     <IconButton
                         onClick={() =>
                             onChange(
@@ -100,7 +104,7 @@ let GenericListItem = ({index, listSize, itemsSchema, deleteOnEmpty, showValidit
                             <Delete fontSize={'inherit'}/>
                         </AccessTooltipIcon>
                     </IconButton>
-                </Grid>
+                </Grid> : null}
             </Grid>
         </Grid>
         {index < listSize - 1 ? <Divider style={{width: '100%'}}/> : null}
@@ -123,30 +127,32 @@ const GenericList = extractValue(memo(({
             {list ? list.map((val, i) =>
                 <GenericListItem
                     key={i} index={i} listSize={list.size}
-                    btnSize={btnSize} storeKeys={storeKeys} deleteOnEmpty={schema.get('deleteOnEmpty') || required}
-                    itemsSchema={schema.get('items')} onChange={onChange}
+                    btnSize={btnSize} storeKeys={storeKeys}
+                    deleteOnEmpty={schema.get('deleteOnEmpty') || required}
+                    schema={schema} onChange={onChange}
                 />,
             ).valueSeq() : null}
 
             <Grid item xs={12}>
-                <IconButton
-                    onClick={() => {
-                        onChange(
-                            storeKeys, ['value', 'internal'],
-                            ({value = List(), internal = List()}) => ({
-                                value: value.push(List.isList(schema.get('items')) ? List() : Map()),
-                                internal: internal.push(List.isList(schema.get('items')) ? List() : Map()),
-                            }),
-                            schema.get('deleteOnEmpty') || required,
-                            schema.get('type'),
-                        )
-                    }}
-                    size={btnSize}
-                >
-                    <AccessTooltipIcon title={'New Item'}>
-                        <Add fontSize={'inherit'}/>
-                    </AccessTooltipIcon>
-                </IconButton>
+                {!schema.get('readOnly') ?
+                    <IconButton
+                        onClick={() => {
+                            onChange(
+                                storeKeys, ['value', 'internal'],
+                                ({value = List(), internal = List()}) => ({
+                                    value: value.push(List.isList(schema.get('items')) ? List() : Map()),
+                                    internal: internal.push(List.isList(schema.get('items')) ? List() : Map()),
+                                }),
+                                schema.get('deleteOnEmpty') || required,
+                                schema.get('type'),
+                            )
+                        }}
+                        size={btnSize}
+                    >
+                        <AccessTooltipIcon title={'New Item'}>
+                            <Add fontSize={'inherit'}/>
+                        </AccessTooltipIcon>
+                    </IconButton> : null}
 
                 <ValidityHelperText
                     /*

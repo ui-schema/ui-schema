@@ -22,11 +22,13 @@ const BoolRenderer = ({ownKey, value, onChange, schema, storeKeys, showValidity,
     const classes = switchStyle({error: !valid && showValidity});
     return <>
         <FormControlLabel
+            disabled={schema.get('readOnly')}
             control={
                 <Switch
                     classes={classes}
                     required={required}
                     checked={currentVal}
+                    disabled={schema.get('readOnly')}
                     onChange={() =>
                         onChange(
                             storeKeys, ['value'],

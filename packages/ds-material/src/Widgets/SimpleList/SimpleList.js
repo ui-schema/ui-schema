@@ -40,6 +40,7 @@ const SimpleList = extractValue(memo(({
                                 schema.get('type'),
                             )
                         }}
+                        disabled={schema.get('readOnly')}
                         size={btnSize}
                         style={{margin: 'auto 6px', flexShrink: 0}}
                     >
@@ -61,6 +62,7 @@ const SimpleList = extractValue(memo(({
                             schema.get('type'),
                         )
                     }}
+                    disabled={schema.get('readOnly')}
                     size={btnSize}
                 >
                     <AccessTooltipIcon title={'Add Entry'}>

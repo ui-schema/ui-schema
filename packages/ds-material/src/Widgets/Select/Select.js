@@ -43,6 +43,7 @@ const Select = ({
                 }).join(', ')
             }}
             onChange={(e) =>
+                !schema.get('readOnly') &&
                 onChange(
                     storeKeys, ['value'],
                     () => ({
