@@ -23,7 +23,7 @@ let GenericListItem = ({index, listSize, itemsSchema, deleteOnEmpty, showValidit
                                 storeKeys, ['value', 'internal'],
                                 ({value, internal}) => ({
                                     value: moveItem(value, index, index - 1),
-                                    internals: moveItem(internal, index, index - 1),
+                                    internal: moveItem(internal, index, index - 1),
                                     // todo: also moveItem in `valid`? that should be handled automatically atm. and is not needed !i think!
                                 }),
                                 deleteOnEmpty,
@@ -48,7 +48,7 @@ let GenericListItem = ({index, listSize, itemsSchema, deleteOnEmpty, showValidit
                             onChange(
                                 storeKeys, ['value', 'internal'], ({value, internal}) => ({
                                     value: moveItem(value, index, index + 1),
-                                    internals: moveItem(internal, index, index + 1),
+                                    internal: moveItem(internal, index, index + 1),
                                 }),
                                 deleteOnEmpty,
                                 'array',
@@ -84,9 +84,10 @@ let GenericListItem = ({index, listSize, itemsSchema, deleteOnEmpty, showValidit
                     <IconButton
                         onClick={() =>
                             onChange(
-                                storeKeys, ['value'],
-                                ({value}) => ({
+                                storeKeys, ['value', 'internal'],
+                                ({value, internal}) => ({
                                     value: value.splice(index, 1),
+                                    internal: internal.splice(index, 1),
                                 }),
                                 deleteOnEmpty,
                                 'array',
@@ -132,8 +133,9 @@ const GenericList = extractValue(memo(({
                     onClick={() => {
                         onChange(
                             storeKeys, ['value', 'internal'],
-                            ({value = List()}) => ({
+                            ({value = List(), internal = List()}) => ({
                                 value: value.push(List.isList(schema.get('items')) ? List() : Map()),
+                                internal: internal.push(List.isList(schema.get('items')) ? List() : Map()),
                             }),
                             schema.get('deleteOnEmpty') || required,
                             schema.get('type'),
