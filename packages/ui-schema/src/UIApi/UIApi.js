@@ -17,15 +17,17 @@ export const useUIApi = () => React.useContext(UIApiContext)
 
 export const schemaLocalCachePath = 'uischema-cache' + window.location.port
 
-const initialState = () => {
+const initialState = ({noCache = false}) => {
     let cached
-    const cachedRaw = window?.localStorage?.getItem(schemaLocalCachePath)
-    if(cachedRaw) {
-        try {
-            cached = JSON.parse(cachedRaw)
-        } catch(e) {
-            if(process.env.NODE_ENV === 'development') {
-                console.error('invalid localStorage schema cache', e)
+    if(!noCache) {
+        const cachedRaw = window?.localStorage?.getItem(schemaLocalCachePath)
+        if(cachedRaw) {
+            try {
+                cached = JSON.parse(cachedRaw)
+            } catch(e) {
+                if(process.env.NODE_ENV === 'development') {
+                    console.error('invalid localStorage schema cache', e)
+                }
             }
         }
     }
@@ -35,15 +37,17 @@ const initialState = () => {
 
 /**
  * @param {OrderedMap<string, OrderedMap<string, any>>} state
- * @param {{ type?: string, id?: string, value?: any }} action
+ * @param {{ type?: string, id?: string, value?: any, noCache?: boolean }} action
  * @return {OrderedMap<string, OrderedMap<string, any>>}
  */
-function reducer(state = initialState(), action = {}) {
+function reducer(state, action = {}) {
     switch(action.type) {
         case 'SCHEMA_LOADED':
             return (() => {
                 let tmpState = state.setIn(['schemas', action.id], createOrderedMap(action.value))
-                window?.localStorage?.setItem(schemaLocalCachePath, JSON.stringify(tmpState.get('schemas').toJS()))
+                if(!action.noCache) {
+                    window?.localStorage?.setItem(schemaLocalCachePath, JSON.stringify(tmpState.get('schemas').toJS()))
+                }
                 return tmpState
             })()
         default:
@@ -64,8 +68,8 @@ export const isLoaded = (schemas, ref, version) => {
     )
 }
 
-export const UIApiProvider = ({loadSchema, children}) => {
-    const [state, dispatch] = React.useReducer(reducer, undefined, reducer)
+export const UIApiProvider = ({loadSchema, noCache, children}) => {
+    const [state, dispatch] = React.useReducer(reducer, {noCache}, initialState)
 
     const loadSchemaFn = React.useCallback((url) => {
         if(schemasLoaded.schemas[url] === PROGRESS_START || schemasLoaded.schemas[url] === PROGRESS_DONE)
@@ -78,6 +82,7 @@ export const UIApiProvider = ({loadSchema, children}) => {
                     type: 'SCHEMA_LOADED',
                     id: url,
                     value: loadedSchema,
+                    noCache: noCache,
                 })
                 return PROGRESS_DONE
             })
@@ -85,7 +90,7 @@ export const UIApiProvider = ({loadSchema, children}) => {
                 schemasLoaded.schemas[url] = PROGRESS_ERROR
                 return PROGRESS_ERROR
             })
-    }, [loadSchema])
+    }, [loadSchema, noCache])
 
     const contextValue = React.useMemo(() => ({
         schemas: state.get('schemas'),

@@ -3,14 +3,16 @@ import {resolvePointer} from '@ui-schema/ui-schema/JSONPointer/resolvePointer';
 export class SchemaRefPending extends Error {
 }
 
-export const resolveRef = (ref, context) => {
+export const resolveRef = (ref, context, schemaVersion) => {
     const {
+        // the id of the parent schema
+        id,
         // the definitions, could be get from ReferencingProvider
         defs,
         // the root schema, could be get from SchemaRootProvider
         root: rootSchema,
         // try to get a loaded schema
-        fetchSchema,
+        getSchema,
     } = context
 
     let schema
@@ -80,15 +82,15 @@ export const resolveRef = (ref, context) => {
         //   $recursiveAnchor
 
         // handle network referenced schemas,
-        // `fetchSchema` may be coming from `useNetworkRef`, which relies on the `UIApiProvider`
+        // `getSchema` may be coming from `useNetworkRef`, which relies on the `UIApiProvider`
         // but could also be otherwise passed down with the context from a custom `ReferencingHandler` implementation
-        if(fetchSchema) {
-            const loadedSchema = fetchSchema(ref)
+        if(getSchema) {
+            const loadedSchema = getSchema(ref, id, schemaVersion)
             if(loadedSchema) {
                 return loadedSchema
             }
         } else if(process.env.NODE_ENV === 'development') {
-            console.error('fetchSchema does not exist in resolveRef, maybe UIApiProvider missing?')
+            console.error('getSchema does not exist in resolveRef, maybe UIApiProvider missing?')
         }
         throw new SchemaRefPending(ref)
     }

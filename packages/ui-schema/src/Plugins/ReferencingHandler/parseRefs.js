@@ -116,11 +116,12 @@ const parseRefsInConditionalKeywords = (schema, context, recursive = false, pend
 
 export const parseRefs = (schema, context, recursive = false, pending = Map()) => {
     const ref = schema.get('$ref')
+    const schemaVersion = schema.get('version')
     if(ref) {
         // 1. if schema is a reference itself, resolve it
         //    then with the next code, references in the reference are resolved
         try {
-            schema = resolveRef(ref, context) || schema
+            schema = resolveRef(ref, context, schemaVersion) || schema
         } catch(e) {
             if(e instanceof SchemaRefPending) {
                 const id = context.id || '#'

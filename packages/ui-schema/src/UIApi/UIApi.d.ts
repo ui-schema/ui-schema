@@ -13,7 +13,7 @@ export function useProgress(): [PROGRESS, React.Dispatch<React.SetStateAction<PR
 
 export interface UIApiContextType {
     schemas: Map<string, StoreSchemaType>
-    loadSchema: (url: string) => Promise<PROGRESS>
+    loadSchema: (url: string, versions?: string[]) => Promise<PROGRESS>
 }
 
 export type schemaLocalCachePath = string
@@ -26,6 +26,7 @@ export function useUIApi(): UIApiContextType
 
 export interface UIApiProviderProps {
     loadSchema: (refUrl: string) => void
+    noCache?: boolean
 }
 
 export function UIApiProvider<P extends React.PropsWithChildren<UIApiProviderProps>>(props: P): React.ReactElement

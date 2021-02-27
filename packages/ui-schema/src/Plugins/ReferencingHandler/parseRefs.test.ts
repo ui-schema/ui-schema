@@ -448,7 +448,7 @@ describe('parseRefs', () => {
                     },
                 },
             }) as StoreSchemaType,
-            {fetchSchema: (ref) => ref === 'dummy-3.json' ? Map() : undefined},
+            {getSchema: (ref) => ref === 'dummy-3.json' ? Map() : undefined},
             createMap({
                 'https://localhost:8080/root-2.json': {
                     'dummy-1a.json': ['*'],

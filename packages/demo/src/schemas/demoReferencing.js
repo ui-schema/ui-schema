@@ -106,9 +106,15 @@ export const schemaDemoReferencingNetwork = createOrderedMap({
     '$id': 'http://localhost:4200/api/demo-referencing-network.json',
     type: 'object',
     properties: {
-        address: {$ref: 'http://localhost:4200/api/address-schema.json'},
-        shipping_address: {$ref: 'address-schema.json'},
-        business_country: {$ref: 'address-schema.json/#properties/country'},
+        //address: {$ref: 'http://localhost:4200/api/address-schema.json'},
+        /*shipping_address: {
+            $ref: 'address-schema.json',
+            version: '*',
+        },*/
+        business_country: {
+            $ref: 'address-schema.json/#properties/country',
+            //version: '0.0.1',
+        },
     },
 });
 

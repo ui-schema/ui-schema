@@ -89,7 +89,8 @@ const DemoUser = () => {
     </Grid>
 };
 
-const loadSchema = (url) => {
+const loadSchema = (url, versions) => {
+    console.log('Demo loadSchema (url, optional versions)', url, versions)
     return fetch(url).then(r => r.json())
 }
 
@@ -169,7 +170,7 @@ const Main = ({classes = {}}) => {
 };
 
 export default () => <AppTheme>
-    <UIApiProvider loadSchema={loadSchema}>
+    <UIApiProvider loadSchema={loadSchema} noCache>
         <Dashboard main={Main}/>
     </UIApiProvider>
 </AppTheme>;

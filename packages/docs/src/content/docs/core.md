@@ -258,7 +258,11 @@ The `loadSchema` property needs a function which accepts the url and must return
 const loadSchema = (url) => {
     return fetch(url).then(r => r.json())
 }
-const Provider = ({children}) => <UIApiProvider loadSchema={loadSchema}>
+const Provider = ({children}) => <UIApiProvider
+    loadSchema={loadSchema}
+    /* disables localStorage cache of e.g. loaded schemas */
+    noCache={false}
+>
     {children}
 </UIApiProvider>
 ```

@@ -21,8 +21,9 @@ const ReferencingRenderer = (props) => {
         schema = schemaRef.current;
     } else {
         const parseRes = parseRefs(schema, {
-            defs: definitions, root: rootSchema,
-            fetchSchema: getSchema,
+            defs: definitions,
+            root: rootSchema,
+            getSchema,
         });
         refPending = parseRes.pending
 
@@ -37,7 +38,7 @@ const ReferencingRenderer = (props) => {
         if(refPending && refPending.size > 0) {
             refPending.forEach((refs, rootId) => {
                 refs.forEach((versions, refId) => {
-                    loadSchema(refId, rootId)
+                    loadSchema(refId, rootId, versions)
                 })
             })
         }
