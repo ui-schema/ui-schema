@@ -265,6 +265,8 @@ When no translation should be used, but e.g. the property names should simply be
 - `tt: 'lower'` turns all letters in lowercase
 - `tt: 'upper-beauty'` applies optimistic-beautification and turns all letters in UPPERCASE
 - `tt: 'lower-beauty'` applies optimistic-beautification and turns all letters in lowercase
+- `tt: 'beauty-text'` will only beautify if the value is not-a-number after `* 1`, usefull for mixed values in e.g. `enum` with `"-1", "1", "+1"`
+- `tt: 'beauty-igno-lead'` will only beautify after no `.-_` was found, prepending the value again, useful for `-new.name` to `-New Name`
 - `tt: 'no-special'` will only print normal a-Z 0-9 chars ❌
 - `tt` should support `boolean`, `string` and `array|List` ❌
 - `tt` should support inheritance through the schema (define one-time per schema) ❌
@@ -277,10 +279,10 @@ The process is as follows:
 
 - if not string, don't do anything
 - replace:
-    - `__` with a space
     - `_` with a space
     - `.` with a space
     - `-` with a space
+    - `  ` (double spaces) with a single space
 - find words, anything that is separated by spaces
 - uppercase the first letter of each found word
 - removing duplicate spaces

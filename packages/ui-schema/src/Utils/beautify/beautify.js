@@ -36,6 +36,21 @@ const textTransform = (name, tt) => {
         case 'lower-beauty':
             if(typeof name === 'string') return beauty(name).toLowerCase();
             break;
+        case 'beauty-text':
+            if(typeof name === 'string' && isNaN(name * 1)) return beauty(name);
+            break;
+        case 'beauty-igno-lead':
+            if(typeof name === 'string') {
+                let lastIndex = 0;
+                do {
+                    if((new RegExp(/[.\-_]/g)).exec(name[lastIndex]) === null) {
+                        break;
+                    }
+                    lastIndex++
+                } while(lastIndex < name.length)
+                return name.substr(0, lastIndex) + beauty(name.substr(lastIndex));
+            }
+            break;
     }
 
     return name;
@@ -47,16 +62,17 @@ const beauty = (name) => {
     let tmp = beautified.get(name);
     if(tmp) return tmp;
 
-    let beauty = strReplaceAll(
+    let beauty =
         strReplaceAll(
             strReplaceAll(
-                strReplaceAll(name, '__', ' '),
-                '_', ' '),
-            '.', ' '),
-        '-', ' ')
-        .split(' ')
-        .map((s) => s.charAt(0).toUpperCase() + s.slice(1))// make first letter uppercase
-        .join(' ');
+                strReplaceAll(name, '_', ' '),
+                '.', ' '),
+            '-', ' ',
+        )
+            .replace(/  +/g, ' ')
+            .split(' ')
+            .map((s) => s.charAt(0).toUpperCase() + s.slice(1))// make first letter uppercase
+            .join(' ');
 
     beautified = beautified.set(name, beauty);
 
