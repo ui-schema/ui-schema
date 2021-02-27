@@ -111,7 +111,7 @@ describe('parseRefs', () => {
             }) as StoreSchemaType,
         ], [
             /*
-             * items must not be resolve
+             * items must be resolve
              */
             OrderedMap({
                 type: 'array',
@@ -120,7 +120,7 @@ describe('parseRefs', () => {
             {defs: OrderedMap({country: mockDefinitions.get('germany_id')})},
             OrderedMap({
                 type: 'array',
-                items: OrderedMap({'$ref': '#germany_id'}),
+                items: mockDefinitions.get('germany_id'),
             }) as StoreSchemaType,
         ], [
             /*

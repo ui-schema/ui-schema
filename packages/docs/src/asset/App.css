@@ -189,3 +189,8 @@ h5 + .MuiPaper-root,
 h6 + .MuiPaper-root {
     margin-top: -12px !important;
 }
+
+
+p {
+    overflow: auto;
+}

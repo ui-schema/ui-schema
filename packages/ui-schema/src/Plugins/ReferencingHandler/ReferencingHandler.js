@@ -20,7 +20,8 @@ const ReferencingRenderer = (props) => {
     if(schemaRef.current && schemaRefPrevious.current?.equals(schema)) {
         schema = schemaRef.current;
     } else {
-        const parseRes = parseRefs(schema, {
+        const parseRes = parseRefs(
+            schema, {
             defs: definitions,
             root: rootSchema,
             getSchema,

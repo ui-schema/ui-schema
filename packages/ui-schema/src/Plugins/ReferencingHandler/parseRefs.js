@@ -25,10 +25,7 @@ const checkNestedMapSchema = {
 }
 
 // all keywords which are an array of schemas
-const checkNestedArraySchema = {
-    // here items are tuple-schema arrays
-    items: false,
-}
+const checkNestedArraySchema = {}
 
 const parseRefsInRenderingKeywords = (schema, context, recursive, pending = Map()) => {
     // for all schema keywords which will be rendered, only the root references must be resolved,
@@ -46,15 +43,6 @@ const parseRefsInRenderingKeywords = (schema, context, recursive, pending = Map(
         res.schema, context, recursive, res.pending,
     )
 
-    // items is either a schema or a list of schemas,
-    // here one-schema for all items
-    const items = res.schema.get('items')
-    if(items && Map.isMap(items)) {
-        const itemsSchema = parseRefs(items, context, recursive, res.pending)
-        res.schema = res.schema.set('items', itemsSchema.schema)
-        res.pending = itemsSchema.pending
-    }
-
     return res
 }
 
@@ -70,6 +58,8 @@ const checkConditionalNestedArraySchema = {
     allOf: false,
     oneOf: false,
     anyOf: false,
+    // here items are tuple-schema arrays
+    items: false,
 }
 
 const checkSchema = {
@@ -110,6 +100,15 @@ const parseRefsInConditionalKeywords = (schema, context, recursive = false, pend
         checkConditionalNestedArraySchema, schemaList => List.isList(schemaList),
         res.schema, context, recursive, res.pending,
     )
+
+    // items is either a schema or a list of schemas,
+    // here one-schema for all items
+    const items = res.schema.get('items')
+    if(items && Map.isMap(items)) {
+        const itemsSchema = parseRefs(items, context, recursive, res.pending)
+        res.schema = res.schema.set('items', itemsSchema.schema)
+        res.pending = itemsSchema.pending
+    }
 
     return res
 }
