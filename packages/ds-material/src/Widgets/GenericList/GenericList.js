@@ -1,15 +1,21 @@
 import React from 'react';
-import {
-    FormControl, Grid, FormLabel, IconButton, Typography, Divider,
-} from '@material-ui/core';
-import {Add, Delete, KeyboardArrowUp, KeyboardArrowDown} from '@material-ui/icons';
-import {UIGeneratorNested, TransTitle, extractValue, memo} from '@ui-schema/ui-schema';
+import FormControl from '@material-ui/core/FormControl';
+import Grid from '@material-ui/core/Grid';
+import FormLabel from '@material-ui/core/FormLabel';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import Add from '@material-ui/icons/Add';
+import Delete from '@material-ui/icons/Delete';
+import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
+import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
+import {TransTitle, extractValue, memo, PluginStack} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 import {List, Map} from 'immutable';
 import {AccessTooltipIcon} from '../../Component/Tooltip/Tooltip';
 import {moveItem} from '@ui-schema/ui-schema/Utils/moveItem/moveItem';
 
-let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, onChange, storeKeys, btnSize}) => {
+let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, onChange, storeKeys, level, btnSize}) => {
     const ownKeys = storeKeys.push(index)
     const itemsSchema = schema.get('items')
     const readOnly = schema.get('readOnly')
@@ -64,24 +70,23 @@ let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, on
 
                 </Grid>
 
-
                 {List.isList(itemsSchema) ?
                     <Grid item style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
                         <Grid container spacing={2}>
-                            {itemsSchema.map((item, j) => <UIGeneratorNested
+                            {itemsSchema.map((item, j) => <PluginStack
                                 key={j}
                                 showValidity={showValidity}
                                 storeKeys={ownKeys.push(j)}
                                 schema={item}
                                 parentSchema={schema}
+                                level={level + 1}
                             />).valueSeq()}
                         </Grid>
                     </Grid> :
-                    <UIGeneratorNested
+                    <PluginStack
                         showValidity={showValidity}
-                        storeKeys={ownKeys}
-                        schema={itemsSchema}
-                        parentSchema={schema}
+                        schema={itemsSchema} parentSchema={schema}
+                        storeKeys={ownKeys} level={level + 1}
                     />}
 
                 {!readOnly ? <Grid item style={{display: 'flex', flexShrink: 0}}>
@@ -114,7 +119,7 @@ GenericListItem = memo(GenericListItem)
 
 const GenericList = extractValue(memo(({
                                            storeKeys, ownKey, schema, value: list, onChange,
-                                           showValidity, valid, errors, required,
+                                           showValidity, valid, errors, required, level,
                                        }) => {
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
 
@@ -130,6 +135,7 @@ const GenericList = extractValue(memo(({
                     btnSize={btnSize} storeKeys={storeKeys}
                     deleteOnEmpty={schema.get('deleteOnEmpty') || required}
                     schema={schema} onChange={onChange}
+                    level={level}
                 />,
             ).valueSeq() : null}
 

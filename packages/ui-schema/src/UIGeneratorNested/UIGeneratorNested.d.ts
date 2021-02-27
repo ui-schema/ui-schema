@@ -13,4 +13,9 @@ export interface UIGeneratorNestedProps {
     showValidity?: UIMetaContext['showValidity']
 }
 
+/**
+ * @deprecated use PluginStack instead
+ * @param props
+ * @constructor
+ */
 export function UIGeneratorNested<P extends UIGeneratorNestedProps>(props: P): React.ReactElement

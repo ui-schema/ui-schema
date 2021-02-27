@@ -180,6 +180,8 @@ Main entry point for every new UI Schema generator,  starts the whole schema and
 
 ### UIGeneratorNested
 
+> **deprecated**, use [PluginStack](#pluginStack) instead, this component may be removed in `0.3.0` as it seems no longer needed with the now optimized logic/component flow
+
 Automatic nesting ui generator, uses the parent contexts, starts a UIGenerator at schema-level with `UIRootRenderer`.
 
 It works with adding the wanted schema and it's storeKeys, this automatically enables data-binding by `UIRootRenderer`.
