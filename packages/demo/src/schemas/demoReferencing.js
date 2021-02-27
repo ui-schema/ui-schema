@@ -102,6 +102,36 @@ export const schemaDemoReferencing = createOrderedMap({
     },
 });
 
+export const schemaDemoReferencingRecursive = createOrderedMap({
+    '$id': 'http://localhost:4200/api/demo-referencing.json',
+    type: 'object',
+    view: {
+        spacing: 0,
+        noGrid: true,
+    },
+    /*view: {
+        sizeMd: 6,
+    },*/
+    // $defs: {
+    definitions: {
+        person: {
+            type: 'object',
+            properties: {
+                name: {type: 'string'},
+                children: {
+                    type: 'array',
+                    widget: 'GenericList',
+                    items: {$ref: '#/definitions/person'},
+                    //'default': [],
+                },
+            },
+        },
+    },
+    properties: {
+        person: {$ref: '#/definitions/person'},
+    },
+});
+
 export const schemaDemoReferencingNetwork = createOrderedMap({
     '$id': 'http://localhost:4200/api/demo-referencing-network.json',
     type: 'object',

@@ -20,7 +20,7 @@ const DocContent = ({content, id, progress, activeDoc}) => {
             <div style={{display: 'block', textAlign: 'right', margin: '0 12px'}}>
                 <Link
                     target={'_blank'} rel='noreferrer noopener nofollow'
-                    href={'https://github.com/ui-schema/ui-schema/tree/master/packages/docs/src/content/docs/' + id + '.md'}
+                    href={'https://github.com/ui-schema/ui-schema/tree/develop/packages/docs/src/content/docs/' + id + '.md'}
                 >Edit Page</Link>
             </div>
             <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column',}} elevation={4}>
@@ -36,7 +36,7 @@ const DocContent = ({content, id, progress, activeDoc}) => {
                 <div style={{display: 'block', textAlign: 'right', margin: '0 12px'}}>
                     <Link
                         target={'_blank'} rel='noreferrer noopener nofollow'
-                        href={'https://github.com/ui-schema/ui-schema/tree/master/packages/docs/src/content/docs/' + id + 'Demo.js'}
+                        href={'https://github.com/ui-schema/ui-schema/tree/develop/packages/docs/src/content/docs/' + id + 'Demo.js'}
                     >Edit Demos</Link>
                 </div> : null}
             {progress === PROCESS_SUCCESS && activeDoc.context && activeDoc.context.demoUIGenerator ?

@@ -11,6 +11,7 @@ const MaterialUiCode = asyncComponent(() => import('./material-ui/material-ui-co
 const MaterialUiColor = asyncComponent(() => import('./material-ui/material-ui-color'), 'Material-UI Color', 'page');
 const MaterialUiRich = asyncComponent(() => import('./material-ui/material-ui-rich'), 'Material-UI Rich Text', 'page');
 const MaterialUiPickers = asyncComponent(() => import('./material-ui/material-ui-pickers'), 'Material-UI Pickers', 'page');
+const MaterialUiPro = asyncComponent(() => import('./material-ui/material-ui-pro'), 'Material-UI Pro', 'page');
 const Bootstrap = asyncComponent(() => import('./bootstrap/page-main'), 'Bootstrap', 'page');
 
 const App = () => <Router>
@@ -19,6 +20,7 @@ const App = () => <Router>
         <Route path="/mui-color" component={MaterialUiColor}/>
         <Route path="/mui-richtext" component={MaterialUiRich}/>
         <Route path="/mui-pickers" component={MaterialUiPickers}/>
+        <Route path="/mui-pro" component={MaterialUiPro}/>
         <Route path="/bootstrap" component={Bootstrap}/>
         <Route path="/" exact component={MaterialUi}/>
     </Switch>
