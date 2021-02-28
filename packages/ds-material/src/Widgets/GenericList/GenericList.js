@@ -125,9 +125,9 @@ const GenericList = extractValue(memo(({
 
     return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
         <Grid container spacing={2}>
-            <Grid item xs={12}>
+            {!schema.getIn(['view', 'hideTitle']) ? <Grid item xs={12}>
                 <FormLabel component="legend"><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></FormLabel>
-            </Grid>
+            </Grid> : null}
 
             {list ? list.map((val, i) =>
                 <GenericListItem

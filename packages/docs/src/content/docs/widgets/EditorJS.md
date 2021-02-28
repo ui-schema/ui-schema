@@ -22,7 +22,7 @@ npm i --save @ui-schema/material-editorjs react-editor-js @editorjs/editorjs @ed
 
 - special keywords:
     - `view.dense` when `true` applies less margins
-    - `view.hideTitle` when `true`, doesn't show any title, also existing as prop `hideTitle` on `EditorJSWidget`
+    - `view.hideTitle` when `true` doesn't show any title, also existing as prop `hideTitle` on `EditorJSWidget`
 
 ```jsx
 import React from 'react';
