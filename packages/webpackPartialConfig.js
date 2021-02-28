@@ -14,6 +14,7 @@ module.exports = {
 '@ui-schema/material-color': path.resolve(__dirname, './material-color/src'),
 '@ui-schema/material-editorjs': path.resolve(__dirname, './material-editorjs/src'),
 '@ui-schema/material-dnd': path.resolve(__dirname, './material-dnd/src'),
+'@ui-schema/material-rbd': path.resolve(__dirname, './material-rbd/src'),
 
         }
     }

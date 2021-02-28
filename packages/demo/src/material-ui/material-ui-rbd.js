@@ -9,7 +9,6 @@ import Dashboard from './dashboard/Dashboard';
 import {widgets} from '@ui-schema/ds-material';
 import {browserT} from '../t';
 import {MuiSchemaDebug} from './component/MuiSchemaDebug';
-import {schemaDemoReferencingRecursive} from '../schemas/demoReferencing';
 import IcSave from '@material-ui/icons/Save'
 import IcClear from '@material-ui/icons/Clear'
 import IcHistory from '@material-ui/icons/History'
@@ -19,20 +18,27 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter/isInvalid';
 import {fromJSOrdered} from '@ui-schema/ui-schema/Utils/createMap';
 import {UIGenerator} from '@ui-schema/ui-schema/UIGenerator';
-import {createStore} from '@ui-schema/ui-schema/UIStore';
+import {createStore, storeUpdater} from '@ui-schema/ui-schema/UIStore';
 import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro';
+import {schemaDragDrop, schemaDragDropSingle} from '../schemas/demoDragDrop';
+import {DroppableRootMultiple} from '@ui-schema/material-rbd/Widgets/DroppableRootMultiple';
+import {DragDropProvider} from '@ui-schema/material-rbd/DragDropProvider/DragDropProvider';
+import {makeDragDropContext} from '@ui-schema/material-rbd/DragDropProvider/makeDragDropContext';
+import {List} from 'immutable';
+import {DroppableRootSingle} from '@ui-schema/material-rbd/Widgets/DroppableRootSingle';
 
 const customWidgets = {...widgets};
 customWidgets.custom = {
     ...widgets.custom,
+    DroppableRootMultiple: DroppableRootMultiple,
+    DroppableRootSingle: DroppableRootSingle,
 };
 
-// or set to `undefined` for no-initial values
 const initialStore = createStore(fromJSOrdered({person: {name: 'Kim Smith'}}))
 
-const schema = schemaDemoReferencingRecursive
+const schema = schemaDragDrop
 
-const Main = () => {
+const MultiEditor = () => {
     const theme = useTheme();
 
     const [showHistory, setShowHistory] = React.useState(false);
@@ -44,6 +50,8 @@ const Main = () => {
         onChange, store, setStore,
         redoHistory, undoHistory,
     } = useStorePro({initialStore: initialStore})
+
+    const dragStoreContext = makeDragDropContext(onChange, schema.get('$defs') || schema.get('definitions'))
 
     const reset = React.useCallback(() => {
         resetHistoryStore(initialStore)
@@ -83,16 +91,18 @@ const Main = () => {
             >save</Button>
         </div>
 
-        <UIGenerator
-            schema={schema}
-            store={store.current}
-            onChange={onChange}
-            widgets={customWidgets}
-            showValidity={showValidity}
-            t={browserT}
-        >
-            <MuiSchemaDebug/>
-        </UIGenerator>
+        <DragDropProvider contextValue={dragStoreContext.contextValue}>
+            <UIGenerator
+                schema={schema}
+                store={store.current}
+                onChange={onChange}
+                widgets={customWidgets}
+                showValidity={showValidity}
+                t={browserT}
+            >
+                <MuiSchemaDebug/>
+            </UIGenerator>
+        </DragDropProvider>
 
         <div style={{width: '100%'}}>
             <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
@@ -132,6 +142,49 @@ const Main = () => {
                 </div>)}
             </DialogContent>
         </Dialog>
+    </React.Fragment>
+};
+
+const schemaSingle = schemaDragDropSingle
+
+const SingleEditor = () => {
+    const [showValidity, setShowValidity] = React.useState(false);
+    const [store, setStore] = React.useState(() => createStore(List()))
+    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+        setStore(prevStore => {
+            return storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
+        })
+    }, [setStore])
+
+    const dragStoreContext = makeDragDropContext(onChange, schema.get('$defs') || schema.get('definitions'))
+
+    return <React.Fragment>
+        <DragDropProvider contextValue={dragStoreContext.contextValue}>
+            <UIGenerator
+                schema={schemaSingle}
+                store={store}
+                onChange={onChange}
+                widgets={customWidgets}
+                showValidity={showValidity}
+                t={browserT}
+            >
+                <MuiSchemaDebug/>
+            </UIGenerator>
+        </DragDropProvider>
+
+        <div style={{width: '100%'}}>
+            <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
+            <div>
+                {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
+            </div>
+        </div>
+    </React.Fragment>
+};
+
+const Main = () => {
+    return <React.Fragment>
+        <MultiEditor/>
+        <SingleEditor/>
     </React.Fragment>
 };
 
