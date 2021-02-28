@@ -38,6 +38,12 @@ export const useEditorStyles = makeStyles(theme => ({
         '& .ce-toolbox': {
             left: 34,
         },
+        '& .ce-block__content': {
+            maxWidth: 'none',
+        },
+        '& .ce-toolbar__content': {
+            maxWidth: 'none',
+        },
     },
 }))
 
