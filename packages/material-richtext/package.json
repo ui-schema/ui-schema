@@ -36,7 +36,8 @@
         "draft-js-import-html": "~1.4.1",
         "draft-js-md-keyboard-plugin": "~0.6.3",
         "markdown-draft-js": "~2.2.0",
-        "react-uid": "^2.2.0"
+        "react-uid": "^2.2.0",
+        "clsx": "^1.1.0"
     },
     "devDependencies": {
         "@material-ui/core": "^4.8",
