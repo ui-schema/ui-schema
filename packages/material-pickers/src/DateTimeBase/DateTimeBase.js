@@ -43,6 +43,7 @@ export const DateTimeBase = ({
         id={'uis-' + uid}
         views={views}
         format={dateFormat}
+        fullWidth
         label={beautifyKey(ownKey, schema.get('tt'))}
         margin={schema.getIn(['view', 'dense'])}
         disableToolbar={schema.getIn(['date', 'toolbar']) !== true}
