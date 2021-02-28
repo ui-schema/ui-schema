@@ -1,5 +1,5 @@
 import React from 'react'
-import { List, Record } from 'immutable'
+import { List, Map, Record } from 'immutable'
 import { createEmptyStore, onChangeHandler, storeUpdater, UIStoreType } from '@ui-schema/ui-schema'
 
 export type redoHistory = (steps?: number) => void
@@ -24,6 +24,8 @@ export interface UIStoreProData {
     current: UIStoreType
     // list of each changes to the UIStore
     list: List<UIStoreType>
+    // for other setStore dependant infos
+    opts: Map<string, any>
 }
 
 // @ts-ignore
@@ -31,6 +33,7 @@ class UIStorePro extends Record({
     activeIndex: 0,
     current: createEmptyStore('object'),
     list: List([createEmptyStore('object')]),
+    opts: Map(),
 }) implements UIStoreProData {
 }
 
@@ -70,6 +73,8 @@ export const toHistory = (prevStore: UIStoreProType, index: number): UIStoreProT
 
 export type setStorePro = React.Dispatch<React.SetStateAction<UIStoreProType>>
 
+const doingValueSelector = ['opts', 'doingValue']
+
 export const useStorePro = (
     {debounceTime = defaultDebounceTime, updateRate = defaultUpdateRate, initialStore = undefined}:
         UIStoreProOptions = defaultStoreOptions
@@ -87,24 +92,32 @@ export const useStorePro = (
     const [store, setStore] = React.useState<UIStoreProType>(() => makeStorePro(initialStore) as UIStoreProType)
 
     const onChange: typeof onChangeHandler = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+        const doValue = scopes.indexOf('value') !== -1
+
         setStore((prevStore: UIStoreProType) => {
-            const doValue = scopes.indexOf('value') !== -1
-            const newStore = prevStore.set(
+            let newStore = prevStore.set(
                 'current',
                 storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore.current)
             )
+
             if (!doValue) {
-                // no values changed, update not needed
+                // when no value was changed, the last history entry is updated, without adding another entry to the history
+                // as e.g. `internals` must be preserved on undo/redo
+                // but only as long as no new `doValue` was executed
+                if (!newStore.getIn(doingValueSelector)) {
+                    return newStore.setIn(['list', newStore.activeIndex], newStore.current)
+                }
                 return newStore
             }
+            newStore = newStore.setIn(doingValueSelector, true)
 
             historyChangeRater.current.current = historyChangeRater.current.current > 1000 ?
                 0 : historyChangeRater.current.current + 1
-            historyChangeRater.current.last = newStore.current
+            historyChangeRater.current.last = newStore.current.setIn(doingValueSelector, false)
             let historyAdded = false
             if (historyChangeRater.current.current % updateRate === 0) {
                 historyAdded = true
-                historyDebounce.current.push(newStore.current)
+                historyDebounce.current.push(newStore.current.setIn(doingValueSelector, false))
             }
             window.clearTimeout(timer.current)
             timer.current = window.setTimeout(() => {
@@ -124,11 +137,15 @@ export const useStorePro = (
                     list = list.push(...historyDebounce.current)
                     historyDebounce.current = []
                     historyChangeRater.current = initialChangeRater
-                    return prevStore.set('list', list).set('activeIndex', list.size - 1)
+                    return prevStore
+                        .set('list', list)
+                        .set('activeIndex', list.size - 1)
+                        .setIn(doingValueSelector, false)
                 })
             }, debounceTime)
             return newStore
         })
+
         return () => window.clearTimeout(timer.current)
     }, [setStore, timer, historyDebounce, historyChangeRater, debounceTime, updateRate])
 
