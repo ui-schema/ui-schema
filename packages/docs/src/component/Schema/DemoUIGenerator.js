@@ -68,6 +68,10 @@ customWidgets.custom = {
         loader: () => import('@ui-schema/material-richtext/RichTextInline').then(r => r.RichTextInline),
         loading: () => <LoadingCircular title={'Loading RichText Widget'}/>,
     }),
+    EditorJS: Loadable({
+        loader: () => import('./EditorJSComp').then(r => r.EditorJSComp),
+        loading: () => <LoadingCircular title={'Loading EditorJS'}/>,
+    }),
 };
 
 const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, richIde, renderChange, theme, maxLines, enableShowAll}) => {

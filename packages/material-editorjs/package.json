@@ -33,14 +33,14 @@
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "dependencies": {
-        "react-uid": "^2.2.0"
+        "react-uid": "^2.2.0",
+        "clsx": "^1.1.0"
     },
     "devDependencies": {
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
         "react-editor-js": "^1.6.0",
-        "@editorjs/editorjs": "^2.19.0",
-        "@editorjs/paragraph": "^2.8.0",
+        "@editorjs/editorjs": "^2.19.2-rc.1",
         "@ui-schema/ds-material": "~0.2.x",
         "@ui-schema/ui-schema": ">=0.2.0-alpha",
         "immutable": "^4.0.0-rc.12",
@@ -49,12 +49,11 @@
     "peerDependencies": {
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
+        "react-editor-js": "^1.6.0",
+        "@editorjs/editorjs": "^2.19.2-rc.1",
         "@ui-schema/ds-material": "~0.2.x",
         "@ui-schema/ui-schema": ">=0.2.0-alpha",
         "immutable": "^4.0.0-rc.12",
-        "react-editor-js": "^1.6.0",
-        "@editorjs/editorjs": "^2.19.0",
-        "@editorjs/paragraph": "^2.8.0",
         "react": "^16.8"
     },
     "publishConfig": {
