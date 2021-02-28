@@ -43,14 +43,14 @@ export const useEditorStyles = makeStyles(theme => ({
 
 export interface RichContentProps {
     tools: EditorConfig['tools']
-    noTitle?: boolean
+    hideTitle?: boolean
 }
 
 export const EditorJSWidget = (
     {
         schema, storeKeys, ownKey,
         showValidity, valid, errors,
-        onChange, required, tools, noTitle,
+        onChange, required, tools, hideTitle,
     }: WidgetProps & RichContentProps
 ): React.ReactElement => {
     const uid = useUID()
@@ -62,7 +62,7 @@ export const EditorJSWidget = (
     const inputClasses = useInputStyles()
 
     return <FormControl className={classes.wrapper}>
-        {!noTitle && !schema.getIn(['view', 'noTitle']) ?
+        {!hideTitle && !schema.getIn(['view', 'hideTitle']) ?
             <InputLabel
                 focused={focused} shrink={focused || !empty}
                 margin={dense ? 'dense' : undefined}
