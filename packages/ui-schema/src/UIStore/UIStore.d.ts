@@ -10,7 +10,7 @@ export type ValuesJS = any[] | string | number | boolean | Object
 
 export interface UIStoreState<D> {
     values: Values<D>
-    internals: Map<string | number, any>
+    internals: Map<string | number, any> | List<any>
     validity: Map<string | number, any>
     // returns the values in `values` as pure JS, even when saved as `Map` or `List`
     valuesToJS: () => ValuesJS
@@ -47,7 +47,10 @@ export function UIStoreProvider(
 // UIMetaContext
 
 export interface UIMetaContext<> {
-    widgets: WidgetsBindingBase
+    widgets: WidgetsBindingBase & {
+        // allow adding any further custom root components
+        [key: string]: React.ComponentType
+    }
     t?: Translator
     showValidity?: boolean
 }

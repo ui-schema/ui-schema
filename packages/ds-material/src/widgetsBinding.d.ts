@@ -26,7 +26,13 @@ export interface MuiWidgetBinding extends WidgetsBindingBase {
         Card: React.ComponentType<WidgetProps>
         LabelBox: React.ComponentType<WidgetProps>
         FormGroup: React.ComponentType<WidgetProps>
+    } & {
+        // allow adding any further custom widgets
+        [key: string]: React.ComponentType<WidgetProps>
     }
 }
 
-export const widgets: MuiWidgetBinding
+export const widgets: MuiWidgetBinding & {
+    // allow adding any further custom root components
+    [key: string]: React.ComponentType
+}
