@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-color",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -37,7 +37,7 @@
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
         "@ui-schema/ds-material": "~0.2.x",
-        "@ui-schema/ui-schema": ">=0.2.0-alpha",
+        "@ui-schema/ui-schema": ">=0.2.0-rc.0",
         "immutable": "^4.0.0-rc.12",
         "react": "^16.12",
         "react-color": "^2.18.1"
@@ -46,7 +46,7 @@
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
         "@ui-schema/ds-material": "~0.2.x",
-        "@ui-schema/ui-schema": ">=0.2.0-alpha",
+        "@ui-schema/ui-schema": ">=0.2.0-rc.0",
         "immutable": "^4.0.0-rc.12",
         "react": "^16.8",
         "react-color": "^2.0.0"

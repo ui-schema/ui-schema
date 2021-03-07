@@ -9,7 +9,7 @@ Toolkit for drag 'n drop UIs, using `react-beautiful-dnd`, supports droppable ro
     - `SimpleDroppableRootMultiple`
     - `SimpleDroppableRootSingle`
 
-> 🚧 Work in progress, basic working concept for DND.
+> 🚧 Work in progress, basic working concept for DND. Has hardcoded translations.
 >
 > Maybe not developed further, but happy for PRs, at the moment focusing on [@ui-schema/material-dnd](/docs/widgets/Drag-n-Drop-Editor)
 

@@ -5,7 +5,7 @@ Toolkit for drag 'n drop UIs, using `react-dnd`, supports endless nested droppab
 [![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-ui-generator) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui)
 
 - type: `object`, `array`
-- widget keyword:
+- widget keywords:
     - `DroppableRootMultiple`
     - `DroppableRootSingle`
     - `DroppablePanel`
@@ -15,7 +15,7 @@ Toolkit for drag 'n drop UIs, using `react-dnd`, supports endless nested droppab
 
 It is recommended, when possible, to only add a schema reference as block definition, the min. recommended is (but with full-url refs) `{"$ref": "address.json", "version": "0.1"}`, also great is `{"$ref": "address.json", "version": "0.1", "title": "Funky Block"}` to specify a custom title, it will only load the schema when really in-use.
 
-> 🚧 Work in progress, basic for endless nested drag 'n drop works.
+> 🚧 Work in progress, basic for endless nested drag 'n drop works. Has hardcoded translations.
 
 ❗ Drag 'n drop from different UIGenerators is currently not forbidden, it doesn't crash the app, but if the target UIGenerator has "a same entry" (by `storeKeys`), it will move that - instead of the actually dragged one. By overwriting the `contextValue` of `DragDropProvider`, you can specify custom functions `getSourceValues` and `moveDraggedValue` which should be used to e.g. get the values from higher hoisted stores, please open an issue with questions/feedback/usecases if you encounter anything.
 
@@ -100,6 +100,10 @@ const blocks = {
                 widget: 'DroppablePanel',
                 dragDrop: {
                     allowed: ['address'],
+                    nameOfBlock: {
+                        en: 'address',
+                        de: 'Addresse',
+                    },
                 },
             },
         },
@@ -136,3 +140,18 @@ Supports extra keywords:
     - enabling accordion blocks (accordions are not included)
     - only for one level
     - only for widgets: `DroppableRootMultiple`, `DroppableRootSingle`
+- `dragDrop.nameOfBlock`: `{[key: string]: string}`, optional, for giving some more context to "add new" buttons
+
+```json
+{
+    "type": "array",
+    "widget": "DroppablePanel",
+    "dragDrop": {
+        "allowed": ["address"],
+        "nameOfBlock": {
+            "en": "address",
+            "de": "Addresse"
+        }
+    }
+}
+```

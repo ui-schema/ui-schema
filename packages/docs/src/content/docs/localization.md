@@ -199,7 +199,7 @@ export const LocaleGenerator = p =>
     <UIGenerator t={tEN} {...p}/>
 ```
 
-> ❗ the function `makeTranslator` was named `t` up to `v0.2.0-alpha`, the exported function `t` (not keyword, not property) will be removed in `v0.3.0`
+> ❗ the function `makeTranslator` was named `t` up to `v0.2.0-rc.0`, the exported function `t` (not keyword, not property) will be removed in `v0.3.0`
 
 ### Translation in schema
 

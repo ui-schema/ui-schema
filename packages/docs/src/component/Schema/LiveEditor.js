@@ -15,6 +15,7 @@ import {Markdown} from "../Markdown";
 import PageNotFound from "../../page/PageNotFound";
 import {useTranslation} from "react-i18next";
 import {schemas} from "../../schemas/_list";
+import {browserT} from '../../t';
 
 const IconInput = ({
                        verticalSplit, title,
@@ -465,6 +466,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
         onChange={onChange}
         widgets={widgets}
         showValidity={showValidity}
+        t={browserT}
     >
         <div style={{display: 'flex', flexGrow: 2, overflow: 'auto', flexDirection: verticalSplit ? 'row' : 'column'}}>
             <div style={{

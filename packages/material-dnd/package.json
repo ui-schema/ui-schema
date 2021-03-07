@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-dnd",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Drag and Drop Tools and Formbuilder for UI-Schema with Material-UI by EditorJS",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -28,6 +28,7 @@
     "main": "index.js",
     "module": "esm/index.js",
     "scripts": {
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/material-dnd/src build && rm -rf build/dts",
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "dependencies": {
@@ -37,7 +38,7 @@
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
         "@ui-schema/ds-material": "~0.2.x",
-        "@ui-schema/ui-schema": ">=0.2.0-alpha",
+        "@ui-schema/ui-schema": ">=0.2.0-rc.0",
         "react-dnd": "^13.0.0",
         "immutable": "^4.0.0-rc.12",
         "react": "^16.12"
@@ -46,7 +47,7 @@
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
         "@ui-schema/ds-material": "~0.2.x",
-        "@ui-schema/ui-schema": ">=0.2.0-alpha",
+        "@ui-schema/ui-schema": ">=0.2.0-rc.0",
         "react-dnd": "^13.0.0",
         "immutable": "^4.0.0-rc.12",
         "react": "^16.8"

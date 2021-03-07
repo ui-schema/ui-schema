@@ -14,6 +14,7 @@ Widgets for date, datetime, time selection, design-system implementation.
     - `format` date-time format string, controls how the value is displayed
         - is not set defaults to `yyyy-MM-dd` for Date, `yyyy-MM-dd HH:mm` for DateTime and `HH:mm` for Time
     - `formatData` date-time format string, controls how the value is saved, when not set, `format` is used
+        - this library supports `x`/`X` format for seconds and microseconds
 
 ## Design System
 

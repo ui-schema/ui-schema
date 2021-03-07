@@ -3,7 +3,7 @@ import { List, OrderedMap } from 'immutable'
 import { useTheme } from '@material-ui/core'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import { Paper } from '@material-ui/core'
-import { DragDropItemData, useDragDropContext } from './UISchemaDragStore'
+import { DragDropItemData, useDragDropContext } from '../DragDropProvider/useDragDropContext'
 import { TransTitle, memo } from '@ui-schema/ui-schema'
 
 const SelectionItem = (
@@ -33,38 +33,44 @@ const DraggableSelectionItem = (
         { isDragging: boolean, isDropAnimating: boolean, provided: any, isOverTarget: boolean, item: OrderedMap<string, any>, itemId: string }
 ) => {
     return [
-        <div ref={provided.innerRef}
-             {...provided.draggableProps}
-             {...provided.dragHandleProps}
-             key={1}
+        <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            key={1}
         >
             <SelectionItem isDragging={isDragging} isOverTarget={isOverTarget} isDropAnimating={isDropAnimating} item={item} itemId={itemId}/>
         </div>,
         // placeholder item, during dragging actual item
         isDragging &&
-        <SelectionItem key={2} className={'rbd-placeholder-clone'} isDragging={false} isOverTarget={false} isDropAnimating={false} item={item} itemId={itemId}/>
+        <SelectionItem key={2} className={'rbd-placeholder-clone'} isDragging={false} isOverTarget={false} isDropAnimating={false} item={item} itemId={itemId}/>,
     ]
 }
 
 let EditorSelectionDraggable = () => {
     const {items} = useDragDropContext()
-    return <Droppable droppableId={'ItemSelection__'}
-                      isDropDisabled={true}
-                      direction={'horizontal'}
-                      ignoreContainerClipping={true}>
+    return <Droppable
+        droppableId={'ItemSelection__'}
+        isDropDisabled
+        direction={'horizontal'}
+        ignoreContainerClipping
+    >
         {(provided, snapshot) => (
             <div>
                 <h4>Select</h4>
 
-                <div className={'flex flex-wrap ' + (snapshot.isDraggingOver ? 'targeted' : '')}
-                     style={{border: '1px solid #8e8e8e'}}
-                     ref={provided.innerRef}
-                     {...provided.droppableProps}
+                <div
+                    className={'flex flex-wrap ' + (snapshot.isDraggingOver ? 'targeted' : '')}
+                    style={{border: '1px solid #8e8e8e'}}
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
                 >
                     {items.keySeq().map((itemId, i) =>
-                        <Draggable key={itemId}
-                                   draggableId={'ItemSelection__#' + itemId}
-                                   index={i}>
+                        <Draggable
+                            key={itemId}
+                            draggableId={'ItemSelection__#' + itemId}
+                            index={i as number}
+                        >
                             {(provided, snapshot) =>
                                 // @ts-ignore
                                 <DraggableSelectionItem
@@ -72,8 +78,8 @@ let EditorSelectionDraggable = () => {
                                     isDragging={snapshot.isDragging}
                                     isDropAnimating={snapshot.isDropAnimating}
                                     isOverTarget={null !== snapshot.draggingOver && snapshot.isDragging}
-                                    itemId={itemId}
-                                    item={items.get(itemId) as OrderedMap<string, any>}
+                                    itemId={itemId as string}
+                                    item={items.get(itemId as string) as OrderedMap<string, any>}
                                 />}
                         </Draggable>).valueSeq()}
                     {provided.placeholder}
