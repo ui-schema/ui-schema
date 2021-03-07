@@ -5,12 +5,6 @@
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
     "license": "MIT",
-    "main": "./lib/index.js",
-    "module": "./es/index.js",
-    "files": [
-        "es",
-        "lib"
-    ],
     "keywords": [
         "ui-schema",
         "json-schema",
@@ -24,6 +18,8 @@
     "bugs": {
         "url": "https://github.com/ui-schema/ui-schema/issues"
     },
+    "main": "index.js",
+    "module": "esm/index.js",
     "devDependencies": {
         "react": "^16.12"
     },
