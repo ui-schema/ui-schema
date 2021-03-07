@@ -119,10 +119,10 @@ export const validateContains = (schema, value) => {
     }
 
     if(typeof minContains === 'number' && minContains > item_err.found) {
-        errors = errors.addError(ERROR_MIN_CONTAINS);
+        errors = errors.addError(ERROR_MIN_CONTAINS, Map({minContains}));
     }
     if(typeof maxContains === 'number' && maxContains < item_err.found) {
-        errors = errors.addError(ERROR_MAX_CONTAINS);
+        errors = errors.addError(ERROR_MAX_CONTAINS, Map({maxContains}));
     }
 
     if(

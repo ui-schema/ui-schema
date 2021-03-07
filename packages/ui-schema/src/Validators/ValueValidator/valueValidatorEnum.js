@@ -1,4 +1,4 @@
-import {List} from 'immutable';
+import {List, Map} from 'immutable';
 
 export const ERROR_ENUM_MISMATCH = 'enum-mismatch';
 
@@ -34,7 +34,7 @@ export const valueValidatorEnum = {
 
         if(!validateEnum(type, schema.get('enum'), value)) {
             valid = false;
-            errors = errors.addError(ERROR_ENUM_MISMATCH);
+            errors = errors.addError(ERROR_ENUM_MISMATCH, Map({enum: schema.get('enum')}));
         }
 
         return {errors, valid}
