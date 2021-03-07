@@ -6,7 +6,7 @@ import {
     handleDragEnd,
     handleItemAdd,
     handleItemDelete,
-    UISchemaDragDropContextType,
+    DragDropSimpleContextType,
 } from '../DragDropProvider/useDragDropContext'
 
 import { getNewBlockFromId, handleDragDropEnd } from './storeHelper'
@@ -15,7 +15,7 @@ export interface DragDropStoreContext {
     onDragEnd: handleDragEnd
     handleDelete: handleItemDelete
     handleAdd: handleItemAdd
-    contextValue: UISchemaDragDropContextType
+    contextValue: DragDropSimpleContextType
 }
 
 export const makeDragDropContext = (onChange: typeof onChangeHandler, itemsDefs: DragDropItemDefinition = OrderedMap()): DragDropStoreContext => {
@@ -57,7 +57,7 @@ export const makeDragDropContext = (onChange: typeof onChangeHandler, itemsDefs:
             ),
         [onChange, itemsDefs])
 
-    const contextValue: UISchemaDragDropContextType = React.useMemo(() => ({
+    const contextValue: DragDropSimpleContextType = React.useMemo(() => ({
         handleDragEnd: onDragEnd,
         handleItemDelete: handleDelete,
         handleItemAdd: handleAdd,

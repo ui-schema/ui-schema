@@ -1,3 +1,5 @@
+import {createOrderedMap} from '@ui-schema/ui-schema';
+
 const blocks = {
     text: {
         type: 'object',
@@ -53,34 +55,30 @@ const blocks = {
         },
         required: ['$bid', '$block'],
     },
+    address: {
+        $ref: 'http://localhost:4200/api/address-schema.json',
+    },
 }
 
-export const demoDragnDropEditorSimple = [
-    [
-        `Multiple draggable roots with accordion as item container`,
-        {
-            type: 'object',
-            widget: 'SimpleDroppableRootMultiple',
-            $defs: blocks,
-            properties: {
-                main: {
-                    type: 'array',
-                    //widget: 'EditorJS',
-                },
-                suggestions: {
-                    type: 'array',
-                    //widget: 'Text',
-                },
-            },
-        },
-    ],
-    [
-        `Single draggable root (one array only)`,
-        {
+export const schemaDragDrop = createOrderedMap({
+    type: 'object',
+    widget: 'SimpleDroppableRootMultiple',
+    $defs: blocks,
+    properties: {
+        main: {
             type: 'array',
-            widget: 'SimpleDroppableRootSingle',
-            $defs: blocks,
-            title: 'Single Editor',
+            //widget: 'EditorJS',
         },
-    ],
-];
+        suggestions: {
+            type: 'array',
+            //widget: 'Text',
+        },
+    },
+});
+
+export const schemaDragDropSingle = createOrderedMap({
+    type: 'array',
+    widget: 'SimpleDroppableRootSingle',
+    $defs: blocks,
+    title: 'Single Editor',
+});

@@ -20,7 +20,7 @@ import {fromJSOrdered} from '@ui-schema/ui-schema/Utils/createMap';
 import {UIGenerator} from '@ui-schema/ui-schema/UIGenerator';
 import {createStore, storeUpdater} from '@ui-schema/ui-schema/UIStore';
 import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro';
-import {schemaDragDrop, schemaDragDropSingle} from '../schemas/demoDragDrop';
+import {schemaDragDrop, schemaDragDropSingle} from '../schemas/demoDragDropSimple';
 import {DroppableRootMultiple} from '@ui-schema/material-rbd/Widgets/DroppableRootMultiple';
 import {DragDropProvider} from '@ui-schema/material-rbd/DragDropProvider/DragDropProvider';
 import {makeDragDropContext} from '@ui-schema/material-rbd/DragDropProvider/makeDragDropContext';
@@ -30,8 +30,8 @@ import {DroppableRootSingle} from '@ui-schema/material-rbd/Widgets/DroppableRoot
 const customWidgets = {...widgets};
 customWidgets.custom = {
     ...widgets.custom,
-    DroppableRootMultiple: DroppableRootMultiple,
-    DroppableRootSingle: DroppableRootSingle,
+    SimpleDroppableRootMultiple: DroppableRootMultiple,
+    SimpleDroppableRootSingle: DroppableRootSingle,
 };
 
 const initialStore = createStore(fromJSOrdered({person: {name: 'Kim Smith'}}))

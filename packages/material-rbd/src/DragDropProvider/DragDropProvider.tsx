@@ -1,9 +1,9 @@
 import React from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
-import { UISchemaDragDropContext, UISchemaDragDropContextType } from '@ui-schema/material-rbd/DragDropProvider/useDragDropContext'
+import { UISchemaDragDropContext, DragDropSimpleContextType } from '@ui-schema/material-rbd/DragDropProvider/useDragDropContext'
 
 export interface DragDropProviderProps {
-    contextValue: UISchemaDragDropContextType
+    contextValue: DragDropSimpleContextType
     children?: React.ReactNode
 }
 

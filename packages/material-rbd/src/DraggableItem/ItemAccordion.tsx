@@ -105,8 +105,8 @@ let ItemAccordionSummary = (
     const [deleteConfirm, setDeleteConfirm] = React.useState(false)
     return <AccordionSummary
         expandIcon={<ExpandMoreIcon/>}
-        aria-controls={'_orb' + uid + '-content'}
-        id={'_orb' + uid + '-header'}
+        aria-controls={'_uis' + uid + '-content'}
+        id={'_uis' + uid + '-header'}
         {...dragHandleProps}
         style={{display: 'flex', position: 'static'}}
     >
@@ -132,7 +132,6 @@ let ItemAccordionSummary = (
                     }}
                     onClick={(e) => {
                         e.stopPropagation()
-                        console.log('up', type)
                         handleDragEnd({
                             destination: {droppableId: String(parentKey || type), index: index - 1},
                             source: {droppableId: String(parentKey || type), index: index},

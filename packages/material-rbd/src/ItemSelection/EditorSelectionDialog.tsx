@@ -46,7 +46,7 @@ let EditorSelectionDialog = (
     const {items, handleItemAdd} = useDragDropContext()
     const uid = useUID()
     return <Dialog onClose={handleClose} open={open}>
-        <DialogTitle id={'_orb' + uid}>Select Block</DialogTitle>
+        <DialogTitle id={'_uis' + uid}>Select Block</DialogTitle>
         <MuiList dense>
             {items.keySeq().toArray().map((itemId: string) =>
                 <SelectionItem
