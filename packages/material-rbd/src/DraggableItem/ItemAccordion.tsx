@@ -105,8 +105,8 @@ let ItemAccordionSummary = (
     const [deleteConfirm, setDeleteConfirm] = React.useState(false)
     return <AccordionSummary
         expandIcon={<ExpandMoreIcon/>}
-        aria-controls={'_uis' + uid + '-content'}
-        id={'_uis' + uid + '-header'}
+        aria-controls={'uis-' + uid + '-content'}
+        id={'uis-' + uid + '-header'}
         {...dragHandleProps}
         style={{display: 'flex', position: 'static'}}
     >

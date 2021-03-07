@@ -102,11 +102,11 @@ let EditorJS: React.ComponentType<EditorJSProps> = (
         enableReInitialize={false}
         onReady={onReady}
         onChange={onChangeEditor}
-        holder={'_uis' + uid + '-editor'}
+        holder={'uis-' + uid + '-editor'}
         minHeight={0}
     >
         <div
-            id={'_uis' + uid + '-editor'}
+            id={'uis-' + uid + '-editor'}
             tabIndex={-1}
             onFocus={onFocus}
             onBlur={onBlur}
