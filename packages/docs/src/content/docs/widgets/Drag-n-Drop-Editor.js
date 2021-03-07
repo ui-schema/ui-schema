@@ -1,5 +1,3 @@
-import {createOrderedMap} from '@ui-schema/ui-schema';
-
 const blocks = {
     text: {
         type: 'object',
@@ -55,30 +53,6 @@ const blocks = {
         },
         required: ['$bid', '$block'],
     },
-    address: {
-        $ref: 'http://localhost:4200/api/address-schema.json',
-    },
-    rich_content: {
-        type: 'object',
-        view: {
-            noGrid: true,
-        },
-        properties: {
-            $bid: {
-                hidden: true,
-                type: 'string',
-            },
-            $block: {
-                hidden: true,
-                type: 'string',
-            },
-            content: {
-                type: 'object',
-                widget: 'EditorJS',
-            },
-        },
-        required: ['$bid', '$block'],
-    },
     'block_group': {
         type: 'object',
         view: {
@@ -100,14 +74,48 @@ const blocks = {
         },
         required: ['$bid', '$block'],
     },
+    address: {
+        type: 'object',
+        widget: 'FormGroup',
+        properties: {
+            $bid: {
+                hidden: true,
+                type: 'string',
+            },
+            $block: {
+                hidden: true,
+                type: 'string',
+            },
+            street_address: {
+                type: 'string',
+            },
+            city: {
+                type: 'string',
+            },
+            state: {
+                type: 'string',
+            },
+            country: {
+                type: 'string',
+                widget: 'Select',
+                'enum': [
+                    'Germany',
+                    'France',
+                    'Spain',
+                    'Ireland',
+                    'Italy',
+                ],
+            },
+        },
+        required: [
+            'city',
+            'country',
+        ],
+    },
     'addresses': {
         type: 'object',
         view: {
             noGrid: true,
-        },
-        dragDrop: {
-            showOpenAll: true,
-            //allowed: ['address'],
         },
         properties: {
             $bid: {
@@ -130,29 +138,32 @@ const blocks = {
     },
 }
 
-export const schemaDragDrop = createOrderedMap({
-    type: 'object',
-    widget: 'DroppableRootMultiple',
-    $defs: blocks,
-    properties: {
-        main: {
-            type: 'array',
-            //widget: 'EditorJS',
+export const demoDragnDropEditor = [
+    [
+        `Multiple draggable roots with panels as item container`,
+        {
+            type: 'object',
+            widget: 'DroppableRootMultiple',
+            $defs: blocks,
+            properties: {
+                main: {
+                    type: 'array',
+                    //widget: 'EditorJS',
+                },
+                suggestions: {
+                    type: 'array',
+                    //widget: 'Text',
+                },
+            },
         },
-        suggestions: {
+    ],
+    [
+        `Single draggable root`,
+        {
             type: 'array',
-            //widget: 'Text',
+            widget: 'DroppableRootSingle',
+            $defs: blocks,
+            title: 'Single Editor',
         },
-    },
-});
-
-export const schemaDragDropSingle = createOrderedMap({
-    type: 'array',
-    widget: 'DroppableRootSingle',
-    $defs: blocks,
-    title: 'Single Editor',
-    dragDrop: {
-        //showOpenAll: true,
-        //allowed: ['address', 'addresses'],
-    },
-});
+    ],
+];

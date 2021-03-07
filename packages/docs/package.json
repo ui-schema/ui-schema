@@ -35,6 +35,8 @@
         "react-codemirror2": "^6.0.0",
         "react-color": "^2.18.1",
         "react-dom": "^16.12",
+        "react-dnd": "^13.0.0",
+        "react-dnd-html5-backend": "^12.1.1",
         "react-error-boundary": "^1.2.5",
         "react-helmet": "^5.2.1",
         "react-i18next": "^11.3.3",

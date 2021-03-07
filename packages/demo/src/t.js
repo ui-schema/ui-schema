@@ -1,11 +1,11 @@
-import React from "react";
-import AccountBox from "@material-ui/icons/AccountBox";
+import React from 'react';
+import AccountBox from '@material-ui/icons/AccountBox';
 import {
     t, createMap,
     ERROR_CONST_MISMATCH, ERROR_DUPLICATE_ITEMS, ERROR_ENUM_MISMATCH,
     ERROR_MAX_LENGTH, ERROR_MIN_LENGTH, ERROR_MULTIPLE_OF, ERROR_NOT_FOUND_CONTAINS,
-    ERROR_NOT_SET, ERROR_PATTERN, ERROR_WRONG_TYPE
-} from "@ui-schema/ui-schema";
+    ERROR_NOT_SET, ERROR_PATTERN, ERROR_WRONG_TYPE,
+} from '@ui-schema/ui-schema';
 
 const BtsPlus = () => {
     return <svg className="bi bi-plus" width={20} height={20} viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -14,7 +14,7 @@ const BtsPlus = () => {
     </svg>;
 };
 const BtsMinus = () => {
-    return <svg className={["bi", "bi-dash-circle", "mx-3"].join(' ')} width={20} height={20} viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    return <svg className={['bi', 'bi-dash-circle', 'mx-3'].join(' ')} width={20} height={20} viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
         <path fillRule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clipRule="evenodd"/>
         <path fillRule="evenodd" d="M3.5 8a.5.5 0 01.5-.5h8a.5.5 0 010 1H4a.5.5 0 01-.5-.5z" clipRule="evenodd"/>
     </svg>;
@@ -42,14 +42,14 @@ const dicEN = createMap({
     },
     widget: {
         stepper: {
-            "step-1": {
-                email: {title: "Email"},
-                date: {title: "Date"},
-            }
+            'step-1': {
+                email: {title: 'Email'},
+                date: {title: 'Date'},
+            },
         },
     },
     titles: {
-        'simple-number': 'Simple Number'
+        'simple-number': 'Simple Number',
     },
     labels: {
         add: 'Add',
@@ -74,19 +74,19 @@ const dicDE = createMap({
     },
     widget: {
         stepper: {
-            "step-1": {
-                email: {title: "E-Mail"},
-                date: {title: "Datum"},
-            }
+            'step-1': {
+                email: {title: 'E-Mail'},
+                date: {title: 'Datum'},
+            },
         },
         layouts: {
             enum: {
-                notice: "Notiz"
+                notice: 'Notiz',
             },
         },
     },
     titles: {
-        'simple-number': 'Einfache Nummer'
+        'simple-number': 'Einfache Nummer',
     },
     labels: {
         add: 'Hinzufügen',
@@ -101,7 +101,6 @@ const tDE = t(dicDE, 'de');
 
 const browserT = (text, context, schema) => {
     const locale = window.localStorage.getItem('locale') || navigator.language;
-
     return locale === 'de' ? tDE(text, context, schema) : tEN(text, context, schema);
 };
 

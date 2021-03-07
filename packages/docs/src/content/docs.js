@@ -14,6 +14,7 @@ import {demoSwitch} from './docs/widgets/SwitchDemo';
 import {demoTextField} from './docs/widgets/TextFieldDemo';
 import {demoEditorJS} from './docs/widgets/EditorJSDemo';
 import {demoDragnDropEditorSimple} from './docs/widgets/Drag-n-Drop-Editor-Simple';
+import {demoDragnDropEditor} from './docs/widgets/Drag-n-Drop-Editor';
 
 const createDoc = (path, label, prefix, context) => ({
     doc: path,
@@ -58,6 +59,9 @@ export const routesWidgets = {
         }),
         createDoc('widgets/DateTimePickers', 'Date + Time Pickers', '', {
             demoUIGenerator: demoDateTimePickers,
+        }),
+        createDoc('widgets/Drag-n-Drop-Editor', 'Drag \'n Drop Advanced', '', {
+            demoUIGenerator: demoDragnDropEditor,
         }),
         createDoc('widgets/Drag-n-Drop-Editor-Simple', 'Drag \'n Drop Simple', '', {
             demoUIGenerator: demoDragnDropEditorSimple,

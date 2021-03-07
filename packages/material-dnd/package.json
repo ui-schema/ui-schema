@@ -38,6 +38,7 @@
         "@material-ui/icons": "^4.8",
         "@ui-schema/ds-material": "~0.2.x",
         "@ui-schema/ui-schema": ">=0.2.0-alpha",
+        "react-dnd": "^13.0.0",
         "immutable": "^4.0.0-rc.12",
         "react": "^16.12"
     },
@@ -46,6 +47,7 @@
         "@material-ui/icons": "^4.8",
         "@ui-schema/ds-material": "~0.2.x",
         "@ui-schema/ui-schema": ">=0.2.0-alpha",
+        "react-dnd": "^13.0.0",
         "immutable": "^4.0.0-rc.12",
         "react": "^16.8"
     },
