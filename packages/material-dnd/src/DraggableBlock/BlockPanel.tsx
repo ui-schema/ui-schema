@@ -260,6 +260,7 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
                 setAddSelectionIndex={setAddSelectionIndex}
                 showAddSelection={false}
                 index={(storeKeys.last() as number) + 1}
+                nameOfBlock={parentSchema.getIn(['dragDrop', 'nameOfBlock']) as string[] | undefined}
             /> : null}
 
             <Dialog onClose={() => setShowInfo(false)} open={showInfo}>
