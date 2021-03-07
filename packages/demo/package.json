@@ -21,7 +21,7 @@
         "@ui-schema/material-richtext": "0.2.x",
         "@ui-schema/ui-schema": ">=0.2.0-rc.0",
         "@ui-schema/pro": "0.0.x",
-        "@ui-schema/dictionary": "0.0.1",
+        "@ui-schema/dictionary": "0.0.x",
         "bootstrap": "^4.4.1",
         "clsx": "^1.1.0",
         "draft-js": "~0.11.4",
