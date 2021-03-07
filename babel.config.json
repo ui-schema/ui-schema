@@ -18,7 +18,6 @@
         "transform-es2015-template-literals",
         "@babel/plugin-proposal-optional-chaining",
         "@babel/plugin-proposal-nullish-coalescing-operator",
-        "es6-promise",
         "react-loadable/babel",
         [
             "babel-plugin-named-asset-import",
