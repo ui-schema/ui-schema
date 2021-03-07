@@ -51,7 +51,7 @@ let EditorSelectionDialog: React.ComponentType<EditorSelectionDialogProps> = (
 ) => {
     const uid = useUID()
     return <Dialog onClose={handleClose} open={open}>
-        <DialogTitle id={'_uis' + uid}>Select Block</DialogTitle>
+        <DialogTitle id={'uis-' + uid}>Select Block</DialogTitle>
         <MuiList dense>
             {blocks?.keySeq().toArray().map((blockId: string) =>
                 <BlockSelection

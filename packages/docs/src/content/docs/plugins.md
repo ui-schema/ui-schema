@@ -72,6 +72,24 @@ const widgets = {
 export {widgets};
 ```
 
+### patternValidator
+
+For human understandable translation of patterns, you can specify the keyword `patternError`, this is passed as context down to the translator. When not specified shows the `pattern` keyword.
+
+Default multi-language support:
+
+```json
+{
+    "pattern": "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$",
+    "patternError": {
+        "en": "be a valid zip code",
+        "de": "eine gültige PLZ"
+    }
+}
+```
+
+Results in the translation: `Input is invalid, must be a valid zip code`, `Eingabe nicht korrekt, benötigt eine gültige PLZ` for `@ui-schema/dictionary`.
+
 ## Plugin List
 
 - [DefaultHandler](#defaulthandler)

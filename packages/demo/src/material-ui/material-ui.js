@@ -74,12 +74,16 @@ const MainStore = () => {
 const DemoUser = () => {
     const [store, setStore] = React.useState(() => createEmptyStore());
 
+    const onChangeNext = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+        setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
+    }, [setStore])
+
     return <Grid container spacing={3} justify={'center'}>
         <Grid item xs={12} md={6}>
             <UIGenerator
                 schema={schemaUser}
                 store={store}
-                onChange={setStore}
+                onChange={onChangeNext}
                 widgets={widgets}
                 t={browserT}
             >

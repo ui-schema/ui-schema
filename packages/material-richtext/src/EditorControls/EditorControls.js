@@ -1,25 +1,25 @@
-import React from "react";
-import clsx from "clsx";
+import React from 'react';
+import clsx from 'clsx';
 import {
     LooksOne, LooksTwo, Looks3, Looks4, Looks5, Looks6,
-    FormatQuote, FormatListBulleted, FormatListNumbered, Code, FormatBold, FormatItalic, FormatUnderlined
-} from "@material-ui/icons";
-import IconButton from "@material-ui/core/IconButton";
-import Fade from "@material-ui/core/Fade";
-import {EditorState,} from 'draft-js';
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import {useControlStyles,} from "../styles";
-import {RichUtils,} from 'draft-js';
-import {memo} from "@ui-schema/ui-schema";
-import {AccessTooltipIcon} from "@ui-schema/ds-material/Component/Tooltip";
-import {useRichText} from "../RichTextProvider/RichTextProvider";
+    FormatQuote, FormatListBulleted, FormatListNumbered, Code, FormatBold, FormatItalic, FormatUnderlined,
+} from '@material-ui/icons';
+import IconButton from '@material-ui/core/IconButton';
+import Fade from '@material-ui/core/Fade';
+import {EditorState} from 'draft-js';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import {useControlStyles} from '../styles';
+import {RichUtils} from 'draft-js';
+import {memo, Trans} from '@ui-schema/ui-schema';
+import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip';
+import {useRichText} from '../RichTextProvider/RichTextProvider';
 
 const buttonStyle = makeStyles(theme => ({
     root: {
         color: ({active}) => active ?
             theme.palette.primary.main :
             theme.palette.text.secondary,
-    }
+    },
 }));
 
 const ControlButton = memo(({classes, size, inline, toggleInlineStyle, toggleBlockType, Label, style}) => <IconButton
@@ -27,7 +27,7 @@ const ControlButton = memo(({classes, size, inline, toggleInlineStyle, toggleBlo
     size={'small'}
     style={{
         margin: size === 'medium' ? '2px 1px' : 'auto 1px',
-        fontSize: size === 'medium' ? '1.25rem' : undefined
+        fontSize: size === 'medium' ? '1.25rem' : undefined,
     }}
     onClick={(e) => {
         e.preventDefault();
@@ -41,7 +41,7 @@ const ControlButton = memo(({classes, size, inline, toggleInlineStyle, toggleBlo
 </IconButton>);
 
 const Button = ({Label, style, inline, size}) => {
-    const {editorState, handleChange,} = useRichText();
+    const {editorState, handleChange} = useRichText();
 
     const toggleInlineStyle = React.useCallback((inlineStyle) => {
         handleChange(prevEditorState => {
@@ -51,7 +51,7 @@ const Button = ({Label, style, inline, size}) => {
             );
             currentState = RichUtils.toggleInlineStyle(
                 currentState,
-                inlineStyle
+                inlineStyle,
             );
             return currentState
         });
@@ -65,7 +65,7 @@ const Button = ({Label, style, inline, size}) => {
             );
             currentState = RichUtils.toggleBlockType(
                 currentState,
-                blockType
+                blockType,
             );
             return currentState
         });
@@ -98,74 +98,74 @@ const Button = ({Label, style, inline, size}) => {
 const BLOCK_TYPES = [
     {
         key: 1,
-        label: () => <AccessTooltipIcon title={'Headline 1'}>
+        label: () => <AccessTooltipIcon title={<Trans text={'labels.rich-text-h1'}/>}>
             <LooksOne fontSize={'inherit'}/>
         </AccessTooltipIcon>,
 
-        style: 'header-one'
+        style: 'header-one',
     },
     {
         key: 2,
-        label: () => <AccessTooltipIcon title={'Headline 2'}>
+        label: () => <AccessTooltipIcon title={<Trans text={'labels.rich-text-h2'}/>}>
             <LooksTwo fontSize={'inherit'}/>
         </AccessTooltipIcon>,
-        style: 'header-two'
+        style: 'header-two',
     },
     {
         key: 3,
-        label: () => <AccessTooltipIcon title={'Headline 3'}>
+        label: () => <AccessTooltipIcon title={<Trans text={'labels.rich-text-h3'}/>}>
             <Looks3 fontSize={'inherit'}/>
         </AccessTooltipIcon>,
-        style: 'header-three'
+        style: 'header-three',
     },
     {
         key: 4,
-        label: () => <AccessTooltipIcon title={'Headline 4'}>
+        label: () => <AccessTooltipIcon title={<Trans text={'labels.rich-text-h4'}/>}>
             <Looks4 fontSize={'inherit'}/>
         </AccessTooltipIcon>,
-        style: 'header-four'
+        style: 'header-four',
     },
     {
         key: 5,
-        label: () => <AccessTooltipIcon title={'Headline 5'}>
+        label: () => <AccessTooltipIcon title={<Trans text={'labels.rich-text-h5'}/>}>
             <Looks5 fontSize={'inherit'}/>
         </AccessTooltipIcon>,
-        style: 'header-five'
+        style: 'header-five',
     },
     {
         key: 6,
-        label: () => <AccessTooltipIcon title={'Headline 6'}>
+        label: () => <AccessTooltipIcon title={<Trans text={'labels.rich-text-h6'}/>}>
             <Looks6 fontSize={'inherit'}/>
         </AccessTooltipIcon>,
-        style: 'header-six'
+        style: 'header-six',
     },
     {
         key: 7,
-        label: () => <AccessTooltipIcon title={'Quote'}>
+        label: () => <AccessTooltipIcon title={<Trans text={'labels.rich-text-quote'}/>}>
             <FormatQuote fontSize={'inherit'}/>
         </AccessTooltipIcon>,
-        style: 'blockquote'
+        style: 'blockquote',
     },
     {
         key: 8,
-        label: () => <AccessTooltipIcon title={'Bullet List'}>
+        label: () => <AccessTooltipIcon title={<Trans text={'labels.rich-text-li'}/>}>
             <FormatListBulleted fontSize={'inherit'}/>
         </AccessTooltipIcon>,
-        style: 'unordered-list-item'
+        style: 'unordered-list-item',
     },
     {
         key: 9,
-        label: () => <AccessTooltipIcon title={'Number List'}>
+        label: () => <AccessTooltipIcon title={<Trans text={'labels.rich-text-ol'}/>}>
             <FormatListNumbered fontSize={'inherit'}/>
         </AccessTooltipIcon>,
-        style: 'ordered-list-item'
+        style: 'ordered-list-item',
     },
     {
         key: 10,
-        label: () => <AccessTooltipIcon title={'Code Block'}>
+        label: () => <AccessTooltipIcon title={<Trans text={'labels.rich-text-code'}/>}>
             <Code fontSize={'inherit'}/>
         </AccessTooltipIcon>,
-        style: 'code-block'
+        style: 'code-block',
     },
     /*{key: 11, label: <MdInsertLink size={'1.25em'}/>, style: 'link'},*/
 ];
@@ -173,46 +173,46 @@ const BLOCK_TYPES = [
 let INLINE_STYLES = [
     {
         key: 1,
-        label: () => <AccessTooltipIcon title={'Format Bold'}>
+        label: () => <AccessTooltipIcon title={<Trans text={'labels.rich-text-bold'}/>}>
             <FormatBold fontSize={'inherit'}/>
         </AccessTooltipIcon>,
-        style: 'BOLD'
+        style: 'BOLD',
     },
     {
         key: 2,
-        label: () => <AccessTooltipIcon title={'Format Italic'}>
+        label: () => <AccessTooltipIcon title={<Trans text={'labels.rich-text-italic'}/>}>
             <FormatItalic fontSize={'inherit'}/>
         </AccessTooltipIcon>,
-        style: 'ITALIC'
+        style: 'ITALIC',
     },
     {
         key: 3,
-        label: () => <AccessTooltipIcon title={'Format Underline'}>
+        label: () => <AccessTooltipIcon title={<Trans text={'labels.rich-text-underline'}/>}>
             <FormatUnderlined fontSize={'inherit'}/>
         </AccessTooltipIcon>,
-        style: 'UNDERLINE'
+        style: 'UNDERLINE',
     },
     {
         key: 4,
-        label: () => <AccessTooltipIcon title={'Code Part'}>
+        label: () => <AccessTooltipIcon title={<Trans text={'labels.rich-text-code-inline'}/>}>
             <Code fontSize={'inherit'}/>
         </AccessTooltipIcon>,
-        style: 'CODE'
+        style: 'CODE',
     },
 ];
 
-const BlockStyleControls = ({btnSize,}) => {
+const BlockStyleControls = ({btnSize}) => {
     return BLOCK_TYPES.map((type) =>
         <Button
             key={type.key}
             Label={type.label}
             style={type.style}
             size={btnSize}
-        />
+        />,
     );
 };
 
-const InlineStyleControls = ({btnSize,}) => {
+const InlineStyleControls = ({btnSize}) => {
     return INLINE_STYLES.map(type =>
         <Button
             key={type.key}
@@ -220,7 +220,7 @@ const InlineStyleControls = ({btnSize,}) => {
             style={type.style}
             size={btnSize}
             inline
-        />
+        />,
     );
 };
 
@@ -232,12 +232,12 @@ let EditorControls = ({
 
     return <Fade
         in={topControls && focused || !topControls}
-        timeout={{enter: 400, exit: 600,}}
+        timeout={{enter: 400, exit: 600}}
     >
         <div
             className={clsx(
                 classes.wrapper,
-                topControls ? classes.controlsTop : classes.controlsBottom
+                topControls ? classes.controlsTop : classes.controlsBottom,
             )}
         >
             <div className={classes.controls}>

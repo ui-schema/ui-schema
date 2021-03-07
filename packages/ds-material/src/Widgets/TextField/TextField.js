@@ -38,8 +38,7 @@ export const StringRenderer = ({
         if(currentRef) {
             onChange(storeKeys, ['valid'], () => ({valid: valid}))
         }
-        // todo: aren't `storeKeys` missing in deps?
-    }, [onChange, valid]);
+    }, [onChange, storeKeys, valid]);
 
     const hideTitle = schema.getIn(['view', 'hideTitle'])
 

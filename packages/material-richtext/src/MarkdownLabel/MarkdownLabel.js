@@ -1,8 +1,9 @@
-import React from "react";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
-import {useEditorStyles} from "../styles";
+import React from 'react';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
+import {useEditorStyles} from '../styles';
+import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
 
 const MarkdownIcon = React.forwardRef(({color}, ref) => <svg
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" ref={ref}
@@ -40,7 +41,7 @@ let MarkdownLabel = ({focus, setFocus}) => {
             {focus ? <Typography
                 component={'span'} variant={'caption'}
                 className={classes.markdownLabel}
-            >MarkDown Enabled</Typography> : null}
+            ><Trans text={'labels.rich-text-enabled-markdown'}/></Typography> : null}
         </IconButton>
     </div>
 };

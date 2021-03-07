@@ -1,0 +1,17 @@
+export const richText = {
+    'rich-text-h1': 'Überschrift 1',
+    'rich-text-h2': 'Überschrift 2',
+    'rich-text-h3': 'Überschrift 3',
+    'rich-text-h4': 'Überschrift 4',
+    'rich-text-h5': 'Überschrift 5',
+    'rich-text-h6': 'Überschrift 6',
+    'rich-text-quote': 'Zitat',
+    'rich-text-li': 'Liste',
+    'rich-text-ol': 'Geordnete Liste',
+    'rich-text-code': 'Code Block',
+    'rich-text-code-inline': 'Code Part',
+    'rich-text-bold': 'Format Fett',
+    'rich-text-italic': 'Format Kursiv',
+    'rich-text-underline': 'Format Unterstrichen',
+    'rich-text-enabled-markdown': 'unterstützt MarkDown',
+}

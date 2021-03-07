@@ -9,7 +9,7 @@ import Add from '@material-ui/icons/Add';
 import Delete from '@material-ui/icons/Delete';
 import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
-import {TransTitle, extractValue, memo, PluginStack} from '@ui-schema/ui-schema';
+import {TransTitle, extractValue, memo, PluginStack, Trans} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 import {List, Map} from 'immutable';
 import {AccessTooltipIcon} from '../../Component/Tooltip/Tooltip';
@@ -39,7 +39,7 @@ let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, on
                             )
                         }
                     >
-                        <AccessTooltipIcon title={`Move to ${(index + 1) - 1}. position`}>
+                        <AccessTooltipIcon title={<Trans text={'labels.move-to-position'} context={Map({nextIndex: index + 1 - 1})}/>}>
                             <KeyboardArrowUp fontSize={'inherit'}/>
                         </AccessTooltipIcon>
                     </IconButton> : null}
@@ -63,7 +63,7 @@ let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, on
                             )
                         }
                     >
-                        <AccessTooltipIcon title={`Move to ${(index + 1) + 1}. position`}>
+                        <AccessTooltipIcon title={<Trans text={'labels.move-to-position'} context={Map({nextIndex: index + 1 + 1})}/>}>
                             <KeyboardArrowDown fontSize={'inherit'}/>
                         </AccessTooltipIcon>
                     </IconButton> : null}
@@ -105,7 +105,7 @@ let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, on
                         size={btnSize}
                         style={{margin: '0 0 auto 0'}}
                     >
-                        <AccessTooltipIcon title={'Delete Item'}>
+                        <AccessTooltipIcon title={<Trans text={'labels.remove-item'}/>}>
                             <Delete fontSize={'inherit'}/>
                         </AccessTooltipIcon>
                     </IconButton>
@@ -155,7 +155,7 @@ const GenericList = extractValue(memo(({
                         }}
                         size={btnSize}
                     >
-                        <AccessTooltipIcon title={'New Item'}>
+                        <AccessTooltipIcon title={<Trans text={'labels.add-item'}/>}>
                             <Add fontSize={'inherit'}/>
                         </AccessTooltipIcon>
                     </IconButton> : null}

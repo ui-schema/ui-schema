@@ -9,6 +9,7 @@ import {TransTitle, extractValue, memo, PluginStack} from '@ui-schema/ui-schema'
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 import {List} from 'immutable';
 import {AccessTooltipIcon} from '../../Component/Tooltip/Tooltip';
+import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
 
 const SimpleList = extractValue(memo(({
                                           storeKeys, ownKey, schema, value, onChange,
@@ -45,7 +46,7 @@ const SimpleList = extractValue(memo(({
                         size={btnSize}
                         style={{margin: 'auto 6px', flexShrink: 0}}
                     >
-                        <AccessTooltipIcon title={'Remove Entry'}>
+                        <AccessTooltipIcon title={<Trans text={'labels.remove-entry'}/>}>
                             <Remove fontSize={'inherit'}/>
                         </AccessTooltipIcon>
                     </IconButton>
@@ -55,10 +56,11 @@ const SimpleList = extractValue(memo(({
             <Grid item xs={12}>
                 <IconButton
                     onClick={() => {
-                        // todo: initial/new value of list should be like the schema `type`
                         onChange(
                             storeKeys, ['value'],
-                            ({value: val = List()}) => ({value: val.push('')}),
+                            ({value: val = List()}) => ({
+                                value: schema.get('type') === 'string' ? val.push('') : val.push(undefined),
+                            }),
                             schema.get('deleteOnEmpty') || required,
                             schema.get('type'),
                         )
@@ -66,7 +68,7 @@ const SimpleList = extractValue(memo(({
                     disabled={schema.get('readOnly')}
                     size={btnSize}
                 >
-                    <AccessTooltipIcon title={'Add Entry'}>
+                    <AccessTooltipIcon title={<Trans text={'labels.add-entry'}/>}>
                         <Add fontSize={'inherit'}/>
                     </AccessTooltipIcon>
                 </IconButton>

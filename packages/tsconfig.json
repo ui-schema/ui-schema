@@ -84,6 +84,12 @@
             ],
             "@ui-schema/pro/*": [
                 "ui-schema-pro/src/*"
+            ],
+            "@ui-schema/dictionary": [
+                "dictionary/src"
+            ],
+            "@ui-schema/dictionary/*": [
+                "dictionary/src/*"
             ]
         }
     },
