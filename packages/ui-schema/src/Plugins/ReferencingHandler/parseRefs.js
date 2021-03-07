@@ -25,10 +25,7 @@ const checkNestedMapSchema = {
 }
 
 // all keywords which are an array of schemas
-const checkNestedArraySchema = {
-    // here items are tuple-schema arrays
-    items: false,
-}
+const checkNestedArraySchema = {}
 
 const parseRefsInRenderingKeywords = (schema, context, recursive, pending = Map()) => {
     // for all schema keywords which will be rendered, only the root references must be resolved,
@@ -46,15 +43,6 @@ const parseRefsInRenderingKeywords = (schema, context, recursive, pending = Map(
         res.schema, context, recursive, res.pending,
     )
 
-    // items is either a schema or a list of schemas,
-    // here one-schema for all items
-    const items = res.schema.get('items')
-    if(items && Map.isMap(items)) {
-        const itemsSchema = parseRefs(items, context, recursive, res.pending)
-        res.schema = res.schema.set('items', itemsSchema.schema)
-        res.pending = itemsSchema.pending
-    }
-
     return res
 }
 
@@ -70,6 +58,8 @@ const checkConditionalNestedArraySchema = {
     allOf: false,
     oneOf: false,
     anyOf: false,
+    // here items are tuple-schema arrays
+    items: false,
 }
 
 const checkSchema = {
@@ -111,16 +101,26 @@ const parseRefsInConditionalKeywords = (schema, context, recursive = false, pend
         res.schema, context, recursive, res.pending,
     )
 
+    // items is either a schema or a list of schemas,
+    // here one-schema for all items
+    const items = res.schema.get('items')
+    if(items && Map.isMap(items)) {
+        const itemsSchema = parseRefs(items, context, recursive, res.pending)
+        res.schema = res.schema.set('items', itemsSchema.schema)
+        res.pending = itemsSchema.pending
+    }
+
     return res
 }
 
 export const parseRefs = (schema, context, recursive = false, pending = Map()) => {
     const ref = schema.get('$ref')
+    const schemaVersion = schema.get('version')
     if(ref) {
         // 1. if schema is a reference itself, resolve it
         //    then with the next code, references in the reference are resolved
         try {
-            schema = resolveRef(ref, context) || schema
+            schema = resolveRef(ref, context, schemaVersion) || schema
         } catch(e) {
             if(e instanceof SchemaRefPending) {
                 const id = context.id || '#'

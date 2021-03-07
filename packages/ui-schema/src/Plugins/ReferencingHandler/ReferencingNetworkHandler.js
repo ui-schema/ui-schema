@@ -21,35 +21,47 @@ export const useNetworkRef = () => {
     const {loadSchema: loader, schemas} = useUIApi()
     const {id} = useSchemaRoot()
 
-    const loadSchema = React.useCallback((ref, rootId = '#') => {
-        const {schemaUrl} = getUrls(ref, rootId === '#' ? id : rootId)
-        if(loader && schemaUrl) {
-            loader(schemaUrl).then()
+    const loadSchema = React.useCallback((ref, rootId = '#', versions = undefined) => {
+        const {cleanUrl} = getUrls(ref, rootId === '#' ? id : rootId)
+        if(loader && cleanUrl) {
+            loader(cleanUrl, versions).then()
         }
         if(!loader) {
-            console.error('ReferencingNetworkLoader `loadSchema` not defined, maybe missing `UIApiProvider`')
+            if(process.env.NODE_ENV === 'development') {
+                console.error('ReferencingNetworkLoader `loadSchema` not defined, maybe missing `UIApiProvider`')
+            }
         }
     }, [id, loader])
 
-    let same = true
     if(!prevSchemas.current || !prevSchemas.current.equals(schemas)) {
-        same = false
         prevSchemas.current = schemas
     }
 
-    const getSchema = React.useCallback((ref, rootId = '#') => {
+    const currentSchemas = prevSchemas.current
+
+    const getSchema = React.useCallback((ref, rootId = '#', version = undefined) => {
         const {cleanUrl, schemaUrl} = getUrls(ref, rootId === '#' ? id : rootId)
         let schema
-        if(schemaUrl && prevSchemas.current?.has(cleanUrl)) {
-            let tmpSchema = prevSchemas.current?.get(cleanUrl)
+        if(schemaUrl && currentSchemas?.has(cleanUrl)) {
+            let tmpSchema = currentSchemas?.get(cleanUrl)
             const fragment = getFragmentFromUrl(schemaUrl)
             if(fragment) {
                 tmpSchema = resolvePointer('#/' + fragment, tmpSchema)
+                // todo: if a version is set, it only enforces the root schema currently, how must fragment references treated
             }
-            schema = tmpSchema
+
+            if(
+                typeof version === 'undefined' ||
+                version === tmpSchema.get('version') ||
+                version === '*'
+            ) {
+                schema = tmpSchema
+            } else if(process.env.NODE_ENV === 'development') {
+                console.log('getSchema.not-found-version', ref, rootId, version, tmpSchema.get('version'))
+            }
         }
         return schema;
-    }, [id, same, prevSchemas])
+    }, [id, currentSchemas])
 
     return {getSchema, loadSchema}
 }
@@ -58,7 +70,8 @@ const RefLoader = (props) => {
     let {schema, schemaRef, isVirtual} = props
     const {loadSchema, getSchema} = useNetworkRef()
 
-    const loadedSchema = getSchema(schemaRef)
+    const schemaVersion = schema?.get('version')
+    const loadedSchema = getSchema(schemaRef, undefined, schemaVersion)
     const loaded = Boolean(loadedSchema)
     if(loaded) {
         schema = loadedSchema
@@ -66,12 +79,12 @@ const RefLoader = (props) => {
 
     React.useEffect(() => {
         if(!loaded) {
-            loadSchema(schemaRef)
+            loadSchema(schemaRef, undefined, [schemaVersion])
         }
-    }, [loadSchema, schemaRef, loaded])
+    }, [loadSchema, schemaRef, schemaVersion, loaded])
 
     return !loaded ?
-        // todo: remove `fallback` with a very very small svg component
+        // todo: add `could not be loaded` info output
         isVirtual ? null : <Trans text={'labels.loading'} fallback={'Loading'}/> :
         <NextPluginRenderer {...props} schema={schema}/>
 }

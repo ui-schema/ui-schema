@@ -1,9 +1,12 @@
-import React from "react";
-import {
-    makeStyles, Stepper as MuiStepper, Step as MuiStep, StepLabel, Button, Typography,
-} from "@material-ui/core";
-import {UIGeneratorNested, isInvalid, memo, extractValidity} from "@ui-schema/ui-schema";
-import {TransTitle} from "@ui-schema/ui-schema/Translate/TransTitle";
+import React from 'react';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import MuiStepper from '@material-ui/core/Stepper';
+import MuiStep from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import {UIGeneratorNested, isInvalid, memo, extractValidity} from '@ui-schema/ui-schema';
+import {TransTitle} from '@ui-schema/ui-schema/Translate/TransTitle';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -24,7 +27,7 @@ export const Step = ({schema, storeKeys, level, ...p}) => {
 
 export const Stepper = extractValidity(memo(
     ({
-         schema, storeKeys, validity,
+         schema, storeKeys, validity, level,
      }) => {
         if(!schema) return null;
 
@@ -84,6 +87,8 @@ export const Stepper = extractValidity(memo(
                             showValidity={showValidity}
                             storeKeys={storeKeys.push(stepOrder.get(activeStep))}
                             schema={steps.get(stepOrder.get(activeStep))}
+                            parentSchema={schema}
+                            level={level + 1}
                         />
 
                         <div style={{margin: '24px 0 0 0'}}>
@@ -104,5 +109,5 @@ export const Stepper = extractValidity(memo(
                 )}
             </div>
         </div>;
-    }
+    },
 ));

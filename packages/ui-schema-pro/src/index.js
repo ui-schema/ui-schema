@@ -1,1 +1,1 @@
-export const Dummy = () => console.log('dummy')
+export * from './UIStorePro'

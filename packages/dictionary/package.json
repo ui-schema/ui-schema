@@ -1,0 +1,40 @@
+{
+    "name": "@ui-schema/dictionary",
+    "version": "0.0.1",
+    "description": "",
+    "homepage": "https://ui-schema.bemit.codes",
+    "author": "Michael Becker <michael@bemit.codes>",
+    "license": "MIT",
+    "main": "./lib/index.js",
+    "module": "./es/index.js",
+    "files": [
+        "es",
+        "lib"
+    ],
+    "keywords": [
+        "ui-schema",
+        "json-schema"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ui-schema/ui-schema.git",
+        "directory": "packages/dictionary"
+    },
+    "bugs": {
+        "url": "https://github.com/ui-schema/ui-schema/issues"
+    },
+    "devDependencies": {
+        "@ui-schema/ui-schema": ">=0.2.0-rc.0",
+        "immutable": "^4.0.0-rc.12"
+    },
+    "peerDependencies": {
+        "@ui-schema/ui-schema": ">=0.2.0-rc.0",
+        "immutable": "^4.0.0-rc.12"
+    },
+    "scripts": {
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts build && rm -rf build/dts"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

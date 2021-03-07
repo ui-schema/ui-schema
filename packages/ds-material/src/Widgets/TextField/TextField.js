@@ -38,8 +38,7 @@ export const StringRenderer = ({
         if(currentRef) {
             onChange(storeKeys, ['valid'], () => ({valid: valid}))
         }
-        // todo: aren't `storeKeys` missing in deps?
-    }, [onChange, valid]);
+    }, [onChange, storeKeys, valid]);
 
     const hideTitle = schema.getIn(['view', 'hideTitle'])
 
@@ -48,6 +47,7 @@ export const StringRenderer = ({
             label={hideTitle ? undefined : <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>}
             aria-label={hideTitle ? <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/> : undefined}
             type={format || type}
+            disabled={schema.get('readOnly')}
             multiline={multiline}
             required={required}
             error={!valid && showValidity}

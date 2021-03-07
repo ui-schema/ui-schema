@@ -20,7 +20,7 @@ export interface ParseRefsContent {
     // the root schema, could be get from SchemaRootProvider
     root?: StoreSchemaType
     // try to get a loaded schema
-    fetchSchema?: getSchema
+    getSchema?: getSchema
 }
 
 export function parseRefs(

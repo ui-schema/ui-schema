@@ -13,7 +13,7 @@ There are two types of plugins: Schema Plugins and Validation Plugins.
 
 ## Schema Plugins
 
-Plugins that work schema-driven are handling the schema in different ways, these are not used for validation but for creating functionality around the schema - which may influence the validations.
+Plugins that work schema-driven are handling the schema in different ways, these are not used for validation but for creating functionality around the schema - which may influence the validations. They may also change the React render behaviour/flow.
 
 ```typescript jsx
 import { PluginProps, PluginType } from "@ui-schema/ui-schema/PluginStack/Plugin"
@@ -35,7 +35,7 @@ import { PluginProps, PluginType } from "@ui-schema/ui-schema/PluginStack/Plugin
 import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators"
 ```
 
-Validation plugins also work with the schema, but are only used for validation of the values/schema and can not change the render-flow.
+Validation plugins also work with the schema, but are only used for validation of the values/schema and can't change the React render-flow.
 
 | Plugin               | Package              | Validity Fn.         | Handles              | Added Props |
 | :---                 | :---                 | :---                 | :---                 | :---        |
@@ -71,6 +71,24 @@ const widgets = {
 
 export {widgets};
 ```
+
+### patternValidator
+
+For human understandable translation of patterns, you can specify the keyword `patternError`, this is passed as context down to the translator. When not specified shows the `pattern` keyword.
+
+Default multi-language support:
+
+```json
+{
+    "pattern": "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$",
+    "patternError": {
+        "en": "be a valid zip code",
+        "de": "eine gültige PLZ"
+    }
+}
+```
+
+Results in the translation: `Input is invalid, must be a valid zip code`, `Eingabe nicht korrekt, benötigt eine gültige PLZ` for `@ui-schema/dictionary`.
 
 ## Plugin List
 
@@ -638,8 +656,6 @@ Supports conditionals up to three levels, otherwise when the conditional get's r
 
 Uses the `ReferencingNetworkHandler` hook `useNetworkRef` to handle resolving, which uses `UIApi` to load the schema.
 
-> ❗ Currently nested root-schemas with relative-url references are not supported, only the first found absolute `$id` is used for relative-url resolving, will be fixed till v2
-
 ### ReferencingNetworkHandler
 
 > A recommended plugin, loads the first/root reference of a schema level, also done by ReferencingHandler, but not beforehand parsing.
@@ -656,19 +672,13 @@ pluginStack.splice(1, 0, ReferencingNetworkHandler)
 widgets.pluginStack = pluginStack
 ```
 
-With this variable you get the used cache key in the `localStorage`
-
-```jsx
-import {schemaLocalCachePath} from '@ui-schema/ui-schema/UIApi/UIApi'
-```
-
 ## Create Plugins
 
 ### Create a Validator Plugin
 
 A validator plugin is a JS-Object which contains multiple functions that can be used for validation. They are not a React component, they can not control the render-flow or using hooks!
 
-Each function receives the props the actual component receives, `noValidate` and `validate` return object is shallow-merged into the current props. Adding e.g. new properties to the actual widget.
+Each function receives the props the actual component receives, the return object of `noValidate` and `validate` is shallow-merged into the current props. Adding e.g. new or changed properties to the actual widget.
 
 - `should`: optional checker if the `validate` function should do something
 - `noValidate`: gets run when it should not be validated, must return object

@@ -74,12 +74,16 @@ const MainStore = () => {
 const DemoUser = () => {
     const [store, setStore] = React.useState(() => createEmptyStore());
 
+    const onChangeNext = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+        setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
+    }, [setStore])
+
     return <Grid container spacing={3} justify={'center'}>
         <Grid item xs={12} md={6}>
             <UIGenerator
                 schema={schemaUser}
                 store={store}
-                onChange={setStore}
+                onChange={onChangeNext}
                 widgets={widgets}
                 t={browserT}
             >
@@ -89,7 +93,8 @@ const DemoUser = () => {
     </Grid>
 };
 
-const loadSchema = (url) => {
+const loadSchema = (url, versions) => {
+    console.log('Demo loadSchema (url, optional versions)', url, versions)
     return fetch(url).then(r => r.json())
 }
 
@@ -169,7 +174,7 @@ const Main = ({classes = {}}) => {
 };
 
 export default () => <AppTheme>
-    <UIApiProvider loadSchema={loadSchema}>
+    <UIApiProvider loadSchema={loadSchema} noCache>
         <Dashboard main={Main}/>
     </UIApiProvider>
 </AppTheme>;

@@ -1,4 +1,4 @@
-import {relT} from "../relT";
+import {makeTranslator} from '../makeTranslator';
 
 /**
  * Dictionary Factory
@@ -9,18 +9,7 @@ import {relT} from "../relT";
  *
  * @param {Map} dictionary imputable map with translations for one language
  * @param {string} locale
+ * @deprecated in 0.2.0-rc, will be removed in 0.3.0
  * @return {function(string, {}): string|React.ComponentType}
  */
-export const t = (dictionary, locale = '') =>
-    (text, context = {}, schema) => {
-        const schemaT = relT(schema, context, locale);
-        if(schemaT) return schemaT;
-
-        let trans = dictionary.getIn(text.split('.'));
-
-        if(typeof trans === 'function') {
-            return trans(context);
-        }
-
-        return trans;
-    };
+export const t = makeTranslator

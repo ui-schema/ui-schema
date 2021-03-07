@@ -3,14 +3,16 @@ import {resolvePointer} from '@ui-schema/ui-schema/JSONPointer/resolvePointer';
 export class SchemaRefPending extends Error {
 }
 
-export const resolveRef = (ref, context) => {
+export const resolveRef = (ref, context, schemaVersion) => {
     const {
+        // the id of the parent schema
+        id,
         // the definitions, could be get from ReferencingProvider
         defs,
         // the root schema, could be get from SchemaRootProvider
         root: rootSchema,
         // try to get a loaded schema
-        fetchSchema,
+        getSchema,
     } = context
 
     let schema
@@ -19,31 +21,41 @@ export const resolveRef = (ref, context) => {
         // intercept JSON Pointer for definitions
         const refId = ref.replace(/^#\/definitions\//, '').replace(/^#\/\$defs\//, '');
         if(!defs) {
-            console.error('definitions needed for $ref resolution', ref)
+            if(process.env.NODE_ENV === 'development') {
+                console.error('definitions needed for $ref resolution', ref)
+            }
         } else if(defs.get(refId)) {
             schema = resolvePointer('#/' + refId, defs);
         } else {
-            console.error('definition not found for $ref', ref, refId)
+            if(process.env.NODE_ENV === 'development') {
+                console.error('definition not found for $ref', ref, refId)
+            }
         }
 
     } else if(ref.indexOf('#/') === 0 || ref === '#') {
         // JSON Pointer
 
         if(!rootSchema) {
-            console.error('rootSchema needed for $ref resolution', ref)
+            if(process.env.NODE_ENV === 'development') {
+                console.error('rootSchema needed for $ref resolution', ref)
+            }
         } else {
             const targeted = resolvePointer(ref, rootSchema)
             if(targeted) {
                 schema = targeted
             } else {
-                console.error('JSON Pointer target schema not found for $ref', ref, rootSchema?.toJS())
+                if(process.env.NODE_ENV === 'development') {
+                    console.error('JSON Pointer target schema not found for $ref', ref, rootSchema?.toJS())
+                }
             }
         }
     } else if(ref.indexOf('#') === 0) {
         // get by `$id` or since 2019-09 by `$anchor` in definitions
 
         if(!defs) {
-            console.error('definitions needed for $ref resolution', ref)
+            if(process.env.NODE_ENV === 'development') {
+                console.error('definitions needed for $ref resolution', ref)
+            }
         } else {
             const def = defs.find(def => {
                 return (
@@ -59,7 +71,9 @@ export const resolveRef = (ref, context) => {
             if(def) {
                 schema = def
             } else {
-                console.error('definition not found for $ref', ref)
+                if(process.env.NODE_ENV === 'development') {
+                    console.error('definition not found for $ref', ref)
+                }
             }
         }
     } else {
@@ -68,15 +82,15 @@ export const resolveRef = (ref, context) => {
         //   $recursiveAnchor
 
         // handle network referenced schemas,
-        // `fetchSchema` may be coming from `useNetworkRef`, which relies on the `UIApiProvider`
+        // `getSchema` may be coming from `useNetworkRef`, which relies on the `UIApiProvider`
         // but could also be otherwise passed down with the context from a custom `ReferencingHandler` implementation
-        if(fetchSchema) {
-            const loadedSchema = fetchSchema(ref)
+        if(getSchema) {
+            const loadedSchema = getSchema(ref, id, schemaVersion)
             if(loadedSchema) {
                 return loadedSchema
             }
         } else if(process.env.NODE_ENV === 'development') {
-            console.error('fetchSchema does not exist in resolveRef, maybe UIApiProvider missing?')
+            console.error('getSchema does not exist in resolveRef, maybe UIApiProvider missing?')
         }
         throw new SchemaRefPending(ref)
     }

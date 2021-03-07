@@ -111,7 +111,7 @@ describe('parseRefs', () => {
             }) as StoreSchemaType,
         ], [
             /*
-             * items must not be resolve
+             * items must be resolve
              */
             OrderedMap({
                 type: 'array',
@@ -120,7 +120,7 @@ describe('parseRefs', () => {
             {defs: OrderedMap({country: mockDefinitions.get('germany_id')})},
             OrderedMap({
                 type: 'array',
-                items: OrderedMap({'$ref': '#germany_id'}),
+                items: mockDefinitions.get('germany_id'),
             }) as StoreSchemaType,
         ], [
             /*
@@ -448,7 +448,7 @@ describe('parseRefs', () => {
                     },
                 },
             }) as StoreSchemaType,
-            {fetchSchema: (ref) => ref === 'dummy-3.json' ? Map() : undefined},
+            {getSchema: (ref) => ref === 'dummy-3.json' ? Map() : undefined},
             createMap({
                 'https://localhost:8080/root-2.json': {
                     'dummy-1a.json': ['*'],
@@ -468,7 +468,9 @@ describe('parseRefs', () => {
             const res = parseRefs(schema, context)
             const r = res.pending.equals(expectedPending)
             if (!r) {
-                console.error(res.pending.toJS(), expectedPending.toJS())
+                if (process.env.NODE_ENV === 'development') {
+                    console.error(res.pending.toJS(), expectedPending.toJS())
+                }
             }
             expect(r).toBe(true)
         }

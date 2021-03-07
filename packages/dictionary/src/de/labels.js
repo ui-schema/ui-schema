@@ -1,0 +1,17 @@
+export const labels = {
+    'loading': 'Lade..',
+    'ok': 'Ok',
+    'add': 'Hinzufügen',
+    'remove': 'Entfernen',
+    'delete': 'Löschen',
+    'delete-confirm': 'Wirklich löschen?',
+    'add-number': 'Neue Nummer',
+    'add-entry': 'Neuer Eintrag',
+    'entry': 'Eintrag',
+    'remove-entry': 'Entferne Eintrag',
+    'add-item': 'Neues Element',
+    'remove-item': 'Lösche Element',
+    'move-up': 'Nach oben',
+    'move-down': 'Nach unten',
+    'move-to-position': (context) => `Verschiebe zur ${context.get('nextIndex')}. Position`,
+}

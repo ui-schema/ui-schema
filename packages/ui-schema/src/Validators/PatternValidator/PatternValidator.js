@@ -1,3 +1,5 @@
+import {Map} from 'immutable';
+
 const ERROR_PATTERN = 'pattern-not-matching';
 
 /**
@@ -30,11 +32,11 @@ const patternValidator = {
 
         if(!validatePattern(type, value, pattern)) {
             valid = false;
-            errors = errors.addError(ERROR_PATTERN);
+            errors = errors.addError(ERROR_PATTERN, Map({pattern, patternError: schema.get('patternError')}));
         }
 
         return {errors, valid}
-    }
+    },
 };
 
 

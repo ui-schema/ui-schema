@@ -36,6 +36,7 @@ Supports extra keywords:
 
 - `view`
     - `btnSize` either `small` (default) or `medium`
+    - `hideTitle` when `true` doesn't show any title
 
 Components:
 

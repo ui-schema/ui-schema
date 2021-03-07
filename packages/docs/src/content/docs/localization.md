@@ -1,5 +1,7 @@
 # Localization of UI-Schema
 
+Checkout the [dictionary package](#dictionary-package)!
+
 ## Translation
 
 Supplying the `t` prop to a `UIGenerator` enables dynamic translations and connecting any translation library.
@@ -165,7 +167,7 @@ UI-Schema includes a very simple, small and powerful **immutable based localizat
 ```jsx harmony
 import React from "react";
 import {
-    t, createMap, UIGenerator,
+    makeTranslator, createMap, UIGenerator,
     ERROR_NOT_SET,
 } from "@ui-schema/ui-schema";
 
@@ -188,15 +190,16 @@ const dictionary = createMap({
     },
 });
 
-// using `t` to build a function that knows the english dictionary
+// using `makeTranslator` to build a function that knows the english dictionary
 //   and can work with the schema `t` keyword
-const tEN = t(dictionary, 'en');
+const tEN = makeTranslator(dictionary, 'en');
 
 // this generator is using english translations for e.g. error messages
 export const LocaleGenerator = p =>
     <UIGenerator t={tEN} {...p}/>
-
 ```
+
+> ❗ the function `makeTranslator` was named `t` up to `v0.2.0-rc.0`, the exported function `t` (not keyword, not property) will be removed in `v0.3.0`
 
 ### Translation in schema
 
@@ -225,27 +228,58 @@ Keyword `t` is not default JSON-Schema, it is a `object` containing multiple or 
 }
 ```
 
-### List of used keys
+## Dictionary Package
 
-In some widgets labels are included by default, also default error messages are existing, those should be translated for each usage.
+Some widgets are using labels by default, also default error messages are existing, those should be translated for each usage.
 
-> todo: create list of those
->
-> todo: create `@ui-schema/translation` with common and error translations
+Checkout the `@ui-schema/dictionary` [sources](https://github.com/ui-schema/ui-schema/tree/master/packages/dictionary) to see the used/needed translations, or simply use it directly!
 
-These are the used error messages:
+> Created another language? A pull request to share it with us would be awesome!
 
-```js
-import {
-    ERROR_CONST_MISMATCH, ERROR_DUPLICATE_ITEMS, ERROR_ENUM_MISMATCH,
-    ERROR_MAX_LENGTH, ERROR_MIN_LENGTH, ERROR_MULTIPLE_OF, ERROR_NOT_FOUND_CONTAINS,
-    ERROR_NOT_SET, ERROR_PATTERN, ERROR_WRONG_TYPE
-} from "@ui-schema/ui-schema";
+```bash
+npm i --save @ui-schema/dictionary
+```
 
-// e.g. for `ERROR_CONST_MISMATCH` the value is `const-mismatch`, will pushed to `t` like:
-//    text:           error.const-mismatch
-//    context:        {const: <value-expected>}
-//    translate like: (context) => `Expected value is ${context.get('const')}`,
+```jsx
+import React from 'react';
+import AccountBox from '@material-ui/icons/AccountBox';
+import {createMap} from '@ui-schema/ui-schema/Utils/createMap'
+import {makeTranslator} from '@ui-schema/ui-schema/Translate/makeTranslator';
+import * as en from '@ui-schema/dictionary/en'
+import * as de from '@ui-schema/dictionary/de'
+
+// for material-ui only icons which are set manually through schema are needed to add here
+const icons = {
+    'AccountBox': () => <AccountBox/>,
+};
+
+const dicEN = createMap({
+    error: en.errors,
+    labels: {...en.labels, ...en.richText},
+    icons,
+    widget: {}, // overwrite single widget translations
+    titles: {}, // overwrite specific titles all the time (no matter in which widget)
+});
+
+const dicDE = createMap({
+    error: de.errors,
+    labels: {...de.labels, ...de.richText},
+    icons,
+    widget: {},
+    titles: {},
+});
+
+const tEN = makeTranslator(dicEN, 'en');
+const tDE = makeTranslator(dicDE, 'de');
+
+const browserT = (text, context, schema) => {
+    // using either some custom language in `localStorage` or the browser language
+    // here you can also intercept and use any other translation library (maybe you need to add this inside an useEffect/useCallback)
+    const locale = window.localStorage.getItem('locale') || navigator.language;
+    return locale === 'de' ? tDE(text, context, schema) : tEN(text, context, schema);
+};
+
+export {browserT}
 ```
 
 ## LTR - RTL
@@ -265,6 +299,8 @@ When no translation should be used, but e.g. the property names should simply be
 - `tt: 'lower'` turns all letters in lowercase
 - `tt: 'upper-beauty'` applies optimistic-beautification and turns all letters in UPPERCASE
 - `tt: 'lower-beauty'` applies optimistic-beautification and turns all letters in lowercase
+- `tt: 'beauty-text'` will only beautify if the value is not-a-number after `* 1`, usefull for mixed values in e.g. `enum` with `"-1", "1", "+1"`
+- `tt: 'beauty-igno-lead'` will only beautify after no `.-_` was found, prepending the value again, useful for `-new.name` to `-New Name`
 - `tt: 'no-special'` will only print normal a-Z 0-9 chars ❌
 - `tt` should support `boolean`, `string` and `array|List` ❌
 - `tt` should support inheritance through the schema (define one-time per schema) ❌
@@ -277,10 +313,10 @@ The process is as follows:
 
 - if not string, don't do anything
 - replace:
-    - `__` with a space
     - `_` with a space
     - `.` with a space
     - `-` with a space
+    - `  ` (double spaces) with a single space
 - find words, anything that is separated by spaces
 - uppercase the first letter of each found word
 - removing duplicate spaces

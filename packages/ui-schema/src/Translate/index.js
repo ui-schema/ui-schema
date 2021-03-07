@@ -1,3 +1,4 @@
+export * from './makeTranslator'
 export * from './relT'
 export * from './t'
 export * from './Trans'

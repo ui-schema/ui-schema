@@ -1,12 +1,13 @@
 import React from 'react';
 import {List} from 'immutable';
+import {useUID} from 'react-uid';
 import Add from '@material-ui/icons/Add';
 import Delete from '@material-ui/icons/Delete';
 import Box from '@material-ui/core/Box';
 import Slider from '@material-ui/core/Slider';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import {TransTitle, extractValue, memo} from '@ui-schema/ui-schema';
+import {TransTitle, extractValue, memo, Trans} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 import {AccessTooltipIcon} from '../../Component/Tooltip/Tooltip';
 
@@ -29,6 +30,7 @@ const NumberSliderRenderer = ({
                                   showValidity, valid, errors, required,
                                   minItems, maxItems,
                               }) => {
+    const uid = useUID();
     let hasMulti = false;
     let canAdd = false;
     if(schema.get('type') === 'array') {
@@ -62,14 +64,14 @@ const NumberSliderRenderer = ({
     }
 
     return <React.Fragment>
-        <Typography id={'discrete-slider-' + ownKey} gutterBottom color={!valid && showValidity ? 'error' : 'initial'}>
+        <Typography id={'uis-' + uid} gutterBottom color={!valid && showValidity ? 'error' : 'initial'}>
             <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>{required ? ' *' : null}
         </Typography>
 
         <Box style={{display: 'flex'}} mt={schema.getIn(['view', 'mt'])} mb={schema.getIn(['view', 'mb'])}>
             <Slider
                 getAriaValueText={valuetext}
-                aria-labelledby={'discrete-slider-' + ownKey}
+                aria-labelledby={'uis-' + uid}
                 valueLabelDisplay={schema.getIn(['view', 'tooltip'])}
                 step={typeof enumVal !== 'undefined' || typeof constVal !== 'undefined' ? null : multipleOf}
                 track={schema.getIn(['view', 'track'])}
@@ -95,6 +97,9 @@ const NumberSliderRenderer = ({
                         console.error('Invalid Type: input not a number in:', e.target, value);
                         return;
                     }
+                    if(schema.get('readOnly')) {
+                        return
+                    }
                     onChange(
                         storeKeys, ['value'],
                         () => ({value: schema.get('type') === 'array' ? List(value) : value * 1}),
@@ -103,7 +108,7 @@ const NumberSliderRenderer = ({
                     )
                 }}
             />
-            {hasMulti ? <IconButton
+            {!schema.get('readOnly') && hasMulti ? <IconButton
                 size={'small'} disabled={!canAdd} style={{margin: 'auto 6px'}}
                 onClick={() =>
                     onChange(
@@ -113,7 +118,7 @@ const NumberSliderRenderer = ({
                     )
                 }
             >
-                <AccessTooltipIcon title={'Add Number'}>
+                <AccessTooltipIcon title={<Trans text={'labels.add-number'}/>}>
                     <Add fontSize={'inherit'}/>
                 </AccessTooltipIcon>
             </IconButton> : null}

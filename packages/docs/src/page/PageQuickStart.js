@@ -112,7 +112,7 @@ import React from "react";
 
 // Import UI Generator
 import {
-    UIGenerator,                  // main component
+    UIGenerator,                   // main component
     isInvalid,                     // for validity checking
     createEmptyStore, createStore, // for initial data-store creation
     createMap, createOrderedMap    // for deep immutables

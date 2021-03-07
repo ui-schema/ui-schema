@@ -1,7 +1,7 @@
 {
     "name": "@ui-schema/pro",
-    "version": "0.0.1",
-    "description": "Enterprise Components and Utilities for UI Schema, an advanced JSON-Schema Form Generator.",
+    "version": "0.0.2",
+    "description": "Components and Utilities for more advanced usages of UI-Schema",
     "homepage": "https://ui-schema.bemit.codes/docs/pro",
     "author": "Michael Becker <michael@bemit.codes>",
     "license": "MIT",
@@ -26,16 +26,17 @@
         "url": "https://github.com/ui-schema/ui-schema/issues"
     },
     "scripts": {
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts build && rm -rf build/dts",
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "devDependencies": {
-        "@ui-schema/ui-schema": ">=0.2.0-alpha",
+        "@ui-schema/ui-schema": ">=0.2.0-rc.0",
         "immutable": "^4.0.0-rc.12",
         "react": "^16.12"
     },
     "peerDependencies": {
         "immutable": "^4.0.0-rc.12",
-        "@ui-schema/ui-schema": ">=0.2.0-alpha",
+        "@ui-schema/ui-schema": ">=0.2.0-rc.0",
         "react": "^16.8"
     },
     "publishConfig": {

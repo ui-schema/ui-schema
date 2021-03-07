@@ -17,16 +17,18 @@ const switchStyle = makeStyles(theme => ({
 }));
 
 const BoolRenderer = ({ownKey, value, onChange, schema, storeKeys, showValidity, valid, required, errors}) => {
-    const currentVal = !!value;
+    const currentVal = Boolean(value);
 
     const classes = switchStyle({error: !valid && showValidity});
     return <>
         <FormControlLabel
+            disabled={schema.get('readOnly')}
             control={
                 <Switch
                     classes={classes}
                     required={required}
                     checked={currentVal}
+                    disabled={schema.get('readOnly')}
                     onChange={() =>
                         onChange(
                             storeKeys, ['value'],

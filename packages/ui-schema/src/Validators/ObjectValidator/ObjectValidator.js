@@ -33,13 +33,6 @@ export const validateObject = (schema, value) => {
             if(tmp_err.hasError()) {
                 err = err.addErrors(tmp_err);
             }
-            /*if(typeof tmp_err === 'string' || (List.isList(tmp_err) && tmp_err.size)) {
-                if(List.isList(tmp_err)) {
-                    err = err.concat(tmp_err);
-                } else {
-                    err = err.push(tmp_err);
-                }
-            }*/
         });
     }
 

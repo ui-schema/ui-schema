@@ -1,5 +1,6 @@
 {
     "type": "object",
+    "version": "0.0.6",
     "widget": "FormGroup",
     "properties": {
         "street_address": {
@@ -17,6 +18,10 @@
             "enum": [
                 "Germany",
                 "France",
+                "Spain",
+                "Swiss",
+                "Austria",
+                "Ireland",
                 "Italy"
             ]
         }

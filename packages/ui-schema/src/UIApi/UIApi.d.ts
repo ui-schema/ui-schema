@@ -9,11 +9,11 @@ export const PROGRESS_ERROR = 'error'
 
 export type PROGRESS = false | 'start' | true | 'error'
 
-export function useProgress(): [PROGRESS, React.SetStateAction<PROGRESS>]
+export function useProgress(): [PROGRESS, React.Dispatch<React.SetStateAction<PROGRESS>>]
 
 export interface UIApiContextType {
     schemas: Map<string, StoreSchemaType>
-    loadSchema: (url: string) => Promise<PROGRESS>
+    loadSchema: (url: string, versions?: string[]) => Promise<PROGRESS>
 }
 
 export type schemaLocalCachePath = string
@@ -22,10 +22,11 @@ export function isLoaded(schemas: UIApiContextType['schemas'], ref: string, vers
 
 export type UIApiContext = React.ContextType<UIApiContextType>
 
-export function useUIApi(): UIApiContext
+export function useUIApi(): UIApiContextType
 
 export interface UIApiProviderProps {
     loadSchema: (refUrl: string) => void
+    noCache?: boolean
 }
 
-export type UIApiProvider = React.ComponentType<React.PropsWithChildren<UIApiProviderProps>>
+export function UIApiProvider<P extends React.PropsWithChildren<UIApiProviderProps>>(props: P): React.ReactElement

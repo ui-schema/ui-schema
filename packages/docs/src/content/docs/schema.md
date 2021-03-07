@@ -27,11 +27,11 @@ Matches the rendered widget, keywords used:
 - `title` what should be used as title, supported by [TransTitle](/docs/localization#example-transtitle)
 - `description` should be used as description (e.g. alt description) *(per widget)*
 - `$comment` is recommended to leave maintaining notes
-- `readOnly` restricts that the a value can not be changed ❌
-    - how does this influence `default`?
-    - text fields need to support `disabled`, but what for e.g. `GenericList`
-    - should the store be `readOnly` aware? so it simply is impossible to change those values?
-        - but this could be a really tricky thing with `allOf` and `default`
+- `readOnly` restricts that the a value can not be changed
+    - currently:
+        - does not influence `default`
+        - for SimpleList/GenericList only for the array level, if also the values must be read only, the keyword must be set on all
+        - doesn't do anything for `object`
     - should it be possible to render something completely different for read only?
         - e.g. a table would make sense for a read only `GenericList`/`SimpleList`
 - `writeOnly` restricts that the widget does not display it's value, but can change it ❌

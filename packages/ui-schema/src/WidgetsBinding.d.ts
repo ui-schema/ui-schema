@@ -14,7 +14,7 @@ export interface WidgetsBindingBase {
     // validator functions
     validators: ValidatorPlugin[]
     // define native JSON-schema type widgets
-    types: { [key: string]: any }
+    types: { [key: string]: React.ComponentType }
     // define custom widgets
-    custom: { [key: string]: any }
+    custom: { [key: string]: React.ComponentType }
 }

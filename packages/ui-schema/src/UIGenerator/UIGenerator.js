@@ -24,7 +24,9 @@ export const UIProvider = ({
                                showValidity,
                            }) => {
     if(!(store instanceof UIStore)) {
-        console.error('given store must be a valid UIStore')
+        if(process.env.NODE_ENV === 'development') {
+            console.error('given store must be a valid UIStore')
+        }
         return null;
     }
     return <UIStoreProvider store={store} onChange={onChange} schema={schema}>

@@ -6,6 +6,8 @@ The props passed to the `UIGenerator`, `UIGeneratorNested` are accessible throug
 
 Basic [flowchart](#flowchart) of the UIGenerator to Widget logic.
 
+> ❗ The `UIMetaProvder` and thus usages of `UIGenerator`, `UIProvider`,`UIStoreProvider` will have a breaking change in `v0.3.0` to enable much better performance optimizes, [see issue](https://github.com/ui-schema/ui-schema/issues/80)
+
 ## UIStore
 
 Values are stored in `UIStore`, an immutable record, created with [createStore](#createstore) or [createEmptyStore](#createemptystore):
@@ -129,7 +131,13 @@ const Demo = () => {
 
 The internal function to update the store, implements the `deleteOnEmpty` logic and handling the execution of `updater` and the updating of the store with the results.
 
-Returns a function which must receive the current store and will return the updated store.
+Returns a function which must receive the current store, it will return the updated store.
+
+See example above on how to use it, additionally you can intercept the prevStore and nextStore through wrapping the function in logic.
+
+```js
+import {storeUpdater} from '@ui-schema/ui-schema/UIStore/storeUpdater';
+```
 
 ## UIMetaProvider
 
@@ -179,6 +187,8 @@ const Comp = withUIMeta(
 Main entry point for every new UI Schema generator,  starts the whole schema and renders the RootRenderer with `UIRootRenderer`.
 
 ### UIGeneratorNested
+
+> **deprecated**, use [PluginStack](#pluginStack) instead, this component may be removed in `0.3.0` as it seems no longer needed with the now optimized logic/component flow
 
 Automatic nesting ui generator, uses the parent contexts, starts a UIGenerator at schema-level with `UIRootRenderer`.
 
@@ -258,9 +268,19 @@ The `loadSchema` property needs a function which accepts the url and must return
 const loadSchema = (url) => {
     return fetch(url).then(r => r.json())
 }
-const Provider = ({children}) => <UIApiProvider loadSchema={loadSchema}>
+const Provider = ({children}) => <UIApiProvider
+    loadSchema={loadSchema}
+    /* disables localStorage cache of e.g. loaded schemas */
+    noCache={false}
+>
     {children}
 </UIApiProvider>
+```
+
+With this variable you get the used cache key in the `localStorage`
+
+```jsx
+import {schemaLocalCachePath} from '@ui-schema/ui-schema/UIApi/UIApi'
 ```
 
 ## Widget Renderer

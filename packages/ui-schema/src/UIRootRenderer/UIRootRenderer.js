@@ -17,7 +17,9 @@ let DumpRootRenderer = ({rootRenderer: RootRenderer, ...props}) => {
 DumpRootRenderer = memo(DumpRootRenderer);
 
 const mustBeSet = name => {
-    console.error(name + ' must be set');
+    if(process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+        console.error(name + ' must be set');
+    }
     return null;
 };
 
@@ -41,7 +43,9 @@ export const UIRootRenderer = () => {
     const {RootRenderer} = widgets;
 
     if(!RootRenderer) {
-        console.error('Widget RootRenderer not existing');
+        if(process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+            console.error('Widget RootRenderer not existing');
+        }
         return null;
     }
 
