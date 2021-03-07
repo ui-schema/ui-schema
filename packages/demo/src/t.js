@@ -25,7 +25,7 @@ const icons = {
 
 const dicEN = createMap({
     error: en.errors,
-    labels: {...en.labels, ...en.richText},
+    labels: {...en.labels, ...en.richText, ...en.dnd},
     // for material-ui only icons which are set manually through schema are needed to add
     icons,
     widget: {
@@ -43,7 +43,7 @@ const dicEN = createMap({
 
 const dicDE = createMap({
     error: de.errors,
-    labels: {...de.labels, ...de.richText},
+    labels: {...de.labels, ...de.richText, ...de.dnd},
     icons,
     widget: {
         stepper: {
@@ -69,7 +69,7 @@ const tDE = makeTranslator(dicDE, 'de');
 const browserT = (text, context, schema) => {
     const locale = window.localStorage.getItem('locale') || navigator.language;
     return locale === 'de' ? tDE(text, context, schema) : tEN(text, context, schema);
-    //return tEN(text, context, schema);
+    return tEN(text, context, schema);
 };
 
 export {browserT}

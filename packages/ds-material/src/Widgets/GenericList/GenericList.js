@@ -46,8 +46,12 @@ let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, on
 
                     <Typography
                         component={'p'} variant={'caption'} align={'center'}
-                        aria-label={'Item Number'} style={{margin: '6px 0', minWidth: '2rem'}}>
+                        style={{margin: '6px 0', minWidth: '2rem'}}
+                    >
                         {index + 1}.
+                        <Typography component={'span'} variant={'srOnly'}>
+                            <Trans text={'labels.entry'}/>
+                        </Typography>
                     </Typography>
 
                     {!readOnly && index < listSize - 1 ? <IconButton

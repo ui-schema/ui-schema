@@ -56,6 +56,7 @@ let ContentTools = (
             setAddSelectionIndex={setAddSelectionIndex}
             showAddSelection={addSelectionIndex !== -1}
             index={dataSize}
+            nameOfBlock={schema.getIn(['dragDrop', 'nameOfBlock']) as string[] | undefined}
             asBlock
             forceShow
         /> : null}

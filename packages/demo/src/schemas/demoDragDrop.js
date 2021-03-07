@@ -123,6 +123,10 @@ const blocks = {
                 widget: 'DroppablePanel',
                 dragDrop: {
                     allowed: ['address'],
+                    nameOfBlock: {
+                        en: 'address',
+                        de: 'Addresse',
+                    },
                 },
             },
         },

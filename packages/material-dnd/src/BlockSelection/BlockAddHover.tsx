@@ -4,17 +4,21 @@ import IconButton from '@material-ui/core/IconButton'
 import Fade from '@material-ui/core/Fade'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip/Tooltip'
 import { BlockAddProps } from './BlockAddProps'
+import { Trans } from '@ui-schema/ui-schema'
+import { Map } from 'immutable'
 
 export interface BlockAddHoverProps {
     forceShow?: boolean
     asBlock?: boolean
+    index: number
+    nameOfBlock?: string[]
 }
 
 export const BlockAddHover: React.ComponentType<BlockAddProps & BlockAddHoverProps> = (
     {
         setAddSelectionIndex, showAddSelection, index,
-        forceShow, asBlock,
-    }: BlockAddProps & { index: number, forceShow?: boolean, asBlock?: boolean }
+        forceShow, asBlock, nameOfBlock,
+    }
 ) => {
     const [showAdd, setShowAdd] = React.useState(false)
     return <div
@@ -47,7 +51,6 @@ export const BlockAddHover: React.ComponentType<BlockAddProps & BlockAddHoverPro
                 setShowAdd(false)
             }
         }}
-        aria-label={showAddSelection ? 'Close Selection' : 'Add New Block'}
     >
         <Fade in={forceShow || showAdd}>
             <IconButton
@@ -67,7 +70,12 @@ export const BlockAddHover: React.ComponentType<BlockAddProps & BlockAddHoverPro
                 }}
             >
                 {showAddSelection ? null :
-                    <AccessTooltipIcon title={showAddSelection ? 'Close Selection' : 'Add New Block'}>
+                    // @ts-ignore
+                    <AccessTooltipIcon title={
+                        showAddSelection ?
+                            <Trans text={'labels.dnd-close-selection'}/> :
+                            <Trans text={'labels.dnd-add-new'} context={Map({name: nameOfBlock})}/>
+                    }>
                         <IcAdd fontSize={'inherit'}/>
                     </AccessTooltipIcon>}
             </IconButton>

@@ -1,6 +1,8 @@
 import React from 'react'
+import { useUID } from 'react-uid'
 import { useDrag, useDrop, DropTargetMonitor, DragSourceMonitor } from 'react-dnd'
 import Grow from '@material-ui/core/Grow'
+import Typography from '@material-ui/core/Typography'
 import IcDrag from '@material-ui/icons/DragHandle'
 import IcDelete from '@material-ui/icons/Delete'
 import IcDeleteOutline from '@material-ui/icons/DeleteOutline'
@@ -19,6 +21,7 @@ import { AccessTooltipIcon } from '@ui-schema/ds-material'
 import { BlockAddHover } from '@ui-schema/material-dnd/BlockSelection/BlockAddHover'
 import { handleDragEnd, handleMoveDown, handleMoveUp } from '@ui-schema/material-dnd/DragDropProvider/storeHelper'
 import { memo } from '@ui-schema/ui-schema/Utils/memo/memo'
+import { Trans } from '@ui-schema/ui-schema'
 
 let BlockPanel: React.ComponentType<DraggableBlockProps> = (
     {
@@ -28,6 +31,7 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
         handleBlockDelete, blocksSize, setAddSelectionIndex,
     }
 ) => {
+    const uid = useUID()
     const timer = React.useRef<number | undefined>()
     React.useEffect(() => {
         return () => window.clearTimeout(timer.current)
@@ -113,11 +117,16 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
                             e.stopPropagation()
                             handleMoveUp(onChange, storeKeys)
                         }}
-                        // need to use `title` here,
-                        // as after moving ab item `AccessTooltipIcon` is sometimes still open
-                        title={'Move Up'}
+                        aria-labelledby={'uis-' + uid + '-up'}
                     >
                         <IcArrowUpward fontSize={'inherit'}/>
+                        {/*
+                            need to use aria label here,
+                            as after moving an item, `AccessTooltipIcon` is sometimes still open
+                        */}
+                        <Typography component={'span'} variant={'srOnly'} id={'uis-' + uid + '-up'}>
+                            <Trans text={'labels.move-up'}/>
+                        </Typography>
                     </IconButton>
                 </Fade>
                 <span
@@ -128,8 +137,16 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
                         setDragFocus(true)
                     }}
                     onBlur={() => setDragFocus(false)}
+                    aria-labelledby={'uis-' + uid + '-drag'}
                 >
                     <IcDrag style={{display: 'block', cursor: 'grab'}}/>
+                    {/*
+                        need to use aria label here,
+                        as after moving an item, `AccessTooltipIcon` is sometimes still open
+                    */}
+                    <Typography component={'span'} variant={'srOnly'} id={'uis-' + uid + '-drag'}>
+                        <Trans text={'labels.dnd-move-up-down'}/>
+                    </Typography>
                 </span>
                 <Fade in={dragFocus && !isLastEntry}>
                     <IconButton
@@ -153,11 +170,16 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
                             e.stopPropagation()
                             handleMoveDown(onChange, storeKeys)
                         }}
-                        // need to use `title` here,
-                        // as after moving ab item `AccessTooltipIcon` is sometimes still open
-                        title={'Move Down'}
+                        aria-labelledby={'uis-' + uid + '-down'}
                     >
                         <IcArrowDownward fontSize={'inherit'}/>
+                        {/*
+                            need to use aria label here,
+                            as after moving an item, `AccessTooltipIcon` is sometimes still open
+                        */}
+                        <Typography component={'span'} variant={'srOnly'} id={'uis-' + uid + '-down'}>
+                            <Trans text={'labels.move-down'}/>
+                        </Typography>
                     </IconButton>
                 </Fade>
             </div>
@@ -196,7 +218,8 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
                         setShowInfo(true)
                     }}
                 >
-                    <AccessTooltipIcon title={'Show Info'}>
+                    {/* @ts-ignore */}
+                    <AccessTooltipIcon title={<Trans text={'labels.dnd-show-block-info'}/>}>
                         <IcInfo fontSize={'inherit'}/>
                     </AccessTooltipIcon>
                 </IconButton>
@@ -226,7 +249,8 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
                         }
                     }}
                 >
-                    <AccessTooltipIcon title={deleteConfirm ? 'Confirm Delete' : 'Delete'}>
+                    {/* @ts-ignore */}
+                    <AccessTooltipIcon title={deleteConfirm ? <Trans text={'labels.delete-confirm'}/> : <Trans text={'labels.delete'}/>}>
                         {deleteConfirm ? <IcDelete fontSize={'inherit'}/> : <IcDeleteOutline fontSize={'inherit'}/>}
                     </AccessTooltipIcon>
                 </IconButton>

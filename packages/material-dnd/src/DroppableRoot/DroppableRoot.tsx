@@ -54,7 +54,8 @@ let DroppableRoot: React.ComponentType<DroppableRootProps> = (
                         }}
                         onClick={() => setOpenAll(o => !o)}
                     >
-                        <AccessTooltipIcon title={openAll ? 'Close All' : 'Open All'}>
+                        {/* @ts-ignore */}
+                        <AccessTooltipIcon title={openAll ? <Trans text={'labels.dnd-close-all'}/> : <Trans text={'labels.dnd-open-all'}/>}>
                             {openAll ? <IcUnfoldLess fontSize={'inherit'} color={'inherit'}/> :
                                 <IcUnfoldMore fontSize={'inherit'} color={'inherit'}/>}
                         </AccessTooltipIcon>

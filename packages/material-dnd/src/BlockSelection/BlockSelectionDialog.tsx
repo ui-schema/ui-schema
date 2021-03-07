@@ -1,6 +1,6 @@
 import React from 'react'
 import { List } from 'immutable'
-import { memo, StoreKeys, StoreSchemaType, TransTitle } from '@ui-schema/ui-schema'
+import { memo, StoreKeys, StoreSchemaType, Trans, TransTitle } from '@ui-schema/ui-schema'
 import MuiList from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -51,7 +51,7 @@ let EditorSelectionDialog: React.ComponentType<EditorSelectionDialogProps> = (
 ) => {
     const uid = useUID()
     return <Dialog onClose={handleClose} open={open}>
-        <DialogTitle id={'uis-' + uid}>Select Block</DialogTitle>
+        <DialogTitle id={'uis-' + uid}><Trans text={'labels.dnd-selection-title'}/></DialogTitle>
         <MuiList dense>
             {blocks?.keySeq().toArray().map((blockId: string) =>
                 <BlockSelection

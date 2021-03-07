@@ -1,13 +1,13 @@
 import React from 'react'
 import { useDrop, DropTargetMonitor } from 'react-dnd'
-import { onChangeHandler, StoreKeys, StoreSchemaType } from '@ui-schema/ui-schema'
-import { AccessTooltipIcon } from '@ui-schema/ds-material'
+import { onChangeHandler, StoreKeys, StoreSchemaType, Trans } from '@ui-schema/ui-schema'
 import { handleDragEnd } from '@ui-schema/material-dnd/DragDropProvider/storeHelper'
 import IcAdd from '@material-ui/icons/Add'
 import Typography from '@material-ui/core/Typography'
 import { BlockAddProps } from '@ui-schema/material-dnd/BlockSelection/BlockAddProps'
 import { DraggableBlock } from '@ui-schema/material-dnd/DraggableBlock/DraggableBlock'
 import { DragDropAdvancedContextType } from '@ui-schema/material-dnd/DragDropProvider/useDragDropContext'
+import { Map } from 'immutable'
 
 export interface DroppableRootSelectProps {
     setAddSelectionIndex: BlockAddProps['setAddSelectionIndex']
@@ -57,10 +57,8 @@ export const DroppableRootSelect: React.ComponentType<DroppableRootSelectProps> 
         data-handler-id={handlerId}
     >
         <span>
-            <AccessTooltipIcon title={'Add New Block'}>
-                <IcAdd fontSize={'inherit'} style={{verticalAlign: 'text-top'}}/>
-            </AccessTooltipIcon>{' '}
-            <span style={{paddingLeft: 2}}>Add a block!</span>
+            <IcAdd fontSize={'inherit'} style={{verticalAlign: 'text-top'}}/>
+            <span style={{paddingLeft: 2}}><Trans text={'labels.dnd-add-a-block'} context={Map({name: schema.getIn(['dragDrop', 'nameOfBlock'])})}/></span>
         </span>
     </Typography>
 }
