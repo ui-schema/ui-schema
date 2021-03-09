@@ -4,10 +4,8 @@ import {useUID} from 'react-uid';
 import {useUtils} from '@material-ui/pickers';
 import {List} from 'immutable';
 
-function fromSeconds(date, secs) {
-    const t = new Date(1970, 0, 1);
-    t.setSeconds(Number(secs) + (date.date().o * 60));
-    return t;
+function fromSeconds(secs) {
+    return new Date(Number(secs) * 1000);
 }
 
 export const DateTimeBase = ({
@@ -58,8 +56,8 @@ export const DateTimeBase = ({
         disablePast={schema.getIn(['date', 'disablePast'])}
         value={value ?
             value === 'now' ? date.date() :
-                dateFormatData === 'X' ? fromSeconds(date, value) :
-                    dateFormatData === 'x' ? fromSeconds(date, value / 1000) :
+                dateFormatData === 'X' ? fromSeconds(value) :
+                    dateFormatData === 'x' ? fromSeconds(value / 1000) :
                         date.parse(value, dateFormatData)
             : null}
         onChange={(e) => {
