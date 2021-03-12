@@ -1,6 +1,6 @@
 import React from 'react'
 import { prependKey, StoreKeys, StoreSchemaType, useUI } from '@ui-schema/ui-schema'
-import { EditorSelectionDialog } from '../BlockSelection/BlockSelectionDialog'
+import { EditorSelectionDialog } from '@ui-schema/material-dnd/BlockSelection/BlockSelectionDialog'
 import { DraggableBlockProps } from '@ui-schema/material-dnd/DraggableBlock/DraggableBlock'
 import { DragDropBlockList, DragDropAdvancedContextType } from '@ui-schema/material-dnd/DragDropProvider/useDragDropContext'
 import { BlockAddHover } from '@ui-schema/material-dnd/BlockSelection/BlockAddHover'

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useUIMeta, WidgetProps } from '@ui-schema/ui-schema'
-import { DroppableRoot } from '../DroppableRoot/DroppableRoot'
+import { DroppableRoot } from '@ui-schema/material-dnd/DroppableRoot/DroppableRoot'
 import { useDragDropContext } from '@ui-schema/material-dnd/DragDropProvider/useDragDropContext'
 import { DroppableRootContentProps } from '@ui-schema/material-dnd/DroppableRoot/DroppableRootContent'
 import { DraggableBlockProps } from '@ui-schema/material-dnd/DraggableBlock/DraggableBlock'

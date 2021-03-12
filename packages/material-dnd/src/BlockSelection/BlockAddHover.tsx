@@ -3,7 +3,7 @@ import IcAdd from '@material-ui/icons/AddCircle'
 import IconButton from '@material-ui/core/IconButton'
 import Fade from '@material-ui/core/Fade'
 import { AccessTooltipIcon } from '@ui-schema/ds-material'
-import { BlockAddProps } from './BlockAddProps'
+import { BlockAddProps } from '@ui-schema/material-dnd/BlockSelection/BlockAddProps'
 import { Trans } from '@ui-schema/ui-schema'
 import { Map } from 'immutable'
 

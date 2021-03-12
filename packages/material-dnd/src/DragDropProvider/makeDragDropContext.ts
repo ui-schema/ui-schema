@@ -10,9 +10,9 @@ import {
     handleBlockAdd,
     handleBlockDelete,
     DragDropAdvancedContextType,
-} from '../DragDropProvider/useDragDropContext'
+} from '@ui-schema/material-dnd/DragDropProvider/useDragDropContext'
 
-import { getNewBlockFromId, getSourceValues, getSourceValuesType, moveDraggedValue, moveDraggedValueType } from './storeHelper'
+import { getNewBlockFromId, getSourceValues, getSourceValuesType, moveDraggedValue, moveDraggedValueType } from '@ui-schema/material-dnd/DragDropProvider/storeHelper'
 
 export interface DragDropStoreContext {
     moveDraggedValue: moveDraggedValueType

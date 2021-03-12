@@ -3,7 +3,7 @@ import {
     isImmutable,
     List, OrderedMap,
 } from 'immutable'
-import { genId } from '../genId'
+import { genId } from '@ui-schema/material-dnd/genId'
 import { onChangeHandler, StoreKeys } from '@ui-schema/ui-schema'
 import { DropTargetMonitor, XYCoord } from 'react-dnd'
 import { DragDropAdvancedContextType } from '@ui-schema/material-dnd/DragDropProvider/useDragDropContext'
