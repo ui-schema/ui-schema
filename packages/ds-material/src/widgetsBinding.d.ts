@@ -32,7 +32,4 @@ export interface MuiWidgetBinding extends WidgetsBindingBase {
     }
 }
 
-export const widgets: MuiWidgetBinding & {
-    // allow adding any further custom root components
-    [key: string]: React.ComponentType
-}
+export const widgets: MuiWidgetBinding
