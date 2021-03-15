@@ -85,6 +85,7 @@ Custom widgets for `widget`, special UIs and specific type handling:
 | `RichText`   | [multiline rich text editor](/docs/widgets/RichText) | `string` | ✅ | 🔵 | 🔵 |
 | `RichTextInline` | [single-line rich text editor](/docs/widgets/RichText) | `string` | ✅ | 🔵 | 🔵 |
 | `Code`       | [text editor with syntax highlight](/docs/widgets/Code) | `string` | ✅ | 🔵 | 🔵 |
+| `EditorJS`       | [EditorJS text editor](/docs/widgets/EditorJS) | `string` | ✅ℹ️ | 🔵 | 🔵 |
 | | | | | | |
 | **Lists** | | | | | |
 | `SimpleList` | [strings and numbers as list](/docs/widgets/SimpleList) | `array(string)`<br>`array(number)` | ✅ | 🔵 | 🔵 |
@@ -109,19 +110,22 @@ Custom widgets for `widget`, special UIs and specific type handling:
 | | | | | | |
 | **Misc** | | | | | |
 | `Table`      | table editor  | | 🔵 | 🔵 | 🔵 |
-| `Grid`       | drag-drop grid  | | 🔵 | 🔵 | 🔵 |
+| `Drag 'n Drop` | [endless nestable drag-drop lists](/docs/widgets/Drag-n-Drop-Editor)  | | ✅ℹ️ | 🔵 | 🔵 |
+| `Drag 'n Drop Lists`   | [simple drag-drop lists](/docs/widgets/Drag-n-Drop-Editor-Simple)  | | ✅ℹ️ | 🔵 | 🔵 |
 | `Accordions` | [accordion drop-downs](/docs/widgets/Accordions) for object properties with headline | `object` | ✅ | 🔵 | 🔵 |
 | `Card` | card with headline for object root and any sub-schema | `object` | ✅ | 🔵 | 🔵 |
 | `LabelBox` | box with label for object root and any sub-schema, without any styling | `object` | ✅ | 🔵 | 🔵 |
 | `FormGroup` | form group (fieldset) with label | `object` | ✅ | 🔵 | 🔵 |
 | `ExpansionPanel` | list headlines and sub-schema  | | 🔵 | 🔵 | 🔵 |
-| `Stepper`    | list with [sub-schema as steps](/docs/widgets/Stepper) | | ✅ | 🔵 | 🔵 |
+| `Stepper`    | list with [sub-schema as steps](/docs/widgets/Stepper) | | ✅ℹ️ | 🔵 | 🔵 |
 | `Tabs`       | list with sub-schema as tabs | | 🔵 | 🔵 | 🔵 |
 | `Dialog`     | sub-schema as dialog | | 🔵 | 🔵 | 🔵 |
 | `TransferList` | double select list | | 🔵 | 🔵 | 🔵 |
 | `LocationSelect` | location/geo selection | | 🔵 | 🔵 | 🔵 |
 | `Price` | | | 🔵 | 🔵 | 🔵 |
 | `NumberButton` | | | 🔵 | 🔵 | 🔵 |
+
+ℹ️= partly/work-in-progress
 
 ... more to follow
 

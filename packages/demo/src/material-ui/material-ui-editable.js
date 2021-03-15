@@ -16,29 +16,48 @@ import IcRedo from '@material-ui/icons/Redo'
 import IcUndo from '@material-ui/icons/Undo'
 import useTheme from '@material-ui/core/styles/useTheme';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter/isInvalid';
-import {fromJSOrdered} from '@ui-schema/ui-schema/Utils/createMap';
 import {UIGenerator} from '@ui-schema/ui-schema/UIGenerator';
-import {createStore, storeUpdater} from '@ui-schema/ui-schema/UIStore';
 import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro';
-import {schemaDragDrop, schemaDragDropSingle} from '../schemas/demoDragDropSimple';
-import {DroppableRootMultiple} from '@ui-schema/material-rbd/Widgets/DroppableRootMultiple';
-import {DragDropProvider} from '@ui-schema/material-rbd/DragDropProvider/DragDropProvider';
-import {makeDragDropContext} from '@ui-schema/material-rbd/DragDropProvider/makeDragDropContext';
-import {List} from 'immutable';
-import {DroppableRootSingle} from '@ui-schema/material-rbd/Widgets/DroppableRootSingle';
+import {schemaDragDropEditableSingle, schemaEditable} from '../schemas/demoDragDropEditable';
+//import {TouchBackend} from 'react-dnd-touch-backend'
+import {HTML5Backend} from 'react-dnd-html5-backend'
+import {DndProvider} from 'react-dnd'
+import {DroppableRootMultiple} from '@ui-schema/material-dnd/Widgets/DroppableRootMultiple';
+import {makeDragDropContext} from '@ui-schema/material-dnd/DragDropProvider/makeDragDropContext';
+import {DragDropProvider} from '@ui-schema/material-dnd/DragDropProvider/DragDropProvider';
+import {BlockPanel} from '@ui-schema/material-dnd/DraggableBlock/BlockPanel';
+import {createStore, storeUpdater, UIApiProvider} from '@ui-schema/ui-schema';
+import {OrderedMap} from 'immutable';
+import {DroppableRootSingle} from '@ui-schema/material-dnd/Widgets/DroppableRootSingle';
+import {DroppableRootContent} from '@ui-schema/material-dnd/DroppableRoot/DroppableRootContent';
+import {DroppablePanel} from '@ui-schema/material-dnd/Widgets/DroppablePanel';
+import {EditableContent} from '@ui-schema/material-editable/Widgets';
 
 const customWidgets = {...widgets};
+customWidgets.DraggableBlock = BlockPanel
+customWidgets.DroppableRootContent = DroppableRootContent
 customWidgets.custom = {
     ...widgets.custom,
-    SimpleDroppableRootMultiple: DroppableRootMultiple,
-    SimpleDroppableRootSingle: DroppableRootSingle,
+    DroppableRootMultiple: DroppableRootMultiple,
+    DroppableRootSingle: DroppableRootSingle,
+    DroppablePanel: DroppablePanel,
+    EditableContent: EditableContent,
 };
 
-const initialStore = createStore(fromJSOrdered({person: {name: 'Kim Smith'}}))
+const touchBackendOpts = {
+    //enableMouseEvents: true,
+}
 
-const schema = schemaDragDrop
+const loadSchema = (url, versions) => {
+    console.log('Demo loadSchema (url, optional versions)', url, versions)
+    return fetch(url).then(r => r.json())
+}
 
-const MultiEditor = () => {
+const initialStore = undefined
+
+const schema = schemaDragDropEditableSingle
+
+const EditorEditablePro = () => {
     const theme = useTheme();
 
     const [showHistory, setShowHistory] = React.useState(false);
@@ -92,18 +111,22 @@ const MultiEditor = () => {
             >save</Button>
         </div>
 
-        <DragDropProvider contextValue={dragStoreContext.contextValue}>
-            <UIGenerator
-                schema={schema}
-                store={store.current}
-                onChange={onChange}
-                widgets={customWidgets}
-                showValidity={showValidity}
-                t={browserT}
-            >
-                <MuiSchemaDebug/>
-            </UIGenerator>
-        </DragDropProvider>
+        <UIApiProvider loadSchema={loadSchema} noCache>
+            <DragDropProvider contextValue={dragStoreContext.contextValue}>
+                <DndProvider backend={HTML5Backend} options={touchBackendOpts}>
+                    <UIGenerator
+                        schema={schema}
+                        store={store.current}
+                        onChange={onChange}
+                        widgets={customWidgets}
+                        showValidity={showValidity}
+                        t={browserT}
+                    >
+                        <MuiSchemaDebug/>
+                    </UIGenerator>
+                </DndProvider>
+            </DragDropProvider>
+        </UIApiProvider>
 
         <div style={{width: '100%'}}>
             <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
@@ -146,32 +169,28 @@ const MultiEditor = () => {
     </React.Fragment>
 };
 
-const schemaSingle = schemaDragDropSingle
-
-const SingleEditor = () => {
+const EditorEditable = () => {
     const [showValidity, setShowValidity] = React.useState(false);
-    const [store, setStore] = React.useState(() => createStore(List()))
+
+    const [store, setStore] = React.useState(() => createStore(OrderedMap()));
+
     const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
         setStore(prevStore => {
             return storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
         })
     }, [setStore])
 
-    const dragStoreContext = makeDragDropContext(onChange, schema.get('$defs') || schema.get('definitions'))
-
-    return <React.Fragment>
-        <DragDropProvider contextValue={dragStoreContext.contextValue}>
-            <UIGenerator
-                schema={schemaSingle}
-                store={store}
-                onChange={onChange}
-                widgets={customWidgets}
-                showValidity={showValidity}
-                t={browserT}
-            >
-                <MuiSchemaDebug/>
-            </UIGenerator>
-        </DragDropProvider>
+    return <div style={{marginTop: 24, width: '100%'}}>
+        <UIGenerator
+            schema={schemaEditable}
+            store={store}
+            onChange={onChange}
+            widgets={customWidgets}
+            showValidity={showValidity}
+            t={browserT}
+        >
+            <MuiSchemaDebug/>
+        </UIGenerator>
 
         <div style={{width: '100%'}}>
             <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
@@ -179,13 +198,13 @@ const SingleEditor = () => {
                 {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
             </div>
         </div>
-    </React.Fragment>
+    </div>
 };
 
 const Main = () => {
     return <React.Fragment>
-        <MultiEditor/>
-        <SingleEditor/>
+        <EditorEditable/>
+        <EditorEditablePro/>
     </React.Fragment>
 };
 

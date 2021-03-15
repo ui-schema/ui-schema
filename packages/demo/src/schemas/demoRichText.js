@@ -1,4 +1,4 @@
-import {createOrderedMap} from "@ui-schema/ui-schema";
+import {createOrderedMap} from '@ui-schema/ui-schema';
 
 const schemaRichText = createOrderedMap({
     type: 'object',
@@ -6,16 +6,17 @@ const schemaRichText = createOrderedMap({
         text_1: {
             type: 'string',
             widget: 'RichText',
+            placeholder: 'Write something great!',
             view: {
                 sizeXs: 10,
-            }
+            },
         },
         pure: {
             type: 'string',
             widget: 'Text',
             view: {
                 sizeXs: 2,
-            }
+            },
         },
         text_2a: {
             type: 'string',
@@ -25,8 +26,8 @@ const schemaRichText = createOrderedMap({
                 sizeXs: 10,
                 sizeMd: 5,
                 topControls: false,
-                btnSize: 'small'
-            }
+                btnSize: 'small',
+            },
         },
         text_2b: {
             type: 'string',
@@ -35,15 +36,15 @@ const schemaRichText = createOrderedMap({
                 sizeXs: 10,
                 sizeMd: 5,
                 topControls: false,
-                btnSize: 'medium'
-            }
+                btnSize: 'medium',
+            },
         },
         pure2: {
             type: 'string',
             widget: 'Text',
             view: {
                 sizeXs: 2,
-            }
+            },
         },
         text_dense: {
             type: 'string',
@@ -53,7 +54,7 @@ const schemaRichText = createOrderedMap({
                 topControls: false,
                 dense: true,
                 hideMd: true,
-            }
+            },
         },
         pure_dense: {
             type: 'string',
@@ -61,14 +62,14 @@ const schemaRichText = createOrderedMap({
             view: {
                 dense: true,
                 sizeXs: 2,
-            }
+            },
         },
         pure3: {
             type: 'string',
             widget: 'Text',
             view: {
                 sizeXs: 2,
-            }
+            },
         },
         text_inline: {
             type: 'string',
@@ -76,7 +77,7 @@ const schemaRichText = createOrderedMap({
             view: {
                 sizeXs: 8,
                 sizeMd: 5,
-            }
+            },
         },
         text_inline_dense: {
             type: 'string',
@@ -85,9 +86,9 @@ const schemaRichText = createOrderedMap({
                 sizeXs: 8,
                 sizeMd: 5,
                 dense: true,
-            }
-        }
-    }
+            },
+        },
+    },
 });
 
 export {schemaRichText}
