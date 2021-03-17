@@ -189,7 +189,6 @@ let ItemAccordionSummary = (
                     display: window.innerWidth < 960 ? 'block' : 'inline-block',
                     lineHeight: window.innerWidth < 960 ? 0.7 : undefined,
                     marginLeft: window.innerWidth < 960 ? 0 : 8,
-                    //marginBottom: window.innerWidth < 960 ? -12 : undefined,
                     fontWeight: 'normal',
                 }}
                 variant={window.innerWidth < 960 ? 'body2' : 'body1'}
@@ -251,7 +250,6 @@ export const ItemAccordion: DragDropItemWrapperType = (
     const [expanded, setExpanded] = React.useState<boolean>(Boolean(open))
     const [showAddSelection, setShowAddSelection] = React.useState(false)
     const {schemas} = useUIApi()
-    //const schemas = Map() as Map<string, any>
     const {palette} = useTheme()
     React.useEffect(() => {
         setExpanded(Boolean(open))
@@ -284,7 +282,6 @@ export const ItemAccordion: DragDropItemWrapperType = (
                 description={
                     refDesc ? data.getIn(refDesc) as string | undefined : undefined
                 }
-                //data={data}
             />
             <AccordionDetails>
                 {children}

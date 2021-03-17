@@ -1,9 +1,9 @@
-import { additionalProps } from '@ui-schema/material-pickers/TimeBase'
+import { AdditionalProps } from '@ui-schema/material-pickers/TimeBase'
 import { KeyboardDateTimePickerProps, DateTimePickerProps, KeyboardTimePickerProps, TimePickerProps } from '@material-ui/pickers'
 import { WidgetProps } from '@ui-schema/ui-schema'
 
 export interface DateTimeBaseInterface extends WidgetProps {
-    additionalProps: additionalProps
+    additionalProps: AdditionalProps
     dateFormat?: string
     dateFormatData?: string
     Component: React.ComponentType<any | DateTimePickerProps | KeyboardDateTimePickerProps | KeyboardTimePickerProps | TimePickerProps>

@@ -4,7 +4,6 @@ import { WidgetRenderer, TransTitle, WidgetProps } from '@ui-schema/ui-schema'
 import FormLabel from '@material-ui/core/FormLabel'
 import FormControl from '@material-ui/core/FormControl'
 import MuiFormGroup from '@material-ui/core/FormGroup'
-//import FormHelperText from '@material-ui/core/FormHelperText'
 import { useTheme } from '@material-ui/core/styles'
 
 export const FormGroup = (props: WidgetProps): React.ReactElement => {

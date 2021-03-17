@@ -70,7 +70,7 @@ export const useUI = () => {
 };
 
 // todo: remove relT here, so Trans is fully optional
-const tDefault = (text, context = {}, schema) =>
+const tDefault = (text, context = {}, schema = undefined) =>
     relT(schema, context);
 
 export const useUIMeta = () => {

@@ -23,7 +23,7 @@ export const schemaDemoEditorJS = createOrderedMap({
             default: {
                 time: 0,
                 blocks: [{
-                    'type': 'p',
+                    'type': 'paragraph',
                     'data': {
                         'text': 'Lorem ipsum dolor sit amet.',
                     },

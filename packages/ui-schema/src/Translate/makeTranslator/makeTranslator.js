@@ -12,7 +12,7 @@ import {relT} from '../relT';
  * @return {function(string, {}): string|React.ComponentType}
  */
 export const makeTranslator = (dictionary, locale = '') =>
-    (text, context = {}, schema) => {
+    (text, context = {}, schema = undefined) => {
         const schemaT = relT(schema, context, locale);
         if(schemaT) return schemaT;
 

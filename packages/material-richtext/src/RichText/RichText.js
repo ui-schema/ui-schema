@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import {beautifyKey} from '@ui-schema/ui-schema';
+import {beautifyKey, createMap} from '@ui-schema/ui-schema';
 import FormControl from '@material-ui/core/FormControl';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText';
 import {styles as inputStyles} from '@material-ui/core/Input/Input';
@@ -19,7 +19,6 @@ import {MarkdownLabel} from '../MarkdownLabel/MarkdownLabel';
 import {EditorControls} from '../EditorControls/EditorControls';
 import {blockRendererFn, editorStateFrom, editorStateTo, getBlockStyle, inlineMap, styleMap} from '../EditorExtends/EditorExtends';
 import {RichTextProvider} from '../RichTextProvider';
-import {createMap} from '@ui-schema/ui-schema';
 
 const useInputStyles = makeStyles(inputStyles);
 

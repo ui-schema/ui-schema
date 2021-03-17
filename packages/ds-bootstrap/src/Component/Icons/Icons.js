@@ -8,16 +8,17 @@ const Icon = ({onClick, label, iconName, btnSize}) => {
         window.$('[data-toggle="tooltip"]').tooltip()
     }, []);
 
-    let btnScale = 1;
+    let btnScale;
     switch(btnSize) {
-        case("small"):
+        case('small'):
             btnScale = 0.5;
             break;
-        case("medium"):
-            btnScale = 1;
-            break;
-        case("big"):
+        case('big'):
             btnScale = 2;
+            break;
+        case('medium'):
+        default:
+            btnScale = 1;
             break;
     }
 

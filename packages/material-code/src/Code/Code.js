@@ -65,17 +65,17 @@ export const Code = ({
         }
     }
 
-    const handleOnChange = React.useCallback((editor) => {
-        if(editor.doc.size !== lines) {
-            setLines(editor.doc.size);
+    const handleOnChange = React.useCallback((changedEditor) => {
+        if(changedEditor.doc.size !== lines) {
+            setLines(changedEditor.doc.size);
         }
     }, [setLines, lines]);
 
     const type = schema.get('type');
     const deleteOnEmpty = schema.get('deleteOnEmpty') || required;
-    const handleBeforeChange = React.useCallback((editor, data, value) => {
+    const handleBeforeChange = React.useCallback((editor, data, storeValue) => {
         onChange(
-            storeKeys, ['value'], () => ({value: value}),
+            storeKeys, ['value'], () => ({value: storeValue}),
             deleteOnEmpty, type,
         )
     }, [onChange, storeKeys, deleteOnEmpty, type]);

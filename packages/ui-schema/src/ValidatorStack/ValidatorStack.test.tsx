@@ -3,9 +3,8 @@ import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 // @ts-ignore
 import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
-import { ValidatorStack } from './ValidatorStack'
+import { ValidatorStack, handleValidatorStack } from './ValidatorStack'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
-import { handleValidatorStack } from './ValidatorStack'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 

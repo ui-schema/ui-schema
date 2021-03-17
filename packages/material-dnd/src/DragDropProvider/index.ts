@@ -1,4 +1,6 @@
 export * from './DragDropProvider'
+export * from './getSourceValues'
 export * from './makeDragDropContext'
+export * from './moveDraggedValue'
 export * from './storeHelper'
 export * from './useDragDropContext'

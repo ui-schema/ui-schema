@@ -219,39 +219,3 @@ export const handleDragEnd = (
         }
     )
 }
-
-export type getSourceValuesType = (item: DraggableBlock, storeKeysFrom: StoreKeys, value: any, internal: any) => { value: any, internal: any }
-
-export const getSourceValues: getSourceValuesType = (_item, storeKeysFrom, value, internal) => {
-    return {
-        value: value.getIn(storeKeysFrom),
-        internal: internal.getIn(storeKeysFrom),
-    }
-}
-
-export type moveDraggedValueType = (
-    item: DraggableBlock,
-    value: List<any> | OrderedMap<string | number, any>,
-    sourceValue: any,
-    rootKeysFrom: StoreKeys, indexFrom: number, targetKeys: StoreKeys
-) => List<any> | OrderedMap<string | number, any>
-
-export const moveDraggedValue: moveDraggedValueType = (
-    _item, value,
-    sourceValue,
-    rootKeysFrom, indexFrom, targetKeys
-): List<any> | OrderedMap<string | number, any> => {
-    return value
-        // first remove element from source
-        .updateIn(
-            rootKeysFrom,
-            (list = List()) =>
-                list.splice(indexFrom as number, 1)
-        )
-        // then add element to target
-        .updateIn(
-            targetKeys.splice(targetKeys.size - 1, 1),
-            (list = List()) =>
-                list.splice(targetKeys.last() as number, 0, sourceValue)
-        )
-}

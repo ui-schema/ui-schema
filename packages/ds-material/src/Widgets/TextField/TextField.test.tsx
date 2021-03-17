@@ -4,10 +4,9 @@ import { render } from '@testing-library/react'
 // @ts-ignore
 import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
-import { StringRenderer } from './TextField'
+import { StringRenderer, convertStringToNumber } from './TextField'
 import { List } from 'immutable'
 import { createValidatorErrors } from '@ui-schema/ui-schema'
-import { convertStringToNumber } from './TextField'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 

@@ -1,7 +1,8 @@
 import React from 'react'
 import { StoreKeys, StoreSchemaType } from '@ui-schema/ui-schema'
 import { List, OrderedMap } from 'immutable'
-import { getSourceValuesType, moveDraggedValueType } from '@ui-schema/material-dnd/DragDropProvider/storeHelper'
+import { getSourceValuesType } from '@ui-schema/material-dnd/DragDropProvider/getSourceValues'
+import { moveDraggedValueType } from '@ui-schema/material-dnd/DragDropProvider/moveDraggedValue'
 
 export type handleBlockDelete = (storeKeys: StoreKeys) => void
 export type handleBlockAdd = (blockId: string, storeKeys: StoreKeys) => void

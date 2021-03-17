@@ -12,7 +12,9 @@ import {
     DragDropAdvancedContextType,
 } from '@ui-schema/material-dnd/DragDropProvider/useDragDropContext'
 
-import { getNewBlockFromId, getSourceValues, getSourceValuesType, moveDraggedValue, moveDraggedValueType } from '@ui-schema/material-dnd/DragDropProvider/storeHelper'
+import { getNewBlockFromId } from '@ui-schema/material-dnd/DragDropProvider/storeHelper'
+import { moveDraggedValue, moveDraggedValueType } from '@ui-schema/material-dnd/DragDropProvider/moveDraggedValue'
+import { getSourceValues, getSourceValuesType } from '@ui-schema/material-dnd/DragDropProvider/getSourceValues'
 
 export interface DragDropStoreContext {
     moveDraggedValue: moveDraggedValueType

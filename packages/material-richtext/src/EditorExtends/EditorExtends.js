@@ -9,12 +9,10 @@ import {
 import {draftToMarkdown, markdownToDraft} from 'markdown-draft-js';
 
 export function getBlockStyle(block) {
-    switch(block.getType()) {
-        case 'blockquote':
-            return 'RichEditor-blockquote';
-        default:
-            return null;
+    if(block.getType() === 'blockquote') {
+        return 'RichEditor-blockquote';
     }
+    return null;
 }
 
 // Custom overrides for "code" style.
@@ -44,13 +42,8 @@ const Line = props => {
     );
 };
 
-export const blockRendererFn = function(contentBlock) {
-    const type = contentBlock.getType();
-
-    switch(type) {
-        default:
-            return {component: Line, editable: true}
-    }
+export const blockRendererFn = function() {
+    return {component: Line, editable: true}
 };
 
 export const editorStateFrom = {

@@ -23,7 +23,7 @@ const SimpleList = extractValue(memo(({
                 <FormLabel component="legend"><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></FormLabel>
             </Grid> : null}
 
-            {value ? value.map((val, i) =>
+            {value ? value.map((itemVal, i) =>
                 <Grid key={i} item xs={12} style={{display: 'flex'}}>
                     <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
                         <PluginStack
