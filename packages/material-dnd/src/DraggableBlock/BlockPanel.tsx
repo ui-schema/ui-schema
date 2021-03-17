@@ -94,6 +94,8 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
                     display: 'flex',
                     flexDirection: 'column',
                 }}
+                onMouseEnter={() => setDragFocus(true)}
+                onMouseLeave={() => setDragFocus(false)}
             >
                 <Fade in={dragFocus && storeKeys.last() > 0}>
                     <IconButton
@@ -106,9 +108,7 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
                             marginRight: 'auto',
                             marginBottom: 0,
                         }}
-                        onFocus={() => {
-                            setDragFocus(true)
-                        }}
+                        onFocus={() => setDragFocus(true)}
                         onBlur={() => setDragFocus(false)}
                         onFocusVisible={e => {
                             e.stopPropagation()
@@ -116,6 +116,7 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
                         onClick={(e) => {
                             e.stopPropagation()
                             handleMoveUp(onChange, storeKeys)
+                            setDragFocus(false)
                         }}
                         aria-labelledby={'uis-' + uid + '-up'}
                     >
@@ -133,9 +134,7 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
                     ref={drag}
                     style={{padding: '4px 0'}}
                     tabIndex={0}
-                    onFocus={() => {
-                        setDragFocus(true)
-                    }}
+                    onFocus={() => setDragFocus(true)}
                     onBlur={() => setDragFocus(false)}
                     aria-labelledby={'uis-' + uid + '-drag'}
                 >
@@ -159,9 +158,7 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
                             marginLeft: 'auto',
                             marginRight: 'auto',
                         }}
-                        onFocus={() => {
-                            setDragFocus(true)
-                        }}
+                        onFocus={() => setDragFocus(true)}
                         onBlur={() => setDragFocus(false)}
                         onFocusVisible={e => {
                             e.stopPropagation()
@@ -169,6 +166,7 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
                         onClick={(e) => {
                             e.stopPropagation()
                             handleMoveDown(onChange, storeKeys)
+                            setDragFocus(false)
                         }}
                         aria-labelledby={'uis-' + uid + '-down'}
                     >

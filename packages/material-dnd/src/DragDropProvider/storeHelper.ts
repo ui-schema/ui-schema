@@ -32,13 +32,13 @@ export const handleMoveUp = (onChange: typeof onChangeHandler, storeKeys: StoreK
 }
 
 export const handleMoveDown = (onChange: typeof onChangeHandler, storeKeys: StoreKeys): void => {
-    if (((storeKeys.last() as number) + 1) > storeKeys.size) {
-        return
-    }
     onChange(
         storeKeys.splice(storeKeys.size - 1, 1) as StoreKeys,
         ['value', 'internal'],
         ({value = List(), internal = List()}) => {
+            if (((storeKeys.last() as number) + 1) > value.size) {
+                return {value, internal}
+            }
             return {
                 value: value.splice(storeKeys.last(), 1).splice((storeKeys.last() as number) + 1, 0, value.get(storeKeys.last())),
                 internal: internal.splice(storeKeys.last(), 1).splice((storeKeys.last() as number) + 1, 0, internal.get(storeKeys.last())),
