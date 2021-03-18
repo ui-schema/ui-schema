@@ -47,10 +47,7 @@ export function UIStoreProvider(
 // UIMetaContext
 
 export interface UIMetaContext<> {
-    widgets: WidgetsBindingBase & {
-        // allow adding any further custom root components
-        [key: string]: React.ComponentType
-    }
+    widgets: WidgetsBindingBase
     t?: Translator
     showValidity?: boolean
 }
