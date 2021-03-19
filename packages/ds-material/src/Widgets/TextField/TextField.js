@@ -5,7 +5,7 @@ import {TransTitle, mapSchema, checkNativeValidity} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
 export const convertStringToNumber = (value, type) => {
-    if(type === 'number') {
+    if(type === 'number' || type === 'integer') {
         if(isNaN(value * 1)) {
             console.error('Invalid Type: input not a number in');
             return;
@@ -32,7 +32,14 @@ export const StringRenderer = ({
     const currentRef = inputRef.current;
 
     inputProps = mapSchema(inputProps, schema);
-    valid = checkNativeValidity(currentRef, valid);
+
+    if(schema.get('type') === 'number' && typeof inputProps['step'] === 'undefined') {
+        inputProps['step'] = 'any'
+    }
+
+    if(schema.get('checkNativeValidity')) {
+        valid = checkNativeValidity(currentRef, valid);
+    }
 
     React.useEffect(() => {
         if(currentRef) {

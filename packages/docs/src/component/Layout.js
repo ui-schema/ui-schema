@@ -64,9 +64,9 @@ export const CustomDrawer = () => {
     const {setOpen} = useDrawer()
     return <Drawer drawerWidth={260}>
         <List>
-            <ListItemLink to={'/'} primary={'Home'} dense showActive onClick={() => setOpen(false)}/>
-            <ListItemLink to={'/quick-start'} primary={'Quick-Start'} dense showActive onClick={() => setOpen(false)}/>
-            <ListItemLink to={'/examples'} primary={'Live Editor'} dense showActive onClick={() => setOpen(false)}/>
+            <ListItemLink to={'/'} primary={'Home'} dense showActive/>
+            <ListItemLink to={'/quick-start'} primary={'Quick-Start'} dense showActive/>
+            <ListItemLink to={'/examples'} primary={'Live Editor'} dense showActive/>
 
             <NavListNested
                 routes={[routesDocs]}
@@ -84,13 +84,13 @@ export const CustomDrawer = () => {
                     {schemas.map((schema, i) => (
                         <ListItemLink
                             key={i} to={'/examples/' + (schemas[i][0].split(' ').join('-'))}
-                            primary={schema[0]} style={{paddingLeft: 24}} dense showActive onClick={() => setOpen(false)}/>
+                            primary={schema[0]} style={{paddingLeft: 24}} dense showActive/>
                     ))}
                 </List>
             </CollapseDrawer>
             <Divider/>
-            <ListItemLink to={'/impress'} primary={'Impress'} dense showActive onClick={() => setOpen(false)}/>
-            <ListItemLink to={'/privacy'} primary={'Privacy Policy'} dense showActive onClick={() => setOpen(false)}/>
+            <ListItemLink to={'/impress'} primary={'Impress'} dense showActive/>
+            <ListItemLink to={'/privacy'} primary={'Privacy Policy'} dense showActive/>
             <Divider/>
         </List>
     </Drawer>;

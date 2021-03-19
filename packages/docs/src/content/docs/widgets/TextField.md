@@ -55,6 +55,7 @@ Supports extra keywords:
     - `shrink` to `true` to always have the label up, e.g. native-date may look wrong otherwise in some browsers (use @ui-schema/material-pickers for best date/time support)
 - `formats`
     - supports browser based translations for format mismatch, schema key: `t: 'browser''` (will be moved to another way)
+- `checkNativeValidity` to enable the native browser validation, this is only usable for some edge cases as part of [native browser translation](/docs/localization#native-translation)
 
 Components:
 

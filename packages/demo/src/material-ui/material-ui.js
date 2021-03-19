@@ -6,7 +6,7 @@ import {schemaWConditional, schemaWConditional1, schemaWConditional2} from '../s
 import {schemaWDep1, schemaWDep2} from '../schemas/demoDependencies';
 import {dataDemoMain, schemaDemoMain, schemaUser} from '../schemas/demoMain';
 import {schemaDemoReferencing, schemaDemoReferencingNetwork, schemaDemoReferencingNetworkB} from '../schemas/demoReferencing';
-import {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect, schemaNull} from '../schemas/demoSimples';
+import {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect, schemaNull, schemaSimInteger} from '../schemas/demoSimples';
 import {schemaGrid} from '../schemas/demoGrid';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -156,6 +156,7 @@ const Main = ({classes = {}}) => {
             <DummyRenderer id={'schemaSimBoolean'} schema={schemaSimBoolean} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
             <DummyRenderer id={'schemaSimCheck'} schema={schemaSimCheck} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
             <DummyRenderer id={'schemaSimNumber'} schema={schemaSimNumber} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
+            <DummyRenderer id={'schemaSimInteger'} schema={schemaSimInteger} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
             <DummyRenderer id={'schemaSimRadio'} schema={schemaSimRadio} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
             <DummyRenderer id={'schemaSimSelect'} schema={schemaSimSelect} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
         </Grid>
