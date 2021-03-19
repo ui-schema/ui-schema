@@ -56,7 +56,7 @@ export const createEmptyStore = (type = 'object') => createStore(
         List([]) :
         type === 'string' ?
             '' :
-            type === 'number' ?
+            type === 'number' || type === 'integer' ?
                 0 :
                 type === 'boolean' ?
                     false :
@@ -125,7 +125,7 @@ export const prependKey = (storeKeys, key) =>
 
 export const shouldDeleteOnEmpty = (value, force, type) => {
     // todo: mv number out here, enforces that numbers can be cleared, but should only be forced for the `""` value in number types
-    if(!force && type !== 'number') return false
+    if(!force && type !== 'number' && type !== 'integer') return false
 
     switch(type) {
         case 'string':
