@@ -46,6 +46,9 @@ export const createStore = (values) => {
     return new UIStore({
         values,
         // when array in root level, internals must be a list
+        // notice: when using special widgets that control their own list items,
+        //         the widget mustn't depend only on `undefined` internalValue, but also check for `internalValue.size`.
+        //         but only when only that widget is used in the root level
         internals: List.isList(values) ? List() : Map(),
         validity: Map({}),
     })
