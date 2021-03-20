@@ -1,7 +1,7 @@
 import React from "react";
 import {Paper,} from "@material-ui/core";
-import {PageContent} from "@control-ui/core/es/PageContent";
-import Head from "@control-ui/core/es/Head";
+import {PageContent} from "@control-ui/kit/PageContent";
+import {Head} from "@control-ui/kit/Head";
 
 const DocsHandler = ({children}) => {
     return <>

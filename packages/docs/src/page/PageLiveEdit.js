@@ -1,5 +1,5 @@
 import React from "react";
-import Head from "@control-ui/core/es/Head";
+import {Head} from "@control-ui/kit/Head";
 import LiveEditor from '../component/Schema/LiveEditor'
 
 function PageLiveEdit() {

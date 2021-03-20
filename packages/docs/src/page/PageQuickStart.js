@@ -4,10 +4,10 @@ import {Markdown} from "../component/Markdown";
 import DemoUIGenerator from "../component/Schema/DemoUIGenerator";
 import {RichCodeEditor} from "../component/RichCodeEditor";
 import {useHistory} from "react-router-dom";
-import {HeadlineMenu} from "@control-ui/docs/es/LinkableHeadline";
-import Head from "@control-ui/core/es/Head";
-import {PageBox, PageContent} from "@control-ui/core/es/PageContent";
-import {LoadingCircular} from "@control-ui/core/es/LoadingCircular";
+import {HeadlineMenu} from "@control-ui/docs/LinkableHeadline";
+import {Head} from "@control-ui/kit/Head";
+import {PageBox, PageContent} from "@control-ui/kit/PageContent";
+import {LoadingCircular} from "@control-ui/kit/Loading/LoadingCircular";
 
 const demoSchema = {
     type: 'object',
@@ -60,7 +60,7 @@ UI-Schema works with JSON-Schema and multiple design-systems, each design-system
 
 See the [**list of widgets**](/docs/overview#widget-list) for the different design-system support.
 `}/>
-                <HeadlineMenu initial/>
+                <HeadlineMenu initial disableNavLink/>
             </PageBox>
 
             <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
@@ -84,7 +84,7 @@ npm i --save @ui-schema/ui-schema immutable @ui-schema/ds-material @material-ui/
 \`\`\`
 `}/> :
                             ds === 'bts' ? <Markdown content source={`
-> not ready yet
+> no priority currently for bootstrap widgets development
 \`\`\`bash
 npm i --save @ui-schema/ui-schema immutable @ui-schema/ds-bootstrap bootstrap
 \`\`\`

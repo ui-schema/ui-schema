@@ -1,8 +1,8 @@
 import React from "react";
 import {Paper, Typography} from "@material-ui/core";
-import {PageTitle, PageContent} from "@control-ui/core/es/PageContent";
+import {PageTitle, PageContent} from "@control-ui/kit/PageContent";
 import NavProject from "../component/NavProject";
-import Head from "@control-ui/core/es/Head";
+import {Head} from "@control-ui/kit/Head";
 import {Logo} from '../asset/logo'
 import Nav from "../component/Nav";
 

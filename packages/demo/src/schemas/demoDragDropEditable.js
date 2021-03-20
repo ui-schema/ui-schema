@@ -14,8 +14,8 @@ const blocks = {
             },
             content: {
                 type: 'array',
-                widget: 'EditableContent',
-                default: [{type: 'string', widget: 'EditableParagraph', text: 'Placeholder'}],
+                widget: 'RichContent',
+                //default: [{type: 'string', widget: 'EditableParagraph', text: 'Placeholder'}],
             },
         },
         required: ['$bid', '$block'],

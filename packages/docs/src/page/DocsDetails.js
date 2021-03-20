@@ -1,21 +1,21 @@
 import React from "react";
 import {Paper, Link} from "@material-ui/core";
-import {ScrollUpButton} from "@control-ui/core/es/ScrollUpButton";
+import {ScrollUpButton} from "@control-ui/kit/ScrollUpButton";
 import PageNotFound from "./PageNotFound";
-import {DocHandler} from "@control-ui/docs/es/DocDetails";
-import {HeadlineMenu} from "@control-ui/docs/es/LinkableHeadline";
-import {PROCESS_ERROR, PROCESS_PROGRESS, PROCESS_START, PROCESS_SUCCESS} from "@control-ui/core/es/Process";
-import {LoadingCircular} from "@control-ui/core/es/LoadingCircular";
+import {DocDetails} from "@control-ui/docs/DocDetails";
+import {HeadlineMenu} from "@control-ui/docs/LinkableHeadline";
+import {PROCESS_ERROR, PROCESS_PROGRESS, PROCESS_START, PROCESS_SUCCESS} from "@control-ui/kit/Process";
+import {LoadingCircular} from "@control-ui/kit/Loading/LoadingCircular";
 import {Markdown} from "../component/Markdown";
 import DemoUIGenerator from "../component/Schema/DemoUIGenerator";
-import {PageContent} from "@control-ui/core/es/PageContent";
+import {PageContent} from "@control-ui/kit/PageContent";
 
 const DocContent = ({content, id, progress, activeDoc}) => {
 
     return <>
         <PageContent maxWidth={'md'}>
             <Paper style={{margin: '12px 0', padding: '0 12px', display: 'flex', flexDirection: 'column', overflowX: 'auto', flexShrink: 0, background: 'transparent'}} elevation={4} variant={'outlined'}>
-                <HeadlineMenu/>
+                <HeadlineMenu disableNavLink/>
             </Paper>
             <div style={{display: 'block', textAlign: 'right', margin: '0 12px'}}>
                 <Link
@@ -60,7 +60,7 @@ Examples of this widget, using \`ds-material\`. Type in/change the input and che
 
 const DocsDetails = ({scrollContainer,}) => {
     return <React.Fragment>
-        <DocHandler
+        <DocDetails
             scrollContainer={scrollContainer}
             title={activeDoc => activeDoc && activeDoc.nav && activeDoc.nav.label ?
                 activeDoc.nav.label + ' · UI Schema' : 'UI Schema Documentation'}

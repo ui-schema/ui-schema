@@ -1,12 +1,12 @@
 import React from 'react';
 import Loadable from 'react-loadable';
-import App from '@control-ui/layouts/es/App';
+import {App} from '@control-ui/app/App';
 import {routes} from './routes';
-import {Layout} from '@control-ui/layouts/es/default/Layout';
+import {Layout} from '@control-ui/app/Layout';
 import {CustomDrawer, CustomHeader} from './component/Layout';
-import {LoadingCircular} from '@control-ui/core/es/LoadingCircular';
-import {DocsProvider} from '@control-ui/docs/es/DocsProvider';
-import {HeadlinesProvider} from '@control-ui/docs/es/LinkableHeadline';
+import {LoadingCircular} from '@control-ui/kit/Loading/LoadingCircular';
+import {DocsProvider} from '@control-ui/docs/DocsProvider';
+import {HeadlinesProvider} from '@control-ui/docs/LinkableHeadline';
 
 const Provider = ({children}) => (
     <DocsProvider loader={(file) => import('./content/docs/' + file + '.md')}>

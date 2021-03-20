@@ -32,6 +32,7 @@ import {DroppableRootSingle} from '@ui-schema/material-dnd/Widgets/DroppableRoot
 import {DroppableRootContent} from '@ui-schema/material-dnd/DroppableRoot/DroppableRootContent';
 import {DroppablePanel} from '@ui-schema/material-dnd/Widgets/DroppablePanel';
 import {EditableContent} from '@ui-schema/material-editable/Widgets';
+import {RichContent, RichContentInline} from '@ui-schema/material-slate';
 
 const customWidgets = {...widgets};
 customWidgets.DraggableBlock = BlockPanel
@@ -42,6 +43,8 @@ customWidgets.custom = {
     DroppableRootSingle: DroppableRootSingle,
     DroppablePanel: DroppablePanel,
     EditableContent: EditableContent,
+    RichContent: RichContent,
+    RichContentInline: RichContentInline,
 };
 
 const touchBackendOpts = {

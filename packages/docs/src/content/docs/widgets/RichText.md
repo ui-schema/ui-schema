@@ -6,21 +6,38 @@ Widgets for rich-text inputs, design-system implementation.
 
 - type: `string`
 - widget keywords:
-    - `RichText`
-    - `RichTextInline`
+    - `RichText`: only DraftJS, in future also for SlateJS
+    - `RichTextInline`: only DraftJS, in future also for SlateJS
+    - `RichContent`: only SlateJS
+    - `RichContentInline`: only SlateJS
 
 ## Design System
 
-### Material-UI
+### Material-UI w/ SlateJS
 
-Rich text editor based on DraftJS with the styles like any other Material-UI TextField.
+> 🚧 Work in progress, only basic integration atm.
+
+Rich text editor based on [SlateJS](https://www.slatejs.org/) with the styles like any other Material-UI TextField.
+
+- toolbar for selecting styles like headlines, lists, blog
+- markdown syntax support for shortcuts while writing
+- own types of rich content inputs with native React components
+
+```bash
+npm i --save @ui-schema/material-slate slate-react slate-history slate-hyperscript styled-components @udecode/slate-plugins
+```
+
+### Material-UI w/ DraftJS
+
+Rich text editor based on [DraftJS](https://draftjs.org/) with the styles like any other Material-UI TextField.
 
 - toolbar for selecting styles like headlines, lists, blog
 - markdown syntax support to automatic transform markdown input into rich-text
 
+> ℹ️ as DraftJS seems to be abandoned / without active development, it is recommended to use the SlateJS integration
 
 ```bash
-npm i --save @ui-schema/material-richtext  draft-js draft-js-plugins-editor
+npm i --save @ui-schema/material-richtext draft-js draft-js-plugins-editor
 ```
 
 - special keywords:

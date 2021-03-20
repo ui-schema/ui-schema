@@ -3,21 +3,23 @@ import IconButton from '@material-ui/core/IconButton';
 import {InvertColors as InvertColorsIcon} from '@material-ui/icons';
 import GithubLogo from '../asset/GithubLogo';
 import {Link as RouterLink} from 'react-router-dom';
-import {AccessTooltipIcon} from '@control-ui/core/es/Tooltip';
+import useTheme from '@material-ui/core/styles/useTheme';
+import {AccessTooltipIcon} from '@control-ui/kit/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import {LinkIconButton} from '@control-ui/core/es/LinkIconButton';
-import {Header} from '@control-ui/layouts/es/default/Header';
-import {useSwitchTheme} from '@control-ui/core/es/Provider/AppTheme';
-import {Drawer} from '@control-ui/layouts/es/default/Drawer';
-import {useDrawer} from '@control-ui/core/es/Provider/DrawerProvider';
-import {ListItemIcon, ListItemLink} from '@control-ui/core/es/Link';
+import {LinkIconButton} from '@control-ui/kit/Link/LinkIconButton';
+import {Header} from '@control-ui/app/Header';
+import {useSwitchTheme} from '@control-ui/app/AppTheme';
+import {Drawer} from '@control-ui/app/Drawer';
+import {useDrawer} from '@control-ui/app/DrawerProvider';
+import {ListItemLink} from '@control-ui/kit/List';
+import {ListItemIcon} from '@control-ui/kit/List/ListItemIcon';
 import {Logo} from '../asset/logo';
 import {schemas} from '../schemas/_list';
 import ListItemText from '@material-ui/core/ListItemText';
 import {ExpandLess, ExpandMore} from '@material-ui/icons';
 import {Divider, List, Collapse} from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
-import {NavListNested} from '@control-ui/core/es/NavList';
+import {NavListNested} from '@control-ui/kit/Menu/NavList';
 import {routesDocs, routesWidgets} from '../content/docs';
 
 export const CustomHeader = ({title}) => {
@@ -62,21 +64,29 @@ const CollapseDrawer = ({toggle, icon, children, dense, style = undefined}) => {
 
 export const CustomDrawer = () => {
     const {setOpen} = useDrawer()
+    const {breakpoints} = useTheme();
+    const closeOnClick = React.useCallback(() => {
+        if(breakpoints.width('md') > window.innerWidth) {
+            setOpen(false)
+        }
+    }, [breakpoints, setOpen]);
     return <Drawer drawerWidth={260}>
         <List>
-            <ListItemLink to={'/'} primary={'Home'} dense showActive/>
-            <ListItemLink to={'/quick-start'} primary={'Quick-Start'} dense showActive/>
-            <ListItemLink to={'/examples'} primary={'Live Editor'} dense showActive/>
+            <ListItemLink to={'/'} primary={'Home'} dense showActive onClick={closeOnClick}/>
+            <ListItemLink to={'/quick-start'} primary={'Quick-Start'} dense showActive onClick={closeOnClick}/>
+            <ListItemLink to={'/examples'} primary={'Live Editor'} dense showActive onClick={closeOnClick}/>
 
             <NavListNested
                 routes={[routesDocs]}
                 dense
                 filter={() => true}
+                onClick={closeOnClick}
             />
             <NavListNested
                 routes={[routesWidgets]}
                 dense
                 filter={() => true}
+                onClick={closeOnClick}
             />
 
             <CollapseDrawer toggle={'Schema Examples'} dense>
@@ -84,13 +94,13 @@ export const CustomDrawer = () => {
                     {schemas.map((schema, i) => (
                         <ListItemLink
                             key={i} to={'/examples/' + (schemas[i][0].split(' ').join('-'))}
-                            primary={schema[0]} style={{paddingLeft: 24}} dense showActive/>
+                            primary={schema[0]} style={{paddingLeft: 24}} dense showActive onClick={closeOnClick}/>
                     ))}
                 </List>
             </CollapseDrawer>
             <Divider/>
-            <ListItemLink to={'/impress'} primary={'Impress'} dense showActive/>
-            <ListItemLink to={'/privacy'} primary={'Privacy Policy'} dense showActive/>
+            <ListItemLink to={'/impress'} primary={'Impress'} dense showActive onClick={closeOnClick}/>
+            <ListItemLink to={'/privacy'} primary={'Privacy Policy'} dense showActive onClick={closeOnClick}/>
             <Divider/>
         </List>
     </Drawer>;

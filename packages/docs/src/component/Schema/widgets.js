@@ -11,7 +11,7 @@ import {
     ColorCircleStatic, ColorTwitterStatic,
     ColorSketchStatic, ColorSketchDialog,
 } from '@ui-schema/material-color';
-import {LoadingCircular} from '@control-ui/core/es/LoadingCircular';
+import {LoadingCircular} from '@control-ui/kit/Loading/LoadingCircular';
 import {BlockPanel} from '@ui-schema/material-dnd/DraggableBlock/BlockPanel';
 import {DroppableRootContent} from '@ui-schema/material-dnd/DroppableRoot/DroppableRootContent';
 
