@@ -30,6 +30,6 @@ export interface WidgetsBindingBaseStrict {
 }
 
 export type WidgetsBindingBase = WidgetsBindingBaseStrict & {
-    // allow adding any further custom root components
-    [key: string]: React.ComponentType<any>
+    // allow adding any further custom root components or further information
+    [key: string]: React.ComponentType<any> | any
 }
