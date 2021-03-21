@@ -3,17 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import {useUID} from 'react-uid';
 import {TransTitle, mapSchema, checkNativeValidity} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
-
-export const convertStringToNumber = (value, type) => {
-    if(type === 'number' || type === 'integer') {
-        if(isNaN(value * 1)) {
-            console.error('Invalid Type: input not a number in');
-            return;
-        }
-        return value === '' ? '' : value * 1
-    }
-    return value
-}
+import {convertStringToNumber} from '@ui-schema/ds-material/Utils/convertStringToNumber';
 
 export const StringRenderer = ({
                                    type,
