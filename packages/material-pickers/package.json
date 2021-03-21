@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-pickers",
-    "version": "0.2.3",
+    "version": "0.2.4",
     "description": "Date+Time Pickers for UI-Schema with Material-UI",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
