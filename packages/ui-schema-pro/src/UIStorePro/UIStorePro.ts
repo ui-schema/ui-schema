@@ -53,7 +53,7 @@ const initialChangeRater: { current: number, last: any } = {current: 0, last: un
 export interface UIStoreProOptions {
     debounceTime?: typeof defaultDebounceTime
     updateRate?: typeof defaultUpdateRate
-    initialStore: UIStoreType | any
+    initialStore?: UIStoreType | any
     type: string
 }
 
