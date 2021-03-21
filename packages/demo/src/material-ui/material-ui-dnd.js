@@ -22,12 +22,12 @@ import {schemaDragDrop, schemaDragDropSingle} from '../schemas/demoDragDrop';
 //import {TouchBackend} from 'react-dnd-touch-backend'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
-import {DroppableRootMultiple} from '@ui-schema/material-dnd/Widgets/DroppableRootMultiple';
 import {makeDragDropContext} from '@ui-schema/material-dnd/DragDropProvider/makeDragDropContext';
 import {DragDropProvider} from '@ui-schema/material-dnd/DragDropProvider/DragDropProvider';
 import {BlockPanel} from '@ui-schema/material-dnd/DraggableBlock/BlockPanel';
 import {createStore, storeUpdater, UIApiProvider} from '@ui-schema/ui-schema';
 import {List} from 'immutable';
+import {DroppableRootMultiple} from '@ui-schema/material-dnd/Widgets/DroppableRootMultiple';
 import {DroppableRootSingle} from '@ui-schema/material-dnd/Widgets/DroppableRootSingle';
 import {DroppableRootContent} from '@ui-schema/material-dnd/DroppableRoot/DroppableRootContent';
 import {DroppablePanel} from '@ui-schema/material-dnd/Widgets/DroppablePanel';

@@ -33,6 +33,11 @@ With replacing `DraggableBlock` and `DraggableRootContent` you can intercept and
 
 ```js
 import {widgets} from '@ui-schema/ds-material';
+import {BlockPanel} from '@ui-schema/material-dnd/DraggableBlock/BlockPanel';
+import {DroppableRootContent} from '@ui-schema/material-dnd/DroppableRoot/DroppableRootContent';
+import {DroppableRootMultiple} from '@ui-schema/material-dnd/Widgets/DroppableRootMultiple';
+import {DroppableRootSingle} from '@ui-schema/material-dnd/Widgets/DroppableRootSingle';
+import {DroppablePanel} from '@ui-schema/material-dnd/Widgets/DroppablePanel';
 
 const customWidgets = {...widgets};
 
