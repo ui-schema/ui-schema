@@ -43,8 +43,8 @@ Validation plugins also work with the schema, but are only used for validation o
 | typeValidator        | @ui-schema/ui-schema | validateType         | keyword `type`       | `valid`, `errors` |
 | valueValidatorConst  | @ui-schema/ui-schema | validateConst        | keywords `type`, `const` | `valid`, `errors` |
 | valueValidatorEnum   | @ui-schema/ui-schema | validateEnum         | keywords `type`, `enum` | `valid`, `errors` |
-| patternValidator     | @ui-schema/ui-schema | validatePattern      | keywords `type:string`, `pattern` | `valid`, `errors` |
-| multipleOfValidator  | @ui-schema/ui-schema | validateMultipleOf   | keywords `type:number,integer`, `multipleOf` | `valid`, `errors` |
+| [multipleOfValidator](#multipleofvalidator)  | @ui-schema/ui-schema | validateMultipleOf   | keywords `type:number,integer`, `multipleOf` | `valid`, `errors` |
+| [patternValidator](#patternvalidator)     | @ui-schema/ui-schema | validatePattern      | keywords `type:string`, `pattern` | `valid`, `errors` |
 | arrayValidator       | @ui-schema/ui-schema |                      | `type:array`          | `valid`, `errors` |
 | objectValidator      | @ui-schema/ui-schema |                      | `type:object`, `additionalProperties`, `propertyNames` | `valid`, `errors` |
 | requiredValidator    | @ui-schema/ui-schema | checkValueExists     | keywords `type:object`, `required` | `valid`, `errors`, `required` |
@@ -71,6 +71,10 @@ const widgets = {
 
 export {widgets};
 ```
+
+### multipleOfValidator
+
+Applies some custom float to not-float conversions to - according to tests - mitigate some JS precision issues, previously  `multipleOf: 0.01` against a value of `0.07` was "invalid". Currently the precision limit is `9`.
 
 ### patternValidator
 
