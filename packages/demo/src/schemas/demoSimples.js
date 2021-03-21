@@ -21,7 +21,7 @@ export const schemaNull = createOrderedMap({
     },
 });
 
-const schemaSimString = createOrderedMap({
+export const schemaSimString = createOrderedMap({
     type: 'string',
     title: 'Simple Text',
     view: {
@@ -29,7 +29,7 @@ const schemaSimString = createOrderedMap({
     },
 });
 
-const schemaSimNumber = createOrderedMap({
+export const schemaSimNumber = createOrderedMap({
     type: 'number',
     title: 'titles.simple-number',
     view: {
@@ -37,14 +37,22 @@ const schemaSimNumber = createOrderedMap({
     },
 });
 
-const schemaSimBoolean = createOrderedMap({
+export const schemaSimInteger = createOrderedMap({
+    type: 'integer',
+    title: 'titles.simple-integer',
+    view: {
+        sizeXs: 12,
+    },
+});
+
+export const schemaSimBoolean = createOrderedMap({
     type: 'boolean',
     view: {
         sizeXs: 12,
     },
 });
 
-const schemaSimRadio = createOrderedMap({
+export const schemaSimRadio = createOrderedMap({
     type: 'string',
     widget: 'OptionsRadio',
     enum: ['left', 'center', 'right'],
@@ -53,7 +61,7 @@ const schemaSimRadio = createOrderedMap({
     },
 });
 
-const schemaSimCheck = createOrderedMap({
+export const schemaSimCheck = createOrderedMap({
     type: 'array',
     widget: 'OptionsCheck',
     enum: ['left', 'center', 'right'],
@@ -62,7 +70,7 @@ const schemaSimCheck = createOrderedMap({
     },
 });
 
-const schemaSimSelect = createOrderedMap({
+export const schemaSimSelect = createOrderedMap({
     type: 'array',
     widget: 'SelectMulti',
     enum: ['left', 'center', 'right'],
@@ -71,38 +79,45 @@ const schemaSimSelect = createOrderedMap({
     },
 });
 
-const schemaCode = createOrderedMap({
+export const schemaCode = createOrderedMap({
     type: 'object',
     properties: {
         code: {
             type: 'string',
             format: 'css',
             widget: 'Code',
-            view: {
-                sizeXs: 12,
-            },
         },
         code_bg: {
             type: 'string',
             format: 'css',
             widget: 'Code',
             view: {
-                sizeXs: 12,
                 bg: true,
             },
         },
-        code_2: {
-            type: 'string',
+        code_selectable: {
+            type: 'array',
             format: ['json', 'js', 'html'],
+            widget: 'CodeSelectable',
+        },
+        code_no_title: {
+            type: 'string',
+            format: 'css',
             widget: 'Code',
+            view: {
+                hideTitle: true,
+            },
+        },
+        code_selectable_no_title: {
+            type: 'array',
+            format: ['json', 'js', 'html'],
+            widget: 'CodeSelectable',
+            view: {
+                hideTitle: true,
+            },
         },
         normal_string: {
             type: 'string',
         },
     },
 });
-
-export {
-    schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect,
-    schemaCode,
-}

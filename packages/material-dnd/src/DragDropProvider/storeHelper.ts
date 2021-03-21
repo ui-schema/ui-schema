@@ -3,7 +3,7 @@ import {
     isImmutable,
     List, OrderedMap,
 } from 'immutable'
-import { genId } from '../genId'
+import { genId } from '@ui-schema/material-dnd/genId'
 import { onChangeHandler, StoreKeys } from '@ui-schema/ui-schema'
 import { DropTargetMonitor, XYCoord } from 'react-dnd'
 import { DragDropAdvancedContextType } from '@ui-schema/material-dnd/DragDropProvider/useDragDropContext'
@@ -32,13 +32,13 @@ export const handleMoveUp = (onChange: typeof onChangeHandler, storeKeys: StoreK
 }
 
 export const handleMoveDown = (onChange: typeof onChangeHandler, storeKeys: StoreKeys): void => {
-    if (((storeKeys.last() as number) + 1) > storeKeys.size) {
-        return
-    }
     onChange(
         storeKeys.splice(storeKeys.size - 1, 1) as StoreKeys,
         ['value', 'internal'],
         ({value = List(), internal = List()}) => {
+            if (((storeKeys.last() as number) + 1) > value.size) {
+                return {value, internal}
+            }
             return {
                 value: value.splice(storeKeys.last(), 1).splice((storeKeys.last() as number) + 1, 0, value.get(storeKeys.last())),
                 internal: internal.splice(storeKeys.last(), 1).splice((storeKeys.last() as number) + 1, 0, internal.get(storeKeys.last())),
@@ -218,40 +218,4 @@ export const handleDragEnd = (
             }
         }
     )
-}
-
-export type getSourceValuesType = (item: DraggableBlock, storeKeysFrom: StoreKeys, value: any, internal: any) => { value: any, internal: any }
-
-export const getSourceValues: getSourceValuesType = (_item, storeKeysFrom, value, internal) => {
-    return {
-        value: value.getIn(storeKeysFrom),
-        internal: internal.getIn(storeKeysFrom),
-    }
-}
-
-export type moveDraggedValueType = (
-    item: DraggableBlock,
-    value: List<any> | OrderedMap<string | number, any>,
-    sourceValue: any,
-    rootKeysFrom: StoreKeys, indexFrom: number, targetKeys: StoreKeys
-) => List<any> | OrderedMap<string | number, any>
-
-export const moveDraggedValue: moveDraggedValueType = (
-    _item, value,
-    sourceValue,
-    rootKeysFrom, indexFrom, targetKeys
-): List<any> | OrderedMap<string | number, any> => {
-    return value
-        // first remove element from source
-        .updateIn(
-            rootKeysFrom,
-            (list = List()) =>
-                list.splice(indexFrom as number, 1)
-        )
-        // then add element to target
-        .updateIn(
-            targetKeys.splice(targetKeys.size - 1, 1),
-            (list = List()) =>
-                list.splice(targetKeys.last() as number, 0, sourceValue)
-        )
 }

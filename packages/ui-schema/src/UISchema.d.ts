@@ -73,7 +73,7 @@ export interface UISchema {
         // format used to save, if not set uses `format`
         formatData?: string
         keyboard?: boolean
-        views?: undefined | ('year' | 'date' | 'month' | 'hours' | 'minutes')[]
+        views?: ('year' | 'date' | 'month' | 'hours' | 'minutes')[]
         variant?: string
         autoOk?: boolean
         disableFuture?: boolean

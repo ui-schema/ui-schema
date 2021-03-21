@@ -19,13 +19,13 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter/isInvalid';
 import {UIGenerator} from '@ui-schema/ui-schema/UIGenerator';
 import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro';
-import {schemaRichContent} from '../schemas/demoRichContent';
 import {EditorJSWidget} from '@ui-schema/material-editorjs/Widgets/EditorJSWidget';
 import Paragraph from '@editorjs/paragraph'
 import CheckList from '@editorjs/checklist'
 import List from '@editorjs/list'
 import Header from '@editorjs/header'
 import Table from '@editorjs/table'
+import {schemaDemoEditorJS} from '../schemas/demoEditorJS';
 
 const tools = {
     paragraph: Paragraph,
@@ -49,7 +49,7 @@ customWidgets.custom = {
 
 const initialStore = undefined
 
-const schema = schemaRichContent
+const schema = schemaDemoEditorJS
 
 const Main = () => {
     const theme = useTheme();
@@ -62,12 +62,13 @@ const Main = () => {
         reset: resetHistoryStore,
         onChange, store, setStore,
         redoHistory, undoHistory,
-    } = useStorePro({initialStore: initialStore})
+    } = useStorePro({type: String(schema.get('type')), initialStore: initialStore})
 
+    const type = String(schema.get('type'))
     const reset = React.useCallback(() => {
-        resetHistoryStore(initialStore)
+        resetHistoryStore(type, initialStore)
         prevOriginalStore.current = initialStore?.getValues()
-    }, [resetHistoryStore, prevOriginalStore])
+    }, [type, resetHistoryStore, prevOriginalStore])
 
     const changedStore = (
         (!prevOriginalStore.current && store.current?.getValues().size > 0) ||

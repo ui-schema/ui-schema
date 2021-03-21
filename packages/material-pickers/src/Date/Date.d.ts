@@ -1,5 +1,4 @@
 import { DateTimeBaseInterface } from '@ui-schema/material-pickers/DateTimeBase'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { WidgetProps } from '@ui-schema/ui-schema'
 
-export function DatePicker(schema: StoreSchemaType, props: DateTimeBaseInterface): React.ReactElement
+export function DatePicker(props: WidgetProps & DateTimeBaseInterface): React.ReactElement

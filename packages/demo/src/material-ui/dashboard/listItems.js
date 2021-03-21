@@ -55,6 +55,7 @@ export const secondaryListItems = (
     <div>
         <ListSubheader inset>Additional</ListSubheader>
         <ListItemLink to={'/mui-richtext'} primary="MUI-Rich" icon={<AssignmentIcon/>}/>
+        <ListItemLink to={'/mui-slate'} primary="MUI Slate" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-code'} primary="MUI-Code" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-color'} primary="MUI-Color" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-pickers'} primary="MUI-Pickers" icon={<AssignmentIcon/>}/>
@@ -62,5 +63,6 @@ export const secondaryListItems = (
         <ListItemLink to={'/mui-editorjs'} primary="MUI EditorJS" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-rbd'} primary="MUI RBD" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-dnd'} primary="MUI DND" icon={<AssignmentIcon/>}/>
+        <ListItemLink to={'/mui-editable'} primary="MUI Editable" icon={<AssignmentIcon/>}/>
     </div>
 );

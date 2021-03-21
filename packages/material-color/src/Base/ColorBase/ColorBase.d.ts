@@ -1,10 +1,9 @@
 import * as React from 'react'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
-import { CSSProperties } from 'react'
 
 export interface ColorBaseProps extends WidgetProps {
     value: string
-    styles: CSSProperties
+    styles: React.CSSProperties
     refocus: boolean
     forceIcon: boolean
     pickerProps: object

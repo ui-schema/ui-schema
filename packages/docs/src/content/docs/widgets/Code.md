@@ -4,11 +4,12 @@ Widgets for code editing, design-system implementation.
 
 [![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-ui-generator) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui)
 
-- type: `string`
+- type: `string`, `array`
 - widget keywords:
-    - `Code`
-- `format` keyword is used to select which language
-- todo: multiple languages need to be saved as object/array: content including the selected language
+    - `Code` for single `format`
+    - `CodeSelectable` for selectable `format` and data as `[format, code]` tuple
+        - does not support `deleteOnEmpty`, workaround: `{"items": [ {"type": "string"}, {"type": "string", "minLength": "1", "default": ""}], }`
+- `format` keyword to select the enabled language mode, `string` or `string[]`
 
 ## Design System
 
@@ -22,11 +23,13 @@ npm i --save @ui-schema/material-code react-codemirror2 codemirror
 
 - special keywords:
     - `view.bg` when `true` it does not turn the background off
+    - `view.hideTitle` when `true` it does not show the title, only the current format
 - see [full list of modes in codemirror repo](https://github.com/codemirror/CodeMirror/tree/master/mode)
     - `css`, `htmlmixed`, `jsx`, `markdown`, `php`, `sass`, `shell`, `sql`, `yaml` and a lot more
 - theming is optional but recommended, can be controlled from your app
     - import the stylesheets like needed
     - wrap all editor that should inherit the style with `WidgetCodeProvider` and pass down the string id of the theme
+- uses translations: `formats.<id-of-mdoe>` for nicer labels
 
 Add needed modes in your app/script:
 

@@ -1,21 +1,13 @@
-import { onChange, OwnKey, StoreKeys } from '@ui-schema/ui-schema/UIStore'
-import { required, StoreSchemaType, showValidity, valid } from '@ui-schema/ui-schema/CommonTypings'
-import { additionalProps } from '@ui-schema/material-pickers/TimeBase'
+import { AdditionalProps } from '@ui-schema/material-pickers/TimeBase'
+import { KeyboardDateTimePickerProps, DateTimePickerProps, KeyboardTimePickerProps, TimePickerProps } from '@material-ui/pickers'
+import { WidgetProps } from '@ui-schema/ui-schema'
 
-export interface DateTimeBaseInterface {
-    storeKeys: StoreKeys
-    ownKey: OwnKey
-    value: string
-    onChange: onChange
-    schema: StoreSchemaType
-    showValidity: showValidity
-    valid: valid
-    required: required
-    additionalProps: additionalProps
-    dateFormat: string
-    dateFormatData: string
-    Component: React.ComponentType
-    keyboard: boolean
+export interface DateTimeBaseInterface extends WidgetProps {
+    additionalProps: AdditionalProps
+    dateFormat?: string
+    dateFormatData?: string
+    Component: React.ComponentType<any | DateTimePickerProps | KeyboardDateTimePickerProps | KeyboardTimePickerProps | TimePickerProps>
+    keyboard?: boolean
 }
 
-export function DateTimeBase<P extends DateTimeBaseInterface>(props: P): React.ReactElement<P>
+export function DateTimeBase<P extends DateTimeBaseInterface>(props: P): React.ReactElement

@@ -26,10 +26,10 @@
     "author": "Michael Becker, https://mlbr.xyz",
     "license": "MIT",
     "devDependencies": {
-        "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
-        "@babel/plugin-proposal-optional-chaining": "^7.12.7",
+        "@babel/plugin-proposal-nullish-coalescing-operator": "^7.13.8",
+        "@babel/plugin-proposal-optional-chaining": "^7.13.8",
         "@types/react-loadable": "^5.5.4",
-        "@types/react-router-dom": "^5.1.6",
+        "@types/react-router-dom": "^5.1.7",
         "@types/testing-library__jest-dom": "^5.9.5",
         "cross-env": "^6.0.3",
         "lerna": "^3.22.1",

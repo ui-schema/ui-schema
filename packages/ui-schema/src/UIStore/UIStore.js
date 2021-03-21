@@ -46,6 +46,9 @@ export const createStore = (values) => {
     return new UIStore({
         values,
         // when array in root level, internals must be a list
+        // notice: when using special widgets that control their own list items,
+        //         the widget mustn't depend only on `undefined` internalValue, but also check for `internalValue.size`.
+        //         but only when only that widget is used in the root level
         internals: List.isList(values) ? List() : Map(),
         validity: Map({}),
     })
@@ -56,7 +59,7 @@ export const createEmptyStore = (type = 'object') => createStore(
         List([]) :
         type === 'string' ?
             '' :
-            type === 'number' ?
+            type === 'number' || type === 'integer' ?
                 0 :
                 type === 'boolean' ?
                     false :
@@ -70,7 +73,7 @@ export const useUI = () => {
 };
 
 // todo: remove relT here, so Trans is fully optional
-const tDefault = (text, context = {}, schema) =>
+const tDefault = (text, context = {}, schema = undefined) =>
     relT(schema, context);
 
 export const useUIMeta = () => {
@@ -112,7 +115,7 @@ export const extractValidity = (Component) => {
 export const withUIMeta = (Component) => {
     const WithUIMeta = p => {
         const meta = useUIMeta();
-        return <Component {...p} {...meta}/>
+        return <Component {...meta} {...p}/>
     };
     WithUIMeta.displayName = `WithUIMeta(${getDisplayName(Component)})`;
     return WithUIMeta;
@@ -125,7 +128,7 @@ export const prependKey = (storeKeys, key) =>
 
 export const shouldDeleteOnEmpty = (value, force, type) => {
     // todo: mv number out here, enforces that numbers can be cleared, but should only be forced for the `""` value in number types
-    if(!force && type !== 'number') return false
+    if(!force && type !== 'number' && type !== 'integer') return false
 
     switch(type) {
         case 'string':

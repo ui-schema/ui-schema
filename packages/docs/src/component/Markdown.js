@@ -1,12 +1,12 @@
 import React from 'react';
 import {Typography} from '@material-ui/core';
 import Loadable from 'react-loadable';
-import {Markdown as MarkdownBase, allowHtml} from '@control-ui/docs/es/Markdown/Markdown'
-import {renderers as baseRenderers} from '@control-ui/docs/es/Markdown/MarkdownRenderers'
-import {MdInlineCode} from '@control-ui/docs/es/Markdown/InlineCode';
-import {MdLink} from '@control-ui/docs/es/Markdown/Link';
-import {LinkableHeadline} from '@control-ui/docs/es';
-import {LoadingCircular} from '@control-ui/core/es/LoadingCircular';
+import {Markdown as MarkdownBase, allowHtml} from '@control-ui/docs/Markdown/Markdown'
+import {renderers as baseRenderers} from '@control-ui/docs/Markdown/MarkdownRenderers'
+import {MdInlineCode} from '@control-ui/docs/Markdown/InlineCode';
+import {MdLink} from '@control-ui/docs/Markdown/Link';
+import {LinkableHeadline} from '@control-ui/docs/LinkableHeadline';
+import {LoadingCircular} from '@control-ui/kit/Loading/LoadingCircular';
 
 const Code = Loadable({
     loader: () => import('./MarkdownCode'),

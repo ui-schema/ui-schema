@@ -32,7 +32,7 @@ const BoolRenderer = ({ownKey, value, onChange, schema, storeKeys, showValidity,
                     onChange={() =>
                         onChange(
                             storeKeys, ['value'],
-                            ({value}) => ({value: !value}),
+                            ({value: storeValue}) => ({value: !storeValue}),
                             schema.get('deleteOnEmpty') || required,
                             schema.get('type'),
                         )

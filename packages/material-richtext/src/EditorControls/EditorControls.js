@@ -6,10 +6,9 @@ import {
 } from '@material-ui/icons';
 import IconButton from '@material-ui/core/IconButton';
 import Fade from '@material-ui/core/Fade';
-import {EditorState} from 'draft-js';
+import {EditorState, RichUtils} from 'draft-js';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {useControlStyles} from '../styles';
-import {RichUtils} from 'draft-js';
 import {memo, Trans} from '@ui-schema/ui-schema';
 import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip';
 import {useRichText} from '../RichTextProvider/RichTextProvider';

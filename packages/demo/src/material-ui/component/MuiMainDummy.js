@@ -5,10 +5,10 @@ import {MuiSchemaDebug} from './MuiSchemaDebug';
 import {MainDummy} from '../../component/MainDummy';
 
 const createDummyRenderer = widgets => ({id, schema, toggleDummy, getDummy, variant, open, classes, stylePaper}) => <React.Fragment>
-    {open ? null : <Button style={{marginBottom: 12}} onClick={() => toggleDummy(id)} variant={(getDummy(id) ? 'contained' : 'outlined')}>
+    {open ? null : <Button style={{marginBottom: 12}} onClick={() => toggleDummy(id)} variant={(getDummy && getDummy(id) ? 'contained' : 'outlined')}>
         {id.replace(/([A-Z0-9])/g, ' $1').replace(/^./, str => str.toUpperCase())}
     </Button>}
-    {getDummy(id) || open ? <Paper
+    {(getDummy && getDummy(id)) || open ? <Paper
         className={classes.paper} style={stylePaper}
         // outlined or elevation
         variant={variant}

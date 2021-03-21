@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {themes} from "./theme";
 import './asset/App.css';
-import AppLoader from "@control-ui/layouts/es/AppLoader";
+import {AppLoader} from "@control-ui/app/AppLoader";
 
 const App = AppLoader(
-    themes,
+    {themes},
     () => import('./App'),
     'Loading',
 );

@@ -57,6 +57,14 @@ cd material-richtext
 cp package.json build/ && cp package-lock.json build/ && cp README.md build/
 cd ../
 
+cd material-slate
+cp package.json build/ && cp package-lock.json build/ && cp README.md build/
+cd ../
+
+cd material-editable
+cp package.json build/ && cp package-lock.json build/ && cp README.md build/
+cd ../
+
 cd ../
 
 #npm run release

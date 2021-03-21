@@ -1,6 +1,7 @@
 import React from 'react'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { GroupRendererProps } from '@ui-schema/ui-schema'
 
 export function SchemaGridItem(props: React.PropsWithChildren<{
     schema: StoreSchemaType
@@ -11,8 +12,8 @@ export function SchemaGridItem(props: React.PropsWithChildren<{
     classes?: any
 }>): React.ReactElement
 
-export function RootRenderer<P>(props: P): React.ReactElement<P>
+export function RootRenderer(props: React.PropsWithChildren<{}>): React.ReactElement
 
-export function GroupRenderer<P>(props: P): React.ReactElement
+export function GroupRenderer(props: GroupRendererProps): React.ReactElement
 
-export function SchemaGridHandler<P extends WidgetProps>(props: P): React.ReactElement<P>
+export function SchemaGridHandler(props: WidgetProps): React.ReactElement

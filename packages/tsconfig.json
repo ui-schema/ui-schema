@@ -55,6 +55,18 @@
             "@ui-schema/material-richtext/*": [
                 "material-richtext/src/*"
             ],
+            "@ui-schema/material-editable": [
+                "material-editable/src"
+            ],
+            "@ui-schema/material-editable/*": [
+                "material-editable/src/*"
+            ],
+            "@ui-schema/material-slate": [
+                "material-slate/src"
+            ],
+            "@ui-schema/material-slate/*": [
+                "material-slate/src/*"
+            ],
             "@ui-schema/material-editorjs": [
                 "material-editorjs/src"
             ],

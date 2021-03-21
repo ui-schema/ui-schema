@@ -41,18 +41,16 @@ const initialState = ({noCache = false}) => {
  * @return {OrderedMap<string, OrderedMap<string, any>>}
  */
 function reducer(state, action = {}) {
-    switch(action.type) {
-        case 'SCHEMA_LOADED':
-            return (() => {
-                let tmpState = state.setIn(['schemas', action.id], createOrderedMap(action.value))
-                if(!action.noCache) {
-                    window?.localStorage?.setItem(schemaLocalCachePath, JSON.stringify(tmpState.get('schemas').toJS()))
-                }
-                return tmpState
-            })()
-        default:
-            return state
+    if(action.type === 'SCHEMA_LOADED') {
+        return (() => {
+            let tmpState = state.setIn(['schemas', action.id], createOrderedMap(action.value))
+            if(!action.noCache) {
+                window?.localStorage?.setItem(schemaLocalCachePath, JSON.stringify(tmpState.get('schemas').toJS()))
+            }
+            return tmpState
+        })()
     }
+    return state
 }
 
 const schemasLoaded = {schemas: {}}

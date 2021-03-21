@@ -26,6 +26,7 @@ const icons = {
 const dicEN = createMap({
     error: en.errors,
     labels: {...en.labels, ...en.richText, ...en.dnd},
+    formats: {...en.formats},
     // for material-ui only icons which are set manually through schema are needed to add
     icons,
     widget: {
@@ -44,6 +45,7 @@ const dicEN = createMap({
 const dicDE = createMap({
     error: de.errors,
     labels: {...de.labels, ...de.richText, ...de.dnd},
+    formats: {...de.formats},
     icons,
     widget: {
         stepper: {

@@ -17,12 +17,14 @@ Checkout the [example video](https://ui-schema.bemit.codes/UISchemaPro-History-D
 ```jsx
 import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro'
 
-const DemoComponent = () => {
+const DemoComponent = ({schema}) => {
     const {
         reset,
         onChange, store, setStore,
         redoHistory, undoHistory,
     } = useStorePro({
+        // type must be given, when empty initialState it must know what store to create
+        type: schema.get('type'),
         initialStore: undefined,
         debounceTime: undefined,
         updateRate: undefined,

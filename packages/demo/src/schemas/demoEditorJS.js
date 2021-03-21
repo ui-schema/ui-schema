@@ -1,6 +1,6 @@
 import {createOrderedMap} from '@ui-schema/ui-schema';
 
-export const schemaRichContent = createOrderedMap({
+export const schemaDemoEditorJS = createOrderedMap({
     type: 'object',
     properties: {
         text_1: {

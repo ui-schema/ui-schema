@@ -1,8 +1,7 @@
 import React from 'react'
 import { List, OrderedMap } from 'immutable'
-import { useTheme } from '@material-ui/core'
+import { useTheme, Paper } from '@material-ui/core'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
-import { Paper } from '@material-ui/core'
 import { DragDropItemData, useDragDropContext } from '../DragDropProvider/useDragDropContext'
 import { TransTitle, memo } from '@ui-schema/ui-schema'
 

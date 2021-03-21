@@ -39,9 +39,9 @@ const NumberSliderRenderer = ({
     }
 
     const marksLabel = schema.getIn(['view', 'marksLabel']);
-    const valuetext = React.useCallback((value) => {
-        if(!marksLabel) return value;
-        return `${value}${marksLabel}`;
+    const valuetext = React.useCallback((valueSingle) => {
+        if(!marksLabel) return valueSingle;
+        return `${valueSingle}${marksLabel}`;
     }, [marksLabel]);
 
     let marksValues = constVal;
@@ -57,8 +57,8 @@ const NumberSliderRenderer = ({
         if(typeof marksValues === 'number') {
             marks.push({value: marksValues, label: valuetext(marksValues)});
         } else if(List.isList(marksValues)) {
-            marksValues.forEach(value => {
-                marks.push({value, label: valuetext(value)});
+            marksValues.forEach(markValue => {
+                marks.push({markValue, label: valuetext(markValue)});
             });
         }
     }
@@ -83,7 +83,7 @@ const NumberSliderRenderer = ({
                     onClick={(index) =>
                         onChange(
                             storeKeys, ['value'],
-                            ({value}) => ({value: value.splice(index, 1)}),
+                            ({value: storeValue}) => ({value: storeValue.splice(index, 1)}),
                             schema.get('deleteOnEmpty') || required, schema.get('type'),
                         )
                     }
@@ -92,9 +92,9 @@ const NumberSliderRenderer = ({
                 value={(schema.get('type') === 'array' ?
                     value && value.size ? value.toJS() : defaultVal :
                     typeof value === 'number' ? value : defaultVal)}
-                onChange={(e, value) => {
-                    if(schema.get('type') !== 'array' && isNaN(value * 1)) {
-                        console.error('Invalid Type: input not a number in:', e.target, value);
+                onChange={(e, newValue) => {
+                    if(schema.get('type') !== 'array' && isNaN(newValue * 1)) {
+                        console.error('Invalid Type: input not a number in:', e.target, newValue);
                         return;
                     }
                     if(schema.get('readOnly')) {
@@ -102,7 +102,7 @@ const NumberSliderRenderer = ({
                     }
                     onChange(
                         storeKeys, ['value'],
-                        () => ({value: schema.get('type') === 'array' ? List(value) : value * 1}),
+                        () => ({value: schema.get('type') === 'array' ? List(newValue) : newValue * 1}),
                         schema.get('deleteOnEmpty') || required,
                         schema.get('type'),
                     )
@@ -113,7 +113,7 @@ const NumberSliderRenderer = ({
                 onClick={() =>
                     onChange(
                         storeKeys, ['value'],
-                        ({value}) => ({value: value ? value.push(min) : List(defaultVal).push(min)}),
+                        ({value: storeValue}) => ({value: storeValue ? storeValue.push(min) : List(defaultVal).push(min)}),
                         schema.get('deleteOnEmpty') || required, schema.get('type'),
                     )
                 }
@@ -135,12 +135,15 @@ export const NumberSlider = ({
                              }) => {
     let min = 0;
     let max = 100;
-    let defaultVal = min;
+    let defaultVal;
     let multipleOf = undefined;
     let minItems = undefined;
     let maxItems = undefined;
     if(schema.get('type') === 'array') {
-        if(schema.getIn(['items', 'type']) !== 'number') {
+        if(
+            schema.getIn(['items', 'type']) !== 'number' &&
+            schema.getIn(['items', 'type']) !== 'integer'
+        ) {
             return null
         }
 

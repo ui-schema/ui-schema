@@ -18,8 +18,6 @@ export interface StringRendererProps {
     inputRef?: any
 }
 
-export function convertStringToNumber(value: string | number | any, type: string): any | string | number
-
 export function StringRenderer<P extends StringRendererProps & WidgetProps>(props: P): React.ReactElement<P>
 
 export function NumberRenderer<P extends StringRendererProps & WidgetProps>(props: P): React.ReactElement<P>

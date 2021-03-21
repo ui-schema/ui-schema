@@ -3,17 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import {useUID} from 'react-uid';
 import {TransTitle, mapSchema, checkNativeValidity} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
-
-export const convertStringToNumber = (value, type) => {
-    if(type === 'number') {
-        if(isNaN(value * 1)) {
-            console.error('Invalid Type: input not a number in');
-            return;
-        }
-        return value === '' ? '' : value * 1
-    }
-    return value
-}
+import {convertStringToNumber} from '@ui-schema/ds-material/Utils/convertStringToNumber';
 
 export const StringRenderer = ({
                                    type,
@@ -32,7 +22,14 @@ export const StringRenderer = ({
     const currentRef = inputRef.current;
 
     inputProps = mapSchema(inputProps, schema);
-    valid = checkNativeValidity(currentRef, valid);
+
+    if(schema.get('type') === 'number' && typeof inputProps['step'] === 'undefined') {
+        inputProps['step'] = 'any'
+    }
+
+    if(schema.get('checkNativeValidity')) {
+        valid = checkNativeValidity(currentRef, valid);
+    }
 
     React.useEffect(() => {
         if(currentRef) {

@@ -43,12 +43,13 @@ const Main = () => {
         reset: resetHistoryStore,
         onChange, store, setStore,
         redoHistory, undoHistory,
-    } = useStorePro({initialStore: initialStore})
+    } = useStorePro({type: String(schema.get('type')), initialStore: initialStore})
 
+    const type = String(schema.get('type'))
     const reset = React.useCallback(() => {
-        resetHistoryStore(initialStore)
+        resetHistoryStore(type, initialStore)
         prevOriginalStore.current = initialStore?.getValues()
-    }, [resetHistoryStore, prevOriginalStore])
+    }, [type, resetHistoryStore, prevOriginalStore])
 
     const changedStore = (
         (!prevOriginalStore.current && store.current?.getValues().size > 0) ||

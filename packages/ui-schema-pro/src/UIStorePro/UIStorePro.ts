@@ -40,11 +40,11 @@ class UIStorePro extends Record({
 // @ts-ignore
 export type UIStoreProType = Record<UIStoreProData> & UIStoreProData
 
-export const makeStorePro = (initialStore: UIStoreType | any = undefined): UIStoreProType => {
+export const makeStorePro = (type: string, initialStore: UIStoreType | any = undefined): UIStoreProType => {
     return new UIStorePro({
         activeIndex: 0,
-        current: initialStore || createEmptyStore('object'),
-        list: List([initialStore || createEmptyStore('object')]),
+        current: initialStore || createEmptyStore(type),
+        list: List([initialStore || createEmptyStore(type)]),
     })
 }
 
@@ -54,12 +54,14 @@ export interface UIStoreProOptions {
     debounceTime?: typeof defaultDebounceTime
     updateRate?: typeof defaultUpdateRate
     initialStore: UIStoreType | any
+    type: string
 }
 
 const defaultStoreOptions: UIStoreProOptions = {
     debounceTime: defaultDebounceTime,
     updateRate: defaultUpdateRate,
     initialStore: undefined,
+    type: '',
 }
 
 export const toHistory = (prevStore: UIStoreProType, index: number): UIStoreProType => {
@@ -76,10 +78,10 @@ export type setStorePro = React.Dispatch<React.SetStateAction<UIStoreProType>>
 const doingValueSelector = ['opts', 'doingValue']
 
 export const useStorePro = (
-    {debounceTime = defaultDebounceTime, updateRate = defaultUpdateRate, initialStore = undefined}:
+    {debounceTime = defaultDebounceTime, updateRate = defaultUpdateRate, type = defaultStoreOptions.type, initialStore = undefined}:
         UIStoreProOptions = defaultStoreOptions
 ): {
-    reset: (initialStore?: UIStoreType) => void
+    reset: (type: string, initialStore?: UIStoreType) => void
     onChange: typeof onChangeHandler
     redoHistory: redoHistory
     undoHistory: undoHistory
@@ -89,7 +91,7 @@ export const useStorePro = (
     const timer = React.useRef<number | undefined>()
     const historyChangeRater = React.useRef(initialChangeRater)
     const historyDebounce = React.useRef<any[]>([])
-    const [store, setStore] = React.useState<UIStoreProType>(() => makeStorePro(initialStore) as UIStoreProType)
+    const [store, setStore] = React.useState<UIStoreProType>(() => makeStorePro(type, initialStore) as UIStoreProType)
 
     const onChange: typeof onChangeHandler = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
         const doValue = scopes.indexOf('value') !== -1
@@ -163,11 +165,11 @@ export const useStorePro = (
         })
     }, [setStore])
 
-    const reset: (initialStore?: UIStoreType) => void = React.useCallback((initialStore) => {
+    const reset: (type: string, initialStore?: UIStoreType) => void = React.useCallback((type, initialStore) => {
         window.clearTimeout(timer.current)
         historyDebounce.current = []
         historyChangeRater.current = initialChangeRater
-        setStore(makeStorePro(initialStore))
+        setStore(makeStorePro(type, initialStore))
     }, [timer, historyDebounce, historyChangeRater, setStore])
 
     return {

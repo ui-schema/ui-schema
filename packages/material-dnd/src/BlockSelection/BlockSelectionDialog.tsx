@@ -7,7 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Dialog from '@material-ui/core/Dialog'
 import { useUID } from 'react-uid'
-import { DragDropBlockData, DragDropAdvancedContextType } from '../DragDropProvider/useDragDropContext'
+import { DragDropBlockData, DragDropAdvancedContextType } from '@ui-schema/material-dnd/DragDropProvider/useDragDropContext'
 
 export interface BlockSelectionProps {
     block: DragDropBlockData

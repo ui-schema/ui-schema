@@ -1,23 +1,26 @@
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import {InvertColors as InvertColorsIcon} from '@material-ui/icons';
-import GithubLogo from "../asset/GithubLogo";
-import {Link as RouterLink} from "react-router-dom";
-import {AccessTooltipIcon} from "@control-ui/core/es/Tooltip";
-import Typography from "@material-ui/core/Typography";
-import {LinkIconButton} from "@control-ui/core/es/LinkIconButton";
-import {Header} from "@control-ui/layouts/es/default/Header";
-import {useSwitchTheme} from "@control-ui/core/es/Provider/AppTheme";
-import {Drawer} from "@control-ui/layouts/es/default/Drawer";
-import {ListItemIcon, ListItemLink} from "@control-ui/core/es/Link";
-import {Logo} from "../asset/logo";
-import {schemas} from "../schemas/_list";
-import ListItemText from "@material-ui/core/ListItemText";
-import {ExpandLess, ExpandMore} from "@material-ui/icons";
-import {Divider, List, Collapse,} from "@material-ui/core";
-import ListItem from "@material-ui/core/ListItem";
-import {NavListNested} from "@control-ui/core/es/NavList";
-import {routesDocs, routesWidgets} from "../content/docs";
+import GithubLogo from '../asset/GithubLogo';
+import {Link as RouterLink} from 'react-router-dom';
+import useTheme from '@material-ui/core/styles/useTheme';
+import {AccessTooltipIcon} from '@control-ui/kit/Tooltip';
+import Typography from '@material-ui/core/Typography';
+import {LinkIconButton} from '@control-ui/kit/Link/LinkIconButton';
+import {Header} from '@control-ui/app/Header';
+import {useSwitchTheme} from '@control-ui/app/AppTheme';
+import {Drawer} from '@control-ui/app/Drawer';
+import {useDrawer} from '@control-ui/app/DrawerProvider';
+import {ListItemLink} from '@control-ui/kit/List';
+import {ListItemIcon} from '@control-ui/kit/List/ListItemIcon';
+import {Logo} from '../asset/logo';
+import {schemas} from '../schemas/_list';
+import ListItemText from '@material-ui/core/ListItemText';
+import {ExpandLess, ExpandMore} from '@material-ui/icons';
+import {Divider, List, Collapse} from '@material-ui/core';
+import ListItem from '@material-ui/core/ListItem';
+import {NavListNested} from '@control-ui/kit/Menu/NavList';
+import {routesDocs, routesWidgets} from '../content/docs';
 
 export const CustomHeader = ({title}) => {
     const {switchTheme} = useSwitchTheme();
@@ -43,8 +46,8 @@ export const CustomHeader = ({title}) => {
     </Header>;
 };
 
-const CollapseDrawer = ({toggle, icon, children, dense, initial = true, style = undefined}) => {
-    const [open, setOpen] = React.useState(initial);
+const CollapseDrawer = ({toggle, icon, children, dense, style = undefined}) => {
+    const {open, setOpen} = useDrawer()
 
     return <React.Fragment>
         <ListItem button onClick={() => setOpen(o => !o)} dense={dense} style={style}>
@@ -59,7 +62,14 @@ const CollapseDrawer = ({toggle, icon, children, dense, initial = true, style = 
     </React.Fragment>
 };
 
-export const CustomDrawer = ({closeOnClick}) => {
+export const CustomDrawer = () => {
+    const {setOpen} = useDrawer()
+    const {breakpoints} = useTheme();
+    const closeOnClick = React.useCallback(() => {
+        if(breakpoints.width('md') > window.innerWidth) {
+            setOpen(false)
+        }
+    }, [breakpoints, setOpen]);
     return <Drawer drawerWidth={260}>
         <List>
             <ListItemLink to={'/'} primary={'Home'} dense showActive onClick={closeOnClick}/>
@@ -70,11 +80,13 @@ export const CustomDrawer = ({closeOnClick}) => {
                 routes={[routesDocs]}
                 dense
                 filter={() => true}
+                onClick={closeOnClick}
             />
             <NavListNested
                 routes={[routesWidgets]}
                 dense
                 filter={() => true}
+                onClick={closeOnClick}
             />
 
             <CollapseDrawer toggle={'Schema Examples'} dense>

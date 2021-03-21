@@ -14,7 +14,11 @@ Widget for rich-content / block-type inputs, design-system implementation with E
 
 Rich text editor based on DraftJS with the styles like any other Material-UI TextField.
 
-> 🚧 Only a working basic integration at this point, not optimized for all tools/design
+> 🚧 Only a working basic integration at this point, not optimized for all tools/design.
+>
+> Currently focusing on the [SlateJS integration](/docs/widgets/RichText) instead.
+>
+> got some performance issues because of the initial `onReady` event of EditorJS, which isn't React render-flow compatible
 
 ```bash
 npm i --save @ui-schema/material-editorjs react-editor-js @editorjs/editorjs @editorjs/paragraph

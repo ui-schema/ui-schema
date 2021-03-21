@@ -11,17 +11,44 @@ import {
     ColorCircleStatic, ColorTwitterStatic,
     ColorSketchStatic, ColorSketchDialog,
 } from '@ui-schema/material-color';
-import {LoadingCircular} from '@control-ui/core/es/LoadingCircular';
+import {LoadingCircular} from '@control-ui/kit/Loading/LoadingCircular';
 import {BlockPanel} from '@ui-schema/material-dnd/DraggableBlock/BlockPanel';
 import {DroppableRootContent} from '@ui-schema/material-dnd/DroppableRoot/DroppableRootContent';
+import {NumberRendererCell, StringRendererCell, TextRendererCell} from '@ui-schema/ds-material/Widgets/TextFieldCell';
+import {Table} from '@ui-schema/ds-material/Widgets/Table';
 
 const customWidgets = {...widgets};
 
 customWidgets.DraggableBlock = BlockPanel
 customWidgets.DroppableRootContent = DroppableRootContent
 
+const CustomTable = ({widgets, ...props}) => {
+
+    // dynamic overwrite for all widgets, which need an special TableCell formatting
+    // you can also only enable specific widgets here
+    const customWidgets = React.useMemo(() => ({
+        ...widgets,
+        types: {
+            ...widgets.types,
+            string: StringRendererCell,
+            number: NumberRendererCell,
+            integer: NumberRendererCell,
+        },
+        custom: {
+            ...widgets.custom,
+            Text: TextRendererCell,
+        },
+    }), [widgets])
+
+    return <Table
+        {...props}
+        widgets={customWidgets}
+    />
+}
+
 customWidgets.custom = {
     ...widgets.custom,
+    Table: CustomTable,
     Color,
     ColorDialog,
     ColorStatic,

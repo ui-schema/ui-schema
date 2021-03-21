@@ -46,7 +46,7 @@ const widgets = {
 };
 ```
 
-Supports extra keywords:
+**Supports extra keywords:**
 
 - `view`
     - `variant`
@@ -55,8 +55,9 @@ Supports extra keywords:
     - `shrink` to `true` to always have the label up, e.g. native-date may look wrong otherwise in some browsers (use @ui-schema/material-pickers for best date/time support)
 - `formats`
     - supports browser based translations for format mismatch, schema key: `t: 'browser''` (will be moved to another way)
+- `checkNativeValidity` to enable the native browser validation, this is only usable for some edge cases as part of [native browser translation](/docs/localization#native-translation)
 
-Components:
+**Components:**
 
 - `TextRenderer` supports multi-line text
     - extra keywords:
@@ -66,7 +67,7 @@ Components:
             - if both are set, the `textarea` grows until `rowsMax` is reached
             - `hideTitle` does not show the title, but will use it as aria-label
     - `TextIconRenderer` supports an icon additionally
-- `NumberRenderer` supports number
+- `NumberRenderer` supports `number`, `integer`
     - `NumberIconRenderer` supports an icon additionally
 - `StringRenderer` base component used by both others and for `string`
     - `StringIconRenderer` supports an icon additionally
