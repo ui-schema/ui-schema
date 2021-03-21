@@ -1,7 +1,7 @@
 const demoRichText = [
     [
         `
-### Demo
+### Demo with DraftJS
 `,
         {
             type: 'object',

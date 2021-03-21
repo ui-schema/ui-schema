@@ -1,17 +1,16 @@
 import React from 'react'
 import clsx from 'clsx'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-// @ts-ignore
-import { DefaultTheme } from '@material-ui/core/styles/createMuiTheme'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 // @ts-ignore
 import { styles as inputStyles } from '@material-ui/core/Input/Input'
 import { TransTitle, WidgetProps } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '@ui-schema/ds-material'
-import { MarkdownLabel } from '@ui-schema/material-slate/FormWrapper/MarkdownLabel'
+import { MarkdownLabel } from '@ui-schema/material-slate/EditorWrapper/MarkdownLabel'
 
-export const useSlateEditorStyles = makeStyles<DefaultTheme, { dense: boolean, focused: boolean }>(theme => ({
+export const useFormEditorStyles = makeStyles<Theme, { dense: boolean, focused: boolean }>(theme => ({
     wrapper: {
         display: 'flex',
         flexDirection: 'column',
@@ -25,9 +24,10 @@ export const useSlateEditorStyles = makeStyles<DefaultTheme, { dense: boolean, f
         '& .slate-HeadingToolbar': {
             borderBottom: 0,
             opacity: ({focused}) => focused ? 1 : 0,
+            pointerEvents: ({focused}) => focused ? 'all' : 'none',
             transition: 'opacity 0.25s ease-out',
             margin: 0,
-            padding: '0 ' + theme.spacing(1) + 'px ' + theme.spacing(1) + 'px ' + theme.spacing(1) + 'px',
+            padding: '0 ' + theme.spacing(1) + 'px 0 ' + theme.spacing(1) + 'px',
             justifyContent: 'center',
             position: 'absolute',
             top: ({dense}: { dense?: boolean }) => ((dense ? theme.spacing(2 + 0.375) : theme.spacing(2 + 0.75)) * -1),
@@ -76,7 +76,7 @@ export const FormWrapper: React.ComponentType<React.PropsWithChildren<{
                 parentFocused={focused}
             /> : null}
 
-        {!schema.getIn(['view', 'hideTitle']) && !schema.get('placeholder') ?
+        {!schema.getIn(['view', 'hideTitle']) && !schema.getIn(['editor', 'placeholder']) ?
             <InputLabel
                 focused={focused} shrink={focused || !empty}
                 margin={dense ? 'dense' : undefined}

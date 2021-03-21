@@ -78,7 +78,7 @@ export const routesWidgets = {
         createDoc('widgets/OptionsList', 'Options List', '', {
             demoUIGenerator: demoOptionsList,
         }),
-        createDoc('widgets/RichText', 'RichText / WYSIWYG', '', {
+        createDoc('widgets/RichText', 'Rich-Text / Rich-Content', '', {
             demoUIGenerator: demoRichText,
         }),
         createDoc('widgets/NumberSlider', 'Number Slider', '', {

@@ -1,6 +1,7 @@
 import React from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { Trans } from '@ui-schema/ui-schema/Translate/Trans'
 
@@ -25,10 +26,10 @@ const MarkdownLink = React.forwardRef((props, ref) => <a
     ref={ref}
 />)
 
-export const useEditorStyles = makeStyles(() => ({
+const useMarkdownStyles = makeStyles<Theme, { top: number }>((theme) => ({
     markdown: {
         position: 'absolute',
-        top: '0px',
+        top: ({top}) => theme.spacing(top),
         right: '4px',
         zIndex: 1,
     },
@@ -40,10 +41,10 @@ export const useEditorStyles = makeStyles(() => ({
     },
 }))
 
-let MarkdownLabel: React.ComponentType<{ href?: string, enableKeyboard?: boolean, parentFocused: boolean }> = (
-    {href, parentFocused, enableKeyboard}
+let MarkdownLabel: React.ComponentType<{ href?: string, enableKeyboard?: boolean, parentFocused: boolean, top?: number }> = (
+    {href, parentFocused, enableKeyboard, top = 0}
 ) => {
-    const classes = useEditorStyles()
+    const classes = useMarkdownStyles({top})
     const [focus, setFocus] = React.useState(false)
     return <div className={classes.markdown}>
         {/* @ts-ignore */}

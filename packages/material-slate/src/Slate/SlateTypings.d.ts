@@ -1,7 +1,9 @@
 import React from 'react'
-import { Element, NodeEntry, Range, Text } from 'slate'
+import { Element, NodeEntry, Range } from 'slate'
+import { RenderLeafProps } from 'slate-react'
+import { editorEnableOnly } from '@ui-schema/material-slate/Slate/SlateRenderer'
 
-// todo: remove those typings, they currently are not exported by slate
+// todo: remove those typings when correctly overwriting the slate typings
 
 export interface CustomElement extends Element {
     // todo: added `type` here, was in slate example but not typing
@@ -24,15 +26,10 @@ export interface RenderElementProps {
 }
 
 /**
- * `RenderLeafProps` are passed to the `renderLeaf` handler.
+ * `RenderElementProps` are passed to the `renderElement` handler.
  */
-export interface RenderLeafProps {
-    children: any
-    leaf: Text
-    text: Text
-    attributes: {
-        'data-slate-leaf': true
-    }
+export interface RenderMapperProps extends RenderElementProps {
+    enableOnly: editorEnableOnly | undefined
 }
 
 /**

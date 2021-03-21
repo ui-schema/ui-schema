@@ -6,7 +6,9 @@ const schemaRichText = createOrderedMap({
         text_1: {
             type: 'string',
             widget: 'RichText',
-            placeholder: 'Write something great!',
+            editor: {
+                placeholder: 'Write something great!',
+            },
             view: {
                 sizeXs: 10,
             },

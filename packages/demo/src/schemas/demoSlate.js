@@ -3,10 +3,26 @@ import {createOrderedMap} from '@ui-schema/ui-schema';
 export const schemaDemoSlate = createOrderedMap({
     type: 'object',
     properties: {
+        texts: {
+            type: 'array',
+            widget: 'GenericList',
+            items: {
+                type: 'array',
+                widget: 'RichContent',
+                editor: {
+                    placeholder: 'Write something great!',
+                },
+                view: {
+                    sizeXs: 10,
+                },
+            },
+        },
         text_1: {
             type: 'array',
             widget: 'RichContent',
-            placeholder: 'Write something great!',
+            editor: {
+                placeholder: 'Write something great!',
+            },
             view: {
                 sizeXs: 10,
             },
@@ -25,8 +41,20 @@ export const schemaDemoSlate = createOrderedMap({
             view: {
                 sizeXs: 10,
                 sizeMd: 5,
-                topControls: false,
-                btnSize: 'small',
+            },
+            editor: {
+                initialRoot: 'h1',
+                enableOnly: [
+                    'p',
+                    'h1',
+                    'h2',
+                    'h3',
+                    'bold',
+                    'italic',
+                    'align_right',
+                    'align_center',
+                    'align_justify',
+                ],
             },
         },
         text_2b: {
@@ -35,8 +63,20 @@ export const schemaDemoSlate = createOrderedMap({
             view: {
                 sizeXs: 10,
                 sizeMd: 5,
-                topControls: false,
-                btnSize: 'medium',
+            },
+            editor: {
+                initialRoot: 'h1',
+                enableOnly: [
+                    'p',
+                    'h1',
+                    'h2',
+                    'h3',
+                    'block_quote',
+                    'align_right',
+                    'align_center',
+                    'align_justify',
+                ],
+                hideBalloon: true,
             },
         },
         pure2: {
@@ -51,7 +91,6 @@ export const schemaDemoSlate = createOrderedMap({
             widget: 'RichContent',
             view: {
                 sizeXs: 10,
-                topControls: false,
                 dense: true,
                 //hideMd: true,
             },
@@ -79,7 +118,7 @@ export const schemaDemoSlate = createOrderedMap({
             },
             default: [
                 {
-                    'type': 'heading-one',
+                    'type': 'h1',
                     'children': [
                         {
                             'text': 'Headline 1',
@@ -87,7 +126,7 @@ export const schemaDemoSlate = createOrderedMap({
                     ],
                 },
                 {
-                    'type': 'heading-two',
+                    'type': 'h2',
                     'children': [
                         {
                             'text': 'Headline 2',
@@ -95,7 +134,7 @@ export const schemaDemoSlate = createOrderedMap({
                     ],
                 },
                 {
-                    'type': 'heading-three',
+                    'type': 'h3',
                     'children': [
                         {
                             'text': 'Headline 3',
@@ -103,7 +142,7 @@ export const schemaDemoSlate = createOrderedMap({
                     ],
                 },
                 {
-                    'type': 'heading-four',
+                    'type': 'h4',
                     'children': [
                         {
                             'text': 'Headline 4',
@@ -111,7 +150,7 @@ export const schemaDemoSlate = createOrderedMap({
                     ],
                 },
                 {
-                    'type': 'heading-five',
+                    'type': 'h5',
                     'children': [
                         {
                             'text': 'Headline 5',
@@ -119,7 +158,7 @@ export const schemaDemoSlate = createOrderedMap({
                     ],
                 },
                 {
-                    'type': 'heading-six',
+                    'type': 'h6',
                     'children': [
                         {
                             'text': 'Headline 6',
@@ -203,7 +242,7 @@ export const schemaDemoSlate = createOrderedMap({
             },
             default: [
                 {
-                    'type': 'heading-one',
+                    'type': 'h1',
                     'children': [
                         {
                             'text': 'Headline 1',
@@ -219,7 +258,7 @@ export const schemaDemoSlate = createOrderedMap({
                     ],
                 },
                 {
-                    'type': 'heading-two',
+                    'type': 'h2',
                     'children': [
                         {
                             'text': 'Headline 2',
@@ -270,4 +309,32 @@ export const schemaDemoSlate = createOrderedMap({
             },
         },
     },
+});
+
+export const schemaDemoSlateSingle = createOrderedMap({
+    type: 'array',
+    widget: 'RichContentPane',
+    view: {
+        sizeMd: 12,
+    },
+    /*editor: {
+        enableOnly: [
+            'p',
+            'h1',
+            'h2',
+            'h3',
+            'ul',
+            'li',
+            //'bold',
+        ],
+        hideBalloon: true,
+    },*/
+    default: [{
+        'type': 'p',
+        'children': [
+            {
+                'text': 'Velit egestas dui id ornare arcu odio ut sem nulla. Pellentesque sit amet porttitor eget dolor morbi non arcu risus. Semper viverra nam libero justo laoreet. Egestas egestas fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate. Ac tortor vitae purus faucibus ornare suspendisse. In fermentum posuere urna nec tincidunt praesent. Ultricies leo integer malesuada nunc vel risus. Lacus luctus accumsan tortor posuere ac ut. Venenatis a condimentum vitae sapien. Mi proin sed libero enim sed faucibus turpis in eu. Blandit libero volutpat sed cras ornare arcu.',
+            },
+        ],
+    }],
 });

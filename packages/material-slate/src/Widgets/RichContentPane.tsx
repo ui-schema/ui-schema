@@ -2,11 +2,11 @@ import React from 'react'
 import { extractValue, memo, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 import { SlateRenderer } from '@ui-schema/material-slate/Slate/SlateRenderer'
 import { ElementMapper } from '@ui-schema/material-slate/SlateElements/ElementMapper'
-import { FormWrapper, useFormEditorStyles } from '@ui-schema/material-slate/EditorWrapper/FormWrapper'
+import { PaneWrapper, usePaneEditorStyles } from '@ui-schema/material-slate/EditorWrapper/PaneWrapper'
 import { useSlate } from '@ui-schema/material-slate/Slate/useSlate'
 import { slatePlugins, withPlugins } from '@ui-schema/material-slate/Slate/slatePlugins'
 
-let RichContent: React.ComponentType<WidgetProps & WithValue> = (props) => {
+let RichContentPane: React.ComponentType<WidgetProps & WithValue> = (props) => {
     const {
         /*internalValue,*/ value, schema, storeKeys,
         errors,
@@ -17,9 +17,9 @@ let RichContent: React.ComponentType<WidgetProps & WithValue> = (props) => {
 
     const {dense, focused, empty, onFocus, onBlur} = useSlate(schema, value)
 
-    const classes = useFormEditorStyles({dense, focused})
+    const classes = usePaneEditorStyles({dense, focused})
 
-    return <FormWrapper
+    return <PaneWrapper
         ownKey={ownKey} storeKeys={storeKeys} schema={schema}
         dense={dense} focused={focused} empty={empty}
         errors={errors} showValidity={showValidity} valid={valid}
@@ -31,9 +31,9 @@ let RichContent: React.ComponentType<WidgetProps & WithValue> = (props) => {
             withPlugins={withPlugins}
             onFocus={onFocus} onBlur={onBlur}
         />
-    </FormWrapper>
+    </PaneWrapper>
 }
 
-RichContent = extractValue(memo(RichContent))
+RichContentPane = extractValue(memo(RichContentPane))
 
-export { RichContent }
+export { RichContentPane }

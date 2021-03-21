@@ -75,7 +75,14 @@ export const pluginOptions = {
     ...setDefaults(DEFAULTS_LINK, {}),
     ...setDefaults(DEFAULTS_IMAGE, {}),
     ...setDefaults(DEFAULTS_MEDIA_EMBED, {}),
-    ...setDefaults(DEFAULTS_TODO_LIST, {}),
+    ...setDefaults(
+        {
+            'todo_li': {
+                hotkey: 'mod+shift+i',
+            },
+        },
+        DEFAULTS_TODO_LIST
+    ),
     ...setDefaults(DEFAULTS_TABLE, {}),
     ...setDefaults(DEFAULTS_LIST, {}),
     ...setDefaults(headingOptions, {}),

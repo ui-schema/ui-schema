@@ -122,6 +122,7 @@ const packages = {
             '@ui-schema/ds-material': buildExternal('@ui-schema/ds-material'),
             '@material-ui/core': buildExternal('@material-ui/core'),
             '@material-ui/icons': buildExternal('@material-ui/icons'),
+            '@material-ui/lab': buildExternal('@material-ui/lab'),
             react: buildExternal('react'),
             'react-dom': buildExternal('react-dom'),
             immutable: buildExternal('immutable'),

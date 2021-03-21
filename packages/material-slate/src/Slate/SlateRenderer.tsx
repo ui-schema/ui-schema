@@ -1,21 +1,23 @@
 import React, { FocusEventHandler } from 'react'
-import { fromJS } from 'immutable'
+import { fromJS, List } from 'immutable'
 import { Slate, ReactEditor, withReact } from 'slate-react'
-import { EditablePlugins as Editable, EditablePluginsProps, pipe } from '@udecode/slate-plugins'
+import { EditablePlugins as Editable, EditablePluginsProps, pipe, RenderLeaf } from '@udecode/slate-plugins'
 import {
     createEditor,
     Descendant,
 } from 'slate'
 import { withHistory } from 'slate-history'
-import { memo, WidgetProps, WithValue } from '@ui-schema/ui-schema'
-import { ElementMapperType } from '@ui-schema/material-slate/Slate/ElementMapper'
+import { memo, useImmutable, WidgetProps, WithValue } from '@ui-schema/ui-schema'
+import { ElementMapperType } from '@ui-schema/material-slate/SlateElements/ElementMapper'
 import { RenderElementProps } from '@ui-schema/material-slate/Slate/SlateTypings'
-import { withPlugins } from '@ui-schema/material-slate/Slate/slatePlugins'
-import { SlateToolbar } from '@ui-schema/material-slate/Slate/SlateToolbar'
+import { withPlugins, withPluginsType } from '@ui-schema/material-slate/Slate/slatePlugins'
+import { SlateToolbarBalloon } from '@ui-schema/material-slate/Slate/SlateToolbarBalloon'
 import { SlateToolbarHead } from '@ui-schema/material-slate/Slate/SlateToolbarHead'
+import { pluginOptions } from '@ui-schema/material-slate/Slate/pluginOptions'
+import { isSlateEmpty } from '@ui-schema/material-slate/Slate/useSlate'
 
 export type BulletedListElement = {
-    type: 'ul'
+    type: string
     children: Descendant[]
 }
 
@@ -24,14 +26,14 @@ export interface SlateRendererProps {
 }
 
 const initialValue = [{
-    type: 'p',
+    type: pluginOptions.p.type,
     children: [
         {
             text: '',
         },
     ],
 }]
-
+export type editorEnableOnly = List<string>
 export type SlateHocType<T extends ReactEditor> = (editor: T) => T
 
 let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithValue & {
@@ -39,8 +41,10 @@ let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithVa
     onFocus: FocusEventHandler
     onBlur: FocusEventHandler
     className?: string
-    withPlugins: SlateHocType<ReactEditor>[]
+    onlyInline?: boolean
+    withPlugins: withPluginsType
     plugins: EditablePluginsProps['plugins']
+    renderLeaf?: RenderLeaf[]
 }> = (
     {
         value,
@@ -53,77 +57,112 @@ let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithVa
         onBlur,
         ElementMapper,
         className,
+        onlyInline = false,
         plugins,
+        renderLeaf,
     }
 ) => {
-    const dense = schema.getIn(['view', 'dense'])
-    const renderElement = React.useCallback(
-        ({children, ...props}: RenderElementProps): JSX.Element =>
-            <ElementMapper {...props}>
-                {children}
-            </ElementMapper>,
-        [dense]
-    )
+    const storeKeysCurrent = useImmutable(storeKeys)
+    const enableOnly = schema.getIn(['editor', 'enableOnly']) as editorEnableOnly
     const renderElements = React.useMemo(() => {
-        return [renderElement]
-    }, [renderElement])
+        return [
+            ({children, ...props}: RenderElementProps): JSX.Element =>
+                <ElementMapper {...props} enableOnly={enableOnly}>
+                    {children}
+                </ElementMapper>,
+        ]
+    }, [enableOnly])
 
-    const internalValRef = React.useRef(internalValue)
-    if (typeof internalValue === 'undefined') {
-        if (value) {
-            // handling setting internal value for keyword `default`
-            internalValRef.current = value.toJS()
-            internalValue = internalValRef.current
-        } else {
-            internalValue = initialValue
-        }
-    }
-
+    const valueRef = React.useRef(value)
+    const handledInitial = React.useRef(false)
+    const valueIsSameOrInitialised = handledInitial.current && valueRef.current?.equals(value)
     React.useEffect(() => {
-        if (internalValRef.current) {
+        if (!valueIsSameOrInitialised) {
+            const handledInitialTemp = handledInitial.current
+            handledInitial.current = true
             onChange(
-                storeKeys, ['internal'],
-                () => ({
-                    internal: internalValRef.current,
-                }),
+                storeKeysCurrent, ['internal', 'value'],
+                ({internal, value: storeValue}) => {
+                    if (storeValue && storeValue.size) {
+                        // handling setting internal value for keyword `default`
+                        // must check for really non empty, e.g. when used in root level `value` and `internal` will be an empty list
+                        valueRef.current = storeValue
+                    } else {
+                        valueRef.current = !handledInitialTemp && schema.get('default') ? schema.get('default') as List<any> : List()
+                    }
+                    if (valueRef.current.size) {
+                        internal = valueRef.current.toJS()
+                    } else {
+                        const initial = [...initialValue]
+                        initial[0] = {...initial[0]}
+                        if (schema.getIn(['editor', 'initialRoot'])) {
+                            initial[0].type = schema.getIn(['editor', 'initialRoot']) as string
+                        } else if (onlyInline) {
+                            initial[0].type = 'span'
+                        }
+                        internal = initial
+                    }
+
+                    return {
+                        internal: internal,
+                        value: valueRef.current,
+                    }
+                },
                 Boolean(schema.get('deleteOnEmpty') || required),
                 'array'
             )
         }
-    }, [internalValRef])
+    }, [valueIsSameOrInitialised, handledInitial, valueRef, schema, required, onChange, onlyInline, storeKeysCurrent])
 
     // @ts-ignore
     const editor: ReactEditor = React.useMemo(
-        () => pipe(createEditor(), withReact, withHistory, ...withPlugins),
-        [withPlugins]
+        () => pipe(createEditor(), withReact, withHistory, ...withPlugins({enableOnly, onlyInline})),
+        [withPlugins, enableOnly, onlyInline]
     )
 
     const onChangeHandler = React.useCallback((editorValue) => {
         onChange(
-            storeKeys, ['value', 'internal'],
-            () => ({
-                value: fromJS(editorValue),
-                internal: editorValue,
-            }),
+            storeKeysCurrent, ['value', 'internal'],
+            () => {
+                let newValue = fromJS(editorValue) as List<any>
+                if (isSlateEmpty(newValue)) {
+                    newValue = List()
+                }
+                valueRef.current = newValue
+                return {
+                    value: newValue,
+                    internal: editorValue,
+                }
+            },
             Boolean(schema.get('deleteOnEmpty') || required),
             'array'
         )
-    }, [onChange, storeKeys, schema, required])
+    }, [valueRef, onChange, storeKeysCurrent, schema, required])
 
-    return <Slate editor={editor} value={internalValue} onChange={onChangeHandler}>
-        <SlateToolbarHead/>
-        <SlateToolbar/>
+    return internalValue?.length ? <Slate editor={editor} value={internalValue} onChange={onChangeHandler}>
+        {!schema.getIn(['editor', 'hideToolbar']) ?
+            <SlateToolbarHead
+                enableOnly={enableOnly}
+                onlyInline={onlyInline}
+                onFocus={onFocus}
+                onBlur={onBlur}
+            /> : null}
+        {!schema.getIn(['editor', 'hideBalloon']) ?
+            <SlateToolbarBalloon
+                enableOnly={enableOnly}
+            /> : null}
         <Editable
             renderElement={renderElements}
+            renderLeaf={renderLeaf}
             plugins={plugins}
             onFocus={onFocus}
             onBlur={onBlur}
-            placeholder={schema.get('placeholder') as string | undefined}
-            spellCheck={schema.get('spellCheck') as boolean}
-            autoFocus={schema.get('autoFocus') as boolean}
+            placeholder={schema.getIn(['editor', 'placeholder']) as string | undefined}
+            spellCheck={schema.getIn(['editor', 'spellCheck']) as boolean}
+            autoFocus={schema.getIn(['editor', 'autoFocus']) as boolean}
             className={className}
         />
-    </Slate>
+    </Slate> : null
 }
 
 SlateRenderer = memo(SlateRenderer)
