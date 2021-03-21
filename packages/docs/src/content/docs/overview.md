@@ -109,7 +109,7 @@ Custom widgets for `widget`, special UIs and specific type handling:
 | `MediaGallery` | Media files selector, may support externals | | 🔵 | 🔵 | 🔵 |
 | | | | | | |
 | **Misc** | | | | | |
-| `Table`      | table editor  | | 🔵 | 🔵 | 🔵 |
+| `Table`      | [table editor](/docs/widgets/Table)  | | ✅ℹ️ | 🔵 | 🔵 |
 | `Drag 'n Drop` | [endless nestable drag-drop lists](/docs/widgets/Drag-n-Drop-Editor)  | | ✅ℹ️ | 🔵 | 🔵 |
 | `Drag 'n Drop Lists`   | [simple drag-drop lists](/docs/widgets/Drag-n-Drop-Editor-Simple)  | | ✅ℹ️ | 🔵 | 🔵 |
 | `Accordions` | [accordion drop-downs](/docs/widgets/Accordions) for object properties with headline | `object` | ✅ | 🔵 | 🔵 |

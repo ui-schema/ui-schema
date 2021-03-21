@@ -11,6 +11,7 @@ import {demoSelect} from './docs/widgets/SelectDemo';
 import {demoSimpleList} from './docs/widgets/SimpleListDemo';
 import {demoStepper} from './docs/widgets/StepperDemo';
 import {demoSwitch} from './docs/widgets/SwitchDemo';
+import {demoTable} from './docs/widgets/TableDemo';
 import {demoTextField} from './docs/widgets/TextFieldDemo';
 import {demoEditorJS} from './docs/widgets/EditorJSDemo';
 import {demoDragnDropEditorSimple} from './docs/widgets/Drag-n-Drop-Editor-Simple';
@@ -95,6 +96,9 @@ export const routesWidgets = {
         }),
         createDoc('widgets/Switch', 'Switch', '', {
             demoUIGenerator: demoSwitch,
+        }),
+        createDoc('widgets/Table', 'Table', '', {
+            demoUIGenerator: demoTable,
         }),
         createDoc('widgets/TextField', 'TextField', '', {
             demoUIGenerator: demoTextField,

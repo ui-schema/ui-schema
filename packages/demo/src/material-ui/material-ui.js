@@ -22,16 +22,45 @@ import {useDummy} from '../component/MainDummy';
 import {UIApiProvider} from '@ui-schema/ui-schema/UIApi/UIApi';
 import {ReferencingNetworkHandler} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
 import {storeUpdater} from '@ui-schema/ui-schema/UIStore/storeUpdater';
+import {schemaDemoTable} from '../schemas/demoTable';
+import {Table} from '@ui-schema/ds-material/Widgets/Table';
+import {NumberRendererCell, StringRendererCell, TextRendererCell} from '@ui-schema/ds-material/Widgets/TextFieldCell';
 
-const pluginStack = [...widgets.pluginStack]
+const customWidgets = {...widgets}
+const pluginStack = [...customWidgets.pluginStack]
 // the referencing network handler should be at first position
 // must be before the `ReferencingHandler`, thus if the root schema for the level is a network schema,
 // the network handler can download it, and the normal referencing handler may handle references inside of e.g. `if`
 // maybe the network handlers adds a generic prop `resolveNetworkRef`, to request network schema inside e.g. an `if` from inside the ReferencingHandler
 pluginStack.splice(0, 0, ReferencingNetworkHandler)
-widgets.pluginStack = pluginStack
+customWidgets.pluginStack = pluginStack
+
+const CustomTable = ({widgets, ...props}) => {
+    const customWidgets = React.useMemo(() => ({
+        ...widgets,
+        types: {
+            ...widgets.types,
+            string: StringRendererCell,
+            number: NumberRendererCell,
+            integer: NumberRendererCell,
+        },
+        custom: {
+            ...widgets.custom,
+            Text: TextRendererCell,
+        },
+    }), [widgets])
+
+    return <Table
+        {...props}
+        widgets={customWidgets}
+    />
+}
+
+customWidgets.custom.Table = CustomTable
+
 //widgets.types.null = () => 'null'
-const DummyRenderer = createDummyRenderer(widgets);
+
+const DummyRenderer = createDummyRenderer(customWidgets);
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
@@ -58,7 +87,7 @@ const MainStore = () => {
             schema={schema}
             store={store}
             onChange={onChangeNext}
-            widgets={widgets}
+            widgets={customWidgets}
             showValidity={showValidity}
             t={browserT}
         >
@@ -84,7 +113,7 @@ const DemoUser = () => {
                 schema={schemaUser}
                 store={store}
                 onChange={onChangeNext}
-                widgets={widgets}
+                widgets={customWidgets}
                 t={browserT}
             >
                 <MuiSchemaDebug/>
@@ -102,6 +131,14 @@ const Main = ({classes = {}}) => {
     const {toggleDummy, getDummy} = useDummy();
 
     return <React.Fragment>
+        <Grid item xs={12}>
+            <DummyRenderer
+                id={'schemaTable'} schema={schemaDemoTable}
+                open
+                toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
+                stylePaper={{background: 'transparent'}} variant={'outlined'}
+            />
+        </Grid>
         <Grid item xs={12}>
             <Paper className={classes.paper}>
                 <MainStore/>

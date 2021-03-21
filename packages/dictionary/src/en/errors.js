@@ -22,7 +22,11 @@ export const errors = {
     [ERROR_DUPLICATE_ITEMS]: 'Remove duplicate entries',
     [ERROR_NOT_FOUND_CONTAINS]: 'Minimum one entry must exist like specified',
     [ERROR_MIN_LENGTH]: (context) => `Min. Length: ${typeof context.get('min') !== 'undefined' ? context.get('min') : typeof context.get('exclMin') !== 'undefined' ? context.get('exclMin') + 1 : '-'}`,
-    [ERROR_MAX_LENGTH]: (context) => `Max. Length: ${typeof context.get('max') !== 'undefined' ? context.get('max') : typeof context.get('exclMin') !== 'undefined' ? context.get('exclMax') - 1 : '-'}`,
+    [ERROR_MAX_LENGTH]: (context) => `Max. Length: ${
+        typeof context.get('max') !== 'undefined' ? context.get('max') :
+            typeof context.get('exclMin') !== 'undefined' ? context.get('exclMin') - 1 :
+                typeof context.get('exclMax') !== 'undefined' ? context.get('exclMax') - 1 : '-'
+    }`,
     [ERROR_MULTIPLE_OF]: (context) => `Must be multiple of ${context.get('multipleOf')}`,
     [ERROR_PATTERN]: (context) => `Input is invalid, must ${context.getIn(['patternError', 'en']) || ('match ' + context.get('pattern'))}`,
     [ERROR_WRONG_TYPE]: (context) => `Wrong type, expected ${context.get('type')} and got ${context.get('actual')}`,
