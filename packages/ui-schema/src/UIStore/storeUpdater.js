@@ -1,8 +1,15 @@
 import {prependKey, shouldDeleteOnEmpty} from '@ui-schema/ui-schema/UIStore/UIStore';
+import {List, Map} from 'immutable';
 
 const updateStoreScope = (store, scope, storeKeys, oldValue, newValue, deleteOnEmpty, type) => {
     if(shouldDeleteOnEmpty(newValue, deleteOnEmpty, type)) {
-        store = store.deleteIn(storeKeys.size ? prependKey(storeKeys, scope) : [scope]);
+        const parentStore = store.getIn(storeKeys.size ? prependKey(storeKeys.splice(storeKeys.size - 1, 1), scope) : [scope])
+        // e.g. numbers in tuples must only be deleted, when it is inside an object, when inside an `list` undefined must be used for a "reset"
+        if(List.isList(parentStore)) {
+            store = store.setIn(storeKeys.size ? prependKey(storeKeys, scope) : [scope], undefined);
+        } else if(Map.isMap(parentStore)) {
+            store = store.deleteIn(storeKeys.size ? prependKey(storeKeys, scope) : [scope]);
+        }
         return store
     }
 
