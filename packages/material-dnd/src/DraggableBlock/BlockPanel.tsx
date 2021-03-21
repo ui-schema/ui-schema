@@ -25,7 +25,7 @@ import { Trans } from '@ui-schema/ui-schema'
 
 let BlockPanel: React.ComponentType<DraggableBlockProps> = (
     {
-        storeKeys, data, onChange,
+        storeKeys, blockId, onChange,
         parentSchema, schema,
         getSourceValues, moveDraggedValue,
         handleBlockDelete, blocksSize, setAddSelectionIndex,
@@ -65,7 +65,6 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
         },
     }), [allowedBlocks, refRoot, onChange, storeKeys, getSourceValues, moveDraggedValue])
 
-    const blockId = data.get('$block') as string
     const [{isDragging}, drag, preview] = useDrag(() => ({
         item: {storeKeys: storeKeys, type: 'BLOCK', $block: blockId},
         collect: (monitor: DragSourceMonitor) => ({
@@ -254,7 +253,7 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
                 </IconButton>
             </div>
 
-            {data?.size && storeKeys.last() < blocksSize - 1 ? <BlockAddHover
+            {storeKeys.last() < blocksSize - 1 ? <BlockAddHover
                 setAddSelectionIndex={setAddSelectionIndex}
                 showAddSelection={false}
                 index={(storeKeys.last() as number) + 1}
@@ -264,7 +263,7 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
             <Dialog onClose={() => setShowInfo(false)} open={showInfo}>
                 <DialogTitle>Block Info</DialogTitle>
                 <DialogContent>
-                    {JSON.stringify(data?.toJS())}
+                    $block: {blockId}
                 </DialogContent>
             </Dialog>
         </div>

@@ -1,12 +1,11 @@
 import { onChangeHandler, StoreKeys, StoreSchemaType } from '@ui-schema/ui-schema'
-import { OrderedMap } from 'immutable'
 import { DragDropAdvancedContextType } from '@ui-schema/material-dnd/DragDropProvider/useDragDropContext'
 import { BlockAddProps } from '@ui-schema/material-dnd/BlockSelection/BlockAddProps'
 
 export interface DraggableBlockProps {
     parentKeys: StoreKeys
     storeKeys: StoreKeys
-    data: OrderedMap<any, any>
+    blockId: string
     blocksSize: number
     schema: StoreSchemaType
     parentSchema: StoreSchemaType

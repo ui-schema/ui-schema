@@ -119,7 +119,7 @@ export const DroppableRootContent: React.ComponentType<DroppableRootContentProps
                     parentKeys={storeKeys}
                     storeKeys={storeKeys.push(i) as StoreKeys}
                     ownKey={i}
-                    data={item}
+                    blockId={item.get('$block') as string}
                     blocksSize={data.size}
                     parentSchema={schema}
                     schema={blocks.get(item.get('$block') as string)}
