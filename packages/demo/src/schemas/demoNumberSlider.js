@@ -9,7 +9,7 @@ const schemaNumberSlider = createOrderedMap({
             minItems: 2,
             maxItems: 2,
             items: {
-                type: 'number',
+                type: 'integer',
                 minimum: 5,
                 maximum: 125
             },

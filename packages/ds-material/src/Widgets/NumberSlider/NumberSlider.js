@@ -140,7 +140,10 @@ export const NumberSlider = ({
     let minItems = undefined;
     let maxItems = undefined;
     if(schema.get('type') === 'array') {
-        if(schema.getIn(['items', 'type']) !== 'number') {
+        if(
+            schema.getIn(['items', 'type']) !== 'number' &&
+            schema.getIn(['items', 'type']) !== 'integer'
+        ) {
             return null
         }
 

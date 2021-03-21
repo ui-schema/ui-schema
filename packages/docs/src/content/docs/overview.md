@@ -61,7 +61,7 @@ Widgets for `type`:
 | Type         | Component            | MUI | BTS | ? |
 | :---         | :---                 | ---: | ---: | ---: |
 | `string`     | [Normal Text + Formats](/docs/widgets/TextField)<br>`*`, `date`, `email`, `tel` | ✅ | ✅ | 🔵 |
-| `number`     | [Number](/docs/widgets/TextField)     | ✅ | ✅ | 🔵 |
+| `number`, `integer`     | [Number](/docs/widgets/TextField)     | ✅ | ✅ | 🔵 |
 | `boolean`    | [Switch / Toggle](/docs/widgets/Switch) | ✅ | ✅ | 🔵 |
 | `object`, `*` | [Native Objects / Grid](/docs/widgets/GridHandler) | ✅ | ✅ | 🔵 |
 | `array`      | only supported through widgets | - | - | - |
@@ -71,7 +71,7 @@ Custom widgets for `widget`, special UIs and specific type handling:
 | Widget       | Component | Types | MUI | BTS | ? |
 | :---         | :----     | :----     | :---: | :---: | ---: |
 | `Text`       | [multiline text](/docs/widgets/TextField) | `string` | ✅ | ✅ | 🔵 |
-| `NumberSlider` | [slider as input](/docs/widgets/NumberSlider) | `number`<br>`array(number)` | ✅ | 🔵 | 🔵 |
+| `NumberSlider` | [slider as input](/docs/widgets/NumberSlider) | `number`<br>`array(number)`<br>`integer`<br>`array(integer)` | ✅ | 🔵 | 🔵 |
 | `Date`       | [date selector](/docs/widgets/DateTimePickers) | `string` | ✅ | 🔵 | 🔵 |
 | `DateTime`   | [date and time selector](/docs/widgets/DateTimePickers) | `string` | ✅ | 🔵 | 🔵 |
 | `Time`       | [time selector](/docs/widgets/DateTimePickers) | `string` | ✅ | 🔵 | 🔵 |
@@ -85,11 +85,11 @@ Custom widgets for `widget`, special UIs and specific type handling:
 | `RichText`   | [multiline rich text editor](/docs/widgets/RichText) | `string` | ✅ | 🔵 | 🔵 |
 | `RichTextInline` | [single-line rich text editor](/docs/widgets/RichText) | `string` | ✅ | 🔵 | 🔵 |
 | `Code`, `CodeSelectable` | [text editor with syntax highlight](/docs/widgets/Code) | `string`, `array(string, string)` | ✅ | 🔵 | 🔵 |
-| `EditorJS`       | [EditorJS text editor](/docs/widgets/EditorJS) | `string` | ✅ℹ️ | 🔵 | 🔵 |
+| `EditorJS`   | [EditorJS text editor](/docs/widgets/EditorJS) | `string` | ✅ℹ️ | 🔵 | 🔵 |
 | | | | | | |
 | **Lists** | | | | | |
-| `SimpleList` | [strings and numbers as list](/docs/widgets/SimpleList) | `array(string)`<br>`array(number)` | ✅ | 🔵 | 🔵 |
-| `GenericList` | [objects/array as list](/docs/widgets/SimpleList) | `array({*})` | ✅ | 🔵 | 🔵 |
+| `SimpleList`  | [strings and numbers as list](/docs/widgets/SimpleList) | `array(string)`<br>`array(number)` | ✅ | 🔵 | 🔵 |
+| `GenericList` | [objects/array as list](/docs/widgets/SimpleList) | `array({*})`, `array([*])` | ✅ | 🔵 | 🔵 |
 | | | | | | |
 | **Selection** | | | | | |
 | `OptionsCheck` | [checkboxes](/docs/widgets/OptionsList)  | `array` | ✅ | ✅ | 🔵 |
