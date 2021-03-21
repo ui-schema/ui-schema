@@ -115,7 +115,7 @@ export const extractValidity = (Component) => {
 export const withUIMeta = (Component) => {
     const WithUIMeta = p => {
         const meta = useUIMeta();
-        return <Component {...p} {...meta}/>
+        return <Component {...meta} {...p}/>
     };
     WithUIMeta.displayName = `WithUIMeta(${getDisplayName(Component)})`;
     return WithUIMeta;
