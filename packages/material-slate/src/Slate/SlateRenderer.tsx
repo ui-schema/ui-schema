@@ -116,7 +116,7 @@ let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithVa
 
     // @ts-ignore
     const editor: ReactEditor = React.useMemo(
-        () => pipe(createEditor(), withReact, withHistory, ...withPlugins({enableOnly, onlyInline})),
+        () => pipe(createEditor() as ReactEditor, withReact, withHistory, ...withPlugins({enableOnly, onlyInline})),
         [withPlugins, enableOnly, onlyInline]
     )
 

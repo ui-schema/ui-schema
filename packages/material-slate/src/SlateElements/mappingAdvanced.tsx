@@ -16,7 +16,7 @@ export const mappingAdvanced: ElementMapping = {
             <Checkbox
                 checked={Boolean(checked)}
                 onChange={(e) => {
-                    const path = ReactEditor.findPath(editor, element)
+                    const path = ReactEditor.findPath(editor as ReactEditor, element)
 
                     Transforms.setNodes(
                         editor,
