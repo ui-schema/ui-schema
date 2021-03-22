@@ -3,6 +3,7 @@ import { mapSchema, checkNativeValidity, WidgetProps } from '@ui-schema/ui-schem
 import { ValidityHelperText } from '../../Component/LocaleHelperText/LocaleHelperText'
 import InputBase from '@material-ui/core/InputBase'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
+import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
 
 export interface StringRendererCellProps {
     type?: string
@@ -74,17 +75,30 @@ export const StringRendererCell: React.ComponentType<WidgetProps & StringRendere
             onFocus={onFocus}
             onBlur={onBlur}
             onKeyUp={onKeyUp}
-            onKeyPress={onKeyPress}
+            onKeyPress={e => {
+                const evt = e.nativeEvent
+                if (!forbidInvalidNumber(evt, schema.get('type') as string)) {
+                    onKeyPress && onKeyPress(evt)
+                }
+            }}
             aria-labelledby={labelledBy}
             style={style}
             onKeyDown={onKeyDown}
             onChange={(e) => {
                 const val = e.target.value
+                const schemaType = schema.get('type') as string
+                const newVal = convertStringToNumber(val, schemaType)
+                if (
+                    (schemaType === 'number' || schemaType === 'integer')
+                    && newVal === '' && e.target.validity.badInput
+                ) {
+                    // forbid saving/deleting of invalid number at all
+                    return undefined
+                }
                 onChange(
                     storeKeys, ['value'],
-                    () => ({value: convertStringToNumber(val, schema.get('type') as string)}),
-                    //schema.get('deleteOnEmpty') as boolean || required,
-                    false,
+                    () => ({value: newVal}),
+                    schema.get('deleteOnEmpty') as boolean || required,
                     schema.get('type') as string
                 )
             }}

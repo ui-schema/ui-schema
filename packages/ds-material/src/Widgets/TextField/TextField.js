@@ -4,6 +4,7 @@ import {useUID} from 'react-uid';
 import {TransTitle, mapSchema, checkNativeValidity} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 import {convertStringToNumber} from '@ui-schema/ds-material/Utils/convertStringToNumber';
+import {forbidInvalidNumber} from '@ui-schema/ds-material/Utils';
 
 export const StringRenderer = ({
                                    type,
@@ -60,15 +61,29 @@ export const StringRenderer = ({
             onFocus={onFocus}
             onBlur={onBlur}
             onKeyUp={onKeyUp}
-            onKeyPress={onKeyPress}
+            onKeyPress={e => {
+                const evt = e.nativeEvent
+                if (!forbidInvalidNumber(evt, schema.get('type'))) {
+                    onKeyPress && onKeyPress(evt)
+                }
+            }}
             id={'uis-' + uid}
             style={style}
             onKeyDown={onKeyDown}
             onChange={(e) => {
                 const val = e.target.value
+                const schemaType = schema.get('type')
+                const newVal = convertStringToNumber(val, schemaType)
+                if(
+                    (schemaType === 'number' || schemaType === 'integer')
+                    && newVal === '' && e.target.validity.badInput
+                ) {
+                    // forbid saving/deleting of invalid number at all
+                    return undefined
+                }
                 onChange(
                     storeKeys, ['value'],
-                    () => ({value: convertStringToNumber(val, schema.get('type'))}),
+                    () => ({value: newVal}),
                     schema.get('deleteOnEmpty') || required,
                     schema.get('type'),
                 )

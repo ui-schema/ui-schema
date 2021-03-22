@@ -8,7 +8,7 @@ import {
     Visibility, VisibilityOff,
     FormatSize, FormatShapes, Code, SpaceBar, RestorePage, HorizontalSplit, VerticalSplit,
 } from '@material-ui/icons';
-import {isInvalid, createOrderedMap, UIProvider, UIRootRenderer, createStore, useUI, storeUpdater} from '@ui-schema/ui-schema';
+import {isInvalid, createOrderedMap, UIProvider, UIRootRenderer, createStore, useUI, storeUpdater, createEmptyStore} from '@ui-schema/ui-schema';
 import {RichCodeEditor, themes} from '../RichCodeEditor';
 import {Markdown} from '../Markdown';
 import PageNotFound from '../../page/PageNotFound';
@@ -419,6 +419,14 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
     const [schema, setSchema] = React.useState(() => schemas[activeSchema][1]);
     const [store, setStore] = React.useState(() => createStore(schemas[activeSchema][2]));
     // end - default schema state
+
+    const type = schema && schema.get('type')
+    React.useEffect(() => {
+        if(type) {
+            setStore(createEmptyStore(type))
+        }
+    }, [type, setStore])
+
 
     const toggleInfoBox = React.useCallback((setter) => {
         setInfoBox(setter);

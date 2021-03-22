@@ -6,14 +6,15 @@
 # the build. This is relative to the base directory if one has been set, or the
 # root directory if a base has not been set. This sample publishes the
 # directory located at the absolute path "root/project/build-output"
-publish = "../dist/demo/"
+# publish = "dist/demo/"
 
-command = "cd ../ && npm ci && npm run bootstrap && npm run hoist && npm run build"
+command = "npm ci && npm run bootstrap && npm run build"
 
 [build.processing]
 skip_processing = false
-[build.processing.html]
-pretty_urls = true
+
+#[build.processing.html]
+#pretty_urls = true
 
 # A redirect rule with all the supported properties
 [[redirects]]
