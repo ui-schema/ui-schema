@@ -8,7 +8,7 @@ let ObjectRenderer = ({
     const {isVirtual} = props
     const properties = schema.get('properties');
 
-    if(!widgets.GroupRenderer) {
+    if(!isVirtual && !widgets.GroupRenderer) {
         if(process.env.NODE_ENV === 'development') {
             console.error('Widget GroupRenderer not existing');
         }
@@ -28,6 +28,7 @@ let ObjectRenderer = ({
             {...props}
             schema={childSchema} parentSchema={schema}
             storeKeys={storeKeys.push(childKey)} level={level + 1}
+            widgets={widgets}
         />,
     ).valueSeq()
 

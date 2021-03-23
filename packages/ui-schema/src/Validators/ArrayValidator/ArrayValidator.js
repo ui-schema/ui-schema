@@ -12,60 +12,75 @@ export const ERROR_ADDITIONAL_ITEMS = 'additional-items';
 let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== index);
 
 /**
- * This function
- * Return false when valid and string for an error
- *
- * @param schema single schema or tuple schema
+ * @param itemsSchema single schema or tuple schema
  * @param value
  * @param additionalItems
  * @return {{err: ValidatorErrorsType, found: number}}
  */
-export const validateArrayContent = (schema, value, additionalItems = true) => {
+export const validateArrayContent = (itemsSchema, value, additionalItems = true) => {
     let err = createValidatorErrors();
     let found = 0;
-    for(let val of value) {
-        let tmpErr = createValidatorErrors();
-        if(List.isList(schema)) {
-            // tuple validation
-            if(List.isList(val) || Array.isArray(val)) {
-                // for tuples, the actual item must be an array/list also
-                /*if(typeof schema.get(i) !== 'undefined') {
-                    let tmpErr2 = validateSchema(schema.get(i), val);
-                    if(tmpErr2) {
-                        // todo: support errors as list
-                        tmpErr = tmpErr.push(tmpErr2)
-                    }
-                } else {
-                    if(!validateAdditionalItems(additionalItems, val, schema)) {
-                        // todo: add index of erroneous item; or at all as one context list, only one error instead of multiple?
-                        tmpErr = tmpErr.push(List([ERROR_ADDITIONAL_ITEMS, Map({})]));
-                    }
-                }*/
-                // todo: add values as array support
-                // todo: implement tuple validation
-                //   actually, only `additionalItems` should be needed to be validated here, the other values should be validated when the input for them is rendered
-                //   as "only what is mounted can be entered and validated"
-                //   but they must be usable for within conditional schemas
-                if(!validateAdditionalItems(additionalItems, val, schema)) {
-                    // todo: add index of erroneous item; or at all as one context list, only one error instead of multiple?
-                    tmpErr = tmpErr.addError(ERROR_ADDITIONAL_ITEMS, Map({}));
-                }
-            } else {
-                // when tuple schema but no-tuple value
-                tmpErr = tmpErr.addError(ERROR_WRONG_TYPE, Map({actual: typeof value, arrayTupleValidation: true}));
+    if(
+        (List.isList(itemsSchema) || Array.isArray(itemsSchema))
+    ) {
+        // tuple validation
+        if(List.isList(value) || Array.isArray(value)) {
+            // for tuples, the actual item must be an array/list also
+            // todo: add values as array support
+            // todo: implement tuple validation
+            //   actually, only `additionalItems` should be needed to be validated here, the other values should be validated when the input for them is rendered
+            //   as "only what is mounted can be entered and validated"
+            //   but they must be usable for within conditional schemas
+            if(!validateAdditionalItems(additionalItems, value, itemsSchema)) {
+                // todo: add index of erroneous item; or at all as one context list, only one error instead of multiple?
+                err = err.addError(ERROR_ADDITIONAL_ITEMS, Map({}));
+                found++
             }
+            /* example: further nested validation
+            const listSize = itemsSchema.size || 0
+            value.forEach((val, i) => {
+                if(i < listSize) {
+                    let tmpErr = validateSchema(itemsSchema.get(i), val);
+                    if(tmpErr.hasError()) {
+                        err = err.addErrors(tmpErr)
+                        found++
+                    }
+                }
+            })*/
         } else {
+            //console.log('val?.toJS()', /*val,*/ schema?.toJS(), value?.toJS())
+            // when tuple schema but no-tuple value
+            err = err.addError(ERROR_WRONG_TYPE, Map({actual: typeof value, arrayTupleValidation: true}));
+            found++
+        }
+    }/* else if(
+        itemsSchema.get('type') === 'array' &&
+        (List.isList(nestedItemsSchema) || Array.isArray(nestedItemsSchema))
+    ) {
+        // nested tuple validation
+        console.log('nested tuple validation', itemsSchema?.toJS())
+    } else if(
+        itemsSchema.get('type') === 'array' &&
+        (Map.isMap(nestedItemsSchema) || typeof nestedItemsSchema === 'object')
+    ) {
+        // a nested "one-schema-for-all" array, nested in the current array
+        console.log('nested one-schema-for-all', itemsSchema?.toJS())
+    }*/ else if(itemsSchema.get('type') !== 'array') {
+        // no nested array, one-schema for all items
+        // not validating array content of array here, must be validated with next schema level
+        for(let val of value) {
+            let tmpErr = createValidatorErrors();
             // single-validation
             // Cite from json-schema.org: When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
-            let tmpErr2 = validateSchema(schema, val);
+            let tmpErr2 = validateSchema(itemsSchema, val);
             if(tmpErr2.hasError()) {
                 tmpErr = tmpErr.addErrors(tmpErr2)
             }
-        }
-        if(tmpErr.errCount === 0) {
-            found++
-        } else {
-            err = err.addErrors(tmpErr);
+            if(tmpErr.errCount === 0) {
+                found++
+            } else {
+                err = err.addErrors(tmpErr);
+            }
         }
     }
 
@@ -178,7 +193,8 @@ export const arrayValidator = {
             let items_err = validateItems(schema, value);
             if(items_err.hasError()) {
                 valid = false;
-                errors = errors.addChildErrors(items_err);
+                //errors = errors.addChildErrors(items_err);
+                errors = errors.addErrorsToChild(items_err);
             }
         }
 
