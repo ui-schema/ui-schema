@@ -58,7 +58,7 @@ const NumberSliderRenderer = ({
             marks.push({value: marksValues, label: valuetext(marksValues)});
         } else if(List.isList(marksValues)) {
             marksValues.forEach(markValue => {
-                marks.push({markValue, label: valuetext(markValue)});
+                marks.push({value: markValue, label: valuetext(markValue)});
             });
         }
     }
