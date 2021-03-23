@@ -99,6 +99,8 @@ export const schemaDemoReferencing = createOrderedMap({
         },
         support_request: {'$ref': 'definitions.json#/support_request'},
         person: {$ref: '#/definitions/person'},
+        simple_string: {type: 'string'},
+        simple_boolean: {type: 'boolean'},
     },
 });
 

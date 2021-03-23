@@ -8,7 +8,7 @@ import {
     Visibility, VisibilityOff,
     FormatSize, FormatShapes, Code, SpaceBar, RestorePage, HorizontalSplit, VerticalSplit,
 } from '@material-ui/icons';
-import {isInvalid, createOrderedMap, UIProvider, UIRootRenderer, createStore, useUI, storeUpdater, createEmptyStore} from '@ui-schema/ui-schema';
+import {isInvalid, createOrderedMap, UIProvider, UIRootRenderer, createStore, useUI, storeUpdater} from '@ui-schema/ui-schema';
 import {RichCodeEditor, themes} from '../RichCodeEditor';
 import {Markdown} from '../Markdown';
 import PageNotFound from '../../page/PageNotFound';
@@ -28,6 +28,7 @@ import {makeDragDropContext as makeDragDropContextSimple} from '@ui-schema/mater
 import {makeDragDropContext} from '@ui-schema/material-dnd/DragDropProvider/makeDragDropContext';
 import {DragDropProvider} from '@ui-schema/material-dnd/DragDropProvider/DragDropProvider';
 import {customWidgets} from './widgets';
+import {createEmptyStore} from '@ui-schema/ui-schema/UIStore/UIStore';
 
 const IconInput = ({
                        verticalSplit, title,
@@ -420,14 +421,6 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
     const [store, setStore] = React.useState(() => createStore(schemas[activeSchema][2]));
     // end - default schema state
 
-    const type = schema && schema.get('type')
-    React.useEffect(() => {
-        if(type) {
-            setStore(createEmptyStore(type))
-        }
-    }, [type, setStore])
-
-
     const toggleInfoBox = React.useCallback((setter) => {
         setInfoBox(setter);
         if(setRenderChange) {
@@ -456,8 +449,12 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
     const changeSchema = React.useCallback(i => {
         setShowValidity(false);
         setActiveSchema(i);
-        setSchema(schemas[i][1]);
-        setStore(createStore(schemas[i][2]));
+        setSchema(schema => {
+            if(!schemas[i][1].equals(schema)) {
+                setStore(createStore(schemas[i][2]));
+            }
+            return schemas[i][1]
+        });
         setRenderChange(p => p + 1);
         history.push('/examples/' + (schemas[i][0].split(' ').join('-')));
     }, [setActiveSchema, i18n, setShowValidity, setSchema, setStore, history]);
@@ -482,6 +479,17 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
             }
         }
     }, [matchedSchema, changeSchema, activeSchema]);
+
+    const onSchemaManual = React.useCallback((schema) => {
+        setSchema((oldSchema) => {
+            const oldType = Map.isMap(oldSchema) && oldSchema.get('type')
+            const type = Map.isMap(schema) && schema.get('type')
+            if(oldType !== type && type) {
+                setStore(createEmptyStore(type))
+            }
+            return schema
+        })
+    }, [setSchema, setStore]);
 
     const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
         setStore(prevStore => {
@@ -559,7 +567,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
                                             <SchemaJSONEditor
                                                 schema={schema}
                                                 setJsonError={setJsonError}
-                                                setSchema={setSchema}
+                                                setSchema={onSchemaManual}
                                                 tabSize={tabSize}
                                                 fontSize={fontSize}
                                                 richIde={richIde}

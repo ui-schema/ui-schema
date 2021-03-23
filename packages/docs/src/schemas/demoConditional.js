@@ -36,7 +36,8 @@ const schemaConditional = createOrderedMap({
     else: {
         properties: {
             "accept": {
-                type: "boolean"
+                type: "boolean",
+                const: true,
             }
         },
         required: [
@@ -109,7 +110,12 @@ const schemaConditionalAllOf = createOrderedMap({
                 }
             },
             then: {
-                required: ['privacy']
+                required: ['privacy'],
+                properties: {
+                    "privacy": {
+                        const: true,
+                    }
+                }
             }
         }, {
             if: {
