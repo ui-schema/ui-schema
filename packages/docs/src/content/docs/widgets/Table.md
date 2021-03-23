@@ -22,6 +22,8 @@ Widget for data tables.
 >
 > Not included in `widgets`, must be added additionally
 
+Special `Table` component for complex, always validated, lists. Using custom widgets without labels. Hidden rows from pagination are still validated, using `isVirtual` prop.
+
 ```js
 import {widgets} from '@ui-schema/ds-material';
 import {Table} from '@ui-schema/ds-material/Widgets/Table';

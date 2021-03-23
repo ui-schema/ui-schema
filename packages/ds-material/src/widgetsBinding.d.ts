@@ -10,6 +10,7 @@ export interface MuiWidgetBinding extends WidgetsBindingBase {
         integer: React.ComponentType<WidgetProps>
     }
     custom: {
+        Accordions: React.ComponentType<WidgetProps>
         Text: React.ComponentType<WidgetProps>
         StringIcon: React.ComponentType<WidgetProps>
         TextIcon: React.ComponentType<WidgetProps>
@@ -21,8 +22,6 @@ export interface MuiWidgetBinding extends WidgetsBindingBase {
         OptionsRadio: React.ComponentType<WidgetProps>
         Select: React.ComponentType<WidgetProps>
         SelectMulti: React.ComponentType<WidgetProps>
-        Stepper: React.ComponentType<WidgetProps>
-        Step: React.ComponentType<WidgetProps>
         Card: React.ComponentType<WidgetProps>
         LabelBox: React.ComponentType<WidgetProps>
         FormGroup: React.ComponentType<WidgetProps>

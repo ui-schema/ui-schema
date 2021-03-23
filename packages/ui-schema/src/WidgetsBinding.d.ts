@@ -8,6 +8,9 @@ export interface GroupRendererProps {
     level: number
     schema: StoreSchemaType
     noGrid?: boolean
+    style?: {}
+    className?: string
+    spacing?: number
 }
 
 /**

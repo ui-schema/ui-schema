@@ -78,7 +78,8 @@ export const StringRenderer = ({
                     (schemaType === 'number' || schemaType === 'integer')
                     && newVal === '' && e.target.validity.badInput
                 ) {
-                    // forbid saving/deleting of invalid number at all
+                    // forbid saving of invalid number at all
+                    // deletes invalid number on-change
                     return undefined
                 }
                 onChange(

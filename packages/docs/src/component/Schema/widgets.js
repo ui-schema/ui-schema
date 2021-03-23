@@ -1,5 +1,5 @@
 import React from 'react';
-import {widgets} from '@ui-schema/ds-material';
+import {Step, Stepper, widgets} from '@ui-schema/ds-material';
 import Loadable from 'react-loadable';
 import {
     Color, ColorDialog,
@@ -48,6 +48,8 @@ const CustomTable = ({widgets, ...props}) => {
 
 customWidgets.custom = {
     ...widgets.custom,
+    Stepper: Stepper,
+    Step: Step,
     Table: CustomTable,
     Color,
     ColorDialog,
@@ -69,6 +71,10 @@ customWidgets.custom = {
     ColorSketchDialog,
     Code: Loadable({
         loader: () => import('@ui-schema/material-code').then(r => r.Code),
+        loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
+    }),
+    CodeSelectable: Loadable({
+        loader: () => import('@ui-schema/material-code').then(r => r.CodeSelectable),
         loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
     }),
     DateTime: Loadable({

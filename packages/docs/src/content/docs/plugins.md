@@ -231,9 +231,13 @@ let schema = {
         // here `country` is defined
         country_eu: {
             type: "boolean",
+            // use for deleting the property when `false`, for correct UX behaviour
+            deleteOnEmpty: true,
         },
         country_canada: {
             type: "boolean",
+            // use for deleting the property when `false`, for correct UX behaviour
+            deleteOnEmpty: true,
         }
     },
     dependencies: {
@@ -241,8 +245,9 @@ let schema = {
             // add boolean input when `canada_eu` is not null
             properties: {
                 privacy: {
-                    type: "boolean"
-                }
+                    type: "boolean",
+                    const: true,
+                },
             },
             required: [
                 "privacy"
@@ -325,7 +330,8 @@ const schemaWConditional = createOrderedMap({
     else: {
         properties: {
             "accept": {
-                type: "boolean"
+                type: "boolean",
+                const: true,
             }
         },
         required: [
@@ -667,6 +673,10 @@ Uses the `ReferencingNetworkHandler` hook `useNetworkRef` to handle resolving, w
 > Not added in default `pluginStack`, needs the additional provider `UIApiProvider`
 
 Plugin allows loading schemas from external APIs, uses the [UIApi](/docs/core/#uiapi) component to handle the schema loading and caching.
+
+- merging resolved ref with current schema, using mergeDeep
+    - but not with `$ref` for recursion protection
+    - without `version`, to be sure to get the latest `version`
 
 Add to plugin stack:
 

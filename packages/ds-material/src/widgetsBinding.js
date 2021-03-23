@@ -4,7 +4,6 @@ import {Select, SelectMulti} from '@ui-schema/ds-material/Widgets/Select';
 import {BoolRenderer} from '@ui-schema/ds-material/Widgets/OptionsBoolean';
 import {OptionsCheck} from '@ui-schema/ds-material/Widgets/OptionsCheck';
 import {OptionsRadio} from '@ui-schema/ds-material/Widgets/OptionsRadio';
-import {Stepper, Step} from '@ui-schema/ds-material/Widgets/Stepper';
 import {NumberIconRenderer, StringIconRenderer, TextIconRenderer} from '@ui-schema/ds-material/Widgets/TextFieldIcon';
 import {SimpleList} from '@ui-schema/ds-material/Widgets/SimpleList';
 import {GenericList} from '@ui-schema/ds-material/Widgets/GenericList';
@@ -48,8 +47,6 @@ export const widgets = {
         OptionsRadio,
         Select,
         SelectMulti,
-        Stepper,
-        Step,
         Card: CardRenderer,
         LabelBox,
         FormGroup,

@@ -13,6 +13,7 @@ export interface PluginStackProps {
     widgets?: WidgetsBindingBase
 
     // all other props are passed down to all rendering Plugins and the final widget
+    // except defined `props` removed by `WidgetRenderer`: https://ui-schema.bemit.codes/docs/core#widgetrenderer
     [key: string]: any
 }
 

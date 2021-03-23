@@ -49,6 +49,15 @@ export const ValidatorErrors = Record({
         })
         return currentErr
     },
+    addErrorsToChild: function(errors) {
+        let currentErr = this;
+        errors.getErrors().keySeq().forEach(type => {
+            errors.getError(type).forEach(error => {
+                currentErr = currentErr.addChildError(type, error)
+            })
+        })
+        return currentErr
+    },
     hasError: function(type = undefined) {
         let typeErrors = this.getIn(type ? ['errors', type] : ['errors'])
         return !!(

@@ -105,7 +105,12 @@ const schemaWConditional1 = createOrderedMap({
                 }
             },
             then: {
-                required: ['privacy']
+                required: ['privacy'],
+                properties: {
+                    "privacy": {
+                        const: true,
+                    }
+                }
             }
         }, {
             if: {

@@ -18,7 +18,7 @@ import { WidgetProps } from "@ui-schema/ui-schema/Widget"
 
 To change the behaviour or design of a widget, wrap it and use properties, overwrite it in the widget mapping.
 
-See the widget documentation for your design-system for available properties.
+See the widget documentation and typings of your design-system for available properties.
 
 This example changes the `OptionsCheck` widget through composition and overwrites it in the widget mapping:
 
@@ -40,17 +40,19 @@ const customWidgets = {
 export {customWidgets}
 ```
 
+> see the more in-depth docs about the [widget composition concept](/docs/widgets-composition) and the basics about [`PluginStack`](/docs/core#pluginstack)
+
 Use github to [request new widget properties](https://github.com/ui-schema/ui-schema/issues/new?template=widget_composition.md) - awesome if you add PRs!
 
 See also [adding or overwriting widgets](#adding--overwriting-widgets)
 
 ## Creating Widgets
 
-JSON-Schema is handled mostly by the `pluginStack` for you, focus on the behaviour of the widget, connect it through the provided properties and the HOC `extractValue` (only non-scalar values).
+JSON-Schema is handled mostly by the `widgets.pluginStack` for you, focus on the behaviour of the widget, connect it through the provided properties and the HOC `extractValue` (only non-scalar values).
 
-Each widget gets properties provided by the root schema renderer or added from plugins.
+Each widget gets properties provided by the root schema renderer or added from plugins. If you pass down new `props` to `PluginStack`, the nested widgets will receive those `props` - except removed ones from [`WidgetRenderer`](/docs/core#widgetrenderer).
 
-Properties from `WidgetRenderer`:
+Properties from `WidgetRenderer` (`React.ComponentType<WidgetProps>`):
 
 - `value` : `{*}` Plugins receive for any value, Widgets only for scalar
 - `onChange` : `{function}` store updater function, see [updating utils](/docs/core#store-updating--onchange)

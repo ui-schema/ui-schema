@@ -1,11 +1,13 @@
-import {dataMain, dataUser, schemaMain, schemaUser} from "./demoMain";
-import {dataStepper, schemaStepper} from "./demoStepper";
+import {dataMain, dataUser, schemaMain, schemaUser} from './demoMain';
+import {dataStepper, schemaStepper} from './demoStepper';
 import {
     schemaCombining, dataCombining,
     schemaCombiningConditional, dataCombiningConditional,
-} from "./demoCombining";
-import {dataConditional, dataConditionalAllOf, schemaConditional, schemaConditionalAllOf} from "./demoConditional";
-import {dataDependencies, dataDependenciesBooleans, schemaDependencies, schemaDependenciesBooleans} from "./demoDependencies";
+} from './demoCombining';
+import {dataConditional, dataConditionalAllOf, schemaConditional, schemaConditionalAllOf} from './demoConditional';
+import {dataDependencies, dataDependenciesBooleans, schemaDependencies, schemaDependenciesBooleans} from './demoDependencies';
+import {schemaLists} from './demoLists';
+import {createOrderedMap} from '@ui-schema/ui-schema/Utils/createMap/createMap';
 
 const schemas = [
     ['Main Demo', schemaMain, dataMain, `
@@ -34,8 +36,16 @@ Including native-objects and native-types.
 
 **Try out** the \`seats\` field only allows a \`maximum\` of 5 seats, uses a \`default\` and a \`minimum\`
 `],
-    ['Stepper', schemaStepper, dataStepper, `
+    ['List', schemaLists, createOrderedMap(), `
+# List in different variations
+
+- array of any sub-schema
+- array of array tuple schemas
+- \`array\` do only correctly validate when rendered/mounted, at \`if\`/\`else\` only one schema level is validated atm.
+`], ['Stepper', schemaStepper, dataStepper, `
 # Stepper / Sequential Example
+
+Example widget for some full custom implementation.
 
 A stepper is a widget that renders a sub-schema after another, it is only possible to enter the next if the current is validated.
 

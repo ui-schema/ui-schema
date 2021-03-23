@@ -5,9 +5,25 @@ import { render } from '@testing-library/react'
 import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
 import { WidgetRenderer } from './WidgetRenderer'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
-import { WidgetProps } from '@ui-schema/ui-schema'
+import { VirtualWidgetsMapping, WidgetProps } from '@ui-schema/ui-schema'
+import { VirtualArrayRenderer } from '@ui-schema/ui-schema/WidgetRenderer/VirtualWidgetRenderer'
+import { ObjectRenderer } from '@ui-schema/ui-schema/ObjectRenderer/ObjectRenderer'
+import { List } from 'immutable'
+import { createStore, UIMetaProvider, UIStoreProvider } from '@ui-schema/ui-schema/UIStore/UIStore'
 
 expect.extend({toBeInTheDocument, toHaveClass})
+
+export const virtualWidgets: VirtualWidgetsMapping = {
+    // eslint-disable-next-line react/display-name
+    'default': () => <span>virtual-default-renderer</span>,
+    // @ts-ignore
+    // eslint-disable-next-line react/display-name
+    'default_w_suffix': ({value}) => <span id={'virtual-default-renderer__' + value}/>,
+    // eslint-disable-next-line react/display-name
+    'object': ObjectRenderer,
+    // eslint-disable-next-line react/display-name
+    'array': () => <span>virtual-array-renderer</span>,
+}
 
 describe('WidgetRenderer', () => {
     it('missing type widget', async () => {
@@ -21,7 +37,6 @@ describe('WidgetRenderer', () => {
                     validators: [],
                 }}
                 value={'demo-value'}
-                current={0}
                 schema={createOrderedMap({type: 'string'})}
             />
         )
@@ -39,7 +54,6 @@ describe('WidgetRenderer', () => {
                     validators: [],
                 }}
                 value={'demo-value'}
-                current={0}
                 schema={createOrderedMap({type: 'string', widget: 'Text'})}
             />
         )
@@ -57,7 +71,6 @@ describe('WidgetRenderer', () => {
                     validators: [],
                 }}
                 value={'demo-value'}
-                current={0}
                 schema={createOrderedMap({type: 'string'})}
             />
         )
@@ -76,7 +89,6 @@ describe('WidgetRenderer', () => {
                     validators: [],
                 }}
                 value={'demo-value'}
-                current={0}
                 schema={createOrderedMap({type: 'string', widget: 'Text'})}
             />
         )
@@ -95,7 +107,6 @@ describe('WidgetRenderer', () => {
                     validators: [],
                 }}
                 value={[]}
-                current={-1}
                 schema={createOrderedMap({type: 'array'})}
             />
         )
@@ -114,10 +125,202 @@ describe('WidgetRenderer', () => {
                     validators: [],
                 }}
                 value={{}}
-                current={-1}
                 schema={createOrderedMap({type: 'object', widget: 'CustomObj'})}
             />
         )
         expect(queryByText('is-undef') !== null).toBeTruthy()
+    })
+
+    it('virtual widget object', async () => {
+        const value = createOrderedMap({dummy: ['lorem ipsum', 42]})
+        const store = createStore(value)
+        const {queryByText, queryAllByText} = render(
+            <UIStoreProvider
+                store={store}
+                // @ts-ignore
+                onChange={undefined} schema={undefined}
+            >
+                <WidgetRenderer
+                    widgets={{
+                        // @ts-ignore
+                        RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
+                        types: {string: () => 'string-renderer', number: () => 'number-renderer'},
+                        custom: {},
+                        pluginStack: [],
+                        validators: [],
+                    }}
+                    value={value}
+                    virtualWidgets={virtualWidgets}
+                    storeKeys={List()}
+                    schema={createOrderedMap({
+                        type: 'object',
+                        properties: {
+                            dummy: {
+                                type: 'string',
+                            },
+                            dummy_nr: {
+                                type: 'number',
+                            },
+                        },
+                    })}
+                    isVirtual
+                />
+            </UIStoreProvider>
+        )
+        expect(queryAllByText('virtual-default-renderer').length === 2).toBeTruthy()
+        expect(queryByText('string-renderer') === null).toBeTruthy()
+        expect(queryByText('number-renderer') === null).toBeTruthy()
+    })
+
+    it('virtual widget object w-values', async () => {
+        const virtualWidgets2: VirtualWidgetsMapping = {
+            default: virtualWidgets.default_w_suffix,
+            array: VirtualArrayRenderer,
+            object: ObjectRenderer,
+        }
+        const schema = createOrderedMap({
+            type: 'object',
+            properties: {
+                dummy_string: {type: 'string'},
+                dummy_string2: {type: 'string'},
+            },
+        })
+        const value = createOrderedMap({
+            dummy_string: 'lorem_ipsum',
+            dummy_string2: 'dolor_sit',
+        })
+        const store = createStore(value)
+        const {queryByText, container} = render(
+            <UIStoreProvider
+                store={store}
+                // @ts-ignore
+                onChange={undefined} schema={undefined}
+            >
+                <WidgetRenderer
+                    widgets={{
+                        // @ts-ignore
+                        RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
+                        types: {string: () => 'string-renderer', number: () => 'number-renderer'},
+                        custom: {},
+                        pluginStack: [],
+                        validators: [],
+                    }}
+                    value={value}
+                    virtualWidgets={virtualWidgets2}
+                    storeKeys={List()}
+                    schema={schema}
+                    isVirtual
+                />
+            </UIStoreProvider>
+        )
+        expect(container.querySelector('#virtual-default-renderer__lorem_ipsum') !== null).toBeTruthy()
+        expect(container.querySelector('#virtual-default-renderer__dolor_sit') !== null).toBeTruthy()
+        expect(queryByText('string-renderer') === null).toBeTruthy()
+        expect(queryByText('number-renderer') === null).toBeTruthy()
+    })
+
+    it('virtual widget w-tuple', async () => {
+        const virtualWidgets2: VirtualWidgetsMapping = {
+            default: virtualWidgets.default,
+            array: VirtualArrayRenderer,
+            object: ObjectRenderer,
+        }
+        const widgets = {
+            // @ts-ignore
+            RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
+            types: {string: () => 'string-renderer', number: () => 'number-renderer'},
+            custom: {},
+            pluginStack: [],
+            validators: [],
+        }
+        const value = createOrderedMap({dummy_array: ['lorem ipsum', 42]})
+        const store = createStore(value)
+        const {queryByText, queryAllByText} = render(
+            <UIMetaProvider widgets={widgets}>
+                <UIStoreProvider
+                    store={store}
+                    // @ts-ignore
+                    onChange={undefined} schema={undefined}
+                >
+                    <WidgetRenderer
+                        widgets={widgets}
+                        value={value}
+                        virtualWidgets={virtualWidgets2}
+                        storeKeys={List()}
+                        schema={createOrderedMap({
+                            type: 'object',
+                            properties: {
+                                dummy: {type: 'string'},
+                                dummy_array: {
+                                    type: 'array',
+                                    items: [
+                                        {type: 'string'},
+                                        {type: 'number'},
+                                    ],
+                                },
+                            },
+                        })}
+                        isVirtual
+                    />
+                </UIStoreProvider>
+            </UIMetaProvider>
+        )
+        expect(queryAllByText('virtual-default-renderer').length).toBe(3)
+        expect(queryByText('string-renderer') === null).toBeTruthy()
+        expect(queryByText('number-renderer') === null).toBeTruthy()
+    })
+
+    it('virtual widget w-array', async () => {
+        const virtualWidgets2: VirtualWidgetsMapping = {
+            default: virtualWidgets.default,
+            array: VirtualArrayRenderer,
+            object: ObjectRenderer,
+        }
+        const widgets = {
+            // @ts-ignore
+            RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
+            types: {string: () => 'string-renderer', number: () => 'number-renderer'},
+            custom: {},
+            pluginStack: [],
+            validators: [],
+        }
+        const value = createOrderedMap({dummy_array: [['lorem ipsum', 42], ['dolor sit', 43]]})
+        const store = createStore(value)
+        const {queryByText, queryAllByText} = render(
+            <UIMetaProvider widgets={widgets}>
+                <UIStoreProvider
+                    store={store}
+                    // @ts-ignore
+                    onChange={undefined} schema={undefined}
+                >
+                    <WidgetRenderer
+                        widgets={widgets}
+                        value={value}
+                        storeKeys={List()}
+                        virtualWidgets={virtualWidgets2}
+                        schema={createOrderedMap({
+                            type: 'object',
+                            properties: {
+                                dummy: {type: 'string'},
+                                dummy_array: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'array',
+                                        items: [
+                                            {type: 'string'},
+                                            {type: 'number'},
+                                        ],
+                                    },
+                                },
+                            },
+                        })}
+                        isVirtual
+                    />
+                </UIStoreProvider>
+            </UIMetaProvider>
+        )
+        expect(queryAllByText('virtual-default-renderer').length).toBe(5)
+        expect(queryByText('string-renderer') === null).toBeTruthy()
+        expect(queryByText('number-renderer') === null).toBeTruthy()
     })
 })

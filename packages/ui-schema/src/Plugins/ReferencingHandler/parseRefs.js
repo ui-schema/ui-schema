@@ -120,7 +120,11 @@ export const parseRefs = (schema, context, recursive = false, pending = Map()) =
         // 1. if schema is a reference itself, resolve it
         //    then with the next code, references in the reference are resolved
         try {
-            schema = resolveRef(ref, context, schemaVersion) || schema
+            let resolved = resolveRef(ref, context, schemaVersion)
+            // merging resolved ref with current schema, using mergeDeep, but not with `$ref`
+            // - for recursion protection and without `version`, to be sure to get the latest `version`
+            // todo: json-schema multi-schema validation
+            schema = resolved ? resolved.mergeDeep(schema.delete('version').delete('$ref')) : schema
         } catch(e) {
             if(e instanceof SchemaRefPending) {
                 const id = context.id || '#'

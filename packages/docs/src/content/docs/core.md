@@ -6,7 +6,7 @@ The props passed to the `UIGenerator`, `UIGeneratorNested` are accessible throug
 
 Basic [flowchart](#flowchart) of the UIGenerator to Widget logic.
 
-> ❗ The `UIMetaProvder` and thus usages of `UIGenerator`, `UIProvider`,`UIStoreProvider` will have a breaking change in `v0.3.0` to enable much better performance optimizes, [see issue](https://github.com/ui-schema/ui-schema/issues/80)
+> ❗ The `UIMetaProvder` and thus usages of `UIGenerator`, `UIProvider`,`UIStoreProvider` will have a breaking change in `v0.3.0` to enable even better performance optimizes, [see issue](https://github.com/ui-schema/ui-schema/issues/80)
 
 ## UIStore
 
@@ -94,12 +94,13 @@ The `onChange` is responsible to update different parts of the [store](#uistore)
 
 Parameters:
 
-- `storeKeys`: `List<string>`, the keys of the value to update
+- `storeKeys`: `List<string | number>`, the keys of the value to update
 - `scopes`: `string[]`, which scope to update, uses singular: `value`, `valid`, `internal`
 - `updater`, a function receiving the scope values and returning the updated values
     - `function({value, valid, internal}: {value: any, valid: any, internal: any}): {value: any, valid: any, internal: any}`
 - `deleteOnEmpty`: `boolean | undefined`, if the property should be deleted at all, treating [empty like in required HTML-inputs](/docs/schema#required-keyword)
     - from widgets the required property/keyword turns this to `true`
+    - `integers`/`numbers` are treated al
 - `type`: `string | undefined`, the type of the value, may be unknown on some edge cases (like only updating validity), is needed for `deleteOnEmpty`
 
 Does not return anything.
@@ -188,7 +189,7 @@ Main entry point for every new UI Schema generator,  starts the whole schema and
 
 ### UIGeneratorNested
 
-> **deprecated**, use [PluginStack](#pluginStack) instead, this component may be removed in `0.3.0` as it seems no longer needed with the now optimized logic/component flow
+> **deprecated**, use [PluginStack](#pluginstack) instead, this component may be removed in `0.3.0` as it seems no longer needed with the now optimized logic/component flow
 
 Automatic nesting ui generator, uses the parent contexts, starts a UIGenerator at schema-level with `UIRootRenderer`.
 
@@ -254,7 +255,7 @@ const CustomEditor = ({someCustomProp, ...props}) => (
 
 Connects to the current context and uses the schema the first time, renders the `widgets.RootRenderer`.
 
-The `RootRenderer` is rendered in a memo component, starts the first rendering of a widget, this is the `children` of `RootRenderer`, done with [PluginStack](#pluginStack).
+The `RootRenderer` is rendered in a memo component, starts the first rendering of a widget, this is the `children` of `RootRenderer`, done with [PluginStack](#pluginstack).
 
 ## UIApi
 
@@ -287,7 +288,92 @@ import {schemaLocalCachePath} from '@ui-schema/ui-schema/UIApi/UIApi'
 
 ### PluginStack
 
-Entry point into widget and plugin rendering, uses the `props` to start the render tree of all registered plugins, with finally the actual widget.
+Entry point into widget and plugin rendering, uses the `props` to start the render tree of all registered plugins, with finally the actual widget by [`WidgetRenderer`](#widgetrenderer).
+
+When ever you need to build an own `array` or `object` widget, you need to handle the rendering of `properties` or `items` schemas.
+
+This is easily done by starting a new `PluginStack` - a new schema-level so to say.
+
+`props` passed to the `PluginStack` are received by it's child(ren), some - like `widgets` overwrite the `UIMetaStore` values for a specific `PluginStack` and when passed down also nested ones (e.g. `widgets` is also passed down further levels through `ObjectRenderer`).
+
+See [PluginStack typings](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/PluginStack/PluginStack.d.ts) for more details about `props`.
+
+```json
+{
+    "type": "object",
+    "widget": "UnitCalcDummy",
+    "properties": {
+        "unit": {
+            "type": "string",
+            "widget": "Select",
+            "enum": ["kg", "l", "ml"]
+        },
+        "value": {
+            "type": "number"
+        }
+    }
+}
+```
+
+Very basic `object` widget that renders two different property schemas in custom plugin stacks, enabling custom formatting/transformations depending on `object` data.
+
+In production/for-others it should be a bit more flexible, e.g. handling additional or different namings of properties.
+
+```typescript jsx
+import { extractValue, memo, PluginStack, WidgetProps, WithValue } from '@ui-schema/ui-schema'
+
+let UnitCalcDummy: React.ComponentType<WidgetProps & WithValue> = (
+    {
+        showValidity, schema, level, widgets, ...props
+    }
+) => {
+    const {storeKeys, value} = props
+    const readOnly = schema.get('readOnly')
+
+    // for getting the value in `object` renderers, you must use `extractValue`/`memo`
+    console.log('value-unit', value?.get('unit'))
+    console.log('value-value', value?.get('value'))
+
+    return <>
+        <h2>Unit Calc</h2>
+
+        <PluginStack
+            showValidity={showValidity}
+            storeKeys={storeKeys.push('unit')}
+            schema={schema.getIn(['properties', 'unit'])}
+            parentSchema={schema}
+            level={level + 1}
+            readOnly={readOnly}
+            widgets={widgets}
+            noGrid // turning of grid, or use `schema.getIn(['view', 'noGrid'])`
+        />
+
+        <span>
+            {' @ '}
+        </span>
+
+        <PluginStack
+            showValidity={showValidity}
+            storeKeys={storeKeys.push('value')}
+            schema={schema.getIn(['properties', 'value'])}
+            parentSchema={schema}
+            level={level + 1}
+            readOnly={readOnly}
+            widgets={widgets}
+            noGrid
+
+            // is received by the `number` widget
+            isKg={value?.get('unit') === 'kg'}
+        />
+    </>
+}
+
+UnitCalcDummy = extractValue(memo(UnitCalcDummy))
+
+export { UnitCalcDummy }
+```
+
+> see the more in-depth docs about the [widget composition concept](/docs/widgets-composition)
 
 ### NextPluginRenderer
 
@@ -305,13 +391,29 @@ Finds the actual widget in the mapping by the then defined schema, renders the w
 
 If no widget is fund, renders nothing / `null`, but the plugins may have already rendered something! (like the grid)
 
+**Handles** removing props, before rendering the actual widget component. For performance reasons removes these `props`:
+
+- `value` is removed for `schema.type` `array` or `object`
+- `requiredList` is removed for every type
+
 ## Utils
+
+### beautify
+
+See [localization text-transform](/docs/localization#text-transform), this is the base function for beautifying.
+
+```js
+import {beautify} from '@ui-schema/ui-schema/Utils/beautify'
+```
 
 ### createStore
 
 Creates the initial store out of passed in values.
 
 ```js
+import {createStore} from '@ui-schema/ui-schema/UIStore'
+import {createOrderedMap} from '@ui-schema/ui-schema/Utils/createOrderedMap'
+
 const [data, setStore] = React.useState(() => createStore(createOrderedMap(initialData)));
 ```
 
@@ -320,7 +422,38 @@ const [data, setStore] = React.useState(() => createStore(createOrderedMap(initi
 Creates an empty store out of the schema type.
 
 ```js
+import {useImmutable} from '@ui-schema/ui-schema/Utils/useImmutable'
+
 const [data, setStore] = React.useState(() => createEmptyStore(schema.get('type')));
+```
+
+### moveItem
+
+Helper for moving an item inside a `List`/`array`, useful for moving up/down inside a list widget.
+
+```js
+import {useImmutable} from '@ui-schema/ui-schema/Utils/useImmutable'
+
+// moving "up" in an sortable list
+onChange(
+    storeKeys, ['value', 'internal'],
+    ({value, internal}) => ({
+        value: moveItem(value, index, index - 1),
+        internal: moveItem(internal, index, index - 1),
+    }),
+    deleteOnEmpty,
+    'array',
+)
+
+// moving "down" in an sortable list
+onChange(
+    storeKeys, ['value', 'internal'], ({value, internal}) => ({
+        value: moveItem(value, index, index + 1),
+        internal: moveItem(internal, index, index + 1),
+    }),
+    deleteOnEmpty,
+    'array',
+)
 ```
 
 ### memo / isEqual
@@ -360,15 +493,44 @@ Supports merging of these keywords, only does something if existing on `b`:
 - `allOf`, are ignored, should be resolved by e.g. [combining handler](/docs/plugins#combininghandler)
 - `if`, `then`, `else` are ignored, should be resolved by e.g. [conditional handler](/docs/plugins#conditionalhandler), also `if` that are inside `allOf`
 
-### createMap
+### sortScalarList
+
+Sorts `string` and `number` values inside a `List` in `asc` order, useful for better "is-same-as-initial" when seleting enum values:
 
 ```js
+import {sortScalarList} from '@ui-schema/ui-schema/Utils/sortScalarList';
+
+onChange(
+    storeKeys, ['value'],
+    ({value: val = List()}) =>
+        ({
+            value: sortScalarList(
+                val.contains(enum_name) ?
+                    val.delete(val.indexOf(enum_name)) :
+                    val.push(enum_name)
+            ),
+        }),
+    required,
+    type,
+)
+```
+### createMap
+
+Deep change directly from `{}` or `[]` to `Map`/`List` structures:
+
+```js
+import {createMap} from '@ui-schema/ui-schema/Utils/createMap'
+
 let dataMap = createMap({});
 ```
 
 ### createOrderedMap
 
+Deep change directly from `{}` or `[]` to `OrderedMap`/`List` structures:
+
 ```js
+import {createOrderedMap} from '@ui-schema/ui-schema/Utils/createOrderedMap'
+
 let dataMap = createOrderedMap({});
 ```
 
@@ -377,7 +539,30 @@ let dataMap = createOrderedMap({});
 Function to deep change an object into an ordered map, will change the objects properties but not the root-object.
 
 ```js
+import {OrderedMap} from 'immutable'
+import {fromJSOrdered} from '@ui-schema/ui-schema/Utils/fromJSOrdered'
+
 let dataMap = new OrderedMap(fromJSOrdered({}));
+```
+
+### useImmutable
+
+Hook for performance optimizing when using dynamically creates immutables like `storeKeys` inside `React.useEffect`/`React.useCallback` etc.
+
+```js
+import {useImmutable} from '@ui-schema/ui-schema/Utils/useImmutable'
+
+const Comp = () => {
+    const currentStoreKeys = useImmutable(storeKeys)
+
+    React.useEffect(() => {
+        // do something when `valid` has changed (or storeKeys)
+        // with just `storeKeys` may rerun every render
+        //   -> as it's an dynamically created immutable
+    }, [onChange, valid, currentStoreKeys])
+
+    return null
+}
 ```
 
 ## Flowchart

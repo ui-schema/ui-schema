@@ -223,6 +223,9 @@ const Widget = ({
 
 Changes from any package are reflected inside the demo/docs package.
 
+See current *[packages/demo@master](https://ui-schema-demo.netlify.app/)* or
+*[packages/demo@develop](https://develop--ui-schema-demo.netlify.app/)*
+
 - Start Documentation: `npm run docs` (needs running demo server)
     - see [localhost:4201](http://localhost:4201)
     - write in [packages/docs/src/content/docs](./packages/docs/src/content/docs)
@@ -260,6 +263,7 @@ Templates for monorepo packages:
 
 - [Additional DS Module](./tools/template-package)
 - [Design-System](./tools/template-ds)
+
 
 ## License
 

@@ -36,39 +36,13 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'number',
             }),
-        ]), [[1, 2, 3], [1, 2, 3], [1, 2, 3]], false, 0],
-        [List([
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-        ]), ['no-tuple', [1, 2, 3], [1, 2, 3]], false, 1],
-        [List([
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-        ]), ['no-tuple', [1, 2, 3], 'no-tuple'], false, 2],
-        [List([
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
+            // at <= 0.2.0-rc.3 this was correct (errCount: 0),
+            // assuming this was correct, but resulted from incorrect array tuple implementation,
+            // `items` array tuple validation is now implemented with:
+            // - correct nesting in `GenericList`/`Table`/`VirtualWidgetRenderer`
+            // - validation of arrays in `validateItems()`
+            // - todo: currently only supporting one level of arrays in conditionals like `if`/`else`
+            //         no problem for rendering, as validated by next schema level
         ]), [[1, 2, 3], [1, 2, 3], [1, 2, 3]], true, 0],
         [List([
             createOrderedMap({
@@ -80,7 +54,7 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'number',
             }),
-        ]), [[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]], false, 3],
+        ]), [1, 2, 3], true, 0],
         [List([
             createOrderedMap({
                 type: 'number',
@@ -91,7 +65,73 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'number',
             }),
-        ]), [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], false, 1],
+        ]), [1, 2, 3], false, 0],
+        [List([
+            createOrderedMap({
+                type: 'number',
+            }),
+            createOrderedMap({
+                type: 'number',
+            }),
+            createOrderedMap({
+                type: 'number',
+            }),
+        ]), 'no-tuple', false, 1],
+        [List([
+            createOrderedMap({
+                type: 'number',
+            }),
+            createOrderedMap({
+                type: 'number',
+            }),
+            createOrderedMap({
+                type: 'number',
+            }),
+        ]), [1, 2, 3, 4], false, 1],
+        [List([
+            createOrderedMap({
+                type: 'array',
+            }),
+            createOrderedMap({
+                type: 'array',
+            }),
+            createOrderedMap({
+                type: 'array',
+            }),
+        ]), [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], false, 0],
+        [List([
+            createOrderedMap({
+                type: 'array',
+            }),
+            createOrderedMap({
+                type: 'array',
+            }),
+            createOrderedMap({
+                type: 'array',
+            }),
+        ]), [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], true, 0],
+        [List([
+            createOrderedMap({
+                type: 'array',
+            }),
+            createOrderedMap({
+                type: 'array',
+            }),
+            createOrderedMap({
+                type: 'array',
+            }),
+        ]), [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3], [1, 2, 3, 4, 5, 6]], false, 1],
+        [List([
+            createOrderedMap({
+                type: 'array',
+            }),
+            createOrderedMap({
+                type: 'array',
+            }),
+            createOrderedMap({
+                type: 'array',
+            }),
+        ]), [[1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3]], false, 1],
         /*
         `validateArrayContent` is only responsible for tuple validation `additionalItems` and checking if a tuple is really a tuple
         deep-schema validation is not it's responsible
@@ -175,6 +215,10 @@ describe('validateArrayContent', () => {
         ]), [1, 'text', true], true, false, 0],*/
     ])('validateArrayContent(%j, %j, %s): %s', (schema, value, additionalItems, expected) => {
         const r = validateArrayContent(schema, value, additionalItems)
+        if (r.err.errCount !== expected) {
+            // @ts-ignore
+            console.log('failed validateArrayContent', schema.toJS(), value && value.toJS ? value.toJS() : value, r.err.toJS())
+        }
         expect(r.err.errCount).toBe(expected)
     })
 })
@@ -232,8 +276,97 @@ describe('validateItems', () => {
         [{
             type: 'array',
         }, List(['1', '2', 3]), 0],
+        [{
+            type: 'array',
+            additionalItems: true,
+            items: [{
+                type: 'number',
+            }, {
+                type: 'number',
+            }, {
+                type: 'number',
+            }],
+        }, [1, 2, 3], 0],
+        [{
+            type: 'array',
+            additionalItems: false,
+            items: [{
+                type: 'number',
+            }, {
+                type: 'number',
+            }, {
+                type: 'number',
+            }],
+        }, [1, 2, 3], 0],
+        [{
+            type: 'array',
+            additionalItems: false,
+            items: [{
+                type: 'number',
+            }, {
+                type: 'number',
+            }, {
+                type: 'number',
+            }],
+        }, 'no-tuple', 1],
+        [{
+            type: 'array',
+            additionalItems: false,
+            items: [{
+                type: 'number',
+            }, {
+                type: 'number',
+            }, {
+                type: 'number',
+            }],
+            // todo: currently `0` error, but for full `if` support needed
+            //       only validating nested tuple schemas in render-flow
+        }, ['no-tuple', 3, 'no-tuple'], 0],
+        [{
+            type: 'array',
+            additionalItems: false,
+            items: [{
+                type: 'number',
+            }, {
+                type: 'number',
+            }, {
+                type: 'number',
+            }],
+        }, [1, 2, 3, 4], 1],
+        [{
+            type: 'array',
+            additionalItems: true,
+            items: [{
+                type: 'number',
+            }, {
+                type: 'number',
+            }, {
+                type: 'number',
+            }],
+        }, [1, 2, 3, 4], 0],
+        [{
+            type: 'array',
+            items: {
+                type: 'array',
+                additionalItems: false,
+                items: [{
+                    type: 'number',
+                }, {
+                    type: 'number',
+                }, {
+                    type: 'number',
+                }],
+            },
+            // todo: currently `0` error, but for full `if` support needed
+            //       only validating nested tuple schemas in render-flow
+        }, [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], 0],
     ])('validateItems(%j, %j)', (schema, value, expected) => {
-        expect(validateItems(createOrderedMap(schema), value).errCount).toBe(expected)
+        const r = validateItems(createOrderedMap(schema), value)
+        if (r.errCount !== expected) {
+            // @ts-ignore
+            console.log('failed validateItems', schema.toJS(), value && value.toJS ? value.toJS() : value, r.toJS())
+        }
+        expect(r.errCount).toBe(expected)
     })
 })
 

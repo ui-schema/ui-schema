@@ -8,7 +8,8 @@ const schemaWDep1 = createOrderedMap({
             "type": "string"
         },
         "credit_card": {
-            "type": "string"
+            "type": "string",
+            "deleteOnEmpty": true,
         }
     },
 
@@ -30,16 +31,18 @@ const schemaWDep2 = createOrderedMap({
         // here `country` is defined
         country_eu: {
             type: "boolean",
+            deleteOnEmpty: true,
         },
         country_canada: {
             type: "boolean",
+            deleteOnEmpty: true,
         }
     },
     dependencies: {
         country_eu: {
             properties: {
                 privacy: {
-                    type: "boolean"
+                    type: "boolean",
                 },
                 maple_trees: {
                     minimum: 10,
@@ -52,7 +55,8 @@ const schemaWDep2 = createOrderedMap({
         country_canada: {
             properties: {
                 maple_trees: {
-                    type: "number"
+                    type: "number",
+                    deleteOnEmpty: true,
                 }
             }
         }

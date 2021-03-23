@@ -144,16 +144,21 @@ Validation Keywords:
 - `uniqueItems` all items must be of an unique value
 - `contains` one or more items needs to be valid against a sub-schema
     - ❗ only checks some schema: everything [validateSchema](/docs/plugins#validateschema) supports
-    - ❗ no full sub-schema against array items
+    - ❗ no nested arrays support atm.
 - `items` restricts all items be valid against a sub-schema (one schema for all or tuples)
-    - ❗ only checks some schema: everything [validateSchema](/docs/plugins#validateschema) supports
+    - ❗ in conditionals (`if`,`else`), only checks some schema: everything [validateSchema](/docs/plugins#validateschema) supports, no nested array schemas
+    - nested schemas must be validated in render tree
+        - supported by `ds-material`
+        - supported by `isVirtual`/`VirtualWidgetRenderer`
     - errors are added with context key `arrayItems`
         - only get **non** items errors:
         - `errors.getErrors()`, `errors.getChildErrors()`
-    - restrict items to be valid against sub-schemas in a defined order (tuple)
+    - restricts items to be valid against
+        - sub-schemas in a defined order (tuple)
+        - one-schema for all items
     - `additionalItems` if more props then defined are allowed
     - the individual items must be validated in their actual widgets, e.g. done in the `PluginStack` per item rendered by `GenericList`
-    - supported by e.g. [GenericList](/docs/widgets/GenericList)
+    - supported by e.g. [GenericList](/docs/widgets/GenericList), [Table](/docs/widgets/Table)
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/array.html)
 

@@ -37,6 +37,7 @@ export const routesDocs = {
         createDoc('design-systems', 'Design-Systems'),
         createDoc('core', 'Core'),
         createDoc('widgets', 'Widgets'),
+        createDoc('widgets-composition', 'Widgets Composition'),
         createDoc('plugins', 'Plugins'),
         createDoc('pro', 'Pro Extensions'),
         createDoc('localization', 'Localization'),

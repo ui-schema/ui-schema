@@ -75,23 +75,27 @@ let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, on
                 </Grid>
 
                 {List.isList(itemsSchema) ?
-                    <Grid item style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
-                        <Grid container spacing={2}>
-                            {itemsSchema.map((item, j) => <PluginStack
-                                key={j}
-                                showValidity={showValidity}
-                                storeKeys={ownKeys.push(j)}
-                                schema={item}
-                                parentSchema={schema}
-                                level={level + 1}
-                            />).valueSeq()}
-                        </Grid>
-                    </Grid> :
-                    <PluginStack
-                        showValidity={showValidity}
-                        schema={itemsSchema} parentSchema={schema}
-                        storeKeys={ownKeys} level={level + 1}
-                    />}
+                    // tuples in root level not possible
+                    // was wrong implementation <= 0.2.2
+                    null :
+                    itemsSchema.get('type') === 'array' ?
+                        <Grid item style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
+                            <Grid container spacing={2}>
+                                {itemsSchema.get('items').map((item, j) => <PluginStack
+                                    key={j}
+                                    showValidity={showValidity}
+                                    storeKeys={ownKeys.push(j)}
+                                    schema={item}
+                                    parentSchema={schema}
+                                    level={level + 1}
+                                />).valueSeq()}
+                            </Grid>
+                        </Grid> :
+                        <PluginStack
+                            showValidity={showValidity}
+                            schema={itemsSchema} parentSchema={schema}
+                            storeKeys={ownKeys} level={level + 1}
+                        />}
 
                 {!readOnly ? <Grid item style={{display: 'flex', flexShrink: 0}}>
                     <IconButton
@@ -150,8 +154,8 @@ const GenericList = extractValue(memo(({
                             onChange(
                                 storeKeys, ['value', 'internal'],
                                 ({value = List(), internal = List()}) => ({
-                                    value: value.push(List.isList(schema.get('items')) ? List() : Map()),
-                                    internal: internal.push(List.isList(schema.get('items')) ? List() : Map()),
+                                    value: value.push(List.isList(schema.get('items')) || schema.getIn(['items', 'type']) === 'array' ? List() : Map()),
+                                    internal: internal.push(List.isList(schema.get('items') || schema.getIn(['items', 'type']) === 'array') ? List() : Map()),
                                 }),
                                 schema.get('deleteOnEmpty') || required,
                                 schema.get('type'),
