@@ -1,8 +1,4 @@
 import * as React from 'react'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { WidgetProps } from '@ui-schema/ui-schema'
 
-export interface CodeProps extends WidgetProps {
-    value: string
-}
-
-export function Code<P extends CodeProps>(props: P): React.ReactElement<P>
+export function CodeSelectable<P extends WidgetProps>(props: P): React.ReactElement
