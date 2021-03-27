@@ -5,4 +5,6 @@ export const pagination = {
     'last-page': 'Last page',
     'total': 'Total',
     'rows-per-page': 'Rows per page',
+    'of': 'of',
+    'all': 'all',
 }
