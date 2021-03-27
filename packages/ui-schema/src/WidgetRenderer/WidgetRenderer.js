@@ -6,6 +6,7 @@ const NoWidget = ({scope, matching}) => <>missing-{scope}-{matching}</>;
 
 export const WidgetRenderer = ({
                                    value,
+                                   WidgetOverride,
                                    // we do not want `requiredList` to be passed to the final widget
                                    // eslint-disable-next-line no-unused-vars
                                    requiredList,
@@ -21,6 +22,8 @@ export const WidgetRenderer = ({
 
     if(isVirtual) {
         Widget = VirtualWidgetRenderer
+    } else if(WidgetOverride) {
+        Widget = WidgetOverride
     } else if(widget_name && widgets.custom) {
         if(widgets.custom[widget_name]) {
             Widget = widgets.custom[widget_name];

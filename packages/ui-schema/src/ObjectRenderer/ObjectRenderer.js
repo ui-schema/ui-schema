@@ -3,9 +3,9 @@ import {memo} from '../Utils/memo';
 import {PluginStack} from '../PluginStack';
 
 let ObjectRenderer = ({
-                          widgets, level, schema, storeKeys, ...props
+                          level, schema, storeKeys, ...props
                       }) => {
-    const {isVirtual} = props
+    const {isVirtual, widgets} = props
     const properties = schema.get('properties');
 
     if(!isVirtual && !widgets.GroupRenderer) {
@@ -28,7 +28,6 @@ let ObjectRenderer = ({
             {...props}
             schema={childSchema} parentSchema={schema}
             storeKeys={storeKeys.push(childKey)} level={level + 1}
-            widgets={widgets}
         />,
     ).valueSeq()
 
