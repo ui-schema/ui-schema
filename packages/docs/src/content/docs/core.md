@@ -306,7 +306,7 @@ See [PluginStack typings](https://github.com/ui-schema/ui-schema/blob/master/pac
         "unit": {
             "type": "string",
             "widget": "Select",
-            "enum": ["kg", "l", "ml"]
+            "enum": ["g", "kg", "l", "ml"]
         },
         "value": {
             "type": "number"
@@ -338,11 +338,15 @@ let UnitCalcDummy: React.ComponentType<WidgetProps & WithValue> = (
         <h2>Unit Calc</h2>
 
         <PluginStack
-            showValidity={showValidity}
+            // from PluginStack, required
             storeKeys={storeKeys.push('unit')}
             schema={schema.getIn(['properties', 'unit'])}
             parentSchema={schema}
+            // from PluginStack, optional
             level={level + 1}
+
+            // additional props we want to override/add
+            showValidity={showValidity}
             readOnly={readOnly}
             widgets={widgets}
             noGrid // turning of grid, or use `schema.getIn(['view', 'noGrid'])`
@@ -353,11 +357,16 @@ let UnitCalcDummy: React.ComponentType<WidgetProps & WithValue> = (
         </span>
 
         <PluginStack
-            showValidity={showValidity}
+            // from PluginStack, required
             storeKeys={storeKeys.push('value')}
             schema={schema.getIn(['properties', 'value'])}
             parentSchema={schema}
+
+            // from PluginStack, optional
             level={level + 1}
+
+            // additional props we want to override/add
+            showValidity={showValidity}
             readOnly={readOnly}
             widgets={widgets}
             noGrid

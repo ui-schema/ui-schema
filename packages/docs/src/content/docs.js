@@ -106,3 +106,12 @@ export const routesWidgets = {
         }),
     ],
 };
+
+export const routesDSMaterial = {
+    nav: {
+        label: 'DS Material Components',
+    },
+    routes: [
+        createDoc('ds-material/Table', 'Table', ''),
+    ],
+};

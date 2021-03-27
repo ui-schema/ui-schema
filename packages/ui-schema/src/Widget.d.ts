@@ -17,6 +17,9 @@ export interface WidgetProps {
     errors: Errors
     required: required
     valid: valid
+    // specifying hidden inputs / virtual lists etc.
+    isVirtual?: boolean
+    // either from `UIMetaProvider` or overriden from within a parent widget/plugin
     widgets: WidgetsBindingBase
     // contains the value for non-scalar items, for objects/array it is undefined
     value: string | number | boolean | undefined | null

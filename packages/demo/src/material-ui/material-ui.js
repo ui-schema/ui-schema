@@ -23,7 +23,7 @@ import {useDummy} from '../component/MainDummy';
 import {UIApiProvider} from '@ui-schema/ui-schema/UIApi/UIApi';
 import {ReferencingNetworkHandler} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
 import {storeUpdater} from '@ui-schema/ui-schema/UIStore/storeUpdater';
-import {schemaDemoTable, schemaDemoTableAdvanced} from '../schemas/demoTable';
+import {schemaDemoTable, schemaDemoTableAdvanced, schemaDemoTableMap} from '../schemas/demoTable';
 import {Table} from '@ui-schema/ds-material/Widgets/Table';
 import {NumberRendererCell, StringRendererCell, TextRendererCell} from '@ui-schema/ds-material/Widgets/TextFieldCell';
 import {TableAdvanced} from '@ui-schema/ds-material/Widgets/TableAdvanced/TableAdvanced';
@@ -141,7 +141,7 @@ const Main = ({classes = {}}) => {
     return <React.Fragment>
         <Grid item xs={12}>
             <DummyRenderer
-                id={'schemaDemoTableAdvanced'} schema={schemaDemoTableAdvanced}
+                id={'schemaTableMap'} schema={schemaDemoTableMap}
                 open
                 toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
                 stylePaper={{background: 'transparent'}} variant={'outlined'}
@@ -150,6 +150,14 @@ const Main = ({classes = {}}) => {
         <Grid item xs={12}>
             <DummyRenderer
                 id={'schemaTable'} schema={schemaDemoTable}
+                open
+                toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
+                stylePaper={{background: 'transparent'}} variant={'outlined'}
+            />
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer
+                id={'schemaDemoTableAdvanced'} schema={schemaDemoTableAdvanced}
                 open
                 toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
                 stylePaper={{background: 'transparent'}} variant={'outlined'}

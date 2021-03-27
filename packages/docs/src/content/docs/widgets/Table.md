@@ -4,25 +4,39 @@ Widget for data tables.
 
 [![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-ui-generator) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui)
 
-- type: `array(array(string | number | integer))`,
+- type: `array(array | object)`,
 - widget keywords:
-    - `Table`
+    - `Table` **(usable)**
+    - `TableAdvanced` **(in-dev)**
 - view
-    - does not support grid keywords, disables grid for own stack
+    - does not support grid keywords in direct nested schemas, disables grid for own stack, but supports for nested `object`
 
-- [Type Properties](/docs/schema#type-boolean)
+- [Array Type Properties](/docs/schema#type-array)
+- [Object Type Properties](/docs/schema#type-object)
 
 ## Design System
 
 ### Material-UI
 
-> 🚧 Work in progress
->
-> At the moment: basic working concept for simple array tuple schemas.
+> 🚧 Work in progress [#73](https://github.com/ui-schema/ui-schema/issues/73)
 >
 > Not included in `widgets`, must be added additionally
 
 Special `Table` component for complex, always validated, lists. Using custom widgets without labels. Hidden rows from pagination are still validated, using `isVirtual` prop.
+
+**Supports additional keywords:**
+
+- `view`
+    - `view.hideTitle` when `true` it does not show the table title
+    - `view.hideItemsTitle` when `true` doesn't display titles of nested object widgets inside the table head
+    - `view.btnSize`
+    - `view.dense`
+- `readOnly`
+- `sortOrder`: `string[]`, only for `object` types, relative key of the properties to render in that order
+
+**Restrictions (atm):**
+
+- when `sortOrder` is defined, only renders & validates those properties
 
 ```js
 import {widgets} from '@ui-schema/ds-material';
@@ -73,6 +87,5 @@ Currently included cell components are based on the `TextField` components and s
             - `rows` minimum rows visible
             - `rowsMax` maximum rows visible
             - if both are set, the `textarea` grows until `rowsMax` is reached
-            - `hideTitle` does not show the title, but will use it as aria-label
 - `NumberRendererCell` supports `number`, `integer`
 - `StringRendererCell` base component used by both others and for `string`

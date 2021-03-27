@@ -50,9 +50,9 @@ See also [adding or overwriting widgets](#adding--overwriting-widgets)
 
 JSON-Schema is handled mostly by the `widgets.pluginStack` for you, focus on the behaviour of the widget, connect it through the provided properties and the HOC `extractValue` (only non-scalar values).
 
-Each widget gets properties provided by the root schema renderer or added from plugins. If you pass down new `props` to `PluginStack`, the nested widgets will receive those `props` - except removed ones from [`WidgetRenderer`](/docs/core#widgetrenderer).
+Each widget gets properties provided by the root schema renderer or added from plugins. When rendering nested schemas, all passed down `props` to [`PluginStack`](/docs/core#pluginstack) are passed to the nested widget(s) - except those removed by [`WidgetRenderer`](/docs/core#widgetrenderer).
 
-Properties from `WidgetRenderer` (`React.ComponentType<WidgetProps>`):
+Received properties from `WidgetRenderer` (`React.ComponentType<WidgetProps>` or accumulated in plugins & validators:
 
 - `value` : `{*}` Plugins receive for any value, Widgets only for scalar
 - `onChange` : `{function}` store updater function, see [updating utils](/docs/core#store-updating--onchange)
@@ -62,9 +62,9 @@ Properties from `WidgetRenderer` (`React.ComponentType<WidgetProps>`):
 - `parentSchema` : `{Map}` the schema of the parent widget
 - `level` : `{integer}` how deep in the schema it is, incremented automatically for native-objects, must be done manually when using `UIGeneratorNested`
 - `required` : `{boolean}`, extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `requiredValidator`
-- `valid` : `{boolean}` if this schema level got some error, detected/changed from the pluginStack
+- `valid` : `{boolean}` if this schema level got some error, detected/changed from the `widgets.pluginStack`
 - `showValidity` : `{boolean}` if the errors/success should be visible
-- `errors` : `{ValidatorErrorsType}` validation errors, added from the pluginStack for the current widget/schema-level
+- `errors` : `{ValidatorErrorsType}` validation errors, added from the `widgets.pluginStack` for the current widget/schema-level
 
 See [how to add custom widgets](#adding--overwriting-widgets) to a binding.
 

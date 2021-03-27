@@ -1,7 +1,7 @@
 import React from 'react';
-import {ObjectRenderer} from '@ui-schema/ui-schema/ObjectRenderer';
 import {List} from 'immutable';
 import {PluginStack} from '@ui-schema/ui-schema/PluginStack';
+import {ObjectRenderer} from '@ui-schema/ui-schema/ObjectRenderer';
 
 export const VirtualArrayRenderer = (
     {storeKeys, value, schema, virtualWidgets, widgets},
@@ -23,26 +23,25 @@ export const VirtualArrayRenderer = (
         />,
     ).valueSeq() : null;
 
-const virtualWidgetsInitial = {
-    'default': null,
-    'object': ObjectRenderer,
-    'array': VirtualArrayRenderer,
-}
-
 export const VirtualWidgetRenderer = (props) => {
     const {
         schema, value,
-        virtualWidgets = virtualWidgetsInitial,
+        virtualWidgets = {
+            'default': null,
+            // `ObjectRenderer` is somehow `undefined` inside of `VirtualWidgetRenderer` when this object was defined outside of the component
+            'object': ObjectRenderer,
+            'array': VirtualArrayRenderer,
+        },
     } = props;
     const type = schema.get('type');
 
-    let Widget = virtualWidgets.default;
+    let Widget = virtualWidgets['default'];
 
     if(type) {
         if(type === 'object') {
-            Widget = virtualWidgets.object;
+            Widget = virtualWidgets['object'];
         } else if(type === 'array') {
-            Widget = virtualWidgets.array;
+            Widget = virtualWidgets['array'];
         }
     }
 

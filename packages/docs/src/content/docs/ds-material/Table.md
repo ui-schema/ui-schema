@@ -1,3 +1,10 @@
+# DS Material
+
+Base components for the `Table` widget, to build custom table widgets, check the [widget docs here](/docs/widgets/Table).
+
+> 🚧 Work in progress, experimental [#73](https://github.com/ui-schema/ui-schema/issues/73)
+
+```typescript jsx
 import React from 'react'
 import { memo, WidgetProps } from '@ui-schema/ui-schema'
 import { TableRenderer } from '@ui-schema/ds-material/BaseComponents/Table/TableRenderer'
@@ -15,3 +22,4 @@ export const Table: React.ComponentType<WidgetProps> = (props) => {
         TableHeader={TableHeaderMemo}
     />
 }
+```

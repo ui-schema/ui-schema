@@ -74,20 +74,20 @@ export interface WithValue {
     onChange: onChange
 }
 
-export function extractValue<P extends WithValue>(Wrapped: React.ComponentType<P>): React.ComponentType<P>
+export function extractValue<P extends {}>(Wrapped: React.ComponentType<P & WithValue>): React.ComponentType<P>
 
 export interface WithValidity {
     validity: any
     onChange: onChange
 }
 
-export function extractValidity(
-    WrappedComponent: React.ComponentType<WithValidity>
-): React.ComponentType<WithValidity>
+export function extractValidity<P extends {}>(
+    WrappedComponent: React.ComponentType<P & WithValidity>
+): React.ComponentType<P>
 
-export function withUIMeta(
-    WrappedComponent: React.ComponentType<UIMetaContext>
-): React.ComponentType<UIMetaContext>
+export function withUIMeta<P extends {}>(
+    WrappedComponent: React.ComponentType<P & UIMetaContext>
+): React.ComponentType<P>
 
 // UIStore / Immutable Manipulation Functions
 

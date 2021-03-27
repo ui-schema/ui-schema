@@ -8,6 +8,8 @@ import {dataConditional, dataConditionalAllOf, schemaConditional, schemaConditio
 import {dataDependencies, dataDependenciesBooleans, schemaDependencies, schemaDependenciesBooleans} from './demoDependencies';
 import {schemaLists} from './demoLists';
 import {createOrderedMap} from '@ui-schema/ui-schema/Utils/createMap/createMap';
+import {demoTable} from '../content/docs/widgets/TableDemo';
+import {List} from 'immutable';
 
 const schemas = [
     ['Main Demo', schemaMain, dataMain, `
@@ -42,6 +44,15 @@ Including native-objects and native-types.
 - array of any sub-schema
 - array of array tuple schemas
 - \`array\` do only correctly validate when rendered/mounted, at \`if\`/\`else\` only one schema level is validated atm.
+`], ['Table: array tuples', createOrderedMap(demoTable[0][1]), List(), `
+# Table (array of arrays)
+
+- array of tuple array schemas for the rows
+`], ['Table: object', createOrderedMap(demoTable[1][1]), List(), `
+# Table (array of objects)
+
+- array of object schemas for the rows
+- in-schema definition of \`sortOrder\`
 `], ['Stepper', schemaStepper, dataStepper, `
 # Stepper / Sequential Example
 
