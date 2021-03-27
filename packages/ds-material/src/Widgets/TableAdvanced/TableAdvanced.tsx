@@ -1,7 +1,7 @@
 import React from 'react'
 import { extractValue, memo, PluginStack, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 
-let TableAdvanced: React.ComponentType<WidgetProps & WithValue> = (
+export const TableAdvancedBase: React.ComponentType<WidgetProps & WithValue> = (
     {
         showValidity, schema, level, ...props
     }
@@ -22,6 +22,4 @@ let TableAdvanced: React.ComponentType<WidgetProps & WithValue> = (
     </>
 }
 
-TableAdvanced = extractValue(memo(TableAdvanced))
-
-export { TableAdvanced }
+export const TableAdvanced = extractValue(memo(TableAdvancedBase))

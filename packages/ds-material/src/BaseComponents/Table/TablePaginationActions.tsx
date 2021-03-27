@@ -7,6 +7,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import LastPageIcon from '@material-ui/icons/LastPage'
 import { AccessTooltipIcon } from '@ui-schema/ds-material'
 import { Trans } from '@ui-schema/ui-schema'
+import { TablePaginationActionsProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
 
 const useStyles1 = makeStyles((theme: Theme) =>
     createStyles({
@@ -16,13 +17,6 @@ const useStyles1 = makeStyles((theme: Theme) =>
         },
     })
 )
-
-export interface TablePaginationActionsProps {
-    count: number
-    page: number
-    rowsPerPage: number
-    onChangePage: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void
-}
 
 export const TablePaginationActions: React.ElementType<TablePaginationActionsProps> = (props) => {
     const classes = useStyles1()

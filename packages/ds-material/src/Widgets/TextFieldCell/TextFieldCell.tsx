@@ -1,7 +1,9 @@
 import React, { CSSProperties, EventHandler } from 'react'
-import { mapSchema, checkNativeValidity, WidgetProps } from '@ui-schema/ui-schema'
+import { useUID } from 'react-uid'
+import { mapSchema, checkNativeValidity, WidgetProps, TransTitle } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '../../Component/LocaleHelperText/LocaleHelperText'
 import InputBase from '@material-ui/core/InputBase'
+import Typography from '@material-ui/core/Typography'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
 import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
 
@@ -11,24 +13,24 @@ export interface StringRendererCellProps {
     rows?: number
     rowsMax?: number
     style?: CSSProperties
-    onClick: EventHandler<any>
-    onFocus: EventHandler<any>
-    onBlur: EventHandler<any>
-    onKeyUp: EventHandler<any>
-    onKeyDown: EventHandler<any>
-    onKeyPress: EventHandler<any>
-    inputProps: {
+    onClick?: EventHandler<any>
+    onFocus?: EventHandler<any>
+    onBlur?: EventHandler<any>
+    onKeyUp?: EventHandler<any>
+    onKeyDown?: EventHandler<any>
+    onKeyPress?: EventHandler<any>
+    inputProps?: {
         [key: string]: any
     }
     inputRef?: null | React.RefObject<any>
-    labelledBy: string
+    labelledBy?: string
 }
 
 export const StringRendererCell: React.ComponentType<WidgetProps & StringRendererCellProps> = (
     {
         type,
         multiline, rows, rowsMax,
-        storeKeys, schema, value, onChange,
+        storeKeys, ownKey, schema, value, onChange,
         showValidity, valid, errors, required,
         style,
         onClick, onFocus, onBlur, onKeyUp, onKeyDown, onKeyPress,
@@ -36,6 +38,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps & StringRendere
         labelledBy,
     }
 ) => {
+    const uid = useUID()
     // todo: this could break law-of-hooks
     const inputRef = customInputRef || React.useRef()
 
@@ -46,6 +49,12 @@ export const StringRendererCell: React.ComponentType<WidgetProps & StringRendere
 
     if (schema.get('type') === 'number' && typeof inputProps['step'] === 'undefined') {
         inputProps['step'] = 'any'
+    }
+
+    if (typeof labelledBy === 'string') {
+        inputProps['aria-labelledby'] = labelledBy
+    } else {
+        inputProps['aria-labelledby'] = 'uis-' + uid
     }
 
     if (schema.get('checkNativeValidity')) {
@@ -59,6 +68,9 @@ export const StringRendererCell: React.ComponentType<WidgetProps & StringRendere
     }, [onChange, storeKeys, valid])
 
     return <>
+        {!labelledBy ? <Typography component={'span'} variant={'srOnly'} id={inputProps['aria-labelledby']}>
+            <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+        </Typography> : null}
         <InputBase
             type={format || type}
             disabled={schema.get('readOnly') as boolean}
@@ -81,7 +93,6 @@ export const StringRendererCell: React.ComponentType<WidgetProps & StringRendere
                     onKeyPress && onKeyPress(evt)
                 }
             }}
-            aria-labelledby={labelledBy}
             style={style}
             onKeyDown={onKeyDown}
             onChange={(e) => {
