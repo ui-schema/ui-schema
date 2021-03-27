@@ -20,7 +20,7 @@ import {ExpandLess, ExpandMore} from '@material-ui/icons';
 import {Divider, List, Collapse} from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
 import {NavListNested} from '@control-ui/kit/Menu/NavList';
-import {routesDocs, routesWidgets} from '../content/docs';
+import {routesDocs, routesDSMaterial, routesWidgets} from '../content/docs';
 
 export const CustomHeader = ({title}) => {
     const {switchTheme} = useSwitchTheme();
@@ -47,7 +47,7 @@ export const CustomHeader = ({title}) => {
 };
 
 const CollapseDrawer = ({toggle, icon, children, dense, style = undefined}) => {
-    const {open, setOpen} = useDrawer()
+    const [open, setOpen] = React.useState(true)
 
     return <React.Fragment>
         <ListItem button onClick={() => setOpen(o => !o)} dense={dense} style={style}>
@@ -84,6 +84,12 @@ export const CustomDrawer = () => {
             />
             <NavListNested
                 routes={[routesWidgets]}
+                dense
+                filter={() => true}
+                onClick={closeOnClick}
+            />
+            <NavListNested
+                routes={[routesDSMaterial]}
                 dense
                 filter={() => true}
                 onClick={closeOnClick}

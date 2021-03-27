@@ -16,6 +16,7 @@ export const schemaDemoTable = createOrderedMap({
             {
                 type: 'integer',
                 title: 'ID',
+                //hidden: true,
             },
             {
                 type: 'string',
@@ -31,6 +32,47 @@ export const schemaDemoTable = createOrderedMap({
                 multipleOf: 0.1,
             },
         ],
+    },
+});
+
+export const schemaDemoTableMap = createOrderedMap({
+    type: 'array',
+    widget: 'Table',
+    view: {
+        dense: true,
+    },
+    items: {
+        type: 'object',
+        rowSortOrder: [
+            'id',
+            'date',
+            'name',
+            'revenue',
+        ],
+        properties: {
+            name: {
+                type: 'string',
+                title: 'Name',
+            },
+            id: {
+                type: 'integer',
+                title: 'ID',
+                //hidden: true,
+            },
+            date: {
+                type: 'string',
+                format: 'date',
+                title: 'Date',
+                view: {
+                    shrink: true,
+                },
+            },
+            revenue: {
+                type: 'number',
+                title: 'Revenue',
+                multipleOf: 0.1,
+            },
+        },
     },
 });
 
@@ -79,6 +121,7 @@ export const schemaDemoTableAdvanced = createOrderedMap({
             view: {
                 dense: true,
                 hideTitle: true,
+                //hideItemsTitle: true,
             },
             items: {
                 type: 'array',
@@ -98,6 +141,7 @@ export const schemaDemoTableAdvanced = createOrderedMap({
                             from: {
                                 type: 'string',
                                 format: 'date',
+                                title: 'Date From',
                                 view: {
                                     shrink: true,
                                     sizeXs: 6,
@@ -106,6 +150,7 @@ export const schemaDemoTableAdvanced = createOrderedMap({
                             till: {
                                 type: 'string',
                                 format: 'date',
+                                title: 'Date Till',
                                 view: {
                                     shrink: true,
                                     sizeXs: 6,

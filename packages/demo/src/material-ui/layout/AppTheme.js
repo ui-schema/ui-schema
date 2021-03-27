@@ -1,20 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Head from './Head';
-import {createMuiTheme} from "@material-ui/core";
-import {ThemerProvider} from "../component/Theme";
+import {createMuiTheme} from '@material-ui/core';
+import {ThemerProvider} from '../component/Theme';
 
 const themeDark = createMuiTheme({
     palette: {
-        type: "dark",
+        type: 'dark',
         primary: {
-            main: "#05aeca",
+            main: '#05aeca',
             dark: '#033944',
         },
         secondary: {
             light: '#d8eed4',
             main: '#bbe1b4',
-            dark: "#002634",
+            dark: '#002634',
         },
         background: {
             paper: '#001f29',
@@ -27,20 +27,28 @@ const themeDark = createMuiTheme({
         action: {
             hoverOpacity: 0.2,
         },
-    }
+    },
+    overrides: {
+        MuiTypography: {
+            srOnly: {
+                // fix for unnecessary scroll on `html` on some really big pages
+                top: '-999em',
+            },
+        },
+    },
 });
 
 const themeLight = createMuiTheme({
     palette: {
-        type: "light",
+        type: 'light',
         primary: {
-            main: "#0599b2",
+            main: '#0599b2',
             dark: '#033944',
         },
         secondary: {
             light: '#d8eed4',
             main: '#37936c',
-            dark: "#002634",
+            dark: '#002634',
         },
         background: {
             paper: '#e8e8e8',
@@ -53,7 +61,15 @@ const themeLight = createMuiTheme({
         action: {
             hoverOpacity: 0.2,
         },
-    }
+    },
+    overrides: {
+        MuiTypography: {
+            srOnly: {
+                // fix for unnecessary scroll on `html` on some really big pages
+                top: '-999em',
+            },
+        },
+    },
 });
 
 const themes = {
