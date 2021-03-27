@@ -6,7 +6,7 @@ import { useSlate } from '@ui-schema/material-slate/Slate/useSlate'
 import { slatePlugins, withPlugins } from '@ui-schema/material-slate/Slate/slatePlugins'
 import { ElementMapperInline } from '@ui-schema/material-slate/SlateElements/ElementMapperInline'
 
-let RichContentInline: React.ComponentType<WidgetProps & WithValue> = (props) => {
+const RichContentInlineBase: React.ComponentType<WidgetProps & WithValue> = (props) => {
     const {
         /*internalValue,*/ value, schema, storeKeys,
         errors,
@@ -34,6 +34,4 @@ let RichContentInline: React.ComponentType<WidgetProps & WithValue> = (props) =>
     </FormWrapper>
 }
 
-RichContentInline = extractValue(memo(RichContentInline))
-
-export { RichContentInline }
+export const RichContentInline = extractValue(memo(RichContentInlineBase))
