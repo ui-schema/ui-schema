@@ -18,27 +18,18 @@ export const TableRendererBase: React.ComponentType<WidgetProps & WithValue & Ta
         TableHeader,
     }
 ) => {
-    //console.log(storeKeys.toJS(), errors?.toJS())
     const uid = useUID()
     const {t} = useUIMeta()
     const [page, setPage] = React.useState(0)
     const [rows, setRows] = React.useState(5)
-    const [filteredList, setFilteredList] = React.useState<TableValue | undefined>(undefined)
     const currentList: TableValue = useImmutable(value)
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small'
     const dense = schema.getIn(['view', 'dense']) || false
     const itemsSchema = schema.get('items') as StoreSchemaType
     const readOnly = schema.get('readOnly') as boolean
 
-    React.useEffect(() => {
-        setFilteredList(() => {
-            return currentList
-        })
-    }, [page, rows, setFilteredList, currentList])
-
     const currentRows = rows === -1 ? currentList?.size || 0 : rows
-    const filteredRows = rows === -1 ? filteredList?.size || 0 : rows
-    const filteredRowsStartVisible = page * filteredRows
+    const currentRowsStartVisible = page * currentRows
 
     const validItemSchema = itemsSchema && Map.isMap(itemsSchema) &&
         (itemsSchema.get('type') === 'array' || itemsSchema.get('type') === 'object')
@@ -70,33 +61,30 @@ export const TableRendererBase: React.ComponentType<WidgetProps & WithValue & Ta
                 />
 
                 <TableBody>
-                    {validItemSchema && filteredList ? <React.Fragment>
-                        {filteredList
-                            .map((_val: any, i) =>
-                                <PluginStack
-                                    key={i}
-                                    storeKeys={storeKeys.push(i as number)}
-                                    schema={itemsSchema}
-                                    parentSchema={schema}
-                                    level={level}
-                                    isVirtual={(i as number) < filteredRowsStartVisible || (i as number) >= (filteredRowsStartVisible + currentRows)}
-                                    noGrid
+                    {validItemSchema && currentList ?
+                        currentList.map((_val: any, i) =>
+                            <PluginStack
+                                key={i}
+                                storeKeys={storeKeys.push(i as number)}
+                                schema={itemsSchema}
+                                parentSchema={schema}
+                                level={level}
+                                isVirtual={(i as number) < currentRowsStartVisible || (i as number) >= (currentRowsStartVisible + currentRows)}
+                                noGrid
 
-                                    widgets={widgets}
-                                    WidgetOverride={TableRowRenderer}
-                                    setPage={setPage}
-                                    showRows={rows}
-                                    uid={uid}
-                                    listSize={value.size}
-                                    dense={dense}
-                                />
-                            ).valueSeq()}
-                    </React.Fragment> : null}
+                                widgets={widgets}
+                                WidgetOverride={TableRowRenderer}
+                                setPage={setPage}
+                                showRows={rows}
+                                uid={uid}
+                                listSize={value.size}
+                                dense={dense}
+                            />
+                        ).valueSeq() : null}
                 </TableBody>
+
                 <TableFooter
-                    colSize={
-                        visibleCols?.size || 0
-                    }
+                    colSize={visibleCols?.size || 0}
                     t={t}
                     listSize={value?.size}
                     listSizeCurrent={currentList?.size || 0}

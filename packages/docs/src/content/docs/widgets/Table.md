@@ -20,11 +20,13 @@ Widget for data tables.
 
 > 🚧 Work in progress [#73](https://github.com/ui-schema/ui-schema/issues/73)
 >
-> Not included in `widgets`, must be added additionally
+> Not included in `widgets`, must be added additionally.
+>
+> Not intended for 1000s of entries, just a few hundred - depending on used schemas & plugins
 
 Special `Table` component for complex, always validated, lists. Using custom widgets without labels. Hidden rows from pagination are still validated, using `isVirtual` prop.
 
-**Supports additional keywords:**
+**Supports extra keywords:**
 
 - `view`
     - `view.hideTitle` when `true` it does not show the table title
@@ -82,10 +84,14 @@ Currently included cell components are based on the `TextField` components and s
 > todo: more code sharing through utils
 
 - `TextRendererCell` supports multi-line text
-    - extra keywords:
+    - **extra keywords:**
         - `view`
             - `rows` minimum rows visible
             - `rowsMax` maximum rows visible
             - if both are set, the `textarea` grows until `rowsMax` is reached
 - `NumberRendererCell` supports `number`, `integer`
+    - automatically aligns the content `right`, when not specified, and hides the number up/down in firefox
 - `StringRendererCell` base component used by both others and for `string`
+    - **extra keywords:**
+        - `view`
+            - `align` to control the `textAlign` in the table cell

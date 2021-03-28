@@ -32,7 +32,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps & StringRendere
         multiline, rows, rowsMax,
         storeKeys, ownKey, schema, value, onChange,
         showValidity, valid, errors, required,
-        style,
+        style = {},
         onClick, onFocus, onBlur, onKeyUp, onKeyDown, onKeyPress,
         inputProps = {}, inputRef: customInputRef,
         labelledBy,
@@ -59,6 +59,26 @@ export const StringRendererCell: React.ComponentType<WidgetProps & StringRendere
 
     if (schema.get('checkNativeValidity')) {
         valid = checkNativeValidity(currentRef, valid)
+    }
+
+    if (!inputProps.style) {
+        inputProps.style = {}
+    }
+    const schemaAlign = schema.getIn(['view', 'align'])
+    if (!inputProps.style.textAlign && schemaAlign) {
+        inputProps.style.textAlign = schemaAlign
+    }
+    if (type === 'number') {
+        // when a table cell is of type number, it should be aligned right
+        if (!inputProps.style.textAlign) {
+            inputProps.style.textAlign = 'right'
+        }
+        if (
+            inputProps.style.textAlign === 'right' &&
+            !inputProps.style['MozAppearance']
+        ) {
+            inputProps.style['MozAppearance'] = 'textfield'
+        }
     }
 
     React.useEffect(() => {

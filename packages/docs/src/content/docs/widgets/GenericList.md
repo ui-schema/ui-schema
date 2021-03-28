@@ -31,12 +31,12 @@ const widgets = {
 };
 ```
 
-Supports extra keywords:
+**Supports extra keywords:**
 
 - `view`
     - `btnSize` either `small` (default) or `medium`
     - `hideTitle` when `true` doesn't show any title
 
-Components:
+**Components:**
 
 - `GenericList` for list sub-schemas

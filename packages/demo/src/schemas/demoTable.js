@@ -17,6 +17,9 @@ export const schemaDemoTable = createOrderedMap({
                 type: 'integer',
                 title: 'ID',
                 //hidden: true,
+                view: {
+                    align: 'center',
+                },
             },
             {
                 type: 'string',
@@ -29,7 +32,13 @@ export const schemaDemoTable = createOrderedMap({
             {
                 type: 'number',
                 title: 'Revenue',
+                default: 0,
                 multipleOf: 0.1,
+            },
+            {
+                type: 'boolean',
+                title: 'Finished',
+                default: true,
             },
         ],
     },
@@ -48,6 +57,7 @@ export const schemaDemoTableMap = createOrderedMap({
             'date',
             'name',
             'revenue',
+            'finished',
         ],
         properties: {
             name: {
@@ -71,6 +81,11 @@ export const schemaDemoTableMap = createOrderedMap({
                 type: 'number',
                 title: 'Revenue',
                 multipleOf: 0.1,
+            },
+            finished: {
+                type: 'boolean',
+                title: 'Finished',
+                default: true,
             },
         },
     },
