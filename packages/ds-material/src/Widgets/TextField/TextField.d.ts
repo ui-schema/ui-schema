@@ -2,11 +2,8 @@ import React, { CSSProperties } from 'react'
 import { InputProps } from '@material-ui/core/Input'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 
-export interface StringRendererProps {
-    multiline?: boolean
+export interface StringRendererBaseProps {
     type?: string
-    rows?: number
-    rowsMax?: number
     style?: CSSProperties
     onClick?: React.MouseEvent
     onFocus?: React.MouseEvent
@@ -18,8 +15,22 @@ export interface StringRendererProps {
     inputRef?: any
 }
 
-export function StringRenderer<P extends StringRendererProps & WidgetProps>(props: P): React.ReactElement<P>
+export interface StringRendererProps extends StringRendererBaseProps {
+    multiline?: boolean
+    rows?: number
+    rowsMax?: number
+}
 
-export function NumberRenderer<P extends StringRendererProps & WidgetProps>(props: P): React.ReactElement<P>
+export interface TextRendererProps extends StringRendererProps {
+    multiline?: true
+}
 
-export function TextRenderer<P extends StringRendererProps & WidgetProps>(props: P): React.ReactElement<P>
+export interface NumberRendererProps extends StringRendererBaseProps {
+    steps?: number | 'any'
+}
+
+export function StringRenderer<P extends WidgetProps>(props: P & StringRendererProps): React.ReactElement
+
+export function NumberRenderer<P extends WidgetProps>(props: P & NumberRendererProps): React.ReactElement
+
+export function TextRenderer<P extends WidgetProps>(props: P & TextRendererProps): React.ReactElement

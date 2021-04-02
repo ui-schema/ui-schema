@@ -24,10 +24,6 @@ export const StringRenderer = ({
 
     inputProps = mapSchema(inputProps, schema);
 
-    if(schema.get('type') === 'number' && typeof inputProps['step'] === 'undefined') {
-        inputProps['step'] = 'any'
-    }
-
     if(schema.get('checkNativeValidity')) {
         valid = checkNativeValidity(currentRef, valid);
     }
@@ -63,7 +59,7 @@ export const StringRenderer = ({
             onKeyUp={onKeyUp}
             onKeyPress={e => {
                 const evt = e.nativeEvent
-                if (!forbidInvalidNumber(evt, schema.get('type'))) {
+                if(!forbidInvalidNumber(evt, schema.get('type'))) {
                     onKeyPress && onKeyPress(evt)
                 }
             }}
@@ -105,15 +101,21 @@ export const TextRenderer = ({schema, ...props}) => {
     return <StringRenderer
         {...props}
         schema={schema}
-        rows={schema.getIn(['view', 'rows'])}
-        rowsMax={schema.getIn(['view', 'rowsMax'])}
+        rows={props.rows || schema.getIn(['view', 'rows'])}
+        rowsMax={props.rowsMax || schema.getIn(['view', 'rowsMax'])}
         multiline
     />
 };
 
 export const NumberRenderer = (props) => {
+    const {schema, inputProps = {}, steps = 'any'} = props
+    if(schema.get('type') === 'number' && typeof inputProps['step'] === 'undefined') {
+        inputProps['step'] = steps
+    }
+
     return <StringRenderer
         {...props}
+        inputProps={inputProps}
         type={'number'}
     />
 };
