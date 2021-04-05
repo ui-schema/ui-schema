@@ -1,23 +1,32 @@
 import React from 'react'
 import { useUID } from 'react-uid'
-import { OwnKey, StoreSchemaType, TransTitle, WidgetProps, PluginStack, memo, extractValidity, WithValue } from '@ui-schema/ui-schema'
+import { OwnKey, StoreSchemaType, TransTitle, WidgetProps, PluginStack, memo, WithValue, ValidatorErrorsType } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '../../Component/LocaleHelperText/LocaleHelperText'
-
 import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
-let AccordionStack: React.ComponentType<WidgetProps> = (props) => {
+export interface AccordionStackBaseProps {
+    isOpen: boolean
+    setOpen: (handler: (ownKey: string) => string) => void
+}
+
+const AccordionStackBase: React.ComponentType<WidgetProps & AccordionStackBaseProps> = (props) => {
     const uid = useUID()
     const {
         storeKeys, schema,
         parentSchema, ownKey,
-        showValidity, errors, level,
+        showValidity, level,
+        isOpen, setOpen,
     } = props
-
-    return <Accordion style={{width: '100%'}}>
+    const [errors, setErrors] = React.useState<ValidatorErrorsType | undefined>()
+    console.log(ownKey, isOpen)
+    return <Accordion
+        style={{width: '100%'}} expanded={isOpen}
+        onChange={() => setOpen(k => k === ownKey ? '' : ownKey as string)}
+    >
         <AccordionSummary
             expandIcon={<ExpandMoreIcon/>}
             id={'uis-' + uid}
@@ -29,11 +38,11 @@ let AccordionStack: React.ComponentType<WidgetProps> = (props) => {
         <AccordionDetails>
             <PluginStack
                 {...props}
-                // passing down schema without `widget`,
-                // otherwise we got an endless recursion
                 schema={schema}
                 parentSchema={parentSchema}
                 storeKeys={storeKeys} level={level}
+                onErrors={setErrors}
+                isVirtual={props.isVirtual || (parentSchema.get('onClosedHidden') && !isOpen)}
             />
             <ValidityHelperText
                 errors={errors} showValidity={showValidity} schema={schema}
@@ -42,20 +51,17 @@ let AccordionStack: React.ComponentType<WidgetProps> = (props) => {
     </Accordion>
 }
 
-// @ts-ignore
-AccordionStack = extractValidity(memo(AccordionStack))
-export { AccordionStack }
+export const AccordionStack = memo(AccordionStackBase)
 
-export const AccordionsRenderer = (
+export const AccordionsRendererBase = (
     {
         schema, storeKeys, level,
         errors, showValidity,
-        // extracting internalValue from props, performance optimize
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        internalValue,
         ...props
     }: WidgetProps & WithValue
 ): React.ReactElement => {
+    const [open, setOpen] = React.useState<string>(schema.get('defaultExpanded') as string || '')
+
     const properties = schema.get('properties')
 
     return <>
@@ -71,6 +77,8 @@ export const AccordionsRenderer = (
                     parentSchema={schema}
                     storeKeys={storeKeys.push(childKey)}
                     level={level + 1}
+                    isOpen={open === childKey}
+                    setOpen={setOpen}
                 />
             )
                 .valueSeq()
@@ -82,3 +90,5 @@ export const AccordionsRenderer = (
         />
     </>
 }
+
+export const AccordionsRenderer = memo(AccordionsRendererBase)
