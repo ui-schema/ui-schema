@@ -4,6 +4,7 @@ import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { StoreKeys } from '@ui-schema/ui-schema/UIStore'
 import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { onErrors } from '@ui-schema/ui-schema/ValidatorStack'
 
 export type WidgetOverrideType<P extends {}> = React.ComponentType<P & WidgetProps>
 
@@ -12,6 +13,10 @@ export interface PluginStackProps {
     schema: StoreSchemaType
     parentSchema: StoreSchemaType
     storeKeys: StoreKeys
+
+    // listen from a hoisted component for `errors` changing,
+    // useful for some performance optimizes like at ds-material Accordions
+    onErrors?: onErrors
 
     // override widgets of MetaProvider for this particular PluginStack (passed down at some use cases)
     widgets?: WidgetsBindingBase

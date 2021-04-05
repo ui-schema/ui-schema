@@ -3,7 +3,12 @@ import {memo} from '../Utils/memo';
 import {PluginStack} from '../PluginStack';
 
 let ObjectRenderer = ({
-                          level, schema, storeKeys, ...props
+                          level, schema, storeKeys,
+                          // todo: concept in validation
+                          // for performance reasons, not pushing errors deeper
+                          // eslint-disable-next-line no-unused-vars
+                          errors,
+                          ...props
                       }) => {
     const {isVirtual, widgets} = props
     const properties = schema.get('properties');

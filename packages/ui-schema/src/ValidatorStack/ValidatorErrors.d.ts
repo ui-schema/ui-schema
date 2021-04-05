@@ -22,3 +22,6 @@ export type ValidatorErrorsType = Record<ValidatorErrors> & ValidatorErrors
 export const ValidatorErrors: ValidatorErrorsType
 
 export function createValidatorErrors(): ValidatorErrorsType
+
+export type onErrorHandler = (errors: ValidatorErrorsType) => void
+export type onErrors = (cb: onErrorHandler) => void
