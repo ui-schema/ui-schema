@@ -5,7 +5,8 @@ import {VirtualWidgetRenderer} from '@ui-schema/ui-schema/WidgetRenderer/Virtual
 const NoWidget = ({scope, matching}) => <>missing-{scope}-{matching}</>;
 
 export const WidgetRenderer = ({
-                                   value,
+                                   // we do not want `value`/`internalValue` to be passed to non-scalar widgets for performance reasons
+                                   value, internalValue,
                                    WidgetOverride,
                                    // we do not want `requiredList` to be passed to the final widget
                                    // eslint-disable-next-line no-unused-vars
@@ -44,5 +45,12 @@ export const WidgetRenderer = ({
         }
     }
 
-    return Widget ? <Widget {...props} value={!isVirtual && (type === 'array' || type === 'object') ? undefined : value}/> : null;
+    const extractValue = !isVirtual && (type === 'array' || type === 'object')
+    return Widget ?
+        <Widget
+            {...props}
+            value={extractValue ? undefined : value}
+            internalValue={extractValue ? undefined : internalValue}
+            errors={errors}
+        /> : null;
 };

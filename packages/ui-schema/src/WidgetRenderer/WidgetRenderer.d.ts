@@ -4,7 +4,7 @@ import { PluginStackProps } from '@ui-schema/ui-schema/PluginStack'
 
 export interface WidgetRendererProps extends Pick<PluginProps,
     'level' | 'errors' | 'onChange' | 'ownKey' | 'parentSchema' | 'required' | 'requiredList' | 'schema' |
-    'showValidity' | 'storeKeys' | 'value' | 'valid' | 'widgets'> {
+    'showValidity' | 'storeKeys' | 'value' | 'valid' | 'widgets' | 'onErrors'> {
     WidgetOverride?: PluginStackProps['WidgetOverride']
 }
 

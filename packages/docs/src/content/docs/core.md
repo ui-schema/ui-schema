@@ -132,6 +132,8 @@ const Demo = () => {
 
 The internal function to update the store, implements the `deleteOnEmpty` logic and handling the execution of `updater` and the updating of the store with the results.
 
+Sets initial `OrderedMap` or `List` when changing nested elements - but the parent doesn't exist, thus forcing `object` to be `OrderedMap` or `List`, needed for comfortable `onChange` inside e.g. `GenericList` and drag 'n drops.
+
 Returns a function which must receive the current store, it will return the updated store.
 
 See example above on how to use it, additionally you can intercept the prevStore and nextStore through wrapping the function in logic.
@@ -400,9 +402,12 @@ Finds the actual widget in the mapping by the then defined schema, renders the w
 
 If no widget is fund, renders nothing / `null`, but the plugins may have already rendered something! (like the grid)
 
+Executes `onErrors` for that schema level, when `errors` have changed and `onErrors` was specified.
+
 **Handles** removing props, before rendering the actual widget component. For performance reasons removes these `props`:
 
 - `value` is removed for `schema.type` `array` or `object`
+- `internalValue` is removed for `schema.type` `array` or `object`
 - `requiredList` is removed for every type
 
 ## Utils
