@@ -1,6 +1,6 @@
 import React from 'react'
 import { useUID } from 'react-uid'
-import { OwnKey, StoreSchemaType, TransTitle, WidgetProps, PluginStack, memo, WithValue, ValidatorErrorsType } from '@ui-schema/ui-schema'
+import { OwnKey, StoreSchemaType, TransTitle, WidgetProps, PluginStack, memo, ValidatorErrorsType } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '../../Component/LocaleHelperText/LocaleHelperText'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
@@ -22,7 +22,7 @@ const AccordionStackBase: React.ComponentType<WidgetProps & AccordionStackBasePr
         isOpen, setOpen,
     } = props
     const [errors, setErrors] = React.useState<ValidatorErrorsType | undefined>()
-    console.log(ownKey, isOpen)
+
     return <Accordion
         style={{width: '100%'}} expanded={isOpen}
         onChange={() => setOpen(k => k === ownKey ? '' : ownKey as string)}
@@ -58,7 +58,7 @@ export const AccordionsRendererBase = (
         schema, storeKeys, level,
         errors, showValidity,
         ...props
-    }: WidgetProps & WithValue
+    }: WidgetProps
 ): React.ReactElement => {
     const [open, setOpen] = React.useState<string>(schema.get('defaultExpanded') as string || '')
 

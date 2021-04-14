@@ -29,7 +29,7 @@ let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, on
                         onClick={() =>
                             onChange(
                                 storeKeys, ['value', 'internal'],
-                                ({value, internal}) => ({
+                                ({value = List(), internal = List()}) => ({
                                     value: moveItem(value, index, index - 1),
                                     internal: moveItem(internal, index, index - 1),
                                     // todo: also moveItem in `valid`? that should be handled automatically atm. and is not needed !i think!
@@ -58,7 +58,8 @@ let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, on
                         size={btnSize} style={{margin: '0 auto'}}
                         onClick={() =>
                             onChange(
-                                storeKeys, ['value', 'internal'], ({value, internal}) => ({
+                                storeKeys, ['value', 'internal'],
+                                ({value = List(), internal = List()}) => ({
                                     value: moveItem(value, index, index + 1),
                                     internal: moveItem(internal, index, index + 1),
                                 }),
@@ -102,7 +103,7 @@ let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, on
                         onClick={() =>
                             onChange(
                                 storeKeys, ['value', 'internal'],
-                                ({value, internal}) => ({
+                                ({value = List(), internal = List()}) => ({
                                     value: value.splice(index, 1),
                                     internal: internal.splice(index, 1),
                                 }),
@@ -125,10 +126,10 @@ let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, on
 }
 GenericListItem = memo(GenericListItem)
 
-const GenericList = extractValue(memo(({
-                                           storeKeys, ownKey, schema, value: list, onChange,
-                                           showValidity, valid, errors, required, level,
-                                       }) => {
+let GenericListBase = ({
+                           storeKeys, ownKey, schema, listSize, onChange,
+                           showValidity, valid, errors, required, level,
+                       }) => {
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
 
     return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
@@ -137,15 +138,15 @@ const GenericList = extractValue(memo(({
                 <FormLabel component="legend"><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></FormLabel>
             </Grid> : null}
 
-            {list ? list.map((val, i) =>
+            {Array(listSize).fill(null).map((val, i) =>
                 <GenericListItem
-                    key={i} index={i} listSize={list.size}
+                    key={i} index={i} listSize={listSize}
                     btnSize={btnSize} storeKeys={storeKeys}
                     deleteOnEmpty={schema.get('deleteOnEmpty') || required}
                     schema={schema} onChange={onChange}
                     level={level}
                 />,
-            ).valueSeq() : null}
+            )}
 
             <Grid item xs={12}>
                 {!schema.get('readOnly') ?
@@ -180,6 +181,21 @@ const GenericList = extractValue(memo(({
             </Grid>
         </Grid>
     </FormControl>
-}));
+}
+GenericListBase = memo(GenericListBase)
 
-export {GenericList};
+export const GenericListExtractor = (
+    {
+        value,
+        // remove `internalValue` from the widget, performance optimize
+        // eslint-disable-next-line no-unused-vars
+        internalValue,
+        ...props
+    },
+) => {
+    // extracting and calculating the list size here, not passing down the actual list for performance reasons
+    // https://github.com/ui-schema/ui-schema/issues/133
+    return <GenericListBase {...props} listSize={value?.size || 0}/>
+}
+
+export const GenericList = extractValue(memo(GenericListExtractor))
