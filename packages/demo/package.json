@@ -22,6 +22,7 @@
 		"@types/react-beautiful-dnd": "^13.0.0",
 		"@udecode/slate-plugins": "~0.75.2",
 		"bootstrap": "^4.4.1",
+        "popper.js": "^1.16.1",
 		"clsx": "^1.1.0",
 		"draft-js": "~0.11.4",
 		"draft-js-plugins-editor": "~3.0.0",
