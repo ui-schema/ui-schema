@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-code",
-    "version": "0.2.3",
+    "version": "0.2.4",
     "description": "Code Input for UI-Schema with Material-UI",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -41,7 +41,8 @@
         "codemirror": "^5.52.0",
         "immutable": "^4.0.0-rc.12",
         "react": "^16.12",
-        "react-codemirror2": "^6.0.0"
+        "react-codemirror2": "^6.0.0",
+        "react-dom": "^16.12"
     },
     "peerDependencies": {
         "@material-ui/core": "^4.8",

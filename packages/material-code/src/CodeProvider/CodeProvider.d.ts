@@ -4,8 +4,8 @@ export interface WidgetCodeProviderProps {
     theme: string
 }
 
-export type WidgetCodeContext = React.Context<WidgetCodeProviderProps>
+export const WidgetCodeContext: React.Context<WidgetCodeProviderProps>
 
-export type WidgetCodeProvider = (props: React.PropsWithChildren<WidgetCodeProviderProps>) => React.ReactElement
+export const WidgetCodeProvider: (props: React.PropsWithChildren<WidgetCodeProviderProps>) => React.ReactElement
 
 export function useWidgetCode(): WidgetCodeProviderProps
