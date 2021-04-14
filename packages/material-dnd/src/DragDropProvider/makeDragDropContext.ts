@@ -30,7 +30,7 @@ export const makeDragDropContext = (onChange: typeof onChangeHandler, blocksDefs
             onChange(
                 storeKeys.splice(storeKeys.size - 1, 1) as StoreKeys,
                 ['value', 'internal'],
-                ({value, internal}) => ({
+                ({value = List(), internal = List()}) => ({
                     value: value.delete(storeKeys.last()),
                     internal: internal.delete(storeKeys.last()),
                 })
