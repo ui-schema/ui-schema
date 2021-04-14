@@ -11,10 +11,17 @@ export interface TableRowProps {
     showRows: number
 }
 
-export interface TableRendererBaseProps {
+export interface TableRendererExtractorProps {
     TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps>
     TableFooter: React.ComponentType<TableFooterProps>
     TableHeader: React.ComponentType<TableHeaderProps>
+    rowsPerPage: List<number>
+    rowsShowAll?: boolean
+}
+
+export interface TableRendererBaseProps extends TableRendererExtractorProps {
+    listSize: number
+    t: Translator
 }
 
 export interface TablePaginationActionsProps {
@@ -48,10 +55,10 @@ export interface TableFooterProps {
     storeKeys: WidgetProps['storeKeys']
     schema: WidgetProps['schema']
     showValidity: WidgetProps['showValidity']
-    valid: WidgetProps['valid']
-    errors: WidgetProps['errors']
     btnSize: 'small' | 'medium'
     colSize: number
+    rowsPerPage: List<number | { label: string, value: number }>
+    rowsShowAll?: boolean
 }
 
 export type TableValue = List<List<any> | OrderedMap<string, any>>

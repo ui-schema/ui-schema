@@ -1,30 +1,26 @@
 import React from 'react';
 import {NextPluginRenderer} from '../../PluginStack';
+import {useImmutable} from '@ui-schema/ui-schema/Utils/useImmutable';
 
 const DefaultValueHandler = ({defaultVal, ...props}) => {
-    const storeKeysPrev = React.useRef(undefined);
     const [defaultHandled, setDefaultHandled] = React.useState(false);
     const {onChange, storeKeys} = props;
     let {value} = props;
 
-    const sameStoreKeys = storeKeysPrev.current && storeKeysPrev.current.equals(storeKeys);
-
-    if(!sameStoreKeys) {
-        storeKeysPrev.current = storeKeys;
-    }
+    const currentStoreKeys = useImmutable(storeKeys)
 
     React.useEffect(() => {
-        if(defaultHandled && !sameStoreKeys) {
-            setDefaultHandled(false);
-        }
-    }, [defaultHandled, sameStoreKeys, defaultVal]);
+        setDefaultHandled(false);
+    }, [currentStoreKeys]);
 
     React.useEffect(() => {
         if(typeof value === 'undefined' && !defaultHandled) {
             setDefaultHandled(true);
-            onChange(storeKeys, ['value'], () => ({value: defaultVal}))
+            onChange(currentStoreKeys, ['value'], () => ({value: defaultVal}))
+        } else if(!defaultHandled) {
+            setDefaultHandled(true);
         }
-    }, [onChange, sameStoreKeys, defaultVal, value, defaultHandled]);
+    }, [onChange, currentStoreKeys, defaultVal, value, defaultHandled]);
 
     let nextValue = value;
     if(typeof value === 'undefined' && !defaultHandled) {

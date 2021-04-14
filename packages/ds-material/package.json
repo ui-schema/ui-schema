@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ds-material",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "description": "Material-UI Binding for UI-Schema",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -37,7 +37,8 @@
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
         "@ui-schema/ui-schema": ">=0.2.0-rc.0",
-        "react": "^16.12"
+        "react": "^16.12",
+        "react-dom": "^16.12"
     },
     "dependencies": {
         "react-uid": "^2.2.0"
@@ -46,7 +47,7 @@
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
         "@ui-schema/ui-schema": ">=0.2.0-rc.0",
-        "react": "^16.8"
+        "react": "^16.8 || ^17.0"
     },
     "publishConfig": {
         "access": "public"

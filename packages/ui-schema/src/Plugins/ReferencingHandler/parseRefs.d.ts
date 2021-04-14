@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable'
-import { getSchema, ReferencingContext, StoreSchemaType } from '@ui-schema/ui-schema'
+import { getSchemaRefPlugin, ReferencingContext, StoreSchemaType } from '@ui-schema/ui-schema'
 
 /**
  * Pending references, grouped by root id, with requested versions per-schema,
@@ -20,7 +20,7 @@ export interface ParseRefsContent {
     // the root schema, could be get from SchemaRootProvider
     root?: StoreSchemaType
     // try to get a loaded schema
-    getSchema?: getSchema
+    getSchema?: getSchemaRefPlugin
 }
 
 export function parseRefs(

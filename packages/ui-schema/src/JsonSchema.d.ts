@@ -18,6 +18,7 @@ export interface JsonSchemaGeneral {
     id?: string
     $id?: string
     $ref?: string
+    version?: string
     $anchor?: string
     default?: any
     definitions?: {
@@ -33,6 +34,7 @@ export interface JsonSchemaGeneral {
     dependentRequired?: string[]
     'const'?: any | string | number
     'enum'?: any[]
+    $comment?: string
 }
 
 export interface JsonSchemaConditionals {

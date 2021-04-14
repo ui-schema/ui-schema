@@ -6,7 +6,7 @@ Widget for data tables.
 
 - type: `array(array | object)`,
 - widget keywords:
-    - `Table` **(usable)**
+    - `Table` **(usable, beta)**
     - `TableAdvanced` **(in-dev)**
 - view
     - does not support grid keywords in direct nested schemas, disables grid for own stack, but supports for nested `object`
@@ -20,17 +20,21 @@ Widget for data tables.
 
 > 🚧 Work in progress [#73](https://github.com/ui-schema/ui-schema/issues/73)
 >
-> Not included in `widgets`, must be added additionally
+> Not included in `widgets`, must be added additionally.
+>
+> Not intended for 1000s of entries, just a few hundred - depending on used schemas & plugins
 
 Special `Table` component for complex, always validated, lists. Using custom widgets without labels. Hidden rows from pagination are still validated, using `isVirtual` prop.
 
-**Supports additional keywords:**
+**Supports extra keywords:**
 
 - `view`
     - `view.hideTitle` when `true` it does not show the table title
     - `view.hideItemsTitle` when `true` doesn't display titles of nested object widgets inside the table head
     - `view.btnSize`
     - `view.dense`
+    - `view.rowsPerPage`, an array on numbers to specify the possible values for how many rows are visible
+    - `view.rowsShowAll`, when `true` allows displaying all rows
 - `readOnly`
 - `sortOrder`: `string[]`, only for `object` types, relative key of the properties to render in that order
 
@@ -42,10 +46,11 @@ Special `Table` component for complex, always validated, lists. Using custom wid
 import {widgets} from '@ui-schema/ds-material';
 import {Table} from '@ui-schema/ds-material/Widgets/Table';
 import {NumberRendererCell, StringRendererCell, TextRendererCell} from '@ui-schema/ds-material/Widgets/TextFieldCell';
+import {BoolRenderer} from '@ui-schema/ds-material/Widgets/OptionsBoolean';
 
 const CustomTable = ({widgets, ...props}) => {
 
-    // dynamic overwrite for all widgets, which need an special TableCell formatting
+    // dynamic overwrite for all widgets, which need a special TableCell formatting
     // you can also only enable specific widgets here
     const customWidgets = React.useMemo(() => ({
         ...widgets,
@@ -54,6 +59,7 @@ const CustomTable = ({widgets, ...props}) => {
             string: StringRendererCell,
             number: NumberRendererCell,
             integer: NumberRendererCell,
+            boolean: BoolRenderer,
         },
         custom: {
             ...widgets.custom,
@@ -82,10 +88,14 @@ Currently included cell components are based on the `TextField` components and s
 > todo: more code sharing through utils
 
 - `TextRendererCell` supports multi-line text
-    - extra keywords:
+    - **extra keywords:**
         - `view`
             - `rows` minimum rows visible
             - `rowsMax` maximum rows visible
             - if both are set, the `textarea` grows until `rowsMax` is reached
 - `NumberRendererCell` supports `number`, `integer`
+    - automatically aligns the content `right`, when not specified, and hides the number up/down in firefox
 - `StringRendererCell` base component used by both others and for `string`
+    - **extra keywords:**
+        - `view`
+            - `align` to control the `textAlign` in the table cell

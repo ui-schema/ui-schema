@@ -1,13 +1,21 @@
 import React from 'react';
 import {ObjectRenderer} from '@ui-schema/ui-schema/ObjectRenderer';
 import {VirtualWidgetRenderer} from '@ui-schema/ui-schema/WidgetRenderer/VirtualWidgetRenderer';
+import {useImmutable} from '@ui-schema/ui-schema/Utils';
 
 const NoWidget = ({scope, matching}) => <>missing-{scope}-{matching}</>;
 
 export const WidgetRenderer = ({
-                                   value,
+                                   // we do not want `value`/`internalValue` to be passed to non-scalar widgets for performance reasons
+                                   value, internalValue,
                                    WidgetOverride,
-                                   // we do not want `requiredList` to be passed to the final widget
+                                   errors,
+                                   onErrors,
+                                   // todo: concept in validation
+                                   // we do not want `parentSchema` to be passed to the final widget for performance reasons
+                                   // eslint-disable-next-line no-unused-vars
+                                   //parentSchema,
+                                   // we do not want `requiredList` to be passed to the final widget for performance reasons
                                    // eslint-disable-next-line no-unused-vars
                                    requiredList,
                                    // `props` contains all props accumulated in the PluginStack, UIRootRenderer, UIGeneratorNested etc.
@@ -16,6 +24,9 @@ export const WidgetRenderer = ({
     const {schema, widgets, isVirtual} = props;
     const type = schema.get('type');
     const widget_name = schema.get('widget');
+    const currentErrors = useImmutable(errors)
+
+    React.useEffect(() => onErrors && onErrors(currentErrors), [onErrors, currentErrors])
 
     // getting the to-render component based on if it finds a custom object-widget or a widget extending native-types
     let Widget = null;
@@ -44,5 +55,12 @@ export const WidgetRenderer = ({
         }
     }
 
-    return Widget ? <Widget {...props} value={!isVirtual && (type === 'array' || type === 'object') ? undefined : value}/> : null;
+    const extractValue = !isVirtual && (type === 'array' || type === 'object')
+    return Widget ?
+        <Widget
+            {...props}
+            value={extractValue ? undefined : value}
+            internalValue={extractValue ? undefined : internalValue}
+            errors={currentErrors}
+        /> : null;
 };

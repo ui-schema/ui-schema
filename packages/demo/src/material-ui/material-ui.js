@@ -23,13 +23,15 @@ import {useDummy} from '../component/MainDummy';
 import {UIApiProvider} from '@ui-schema/ui-schema/UIApi/UIApi';
 import {ReferencingNetworkHandler} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
 import {storeUpdater} from '@ui-schema/ui-schema/UIStore/storeUpdater';
-import {schemaDemoTable, schemaDemoTableAdvanced, schemaDemoTableMap} from '../schemas/demoTable';
+import {schemaDemoTable, schemaDemoTableAdvanced, schemaDemoTableMap, schemaDemoTableMapBig} from '../schemas/demoTable';
 import {Table} from '@ui-schema/ds-material/Widgets/Table';
 import {NumberRendererCell, StringRendererCell, TextRendererCell} from '@ui-schema/ds-material/Widgets/TextFieldCell';
 import {TableAdvanced} from '@ui-schema/ds-material/Widgets/TableAdvanced/TableAdvanced';
 import {List, OrderedMap} from 'immutable';
 import {UIProvider} from '@ui-schema/ui-schema/UIGenerator/UIGenerator';
 import {PluginStack} from '@ui-schema/ui-schema/PluginStack/PluginStack';
+import {applyPluginStack} from '@ui-schema/ui-schema/applyPluginStack';
+import {StringRenderer} from '@ui-schema/ds-material/Widgets/TextField';
 
 const customWidgets = {...widgets}
 const pluginStack = [...customWidgets.pluginStack]
@@ -157,6 +159,14 @@ const Main = ({classes = {}}) => {
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer
+                id={'schemaDemoTableMapBig'} schema={schemaDemoTableMapBig}
+                open
+                toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
+                stylePaper={{background: 'transparent'}} variant={'outlined'}
+            />
+        </Grid>
+        <Grid item xs={12}>
+            <DummyRenderer
                 id={'schemaDemoTableAdvanced'} schema={schemaDemoTableAdvanced}
                 open
                 toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
@@ -260,6 +270,8 @@ const freeFormSchema = createOrderedMap({
 
 const storeKeys = List()
 
+const WidgetTextField = applyPluginStack(StringRenderer)
+
 const FreeFormEditor = () => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
@@ -278,14 +290,15 @@ const FreeFormEditor = () => {
             schema={freeFormSchema}
         >
             <Grid container dir={'columns'} spacing={4}>
-                <PluginStack
-                    showValidity={showValidity}
+                <WidgetTextField
+                    level={1}
                     storeKeys={storeKeys.push('name')}
                     schema={freeFormSchema.get('name')}
                     parentSchema={freeFormSchema}
-                    level={1}
-                    readOnly={false}
-                    // noGrid={false} (as grid-item is included in `PluginStack`)
+
+                    // using `applyPluginStack`, this free-form widget is fully typed
+                    // with the actual props of the widget component
+                    multiline={false}
                 />
                 <PluginStack
                     showValidity={showValidity}

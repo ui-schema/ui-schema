@@ -17,6 +17,9 @@ export const schemaDemoTable = createOrderedMap({
                 type: 'integer',
                 title: 'ID',
                 //hidden: true,
+                view: {
+                    align: 'center',
+                },
             },
             {
                 type: 'string',
@@ -29,7 +32,13 @@ export const schemaDemoTable = createOrderedMap({
             {
                 type: 'number',
                 title: 'Revenue',
+                default: 0,
                 multipleOf: 0.1,
+            },
+            {
+                type: 'boolean',
+                title: 'Finished',
+                default: true,
             },
         ],
     },
@@ -48,6 +57,7 @@ export const schemaDemoTableMap = createOrderedMap({
             'date',
             'name',
             'revenue',
+            'finished',
         ],
         properties: {
             name: {
@@ -71,6 +81,11 @@ export const schemaDemoTableMap = createOrderedMap({
                 type: 'number',
                 title: 'Revenue',
                 multipleOf: 0.1,
+            },
+            finished: {
+                type: 'boolean',
+                title: 'Finished',
+                default: true,
             },
         },
     },
@@ -121,6 +136,7 @@ export const schemaDemoTableAdvanced = createOrderedMap({
             view: {
                 dense: true,
                 hideTitle: true,
+                rowsShowAll: true,
                 //hideItemsTitle: true,
             },
             items: {
@@ -200,6 +216,275 @@ export const schemaDemoTableAdvanced = createOrderedMap({
                     },
                 ],
             },
+        },
+    },
+});
+
+// this schema comes from mikepan-ovoenergy, no license supplied
+// https://github.com/ui-schema/ui-schema/issues/115
+export const schemaDemoTableMapBig = createOrderedMap({
+    '$schema': 'http://json-schema.org/draft-06/schema#',
+    '$ref': '#/definitions/Welcome7',
+    'definitions': {
+        'Welcome7': {
+            'type': 'object',
+            'widget': 'Accordions',
+            'additionalProperties': false,
+            'onClosedHidden': true,
+            //'defaultExpanded': '',
+            'properties': {
+                'metadata': {
+                    '$ref': '#/definitions/Welcome7Metadata',
+                },
+                'pages': {
+                    'type': 'array',
+                    'widget': 'Table',
+                    'view': {
+                        'dense': true,
+                    },
+                    'items': {
+                        '$ref': '#/definitions/Page',
+                    },
+                },
+                'questions': {
+                    'type': 'array',
+                    'widget': 'Table',
+                    'items': {
+                        '$ref': '#/definitions/Question',
+                    },
+                },
+                'edges': {
+                    'type': 'array',
+                    'widget': 'Table',
+                    'items': {
+                        '$ref': '#/definitions/Edge',
+                    },
+                },
+                'conditions': {
+                    'type': 'array',
+                    'widget': 'Table',
+                    'items': {
+                        '$ref': '#/definitions/Condition',
+                    },
+                },
+                'fields': {
+                    'type': 'array',
+                    'widget': 'Table',
+                    'items': {
+                        '$ref': '#/definitions/Field',
+                    },
+                },
+                'options': {
+                    'type': 'array',
+                    'widget': 'Table',
+                    'maxItems': 4,
+                    'items': {
+                        '$ref': '#/definitions/Option',
+                    },
+                },
+            },
+            'required': [
+                'conditions',
+                'edges',
+                'fields',
+                'metadata',
+                'options',
+                'pages',
+                'questions',
+            ],
+            'title': 'Welcome7',
+        },
+        'Condition': {
+            'type': 'object',
+            'additionalProperties': false,
+            'properties': {
+                'id': {
+                    'type': 'string',
+                },
+                'linkedQuestion': {
+                    'type': 'string',
+                },
+                'value': {
+                    '$ref': '#/definitions/Value',
+                },
+                'metadata': {
+                    '$ref': '#/definitions/ConditionMetadata',
+                },
+            },
+            'required': ['id'],
+            'title': 'Condition',
+        },
+        'ConditionMetadata': {
+            'type': 'object',
+            'additionalProperties': false,
+            'properties': {
+                'paymentType': {
+                    'type': 'string',
+                },
+            },
+            'required': ['paymentType'],
+            'title': 'ConditionMetadata',
+        },
+        'Edge': {
+            'type': 'object',
+            'additionalProperties': false,
+            'properties': {
+                'id': {
+                    'type': 'string',
+                },
+                'child': {
+                    'type': 'string',
+                },
+                'condition': {
+                    'type': 'array',
+                    'widget': 'SimpleList',
+                    'items': {
+                        'type': 'string',
+                    },
+                    /*'anyOf': [
+                        {
+                            'type': 'array',
+                            'widget': 'SimpleList',
+                            'items': {
+                                'type': 'string',
+                            },
+                        },
+                        {
+                            'type': 'null',
+                        },
+                    ],*/
+                },
+            },
+            'required': ['child', 'condition', 'id'],
+            'title': 'Edge',
+        },
+        'Field': {
+            'type': 'object',
+            'additionalProperties': false,
+            'properties': {
+                'id': {
+                    'type': 'string',
+                },
+                'type': {
+                    '$ref': '#/definitions/Type',
+                },
+                'options': {
+                    'type': 'string',
+                },
+            },
+            'required': ['id', 'type'],
+            'title': 'Field',
+        },
+        'Welcome7Metadata': {
+            'type': 'object',
+            'additionalProperties': false,
+            'properties': {
+                'version': {
+                    'type': 'string',
+                },
+                'paymentType': {
+                    'type': 'string',
+                },
+            },
+            'required': ['paymentType', 'version'],
+            'title': 'Welcome7Metadata',
+        },
+        'Option': {
+            'type': 'object',
+            'additionalProperties': false,
+            'properties': {
+                'name': {
+                    'type': 'string',
+                },
+                'choices': {
+                    'type': 'array',
+                    'widget': 'SimpleList',
+                    'items': {
+                        '$ref': '#/definitions/Choice',
+                    },
+                },
+            },
+            'required': ['choices', 'name'],
+            'title': 'Option',
+        },
+        'Choice': {
+            'type': 'object',
+            'additionalProperties': false,
+            'properties': {
+                'name': {
+                    'type': 'string',
+                },
+            },
+            'required': ['name'],
+            'title': 'Choice',
+        },
+        'Page': {
+            'type': 'object',
+            'additionalProperties': false,
+            'properties': {
+                'id': {
+                    'type': 'string',
+                },
+                'questions': {
+                    'type': 'array',
+                    'items': {
+                        'type': 'string',
+                    },
+                },
+                'description': {
+                    'type': 'string',
+                },
+                'dependsOn': {
+                    'type': 'array',
+                    'items': {
+                        'type': 'string',
+                    },
+                },
+                'abort': {
+                    'type': 'string',
+                },
+            },
+            'required': ['dependsOn', 'description', 'id', 'questions'],
+            'title': 'Page',
+        },
+        'Question': {
+            'type': 'object',
+            'additionalProperties': false,
+            'properties': {
+                'id': {
+                    'type': 'string',
+                },
+                'edges': {
+                    'type': 'array',
+                    'items': {
+                        'type': 'string',
+                    },
+                },
+                'description': {
+                    'type': 'string',
+                },
+                'field': {
+                    'type': 'string',
+                },
+            },
+            'required': ['description', 'edges', 'field', 'id'],
+            'title': 'Question',
+        },
+        'Value': {
+            'anyOf': [
+                {
+                    'type': 'boolean',
+                },
+                {
+                    'type': 'string',
+                },
+            ],
+            'title': 'Value',
+        },
+        'Type': {
+            'type': 'string',
+            'enum': ['text', 'number', 'boolean', 'signature', 'photo', 'option'],
+            'title': 'Type',
         },
     },
 });

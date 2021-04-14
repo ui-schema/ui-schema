@@ -132,6 +132,8 @@ const Demo = () => {
 
 The internal function to update the store, implements the `deleteOnEmpty` logic and handling the execution of `updater` and the updating of the store with the results.
 
+Sets initial `OrderedMap` or `List` when changing nested elements - but the parent doesn't exist, thus forcing `object` to be `OrderedMap` or `List`, needed for comfortable `onChange` inside e.g. `GenericList` and drag 'n drops.
+
 Returns a function which must receive the current store, it will return the updated store.
 
 See example above on how to use it, additionally you can intercept the prevStore and nextStore through wrapping the function in logic.
@@ -185,7 +187,7 @@ const Comp = withUIMeta(
 
 ### UIGenerator
 
-Main entry point for every new UI Schema generator,  starts the whole schema and renders the RootRenderer with `UIRootRenderer`.
+Main entry point for every new UI Schema generator, starts the whole schema and renders the RootRenderer with `UIRootRenderer`, **checkout the [quick-start](/quick-start)** for a full example!
 
 ### UIGeneratorNested
 
@@ -384,6 +386,88 @@ export { UnitCalcDummy }
 
 > see the more in-depth docs about the [widget composition concept](/docs/widgets-composition)
 
+### applyPluginStack
+
+Function to build autowiring components, which are fully typed with the actual widget properties, useful for full custom UIs or complex widgets.
+
+The created component applies the typescript definitions of the actual widget, but omits those injected by `PluginStack`.
+
+> todo: currently omits properties (also the `PluginStack`), which are possible because of the used plugins,
+> this should be optimized to automatically suggest the props of currently applied `widgets.pluginStack` (when possible)
+
+```typescript jsx
+import React from 'react'
+import {List} from 'immutable'
+import Grid from '@material-ui/core/Grid'
+import {createOrderedMap} from '@ui-schema/ui-schema/Utils/createMap'
+import {WidgetProps} from '@ui-schema/ui-schema/Widget'
+import {StringRenderer} from '@ui-schema/ds-material/Widgets/TextField'
+import {applyPluginStack} from '@ui-schema/ui-schema/applyPluginStack'
+
+// using `applyPluginStack`, this widget is fully typed
+// with the actual props of the widget component `StringRenderer`
+const WidgetTextField = applyPluginStack(StringRenderer)
+
+// custom group component, needed to also validate the root level
+// this one works for objects
+let CustomGroup: React.ComponentType<WidgetProps> = (props) => {
+    const {
+        schema, storeKeys, level,
+        // errors for the root/current schema level
+        errors, valid,
+    } = props
+
+    return <Grid container dir={'columns'} spacing={4}>
+        <WidgetTextField
+            level={level + 1}
+            storeKeys={storeKeys.push('name')}
+            schema={schema.get('name')}
+            parentSchema={schema}
+
+            // this property comes from `StringRenderer`:
+            multiline={false}
+        />
+    </Grid>
+}
+// wiring this component, to use for `type: object` schema levels
+CustomGroup = applyPluginStack(CustomGroup)
+
+const freeFormSchema = createOrderedMap({
+    type: 'object',
+    name: {
+        type: 'string',
+    },
+})
+
+const rootStoreKeys = List()
+const EditorStub = () => {
+    const [store, setStore] = React.useState(() => createStore(OrderedMap()))
+
+    const onChange = React.useCallback((...action) => setStore(storeUpdater(...action)), [setStore])
+
+    // use the `UIProvider` to skip the rendering of `RootRenderer`
+    return <UIProvider
+        store={store}
+        onChange={onChange}
+        schema={freeFormSchema}
+        /* widgets={} showValidity={} t={} */
+    >
+        {/*
+          * this could be in any component below `UIProvider`,
+          * thus you can nest it in own HTML, which can be in `PureComponents`:
+          * using `memo`, they don't re-render even when `store` has changed
+          */}
+        <CustomGroup
+            level={0}
+            storeKeys={rootStoreKeys}
+            schema={freeFormSchema}
+            parentSchema={freeFormSchema}
+        />
+    </UIProvider>
+}
+```
+
+
 ### NextPluginRenderer
 
 Used for plugin rendering, see: [creating plugins](/docs/plugins#creating-plugins).
@@ -400,9 +484,12 @@ Finds the actual widget in the mapping by the then defined schema, renders the w
 
 If no widget is fund, renders nothing / `null`, but the plugins may have already rendered something! (like the grid)
 
+Executes `onErrors` for that schema level, when `errors` have changed and `onErrors` was specified.
+
 **Handles** removing props, before rendering the actual widget component. For performance reasons removes these `props`:
 
 - `value` is removed for `schema.type` `array` or `object`
+- `internalValue` is removed for `schema.type` `array` or `object`
 - `requiredList` is removed for every type
 
 ## Utils

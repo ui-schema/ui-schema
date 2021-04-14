@@ -1,5 +1,5 @@
 import React from 'react'
-import { memo, OwnKey, PluginStack, StoreKeys, WidgetProps } from '@ui-schema/ui-schema'
+import { OwnKey, PluginStack, WidgetProps } from '@ui-schema/ui-schema'
 import { List, OrderedMap, Map } from 'immutable'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
@@ -22,7 +22,7 @@ const useTableRowStyle = makeStyles<Theme, { dense: boolean }>((theme) => ({
     },
 }))
 
-let TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps> = (
+export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps> = (
     {
         parentSchema, schema,
         showValidity, widgets,
@@ -71,6 +71,7 @@ let TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps> = (
                 <TableCell
                     key={j}
                     className={classes.cell}
+                    align={item.get('type') === 'boolean' ? 'center' : undefined}
                 >
                     {item.get('type') === 'object' ?
                         <GroupRenderer level={0} schema={item} className={classes.groupRenderer}>
@@ -112,7 +113,7 @@ let TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps> = (
 
         {!readOnly ? <TableCell className={classes.cell}>
             <TableRowActionDelete
-                storeKeys={storeKeys.slice(storeKeys.size - 1, 1) as StoreKeys}
+                storeKeys={storeKeys}
                 onChange={onChange}
                 setPage={setPage}
                 index={ownKey as number}
@@ -122,6 +123,3 @@ let TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps> = (
         </TableCell> : null}
     </TableRow>
 }
-TableRowRenderer = memo(TableRowRenderer)
-
-export { TableRowRenderer }

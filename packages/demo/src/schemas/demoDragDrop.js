@@ -73,8 +73,8 @@ const blocks = {
                 type: 'string',
             },
             content: {
-                type: 'object',
-                widget: 'EditorJS',
+                type: 'array',
+                widget: 'RichContent',
             },
         },
         required: ['$bid', '$block'],
@@ -141,7 +141,7 @@ export const schemaDragDrop = createOrderedMap({
     properties: {
         main: {
             type: 'array',
-            //widget: 'EditorJS',
+            //widget: 'RichContent',
         },
         suggestions: {
             type: 'array',

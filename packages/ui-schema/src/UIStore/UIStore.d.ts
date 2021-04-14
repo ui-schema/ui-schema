@@ -8,14 +8,14 @@ import { updaterFn, updateScope } from './storeUpdater'
 export type Values<V> = List<V> | string | number | boolean | Map<string, V> | OrderedMap<string, V>
 export type ValuesJS = any[] | string | number | boolean | Object
 
-export interface UIStoreState<D> {
-    values: Values<D>
+export interface UIStoreState<D = any> {
+    values: D
     internals: Map<string | number, any> | List<any>
     validity: Map<string | number, any>
     // returns the values in `values` as pure JS, even when saved as `Map` or `List`
     valuesToJS: () => ValuesJS
     // todo: correct typing `getValues` return value
-    getValues: () => Values<D>
+    getValues: () => D
     getInternals: () => any
     getValidity: () => Map<string | number, any>
 }

@@ -1,14 +1,18 @@
 # Widgets Composition
 
-This page contains more in-depth docs and thoughts about the [widgets](/docs/widgets) composition concept, enabling near endless widget & pugins customization possibilities powered by `@ui-schema/ui-schema`.
+This page contains more in-depth docs and thoughts about the [widgets](/docs/widgets) composition concept and the core concepts which enable near endless widget & pugins customization possibilities, powered by `@ui-schema/ui-schema`.
 
 ## Deep Dive Concepts
 
-Built with the ReactJS native [render flow](https://reactjs.org/docs/state-and-lifecycle.html#the-data-flows-down) and [hoisted states](https://reactjs.org/docs/lifting-state-up.html#lifting-state-up) as foundation, leaning a few principles from [`redux`](https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow) / [`flux`](https://facebook.github.io/flux/docs/in-depth-overview), rendering [atomic conditional](https://reactjs.org/docs/conditional-rendering.html) and [pure](https://medium.com/technofunnel/working-with-react-pure-components-166ded26ae48) wrapper components around single schema levels.
+"Basic concepts" to get a better understanding of what's going on in the core:
 
-A lot of [component composition](https://www.robinwieruch.de/react-component-composition) around the [`widgets` binding](/docs/widgets#create-design-system-binding) to get / specify the needed custom react components for each usage, thus nearly no HTML/output inside the core.
+Built with the ReactJS native [render flow](https://reactjs.org/docs/state-and-lifecycle.html#the-data-flows-down) and [hoisted states](https://reactjs.org/docs/lifting-state-up.html#lifting-state-up) as foundation, leaning a few principles from [`redux`](https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow) / [`flux`](https://facebook.github.io/flux/docs/in-depth-overview).
 
-Custom [`React.Context` / Providers](https://reactjs.org/docs/context.html) are used for handling store updates and extracting with special [HOCs](https://reactjs.org/docs/higher-order-components.html) (connecting `store` to `props`).
+Rendering [atomic conditional](https://reactjs.org/docs/conditional-rendering.html) and [pure](https://medium.com/technofunnel/working-with-react-pure-components-166ded26ae48) wrapper components around single schema levels.
+
+A lot of [component composition](https://www.robinwieruch.de/react-component-composition) by the `PluginStack`, around `WidgetOverride` or/and the [`widgets` binding](/docs/widgets#create-design-system-binding) to get / specify the needed custom react components for each usage, thus nearly no HTML/output inside the core.
+
+Custom [`React.Context` / Providers](https://reactjs.org/docs/context.html) are used for handling store updates and extracting with special [HOCs](https://reactjs.org/docs/higher-order-components.html) (connecting `store` to `props`), but enabling `store`/`state` management by typical stuff like `React.useState`, `React.useReducer` or redux reducers.
 
 Using an additional [props plugins system](/docs/plugins#validation-plugins) for a shallower component tree of validators.
 
@@ -30,15 +34,15 @@ The AST and plugins are rendered by [`PluginStack`](/docs/core#pluginstack) - in
 
 See [flowchart of @ui-schema/ui-schema](/docs/core#flowchart).
 
-## Overwriting by **Provider**
+## Overriding by **Provider**
 
 > todo
 
-## Overwriting by **props**
+## Overriding by **props**
 
 > todo
 
-## Overwriting by **keywords**
+## Overriding by **keywords**
 
 > todo
 

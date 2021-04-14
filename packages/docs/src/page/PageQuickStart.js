@@ -47,14 +47,14 @@ const PageQuickStart = () => {
     return <>
         <Head
             title={'Quick-Start UI-Schema'}
-            description={'In 6 Steps to a React form which sends the data to an API! Build with JSON-Schema and Material-UI or Bootstrap'}
+            description={'In 6 steps to a React form that sends data to an API! Build with JSON-Schema and Material-UI or Bootstrap'}
         />
         <PageContent maxWidth={'md'}>
             <PageBox style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}}>
                 <Markdown content source={`
 # Quick-Start UI-Schema
 
-In **6 Steps** to a contact form that sends the data to an API if the user entered it correctly.
+In **6 steps** to a contact form that sends data to an API - if the user entered it correctly.
 
 UI-Schema works with JSON-Schema and multiple design-systems, each design-system exports a widget binding that connects to the UI-Schema renderer.
 
@@ -82,6 +82,10 @@ First select the design-system and install ui-schema and dependencies.
 \`\`\`bash
 npm i --save @ui-schema/ui-schema immutable @ui-schema/ds-material @material-ui/core @material-ui/icons
 \`\`\`
+
+> for version constraints [check the ds-material/package.json](https://github.com/ui-schema/ui-schema/blob/master/packages/ds-material/package.json)
+
+> there's also a [create-react-app demo](https://github.com/ui-schema/demo-cra)
 `}/> :
                             ds === 'bts' ? <Markdown content source={`
 > no priority currently for bootstrap widgets development
@@ -230,6 +234,8 @@ Each \`object\` can have multiple \`properties\`, each can be of a different typ
 Properties defined in \`required\` must be filled out, see what is [invalid for required](/docs/schema#required-keyword).
 
 See [schema docs](/docs/schema) for the keywords of each type.
+
+You want to build UIs with a lot of custom widgets or positioning? Then checkout [applyPluginStack](/docs/core#applypluginstack) for auto wiring custom components.
 `}/>
                     </Grid>
                     <Grid item xs={12}>

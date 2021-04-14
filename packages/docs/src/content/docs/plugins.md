@@ -35,7 +35,9 @@ import { PluginProps, PluginType } from "@ui-schema/ui-schema/PluginStack/Plugin
 import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators"
 ```
 
-Validation plugins also work with the schema, but are only used for validation of the values/schema and can't change the React render-flow.
+Validation plugins also work with the schema, but are only used for validation of the values/schema and can't change the React render-flow, but can change any `props`.
+
+This plugin system can also be used to add other, non-React dependant, plugins that work around `props`, [more in that direction in #130](https://github.com/ui-schema/ui-schema/issues/130)
 
 | Plugin               | Package              | Validity Fn.         | Handles              | Added Props |
 | :---                 | :---                 | :---                 | :---                 | :---        |

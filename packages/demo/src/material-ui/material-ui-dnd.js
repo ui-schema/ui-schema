@@ -25,28 +25,13 @@ import {DndProvider} from 'react-dnd'
 import {makeDragDropContext} from '@ui-schema/material-dnd/DragDropProvider/makeDragDropContext';
 import {DragDropProvider} from '@ui-schema/material-dnd/DragDropProvider/DragDropProvider';
 import {BlockPanel} from '@ui-schema/material-dnd/DraggableBlock/BlockPanel';
-import {createStore, storeUpdater, UIApiProvider} from '@ui-schema/ui-schema';
+import {createOrderedMap, createStore, storeUpdater, UIApiProvider} from '@ui-schema/ui-schema';
 import {List} from 'immutable';
 import {DroppableRootMultiple} from '@ui-schema/material-dnd/Widgets/DroppableRootMultiple';
 import {DroppableRootSingle} from '@ui-schema/material-dnd/Widgets/DroppableRootSingle';
 import {DroppableRootContent} from '@ui-schema/material-dnd/DroppableRoot/DroppableRootContent';
 import {DroppablePanel} from '@ui-schema/material-dnd/Widgets/DroppablePanel';
-import {EditorJSWidget} from '@ui-schema/material-editorjs/Widgets/EditorJSWidget';
-import Paragraph from '@editorjs/paragraph'
-import CheckList from '@editorjs/checklist'
-import Header from '@editorjs/header'
-
-const tools = {
-    paragraph: Paragraph,
-    checkList: CheckList,
-    header: Header,
-};
-const EditorJSRichContent = (props) => {
-    return <EditorJSWidget
-        {...props}
-        tools={tools}
-    />
-}
+import {RichContent, RichContentInline, RichContentPane} from '@ui-schema/material-slate';
 
 const customWidgets = {...widgets};
 customWidgets.DraggableBlock = BlockPanel
@@ -56,7 +41,9 @@ customWidgets.custom = {
     DroppableRootMultiple: DroppableRootMultiple,
     DroppableRootSingle: DroppableRootSingle,
     DroppablePanel: DroppablePanel,
-    EditorJS: EditorJSRichContent,
+    RichContentPane: RichContentPane,
+    RichContent: RichContent,
+    RichContentInline: RichContentInline,
 };
 
 const touchBackendOpts = {
@@ -68,7 +55,51 @@ const loadSchema = (url, versions) => {
     return fetch(url).then(r => r.json())
 }
 
-const initialStore = undefined
+const initialStore = createStore(createOrderedMap({
+    main: [
+        {
+            '$bid': '_bjugvdhrqn9',
+            '$block': 'rich_content',
+            'content': [
+                {
+                    'type': 'h1',
+                    'children': [
+                        {
+                            'text': 'Hi!',
+                        },
+                    ],
+                },
+                {
+                    'type': 'p',
+                    'children': [
+                        {
+                            'text': 'Lorem Ipsum dolor sit amet.',
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            '$bid': '_nt5y5qws6p',
+            '$block': 'text',
+            'text': 'Adepisci ut sut mot.',
+        },
+        {
+            '$bid': '_q6s1lbxhs78',
+            '$block': 'teasers',
+            'list': [
+                {
+                    'headline': '1234',
+                    'content': ' sgdffdg fdg sdf',
+                },
+                {
+                    'headline': '56789',
+                    'content': 'fgsd vnjghj hg',
+                },
+            ],
+        },
+    ],
+}))
 
 const schema = schemaDragDrop
 

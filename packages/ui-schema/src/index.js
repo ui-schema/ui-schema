@@ -1,3 +1,4 @@
+export * from './applyPluginStack'
 export * from './JSONPointer'
 export * from './ObjectRenderer'
 export * from './Plugins'

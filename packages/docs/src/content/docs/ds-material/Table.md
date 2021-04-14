@@ -13,11 +13,12 @@ import { TableHeader } from '@ui-schema/ds-material/BaseComponents/Table/TableHe
 import { TableRowRenderer } from '@ui-schema/ds-material/BaseComponents/Table/TableRowRenderer'
 
 const TableHeaderMemo = memo(TableHeader)
+const TableRowRendererMemo = memo(TableRowRenderer)
 
 export const Table: React.ComponentType<WidgetProps> = (props) => {
     return <TableRenderer
         {...props}
-        TableRowRenderer={TableRowRenderer}
+        TableRowRenderer={TableRowRendererMemo}
         TableFooter={TableFooter}
         TableHeader={TableHeaderMemo}
     />

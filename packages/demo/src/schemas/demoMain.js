@@ -106,7 +106,7 @@ const schemaDemoMain = {
         qty: {
             type: 'number',
             minimum: 2,
-            default: '23dijk',
+            //default: '23dijk',
             maximum: 10,
             tt: 'lower',
             view: {

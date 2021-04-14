@@ -12,7 +12,7 @@ export const DateTimeBase = ({
                                  storeKeys, ownKey, value, onChange, schema,
                                  showValidity, valid, /*errors,*/
                                  required,
-                                 additionalProps, dateFormat, dateFormatData,
+                                 additionalProps = {}, dateFormat, dateFormatData,
                                  Component, keyboard,
                              }) => {
     const date = useUtils();

@@ -8,7 +8,7 @@ export const Code = (props) => {
     const {valid, showValidity, ownKey, schema, required, errors} = props
     const format = schema.get('format')
 
-    if(process.env.NODE_ENV === 'development' && typeof format === 'string') {
+    if(process.env.NODE_ENV === 'development' && typeof format !== 'string') {
         console.log('Code schema without string format')
     }
 

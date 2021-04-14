@@ -28,9 +28,16 @@ const widgets = {
 };
 ```
 
-Components:
+**Supports extra keywords:**
+
+- `view`
+    - `hideTitle` when `true` doesn't show any title
+- `readOnly`
+
+**Components:**
 
 - `BoolRenderer` single [mui switch component](https://material-ui.com/components/switches#switches-with-formcontrollabel)
+    - supports usage as cell for a [Table widget](/docs/widgets/Table)
 
 ### Bootstrap
 

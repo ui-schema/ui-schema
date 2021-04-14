@@ -4,7 +4,7 @@ import {NextPluginRenderer} from '../../PluginStack';
 import {mergeSchema} from '../../Utils/mergeSchema';
 import {handleIfElseThen} from '../ConditionalHandler';
 
-const CombiningRenderer = (props) => {
+export const CombiningHandler = (props) => {
     let {schema, value} = props;
 
     const allOf = schema.get('allOf');
@@ -31,14 +31,4 @@ const CombiningRenderer = (props) => {
     }
 
     return <NextPluginRenderer {...props} schema={schema}/>;
-};
-
-export const CombiningHandler = (props) => {
-    let {schema} = props;
-
-    const hasAllOf = schema.get('allOf');
-
-    return hasAllOf ?
-        <CombiningRenderer {...props}/> :
-        <NextPluginRenderer {...props}/>
 };

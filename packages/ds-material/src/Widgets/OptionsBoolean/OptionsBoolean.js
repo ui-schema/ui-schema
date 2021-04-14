@@ -16,34 +16,42 @@ const switchStyle = makeStyles(theme => ({
     },
 }));
 
-const BoolRenderer = ({ownKey, value, onChange, schema, storeKeys, showValidity, valid, required, errors}) => {
+export const BoolRenderer = (
+    {
+        ownKey, value, onChange, schema, storeKeys, showValidity, valid, required, errors,
+        labelledBy = undefined,
+    },
+) => {
     const currentVal = Boolean(value);
 
     const classes = switchStyle({error: !valid && showValidity});
+
+    const control = <Switch
+        classes={classes}
+        required={required}
+        checked={currentVal}
+        disabled={schema.get('readOnly')}
+        inputProps={{
+            'aria-labelledby': labelledBy,
+        }}
+        onChange={() =>
+            onChange(
+                storeKeys, ['value'],
+                ({value: storeValue}) => ({value: !storeValue}),
+                schema.get('deleteOnEmpty') || required,
+                schema.get('type'),
+            )
+        }
+    />
+
     return <>
-        <FormControlLabel
-            disabled={schema.get('readOnly')}
-            control={
-                <Switch
-                    classes={classes}
-                    required={required}
-                    checked={currentVal}
-                    disabled={schema.get('readOnly')}
-                    onChange={() =>
-                        onChange(
-                            storeKeys, ['value'],
-                            ({value: storeValue}) => ({value: !storeValue}),
-                            schema.get('deleteOnEmpty') || required,
-                            schema.get('type'),
-                        )
-                    }
-                />
-            }
-            label={<><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>{required ? ' *' : ''}</>}
-        />
+        {schema.getIn(['view', 'hideTitle']) ?
+            control :
+            <FormControlLabel
+                disabled={schema.get('readOnly')}
+                control={control}
+                label={<><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>{required ? ' *' : ''}</>}
+            />}
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </>
-        ;
 };
-
-export {BoolRenderer};

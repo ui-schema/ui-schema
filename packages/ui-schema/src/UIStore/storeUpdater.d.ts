@@ -16,4 +16,5 @@ export function storeUpdater(
     updater: updaterFn,
     deleteOnEmpty?: boolean,
     type?: string,
+    action?: { [key: string]: any }
 ): (store: UIStoreType) => UIStoreType

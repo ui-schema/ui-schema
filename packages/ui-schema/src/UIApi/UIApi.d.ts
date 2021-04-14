@@ -24,8 +24,11 @@ export type UIApiContext = React.ContextType<UIApiContextType>
 
 export function useUIApi(): UIApiContextType
 
+// todo: rename `loadSchemaUIApi`, currently the ReferencingNetworkHandler also publishes a type `loadSchema`
+export type loadSchemaUIApi = (refUrl: string, version?: string[]) => void
+
 export interface UIApiProviderProps {
-    loadSchema: (refUrl: string) => void
+    loadSchema: loadSchemaUIApi
     noCache?: boolean
 }
 

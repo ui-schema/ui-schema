@@ -16,7 +16,8 @@ export const getNewBlockFromId = (id: string): OrderedMap<'$bid' | '$block', str
 }) as OrderedMap<'$bid' | '$block', string>
 
 export const handleMoveUp = (onChange: typeof onChangeHandler, storeKeys: StoreKeys): void => {
-    if (((storeKeys.last() as number) - 1) < 0) {
+    const ownKey = storeKeys.last() as number
+    if ((ownKey - 1) < 0) {
         return
     }
     onChange(
@@ -24,8 +25,8 @@ export const handleMoveUp = (onChange: typeof onChangeHandler, storeKeys: StoreK
         ['value', 'internal'],
         ({value = List(), internal = List()}) => {
             return {
-                value: value.splice(storeKeys.last(), 1).splice((storeKeys.last() as number) - 1, 0, value.get(storeKeys.last())),
-                internal: internal.splice(storeKeys.last(), 1).splice((storeKeys.last() as number) - 1, 0, internal.get(storeKeys.last())),
+                value: value.splice(ownKey, 1).splice(ownKey - 1, 0, value.get(ownKey)),
+                internal: internal.splice(ownKey, 1).splice(ownKey - 1, 0, internal.get(ownKey)),
             }
         }
     )
@@ -36,12 +37,19 @@ export const handleMoveDown = (onChange: typeof onChangeHandler, storeKeys: Stor
         storeKeys.splice(storeKeys.size - 1, 1) as StoreKeys,
         ['value', 'internal'],
         ({value = List(), internal = List()}) => {
-            if (((storeKeys.last() as number) + 1) > value.size) {
+            const ownKey = storeKeys.last() as number
+            if ((ownKey + 1) > value.size) {
                 return {value, internal}
             }
+            if ((ownKey + 1) >= internal.size) {
+                // fix "Cannot update within non-data-structure value in path ["values","options",0,"choices",0]: undefined"
+                // - e.g. when rendering DND with existing data where not every item uses `internals`,
+                //   the structures like [data1, data2] vs [internal1] can not be moved with splice
+                internal = internal.set((ownKey + 1), undefined)
+            }
             return {
-                value: value.splice(storeKeys.last(), 1).splice((storeKeys.last() as number) + 1, 0, value.get(storeKeys.last())),
-                internal: internal.splice(storeKeys.last(), 1).splice((storeKeys.last() as number) + 1, 0, internal.get(storeKeys.last())),
+                value: value.splice(ownKey, 1).splice(ownKey + 1, 0, value.get(ownKey)),
+                internal: internal.splice(ownKey, 1).splice(ownKey + 1, 0, internal.get(ownKey)),
             }
         }
     )

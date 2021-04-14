@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ds-bootstrap",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "description": "Bootstrap Binding for UI-Schema",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -36,7 +36,8 @@
     },
     "devDependencies": {
         "@ui-schema/ui-schema": ">=0.2.0-rc.0",
-        "react": "^16.12"
+        "react": "^16.12",
+        "react-dom": "^16.12"
     },
     "dependencies": {
         "react-uid": "^2.2.0"
