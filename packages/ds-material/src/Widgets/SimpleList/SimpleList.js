@@ -7,7 +7,7 @@ import Add from '@material-ui/icons/Add';
 import Remove from '@material-ui/icons/Remove';
 import {TransTitle, extractValue, memo, PluginStack} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
-import {List} from 'immutable';
+import {List, OrderedMap} from 'immutable';
 import {AccessTooltipIcon} from '../../Component/Tooltip/Tooltip';
 import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
 
@@ -37,7 +37,9 @@ const SimpleList = extractValue(memo(({
                         onClick={() => {
                             onChange(
                                 storeKeys, ['value'],
-                                ({value: val}) => ({value: val.splice(i, 1)}),
+                                ({value: val}) => ({
+                                    value: val.splice(i, 1),
+                                }),
                                 schema.get('deleteOnEmpty') || required,
                                 schema.get('type'),
                             )
@@ -59,7 +61,12 @@ const SimpleList = extractValue(memo(({
                         onChange(
                             storeKeys, ['value'],
                             ({value: val = List()}) => ({
-                                value: schema.get('type') === 'string' ? val.push('') : val.push(undefined),
+                                value:
+                                // todo: support `default` keyword
+                                    schema.getIn(['items', 'type']) === 'string' ? val.push('') :
+                                        schema.getIn(['items', 'type']) === 'array' ? val.push(List()) :
+                                            schema.getIn(['items', 'type']) === 'object' ? val.push(OrderedMap()) :
+                                                val.push(undefined),
                             }),
                             schema.get('deleteOnEmpty') || required,
                             schema.get('type'),

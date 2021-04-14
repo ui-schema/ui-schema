@@ -1,7 +1,7 @@
 import React from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Add from '@material-ui/icons/Add'
-import { memo, Trans } from '@ui-schema/ui-schema'
+import { memo, Trans, WidgetProps } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '../../Component/LocaleHelperText/LocaleHelperText'
 import { List, Map } from 'immutable'
 import { AccessTooltipIcon } from '../../Component/Tooltip/Tooltip'
@@ -11,8 +11,40 @@ import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import { TablePaginationActions } from '@ui-schema/ds-material/BaseComponents/Table/TablePaginationActions'
 import { TableFooterProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
+import { withTable } from '@ui-schema/ds-material/BaseComponents/Table/TableContext'
 
-let TableFooter: React.ComponentType<TableFooterProps> = (
+export interface TableFooterErrorsBaseProps {
+    colSize: number | undefined
+    showValidity: WidgetProps['showValidity']
+    schema: WidgetProps['schema']
+}
+
+export const TableFooterErrorsBase: React.ComponentType<TableFooterErrorsBaseProps & { valid: boolean, errors: WidgetProps['errors'] }> = (
+    {
+        colSize = 0,
+        showValidity,
+        schema,
+        valid, errors,
+    }
+) => {
+    return !valid && showValidity ? <TableRow>
+        <TableCell
+            colSpan={colSize + 1}
+        >
+            <ValidityHelperText
+                /*
+                 * only pass down errors which are not for a specific sub-schema
+                 * todo: check if all needed are passed down
+                 */
+                errors={errors}
+                showValidity={showValidity}
+                schema={schema}
+            />
+        </TableCell>
+    </TableRow> : null
+}
+
+export const TableFooterBase: React.ComponentType<TableFooterProps> = (
     {
         t,
         dense,
@@ -28,9 +60,8 @@ let TableFooter: React.ComponentType<TableFooterProps> = (
         schema,
         btnSize,
         colSize,
-        valid,
         showValidity,
-        errors,
+        rowsPerPage, rowsShowAll,
     }
 ) => {
     return <MuiTableFooter>
@@ -63,7 +94,12 @@ let TableFooter: React.ComponentType<TableFooterProps> = (
             </TableCell>
 
             <TablePagination
-                rowsPerPageOptions={[5, 10, 25, 50, {label: t('pagination.all') as string, value: -1}]}
+                //rowsPerPageOptions={[5, 10, 25, 50, {label: t('pagination.all') as string, value: -1}]}
+                rowsPerPageOptions={
+                    rowsShowAll ?
+                        rowsPerPage.push({label: t('pagination.all') as string, value: -1}).toArray() :
+                        rowsPerPage.toArray()
+                }
                 colSpan={colSize + 1}
                 count={listSize || 0}
                 rowsPerPage={rows}
@@ -83,24 +119,9 @@ let TableFooter: React.ComponentType<TableFooterProps> = (
                 labelDisplayedRows={({from, to, count}) => `${to !== -1 ? (from + '-' + to) : count} ${t('pagination.of') as string} ${count !== -1 ? count : 0}`}
             />
         </TableRow>
-        {!valid && showValidity ? <TableRow>
-            <TableCell
-                colSpan={colSize + 1}
-            >
-                <ValidityHelperText
-                    /*
-                     * only pass down errors which are not for a specific sub-schema
-                     * todo: check if all needed are passed down
-                     */
-                    errors={errors}
-                    showValidity={showValidity}
-                    schema={schema}
-                />
-            </TableCell>
-        </TableRow> : null}
+        <TableFooterErrors colSize={colSize} showValidity={showValidity} schema={schema}/>
     </MuiTableFooter>
 }
+export const TableFooterErrors: React.ComponentType<TableFooterErrorsBaseProps> = withTable<TableFooterErrorsBaseProps>(memo(TableFooterErrorsBase))
 
-TableFooter = memo(TableFooter)
-
-export { TableFooter }
+export const TableFooter: React.ComponentType<TableFooterProps> = memo(TableFooterBase)

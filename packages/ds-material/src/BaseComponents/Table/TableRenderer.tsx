@@ -1,34 +1,35 @@
 import React from 'react'
 import { useUID } from 'react-uid'
-import { TransTitle, extractValue, memo, PluginStack, WidgetProps, WithValue, useImmutable, StoreSchemaType, useUIMeta } from '@ui-schema/ui-schema'
+import { TransTitle, extractValue, memo, PluginStack, WidgetProps, WithValue, StoreSchemaType, useUIMeta } from '@ui-schema/ui-schema'
 import { List, Map, OrderedMap } from 'immutable'
 import MuiTable from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableContainer from '@material-ui/core/TableContainer'
-import { TableRendererBaseProps, TableValue } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
+import { TableRendererBaseProps, TableRendererExtractorProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
+import { TableContext } from '@ui-schema/ds-material/BaseComponents/Table/TableContext'
 
-export const TableRendererBase: React.ComponentType<WidgetProps & WithValue & TableRendererBaseProps> = (
+export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<keyof WidgetProps, 'value' | 'errors' | 'valid'>> & TableRendererBaseProps> = (
     {
-        storeKeys, ownKey, schema, value, onChange,
-        showValidity, valid, errors, level,
+        storeKeys, ownKey, schema, onChange,
+        showValidity, level,
         // widgets must come from an own wrapper component, to overwrite/enable any widgets for special `TableCell` formatting
         widgets,
         TableRowRenderer,
         TableFooter,
         TableHeader,
+        listSize, t,
+        rowsPerPage, rowsShowAll,
     }
 ) => {
     const uid = useUID()
-    const {t} = useUIMeta()
     const [page, setPage] = React.useState(0)
-    const [rows, setRows] = React.useState(5)
-    const currentList: TableValue = useImmutable(value)
+    const [rows, setRows] = React.useState(rowsPerPage.first())
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small'
     const dense = schema.getIn(['view', 'dense']) || false
     const itemsSchema = schema.get('items') as StoreSchemaType
     const readOnly = schema.get('readOnly') as boolean
 
-    const currentRows = rows === -1 ? currentList?.size || 0 : rows
+    const currentRows = rows === -1 ? listSize || 0 : rows
     const currentRowsStartVisible = page * currentRows
 
     const validItemSchema = itemsSchema && Map.isMap(itemsSchema) &&
@@ -45,8 +46,7 @@ export const TableRendererBase: React.ComponentType<WidgetProps & WithValue & Ta
 
     return <>
         {!schema.getIn(['view', 'hideTitle']) ?
-            <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
-            : null}
+            <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/> : null}
 
         <TableContainer>
             <MuiTable size={dense ? 'small' : 'medium'}>
@@ -61,8 +61,8 @@ export const TableRendererBase: React.ComponentType<WidgetProps & WithValue & Ta
                 />
 
                 <TableBody>
-                    {validItemSchema && currentList ?
-                        currentList.map((_val: any, i) =>
+                    {validItemSchema && listSize ?
+                        Array(listSize).fill(null).map((_val: any, i) =>
                             <PluginStack
                                 key={i}
                                 storeKeys={storeKeys.push(i as number)}
@@ -77,17 +77,18 @@ export const TableRendererBase: React.ComponentType<WidgetProps & WithValue & Ta
                                 setPage={setPage}
                                 showRows={rows}
                                 uid={uid}
-                                listSize={value.size}
+                                // todo: some table rows like `DragDrop` would need info like "is-first-row", "is-last-row", "is-only-row"
+                                //listSize={listSize}
                                 dense={dense}
                             />
-                        ).valueSeq() : null}
+                        ) : null}
                 </TableBody>
 
                 <TableFooter
                     colSize={visibleCols?.size || 0}
                     t={t}
-                    listSize={value?.size}
-                    listSizeCurrent={currentList?.size || 0}
+                    listSize={listSize}
+                    listSizeCurrent={listSize || 0}
                     btnSize={btnSize}
                     schema={schema}
                     setPage={setPage}
@@ -95,16 +96,39 @@ export const TableRendererBase: React.ComponentType<WidgetProps & WithValue & Ta
                     setRows={setRows}
                     rows={rows}
                     storeKeys={storeKeys}
-                    errors={errors}
                     showValidity={showValidity}
-                    valid={valid}
                     onChange={onChange}
                     dense={dense}
                     readOnly={readOnly}
+                    rowsPerPage={rowsPerPage}
+                    rowsShowAll={rowsShowAll}
                 />
             </MuiTable>
         </TableContainer>
     </>
 }
 
-export const TableRenderer = extractValue(memo(TableRendererBase))
+export const TableRendererBaseMemo = memo(TableRendererBase)
+
+export const TableRendererExtractor: React.ComponentType<WidgetProps & WithValue & TableRendererExtractorProps> = (
+    {
+        value,
+        // remove `internalValue` from the table widget, performance optimize
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        internalValue,
+        // remove `errors` from the table widget, performance optimize
+        errors,
+        // remove `valid` from the table widget, performance optimize
+        valid,
+        ...props
+    }
+) => {
+    const {t} = useUIMeta()
+    // extracting and calculating the list size here, not passing down the actual list for performance reasons
+    // https://github.com/ui-schema/ui-schema/issues/115
+    return <TableContext.Provider value={{errors, valid}}>
+        <TableRendererBaseMemo {...props} listSize={value?.size || 0} t={t}/>
+    </TableContext.Provider>
+}
+
+export const TableRenderer = extractValue(memo(TableRendererExtractor))
