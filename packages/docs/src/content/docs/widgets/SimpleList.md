@@ -32,6 +32,8 @@ const widgets = {
 };
 ```
 
+> currently doesn't support keyword `default` in the schemas direct descending `items`
+
 Supports extra keywords:
 
 - `view`

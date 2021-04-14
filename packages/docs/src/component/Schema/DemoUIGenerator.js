@@ -16,6 +16,7 @@ import {makeDragDropContext as makeDragDropContextSimple} from '@ui-schema/mater
 import {makeDragDropContext} from '@ui-schema/material-dnd/DragDropProvider/makeDragDropContext';
 import {DragDropProvider} from '@ui-schema/material-dnd/DragDropProvider/DragDropProvider';
 import {customWidgets} from './widgets';
+import {OrderedMap} from 'immutable';
 
 const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, richIde, renderChange, theme, maxLines, enableShowAll}) => {
     return <RichCodeEditor
@@ -92,8 +93,8 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
         })
     }, [setStore]);
 
-    const dragStoreContext = makeDragDropContext(onChange, schema.get('$defs') || schema.get('definitions'))
-    const dragStoreContextSimple = makeDragDropContextSimple(onChange, schema.get('$defs') || schema.get('definitions'))
+    const dragStoreContext = makeDragDropContext(onChange, OrderedMap.isMap(schema) ? schema.get('$defs') || schema.get('definitions') : OrderedMap())
+    const dragStoreContextSimple = makeDragDropContextSimple(onChange, OrderedMap.isMap(schema) ? schema.get('$defs') || schema.get('definitions') : OrderedMap())
 
     const tabSize = 2;
     const fontSize = 13;

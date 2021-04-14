@@ -7,12 +7,12 @@ This ui renderer has multiple levels of performance optimization:
 - [immutables](https://immutable-js.github.io/immutable-js/) as internal store
     - does not apply to `widgets`, storing memoized components in immutable are a problem
 - [memoization](https://reactjs.org/docs/hooks-reference.html#usememo) of multiple components which work on the context
-    - use [memo](/docs/core#memo--isequal), which compares immutable correctly
+    - use [memo](/docs/core#memo--isequal), which compares immutable correctly (in `@ui-schema/ui-schema`, not the one in `react`)
 - no html re-rendering of no-changed scopes
     - **normally**: e.g. `onChange` updates the hook `useUI`, thus typing in inputs lags
         - within the core this hook is used to access the context
         - all hook consuming components are re-rendering, you got 100 input fields, all will re-render
-    - to **not re-render any HTML** that must not be re-rendered this approach is used:
+    - to **not re-render any HTML** that must not be re-rendered, this approach is used:
         - components [React.PureComponent](https://reactjs.org/docs/react-api.html#reactpurecomponent) [[memo](https://reactjs.org/docs/hooks-reference.html#usememo)] compatible with full logic-html separation
         - the root component accesses the hook, prepares the values, but doesn't render html by itself
         - this wraps another component which receives props and is a memoized function component

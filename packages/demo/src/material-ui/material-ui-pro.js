@@ -28,7 +28,41 @@ customWidgets.custom = {
 };
 
 // or set to `undefined` for no-initial values
-const initialStore = createStore(fromJSOrdered({person: {name: 'Kim Smith'}}))
+//const initialStore = createStore(fromJSOrdered({person: {name: 'Kim Smith'}}))
+const initialStore = createStore(fromJSOrdered({
+    person: {
+        'name': 'Kim Smith',
+        'children': [
+            {
+                'name': '4335534',
+            },
+            {
+                'name': 'gegfgtg',
+                'children': [
+                    {
+                        'name': 'asdcvbn',
+                        'children': [
+                            {
+                                'name': '233456',
+                            },
+                        ],
+                    },
+                    {
+                        'name': 'fddgfdfdfgdfs',
+                        'children': [
+                            {
+                                'name': '23456',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                'name': 'dfgdgfdgf',
+            },
+        ],
+    },
+}))
 
 const schema = schemaDemoReferencingRecursive
 

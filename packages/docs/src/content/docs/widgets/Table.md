@@ -6,7 +6,7 @@ Widget for data tables.
 
 - type: `array(array | object)`,
 - widget keywords:
-    - `Table` **(usable)**
+    - `Table` **(usable, beta)**
     - `TableAdvanced` **(in-dev)**
 - view
     - does not support grid keywords in direct nested schemas, disables grid for own stack, but supports for nested `object`
@@ -33,6 +33,8 @@ Special `Table` component for complex, always validated, lists. Using custom wid
     - `view.hideItemsTitle` when `true` doesn't display titles of nested object widgets inside the table head
     - `view.btnSize`
     - `view.dense`
+    - `view.rowsPerPage`, an array on numbers to specify the possible values for how many rows are visible
+    - `view.rowsShowAll`, when `true` allows displaying all rows
 - `readOnly`
 - `sortOrder`: `string[]`, only for `object` types, relative key of the properties to render in that order
 
@@ -44,10 +46,11 @@ Special `Table` component for complex, always validated, lists. Using custom wid
 import {widgets} from '@ui-schema/ds-material';
 import {Table} from '@ui-schema/ds-material/Widgets/Table';
 import {NumberRendererCell, StringRendererCell, TextRendererCell} from '@ui-schema/ds-material/Widgets/TextFieldCell';
+import {BoolRenderer} from '@ui-schema/ds-material/Widgets/OptionsBoolean';
 
 const CustomTable = ({widgets, ...props}) => {
 
-    // dynamic overwrite for all widgets, which need an special TableCell formatting
+    // dynamic overwrite for all widgets, which need a special TableCell formatting
     // you can also only enable specific widgets here
     const customWidgets = React.useMemo(() => ({
         ...widgets,
@@ -56,6 +59,7 @@ const CustomTable = ({widgets, ...props}) => {
             string: StringRendererCell,
             number: NumberRendererCell,
             integer: NumberRendererCell,
+            boolean: BoolRenderer,
         },
         custom: {
             ...widgets.custom,

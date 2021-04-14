@@ -58,7 +58,8 @@ JSON Schema keywords are used to validate the data, the UI is created from the d
 - add any design-system and custom widget
     - easily create isolated and atomic widgets
     - customize design system behaviour with e.g. widget compositions
-    - easy binding of own design systems
+    - easy binding of own design systems and custom widgets
+    - [auto-rendering by data & schema](https://ui-schema.bemit.codes/docs/core#main-ui-generator--renderer) or [full-custom forms](https://ui-schema.bemit.codes/docs/core#applypluginstack) with autowiring widgets
 - flexible translation of widgets
     - with any library
     - (optional) integrated translation library

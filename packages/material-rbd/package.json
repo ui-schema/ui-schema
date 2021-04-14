@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-rbd",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Drag and Drop Tools for UI-Schema with Material-UI by react-beautiful-dnd",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -40,19 +40,20 @@
         "@ui-schema/ds-material": "~0.2.x",
         "@ui-schema/ui-schema": ">=0.2.0-rc.0",
         "@types/react-beautiful-dnd": "^13.0.0",
-        "react-beautiful-dnd": "^13.0.0",
         "immutable": "^4.0.0-rc.12",
-        "react": "^16.12"
+        "react": "^16.12",
+        "react-beautiful-dnd": "^13.0.0",
+        "react-dom": "^16.12"
     },
     "peerDependencies": {
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
+        "@types/react-beautiful-dnd": "^13.0.0",
         "@ui-schema/ds-material": "~0.2.x",
         "@ui-schema/ui-schema": ">=0.2.0-rc.0",
-        "@types/react-beautiful-dnd": "^13.0.0",
-        "react-beautiful-dnd": "^13.0.0",
         "immutable": "^4.0.0-rc.12",
-        "react": "^16.8"
+        "react": "^16.8",
+        "react-beautiful-dnd": "^13.0.0"
     },
     "publishConfig": {
         "access": "public"

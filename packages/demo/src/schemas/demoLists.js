@@ -24,6 +24,29 @@ const schemaLists = createOrderedMap({
                 'max_guests': 4,
                 'end_check': true,
             }],*/
+            default: [
+                {
+                    'info': {
+                        'name': 'dsasfd',
+                        'location': 'sfdfds',
+                    },
+                    'max_guests': 5,
+                    'booked': 6,
+                    'end_check': true,
+                },
+                {
+                    'info': {
+                        'date': 'dsasdafasd',
+                        'location': 'dsadsa',
+                    },
+                },
+                {
+                    'info': {
+                        'name': 'dadasds',
+                    },
+                    'end_check': true,
+                },
+            ],
             view: {
                 sizeXs: 12,
                 sizeMd: 12,
@@ -132,6 +155,11 @@ const schemaLists = createOrderedMap({
                 sizeMd: 12,
                 btnSize: 'small',
             },
+            default: [
+                'adfn',
+                'mnbvf',
+                'ertyh1234',
+            ],
             minItems: 2,
             items: {
                 type: 'string',

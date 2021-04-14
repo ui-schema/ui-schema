@@ -24,7 +24,7 @@ customWidgets.DroppableRootContent = DroppableRootContent
 
 const CustomTable = ({widgets, ...props}) => {
 
-    // dynamic overwrite for all widgets, which need an special TableCell formatting
+    // dynamic overwrite for all widgets, which need a special TableCell formatting
     // you can also only enable specific widgets here
     const customWidgets = React.useMemo(() => ({
         ...widgets,

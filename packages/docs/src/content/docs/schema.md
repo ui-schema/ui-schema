@@ -159,6 +159,8 @@ Validation Keywords:
     - `additionalItems` if more props then defined are allowed
     - the individual items must be validated in their actual widgets, e.g. done in the `PluginStack` per item rendered by `GenericList`
     - supported by e.g. [GenericList](/docs/widgets/GenericList), [Table](/docs/widgets/Table)
+- **restrictions:**
+    - `null`/`undefined` behaviour [#106](https://github.com/ui-schema/ui-schema/issues/106)
 
 [Specification](https://json-schema.org/understanding-json-schema/reference/array.html)
 
@@ -176,7 +178,8 @@ Renders `null`, really nothing, but can be overwritten `widgets.types.null` to r
 
 Supported JSON-Schema versions and what currently isn't supported.
 
-- [Draft 2019-09 / Draft-08](https://json-schema.org/draft/2019-09/release-notes.html) **latest**
+- [Draft 2020-12](https://json-schema.org/draft/2020-12/release-notes.html) [changelog](https://json-schema.org/draft/2020-12/json-schema-core.html#rfc.appendix.G) **latest** ❌
+- [Draft 2019-09 / Draft-08](https://json-schema.org/draft/2019-09/release-notes.html)
     - link resolution for multiple of draft-07 is incompatible to 2019-09, but currently not implemented at all
 - [Draft-07](https://json-schema.org/draft-07/json-schema-release-notes.html) differences marked in table
 - [Draft-06](https://json-schema.org/draft-06/json-schema-release-notes.html) differences marked in table
@@ -186,6 +189,8 @@ Supported JSON-Schema versions and what currently isn't supported.
     - defines any-where usage of `$ref`, e.g. properties can't be named `$ref` as it should resolve, only supports `$ref` where a schema is expected (like from draft-06 onwards) ❌
 
 Validators for latest version are used by default, incompatible changes are solved from the validator (e.g. different namings), the possibility to change/replace validators completely will be added.
+
+For latest issues/questions checkout the [github issues](https://github.com/ui-schema/ui-schema/issues).
 
 | Spec. | Group      | Keyword         | Status |
 | :---  | :---       | :---            | :--- |

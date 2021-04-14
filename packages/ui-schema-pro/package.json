@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/pro",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "Components and Utilities for more advanced usages of UI-Schema",
     "homepage": "https://ui-schema.bemit.codes/docs/pro",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -34,12 +34,13 @@
     "devDependencies": {
         "@ui-schema/ui-schema": ">=0.2.0-rc.0",
         "immutable": "^4.0.0-rc.12",
-        "react": "^16.12"
+        "react": "^16.12",
+        "react-dom": "^16.12"
     },
     "peerDependencies": {
-        "immutable": "^4.0.0-rc.12",
         "@ui-schema/ui-schema": ">=0.2.0-rc.0",
-        "react": "^16.8"
+        "immutable": "^4.0.0-rc.12",
+        "react": "^16.8 || ^17.0"
     },
     "publishConfig": {
         "access": "public"
