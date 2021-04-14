@@ -1,6 +1,7 @@
 import { tt } from "@ui-schema/ui-schema/Utils"
 
 export interface UISchema {
+    title?: string
     tt?: tt
     t?: {
         [key: string]: string | number

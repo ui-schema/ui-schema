@@ -10,7 +10,7 @@ import { UIGenerator } from '../src/UIGenerator/UIGenerator'
 import { MockWidgets } from './MockSchemaProvider.mock'
 import { createStore, extractValue, WithValue } from '@ui-schema/ui-schema/UIStore/UIStore'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
-import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, JsonSchema, UIGeneratorNested, TransTitle, ValidatorStack, ValidityReporter, WidgetProps } from '@ui-schema/ui-schema'
+import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, JsonSchema, UIGeneratorNested, TransTitle, ValidatorStack, ValidityReporter, WidgetProps, StoreSchemaType } from '@ui-schema/ui-schema'
 import { ReferencingHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
 import { validators } from '@ui-schema/ui-schema/Validators/validators'
 import { NextPluginRenderer } from '@ui-schema/ui-schema/PluginStack/PluginStack'
@@ -66,10 +66,12 @@ widgets.types.array = extractValue((props: WidgetProps & WithValue): React.React
         {List.isList(props.value) ? props.value.map((val, i: number) =>
             <div key={i}>
                 <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
+                    {/* eslint-disable-next-line deprecation/deprecation */}
                     <UIGeneratorNested
                         showValidity={props.showValidity}
                         storeKeys={props.storeKeys.push(i)}
-                        schema={props.schema.get('items')}
+                        schema={props.schema.get('items') as StoreSchemaType}
+                        // @ts-ignore
                         noGrid
                     />
                 </div>
