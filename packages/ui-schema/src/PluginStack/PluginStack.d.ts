@@ -22,6 +22,7 @@ export interface PluginStackProps {
     widgets?: WidgetsBindingBase
 
     // override any widget for just this PluginStack, not passed down further on
+    // better use `applyPluginStack` instead! https://ui-schema.bemit.codes/docs/core#applypluginstack
     WidgetOverride?: WidgetOverrideType
 
     // all other props are passed down to all rendering Plugins and the final widget
