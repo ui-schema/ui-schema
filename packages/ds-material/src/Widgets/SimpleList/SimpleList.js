@@ -16,6 +16,9 @@ const SimpleList = extractValue(memo(({
                                           showValidity, valid, errors, required, level,
                                       }) => {
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
+    const notAddable = schema.get('notAddable')
+    const notDeletable = schema.get('notDeletable')
+    const readOnly = schema.get('readOnly')
 
     return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
         <Grid container spacing={2}>
@@ -33,7 +36,7 @@ const SimpleList = extractValue(memo(({
                         />
                     </div>
 
-                    <IconButton
+                    {!readOnly && !notDeletable ? <IconButton
                         onClick={() => {
                             onChange(
                                 storeKeys, ['value'],
@@ -44,19 +47,18 @@ const SimpleList = extractValue(memo(({
                                 schema.get('type'),
                             )
                         }}
-                        disabled={schema.get('readOnly')}
                         size={btnSize}
                         style={{margin: 'auto 6px', flexShrink: 0}}
                     >
                         <AccessTooltipIcon title={<Trans text={'labels.remove-entry'}/>}>
                             <Remove fontSize={'inherit'}/>
                         </AccessTooltipIcon>
-                    </IconButton>
+                    </IconButton> : null}
                 </Grid>,
             ).valueSeq() : null}
 
             <Grid item xs={12}>
-                <IconButton
+                {!readOnly && !notAddable ? <IconButton
                     onClick={() => {
                         onChange(
                             storeKeys, ['value'],
@@ -72,13 +74,12 @@ const SimpleList = extractValue(memo(({
                             schema.get('type'),
                         )
                     }}
-                    disabled={schema.get('readOnly')}
                     size={btnSize}
                 >
                     <AccessTooltipIcon title={<Trans text={'labels.add-entry'}/>}>
                         <Add fontSize={'inherit'}/>
                     </AccessTooltipIcon>
-                </IconButton>
+                </IconButton> : null}
 
                 <ValidityHelperText
                     /* only pass down errors which are not for a specific sub-schema */

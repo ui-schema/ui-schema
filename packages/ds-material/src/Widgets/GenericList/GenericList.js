@@ -15,7 +15,7 @@ import {List, Map} from 'immutable';
 import {AccessTooltipIcon} from '../../Component/Tooltip/Tooltip';
 import {moveItem} from '@ui-schema/ui-schema/Utils/moveItem/moveItem';
 
-let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, onChange, storeKeys, level, btnSize}) => {
+let GenericListItem = ({index, listSize, schema, notSortable, notDeletable, deleteOnEmpty, showValidity, onChange, storeKeys, level, btnSize}) => {
     const ownKeys = storeKeys.push(index)
     const itemsSchema = schema.get('items')
     const readOnly = schema.get('readOnly')
@@ -24,7 +24,7 @@ let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, on
             <Grid container spacing={2} wrap={'nowrap'}>
                 <Grid item style={{display: 'flex', flexDirection: 'column', flexShrink: 0}}>
 
-                    {!readOnly && index > 0 ? <IconButton
+                    {!readOnly && !notSortable && index > 0 ? <IconButton
                         size={btnSize} style={{margin: '0 auto'}}
                         onClick={() =>
                             onChange(
@@ -54,7 +54,7 @@ let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, on
                         </Typography>
                     </Typography>
 
-                    {!readOnly && index < listSize - 1 ? <IconButton
+                    {!readOnly && !notSortable && index < listSize - 1 ? <IconButton
                         size={btnSize} style={{margin: '0 auto'}}
                         onClick={() =>
                             onChange(
@@ -98,7 +98,7 @@ let GenericListItem = ({index, listSize, schema, deleteOnEmpty, showValidity, on
                             storeKeys={ownKeys} level={level + 1}
                         />}
 
-                {!readOnly ? <Grid item style={{display: 'flex', flexShrink: 0}}>
+                {!readOnly && !notDeletable ? <Grid item style={{display: 'flex', flexShrink: 0}}>
                     <IconButton
                         onClick={() =>
                             onChange(
@@ -131,6 +131,9 @@ let GenericListBase = ({
                            showValidity, valid, errors, required, level,
                        }) => {
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
+    const notSortable = schema.get('notSortable')
+    const notAddable = schema.get('notAddable')
+    const notDeletable = schema.get('notDeletable')
 
     return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
         <Grid container spacing={2}>
@@ -145,11 +148,13 @@ let GenericListBase = ({
                     deleteOnEmpty={schema.get('deleteOnEmpty') || required}
                     schema={schema} onChange={onChange}
                     level={level}
+                    notSortable={notSortable}
+                    notDeletable={notDeletable}
                 />,
             )}
 
             <Grid item xs={12}>
-                {!schema.get('readOnly') ?
+                {!schema.get('readOnly') && !notAddable ?
                     <IconButton
                         onClick={() => {
                             onChange(
