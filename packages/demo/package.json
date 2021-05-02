@@ -22,21 +22,21 @@
 		"@types/react-beautiful-dnd": "^13.0.0",
 		"@udecode/slate-plugins": "~0.75.2",
 		"bootstrap": "^4.4.1",
-        "popper.js": "^1.16.1",
 		"clsx": "^1.1.0",
 		"draft-js": "~0.11.4",
 		"draft-js-plugins-editor": "~3.0.0",
 		"immutable": "^4.0.0-rc.12",
 		"jquery": "^3.5.0",
 		"luxon": "^1.22.0",
+		"popper.js": "^1.16.1",
 		"prop-types": "^15.7.2",
 		"react": "^16.12",
-        "react-dom": "^16.12",
 		"react-beautiful-dnd": "^13.0.0",
 		"react-color": "^2.18.1",
 		"react-dnd": "^13.0.0",
 		"react-dnd-html5-backend": "^12.1.1",
 		"react-dnd-touch-backend": "^12.0.0",
+		"react-dom": "^16.12",
 		"react-editor-js": "^1.6.0",
 		"react-error-boundary": "^1.2.5",
 		"react-helmet": "^5.2.1",
@@ -51,6 +51,5 @@
 		"slate-hyperscript": "~0.60.8",
 		"slate-react": "~0.60.8",
 		"styled-components": "^5.0.0"
-	},
-	"scripts": {}
+	}
 }

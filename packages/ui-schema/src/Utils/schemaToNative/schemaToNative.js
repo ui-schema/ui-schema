@@ -1,19 +1,19 @@
 export const mapSchema = (inputProps = {}, schema) => {
-    if(schema.get('minLength')) {
+    if(typeof schema.get('minLength') === 'number') {
         inputProps['minLength'] = schema.get('minLength');
     }
-    if(schema.get('maxLength')) {
+    if(typeof schema.get('maxLength') === 'number') {
         inputProps['maxLength'] = schema.get('maxLength');
     }
-    if(schema.get('minimum')) {
+    if(typeof schema.get('minimum') === 'number') {
         // todo add exclusive
         inputProps['min'] = schema.get('minimum');
     }
-    if(schema.get('maximum')) {
+    if(typeof schema.get('maximum') === 'number') {
         // todo add exclusive
         inputProps['max'] = schema.get('maximum');
     }
-    if(schema.get('multipleOf')) {
+    if(typeof schema.get('multipleOf') === 'number') {
         inputProps['step'] = schema.get('multipleOf');
     }
     if(schema.get('pattern')) {

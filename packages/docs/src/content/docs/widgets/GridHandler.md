@@ -17,10 +17,10 @@ These components are the wire/grid in which the widgets are rendered.
     - added to the widget-stack
         - thus each widget is automatically wrapped with the needed grid handler to build responsive grid
 
-Disabling the GridHandler with `noGrid` can - for example - be done by passing it down from `UIGeneratorNested`:
+Disabling the GridHandler with `noGrid` can - for example - be done by passing it down from `PluginStack`:
 
 ```js
-<UIGeneratorNested
+<PluginStack
     showValidity={showValidity}
     storeKeys={storeKeys.push(i)}
     schema={schema.get('items')}

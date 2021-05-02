@@ -48,7 +48,6 @@ export const CustomHeader = ({title}) => {
 
 const CollapseDrawer = ({toggle, icon, children, dense, style = undefined}) => {
     const [open, setOpen] = React.useState(true)
-
     return <React.Fragment>
         <ListItem button onClick={() => setOpen(o => !o)} dense={dense} style={style}>
             {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}

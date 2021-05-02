@@ -2,6 +2,11 @@ import React from 'react'
 import { PluginStackProps } from '@ui-schema/ui-schema/PluginStack'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 
-export function applyPluginStack<P extends WidgetProps>(CustomWidget: React.ComponentType<P>):
-    React.ComponentType<Omit<PluginStackProps, ['WidgetOverride']> &
-        Omit<P, keyof WidgetProps>>
+export type AppliedPluginStackProps<P extends {} = {}> =
+    Omit<PluginStackProps, ['WidgetOverride']> &
+    Omit<P, keyof WidgetProps> &
+    Pick<WidgetProps, 'schema' | 'parentSchema' | 'storeKeys' | 'level'>
+
+export type AppliedPluginStack<P extends {} = {}> = React.ComponentType<AppliedPluginStackProps<P>>
+
+export function applyPluginStack<P extends WidgetProps = WidgetProps>(CustomWidget: React.ComponentType<P>): AppliedPluginStack<P>

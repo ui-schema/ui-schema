@@ -17,6 +17,7 @@ const MaterialUiDnd = asyncComponent(() => import('./material-ui/material-ui-dnd
 const MaterialUiEditorJS = asyncComponent(() => import('./material-ui/material-ui-editorjs'), 'Material-UI EditorJS', 'page');
 const MaterialUiSlate = asyncComponent(() => import('./material-ui/material-ui-slate'), 'Material-UI Slate', 'page');
 const MaterialUiEditable = asyncComponent(() => import('./material-ui/material-ui-editable'), 'Material-UI Editable', 'page');
+const MaterialUiCustom = asyncComponent(() => import('./material-ui/material-ui-custom'), 'Material-UI Custom', 'page');
 const Bootstrap = asyncComponent(() => import('./bootstrap/page-main'), 'Bootstrap', 'page');
 
 const App = () => <Router>
@@ -31,6 +32,7 @@ const App = () => <Router>
         <Route path="/mui-rbd" component={MaterialUiRbd}/>
         <Route path="/mui-dnd" component={MaterialUiDnd}/>
         <Route path="/mui-editable" component={MaterialUiEditable}/>
+        <Route path="/mui-custom" component={MaterialUiCustom}/>
         <Route path="/bootstrap" component={Bootstrap}/>
         <Route path="/" exact component={MaterialUi}/>
     </Switch>
