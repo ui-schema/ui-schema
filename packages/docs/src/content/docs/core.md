@@ -167,14 +167,14 @@ const Comp = () => {
 };
 ```
 
-Example HOC, recommended for memo usage:
+Example HOC, recommended to use memo:
 
 ```js
 import React from "react";
-import {withUIMeta} from "@ui-schema/ui-schema";
+import {withUIMeta, memo} from "@ui-schema/ui-schema";
 
 const Comp = withUIMeta(
-    React.memo(
+    memo(
         ({widgets, showValidity, t, ...props}) => {
             const RootRenderer = widgets.RootRenderer;
             return <RootRenderer {...props}/>
@@ -287,6 +287,8 @@ import {schemaLocalCachePath} from '@ui-schema/ui-schema/UIApi/UIApi'
 ```
 
 ## Widget Renderer
+
+Components responsible for the actual rendering of plugins and then finally the widget.
 
 ### PluginStack
 
@@ -421,7 +423,7 @@ let CustomGroup: React.ComponentType<WidgetProps> = (props) => {
         <WidgetTextField
             level={level + 1}
             storeKeys={storeKeys.push('name')}
-            schema={schema.get('name')}
+            schema={schema.getIn(['properties', 'name'])}
             parentSchema={schema}
 
             // this property comes from `StringRenderer`:
@@ -434,8 +436,10 @@ CustomGroup = applyPluginStack(CustomGroup)
 
 const freeFormSchema = createOrderedMap({
     type: 'object',
-    name: {
-        type: 'string',
+    properties: {
+        name: {
+            type: 'string',
+        },
     },
 })
 
@@ -467,7 +471,6 @@ const EditorStub = () => {
 }
 ```
 
-
 ### NextPluginRenderer
 
 Used for plugin rendering, see: [creating plugins](/docs/plugins#creating-plugins).
@@ -491,6 +494,61 @@ Executes `onErrors` for that schema level, when `errors` have changed and `onErr
 - `value` is removed for `schema.type` `array` or `object`
 - `internalValue` is removed for `schema.type` `array` or `object`
 - `requiredList` is removed for every type
+
+### ObjectGroup
+
+Component - not a widget - for custom UI generation and handling `type=object` schema levels - without needing to nest everything.
+
+Use the property `onSchema` to get the maybe-changed schema up to the parent component, then reuse that for your other widgets.
+
+To get the errors of that schema level, use `onErrors` from [`WidgetRenderer`](#widgetrenderer).
+
+```typescript jsx
+const freeFormSchema = OrderedMap()
+
+const WidgetTextField = applyPluginStack(StringRenderer)
+
+const FreeFormEditor = () => {
+    const [store, setStore] = React.useState(() => createStore(OrderedMap()))
+    const [schema, setSchema] = React.useState<StoreSchemaType>(() => freeFormSchema)
+
+    const onChange = React.useCallback((...update) => setStore(storeUpdater(...update)), [setStore])
+
+    return <UIProvider
+        schema={freeFormSchema}
+        store={store}
+        onChange={onChange}
+        // widgets={customWidgets}
+        // showValidity={showValidity}
+        // t={browserT}
+    >
+        <ObjectGroup
+            storeKeys={storeKeys}
+            schema={freeFormSchema} parentSchema={undefined}
+            onSchema={(schema) => setSchema(schema)}
+        >
+            <Grid container dir={'columns'} spacing={4}>
+                <WidgetTextField
+                    level={1}
+                    storeKeys={storeKeys.push('name') as StoreKeys}
+                    schema={schema.getIn(['properties', 'name']) as unknown as StoreSchemaType}
+                    parentSchema={schema}
+
+                    // using `applyPluginStack`, this free-form widget is fully typed
+                    // with the actual props of the widget component
+                    multiline={false}
+                />
+            </Grid>
+        </ObjectGroup>
+
+    </UIProvider>
+}
+```
+
+### ObjectRenderer
+
+Widget used automatically for `type=object` that do not have a custom `widget`.
+
 
 ## Utils
 

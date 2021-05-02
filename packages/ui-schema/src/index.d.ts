@@ -1,6 +1,7 @@
 export * from './applyPluginStack'
 export * from './JSONPointer'
 export * from './ObjectRenderer'
+export * from './ObjectGroup'
 export * from './Plugins'
 export * from './PluginStack'
 export * from './SchemaRootProvider'
