@@ -2,7 +2,7 @@ import * as React from 'react'
 import { PluginProps, PluginType } from '@ui-schema/ui-schema/PluginStack/Plugin'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { StoreKeys } from '@ui-schema/ui-schema/UIStore'
-import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
+import { GroupRendererProps, WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { onErrors } from '@ui-schema/ui-schema/ValidatorStack'
 
@@ -11,8 +11,9 @@ export type WidgetOverrideType<P extends {}> = React.ComponentType<P & WidgetPro
 export interface PluginStackProps {
     level?: number
     schema: StoreSchemaType
-    parentSchema: StoreSchemaType
+    parentSchema: StoreSchemaType | undefined
     storeKeys: StoreKeys
+    noGrid?: GroupRendererProps['noGrid']
 
     // listen from a hoisted component for `errors` changing,
     // useful for some performance optimizes like at ds-material Accordions
