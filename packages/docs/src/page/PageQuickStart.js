@@ -1,37 +1,39 @@
-import React from "react";
-import {Typography, Box, Grid, Button, Paper,} from "@material-ui/core";
-import {Markdown} from "../component/Markdown";
-import DemoUIGenerator from "../component/Schema/DemoUIGenerator";
-import {RichCodeEditor} from "../component/RichCodeEditor";
-import {useHistory} from "react-router-dom";
-import {HeadlineMenu} from "@control-ui/docs/LinkableHeadline";
-import {Head} from "@control-ui/kit/Head";
-import {PageBox, PageContent} from "@control-ui/kit/PageContent";
-import {LoadingCircular} from "@control-ui/kit/Loading/LoadingCircular";
+import React from 'react';
+import {Typography, Box, Grid, Button, Paper} from '@material-ui/core';
+import {Markdown} from '../component/Markdown';
+import DemoUIGenerator from '../component/Schema/DemoUIGenerator';
+import {RichCodeEditor} from '../component/RichCodeEditor';
+import {useHistory} from 'react-router-dom';
+import {HeadlineMenu} from '@control-ui/docs/LinkableHeadline';
+import {Head} from '@control-ui/kit/Head';
+import {PageBox, PageContent} from '@control-ui/kit/PageContent';
+import {LoadingCircular} from '@control-ui/kit/Loading/LoadingCircular';
 
 const demoSchema = {
     type: 'object',
     properties: {
         name: {
             type: 'string',
-            minLength: 3
+            minLength: 3,
         },
         comment: {
             type: 'string',
             widget: 'Text',
             view: {
                 rows: 3,
-            }
+            },
         },
         accept_privacy: {
-            type: 'boolean'
-        }
+            type: 'boolean',
+        },
     },
-    required: ['accept_privacy']
+    required: ['accept_privacy'],
 };
 
 const PageQuickStart = () => {
     const history = useHistory();
+    const urlParams = new URLSearchParams(window.location.search);
+    const [render, setRender] = React.useState(urlParams.get('render') === 'custom' ? 'custom' : 'automatic');
     const [ds, setDS] = React.useState('mui');
 
     const hash = history.location.hash;
@@ -54,12 +56,30 @@ const PageQuickStart = () => {
                 <Markdown content source={`
 # Quick-Start UI-Schema
 
-In **6 steps** to a contact form that sends data to an API - if the user entered it correctly.
+Quickly build a contact form that sends data to an API - if the user entered it correctly - and get to know how UI-Schema works.
 
-UI-Schema works with JSON-Schema and multiple design-systems, each design-system exports a widget binding that connects to the UI-Schema renderer.
+UI-Schema works with JSON-Schema and any design-system, each included design-system exports a widget binding for the UI renderer.
 
 See the [**list of widgets**](/docs/overview#widget-list) for the different design-system support.
 `}/>
+
+                <Markdown content source={`
+**UIGenerator vs. Custom UI**, UI-Schema supports either:
+
+- full automatic UI generation by schema and data or
+- custom UI with autowired and always validated widgets and partial-automatic generation
+
+`}/>
+
+                <Grid container>
+                    <Grid item xs={6} style={{paddingRight: 6}}>
+                        <Button fullWidth variant={render === 'automatic' ? 'contained' : 'outlined'} color={'secondary'} onClick={() => setRender('automatic')}>Automatic</Button>
+                    </Grid>
+                    <Grid item xs={6} style={{paddingLeft: 6}}>
+                        <Button fullWidth variant={render === 'custom' ? 'contained' : 'outlined'} color={'secondary'} onClick={() => setRender('custom')}>Custom</Button>
+                    </Grid>
+                </Grid>
+
                 <HeadlineMenu initial disableNavLink/>
             </PageBox>
 
@@ -99,18 +119,68 @@ npm i --save @ui-schema/ui-schema immutable @ui-schema/ds-bootstrap bootstrap
                 </Grid>
             </Paper>
 
-            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
-                <Markdown content source={`
+            {render === 'custom' ?
+                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+                    <Markdown content source={`
 ## 2. Create Demo Generator
 
 Create a file which serves as demo: \`DemoGenerator.js\`
 
-Create an empty generator component in the file:
+Create an empty generator component in the file with the needed imports.
 `}/>
 
-                <Grid container>
-                    <Grid item xs={12}>
-                        <Markdown content source={`
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <Markdown content source={`
+\`\`\`jsx
+import React from "react";
+
+// Import UI Generator Components
+import {
+    UIProvider,                    // UIStore & UIMeta provider as one
+    isInvalid,                     // for validity checking
+    createEmptyStore, createStore, // for initial data-store creation
+    createMap, createOrderedMap,   // for deep immutables
+    storeUpdater,                  // for on change handling
+    PluginStack, applyPluginStack, // for creating custom positioned widgets
+    ObjectGroup,                   // for handling schema level "type-object"
+} from "@ui-schema/ui-schema";
+
+// import the widgets for your design-system.
+${ds === 'mui' ? 'import {widgets} from "@ui-schema/ds-material";' : 'import {widgets} from "@ui-schema/ds-bootstrap";'}
+
+// Empty Demo Schema & Data/Values
+const schema = createOrderedMap({});
+const values = {};
+
+export const Generator = () => {
+    // here the state will be added
+
+    return (
+        <UIProvider
+            /* here the props will be added */
+        />
+    )
+};
+\`\`\`
+`}/>
+                        </Grid>
+                    </Grid>
+                </Paper> : null}
+
+            {render === 'automatic' ?
+                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+                    <Markdown content source={`
+## 2. Create Demo Generator
+
+Create a file which serves as demo: \`DemoGenerator.js\`
+
+Add a empty provider in the file with the needed imports.
+`}/>
+
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <Markdown content source={`
 \`\`\`jsx
 import React from "react";
 
@@ -119,11 +189,15 @@ import {
     UIGenerator,                   // main component
     isInvalid,                     // for validity checking
     createEmptyStore, createStore, // for initial data-store creation
-    createMap, createOrderedMap    // for deep immutables
+    createMap, createOrderedMap,   // for deep immutables
+    storeUpdater,                  // for on change handling
 } from "@ui-schema/ui-schema";
 
+// import the widgets for your design-system.
+${ds === 'mui' ? 'import {widgets} from "@ui-schema/ds-material";' : 'import {widgets} from "@ui-schema/ds-bootstrap";'}
+
 // Empty Demo Schema & Data/Values
-const schema = {};
+const schema = createOrderedMap({});
 const values = {};
 
 export const Generator = () => {
@@ -137,49 +211,15 @@ export const Generator = () => {
 };
 \`\`\`
 `}/>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Paper>
+                </Paper> : null}
 
             <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
                 <Markdown content source={`
-## 3. Import Design-System Widgets
+## 3. Create Store State, Add Schema
 
-Import the widgets for your selected design-system and add them to the UIGenerator:
-`}/>
-
-                <Grid container>
-                    <Grid item xs={12}>
-                        {ds === 'mui' ? <Markdown content source={`
-\`\`\`jsx
-import {widgets} from "@ui-schema/ds-material";
-\`\`\`
-`}/> :
-                            ds === 'bts' ? <Markdown content source={`
-\`\`\`jsx
-import {widgets} from "@ui-schema/ds-bootstrap";
-\`\`\`
-`}/> :
-                                'unsupported'
-                        }
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Markdown content source={`
-\`\`\`jsx
-<UIGenerator
-    widgets={widgets}
-/>
-\`\`\`
-`}/>
-                    </Grid>
-                </Grid>
-            </Paper>
-
-            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
-                <Markdown content source={`
-## 4. Create Store State, Add Schema
-
-Each UIGenerator needs to receive a \`store\` and \`onChange\` to work with the data and have something to save validity and internal values. The store must be an \`UIStore\`, which is based on a [immutable](https://immutable-js.github.io/immutable-js/) Record.
+Each ${render === 'automatic' ? 'UIGenerator' : 'UIProvider'} needs to receive a \`store\` and \`onChange\` to work with the data and have something to save validity and internal values. The store must be an \`UIStore\`, which is based on a [immutable](https://immutable-js.github.io/immutable-js/) Record.
 
 The schema in this example is bundled with the component and not dynamic, also the schema must be immutable. A minimal valid schema is an empty \`object\` schema.
 `}/>
@@ -195,7 +235,7 @@ const schema = createOrderedMap({
 
 const values = {};
 
-const Editor = () => {
+export const Generator = () => {
     // Create a state with the data, transforming into immutable on first mount
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(values)));
 
@@ -207,7 +247,7 @@ const Editor = () => {
     }, [setStore])
 
     return (
-        <UIGenerator
+        <${render === 'automatic' ? 'UIGenerator' : 'UIProvider'}
             schema={schema}
 
             store={store}
@@ -227,15 +267,13 @@ const Editor = () => {
                 <Grid container>
                     <Grid item xs={12}>
                         <Markdown content source={`
-## 5. Add First Inputs
+## 4. Add First Inputs
 
 Each \`object\` can have multiple \`properties\`, each can be of a different type, we define now a single-line text, multi-line text and boolean property to our contact schema.
 
 Properties defined in \`required\` must be filled out, see what is [invalid for required](/docs/schema#required-keyword).
 
 See [schema docs](/docs/schema) for the keywords of each type.
-
-You want to build UIs with a lot of custom widgets or positioning? Then checkout [applyPluginStack](/docs/core#applypluginstack) for auto wiring custom components.
 `}/>
                     </Grid>
                     <Grid item xs={12}>
@@ -246,33 +284,35 @@ const schema = createOrderedMap(${JSON.stringify(demoSchema, null, 2)});
 `}/>
                     </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                    <Markdown content source={`
+                {render === 'automatic' ? <>
+                    <Grid item xs={12}>
+                        <Markdown content source={`
 ---
 
 > Your editor should look like this when using **ds-material**:
 `}/>
-                </Grid>
-                <Grid item xs={12} md={9} style={{margin: '0 auto'}}>
-                    <DemoUIGenerator activeSchema={demoSchema} id={'qs-demo'}/>
-                </Grid>
+                    </Grid>
+                    <Grid item xs={12} md={9} style={{margin: '0 auto'}}>
+                        <DemoUIGenerator activeSchema={demoSchema} id={'qs-demo'}/>
+                    </Grid>
+                </> : null}
             </Paper>
-
-            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
-                <Grid container>
-                    <Grid item xs={12}>
-                        <Markdown content source={`
-## 6. Add API Call
+            {render === 'automatic' ?
+                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <Markdown content source={`
+## 5. Add API Call
 
 Now we add a button that will send the store of the editor to an API if the form is valid.
 
 We tell the editor also to display validity from start on.
 `}/>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Markdown content source={`
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Markdown content source={`
 \`\`\`jsx
-const Editor = () => {
+export const Generator = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(values)));
 
     const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
@@ -310,38 +350,214 @@ const Editor = () => {
                             .then(answer => console.log(answer))
                             .catch(err => console.error(err))
                     }
-                }
+                }}
             >Send</button>
         </React.Fragment>
     )
 };
 \`\`\`
 `}/>
-                    </Grid>
+                        </Grid>
 
-                    <Grid item xs={12}>
-                        <Markdown content source={`
-Test the demo form below, it will send the entered data to [httpbin.org](https://httpbin.org) with \`POST\` and display the response after the form.
+                        <Grid item xs={12}>
+                            <Markdown content source={`
+Test the demo form below, it will send the entered data to [httpbin.org*](https://httpbin.org) with \`POST\` and display the response after the form.
 `}/>
-                    </Grid>
+                        </Grid>
 
-                    <Grid item xs={12} md={9} style={{margin: '24px auto 0 auto'}}>
-                        <QuickStartEditor/>
-                    </Grid>
+                        <Grid item xs={12} md={9} style={{margin: '24px auto 0 auto'}}>
+                            <QuickStartEditor/>
+                        </Grid>
 
-                    <Grid item xs={12} style={{marginTop: 16}}>
-                        <Markdown content source={`
+                        <Grid item xs={12} style={{marginTop: 16}}>
+                            <Markdown content source={`
 ### Next Steps
 
 - [JSON-Schema Guides](https://json-schema.org/understanding-json-schema/)
 - [Adding custom l10n](/docs/localization)
 - [Creating widgets](/docs/widgets#creating-widgets)
 - [Adding / Overwriting Widgets](/docs/widgets#adding--overwriting-widgets)
-- [Advanced Widgets with UIGeneratorNested](/docs/core#uigeneratornested)
+- [More about PluginStack for nesting in arrays/objects](/docs/core#pluginstack)
 `}/>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Paper>
+                </Paper> : null}
+
+            {render === 'custom' ? <>
+                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <Markdown content source={`
+## 5. Add Root Level Renderer
+
+Now we add the root level render, the \`CustomGroup\` is responsible to validate the root schema-level.
+
+It is recommended to nest \`type=object\` schemas for best and easiest conditional and referencing handling, otherwise checkout [ObjectGroup](/docs/core#objectgroup).
+`}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Markdown content source={`
+\`\`\`jsx
+import {StringRenderer} from '@ui-schema/${ds === 'mui' ? 'ds-material' : 'ds-bootstrap'}/Widgets/TextField'
+
+// using applyPluginStack, this widget is fully typed
+// with the actual props of the widget component StringRenderer
+const WidgetTextField = applyPluginStack(StringRenderer)
+
+// custom group component, needed to also validate the root level
+// this one works for objects
+let CustomGroup: React.ComponentType<WidgetProps> = (props) => {
+    const {
+        schema: schemaLevel, storeKeys, level,
+        // errors for the root (current) schema level
+        errors, valid,
+    } = props
+
+    return <Grid container dir={'columns'} spacing={4}>
+        <WidgetTextField
+            level={level + 1}
+            storeKeys={storeKeys.push('name')}
+            schema={schemaLevel.getIn(['properties', 'name'])}
+            parentSchema={schemaLevel}
+
+            // this property comes from StringRenderer:
+            multiline={false}
+        />
+
+        <PluginStack
+            level={0}
+            storeKeys={storeKeys.push('comment') as StoreKeys}
+            schema={schemaLevel.getIn(['properties', 'comment']) as unknown as StoreSchemaType}
+            parentSchema={schemaLevel}
+        />
+
+        <PluginStack
+            level={0}
+            storeKeys={storeKeys.push('accept_privacy') as StoreKeys}
+            schema={schemaLevel.getIn(['properties', 'accept_privacy']) as unknown as StoreSchemaType}
+            parentSchema={schemaLevel}
+        />
+    </Grid>
+}
+// wiring this component
+CustomGroup = applyPluginStack(CustomGroup)
+
+
+// for storing at which store position a widget is,
+// as it is immutable, doesn't need to be newly created in component
+const rootStoreKeys = List()
+
+export const Generator = () => {
+    const [store, setStore] = React.useState(() => createStore(createOrderedMap(values)));
+
+    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+        setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
+    }, [setStore])
+
+    return (
+        <React.Fragment>
+            <UIProvider
+                schema={schema}
+
+                store={store}
+                onChange={onChange}
+
+                widgets={widgets}
+
+                showValidity={true}
+            >
+                {/*
+                  * this could be in any component below UIProvider,
+                  * thus you can nest it in own HTML, which can be in PureComponents:
+                  * using memo, they don't re-render even when store has changed
+                  */}
+                <CustomGroup
+                    level={0}
+                    storeKeys={rootStoreKeys}
+                    schema={schema}
+                    parentSchema={schema}
+                />
+            </UIProvider>
+        </React.Fragment>
+    )
+};
+\`\`\`
+`}/>
+                        </Grid>
+                    </Grid>
+                </Paper>
+
+                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <Markdown content source={`
+## 6. Add API Call
+
+Now we add a button that will send the store of the editor to an API if the form is valid.
+`}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Markdown content source={`
+\`\`\`jsx
+export const Generator = () => {
+    // ... the previous content ....
+
+    return (
+        <React.Fragment>
+            {/* ..the generator component.. */}
+
+            {/* add your sending button, in the onClick check for validity and do the needed action */}
+            <button
+                disabled={!!isInvalid(store.getValidity())}
+                onClick={() => {
+                    if(!isInvalid(store.getValidity())) {
+                        // when not invalid, post to an API
+                        fetch('https://httpbin.org/post', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            // here the immutable store is converted back to JS-Object and then to JSON
+                            body: JSON.stringify(store.valuesToJS())
+                        })
+                            .then(r => r.json())
+                            .then(answer => console.log(answer))
+                            .catch(err => console.error(err))
+                    }
+                }}
+            >Send</button>
+        </React.Fragment>
+    )
+};
+\`\`\`
+`}/>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Markdown content source={`
+Test the demo form below, it will send the entered data to [httpbin.org*](https://httpbin.org) with \`POST\` and display the response after the form.
+`}/>
+                        </Grid>
+
+                        <Grid item xs={12} md={9} style={{margin: '24px auto 0 auto'}}>
+                            <QuickStartEditor/>
+                        </Grid>
+
+                        <Grid item xs={12} style={{marginTop: 16}}>
+                            <Markdown content source={`
+### Next Steps
+
+- [JSON-Schema Guides](https://json-schema.org/understanding-json-schema/)
+- [Adding custom l10n](/docs/localization)
+- [Creating widgets](/docs/widgets#creating-widgets)
+- [Adding / Overwriting Widgets](/docs/widgets#adding--overwriting-widgets)
+- [More about PluginStack for nesting in arrays/objects](/docs/core#pluginstack)
+`}/>
+                        </Grid>
+                    </Grid>
+                </Paper>
+            </> : null}
         </PageContent>
     </>;
 };
@@ -359,9 +575,9 @@ const QuickStartEditor = () => {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
-                        body: JSON.stringify(store.valuesToJS())
+                    body: JSON.stringify(store.valuesToJS()),
                 })
                     .then(r => r.json())
                     .then(setSending)

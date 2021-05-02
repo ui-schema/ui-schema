@@ -26,7 +26,7 @@ The AST and plugins are rendered by [`PluginStack`](/docs/core#pluginstack) - in
 
  A plugin or widget can use more than only it's own schema/store level in various ways.
 
--  `ObjectRenderer` uses one schema-level, to build the next level automatically, by nesting of `PluginStack`
+- `ObjectRenderer` uses one schema-level, to build the next level automatically, by nesting of `PluginStack`
  - if the next level can only be rendered when the `value` is known, a non-scalar widget (`array`/`object`) must use `extractValue` to extract exactly it's own store values (`value`, `internalValue`), e.g. building a table out of array tuple items schemas
  - the `UIApi`/`ReferencingNetworkHandler` components use [React hooks](https://reactjs.org/docs/hooks-intro.html) to connect to `UIApiProvider` from within the plugin component.
 
@@ -55,7 +55,7 @@ Some not-so-usual examples, mostly just as demonstration - for production usage 
 
 One root schema, but rendering the widgets fully manually in the root level, without validating the root object for this strategy, technical limitation.
 
-```jsx
+```typescript jsx
 import React from 'react';
 import {List, OrderedMap} from 'immutable';
 import Grid from '@material-ui/core/Grid';
@@ -71,13 +71,15 @@ import {browserT} from '../t';
 
 const freeFormSchema = createOrderedMap({
     type: 'object',
-    name: {
-        type: 'string',
-    },
-    city: {
-        type: 'string',
-        widget: 'Select',
-        enum: ['Berlin', 'Paris', 'Zurich'],
+    properties: {
+        name: {
+            type: 'string',
+        },
+        city: {
+            type: 'string',
+            widget: 'Select',
+            enum: ['Berlin', 'Paris', 'Zurich'],
+        },
     },
 })
 
@@ -105,7 +107,7 @@ const FreeFormEditor = () => {
                 <PluginStack
                     showValidity={showValidity}
                     storeKeys={storeKeys.push('name')}
-                    schema={freeFormSchema.get('name')}
+                    schema={freeFormSchema.getIn(['properties', 'name'])}
                     parentSchema={freeFormSchema}
                     level={1}
                     readOnly={false}
@@ -114,7 +116,7 @@ const FreeFormEditor = () => {
                 <PluginStack
                     showValidity={showValidity}
                     storeKeys={storeKeys.push('city')}
-                    schema={freeFormSchema.get('city')}
+                    schema={freeFormSchema.getIn(['properties', 'city'])}
                     parentSchema={freeFormSchema}
                     level={1}
                     readOnly={false}

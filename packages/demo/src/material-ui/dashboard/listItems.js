@@ -64,5 +64,6 @@ export const secondaryListItems = (
         <ListItemLink to={'/mui-rbd'} primary="MUI RBD" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-dnd'} primary="MUI DND" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-editable'} primary="MUI Editable" icon={<AssignmentIcon/>}/>
+        <ListItemLink to={'/mui-custom'} primary="MUI Custom" icon={<AssignmentIcon/>}/>
     </div>
 );

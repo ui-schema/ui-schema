@@ -24,6 +24,9 @@ const schemaLists = createOrderedMap({
                 'max_guests': 4,
                 'end_check': true,
             }],*/
+            //notSortable: true,
+            //notAddable: true,
+            //notDeletable: true,
             default: [
                 {
                     'info': {
@@ -160,6 +163,8 @@ const schemaLists = createOrderedMap({
                 'mnbvf',
                 'ertyh1234',
             ],
+            //notAddable: true,
+            //notDeletable: true,
             minItems: 2,
             items: {
                 type: 'string',

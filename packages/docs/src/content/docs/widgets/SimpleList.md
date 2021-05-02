@@ -39,6 +39,8 @@ Supports extra keywords:
 - `view`
     - `btnSize` either `small` (default) or `medium`
     - `hideTitle` when `true` doesn't show any title
+- `notDeletable` when `true` doesn't allow deletion of items
+- `notAddable` when `true` doesn't allow adding items
 
 Components:
 

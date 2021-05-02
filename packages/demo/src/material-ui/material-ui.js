@@ -144,7 +144,7 @@ const Main = ({classes = {}}) => {
         <Grid item xs={12}>
             <DummyRenderer
                 id={'schemaTableMap'} schema={schemaDemoTableMap}
-                open
+                //open
                 toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
                 stylePaper={{background: 'transparent'}} variant={'outlined'}
             />
@@ -152,7 +152,7 @@ const Main = ({classes = {}}) => {
         <Grid item xs={12}>
             <DummyRenderer
                 id={'schemaTable'} schema={schemaDemoTable}
-                open
+                //open
                 toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
                 stylePaper={{background: 'transparent'}} variant={'outlined'}
             />
@@ -160,7 +160,7 @@ const Main = ({classes = {}}) => {
         <Grid item xs={12}>
             <DummyRenderer
                 id={'schemaDemoTableMapBig'} schema={schemaDemoTableMapBig}
-                open
+                //open
                 toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
                 stylePaper={{background: 'transparent'}} variant={'outlined'}
             />
@@ -168,7 +168,7 @@ const Main = ({classes = {}}) => {
         <Grid item xs={12}>
             <DummyRenderer
                 id={'schemaDemoTableAdvanced'} schema={schemaDemoTableAdvanced}
-                open
+                //open
                 toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}
                 stylePaper={{background: 'transparent'}} variant={'outlined'}
             />
@@ -258,13 +258,15 @@ const Main = ({classes = {}}) => {
 
 const freeFormSchema = createOrderedMap({
     type: 'object',
-    name: {
-        type: 'string',
-    },
-    city: {
-        type: 'string',
-        widget: 'Select',
-        enum: ['Berlin', 'Paris', 'Zurich'],
+    properties: {
+        name: {
+            type: 'string',
+        },
+        city: {
+            type: 'string',
+            widget: 'Select',
+            enum: ['Berlin', 'Paris', 'Zurich'],
+        },
     },
 })
 
@@ -293,7 +295,7 @@ const FreeFormEditor = () => {
                 <WidgetTextField
                     level={1}
                     storeKeys={storeKeys.push('name')}
-                    schema={freeFormSchema.get('name')}
+                    schema={freeFormSchema.getIn(['properties', 'name'])}
                     parentSchema={freeFormSchema}
 
                     // using `applyPluginStack`, this free-form widget is fully typed
@@ -303,7 +305,7 @@ const FreeFormEditor = () => {
                 <PluginStack
                     showValidity={showValidity}
                     storeKeys={storeKeys.push('city')}
-                    schema={freeFormSchema.get('city')}
+                    schema={freeFormSchema.getIn(['properties', 'city'])}
                     parentSchema={freeFormSchema}
                     level={1}
                     readOnly={false}

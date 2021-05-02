@@ -6,7 +6,7 @@
 
 JSON Schema based form + UI generator for any design system.
 
-Build powerful widget systems and user interfaces in no time, no matter how they should look like and how complex the logic is.
+Build powerful widget systems and user interfaces in no time, no matter how they should look like and how simple or complex your app will be - without wasting time to implement validations everytime.
 
 **JSON Schema versions** supported: Draft 2019-09 / Draft-08, Draft-07, Draft-06, Draft-04
 

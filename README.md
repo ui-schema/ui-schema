@@ -6,6 +6,8 @@
 
 JSON Schema form + UI generator for any design system, first-class support for [Material UI React](https://material-ui.com), easily create own widgets and plugins.
 
+Develop your next React app faster, with less code duplications - and without wasting time to implement validations.
+
 [![Travis (.org) branch](https://img.shields.io/travis/ui-schema/ui-schema/master?style=flat-square)](https://travis-ci.org/ui-schema/ui-schema)
 [![react compatibility](https://img.shields.io/badge/React-%3E%3D16.8-success?style=flat-square&logo=react)](https://reactjs.org/)
 [![MIT license](https://img.shields.io/npm/l/@ui-schema/ui-schema?style=flat-square)](https://github.com/ui-schema/ui-schema/blob/master/LICENSE)
@@ -49,17 +51,17 @@ JSON Schema form + UI generator for any design system, first-class support for [
 
 ## Schema
 
-JSON Schema keywords are used to validate the data, the UI is created from the data-schema and special UI keywords. A data-schema with integrated ui-schema enforces the consistency of data and UI across different apps and devices. Schemas are speeding up development, especially for admin portals which work primary CRUD, API first projects which need a good way to validate data, anything which needs fast changes of forms or dynamically generated forms.
+JSON Schema keywords are used to validate the data, the UI is created from that data-schema and special UI keywords. A data-schema with integrated ui-schema enforces the consistency of data and UI across different apps and devices. Schemas are speeding up development, especially for admin portals which work primary CRUD, API first projects which need a good way to validate data, anything which needs fast changes of forms or dynamically generated forms.
 
 *[Schema Documentation](https://ui-schema.bemit.codes/docs/schema)*
 
 ## Features
 
 - add any design-system and custom widget
-    - easily create isolated and atomic widgets
+    - easily create isolated and atomic widgets that connect automatically to the data
     - customize design system behaviour with e.g. widget compositions
     - easy binding of own design systems and custom widgets
-    - [auto-rendering by data & schema](https://ui-schema.bemit.codes/docs/core#main-ui-generator--renderer) or [full-custom forms](https://ui-schema.bemit.codes/docs/core#applypluginstack) with autowiring widgets
+    - [auto-rendering by data & schema](https://ui-schema.bemit.codes/quick-start) or [full-custom forms](https://ui-schema.bemit.codes/quick-start?render=custom) with autowiring widgets
 - flexible translation of widgets
     - with any library
     - (optional) integrated translation library

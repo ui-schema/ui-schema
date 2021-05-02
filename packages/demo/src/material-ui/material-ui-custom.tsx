@@ -9,7 +9,6 @@ import { Step, Stepper, widgets } from '@ui-schema/ds-material'
 import { isInvalid, createOrderedMap, createStore, StoreKeys, StoreSchemaType, WidgetProps, loadSchemaUIApi } from '@ui-schema/ui-schema'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { browserT } from '../t'
-import { useDummy } from '../component/MainDummy'
 import { UIApiProvider } from '@ui-schema/ui-schema/UIApi/UIApi'
 import { ReferencingNetworkHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
 import { storeUpdater } from '@ui-schema/ui-schema/UIStore/storeUpdater'
@@ -21,6 +20,7 @@ import { UIProvider } from '@ui-schema/ui-schema/UIGenerator/UIGenerator'
 import { PluginStack } from '@ui-schema/ui-schema/PluginStack/PluginStack'
 import { applyPluginStack } from '@ui-schema/ui-schema/applyPluginStack'
 import { StringRenderer } from '@ui-schema/ds-material/Widgets/TextField'
+import { ObjectGroup } from '@ui-schema/ui-schema/ObjectGroup'
 
 const customWidgets = {...widgets}
 const pluginStack = [...customWidgets.pluginStack]
@@ -65,32 +65,31 @@ const loadSchema: loadSchemaUIApi = (url, versions) => {
 }
 
 const Main = ({classes}: { classes: { paper: string } }) => {
-    const {toggleDummy, getDummy} = useDummy()
 
     return <React.Fragment>
         <Grid item xs={12}>
-            <Button style={{marginBottom: 12}} onClick={() => toggleDummy('freeFormEditor')} variant={getDummy('freeFormEditor') ? 'contained' : 'outlined'}>
-                FreeFormEditor
-            </Button>
-            {getDummy('freeFormEditor') ? <Paper className={classes.paper}>
+            <Paper className={classes.paper}>
                 <Typography component={'p'} variant={'body1'}>
-                    One root schema, but rendering the widgets fully manually in the root level, without validating the root object for this strategy, technical limitation.
+                    One root schema, but rendering the widgets fully manually in the root level.
+                    <del>without validating the root object for this strategy, technical limitation.</del>
                 </Typography>
                 <FreeFormEditor/>
-            </Paper> : null}
+            </Paper>
         </Grid>
     </React.Fragment>
 }
 
 const freeFormSchema = createOrderedMap({
     type: 'object',
-    name: {
-        type: 'string',
-    },
-    city: {
-        type: 'string',
-        widget: 'Select',
-        enum: ['Berlin', 'Paris', 'Zurich'],
+    properties: {
+        name: {
+            type: 'string',
+        },
+        city: {
+            type: 'string',
+            widget: 'Select',
+            enum: ['Berlin', 'Paris', 'Zurich'],
+        },
     },
 })
 
@@ -101,6 +100,7 @@ const WidgetTextField = applyPluginStack(StringRenderer)
 const FreeFormEditor = () => {
     const [showValidity, setShowValidity] = React.useState(false)
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
+    const [schema, setSchema] = React.useState<StoreSchemaType>(() => freeFormSchema)
 
     const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
         setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
@@ -115,28 +115,34 @@ const FreeFormEditor = () => {
             t={browserT}
             schema={freeFormSchema}
         >
-            <Grid container dir={'columns'} spacing={4}>
-                <WidgetTextField
-                    level={1}
-                    storeKeys={storeKeys.push('name') as StoreKeys}
-                    schema={freeFormSchema.get('name') as unknown as StoreSchemaType}
-                    parentSchema={freeFormSchema}
+            <ObjectGroup
+                storeKeys={storeKeys}
+                schema={freeFormSchema} parentSchema={undefined}
+                onSchema={(schema) => setSchema(schema)}
+            >
+                <Grid container dir={'columns'} spacing={4}>
+                    <WidgetTextField
+                        level={1}
+                        storeKeys={storeKeys.push('name') as StoreKeys}
+                        schema={schema.getIn(['properties', 'name']) as unknown as StoreSchemaType}
+                        parentSchema={schema}
 
-                    // using `applyPluginStack`, this free-form widget is fully typed
-                    // with the actual props of the widget component
-                    multiline={false}
-                />
+                        // using `applyPluginStack`, this free-form widget is fully typed
+                        // with the actual props of the widget component
+                        multiline={false}
+                    />
 
-                <PluginStack
-                    showValidity={showValidity}
-                    storeKeys={storeKeys.push('city') as StoreKeys}
-                    schema={freeFormSchema.get('city') as unknown as StoreSchemaType}
-                    parentSchema={freeFormSchema}
-                    level={1}
-                    readOnly={false}
-                    // noGrid={false} (as grid-item is included in `PluginStack`)
-                />
-            </Grid>
+                    <PluginStack
+                        showValidity={showValidity}
+                        storeKeys={storeKeys.push('city') as StoreKeys}
+                        schema={schema.getIn(['properties', 'name']) as unknown as StoreSchemaType}
+                        parentSchema={schema}
+                        level={1}
+                        readOnly={false}
+                        // noGrid={false} (as grid-item is included in `PluginStack`)
+                    />
+                </Grid>
+            </ObjectGroup>
 
             <MuiSchemaDebug setSchema={() => null}/>
         </UIProvider>
