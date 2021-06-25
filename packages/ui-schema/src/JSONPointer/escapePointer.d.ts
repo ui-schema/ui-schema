@@ -1,1 +1,1 @@
-export function escapePointer(pointer): string
+export function escapePointer(pointer: string): string

@@ -1,3 +1,3 @@
 import { List } from 'immutable'
 
-export function pointerToKeySeq(pointer): List<string | number>
+export function pointerToKeySeq(pointer: string): List<string | number>

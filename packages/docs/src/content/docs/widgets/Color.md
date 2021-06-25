@@ -16,7 +16,7 @@ Widgets for color picking, design-system implementation.
 Color picker using [react-color](https://casesandberg.github.io/react-color), inspired by [material-ui-color-picker](https://github.com/LoicMahieu/material-ui-color-picker/).
 
 ```bash
-npm i --save @ui-schema/material-color
+npm i --save @ui-schema/material-color react-color
 ```
 
 - special keywords:

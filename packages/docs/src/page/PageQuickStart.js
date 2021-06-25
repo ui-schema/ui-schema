@@ -66,7 +66,7 @@ See the [**list of widgets**](/docs/overview#widget-list) for the different desi
                 <Markdown content source={`
 **UIGenerator vs. Custom UI**, UI-Schema supports either:
 
-- full automatic UI generation by schema and data or
+- full automatic UI generation by schema and data, or:
 - custom UI with autowired and always validated widgets and partial-automatic generation
 
 `}/>
@@ -374,7 +374,7 @@ Test the demo form below, it will send the entered data to [httpbin.org*](https:
 ### Next Steps
 
 - [JSON-Schema Guides](https://json-schema.org/understanding-json-schema/)
-- [Adding custom l10n](/docs/localization)
+- [Adding translations](/docs/localization)
 - [Creating widgets](/docs/widgets#creating-widgets)
 - [Adding / Overwriting Widgets](/docs/widgets#adding--overwriting-widgets)
 - [More about PluginStack for nesting in arrays/objects](/docs/core#pluginstack)

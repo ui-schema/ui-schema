@@ -1,1 +1,3 @@
-export function resolvePointer(pointer, data): any
+import { Map } from 'immutable'
+
+export function resolvePointer(pointer: string, data: Map<string, any>): any

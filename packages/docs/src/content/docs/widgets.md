@@ -4,10 +4,9 @@
 
 This document is about **creating own widgets and design-system bindings** or changing existing ones.
 
-A widget is responsible to render the UI and either display or make the editing of the data possible, it **handles one schema level** and may connect to another UIGeneratorNested.
+A widget renders the UI and displays data and/or handles editing, **one widget handles one schema level** and may start rendering deeper nested levels.
 
-Through the **modular approach** and easy definition of a new widget, the widget system can be used to create **complex, separated UI components**, where the orchestration can be done **from an external system**, like some backend API.
-
+Through the **modular approach** and easy definition of new widgets, the widget system can be used to create **complex, separated UI components**, where the orchestration can be done **from an external system**, like some backend API.
 
 ```typescript jsx
 // Typings of widgets:
@@ -52,7 +51,7 @@ JSON-Schema is handled mostly by the `widgets.pluginStack` for you, focus on the
 
 Each widget gets properties provided by the root schema renderer or added from plugins. When rendering nested schemas, all passed down `props` to [`PluginStack`](/docs/core#pluginstack) are passed to the nested widget(s) - except those removed by [`WidgetRenderer`](/docs/core#widgetrenderer).
 
-Received properties from `WidgetRenderer` (`React.ComponentType<WidgetProps>` or accumulated in plugins & validators:
+Received properties from `WidgetRenderer` (`React.ComponentType<WidgetProps>`) or accumulated in plugins & validators:
 
 - `value` : `{*}` Plugins receive for any value, Widgets only for scalar
 - `onChange` : `{function}` store updater function, see [updating utils](/docs/core#store-updating--onchange)
@@ -66,7 +65,7 @@ Received properties from `WidgetRenderer` (`React.ComponentType<WidgetProps>` or
 - `showValidity` : `{boolean}` if the errors/success should be visible
 - `errors` : `{ValidatorErrorsType}` validation errors, added from the `widgets.pluginStack` for the current widget/schema-level
 
-See [how to add custom widgets](#adding--overwriting-widgets) to a binding.
+See [how to add custom widgets](#adding--overwriting-widgets) to a design system binding.
 
 ### Simplest Text Widget
 
