@@ -60,6 +60,13 @@ const useStyle = (styles) => {
     }, [styles]);
 };
 
+const modes = {
+    json: {
+        name: 'javascript',
+        json: true,
+    },
+}
+
 const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, split = true, uiStyle}) => {
     const [jsonError, setJsonError] = React.useState(false);
     const [maxLines /*setMaxLines*/] = React.useState(15);
@@ -100,7 +107,10 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
     const fontSize = 13;
 
     return <div style={uiStyle}>
-        <WidgetCodeProvider theme={palette.type === 'dark' ? 'duotone-dark' : 'duotone-light'}>
+        <WidgetCodeProvider
+            theme={palette.type === 'dark' ? 'duotone-dark' : 'duotone-light'}
+            modes={modes}
+        >
             <MuiPickersUtilsProvider utils={LuxonAdapter}>
                 <DragDropProvider contextValue={dragStoreContext.contextValue}>
                     <DndProvider backend={HTML5Backend}>

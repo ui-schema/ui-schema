@@ -242,7 +242,7 @@ Commands:
     - `npm run tdd -- -u --testPathPattern=src/Validators`
         - with `-u|--update` for snapshot update testing
         - with `--testPathPattern` to run all tests in a specific folder / path
-    - `npm run tdd -- --testPathPattern=PatternValidator -t patternValidator` for only one test and mostly one file
+        - `npm run tdd -- --testPathPattern=PatternValidator -t patternValidator` for only one test and often only one file
 - Testing: `npm test`
     - needs manual bootstrapping, hoisting and update handling
 - Build: `npm run build`
@@ -274,7 +274,7 @@ This project is free software distributed under the **MIT License**.
 
 See: [LICENSE](LICENSE).
 
-© 2020 bemit UG (haftungsbeschränkt)
+© 2021 bemit UG (haftungsbeschränkt)
 
 ### License Icons
 
