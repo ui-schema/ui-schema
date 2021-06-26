@@ -28,7 +28,7 @@ export const CodeRenderer = ({
                                  valid, required, format,
                              }) => {
     const uid = useUID();
-    const {theme} = useWidgetCode();
+    const {theme, modes} = useWidgetCode();
     const [lines, setLines] = React.useState(1);
     const [editor, setEditor] = React.useState();
     const [focused, setFocused] = React.useState(false);
@@ -71,17 +71,19 @@ export const CodeRenderer = ({
         )
     }, [onChange, currentStoreKeys, deleteOnEmpty, type]);
 
+    const mode = modes?.[format] ? modes[format] : format
     const options = React.useMemo(() => ({
-        mode: format,
+        mode: mode,
         lineNumbers: true,
-    }), [format]);
-
-    if(theme) {
-        options.theme = theme;
-    }
+        ...(theme ? {theme} : {}),
+    }), [format, theme, mode]);
 
     return <div
-        style={{minHeight: '2rem', height: lines ? ((lines + 1) * height) + 6 : 'auto', position: 'relative'}}
+        style={{
+            minHeight: '2rem',
+            height: lines ? ((lines + 1) * height) + 6 : 'auto',
+            position: 'relative',
+        }}
     >
         <CodeMirror
             className={clsx(

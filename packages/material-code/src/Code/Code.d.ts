@@ -5,4 +5,4 @@ export interface CodeProps extends WidgetProps {
     value: string
 }
 
-export function Code<P extends CodeProps>(props: P): React.ReactElement<P>
+export function Code<P extends CodeProps>(props: P): React.ReactElement

@@ -101,6 +101,7 @@ let EditorJS: React.ComponentType<EditorJSProps> = (
         instanceRef={instance => editorRef.current = instance}
         enableReInitialize={false}
         onReady={onReady}
+        // @ts-ignore
         onChange={onChangeEditor}
         holder={'uis-' + uid + '-editor'}
         minHeight={0}

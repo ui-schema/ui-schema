@@ -1,6 +1,6 @@
 import React from 'react'
 import { Record, OrderedMap, Map, List } from 'immutable'
-import { Translator } from '../Translate/t'
+import { Translator } from '../Translate/makeTranslator'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
 import { updaterFn, updateScope } from './storeUpdater'

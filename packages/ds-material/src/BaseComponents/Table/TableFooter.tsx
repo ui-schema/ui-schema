@@ -97,7 +97,7 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                 //rowsPerPageOptions={[5, 10, 25, 50, {label: t('pagination.all') as string, value: -1}]}
                 rowsPerPageOptions={
                     rowsShowAll ?
-                        rowsPerPage.push({label: t('pagination.all') as string, value: -1}).toArray() :
+                        rowsPerPage.push({label: t ? t('pagination.all') as string : 'all', value: -1}).toArray() :
                         rowsPerPage.toArray()
                 }
                 colSpan={colSize + 1}
@@ -105,7 +105,7 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                 rowsPerPage={rows}
                 page={page}
                 SelectProps={{
-                    inputProps: {'aria-label': t('pagination.rows-per-page') as string},
+                    inputProps: {'aria-label': t ? t('pagination.rows-per-page') as string : 'per Page'},
                     //native: true,
                 }}
                 onChangePage={(_e, p) => setPage(p)}
@@ -115,8 +115,8 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                 }}
                 // @ts-ignore
                 ActionsComponent={TablePaginationActions}
-                labelRowsPerPage={t('pagination.rows-per-page') as string + ':'}
-                labelDisplayedRows={({from, to, count}) => `${to !== -1 ? (from + '-' + to) : count} ${t('pagination.of') as string} ${count !== -1 ? count : 0}`}
+                labelRowsPerPage={t ? t('pagination.rows-per-page') as string + ':' : undefined}
+                labelDisplayedRows={({from, to, count}) => `${to !== -1 ? (from + '-' + to) : count} ${t ? t('pagination.of') as string : 'of'} ${count !== -1 ? count : 0}`}
             />
         </TableRow>
         <TableFooterErrors colSize={colSize} showValidity={showValidity} schema={schema}/>

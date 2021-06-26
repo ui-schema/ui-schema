@@ -21,7 +21,7 @@ export interface TableRendererExtractorProps {
 
 export interface TableRendererBaseProps extends TableRendererExtractorProps {
     listSize: number
-    t: Translator
+    t?: Translator
 }
 
 export interface TablePaginationActionsProps {
@@ -42,7 +42,7 @@ export interface TableHeaderProps {
 }
 
 export interface TableFooterProps {
-    t: Translator
+    t?: Translator
     dense?: boolean
     readOnly?: boolean
     page: number

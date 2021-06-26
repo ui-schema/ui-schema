@@ -1,11 +1,28 @@
 import * as React from 'react'
 
-export interface WidgetCodeProviderProps {
-    theme: string
+export interface WidgetCodeContextType {
+    // e.g. import theme:
+    // import 'codemirror/theme/duotone-dark.css'
+    // set theme prop to: `duotone-dark`
+    theme?: string
+    // mode mapping, where the `mode` key is accessed with `schema.format`,
+    // when not set, uses format directly
+    // e.g. needed for JSON, not needed for CSS
+    modes?: {
+        [mode: string]: {
+            name: string
+            [k: string]: any
+        }
+    }
 }
 
-export const WidgetCodeContext: React.Context<WidgetCodeProviderProps>
+/**
+ * @deprecated will be removed with major `0.3.0` release, more concise naming
+ */
+export type  WidgetCodeProviderProps = WidgetCodeContextType
 
-export const WidgetCodeProvider: (props: React.PropsWithChildren<WidgetCodeProviderProps>) => React.ReactElement
+export const WidgetCodeContext: React.Context<WidgetCodeContextType>
 
-export function useWidgetCode(): WidgetCodeProviderProps
+export const WidgetCodeProvider: React.ComponentType<React.PropsWithChildren<WidgetCodeContextType>>
+
+export function useWidgetCode(): WidgetCodeContextType

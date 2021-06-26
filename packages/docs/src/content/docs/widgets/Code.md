@@ -26,10 +26,18 @@ npm i --save @ui-schema/material-code react-codemirror2 codemirror
     - `view.hideTitle` when `true` it does not show the title, only the current format
 - see [full list of modes in codemirror repo](https://github.com/codemirror/CodeMirror/tree/master/mode)
     - `css`, `htmlmixed`, `jsx`, `markdown`, `php`, `sass`, `shell`, `sql`, `yaml` and a lot more
-- theming is optional but recommended, can be controlled from your app
+- uses translations: `formats.<schema.format>` for nicer labels, check [examples in docs](https://github.com/ui-schema/ui-schema/blob/master/packages/dictionary/src/en/formats.js)
+
+#### WidgetCodeProvider
+
+Props:
+
+- `modes`, mode mapping, where the `mode` key is accessed with `schema.format`
+    - when not set, uses format directly
+    - e.g. needed for JSON, not needed for CSS
+    - [see codemirror docs](https://codemirror.net/doc/manual.html#option_mode)
+- `theme` string id of the imported theme css
     - import the stylesheets like needed
-    - wrap all editor that should inherit the style with `WidgetCodeProvider` and pass down the string id of the theme
-- uses translations: `formats.<id-of-mdoe>` for nicer labels
 
 Add needed modes in your app/script:
 
@@ -39,13 +47,15 @@ import "codemirror/mode/javascript/javascript";
 // ... add further needed modes
 ```
 
-In this example we use the style-load with `lazySingletonStyleTag` to be able to inject/remove themes on theme switch and mount/dismount of the provider component:
+#### Example
+
+In this example, the CSS is loaded with `lazySingletonStyleTag`, to be able to inject/remove themes on theme switch and mount/dismount of the provider component. **This is sadly not possible with standard create-react-app**, there the CSS imports will be global.
 
 ```js
 import React from 'react';
 
 import {UIGenerator} from "@ui-schema/ui-schema";
-import {WidgetCodeProvider} from "@ui-schema/material-code";
+import {WidgetCodeProvider, WidgetCodeContextType} from "@ui-schema/material-code";
 
 import "codemirror/mode/css/css";
 import "codemirror/mode/javascript/javascript";
@@ -70,13 +80,25 @@ const useStyle = (styles) => {
     }, [styles]);
 };
 
+// ! only supported since `0.3.0-next.0`
+const modes: WidgetCodeContextType['modes'] = {
+    json: {
+        name: 'javascript',
+        json: true,
+    },
+}
+
 const StyledCodeEditor = props => {
     const {palette} = useTheme();
 
     useStyle(style);
     useStyle(palette.type === 'dark' ? themeDark : themeLight);
 
-    return <WidgetCodeProvider theme={palette.type === 'dark' ? 'duotone-dark' : 'duotone-light'}>
+    return <WidgetCodeProvider
+        theme={palette.type === 'dark' ? 'duotone-dark' : 'duotone-light'}
+        // only supported since `0.3.0-next.0`
+        modes={modes}
+    >
         <UIGenerator {...props}/>
     </WidgetCodeProvider>
 }
