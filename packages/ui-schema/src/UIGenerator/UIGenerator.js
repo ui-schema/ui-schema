@@ -1,6 +1,6 @@
 import React from 'react';
-import {UIStoreProvider, UIMetaProvider, UIStore} from '../UIStore';
-import {UIRootRenderer} from '../UIRootRenderer';
+import {UIStoreProvider, UIMetaProvider, UIStore} from '@ui-schema/ui-schema/UIStore';
+import {UIRootRenderer} from '@ui-schema/ui-schema/UIRootRenderer';
 
 /**
  * Main Component to create a schema based UI generator

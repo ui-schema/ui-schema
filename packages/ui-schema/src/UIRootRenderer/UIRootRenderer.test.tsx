@@ -4,7 +4,7 @@ import { render } from '@testing-library/react'
 // @ts-ignore
 import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
-import { UIRootRenderer } from './UIRootRenderer'
+import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer'
 import { MockSchemaProvider } from '../../tests/MockSchemaProvider.mock'
 
 expect.extend({toBeInTheDocument, toHaveClass})

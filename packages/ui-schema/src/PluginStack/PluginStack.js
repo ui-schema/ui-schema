@@ -1,5 +1,5 @@
 import React from 'react';
-import {memo} from '../Utils/memo';
+import {memo} from '@ui-schema/ui-schema/Utils/memo';
 import {List} from 'immutable';
 import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorStack';
 import {extractValue, withUIMeta} from '@ui-schema/ui-schema/UIStore';

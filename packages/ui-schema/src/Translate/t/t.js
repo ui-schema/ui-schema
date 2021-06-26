@@ -1,4 +1,4 @@
-import {makeTranslator} from '../makeTranslator';
+import {makeTranslator} from '@ui-schema/ui-schema/Translate/makeTranslator';
 
 /**
  * Dictionary Factory

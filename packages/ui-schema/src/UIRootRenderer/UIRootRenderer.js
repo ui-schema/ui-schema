@@ -1,8 +1,8 @@
 import React from 'react';
 import {List} from 'immutable';
-import {useUIMeta, useUI} from '../UIStore';
-import {PluginStack} from '../PluginStack';
-import {memo} from '../Utils/memo';
+import {useUIMeta, useUI} from '@ui-schema/ui-schema/UIStore';
+import {PluginStack} from '@ui-schema/ui-schema/PluginStack';
+import {memo} from '@ui-schema/ui-schema/Utils/memo';
 
 /**
  * @type {function({rootRenderer: *, ...}): *}

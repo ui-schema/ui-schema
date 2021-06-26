@@ -1,6 +1,6 @@
 import React from 'react';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import {NumberRenderer, StringRenderer, TextRenderer} from '../TextField/TextField';
+import {NumberRenderer, StringRenderer, TextRenderer} from '@ui-schema/ds-material/Widgets/TextField';
 import {Trans} from '@ui-schema/ui-schema';
 
 const computeIcon = (schema, baseInputProps) => {

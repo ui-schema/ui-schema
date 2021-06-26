@@ -1,7 +1,7 @@
 import React from 'react';
-import {NextPluginRenderer, NextPluginRendererMemo} from '../../PluginStack';
-import {useUI} from '../../UIStore';
-import {mergeSchema} from '../../Utils/mergeSchema';
+import {NextPluginRenderer, NextPluginRendererMemo} from '@ui-schema/ui-schema/PluginStack';
+import {useUI} from '@ui-schema/ui-schema/UIStore';
+import {mergeSchema} from '@ui-schema/ui-schema/Utils/mergeSchema';
 import {List, Map} from 'immutable';
 
 const DependentRenderer = ({dependencies, dependentSchemas, dependentRequired, ...props}) => {

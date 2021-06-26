@@ -1,9 +1,9 @@
 import React from 'react'
 import { Record, OrderedMap, Map, List } from 'immutable'
-import { Translator } from '../Translate/makeTranslator'
+import { Translator } from '@ui-schema/ui-schema/Translate/makeTranslator'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
-import { updaterFn, updateScope } from './storeUpdater'
+import { updaterFn, updateScope } from '@ui-schema/ui-schema/UIStore/storeUpdater'
 
 export type Values<V> = List<V> | string | number | boolean | Map<string, V> | OrderedMap<string, V>
 export type ValuesJS = any[] | string | number | boolean | Object

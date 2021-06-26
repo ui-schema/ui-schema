@@ -1,7 +1,7 @@
 import React, { CSSProperties, EventHandler } from 'react'
 import { useUID } from 'react-uid'
 import { mapSchema, checkNativeValidity, WidgetProps, TransTitle } from '@ui-schema/ui-schema'
-import { ValidityHelperText } from '../../Component/LocaleHelperText/LocaleHelperText'
+import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
 import InputBase from '@material-ui/core/InputBase'
 import Typography from '@material-ui/core/Typography'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'

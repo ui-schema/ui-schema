@@ -8,8 +8,8 @@ import Slider from '@material-ui/core/Slider';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import {TransTitle, extractValue, memo, Trans} from '@ui-schema/ui-schema';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
-import {AccessTooltipIcon} from '../../Component/Tooltip/Tooltip';
+import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
+import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip/Tooltip';
 
 const ThumbComponent = ({onClick, canDelete, children, ...p}) => {
     return <span {...p}>

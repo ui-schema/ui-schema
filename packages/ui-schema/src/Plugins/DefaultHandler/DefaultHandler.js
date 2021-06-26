@@ -1,5 +1,5 @@
 import React from 'react';
-import {NextPluginRenderer} from '../../PluginStack';
+import {NextPluginRenderer} from '@ui-schema/ui-schema/PluginStack';
 import {useImmutable} from '@ui-schema/ui-schema/Utils/useImmutable';
 
 const DefaultValueHandler = ({defaultVal, ...props}) => {

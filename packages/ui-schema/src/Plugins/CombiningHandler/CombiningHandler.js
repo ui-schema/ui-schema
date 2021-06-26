@@ -1,8 +1,8 @@
 import React from 'react';
 import {Map} from 'immutable';
-import {NextPluginRenderer} from '../../PluginStack';
-import {mergeSchema} from '../../Utils/mergeSchema';
-import {handleIfElseThen} from '../ConditionalHandler';
+import {NextPluginRenderer} from '@ui-schema/ui-schema/PluginStack';
+import {mergeSchema} from '@ui-schema/ui-schema/Utils/mergeSchema';
+import {handleIfElseThen} from '@ui-schema/ui-schema/Plugins/ConditionalHandler';
 
 export const CombiningHandler = (props) => {
     let {schema, value} = props;

@@ -5,7 +5,7 @@ import {
 import {Map, List} from 'immutable';
 import {TransTitle, Trans, beautifyKey, extractValue, memo} from '@ui-schema/ui-schema';
 import {useUID} from 'react-uid';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
 import {sortScalarList} from '@ui-schema/ui-schema/Utils/sortScalarList';
 
 const OptionCheck = ({disabled, currentValue, label, onChange}) => {

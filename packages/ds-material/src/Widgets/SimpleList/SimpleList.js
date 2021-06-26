@@ -6,9 +6,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Add from '@material-ui/icons/Add';
 import Remove from '@material-ui/icons/Remove';
 import {TransTitle, extractValue, memo, PluginStack} from '@ui-schema/ui-schema';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
 import {List, OrderedMap} from 'immutable';
-import {AccessTooltipIcon} from '../../Component/Tooltip/Tooltip';
+import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip/Tooltip';
 import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
 
 const SimpleList = extractValue(memo(({

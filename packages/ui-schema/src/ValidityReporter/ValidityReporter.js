@@ -1,5 +1,5 @@
 import React from 'react';
-import {NextPluginRenderer} from '../PluginStack';
+import {NextPluginRenderer} from '@ui-schema/ui-schema/PluginStack';
 
 export const ValidityReporter = (props) => {
     const {onChange, showValidity, storeKeys, valid} = props;

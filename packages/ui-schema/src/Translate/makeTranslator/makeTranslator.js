@@ -1,4 +1,4 @@
-import {relT} from '../relT';
+import {relT} from '@ui-schema/ui-schema/Translate/relT';
 
 /**
  * Dictionary Factory

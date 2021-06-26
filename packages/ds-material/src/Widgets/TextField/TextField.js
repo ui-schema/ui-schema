@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import {useUID} from 'react-uid';
 import {TransTitle, mapSchema, checkNativeValidity} from '@ui-schema/ui-schema';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
 import {convertStringToNumber} from '@ui-schema/ds-material/Utils/convertStringToNumber';
 import {forbidInvalidNumber} from '@ui-schema/ds-material/Utils';
 

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { UIMetaContext, StoreKeys } from '../UIStore'
+import { UIMetaContext, StoreKeys } from '@ui-schema/ui-schema/UIStore'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface UIGeneratorNestedProps {

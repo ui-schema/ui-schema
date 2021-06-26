@@ -1,5 +1,5 @@
 import React from 'react';
-import {NextPluginRenderer} from '../PluginStack';
+import {NextPluginRenderer} from '@ui-schema/ui-schema/PluginStack';
 
 export const handleValidatorStack = (props) => {
     if(props.widgets && props.widgets.validators && Array.isArray(props.widgets.validators)) {

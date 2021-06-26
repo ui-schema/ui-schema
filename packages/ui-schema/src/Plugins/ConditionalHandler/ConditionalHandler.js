@@ -1,6 +1,6 @@
 import React from 'react';
 import {Map} from 'immutable';
-import {NextPluginRendererMemo} from '../../PluginStack';
+import {NextPluginRendererMemo} from '@ui-schema/ui-schema/PluginStack';
 import {handleIfElseThen} from './handleIfElseThen';
 
 export const ConditionalHandler = (props) => {

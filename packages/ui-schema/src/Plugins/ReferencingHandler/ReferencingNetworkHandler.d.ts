@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { PluginProps } from '../../PluginStack/Plugin'
+import { PluginProps } from '@ui-schema/ui-schema/PluginStack/Plugin'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 
 /**

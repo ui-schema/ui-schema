@@ -3,11 +3,11 @@ import { ValidatorPlugin } from "@ui-schema/ui-schema/ValidatorStack/ValidatorPl
 import { PluginProps } from "@ui-schema/ui-schema/PluginStack/Plugin"
 import { Errors, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 
-export const ERROR_DUPLICATE_ITEMS = 'duplicate-items'
-export const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains'
-export const ERROR_MIN_CONTAINS = 'min-contains'
-export const ERROR_MAX_CONTAINS = 'max-contains'
-export const ERROR_ADDITIONAL_ITEMS = 'additional-items'
+export const ERROR_DUPLICATE_ITEMS: 'duplicate-items'
+export const ERROR_NOT_FOUND_CONTAINS: 'not-found-contains'
+export const ERROR_MIN_CONTAINS: 'min-contains'
+export const ERROR_MAX_CONTAINS: 'max-contains'
+export const ERROR_ADDITIONAL_ITEMS: 'additional-items'
 
 export function validateArrayContent(schema: StoreSchemaType | List<StoreSchemaType>, value: any, additionalItems?: boolean): {
     err: Errors

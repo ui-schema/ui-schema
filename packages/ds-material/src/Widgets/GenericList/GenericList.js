@@ -10,9 +10,9 @@ import Delete from '@material-ui/icons/Delete';
 import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import {TransTitle, extractValue, memo, PluginStack, Trans} from '@ui-schema/ui-schema';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
 import {List, Map} from 'immutable';
-import {AccessTooltipIcon} from '../../Component/Tooltip/Tooltip';
+import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip/Tooltip';
 import {moveItem} from '@ui-schema/ui-schema/Utils/moveItem/moveItem';
 
 let GenericListItem = ({index, listSize, schema, notSortable, notDeletable, deleteOnEmpty, showValidity, onChange, storeKeys, level, btnSize}) => {

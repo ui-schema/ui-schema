@@ -2,7 +2,7 @@
 
 Through widgets, the schema can work with any design system or individual component library, just use the properties to build the supported behaviour needed.
 
-For some popular design-systems default bindings exists, otherwise see [create your own binding](/docs/widgets#create-design-system-binding) or [overwriting widgets](/docs/widgets#adding--overwriting-widgets).
+Bindings for some popular design-systems are provided, otherwise see how to [create your own binding](/docs/widgets#create-design-system-binding) or how to [overwrite widgets for existing bindings](/docs/widgets#adding--overwriting-widgets).
 
 ## Material-UI
 

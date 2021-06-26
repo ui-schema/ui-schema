@@ -1,5 +1,5 @@
-import {validateSchemaObject} from '../../validateSchema';
-import {mergeSchema} from '../../Utils/mergeSchema';
+import {validateSchemaObject} from '@ui-schema/ui-schema/validateSchema';
+import {mergeSchema} from '@ui-schema/ui-schema/Utils/mergeSchema';
 
 export const handleIfElseThen = (schema, store, distSchema) => {
     const keyIf = schema.get('if');

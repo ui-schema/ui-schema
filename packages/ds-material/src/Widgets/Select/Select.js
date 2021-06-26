@@ -6,7 +6,7 @@ import {
     MenuItem, Select as MuiSelect, ListItemText,
 } from '@material-ui/core';
 import {TransTitle, Trans, beautifyKey, extractValue, memo} from '@ui-schema/ui-schema';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText';
 import {sortScalarList} from '@ui-schema/ui-schema/Utils/sortScalarList';
 
 const Select = ({

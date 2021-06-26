@@ -1,8 +1,8 @@
 import React from 'react';
 import {Record, Map, List} from 'immutable';
-import {getDisplayName} from '../Utils/memo/getDisplayName';
-import {createMap} from '../Utils/createMap';
-import {relT} from '../Translate/relT';
+import {getDisplayName} from '@ui-schema/ui-schema/Utils/memo/getDisplayName';
+import {createMap} from '@ui-schema/ui-schema/Utils/createMap';
+import {relT} from '@ui-schema/ui-schema/Translate/relT';
 
 const UIStoreContext = React.createContext({});
 const UIMetaContext = React.createContext({});
