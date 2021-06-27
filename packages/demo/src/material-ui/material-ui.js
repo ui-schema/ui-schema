@@ -13,22 +13,24 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import {Button} from '@material-ui/core';
 import {Step, Stepper, widgets} from '@ui-schema/ds-material';
-import {UIGenerator, isInvalid, createOrderedMap, createMap, createStore, createEmptyStore} from '@ui-schema/ui-schema';
+import {
+    isInvalid, createOrderedMap, createMap,
+    createStore, createEmptyStore,
+    UIMetaProvider, UIRootRenderer, UIStoreProvider, storeUpdater,
+} from '@ui-schema/ui-schema';
 import {MuiSchemaDebug} from './component/MuiSchemaDebug';
 import {browserT} from '../t';
 import {schemaLists} from '../schemas/demoLists';
 import {schemaNumberSlider} from '../schemas/demoNumberSlider';
-import {createDummyRenderer} from './component/MuiMainDummy';
+import {DummyRenderer} from './component/MuiMainDummy';
 import {useDummy} from '../component/MainDummy';
-import {UIApiProvider} from '@ui-schema/ui-schema/UIApi/UIApi';
+import {UIApiProvider} from '@ui-schema/ui-schema/UIApi';
 import {ReferencingNetworkHandler} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
-import {storeUpdater} from '@ui-schema/ui-schema/UIStore/storeUpdater';
 import {schemaDemoTable, schemaDemoTableAdvanced, schemaDemoTableMap, schemaDemoTableMapBig} from '../schemas/demoTable';
 import {Table} from '@ui-schema/ds-material/Widgets/Table';
 import {NumberRendererCell, StringRendererCell, TextRendererCell} from '@ui-schema/ds-material/Widgets/TextFieldCell';
-import {TableAdvanced} from '@ui-schema/ds-material/Widgets/TableAdvanced/TableAdvanced';
+import {TableAdvanced} from '@ui-schema/ds-material/Widgets/TableAdvanced';
 import {List, OrderedMap} from 'immutable';
-import {UIProvider} from '@ui-schema/ui-schema/UIGenerator/UIGenerator';
 import {PluginStack} from '@ui-schema/ui-schema/PluginStack/PluginStack';
 import {applyPluginStack} from '@ui-schema/ui-schema/applyPluginStack';
 import {StringRenderer} from '@ui-schema/ds-material/Widgets/TextField';
@@ -70,7 +72,6 @@ customWidgets.custom.Step = Step
 
 //widgets.types.null = () => 'null'
 
-const DummyRenderer = createDummyRenderer(customWidgets);
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
@@ -93,16 +94,14 @@ const MainStore = () => {
     }, [setStore])
 
     return <React.Fragment>
-        <UIGenerator
-            schema={schema}
+        <UIStoreProvider
             store={store}
             onChange={onChangeNext}
-            widgets={customWidgets}
             showValidity={showValidity}
-            t={browserT}
         >
+            <UIRootRenderer schema={schema}/>
             <MuiSchemaDebug setSchema={setSchema}/>
-        </UIGenerator>
+        </UIStoreProvider>
 
         <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
         {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
@@ -119,15 +118,14 @@ const DemoUser = () => {
 
     return <Grid container spacing={3} justify={'center'}>
         <Grid item xs={12} md={6}>
-            <UIGenerator
-                schema={schemaUser}
+            <UIStoreProvider
                 store={store}
                 onChange={onChangeNext}
-                widgets={customWidgets}
-                t={browserT}
+                showValidity
             >
+                <UIRootRenderer schema={schemaUser}/>
                 <MuiSchemaDebug/>
-            </UIGenerator>
+            </UIStoreProvider>
         </Grid>
     </Grid>
 };
@@ -283,13 +281,11 @@ const FreeFormEditor = () => {
     }, [setStore])
 
     return <React.Fragment>
-        <UIProvider
+        <UIStoreProvider
+            schema={freeFormSchema}
             store={store}
             onChange={onChange}
-            widgets={customWidgets}
             showValidity={showValidity}
-            t={browserT}
-            schema={freeFormSchema}
         >
             <Grid container dir={'columns'} spacing={4}>
                 <WidgetTextField
@@ -314,7 +310,7 @@ const FreeFormEditor = () => {
             </Grid>
 
             <MuiSchemaDebug setSchema={() => null}/>
-        </UIProvider>
+        </UIStoreProvider>
 
         <div style={{width: '100%'}}>
             <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
@@ -326,7 +322,9 @@ const FreeFormEditor = () => {
 };
 
 export default () => <AppTheme>
-    <UIApiProvider loadSchema={loadSchema} noCache>
-        <Dashboard main={Main}/>
-    </UIApiProvider>
+    <UIMetaProvider widgets={customWidgets} t={browserT}>
+        <UIApiProvider loadSchema={loadSchema} noCache>
+            <Dashboard main={Main}/>
+        </UIApiProvider>
+    </UIMetaProvider>
 </AppTheme>;

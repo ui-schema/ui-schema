@@ -1,0 +1,83 @@
+# UI Schema Generator & Renderer
+
+Components and functions exported by `@ui-schema/ui-schema` for usage within design systems, plugins and widgets.
+
+Components responsible for the actual rendering of plugins and then finally the widget.
+
+## UIGenerator
+
+Convenience, single-entry-point UI Schema generator, starts the whole schema and renders the RootRenderer with `UIRootRenderer`, **checkout the [quick-start](/quick-start)** for a full example!
+
+## UIRootRenderer
+
+Connects to the current context and uses the schema the first time, renders the `widgets.RootRenderer`.
+
+The `RootRenderer` is rendered in a memo component, starts the first rendering of a widget, this is the `children` of `RootRenderer`, done with [PluginStack](/docs/core-pluginstack).
+
+## WidgetRenderer
+
+Finds the actual widget in the mapping by the then defined schema, renders the widget and passes down all accumulated props (e.g. everything the plugins have added).
+
+If no widget is fund, renders nothing / `null`, but the plugins may have already rendered something! (like the grid)
+
+Executes `onErrors` for that schema level, when `errors` have changed and `onErrors` was specified.
+
+**Handles** removing props, before rendering the actual widget component. For performance reasons removes these `props`:
+
+- `value` is removed for `schema.type` `array` or `object`
+- `internalValue` is removed for `schema.type` `array` or `object`
+- `requiredList` is removed for every type
+
+## ObjectGroup
+
+Component - not a widget - for custom UI generation and handling `type=object` schema levels - without needing to nest everything.
+
+Use the property `onSchema` to get the maybe-changed schema up to the parent component, then reuse that for your other widgets.
+
+To get the errors of that schema level, use `onErrors` from [`WidgetRenderer`](#widgetrenderer).
+
+```typescript jsx
+const freeFormSchema = OrderedMap()
+
+const WidgetTextField = applyPluginStack(StringRenderer)
+
+const FreeFormEditor = () => {
+    const [store, setStore] = React.useState(() => createStore(OrderedMap()))
+    const [schema, setSchema] = React.useState<StoreSchemaType>(() => freeFormSchema)
+
+    const onChange = React.useCallback((...update) => setStore(storeUpdater(...update)), [setStore])
+
+    return <UIProvider
+        schema={freeFormSchema}
+        store={store}
+        onChange={onChange}
+        // widgets={customWidgets}
+        // showValidity={showValidity}
+        // t={browserT}
+    >
+        <ObjectGroup
+            storeKeys={storeKeys}
+            schema={freeFormSchema} parentSchema={undefined}
+            onSchema={(schema) => setSchema(schema)}
+        >
+            <Grid container dir={'columns'} spacing={4}>
+                <WidgetTextField
+                    level={1}
+                    storeKeys={storeKeys.push('name') as StoreKeys}
+                    schema={schema.getIn(['properties', 'name']) as unknown as StoreSchemaType}
+                    parentSchema={schema}
+
+                    // using `applyPluginStack`, this free-form widget is fully typed
+                    // with the actual props of the widget component
+                    multiline={false}
+                />
+            </Grid>
+        </ObjectGroup>
+
+    </UIProvider>
+}
+```
+
+## ObjectRenderer
+
+Widget used automatically for `type=object` that do not have a custom `widget`.

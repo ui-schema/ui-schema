@@ -16,7 +16,6 @@ import IcRedo from '@material-ui/icons/Redo'
 import IcUndo from '@material-ui/icons/Undo'
 import useTheme from '@material-ui/core/styles/useTheme';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter/isInvalid';
-import {UIGenerator} from '@ui-schema/ui-schema/UIGenerator';
 import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro';
 import {schemaDragDropEditableSingle, schemaEditable} from '../schemas/demoDragDropEditable';
 //import {TouchBackend} from 'react-dnd-touch-backend'
@@ -26,7 +25,7 @@ import {DroppableRootMultiple} from '@ui-schema/material-dnd/Widgets/DroppableRo
 import {makeDragDropContext} from '@ui-schema/material-dnd/DragDropProvider/makeDragDropContext';
 import {DragDropProvider} from '@ui-schema/material-dnd/DragDropProvider/DragDropProvider';
 import {BlockPanel} from '@ui-schema/material-dnd/DraggableBlock/BlockPanel';
-import {createStore, storeUpdater, UIApiProvider} from '@ui-schema/ui-schema';
+import {createStore, storeUpdater, UIApiProvider, UIMetaProvider, UIRootRenderer, UIStoreProvider} from '@ui-schema/ui-schema';
 import {OrderedMap} from 'immutable';
 import {DroppableRootSingle} from '@ui-schema/material-dnd/Widgets/DroppableRootSingle';
 import {DroppableRootContent} from '@ui-schema/material-dnd/DroppableRoot/DroppableRootContent';
@@ -117,16 +116,14 @@ const EditorEditablePro = () => {
         <UIApiProvider loadSchema={loadSchema} noCache>
             <DragDropProvider contextValue={dragStoreContext.contextValue}>
                 <DndProvider backend={HTML5Backend} options={touchBackendOpts}>
-                    <UIGenerator
-                        schema={schema}
+                    <UIStoreProvider
                         store={store.current}
                         onChange={onChange}
-                        widgets={customWidgets}
                         showValidity={showValidity}
-                        t={browserT}
                     >
+                        <UIRootRenderer schema={schema}/>
                         <MuiSchemaDebug/>
-                    </UIGenerator>
+                    </UIStoreProvider>
                 </DndProvider>
             </DragDropProvider>
         </UIApiProvider>
@@ -184,16 +181,14 @@ const EditorEditable = () => {
     }, [setStore])
 
     return <div style={{marginTop: 24, width: '100%'}}>
-        <UIGenerator
-            schema={schemaEditable}
+        <UIStoreProvider
             store={store}
             onChange={onChange}
-            widgets={customWidgets}
             showValidity={showValidity}
-            t={browserT}
         >
+            <UIRootRenderer schema={schemaEditable}/>
             <MuiSchemaDebug/>
-        </UIGenerator>
+        </UIStoreProvider>
 
         <div style={{width: '100%'}}>
             <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
@@ -212,7 +207,9 @@ const Main = () => {
 };
 
 export default () => <AppTheme>
-    <Dashboard main={Main}/>
+    <UIMetaProvider widgets={customWidgets} t={browserT}>
+        <Dashboard main={Main}/>
+    </UIMetaProvider>
 </AppTheme>
 
 export {customWidgets}

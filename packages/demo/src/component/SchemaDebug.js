@@ -1,4 +1,4 @@
-import {useUI} from '@ui-schema/ui-schema';
+import {useUI} from '@ui-schema/ui-schema/UIStore';
 import React from 'react';
 import {List} from 'immutable';
 

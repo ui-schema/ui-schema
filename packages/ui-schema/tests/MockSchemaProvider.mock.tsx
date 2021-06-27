@@ -1,9 +1,11 @@
 import React from 'react'
-import { Translator } from '@ui-schema/ui-schema/Translate/t'
+import { Translator } from '@ui-schema/ui-schema/Translate/makeTranslator'
 import { createEmptyStore } from '@ui-schema/ui-schema/UIStore'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap'
-import { UIProvider } from '@ui-schema/ui-schema/UIGenerator/UIGenerator'
-import { StoreSchemaType, WidgetsBindingBase } from '@ui-schema/ui-schema'
+import { UIProvider } from '@ui-schema/ui-schema/UIGenerator'
+import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer'
+import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
 
 export const MockWidgets: WidgetsBindingBase = {
     ErrorFallback: () => null,
@@ -17,21 +19,23 @@ export const MockWidgets: WidgetsBindingBase = {
 
 export const MockSchema = createOrderedMap({type: 'object'})
 
-export const MockSchemaProvider = (
-    {children, t, widgets, schema}: React.PropsWithChildren<{
-        t?: Translator
-        widgets: WidgetsBindingBase
-        schema: StoreSchemaType
-    }>
+export const MockSchemaProvider: React.ComponentType<{
+    t?: Translator
+    widgets: WidgetsBindingBase
+    schema: StoreSchemaType
+}> = (
+    {t, widgets, schema}
 ) => {
+    // @ts-ignore
     const [store, setStore] = React.useState(() => createEmptyStore(schema && schema.get('type')))
 
     return <UIProvider
-        schema={schema}
         store={store}
         onChange={setStore}
         // @ts-ignore
         widgets={widgets}
         t={t}
-    >{children}</UIProvider>
+    >
+        <UIRootRenderer schema={schema}/>
+    </UIProvider>
 }

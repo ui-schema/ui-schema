@@ -17,8 +17,7 @@ import IcUndo from '@material-ui/icons/Undo'
 import useTheme from '@material-ui/core/styles/useTheme';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter/isInvalid';
 import {fromJSOrdered} from '@ui-schema/ui-schema/Utils/createMap';
-import {UIGenerator} from '@ui-schema/ui-schema/UIGenerator';
-import {createStore, storeUpdater} from '@ui-schema/ui-schema/UIStore';
+import {createStore, storeUpdater, UIStoreProvider} from '@ui-schema/ui-schema/UIStore';
 import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro';
 import {schemaDragDrop, schemaDragDropSingle} from '../schemas/demoDragDropSimple';
 import {DroppableRootMultiple} from '@ui-schema/material-rbd/Widgets/DroppableRootMultiple';
@@ -26,6 +25,8 @@ import {DragDropProvider} from '@ui-schema/material-rbd/DragDropProvider/DragDro
 import {makeDragDropContext} from '@ui-schema/material-rbd/DragDropProvider/makeDragDropContext';
 import {List} from 'immutable';
 import {DroppableRootSingle} from '@ui-schema/material-rbd/Widgets/DroppableRootSingle';
+import {UIMetaProvider} from '@ui-schema/ui-schema';
+import {UIRootRenderer} from '@ui-schema/ui-schema/UIRootRenderer/UIRootRenderer';
 
 const customWidgets = {...widgets};
 customWidgets.custom = {
@@ -93,16 +94,14 @@ const MultiEditor = () => {
         </div>
 
         <DragDropProvider contextValue={dragStoreContext.contextValue}>
-            <UIGenerator
-                schema={schema}
+            <UIStoreProvider
                 store={store.current}
                 onChange={onChange}
-                widgets={customWidgets}
                 showValidity={showValidity}
-                t={browserT}
             >
+                <UIRootRenderer schema={schema}/>
                 <MuiSchemaDebug/>
-            </UIGenerator>
+            </UIStoreProvider>
         </DragDropProvider>
 
         <div style={{width: '100%'}}>
@@ -161,16 +160,14 @@ const SingleEditor = () => {
 
     return <React.Fragment>
         <DragDropProvider contextValue={dragStoreContext.contextValue}>
-            <UIGenerator
-                schema={schemaSingle}
+            <UIStoreProvider
                 store={store}
                 onChange={onChange}
-                widgets={customWidgets}
                 showValidity={showValidity}
-                t={browserT}
             >
+                <UIRootRenderer schema={schemaSingle}/>
                 <MuiSchemaDebug/>
-            </UIGenerator>
+            </UIStoreProvider>
         </DragDropProvider>
 
         <div style={{width: '100%'}}>
@@ -190,7 +187,9 @@ const Main = () => {
 };
 
 export default () => <AppTheme>
-    <Dashboard main={Main}/>
+    <UIMetaProvider widgets={customWidgets} t={browserT}>
+        <Dashboard main={Main}/>
+    </UIMetaProvider>
 </AppTheme>
 
 export {customWidgets}

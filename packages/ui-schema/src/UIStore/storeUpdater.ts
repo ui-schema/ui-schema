@@ -1,50 +1,94 @@
-import {prependKey, shouldDeleteOnEmpty} from '@ui-schema/ui-schema/UIStore/UIStore';
-import {List, Map, OrderedMap, Record} from 'immutable';
+import { List, Map, OrderedMap, Record } from 'immutable'
+import { StoreKeys, prependKey, UIStoreType, shouldDeleteOnEmpty } from '@ui-schema/ui-schema/UIStore/UIStore'
 
-const updateStoreScope = (store, scope, storeKeys, oldValue, newValue, deleteOnEmpty, type) => {
-    if(shouldDeleteOnEmpty(newValue, deleteOnEmpty, type)) {
-        const parentStore = store.getIn(storeKeys.size ? prependKey(storeKeys.splice(storeKeys.size - 1, 1), scope) : [scope])
+export interface UpdaterData {
+    value?: any
+    internal?: any
+    valid?: any
+
+    [extraScope: string]: any
+}
+
+export type updaterFn = ({value, internal, valid}: UpdaterData) => UpdaterData
+
+export type updateScope = 'value' | 'internal' | 'valid' | string
+
+const updateStoreScope: ScopeOnChangeHandlerInternal = (store, scope, storeKeys, _oldValue, newValue, deleteOnEmpty, type) => {
+    if (shouldDeleteOnEmpty(newValue, deleteOnEmpty, type)) {
+        const parentStore = store.getIn(storeKeys.size ? prependKey(storeKeys.splice(storeKeys.size - 1, 1) as StoreKeys, scope) : [scope])
         // e.g. numbers in tuples must only be deleted, when it is inside an object, when inside an `list` undefined must be used for a "reset"
         // todo: support valueOnDelete and fix behaviour in Array tuples https://github.com/ui-schema/ui-schema/issues/106
         //       also tests are missing atm.
-        if(List.isList(parentStore)) {
-            store = store.setIn(storeKeys.size ? prependKey(storeKeys, scope) : [scope], undefined);
-        } else if(Map.isMap(parentStore)) {
-            store = store.deleteIn(storeKeys.size ? prependKey(storeKeys, scope) : [scope]);
+        if (List.isList(parentStore)) {
+            store = store.setIn(storeKeys.size ? prependKey(storeKeys, scope) : [scope], undefined)
+        } else if (Map.isMap(parentStore)) {
+            store = store.deleteIn(storeKeys.size ? prependKey(storeKeys, scope) : [scope])
         }
         return store
     }
 
     store = store.setIn(
         storeKeys.size ? prependKey(storeKeys, scope) : [scope],
-        newValue,
+        newValue
     )
     return store
 }
 
-const getScopedValue = (storeKeys, scope, store) => store.getIn(storeKeys.size ? prependKey(storeKeys, scope) : [scope])
+const getScopedValue = <S extends UIStoreType>(storeKeys: StoreKeys, scope: updateScope, store: S) => store.getIn(storeKeys.size ? prependKey(storeKeys, scope) : [scope])
 
-export const buildScopedTree = (storeKeys, scope, store) => {
+export const buildScopedTree = <S extends UIStoreType>(storeKeys: StoreKeys, scope: updateScope, store: S): S => {
     const relativeList = [scope]
     storeKeys.forEach(key => {
-        let value = store.getIn(relativeList)
-        if(
-            (!List.isList(value) && !Map.isMap(value) && !Record.isRecord(value)) ||
+        if (typeof key === 'undefined') return
+
+        const value = store.getIn(relativeList)
+        if (
+            (
+                !List.isList(value) &&
+                !Map.isMap(value) &&
+                // @ts-ignore
+                !Record.isRecord(value)
+            ) ||
             (typeof key === 'number' && !List.isList(value))
         ) {
             store = store.setIn(
                 relativeList,
-                typeof key === 'number' ? List() : OrderedMap(),
+                typeof key === 'number' ? List() : OrderedMap()
             )
         }
         // the current iteration must have the "parents" relative storeKeys, not it's own,
         // thus doesn't do the last entry inside the tree, that one must be handled by the widget/onChange handler
-        relativeList.push(key)
+        relativeList.push(key as string)
     })
     return store
 }
 
-const scopeMap = {
+export type ScopeOnChangeHandlerInternal = <S extends UIStoreType>(
+    store: S, scope: updateScope, storeKeys: StoreKeys,
+    oldValue: any, newValue: any,
+    deleteOnEmpty: boolean, type?: string,
+    action?: UIStoreAction
+) => S
+
+export type ScopeOnChangeHandler = <S extends UIStoreType>(
+    store: S, storeKeys: StoreKeys,
+    oldValue: any, newValue: any,
+    deleteOnEmpty: boolean, type?: string,
+    action?: UIStoreAction
+) => S
+
+export interface UIStoreAction {
+    [key: string]: any
+}
+
+export interface ScopeMapType {
+    [scope: string]: {
+        key: string
+        handler: ScopeOnChangeHandler
+    }
+}
+
+const scopeMap: ScopeMapType = {
     value: {
         key: 'values',
         handler: (store, storeKeys, oldValue, newValue, deleteOnEmpty, type) => {
@@ -78,14 +122,14 @@ const scopeMap = {
             return updateStoreScope(
                 store, 'values', storeKeys,
                 oldValue, newValue,
-                deleteOnEmpty, type,
+                deleteOnEmpty, type
             )
         },
     },
     internal: {
         key: 'internals',
         handler: (store, storeKeys, oldValue, newValue, deleteOnEmpty, type) => {
-            if(typeof oldValue === 'undefined') {
+            if (typeof oldValue === 'undefined') {
                 // initializing the tree for correct data types
                 // https://github.com/ui-schema/ui-schema/issues/119
                 store = buildScopedTree(storeKeys, 'internals', store)
@@ -93,20 +137,20 @@ const scopeMap = {
             return updateStoreScope(
                 store, 'internals', storeKeys,
                 oldValue, newValue,
-                deleteOnEmpty, type,
+                deleteOnEmpty, type
             )
         },
     },
     valid: {
         key: 'validity',
         handler: (store, storeKeys, oldValue, newValue, deleteOnEmpty, type) => {
-            if(typeof newValue === 'undefined') {
+            if (typeof newValue === 'undefined') {
                 store = store.deleteIn(prependKey(storeKeys.push('__valid'), 'validity'))
             } else {
                 store = updateStoreScope(
                     store, 'validity', storeKeys.push('__valid'),
                     oldValue, newValue,
-                    deleteOnEmpty, type,
+                    deleteOnEmpty, type
                 )
             }
             return store
@@ -114,11 +158,18 @@ const scopeMap = {
     },
 }
 
-export const storeUpdater = (storeKeys, scopes, updater, deleteOnEmpty, type, action = {}) =>
-    store => {
-        const values = {}
+export const storeUpdater = (
+    storeKeys: StoreKeys,
+    scopes: updateScope[],
+    updater: updaterFn,
+    deleteOnEmpty?: boolean,
+    type?: string,
+    action: UIStoreAction = {}
+) =>
+    <T extends UIStoreType>(store: T): T => {
+        const values: { [k: string]: any } = {}
         scopes.forEach(scope => {
-            if(!scopeMap[scope]) {
+            if (!scopeMap[scope]) {
                 console.error('try to update unknown scope:', scope)
                 return
             }
@@ -128,14 +179,14 @@ export const storeUpdater = (storeKeys, scopes, updater, deleteOnEmpty, type, ac
         const res = updater({...values})
 
         scopes.forEach(scope => {
-            if(!scopeMap[scope]) {
+            if (!scopeMap[scope]) {
                 console.error('try to update unknown scope:', scope)
                 return
             }
             store = scopeMap[scope].handler(
                 store, storeKeys,
                 values[scope], res[scope],
-                deleteOnEmpty, type, action,
+                Boolean(deleteOnEmpty), type, action
             )
         })
 

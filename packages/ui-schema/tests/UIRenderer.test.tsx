@@ -1,19 +1,23 @@
+/**
+ * @jest-environment jsdom
+ */
 import React, { PropsWithChildren } from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 import {
     toBeInTheDocument,
     toHaveClass,
+    // @ts-ignore
 } from '@testing-library/jest-dom/matchers'
 import { List } from 'immutable'
 import { UIGenerator } from '../src/UIGenerator/UIGenerator'
 import { MockWidgets } from './MockSchemaProvider.mock'
-import { createStore, extractValue, WithValue } from '@ui-schema/ui-schema/UIStore/UIStore'
+import { createStore, extractValue, WithValue } from '@ui-schema/ui-schema/UIStore'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
-import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, JsonSchema, UIGeneratorNested, TransTitle, ValidatorStack, ValidityReporter, WidgetProps, StoreSchemaType } from '@ui-schema/ui-schema'
+import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ExtractStorePlugin, JsonSchema, TransTitle, ValidatorStack, ValidityReporter, WidgetProps } from '@ui-schema/ui-schema'
 import { ReferencingHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
 import { validators } from '@ui-schema/ui-schema/Validators/validators'
-import { NextPluginRenderer } from '@ui-schema/ui-schema/PluginStack/PluginStack'
+import { PluginStack, NextPluginRenderer } from '@ui-schema/ui-schema/PluginStack'
 import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter/isInvalid'
 import { storeUpdater } from '@ui-schema/ui-schema/UIStore/storeUpdater'
 
@@ -38,6 +42,7 @@ widgets.pluginStack = [
     // plugin to have every widget in it's own div to query against
     (props) => <div><NextPluginRenderer {...props}/></div>,
     ReferencingHandler,
+    ExtractStorePlugin,
     CombiningHandler,
     DefaultHandler,
     DependentHandler,
@@ -66,12 +71,13 @@ widgets.types.array = extractValue((props: WidgetProps & WithValue): React.React
         {List.isList(props.value) ? props.value.map((val, i: number) =>
             <div key={i}>
                 <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
-                    {/* eslint-disable-next-line deprecation/deprecation */}
-                    <UIGeneratorNested
+                    {null}
+                    {/* @ts-ignore */}
+                    <PluginStack
                         showValidity={props.showValidity}
-                        storeKeys={props.storeKeys.push(i)}
-                        schema={props.schema.get('items') as StoreSchemaType}
                         // @ts-ignore
+                        schema={props.schema.get('items')} //parentSchema={schema}
+                        storeKeys={props.storeKeys.push(i)} //level={level + 1}
                         noGrid
                     />
                 </div>

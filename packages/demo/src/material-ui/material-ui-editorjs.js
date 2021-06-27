@@ -17,7 +17,6 @@ import IcRedo from '@material-ui/icons/Redo'
 import IcUndo from '@material-ui/icons/Undo'
 import useTheme from '@material-ui/core/styles/useTheme';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter/isInvalid';
-import {UIGenerator} from '@ui-schema/ui-schema/UIGenerator';
 import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro';
 import {EditorJSWidget} from '@ui-schema/material-editorjs/Widgets/EditorJSWidget';
 import Paragraph from '@editorjs/paragraph'
@@ -26,6 +25,7 @@ import List from '@editorjs/list'
 import Header from '@editorjs/header'
 import Table from '@editorjs/table'
 import {schemaDemoEditorJS} from '../schemas/demoEditorJS';
+import {UIMetaProvider, UIRootRenderer, UIStoreProvider} from '@ui-schema/ui-schema';
 
 const tools = {
     paragraph: Paragraph,
@@ -103,16 +103,14 @@ const Main = () => {
             >save</Button>
         </div>
 
-        <UIGenerator
-            schema={schema}
+        <UIStoreProvider
             store={store.current}
             onChange={onChange}
-            widgets={customWidgets}
             showValidity={showValidity}
-            t={browserT}
         >
+            <UIRootRenderer schema={schema}/>
             <MuiSchemaDebug/>
-        </UIGenerator>
+        </UIStoreProvider>
 
         <div style={{width: '100%'}}>
             <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
@@ -156,7 +154,9 @@ const Main = () => {
 };
 
 export default () => <AppTheme>
-    <Dashboard main={Main}/>
+    <UIMetaProvider widgets={customWidgets} t={browserT}>
+        <Dashboard main={Main}/>
+    </UIMetaProvider>
 </AppTheme>
 
 export {customWidgets}

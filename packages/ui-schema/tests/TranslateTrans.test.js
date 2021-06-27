@@ -11,7 +11,6 @@ import {makeTranslator} from '../src/Translate/makeTranslator';
 import {t} from '../src/Translate/t';
 import {Map} from 'immutable';
 import {ERROR_MIN_LENGTH} from '@ui-schema/ui-schema/Validators';
-import {MockSchema, MockSchemaProvider, MockWidgets} from './MockSchemaProvider.mock';
 
 expect.extend({toBeInTheDocument, toHaveClass})
 
@@ -29,9 +28,7 @@ const tDeprecated = t(dicEN, 'en');
 describe('Translate\\Trans deprecated t', () => {
     it('Text', async () => {
         const {findByText, queryByText} = render(
-            <MockSchemaProvider t={tDeprecated} schema={MockSchema} widgets={MockWidgets}>
-                <Trans text={'titles.simple-number'}/>
-            </MockSchemaProvider>,
+            <Trans text={'titles.simple-number'} t={tDeprecated}/>,
         );
         //expect(container.firstChild).toMatchSnapshot();
         const label = await findByText('Simple Number');
@@ -41,9 +38,7 @@ describe('Translate\\Trans deprecated t', () => {
 
     test('Function', async () => {
         const {findByText, queryByText} = render(
-            <MockSchemaProvider t={tDeprecated} schema={MockSchema} widgets={MockWidgets}>
-                <Trans text={'error.' + ERROR_MIN_LENGTH} context={Map({min: 2})}/>
-            </MockSchemaProvider>,
+            <Trans text={'error.' + ERROR_MIN_LENGTH} context={Map({min: 2})} t={tDeprecated}/>,
         );
         //expect(container.firstChild).toMatchSnapshot();
         const label = await findByText('Min. Length: 2');
@@ -57,9 +52,7 @@ const tEN = makeTranslator(dicEN, 'en');
 describe('Translate\\Trans', () => {
     it('Text', async () => {
         const {findByText, queryByText} = render(
-            <MockSchemaProvider t={tEN} schema={MockSchema} widgets={MockWidgets}>
-                <Trans text={'titles.simple-number'}/>
-            </MockSchemaProvider>,
+            <Trans text={'titles.simple-number'} t={tEN}/>,
         );
         //expect(container.firstChild).toMatchSnapshot();
         const label = await findByText('Simple Number');
@@ -69,9 +62,7 @@ describe('Translate\\Trans', () => {
 
     test('Function', async () => {
         const {findByText, queryByText} = render(
-            <MockSchemaProvider t={tEN} schema={MockSchema} widgets={MockWidgets}>
-                <Trans text={'error.' + ERROR_MIN_LENGTH} context={Map({min: 2})}/>
-            </MockSchemaProvider>,
+            <Trans text={'error.' + ERROR_MIN_LENGTH} context={Map({min: 2})} t={tEN}/>,
         );
         //expect(container.firstChild).toMatchSnapshot();
         const label = await findByText('Min. Length: 2');

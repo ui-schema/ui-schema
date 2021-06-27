@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import {MuiSchemaDebug} from './MuiSchemaDebug';
 import {MainDummy} from '../../component/MainDummy';
 
-const createDummyRenderer = widgets => ({id, schema, toggleDummy, getDummy, variant = undefined, open, classes, stylePaper = {}}) => <React.Fragment>
+const DummyRenderer = ({id, schema, toggleDummy, getDummy, variant = undefined, open, classes, stylePaper = {}}) => <React.Fragment>
     {open ? null : <Button style={{marginBottom: 12}} onClick={() => toggleDummy(id)} variant={(getDummy && getDummy(id) ? 'contained' : 'outlined')}>
         {id.replace(/([A-Z0-9])/g, ' $1').replace(/^./, str => str.toUpperCase())}
     </Button>}
@@ -17,9 +17,8 @@ const createDummyRenderer = widgets => ({id, schema, toggleDummy, getDummy, vari
             schema={schema}
             Debugger={MuiSchemaDebug}
             Button={Button}
-            widgets={widgets}
         />
     </Paper> : null}
 </React.Fragment>;
 
-export {createDummyRenderer}
+export {DummyRenderer}

@@ -5,7 +5,10 @@ import MuiStep from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import {UIGeneratorNested, isInvalid, memo, extractValidity} from '@ui-schema/ui-schema';
+import {memo} from '@ui-schema/ui-schema/Utils';
+import {extractValidity} from '@ui-schema/ui-schema/UIStore';
+import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter';
+import {PluginStack} from '@ui-schema/ui-schema/PluginStack';
 import {TransTitle} from '@ui-schema/ui-schema/Translate/TransTitle';
 
 const useStyles = makeStyles(theme => ({
@@ -22,7 +25,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const Step = ({schema, storeKeys, level, ...p}) => {
-    return <UIGeneratorNested storeKeys={storeKeys} schema={schema.delete('widget')} level={level + 1} {...p}/>
+    return <PluginStack
+        schema={schema.delete('widget')}
+        storeKeys={storeKeys} level={level + 1}
+        {...p}
+    />
 };
 
 export const Stepper = extractValidity(memo(
@@ -83,12 +90,10 @@ export const Stepper = extractValidity(memo(
                     <div>
                         <Typography className={classes.instructions}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={stepOrder.get(activeStep)}/></Typography>
 
-                        <UIGeneratorNested
+                        <PluginStack
                             showValidity={showValidity}
-                            storeKeys={storeKeys.push(stepOrder.get(activeStep))}
-                            schema={steps.get(stepOrder.get(activeStep))}
-                            parentSchema={schema}
-                            level={level + 1}
+                            schema={steps.get(stepOrder.get(activeStep))} parentSchema={schema}
+                            storeKeys={storeKeys.push(stepOrder.get(activeStep))} level={level + 1}
                         />
 
                         <div style={{margin: '24px 0 0 0'}}>

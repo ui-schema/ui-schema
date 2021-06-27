@@ -79,10 +79,11 @@ let GenericListItem = ({index, listSize, schema, notSortable, notDeletable, dele
                     // tuples in root level not possible
                     // was wrong implementation <= 0.2.2
                     null :
-                    itemsSchema.get('type') === 'array' ?
+                    itemsSchema.get('type') === 'array' &&
+                    itemsSchema.get('items') ?
                         <Grid item style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
                             <Grid container spacing={2}>
-                                {itemsSchema.get('items').map((item, j) => <PluginStack
+                                {itemsSchema.get('items')?.map((item, j) => <PluginStack
                                     key={j}
                                     showValidity={showValidity}
                                     storeKeys={ownKeys.push(j)}

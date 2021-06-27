@@ -300,7 +300,7 @@ Vocabularies (**not up to date**):
 
 When the `hidden: true` keyword is applied to any schema, the `UIGenerator` doesn't render any HTML, producing no output in the page, but still renders and executes the plugins and validators - thus rendering it virtually.
 
-The prop `isVirtual` can be passed to the per schema-level components, like `PluginStack`, `UIGeneratorNested`, `WidgetRenderer` to render them virtual from within an e.g. widget.
+The prop `isVirtual` can be passed to the per schema-level components, like `PluginStack`, `WidgetRenderer` to render them virtual from within an e.g. widget.
 
 The `SchemaGridHandler` plugin of the design-system and any other plugin needs to support it, the official provided design systems and plugins are compatible.
 

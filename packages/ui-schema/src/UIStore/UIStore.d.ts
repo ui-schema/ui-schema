@@ -1,8 +1,4 @@
-import React from 'react'
-import { Record, OrderedMap, Map, List } from 'immutable'
-import { Translator } from '@ui-schema/ui-schema/Translate/makeTranslator'
-import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
-import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
+import { OrderedMap, Map, List, RecordOf } from 'immutable'
 import { updaterFn, updateScope } from '@ui-schema/ui-schema/UIStore/storeUpdater'
 
 export type Values<V> = List<V> | string | number | boolean | Map<string, V> | OrderedMap<string, V>
@@ -20,7 +16,7 @@ export interface UIStoreState<D = any> {
     getValidity: () => Map<string | number, any>
 }
 
-export type UIStoreType<D = any> = Record<UIStoreState<D>> & UIStoreState<D>
+export type UIStoreType<D = any> = RecordOf<UIStoreState<D>>
 
 export const UIStore: UIStoreType
 
@@ -34,27 +30,7 @@ export function onChangeHandler(
 
 export type onChange = typeof onChangeHandler
 
-export interface UIStoreContext<> {
-    store: UIStoreType
-    onChange: onChange
-    schema: StoreSchemaType
-}
-
-export function UIStoreProvider(
-    props: React.PropsWithChildren<UIStoreContext>
-): React.ReactElement
-
 // UIMetaContext
-
-export interface UIMetaContext<> {
-    widgets: WidgetsBindingBase
-    t?: Translator
-    showValidity?: boolean
-}
-
-export function UIMetaProvider(
-    props: React.PropsWithChildren<UIMetaContext>
-): React.ReactElement
 
 // Hooks & HOCs
 
@@ -62,39 +38,12 @@ export function createStore<D = any>(data: D): UIStoreType<D>
 
 export function createEmptyStore(type?: string): UIStoreType<[] | '' | 0 | false | {}>
 
-export function useUI(): UIStoreContext
-
-export function useUIMeta(): UIMetaContext
-
-// todo: check HOC definitions
-
-export interface WithValue {
-    value: any
-    internalValue: any
-    onChange: onChange
-}
-
-export function extractValue<P extends {}>(Wrapped: React.ComponentType<P & WithValue>): React.ComponentType<P>
-
-export interface WithValidity {
-    validity: any
-    onChange: onChange
-}
-
-export function extractValidity<P extends {}>(
-    WrappedComponent: React.ComponentType<P & WithValidity>
-): React.ComponentType<P>
-
-export function withUIMeta<P extends {}>(
-    WrappedComponent: React.ComponentType<P & UIMetaContext>
-): React.ComponentType<P>
-
 // UIStore / Immutable Manipulation Functions
 
 export type OwnKey = string | number
 
-export type StoreKeys<T = OwnKey> = List<T>
+export type StoreKeys = List<OwnKey>
 
-export function prependKey(storeKeys: StoreKeys, key: string | number): StoreKeys
+export function prependKey<O extends OwnKey = OwnKey, S extends StoreKeys<O>>(storeKeys: S, key: O): S
 
 export function shouldDeleteOnEmpty(value: any, force?: boolean, type?: string): boolean

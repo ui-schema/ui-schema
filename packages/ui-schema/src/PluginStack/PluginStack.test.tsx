@@ -3,7 +3,7 @@ import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 // @ts-ignore
 import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
-import { NextPluginRenderer, NextPluginRendererMemo, PluginStackBase } from '@ui-schema/ui-schema/PluginStack/PluginStack'
+import { NextPluginRenderer, NextPluginRendererMemo, PluginStack } from '@ui-schema/ui-schema/PluginStack/PluginStack'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
 import { List } from 'immutable'
 
@@ -107,7 +107,7 @@ describe('NextPluginRenderer', () => {
     it('Plugin Stack - noSchema', async () => {
         const {queryByText} = render(
             // @ts-ignore
-            <PluginStackBase
+            <PluginStack
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
@@ -118,7 +118,7 @@ describe('NextPluginRenderer', () => {
                     }],
                 }}
                 parentSchema={createOrderedMap({required: ['dummy']})}
-                storeKeys={List('dummy')}
+                storeKeys={List(['dummy'])}
             />
         )
         expect(queryByText('error-fallback') === null).toBeTruthy()

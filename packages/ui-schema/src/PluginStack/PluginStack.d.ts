@@ -35,10 +35,6 @@ export function PluginStack<P extends PluginStackProps>(
     props: P
 ): React.ReactElement
 
-export function PluginStackBase(
-    props: PluginStackProps
-): React.ReactElement
-
 export function getPlugin(current: number, pluginStack: []): PluginType | undefined
 
 export function NextPluginRenderer<P extends PluginProps>(props: P): React.ReactElement<P>

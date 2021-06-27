@@ -186,7 +186,7 @@ export const arrayValidator = {
          * - e.g. 2 out of 3 are invalid, only one error is visible on the parent-component
          * - but when the items are not valid, the parent should also know that something is invalid
          * - providing context `arrayItems = true` for errors makes it possible to distinct the errors in the parent-component
-         * - full sub-schema validation is done (and possible) if the sub-schema is rendered through e.g. UIGeneratorNested
+         * - full sub-schema validation is done (and possible) if the sub-schema is rendered through e.g. PluginStack isVirtual
          */
         let items = schema.get('items');
         if(items && value) {

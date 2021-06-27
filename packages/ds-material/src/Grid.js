@@ -46,7 +46,12 @@ const SchemaGridHandler = (props) => {
         return <NextPluginRenderer {...props}/>;
     }
 
-    return <SchemaGridItem schema={schema} style={{textAlign: schema.getIn(['view', 'align'])}}>
+    const align = schema.getIn(['view', 'align'])
+    const style = React.useMemo(() => ({
+        textAlign: align,
+    }), [align])
+
+    return <SchemaGridItem schema={schema} style={style}>
         <NextPluginRenderer {...props}/>
     </SchemaGridItem>;
 };

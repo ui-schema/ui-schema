@@ -11,7 +11,7 @@ import { Map } from 'immutable'
 expect.extend({toBeInTheDocument, toHaveClass})
 
 describe('LocaleHelperText', () => {
-    it('ValidityHelperText', async () => {
+    it('ValidityHelperText', () => {
         const {queryByText} = render(
             <ValidityHelperText
                 schema={createOrderedMap({type: 'string', widget: 'Text'})}
@@ -21,7 +21,7 @@ describe('LocaleHelperText', () => {
         )
         expect(queryByText('error.demo-err') !== null).toBeTruthy()
     })
-    it('ValidityHelperText no err', async () => {
+    it('ValidityHelperText no err', () => {
         const {queryByText} = render(
             <ValidityHelperText
                 schema={createOrderedMap({type: 'string', widget: 'Text'})}
@@ -31,7 +31,7 @@ describe('LocaleHelperText', () => {
         )
         expect(queryByText('browser-error') === null).toBeTruthy()
     })
-    it('ValidityHelperText browser', async () => {
+    it('ValidityHelperText browser', () => {
         const {queryByText} = render(
             // @ts-ignore
             <ValidityHelperText

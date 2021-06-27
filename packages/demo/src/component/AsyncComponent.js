@@ -1,11 +1,16 @@
-import React from "react";
-import Loadable from "react-loadable";
-import {Loading} from "./Loading";
+import React from 'react';
+import Loadable from 'react-loadable';
+import {Loading} from './Loading';
 
 const asyncComponent = (loader, name, label, preload = undefined) => {
     const LoadableComp = Loadable({
         loader,
-        loading: (load_props) => <Loading {...load_props} styleWrapper={{padding: '6px 0'}} name={name} label={label}/>,
+        loading: (load_props) => {
+            if(load_props.error) {
+                console.log('Error loading ' + name, load_props.error)
+            }
+            return <Loading {...load_props} styleWrapper={{padding: '6px 0'}} name={name} label={label}/>
+        },
     });
 
     if(preload) {

@@ -1,14 +1,16 @@
-import {SchemaGridHandler} from "./Grid";
+import {SchemaGridHandler} from './Grid';
 import {
-    DefaultHandler, ValidityReporter, DependentHandler,
-    ValidatorStack,
+    DefaultHandler, DependentHandler,
     ConditionalHandler, CombiningHandler,
-} from "@ui-schema/ui-schema";
-import {ReferencingHandler} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
+    ReferencingHandler, ExtractStorePlugin,
+} from '@ui-schema/ui-schema/Plugins';
+import {ValidatorStack} from '@ui-schema/ui-schema/ValidatorStack';
+import {ValidityReporter} from '@ui-schema/ui-schema/ValidityReporter';
 
 const pluginStack = [
     ReferencingHandler,
     SchemaGridHandler,
+    ExtractStorePlugin,
     CombiningHandler,
     DefaultHandler,
     DependentHandler,

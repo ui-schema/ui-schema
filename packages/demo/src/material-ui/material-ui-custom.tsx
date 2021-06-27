@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import { Button } from '@material-ui/core'
 import { Step, Stepper, widgets } from '@ui-schema/ds-material'
-import { isInvalid, createOrderedMap, createStore, StoreKeys, StoreSchemaType, WidgetProps, loadSchemaUIApi } from '@ui-schema/ui-schema'
+import { isInvalid, createOrderedMap, createStore, StoreKeys, StoreSchemaType, WidgetProps, loadSchemaUIApi, UIMetaProvider, UIStoreProvider } from '@ui-schema/ui-schema'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { browserT } from '../t'
 import { UIApiProvider } from '@ui-schema/ui-schema/UIApi/UIApi'
@@ -16,7 +16,6 @@ import { Table } from '@ui-schema/ds-material/Widgets/Table'
 import { NumberRendererCell, StringRendererCell, TextRendererCell } from '@ui-schema/ds-material/Widgets/TextFieldCell'
 import { TableAdvanced } from '@ui-schema/ds-material/Widgets/TableAdvanced/TableAdvanced'
 import { List, OrderedMap } from 'immutable'
-import { UIProvider } from '@ui-schema/ui-schema/UIGenerator/UIGenerator'
 import { PluginStack } from '@ui-schema/ui-schema/PluginStack/PluginStack'
 import { applyPluginStack } from '@ui-schema/ui-schema/applyPluginStack'
 import { StringRenderer } from '@ui-schema/ds-material/Widgets/TextField'
@@ -107,12 +106,10 @@ const FreeFormEditor = () => {
     }, [setStore])
 
     return <React.Fragment>
-        <UIProvider
+        <UIStoreProvider
             store={store}
             onChange={onChange}
-            widgets={customWidgets}
             showValidity={showValidity}
-            t={browserT}
             schema={freeFormSchema}
         >
             <ObjectGroup
@@ -145,7 +142,7 @@ const FreeFormEditor = () => {
             </ObjectGroup>
 
             <MuiSchemaDebug setSchema={() => null}/>
-        </UIProvider>
+        </UIStoreProvider>
 
         <div style={{width: '100%'}}>
             <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
@@ -158,7 +155,9 @@ const FreeFormEditor = () => {
 
 // eslint-disable-next-line react/display-name,@typescript-eslint/explicit-module-boundary-types
 export default () => <AppTheme>
-    <UIApiProvider loadSchema={loadSchema} noCache>
-        <Dashboard main={Main}/>
-    </UIApiProvider>
+    <UIMetaProvider widgets={customWidgets} t={browserT}>
+        <UIApiProvider loadSchema={loadSchema} noCache>
+            <Dashboard main={Main}/>
+        </UIApiProvider>
+    </UIMetaProvider>
 </AppTheme>

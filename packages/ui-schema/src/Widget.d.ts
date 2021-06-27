@@ -1,5 +1,5 @@
-import { onChange, OwnKey, StoreKeys } from '@ui-schema/ui-schema/UIStore'
-import { showValidity, Errors, required, valid, StoreSchemaType } from './CommonTypings'
+import { onChange, OwnKey, StoreKeys, UIStoreContext } from '@ui-schema/ui-schema/UIStore'
+import { Errors, required, valid, StoreSchemaType } from './CommonTypings'
 import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
 
 export interface WidgetProps {
@@ -13,7 +13,7 @@ export interface WidgetProps {
     // all indices of the current widget
     storeKeys: StoreKeys
     // if the widget should show the validity
-    showValidity: showValidity
+    showValidity: UIStoreContext['showValidity']
     errors: Errors
     required: required
     valid: valid

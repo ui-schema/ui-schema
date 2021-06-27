@@ -18,7 +18,7 @@ export const WidgetRenderer = ({
                                    // we do not want `requiredList` to be passed to the final widget for performance reasons
                                    // eslint-disable-next-line no-unused-vars
                                    requiredList,
-                                   // `props` contains all props accumulated in the PluginStack, UIRootRenderer, UIGeneratorNested etc.
+                                   // `props` contains all props accumulated in the PluginStack, UIRootRenderer etc.
                                    ...props
                                }) => {
     const {schema, widgets, isVirtual} = props;

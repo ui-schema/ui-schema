@@ -1,6 +1,6 @@
 import React from 'react';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import {Trans} from '@ui-schema/ui-schema';
+import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
 
 export const LocaleHelperText = ({text, schema, context, error = false}) => {
     return <FormHelperText error={error}>

@@ -1,6 +1,10 @@
 import React from 'react'
-import { List, Map, Record } from 'immutable'
-import { createEmptyStore, onChangeHandler, storeUpdater, UIStoreType } from '@ui-schema/ui-schema'
+import {
+    List, Map, Record,
+    // @ts-ignore
+    RecordOf,
+} from 'immutable'
+import { createEmptyStore, onChangeHandler, storeUpdater, UIStoreType } from '@ui-schema/ui-schema/UIStore'
 
 export type redoHistory = (steps?: number) => void
 export type undoHistory = (steps?: number) => void
@@ -38,7 +42,7 @@ class UIStorePro extends Record({
 }
 
 // @ts-ignore
-export type UIStoreProType = Record<UIStoreProData> & UIStoreProData
+export type UIStoreProType = RecordOf<UIStoreProData>
 
 export const makeStorePro = (type: string, initialStore: UIStoreType | any = undefined): UIStoreProType => {
     return new UIStorePro({

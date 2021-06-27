@@ -1,9 +1,8 @@
 import React from 'react';
-import {createEmptyStore, isInvalid, UIGenerator} from '@ui-schema/ui-schema';
-import {browserT} from '../t';
+import {createEmptyStore, isInvalid, UIRootRenderer, UIStoreProvider} from '@ui-schema/ui-schema';
 import {storeUpdater} from '@ui-schema/ui-schema/UIStore/storeUpdater';
 
-const MainDummy = ({schema, Debugger, Button, widgets}) => {
+const MainDummy = ({schema, Debugger, Button}) => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [store, setStore] = React.useState(() => createEmptyStore(schema.get('type')));
 
@@ -23,17 +22,13 @@ const MainDummy = ({schema, Debugger, Button, widgets}) => {
     }, [setStore])
 
     return <React.Fragment>
-        <UIGenerator
-            schema={schema}
+        <UIStoreProvider
             store={store}
-            //onChange={setStore}
             onChange={onChangeNext}
-            widgets={widgets}
-            showValidity={showValidity}
-            t={browserT}
         >
+            <UIRootRenderer schema={schema}/>
             <Debugger/>
-        </UIGenerator>
+        </UIStoreProvider>
 
         <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
         {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}

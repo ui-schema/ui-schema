@@ -5,11 +5,12 @@ import { render } from '@testing-library/react'
 import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
 import { WidgetRenderer } from './WidgetRenderer'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
-import { VirtualWidgetsMapping, WidgetProps } from '@ui-schema/ui-schema'
+import { ExtractStorePlugin, VirtualWidgetsMapping, WidgetProps } from '@ui-schema/ui-schema'
 import { VirtualArrayRenderer } from '@ui-schema/ui-schema/WidgetRenderer/VirtualWidgetRenderer'
 import { ObjectRenderer } from '@ui-schema/ui-schema/ObjectRenderer/ObjectRenderer'
 import { List } from 'immutable'
-import { createStore, UIMetaProvider, UIStoreProvider } from '@ui-schema/ui-schema/UIStore/UIStore'
+import { createStore, UIStoreProvider } from '@ui-schema/ui-schema/UIStore'
+import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 
@@ -33,7 +34,7 @@ describe('WidgetRenderer', () => {
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
                     types: {}, custom: {},
-                    pluginStack: [],
+                    pluginStack: [ExtractStorePlugin],
                     validators: [],
                 }}
                 value={'demo-value'}
@@ -50,7 +51,7 @@ describe('WidgetRenderer', () => {
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
                     types: {}, custom: {},
-                    pluginStack: [],
+                    pluginStack: [ExtractStorePlugin],
                     validators: [],
                 }}
                 value={'demo-value'}
@@ -67,7 +68,7 @@ describe('WidgetRenderer', () => {
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
                     types: {string: (props: WidgetProps) => props.value}, custom: {},
-                    pluginStack: [],
+                    pluginStack: [ExtractStorePlugin],
                     validators: [],
                 }}
                 value={'demo-value'}
@@ -85,7 +86,7 @@ describe('WidgetRenderer', () => {
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
                     types: {}, custom: {Text: (props: WidgetProps) => props.value},
-                    pluginStack: [],
+                    pluginStack: [ExtractStorePlugin],
                     validators: [],
                 }}
                 value={'demo-value'}
@@ -103,7 +104,7 @@ describe('WidgetRenderer', () => {
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
                     types: {array: (props: WidgetProps) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set'}, custom: {},
-                    pluginStack: [],
+                    pluginStack: [ExtractStorePlugin],
                     validators: [],
                 }}
                 value={[]}
@@ -121,7 +122,7 @@ describe('WidgetRenderer', () => {
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
                     types: {},
                     custom: {CustomObj: (props: WidgetProps) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set'},
-                    pluginStack: [],
+                    pluginStack: [ExtractStorePlugin],
                     validators: [],
                 }}
                 value={{}}
@@ -138,7 +139,7 @@ describe('WidgetRenderer', () => {
             <UIStoreProvider
                 store={store}
                 // @ts-ignore
-                onChange={undefined} schema={undefined}
+                onChange={undefined}
             >
                 <WidgetRenderer
                     widgets={{
@@ -146,7 +147,7 @@ describe('WidgetRenderer', () => {
                         RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
                         types: {string: () => 'string-renderer', number: () => 'number-renderer'},
                         custom: {},
-                        pluginStack: [],
+                        pluginStack: [ExtractStorePlugin],
                         validators: [],
                     }}
                     value={value}
@@ -194,7 +195,7 @@ describe('WidgetRenderer', () => {
             <UIStoreProvider
                 store={store}
                 // @ts-ignore
-                onChange={undefined} schema={undefined}
+                onChange={undefined}
             >
                 <WidgetRenderer
                     widgets={{
@@ -202,7 +203,7 @@ describe('WidgetRenderer', () => {
                         RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
                         types: {string: () => 'string-renderer', number: () => 'number-renderer'},
                         custom: {},
-                        pluginStack: [],
+                        pluginStack: [ExtractStorePlugin],
                         validators: [],
                     }}
                     value={value}
@@ -230,7 +231,7 @@ describe('WidgetRenderer', () => {
             RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
             types: {string: () => 'string-renderer', number: () => 'number-renderer'},
             custom: {},
-            pluginStack: [],
+            pluginStack: [ExtractStorePlugin],
             validators: [],
         }
         const value = createOrderedMap({dummy_array: ['lorem ipsum', 42]})
@@ -240,7 +241,7 @@ describe('WidgetRenderer', () => {
                 <UIStoreProvider
                     store={store}
                     // @ts-ignore
-                    onChange={undefined} schema={undefined}
+                    onChange={undefined}
                 >
                     <WidgetRenderer
                         widgets={widgets}
@@ -281,7 +282,7 @@ describe('WidgetRenderer', () => {
             RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
             types: {string: () => 'string-renderer', number: () => 'number-renderer'},
             custom: {},
-            pluginStack: [],
+            pluginStack: [ExtractStorePlugin],
             validators: [],
         }
         const value = createOrderedMap({dummy_array: [['lorem ipsum', 42], ['dolor sit', 43]]})
@@ -291,7 +292,7 @@ describe('WidgetRenderer', () => {
                 <UIStoreProvider
                     store={store}
                     // @ts-ignore
-                    onChange={undefined} schema={undefined}
+                    onChange={undefined}
                 >
                     <WidgetRenderer
                         widgets={widgets}

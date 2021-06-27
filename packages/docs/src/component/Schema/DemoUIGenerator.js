@@ -1,8 +1,7 @@
 import React from 'react';
 import {Button, Box, Typography, useTheme} from '@material-ui/core';
-import {createOrderedMap, UIProvider, UIRootRenderer, isInvalid, createEmptyStore, storeUpdater} from '@ui-schema/ui-schema';
+import {createOrderedMap, UIRootRenderer, isInvalid, createEmptyStore, storeUpdater, UIStoreProvider} from '@ui-schema/ui-schema';
 import {RichCodeEditor} from '../RichCodeEditor';
-import {browserT} from '../../t';
 import style from 'codemirror/lib/codemirror.css';
 import themeDark from 'codemirror/theme/duotone-dark.css';
 import themeLight from 'codemirror/theme/duotone-light.css';
@@ -15,7 +14,6 @@ import {DragDropProvider as DragDropProviderSimple} from '@ui-schema/material-rb
 import {makeDragDropContext as makeDragDropContextSimple} from '@ui-schema/material-rbd/DragDropProvider/makeDragDropContext';
 import {makeDragDropContext} from '@ui-schema/material-dnd/DragDropProvider/makeDragDropContext';
 import {DragDropProvider} from '@ui-schema/material-dnd/DragDropProvider/DragDropProvider';
-import {customWidgets} from './widgets';
 import {OrderedMap} from 'immutable';
 
 const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, richIde, renderChange, theme, maxLines, enableShowAll}) => {
@@ -115,13 +113,10 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
                 <DragDropProvider contextValue={dragStoreContext.contextValue}>
                     <DndProvider backend={HTML5Backend}>
                         <DragDropProviderSimple contextValue={dragStoreContextSimple.contextValue}>
-                            <UIProvider
-                                schema={schema}
+                            <UIStoreProvider
                                 store={store}
                                 onChange={onChange}
-                                widgets={customWidgets}
                                 showValidity={showValidity}
-                                t={browserT}
                             >
                                 {showDebugger && !split ? <DebugSchemaEditor
                                     schema={schema} setSchema={setSchema}
@@ -141,8 +136,8 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
                                         </Typography>
                                     </Box> : null}
 
-                                {typeof schema === 'string' ? null : <UIRootRenderer/>}
-                            </UIProvider>
+                                {typeof schema === 'string' ? null : <UIRootRenderer schema={schema}/>}
+                            </UIStoreProvider>
                         </DragDropProviderSimple>
                     </DndProvider>
                 </DragDropProvider>

@@ -59,7 +59,7 @@ Received properties from `WidgetRenderer` (`React.ComponentType<WidgetProps>`) o
 - `ownKey` : `{string|integer}`
 - `schema` : `{Map}` the schema of the current widget
 - `parentSchema` : `{Map}` the schema of the parent widget
-- `level` : `{integer}` how deep in the schema it is, incremented automatically for native-objects, must be done manually when using `UIGeneratorNested`
+- `level` : `{integer}` how deep in the schema it is, incremented automatically for native-objects, must be done manually when using `PluginStack`
 - `required` : `{boolean}`, extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `requiredValidator`
 - `valid` : `{boolean}` if this schema level got some error, detected/changed from the `widgets.pluginStack`
 - `showValidity` : `{boolean}` if the errors/success should be visible

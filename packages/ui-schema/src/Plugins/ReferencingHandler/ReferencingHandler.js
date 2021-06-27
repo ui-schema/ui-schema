@@ -22,10 +22,10 @@ const ReferencingRenderer = (props) => {
     } else {
         const parseRes = parseRefs(
             schema, {
-            defs: definitions,
-            root: rootSchema,
-            getSchema,
-        });
+                defs: definitions,
+                root: rootSchema,
+                getSchema,
+            });
         refPending = parseRes.pending
 
         if(!refPending || refPending.size <= 0) {

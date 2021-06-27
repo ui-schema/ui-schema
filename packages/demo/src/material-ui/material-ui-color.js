@@ -1,10 +1,10 @@
 import React from 'react';
 import AppTheme from './layout/AppTheme';
 import Dashboard from './dashboard/Dashboard';
-import Grid from "@material-ui/core/Grid";
-import {widgets,} from "@ui-schema/ds-material";
-import {createDummyRenderer} from "./component/MuiMainDummy";
-import {useDummy} from "../component/MainDummy";
+import Grid from '@material-ui/core/Grid';
+import {widgets} from '@ui-schema/ds-material';
+import {DummyRenderer} from './component/MuiMainDummy';
+import {useDummy} from '../component/MainDummy';
 import {
     Color, ColorDialog,
     ColorSwatches,
@@ -14,8 +14,10 @@ import {
     ColorSliderStatic, ColorStatic,
     ColorCircleStatic, ColorTwitterStatic,
     ColorSketchStatic, ColorSketchDialog,
-} from "@ui-schema/material-color";
-import {schemaColor} from "../schemas/demoColor";
+} from '@ui-schema/material-color';
+import {schemaColor} from '../schemas/demoColor';
+import {browserT} from '../t';
+import {UIMetaProvider} from '@ui-schema/ui-schema';
 
 const customWidgets = {...widgets};
 customWidgets.custom = {
@@ -40,8 +42,6 @@ customWidgets.custom = {
     ColorSketchDialog,
 };
 
-const DummyRenderer = createDummyRenderer(customWidgets);
-
 const Main = ({classes = {}}) => {
     const {toggleDummy, getDummy} = useDummy();
 
@@ -52,6 +52,8 @@ const Main = ({classes = {}}) => {
 
 export default () => (
     <AppTheme>
-        <Dashboard main={Main}/>
+        <UIMetaProvider widgets={customWidgets} t={browserT}>
+            <Dashboard main={Main}/>
+        </UIMetaProvider>
     </AppTheme>
 )

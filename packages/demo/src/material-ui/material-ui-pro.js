@@ -18,9 +18,9 @@ import IcUndo from '@material-ui/icons/Undo'
 import useTheme from '@material-ui/core/styles/useTheme';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter/isInvalid';
 import {fromJSOrdered} from '@ui-schema/ui-schema/Utils/createMap';
-import {UIGenerator} from '@ui-schema/ui-schema/UIGenerator';
-import {createStore} from '@ui-schema/ui-schema/UIStore';
+import {createStore, UIStoreProvider} from '@ui-schema/ui-schema/UIStore';
 import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro';
+import {UIMetaProvider, UIRootRenderer} from '@ui-schema/ui-schema';
 
 const customWidgets = {...widgets};
 customWidgets.custom = {
@@ -118,16 +118,14 @@ const Main = () => {
             >save</Button>
         </div>
 
-        <UIGenerator
-            schema={schema}
+        <UIStoreProvider
             store={store.current}
             onChange={onChange}
-            widgets={customWidgets}
             showValidity={showValidity}
-            t={browserT}
         >
+            <UIRootRenderer schema={schema}/>
             <MuiSchemaDebug/>
-        </UIGenerator>
+        </UIStoreProvider>
 
         <div style={{width: '100%'}}>
             <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
@@ -171,7 +169,9 @@ const Main = () => {
 };
 
 export default () => <AppTheme>
-    <Dashboard main={Main}/>
+    <UIMetaProvider widgets={customWidgets} t={browserT}>
+        <Dashboard main={Main}/>
+    </UIMetaProvider>
 </AppTheme>
 
 export {customWidgets}

@@ -1,11 +1,11 @@
 import React from 'react';
-import {memo} from '@ui-schema/ui-schema/Utils/memo';
 import {List} from 'immutable';
-import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorStack';
-import {extractValue, withUIMeta} from '@ui-schema/ui-schema/UIStore';
-import {WidgetRenderer} from '@ui-schema/ui-schema/WidgetRenderer/WidgetRenderer';
-import {isRootSchema, SchemaRootProvider} from '@ui-schema/ui-schema/SchemaRootProvider/SchemaRootProvider';
+import {memo} from '@ui-schema/ui-schema/Utils/memo';
 import {getSchemaId} from '@ui-schema/ui-schema/Utils/getSchema';
+import {useUIMeta} from '@ui-schema/ui-schema/UIMeta/UIMetaProvider';
+import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorStack';
+import {WidgetRenderer} from '@ui-schema/ui-schema/WidgetRenderer/WidgetRenderer';
+import {isRootSchema, SchemaRootProvider} from '@ui-schema/ui-schema/SchemaRootProvider';
 
 class PluginStackErrorBoundary extends React.Component {
     state = {
@@ -32,11 +32,18 @@ class PluginStackErrorBoundary extends React.Component {
     }
 }
 
-export const PluginStackBase = (props) => {
+// `extractValue` has moved to own plugin `ExtractStorePlugin` since `0.3.0`
+// `withUIMeta` and `mema` are not needed for performance optimizing since `0.3.0` at this position
+export const PluginStack = (props) => {
+    const {widgets, t} = useUIMeta()
     const {
         level = 0, parentSchema,
-        storeKeys, schema, widgets,
+        storeKeys, schema,
+        widgets: customWidgets,
+        t: customT,
     } = props;
+    const activeWidgets = customWidgets ? customWidgets : widgets
+    const activeT = customT ? customT : t
 
     // till draft-06, no `$`, hashtag in id
     const id = getSchemaId(schema)
@@ -49,12 +56,14 @@ export const PluginStackBase = (props) => {
         }
     }
 
-    const ErrorBoundary = widgets.ErrorFallback ? PluginStackErrorBoundary : React.Fragment;
+    const ErrorBoundary = activeWidgets.ErrorFallback ? PluginStackErrorBoundary : React.Fragment;
 
     const pluginTree = <NextPluginRenderer
         current={-1}
         // all others are getting pushed to Widget
         {...props}
+        t={activeT}
+        widgets={activeWidgets}
         level={level}
         ownKey={storeKeys.get(storeKeys.count() - 1)}
         requiredList={required}
@@ -65,7 +74,7 @@ export const PluginStackBase = (props) => {
     />
 
     return props.schema ? <ErrorBoundary
-        FallbackComponent={widgets.ErrorFallback}
+        FallbackComponent={activeWidgets.ErrorFallback}
         type={schema.get('type')}
         widget={schema.get('widget')}
     >
@@ -77,7 +86,6 @@ export const PluginStackBase = (props) => {
             pluginTree}
     </ErrorBoundary> : null;
 };
-export const PluginStack = withUIMeta(extractValue(memo(PluginStackBase)));
 
 export const getPlugin = (current, pluginStack) => {
     return current < pluginStack.length ? pluginStack[current] : undefined;
