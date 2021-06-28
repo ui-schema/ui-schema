@@ -7,20 +7,23 @@ import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap
 import { StringRenderer } from './TextField'
 import { List } from 'immutable'
 import { createValidatorErrors } from '@ui-schema/ui-schema'
+import { MockSchemaMetaProvider } from '../../../tests/MockSchemaProvider.mock'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 
 describe('StringRenderer', () => {
     it('renders html', async () => {
         const {container} = render(
-            // @ts-ignore
-            <StringRenderer
-                schema={createOrderedMap({})}
-                storeKeys={List()}
-                valid={false}
-                showValidity={false}
-                errors={createValidatorErrors()}
-            />
+            <MockSchemaMetaProvider>
+                {/* @ts-ignore */}
+                <StringRenderer
+                    schema={createOrderedMap({})}
+                    storeKeys={List()}
+                    valid={false}
+                    showValidity={false}
+                    errors={createValidatorErrors()}
+                />
+            </MockSchemaMetaProvider>
         )
         // expect(container.firstChild).toMatchSnapshot()
         expect(container.querySelector('.MuiTextField-root') !== null).toBeTruthy()
@@ -31,14 +34,16 @@ describe('StringRenderer', () => {
 
     it('renders html error', async () => {
         const {container} = render(
-            // @ts-ignore
-            <StringRenderer
-                schema={createOrderedMap({})}
-                storeKeys={List()}
-                valid={false}
-                showValidity
-                errors={createValidatorErrors()}
-            />
+            <MockSchemaMetaProvider>
+                {/* @ts-ignore */}
+                <StringRenderer
+                    schema={createOrderedMap({})}
+                    storeKeys={List()}
+                    valid={false}
+                    showValidity
+                    errors={createValidatorErrors()}
+                />
+            </MockSchemaMetaProvider>
         )
         expect(container.querySelector('.MuiTextField-root') !== null).toBeTruthy()
         expect(container.querySelector('.MuiInputLabel-root') !== null).toBeTruthy()

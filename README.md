@@ -58,26 +58,27 @@ JSON Schema keywords are used to validate the data, the UI is created from that 
 ## Features
 
 - add any design-system and custom widget
-    - easily create isolated and atomic widgets that connect automatically to the data
+    - easily create isolated and atomic widgets, with autowired data and validations
     - customize design system behaviour with e.g. widget compositions
     - easy binding of own design systems and custom widgets
     - [auto-rendering by data & schema](https://ui-schema.bemit.codes/quick-start) or [full-custom forms](https://ui-schema.bemit.codes/quick-start?render=custom) with autowiring widgets
 - flexible translation of widgets
-    - with any library
-    - (optional) integrated translation library
-    - supports translations in schema
+    - with any library ([`t` prop (Translator)](https://ui-schema.bemit.codes/docs/localization#translation))
+    - in-schema translations ([`t` keyword](https://ui-schema.bemit.codes/docs/localization#translation-in-schema))
+    - label text transforms ([`tt` keyword](https://ui-schema.bemit.codes/docs/localization#text-transform))
     - single or multi-language
     - for labels, titles, errors, icons...
+    - (optional) [integrated translation library](https://ui-schema.bemit.codes/docs/localization#immutable-as-dictionary)
 - modular, extensible and slim core
     - add own validators
     - add own plugins
     - use what you need
-- performance optimized, only updates HTML which must re-render, perfect for big schemas
+- [performance optimized](https://ui-schema.bemit.codes/docs/performance), only updates HTML which must re-render, perfect for big schemas
 - code-splitting, with custom widget mappings / lazy-loading widgets
 - includes helper functions for store and immutable handling
-- easy nesting of ui-generator for object/array widgets
-- validate hidden/auto-generated values, virtualize schema levels
-- handle the store update from anywhere and however you want
+- easy nesting for custom object/array widgets with [`PluginStack`](https://ui-schema.bemit.codes/docs/core#pluginstack)
+- validate hidden/auto-generated values, virtualize schema levels ([`hidden` keyword](https://ui-schema.bemit.codes/docs/schema#hidden-keyword--virtualization))
+- handle store update from anywhere and however you want
 - extensive documentations of core, widgets
 - typed components and definitions for JSON Schema and UI Schema
 - complex conditionals schemas
@@ -96,18 +97,18 @@ For updates see [github release notes](https://github.com/ui-schema/ui-schema/re
 
 This project adheres to [semver](https://semver.org/), until `1.0.0` and beginning with `0.1.0`: all `0.x.0` releases are like MAJOR releases and all `0.0.x` like MINOR or PATCH, modules below `0.1.0` should be considered experimental.
 
-## Basic Example
+## Example Basic UIGenerator
 
 First time? [Take the quick-start](https://ui-schema.bemit.codes/quick-start) or take a look into the [create-react-app UI Schema example](https://github.com/ui-schema/demo-cra).
 
-Example setup of a generator, followed by a simple text widget.
+Example setup of a generator, followed by a [simple text widget](#example-simple-text-widget). The last example is the slightly more advanced, **but recommended,** [provider setup](#example-without-uigenerator).
 
 ```js
 import React from 'react';
 
 // Import Schema UI Generator
 import {
-    UIGenerator, isInvalid, createOrderedMap, createStore, storeUpdater,
+    UIGenerator, isInvalid, createOrderedMap, createStore, storeUpdater, relTranslate,
 } from '@ui-schema/ui-schema';
 
 // Get the widgets binding for your design-system
@@ -163,7 +164,8 @@ export const DemoForm = () => {
             showValidity={showValidity}
             widgets={widgets}
 
-            t={(text, context, schema) => {/* add translations */}}
+            t={relTranslate}
+            // t={(text, context, schema) => {/* add translations */}}
         >
             {/* (optional) add components which use the context of the generator here */}
         </UIGenerator>
@@ -175,16 +177,19 @@ export const DemoForm = () => {
                     setShowValidity(true) :
                     console.log('doingSomeAction:', store.valuesToJS())
             }
-        >send!</button>
+        >send!
+        </button>
     </React.Fragment>
 };
 ```
+
+## Example Simple Text Widget
 
 Easily create new widgets, this is all for a simple text (`type=string`) widget:
 
 ```typescript jsx
 import React from 'react';
-import {TransTitle, WidgetProps, WithValue} from '@ui-schema/ui-schema';
+import { TransTitle, WidgetProps, WithValue } from '@ui-schema/ui-schema';
 
 const Widget = ({
                     value, ownKey, storeKeys, onChange,
@@ -213,6 +218,114 @@ const Widget = ({
 }
 ```
 
+## Example without UIGenerator
+
+**Recommended** usage with one `UIMetaProvider` for many `UIStoreProvider`, delivers improved performance and ease of extension, check that your `UIMetaProvider` isn't re-rendering when the `UIStoreProvider` re-renders with the React developer tools.
+
+Instead of using `UIRootRenderer` it's also possible to use [full custom rendering](/quick-start?type=custom) with e.g. [ObjectGroup](/docs/core#objectgroup).
+
+```js
+import React from 'react';
+
+// Import Schema UI Provider and Render engine
+import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter';
+import {createOrderedMap} from '@ui-schema/ui-schema/Utils/createMap';
+import {
+    UIStoreProvider,
+    createStore, storeUpdater,
+} from '@ui-schema/ui-schema/UIStore';
+import {UIMetaProvider, useUIMeta} from '@ui-schema/ui-schema/UIMeta';
+import {UIRootRenderer} from '@ui-schema/ui-schema/UIRootRenderer';
+import {relTranslate} from '@ui-schema/ui-schema/Translate/relT';
+
+// Get the widgets binding for your design-system
+import {widgets} from '@ui-schema/ds-material/widgetsBinding';
+
+// could be fetched from some API or bundled with the app
+const schemaBase = {
+    type: 'object',
+    properties: {
+        country: {
+            type: 'string',
+            widget: 'Select',
+            enum: [
+                'usa',
+                'canada',
+                'eu'
+            ],
+            default: 'eu',
+            tt: 'upper'
+        },
+        name: {
+            type: 'string',
+            maxLength: 20,
+        }
+    },
+    required: [
+        'country',
+        'name',
+    ],
+};
+
+// or fetch from API
+const data = {};
+
+export const DemoForm = () => {
+    // optional state for display errors/validity
+    const [showValidity, setShowValidity] = React.useState(false);
+
+    // needed variables and setters for the render engine, create wherever you like
+    const [store, setStore] = React.useState(() => createStore(createOrderedMap(data)));
+    const [schema/*, setSchema*/] = React.useState(() => createOrderedMap(schemaBase));
+
+    // `useUIMeta` can be used safely, without performance impact (`useUI` has a performance impact)
+    const {widgets, t} = useUIMeta()
+
+    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+        setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
+    }, [setStore])
+
+    return <React.Fragment>
+        <UIStoreProvider
+            store={store}
+            onChange={onChange}
+            showValidity={showValidity}
+        >
+            <UIRootRenderer schema={schema}/>
+            {/*
+              * (optional) add components which use the context of the providers here,
+              * it's better to use the HOC `extractValue` together with `memo`, instead of `useUI`
+              */}
+        </UIStoreProvider>
+
+        <button
+            /* show the validity only at submit (or pass `true` to `showValidity`) */
+            onClick={() =>
+                isInvalid(store.getValidity()) ?
+                    setShowValidity(true) :
+                    console.log('doingSomeAction:', store.valuesToJS())
+            }
+        >send!
+        </button>
+    </React.Fragment>
+};
+
+export default function App() {
+    return <UIMetaProvider
+        widgets={widgets}
+        t={relTranslate}
+        //t={(text, context, schema) => {/* add translations */}}
+    >
+        {/*
+          * somewhere in `YourRouterAndStuff` are your custom forms,
+          * it's possible to nest `UIMetaProvider` if you need to have different widgets,
+          * e.g. depending on some lazy loaded component tree
+          */}
+        <YourRouterAndStuff/>
+    </UIMetaProvider>
+}
+```
+
 ## Contributing
 
 1. Fork/Clone Repository, use branch `develop`
@@ -237,6 +350,7 @@ See current *[packages/demo@master](https://ui-schema-demo.netlify.app/)* or
     - `npm run serve -- demo --serve docs` start specific apps (docs and demo here)
 
 Commands:
+
 - Developing test driven: `npm run tdd`
     - needs manual bootstrapping, hoisting and update handling
     - `npm run tdd -- -u --testPathPattern=src/Validators`
@@ -266,7 +380,6 @@ Templates for monorepo packages:
 
 - [Additional DS Module](./tools/template-package)
 - [Design-System](./tools/template-ds)
-
 
 ## License
 

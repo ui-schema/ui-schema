@@ -11,6 +11,7 @@ import { ObjectRenderer } from '@ui-schema/ui-schema/ObjectRenderer/ObjectRender
 import { List } from 'immutable'
 import { createStore, UIStoreProvider } from '@ui-schema/ui-schema/UIStore'
 import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta'
+import { relTranslator } from '@ui-schema/ui-schema/Translate/relT/relT'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 
@@ -237,7 +238,8 @@ describe('WidgetRenderer', () => {
         const value = createOrderedMap({dummy_array: ['lorem ipsum', 42]})
         const store = createStore(value)
         const {queryByText, queryAllByText} = render(
-            <UIMetaProvider widgets={widgets}>
+            // @ts-ignore
+            <UIMetaProvider widgets={widgets} t={relTranslator}>
                 <UIStoreProvider
                     store={store}
                     // @ts-ignore
@@ -288,7 +290,8 @@ describe('WidgetRenderer', () => {
         const value = createOrderedMap({dummy_array: [['lorem ipsum', 42], ['dolor sit', 43]]})
         const store = createStore(value)
         const {queryByText, queryAllByText} = render(
-            <UIMetaProvider widgets={widgets}>
+            // @ts-ignore
+            <UIMetaProvider widgets={widgets} t={relTranslator}>
                 <UIStoreProvider
                     store={store}
                     // @ts-ignore

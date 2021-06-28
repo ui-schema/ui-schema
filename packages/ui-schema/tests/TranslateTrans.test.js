@@ -8,7 +8,6 @@ import {
 import {Trans} from '../src/Translate/Trans/Trans';
 import {createMap} from '../src/Utils/createMap';
 import {makeTranslator} from '../src/Translate/makeTranslator';
-import {t} from '../src/Translate/t';
 import {Map} from 'immutable';
 import {ERROR_MIN_LENGTH} from '@ui-schema/ui-schema/Validators';
 
@@ -23,9 +22,9 @@ const dicEN = createMap({
     },
 });
 
-const tDeprecated = t(dicEN, 'en');
+const tDeprecated = makeTranslator(dicEN, 'en');
 
-describe('Translate\\Trans deprecated t', () => {
+describe('Translate\\Trans deprecated makeTranslator', () => {
     it('Text', async () => {
         const {findByText, queryByText} = render(
             <Trans text={'titles.simple-number'} t={tDeprecated}/>,

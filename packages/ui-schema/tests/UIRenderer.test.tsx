@@ -20,6 +20,7 @@ import { validators } from '@ui-schema/ui-schema/Validators/validators'
 import { PluginStack, NextPluginRenderer } from '@ui-schema/ui-schema/PluginStack'
 import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter/isInvalid'
 import { storeUpdater } from '@ui-schema/ui-schema/UIStore/storeUpdater'
+import { relTranslator } from '@ui-schema/ui-schema/Translate/relT'
 
 /**
  * This file serves as general integration test
@@ -209,7 +210,7 @@ const TestUIRenderer = (props: {
 
         showValidity
         widgets={widgets}
-        t={props.notT ? undefined : (text: string) => text}
+        t={props.notT ? relTranslator : (text: string) => text}
     >
         {/* (optional) add components which use the context of the Editor here */}
         <div>schema-is-{isInvalid(store.getValidity()) ? 'invalid' : 'correct'}</div>

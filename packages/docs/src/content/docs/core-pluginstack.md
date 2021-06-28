@@ -66,7 +66,7 @@ let UnitCalcDummy: React.ComponentType<WidgetProps & WithValue> = (
             showValidity={showValidity}
             readOnly={readOnly}
             widgets={widgets}
-            noGrid // turning of grid, or use `schema.getIn(['view', 'noGrid'])`
+            noGrid // turning grid off, or use e.g. `schema.setIn(['view', 'noGrid'], true)`
         />
 
         <span>
