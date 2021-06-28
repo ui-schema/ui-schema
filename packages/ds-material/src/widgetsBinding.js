@@ -11,6 +11,7 @@ import {NumberSlider} from '@ui-schema/ds-material/Widgets/NumberSlider';
 import {AccordionsRenderer} from '@ui-schema/ds-material/Widgets/Accordions';
 import {RootRenderer, GroupRenderer} from './Grid';
 import {pluginStack} from './pluginStack';
+import {WidgetRenderer} from '@ui-schema/ui-schema/WidgetRenderer';
 import {validators} from '@ui-schema/ui-schema/Validators/validators';
 import {CardRenderer, FormGroup, LabelBox} from '@ui-schema/ds-material/Widgets';
 
@@ -26,6 +27,7 @@ export const widgets = {
     ErrorFallback: MyFallbackComponent,
     RootRenderer,
     GroupRenderer,
+    WidgetRenderer,
     pluginStack,
     validators,
     types: {

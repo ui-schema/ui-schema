@@ -3,6 +3,7 @@ import { PluginType } from '@ui-schema/ui-schema/PluginStack/Plugin'
 import { ValidatorPlugin } from '@ui-schema/ui-schema/ValidatorStack/ValidatorPlugin'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { WidgetRendererProps } from '@ui-schema/ui-schema/WidgetRenderer'
 
 export interface GroupRendererProps {
     level: number
@@ -22,8 +23,9 @@ export interface WidgetsBindingBaseStrict {
     RootRenderer: React.ComponentType<any>
     // wraps any `object` that has no custom widget
     GroupRenderer: React.ComponentType<GroupRendererProps>
+    WidgetRenderer: React.ComponentType<WidgetRendererProps>
     // widget plugin system
-    pluginStack: Array<PluginType>
+    pluginStack: PluginType[]
     // validator functions
     validators: ValidatorPlugin[]
     // define native JSON-schema type widgets

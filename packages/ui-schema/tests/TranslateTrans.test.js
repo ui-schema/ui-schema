@@ -22,30 +22,6 @@ const dicEN = createMap({
     },
 });
 
-const tDeprecated = makeTranslator(dicEN, 'en');
-
-describe('Translate\\Trans deprecated makeTranslator', () => {
-    it('Text', async () => {
-        const {findByText, queryByText} = render(
-            <Trans text={'titles.simple-number'} t={tDeprecated}/>,
-        );
-        //expect(container.firstChild).toMatchSnapshot();
-        const label = await findByText('Simple Number');
-        expect(label).toBeInTheDocument();
-        expect(queryByText('titles.simple-number')).toBeNull();
-    });
-
-    test('Function', async () => {
-        const {findByText, queryByText} = render(
-            <Trans text={'error.' + ERROR_MIN_LENGTH} context={Map({min: 2})} t={tDeprecated}/>,
-        );
-        //expect(container.firstChild).toMatchSnapshot();
-        const label = await findByText('Min. Length: 2');
-        expect(label).toBeInTheDocument();
-        expect(queryByText('error.' + ERROR_MIN_LENGTH)).toBeNull();
-    });
-});
-
 const tEN = makeTranslator(dicEN, 'en');
 
 describe('Translate\\Trans', () => {

@@ -5,6 +5,7 @@ import { render } from '@testing-library/react'
 import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
 import { ValidatorStack, handleValidatorStack } from './ValidatorStack'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
+import { WidgetRenderer } from '../WidgetRenderer'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 
@@ -17,6 +18,7 @@ describe('ValidatorStack', () => {
                 handled
                 // ts-@ignore
                 widgets={{
+                    WidgetRenderer: WidgetRenderer,
                     types: {
                         string: ({valid, handled}: { valid?: boolean, handled?: boolean }) =>
                             valid === true && handled === true ? 'is-valid' : 'is-invalid',

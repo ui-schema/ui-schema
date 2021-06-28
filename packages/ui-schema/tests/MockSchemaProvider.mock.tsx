@@ -6,12 +6,13 @@ import { UIProvider } from '@ui-schema/ui-schema/UIGenerator'
 import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
-import { relTranslator, UIMetaProvider } from '@ui-schema/ui-schema'
+import { relTranslator, UIMetaProvider, WidgetRenderer } from '@ui-schema/ui-schema'
 
 export const MockWidgets: WidgetsBindingBase = {
     ErrorFallback: () => null,
     RootRenderer: () => null,
     GroupRenderer: () => null,
+    WidgetRenderer: WidgetRenderer,
     pluginStack: [],
     validators: [],
     types: {},

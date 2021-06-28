@@ -34,6 +34,7 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
                     pluginStack: [ExtractStorePlugin],
                     validators: [],
@@ -51,6 +52,7 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
                     pluginStack: [ExtractStorePlugin],
                     validators: [],
@@ -68,6 +70,7 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    WidgetRenderer: WidgetRenderer,
                     types: {string: (props: WidgetProps) => props.value}, custom: {},
                     pluginStack: [ExtractStorePlugin],
                     validators: [],
@@ -86,6 +89,7 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {Text: (props: WidgetProps) => props.value},
                     pluginStack: [ExtractStorePlugin],
                     validators: [],
@@ -104,6 +108,7 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    WidgetRenderer: WidgetRenderer,
                     types: {array: (props: WidgetProps) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set'}, custom: {},
                     pluginStack: [ExtractStorePlugin],
                     validators: [],
@@ -121,6 +126,7 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    WidgetRenderer: WidgetRenderer,
                     types: {},
                     custom: {CustomObj: (props: WidgetProps) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set'},
                     pluginStack: [ExtractStorePlugin],
@@ -146,6 +152,7 @@ describe('WidgetRenderer', () => {
                     widgets={{
                         // @ts-ignore
                         RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
+                        WidgetRenderer: WidgetRenderer,
                         types: {string: () => 'string-renderer', number: () => 'number-renderer'},
                         custom: {},
                         pluginStack: [ExtractStorePlugin],
@@ -202,6 +209,7 @@ describe('WidgetRenderer', () => {
                     widgets={{
                         // @ts-ignore
                         RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
+                        WidgetRenderer: WidgetRenderer,
                         types: {string: () => 'string-renderer', number: () => 'number-renderer'},
                         custom: {},
                         pluginStack: [ExtractStorePlugin],
@@ -230,6 +238,7 @@ describe('WidgetRenderer', () => {
         const widgets = {
             // @ts-ignore
             RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
+            WidgetRenderer: WidgetRenderer,
             types: {string: () => 'string-renderer', number: () => 'number-renderer'},
             custom: {},
             pluginStack: [ExtractStorePlugin],
@@ -282,6 +291,7 @@ describe('WidgetRenderer', () => {
         const widgets = {
             // @ts-ignore
             RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
+            WidgetRenderer: WidgetRenderer,
             types: {string: () => 'string-renderer', number: () => 'number-renderer'},
             custom: {},
             pluginStack: [ExtractStorePlugin],

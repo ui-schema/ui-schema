@@ -35,7 +35,12 @@ export function PluginStack<P extends PluginStackProps>(
     props: P
 ): React.ReactElement
 
-export function getNextPlugin(current: number, widgets: WidgetsBindingBase): PluginType | React.ComponentType<WidgetProps>
+/**
+ * Returns the next `Plugin` or when the plugin list is finished, the `WidgetRenderer`
+ * @param next index of the next plugin to use
+ * @param widgets the widgets binding, e.g. `props.widgets`
+ */
+export function getNextPlugin(next: number, widgets: WidgetsBindingBase): PluginType | React.ComponentType<WidgetProps>
 
 export function NextPluginRenderer<P extends PluginProps>(props: P): React.ReactElement<P>
 

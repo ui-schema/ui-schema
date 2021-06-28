@@ -4,7 +4,6 @@ import {memo} from '@ui-schema/ui-schema/Utils/memo';
 import {getSchemaId} from '@ui-schema/ui-schema/Utils/getSchema';
 import {useUIMeta} from '@ui-schema/ui-schema/UIMeta/UIMetaProvider';
 import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorStack';
-import {WidgetRenderer} from '@ui-schema/ui-schema/WidgetRenderer/WidgetRenderer';
 import {isRootSchema, SchemaRootProvider} from '@ui-schema/ui-schema/SchemaRootProvider';
 
 class PluginStackErrorBoundary extends React.Component {
@@ -87,7 +86,7 @@ export const PluginStack = (props) => {
     </ErrorBoundary> : null;
 };
 
-export const getNextPlugin = (next, {pluginStack: ps}) => {
+export const getNextPlugin = (next, {pluginStack: ps, WidgetRenderer}) => {
     return next < ps.length ? ps[next] || (() => 'plugin-error') : WidgetRenderer;
 }
 

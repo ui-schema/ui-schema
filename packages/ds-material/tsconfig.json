@@ -3,6 +3,9 @@
     "include": [
         "src"
     ],
+    "exclude": [
+        "src/**/*.test.*"
+    ],
     "compilerOptions": {
         "outDir": "build/dts"
     }
