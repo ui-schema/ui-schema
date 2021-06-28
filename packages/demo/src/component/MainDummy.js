@@ -25,6 +25,7 @@ const MainDummy = ({schema, Debugger, Button}) => {
         <UIStoreProvider
             store={store}
             onChange={onChangeNext}
+            showValidity={showValidity}
         >
             <UIRootRenderer schema={schema}/>
             <Debugger/>

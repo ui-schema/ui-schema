@@ -1,5 +1,5 @@
 import React from 'react';
-import {NextPluginRenderer} from '@ui-schema/ui-schema/PluginStack';
+import {getNextPlugin} from '@ui-schema/ui-schema/PluginStack';
 
 export const handleValidatorStack = (props) => {
     if(props.widgets && props.widgets.validators && Array.isArray(props.widgets.validators)) {
@@ -24,5 +24,8 @@ export const handleValidatorStack = (props) => {
     return props;
 }
 
-export const ValidatorStack = (props) =>
-    <NextPluginRenderer {...handleValidatorStack(props)}/>;
+export const ValidatorStack = ({currentPluginIndex, ...props}) => {
+    const next = currentPluginIndex + 1;
+    const Plugin = getNextPlugin(next, props.widgets)
+    return <Plugin {...handleValidatorStack(props)} currentPluginIndex={next}/>;
+}

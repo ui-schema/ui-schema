@@ -5,22 +5,26 @@ import {useImmutable} from '@ui-schema/ui-schema/Utils';
 
 const NoWidget = ({scope, matching}) => <>missing-{scope}-{matching}</>;
 
-export const WidgetRenderer = ({
-                                   // we do not want `value`/`internalValue` to be passed to non-scalar widgets for performance reasons
-                                   value, internalValue,
-                                   WidgetOverride,
-                                   errors,
-                                   onErrors,
-                                   // todo: concept in validation
-                                   // we do not want `parentSchema` to be passed to the final widget for performance reasons
-                                   // eslint-disable-next-line no-unused-vars
-                                   //parentSchema,
-                                   // we do not want `requiredList` to be passed to the final widget for performance reasons
-                                   // eslint-disable-next-line no-unused-vars
-                                   requiredList,
-                                   // `props` contains all props accumulated in the PluginStack, UIRootRenderer etc.
-                                   ...props
-                               }) => {
+export const WidgetRenderer = (
+    {
+        // we do not want `value`/`internalValue` to be passed to non-scalar widgets for performance reasons
+        value, internalValue,
+        WidgetOverride,
+        errors,
+        onErrors,
+        // todo: concept in validation
+        // we do not want `parentSchema` to be passed to the final widget for performance reasons
+        // eslint-disable-next-line no-unused-vars
+        //parentSchema,
+        // we do not want `requiredList` to be passed to the final widget for performance reasons
+        // eslint-disable-next-line no-unused-vars
+        requiredList,
+        // eslint-disable-next-line no-unused-vars
+        currentPluginIndex,
+        // `props` contains all props accumulated in the PluginStack, UIRootRenderer etc.
+        ...props
+    },
+) => {
     const {schema, widgets, isVirtual} = props;
     const type = schema.get('type');
     const widget_name = schema.get('widget');

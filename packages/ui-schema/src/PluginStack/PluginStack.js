@@ -59,7 +59,7 @@ export const PluginStack = (props) => {
     const ErrorBoundary = activeWidgets.ErrorFallback ? PluginStackErrorBoundary : React.Fragment;
 
     const pluginTree = <NextPluginRenderer
-        current={-1}
+        currentPluginIndex={-1}
         // all others are getting pushed to Widget
         {...props}
         t={activeT}
@@ -87,17 +87,13 @@ export const PluginStack = (props) => {
     </ErrorBoundary> : null;
 };
 
-export const getPlugin = (current, pluginStack) => {
-    return current < pluginStack.length ? pluginStack[current] : undefined;
-};
+export const getNextPlugin = (next, {pluginStack: ps}) => {
+    return next < ps.length ? ps[next] || (() => 'plugin-error') : WidgetRenderer;
+}
 
-export const NextPluginRenderer = ({current, ...props}) => {
-    const {widgets} = props;
-    const next = current + 1;
-    const Plugin = getPlugin(next, widgets.pluginStack);
-
-    return next < widgets.pluginStack.length ?
-        Plugin ? <Plugin {...props} current={next}/> : 'plugin-error' :
-        <WidgetRenderer {...props}/>;
+export const NextPluginRenderer = ({currentPluginIndex, ...props}) => {
+    const next = currentPluginIndex + 1;
+    const Plugin = getNextPlugin(next, props.widgets)
+    return <Plugin {...props} currentPluginIndex={next}/>
 };
 export const NextPluginRendererMemo = memo(NextPluginRenderer);

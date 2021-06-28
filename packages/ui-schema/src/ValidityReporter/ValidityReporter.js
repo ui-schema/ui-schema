@@ -1,8 +1,8 @@
 import React from 'react';
-import {NextPluginRenderer} from '@ui-schema/ui-schema/PluginStack';
+import {getNextPlugin} from '@ui-schema/ui-schema/PluginStack';
 
 export const ValidityReporter = (props) => {
-    const {onChange, showValidity, storeKeys, valid} = props;
+    const {onChange, showValidity, storeKeys, valid, currentPluginIndex} = props;
 
     const storeKeysPrev = React.useRef(storeKeys);
 
@@ -26,5 +26,7 @@ export const ValidityReporter = (props) => {
         } : undefined
     }, [onChange, sameStoreKeys, storeKeysPrev]);
 
-    return <NextPluginRenderer {...props} valid={valid} showValidity={showValidity}/>;
+    const next = currentPluginIndex + 1;
+    const Plugin = getNextPlugin(next, props.widgets)
+    return <Plugin {...props} currentPluginIndex={next} valid={valid} showValidity={showValidity}/>;
 };

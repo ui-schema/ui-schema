@@ -20,7 +20,7 @@ describe('NextPluginRenderer', () => {
                     types: {}, custom: {},
                     pluginStack: [],
                 }}
-                current={-1}
+                currentPluginIndex={-1}
                 schema={createOrderedMap({type: 'string'})}
             />
         )
@@ -39,7 +39,7 @@ describe('NextPluginRenderer', () => {
                         <NextPluginRenderer {...p}/>
                     </>],
                 }}
-                current={-1}
+                currentPluginIndex={-1}
                 schema={createOrderedMap({type: 'string'})}
             />
         )
@@ -59,7 +59,7 @@ describe('NextPluginRenderer', () => {
                         <NextPluginRendererMemo {...p}/>
                     </>],
                 }}
-                current={-1}
+                currentPluginIndex={-1}
                 schema={createOrderedMap({type: 'string'})}
             />
         )
@@ -79,7 +79,7 @@ describe('NextPluginRenderer', () => {
                         <NextPluginRenderer {...p}/>
                     </>],
                 }}
-                current={0}
+                currentPluginIndex={0}
                 schema={createOrderedMap({type: 'string'})}
             />
         )
@@ -97,7 +97,7 @@ describe('NextPluginRenderer', () => {
                     // @ts-ignore
                     pluginStack: [undefined],
                 }}
-                current={-1}
+                currentPluginIndex={-1}
                 schema={createOrderedMap({type: 'string'})}
             />
         )

@@ -1,8 +1,14 @@
 import React from 'react';
-import {NextPluginRenderer} from '@ui-schema/ui-schema/PluginStack';
+import {getNextPlugin} from '@ui-schema/ui-schema/PluginStack';
 import {useImmutable} from '@ui-schema/ui-schema/Utils/useImmutable';
 
-const DefaultValueHandler = ({defaultVal, ...props}) => {
+const DefaultValueHandler = (
+    {
+        defaultVal,
+        Plugin, currentPluginIndex,
+        ...props
+    },
+) => {
     const [defaultHandled, setDefaultHandled] = React.useState(false);
     const {onChange, storeKeys} = props;
     let {value} = props;
@@ -27,17 +33,19 @@ const DefaultValueHandler = ({defaultVal, ...props}) => {
         nextValue = defaultVal;
     }
 
-    return <NextPluginRenderer {...props} value={nextValue}/>;
+    return <Plugin {...props} value={nextValue} currentPluginIndex={currentPluginIndex}/>;
 };
 
 const DefaultHandler = (props) => {
-    const {schema} = props;
+    const {schema, currentPluginIndex} = props;
+    const next = currentPluginIndex + 1;
+    const Plugin = getNextPlugin(next, props.widgets)
 
     let defaultVal = schema.get('default');
 
     return typeof defaultVal !== 'undefined' ?
-        <DefaultValueHandler {...props} defaultVal={defaultVal}/> :
-        <NextPluginRenderer {...props}/>;
+        <DefaultValueHandler {...props} defaultVal={defaultVal} Plugin={Plugin} currentPluginIndex={next}/> :
+        <Plugin {...props} currentPluginIndex={next}/>;
 };
 
 export {DefaultHandler}

@@ -1,5 +1,5 @@
 import React from 'react';
-import {NextPluginRenderer, NextPluginRendererMemo} from '@ui-schema/ui-schema/PluginStack';
+import {getNextPlugin, NextPluginRendererMemo} from '@ui-schema/ui-schema/PluginStack';
 import {useUI} from '@ui-schema/ui-schema/UIStore';
 import {mergeSchema} from '@ui-schema/ui-schema/Utils/mergeSchema';
 import {List, Map} from 'immutable';
@@ -49,7 +49,9 @@ const DependentRenderer = ({dependencies, dependentSchemas, dependentRequired, .
 };
 
 export const DependentHandler = (props) => {
-    let {storeKeys, ownKey, schema} = props;
+    let {storeKeys, ownKey, schema, currentPluginIndex} = props;
+    const next = currentPluginIndex + 1;
+    const Plugin = getNextPlugin(next, props.widgets)
 
     const dependencies = schema.get('dependencies');
     const dependentSchemas = schema.get('dependentSchemas');
@@ -64,6 +66,6 @@ export const DependentHandler = (props) => {
                 storeKeys={storeKeys}
                 ownKey={ownKey}
                 {...props}/>
-            : <NextPluginRenderer {...props}/>}
+            : <Plugin {...props} currentPluginIndex={next}/>}
     </React.Fragment>;
 };

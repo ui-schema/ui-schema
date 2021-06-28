@@ -35,7 +35,7 @@ export function PluginStack<P extends PluginStackProps>(
     props: P
 ): React.ReactElement
 
-export function getPlugin(current: number, pluginStack: []): PluginType | undefined
+export function getNextPlugin(current: number, widgets: WidgetsBindingBase): PluginType | React.ComponentType<WidgetProps>
 
 export function NextPluginRenderer<P extends PluginProps>(props: P): React.ReactElement<P>
 

@@ -7,7 +7,7 @@ export interface PluginProps extends WidgetProps {
     // must be transformed from list to boolean `required` by a plugin
     requiredList?: List<any>
     // current number of plugin in the stack
-    current: number
+    currentPluginIndex: number
     // contains the value for any items (scalar/objects/array)
     value: any
 

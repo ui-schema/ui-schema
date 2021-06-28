@@ -1,6 +1,6 @@
 import React from 'react';
 import {Grid} from '@material-ui/core';
-import {NextPluginRenderer} from '@ui-schema/ui-schema';
+import {getNextPlugin} from '@ui-schema/ui-schema';
 
 const SchemaGridItem = ({schema, children, defaultMd, style, className, classes}) => {
     const view = schema ? schema.get('view') : undefined;
@@ -40,10 +40,12 @@ const GroupRenderer = ({schema, noGrid, children, style, className, spacing = 2}
         </Grid>;
 
 const SchemaGridHandler = (props) => {
-    const {schema, noGrid, isVirtual} = props;
+    const {schema, noGrid, isVirtual, currentPluginIndex} = props;
+    const next = currentPluginIndex + 1;
+    const Plugin = getNextPlugin(next, props.widgets)
 
     if(noGrid || isVirtual || schema.getIn(['view', 'noGrid'])) {
-        return <NextPluginRenderer {...props}/>;
+        return <Plugin {...props} currentPluginIndex={next}/>
     }
 
     const align = schema.getIn(['view', 'align'])
@@ -52,7 +54,7 @@ const SchemaGridHandler = (props) => {
     }), [align])
 
     return <SchemaGridItem schema={schema} style={style}>
-        <NextPluginRenderer {...props}/>
+        <Plugin {...props} currentPluginIndex={next}/>
     </SchemaGridItem>;
 };
 
