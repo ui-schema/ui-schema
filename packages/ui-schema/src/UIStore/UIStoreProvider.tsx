@@ -40,16 +40,20 @@ export interface WithValidity {
 export const extractValue = <P extends { storeKeys: StoreKeys, showValidity?: boolean }>(Component: React.ComponentType<P & WithValue>): React.ComponentType<P> => {
     const ExtractValue = (p: P) => {
         const {store, onChange, showValidity} = useUI()
-        return <Component
+        return store ? <Component
             // `showValidity` is overridable by render flow, e.g. nested Stepper
             {...p}
             showValidity={p.showValidity || showValidity}
             onChange={onChange}
-            value={p.storeKeys.size ?
-                (Map.isMap(store.getValues()) || List.isList(store.getValues()) ? store.getValues().getIn(p.storeKeys) : undefined)
-                : store.getValues()}
-            internalValue={p.storeKeys.size ? store.getInternals() ? store.getInternals().getIn(p.storeKeys) : createMap() : store.getInternals()}
-        />
+            value={
+                p.storeKeys.size ?
+                    (Map.isMap(store.getValues()) || List.isList(store.getValues()) ? store.getValues().getIn(p.storeKeys) : undefined)
+                    : store.getValues()
+            }
+            internalValue={
+                p.storeKeys.size ? store.getInternals() ? store.getInternals().getIn(p.storeKeys) : createMap() : store.getInternals()
+            }
+        /> : null
     }
     ExtractValue.displayName = `ExtractValue(${getDisplayName(Component)})`
     return ExtractValue

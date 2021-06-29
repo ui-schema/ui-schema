@@ -94,6 +94,7 @@ const TestUIRenderer = (props: {
         demo_array2?: string[]
     }
     notT?: boolean
+    noStore?: boolean
 }) => {
 
     // needed variables and setters for the UIGenerator, create wherever you like
@@ -205,7 +206,7 @@ const TestUIRenderer = (props: {
 
     return <UIGenerator
         schema={schema}
-        store={store}
+        store={props.noStore ? undefined : store}
         onChange={onChange}
 
         showValidity
@@ -232,6 +233,17 @@ describe('UIGenerator Integration', () => {
         expect(queryByText('missing-type-number') !== null).toBeTruthy()
         expect(queryAllByText('array-renderer').length === 3).toBeTruthy()
     })
+    it('TestUIRenderer no `store`', async () => {
+        const {queryByText, queryAllByText, container} = render(
+            <TestUIRenderer noStore/>
+        )
+        expect(container.querySelectorAll('.root-renderer').length).toBe(1)
+        expect(container.querySelectorAll('.group-renderer').length).toBe(0)
+
+        expect(queryByText('Demo String')).toBe(null)
+        expect(queryByText('widget.demo_string.title')).toBe(null)
+        expect(queryAllByText('string-renderer').length).toBe(0)
+    })
     it('TestUIRenderer not `t`', async () => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer notT/>
@@ -239,8 +251,8 @@ describe('UIGenerator Integration', () => {
         expect(container.querySelectorAll('.root-renderer').length === 1).toBeTruthy()
         expect(container.querySelectorAll('.group-renderer').length > 0).toBeTruthy()
         expect(queryByText('Demo String') !== null).toBeTruthy()
-        expect(queryByText('widget.demo_string.title') === null).toBeTruthy()
-        expect(queryAllByText('string-renderer').length === 3).toBeTruthy()
+        expect(queryByText('widget.demo_string.title')).toBe(null)
+        expect(queryAllByText('string-renderer').length).toBe(3)
     })
     it('TestUIRenderer ConditionalCombining', async () => {
         const {queryByText, container} = render(
