@@ -4,7 +4,7 @@ import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { StoreKeys } from '@ui-schema/ui-schema/UIStore'
 import { GroupRendererProps, WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
-import { onErrors } from '@ui-schema/ui-schema/ValidatorStack'
+import { onErrors } from '@ui-schema/ui-schema/ValidatorErrors'
 
 export type WidgetOverrideType<P extends {}> = React.ComponentType<P & WidgetProps>
 

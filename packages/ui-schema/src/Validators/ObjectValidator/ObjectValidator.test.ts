@@ -4,7 +4,7 @@ import {
 } from '@ui-schema/ui-schema/Validators/ObjectValidator'
 import { createMap, createOrderedMap } from '@ui-schema/ui-schema/Utils'
 import { ERROR_PATTERN } from '@ui-schema/ui-schema/Validators/PatternValidator/PatternValidator'
-import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
+import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorErrors'
 
 describe('validateObject', () => {
     test.each([
@@ -172,9 +172,9 @@ describe('objectValidator', () => {
             true,
         ],
     ])(
-        '.validate(%j, %s)',
+        '.handle(%j, %s)',
         (schema, value, error, expectedValid, expectedError) => {
-            const result = objectValidator.validate({
+            const result = objectValidator.handle({
                 schema: createOrderedMap(schema),
                 value,
                 errors: createValidatorErrors(),

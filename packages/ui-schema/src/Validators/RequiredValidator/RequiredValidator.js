@@ -26,8 +26,8 @@ const requiredValidator = {
         }
         return false
     },
-    noValidate: () => ({required: false}),
-    validate: ({schema, value, errors, valid}) => {
+    noHandle: () => ({required: false}),
+    handle: ({schema, value, errors, valid}) => {
         let type = schema.get('type');
         if(!checkValueExists(type, value)) {
             valid = false;

@@ -4,7 +4,7 @@ import {
     ConditionalHandler, CombiningHandler,
     ReferencingHandler, ExtractStorePlugin,
 } from '@ui-schema/ui-schema/Plugins';
-import {ValidatorStack} from '@ui-schema/ui-schema/ValidatorStack';
+import {PluginSimpleStack} from '@ui-schema/ui-schema/PluginSimpleStack';
 import {ValidityReporter} from '@ui-schema/ui-schema/ValidityReporter';
 
 const pluginStack = [
@@ -15,7 +15,7 @@ const pluginStack = [
     DefaultHandler,
     DependentHandler,
     ConditionalHandler,
-    ValidatorStack,
+    PluginSimpleStack,
     ValidityReporter,
 ];
 

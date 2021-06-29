@@ -110,7 +110,6 @@ const FreeFormEditor = () => {
             store={store}
             onChange={onChange}
             showValidity={showValidity}
-            schema={freeFormSchema}
         >
             <ObjectGroup
                 storeKeys={storeKeys}

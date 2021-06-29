@@ -14,7 +14,7 @@ import { UIGenerator } from '../src/UIGenerator/UIGenerator'
 import { MockWidgets } from './MockSchemaProvider.mock'
 import { createStore, extractValue, WithValue } from '@ui-schema/ui-schema/UIStore'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
-import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ExtractStorePlugin, JsonSchema, TransTitle, ValidatorStack, ValidityReporter, WidgetProps } from '@ui-schema/ui-schema'
+import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ExtractStorePlugin, JsonSchema, TransTitle, PluginSimpleStack, ValidityReporter, WidgetProps } from '@ui-schema/ui-schema'
 import { ReferencingHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
 import { validators } from '@ui-schema/ui-schema/Validators/validators'
 import { PluginStack, NextPluginRenderer } from '@ui-schema/ui-schema/PluginStack'
@@ -48,10 +48,10 @@ widgets.pluginStack = [
     DefaultHandler,
     DependentHandler,
     ConditionalHandler,
-    ValidatorStack,
+    PluginSimpleStack,
     ValidityReporter,
 ]
-widgets.validators = validators
+widgets.pluginSimpleStack = validators
 
 // eslint-disable-next-line react/display-name
 widgets.types.string = (props: WidgetProps): React.ReactElement => {

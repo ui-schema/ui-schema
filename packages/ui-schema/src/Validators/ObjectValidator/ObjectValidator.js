@@ -1,6 +1,6 @@
 import {Map} from "immutable";
-import {validateSchema} from "../../validateSchema/index";
-import {createValidatorErrors} from "@ui-schema/ui-schema/ValidatorStack/ValidatorErrors";
+import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorErrors';
+import {validateSchema} from '@ui-schema/ui-schema/validateSchema';
 
 export const ERROR_ADDITIONAL_PROPERTIES = 'additional-properties';
 
@@ -45,7 +45,7 @@ export const objectValidator = {
 
         return type === 'object'
     },
-    validate: ({schema, value, errors, valid}) => {
+    handle: ({schema, value, errors, valid}) => {
         errors = validateObject(schema, value,);
         if(errors.hasError()) valid = false;
         return {errors, valid}

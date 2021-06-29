@@ -3,8 +3,8 @@ import {List} from 'immutable';
 import {memo} from '@ui-schema/ui-schema/Utils/memo';
 import {getSchemaId} from '@ui-schema/ui-schema/Utils/getSchema';
 import {useUIMeta} from '@ui-schema/ui-schema/UIMeta/UIMetaProvider';
-import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorStack';
 import {isRootSchema, SchemaRootProvider} from '@ui-schema/ui-schema/SchemaRootProvider';
+import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorErrors';
 
 class PluginStackErrorBoundary extends React.Component {
     state = {

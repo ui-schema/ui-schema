@@ -39,7 +39,7 @@ const validateMultipleOf = (schema, value) => {
 };
 
 const multipleOfValidator = {
-    validate: ({schema, value, errors, valid}) => {
+    handle: ({schema, value, errors, valid}) => {
         if(!validateMultipleOf(schema, value)) {
             valid = false;
             errors = errors.addError(ERROR_MULTIPLE_OF, Map({multipleOf: schema.get('multipleOf')}));

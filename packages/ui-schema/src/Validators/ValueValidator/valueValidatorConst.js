@@ -24,7 +24,7 @@ export const valueValidatorConst = {
 
         return typeof _const !== 'undefined' && typeof value !== 'undefined'
     },
-    validate: ({schema, value, errors, valid}) => {
+    handle: ({schema, value, errors, valid}) => {
         let type = schema.get('type');
 
         if(!validateConst(type, schema.get('const'), value)) {

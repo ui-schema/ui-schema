@@ -1,14 +1,14 @@
 import { PluginProps } from '@ui-schema/ui-schema/PluginStack/Plugin'
-import { ValidatorPlugin } from '@ui-schema/ui-schema/ValidatorStack/ValidatorPlugin'
+import { PluginSimple } from '@ui-schema/ui-schema/PluginSimpleStack/PluginSimple'
 import { Errors } from '@ui-schema/ui-schema/CommonTypings'
 
 export const ERROR_CONST_MISMATCH = 'const-mismatch'
 
 export function validateConst(type: string, _const?: string | number | boolean | null, value?: any): boolean
 
-export interface ValueValidatorConstType extends ValidatorPlugin {
+export interface ValueValidatorConstType extends PluginSimple {
     should: ({schema, value}: Partial<PluginProps>) => boolean
-    validate: (
+    handle: (
         {schema, value, errors, valid}: Partial<PluginProps>
     ) => {
         errors: Errors

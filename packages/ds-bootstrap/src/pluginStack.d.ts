@@ -7,7 +7,7 @@ import { PluginType } from '@ui-schema/ui-schema/PluginStack/Plugin'
  * - DefaultHandler
  * - DependentHandler
  * - ConditionalHandler
- * - ValidatorStack
+ * - PluginSimpleStack
  * - ValidityReporter
  */
 export const pluginStack: Array<PluginType>

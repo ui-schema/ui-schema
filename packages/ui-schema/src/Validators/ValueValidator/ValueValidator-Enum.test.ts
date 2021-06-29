@@ -2,7 +2,7 @@ import { OrderedMap, List } from 'immutable'
 import {
     validateEnum, valueValidatorEnum, ERROR_ENUM_MISMATCH,
 } from '@ui-schema/ui-schema/Validators/ValueValidator'
-import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
+import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorErrors'
 
 describe('validateEnum', () => {
     test('validateEnum', () => {
@@ -135,9 +135,9 @@ describe('valueValidatorEnum', () => {
             false,
         ],
     ])(
-        '.validate(%j, %s)',
+        '.handle(%j, %s)',
         (schema, value, error, expectedValid, expectedError) => {
-            const result = valueValidatorEnum.validate({
+            const result = valueValidatorEnum.handle({
                 schema: OrderedMap(schema),
                 value,
                 errors: createValidatorErrors(),

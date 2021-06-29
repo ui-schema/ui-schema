@@ -1,7 +1,7 @@
 import {List, Map} from 'immutable';
 import {validateSchema} from '@ui-schema/ui-schema/validateSchema';
+import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorErrors';
 import {ERROR_WRONG_TYPE} from '@ui-schema/ui-schema/Validators/TypeValidator/TypeValidator';
-import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors';
 
 export const ERROR_DUPLICATE_ITEMS = 'duplicate-items';
 export const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains';
@@ -169,7 +169,7 @@ export const arrayValidator = {
 
         return type === 'array'
     },
-    validate: ({schema, value, errors, valid}) => {
+    handle: ({schema, value, errors, valid}) => {
         // unique-items sub-schema is intended for dynamics and for statics, e.g. Selects could have duplicates but also a SimpleList of strings
         let uniqueItems = schema.get('uniqueItems');
         if(uniqueItems && value) {

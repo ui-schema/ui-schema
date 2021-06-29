@@ -29,7 +29,7 @@ export const valueValidatorEnum = {
 
         return typeof _enum !== 'undefined' && typeof value !== 'undefined'
     },
-    validate: ({schema, value, errors, valid}) => {
+    handle: ({schema, value, errors, valid}) => {
         let type = schema.get('type');
 
         if(!validateEnum(type, schema.get('enum'), value)) {

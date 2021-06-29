@@ -26,7 +26,7 @@ const patternValidator = {
      * @param valid
      * @return {{valid: boolean, errors: *}}
      */
-    validate: ({schema, value, errors, valid}) => {
+    handle: ({schema, value, errors, valid}) => {
         let type = schema.get('type');
         let pattern = schema.get('pattern');
 

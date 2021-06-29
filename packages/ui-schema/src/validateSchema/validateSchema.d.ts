@@ -1,6 +1,6 @@
 import { OrderedMap, Map } from 'immutable'
-import { ValidatorErrorsType } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { ValidatorErrorsType } from '@ui-schema/ui-schema/ValidatorErrors'
 
 export function validateSchema(
     schema: StoreSchemaType,

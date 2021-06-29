@@ -1,6 +1,6 @@
 import { Map, List, OrderedMap } from 'immutable'
-import { ValidatorErrorsType } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
 import { OwnKey } from '@ui-schema/ui-schema/UIStore'
+import { ValidatorErrorsType } from '@ui-schema/ui-schema/ValidatorErrors'
 // import { JsonSchema, JsonSchemaKeys, JsonSchemaKeyValue } from '@ui-schema/ui-schema/JsonSchema'
 
 export type showValidity = boolean

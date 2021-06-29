@@ -61,17 +61,19 @@ JSON Schema keywords are used to validate the data, the UI is created from that 
     - easily create isolated and atomic widgets, with autowired data and validations
     - customize design system behaviour with e.g. widget compositions
     - easy binding of own design systems and custom widgets
-    - [auto-rendering by data & schema](https://ui-schema.bemit.codes/quick-start) or [full-custom forms](https://ui-schema.bemit.codes/quick-start?render=custom) with autowiring widgets
+    - [auto-rendering by data & schema](https://ui-schema.bemit.codes/quick-start) or [full-custom forms](https://ui-schema.bemit.codes/quick-start?render=custom) with autowired widgets
 - flexible translation of widgets
-    - with any library ([`t` prop (Translator)](https://ui-schema.bemit.codes/docs/localization#translation))
+    - with any library ([`t` prop (Translator)](https://ui-schema.bemit.codes/docs/localization#translation), [`Trans` component](https://ui-schema.bemit.codes/docs/localization#trans-component))
     - in-schema translations ([`t` keyword](https://ui-schema.bemit.codes/docs/localization#translation-in-schema))
-    - label text transforms ([`tt` keyword](https://ui-schema.bemit.codes/docs/localization#text-transform))
+    - label text transforms ([`tt`/`ttEnum` keyword](https://ui-schema.bemit.codes/docs/localization#text-transform))
     - single or multi-language
     - for labels, titles, errors, icons...
-    - (optional) [integrated translation library](https://ui-schema.bemit.codes/docs/localization#immutable-as-dictionary)
+    - (optional) [tiny integrated translation library](https://ui-schema.bemit.codes/docs/localization#immutable-as-dictionary)
+    - (optional) [translation dictionaries](./packages/dictionary)
 - modular, extensible and slim core
-    - add own validators
     - add own plugins
+    - add own validators
+    - add own renderers & strategies
     - use what you need
 - [performance optimized](https://ui-schema.bemit.codes/docs/performance), only updates HTML which must re-render, perfect for big schemas
 - code-splitting, with custom widget mappings / lazy-loading widgets

@@ -1,7 +1,7 @@
 import {SchemaGridHandler} from './Grid';
 import {
     DefaultHandler, ValidityReporter, DependentHandler,
-    ValidatorStack,
+    PluginSimpleStack,
     ConditionalHandler, CombiningHandler, ExtractStorePlugin,
 } from '@ui-schema/ui-schema';
 import {ReferencingHandler} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
@@ -14,7 +14,7 @@ const pluginStack = [
     DefaultHandler,
     DependentHandler,
     ConditionalHandler,
-    ValidatorStack,
+    PluginSimpleStack,
     ValidityReporter,
 ];
 

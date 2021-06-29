@@ -1,5 +1,5 @@
 import {List, Map} from "immutable";
-import {createValidatorErrors} from "@ui-schema/ui-schema/ValidatorStack/ValidatorErrors";
+import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorErrors';
 
 export const ERROR_MIN_LENGTH = 'min-length';
 export const ERROR_MAX_LENGTH = 'max-length';
@@ -128,7 +128,7 @@ export const validateMinMax = (schema, value) => {
 };
 
 export const minMaxValidator = {
-    validate: ({schema, value, errors, valid}) => {
+    handle: ({schema, value, errors, valid}) => {
         let err = validateMinMax(schema, value);
 
         if(err.hasError()) {

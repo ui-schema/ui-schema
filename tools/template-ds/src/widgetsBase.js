@@ -9,7 +9,7 @@ const widgetsBase = {
     GroupRenderer,  // wraps any `object` that has no custom widget
     WidgetRenderer, // final rendering and matching of the Widget component
     pluginStack,    // widget plugin system
-    validators,     // validator functions
+    pluginSimpleStack: validators, // simple plugins (e.g. validator functions)
     types: {/* define native JSON-schema type widgets */},
     custom: {/* define custom widgets */},
 };

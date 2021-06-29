@@ -1,7 +1,7 @@
 import React from 'react'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { List } from 'immutable'
-import { onErrors } from '@ui-schema/ui-schema/ValidatorStack'
+import { onErrors } from '@ui-schema/ui-schema/ValidatorErrors'
 
 export interface PluginProps extends WidgetProps {
     // must be transformed from list to boolean `required` by a plugin
@@ -17,6 +17,7 @@ export interface PluginProps extends WidgetProps {
     onErrors?: onErrors
 }
 
-export type PluginType = React.ComponentType<PluginProps>
+export type ComponentPluginType = React.ComponentType<PluginProps>
+export type PluginType = ComponentPluginType
 
 export function PluginComponent<P extends PluginProps>(props: P): React.ReactElement<P>

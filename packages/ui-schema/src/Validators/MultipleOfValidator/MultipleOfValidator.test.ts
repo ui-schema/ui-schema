@@ -4,7 +4,7 @@ import {
 } from '@ui-schema/ui-schema/Validators/MultipleOfValidator'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils'
 import { JsonSchemaNumber } from '@ui-schema/ui-schema/JsonSchema'
-import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
+import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorErrors'
 import { UISchema } from '@ui-schema/ui-schema'
 
 describe('validateMultipleOf', () => {
@@ -253,9 +253,9 @@ describe('multipleOfValidator', () => {
     ]
 
     test.each(multipleOfValidatorTestValues)(
-        '.validate(%j, %s)',
+        '.handle(%j, %s)',
         (schema, value, error, expectedValid, expectedError) => {
-            const result = multipleOfValidator.validate({
+            const result = multipleOfValidator.handle({
                 schema: OrderedMap(schema),
                 value,
                 errors: createValidatorErrors(),

@@ -2,7 +2,7 @@ import { OrderedMap, List, Map } from 'immutable'
 import {
     validateConst, valueValidatorConst, ERROR_CONST_MISMATCH,
 } from '@ui-schema/ui-schema/Validators/ValueValidator'
-import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
+import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorErrors'
 
 describe('validateConst', () => {
     test('validateConst', () => {
@@ -84,9 +84,9 @@ describe('valueValidatorConst', () => {
     ]
 
     test.each(valueValidatorConstTestValues)(
-        '.validate(%j, %s)',
+        '.handle(%j, %s)',
         (schema, value, error, expectedValid, expectedError) => {
-            const result = valueValidatorConst.validate({
+            const result = valueValidatorConst.handle({
                 schema: OrderedMap(schema),
                 value,
                 errors: createValidatorErrors(),

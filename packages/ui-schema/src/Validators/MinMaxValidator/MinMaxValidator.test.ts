@@ -5,7 +5,7 @@ import {
 import { createMap, createOrderedMap } from '@ui-schema/ui-schema/Utils'
 import { JsonSchema } from '@ui-schema/ui-schema/JsonSchema'
 import { UISchema } from '@ui-schema/ui-schema/UISchema'
-import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
+import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorErrors/ValidatorErrors'
 
 describe('validateMinMax', () => {
     type validateMinMaxTest = [
@@ -263,9 +263,9 @@ describe('minMaxValidator', () => {
     ]
 
     test.each(minMaxValidatorTestValues)(
-        '.validate(%j, %s)',
+        '.handle(%j, %s)',
         (schema, value, error, expectedValid, expectedError) => {
-            const result = minMaxValidator.validate({
+            const result = minMaxValidator.handle({
                 schema: OrderedMap(schema),
                 value,
                 errors: createValidatorErrors(),

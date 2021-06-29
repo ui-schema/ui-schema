@@ -1,9 +1,9 @@
 import React from 'react'
-import { PluginType } from '@ui-schema/ui-schema/PluginStack/Plugin'
-import { ValidatorPlugin } from '@ui-schema/ui-schema/ValidatorStack/ValidatorPlugin'
+import { ComponentPluginType } from '@ui-schema/ui-schema/PluginStack/Plugin'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { WidgetRendererProps } from '@ui-schema/ui-schema/WidgetRenderer'
+import { PluginSimple } from '@ui-schema/ui-schema/PluginSimpleStack/PluginSimple'
 
 export interface GroupRendererProps {
     level: number
@@ -23,11 +23,18 @@ export interface WidgetsBindingBaseStrict {
     RootRenderer: React.ComponentType<any>
     // wraps any `object` that has no custom widget
     GroupRenderer: React.ComponentType<GroupRendererProps>
+    // final widget matching and rendering
     WidgetRenderer: React.ComponentType<WidgetRendererProps>
-    // widget plugin system
-    pluginStack: PluginType[]
-    // validator functions
-    validators: ValidatorPlugin[]
+    // widget plugin system (react components)
+    pluginStack: ComponentPluginType[]
+    // props plugin system (vanilla JS functions based)
+    // > restructured from `validators` in `0.3.0`
+    pluginSimpleStack: PluginSimple[]
+
+    // actual validator function to use outside of render flow (in functions)
+    // > added in `0.3.0`
+    // validator: () => void
+
     // define native JSON-schema type widgets
     types: { [key: string]: React.ComponentType<WidgetProps> }
     // define custom widgets

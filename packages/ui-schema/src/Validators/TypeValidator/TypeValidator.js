@@ -39,7 +39,7 @@ export const validateType = (value, type) => {
 };
 
 export const typeValidator = {
-    validate: ({schema, value, errors, valid}) => {
+    handle: ({schema, value, errors, valid}) => {
         let type = schema.get('type');
 
         if(!validateType(value, type)) {

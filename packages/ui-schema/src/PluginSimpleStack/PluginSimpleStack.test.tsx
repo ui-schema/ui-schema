@@ -3,27 +3,28 @@ import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 // @ts-ignore
 import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
-import { ValidatorStack, handleValidatorStack } from './ValidatorStack'
+import { PluginSimpleStack, handlePluginSimpleStack } from './PluginSimpleStack'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
 import { WidgetRenderer } from '../WidgetRenderer'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 
-describe('ValidatorStack', () => {
-    it('ValidatorStack', async () => {
+describe('PluginSimpleStack', () => {
+    it('PluginSimpleStack', async () => {
         const {queryByText} = render(
             // ts-@ignore
-            <ValidatorStack
+            <PluginSimpleStack
                 // ts-@ignore
                 handled
                 // ts-@ignore
                 widgets={{
                     WidgetRenderer: WidgetRenderer,
                     types: {
+                        // @ts-ignore
                         string: ({valid, handled}: { valid?: boolean, handled?: boolean }) =>
                             valid === true && handled === true ? 'is-valid' : 'is-invalid',
                     },
-                    validators: [{validate: () => ({valid: true})}],
+                    pluginSimpleStack: [{handle: () => ({valid: true})}],
                     pluginStack: [],
                 }}
                 schema={createOrderedMap({type: 'string'})}
@@ -33,26 +34,26 @@ describe('ValidatorStack', () => {
     })
 })
 
-describe('handleValidatorStack', () => {
+describe('handlePluginSimpleStack', () => {
     test.each([
         [{
             widgets: {
-                validators: [{
-                    validate: (): { valid: boolean } => ({valid: true}),
+                pluginSimpleStack: [{
+                    handle: (): { valid: boolean } => ({valid: true}),
                 }],
             },
         }, 'valid', true],
         [{
             widgets: {
-                validators: [{
+                pluginSimpleStack: [{
                     should: (): boolean => false,
-                    validate: (): { valid: boolean } => ({valid: true}),
+                    handle: (): { valid: boolean } => ({valid: true}),
                 }],
             },
         }, 'valid', undefined],
         [{
             widgets: {
-                validators: [{
+                pluginSimpleStack: [{
                     should: (): boolean => true,
                 }],
             },
@@ -63,26 +64,26 @@ describe('handleValidatorStack', () => {
         [{}, 'valid', undefined],
         [{
             widgets: {
-                validators: [{
-                    should: () => true,
-                    validate: (): { valid: boolean } => ({valid: true}),
+                pluginSimpleStack: [{
+                    should: (): boolean => true,
+                    handle: (): { valid: boolean } => ({valid: true}),
                 }],
             },
         }, 'valid', true],
         [{
             widgets: {
-                validators: [{
+                pluginSimpleStack: [{
                     should: (): boolean => false,
-                    validate: (): { valid: boolean } => ({valid: true}),
-                    noValidate: (): { valid: number } => ({valid: 100}),
+                    handle: (): { valid: boolean } => ({valid: true}),
+                    noHandle: (): { valid: number } => ({valid: 100}),
                 }],
             },
         }, 'valid', 100],
     ])(
-        'handleValidatorStack(%j): %j, %j',
+        'handlePluginSimpleStack(%j): %j, %j',
         (props, keyA: string, expectA: any) => {
             // @ts-ignore
-            const newProps = handleValidatorStack(props)
+            const newProps = handlePluginSimpleStack(props)
             // @ts-ignore
             expect(newProps[keyA]).toBe(expectA)
             // @ts-ignore

@@ -24,7 +24,7 @@ export const widgets = {
     GroupRenderer,
     WidgetRenderer,
     pluginStack,
-    validators,
+    pluginSimpleStack: validators,
     types: {
         string: StringRenderer,
         boolean: BoolRenderer,
