@@ -1,12 +1,14 @@
 import React from 'react'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
-import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
 import FormLabel from '@material-ui/core/FormLabel'
 import FormControl from '@material-ui/core/FormControl'
 import MuiFormGroup from '@material-ui/core/FormGroup'
 import { useTheme } from '@material-ui/core/styles'
+import { extractValue, WithValue } from '@ui-schema/ui-schema/UIStore'
+import { memo } from '@ui-schema/ui-schema/Utils'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
 
-export const FormGroup: React.ComponentType<WidgetProps> = (props) => {
+export const FormGroupBase: React.ComponentType<WidgetProps & WithValue> = (props) => {
     const {storeKeys, ownKey, widgets} = props
     const {WidgetRenderer} = widgets
     const {spacing} = useTheme()
@@ -36,3 +38,5 @@ export const FormGroup: React.ComponentType<WidgetProps> = (props) => {
         {/*<FormHelperText>Be careful</FormHelperText>*/}
     </FormControl>
 }
+
+export const FormGroup: React.ComponentType<WidgetProps> = extractValue(memo(FormGroupBase))

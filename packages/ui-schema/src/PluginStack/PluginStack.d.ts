@@ -1,19 +1,13 @@
 import * as React from 'react'
 import { PluginProps, PluginType } from '@ui-schema/ui-schema/PluginStack/Plugin'
-import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
-import { StoreKeys } from '@ui-schema/ui-schema/UIStore'
-import { GroupRendererProps, WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
+import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { onErrors } from '@ui-schema/ui-schema/ValidatorErrors'
 
-export type WidgetOverrideType<P extends {}> = React.ComponentType<P & WidgetProps>
+export type WidgetOverrideType<P extends {} = {}> = React.ComponentType<P & WidgetProps>
 
-export interface PluginStackProps {
+export interface PluginStackProps<WP extends {} = {}> extends Pick<WidgetProps, 'schema' | 'parentSchema' | 'storeKeys' | 'isVirtual' | 'noGrid' | 'showValidity'> {
     level?: number
-    schema: StoreSchemaType
-    parentSchema: StoreSchemaType | undefined
-    storeKeys: StoreKeys
-    noGrid?: GroupRendererProps['noGrid']
 
     // listen from a hoisted component for `errors` changing,
     // useful for some performance optimizes like at ds-material Accordions
@@ -24,15 +18,15 @@ export interface PluginStackProps {
 
     // override any widget for just this PluginStack, not passed down further on
     // better use `applyPluginStack` instead! https://ui-schema.bemit.codes/docs/core#applypluginstack
-    WidgetOverride?: WidgetOverrideType
+    WidgetOverride?: WidgetOverrideType<WP>
 
     // all other props are passed down to all rendering Plugins and the final widget
     // except defined `props` removed by `WidgetRenderer`: https://ui-schema.bemit.codes/docs/core#widgetrenderer
-    [key: string]: any
+    //[key: string]: any
 }
 
-export function PluginStack<P extends PluginStackProps>(
-    props: P
+export function PluginStack<WP extends {} = {}, P extends PluginStackProps<WP> = PluginStackProps<WP>>(
+    props: P & WP
 ): React.ReactElement
 
 /**

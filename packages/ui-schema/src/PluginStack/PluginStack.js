@@ -34,15 +34,13 @@ class PluginStackErrorBoundary extends React.Component {
 // `extractValue` has moved to own plugin `ExtractStorePlugin` since `0.3.0`
 // `withUIMeta` and `mema` are not needed for performance optimizing since `0.3.0` at this position
 export const PluginStack = (props) => {
-    const {widgets, t} = useUIMeta()
+    const {widgets, ...meta} = useUIMeta()
     const {
         level = 0, parentSchema,
         storeKeys, schema,
         widgets: customWidgets,
-        t: customT,
     } = props;
     const activeWidgets = customWidgets ? customWidgets : widgets
-    const activeT = customT ? customT : t
 
     // till draft-06, no `$`, hashtag in id
     const id = getSchemaId(schema)
@@ -60,8 +58,8 @@ export const PluginStack = (props) => {
     const pluginTree = <NextPluginRenderer
         currentPluginIndex={-1}
         // all others are getting pushed to Widget
+        {...meta}
         {...props}
-        t={activeT}
         widgets={activeWidgets}
         level={level}
         ownKey={storeKeys.get(storeKeys.count() - 1)}
@@ -86,9 +84,11 @@ export const PluginStack = (props) => {
     </ErrorBoundary> : null;
 };
 
-export const getNextPlugin = (next, {pluginStack: ps, WidgetRenderer}) => {
-    return next < ps.length ? ps[next] || (() => 'plugin-error') : WidgetRenderer;
-}
+export const getNextPlugin = (next, {pluginStack: ps, WidgetRenderer}) =>
+    next < ps.length ?
+        ps[next] || (() => 'plugin-error')
+        : WidgetRenderer;
+
 
 export const NextPluginRenderer = ({currentPluginIndex, ...props}) => {
     const next = currentPluginIndex + 1;

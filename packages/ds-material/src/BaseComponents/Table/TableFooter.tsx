@@ -11,7 +11,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import { TablePaginationActions } from '@ui-schema/ds-material/BaseComponents/Table/TablePaginationActions'
 import { TableFooterProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
-import { withTable } from '@ui-schema/ds-material/BaseComponents/Table/TableContext'
+import { TableContextType, withTable } from '@ui-schema/ds-material/BaseComponents/Table/TableContext'
 
 export interface TableFooterErrorsBaseProps {
     colSize: number | undefined
@@ -19,7 +19,7 @@ export interface TableFooterErrorsBaseProps {
     schema: WidgetProps['schema']
 }
 
-export const TableFooterErrorsBase: React.ComponentType<TableFooterErrorsBaseProps & { valid: boolean, errors: WidgetProps['errors'] }> = (
+export const TableFooterErrorsBase: React.ComponentType<TableFooterErrorsBaseProps & TableContextType> = (
     {
         colSize = 0,
         showValidity,
@@ -43,6 +43,7 @@ export const TableFooterErrorsBase: React.ComponentType<TableFooterErrorsBasePro
         </TableCell>
     </TableRow> : null
 }
+export const TableFooterErrors: React.ComponentType<TableFooterErrorsBaseProps> = withTable<TableFooterErrorsBaseProps>(memo(TableFooterErrorsBase))
 
 export const TableFooterBase: React.ComponentType<TableFooterProps> = (
     {
@@ -122,6 +123,4 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
         <TableFooterErrors colSize={colSize} showValidity={showValidity} schema={schema}/>
     </MuiTableFooter>
 }
-export const TableFooterErrors: React.ComponentType<TableFooterErrorsBaseProps> = withTable<TableFooterErrorsBaseProps>(memo(TableFooterErrorsBase))
-
 export const TableFooter: React.ComponentType<TableFooterProps> = memo(TableFooterBase)

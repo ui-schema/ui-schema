@@ -42,7 +42,7 @@ const AccordionStackBase: React.ComponentType<WidgetProps & AccordionStackBasePr
                 parentSchema={parentSchema}
                 storeKeys={storeKeys} level={level}
                 onErrors={setErrors}
-                isVirtual={props.isVirtual || (parentSchema.get('onClosedHidden') && !isOpen)}
+                isVirtual={props.isVirtual || (parentSchema?.get('onClosedHidden') as boolean && !isOpen)}
             />
             <ValidityHelperText
                 errors={errors} showValidity={showValidity} schema={schema}

@@ -4,10 +4,8 @@ import Dashboard from './dashboard/Dashboard'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
-import { Button } from '@material-ui/core'
 import { Step, Stepper, widgets } from '@ui-schema/ds-material'
-import { isInvalid, createOrderedMap, createStore, StoreKeys, StoreSchemaType, WidgetProps, loadSchemaUIApi, UIMetaProvider, UIStoreProvider } from '@ui-schema/ui-schema'
-import { MuiSchemaDebug } from './component/MuiSchemaDebug'
+import { createOrderedMap, createStore, StoreKeys, StoreSchemaType, WidgetProps, loadSchemaUIApi, UIMetaProvider, UIStoreProvider, useUIMeta } from '@ui-schema/ui-schema'
 import { browserT } from '../t'
 import { UIApiProvider } from '@ui-schema/ui-schema/UIApi/UIApi'
 import { ReferencingNetworkHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
@@ -20,6 +18,7 @@ import { PluginStack } from '@ui-schema/ui-schema/PluginStack/PluginStack'
 import { applyPluginStack } from '@ui-schema/ui-schema/applyPluginStack'
 import { StringRenderer } from '@ui-schema/ds-material/Widgets/TextField'
 import { ObjectGroup } from '@ui-schema/ui-schema/ObjectGroup'
+import { memo } from '@ui-schema/ui-schema/Utils/memo/memo'
 
 const customWidgets = {...widgets}
 const pluginStack = [...customWidgets.pluginStack]
@@ -97,7 +96,7 @@ const storeKeys = List()
 const WidgetTextField = applyPluginStack(StringRenderer)
 
 const FreeFormEditor = () => {
-    const [showValidity, setShowValidity] = React.useState(false)
+    const showValidity = true
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
     const [schema, setSchema] = React.useState<StoreSchemaType>(() => freeFormSchema)
 
@@ -105,58 +104,100 @@ const FreeFormEditor = () => {
         setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
     }, [setStore])
 
+    const {handleStuff} = useUIMeta<UIMetaCustomContext>()
+    console.log('handleStuff', handleStuff)
+
     return <React.Fragment>
         <UIStoreProvider
             store={store}
             onChange={onChange}
             showValidity={showValidity}
         >
-            <ObjectGroup
+            <FreeFormEditorContent
                 storeKeys={storeKeys}
-                schema={freeFormSchema} parentSchema={undefined}
-                onSchema={(schema) => setSchema(schema)}
-            >
-                <Grid container dir={'columns'} spacing={4}>
-                    <WidgetTextField
-                        level={1}
-                        storeKeys={storeKeys.push('name') as StoreKeys}
-                        schema={schema.getIn(['properties', 'name']) as unknown as StoreSchemaType}
-                        parentSchema={schema}
-
-                        // using `applyPluginStack`, this free-form widget is fully typed
-                        // with the actual props of the widget component
-                        multiline={false}
-                    />
-
-                    <PluginStack
-                        showValidity={showValidity}
-                        storeKeys={storeKeys.push('city') as StoreKeys}
-                        schema={schema.getIn(['properties', 'name']) as unknown as StoreSchemaType}
-                        parentSchema={schema}
-                        level={1}
-                        readOnly={false}
-                        // noGrid={false} (as grid-item is included in `PluginStack`)
-                    />
-                </Grid>
-            </ObjectGroup>
-
-            <MuiSchemaDebug setSchema={() => null}/>
+                freeFormSchema={freeFormSchema}
+                setSchema={setSchema}
+                schema={schema}
+                showValidity={showValidity}
+            />
         </UIStoreProvider>
-
-        <div style={{width: '100%'}}>
-            <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
-            <div>
-                {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
-            </div>
-        </div>
     </React.Fragment>
+}
+
+let FreeFormEditorContent = (
+    // @ts-ignore
+    {storeKeys, freeFormSchema, setSchema, schema, showValidity}
+) => {
+    return <ObjectGroup
+        storeKeys={storeKeys}
+        schema={freeFormSchema} parentSchema={undefined}
+        onSchema={setSchema}
+    >
+        <Grid container dir={'columns'} spacing={4}>
+            <WidgetTextField
+                level={1}
+                storeKeys={storeKeys.push('name') as StoreKeys}
+                schema={schema.getIn(['properties', 'name']) as unknown as StoreSchemaType}
+                parentSchema={schema}
+
+                // using `applyPluginStack`, this free-form widget is fully typed
+                // with the actual props of the widget component
+                multiline={false}
+            />
+
+            <PluginStack
+                showValidity={showValidity}
+                storeKeys={storeKeys.push('city') as StoreKeys}
+                schema={schema.getIn(['properties', 'name']) as unknown as StoreSchemaType}
+                parentSchema={schema}
+                level={1}
+                readOnly={false}
+                // noGrid={false} (as grid-item is included in `PluginStack`)
+            />
+        </Grid>
+    </ObjectGroup>
+}
+// @ts-ignore
+FreeFormEditorContent = memo(FreeFormEditorContent)
+
+/*
+// export const TestFn=<D extends {}>(data: D): D
+export type TestFn<D extends { [k: string]: any } = {}> = (data: D) => D
+
+export type TestFns<D> = TestFn<D>[]
+
+const fns: TestFns<{ [k: string]: any }> = [
+    //(d: { ddd: string }) => ({...d, eee: ''}),
+    (d: D) => ({...d, eee: ''}),
+    (e: { eee: string } & { ddd: string }) => e,
+    (f) => {
+        console.log(f)
+        return f
+    },
+]
+let data = fns.reduce((c, b) => ({...b(c)}), {ddd: ''})
+//data.
+
+const execute = <T extends {} = {}>(arr: ((d: T) => T)[]): T => {
+    const data: T = {}
+    return arr.reduce((c, b) => ({...b(c)}), data)
+}
+
+const d = execute(fns)
+d.ddd
+*/
+
+export interface UIMetaCustomContext {
+    handleStuff: () => 'stuff'
 }
 
 // eslint-disable-next-line react/display-name,@typescript-eslint/explicit-module-boundary-types
 export default () => <AppTheme>
-    <UIMetaProvider widgets={customWidgets} t={browserT}>
-        <UIApiProvider loadSchema={loadSchema} noCache>
-            <Dashboard main={Main}/>
-        </UIApiProvider>
-    </UIMetaProvider>
+    <div>
+        <UIMetaProvider<UIMetaCustomContext> widgets={customWidgets} t={browserT} handleStuff={() => 'stuff'}>
+            <UIApiProvider loadSchema={loadSchema} noCache>
+                <Dashboard main={Main}/>
+            </UIApiProvider>
+        </UIMetaProvider>
+    </div>
 </AppTheme>

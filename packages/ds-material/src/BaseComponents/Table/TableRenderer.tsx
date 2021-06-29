@@ -5,7 +5,7 @@ import { List, Map, OrderedMap } from 'immutable'
 import MuiTable from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableContainer from '@material-ui/core/TableContainer'
-import { TableRendererBaseProps, TableRendererExtractorProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
+import { TableRendererBaseProps, TableRendererExtractorProps, TableRowProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
 import { TableContext } from '@ui-schema/ds-material/BaseComponents/Table/TableContext'
 
 export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<keyof WidgetProps, 'value' | 'errors' | 'valid'>> & TableRendererBaseProps> = (
@@ -63,7 +63,7 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
                 <TableBody>
                     {validItemSchema && listSize ?
                         Array(listSize).fill(null).map((_val: any, i) =>
-                            <PluginStack
+                            <PluginStack<TableRowProps>
                                 key={i}
                                 storeKeys={storeKeys.push(i as number)}
                                 schema={itemsSchema}
@@ -78,7 +78,7 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
                                 showRows={rows}
                                 uid={uid}
                                 // todo: some table rows like `DragDrop` would need info like "is-first-row", "is-last-row", "is-only-row"
-                                //listSize={listSize}
+                                listSize={listSize}
                                 dense={dense}
                             />
                         ) : null}
@@ -88,7 +88,7 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
                     colSize={visibleCols?.size || 0}
                     t={t}
                     listSize={listSize}
-                    listSizeCurrent={listSize || 0}
+                    listSizeCurrent={listSize}
                     btnSize={btnSize}
                     schema={schema}
                     setPage={setPage}

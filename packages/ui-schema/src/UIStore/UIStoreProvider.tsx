@@ -6,7 +6,7 @@ import { createMap, getDisplayName } from '@ui-schema/ui-schema/Utils'
 export interface UIStoreContext {
     store: UIStoreType
     onChange: onChange
-    showValidity?: boolean
+    showValidity?: boolean | undefined
 }
 
 // @ts-ignore

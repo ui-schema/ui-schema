@@ -58,7 +58,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps & StringRendere
     }
 
     if (schema.get('checkNativeValidity')) {
-        valid = checkNativeValidity(currentRef, valid)
+        valid = checkNativeValidity(currentRef, Boolean(valid))
     }
 
     if (!inputProps.style) {

@@ -38,8 +38,8 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps> 
     const classes = useTableRowStyle({dense})
     // only supporting array tuple schemas or objects for table rows / items
     let cellSchema = (schema.get('items') as List<any>) || (schema.get('properties') as Map<string, any>)
-    const readOnly = parentSchema.get('readOnly')
-    const deleteOnEmpty = parentSchema.get('deleteOnEmpty') || required
+    const readOnly = Boolean(parentSchema?.get('readOnly'))
+    const deleteOnEmpty = parentSchema?.get('deleteOnEmpty') || required
 
     if (
         schema.get('type') === 'object' &&
@@ -75,7 +75,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps> 
                 >
                     {item.get('type') === 'object' ?
                         <GroupRenderer level={0} schema={item} className={classes.groupRenderer}>
-                            <PluginStack
+                            <PluginStack<{ [k: string]: any }>
                                 showValidity={showValidity}
                                 storeKeys={storeKeys.push(j as OwnKey)}
                                 schema={item.setIn(['view', 'hideTitle'], true)}
@@ -91,7 +91,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps> 
                                 // labelledBy={'uis-' + uid + '-tbl-' + j}
                             />
                         </GroupRenderer> :
-                        <PluginStack
+                        <PluginStack<{ [k: string]: any }>
                             showValidity={showValidity}
                             storeKeys={storeKeys.push(j as OwnKey)}
                             schema={item.setIn(['view', 'hideTitle'], true)}

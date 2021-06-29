@@ -9,4 +9,4 @@ export type AppliedPluginStackProps<P extends {} = {}> =
 
 export type AppliedPluginStack<P extends {} = {}> = React.ComponentType<AppliedPluginStackProps<P>>
 
-export function applyPluginStack<P extends WidgetProps = WidgetProps>(CustomWidget: React.ComponentType<P>): AppliedPluginStack<P>
+export function applyPluginStack<C extends {} = {}, P extends WidgetProps<C> = WidgetProps<C>>(CustomWidget: React.ComponentType<P>): AppliedPluginStack<P>
