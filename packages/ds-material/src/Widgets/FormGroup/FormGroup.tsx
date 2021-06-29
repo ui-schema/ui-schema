@@ -1,13 +1,14 @@
 import React from 'react'
-import { WidgetRenderer, TransTitle, WidgetProps } from '@ui-schema/ui-schema'
-
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
 import FormLabel from '@material-ui/core/FormLabel'
 import FormControl from '@material-ui/core/FormControl'
 import MuiFormGroup from '@material-ui/core/FormGroup'
 import { useTheme } from '@material-ui/core/styles'
 
-export const FormGroup = (props: WidgetProps): React.ReactElement => {
-    const {storeKeys, ownKey} = props
+export const FormGroup: React.ComponentType<WidgetProps> = (props) => {
+    const {storeKeys, ownKey, widgets} = props
+    const {WidgetRenderer} = widgets
     const {spacing} = useTheme()
     let {schema} = props
     // deleting the `widget` to directly use `PluginStack` for nesting
