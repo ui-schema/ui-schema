@@ -53,7 +53,7 @@ const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChang
                     defaultValue={multiple ? currentValue.toArray().includes(enum_name) : currentValue === enum_name}>
                     {typeof Translated === 'string' || typeof Translated === 'number' ?
                         Translated :
-                        beautifyKey(s, schema.get('tt'))}
+                        beautifyKey(s, schema.get('ttEnum'))}
                 </option>
 
             }).valueSeq() : null}

@@ -41,7 +41,7 @@ const Select = ({
                     const Translated = t(s, Map({relative: List(['enum', s])}), schema.get('t'));
                     return typeof Translated === 'string' || typeof Translated === 'number' ?
                         Translated :
-                        beautifyKey(s, schema.get('tt')) + '';
+                        beautifyKey(s, schema.get('ttEnum')) + '';
                 }).join(', ')
             }}
             onChange={(e) =>
@@ -70,14 +70,14 @@ const Select = ({
                             schema={schema.get('t')}
                             text={storeKeys.insert(0, 'widget').concat(List(['enum', enum_name])).join('.')}
                             context={Map({'relative': List(['enum', enum_name])})}
-                            fallback={beautifyKey(enum_name, schema.get('tt')) + ''}
+                            fallback={beautifyKey(enum_name, schema.get('ttEnum')) + ''}
                         />}/>
                     </React.Fragment> :
                     <Trans
                         schema={schema.get('t')}
                         text={storeKeys.insert(0, 'widget').concat(List(['enum', enum_name])).join('.')}
                         context={Map({'relative': List(['enum', enum_name])})}
-                        fallback={beautifyKey(enum_name, schema.get('tt')) + ''}
+                        fallback={beautifyKey(enum_name, schema.get('ttEnum')) + ''}
                     />}
                 </MenuItem>,
             ).valueSeq() : null}

@@ -38,7 +38,7 @@ const OptionsRadio = ({
                         schema={schema.get('t')}
                         text={storeKeys.insert(0, 'widget').concat(List(['enum', enum_name])).join('.')}
                         context={Map({'relative': List(['enum', enum_name])})}
-                        fallback={beautifyKey(enum_name, schema.get('tt'))}
+                        fallback={beautifyKey(enum_name, schema.get('ttEnum'))}
                     />}
                 />
             }).valueSeq() : null}

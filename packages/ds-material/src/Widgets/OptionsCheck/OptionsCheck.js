@@ -79,7 +79,7 @@ const OptionsCheck = ({
         <FormGroup row={row}>
             <OptionsCheckValue
                 enumVal={enumVal} storeKeys={storeKeys}
-                trans={schema.get('t')} tt={schema.get('tt')}
+                trans={schema.get('t')} tt={schema.get('ttEnum')}
                 required={required} type={schema.get('type')}
                 disabled={schema.get('readOnly')}
             />
