@@ -4,9 +4,9 @@ import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { onErrors } from '@ui-schema/ui-schema/ValidatorErrors'
 
-export type WidgetOverrideType<P extends {} = {}> = React.ComponentType<P & WidgetProps>
+export type WidgetOverrideType<P extends {} = {}, C extends {} = {}> = React.ComponentType<P & WidgetProps<C>>
 
-export interface PluginStackProps<WP extends {} = {}> extends Pick<WidgetProps, 'schema' | 'parentSchema' | 'storeKeys' | 'isVirtual' | 'noGrid' | 'showValidity'> {
+export interface PluginStackProps<WP extends {} = {}, C extends {} = {}> extends Pick<WidgetProps, 'schema' | 'parentSchema' | 'storeKeys' | 'isVirtual' | 'noGrid' | 'showValidity'> {
     level?: number
 
     // listen from a hoisted component for `errors` changing,
@@ -17,15 +17,15 @@ export interface PluginStackProps<WP extends {} = {}> extends Pick<WidgetProps, 
     widgets?: WidgetsBindingBase
 
     // override any widget for just this PluginStack, not passed down further on
-    // better use `applyPluginStack` instead! https://ui-schema.bemit.codes/docs/core#applypluginstack
-    WidgetOverride?: WidgetOverrideType<WP>
+    // better use `applyPluginStack` instead! https://ui-schema.bemit.codes/docs/core-pluginstack#applypluginstack
+    WidgetOverride?: WidgetOverrideType<WP, C>
 
     // all other props are passed down to all rendering Plugins and the final widget
-    // except defined `props` removed by `WidgetRenderer`: https://ui-schema.bemit.codes/docs/core#widgetrenderer
+    // except defined `props` removed by `WidgetRenderer`: https://ui-schema.bemit.codes/docs/core-renderer#widgetrenderer
     //[key: string]: any
 }
 
-export function PluginStack<WP extends {} = {}, P extends PluginStackProps<WP> = PluginStackProps<WP>>(
+export function PluginStack<WP extends {} = {}, C extends {} = {}, P extends PluginStackProps<WP, C> = PluginStackProps<WP, C>>(
     props: P & WP
 ): React.ReactElement
 

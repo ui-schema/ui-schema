@@ -77,6 +77,7 @@ export const PluginStack = (props) => {
     >
         {isRootSchema(schema) ?
             // TODO: check spec. for: uses root `id`s only, those which are not in the same document/e.g. excludes $anchors from `$defs`
+            // TODO: shouldn't this be after handling $ref?
             <SchemaRootProvider id={id} schema={schema}>
                 {pluginTree}
             </SchemaRootProvider> :

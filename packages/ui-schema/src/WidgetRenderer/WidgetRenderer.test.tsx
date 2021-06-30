@@ -37,7 +37,7 @@ describe('WidgetRenderer', () => {
                     WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
                     pluginStack: [ExtractStorePlugin],
-                    validators: [],
+                    pluginSimpleStack: [],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string'})}
@@ -55,7 +55,7 @@ describe('WidgetRenderer', () => {
                     WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
                     pluginStack: [ExtractStorePlugin],
-                    validators: [],
+                    pluginSimpleStack: [],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string', widget: 'Text'})}
@@ -73,7 +73,7 @@ describe('WidgetRenderer', () => {
                     WidgetRenderer: WidgetRenderer,
                     types: {string: (props: WidgetProps) => props.value}, custom: {},
                     pluginStack: [ExtractStorePlugin],
-                    validators: [],
+                    pluginSimpleStack: [],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string'})}
@@ -92,7 +92,7 @@ describe('WidgetRenderer', () => {
                     WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {Text: (props: WidgetProps) => props.value},
                     pluginStack: [ExtractStorePlugin],
-                    validators: [],
+                    pluginSimpleStack: [],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string', widget: 'Text'})}
@@ -111,7 +111,7 @@ describe('WidgetRenderer', () => {
                     WidgetRenderer: WidgetRenderer,
                     types: {array: (props: WidgetProps) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set'}, custom: {},
                     pluginStack: [ExtractStorePlugin],
-                    validators: [],
+                    pluginSimpleStack: [],
                 }}
                 value={[]}
                 schema={createOrderedMap({type: 'array'})}
@@ -130,7 +130,7 @@ describe('WidgetRenderer', () => {
                     types: {},
                     custom: {CustomObj: (props: WidgetProps) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set'},
                     pluginStack: [ExtractStorePlugin],
-                    validators: [],
+                    pluginSimpleStack: [],
                 }}
                 value={{}}
                 schema={createOrderedMap({type: 'object', widget: 'CustomObj'})}
@@ -156,7 +156,7 @@ describe('WidgetRenderer', () => {
                         types: {string: () => 'string-renderer', number: () => 'number-renderer'},
                         custom: {},
                         pluginStack: [ExtractStorePlugin],
-                        validators: [],
+                        pluginSimpleStack: [],
                     }}
                     value={value}
                     virtualWidgets={virtualWidgets}
@@ -213,7 +213,7 @@ describe('WidgetRenderer', () => {
                         types: {string: () => 'string-renderer', number: () => 'number-renderer'},
                         custom: {},
                         pluginStack: [ExtractStorePlugin],
-                        validators: [],
+                        pluginSimpleStack: [],
                     }}
                     value={value}
                     virtualWidgets={virtualWidgets2}
@@ -242,7 +242,7 @@ describe('WidgetRenderer', () => {
             types: {string: () => 'string-renderer', number: () => 'number-renderer'},
             custom: {},
             pluginStack: [ExtractStorePlugin],
-            validators: [],
+            pluginSimpleStack: [],
         }
         const value = createOrderedMap({dummy_array: ['lorem ipsum', 42]})
         const store = createStore(value)
@@ -295,7 +295,7 @@ describe('WidgetRenderer', () => {
             types: {string: () => 'string-renderer', number: () => 'number-renderer'},
             custom: {},
             pluginStack: [ExtractStorePlugin],
-            validators: [],
+            pluginSimpleStack: [],
         }
         const value = createOrderedMap({dummy_array: [['lorem ipsum', 42], ['dolor sit', 43]]})
         const store = createStore(value)

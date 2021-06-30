@@ -71,14 +71,14 @@ JSON Schema keywords are used to validate the data, the UI is created from that 
     - (optional) [tiny integrated translation library](https://ui-schema.bemit.codes/docs/localization#immutable-as-dictionary)
     - (optional) [translation dictionaries](./packages/dictionary)
 - modular, extensible and slim core
-    - add own plugins
+    - add own [plugins](https://ui-schema.bemit.codes/docs/core-pluginstack)
     - add own validators
     - add own renderers & strategies
     - use what you need
 - [performance optimized](https://ui-schema.bemit.codes/docs/performance), only updates HTML which must re-render, perfect for big schemas
 - code-splitting, with custom widget mappings / lazy-loading widgets
 - includes helper functions for store and immutable handling
-- easy nesting for custom object/array widgets with [`PluginStack`](https://ui-schema.bemit.codes/docs/core#pluginstack)
+- easy nesting for custom object/array widgets with [`PluginStack`](https://ui-schema.bemit.codes/docs/core-pluginstack)
 - validate hidden/auto-generated values, virtualize schema levels ([`hidden` keyword](https://ui-schema.bemit.codes/docs/schema#hidden-keyword--virtualization))
 - handle store update from anywhere and however you want
 - extensive documentations of core, widgets
@@ -110,7 +110,7 @@ import React from 'react';
 
 // Import Schema UI Generator
 import {
-    UIGenerator, isInvalid, createOrderedMap, createStore, storeUpdater, relTranslate,
+    UIGenerator, isInvalid, createOrderedMap, createStore, storeUpdater, relTranslator,
 } from '@ui-schema/ui-schema';
 
 // Get the widgets binding for your design-system
@@ -166,7 +166,7 @@ export const DemoForm = () => {
             showValidity={showValidity}
             widgets={widgets}
 
-            t={relTranslate}
+            t={relTranslator}
             // t={(text, context, schema) => {/* add translations */}}
         >
             {/* (optional) add components which use the context of the generator here */}
@@ -224,7 +224,7 @@ const Widget = ({
 
 **Recommended** usage with one `UIMetaProvider` for many `UIStoreProvider`, delivers improved performance and ease of extension, check that your `UIMetaProvider` isn't re-rendering when the `UIStoreProvider` re-renders with the React developer tools.
 
-Instead of using `UIRootRenderer` it's also possible to use [full custom rendering](/quick-start?type=custom) with e.g. [ObjectGroup](/docs/core#objectgroup).
+Instead of using `UIRootRenderer` it's also possible to use [full custom rendering](/quick-start?type=custom) with e.g. [ObjectGroup](/docs/core-renderer#objectgroup).
 
 ```js
 import React from 'react';
@@ -238,7 +238,7 @@ import {
 } from '@ui-schema/ui-schema/UIStore';
 import {UIMetaProvider, useUIMeta} from '@ui-schema/ui-schema/UIMeta';
 import {UIRootRenderer} from '@ui-schema/ui-schema/UIRootRenderer';
-import {relTranslate} from '@ui-schema/ui-schema/Translate/relT';
+import {relTranslator} from '@ui-schema/ui-schema/Translate/relT';
 
 // Get the widgets binding for your design-system
 import {widgets} from '@ui-schema/ds-material/widgetsBinding';
@@ -315,7 +315,7 @@ export const DemoForm = () => {
 export default function App() {
     return <UIMetaProvider
         widgets={widgets}
-        t={relTranslate}
+        t={relTranslator}
         //t={(text, context, schema) => {/* add translations */}}
     >
         {/*

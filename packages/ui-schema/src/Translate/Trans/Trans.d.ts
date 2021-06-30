@@ -1,5 +1,5 @@
 import React from 'react'
-import { translation, TranslatorContext } from '@ui-schema/ui-schema/Translate/t'
+import { translation, TranslatorContext } from '@ui-schema/ui-schema/Translate/makeTranslator'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface TransProps {

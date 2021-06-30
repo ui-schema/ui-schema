@@ -83,7 +83,7 @@ describe('handlePluginSimpleStack', () => {
         'handlePluginSimpleStack(%j): %j, %j',
         (props, keyA: string, expectA: any) => {
             // @ts-ignore
-            const newProps = handlePluginSimpleStack(props)
+            const newProps = handlePluginSimpleStack(props, props.widgets?.pluginSimpleStack)
             // @ts-ignore
             expect(newProps[keyA]).toBe(expectA)
             // @ts-ignore

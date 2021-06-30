@@ -6,7 +6,8 @@ import { UIProvider } from '@ui-schema/ui-schema/UIGenerator'
 import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
-import { relTranslator, UIMetaProvider, WidgetRenderer } from '@ui-schema/ui-schema'
+import { UIMetaProvider, WidgetRenderer } from '@ui-schema/ui-schema'
+import { relTranslator } from '@ui-schema/ui-schema/Translate/relT'
 
 export const MockWidgets: WidgetsBindingBase = {
     ErrorFallback: () => null,
@@ -14,7 +15,7 @@ export const MockWidgets: WidgetsBindingBase = {
     GroupRenderer: () => null,
     WidgetRenderer: WidgetRenderer,
     pluginStack: [],
-    validators: [],
+    pluginSimpleStack: [],
     types: {},
     custom: {},
 }

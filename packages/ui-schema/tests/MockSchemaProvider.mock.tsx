@@ -14,7 +14,7 @@ export const MockWidgets: WidgetsBindingBase = {
     GroupRenderer: () => null,
     WidgetRenderer: WidgetRenderer,
     pluginStack: [],
-    validators: [],
+    pluginSimpleStack: [],
     types: {},
     custom: {},
 }

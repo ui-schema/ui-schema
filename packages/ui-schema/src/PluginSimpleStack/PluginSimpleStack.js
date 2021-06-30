@@ -1,13 +1,9 @@
 import React from 'react';
 import {getNextPlugin} from '@ui-schema/ui-schema/PluginStack';
 
-export const handlePluginSimpleStack = (props) => {
-    /**
-     * @var WidgetsBindingBase widgets
-     */
-    const widgets = props.widgets
-    if(widgets && widgets.pluginSimpleStack && Array.isArray(widgets.pluginSimpleStack)) {
-        widgets.pluginSimpleStack.forEach(propsPlugin => {
+export const handlePluginSimpleStack = (props, pluginSimpleStack) => {
+    if(pluginSimpleStack && Array.isArray(pluginSimpleStack)) {
+        pluginSimpleStack.forEach(propsPlugin => {
             if(typeof propsPlugin.handle !== 'function') {
                 return;
             }
@@ -31,5 +27,5 @@ export const handlePluginSimpleStack = (props) => {
 export const PluginSimpleStack = ({currentPluginIndex, ...props}) => {
     const next = currentPluginIndex + 1;
     const Plugin = getNextPlugin(next, props.widgets)
-    return <Plugin {...handlePluginSimpleStack(props)} currentPluginIndex={next}/>;
+    return <Plugin {...handlePluginSimpleStack(props, props.widgets.pluginSimpleStack)} currentPluginIndex={next}/>;
 }

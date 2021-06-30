@@ -145,7 +145,7 @@ let FreeFormEditorContent = (
                 multiline={false}
             />
 
-            <PluginStack
+            <PluginStack<{ readOnly: boolean }>
                 showValidity={showValidity}
                 storeKeys={storeKeys.push('city') as StoreKeys}
                 schema={schema.getIn(['properties', 'name']) as unknown as StoreSchemaType}
