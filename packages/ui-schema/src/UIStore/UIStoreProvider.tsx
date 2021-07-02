@@ -54,12 +54,12 @@ export function doExtractValue<S extends UIStoreType>(storeKeys: StoreKeys, stor
     }
 }
 
-export type ExtractValueNonOverwriteProps = Exclude<keyof WithValue, 'showValidity'>
+export type ExtractValueNonOverwriteProps = Partial<Exclude<keyof WithValue, 'showValidity'>>
 /**
  * HOC to extract the value with the storeKeys, pushing only the component's value and onChange to it, not the whole store
  */
 //export const extractValue = <P extends { storeKeys: StoreKeys, showValidity?: boolean }>(Component: React.ComponentType<P & WithValue>): React.ComponentType<Pick<P, Exclude<keyof P, ExtractValueNonOverwriteProps>>> => {
-export const extractValue = <P extends WithValue & { storeKeys: StoreKeys }>(Component: React.ComponentType<P>): React.ComponentType<Omit<P, keyof WithValue> & ExtractValueOverwriteProps> => {
+export const extractValue = <P extends Partial<WithValue> & { storeKeys: StoreKeys }>(Component: React.ComponentType<P>): React.ComponentType<Omit<P, keyof WithValue> & ExtractValueOverwriteProps> => {
     const ExtractValue = (p: Omit<P, keyof WithValue> & ExtractValueOverwriteProps) => {
         const {store, onChange, showValidity} = useUI()
         // @ts-ignore

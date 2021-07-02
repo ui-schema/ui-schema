@@ -1,17 +1,17 @@
 import React from 'react';
-import {useRefs, ReferencingProvider} from './ReferencingProvider';
 import {parseRefs} from '@ui-schema/ui-schema/Plugins/ReferencingHandler/parseRefs';
 import {Trans} from '@ui-schema/ui-schema/Translate';
-import {isRootSchema, SchemaRootProvider, useSchemaRoot} from '@ui-schema/ui-schema/SchemaRootProvider/SchemaRootProvider';
+import {isRootSchema, SchemaRootProvider, useSchemaRoot} from '@ui-schema/ui-schema/SchemaRootProvider';
 import {useNetworkRef} from '@ui-schema/ui-schema/Plugins/ReferencingHandler/ReferencingNetworkHandler';
 import {NextPluginRendererMemo} from '@ui-schema/ui-schema/PluginStack/PluginStack';
 import {getSchemaId} from '@ui-schema/ui-schema/Utils/getSchema';
 
-const ReferencingRenderer = (props) => {
+export const ReferencingHandler = ({rootContext, ...props}) => {
     let {schema, isVirtual} = props;
-    const {definitions} = useRefs();
-    const {schema: rootSchema} = useSchemaRoot()
+    const {schema: maybeRootSchema, definitions: maybeDefinitions, ...nestedRootProps} = useSchemaRoot()
     const {getSchema, loadSchema} = useNetworkRef()
+    const isRoot = isRootSchema(schema) || rootContext || schema.get('definitions') || schema.get('$defs')
+    const definitions = isRoot ? schema.get('definitions') || schema.get('$defs') : maybeDefinitions
 
     const schemaRefPrevious = React.useRef(undefined);
     const schemaRef = React.useRef(undefined);
@@ -23,8 +23,8 @@ const ReferencingRenderer = (props) => {
         const parseRes = parseRefs(
             schema, {
                 defs: definitions,
-                root: rootSchema,
-                getSchema,
+                root: isRoot ? schema : maybeRootSchema,
+                getLoadedSchema: getSchema,
             });
         refPending = parseRes.pending
 
@@ -36,34 +36,22 @@ const ReferencingRenderer = (props) => {
     }
 
     React.useEffect(() => {
-        if(refPending && refPending.size > 0) {
+        if(loadSchema && refPending && refPending.size > 0) {
             refPending.forEach((refs, rootId) => {
                 refs.forEach((versions, refId) => {
                     loadSchema(refId, rootId, versions)
                 })
             })
+        } else if(!loadSchema) {
+            console.error('ReferencingHandler needs `loadSchema` function to handle network references')
         }
-    }, [refPending])
+    }, [refPending, loadSchema])
 
     return refPending && refPending.size > 0 ?
         isVirtual ? null : <Trans text={'labels.loading'} fallback={'Loading'}/> :
-        isRootSchema(schema) ?
-            <SchemaRootProvider id={getSchemaId(schema)} schema={schema}>
+        isRoot ?
+            <SchemaRootProvider {...nestedRootProps} {...(rootContext || {})} id={getSchemaId(schema)} schema={schema} definitions={definitions}>
                 <NextPluginRendererMemo {...props} schema={schema}/>
             </SchemaRootProvider> :
             <NextPluginRendererMemo {...props} schema={schema}/>;
-};
-
-export const ReferencingHandler = (props) => {
-    let {schema} = props;
-
-    const definitions = schema.get('definitions') || schema.get('$defs')
-
-    return <React.Fragment>
-        {definitions ?
-            <ReferencingProvider definitions={definitions}>
-                <ReferencingRenderer {...props}/>
-            </ReferencingProvider> :
-            <ReferencingRenderer {...props}/>}
-    </React.Fragment>;
 };

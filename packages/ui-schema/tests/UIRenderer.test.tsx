@@ -40,7 +40,7 @@ widgets.RootRenderer = (props: PropsWithChildren<any>): React.ReactElement => <d
 // eslint-disable-next-line react/display-name
 widgets.GroupRenderer = (props: PropsWithChildren<any>): React.ReactElement => <div className={'group-renderer'}>{props.children}</div>
 widgets.pluginStack = [
-    // plugin to have every widget in it's own div to query against
+    // plugin to have every widget in it's own div - to query against in tests
     (props) => <div><NextPluginRenderer {...props}/></div>,
     ReferencingHandler,
     ExtractStorePlugin,
@@ -214,7 +214,7 @@ const TestUIRenderer = (props: {
         t={props.notT ? relTranslator : (text: string) => text}
     >
         {/* (optional) add components which use the context of the Editor here */}
-        <div>schema-is-{isInvalid(store.getValidity()) ? 'invalid' : 'correct'}</div>
+        <div>store-is-{isInvalid(store.getValidity()) ? 'invalid' : 'correct'}</div>
     </UIGenerator>
 }
 
@@ -223,10 +223,10 @@ describe('UIGenerator Integration', () => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer data={{demo_number: 10, demo_array2: ['val-test']}}/>
         )
-        // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-renderer').length === 1).toBeTruthy()
         expect(container.querySelectorAll('.group-renderer').length > 0).toBeTruthy()
-        expect(queryByText('schema-is-correct') !== null).toBeTruthy()
+        expect(queryByText('store-is-correct') !== null).toBeTruthy()
+        expect(queryByText('store-is-invalid')).toBe(null)
         expect(queryByText('widget.demo_string.title') !== null).toBeTruthy()
         expect(queryAllByText('string-renderer').length === 4).toBeTruthy()
         expect(queryByText('string-with-error') === null).toBeTruthy()
@@ -275,8 +275,8 @@ describe('UIGenerator Integration', () => {
         //expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-renderer').length === 1).toBeTruthy()
         expect(container.querySelectorAll('.group-renderer').length > 0).toBeTruthy()
-        //expect(queryByText('schema-is-correct') === null).toBeTruthy()
-        //expect(queryByText('schema-is-invalid') !== null).toBeTruthy()
+        //expect(queryByText('store-is-correct') === null).toBeTruthy()
+        //expect(queryByText('store-is-invalid') !== null).toBeTruthy()
         expect(queryByText('widget.demo_string.title') !== null).toBeTruthy()
         expect(queryByText('string-with-error') !== null).toBeTruthy()
         expect(queryAllByText('string-renderer').length === 2).toBeTruthy()

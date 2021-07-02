@@ -1,9 +1,7 @@
 import React from 'react';
 import {List} from 'immutable';
 import {memo} from '@ui-schema/ui-schema/Utils/memo';
-import {getSchemaId} from '@ui-schema/ui-schema/Utils/getSchema';
 import {useUIMeta} from '@ui-schema/ui-schema/UIMeta/UIMetaProvider';
-import {isRootSchema, SchemaRootProvider} from '@ui-schema/ui-schema/SchemaRootProvider';
 import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorErrors';
 
 class PluginStackErrorBoundary extends React.Component {
@@ -42,8 +40,6 @@ export const PluginStack = (props) => {
     } = props;
     const activeWidgets = customWidgets ? customWidgets : widgets
 
-    // till draft-06, no `$`, hashtag in id
-    const id = getSchemaId(schema)
     const isVirtual = Boolean(props.isVirtual || schema?.get('hidden'))
     let required = List([]);
     if(parentSchema) {
@@ -55,32 +51,24 @@ export const PluginStack = (props) => {
 
     const ErrorBoundary = activeWidgets.ErrorFallback ? PluginStackErrorBoundary : React.Fragment;
 
-    const pluginTree = <NextPluginRenderer
-        {...meta}
-        {...props}
-        currentPluginIndex={-1}
-        widgets={activeWidgets}
-        level={level}
-        ownKey={storeKeys.get(storeKeys.count() - 1)}
-        requiredList={required}
-        required={false}
-        errors={createValidatorErrors()}
-        isVirtual={isVirtual}
-        valid
-    />
-
     return props.schema ? <ErrorBoundary
         FallbackComponent={activeWidgets.ErrorFallback}
         type={schema.get('type')}
         widget={schema.get('widget')}
     >
-        {isRootSchema(schema) ?
-            // TODO: check spec. for: uses root `id`s only, those which are not in the same document/e.g. excludes $anchors from `$defs`
-            // TODO: shouldn't this be after handling $ref?
-            <SchemaRootProvider id={id} schema={schema}>
-                {pluginTree}
-            </SchemaRootProvider> :
-            pluginTree}
+        <NextPluginRenderer
+            {...meta}
+            {...props}
+            currentPluginIndex={-1}
+            widgets={activeWidgets}
+            level={level}
+            ownKey={storeKeys.get(storeKeys.count() - 1)}
+            requiredList={required}
+            required={false}
+            errors={createValidatorErrors()}
+            isVirtual={isVirtual}
+            valid
+        />
     </ErrorBoundary> : null;
 };
 

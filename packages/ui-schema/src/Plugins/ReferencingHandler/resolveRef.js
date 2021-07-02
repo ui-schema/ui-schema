@@ -12,7 +12,7 @@ export const resolveRef = (ref, context, schemaVersion) => {
         // the root schema, could be get from SchemaRootProvider
         root: rootSchema,
         // try to get a loaded schema
-        getSchema,
+        getLoadedSchema,
     } = context
 
     let schema
@@ -82,15 +82,15 @@ export const resolveRef = (ref, context, schemaVersion) => {
         //   $recursiveAnchor
 
         // handle network referenced schemas,
-        // `getSchema` may be coming from `useNetworkRef`, which relies on the `UIApiProvider`
+        // `getLoadedSchema` may be coming from `useNetworkRef`, which relies on the `UIApiProvider`
         // but could also be otherwise passed down with the context from a custom `ReferencingHandler` implementation
-        if(getSchema) {
-            const loadedSchema = getSchema(ref, id, schemaVersion)
+        if(getLoadedSchema) {
+            const loadedSchema = getLoadedSchema(ref, id, schemaVersion)
             if(loadedSchema) {
                 return loadedSchema
             }
         } else if(process.env.NODE_ENV === 'development') {
-            console.error('getSchema does not exist in resolveRef, maybe UIApiProvider missing?')
+            console.error('getLoadedSchema does not exist in resolveRef, maybe UIApiProvider missing?')
         }
         throw new SchemaRefPending(ref)
     }

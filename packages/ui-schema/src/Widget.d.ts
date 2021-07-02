@@ -1,8 +1,8 @@
+import * as React from 'react'
 import { OwnKey, StoreKeys, UIStoreContext, WithScalarValue, WithValue } from '@ui-schema/ui-schema/UIStore'
 import { Errors, required, valid, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { UIMetaContext } from '@ui-schema/ui-schema/UIMeta'
 import { GroupRendererProps } from '@ui-schema/ui-schema/WidgetsBinding'
-import * as React from 'react'
 
 // todo: maybe base partly on `AppliedPluginStackProps`?
 export type WidgetOverrideType<P extends {} = {}, C extends {} = {}> =
@@ -12,6 +12,12 @@ export type WidgetOverrideType<P extends {} = {}, C extends {} = {}> =
 
 export type WidgetType<C extends {} = {}> = WidgetOverrideType<{}, C>
 
+/**
+ * Base widget props which are expected to exist no matter which data "type" the widget is for
+ * - for only-scalar widgets add `WithScalarValue`
+ * - for any-value-type widgets add `WithValue` and use the HOC `extractValue`
+ * - `C` = custom `UIMetaContext` definition
+ */
 export interface WidgetProps<C extends {} = {}> extends UIMetaContext<C> {
     // the current schema level
     schema: StoreSchemaType
@@ -28,6 +34,7 @@ export interface WidgetProps<C extends {} = {}> extends UIMetaContext<C> {
 
     // `required` is created inside validator plugin
     required: required
+    // todo: extract to validator typings, extend here
     // `errors` and `valid` are created inside validator plugins
     errors?: Errors
     valid?: valid

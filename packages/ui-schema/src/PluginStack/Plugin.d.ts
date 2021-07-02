@@ -15,7 +15,7 @@ export interface PluginProps<C extends {} = {}> extends WidgetProps<C> {
     onErrors?: onErrors
 }
 
-export type ComponentPluginType = React.ComponentType<PluginProps>
+export type ComponentPluginType<C extends {} = {}> = React.ComponentType<PluginProps<C>>
 export type PluginType = ComponentPluginType
 
 export function PluginComponent<P extends PluginProps>(props: P): React.ReactElement<P>

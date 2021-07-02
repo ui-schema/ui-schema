@@ -35,7 +35,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps> = (
         internalValue,
         onEmptyChange,
         tools,
-    }: EditorJSProps
+    }
 ) => {
     const editorRef = React.useRef<EditorJSType>()
     const currentState = React.useRef<OrderedMap<any, any> | undefined>(undefined)

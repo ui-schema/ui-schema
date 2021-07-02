@@ -59,6 +59,10 @@ export function widgetMatcher<B extends WidgetsBindingBase>(
             Widget = () => <NoW scope={'type'} matching={schemaType}/>
             Widget.displayName = 'NoWidgetType'
         }
+    } else if (!schemaType && !widgetName) {
+        // eslint-disable-next-line react/display-name
+        Widget = () => <NoW scope={'any'} matching={'no-matchers'}/>
+        Widget.displayName = 'NoWidgetMatchers'
     } else {
         // eslint-disable-next-line react/display-name
         Widget = () => <NoW scope={'any'} matching={schemaType}/>

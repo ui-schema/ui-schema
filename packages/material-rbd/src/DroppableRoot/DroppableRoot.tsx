@@ -1,6 +1,6 @@
 import React from 'react'
 import { Droppable } from 'react-beautiful-dnd'
-import { beautifyKey, memo, OwnKey, StoreKeys, StoreSchemaType, Trans, useRefs, useUI } from '@ui-schema/ui-schema'
+import { beautifyKey, memo, OwnKey, StoreKeys, StoreSchemaType, Trans, useSchemaRoot, useUI } from '@ui-schema/ui-schema'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import IcUnfoldMore from '@material-ui/icons/UnfoldMore'
@@ -73,7 +73,7 @@ const EditorRootSelect = ({storeKeys, isDraggingOver}: { storeKeys: StoreKeys, i
 // @ts-ignore
 const DroppableRootContent: React.ComponentType<DroppableRootContentProps> = ({type, schema, storeKeys, isDraggingOver, openAll, ownKey}) => {
     const {store} = useUI()
-    const {definitions} = useRefs()
+    const {definitions} = useSchemaRoot()
     const data: DragDropItemList = store.getIn(storeKeys.size > 0 ? prependKey(storeKeys, 'values') : ['values'])
     return data && data.size ?
         data.toArray().map((item, i) =>

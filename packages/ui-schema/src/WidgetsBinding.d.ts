@@ -19,7 +19,11 @@ export interface GroupRendererProps {
  * - `C` = custom `UIMetaContext` definition
  */
 export interface WidgetsBindingBaseStrict<C extends {} = {}> {
-    ErrorFallback?: React.ComponentType<any>
+    ErrorFallback?: React.ComponentType<{
+        error: any | null
+        type?: string
+        widget?: string
+    }>
     // wraps the whole generator
     RootRenderer: React.ComponentType<any>
     // wraps any `object` that has no custom widget
@@ -42,7 +46,7 @@ export interface WidgetsBindingBaseStrict<C extends {} = {}> {
     custom: { [key: string]: WidgetType<C> }
 }
 
-export type WidgetsBindingBase = WidgetsBindingBaseStrict & {
+export type WidgetsBindingBase<C extends {} = {}> = WidgetsBindingBaseStrict<C> & {
     // allow adding any further custom root components or further information
     [key: string]: React.ComponentType<any> | any
 }

@@ -8,6 +8,8 @@ This page lists and explains the included plugins and validators.
 
 ## Widget / Schema Plugins
 
+Widget plugins which work with default JSON-Schema keywords:
+
 | Plugin                                              | Package              | Handles              | Added Props | Status |
 | :---                                                | :---                 | :---                 | :---        | :--- |
 | [DefaultHandler](#defaulthandler)                   | @ui-schema/ui-schema | keyword `default`    | - | ✔ |
@@ -17,6 +19,14 @@ This page lists and explains the included plugins and validators.
 | [CombiningHandler](#combininghandler)               | @ui-schema/ui-schema | keyword `allOf`, `oneOf`, `anyOf`, ... | - | ✔(allOf) ❗ |
 | [ReferencingHandler](#referencinghandler) | @ui-schema/ui-schema | keywords `$defs`, `$anchor`, `$id`, `$ref` ... | ... | ✔ |
 | [ReferencingNetworkHandler](#referencingnetworkhandler) | @ui-schema/ui-schema | keywords `$ref` | ... | ✔ |
+
+## Widget / Extra Plugins
+
+Widget plugins which implement further custom logics, mostly not included by default.
+
+| Plugin                                              | Package              | Handles              |
+| :---                                                | :---                 | :---                 |
+| [InjectSplitSchemaPlugin](#injectsplitschemaplugin) | @ui-schema/ui-schema | merging "style schema" into "data schema"    |
 
 ## Validation Plugins
 
@@ -86,6 +96,7 @@ Results in the translation: `Input is invalid, must be a valid zip code`, `Einga
 - [CombiningHandler](#combininghandler)
 - [ReferencingHandler](#referencinghandler)
 - [ReferencingNetworkHandler](#referencingnetworkhandler)
+- [InjectSplitSchemaPlugin](#injectsplitschemaplugin)
 
 ### DefaultHandler
 
@@ -653,7 +664,7 @@ Uses the `ReferencingNetworkHandler` hook `useNetworkRef` to handle resolving, w
 
 > A recommended plugin, loads the first/root reference of a schema level, also done by ReferencingHandler, but not beforehand parsing.
 >
-> Not added in default `pluginStack`, needs the additional provider `UIApiProvider`
+> **Not added in default `pluginStack`, needs the additional provider `UIApiProvider`**
 
 Plugin allows loading schemas from external APIs, uses the [UIApi](/docs/core-uiapi#uiapi) component to handle the schema loading and caching.
 
@@ -669,3 +680,89 @@ pluginStack.splice(1, 0, ReferencingNetworkHandler)
 widgets.pluginStack = pluginStack
 ```
 
+### InjectSplitSchemaPlugin
+
+Uses a separate style schema and merges it into the matching data schema.
+
+> **Currently works with the `storeKeys`, thus data keys.**
+>
+> **Alpha version**
+
+Adding the plugin to default widget binding, using Typescript:
+
+```typescript jsx
+import { widgets } from '@ui-schema/ds-material'
+import { InjectSplitSchemaPlugin, InjectSplitSchemaRootContext } from '@ui-schema/ui-schema/Plugins/InjectSplitSchemaPlugin'
+
+const customWidgets = {...widgets}
+const pluginStack = [...customWidgets.pluginStack]
+// the referencing network handler should be at first position
+// the InjectSplitSchema should be after the ReferencingHandler (so after both ref handler)
+pluginStack.splice(0, 0, ReferencingNetworkHandler)
+pluginStack.splice(2, 0, InjectSplitSchemaPlugin)
+customWidgets.pluginStack = pluginStack
+
+const schemaData = createOrderedMap({
+    // id is not needed when using the `rootContext` prop
+    //id: 'https://example.org/schema/split-schema',
+    type: 'object',
+    properties: {
+        name: {
+            type: 'string',
+        },
+        postal_code: {
+            type: 'string',
+        },
+        city: {
+            type: 'string',
+        },
+    },
+    required: ['name', 'postal_code'],
+})
+
+const schemaStyle = createOrderedMap({
+    '': {
+        widget: 'FormGroup',
+        title: 'Address',
+    },
+    '/name': {
+        view: {
+            sizeMd: 12,
+        },
+    },
+    '/postal_code': {
+        view: {
+            sizeMd: 3,
+        },
+    },
+    '/city': {
+        view: {
+            sizeMd: 9,
+        },
+    },
+} as { [k: string]: UISchema })
+
+// keep the `rootContext` reference integration!
+// e.g. be sure it does not force a re-render of UIRootRenderer with `React.useMemo` and maybe `useImmutable`
+const rootContext: InjectSplitSchemaRootContext = {schemaStyle: schemaStyle as StoreSchemaType}
+
+const Main = () => {
+    const [showValidity, setShowValidity] = React.useState(false)
+
+    const [store, setStore] = React.useState((): UIStoreType => createStore(OrderedMap()))
+
+    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+        setStore((prevStore: UIStoreType) => {
+            return storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
+        })
+    }, [setStore])
+
+    return <UIStoreProvider
+        store={store}
+        onChange={onChange}
+        showValidity={showValidity}
+    >
+        <UIRootRenderer<InjectSplitSchemaRootContext> schema={schemaData} rootContext={rootContext}/>
+    </UIStoreProvider>
+}
+```

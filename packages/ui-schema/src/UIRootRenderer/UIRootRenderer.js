@@ -28,7 +28,7 @@ const mustBeSet = name => {
  *
  * @return {null|*}
  */
-export const UIRootRenderer = ({schema}) => {
+export const UIRootRenderer = ({schema, rootContext}) => {
     // getting the root level schema, all other schemas within an editor are property calculated
     const {widgets} = useUIMeta();
 
@@ -51,5 +51,7 @@ export const UIRootRenderer = ({schema}) => {
     return <DumpRootRenderer
         rootRenderer={RootRenderer} isVirtual={schema?.get('hidden')}
         schema={schema} storeKeys={List([])}
+        // additional meta data, available from `SchemaRootProvider`
+        rootContext={rootContext}
     />;
 };
