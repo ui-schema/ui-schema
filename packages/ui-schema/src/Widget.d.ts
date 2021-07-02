@@ -1,9 +1,18 @@
-import { OwnKey, StoreKeys, UIStoreContext } from '@ui-schema/ui-schema/UIStore'
+import { OwnKey, StoreKeys, UIStoreContext, WithScalarValue, WithValue } from '@ui-schema/ui-schema/UIStore'
 import { Errors, required, valid, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { UIMetaContext } from '@ui-schema/ui-schema/UIMeta'
 import { GroupRendererProps } from '@ui-schema/ui-schema/WidgetsBinding'
+import * as React from 'react'
 
-export interface WidgetProps<C extends {} = {}> extends UIMetaContext<C>, Pick<UIStoreContext, 'showValidity' | 'onChange'> {
+// todo: maybe base partly on `AppliedPluginStackProps`?
+export type WidgetOverrideType<P extends {} = {}, C extends {} = {}> =
+    React.ComponentType<P & WidgetProps<C>> |
+    React.ComponentType<P & WidgetProps<C> & Pick<WithValue, 'onChange'>> |
+    React.ComponentType<P & WidgetProps<C> & WithScalarValue>
+
+export type WidgetType<C extends {} = {}> = WidgetOverrideType<{}, C>
+
+export interface WidgetProps<C extends {} = {}> extends UIMetaContext<C> {
     // the current schema level
     schema: StoreSchemaType
     // `parentSchema` must only be `undefined` in the root level of a schema
@@ -29,6 +38,9 @@ export interface WidgetProps<C extends {} = {}> extends UIMetaContext<C>, Pick<U
     // specifying hidden inputs / virtual lists etc.
     isVirtual?: boolean
 
+    // overridable store value:
+    showValidity?: UIStoreContext['showValidity']
+
     // contains the value for non-scalar items, for objects/array it is undefined
-    value: string | number | boolean | undefined | null
+    // use typing `WithScalarValue` for those, otherwise for `array`/`object` checkout the HOC: `extractValue` and typing `WithValue`
 }

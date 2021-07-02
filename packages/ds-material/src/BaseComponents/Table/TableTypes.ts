@@ -1,4 +1,4 @@
-import { StoreKeys, StoreSchemaType, Translator, WidgetProps } from '@ui-schema/ui-schema'
+import { StoreKeys, StoreSchemaType, Translator, UIStoreContext, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 import React from 'react'
 import { List, OrderedMap } from 'immutable'
 
@@ -8,11 +8,11 @@ export interface TableRowProps {
     listSize: number
     dense: boolean
     setPage: React.Dispatch<React.SetStateAction<number>>
-    showRows: number
+    showRows: number | undefined
 }
 
 export interface TableRendererExtractorProps {
-    TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps>
+    TableRowRenderer: React.ComponentType<WidgetProps & Pick<WithValue, 'onChange'> & TableRowProps>
     TableFooter: React.ComponentType<TableFooterProps>
     TableHeader: React.ComponentType<TableHeaderProps>
     rowsPerPage: List<number>
@@ -51,7 +51,7 @@ export interface TableFooterProps {
     listSizeCurrent: number
     rows: number
     setRows: React.Dispatch<React.SetStateAction<number>>
-    onChange: WidgetProps['onChange']
+    onChange: UIStoreContext['onChange']
     storeKeys: WidgetProps['storeKeys']
     schema: WidgetProps['schema']
     showValidity: WidgetProps['showValidity']

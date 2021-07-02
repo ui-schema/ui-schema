@@ -24,7 +24,7 @@ import themeDark from 'codemirror/theme/duotone-dark.css'
 import themeLight from 'codemirror/theme/duotone-light.css'
 import useTheme from '@material-ui/core/styles/useTheme'
 import { CodeSelectable } from '@ui-schema/material-code/CodeSelectable/CodeSelectable'
-import { UIMetaProvider, WidgetProps } from '@ui-schema/ui-schema'
+import { UIMetaProvider } from '@ui-schema/ui-schema'
 /*import themeMaterial from 'codemirror/theme/gruvbox-dark.css';
 import themeDark from 'codemirror/theme/xq-dark.css';
 import themeLight from 'codemirror/theme/xq-light.css';*/
@@ -40,7 +40,7 @@ const useStyle = (styles) => {
 const customWidgets = {...widgets}
 customWidgets.custom = {
     ...widgets.custom,
-    Code: Code as React.ComponentType<WidgetProps>,
+    Code: Code,
     CodeSelectable,
 }
 

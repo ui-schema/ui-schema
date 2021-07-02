@@ -28,7 +28,7 @@ const MainDummy = ({schema, Debugger, Button}) => {
             showValidity={showValidity}
         >
             <UIRootRenderer schema={schema}/>
-            <Debugger/>
+            <Debugger schema={schema}/>
         </UIStoreProvider>
 
         <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>

@@ -19,6 +19,7 @@ import {MarkdownLabel} from '../MarkdownLabel/MarkdownLabel';
 import {EditorControls} from '../EditorControls/EditorControls';
 import {blockRendererFn, editorStateFrom, editorStateTo, getBlockStyle, inlineMap, styleMap} from '../EditorExtends/EditorExtends';
 import {RichTextProvider} from '../RichTextProvider';
+import {Map} from 'immutable';
 
 const useInputStyles = makeStyles(inputStyles);
 
@@ -41,7 +42,7 @@ export const RichText = ({
 
     const topControls = schema.getIn(['view', 'topControls']) !== false;
 
-    let editorState = internalValue;
+    let editorState = internalValue.get('value');
     if(!editorState) {
         if(typeof value !== 'undefined') {
             editorState = editorStateFrom.markdown(value);
@@ -51,8 +52,8 @@ export const RichText = ({
     }
 
     React.useEffect(() => {
-        if(!internalValue && editorState) {
-            onChange(storeKeys, ['internal'], () => ({internal: editorState}))
+        if(!internalValue.get('value') && editorState) {
+            onChange(storeKeys, ['internal'], ({internal: currentInternal = Map()}) => ({internal: currentInternal.set('value', editorState)}))
         }
     }, [internalValue, editorState, onChange, storeKeys.equals(prevStoreKeys.current)]);
 
@@ -60,17 +61,17 @@ export const RichText = ({
     const handleChange = React.useCallback((state) => {
         onChange(
             storeKeys, ['value', 'internal'],
-            (store) => {
+            ({internal: currentInternal = Map()}) => {
                 let stateHandler = state;
                 if(typeof stateHandler !== 'function') {
                     // DraftJS onChange does not use a function to update the state, but we use it everywhere
                     stateHandler = () => state;
                 }
 
-                let newState = stateHandler(store.internal || createMap());
+                let newState = stateHandler(currentInternal.get('value') || createMap());
                 return {
                     value: editorStateTo.markdown(newState),
-                    internal: newState,
+                    internal: currentInternal.set('value', newState),
                 }
             },
             schema.get('deleteOnEmpty') || required,

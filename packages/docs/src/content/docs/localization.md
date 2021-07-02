@@ -2,6 +2,8 @@
 
 Checkout the [dictionary package](#dictionary-package)!
 
+> ❗ These components will have a breaking change in `v0.4.0`, split up into own modules, [see issue](https://github.com/ui-schema/ui-schema/issues/100)
+
 ## Translation
 
 The `t` prop of `UIMetaProvider` and `UIGenerator` supports complex translators for dynamic translations and with any translation library.
@@ -89,7 +91,7 @@ const DemoEnumWidget = ({ownKey, schema, storeKeys,}) => {
                 schema={schema.get('t')}
                 text={storeKeys.insert(0, 'widget').concat(relative).join('.')}
                 context={Map({'relative': relative})}
-                fallback={beautifyKey(enum_name, schema.get('tt'))}
+                fallback={beautifyKey(enum_name, schema.get('ttEnum'))}
             />
         </span>
     }).valueSeq() // as `enum_val` is an immutable list, this converts the map to an array compatible structure
@@ -303,6 +305,8 @@ Design systems should support both, the Material-UI library supports it.
 ## Text Transform
 
 When no translation should be used, but e.g. the property names should simply be in uppercase, `tt` influence the text-transformation - primary for the widget title (and not widget values).
+
+These keywords are intended for title & labels, not for formatting data. `tt` for property names and `ttEnum` for formatting value data. The `Select` widget title can be changed with `tt` and the dropdown values display format with `ttEnum`.
 
 - `tt: true` uses `beautifyKey` for optimistic beautification (default)
 - `tt: false | ''` disables optimistic beautification, `undefined` doesn't!

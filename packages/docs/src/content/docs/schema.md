@@ -275,7 +275,7 @@ UI Schema extends JSON Schema with special only-UI keywords, take a look a each 
 
 - `view` used for the grid and visual settings, see [view keyword](#view-keyword) and each widget
 - `widget` (see top of page), UI selection / widget matching
-- `t`, `tt` for [translation](/docs/localization#Translation)
+- `t`, `tt`, `ttEnum` for [translation](/docs/localization#Translation)
 - `hidden` for virtualization see [hidden keyword](#hidden-keyword--virtualization)
 
 Typings:

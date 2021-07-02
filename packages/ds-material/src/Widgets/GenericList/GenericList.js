@@ -13,7 +13,6 @@ import {TransTitle, extractValue, memo, PluginStack, Trans} from '@ui-schema/ui-
 import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
 import {List, Map} from 'immutable';
 import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip/Tooltip';
-import {moveItem} from '@ui-schema/ui-schema/Utils/moveItem/moveItem';
 
 let GenericListItem = ({index, listSize, schema, notSortable, notDeletable, deleteOnEmpty, showValidity, onChange, storeKeys, level, btnSize}) => {
     const ownKeys = storeKeys.push(index)
@@ -29,11 +28,11 @@ let GenericListItem = ({index, listSize, schema, notSortable, notDeletable, dele
                         onClick={() =>
                             onChange(
                                 storeKeys, ['value', 'internal'],
-                                ({value = List(), internal = List()}) => ({
-                                    value: moveItem(value, index, index - 1),
-                                    internal: moveItem(internal, index, index - 1),
-                                    // todo: also moveItem in `valid`? that should be handled automatically atm. and is not needed !i think!
-                                }),
+                                {
+                                    type: 'list-item-move',
+                                    fromIndex: index,
+                                    toIndex: index - 1,
+                                },
                                 deleteOnEmpty,
                                 'array',
                             )
@@ -59,10 +58,11 @@ let GenericListItem = ({index, listSize, schema, notSortable, notDeletable, dele
                         onClick={() =>
                             onChange(
                                 storeKeys, ['value', 'internal'],
-                                ({value = List(), internal = List()}) => ({
-                                    value: moveItem(value, index, index + 1),
-                                    internal: moveItem(internal, index, index + 1),
-                                }),
+                                {
+                                    type: 'list-item-move',
+                                    fromIndex: index,
+                                    toIndex: index + 1,
+                                },
                                 deleteOnEmpty,
                                 'array',
                             )
@@ -104,10 +104,10 @@ let GenericListItem = ({index, listSize, schema, notSortable, notDeletable, dele
                         onClick={() =>
                             onChange(
                                 storeKeys, ['value', 'internal'],
-                                ({value = List(), internal = List()}) => ({
-                                    value: value.splice(index, 1),
-                                    internal: internal.splice(index, 1),
-                                }),
+                                {
+                                    type: 'list-item-delete',
+                                    index: index,
+                                },
                                 deleteOnEmpty,
                                 'array',
                             )
@@ -160,10 +160,10 @@ let GenericListBase = ({
                         onClick={() => {
                             onChange(
                                 storeKeys, ['value', 'internal'],
-                                ({value = List(), internal = List()}) => ({
-                                    value: value.push(List.isList(schema.get('items')) || schema.getIn(['items', 'type']) === 'array' ? List() : Map()),
-                                    internal: internal.push(List.isList(schema.get('items') || schema.getIn(['items', 'type']) === 'array') ? List() : Map()),
-                                }),
+                                {
+                                    type: 'list-item-add',
+                                    schema: schema,
+                                },
                                 schema.get('deleteOnEmpty') || required,
                                 schema.get('type'),
                             )

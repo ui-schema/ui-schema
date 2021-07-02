@@ -13,7 +13,7 @@ export interface DroppableRootSelectProps {
     setAddSelectionIndex: BlockAddProps['setAddSelectionIndex']
     storeKeys: StoreKeys
     schema: StoreSchemaType
-    onChange: typeof onChangeHandler
+    onChange: onChangeHandler
     moveDraggedValue: DragDropAdvancedContextType['moveDraggedValue']
     getSourceValues: DragDropAdvancedContextType['getSourceValues']
 }

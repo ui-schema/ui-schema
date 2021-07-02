@@ -100,7 +100,7 @@ const MultiEditor = () => {
                 showValidity={showValidity}
             >
                 <UIRootRenderer schema={schema}/>
-                <MuiSchemaDebug/>
+                <MuiSchemaDebug schema={schema}/>
             </UIStoreProvider>
         </DragDropProvider>
 
@@ -166,7 +166,7 @@ const SingleEditor = () => {
                 showValidity={showValidity}
             >
                 <UIRootRenderer schema={schemaSingle}/>
-                <MuiSchemaDebug/>
+                <MuiSchemaDebug schema={schemaSingle}/>
             </UIStoreProvider>
         </DragDropProvider>
 

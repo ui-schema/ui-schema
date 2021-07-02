@@ -8,30 +8,62 @@ See [localization text-transform](/docs/localization#text-transform), this is th
 import {beautify} from '@ui-schema/ui-schema/Utils/beautify'
 ```
 
-## createStore
+## createMap
 
-Creates the initial store out of passed in values.
+Deep change directly from `{}` or `[]` to `Map`/`List` structures:
 
 ```js
-import {createStore} from '@ui-schema/ui-schema/UIStore'
-import {createOrderedMap} from '@ui-schema/ui-schema/Utils/createOrderedMap'
+import {createMap} from '@ui-schema/ui-schema/Utils/createMap'
 
-const [data, setStore] = React.useState(() => createStore(createOrderedMap(initialData)));
+let dataMap = createMap({});
 ```
 
-## createEmptyStore
+## createOrderedMap
 
-Creates an empty store out of the schema type.
+Deep change directly from `{}` or `[]` to `OrderedMap`/`List` structures:
+
+```js
+import {createOrderedMap} from '@ui-schema/ui-schema/Utils/createMap'
+
+let dataMap = createOrderedMap({});
+```
+
+## fromJSOrdered
+
+Function to deep change an object into an ordered map, will change the objects properties but not the root-object.
+
+```js
+import {OrderedMap} from 'immutable'
+import {fromJSOrdered} from '@ui-schema/ui-schema/Utils/fromJSOrdered'
+
+let dataMap = new OrderedMap(fromJSOrdered({}));
+```
+
+## useImmutable
+
+Hook for performance optimizing when using dynamically creates immutables like `storeKeys` inside `React.useEffect`/`React.useCallback` etc.
 
 ```js
 import {useImmutable} from '@ui-schema/ui-schema/Utils/useImmutable'
 
-const [data, setStore] = React.useState(() => createEmptyStore(schema.get('type')));
+const Comp = () => {
+    const currentStoreKeys = useImmutable(storeKeys)
+
+    React.useEffect(() => {
+        // do something when `valid` has changed (or storeKeys)
+        // with just `storeKeys` may rerun every render
+        //   -> as it's an dynamically created immutable
+    }, [onChange, valid, currentStoreKeys])
+
+    return null
+}
 ```
 
 ## moveItem
 
 Helper for moving an item inside a `List`/`array`, useful for moving up/down inside a list widget.
+
+> **better use [store actions](/docs/core-store#store-actions) instead!**
 
 ```js
 import {useImmutable} from '@ui-schema/ui-schema/Utils/useImmutable'
@@ -41,7 +73,7 @@ onChange(
     storeKeys, ['value', 'internal'],
     ({value, internal}) => ({
         value: moveItem(value, index, index - 1),
-        internal: moveItem(internal, index, index - 1),
+        internal: // todo implement
     }),
     deleteOnEmpty,
     'array',
@@ -51,7 +83,7 @@ onChange(
 onChange(
     storeKeys, ['value', 'internal'], ({value, internal}) => ({
         value: moveItem(value, index, index + 1),
-        internal: moveItem(internal, index, index + 1),
+        internal: // todo implement
     }),
     deleteOnEmpty,
     'array',
@@ -115,54 +147,4 @@ onChange(
     required,
     type,
 )
-```
-## createMap
-
-Deep change directly from `{}` or `[]` to `Map`/`List` structures:
-
-```js
-import {createMap} from '@ui-schema/ui-schema/Utils/createMap'
-
-let dataMap = createMap({});
-```
-
-## createOrderedMap
-
-Deep change directly from `{}` or `[]` to `OrderedMap`/`List` structures:
-
-```js
-import {createOrderedMap} from '@ui-schema/ui-schema/Utils/createOrderedMap'
-
-let dataMap = createOrderedMap({});
-```
-
-## fromJSOrdered
-
-Function to deep change an object into an ordered map, will change the objects properties but not the root-object.
-
-```js
-import {OrderedMap} from 'immutable'
-import {fromJSOrdered} from '@ui-schema/ui-schema/Utils/fromJSOrdered'
-
-let dataMap = new OrderedMap(fromJSOrdered({}));
-```
-
-## useImmutable
-
-Hook for performance optimizing when using dynamically creates immutables like `storeKeys` inside `React.useEffect`/`React.useCallback` etc.
-
-```js
-import {useImmutable} from '@ui-schema/ui-schema/Utils/useImmutable'
-
-const Comp = () => {
-    const currentStoreKeys = useImmutable(storeKeys)
-
-    React.useEffect(() => {
-        // do something when `valid` has changed (or storeKeys)
-        // with just `storeKeys` may rerun every render
-        //   -> as it's an dynamically created immutable
-    }, [onChange, valid, currentStoreKeys])
-
-    return null
-}
 ```

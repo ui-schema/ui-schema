@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactEditorJs from 'react-editor-js'
 import EditorJSType, { API, OutputData, EditorConfig } from '@editorjs/editorjs'
-import { onChangeHandler, StoreKeys } from '@ui-schema/ui-schema'
+import { onChangeHandler, StoreKeys, UIStoreInternalsType } from '@ui-schema/ui-schema'
 import { extractValue } from '@ui-schema/ui-schema/UIStore'
-import { List, OrderedMap } from 'immutable'
+import { List, Map, OrderedMap } from 'immutable'
 import { fromJSOrdered } from '@ui-schema/ui-schema/Utils/createMap/createMap'
 
 export interface EditorJSProps {
@@ -13,15 +13,15 @@ export interface EditorJSProps {
     onReady?: () => void
     onEmptyChange: (empty: boolean) => void
     ready?: boolean
-    onChange: typeof onChangeHandler
+    onChange: onChangeHandler
     storeKeys: StoreKeys
     required?: boolean
-    internalValue?: { isEmpty?: boolean }
+    internalValue: UIStoreInternalsType
     value?: OrderedMap<'time' | 'blocks' | 'version', any>
     tools: EditorConfig['tools']
 }
 
-let EditorJS: React.ComponentType<EditorJSProps> = (
+const EditorJSBase: React.ComponentType<EditorJSProps> = (
     {
         uid,
         onFocus,
@@ -44,11 +44,11 @@ let EditorJS: React.ComponentType<EditorJSProps> = (
         if (!currentState.current?.get('blocks')?.equals(newValue?.get('blocks'))) {
             onChange(
                 storeKeys, ['value', 'internal'],
-                () => {
+                ({internal: currentInternal = Map()}) => {
                     currentState.current = newValue
                     return {
                         value: currentState.current,
-                        internal: {isEmpty: Boolean(!(currentState.current?.get('blocks')?.size > 0))},
+                        internal: currentInternal.set('isEmpty', Boolean(!(currentState.current?.get('blocks')?.size > 0))),
                     }
                 },
                 required,
@@ -57,7 +57,7 @@ let EditorJS: React.ComponentType<EditorJSProps> = (
         }
     }, [onChange, storeKeys, required, currentState])
 
-    const isEmpty = internalValue?.isEmpty || !(value?.get('blocks')?.size > 0)
+    const isEmpty = internalValue.get('isEmpty') || !(value?.get('blocks')?.size > 0)
 
     React.useEffect(() => {
         if (
@@ -82,8 +82,8 @@ let EditorJS: React.ComponentType<EditorJSProps> = (
             }
             onChange(
                 storeKeys, ['internal'],
-                () => ({
-                    internal: {isEmpty: Boolean(!(value?.get('blocks')?.size > 0))},
+                ({internal: currentInternal = Map()}) => ({
+                    internal: currentInternal.set('isEmpty', Boolean(!(value?.get('blocks')?.size > 0))),
                 }),
                 required,
                 'object'
@@ -119,7 +119,4 @@ let EditorJS: React.ComponentType<EditorJSProps> = (
     </ReactEditorJs>
 }
 
-// @ts-ignore
-EditorJS = extractValue(EditorJS)
-
-export { EditorJS }
+export const EditorJS = extractValue(EditorJSBase)

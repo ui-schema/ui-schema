@@ -1,10 +1,10 @@
 import {
     // @ts-ignore
     isImmutable,
-    List, OrderedMap,
+    List, Map, OrderedMap,
 } from 'immutable'
 import { genId } from '@ui-schema/material-dnd/genId'
-import { onChangeHandler, StoreKeys } from '@ui-schema/ui-schema'
+import { addNestKey, onChangeHandler, StoreKeys } from '@ui-schema/ui-schema/UIStore'
 import { DropTargetMonitor, XYCoord } from 'react-dnd'
 import { DragDropAdvancedContextType } from '@ui-schema/material-dnd/DragDropProvider/useDragDropContext'
 import { DraggableBlock } from '@ui-schema/material-dnd/DraggableBlock/DraggableBlock'
@@ -15,7 +15,7 @@ export const getNewBlockFromId = (id: string): OrderedMap<'$bid' | '$block', str
     $block: id,
 }) as OrderedMap<'$bid' | '$block', string>
 
-export const handleMoveUp = (onChange: typeof onChangeHandler, storeKeys: StoreKeys): void => {
+export const handleMoveUp = (onChange: onChangeHandler, storeKeys: StoreKeys): void => {
     const ownKey = storeKeys.last() as number
     if ((ownKey - 1) < 0) {
         return
@@ -23,41 +23,29 @@ export const handleMoveUp = (onChange: typeof onChangeHandler, storeKeys: StoreK
     onChange(
         storeKeys.splice(storeKeys.size - 1, 1) as StoreKeys,
         ['value', 'internal'],
-        ({value = List(), internal = List()}) => {
-            return {
-                value: value.splice(ownKey, 1).splice(ownKey - 1, 0, value.get(ownKey)),
-                internal: internal.splice(ownKey, 1).splice(ownKey - 1, 0, internal.get(ownKey)),
-            }
+        {
+            type: 'list-item-move',
+            fromIndex: ownKey,
+            toIndex: ownKey - 1,
         }
     )
 }
 
-export const handleMoveDown = (onChange: typeof onChangeHandler, storeKeys: StoreKeys): void => {
+export const handleMoveDown = (onChange: onChangeHandler, storeKeys: StoreKeys): void => {
     onChange(
         storeKeys.splice(storeKeys.size - 1, 1) as StoreKeys,
         ['value', 'internal'],
-        ({value = List(), internal = List()}) => {
-            const ownKey = storeKeys.last() as number
-            if ((ownKey + 1) > value.size) {
-                return {value, internal}
-            }
-            if ((ownKey + 1) >= internal.size) {
-                // fix "Cannot update within non-data-structure value in path ["values","options",0,"choices",0]: undefined"
-                // - e.g. when rendering DND with existing data where not every item uses `internals`,
-                //   the structures like [data1, data2] vs [internal1] can not be moved with splice
-                internal = internal.set((ownKey + 1), undefined)
-            }
-            return {
-                value: value.splice(ownKey, 1).splice(ownKey + 1, 0, value.get(ownKey)),
-                internal: internal.splice(ownKey, 1).splice(ownKey + 1, 0, internal.get(ownKey)),
-            }
+        {
+            type: 'list-item-move',
+            fromIndex: storeKeys.last() as number,
+            toIndex: storeKeys.last() as number + 1,
         }
     )
 }
 
 export const handleDragEnd = (
     ref: React.RefObject<HTMLDivElement>,
-    onChange: typeof onChangeHandler,
+    onChange: onChangeHandler,
     item: DraggableBlock,
     storeKeysTo: StoreKeys,
     monitor: DropTargetMonitor,
@@ -196,14 +184,11 @@ export const handleDragEnd = (
     onChange(
         List(),
         ['value', 'internal'],
-        ({value, internal}) => {
+        ({value, internal = Map()}) => {
             if (storeKeysFrom.size < 2) {
                 // when in root list (single root array for whole schema)
                 if (typeof value === 'undefined') {
                     value = List()
-                }
-                if (typeof internal === 'undefined') {
-                    internal = List()
                 }
             }
             const sourceValues = getSourceValues(item, storeKeysFrom, value, internal)
@@ -222,7 +207,12 @@ export const handleDragEnd = (
 
             return {
                 value: moveDraggedValue(item, value, sourceValues.value, rootKeysFrom, indexFrom, targetKeys),
-                internal: moveDraggedValue(item, internal, sourceValues.internal, rootKeysFrom, indexFrom, targetKeys),
+                internal: moveDraggedValue(
+                    item, internal, sourceValues.internal,
+                    addNestKey('internals', rootKeysFrom).push('internals'),
+                    indexFrom,
+                    addNestKey('internals', targetKeys.splice(-1, 1) as StoreKeys).push('internals').push(targetKeys.last())
+                ),
             }
         }
     )

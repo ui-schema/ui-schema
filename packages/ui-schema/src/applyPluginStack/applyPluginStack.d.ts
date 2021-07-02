@@ -1,12 +1,13 @@
 import React from 'react'
-import { PluginStackProps } from '@ui-schema/ui-schema/PluginStack'
+import { PluginStackInjectProps } from '@ui-schema/ui-schema/PluginStack'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { UIMetaContext } from '@ui-schema/ui-schema/UIMeta'
+import { WithValue } from '@ui-schema/ui-schema/UIStore'
 
-export type AppliedPluginStackProps<P extends {} = {}> =
-    Omit<PluginStackProps, ['WidgetOverride']> &
-    Omit<P, keyof WidgetProps> &
-    Pick<WidgetProps, 'schema' | 'parentSchema' | 'storeKeys' | 'level'>
+export type AppliedPluginStackProps<WP extends WidgetProps<C> = WidgetProps<C>, C extends {} = {}> =
+    Omit<WP, PluginStackInjectProps | keyof UIMetaContext<C> | keyof WithValue | 'level'>
+    & Partial<UIMetaContext<C>>
+    & Partial<Pick<WP, 'showValidity' | 'level'>>
 
-export type AppliedPluginStack<P extends {} = {}> = React.ComponentType<AppliedPluginStackProps<P>>
-
-export function applyPluginStack<C extends {} = {}, P extends WidgetProps<C> = WidgetProps<C>>(CustomWidget: React.ComponentType<P>): AppliedPluginStack<P>
+export function applyPluginStack<C extends {} = {}, WP extends WidgetProps<C> = WidgetProps<C>>(CustomWidget: React.ComponentType<WP>):
+    React.ComponentType<AppliedPluginStackProps<WP, C>>

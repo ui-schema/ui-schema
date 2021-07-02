@@ -109,7 +109,7 @@ const Main = () => {
             showValidity={showValidity}
         >
             <UIRootRenderer schema={schema}/>
-            <MuiSchemaDebug/>
+            <MuiSchemaDebug schema={schema}/>
         </UIStoreProvider>
 
         <div style={{width: '100%'}}>

@@ -1501,14 +1501,14 @@
 				<v:ud v:nameU="visNavOrder" v:val="VT0(42000):26"/>
 			</v:userDefs>
 			<title>Note</title>
-			<desc>one plugin is e.g. `ValidatorStack`, which uses widgets.valid...</desc>
+			<desc>one plugin is e.g. `PluginSimpleStack`, which uses widgets.valid...</desc>
 			<g id="shape80-378" v:mID="80" v:groupContext="groupContent">
 				<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
 				<v:textRect cx="58.3937" cy="1653.31" width="116.79" height="36.8032"/>
 				<path d="M0 1672.44 L116.79 1672.44 L116.79 1642.68 L108.28 1634.17 L0 1634.17 L0 1672.44 Z" class="st30"/>
 				<path d="M0 1663.42 L-21.45 1667.14" class="st31"/>
 				<path d="M0 1672.44 L116.79 1672.44 L116.79 1642.68 L108.28 1634.17 L0 1634.17 L0 1672.44" class="st31"/>
-				<text x="4" y="1644.31" class="st32" v:langID="1033"><v:paragraph/><v:tabList/>one plugin is e.g. `ValidatorStack`, <v:lf/><tspan
+				<text x="4" y="1644.31" class="st32" v:langID="1033"><v:paragraph/><v:tabList/>one plugin is e.g. `PluginSimpleStack`, <v:lf/><tspan
 							x="4" dy="1.2em" class="st14">which uses widgets.validators to validate </tspan><tspan x="4" dy="1.2em"
 							class="st14">each widgets schema and changing </tspan><tspan x="4" dy="1.2em" class="st14">`error`/`valid` props (more possible)</tspan></text>			</g>
 			<g id="shape81-386" v:mID="81" v:groupContext="shape" transform="translate(108.283,-29.7638)">

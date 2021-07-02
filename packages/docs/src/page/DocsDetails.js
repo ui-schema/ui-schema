@@ -1,5 +1,6 @@
 import React from 'react';
-import {Paper, Link} from '@material-ui/core';
+import {useTheme, Paper, Link} from '@material-ui/core';
+import IcToc from '@material-ui/icons/Toc';
 import {ScrollUpButton} from '@control-ui/kit/ScrollUpButton';
 import PageNotFound from './PageNotFound';
 import {DocDetails} from '@control-ui/docs/DocDetails';
@@ -11,7 +12,7 @@ import DemoUIGenerator from '../component/Schema/DemoUIGenerator';
 import {PageContent} from '@control-ui/kit/PageContent';
 
 const DocContent = ({content, id, progress, activeDoc}) => {
-
+    const {palette} = useTheme()
     return <>
         <PageContent maxWidth={'md'}>
             <div style={{display: 'block', textAlign: 'right', margin: '0 12px'}}>
@@ -56,8 +57,11 @@ Examples of this widget, using \`ds-material\`. Type in/change the input and che
                 style={{
                     /*margin: '12px 0',*/
                     padding: '0 12px',
-                    display: 'flex', flexDirection: 'column',
+                    display: 'flex',
+                    flexDirection: 'column',
                     overflowX: 'auto',
+                    opacity: progress === PROCESS_SUCCESS ? 1 : 0,
+                    transition: '0.32s opacity ease-out',
                     flexShrink: 0,
                     position: 'sticky',
                     bottom: 0,
@@ -65,12 +69,19 @@ Examples of this widget, using \`ds-material\`. Type in/change the input and che
                     right: 0,
                     zIndex: 10,
                     maxHeight: '90vh',
-
+                    //borderTop: '1px solid ' + palette.primary.main,
+                    //background: palette.primary.main,
                 }}
                 elevation={4}
                 variant={'elevation'}
             >
-                <HeadlineMenu disableNavLink/>
+                <HeadlineMenu
+                    disableNavLink
+                    //style={{margin: 0, padding: 0}}
+                    startIcon={<IcToc/>}
+                    titleStyle={{color: palette.background.paper, fontWeight: 'bold', background: palette.primary.main}}
+                    //linkItemStyle={{color: palette.background.paper}}
+                />
             </Paper>
         </PageContent>
     </>

@@ -56,7 +56,7 @@ export const EditorJSWidget = (
     {
         schema, storeKeys, ownKey,
         showValidity, valid, errors,
-        onChange, required, tools, hideTitle,
+        required, tools, hideTitle,
     }: WidgetProps & RichContentProps
 ): React.ReactElement => {
     const uid = useUID()
@@ -92,7 +92,6 @@ export const EditorJSWidget = (
                 onReady={() => setReady(true)}
                 onEmptyChange={(e) => setEmpty(e)}
                 storeKeys={storeKeys}
-                onChange={onChange}
                 tools={tools}
                 required={Boolean(schema.get('deleteOnEmpty') || required)}
             />

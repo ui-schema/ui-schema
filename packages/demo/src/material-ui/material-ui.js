@@ -100,7 +100,7 @@ const MainStore = () => {
             showValidity={showValidity}
         >
             <UIRootRenderer schema={schema}/>
-            <MuiSchemaDebug setSchema={setSchema}/>
+            <MuiSchemaDebug setSchema={setSchema} schema={schema}/>
         </UIStoreProvider>
 
         <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
@@ -124,7 +124,7 @@ const DemoUser = () => {
                 showValidity
             >
                 <UIRootRenderer schema={schemaUser}/>
-                <MuiSchemaDebug/>
+                <MuiSchemaDebug schema={schemaUser}/>
             </UIStoreProvider>
         </Grid>
     </Grid>
@@ -309,7 +309,7 @@ const FreeFormEditor = () => {
                 />
             </Grid>
 
-            <MuiSchemaDebug setSchema={() => null}/>
+            <MuiSchemaDebug setSchema={() => null} schema={freeFormSchema}/>
         </UIStoreProvider>
 
         <div style={{width: '100%'}}>

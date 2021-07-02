@@ -7,7 +7,6 @@ import Add from '@material-ui/icons/Add';
 import Remove from '@material-ui/icons/Remove';
 import {TransTitle, extractValue, memo, PluginStack} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
-import {List, OrderedMap} from 'immutable';
 import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip/Tooltip';
 import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
 
@@ -26,10 +25,11 @@ let SimpleListItem = (
         {!readOnly && !notDeletable ? <IconButton
             onClick={() => {
                 onChange(
-                    storeKeys, ['value'],
-                    ({value: val}) => ({
-                        value: val.splice(index, 1),
-                    }),
+                    storeKeys, ['value', 'internal'],
+                    {
+                        type: 'list-item-delete',
+                        index: index,
+                    },
                     schema.get('deleteOnEmpty') || required,
                     schema.get('type'),
                 )
@@ -78,15 +78,11 @@ let SimpleListBase = ({
                 {!readOnly && !notAddable ? <IconButton
                     onClick={() => {
                         onChange(
-                            storeKeys, ['value'],
-                            ({value: val = List()}) => ({
-                                value:
-                                // todo: support `default` keyword
-                                    schema.getIn(['items', 'type']) === 'string' ? val.push('') :
-                                        schema.getIn(['items', 'type']) === 'array' ? val.push(List()) :
-                                            schema.getIn(['items', 'type']) === 'object' ? val.push(OrderedMap()) :
-                                                val.push(undefined),
-                            }),
+                            storeKeys, ['value', 'internal'],
+                            {
+                                type: 'list-item-add',
+                                schema: schema,
+                            },
                             schema.get('deleteOnEmpty') || required,
                             schema.get('type'),
                         )

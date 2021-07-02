@@ -14,15 +14,15 @@ A lot of [component composition](https://www.robinwieruch.de/react-component-com
 
 Custom [`React.Context` / Providers](https://reactjs.org/docs/context.html) are used for handling store updates and extracting with special [HOCs](https://reactjs.org/docs/higher-order-components.html) (connecting `store` to `props`), but enabling `store`/`state` management by typical stuff like `React.useState`, `React.useReducer` or redux reducers.
 
-Using an additional [props plugins system](/docs/plugins#validation-plugins) for a shallower component tree of validators.
+Using an additional [props plugins system](/docs/core-pluginstack#simple-plugins) for a shallower component tree of validators.
 
 ## Widgets & Component Plugins
 
-Each plugin or widget should only need to do one specific thing, in one specific schema layer, leading to [enhanced performance](https://reactjs.org/docs/optimizing-performance.html#shouldcomponentupdate-in-action) and optimizing [reconciliation levels](https://reactjs.org/docs/reconciliation.html). Forming a [typical AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) renderer based on schema keywords and data structures - stored in a central [immutable data-structure](/docs/core#uistore).
+Each plugin or widget should only need to do one specific thing, in one specific schema layer, leading to [enhanced performance](https://reactjs.org/docs/optimizing-performance.html#shouldcomponentupdate-in-action) and optimizing [reconciliation levels](https://reactjs.org/docs/reconciliation.html). Forming a [typical AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) renderer based on schema keywords and data structures - stored in a central [immutable data-structure](/docs/core-store).
 
 > check also the base concepts about [performance](/docs/performance), especially keep an eye open for `non-scalar` widget infos and `memo`
 
-The AST and plugins are rendered by [`PluginStack`](/docs/core#pluginstack) - initially started by [`UIRootRenderer`](/docs/core#uirootrenderer).
+The AST and plugins are rendered by [`PluginStack`](/docs/core-pluginstack) - initially started by [`UIRootRenderer`](/docs/core-renderer#uirootrenderer).
 
  A plugin or widget can use more than only it's own schema/store level in various ways.
 

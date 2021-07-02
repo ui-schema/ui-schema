@@ -1,28 +1,29 @@
 import * as React from 'react'
 import { PluginProps, PluginType } from '@ui-schema/ui-schema/PluginStack/Plugin'
 import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
-import { onErrors } from '@ui-schema/ui-schema/ValidatorErrors'
+import { WidgetOverrideType, WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { AppliedPluginStackProps } from '@ui-schema/ui-schema/applyPluginStack'
 
-export type WidgetOverrideType<P extends {} = {}, C extends {} = {}> = React.ComponentType<P & WidgetProps<C>>
+export type PluginStackInjectProps = 'currentPluginIndex' | 'ownKey' | 'requiredList' | 'required' | 'errors' | 'valid'
 
-export interface PluginStackProps<WP extends {} = {}, C extends {} = {}> extends Pick<WidgetProps, 'schema' | 'parentSchema' | 'storeKeys' | 'isVirtual' | 'noGrid' | 'showValidity'> {
-    level?: number
+export type PluginStackProps<WP extends {} = {}, C extends {} = {}> = AppliedPluginStackProps<PluginProps<C>, C> & {
+    // level?: number
 
     // listen from a hoisted component for `errors` changing,
     // useful for some performance optimizes like at ds-material Accordions
-    onErrors?: onErrors
+    // onErrors?: onErrors
 
     // override widgets of MetaProvider for this particular PluginStack (passed down at some use cases)
-    widgets?: WidgetsBindingBase
+    // widgets?: WidgetsBindingBase
 
     // override any widget for just this PluginStack, not passed down further on
     // better use `applyPluginStack` instead! https://ui-schema.bemit.codes/docs/core-pluginstack#applypluginstack
+    // todo: actually `WidgetOverride` is a WidgetRenderer prop - and also passed through the plugins, so should be in PluginProps also - but not in WidgetProps
     WidgetOverride?: WidgetOverrideType<WP, C>
 
     // all other props are passed down to all rendering Plugins and the final widget
     // except defined `props` removed by `WidgetRenderer`: https://ui-schema.bemit.codes/docs/core-renderer#widgetrenderer
-    //[key: string]: any
+    // [key: string]: any
 }
 
 export function PluginStack<WP extends {} = {}, C extends {} = {}, P extends PluginStackProps<WP, C> = PluginStackProps<WP, C>>(

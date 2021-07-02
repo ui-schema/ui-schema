@@ -1,5 +1,5 @@
 import React, { FocusEventHandler } from 'react'
-import { fromJS, List } from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import { Slate, ReactEditor, withReact } from 'slate-react'
 import { EditablePlugins as Editable, EditablePluginsProps, pipe, RenderLeaf } from '@udecode/slate-plugins'
 import {
@@ -82,7 +82,7 @@ let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithVa
             handledInitial.current = true
             onChange(
                 storeKeysCurrent, ['internal', 'value'],
-                ({internal, value: storeValue}) => {
+                ({internal: currentInternal = Map(), value: storeValue}) => {
                     if (storeValue && storeValue.size) {
                         // handling setting internal value for keyword `default`
                         // must check for really non empty, e.g. when used in root level `value` and `internal` will be an empty list
@@ -91,7 +91,7 @@ let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithVa
                         valueRef.current = !handledInitialTemp && schema.get('default') ? schema.get('default') as List<any> : List()
                     }
                     if (valueRef.current.size) {
-                        internal = valueRef.current.toJS()
+                        currentInternal = currentInternal.set('value', valueRef.current.toJS())
                     } else {
                         const initial = [...initialValue]
                         initial[0] = {...initial[0]}
@@ -100,11 +100,11 @@ let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithVa
                         } else if (onlyInline) {
                             initial[0].type = 'span'
                         }
-                        internal = initial
+                        currentInternal = currentInternal.set('value', initial)
                     }
 
                     return {
-                        internal: internal,
+                        internal: currentInternal,
                         value: valueRef.current,
                     }
                 },
@@ -123,7 +123,7 @@ let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithVa
     const onChangeHandler = React.useCallback((editorValue) => {
         onChange(
             storeKeysCurrent, ['value', 'internal'],
-            () => {
+            ({internal: currentInternal = Map()}) => {
                 let newValue = fromJS(editorValue) as List<any>
                 if (isSlateEmpty(newValue)) {
                     newValue = List()
@@ -131,7 +131,7 @@ let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithVa
                 valueRef.current = newValue
                 return {
                     value: newValue,
-                    internal: editorValue,
+                    internal: currentInternal.set('value', editorValue),
                 }
             },
             Boolean(schema.get('deleteOnEmpty') || required),
@@ -139,7 +139,7 @@ let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithVa
         )
     }, [valueRef, onChange, storeKeysCurrent, schema, required])
 
-    return internalValue?.length ? <Slate editor={editor} value={internalValue} onChange={onChangeHandler}>
+    return internalValue.get('value') ? <Slate editor={editor} value={internalValue.get('value')||initialValue} onChange={onChangeHandler}>
         {!schema.getIn(['editor', 'hideToolbar']) ?
             <SlateToolbarHead
                 enableOnly={enableOnly}

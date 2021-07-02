@@ -49,7 +49,7 @@ const MainStore = () => {
             showValidity={showValidity}
             t={browserT}
         >
-            <BtsSchemaDebug setSchema={setSchema}/>
+            <BtsSchemaDebug setSchema={setSchema} schema={schema}/>
         </UIGenerator>
 
         <button className={clsx('btn', 'btn-primary', 'col-12', 'text-uppercase')} onClick={() => setShowValidity(!showValidity)}>validity</button>

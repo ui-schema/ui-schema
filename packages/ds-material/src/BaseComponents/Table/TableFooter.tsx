@@ -3,7 +3,6 @@ import IconButton from '@material-ui/core/IconButton'
 import Add from '@material-ui/icons/Add'
 import { memo, Trans, WidgetProps } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
-import { List, Map } from 'immutable'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip/Tooltip'
 import TablePagination from '@material-ui/core/TablePagination'
 import MuiTableFooter from '@material-ui/core/TableFooter'
@@ -78,10 +77,10 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                             }
                             onChange(
                                 storeKeys, ['value', 'internal'],
-                                ({value = List(), internal = List()}) => ({
-                                    value: value.push(schema.getIn(['items', 'type']) === 'object' ? Map() : List()),
-                                    internal: internal.push(schema.getIn(['items', 'type']) === 'object' ? Map() : List()),
-                                })
+                                {
+                                    type: 'list-item-add',
+                                    schema: schema,
+                                }
                             )
                         }}
                         size={btnSize}

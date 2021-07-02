@@ -10,9 +10,10 @@ export const UIStore = Record({
     // internals must be an map when it is an object in the root, for array a List and for other "any type"
     internals: Map({}),
     validity: Map({}),
+    meta: Map({}),
     valuesToJS: function() {
         const values = this.get(STR_VALUES)
-        if(Map.isMap(values) || List.isList(values)) return values.toJS()
+        if(Map.isMap(values) || List.isList(values) || Record.isRecord(values)) return values.toJS()
 
         return values
     },
@@ -30,12 +31,11 @@ export const UIStore = Record({
 export const createStore = (values) => {
     return new UIStore({
         values,
-        // when array in root level, internals must be a list
-        // notice: when using special widgets that control their own list items,
-        //         the widget mustn't depend only on `undefined` internalValue, but also check for `internalValue.size`.
-        //         but only when only that widget is used in the root level
-        internals: List.isList(values) ? List() : Map(),
+        internals: Map({
+            internals: List.isList(values) ? List() : Map(),
+        }),
         validity: Map({}),
+        meta: Map({}),
     })
 };
 
@@ -76,3 +76,6 @@ export const shouldDeleteOnEmpty = (value, force, type) => {
 
     return false;
 };
+
+export const addNestKey = (storeKeysNestedKey, storeKeys) =>
+    storeKeysNestedKey ? storeKeys.reduce((nk, sk) => nk?.concat(sk, List([storeKeysNestedKey])), List([storeKeysNestedKey])).splice(-1, 1) : storeKeys

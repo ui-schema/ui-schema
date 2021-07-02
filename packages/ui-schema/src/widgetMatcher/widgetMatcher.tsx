@@ -1,9 +1,9 @@
 import React from 'react'
-import { WithValue } from '@ui-schema/ui-schema/UIStore'
 import { ObjectRenderer } from '@ui-schema/ui-schema/ObjectRenderer'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { WidgetType } from '@ui-schema/ui-schema/Widget'
 import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
 import { VirtualWidgetRenderer } from '@ui-schema/ui-schema/WidgetRenderer/VirtualWidgetRenderer'
+import { PluginStackProps } from '@ui-schema/ui-schema'
 
 export interface NoWidgetProps {
     scope: string
@@ -23,15 +23,15 @@ export function widgetMatcher<B extends WidgetsBindingBase>(
     }:
         {
             isVirtual: boolean
-            WidgetOverride?: React.ComponentType<WidgetProps>
+            WidgetOverride?: PluginStackProps['WidgetOverride']
             widgetName: string | undefined
             schemaType: string
             widgets: B
             NoWidget?: React.ComponentType<NoWidgetProps>
         }
-): React.ComponentType<WidgetProps> | React.ComponentType<WidgetProps & WithValue> | null {
+): WidgetType | null {
     const NoW = NoWidgetCustom || NoWidget
-    let Widget: React.ComponentType<WidgetProps> | React.ComponentType<WidgetProps & WithValue> | null
+    let Widget: WidgetType | null
 
     // getting the to-render component based on if it finds a custom object-widget or a widget extending native-types
     // or it is virtual at all or there is a custom override

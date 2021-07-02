@@ -1,5 +1,5 @@
 import React from 'react'
-import { OwnKey, PluginStack, WidgetProps } from '@ui-schema/ui-schema'
+import { OwnKey, PluginStack, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 import { List, OrderedMap, Map } from 'immutable'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
@@ -22,7 +22,7 @@ const useTableRowStyle = makeStyles<Theme, { dense: boolean }>((theme) => ({
     },
 }))
 
-export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps> = (
+export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps & Pick<WithValue, 'onChange'>> = (
     {
         parentSchema, schema,
         showValidity, widgets,

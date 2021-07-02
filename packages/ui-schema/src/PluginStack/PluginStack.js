@@ -56,10 +56,9 @@ export const PluginStack = (props) => {
     const ErrorBoundary = activeWidgets.ErrorFallback ? PluginStackErrorBoundary : React.Fragment;
 
     const pluginTree = <NextPluginRenderer
-        currentPluginIndex={-1}
-        // all others are getting pushed to Widget
         {...meta}
         {...props}
+        currentPluginIndex={-1}
         widgets={activeWidgets}
         level={level}
         ownKey={storeKeys.get(storeKeys.count() - 1)}

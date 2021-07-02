@@ -22,7 +22,7 @@ import ListItem from '@material-ui/core/ListItem';
 import {NavListNested} from '@control-ui/kit/Menu/NavList';
 import {routesDocs, routesDSMaterial, routesWidgets} from '../content/docs';
 
-const title = ''
+const title = '0.3.x'
 export const CustomHeader = () => {
     const {switchTheme} = useSwitchTheme();
     return <Header>
@@ -30,7 +30,7 @@ export const CustomHeader = () => {
             <Logo width={26} style={{marginLeft: 6, display: 'block'}}/>
         </RouterLink>
 
-        {title ? <Typography component="h1" variant="h6" style={{flexShrink: 0, margin: '0 auto'}}>
+        {title ? <Typography component="p" variant="h6" style={{flexShrink: 0, margin: '0 auto 0 8px'}}>
             {title}
         </Typography> : null}
 

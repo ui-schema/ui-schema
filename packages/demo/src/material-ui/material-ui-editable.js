@@ -122,7 +122,7 @@ const EditorEditablePro = () => {
                         showValidity={showValidity}
                     >
                         <UIRootRenderer schema={schema}/>
-                        <MuiSchemaDebug/>
+                        <MuiSchemaDebug schema={schema}/>
                     </UIStoreProvider>
                 </DndProvider>
             </DragDropProvider>
@@ -187,7 +187,7 @@ const EditorEditable = () => {
             showValidity={showValidity}
         >
             <UIRootRenderer schema={schemaEditable}/>
-            <MuiSchemaDebug/>
+            <MuiSchemaDebug schema={schemaEditable}/>
         </UIStoreProvider>
 
         <div style={{width: '100%'}}>

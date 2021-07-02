@@ -10,7 +10,7 @@ export interface DraggableBlockProps {
     schema: StoreSchemaType
     parentSchema: StoreSchemaType
     ownKey: number
-    onChange: typeof onChangeHandler
+    onChange: onChangeHandler
     type?: string
     open?: boolean
     setAddSelectionIndex: BlockAddProps['setAddSelectionIndex']

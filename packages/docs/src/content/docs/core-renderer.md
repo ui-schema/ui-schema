@@ -1,8 +1,8 @@
 # UI Schema Generator & Renderer
 
-Components and functions exported by `@ui-schema/ui-schema` for usage within design systems, plugins and widgets.
+Components responsible for the actual rendering of plugins and then finally the widget, using data and functions from the `UI Store` and `UI Meta` providers (or all in one as `UIProvider`)
 
-Components responsible for the actual rendering of plugins and then finally the widget.
+> ❗ These components will have a breaking change in `v0.4.0`, split up into own modules, [see issue](https://github.com/ui-schema/ui-schema/issues/100)
 
 ## UIGenerator
 
@@ -10,9 +10,24 @@ Convenience, single-entry-point UI Schema generator, starts the whole schema and
 
 ## UIRootRenderer
 
-Connects to the current context and uses the schema the first time, renders the `widgets.RootRenderer`.
+Connects to the current context and starts parsing the schema, renders the `widgets.RootRenderer`.
 
-The `RootRenderer` is rendered in a memo component, starts the first rendering of a widget, this is the `children` of `RootRenderer`, done with [PluginStack](/docs/core-pluginstack).
+Starts rendering the root level schema with [`PluginStack`](/docs/core-pluginstack), (passed to `widgets.RootRenderer` in `children` prop).
+
+`widgets.RootRenderer` is rendered inside it, within a memoized component.
+
+```javascript
+import { UIStoreProvider } from '@ui-schema/ui-schema/UIStore';
+import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer';
+
+<UIStoreProvider
+    store={store}
+    onChange={onChange}
+    showValidity={showValidity}
+>
+    <UIRootRenderer schema={schema}/>
+</UIStoreProvider>
+```
 
 ## WidgetRenderer
 
@@ -22,11 +37,15 @@ If no widget is fund, renders nothing / `null`, but the plugins may have already
 
 Executes `onErrors` for that schema level, when `errors` have changed and `onErrors` was specified.
 
-**Handles** removing props, before rendering the actual widget component. For performance reasons removes these `props`:
+**Handles removing props**, before rendering the actual widget component. For performance reasons removes these `props`:
 
 - `value` is removed for `schema.type` `array` or `object`
 - `internalValue` is removed for `schema.type` `array` or `object`
 - `requiredList` is removed for every type
+
+**Is itself in the `widgets` binding** and can be replaced / extended this way, `widgets.WidgetRenderer` (since `0.3.0`).
+
+Uses `widgetMatcher` to execute the default matching logic: `import {widgetMatcher} from '@ui-schema/ui-schema/widgetMatcher';`
 
 ## ObjectGroup
 
@@ -80,4 +99,4 @@ const FreeFormEditor = () => {
 
 ## ObjectRenderer
 
-Widget used automatically for `type=object` that do not have a custom `widget`.
+Widget used automatically for `type=object` that do not have a custom `widget`, used by `WidgetRenderer`.

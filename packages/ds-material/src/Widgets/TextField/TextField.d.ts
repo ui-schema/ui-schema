@@ -1,6 +1,7 @@
 import React, { CSSProperties } from 'react'
 import { InputProps } from '@material-ui/core/Input'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { WithScalarValue } from '@ui-schema/ui-schema'
 
 export interface StringRendererBaseProps {
     type?: string
@@ -29,8 +30,9 @@ export interface NumberRendererProps extends StringRendererBaseProps {
     steps?: number | 'any'
 }
 
-export function StringRenderer<P extends WidgetProps>(props: P & StringRendererProps): React.ReactElement
+//export function StringRenderer<P extends WidgetProps = WidgetProps>(props: P & WithScalarValue & StringRendererProps): React.ReactElement
+export function StringRenderer<P extends WidgetProps = WidgetProps>(props: P & WithScalarValue & StringRendererProps): React.ReactElement
 
-export function NumberRenderer<P extends WidgetProps>(props: P & NumberRendererProps): React.ReactElement
+export function NumberRenderer<P extends WidgetProps = WidgetProps>(props: P & WithScalarValue & NumberRendererProps): React.ReactElement
 
-export function TextRenderer<P extends WidgetProps>(props: P & TextRendererProps): React.ReactElement
+export function TextRenderer<P extends WidgetProps = WidgetProps>(props: P & WithScalarValue & TextRendererProps): React.ReactElement

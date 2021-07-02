@@ -3,7 +3,7 @@ import { onChangeHandler, StoreKeys } from '@ui-schema/ui-schema'
 import {
     // @ts-ignore
     isImmutable,
-    List, OrderedMap,
+    List, Map, OrderedMap,
 } from 'immutable'
 import {
     DragDropBlockDefinition,
@@ -24,16 +24,16 @@ export interface DragDropStoreContext {
     contextValue: DragDropAdvancedContextType
 }
 
-export const makeDragDropContext = (onChange: typeof onChangeHandler, blocksDefs: DragDropBlockDefinition = OrderedMap()): DragDropStoreContext => {
+export const makeDragDropContext = (onChange: onChangeHandler, blocksDefs: DragDropBlockDefinition = OrderedMap()): DragDropStoreContext => {
     const handleDelete: handleBlockDelete = React.useCallback(
         (storeKeys: StoreKeys) =>
             onChange(
-                storeKeys.splice(storeKeys.size - 1, 1) as StoreKeys,
+                storeKeys.splice(-1, 1) as StoreKeys,
                 ['value', 'internal'],
-                ({value = List(), internal = List()}) => ({
-                    value: value.delete(storeKeys.last()),
-                    internal: internal.delete(storeKeys.last()),
-                })
+                {
+                    type: 'list-item-delete',
+                    index: storeKeys.last() as number,
+                }
             ),
         [onChange])
 
@@ -43,7 +43,7 @@ export const makeDragDropContext = (onChange: typeof onChangeHandler, blocksDefs
                 storeKeys.splice(storeKeys.size - 1, 1) as StoreKeys :
                 List(),
             ['value', 'internal'],
-            ({value = List(), internal = List()}) => {
+            ({value = List(), internal = Map()}) => {
                 if (process.env.NODE_ENV === 'development') {
                     if (!List.isList(value)) {
                         console.error(
@@ -57,8 +57,10 @@ export const makeDragDropContext = (onChange: typeof onChangeHandler, blocksDefs
                     }
                 }
                 return {
-                    value: (value || List()).splice(storeKeys.last(), 0, getNewBlockFromId(blocksDefs.get(blockId) ? blockId : 'NotFound')),
-                    internal: (internal || List()).splice(storeKeys.last(), 0, OrderedMap()),
+                    value: (value || List()).splice(storeKeys.last() as number, 0, getNewBlockFromId(blocksDefs.get(blockId) ? blockId : 'NotFound')),
+                    internal: internal.update('internals', (internalInternals = List()) =>
+                        internalInternals.push(Map())
+                    ),
                 }
             }
         )

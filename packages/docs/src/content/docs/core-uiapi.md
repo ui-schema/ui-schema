@@ -2,7 +2,7 @@
 
 > ❗ Only for loading schemas currently, may move to own package
 
-Add the `UIApiProvider`, should be above all `UIGenerator` to not load the same schema multiple times.
+Add the `UIApiProvider`, should be above all UI renderers, to not load the same schema multiple times.
 
 The `loadSchema` property needs a function which accepts the url and must return the schema in json. If the api fails, either don't catch or re-throw the error. This way the internal caching can correctly allow retries for errors.
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { ComponentPluginType } from '@ui-schema/ui-schema/PluginStack/Plugin'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { WidgetType } from '@ui-schema/ui-schema/Widget'
 import { WidgetRendererProps } from '@ui-schema/ui-schema/WidgetRenderer'
 import { PluginSimple } from '@ui-schema/ui-schema/PluginSimpleStack/PluginSimple'
 
@@ -16,8 +16,9 @@ export interface GroupRendererProps {
 
 /**
  * Strict widget binding, without allowing any further root components
+ * - `C` = custom `UIMetaContext` definition
  */
-export interface WidgetsBindingBaseStrict {
+export interface WidgetsBindingBaseStrict<C extends {} = {}> {
     ErrorFallback?: React.ComponentType<any>
     // wraps the whole generator
     RootRenderer: React.ComponentType<any>
@@ -36,9 +37,9 @@ export interface WidgetsBindingBaseStrict {
     // validator: () => void
 
     // define native JSON-schema type widgets
-    types: { [key: string]: React.ComponentType<WidgetProps> }
+    types: { [key: string]: WidgetType<C> }
     // define custom widgets
-    custom: { [key: string]: React.ComponentType<WidgetProps> }
+    custom: { [key: string]: WidgetType<C> }
 }
 
 export type WidgetsBindingBase = WidgetsBindingBaseStrict & {

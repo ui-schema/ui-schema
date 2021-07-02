@@ -1,23 +1,12 @@
 # Plugins
 
-Plugins are wrapped around each widget/json-schema level and are used to add logic to all. Each plugin should decide if it should do something according to it's props/schema.
+> Also check [the plugin concepts and how to create plugins](/docs/core-pluginstack).
 
-There are two types of plugins: Schema Plugins and Validation Plugins.
+This page lists and explains the included plugins and validators.
 
-- [Schema Plugins](#schema-plugins)
-- [Validation Plugins](#validation-plugins)
-- [Plugin List](#plugin-list)
-- [Create Plugins](#create-plugins)
-    - [Creating a Widget Plugin](#create-a-widget-plugin)
-    - [Creating a Validator Plugin](#create-a-validator-plugin)
+> ❗ The plugins binding / `validateSchema` pass down & execution will have a breaking change in `v0.4.0`, split up into own modules, [see issue](https://github.com/ui-schema/ui-schema/issues/100)
 
-## Schema Plugins
-
-Plugins that work schema-driven are handling the schema in different ways, these are not used for validation but for creating functionality around the schema - which may influence the validations. They may also change the React render behaviour/flow.
-
-```typescript jsx
-import { PluginProps, PluginType } from "@ui-schema/ui-schema/PluginStack/Plugin"
-```
+## Widget / Schema Plugins
 
 | Plugin                                              | Package              | Handles              | Added Props | Status |
 | :---                                                | :---                 | :---                 | :---        | :--- |
@@ -30,14 +19,6 @@ import { PluginProps, PluginType } from "@ui-schema/ui-schema/PluginStack/Plugin
 | [ReferencingNetworkHandler](#referencingnetworkhandler) | @ui-schema/ui-schema | keywords `$ref` | ... | ✔ |
 
 ## Validation Plugins
-
-```typescript
-import { ValidatorPlugin } from "@ui-schema/ui-schema/Validators"
-```
-
-Validation plugins also work with the schema, but are only used for validation of the values/schema and can't change the React render-flow, but can change any `props`.
-
-This plugin system can also be used to add other, non-React dependant, plugins that work around `props`, [more in that direction in #130](https://github.com/ui-schema/ui-schema/issues/130)
 
 | Plugin               | Package              | Validity Fn.         | Handles              | Added Props |
 | :---                 | :---                 | :---                 | :---                 | :---        |
@@ -57,18 +38,18 @@ Using default validators:
 
 ```js
 import {
-    ValidatorStack, validators,
+    PluginSimpleStack, validators,
     ValidityReporter
 } from '@ui-schema/ui-schema';
 
 const widgets = {
     pluginStack: [
         // ... other plugins
-        ValidatorStack,
-        ValidityReporter, // after `ValidatorStack`
+        PluginSimpleStack, // executes the `pluginSimpleStack`
+        ValidityReporter,  // after `PluginSimpleStack`
         // ... other plugins
     ],
-    validators: validators,
+    pluginSimpleStack: validators,
 };
 
 export {widgets};
@@ -109,7 +90,7 @@ Results in the translation: `Input is invalid, must be a valid zip code`, `Einga
 ### DefaultHandler
 
 ```js
-import { DefaultHandler } from '@ui-schema/ui-schema/Plugins/DefaultHandler';
+import {DefaultHandler} from '@ui-schema/ui-schema/Plugins/DefaultHandler';
 ````
 
 Checks if the current schema has a defined `default` keyword and it's value is `undefined`. The value is set directly, the actual store is updated within an effect.
@@ -117,7 +98,7 @@ Checks if the current schema has a defined `default` keyword and it's value is `
 ### ValidityReporter
 
 ```js
-import { ValidityReporter, isInvalid } from '@ui-schema/ui-schema/ValidityReporter';
+import {ValidityReporter, isInvalid} from '@ui-schema/ui-schema/ValidityReporter';
 ````
 
 Submits the validity of each widget up to the state hoisted component when it changes.
@@ -209,14 +190,14 @@ Supports `not` keyword for any validation, see [spec.](https://json-schema.org/u
 ### DependentHandler
 
 ```js
-import { DependentHandler } from '@ui-schema/ui-schema/Plugins/DependentHandler';
+import {DependentHandler} from '@ui-schema/ui-schema/Plugins/DependentHandler';
 ````
 
 Enables on-the-fly sub-schema rendering based on single property data and schema, see also [ConditionalHandler](#conditionalhandler).
 
 - keyword `dependencies`, `dependentSchemas`, `dependentRequired`
-    - property dependencies [spec](https://json-schema.org/understanding-json-schema/reference/object.html#property-dependencies)
-    - schema dependencies [spec](https://json-schema.org/understanding-json-schema/reference/object.html#schema-dependencies)
+    - property dependencies [spec](https://json-schema.org/understanding-json-schema/reference/conditionals.html#property-dependencies)
+    - schema dependencies [spec](https://json-schema.org/understanding-json-schema/reference/conditionals.html#schema-dependencies)
         - simple: extend the schema when a value is not set (using `property exists` check enforces usage of `deleteOnEmpty` or `required` keywords)
 - changes the schema dynamically on runtime
 - does not re-render the Widget when the dependency matching didn't change
@@ -267,18 +248,18 @@ let schema = {
 ```
 
 Specifications:
-[dependencies](https://json-schema.org/understanding-json-schema/reference/object.html#dependencies)
+[dependencies](https://json-schema.org/understanding-json-schema/reference/conditionals.html#dependencies)
 [combining schemas](https://json-schema.org/understanding-json-schema/reference/combining.html)
 
 ### ConditionalHandler
 
 ```js
-import { ConditionalHandler } from '@ui-schema/ui-schema/Plugins/ConditionalHandler';
+import {ConditionalHandler} from '@ui-schema/ui-schema/Plugins/ConditionalHandler';
 ````
 
 Enables on-the-fly sub-schema rendering based on current objects data.
 
-- `if` the sub-schema against which the object is validated
+- `if` the sub-schema against which the object is validated [spec](https://json-schema.org/understanding-json-schema/reference/conditionals.html#if-then-else)
 - `else` when valid, else is applied
 - `then` when invalid, then is applied
 - `not` sub-schema that must be invalid
@@ -466,7 +447,7 @@ const schemaWConditional = createOrderedMap({
 ### CombiningHandler
 
 ```js
-import { CombiningHandler } from '@ui-schema/ui-schema/Plugins/CombiningHandler';
+import {CombiningHandler} from '@ui-schema/ui-schema/Plugins/CombiningHandler';
 ````
 
 Combining schemas from within one schema with:
@@ -674,7 +655,7 @@ Uses the `ReferencingNetworkHandler` hook `useNetworkRef` to handle resolving, w
 >
 > Not added in default `pluginStack`, needs the additional provider `UIApiProvider`
 
-Plugin allows loading schemas from external APIs, uses the [UIApi](/docs/core/#uiapi) component to handle the schema loading and caching.
+Plugin allows loading schemas from external APIs, uses the [UIApi](/docs/core-uiapi#uiapi) component to handle the schema loading and caching.
 
 - merging resolved ref with current schema, using mergeDeep
     - but not with `$ref` for recursion protection
@@ -688,66 +669,3 @@ pluginStack.splice(1, 0, ReferencingNetworkHandler)
 widgets.pluginStack = pluginStack
 ```
 
-## Create Plugins
-
-### Create a Validator Plugin
-
-A validator plugin is a JS-Object which contains multiple functions that can be used for validation. They are not a React component, they can not control the render-flow or using hooks!
-
-Each function receives the props the actual component receives, the return object of `noValidate` and `validate` is shallow-merged into the current props. Adding e.g. new or changed properties to the actual widget.
-
-- `should`: optional checker if the `validate` function should do something
-- `noValidate`: gets run when it should not be validated, must return object
-- `validate`: only run when should validate, handles the actual validation, must return object
-
-```js
-const SomeValidator = {
-    should: (props) => {
-        return shouldValidate ? true : false;
-    },
-    noValidate: (props) => ({newProp: false}),
-    validate: ({schema, value, errors, valid}) => {
-        let type = schema.get('type');
-        if(!checkValueExists(type, value)) {
-            valid = false;
-            errors = errors.addError(ERROR_NOT_SET);
-        }
-        return {errors, valid, required: true}
-    }
-};
-```
-
-### Create a Widget Plugin
-
-Each plugin can change or add properties to the final widget in an easy way, the render behaviour can be changed, even asynchronous actions could be applied schema driven.
-
-Creating a plugin like:
-
-```js
-import React from "react";
-import {NextPluginRenderer} from "@ui-schema/ui-schema";
-
-const NewPlugin = (props) => {
-    // special prop which don't reach `Widget`, only for plugins
-    const {current} = props;
-
-    // doing some logic
-    const newProp = props.schema.get('keyword') ? 'success' : 'error';
-
-    // keep rendering the stack or do something else
-    return <NextPluginRenderer {...props} newProp={newProp}/>;// `current` gets `+1` in here
-};
-
-export {NewPlugin}
-```
-
-- `{current, ...props}` prop signature of each plugin
-- `current` index/current position in stack
-- `props` are the props which are getting pushed to the `Widget`
-- recommended: use `<NextPluginRenderer {...props} newProp={false}/>`
-    - automatically render the plugins nested
-    - `newProp` is available in the widget and the next plugins
-
-See also:
-- [how to add custom plugins to the binding](/docs/widgets#adding--overwriting-widgets).
-- [UIStore hooks, HOCs and utils](/docs/core#uistore) can be used to access, udpate, delete, move any data, keep [performance](/docs/performance) in mind!
