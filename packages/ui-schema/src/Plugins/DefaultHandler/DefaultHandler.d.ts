@@ -1,4 +1,9 @@
-import * as React from "react"
-import { PluginProps } from "../../PluginStack/Plugin"
+import * as React from 'react'
+import { PluginProps } from '../../PluginStack/Plugin'
 
-export function DefaultHandler<P extends PluginProps>(props: P): React.ReactElement<P>
+export interface DefaultHandlerProps {
+    doNotDefault?: boolean
+    readOnly?: boolean
+}
+
+export function DefaultHandler<P extends PluginProps & DefaultHandlerProps>(props: P): React.ReactElement<P>
