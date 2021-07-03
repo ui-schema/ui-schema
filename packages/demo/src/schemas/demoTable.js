@@ -86,6 +86,7 @@ export const schemaDemoTableMap = createOrderedMap({
                 type: 'boolean',
                 title: 'Finished',
                 default: true,
+                //deleteOnEmpty: true,
             },
         },
     },

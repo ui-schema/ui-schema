@@ -26,7 +26,8 @@ Widget plugins which implement further custom logics, mostly not included by def
 
 | Plugin                                              | Package              | Handles              |
 | :---                                                | :---                 | :---                 |
-| [InjectSplitSchemaPlugin](#injectsplitschemaplugin) | @ui-schema/ui-schema | merging "style schema" into "data schema"    |
+| [InjectSplitSchemaPlugin](#injectsplitschemaplugin) | @ui-schema/ui-schema | merging "style schema" into "data schema" |
+| [ExtractStorePlugin](#extractstoreplugin) | @ui-schema/ui-schema | extracting schema level values from `UIStore`, **included by default** |
 
 ## Validation Plugins
 
@@ -104,7 +105,26 @@ Results in the translation: `Input is invalid, must be a valid zip code`, `Einga
 import {DefaultHandler} from '@ui-schema/ui-schema/Plugins/DefaultHandler';
 ````
 
-Checks if the current schema has a defined `default` keyword and it's value is `undefined`. The value is set directly, the actual store is updated within an effect.
+Applies the `default` keyword and handles persistence of "has-done-default", turn of default handling with the prop `doNotDefault={true}` in `UIConfigContext`/`UIStoreProvider`.
+
+Will only apply default when:
+
+- `default` keyword exists and default value is `not-undefined`
+- `doNotDefault` is `not-true`
+- `readOnly` and `schema.get('readOnly')` are `not-true`
+- no-default-applied-already marker for the current `store` position
+- `value` is `not-undefined`
+
+Will mark "has-done-default" when:
+
+- `default` keyword exists and default value is `not-undefined`
+- no-default-applied-already marker for the current `store` position
+
+Only when it applies the `default`, the store will get the flag `Store.internals.%storeKeys%.defaultHandled`.
+
+Will start again when `default` was `undefined`, not handled beforehand, then changes to `not-undefined`.
+
+Does not reset the flag when the widget unmounts, thus does not re-apply default, once it was marked and the store was not cleared.
 
 ### ValidityReporter
 
@@ -765,4 +785,38 @@ const Main = () => {
         <UIRootRenderer<InjectSplitSchemaRootContext> schema={schemaData} rootContext={rootContext}/>
     </UIStoreProvider>
 }
+```
+
+### ExtractStorePlugin
+
+Default plugin to extract the store, using `extractValue`.
+
+**Included in `widgets.pluginStack` by default.**
+
+Customize the code to extract with custom values / replacing the plugin, [see source for the super simple HOC plugin](https://github.com/ui-schema/ui-schema/blob/develop/packages/ui-schema/src/Plugins/ExtractStorePlugin/ExtractStorePlugin.tsx).
+
+It is best to replace the `ExtractStorePlugin` with a custom plugin - if you write any custom HOC plugin. Instead of adding many HOC plugins which would rely on `NextPluginRendererMemo`, which would introduce many React render levels and thus may introduce performance issues.
+
+> the PluginProps/extractValue typing is a bit unstable atm. [issue #91](https://github.com/ui-schema/ui-schema/issues/91)
+
+```typescript jsx
+import { extractValue } from '@ui-schema/ui-schema/UIStore'
+
+// `WithValue` with "after extractValue", otherwise without that partial typing!
+export const customHoc = <P extends Partial<WithValue> & { storeKeys: StoreKeys }>(Component: React.ComponentType<P>): React.ComponentType<Omit<P, keyof WithValue> & ExtractValueOverwriteProps> => {
+    const ExtractValue = (p: Omit<P, keyof WithValue> & ExtractValueOverwriteProps) => {
+        const {somethingCustom} = useSomeCustomHook()
+        // @ts-ignore
+        return store ? <Component
+            {...p}
+            {...doSomeThing(p.storeKeys, somethingCustom)}
+        /> : null
+    }
+    ExtractValue.displayName = `SomeThingDone(${getDisplayName(Component)})`
+    return ExtractValue
+}
+
+// @ts-ignore
+export const ExtractStorePlugin: React.ComponentType<PluginProps> =
+    extractValue(customHoc(NextPluginRendererMemo))
 ```

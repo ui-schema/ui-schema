@@ -1,6 +1,6 @@
 import React, { CSSProperties, EventHandler } from 'react'
 import { useUID } from 'react-uid'
-import { mapSchema, checkNativeValidity, WidgetProps, TransTitle, WithScalarValue } from '@ui-schema/ui-schema'
+import { mapSchema, WidgetProps, TransTitle, WithScalarValue } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
 import InputBase from '@material-ui/core/InputBase'
 import Typography from '@material-ui/core/Typography'
@@ -57,10 +57,6 @@ export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarVal
         inputProps['aria-labelledby'] = 'uis-' + uid
     }
 
-    if (schema.get('checkNativeValidity')) {
-        valid = checkNativeValidity(currentRef, Boolean(valid))
-    }
-
     if (!inputProps.style) {
         inputProps.style = {}
     }
@@ -80,12 +76,6 @@ export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarVal
             inputProps.style['MozAppearance'] = 'textfield'
         }
     }
-
-    React.useEffect(() => {
-        if (currentRef) {
-            onChange(storeKeys, ['valid'], () => ({valid: valid}))
-        }
-    }, [onChange, storeKeys, valid])
 
     return <>
         {!labelledBy ? <Typography component={'span'} variant={'srOnly'} id={inputProps['aria-labelledby']}>

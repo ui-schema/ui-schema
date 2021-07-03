@@ -1,7 +1,8 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import {useUID} from 'react-uid';
-import {TransTitle, mapSchema, checkNativeValidity} from '@ui-schema/ui-schema';
+import {TransTitle} from '@ui-schema/ui-schema/Translate/TransTitle';
+import {mapSchema} from '@ui-schema/ui-schema/Utils/schemaToNative';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
 import {convertStringToNumber} from '@ui-schema/ds-material/Utils/convertStringToNumber';
 import {forbidInvalidNumber} from '@ui-schema/ds-material/Utils';
@@ -20,19 +21,8 @@ export const StringRenderer = ({
     const inputRef = customInputRef || React.useRef();
 
     const format = schema.get('format');
-    const currentRef = inputRef.current;
 
     inputProps = mapSchema(inputProps, schema);
-
-    if(schema.get('checkNativeValidity')) {
-        valid = checkNativeValidity(currentRef, valid);
-    }
-
-    React.useEffect(() => {
-        if(currentRef) {
-            onChange(storeKeys, ['valid'], () => ({valid: valid}))
-        }
-    }, [onChange, storeKeys, valid]);
 
     const hideTitle = schema.getIn(['view', 'hideTitle'])
 
@@ -92,7 +82,6 @@ export const StringRenderer = ({
 
         <ValidityHelperText
             errors={errors} showValidity={showValidity} schema={schema}
-            browserError={currentRef ? currentRef.validationMessage : ''}
         />
     </React.Fragment>
 };

@@ -40,6 +40,14 @@ This is easily done by starting a new `PluginStack` - a new schema-level so to s
 
 See [PluginStack typings](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/PluginStack/PluginStack.d.ts) for more details about `props`.
 
+Overwrite `props` rules for any `widgets.pluginStack` plugin:
+
+- `props` passed directly to `PluginStack` overwrite any other, except [`PluginStackInjectProps`](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/PluginStack/PluginStack.d.ts)
+- [`UIMetaContext`](/docs/core-meta) are overwritten by any other, added to every plugin stack by default
+- [`UIConfigContext`](/docs/core-store#uiconfigcontext) is overwriting only the `UIMetaContext`, added to every plugin stack by default
+- [`UIStoreContext`](/docs/core-store#uistoreprovider) must be added from within plugins, but only extracted using `storeKeys` as [interface `WithValue`](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/UIStore/UIStoreProvider.tsx) on a schema level, [done by `ExtractStorePlugin`](/docs/plugins#extractstoreplugin)
+
+
 ### Typescript Custom PluginStack props
 
 `PluginStack` allows to specify the needed `props`, when using `WidgetOverride` it automatically types those props. All `props` passed to `PluginStack` are passed down, but the typing is stricter since `0.3.0`.
@@ -377,5 +385,6 @@ Design system binding in `widgets.pluginStack`.
 
 See also:
 
-- [how to add custom plugins to the binding](/docs/widgets#adding--overwriting-widgets).
-- [UIStore hooks, HOCs and utils](/docs/core-store) can be used to access, udpate, delete, move any data, keep [performance](/docs/performance) in mind!
+- [how to add custom plugins to the binding](/docs/widgets#adding--overwriting-widgets)
+- [replace `ExtractStorePlugin`](/docs/plugins#extractstoreplugin)
+- [`UIStoreContext`/`UIConfigContext`](/docs/core-store) and [`UIMetaContext`](/docs/core-meta) hooks, HOCs and utils can be used to access, update, delete, move any data, keep [performance](/docs/performance) in mind!

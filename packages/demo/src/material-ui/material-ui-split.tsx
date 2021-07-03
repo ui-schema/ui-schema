@@ -4,7 +4,7 @@ import Dashboard from './dashboard/Dashboard'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import { Step, Stepper, widgets } from '@ui-schema/ds-material'
-import { createOrderedMap, WidgetProps, loadSchemaUIApi, UIMetaProvider, UISchema, UIRootRenderer, UIStoreProvider, createStore, storeUpdater, isInvalid, UIStoreType, StoreSchemaType } from '@ui-schema/ui-schema'
+import { createOrderedMap, WidgetProps, loadSchemaUIApi, UIMetaProvider, UISchema, UIRootRenderer, UIStoreProvider, createStore, storeUpdater, isInvalid, UIStoreType, StoreSchemaType, DefaultHandlerProps } from '@ui-schema/ui-schema'
 import { browserT } from '../t'
 import { UIApiProvider } from '@ui-schema/ui-schema/UIApi/UIApi'
 import { ReferencingNetworkHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
@@ -63,6 +63,7 @@ const schemaData = createOrderedMap({
     properties: {
         name: {
             type: 'string',
+            default: 'Max',
         },
         postal_code: {
             type: 'string',
@@ -100,6 +101,8 @@ const schemaStyle = createOrderedMap({
 // e.g. be sure it does not force a re-render of UIRootRenderer with `React.useMemo` and maybe `useImmutable`
 const rootContext: InjectSplitSchemaRootContext = {schemaStyle: schemaStyle as StoreSchemaType}
 
+export type CustomConfig = Partial<DefaultHandlerProps>
+
 const Main = () => {
     const [showValidity, setShowValidity] = React.useState(false)
 
@@ -113,10 +116,11 @@ const Main = () => {
 
     return <React.Fragment>
         <Grid item xs={12}>
-            <UIStoreProvider
+            <UIStoreProvider<CustomConfig>
                 store={store}
                 onChange={onChange}
                 showValidity={showValidity}
+                //doNotDefault
             >
                 <UIRootRenderer<InjectSplitSchemaRootContext> schema={schemaData} rootContext={rootContext}/>
                 <MuiSchemaDebug schema={schemaData}/>

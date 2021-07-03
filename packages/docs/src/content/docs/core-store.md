@@ -44,7 +44,7 @@ Saves and provides the `store`, `onChange` and `schema`.
     - `schema`: `OrderedMap` the full schema as an immutable map
     - `showValidity` boolean
 
-See [core functions to update store](#store-updating--onchange).
+See [core functions to update store](#store-updating--onchange) and [check `UIConfigContext` for other per-store/generator config](#uiconfigcontext).
 
 Example creating the provider:
 
@@ -261,3 +261,37 @@ onChange(
     'array',
 )
 ```
+
+## UIConfigContext
+
+Global configuration for a generator / store, coupled together with the [`UIStoreProvider`](#uistoreprovider), also available on its own as `UIConfigProvider`.
+
+Should be used for seldom-changing-values, e.g. is used for the `doNotDefault` config of `Plugin/DefaultHandler`.
+
+```typescript tsx
+// for generic "allows any props as extra config"
+<UIStoreProvider<{ [k: string]: any }>
+    // `store`, `onChange`, `showValidity` are passed to `UIStoreContext` / `useUI`
+    // all other will be available in all `PluginStack` / `useUIConfig`
+/>
+
+// explicit telling of allowed/expected-to-work `props`:
+<UIStoreProvider<DefaultHandlerProps>
+    // `store`, `onChange`, `showValidity` are passed to `UIStoreContext` / `useUI`
+    // all other will be available in all `PluginStack` / `useUIConfig`
+    doNotDefault={true}
+/>
+
+// now also tell e.g. `PluginStack` to use it
+<PluginStack<DefaultHandlerProps>
+    showValidity={showValidity}
+    storeKeys={storeKeys.push('city') as StoreKeys}
+    schema={schema.getIn(['properties', 'city']) as unknown as StoreSchemaType}
+    parentSchema={schema}
+    level={1}
+    // possible also to overwrite:
+    doNotDefault={false}
+/>
+```
+
+> hint: make a global `CustomUIMetaAndConfig` interface which serves to define your custom `UIMetaContext` and `UIConfigCOntext` as once

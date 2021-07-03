@@ -98,6 +98,7 @@ const MainStore = () => {
             store={store}
             onChange={onChangeNext}
             showValidity={showValidity}
+            //doNotDefault
         >
             <UIRootRenderer schema={schema}/>
             <MuiSchemaDebug setSchema={setSchema} schema={schema}/>
