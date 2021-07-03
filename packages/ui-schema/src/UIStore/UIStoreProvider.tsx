@@ -12,13 +12,39 @@ export interface UIStoreContext {
 // @ts-ignore
 const UIStoreContextObj = React.createContext<UIStoreContext>({})
 
-export const UIStoreProvider: React.ComponentType<React.PropsWithChildren<UIStoreContext>> = ({children, ...props}) => {
-    return <UIStoreContextObj.Provider value={props}>
+// @ts-ignore
+const UIConfigContextObj = React.createContext<{}>({})
+
+export const UIConfigProvider: React.ComponentType<React.PropsWithChildren<{}>> = (
+    {children, ...props}
+) => {
+    const value = React.useMemo(() => ({...props}), [...Object.values(props)])
+    return <UIConfigContextObj.Provider value={value}>
         {children}
+    </UIConfigContextObj.Provider>
+}
+
+export function UIStoreProvider<C extends {} = {}>(
+    {
+        children,
+        showValidity, onChange, store,
+        ...props
+    }: React.PropsWithChildren<UIStoreContext & C>
+): React.ReactElement {
+    return <UIStoreContextObj.Provider value={{showValidity, onChange, store}}>
+        <UIConfigProvider {...props}>
+            {children}
+        </UIConfigProvider>
     </UIStoreContextObj.Provider>
 }
+
 export const useUI = (): UIStoreContext => {
     return React.useContext(UIStoreContextObj)
+}
+
+export function useUIConfig<C extends {} = {}>(): C {
+    // @ts-ignore
+    return React.useContext(UIConfigContextObj)
 }
 
 export interface WithValue {

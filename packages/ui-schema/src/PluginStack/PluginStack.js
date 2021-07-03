@@ -3,6 +3,8 @@ import {List} from 'immutable';
 import {memo} from '@ui-schema/ui-schema/Utils/memo';
 import {useUIMeta} from '@ui-schema/ui-schema/UIMeta/UIMetaProvider';
 import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorErrors';
+import {useUIConfig} from '@ui-schema/ui-schema/UIStore/UIStoreProvider';
+import {useImmutable} from '@ui-schema/ui-schema/Utils/useImmutable';
 
 class PluginStackErrorBoundary extends React.Component {
     state = {
@@ -33,12 +35,15 @@ class PluginStackErrorBoundary extends React.Component {
 // `withUIMeta` and `mema` are not needed for performance optimizing since `0.3.0` at this position
 export const PluginStack = (props) => {
     const {widgets, ...meta} = useUIMeta()
+    const config = useUIConfig()
     const {
         level = 0, parentSchema,
         storeKeys, schema,
         widgets: customWidgets,
     } = props;
-    const activeWidgets = customWidgets ? customWidgets : widgets
+    // central reference integrity of `storeKeys` for all plugins and the receiving widget, otherwise `useImmutable` is needed more times, e.g. 3 times in plugins + 1x time in widget
+    const currentStoreKeys = useImmutable(storeKeys)
+    const activeWidgets = customWidgets || widgets
 
     const isVirtual = Boolean(props.isVirtual || schema?.get('hidden'))
     let required = List([]);
@@ -58,10 +63,12 @@ export const PluginStack = (props) => {
     >
         <NextPluginRenderer
             {...meta}
+            {...config}
             {...props}
             currentPluginIndex={-1}
             widgets={activeWidgets}
             level={level}
+            storeKeys={currentStoreKeys}
             ownKey={storeKeys.get(storeKeys.count() - 1)}
             requiredList={required}
             required={false}

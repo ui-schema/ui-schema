@@ -26,6 +26,8 @@ export type PluginStackProps<WP extends {} = {}, C extends {} = {}> = AppliedPlu
     // [key: string]: any
 }
 
+// - `WP` = extra supported/required widget props
+// - `C` = custom `meta context` or additional `config context`
 export function PluginStack<WP extends {} = {}, C extends {} = {}, P extends PluginStackProps<WP, C> = PluginStackProps<WP, C>>(
     props: P & WP
 ): React.ReactElement

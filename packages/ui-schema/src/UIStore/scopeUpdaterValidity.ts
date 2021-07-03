@@ -1,4 +1,5 @@
-import { prependKey, ScopeOnChangeHandler } from '@ui-schema/ui-schema/UIStore'
+import { prependKey } from '@ui-schema/ui-schema/UIStore/UIStore'
+import { ScopeOnChangeHandler } from '@ui-schema/ui-schema/UIStore/storeUpdater'
 import { updateStoreScope } from '@ui-schema/ui-schema/UIStore/updateStoreScope'
 import { List } from 'immutable'
 

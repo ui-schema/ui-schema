@@ -1,6 +1,7 @@
 import { storeBuildScopeTree } from '@ui-schema/ui-schema/UIStore/storeBuildScopeTree'
 import { updateStoreScope } from '@ui-schema/ui-schema/UIStore/updateStoreScope'
-import { addNestKey, ScopeOnChangeHandler } from '@ui-schema/ui-schema'
+import { addNestKey } from '@ui-schema/ui-schema/UIStore/UIStore'
+import { ScopeOnChangeHandler } from '@ui-schema/ui-schema/UIStore/storeUpdater'
 
 export const scopeUpdaterInternals: ScopeOnChangeHandler = (store, storeKeys, oldValue, newValue) => {
     if (typeof oldValue === 'undefined') {
