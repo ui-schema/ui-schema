@@ -180,7 +180,7 @@ const MyFallbackComponent = ({type, widget}) => (
         </p>
         <p>
             <strong>Type:</strong>
-            {type}
+            {JSON.stringify(type)}
         </p>
         <p>
             <strong>Widget:</strong>

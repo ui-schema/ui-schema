@@ -2,6 +2,7 @@ import React from 'react';
 import {List} from 'immutable';
 import {PluginStack} from '@ui-schema/ui-schema/PluginStack';
 import {ObjectRenderer} from '@ui-schema/ui-schema/ObjectRenderer';
+import {schemaTypeToDistinct} from '@ui-schema/ui-schema/Utils/schemaTypeToDistinct';
 
 export const VirtualArrayRenderer = (
     {storeKeys, value, schema, virtualWidgets, widgets},
@@ -33,7 +34,7 @@ export const VirtualWidgetRenderer = (props) => {
             'array': VirtualArrayRenderer,
         },
     } = props;
-    const type = schema.get('type');
+    const type = schemaTypeToDistinct(schema.get('type'));
 
     let Widget = virtualWidgets['default'];
 

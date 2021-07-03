@@ -42,6 +42,50 @@ describe('validateMinMax', () => {
             111,
             0,
         ], [
+            {type: ['string'], maxLength: 2},
+            'tex',
+            1,
+        ], [
+            {type: ['string'], maxLength: 2},
+            'te',
+            0,
+        ], [
+            {type: ['string'], maxLength: 2},
+            111,
+            0,
+        ], [
+            {type: ['string', 'number'], maxLength: 2},
+            'tex',
+            // todo: add test for "is-correct-error"
+            1,
+        ], [
+            {type: ['string', 'number'], maxLength: 2},
+            'te',
+            0,
+        ], [
+            {type: ['string', 'number'], maxLength: 2},
+            111,
+            0,
+        ], [
+            {type: ['string', 'array'], maxLength: 2, minItems: 2},
+            // todo: add test for "is-correct-error"
+            ['text1'],
+            1,
+        ], [
+            {type: ['string', 'array'], maxLength: 2, minItems: 2},
+            // todo: add test for "is-correct-error"
+            'tex',
+            1,
+        ], [
+            {type: ['string', 'array'], maxLength: 2, minItems: 2},
+            // todo: add test for "is-correct-error"
+            ['text1', 'text2'],
+            0,
+        ], [
+            {type: ['string', 'array'], maxLength: 2, minItems: 2},
+            'te',
+            0,
+        ], [
             {type: 'array', minItems: 2},
             ['text1'],
             1,
@@ -209,6 +253,14 @@ describe('validateMinMax', () => {
             {type: 'integer', maximum: 2},
             undefined,
             0,
+        ], [
+            {type: ['integer'], maximum: 2},
+            undefined,
+            0,
+        ], [
+            {type: ['integer', 'string'], maximum: 2},
+            undefined,
+            0,
         ],
     ]
     test.each(validateMinMaxTestValues)(
@@ -267,6 +319,7 @@ describe('minMaxValidator', () => {
         (schema, value, error, expectedValid, expectedError) => {
             const result = minMaxValidator.handle({
                 schema: OrderedMap(schema),
+                // @ts-ignore
                 value,
                 errors: createValidatorErrors(),
                 valid: true,

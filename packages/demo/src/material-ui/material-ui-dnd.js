@@ -118,6 +118,7 @@ const MultiEditor = () => {
 
     const dragStoreContext = makeDragDropContext(onChange, schema.get('$defs') || schema.get('definitions'))
 
+    // todo: multi type support #68
     const type = String(schema.get('type'))
     const reset = React.useCallback(() => {
         resetHistoryStore(type, initialStore)

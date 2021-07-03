@@ -5,7 +5,7 @@ import { render } from '@testing-library/react'
 import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
 import { PluginSimpleStack, handlePluginSimpleStack } from './PluginSimpleStack'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
-import { WidgetRenderer } from '../WidgetRenderer'
+import { WidgetRenderer } from '../WidgetRenderer/WidgetRenderer'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 

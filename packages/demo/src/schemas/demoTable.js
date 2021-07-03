@@ -144,15 +144,18 @@ export const schemaDemoTableAdvanced = createOrderedMap({
                 type: 'array',
                 items: [
                     {
-                        type: 'string',
+                        type: ['string', 'null'],
+                        default: null,
                         title: 'Name',
                     },
                     {
-                        type: 'integer',
+                        type: ['integer', 'null'],
+                        default: null,
                         title: 'ID',
                     },
                     {
-                        type: 'object',
+                        type: ['object', 'null'],
+                        default: null,
                         title: 'DateRange',
                         properties: {
                             from: {
@@ -211,7 +214,8 @@ export const schemaDemoTableAdvanced = createOrderedMap({
                         },
                     },*/
                     {
-                        type: 'number',
+                        type: ['number', 'null'],
+                        default: null,
                         title: 'Revenue',
                         multipleOf: 0.01,
                     },

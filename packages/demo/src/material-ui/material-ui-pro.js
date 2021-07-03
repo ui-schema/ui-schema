@@ -77,8 +77,10 @@ const Main = () => {
         reset: resetHistoryStore,
         onChange, store, setStore,
         redoHistory, undoHistory,
+        // todo: multi type support #68
     } = useStorePro({type: String(schema.get('type')), initialStore: initialStore})
 
+    // todo: multi type support #68
     const type = String(schema.get('type'))
     const reset = React.useCallback(() => {
         resetHistoryStore(type, initialStore)

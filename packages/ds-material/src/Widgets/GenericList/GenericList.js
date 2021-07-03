@@ -9,7 +9,7 @@ import Add from '@material-ui/icons/Add';
 import Delete from '@material-ui/icons/Delete';
 import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
-import {TransTitle, extractValue, memo, PluginStack, Trans} from '@ui-schema/ui-schema';
+import {TransTitle, extractValue, memo, PluginStack, Trans, schemaTypeToDistinct} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
 import {List, Map} from 'immutable';
 import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip/Tooltip';
@@ -79,7 +79,7 @@ let GenericListItem = ({index, listSize, schema, notSortable, notDeletable, dele
                     // tuples in root level not possible
                     // was wrong implementation <= 0.2.2
                     null :
-                    itemsSchema.get('type') === 'array' &&
+                    schemaTypeToDistinct(itemsSchema.get('type')) === 'array' &&
                     itemsSchema.get('items') ?
                         <Grid item style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
                             <Grid container spacing={2}>

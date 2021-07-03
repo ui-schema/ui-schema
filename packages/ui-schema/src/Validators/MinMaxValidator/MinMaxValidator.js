@@ -1,5 +1,6 @@
-import {List, Map} from "immutable";
+import {List, Map} from 'immutable';
 import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorErrors';
+import {schemaTypeIs, schemaTypeIsNumeric} from '@ui-schema/ui-schema/Utils/schemaTypeIs';
 
 export const ERROR_MIN_LENGTH = 'min-length';
 export const ERROR_MAX_LENGTH = 'max-length';
@@ -9,11 +10,10 @@ export const validateMinMax = (schema, value) => {
     let errors = createValidatorErrors();
     if(typeof value === 'undefined') return errors
 
-    if(type === 'string') {
-        let minLength = schema.get('minLength');
-        let maxLength = schema.get('maxLength');
-
+    if(schemaTypeIs(type, 'string')) {
         if(typeof value === 'string') {
+            let minLength = schema.get('minLength');
+            let maxLength = schema.get('maxLength');
             if(minLength) {
                 if(value.length < minLength) {
                     errors = errors.addError(ERROR_MIN_LENGTH, Map({min: minLength}));
@@ -27,7 +27,7 @@ export const validateMinMax = (schema, value) => {
         }
     }
 
-    if(type === 'array') {
+    if(schemaTypeIs(type, 'array')) {
         let minItems = schema.get('minItems');
         let maxItems = schema.get('maxItems');
 
@@ -56,7 +56,7 @@ export const validateMinMax = (schema, value) => {
         }
     }
 
-    if(type === 'object') {
+    if(schemaTypeIs(type, 'object')) {
         let minProperties = schema.get('minProperties');
         let maxProperties = schema.get('maxProperties');
 
@@ -85,7 +85,7 @@ export const validateMinMax = (schema, value) => {
         }
     }
 
-    if(type === 'number' || type === 'integer') {
+    if(schemaTypeIsNumeric(type)) {
         let minimum = schema.get('minimum');
         let exclusiveMinimum = schema.get('exclusiveMinimum');
         let maximum = schema.get('maximum');
@@ -136,5 +136,5 @@ export const minMaxValidator = {
             errors = errors.addErrors(err);
         }
         return {errors, valid}
-    }
+    },
 };

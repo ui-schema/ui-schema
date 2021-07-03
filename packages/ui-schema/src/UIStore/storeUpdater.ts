@@ -28,7 +28,7 @@ export type ScopeOnChangeHandlerInternal = <S extends UIStoreType>(
 export type ScopeOnChangeHandler = <S extends UIStoreType>(
     store: S, storeKeys: StoreKeys,
     oldValue: any, newValue: any,
-    config: {
+    config?: {
         [key: string]: any
     }
 ) => S

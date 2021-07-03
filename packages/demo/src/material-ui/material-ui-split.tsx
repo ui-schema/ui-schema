@@ -66,7 +66,8 @@ const schemaData = createOrderedMap({
             default: 'Max',
         },
         postal_code: {
-            type: 'string',
+            type: ['null', 'string'],
+            //default: null,
         },
         city: {
             type: 'string',

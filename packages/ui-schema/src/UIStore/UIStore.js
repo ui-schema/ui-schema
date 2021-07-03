@@ -1,4 +1,5 @@
 import {Record, Map, List} from 'immutable';
+import {schemaTypeIs, schemaTypeIsNumeric} from '@ui-schema/ui-schema/Utils/schemaTypeIs';
 
 // only to enable better minification, DO NOT EXPORT
 const STR_INTERNALS = 'internals'
@@ -39,6 +40,7 @@ export const createStore = (values) => {
     })
 };
 
+// todo: support multiple types #68
 export const createEmptyStore = (type = 'object') => createStore(
     type === 'array' ?
         List([]) :
@@ -58,20 +60,22 @@ export const prependKey = (storeKeys, key) =>
         storeKeys.splice(0, 0, key);
 
 export const shouldDeleteOnEmpty = (value, force, type) => {
+    const valueTypeOf = typeof value
     // todo: mv number out here, enforces that numbers can be cleared, but should only be forced for the `""` value in number types
-    if(!force && type !== 'number' && type !== 'integer') return false
+    if(!force && !schemaTypeIsNumeric(type)) return false
 
-    switch(type) {
-        case 'string':
-        case 'number':
-        case 'integer':
-            return value === '' || typeof value === 'undefined' || (typeof value === 'string' && 0 === value.trim().length)
-        case 'boolean':
-            return !value
-        case 'array':
-            return (List.isList(value) && value.size === 0) || (Array.isArray(value) && value.length === 0)
-        case 'object':
-            return (Map.isMap(value) && value.keySeq().size === 0) || (typeof value === 'object' && Object.keys(value).length === 0)
+    if(
+        (schemaTypeIs(type, 'string') && valueTypeOf === 'string') ||
+        (schemaTypeIs(type, 'number') && (valueTypeOf === 'number' || valueTypeOf === 'string')) ||
+        (schemaTypeIs(type, 'integer') && (valueTypeOf === 'number' || valueTypeOf === 'string'))
+    ) {
+        return value === '' || valueTypeOf === 'undefined' || (valueTypeOf === 'string' && 0 === value.trim().length)
+    } else if(schemaTypeIs(type, 'boolean') && valueTypeOf === 'boolean') {
+        return !value
+    } else if(schemaTypeIs(type, 'array') && (List.isList(value) || Array.isArray(value))) {
+        return (List.isList(value) && value.size === 0) || (Array.isArray(value) && value.length === 0)
+    } else if(schemaTypeIs(type, 'object') && (Map.isMap(value) || Record.isRecord(value) || valueTypeOf === 'object')) {
+        return ((Map.isMap(value) || Record.isRecord(value)) && value.keySeq().size === 0) || (valueTypeOf === 'object' && Object.keys(value).length === 0)
     }
 
     return false;

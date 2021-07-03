@@ -10,6 +10,7 @@ import {
 import { List, Map, OrderedMap } from 'immutable'
 import { UIStore, StoreKeys, UIStoreType, createEmptyStore } from '@ui-schema/ui-schema/UIStore/UIStore'
 import { scopeUpdaterValues } from '@ui-schema/ui-schema/UIStore/scopeUpdaterValues'
+import { SchemaTypesType } from '@ui-schema/ui-schema'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 
@@ -181,7 +182,7 @@ describe('scopeUpdaterValues', () => {
                 values: OrderedMap({
                     prop_a: List([
                         // todo: change test with correct tuple behaviour
-                        undefined,
+                        null,
                         'some-string-1',
                         'some-string-2',
                         'some-string-3',
@@ -208,7 +209,7 @@ describe('scopeUpdaterValues', () => {
                     prop_a: List([
                         // todo: change test with correct tuple behaviour
                         'some-string-0',
-                        undefined,
+                        null,
                         'some-string-2',
                         'some-string-3',
                     ]),
@@ -236,7 +237,7 @@ describe('scopeUpdaterValues', () => {
                         'some-string-0',
                         'some-string-1',
                         'some-string-2',
-                        undefined,
+                        null,
                     ]),
                 }),
             }),
@@ -300,10 +301,10 @@ describe('scopeUpdaterValues', () => {
     ])('scopeUpdaterValues(%j, %s, %j): %j', <S extends UIStoreType>(
         store: S, storeKeys: StoreKeys,
         oldValue: any, newValue: any,
-        action: { deleteOnEmpty?: boolean, type?: string } | undefined,
+        config: { deleteOnEmpty?: boolean, type?: SchemaTypesType } | undefined,
         expected: any
     ) => {
-        const r = scopeUpdaterValues(store, storeKeys, oldValue, newValue, action)
+        const r = scopeUpdaterValues(store, storeKeys, oldValue, newValue, config)
         const isExpected = r.equals(expected)
         if (!isExpected) {
             console.log(

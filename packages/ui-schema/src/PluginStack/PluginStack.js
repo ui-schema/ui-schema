@@ -25,6 +25,7 @@ class PluginStackErrorBoundary extends React.Component {
             if(FallbackComponent) {
                 return <FallbackComponent error={this.state.error} type={this.props.type} widget={this.props.widget}/>;
             }
+            // todo: multi type support #68
             return 'error-' + this.props.type + (this.props.widget ? '-' + this.props.widget : '')
         }
         return this.props.children;

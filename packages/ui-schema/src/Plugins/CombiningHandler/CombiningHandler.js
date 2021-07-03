@@ -13,6 +13,7 @@ export const CombiningHandler = (props) => {
             // removing afterwards-handled keywords, otherwise they would merge wrongly/double evaluate
             schema = mergeSchema(schema, subSchema.delete('if').delete('else').delete('then').delete('allOf'));
 
+            // todo: `Record` support #140
             if(value && Map.isMap(value)) {
                 schema = handleIfElseThen(subSchema, value, schema);
             }
@@ -25,6 +26,7 @@ export const CombiningHandler = (props) => {
                     // further on nested `allOf` will be resolved by render flow
                     schema = mergeSchema(schema, subSchema1.delete('if').delete('else').delete('then'));
 
+                    // todo: `Record` support #140
                     if(value && Map.isMap(value)) {
                         schema = handleIfElseThen(subSchema1, value, schema);
                     }

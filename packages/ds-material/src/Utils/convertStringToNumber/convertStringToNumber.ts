@@ -1,7 +1,10 @@
-export type convertStringToNumberType = (value: string | number | any, type: string) => any | string | number
+import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
+import { schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/schemaTypeIs'
+
+export type convertStringToNumberType = (value: string | number | any, type: SchemaTypesType) => any | string | number
 
 export const convertStringToNumber: convertStringToNumberType = (value, type) => {
-    if (type === 'number' || type === 'integer') {
+    if (schemaTypeIsNumeric(type)) {
         if (isNaN(value * 1)) {
             console.error('Invalid Type: input not a number in')
             return undefined

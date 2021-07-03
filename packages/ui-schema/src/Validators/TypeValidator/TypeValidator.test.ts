@@ -62,6 +62,12 @@ describe('typeValidator', () => {
             true,
         ], [
             'string',
+            undefined,
+            List([ERROR_WRONG_TYPE, Map({actual: typeof undefined})]),
+            true,
+            false,
+        ], [
+            'string',
             false,
             List([ERROR_WRONG_TYPE, Map({actual: typeof false})]),
             false,
@@ -72,12 +78,61 @@ describe('typeValidator', () => {
             List([ERROR_WRONG_TYPE, Map({actual: typeof '2'})]),
             true,
             false,
+        ], [
+            List(['string']),
+            false,
+            List([ERROR_WRONG_TYPE, Map({actual: typeof false})]),
+            false,
+            true,
+        ], [
+            List(['string']),
+            '2',
+            List([ERROR_WRONG_TYPE, Map({actual: typeof '2'})]),
+            true,
+            false,
+        ], [
+            List(['string', 'null']),
+            false,
+            List([ERROR_WRONG_TYPE, Map({actual: typeof false})]),
+            false,
+            true,
+        ], [
+            List(['null', 'string']),
+            false,
+            List([ERROR_WRONG_TYPE, Map({actual: typeof false})]),
+            false,
+            true,
+        ], [
+            List(['string', 'null']),
+            '2',
+            List([ERROR_WRONG_TYPE, Map({actual: typeof '2'})]),
+            true,
+            false,
+        ], [
+            List(['null', 'string']),
+            '2',
+            List([ERROR_WRONG_TYPE, Map({actual: typeof '2'})]),
+            true,
+            false,
+        ], [
+            List(['string', 'null']),
+            null,
+            List([ERROR_WRONG_TYPE, Map({actual: typeof null})]),
+            true,
+            false,
+        ], [
+            List(['null', 'string']),
+            null,
+            List([ERROR_WRONG_TYPE, Map({actual: typeof null})]),
+            true,
+            false,
         ],
     ])(
         '.should(%j, %s)',
         (type, value, error, expectedValid, expectedError) => {
             const result = typeValidator.handle({
                 schema: OrderedMap({type}),
+                // @ts-ignore
                 value,
                 errors: createValidatorErrors(),
                 valid: true,

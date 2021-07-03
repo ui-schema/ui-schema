@@ -1,6 +1,7 @@
 import { StoreActions, UIStoreUpdaterFn } from '@ui-schema/ui-schema/UIStore/UIStore'
 import { List, Map, OrderedMap } from 'immutable'
 import { moveItem } from '@ui-schema/ui-schema/Utils/moveItem/moveItem'
+import { SchemaTypesType } from '@ui-schema/ui-schema'
 
 export const actionHandler: (action: StoreActions) => UIStoreUpdaterFn = (action) => {
     switch (action.type) {
@@ -8,7 +9,7 @@ export const actionHandler: (action: StoreActions) => UIStoreUpdaterFn = (action
             return ({value = List(), internal = Map(), ...r}) => {
                 const schema = action.schema
                 const items = schema.get('items')
-                const type = schema.getIn(['items', 'type'])
+                const type = schema.getIn(['items', 'type']) as SchemaTypesType
                 return ({
                     // todo: support `default` keyword
                     //       https://github.com/ui-schema/ui-schema/issues/143

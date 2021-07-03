@@ -1,4 +1,4 @@
-import { OrderedMap } from 'immutable'
+import { List, OrderedMap } from 'immutable'
 import {
     validateObject, objectValidator, ERROR_ADDITIONAL_PROPERTIES,
 } from '@ui-schema/ui-schema/Validators/ObjectValidator'
@@ -104,6 +104,9 @@ describe('validateObject', () => {
 describe('objectValidator', () => {
     test.each([
         [OrderedMap({type: 'object'}), true],
+        [OrderedMap({type: List(['object'])}), true],
+        [OrderedMap({type: List(['string'])}), false],
+        [OrderedMap({type: List(['string', 'object'])}), true],
         [OrderedMap({type: 'string'}), false],
         [OrderedMap<string, {}>({}), false],
     ])(
@@ -176,6 +179,7 @@ describe('objectValidator', () => {
         (schema, value, error, expectedValid, expectedError) => {
             const result = objectValidator.handle({
                 schema: createOrderedMap(schema),
+                // @ts-ignore
                 value,
                 errors: createValidatorErrors(),
                 valid: true,

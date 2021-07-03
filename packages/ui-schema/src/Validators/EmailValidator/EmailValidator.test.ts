@@ -1,4 +1,5 @@
 import { emailValidator } from '@ui-schema/ui-schema/Validators/EmailValidator/EmailValidator'
+import { OrderedMap } from 'immutable'
 
 describe('emailValidator', () => {
     test.each([
@@ -37,9 +38,78 @@ describe('emailValidator', () => {
             // according to RFC correct, but not supported by most/normal email providers
             'demo)dee@example.org', false,
         ],
-    ])('emailValidator(%s): %j', (email, isValid) => {
+    ])('emailValidator.handle(%s): %j', (email, isValid) => {
         // @ts-ignore
         const r = emailValidator.handle({value: email, valid: true})
         expect(r.valid).toBe(isValid)
+    })
+    test.each([
+        [
+            OrderedMap({
+                type: 'string',
+                format: 'email',
+            }),
+            '',
+            true,
+        ], [
+            OrderedMap({
+                type: 'string',
+                format: 'email',
+            }),
+            'some-text',
+            true,
+        ], [
+            OrderedMap({
+                type: 'string',
+                format: 'email',
+            }),
+            undefined,
+            false,
+        ], [
+            OrderedMap({
+                type: 'string',
+                format: 'email',
+            }),
+            0,
+            false,
+        ], [
+            OrderedMap({
+                type: 'integer',
+                format: 'email',
+            }),
+            'some-text',
+            false,
+        ], [
+            OrderedMap({
+                type: 'string',
+                format: 'emails',
+            }),
+            'some-text',
+            false,
+        ], [
+            OrderedMap({
+                type: ['string'],
+                format: 'email',
+            }),
+            'some-text',
+            true,
+        ], [
+            OrderedMap({
+                type: ['string', 'integer'],
+                format: 'email',
+            }),
+            'some-text',
+            true,
+        ], [
+            OrderedMap({
+                type: ['string', 'integer'],
+                format: 'email',
+            }),
+            10,
+            false,
+        ],
+    ])('emailValidator.should(%s): %j', (schema, email, expected: boolean) => {
+        // @ts-ignore
+        expect(emailValidator.should({schema, value: email})).toBe(expected)
     })
 })

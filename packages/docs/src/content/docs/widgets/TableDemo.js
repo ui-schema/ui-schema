@@ -16,15 +16,18 @@ Table based on array tuple schemas:
                 type: 'array',
                 items: [
                     {
-                        type: 'string',
+                        type: ['string', 'null'],
+                        default: null,
                         title: 'Name',
                     },
                     {
-                        type: 'integer',
+                        type: ['integer', 'null'],
                         title: 'ID',
+                        default: null,
                     },
                     {
-                        type: 'string',
+                        type: ['string', 'null'],
+                        default: null,
                         format: 'date',
                         title: 'Date',
                         view: {
@@ -32,7 +35,8 @@ Table based on array tuple schemas:
                         },
                     },
                     {
-                        type: 'number',
+                        type: ['number', 'null'],
+                        default: null,
                         title: 'Revenue',
                         multipleOf: 0.01,
                     },

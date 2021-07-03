@@ -48,6 +48,7 @@ Including native-objects and native-types.
 # Table (array of arrays)
 
 - array of tuple array schemas for the rows
+- using multiple types for nullable behaviour
 `], ['Table: object', createOrderedMap(demoTable[1][1]), List(), `
 # Table (array of objects)
 

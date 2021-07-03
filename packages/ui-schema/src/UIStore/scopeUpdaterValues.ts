@@ -19,7 +19,7 @@ export const scopeUpdaterValues: ScopeOnChangeHandler = (store, storeKeys, oldVa
             // todo: support valueOnDelete and fix behaviour in Array tuples https://github.com/ui-schema/ui-schema/issues/106
             //       also tests are missing atm.
             if (List.isList(parentStore)) {
-                store = store.setIn(prependKey(storeKeys, 'values'), undefined)
+                store = store.setIn(prependKey(storeKeys, 'values'), null)
             } else if (Map.isMap(parentStore)) {
                 store = store.deleteIn(prependKey(storeKeys, 'values'))
             }
@@ -28,6 +28,9 @@ export const scopeUpdaterValues: ScopeOnChangeHandler = (store, storeKeys, oldVa
         }
         return store
     }
+
+    // todo: when parent is a `list`, check if "all other array items exist" - and when not, fill them with e.g. `null`
+
     return updateStoreScope(
         store, 'values', storeKeys,
         newValue

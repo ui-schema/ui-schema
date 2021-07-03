@@ -1,6 +1,6 @@
 import React from 'react'
 import { useUID } from 'react-uid'
-import { TransTitle, extractValue, memo, PluginStack, WidgetProps, WithValue, StoreSchemaType, useUIMeta } from '@ui-schema/ui-schema'
+import { TransTitle, extractValue, memo, PluginStack, WidgetProps, WithValue, StoreSchemaType, useUIMeta, schemaTypeIsAny, SchemaTypesType } from '@ui-schema/ui-schema'
 import { List, Map, OrderedMap } from 'immutable'
 import MuiTable from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -33,7 +33,7 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
     const currentRowsStartVisible = page * currentRows
 
     const validItemSchema = itemsSchema && Map.isMap(itemsSchema) &&
-        (itemsSchema.get('type') === 'array' || itemsSchema.get('type') === 'object')
+        schemaTypeIsAny(itemsSchema.get('type') as SchemaTypesType, ['array', 'object'])
 
     if (process.env.NODE_ENV === 'development' && !validItemSchema) {
         console.error('TableRenderer invalid `items` schema at storeKeys:', storeKeys?.toJS(), itemsSchema.toJS())

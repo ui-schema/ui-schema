@@ -1,5 +1,5 @@
 import { OrderedMap, Map, List, RecordOf } from 'immutable'
-import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { SchemaTypesType, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 
 export type Values<V> = List<V> | string | number | boolean | Map<string, V> | OrderedMap<string, V>
 export type ValuesJS = any[] | string | number | boolean | Object
@@ -69,7 +69,7 @@ export type onChangeHandlerGeneric<R extends any = void> = (
     scopes: (keyof UIStoreUpdaterData)[],
     updater: UIStoreUpdaterFn | StoreActions,
     deleteOnEmpty?: boolean,
-    type?: string,
+    type?: SchemaTypesType,
     config?: {
         [key: string]: any
     },
@@ -83,7 +83,7 @@ export type onChangeHandler = onChangeHandlerGeneric<void>
 
 export function createStore<D = any>(data: D): UIStoreType<D>
 
-export function createEmptyStore(type?: string): UIStoreType<[] | '' | 0 | false | {}>
+export function createEmptyStore(type?: SchemaTypesType): UIStoreType<[] | '' | 0 | false | {}>
 
 // UIStore / Immutable Manipulation Functions
 
@@ -93,6 +93,6 @@ export type StoreKeys = List<OwnKey>
 
 export function prependKey<O extends OwnKey = OwnKey, S extends StoreKeys<O>>(storeKeys: S, key: O): S
 
-export function shouldDeleteOnEmpty(value: any, force?: boolean, type?: string): boolean
+export function shouldDeleteOnEmpty(value: any, force?: boolean, type?: SchemaTypesType): boolean
 
 export function addNestKey(storeKeysNestedKey: string, storeKeys: StoreKeys): StoreKeys

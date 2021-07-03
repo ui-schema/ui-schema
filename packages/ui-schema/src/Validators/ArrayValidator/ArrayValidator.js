@@ -2,6 +2,7 @@ import {List, Map} from 'immutable';
 import {validateSchema} from '@ui-schema/ui-schema/validateSchema';
 import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorErrors';
 import {ERROR_WRONG_TYPE} from '@ui-schema/ui-schema/Validators/TypeValidator/TypeValidator';
+import {schemaTypeIs} from '@ui-schema/ui-schema/Utils/schemaTypeIs';
 
 export const ERROR_DUPLICATE_ITEMS = 'duplicate-items';
 export const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains';
@@ -9,7 +10,7 @@ export const ERROR_MIN_CONTAINS = 'min-contains';
 export const ERROR_MAX_CONTAINS = 'max-contains';
 export const ERROR_ADDITIONAL_ITEMS = 'additional-items';
 
-let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== index);
+const findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== index);
 
 /**
  * @param itemsSchema single schema or tuple schema
@@ -65,7 +66,7 @@ export const validateArrayContent = (itemsSchema, value, additionalItems = true)
     ) {
         // a nested "one-schema-for-all" array, nested in the current array
         console.log('nested one-schema-for-all', itemsSchema?.toJS())
-    }*/ else if(itemsSchema.get('type') !== 'array') {
+    }*/ else if(!schemaTypeIs(itemsSchema.get('type'), 'array')) {
         // no nested array, one-schema for all items
         // not validating array content of array here, must be validated with next schema level
         for(let val of value) {
@@ -111,7 +112,7 @@ export const validateItems = (schema, value) => {
 
 export const validateContains = (schema, value) => {
     let errors = createValidatorErrors();
-    if(schema.get('type') !== 'array') return errors;
+    if(!schemaTypeIs(schema.get('type'), 'array')) return errors;
 
     const contains = schema.get('contains');
     if(!contains) return errors;
@@ -152,7 +153,7 @@ export const validateContains = (schema, value) => {
 
 export const validateUniqueItems = (schema, value) => {
     let uniqueItems = schema.get('uniqueItems');
-    if(uniqueItems && value) {
+    if(uniqueItems && (List.isList(value) || Array.isArray(value))) {
         let duplicates = findDuplicates(value);
         if(Array.isArray(duplicates)) {
             return duplicates.length === 0;
@@ -164,10 +165,9 @@ export const validateUniqueItems = (schema, value) => {
 }
 
 export const arrayValidator = {
-    should: ({schema}) => {
-        let type = schema.get('type');
-
-        return type === 'array'
+    should: ({schema, value}) => {
+        return schemaTypeIs(schema.get('type'), 'array') &&
+            (List.isList(value) || Array.isArray(value))
     },
     handle: ({schema, value, errors, valid}) => {
         // unique-items sub-schema is intended for dynamics and for statics, e.g. Selects could have duplicates but also a SimpleList of strings

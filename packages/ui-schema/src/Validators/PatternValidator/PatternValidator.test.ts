@@ -1,14 +1,23 @@
 import { OrderedMap } from 'immutable'
-import { test, expect } from '@jest/globals'
+import { describe, test, expect } from '@jest/globals'
 import { validatePattern, patternValidator, ERROR_PATTERN } from '@ui-schema/ui-schema/Validators/PatternValidator'
 import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorErrors/ValidatorErrors'
+import { SchemaTypesType } from '@ui-schema/ui-schema'
 
-test('validatePattern', () => {
-    expect(validatePattern('string', 'blabla', '^[bla]*$')).toBe(true)
-    expect(validatePattern('string', 'wawawa', '^[bla]*$')).toBe(false)
-    expect(validatePattern('string', 'wawawa')).toBe(true)
-    expect(validatePattern('array', [], '^[bla]*$')).toBe(true)
-    expect(validatePattern('array', [])).toBe(true)
+describe('validatePattern', () => {
+    test.each([
+        ['string', 'blabla', '^[bla]*$', true],
+        ['string', 'wawawa', '^[bla]*$', false],
+        ['string', 'wawawa', undefined, true],
+        [['string'], 'wawawa', undefined, true],
+        [['string'], 'wawawa', '^[bla]*$', false],
+        [['integer', 'string'], 'wawawa', '^[bla]*$', false],
+        [['integer', 'string'], 122, '^[bla]*$', true],
+        ['array', [], '^[bla]*$', true],
+        ['array', [], undefined, true],
+    ])('validatePattern(%j, %j, %j): %j', (type: SchemaTypesType, value: any, pattern: string | undefined, expected: boolean) => {
+        expect(validatePattern(type, value, pattern)).toBe(expected)
+    })
 })
 
 test('patternValidator', () => {

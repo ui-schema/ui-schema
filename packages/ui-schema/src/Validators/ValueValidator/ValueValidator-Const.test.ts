@@ -8,6 +8,15 @@ describe('validateConst', () => {
     test('validateConst', () => {
         expect(validateConst('string', 'text1', 'text1')).toBe(true)
         expect(validateConst('string', 'text1', 'text2')).toBe(false)
+        expect(validateConst(List(['string', 'integer', 'object']), 'text1', 'text1')).toBe(true)
+        expect(validateConst(List(['string', 'integer', 'null']), 'text1', 'text1')).toBe(true)
+        expect(validateConst(List(['string', 'integer', 'null']), null, null)).toBe(true)
+        expect(validateConst(List(['string', 'integer']), 'text1', 'text1')).toBe(true)
+        expect(validateConst(List(['string']), 'text1', 'text1')).toBe(true)
+        expect(validateConst(List(['string', 'integer', 'null']), 'text1', 'text2')).toBe(false)
+        expect(validateConst(List(['string', 'integer', 'object']), 'text1', 'text2')).toBe(false)
+        expect(validateConst(List(['string', 'integer']), 'text1', 'text2')).toBe(false)
+        expect(validateConst(List(['string']), 'text1', 'text2')).toBe(false)
 
         expect(validateConst('number', 1, 1)).toBe(true)
         expect(validateConst('number', 1, 2)).toBe(false)
@@ -43,6 +52,7 @@ describe('valueValidatorConst', () => {
         (schema, value, expected) => {
             expect(valueValidatorConst.should({
                 schema: OrderedMap(schema),
+                // @ts-ignore
                 value,
             })).toBe(expected)
         }
@@ -88,6 +98,7 @@ describe('valueValidatorConst', () => {
         (schema, value, error, expectedValid, expectedError) => {
             const result = valueValidatorConst.handle({
                 schema: OrderedMap(schema),
+                // @ts-ignore
                 value,
                 errors: createValidatorErrors(),
                 valid: true,

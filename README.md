@@ -73,7 +73,8 @@ JSON Schema keywords are used to validate the data, the UI is created from that 
 - modular, extensible and slim core
     - add own [plugins](https://ui-schema.bemit.codes/docs/core-pluginstack)
     - add own validators
-    - add own renderers & strategies
+    - add own base renderers
+    - add own widget matchers & render strategies
     - use what you need
 - [performance optimized](https://ui-schema.bemit.codes/docs/performance), only updates HTML which must re-render, perfect for big schemas
 - code-splitting, with custom widget mappings / lazy-loading widgets

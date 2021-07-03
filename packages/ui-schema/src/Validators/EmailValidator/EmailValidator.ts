@@ -1,10 +1,17 @@
-import { PluginSimple } from '@ui-schema/ui-schema'
+import { PluginSimple, SchemaTypesType } from '@ui-schema/ui-schema'
+import { schemaTypeIs } from '@ui-schema/ui-schema/Utils/schemaTypeIs'
 
 export const ERROR_EMAIL_INVALID = 'email-invalid'
 
 export const emailValidator: PluginSimple = {
-    should: ({schema}) => {
-        return Boolean(schema && schema.get('type') === 'string' && schema.get('format') === 'email')
+    // @ts-ignore
+    should: ({schema, value}) => {
+        return Boolean(
+            schema &&
+            typeof value === 'string' &&
+            schemaTypeIs(schema.get('type') as SchemaTypesType, 'string') &&
+            schema.get('format') === 'email'
+        )
     },
     // @ts-ignore
     handle: ({value, errors, valid}) => {
