@@ -18,7 +18,7 @@ export interface DragDropStoreContext {
     contextValue: DragDropSimpleContextType
 }
 
-export const makeDragDropContext = (onChange: typeof onChangeHandler, itemsDefs: DragDropItemDefinition = OrderedMap()): DragDropStoreContext => {
+export const makeDragDropContext = (onChange: onChangeHandler, itemsDefs: DragDropItemDefinition = OrderedMap()): DragDropStoreContext => {
     const onDragEnd: handleDragEnd = React.useCallback(
         ({destination, source, type}) => {
             if (destination) {

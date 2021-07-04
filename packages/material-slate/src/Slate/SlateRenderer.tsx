@@ -1,5 +1,5 @@
 import React, { FocusEventHandler } from 'react'
-import { fromJS, List } from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import { Slate, ReactEditor, withReact } from 'slate-react'
 import { EditablePlugins as Editable, EditablePluginsProps, pipe, RenderLeaf } from '@udecode/slate-plugins'
 import {
@@ -7,7 +7,8 @@ import {
     Descendant,
 } from 'slate'
 import { withHistory } from 'slate-history'
-import { memo, useImmutable, WidgetProps, WithValue } from '@ui-schema/ui-schema'
+import { WidgetProps, WithValue } from '@ui-schema/ui-schema'
+import { memo } from '@ui-schema/ui-schema/Utils/memo'
 import { ElementMapperType } from '@ui-schema/material-slate/SlateElements/ElementMapper'
 import { RenderElementProps } from '@ui-schema/material-slate/Slate/SlateTypings'
 import { withPlugins, withPluginsType } from '@ui-schema/material-slate/Slate/slatePlugins'
@@ -62,7 +63,6 @@ let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithVa
         renderLeaf,
     }
 ) => {
-    const storeKeysCurrent = useImmutable(storeKeys)
     const enableOnly = schema.getIn(['editor', 'enableOnly']) as editorEnableOnly
     const renderElements = React.useMemo(() => {
         return [
@@ -81,38 +81,41 @@ let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithVa
             const handledInitialTemp = handledInitial.current
             handledInitial.current = true
             onChange(
-                storeKeysCurrent, ['internal', 'value'],
-                ({internal, value: storeValue}) => {
-                    if (storeValue && storeValue.size) {
-                        // handling setting internal value for keyword `default`
-                        // must check for really non empty, e.g. when used in root level `value` and `internal` will be an empty list
-                        valueRef.current = storeValue
-                    } else {
-                        valueRef.current = !handledInitialTemp && schema.get('default') ? schema.get('default') as List<any> : List()
-                    }
-                    if (valueRef.current.size) {
-                        internal = valueRef.current.toJS()
-                    } else {
-                        const initial = [...initialValue]
-                        initial[0] = {...initial[0]}
-                        if (schema.getIn(['editor', 'initialRoot'])) {
-                            initial[0].type = schema.getIn(['editor', 'initialRoot']) as string
-                        } else if (onlyInline) {
-                            initial[0].type = 'span'
+                storeKeys, ['internal', 'value'],
+                {
+                    type: 'update',
+                    updater: ({internal: currentInternal = Map(), value: storeValue}) => {
+                        if (storeValue && storeValue.size) {
+                            // handling setting internal value for keyword `default`
+                            // must check for really non empty, e.g. when used in root level `value` and `internal` will be an empty list
+                            valueRef.current = storeValue
+                        } else {
+                            valueRef.current = !handledInitialTemp && schema.get('default') ? schema.get('default') as List<any> : List()
                         }
-                        internal = initial
-                    }
+                        if (valueRef.current.size) {
+                            currentInternal = currentInternal.set('value', valueRef.current.toJS())
+                        } else {
+                            const initial = [...initialValue]
+                            initial[0] = {...initial[0]}
+                            if (schema.getIn(['editor', 'initialRoot'])) {
+                                initial[0].type = schema.getIn(['editor', 'initialRoot']) as string
+                            } else if (onlyInline) {
+                                initial[0].type = 'span'
+                            }
+                            currentInternal = currentInternal.set('value', initial)
+                        }
 
-                    return {
-                        internal: internal,
-                        value: valueRef.current,
-                    }
-                },
-                Boolean(schema.get('deleteOnEmpty') || required),
-                'array'
+                        return {
+                            internal: currentInternal,
+                            value: valueRef.current,
+                        }
+                    },
+                    schema,
+                    required,
+                }
             )
         }
-    }, [valueIsSameOrInitialised, handledInitial, valueRef, schema, required, onChange, onlyInline, storeKeysCurrent])
+    }, [valueIsSameOrInitialised, handledInitial, valueRef, schema, required, onChange, onlyInline, storeKeys])
 
     // @ts-ignore
     const editor: ReactEditor = React.useMemo(
@@ -122,24 +125,27 @@ let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithVa
 
     const onChangeHandler = React.useCallback((editorValue) => {
         onChange(
-            storeKeysCurrent, ['value', 'internal'],
-            () => {
-                let newValue = fromJS(editorValue) as List<any>
-                if (isSlateEmpty(newValue)) {
-                    newValue = List()
-                }
-                valueRef.current = newValue
-                return {
-                    value: newValue,
-                    internal: editorValue,
-                }
-            },
-            Boolean(schema.get('deleteOnEmpty') || required),
-            'array'
+            storeKeys, ['value', 'internal'],
+            {
+                type: 'update',
+                updater: ({internal: currentInternal = Map()}) => {
+                    let newValue = fromJS(editorValue) as List<any>
+                    if (isSlateEmpty(newValue)) {
+                        newValue = List()
+                    }
+                    valueRef.current = newValue
+                    return {
+                        value: newValue,
+                        internal: currentInternal.set('value', editorValue),
+                    }
+                },
+                schema,
+                required,
+            }
         )
-    }, [valueRef, onChange, storeKeysCurrent, schema, required])
+    }, [valueRef, onChange, storeKeys, schema, required])
 
-    return internalValue?.length ? <Slate editor={editor} value={internalValue} onChange={onChangeHandler}>
+    return internalValue.get('value') ? <Slate editor={editor} value={internalValue.get('value') || initialValue} onChange={onChangeHandler}>
         {!schema.getIn(['editor', 'hideToolbar']) ?
             <SlateToolbarHead
                 enableOnly={enableOnly}

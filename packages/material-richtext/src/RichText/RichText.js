@@ -19,6 +19,7 @@ import {MarkdownLabel} from '../MarkdownLabel/MarkdownLabel';
 import {EditorControls} from '../EditorControls/EditorControls';
 import {blockRendererFn, editorStateFrom, editorStateTo, getBlockStyle, inlineMap, styleMap} from '../EditorExtends/EditorExtends';
 import {RichTextProvider} from '../RichTextProvider';
+import {Map} from 'immutable';
 
 const useInputStyles = makeStyles(inputStyles);
 
@@ -41,7 +42,7 @@ export const RichText = ({
 
     const topControls = schema.getIn(['view', 'topControls']) !== false;
 
-    let editorState = internalValue;
+    let editorState = internalValue.get('value');
     if(!editorState) {
         if(typeof value !== 'undefined') {
             editorState = editorStateFrom.markdown(value);
@@ -51,32 +52,34 @@ export const RichText = ({
     }
 
     React.useEffect(() => {
-        if(!internalValue && editorState) {
-            onChange(storeKeys, ['internal'], () => ({internal: editorState}))
+        if(!internalValue.get('value') && editorState) {
+            onChange(storeKeys, ['internal'], ({internal: currentInternal = Map()}) => ({internal: currentInternal.set('value', editorState)}))
         }
     }, [internalValue, editorState, onChange, storeKeys.equals(prevStoreKeys.current)]);
 
-    const type = schema.get('type');
     const handleChange = React.useCallback((state) => {
         onChange(
             storeKeys, ['value', 'internal'],
-            (store) => {
-                let stateHandler = state;
-                if(typeof stateHandler !== 'function') {
-                    // DraftJS onChange does not use a function to update the state, but we use it everywhere
-                    stateHandler = () => state;
-                }
+            {
+                type: 'update',
+                updater: ({internal: currentInternal = Map()}) => {
+                    let stateHandler = state;
+                    if(typeof stateHandler !== 'function') {
+                        // DraftJS onChange does not use a function to update the state, but we use it everywhere
+                        stateHandler = () => state;
+                    }
 
-                let newState = stateHandler(store.internal || createMap());
-                return {
-                    value: editorStateTo.markdown(newState),
-                    internal: newState,
-                }
+                    let newState = stateHandler(currentInternal.get('value') || createMap());
+                    return {
+                        value: editorStateTo.markdown(newState),
+                        internal: currentInternal.set('value', newState),
+                    }
+                },
+                schema,
+                required,
             },
-            schema.get('deleteOnEmpty') || required,
-            type,
         )
-    }, [onChange, storeKeys.equals(prevStoreKeys.current), required, type]);
+    }, [onChange, storeKeys.equals(prevStoreKeys.current), required, schema]);
 
     const handleKeyCommand = (command, editorState) => {
         if(onlyInline) return 'handled';

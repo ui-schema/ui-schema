@@ -1,4 +1,4 @@
-# Widget System
+# Widgets & Widget Binding
 
 > 📌 Here for the [**list of widgets**](/docs/overview#widget-list)?
 
@@ -39,7 +39,7 @@ const customWidgets = {
 export {customWidgets}
 ```
 
-> see the more in-depth docs about the [widget composition concept](/docs/widgets-composition) and the basics about [`PluginStack`](/docs/core#pluginstack)
+> see the more in-depth docs about the [widget composition concept](/docs/widgets-composition) and the basics about [`PluginStack`](/docs/core-pluginstack)
 
 Use github to [request new widget properties](https://github.com/ui-schema/ui-schema/issues/new?template=widget_composition.md) - awesome if you add PRs!
 
@@ -49,21 +49,35 @@ See also [adding or overwriting widgets](#adding--overwriting-widgets)
 
 JSON-Schema is handled mostly by the `widgets.pluginStack` for you, focus on the behaviour of the widget, connect it through the provided properties and the HOC `extractValue` (only non-scalar values).
 
-Each widget gets properties provided by the root schema renderer or added from plugins. When rendering nested schemas, all passed down `props` to [`PluginStack`](/docs/core#pluginstack) are passed to the nested widget(s) - except those removed by [`WidgetRenderer`](/docs/core#widgetrenderer).
+Each widget gets properties provided by the root schema renderer or added from plugins. When rendering nested schemas, all passed down `props` to [`PluginStack`](/docs/core-pluginstack) are passed to the nested widget(s) - except those removed by [`WidgetRenderer`](/docs/core-renderer#widgetrenderer).
 
-Received properties from `WidgetRenderer` (`React.ComponentType<WidgetProps>`) or accumulated in plugins & validators:
+Received properties from `WidgetRenderer` or accumulated in plugins & pluginSimpleStack:
 
 - `value` : `{*}` Plugins receive for any value, Widgets only for scalar
-- `onChange` : `{function}` store updater function, see [updating utils](/docs/core#store-updating--onchange)
+- `onChange` : `{function}` store updater function, see [updating utils](/docs/core-store#store-updating--onchange)
 - `storeKeys` : `{List}`
 - `ownKey` : `{string|integer}`
 - `schema` : `{Map}` the schema of the current widget
 - `parentSchema` : `{Map}` the schema of the parent widget
-- `level` : `{integer}` how deep in the schema it is, incremented automatically for native-objects, must be done manually when using `UIGeneratorNested`
+- `level` : `{integer}` how deep in the schema it is, incremented automatically for native-objects, must be done manually when using `PluginStack`
 - `required` : `{boolean}`, extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `requiredValidator`
 - `valid` : `{boolean}` if this schema level got some error, detected/changed from the `widgets.pluginStack`
 - `showValidity` : `{boolean}` if the errors/success should be visible
 - `errors` : `{ValidatorErrorsType}` validation errors, added from the `widgets.pluginStack` for the current widget/schema-level
+
+Use typings:
+
+
+```typescript jsx
+// for any scalar widgets:
+React.ComponentType<WidgetProps & WithScalarValue>
+
+// or use e.g. the `extractValue` HOC:
+React.ComponentType<WidgetProps & WithValue>
+
+export const FormGroupBase: React.ComponentType<WidgetProps & WithValue> = (props) => {}
+export const FormGroup: React.ComponentType<WidgetProps> = extractValue(memo(FormGroupBase))
+```
 
 See [how to add custom widgets](#adding--overwriting-widgets) to a design system binding.
 
@@ -73,7 +87,7 @@ Example of a really simple text widget (in typescript):
 
 ```typescript jsx
 import React from 'react';
-import {TransTitle, WidgetProps} from '@ui-schema/ui-schema';
+import { TransTitle, WidgetProps } from '@ui-schema/ui-schema';
 
 const Widget = ({
                     value, ownKey, storeKeys, onChange,
@@ -107,16 +121,20 @@ Each UIGenerator receives an `widgets` object containing all HTML components and
 
 Create a complete custom binding or only `import` the components you need and optimize your bundle size!
 
+[Typing for `WidgetsBinding`](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/WidgetsBinding.d.ts).
+
 - `ErrorFallback` shows error for exceptions during of a widget rendering, when not set turns of the error boundary
 - `RootRenderer` main wrapper around everything
 - `GroupRenderer` wraps any object that is not a widget
-- `pluginStack` is the widget plugin system, this wraps all widgets individually
+- `WidgetRenderer` the actual widget matching & rendering component, rendered as "last plugin" by `getNextPlugin`
+- `pluginStack` widget plugin system
     - e.g. used to handle json schema `default`
     - see [how to create widget plugins](/docs/plugins#create-a-widget-plugin)
-- `validators` the validator plugins
-    - see [how to create validator plugins](/docs/plugins#create-a-validator-plugin)
+- `pluginSimpleStack` the simple plugins
+    - e.g. used to validate json schema `required`
+    - see [how to create simple plugins](/docs/plugins#create-a-simple-plugin)
 - `custom` contains widgets mapping with schema's `widget`
-- `types` contains widgets mapping with schema's `type`
+- `types` contains native-type widgets mapping with schema's `type`
 
 Example default binding for `material-ui` can be used as template:
 
@@ -147,6 +165,7 @@ import Loadable from 'react-loadable';
 import {RootRenderer, GroupRenderer} from "@ui-schema/ds-material/Grid";
 import {pluginStack} from "@ui-schema/ds-material/pluginStack";
 import {validators} from '@ui-schema/ui-schema/Validators/validators';
+import {WidgetRenderer} from '@ui-schema/ui-schema/WidgetRenderer';
 
 // Build the loadable widgets
 const StringRenderer = Loadable({
@@ -156,9 +175,17 @@ const StringRenderer = Loadable({
 
 const MyFallbackComponent = ({type, widget}) => (
     <div>
-        <p><strong>Error in Widget!</strong></p>
-        <p><strong>Type:</strong> {type}</p>
-        <p><strong>Widget:</strong> {widget}</p>
+        <p>
+            <strong>Error in Widget!</strong>
+        </p>
+        <p>
+            <strong>Type:</strong>
+            {JSON.stringify(type)}
+        </p>
+        <p>
+            <strong>Widget:</strong>
+            {widget}
+        </p>
     </div>
 );
 
@@ -166,14 +193,14 @@ export const widgets = {
     ErrorFallback: MyFallbackComponent,
     RootRenderer,
     GroupRenderer,
+    WidgetRenderer,
     pluginStack,
     validators,
     types: {
         // supply your needed native-type widgets
         string: StringRenderer,
     },
-    custom: {
-    }
+    custom: {}
 }
 ```
 
@@ -187,7 +214,7 @@ Use the existing exported binding of your design-system and add or overwrite wid
 Simple example of adding a new widget to the binding:
 
 ```js
-import { widgets } from "@ui-schema/ds-material/widgetsBinding";
+import {widgets} from "@ui-schema/ds-material/widgetsBinding";
 
 const CustomNumberRenderer = () => /* todo: implement */ null;
 const CustomSelect = () => /* todo: implement */ null;

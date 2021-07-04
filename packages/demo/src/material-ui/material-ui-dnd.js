@@ -16,7 +16,6 @@ import IcRedo from '@material-ui/icons/Redo'
 import IcUndo from '@material-ui/icons/Undo'
 import useTheme from '@material-ui/core/styles/useTheme';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter/isInvalid';
-import {UIGenerator} from '@ui-schema/ui-schema/UIGenerator';
 import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro';
 import {schemaDragDrop, schemaDragDropSingle} from '../schemas/demoDragDrop';
 //import {TouchBackend} from 'react-dnd-touch-backend'
@@ -25,13 +24,14 @@ import {DndProvider} from 'react-dnd'
 import {makeDragDropContext} from '@ui-schema/material-dnd/DragDropProvider/makeDragDropContext';
 import {DragDropProvider} from '@ui-schema/material-dnd/DragDropProvider/DragDropProvider';
 import {BlockPanel} from '@ui-schema/material-dnd/DraggableBlock/BlockPanel';
-import {createOrderedMap, createStore, storeUpdater, UIApiProvider} from '@ui-schema/ui-schema';
+import {createOrderedMap, createStore, storeUpdater, UIApiProvider, UIMetaProvider, UIStoreProvider} from '@ui-schema/ui-schema';
 import {List} from 'immutable';
 import {DroppableRootMultiple} from '@ui-schema/material-dnd/Widgets/DroppableRootMultiple';
 import {DroppableRootSingle} from '@ui-schema/material-dnd/Widgets/DroppableRootSingle';
 import {DroppableRootContent} from '@ui-schema/material-dnd/DroppableRoot/DroppableRootContent';
 import {DroppablePanel} from '@ui-schema/material-dnd/Widgets/DroppablePanel';
 import {RichContent, RichContentInline, RichContentPane} from '@ui-schema/material-slate';
+import {UIRootRenderer} from '@ui-schema/ui-schema/UIRootRenderer';
 
 const customWidgets = {...widgets};
 customWidgets.DraggableBlock = BlockPanel
@@ -118,6 +118,7 @@ const MultiEditor = () => {
 
     const dragStoreContext = makeDragDropContext(onChange, schema.get('$defs') || schema.get('definitions'))
 
+    // todo: multi type support #68
     const type = String(schema.get('type'))
     const reset = React.useCallback(() => {
         resetHistoryStore(type, initialStore)
@@ -160,16 +161,14 @@ const MultiEditor = () => {
         <UIApiProvider loadSchema={loadSchema} noCache>
             <DragDropProvider contextValue={dragStoreContext.contextValue}>
                 <DndProvider backend={HTML5Backend} options={touchBackendOpts}>
-                    <UIGenerator
-                        schema={schema}
+                    <UIStoreProvider
                         store={store.current}
                         onChange={onChange}
-                        widgets={customWidgets}
                         showValidity={showValidity}
-                        t={browserT}
                     >
-                        <MuiSchemaDebug/>
-                    </UIGenerator>
+                        <UIRootRenderer schema={schema}/>
+                        <MuiSchemaDebug schema={schema}/>
+                    </UIStoreProvider>
                 </DndProvider>
             </DragDropProvider>
         </UIApiProvider>
@@ -222,9 +221,9 @@ const SingleEditor = () => {
 
     const [store, setStore] = React.useState(() => createStore(List()));
 
-    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+    const onChange = React.useCallback((storeKeys, scopes, updater) => {
         setStore(prevStore => {
-            return storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
+            return storeUpdater(storeKeys, scopes, updater)(prevStore)
         })
     }, [setStore])
 
@@ -233,16 +232,14 @@ const SingleEditor = () => {
     return <React.Fragment>
         <DragDropProvider contextValue={dragStoreContext.contextValue}>
             <DndProvider backend={HTML5Backend} options={touchBackendOpts}>
-                <UIGenerator
-                    schema={schemaSingle}
+                <UIStoreProvider
                     store={store}
                     onChange={onChange}
-                    widgets={customWidgets}
                     showValidity={showValidity}
-                    t={browserT}
                 >
-                    <MuiSchemaDebug/>
-                </UIGenerator>
+                    <UIRootRenderer schema={schemaSingle}/>
+                    <MuiSchemaDebug schema={schemaSingle}/>
+                </UIStoreProvider>
             </DndProvider>
         </DragDropProvider>
 
@@ -263,7 +260,9 @@ const Main = () => {
 };
 
 export default () => <AppTheme>
-    <Dashboard main={Main}/>
+    <UIMetaProvider widgets={customWidgets} t={browserT}>
+        <Dashboard main={Main}/>
+    </UIMetaProvider>
 </AppTheme>
 
 export {customWidgets}

@@ -1,100 +1,100 @@
-import React from 'react'
-import { Record, OrderedMap, Map, List } from 'immutable'
-import { Translator } from '../Translate/makeTranslator'
-import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
-import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
-import { updaterFn, updateScope } from './storeUpdater'
+import { OrderedMap, Map, List, RecordOf } from 'immutable'
+import { SchemaTypesType, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 
 export type Values<V> = List<V> | string | number | boolean | Map<string, V> | OrderedMap<string, V>
 export type ValuesJS = any[] | string | number | boolean | Object
 
-export interface UIStoreState<D = any> {
+export interface UIStoreStateData<D = any> {
     values: D
-    internals: Map<string | number, any> | List<any>
+    internals: UIStoreInternalsType
     validity: Map<string | number, any>
+    meta: Map<string, any>
+}
+
+export interface UIStoreState<D = any> extends UIStoreStateData<D> {
     // returns the values in `values` as pure JS, even when saved as `Map` or `List`
     valuesToJS: () => ValuesJS
     // todo: correct typing `getValues` return value
     getValues: () => D
-    getInternals: () => any
+    getInternals: () => UIStoreInternalsType | undefined
     getValidity: () => Map<string | number, any>
 }
 
-export type UIStoreType<D = any> = Record<UIStoreState<D>> & UIStoreState<D>
+export type UIStoreType<D = any> = RecordOf<UIStoreState<D>>
+/**
+ * the `internals` are nested for safer generic usage, only the key `internals` is reserved (for nesting)
+ * {} = {internals: Map({})}
+ * {prop_a: 20} = {internals: Map({
+ *     prop_a: Map({internals: Map({})})
+ * })}
+ */
+export type UIStoreInternalsType = Map<string, any>
 
 export const UIStore: UIStoreType
 
-export function onChangeHandler(
-    storeKeys: StoreKeys,
-    scopes: updateScope[],
-    updater: updaterFn,
-    deleteOnEmpty?: boolean,
-    type?: string,
-): void
+export interface UIStoreUpdaterData {
+    value?: any
+    internal?: any
+    valid?: any
+    meta?: any
+}
 
-export type onChange = typeof onChangeHandler
+export interface UIStoreAction {
+    type: string
+    effect?: (newData: UIStoreUpdaterData, newStore: UIStoreType) => void
+    schema?: StoreSchemaType
+    required?: boolean
+}
 
-export interface UIStoreContext<> {
-    store: UIStoreType
-    onChange: onChange
+export interface UIStoreActionListItemAdd extends UIStoreAction {
+    type: 'list-item-add'
     schema: StoreSchemaType
 }
 
-export function UIStoreProvider(
-    props: React.PropsWithChildren<UIStoreContext>
-): React.ReactElement
-
-// UIMetaContext
-
-export interface UIMetaContext<> {
-    widgets: WidgetsBindingBase
-    t?: Translator
-    showValidity?: boolean
+export interface UIStoreActionListItemDelete extends UIStoreAction {
+    type: 'list-item-delete'
+    index: number
 }
 
-export function UIMetaProvider(
-    props: React.PropsWithChildren<UIMetaContext>
-): React.ReactElement
+export interface UIStoreActionListItemMove extends UIStoreAction {
+    type: 'list-item-move'
+    fromIndex: number
+    toIndex: number
+}
+
+export interface UIStoreActionUpdate extends UIStoreAction {
+    type: 'update'
+    updater: UIStoreUpdaterFn
+}
+
+export type StoreActions = UIStoreActionListItemAdd | UIStoreActionListItemDelete | UIStoreActionListItemMove | UIStoreActionUpdate
+
+export type UIStoreUpdaterFn<D extends UIStoreUpdaterData = UIStoreUpdaterData> = (data: D) => D
+
+export type onChangeHandlerGeneric<R extends any = void> = (
+    storeKeys: StoreKeys,
+    scopes: (keyof UIStoreUpdaterData)[],
+    updater: UIStoreUpdaterFn | StoreActions,
+) => R
+
+export type onChangeHandler = onChangeHandlerGeneric<void>
+
+// UIMetaContext
 
 // Hooks & HOCs
 
 export function createStore<D = any>(data: D): UIStoreType<D>
 
-export function createEmptyStore(type?: string): UIStoreType<[] | '' | 0 | false | {}>
-
-export function useUI(): UIStoreContext
-
-export function useUIMeta(): UIMetaContext
-
-// todo: check HOC definitions
-
-export interface WithValue {
-    value: any
-    internalValue: any
-    onChange: onChange
-}
-
-export function extractValue<P extends {}>(Wrapped: React.ComponentType<P & WithValue>): React.ComponentType<P>
-
-export interface WithValidity {
-    validity: any
-    onChange: onChange
-}
-
-export function extractValidity<P extends {}>(
-    WrappedComponent: React.ComponentType<P & WithValidity>
-): React.ComponentType<P>
-
-export function withUIMeta<P extends {}>(
-    WrappedComponent: React.ComponentType<P & UIMetaContext>
-): React.ComponentType<P>
+export function createEmptyStore(type?: SchemaTypesType): UIStoreType<[] | '' | 0 | false | {}>
 
 // UIStore / Immutable Manipulation Functions
 
 export type OwnKey = string | number
 
-export type StoreKeys<T = OwnKey> = List<T>
+export type StoreKeys = List<OwnKey>
 
-export function prependKey(storeKeys: StoreKeys, key: string | number): StoreKeys
+export function prependKey<O extends OwnKey = OwnKey, S extends StoreKeys<O>>(storeKeys: S, key: O): S
 
-export function shouldDeleteOnEmpty(value: any, force?: boolean, type?: string): boolean
+export function shouldDeleteOnEmpty(value: any, force?: boolean, type?: SchemaTypesType): boolean
+
+export function addNestKey(storeKeysNestedKey: string, storeKeys: StoreKeys): StoreKeys

@@ -1,5 +1,6 @@
 import React from 'react'
 import {getSchemaId} from '@ui-schema/ui-schema/Utils/getSchema';
+import {memo} from '@ui-schema/ui-schema/Utils/memo';
 
 export const isRootSchema = (schema) => {
     const id = getSchemaId(schema)
@@ -8,19 +9,21 @@ export const isRootSchema = (schema) => {
 }
 
 const SchemaRootContext = React.createContext({
-    id: '',
-    schema: null,
+    id: undefined,
+    schema: undefined,
 });
 
-export const SchemaRootProvider = ({id, schema, children}) => {
+export const SchemaRootProviderBase = ({id, schema, children, ...further} = {}) => {
     const context = React.useMemo(() => ({
-        id, schema,
-    }), [id, schema])
+        id, schema, ...further,
+    }), [id, schema, ...Object.values(further)])
 
     return <SchemaRootContext.Provider value={context}>
         {children}
     </SchemaRootContext.Provider>
 }
+
+export const SchemaRootProvider = memo(SchemaRootProviderBase)
 
 export const useSchemaRoot = () => {
     return React.useContext(SchemaRootContext);

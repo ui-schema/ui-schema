@@ -17,8 +17,11 @@ packages.forEach(pkg => {
 
 const base = {
     transformIgnorePatterns: [
-        'node_modules/?!(@ui-schema)'
+        'node_modules/?!(@ui-schema)',
     ],
+    /*transform: {
+        '^.+\\.tsx?$': 'ts-jest',
+    },*/
     moduleNameMapper: {
         '^@ui-schema/ui-schema(.*)$': '<rootDir>/ui-schema/src$1',
         '^@ui-schema/pro(.*)$': '<rootDir>/ui-schema-pro/src$1',
@@ -31,11 +34,11 @@ const base = {
         'js',
         'jsx',
         'json',
-        'node'
+        'node',
     ],
     collectCoverage: true,
     coveragePathIgnorePatterns: [
-        '(tests/.*.mock).(jsx?|tsx?)$'
+        '(tests/.*.mock).(jsx?|tsx?)$',
     ],
     verbose: true,
 };

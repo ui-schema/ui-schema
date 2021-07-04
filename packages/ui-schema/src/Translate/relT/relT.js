@@ -1,4 +1,4 @@
-import {Map,} from "immutable";
+import {Map} from 'immutable';
 
 export const relT = (schema, context, locale) => {
     if(Map.isMap(schema) && context && context.get('relative')) {
@@ -11,3 +11,6 @@ export const relT = (schema, context, locale) => {
 
     return undefined;
 };
+
+export const relTranslator = (_text, context, schema = undefined) =>
+    relT(schema, context)

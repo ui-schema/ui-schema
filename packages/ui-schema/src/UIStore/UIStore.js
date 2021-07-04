@@ -1,19 +1,5 @@
-import React from 'react';
 import {Record, Map, List} from 'immutable';
-import {getDisplayName} from '../Utils/memo/getDisplayName';
-import {createMap} from '../Utils/createMap';
-import {relT} from '../Translate/relT';
-
-const UIStoreContext = React.createContext({});
-const UIMetaContext = React.createContext({});
-
-// with store, onChange, schema
-export const UIStoreProvider = ({children, ...props}) => {
-    return <UIStoreContext.Provider value={props} children={children}/>
-};
-
-// with widgets, t, showValidity
-export const UIMetaProvider = ({children, ...props}) => <UIMetaContext.Provider value={props} children={children}/>;
+import {schemaTypeIs, schemaTypeIsNumeric} from '@ui-schema/ui-schema/Utils/schemaTypeIs';
 
 // only to enable better minification, DO NOT EXPORT
 const STR_INTERNALS = 'internals'
@@ -25,9 +11,10 @@ export const UIStore = Record({
     // internals must be an map when it is an object in the root, for array a List and for other "any type"
     internals: Map({}),
     validity: Map({}),
+    meta: Map({}),
     valuesToJS: function() {
         const values = this.get(STR_VALUES)
-        if(Map.isMap(values) || List.isList(values)) return values.toJS()
+        if(Map.isMap(values) || List.isList(values) || Record.isRecord(values)) return values.toJS()
 
         return values
     },
@@ -45,15 +32,15 @@ export const UIStore = Record({
 export const createStore = (values) => {
     return new UIStore({
         values,
-        // when array in root level, internals must be a list
-        // notice: when using special widgets that control their own list items,
-        //         the widget mustn't depend only on `undefined` internalValue, but also check for `internalValue.size`.
-        //         but only when only that widget is used in the root level
-        internals: List.isList(values) ? List() : Map(),
+        internals: Map({
+            internals: List.isList(values) ? List() : Map(),
+        }),
         validity: Map({}),
+        meta: Map({}),
     })
 };
 
+// todo: support multiple types #68
 export const createEmptyStore = (type = 'object') => createStore(
     type === 'array' ?
         List([]) :
@@ -66,60 +53,6 @@ export const createEmptyStore = (type = 'object') => createStore(
                     Map({}),
 );
 
-export const useUI = () => {
-    const {store, onChange, schema} = React.useContext(UIStoreContext);
-
-    return {store, onChange, schema};
-};
-
-// todo: remove relT here, so Trans is fully optional
-const tDefault = (text, context = {}, schema = undefined) =>
-    relT(schema, context);
-
-export const useUIMeta = () => {
-    let context = React.useContext(UIMetaContext);
-    if(!context.t) {
-        context.t = tDefault;
-    }
-    return context;
-};
-
-/**
- * HOC to extract the value with the storeKeys, pushing only the component's value and onChange to it, not the whole store
- */
-export const extractValue = (Component) => {
-    const ExtractValue = p => {
-        const {store, onChange} = useUI();
-
-        return <Component
-            {...p} onChange={onChange}
-            value={p.storeKeys.size ?
-                (Map.isMap(store.getValues()) || List.isList(store.getValues()) ? store.getValues().getIn(p.storeKeys) : undefined)
-                : store.getValues()}
-            internalValue={p.storeKeys.size ? store.getInternals() ? store.getInternals().getIn(p.storeKeys) : createMap() : store.getInternals()}
-        />
-    };
-    ExtractValue.displayName = `ExtractValue(${getDisplayName(Component)})`;
-    return ExtractValue;
-};
-
-export const extractValidity = (Component) => {
-    const ExtractValidity = p => {
-        const {store, onChange} = useUI();
-        return <Component {...p} validity={p.storeKeys.size ? store.getValidity().getIn(p.storeKeys) : store.getValidity()} onChange={onChange}/>
-    };
-    ExtractValidity.displayName = `ExtractValidity(${getDisplayName(Component)})`;
-    return ExtractValidity;
-};
-
-export const withUIMeta = (Component) => {
-    const WithUIMeta = p => {
-        const meta = useUIMeta();
-        return <Component {...meta} {...p}/>
-    };
-    WithUIMeta.displayName = `WithUIMeta(${getDisplayName(Component)})`;
-    return WithUIMeta;
-};
 
 export const prependKey = (storeKeys, key) =>
     Array.isArray(storeKeys) ?
@@ -127,21 +60,28 @@ export const prependKey = (storeKeys, key) =>
         storeKeys.splice(0, 0, key);
 
 export const shouldDeleteOnEmpty = (value, force, type) => {
+    const valueTypeOf = typeof value
     // todo: mv number out here, enforces that numbers can be cleared, but should only be forced for the `""` value in number types
-    if(!force && type !== 'number' && type !== 'integer') return false
+    if(!force && !schemaTypeIsNumeric(type)) return false
 
-    switch(type) {
-        case 'string':
-        case 'number':
-        case 'integer':
-            return value === '' || typeof value === 'undefined' || (typeof value === 'string' && 0 === value.trim().length)
-        case 'boolean':
-            return !value
-        case 'array':
-            return (List.isList(value) && value.size === 0) || (Array.isArray(value) && value.length === 0)
-        case 'object':
-            return (Map.isMap(value) && value.keySeq().size === 0) || (typeof value === 'object' && Object.keys(value).length === 0)
+    if(valueTypeOf === 'undefined') return true
+
+    if(
+        (schemaTypeIs(type, 'string') && valueTypeOf === 'string') ||
+        (schemaTypeIs(type, 'number') && (valueTypeOf === 'number' || valueTypeOf === 'string')) ||
+        (schemaTypeIs(type, 'integer') && (valueTypeOf === 'number' || valueTypeOf === 'string'))
+    ) {
+        return value === '' || valueTypeOf === 'undefined' || (valueTypeOf === 'string' && 0 === value.trim().length)
+    } else if(schemaTypeIs(type, 'boolean') && valueTypeOf === 'boolean') {
+        return !value
+    } else if(schemaTypeIs(type, 'array') && (List.isList(value) || Array.isArray(value))) {
+        return (List.isList(value) && value.size === 0) || (Array.isArray(value) && value.length === 0)
+    } else if(schemaTypeIs(type, 'object') && (Map.isMap(value) || Record.isRecord(value) || valueTypeOf === 'object')) {
+        return ((Map.isMap(value) || Record.isRecord(value)) && value.keySeq().size === 0) || (valueTypeOf === 'object' && Object.keys(value).length === 0)
     }
 
     return false;
 };
+
+export const addNestKey = (storeKeysNestedKey, storeKeys) =>
+    storeKeysNestedKey ? storeKeys.reduce((nk, sk) => nk?.concat(sk, List([storeKeysNestedKey])), List([storeKeysNestedKey])).splice(-1, 1) : storeKeys

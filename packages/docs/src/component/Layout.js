@@ -22,19 +22,20 @@ import ListItem from '@material-ui/core/ListItem';
 import {NavListNested} from '@control-ui/kit/Menu/NavList';
 import {routesDocs, routesDSMaterial, routesWidgets} from '../content/docs';
 
-export const CustomHeader = ({title}) => {
+const title = '0.3.x'
+export const CustomHeader = () => {
     const {switchTheme} = useSwitchTheme();
     return <Header>
         <RouterLink to={'/'}>
             <Logo width={26} style={{marginLeft: 6, display: 'block'}}/>
         </RouterLink>
 
-        {title ? <Typography component="h1" variant="h6" style={{flexShrink: 0, margin: '0 auto'}}>
+        {title ? <Typography component="p" variant="h6" style={{flexShrink: 0, margin: '0 auto 0 8px'}}>
             {title}
         </Typography> : null}
 
         <LinkIconButton size={'medium'} to={'https://github.com/ui-schema/ui-schema'} color="inherit" style={{color: 'inherit', marginLeft: title ? 0 : 'auto'}}>
-            <GithubLogo fill='currentColor'/>
+            <GithubLogo fill="currentColor"/>
             <span className={'sr-only'}>To Github</span>
         </LinkIconButton>
 

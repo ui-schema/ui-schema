@@ -1,12 +1,13 @@
 import React from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Delete from '@material-ui/icons/Delete'
-import { StoreKeys, Trans, WidgetProps } from '@ui-schema/ui-schema'
+import { StoreKeys, Trans, UIStoreContext, WidgetProps } from '@ui-schema/ui-schema'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip/Tooltip'
 import { TableRowProps } from '@ui-schema/ds-material'
+import { Map } from 'immutable'
 
 export interface TableRowActionDeleteProps {
-    onChange: WidgetProps['onChange']
+    onChange: UIStoreContext['onChange']
     storeKeys: WidgetProps['storeKeys']
     showRows: TableRowProps['showRows']
     setPage: TableRowProps['setPage']
@@ -17,7 +18,7 @@ export interface TableRowActionDeleteProps {
 export const TableRowActionDelete: React.ComponentType<TableRowActionDeleteProps> = (
     {
         onChange, storeKeys,
-        showRows, setPage,
+        showRows = 0, setPage,
         index, deleteOnEmpty,
     }
 ) => {
@@ -25,21 +26,21 @@ export const TableRowActionDelete: React.ComponentType<TableRowActionDeleteProps
         color="inherit"
         onClick={() => {
             onChange(
-                storeKeys.splice(storeKeys.size - 1, 1) as StoreKeys, ['value', 'internal'],
-                ({value, internal}) => {
-                    if (showRows !== -1) {
-                        setPage(p => {
-                            const nextPage = (Math.ceil((value.size - 1) / showRows) || 1) - 1
-                            return (p < nextPage ? p : nextPage)
-                        })
-                    }
-                    return ({
-                        value: value.splice(index, 1),
-                        internal: internal?.splice(index, 1),
-                    })
-                },
-                deleteOnEmpty,
-                'array'
+                storeKeys.splice(-1, 1) as StoreKeys, ['value', 'internal'],
+                {
+                    type: 'list-item-delete',
+                    index: index,
+                    effect: ({value}) => {
+                        if (showRows !== -1) {
+                            setPage(p => {
+                                const nextPage = (Math.ceil(value.size / showRows) || 1) - 1
+                                return (p < nextPage ? p : nextPage)
+                            })
+                        }
+                    },
+                    schema: Map({type: 'array'}),
+                    required: deleteOnEmpty,
+                }
             )
         }}
         size={'small'}

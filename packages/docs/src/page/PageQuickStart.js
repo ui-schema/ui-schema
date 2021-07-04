@@ -126,7 +126,7 @@ npm i --save @ui-schema/ui-schema immutable @ui-schema/ds-bootstrap bootstrap
 
 Create a file which serves as demo: \`DemoGenerator.js\`
 
-Create an empty generator component in the file with the needed imports.
+Create an empty generator component in the file with the needed imports, move the \`UIMetaProvider\` to a position, where it does not re-render on \`store\` changes, e.g. lifting it up in the react tree.
 `}/>
 
                     <Grid container>
@@ -137,7 +137,6 @@ import React from "react";
 
 // Import UI Generator Components
 import {
-    UIProvider,                    // UIStore & UIMeta provider as one
     isInvalid,                     // for validity checking
     createEmptyStore, createStore, // for initial data-store creation
     createMap, createOrderedMap,   // for deep immutables
@@ -146,8 +145,15 @@ import {
     ObjectGroup,                   // for handling schema level "type-object"
 } from "@ui-schema/ui-schema";
 
+// Simple translator for in-schema translation, keyword \`t\`
+import { relTranslator } from '@ui-schema/ui-schema/Translate/relT'
+
+// use one \`UIMetaProvider\` for many \`UIStoreProvider\`
+import { UIStoreProvider } from '@ui-schema/ui-schema/UIStore';
+import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta';
+
 // import the widgets for your design-system.
-${ds === 'mui' ? 'import {widgets} from "@ui-schema/ds-material";' : 'import {widgets} from "@ui-schema/ds-bootstrap";'}
+${ds === 'mui' ? 'import { widgets } from "@ui-schema/ds-material";' : 'import { widgets } from "@ui-schema/ds-bootstrap";'}
 
 // Empty Demo Schema & Data/Values
 const schema = createOrderedMap({});
@@ -157,9 +163,11 @@ export const Generator = () => {
     // here the state will be added
 
     return (
-        <UIProvider
-            /* here the props will be added */
-        />
+        <UIMetaProvider>
+            <UIStoreProvider>
+                {/* here the components will be added */}
+            </UIStoreProvider>
+        </UIMetaProvider>
     )
 };
 \`\`\`
@@ -193,8 +201,18 @@ import {
     storeUpdater,                  // for on change handling
 } from "@ui-schema/ui-schema";
 
+
+// individual components, e.g. use one \`UIMetaProvider\` for many \`UIStoreProvider\` instead of \`UIGenerator\`
+import { UIStoreProvider } from '@ui-schema/ui-schema/UIStore';
+import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta';
+// instead of \`UIGenerator\` use \`UIRootRenderer\` and pass down the schema
+import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer';
+
+// Simple translator for in-schema translation, keyword \`t\`
+import { relTranslator } from '@ui-schema/ui-schema/Translate/relT'
+
 // import the widgets for your design-system.
-${ds === 'mui' ? 'import {widgets} from "@ui-schema/ds-material";' : 'import {widgets} from "@ui-schema/ds-bootstrap";'}
+${ds === 'mui' ? 'import { widgets } from "@ui-schema/ds-material";' : 'import { widgets } from "@ui-schema/ds-bootstrap";'}
 
 // Empty Demo Schema & Data/Values
 const schema = createOrderedMap({});
@@ -219,7 +237,7 @@ export const Generator = () => {
                 <Markdown content source={`
 ## 3. Create Store State, Add Schema
 
-Each ${render === 'automatic' ? 'UIGenerator' : 'UIProvider'} needs to receive a \`store\` and \`onChange\` to work with the data and have something to save validity and internal values. The store must be an \`UIStore\`, which is based on a [immutable](https://immutable-js.github.io/immutable-js/) Record.
+Each ${render === 'automatic' ? 'UIGenerator' : 'UIStoreProvider'} needs to receive a \`store\` and \`onChange\` to work with the data and have something to save validity and internal values. The store must be an \`UIStore\`, which is based on a [immutable](https://immutable-js.github.io/immutable-js/) Record.
 
 The schema in this example is bundled with the component and not dynamic, also the schema must be immutable. A minimal valid schema is an empty \`object\` schema.
 `}/>
@@ -247,14 +265,27 @@ export const Generator = () => {
     }, [setStore])
 
     return (
-        <${render === 'automatic' ? 'UIGenerator' : 'UIProvider'}
+        ${render === 'automatic' ? `<UIGenerator
             schema={schema}
 
             store={store}
             onChange={onChange}
+            showValidity={true}
 
             widgets={widgets}
-        />
+            t={relTranslator}
+        />` : ''} ${render === 'custom' ? `<UIMetaProvider
+            widgets={widgets}
+            t={relTranslator}
+        >
+            <UIStoreProvider
+                store={store}
+                onChange={onChange}
+                showValidity={true}
+            >
+
+            </UIStoreProvider>
+        </UIMetaProvider>` : ''}
     )
 };
 \`\`\`
@@ -377,7 +408,7 @@ Test the demo form below, it will send the entered data to [httpbin.org*](https:
 - [Adding translations](/docs/localization)
 - [Creating widgets](/docs/widgets#creating-widgets)
 - [Adding / Overwriting Widgets](/docs/widgets#adding--overwriting-widgets)
-- [More about PluginStack for nesting in arrays/objects](/docs/core#pluginstack)
+- [More about PluginStack for nesting in arrays/objects](/docs/core-pluginstack)
 `}/>
                         </Grid>
                     </Grid>
@@ -392,7 +423,7 @@ Test the demo form below, it will send the entered data to [httpbin.org*](https:
 
 Now we add the root level render, the \`CustomGroup\` is responsible to validate the root schema-level.
 
-It is recommended to nest \`type=object\` schemas for best and easiest conditional and referencing handling, otherwise checkout [ObjectGroup](/docs/core#objectgroup).
+It is recommended to nest \`type=object\` schemas for best and easiest conditional and referencing handling, otherwise checkout [ObjectGroup](/docs/core-renderer#objectgroup).
 `}/>
                         </Grid>
                         <Grid item xs={12}>
@@ -442,7 +473,6 @@ let CustomGroup: React.ComponentType<WidgetProps> = (props) => {
 // wiring this component
 CustomGroup = applyPluginStack(CustomGroup)
 
-
 // for storing at which store position a widget is,
 // as it is immutable, doesn't need to be newly created in component
 const rootStoreKeys = List()
@@ -455,20 +485,18 @@ export const Generator = () => {
     }, [setStore])
 
     return (
-        <React.Fragment>
-            <UIProvider
-                schema={schema}
-
+        <UIMetaProvider
+            widgets={widgets}
+            t={relTranslator}
+        >
+            <UIStoreProvider
                 store={store}
                 onChange={onChange}
-
-                widgets={widgets}
-
                 showValidity={true}
             >
                 {/*
-                  * this could be in any component below UIProvider,
-                  * thus you can nest it in own HTML, which can be in PureComponents:
+                  * this could be in any component below UIStoreProvider,
+                  * you can nest it in own HTML, which can be in PureComponents:
                   * using memo, they don't re-render even when store has changed
                   */}
                 <CustomGroup
@@ -477,8 +505,8 @@ export const Generator = () => {
                     schema={schema}
                     parentSchema={schema}
                 />
-            </UIProvider>
-        </React.Fragment>
+            </UIStoreProvider>
+        </UIMetaProvider>
     )
 };
 \`\`\`
@@ -552,7 +580,7 @@ Test the demo form below, it will send the entered data to [httpbin.org*](https:
 - [Adding custom l10n](/docs/localization)
 - [Creating widgets](/docs/widgets#creating-widgets)
 - [Adding / Overwriting Widgets](/docs/widgets#adding--overwriting-widgets)
-- [More about PluginStack for nesting in arrays/objects](/docs/core#pluginstack)
+- [More about PluginStack for nesting in arrays/objects](/docs/core-pluginstack)
 `}/>
                         </Grid>
                     </Grid>

@@ -1,6 +1,6 @@
-import { List, OrderedMap } from "immutable"
+import { List, OrderedMap } from 'immutable'
 import { checkValueExists, ERROR_NOT_SET, requiredValidator } from '@ui-schema/ui-schema/Validators/RequiredValidator'
-import { createValidatorErrors } from "@ui-schema/ui-schema/ValidatorStack/ValidatorErrors"
+import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorErrors/ValidatorErrors'
 
 describe('checkValueExists', () => {
     test.each([
@@ -80,9 +80,9 @@ describe('requiredValidator', () => {
             true,
         ],
     ])(
-        '.validate(%j, %s)',
+        '.handle(%j, %s)',
         (type, value, error, expectedValid, expectedError) => {
-            const result = requiredValidator.validate({
+            const result = requiredValidator.handle({
                 schema: OrderedMap({type}),
                 value,
                 errors: createValidatorErrors(),
@@ -94,9 +94,9 @@ describe('requiredValidator', () => {
     )
 
     test(
-        '.noValidate(%j, %s)',
+        '.noHandle(%j, %s)',
         () => {
-            const result = requiredValidator.noValidate()
+            const result = requiredValidator.noHandle()
             expect(result.required).toBe(false)
         }
     )

@@ -6,70 +6,83 @@ import IconButton from '@material-ui/core/IconButton';
 import Add from '@material-ui/icons/Add';
 import Remove from '@material-ui/icons/Remove';
 import {TransTitle, extractValue, memo, PluginStack} from '@ui-schema/ui-schema';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
-import {List, OrderedMap} from 'immutable';
-import {AccessTooltipIcon} from '../../Component/Tooltip/Tooltip';
+import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
+import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip/Tooltip';
 import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
 
-const SimpleList = extractValue(memo(({
-                                          storeKeys, ownKey, schema, value, onChange,
-                                          showValidity, valid, errors, required, level,
-                                      }) => {
+let SimpleListItem = (
+    {showValidity, schema, storeKeys, notDeletable, btnSize, readOnly, required, onChange, level, index},
+) => {
+    return <Grid key={index} item xs={12} style={{display: 'flex'}}>
+        <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
+            <PluginStack
+                showValidity={showValidity} noGrid
+                schema={schema.get('items')} parentSchema={schema}
+                storeKeys={storeKeys.push(index)} level={level + 1}
+            />
+        </div>
+
+        {!readOnly && !notDeletable ? <IconButton
+            onClick={() => {
+                onChange(
+                    storeKeys, ['value', 'internal'],
+                    {
+                        type: 'list-item-delete',
+                        index: index,
+                    },
+                    schema.get('deleteOnEmpty') || required,
+                    schema.get('type'),
+                )
+            }}
+            size={btnSize}
+            style={{margin: 'auto 6px', flexShrink: 0}}
+        >
+            <AccessTooltipIcon title={<Trans text={'labels.remove-entry'}/>}>
+                <Remove fontSize={'inherit'}/>
+            </AccessTooltipIcon>
+        </IconButton> : null}
+    </Grid>
+}
+SimpleListItem = memo(SimpleListItem)
+export {SimpleListItem}
+
+let SimpleListBase = ({
+                          storeKeys, ownKey, schema, listSize, onChange,
+                          showValidity, valid, errors, required, level,
+                      }) => {
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
     const notAddable = schema.get('notAddable')
     const notDeletable = schema.get('notDeletable')
     const readOnly = schema.get('readOnly')
-
     return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
         <Grid container spacing={2}>
             {!schema.getIn(['view', 'hideTitle']) ? <Grid item xs={12}>
                 <FormLabel component="legend"><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></FormLabel>
             </Grid> : null}
 
-            {value ? value.map((itemVal, i) =>
-                <Grid key={i} item xs={12} style={{display: 'flex'}}>
-                    <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
-                        <PluginStack
-                            showValidity={showValidity} noGrid
-                            schema={schema.get('items')} parentSchema={schema}
-                            storeKeys={storeKeys.push(i)} level={level + 1}
-                        />
-                    </div>
-
-                    {!readOnly && !notDeletable ? <IconButton
-                        onClick={() => {
-                            onChange(
-                                storeKeys, ['value'],
-                                ({value: val}) => ({
-                                    value: val.splice(i, 1),
-                                }),
-                                schema.get('deleteOnEmpty') || required,
-                                schema.get('type'),
-                            )
-                        }}
-                        size={btnSize}
-                        style={{margin: 'auto 6px', flexShrink: 0}}
-                    >
-                        <AccessTooltipIcon title={<Trans text={'labels.remove-entry'}/>}>
-                            <Remove fontSize={'inherit'}/>
-                        </AccessTooltipIcon>
-                    </IconButton> : null}
-                </Grid>,
-            ).valueSeq() : null}
+            {Array.from(Array(listSize || 0)).map((itemVal, i) => <SimpleListItem
+                key={i}
+                index={i}
+                showValidity={showValidity}
+                schema={schema}
+                storeKeys={storeKeys}
+                btnSize={btnSize}
+                level={level}
+                notDeletable={notDeletable}
+                readOnly={readOnly}
+                required={required}
+                onChange={onChange}
+            />)}
 
             <Grid item xs={12}>
                 {!readOnly && !notAddable ? <IconButton
                     onClick={() => {
                         onChange(
-                            storeKeys, ['value'],
-                            ({value: val = List()}) => ({
-                                value:
-                                // todo: support `default` keyword
-                                    schema.getIn(['items', 'type']) === 'string' ? val.push('') :
-                                        schema.getIn(['items', 'type']) === 'array' ? val.push(List()) :
-                                            schema.getIn(['items', 'type']) === 'object' ? val.push(OrderedMap()) :
-                                                val.push(undefined),
-                            }),
+                            storeKeys, ['value', 'internal'],
+                            {
+                                type: 'list-item-add',
+                                schema: schema,
+                            },
                             schema.get('deleteOnEmpty') || required,
                             schema.get('type'),
                         )
@@ -90,6 +103,14 @@ const SimpleList = extractValue(memo(({
             </Grid>
         </Grid>
     </FormControl>
-}));
-
-export {SimpleList};
+}
+SimpleListBase = memo(SimpleListBase)
+const SimpleListWrapper = ({
+                               value,
+                               // eslint-disable-next-line no-unused-vars
+                               internalValue,
+                               ...props
+                           }) => {
+    return <SimpleListBase listSize={value?.size} {...props}/>
+}
+export const SimpleList = extractValue(SimpleListWrapper)

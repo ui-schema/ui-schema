@@ -6,7 +6,6 @@ These components are the wire/grid in which the widgets are rendered.
 
 - `RootRenderer`, defined as special widget: `widgets.RootRenderer`
     - the first component that is rendered for the generator, containing the root-level
-    - not applied for `UIGeneratorNested`, this starts directly at schema-level
 - `GroupRenderer`, defined as special widget: `widgets.GroupRenderer`
     - has the GridHandler as children
     - each native-object is wrapped with this (default), each property of an `object` results in a new child

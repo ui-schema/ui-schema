@@ -1,13 +1,13 @@
 import { List } from 'immutable'
-import { ValidatorPlugin } from "@ui-schema/ui-schema/ValidatorStack/ValidatorPlugin"
 import { PluginProps } from "@ui-schema/ui-schema/PluginStack/Plugin"
 import { Errors, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { PluginSimple } from '@ui-schema/ui-schema/PluginSimpleStack/PluginSimple'
 
-export const ERROR_DUPLICATE_ITEMS = 'duplicate-items'
-export const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains'
-export const ERROR_MIN_CONTAINS = 'min-contains'
-export const ERROR_MAX_CONTAINS = 'max-contains'
-export const ERROR_ADDITIONAL_ITEMS = 'additional-items'
+export const ERROR_DUPLICATE_ITEMS: 'duplicate-items'
+export const ERROR_NOT_FOUND_CONTAINS: 'not-found-contains'
+export const ERROR_MIN_CONTAINS: 'min-contains'
+export const ERROR_MAX_CONTAINS: 'max-contains'
+export const ERROR_ADDITIONAL_ITEMS: 'additional-items'
 
 export function validateArrayContent(schema: StoreSchemaType | List<StoreSchemaType>, value: any, additionalItems?: boolean): {
     err: Errors
@@ -32,9 +32,9 @@ export function validateContains(schema: StoreSchemaType, value: List<any> | any
  */
 export function validateUniqueItems(schema: StoreSchemaType, value: List<any> | any[]): boolean
 
-export interface ArrayValidatorType extends ValidatorPlugin {
+export interface ArrayValidatorType extends PluginSimple {
     should: ({schema}: Partial<PluginProps>) => boolean
-    validate: (
+    handle: (
         {schema, value, errors, valid}: Partial<PluginProps>
     ) => {
         errors: Errors

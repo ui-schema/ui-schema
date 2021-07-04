@@ -1,9 +1,3 @@
-import React from 'react';
-
-const ReferencingContext = React.createContext({
-    definitions: undefined,
-});
-
 export const isRelUrl = (schemaRef) => {
     return (
         schemaRef.indexOf('https://') !== 0 &&
@@ -52,19 +46,3 @@ export const makeUrlFromRef = (schemaRef, id) => {
     return schemaUrl
 }
 
-export const ReferencingProvider = ({definitions, children}) => {
-    const prevDef = React.useRef(undefined)
-    const sameDef = prevDef.current?.equals(definitions)
-
-    const context = React.useMemo(() => ({
-        definitions,
-    }), [sameDef])
-
-    return <ReferencingContext.Provider value={context}>
-        {children}
-    </ReferencingContext.Provider>
-}
-
-export const useRefs = () => {
-    return React.useContext(ReferencingContext);
-}

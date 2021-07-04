@@ -1,5 +1,5 @@
 import React from 'react';
-import {UIGeneratorNested, TransTitle, extractValue, memo} from '@ui-schema/ui-schema';
+import {TransTitle, extractValue, memo, PluginStack} from '@ui-schema/ui-schema';
 import {List} from 'immutable';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 import {IconPlus, IconMinus} from '@ui-schema/ds-bootstrap/Component/Icons/Icons';
@@ -27,10 +27,11 @@ const SimpleList = extractValue(memo(({
                 <div
                     key={i}
                     className={classFormGroup.join(' ')}>
-                    <UIGeneratorNested
+                    <PluginStack
                         className={classFormControl.join(' ')}
                         showValidity={showValidity}
                         storeKeys={storeKeys.push(i)}
+                        parentSchema={schema}
                         schema={schema.get('items')}
                         required={required}
                         noGrid

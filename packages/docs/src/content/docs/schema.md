@@ -11,7 +11,8 @@ This page covers the support for JSON Schema within the core, validators or from
 Matches the rendered widget, keywords used:
 
 - `type` valid types: `string`, `number`, `integer`, `boolean`, `object`, `array`, `null`
-    - multiple types support ❌
+    - including multiple types support *(experimental, see [happy path infos](/docs/widgets-composition#example-for-multiple-types))*
+        - e.g.: use `"type": ["string", "null"], "default": null` for nullable array items
 - `widget` non-standard JSON-Schema to select a specific UI widget
 
 ## Universal Keywords
@@ -262,9 +263,6 @@ For latest issues/questions checkout the [github issues](https://github.com/ui-s
 | core |            | `contains` | ✅ |
 | core |            | `additionalItems` | ✅ |
 | | `null`   | | ✅ |
-| [JSON-Schema Hypermedia](https://json-schema.org/draft/2019-09/json-schema-hypermedia.html) [examples](https://json-schema.org/draft/2019-09/json-schema-hypermedia.html#examples) | | | ❌ |
-| hyper |            | `base` | ❌ |
-| hyper |            | `links` | ❌ |
 
 ❌ = not implemented, ✅ = done
 
@@ -272,10 +270,9 @@ For latest issues/questions checkout the [github issues](https://github.com/ui-s
 
 UI Schema extends JSON Schema with special only-UI keywords, take a look a each [widget page](/docs/overview#widget-list) for individual settings and more.
 
-
 - `view` used for the grid and visual settings, see [view keyword](#view-keyword) and each widget
 - `widget` (see top of page), UI selection / widget matching
-- `t`, `tt` for [translation](/docs/localization#Translation)
+- `t`, `tt`, `ttEnum` for [translation](/docs/localization#Translation)
 - `hidden` for virtualization see [hidden keyword](#hidden-keyword--virtualization)
 
 Typings:
@@ -300,7 +297,7 @@ Vocabularies (**not up to date**):
 
 When the `hidden: true` keyword is applied to any schema, the `UIGenerator` doesn't render any HTML, producing no output in the page, but still renders and executes the plugins and validators - thus rendering it virtually.
 
-The prop `isVirtual` can be passed to the per schema-level components, like `PluginStack`, `UIGeneratorNested`, `WidgetRenderer` to render them virtual from within an e.g. widget.
+The prop `isVirtual` can be passed to the per schema-level components, like `PluginStack`, `WidgetRenderer` to render them virtual from within an e.g. widget.
 
 The `SchemaGridHandler` plugin of the design-system and any other plugin needs to support it, the official provided design systems and plugins are compatible.
 

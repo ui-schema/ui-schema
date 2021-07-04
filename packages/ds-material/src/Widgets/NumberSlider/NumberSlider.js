@@ -7,9 +7,9 @@ import Box from '@material-ui/core/Box';
 import Slider from '@material-ui/core/Slider';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import {TransTitle, extractValue, memo, Trans} from '@ui-schema/ui-schema';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
-import {AccessTooltipIcon} from '../../Component/Tooltip/Tooltip';
+import {TransTitle, extractValue, memo, Trans, schemaTypeIs, schemaTypeToDistinct, schemaTypeIsNumeric} from '@ui-schema/ui-schema';
+import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
+import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip/Tooltip';
 
 const ThumbComponent = ({onClick, canDelete, children, ...p}) => {
     return <span {...p}>
@@ -33,7 +33,7 @@ const NumberSliderRenderer = ({
     const uid = useUID();
     let hasMulti = false;
     let canAdd = false;
-    if(schema.get('type') === 'array') {
+    if(schemaTypeToDistinct(schema.get('type')) === 'array') {
         hasMulti = typeof maxItems === 'undefined' || minItems < maxItems;
         canAdd = typeof maxItems === 'undefined' || (!List.isList(value) || (List.isList(value) && value.size < maxItems));
     }
@@ -83,17 +83,21 @@ const NumberSliderRenderer = ({
                     onClick={(index) =>
                         onChange(
                             storeKeys, ['value'],
-                            ({value: storeValue}) => ({value: storeValue.splice(index, 1)}),
-                            schema.get('deleteOnEmpty') || required, schema.get('type'),
+                            {
+                                type: 'update',
+                                updater: ({value: storeValue}) => ({value: storeValue.splice(index, 1)}),
+                                schema,
+                                required,
+                            },
                         )
                     }
                     canDelete={value && value.size > minItems}
                 /> : undefined}
-                value={(schema.get('type') === 'array' ?
+                value={(schemaTypeToDistinct(schema.get('type')) === 'array' ?
                     value && value.size ? value.toJS() : defaultVal :
                     typeof value === 'number' ? value : defaultVal)}
                 onChange={(e, newValue) => {
-                    if(schema.get('type') !== 'array' && isNaN(newValue * 1)) {
+                    if(schemaTypeToDistinct(schema.get('type')) !== 'array' && isNaN(newValue * 1)) {
                         console.error('Invalid Type: input not a number in:', e.target, newValue);
                         return;
                     }
@@ -102,9 +106,12 @@ const NumberSliderRenderer = ({
                     }
                     onChange(
                         storeKeys, ['value'],
-                        () => ({value: schema.get('type') === 'array' ? List(newValue) : newValue * 1}),
-                        schema.get('deleteOnEmpty') || required,
-                        schema.get('type'),
+                        {
+                            type: 'update',
+                            updater: () => ({value: schemaTypeToDistinct(schema.get('type')) === 'array' ? List(newValue) : newValue * 1}),
+                            schema,
+                            required,
+                        },
                     )
                 }}
             />
@@ -113,8 +120,12 @@ const NumberSliderRenderer = ({
                 onClick={() =>
                     onChange(
                         storeKeys, ['value'],
-                        ({value: storeValue}) => ({value: storeValue ? storeValue.push(min) : List(defaultVal).push(min)}),
-                        schema.get('deleteOnEmpty') || required, schema.get('type'),
+                        {
+                            type: 'update',
+                            updater: ({value: storeValue}) => ({value: storeValue ? storeValue.push(min) : List(defaultVal).push(min)}),
+                            schema,
+                            required,
+                        },
                     )
                 }
             >
@@ -139,11 +150,8 @@ export const NumberSlider = ({
     let multipleOf = undefined;
     let minItems = undefined;
     let maxItems = undefined;
-    if(schema.get('type') === 'array') {
-        if(
-            schema.getIn(['items', 'type']) !== 'number' &&
-            schema.getIn(['items', 'type']) !== 'integer'
-        ) {
+    if(schemaTypeToDistinct(schema.get('type')) === 'array') {
+        if(!schemaTypeIsNumeric(schema.getIn(['items', 'type']))) {
             return null
         }
 
@@ -171,7 +179,8 @@ export const NumberSlider = ({
         defaultVal = min;
     }
 
-    const Component = schema.get('type') === 'array' ? ValueNumberSliderRenderer : NumberSliderRenderer;
+    // todo: happy-path issue with multiple types: `array | number | integer`, will always select array component
+    const Component = schemaTypeIs(schema.get('type'), 'array') ? ValueNumberSliderRenderer : NumberSliderRenderer;
 
     return <Component
         multipleOf={multipleOf}

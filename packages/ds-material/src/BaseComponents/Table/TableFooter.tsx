@@ -2,16 +2,15 @@ import React from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Add from '@material-ui/icons/Add'
 import { memo, Trans, WidgetProps } from '@ui-schema/ui-schema'
-import { ValidityHelperText } from '../../Component/LocaleHelperText/LocaleHelperText'
-import { List, Map } from 'immutable'
-import { AccessTooltipIcon } from '../../Component/Tooltip/Tooltip'
+import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
+import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip/Tooltip'
 import TablePagination from '@material-ui/core/TablePagination'
 import MuiTableFooter from '@material-ui/core/TableFooter'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import { TablePaginationActions } from '@ui-schema/ds-material/BaseComponents/Table/TablePaginationActions'
 import { TableFooterProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
-import { withTable } from '@ui-schema/ds-material/BaseComponents/Table/TableContext'
+import { TableContextType, withTable } from '@ui-schema/ds-material/BaseComponents/Table/TableContext'
 
 export interface TableFooterErrorsBaseProps {
     colSize: number | undefined
@@ -19,7 +18,7 @@ export interface TableFooterErrorsBaseProps {
     schema: WidgetProps['schema']
 }
 
-export const TableFooterErrorsBase: React.ComponentType<TableFooterErrorsBaseProps & { valid: boolean, errors: WidgetProps['errors'] }> = (
+export const TableFooterErrorsBase: React.ComponentType<TableFooterErrorsBaseProps & TableContextType> = (
     {
         colSize = 0,
         showValidity,
@@ -43,6 +42,7 @@ export const TableFooterErrorsBase: React.ComponentType<TableFooterErrorsBasePro
         </TableCell>
     </TableRow> : null
 }
+export const TableFooterErrors: React.ComponentType<TableFooterErrorsBaseProps> = withTable<TableFooterErrorsBaseProps>(memo(TableFooterErrorsBase))
 
 export const TableFooterBase: React.ComponentType<TableFooterProps> = (
     {
@@ -77,10 +77,10 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                             }
                             onChange(
                                 storeKeys, ['value', 'internal'],
-                                ({value = List(), internal = List()}) => ({
-                                    value: value.push(schema.getIn(['items', 'type']) === 'object' ? Map() : List()),
-                                    internal: internal.push(schema.getIn(['items', 'type']) === 'object' ? Map() : List()),
-                                })
+                                {
+                                    type: 'list-item-add',
+                                    schema: schema,
+                                }
                             )
                         }}
                         size={btnSize}
@@ -122,6 +122,4 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
         <TableFooterErrors colSize={colSize} showValidity={showValidity} schema={schema}/>
     </MuiTableFooter>
 }
-export const TableFooterErrors: React.ComponentType<TableFooterErrorsBaseProps> = withTable<TableFooterErrorsBaseProps>(memo(TableFooterErrorsBase))
-
 export const TableFooter: React.ComponentType<TableFooterProps> = memo(TableFooterBase)

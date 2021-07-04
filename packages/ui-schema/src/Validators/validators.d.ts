@@ -1,3 +1,3 @@
-import { ValidatorPlugin } from "@ui-schema/ui-schema/ValidatorStack/ValidatorPlugin"
+import { PluginSimple } from '@ui-schema/ui-schema/PluginSimpleStack/PluginSimple'
 
-export const validators: ValidatorPlugin[]
+export const validators: PluginSimple[]

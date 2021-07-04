@@ -1,6 +1,6 @@
-import { isEqual } from "@ui-schema/ui-schema/Utils/memo/memo"
-import { createMap } from "@ui-schema/ui-schema/Utils"
-import { List } from "immutable"
+import { isEqual } from '@ui-schema/ui-schema/Utils/memo/memo'
+import { createMap } from '@ui-schema/ui-schema/Utils'
+import { List } from 'immutable'
 
 describe('isEqual', () => {
     test.each([
@@ -8,9 +8,13 @@ describe('isEqual', () => {
         [{a: 'name'}, {a: 'names'}, false],
         [{a: 'name'}, {b: 'name'}, false],
         [{a: createMap({c: 'name'})}, {a: createMap({c: 'name'})}, true],
+        [{a: {c: 'name'}}, {a: createMap({c: 'name'})}, false],
+        [{a: createMap({c: 'name'})}, {a: {c: 'name'}}, false],
         [{a: createMap({c: 'name'})}, {a: createMap({c: 'names'})}, false],
         [{a: createMap({c: 'name'})}, {a: createMap({b: 'name'})}, false],
         [{a: List(['name'])}, {a: List(['name'])}, true],
+        [{a: ['name']}, {a: List(['name'])}, false],
+        [{a: List(['name'])}, {a: ['name']}, false],
         [{a: List(['name'])}, {a: List(['names'])}, false],
         [{a: List(['name'])}, {a: List(['name', 'street'])}, false],
         [{a: List(['name']), b: true}, {a: List(['name']), b: true}, true],

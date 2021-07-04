@@ -1,4 +1,5 @@
 export * from './ArrayValidator'
+export * from './EmailValidator'
 export * from './MinMaxValidator'
 export * from './MultipleOfValidator'
 export * from './ObjectValidator'

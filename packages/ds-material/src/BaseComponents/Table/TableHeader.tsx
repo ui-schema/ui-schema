@@ -1,6 +1,6 @@
 import React from 'react'
 import { List, Map } from 'immutable'
-import { OwnKey, TransTitle } from '@ui-schema/ui-schema'
+import { OwnKey, SchemaTypesType, schemaTypeToDistinct, TransTitle } from '@ui-schema/ui-schema'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
@@ -18,7 +18,7 @@ export const TableHeader: React.ComponentType<TableHeaderProps> = (
 ) => {
     let cellSchema = (itemsSchema.get('items') as List<any>) || (itemsSchema.get('properties') as Map<string, any>)
     if (
-        itemsSchema.get('type') === 'object' &&
+        schemaTypeToDistinct(itemsSchema.get('type') as SchemaTypesType) === 'object' &&
         itemsSchema.getIn(['rowSortOrder'])?.size
     ) {
         cellSchema = itemsSchema.getIn(['rowSortOrder'])
@@ -37,7 +37,7 @@ export const TableHeader: React.ComponentType<TableHeaderProps> = (
                                 ownKey={j as OwnKey}
                             />
                             {!schema.getIn(['view', 'hideItemsTitle']) &&
-                            item.get('type') === 'object' ?
+                            schemaTypeToDistinct(item.get('type')) === 'object' ?
                                 <div>
                                     {' ('}
                                     {item.get('properties')?.keySeq()

@@ -1,9 +1,9 @@
-import {useUI} from '@ui-schema/ui-schema';
+import {useUI} from '@ui-schema/ui-schema/UIStore';
 import React from 'react';
 import {List} from 'immutable';
 
-export const SchemaDebug = ({StyledEditor}) => {
-    const {store, schema, onChange} = useUI();
+export const SchemaDebug = ({StyledEditor, schema}) => {
+    const {store, onChange} = useUI();
 
     return <React.Fragment>
         <StyledEditor

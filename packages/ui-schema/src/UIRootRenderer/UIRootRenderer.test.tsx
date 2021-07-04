@@ -4,7 +4,6 @@ import { render } from '@testing-library/react'
 // @ts-ignore
 import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
-import { UIRootRenderer } from './UIRootRenderer'
 import { MockSchemaProvider } from '../../tests/MockSchemaProvider.mock'
 
 expect.extend({toBeInTheDocument, toHaveClass})
@@ -23,9 +22,7 @@ describe('UIRootRenderer', () => {
                     pluginStack: [],
                 }}
                 schema={createOrderedMap({type: 'string'})}
-            >
-                <UIRootRenderer/>
-            </MockSchemaProvider>
+            />
         )
         expect(queryByText('root-renderer') !== null).toBeTruthy()
     })
@@ -46,9 +43,7 @@ describe('UIRootRenderer', () => {
                     pluginStack: [],
                 }}
                 schema={createOrderedMap({type: 'string'})}
-            >
-                <UIRootRenderer/>
-            </MockSchemaProvider>
+            />
         )
         expect(queryByText('root-renderer') === null).toBeTruthy()
         expect(consoleSpy.mock.calls[0] && consoleSpy.mock.calls[0][0]).toBe('Widget RootRenderer not existing')
@@ -65,9 +60,7 @@ describe('UIRootRenderer', () => {
                 }}
                 // @ts-ignore
                 schema={undefined}
-            >
-                <UIRootRenderer/>
-            </MockSchemaProvider>
+            />
         )
         expect(queryByText('root-renderer') === null).toBeTruthy()
         expect(consoleSpy.mock.calls[1] && consoleSpy.mock.calls[1][0]).toBe('schema must be set')
@@ -78,9 +71,7 @@ describe('UIRootRenderer', () => {
                 // @ts-ignore
                 widgets={undefined}
                 schema={createOrderedMap({type: 'string'})}
-            >
-                <UIRootRenderer/>
-            </MockSchemaProvider>
+            />
         )
         expect(queryByText('root-renderer') === null).toBeTruthy()
         expect(consoleSpy.mock.calls[2] && consoleSpy.mock.calls[2][0]).toBe('widgets must be set')

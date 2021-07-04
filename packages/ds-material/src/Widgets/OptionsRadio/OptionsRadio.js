@@ -4,7 +4,7 @@ import {
     FormControl, FormLabel, FormControlLabel, RadioGroup, Radio,
 } from '@material-ui/core';
 import {TransTitle, Trans, beautifyKey} from '@ui-schema/ui-schema';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
 
 const OptionsRadio = ({
                           ownKey, schema, value, onChange, storeKeys, showValidity, valid, required, errors,
@@ -28,9 +28,12 @@ const OptionsRadio = ({
                             !schema.get('readOnly') &&
                             onChange(
                                 storeKeys, ['value'],
-                                () => ({value: enum_name}),
-                                schema.get('deleteOnEmpty') || required,
-                                schema.get('type'),
+                                {
+                                    type: 'update',
+                                    updater: () => ({value: enum_name}),
+                                    schema,
+                                    required,
+                                },
                             )
                         }
                     />}
@@ -38,7 +41,7 @@ const OptionsRadio = ({
                         schema={schema.get('t')}
                         text={storeKeys.insert(0, 'widget').concat(List(['enum', enum_name])).join('.')}
                         context={Map({'relative': List(['enum', enum_name])})}
-                        fallback={beautifyKey(enum_name, schema.get('tt'))}
+                        fallback={beautifyKey(enum_name, schema.get('ttEnum'))}
                     />}
                 />
             }).valueSeq() : null}

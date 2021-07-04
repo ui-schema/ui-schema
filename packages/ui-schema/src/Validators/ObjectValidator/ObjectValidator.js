@@ -1,6 +1,7 @@
-import {Map} from "immutable";
-import {validateSchema} from "../../validateSchema/index";
-import {createValidatorErrors} from "@ui-schema/ui-schema/ValidatorStack/ValidatorErrors";
+import {List, Map, Record} from 'immutable';
+import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorErrors';
+import {validateSchema} from '@ui-schema/ui-schema/validateSchema';
+import {schemaTypeIs} from '@ui-schema/ui-schema/Utils/schemaTypeIs';
 
 export const ERROR_ADDITIONAL_PROPERTIES = 'additional-properties';
 
@@ -13,6 +14,11 @@ export const ERROR_ADDITIONAL_PROPERTIES = 'additional-properties';
  */
 export const validateObject = (schema, value) => {
     let err = createValidatorErrors();
+    if(
+        !schemaTypeIs(schema.get('type'), 'object') ||
+        !(Map.isMap(value) || Record.isRecord(value) || typeof value === 'object') || List.isList(value) || Array.isArray(value)) {
+        return err
+    }
     if(schema.get('additionalProperties') === false && schema.get('properties') && typeof value === 'object') {
         let hasAdditional = false;
         const keys = Map.isMap(value) ? value.keySeq() : Object.keys(value);
@@ -41,13 +47,11 @@ export const validateObject = (schema, value) => {
 
 export const objectValidator = {
     should: ({schema}) => {
-        let type = schema.get('type');
-
-        return type === 'object'
+        return schemaTypeIs(schema.get('type'), 'object')
     },
-    validate: ({schema, value, errors, valid}) => {
-        errors = validateObject(schema, value,);
+    handle: ({schema, value, errors, valid}) => {
+        errors = validateObject(schema, value);
         if(errors.hasError()) valid = false;
         return {errors, valid}
-    }
+    },
 };

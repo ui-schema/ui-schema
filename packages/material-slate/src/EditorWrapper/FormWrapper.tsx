@@ -10,7 +10,7 @@ import { TransTitle, WidgetProps } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '@ui-schema/ds-material'
 import { MarkdownLabel } from '@ui-schema/material-slate/EditorWrapper/MarkdownLabel'
 
-export const useFormEditorStyles = makeStyles<Theme, { dense: boolean, focused: boolean }>(theme => ({
+export const useFormEditorStyles = makeStyles<Theme, { dense: boolean, focused: boolean }, 'wrapper' | 'editor'>(theme => ({
     wrapper: {
         display: 'flex',
         flexDirection: 'column',

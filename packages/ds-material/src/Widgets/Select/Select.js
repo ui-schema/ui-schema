@@ -6,7 +6,7 @@ import {
     MenuItem, Select as MuiSelect, ListItemText,
 } from '@material-ui/core';
 import {TransTitle, Trans, beautifyKey, extractValue, memo} from '@ui-schema/ui-schema';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText';
 import {sortScalarList} from '@ui-schema/ui-schema/Utils/sortScalarList';
 
 const Select = ({
@@ -41,20 +41,23 @@ const Select = ({
                     const Translated = t(s, Map({relative: List(['enum', s])}), schema.get('t'));
                     return typeof Translated === 'string' || typeof Translated === 'number' ?
                         Translated :
-                        beautifyKey(s, schema.get('tt')) + '';
+                        beautifyKey(s, schema.get('ttEnum')) + '';
                 }).join(', ')
             }}
             onChange={(e) =>
                 !schema.get('readOnly') &&
                 onChange(
                     storeKeys, ['value'],
-                    () => ({
-                        value: multiple ?
-                            sortScalarList(List(e.target.value)) :
-                            e.target.value,
-                    }),
-                    schema.get('deleteOnEmpty') || required,
-                    schema.get('type'),
+                    {
+                        type: 'update',
+                        updater: () => ({
+                            value: multiple ?
+                                sortScalarList(List(e.target.value)) :
+                                e.target.value,
+                        }),
+                        schema,
+                        required,
+                    },
                 )
             }
         >
@@ -70,14 +73,14 @@ const Select = ({
                             schema={schema.get('t')}
                             text={storeKeys.insert(0, 'widget').concat(List(['enum', enum_name])).join('.')}
                             context={Map({'relative': List(['enum', enum_name])})}
-                            fallback={beautifyKey(enum_name, schema.get('tt')) + ''}
+                            fallback={beautifyKey(enum_name, schema.get('ttEnum')) + ''}
                         />}/>
                     </React.Fragment> :
                     <Trans
                         schema={schema.get('t')}
                         text={storeKeys.insert(0, 'widget').concat(List(['enum', enum_name])).join('.')}
                         context={Map({'relative': List(['enum', enum_name])})}
-                        fallback={beautifyKey(enum_name, schema.get('tt')) + ''}
+                        fallback={beautifyKey(enum_name, schema.get('ttEnum')) + ''}
                     />}
                 </MenuItem>,
             ).valueSeq() : null}

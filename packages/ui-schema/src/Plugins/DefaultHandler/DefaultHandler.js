@@ -1,43 +1,42 @@
 import React from 'react';
-import {NextPluginRenderer} from '../../PluginStack';
-import {useImmutable} from '@ui-schema/ui-schema/Utils/useImmutable';
+import {Map} from 'immutable';
+import {getNextPlugin} from '@ui-schema/ui-schema/PluginStack/PluginStack';
 
-const DefaultValueHandler = ({defaultVal, ...props}) => {
-    const [defaultHandled, setDefaultHandled] = React.useState(false);
+const DefaultHandler = (props) => {
+    const {schema, currentPluginIndex, doNotDefault, readOnly} = props;
+    const next = currentPluginIndex + 1;
+    const Plugin = getNextPlugin(next, props.widgets)
+
+    let defaultVal = schema.get('default');
+
     const {onChange, storeKeys} = props;
-    let {value} = props;
+    let {value, internalValue} = props;
 
-    const currentStoreKeys = useImmutable(storeKeys)
-
+    const valRef = React.useRef(value)
+    valRef.current = value
+    const defaultHandled = Boolean(internalValue?.get('defaultHandled') || doNotDefault || readOnly || schema?.get('readOnly'))
     React.useEffect(() => {
-        setDefaultHandled(false);
-    }, [currentStoreKeys]);
+        if(defaultHandled) return
+        if(typeof defaultVal === 'undefined') return
 
-    React.useEffect(() => {
-        if(typeof value === 'undefined' && !defaultHandled) {
-            setDefaultHandled(true);
-            onChange(currentStoreKeys, ['value'], () => ({value: defaultVal}))
-        } else if(!defaultHandled) {
-            setDefaultHandled(true);
+        if(typeof valRef.current === 'undefined') {
+            onChange(storeKeys, ['value', 'internal'], ({internal = Map()}) => ({
+                value: defaultVal,
+                internal: internal.set('defaultHandled', true),
+            }))
+        } else {
+            onChange(storeKeys, ['internal'], ({internal = Map()}) => ({
+                internal: internal.set('defaultHandled', true),
+            }))
         }
-    }, [onChange, currentStoreKeys, defaultVal, value, defaultHandled]);
+    }, [onChange, storeKeys, defaultHandled, defaultVal, valRef]);
 
     let nextValue = value;
     if(typeof value === 'undefined' && !defaultHandled) {
         nextValue = defaultVal;
     }
 
-    return <NextPluginRenderer {...props} value={nextValue}/>;
-};
-
-const DefaultHandler = (props) => {
-    const {schema} = props;
-
-    let defaultVal = schema.get('default');
-
-    return typeof defaultVal !== 'undefined' ?
-        <DefaultValueHandler {...props} defaultVal={defaultVal}/> :
-        <NextPluginRenderer {...props}/>;
+    return <Plugin {...props} value={nextValue} currentPluginIndex={currentPluginIndex}/>;
 };
 
 export {DefaultHandler}

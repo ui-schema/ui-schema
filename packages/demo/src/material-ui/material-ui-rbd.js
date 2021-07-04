@@ -17,8 +17,7 @@ import IcUndo from '@material-ui/icons/Undo'
 import useTheme from '@material-ui/core/styles/useTheme';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter/isInvalid';
 import {fromJSOrdered} from '@ui-schema/ui-schema/Utils/createMap';
-import {UIGenerator} from '@ui-schema/ui-schema/UIGenerator';
-import {createStore, storeUpdater} from '@ui-schema/ui-schema/UIStore';
+import {createStore, storeUpdater, UIStoreProvider} from '@ui-schema/ui-schema/UIStore';
 import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro';
 import {schemaDragDrop, schemaDragDropSingle} from '../schemas/demoDragDropSimple';
 import {DroppableRootMultiple} from '@ui-schema/material-rbd/Widgets/DroppableRootMultiple';
@@ -26,6 +25,8 @@ import {DragDropProvider} from '@ui-schema/material-rbd/DragDropProvider/DragDro
 import {makeDragDropContext} from '@ui-schema/material-rbd/DragDropProvider/makeDragDropContext';
 import {List} from 'immutable';
 import {DroppableRootSingle} from '@ui-schema/material-rbd/Widgets/DroppableRootSingle';
+import {UIMetaProvider} from '@ui-schema/ui-schema';
+import {UIRootRenderer} from '@ui-schema/ui-schema/UIRootRenderer/UIRootRenderer';
 
 const customWidgets = {...widgets};
 customWidgets.custom = {
@@ -49,10 +50,12 @@ const MultiEditor = () => {
         reset: resetHistoryStore,
         onChange, store, setStore,
         redoHistory, undoHistory,
+        // todo: multi type support #68
     } = useStorePro({type: String(schema.get('type')), initialStore: initialStore})
 
     const dragStoreContext = makeDragDropContext(onChange, schema.get('$defs') || schema.get('definitions'))
 
+    // todo: multi type support #68
     const type = String(schema.get('type'))
     const reset = React.useCallback(() => {
         resetHistoryStore(type, initialStore)
@@ -93,16 +96,14 @@ const MultiEditor = () => {
         </div>
 
         <DragDropProvider contextValue={dragStoreContext.contextValue}>
-            <UIGenerator
-                schema={schema}
+            <UIStoreProvider
                 store={store.current}
                 onChange={onChange}
-                widgets={customWidgets}
                 showValidity={showValidity}
-                t={browserT}
             >
-                <MuiSchemaDebug/>
-            </UIGenerator>
+                <UIRootRenderer schema={schema}/>
+                <MuiSchemaDebug schema={schema}/>
+            </UIStoreProvider>
         </DragDropProvider>
 
         <div style={{width: '100%'}}>
@@ -151,9 +152,9 @@ const schemaSingle = schemaDragDropSingle
 const SingleEditor = () => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [store, setStore] = React.useState(() => createStore(List()))
-    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+    const onChange = React.useCallback((storeKeys, scopes, updater) => {
         setStore(prevStore => {
-            return storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
+            return storeUpdater(storeKeys, scopes, updater)(prevStore)
         })
     }, [setStore])
 
@@ -161,16 +162,14 @@ const SingleEditor = () => {
 
     return <React.Fragment>
         <DragDropProvider contextValue={dragStoreContext.contextValue}>
-            <UIGenerator
-                schema={schemaSingle}
+            <UIStoreProvider
                 store={store}
                 onChange={onChange}
-                widgets={customWidgets}
                 showValidity={showValidity}
-                t={browserT}
             >
-                <MuiSchemaDebug/>
-            </UIGenerator>
+                <UIRootRenderer schema={schemaSingle}/>
+                <MuiSchemaDebug schema={schemaSingle}/>
+            </UIStoreProvider>
         </DragDropProvider>
 
         <div style={{width: '100%'}}>
@@ -190,7 +189,9 @@ const Main = () => {
 };
 
 export default () => <AppTheme>
-    <Dashboard main={Main}/>
+    <UIMetaProvider widgets={customWidgets} t={browserT}>
+        <Dashboard main={Main}/>
+    </UIMetaProvider>
 </AppTheme>
 
 export {customWidgets}

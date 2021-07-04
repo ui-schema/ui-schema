@@ -1,14 +1,10 @@
 {
     "presets": [
-        [
-            "@babel/preset-react",
-            {
-                "loose": false
-            }
-        ],
+        "@babel/preset-react",
         "@babel/preset-typescript"
     ],
     "plugins": [
+        "@babel/plugin-proposal-private-methods",
         "@babel/plugin-syntax-dynamic-import",
         "@babel/plugin-transform-react-jsx",
         "@babel/plugin-transform-template-literals",
@@ -35,43 +31,21 @@
                 "useBuiltIns": true
             }
         ],
-        [
-            "@babel/plugin-proposal-class-properties",
-            {
-                "loose": true
-            }
-        ]
+        "@babel/plugin-proposal-class-properties"
     ],
     "env": {
         "cjs": {
             "presets": [
-                [
-                    "@babel/preset-env",
-                    {
-                        "loose": false
-                    }
-                ],
-                [
-                    "@babel/preset-react",
-                    {
-                        "loose": false
-                    }
-                ],
-                [
-                    "@babel/preset-typescript",
-                    {
-                        "loose": false
-                    }
-                ]
+                "@babel/preset-env",
+                "@babel/preset-react",
+                "@babel/preset-typescript"
             ]
         },
         "test": {
             "presets": [
                 "@babel/preset-env",
+                "@babel/preset-react",
                 "@babel/preset-typescript"
-            ],
-            "plugins": [
-                "@babel/plugin-transform-modules-commonjs"
             ]
         }
     }

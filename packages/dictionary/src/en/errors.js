@@ -14,6 +14,7 @@ import {
     ERROR_MAX_CONTAINS,
     ERROR_ADDITIONAL_PROPERTIES,
 } from '@ui-schema/ui-schema/Validators';
+import {typeToString} from '@ui-schema/dictionary/Utils/typeToString';
 
 export const errors = {
     [ERROR_NOT_SET]: 'Please fill out this field',
@@ -29,7 +30,7 @@ export const errors = {
     }`,
     [ERROR_MULTIPLE_OF]: (context) => `Must be multiple of ${context.get('multipleOf')}`,
     [ERROR_PATTERN]: (context) => `Input is invalid, must ${context.getIn(['patternError', 'en']) || ('match ' + context.get('pattern'))}`,
-    [ERROR_WRONG_TYPE]: (context) => `Wrong type, expected ${context.get('type')} and got ${context.get('actual')}`,
+    [ERROR_WRONG_TYPE]: (context) => `Wrong type, expected ${typeToString(context.get('type'))} and got ${context.get('actual')}`,
     [ERROR_ADDITIONAL_ITEMS]: 'Must have only specified items, remove the additional.',
     [ERROR_ADDITIONAL_PROPERTIES]: 'Must have only specified properties, remove the additional.',
     [ERROR_MIN_CONTAINS]: (context) => `Must have at least ${context.get('minContains')} occurrences of the specified element`,

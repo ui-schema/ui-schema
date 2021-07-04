@@ -1,11 +1,12 @@
 import {List, Map} from 'immutable';
+import {schemaTypeIsAny} from '@ui-schema/ui-schema/Utils/schemaTypeIs';
 
 export const ERROR_ENUM_MISMATCH = 'enum-mismatch';
 
 export const validateEnum = (type, _enum, value) => {
-    if(typeof _enum === 'undefined' || typeof value === 'undefined') return true;
+    if(typeof _enum === 'undefined' || typeof value === 'undefined' || typeof type === 'undefined') return true;
 
-    if(type === 'string' || type === 'number' || type === 'integer' || type === 'boolean' || type === 'null') {
+    if(schemaTypeIsAny(type, ['string', 'number', 'integer', 'boolean', 'null'])) {
         if(List.isList(_enum)) {
             if(!_enum.contains(value)) {
                 return false;
@@ -17,6 +18,7 @@ export const validateEnum = (type, _enum, value) => {
         }
     }
 
+    // todo: add missing `array`/`object` compare
     return true;
 };
 
@@ -29,7 +31,7 @@ export const valueValidatorEnum = {
 
         return typeof _enum !== 'undefined' && typeof value !== 'undefined'
     },
-    validate: ({schema, value, errors, valid}) => {
+    handle: ({schema, value, errors, valid}) => {
         let type = schema.get('type');
 
         if(!validateEnum(type, schema.get('enum'), value)) {

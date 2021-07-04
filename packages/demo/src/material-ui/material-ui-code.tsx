@@ -1,9 +1,10 @@
 import React from 'react'
+import { DummyRenderer } from './component/MuiMainDummy'
+import { browserT } from '../t'
 import AppTheme from './layout/AppTheme'
 import Dashboard from './dashboard/Dashboard'
 import Grid from '@material-ui/core/Grid'
 import { widgets } from '@ui-schema/ds-material'
-import { createDummyRenderer } from './component/MuiMainDummy'
 import { useDummy } from '../component/MainDummy'
 import { schemaCode } from '../schemas/demoSimples'
 import { WidgetCodeProvider, Code, WidgetCodeContextType } from '@ui-schema/material-code'
@@ -23,7 +24,7 @@ import themeDark from 'codemirror/theme/duotone-dark.css'
 import themeLight from 'codemirror/theme/duotone-light.css'
 import useTheme from '@material-ui/core/styles/useTheme'
 import { CodeSelectable } from '@ui-schema/material-code/CodeSelectable/CodeSelectable'
-import { WidgetProps } from '@ui-schema/ui-schema'
+import { UIMetaProvider } from '@ui-schema/ui-schema'
 /*import themeMaterial from 'codemirror/theme/gruvbox-dark.css';
 import themeDark from 'codemirror/theme/xq-dark.css';
 import themeLight from 'codemirror/theme/xq-light.css';*/
@@ -39,11 +40,9 @@ const useStyle = (styles) => {
 const customWidgets = {...widgets}
 customWidgets.custom = {
     ...widgets.custom,
-    Code: Code as React.ComponentType<WidgetProps>,
+    Code: Code,
     CodeSelectable,
 }
-
-const DummyRenderer = createDummyRenderer(customWidgets)
 
 const modes: WidgetCodeContextType['modes'] = {
     json: {
@@ -68,6 +67,8 @@ const Main = ({classes = {}}) => {
 
 export default function MaterialDemoCode(): React.ReactElement {
     return <AppTheme>
-        <Dashboard main={Main}/>
+        <UIMetaProvider widgets={customWidgets} t={browserT}>
+            <Dashboard main={Main}/>
+        </UIMetaProvider>
     </AppTheme>
 }

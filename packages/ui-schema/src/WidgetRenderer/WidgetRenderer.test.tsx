@@ -9,7 +9,10 @@ import { VirtualWidgetsMapping, WidgetProps } from '@ui-schema/ui-schema'
 import { VirtualArrayRenderer } from '@ui-schema/ui-schema/WidgetRenderer/VirtualWidgetRenderer'
 import { ObjectRenderer } from '@ui-schema/ui-schema/ObjectRenderer/ObjectRenderer'
 import { List } from 'immutable'
-import { createStore, UIMetaProvider, UIStoreProvider } from '@ui-schema/ui-schema/UIStore/UIStore'
+import { ExtractStorePlugin } from '@ui-schema/ui-schema/Plugins/ExtractStorePlugin'
+import { createStore, UIStoreProvider } from '@ui-schema/ui-schema/UIStore'
+import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta'
+import { relTranslator } from '@ui-schema/ui-schema/Translate/relT/relT'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 
@@ -32,9 +35,10 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
-                    pluginStack: [],
-                    validators: [],
+                    pluginStack: [ExtractStorePlugin],
+                    pluginSimpleStack: [],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string'})}
@@ -49,9 +53,10 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
-                    pluginStack: [],
-                    validators: [],
+                    pluginStack: [ExtractStorePlugin],
+                    pluginSimpleStack: [],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string', widget: 'Text'})}
@@ -66,9 +71,10 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    WidgetRenderer: WidgetRenderer,
                     types: {string: (props: WidgetProps) => props.value}, custom: {},
-                    pluginStack: [],
-                    validators: [],
+                    pluginStack: [ExtractStorePlugin],
+                    pluginSimpleStack: [],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string'})}
@@ -84,9 +90,10 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {Text: (props: WidgetProps) => props.value},
-                    pluginStack: [],
-                    validators: [],
+                    pluginStack: [ExtractStorePlugin],
+                    pluginSimpleStack: [],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string', widget: 'Text'})}
@@ -102,9 +109,10 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    WidgetRenderer: WidgetRenderer,
                     types: {array: (props: WidgetProps) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set'}, custom: {},
-                    pluginStack: [],
-                    validators: [],
+                    pluginStack: [ExtractStorePlugin],
+                    pluginSimpleStack: [],
                 }}
                 value={[]}
                 schema={createOrderedMap({type: 'array'})}
@@ -119,10 +127,11 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    WidgetRenderer: WidgetRenderer,
                     types: {},
                     custom: {CustomObj: (props: WidgetProps) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set'},
-                    pluginStack: [],
-                    validators: [],
+                    pluginStack: [ExtractStorePlugin],
+                    pluginSimpleStack: [],
                 }}
                 value={{}}
                 schema={createOrderedMap({type: 'object', widget: 'CustomObj'})}
@@ -138,16 +147,17 @@ describe('WidgetRenderer', () => {
             <UIStoreProvider
                 store={store}
                 // @ts-ignore
-                onChange={undefined} schema={undefined}
+                onChange={undefined}
             >
                 <WidgetRenderer
                     widgets={{
                         // @ts-ignore
                         RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
+                        WidgetRenderer: WidgetRenderer,
                         types: {string: () => 'string-renderer', number: () => 'number-renderer'},
                         custom: {},
-                        pluginStack: [],
-                        validators: [],
+                        pluginStack: [ExtractStorePlugin],
+                        pluginSimpleStack: [],
                     }}
                     value={value}
                     virtualWidgets={virtualWidgets}
@@ -194,16 +204,17 @@ describe('WidgetRenderer', () => {
             <UIStoreProvider
                 store={store}
                 // @ts-ignore
-                onChange={undefined} schema={undefined}
+                onChange={undefined}
             >
                 <WidgetRenderer
                     widgets={{
                         // @ts-ignore
                         RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
+                        WidgetRenderer: WidgetRenderer,
                         types: {string: () => 'string-renderer', number: () => 'number-renderer'},
                         custom: {},
-                        pluginStack: [],
-                        validators: [],
+                        pluginStack: [ExtractStorePlugin],
+                        pluginSimpleStack: [],
                     }}
                     value={value}
                     virtualWidgets={virtualWidgets2}
@@ -228,19 +239,21 @@ describe('WidgetRenderer', () => {
         const widgets = {
             // @ts-ignore
             RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
+            WidgetRenderer: WidgetRenderer,
             types: {string: () => 'string-renderer', number: () => 'number-renderer'},
             custom: {},
-            pluginStack: [],
-            validators: [],
+            pluginStack: [ExtractStorePlugin],
+            pluginSimpleStack: [],
         }
         const value = createOrderedMap({dummy_array: ['lorem ipsum', 42]})
         const store = createStore(value)
         const {queryByText, queryAllByText} = render(
-            <UIMetaProvider widgets={widgets}>
+            // @ts-ignore
+            <UIMetaProvider widgets={widgets} t={relTranslator}>
                 <UIStoreProvider
                     store={store}
                     // @ts-ignore
-                    onChange={undefined} schema={undefined}
+                    onChange={undefined}
                 >
                     <WidgetRenderer
                         widgets={widgets}
@@ -279,19 +292,21 @@ describe('WidgetRenderer', () => {
         const widgets = {
             // @ts-ignore
             RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
+            WidgetRenderer: WidgetRenderer,
             types: {string: () => 'string-renderer', number: () => 'number-renderer'},
             custom: {},
-            pluginStack: [],
-            validators: [],
+            pluginStack: [ExtractStorePlugin],
+            pluginSimpleStack: [],
         }
         const value = createOrderedMap({dummy_array: [['lorem ipsum', 42], ['dolor sit', 43]]})
         const store = createStore(value)
         const {queryByText, queryAllByText} = render(
-            <UIMetaProvider widgets={widgets}>
+            // @ts-ignore
+            <UIMetaProvider widgets={widgets} t={relTranslator}>
                 <UIStoreProvider
                     store={store}
                     // @ts-ignore
-                    onChange={undefined} schema={undefined}
+                    onChange={undefined}
                 >
                     <WidgetRenderer
                         widgets={widgets}

@@ -1,6 +1,6 @@
 import React from 'react';
-import {memo} from '../Utils/memo';
-import {PluginStack} from '../PluginStack';
+import {memo} from '@ui-schema/ui-schema/Utils/memo';
+import {PluginStack} from '@ui-schema/ui-schema/PluginStack';
 
 let ObjectRenderer = ({
                           level, schema, storeKeys,

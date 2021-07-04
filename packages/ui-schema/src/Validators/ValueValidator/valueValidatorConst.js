@@ -1,18 +1,12 @@
 import {Map} from 'immutable';
+import {schemaTypeIsAny} from '@ui-schema/ui-schema/Utils/schemaTypeIs';
 
 export const ERROR_CONST_MISMATCH = 'const-mismatch';
 
-/**
- *
- * @param type
- * @param _const
- * @param value
- * @return {boolean|boolean}
- */
 export const validateConst = (type, _const, value) => {
 
     return typeof _const === 'undefined' || typeof value === 'undefined' || (
-        (type === 'string' || type === 'number' || type === 'integer' || type === 'boolean' || type === 'null')
+        schemaTypeIsAny(type, ['string', 'number', 'integer', 'boolean', 'null'])
         &&
         (value === _const)
     );
@@ -24,7 +18,7 @@ export const valueValidatorConst = {
 
         return typeof _const !== 'undefined' && typeof value !== 'undefined'
     },
-    validate: ({schema, value, errors, valid}) => {
+    handle: ({schema, value, errors, valid}) => {
         let type = schema.get('type');
 
         if(!validateConst(type, schema.get('const'), value)) {

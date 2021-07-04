@@ -1,4 +1,5 @@
-import {List} from "immutable";
+import {List} from 'immutable';
+import {schemaTypeIs, schemaTypeIsNumeric} from '@ui-schema/ui-schema';
 
 const ERROR_NOT_SET = 'required-not-set';
 
@@ -9,9 +10,9 @@ const checkValueExists = (type, value) => {
         return false;
     }
 
-    if(type === 'string' && valType === 'string') {
+    if(schemaTypeIs(type, 'string') && valType === 'string') {
         return value !== '';
-    } else if(valType === 'string' && (type === 'number' || type === 'integer')) {
+    } else if(valType === 'string' && schemaTypeIsNumeric(type)) {
         // 0 is also a valid number, so not checking for false here
         return value !== ''
     }
@@ -26,15 +27,15 @@ const requiredValidator = {
         }
         return false
     },
-    noValidate: () => ({required: false}),
-    validate: ({schema, value, errors, valid}) => {
+    noHandle: () => ({required: false}),
+    handle: ({schema, value, errors, valid}) => {
         let type = schema.get('type');
         if(!checkValueExists(type, value)) {
             valid = false;
             errors = errors.addError(ERROR_NOT_SET);
         }
         return {errors, valid, required: true}
-    }
+    },
 };
 
 export {requiredValidator, ERROR_NOT_SET, checkValueExists}

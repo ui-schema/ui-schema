@@ -2,19 +2,27 @@
 
 Checkout the [dictionary package](#dictionary-package)!
 
+> ❗ These components will have a breaking change in `v0.4.0`, split up into own modules, [see issue](https://github.com/ui-schema/ui-schema/issues/100)
+
 ## Translation
 
-Supplying the `t` prop to a `UIGenerator` enables dynamic translations and connecting any translation library.
+The `t` prop of `UIMetaProvider` and `UIGenerator` supports complex translators for dynamic translations and with any translation library.
 
-Native HTML inputs can use [native translations](#native-translation) for some validations.
+Native HTML inputs can use [native translations](#native-translation) - for some validations.
 
-> In your own widgets any translation lib can be used directly, if publishing it is recommended to use `t` / `Trans`
+> In your own widgets any translation lib can be used directly, when contributing to a design system use one of:
+> - `{ t } = useUIMeta()`
+> - `Trans`/`TransTitle`
 
 ```jsx harmony
-import {relT} from '@ui-schema/ui-schema';
+import {relT} from '@ui-schema/ui-schema/Translate/relT';
+import {Translator} from '@ui-schema/ui-schema/Translate/makeTranslator';
+import {UIMetaProvider} from '@ui-schema/ui-schema/UIMeta';
 
+/**
+ * @var {Translator} translate
+ */
 const translate = (text, context, schema) => {
-
     // locale can be empty or the string of the current locale
     // for handling the schema keyword `t`
     const schemaT = relT(schema, context, locale);
@@ -24,7 +32,10 @@ const translate = (text, context, schema) => {
     return translator(text, context, schema)
 };
 
+// pass down, depending how you use in either of:
 <UIGenerator t={translate}/>
+
+<UIMetaProvider t={translate}/>
 ```
 
 - `text` is a string like
@@ -73,14 +84,14 @@ const DemoWidget = ({ownKey, schema, storeKeys,}) => {
 
 const DemoEnumWidget = ({ownKey, schema, storeKeys,}) => {
     const enum_val = schema.get('enum');
-    return enum_val.map((enum_name, i) =>{
+    return enum_val.map((enum_name, i) => {
         const relative = List(['enum', enum_name]);
         return <span key={i}>
             <Trans
                 schema={schema.get('t')}
                 text={storeKeys.insert(0, 'widget').concat(relative).join('.')}
                 context={Map({'relative': relative})}
-                fallback={beautifyKey(enum_name, schema.get('tt'))}
+                fallback={beautifyKey(enum_name, schema.get('ttEnum'))}
             />
         </span>
     }).valueSeq() // as `enum_val` is an immutable list, this converts the map to an array compatible structure
@@ -93,7 +104,7 @@ The above example can be used to translate enum and anything, as titles are ofte
 
 ```jsx harmony
 import React from "react";
-import {TransTitle} from '@ui-schema/ui-schema';
+import {TransTitle} from '@ui-schema/ui-schema/Translate/TransTitle';
 
 const DemoWidget = ({ownKey, schema, storeKeys,}) => {
     return <TransTitle
@@ -111,7 +122,7 @@ Each design-system includes helper component for error translations, this way yo
 ```jsx harmony
 import React from "react";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import {Trans} from '@ui-schema/ui-schema';
+import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
 
 const LocaleHelperText = ({text, schema, context}) => {
     return <FormHelperText>
@@ -167,9 +178,10 @@ UI-Schema includes a very simple, small and powerful **immutable based localizat
 ```jsx harmony
 import React from "react";
 import {
-    makeTranslator, createMap, UIGenerator,
+    createMap, UIGenerator,
     ERROR_NOT_SET,
 } from "@ui-schema/ui-schema";
+import {makeTranslator} from "@ui-schema/ui-schema/Translate/makeTranslator";
 
 const dictionary = createMap({
     error: {
@@ -183,10 +195,12 @@ const dictionary = createMap({
 
         // usage with function, using the context, producing a React functional component
         [ERROR_MULTIPLE_OF]: (context) =>
-                            () => <span>Must be multiple of <u>{context.get('multipleOf')}</u></span>,
+            () => <span>Must be multiple of <u>{context.get('multipleOf')}</u></span>,
     },
     icons: {
-        AccountBox:() => <svg><path/></svg>
+        AccountBox: () => <svg>
+            <path/>
+        </svg>
     },
 });
 
@@ -195,7 +209,7 @@ const dictionary = createMap({
 const tEN = makeTranslator(dictionary, 'en');
 
 // this generator is using english translations for e.g. error messages
-export const LocaleGenerator = p =>
+export const LocalizedGenerator = p =>
     <UIGenerator t={tEN} {...p}/>
 ```
 
@@ -209,22 +223,22 @@ Keyword `t` is not default JSON-Schema, it is a `object` containing multiple or 
 
 ```json
 {
-  "t": {
-    "title":  "Some english text"
-  }
+    "t": {
+        "title": "Some english text"
+    }
 }
 ```
 
 ```json
 {
-  "t": {
-    "de": {
-      "title": "Irgendein deutscher Text"
-    },
-    "en": {
-      "title":  "Some english text"
+    "t": {
+        "de": {
+            "title": "Irgendein deutscher Text"
+        },
+        "en": {
+            "title": "Some english text"
+        }
     }
-  }
 }
 ```
 
@@ -291,6 +305,8 @@ Design systems should support both, the Material-UI library supports it.
 ## Text Transform
 
 When no translation should be used, but e.g. the property names should simply be in uppercase, `tt` influence the text-transformation - primary for the widget title (and not widget values).
+
+These keywords are intended for title & labels, not for formatting data. `tt` for property names and `ttEnum` for formatting value data. The `Select` widget title can be changed with `tt` and the dropdown values display format with `ttEnum`.
 
 - `tt: true` uses `beautifyKey` for optimistic beautification (default)
 - `tt: false | ''` disables optimistic beautification, `undefined` doesn't!

@@ -12,9 +12,9 @@ import {storeUpdater} from '@ui-schema/ui-schema/UIStore/storeUpdater';
 const DemoGrid = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap({})));
 
-    const onChangeNext = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+    const onChangeNext = React.useCallback((storeKeys, scopes, updater) => {
         setStore(prevStore => {
-            return storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
+            return storeUpdater(storeKeys, scopes, updater)(prevStore)
         })
     }, [setStore])
 
@@ -34,9 +34,9 @@ const MainStore = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(dataDemoMain)));
     const [schema, setSchema] = React.useState(schemaTestBts);
 
-    const onChangeNext = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+    const onChangeNext = React.useCallback((storeKeys, scopes, updater) => {
         setStore(prevStore => {
-            return storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
+            return storeUpdater(storeKeys, scopes, updater)(prevStore)
         })
     }, [setStore])
 
@@ -49,7 +49,7 @@ const MainStore = () => {
             showValidity={showValidity}
             t={browserT}
         >
-            <BtsSchemaDebug setSchema={setSchema}/>
+            <BtsSchemaDebug setSchema={setSchema} schema={schema}/>
         </UIGenerator>
 
         <button className={clsx('btn', 'btn-primary', 'col-12', 'text-uppercase')} onClick={() => setShowValidity(!showValidity)}>validity</button>

@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { Map, List } from 'immutable'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { UIStoreInternalsType } from '@ui-schema/ui-schema'
 
 export interface RichTextInterface extends WidgetProps {
-    internalValue: Map<string|numebr, any> | List<[]>
+    internalValue: UIStoreInternalsType
     onlyInline: boolean
 }
 

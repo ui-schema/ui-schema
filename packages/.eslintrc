@@ -115,7 +115,10 @@
                 ],
                 "indent": [
                     "error",
-                    4
+                    4,
+                    {
+                        "SwitchCase": 1
+                    }
                 ],
                 "no-trailing-spaces": "warn",
                 "comma-dangle": [

@@ -1,8 +1,8 @@
 import React from 'react';
 import {List} from 'immutable';
-import {useUIMeta, useUI} from '../UIStore';
-import {PluginStack} from '../PluginStack';
-import {memo} from '../Utils/memo';
+import {PluginStack} from '@ui-schema/ui-schema/PluginStack';
+import {memo} from '@ui-schema/ui-schema/Utils/memo';
+import {useUIMeta} from '@ui-schema/ui-schema/UIMeta';
 
 /**
  * @type {function({rootRenderer: *, ...}): *}
@@ -28,9 +28,8 @@ const mustBeSet = name => {
  *
  * @return {null|*}
  */
-export const UIRootRenderer = () => {
+export const UIRootRenderer = ({schema, rootContext}) => {
     // getting the root level schema, all other schemas within an editor are property calculated
-    const {schema} = useUI();
     const {widgets} = useUIMeta();
 
     if(!schema) {
@@ -52,5 +51,7 @@ export const UIRootRenderer = () => {
     return <DumpRootRenderer
         rootRenderer={RootRenderer} isVirtual={schema?.get('hidden')}
         schema={schema} storeKeys={List([])}
+        // additional meta data, available from `SchemaRootProvider`
+        rootContext={rootContext}
     />;
 };

@@ -1,6 +1,6 @@
-# Widgets Composition
+# Concepts & Widgets Composition
 
-This page contains more in-depth docs and thoughts about the [widgets](/docs/widgets) composition concept and the core concepts which enable near endless widget & pugins customization possibilities, powered by `@ui-schema/ui-schema`.
+This page contains more in-depth docs and thoughts about the [widgets](/docs/widgets) composition and core concepts - which enable near endless widget & plugins customization, powered by `@ui-schema/ui-schema`.
 
 ## Deep Dive Concepts
 
@@ -8,21 +8,22 @@ This page contains more in-depth docs and thoughts about the [widgets](/docs/wid
 
 Built with the ReactJS native [render flow](https://reactjs.org/docs/state-and-lifecycle.html#the-data-flows-down) and [hoisted states](https://reactjs.org/docs/lifting-state-up.html#lifting-state-up) as foundation, leaning a few principles from [`redux`](https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow) / [`flux`](https://facebook.github.io/flux/docs/in-depth-overview).
 
-Rendering [atomic conditional](https://reactjs.org/docs/conditional-rendering.html) and [pure](https://medium.com/technofunnel/working-with-react-pure-components-166ded26ae48) wrapper components around single schema levels.
+Rendering [atomic conditional](https://reactjs.org/docs/conditional-rendering.html) and [pure](https://medium.com/technofunnel/working-with-react-pure-components-166ded26ae48) wrapper components around single schema levels. According to the assumed [happy path according to schema & data](#happy-path).
 
 A lot of [component composition](https://www.robinwieruch.de/react-component-composition) by the `PluginStack`, around `WidgetOverride` or/and the [`widgets` binding](/docs/widgets#create-design-system-binding) to get / specify the needed custom react components for each usage, thus nearly no HTML/output inside the core.
 
 Custom [`React.Context` / Providers](https://reactjs.org/docs/context.html) are used for handling store updates and extracting with special [HOCs](https://reactjs.org/docs/higher-order-components.html) (connecting `store` to `props`), but enabling `store`/`state` management by typical stuff like `React.useState`, `React.useReducer` or redux reducers.
 
-Using an additional [props plugins system](/docs/plugins#validation-plugins) for a shallower component tree of validators.
+Using an additional [props plugins system](/docs/core-pluginstack#simple-plugins) for a shallower component tree of e.g. validators.
+
 
 ## Widgets & Component Plugins
 
-Each plugin or widget should only need to do one specific thing, in one specific schema layer, leading to [enhanced performance](https://reactjs.org/docs/optimizing-performance.html#shouldcomponentupdate-in-action) and optimizing [reconciliation levels](https://reactjs.org/docs/reconciliation.html). Forming a [typical AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) renderer based on schema keywords and data structures - stored in a central [immutable data-structure](/docs/core#uistore).
+Each plugin or widget should only need to do one specific thing, in one specific schema layer, leading to [enhanced performance](https://reactjs.org/docs/optimizing-performance.html#shouldcomponentupdate-in-action) and optimizing [reconciliation levels](https://reactjs.org/docs/reconciliation.html). Forming a [typical AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) renderer based on schema keywords and data structures - stored in a central [immutable data-structure](/docs/core-store).
 
 > check also the base concepts about [performance](/docs/performance), especially keep an eye open for `non-scalar` widget infos and `memo`
 
-The AST and plugins are rendered by [`PluginStack`](/docs/core#pluginstack) - initially started by [`UIRootRenderer`](/docs/core#uirootrenderer).
+The AST and plugins are rendered by [`PluginStack`](/docs/core-pluginstack) - initially started by [`UIRootRenderer`](/docs/core-renderer#uirootrenderer).
 
  A plugin or widget can use more than only it's own schema/store level in various ways.
 
@@ -32,7 +33,45 @@ The AST and plugins are rendered by [`PluginStack`](/docs/core#pluginstack) - in
 
 ## Rendering Basics
 
-See [flowchart of @ui-schema/ui-schema](/docs/core#flowchart).
+Special entry point components start the UI Rendering, connecting to and/or creating some contexts & providers and/or relying on given props to do something, according to their definite position in `schema` and data (`storeKeys`).
+
+
+See [flowchart of @ui-schema/ui-schema](/docs/core#flowchart), textual example: `UIMetaProvider` > `UIStoreProvider` > `UIRootRenderer` > `widgets.RootRenderer` > `PluginStack` > optional `ErrorBoundary` with `widgets.ErrorFallback` > `widgets.pluginStack` including `widgets.simplePuginStack` > `WidgetRenderer` > widget matching > `WidgetRenderer` > actual `Widget`.
+
+### Happy Path
+
+From within the rendering engine, the `schema` is used to automatically create the required UI to enter data.
+
+To be able to do this, the render engine must reduce the `schema` and data to specific behaviour & rendering instructions.
+
+For some JSON-Schema keywords / keyword combinations it can not automatically know: what exactly it should do & render. This could be due to [illogical schemas](https://json-schema.org/understanding-json-schema/reference/combining.html#illogical-schemas) or uncertain parts [like subschema independence](https://json-schema.org/understanding-json-schema/reference/combining.html#subschema-independence).
+
+#### Example for subschema independence
+
+- multiple `anyOf` should evaluate either one or another schema
+- but what UI should be rendered?
+- this can only be assumed by existing data
+    - but not always, not fully reliable
+- a custom `widget` that supports "user can select which one", can handle those schemas correctly
+    - todo: there isn't a `anyOf` validator atm.
+
+#### Example for multiple types
+
+- the widget matching must resolve to a specific `native-type` (or be overwritten with a custom `widget`)
+- validation can support multiple types, e.g. as it only must validate `type: string` when the value is of type `string`
+- for `"type": "string"` exactly one widget can match
+- for `"type": "null"` exactly one widget can match
+- for `"type": ["string", "null"]` multiple widgets may match
+    - but for this special use case, it does infer to render `string`, as `null` doesn't have an input use case
+- for `"type": ["string", "number", "null"]` multiple widgets may match
+    - and it could not determine what to render exactly, when no data exists
+    - this must be handled with a custom `"widget": "StringOrNumber"` which e.g. allows selecting if a `string` or `number` can be entered
+
+Together with cases like: `deleteOnEmpty` within `array` [issue #106](https://github.com/ui-schema/ui-schema/issues/106), the happy-path also influences what data store updates really do.
+
+### HTML in Core
+
+> todo: document the 2-3 positions, where either HTML or simple strings are returned by the render components in core and how to replace them with custom output.
 
 ## Overriding by **Provider**
 
@@ -45,92 +84,3 @@ See [flowchart of @ui-schema/ui-schema](/docs/core#flowchart).
 ## Overriding by **keywords**
 
 > todo
-
-
-## Random Examples
-
-Some not-so-usual examples, mostly just as demonstration - for production usage adjustments will be needed (e.g. performance, pure components).
-
-### Free Form Editor
-
-One root schema, but rendering the widgets fully manually in the root level, without validating the root object for this strategy, technical limitation.
-
-```typescript jsx
-import React from 'react';
-import {List, OrderedMap} from 'immutable';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import {Button} from '@material-ui/core';
-import {widgets} from '@ui-schema/ds-material';
-import {UIGenerator, isInvalid, createOrderedMap, createStore} from '@ui-schema/ui-schema';
-import {storeUpdater} from '@ui-schema/ui-schema/UIStore/storeUpdater';
-import {UIProvider} from '@ui-schema/ui-schema/UIGenerator/UIGenerator';
-import {PluginStack} from '@ui-schema/ui-schema/PluginStack/PluginStack';
-import {browserT} from '../t';
-
-const freeFormSchema = createOrderedMap({
-    type: 'object',
-    properties: {
-        name: {
-            type: 'string',
-        },
-        city: {
-            type: 'string',
-            widget: 'Select',
-            enum: ['Berlin', 'Paris', 'Zurich'],
-        },
-    },
-})
-
-// must have an own `storeKeys` when not using `UIRootRenderer`
-const storeKeys = List()
-
-const FreeFormEditor = () => {
-    const [showValidity, setShowValidity] = React.useState(false);
-    const [store, setStore] = React.useState(() => createStore(OrderedMap()))
-
-    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
-        setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
-    }, [setStore])
-
-    return <React.Fragment>
-        <UIProvider
-            store={store}
-            onChange={onChange}
-            widgets={widgets}
-            showValidity={showValidity}
-            t={browserT}
-            schema={freeFormSchema}
-        >
-            <Grid container dir={'columns'} spacing={4}>
-                <PluginStack
-                    showValidity={showValidity}
-                    storeKeys={storeKeys.push('name')}
-                    schema={freeFormSchema.getIn(['properties', 'name'])}
-                    parentSchema={freeFormSchema}
-                    level={1}
-                    readOnly={false}
-                    // noGrid={false} (as grid-item is included in `PluginStack`)
-                />
-                <PluginStack
-                    showValidity={showValidity}
-                    storeKeys={storeKeys.push('city')}
-                    schema={freeFormSchema.getIn(['properties', 'city'])}
-                    parentSchema={freeFormSchema}
-                    level={1}
-                    readOnly={false}
-                    // noGrid={false} (as grid-item is included in `PluginStack`)
-                />
-            </Grid>
-        </UIProvider>
-
-        <div style={{width: '100%'}}>
-            <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
-            <div>
-                {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
-            </div>
-        </div>
-    </React.Fragment>
-};
-```

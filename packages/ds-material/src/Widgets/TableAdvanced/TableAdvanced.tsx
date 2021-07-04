@@ -7,10 +7,10 @@ export const TableAdvancedBase: React.ComponentType<WidgetProps & WithValue> = (
     }
 ) => {
     const {storeKeys} = props
-    const readOnly = schema.get('readOnly')
+    const readOnly = schema.get('readOnly') as boolean
     return <>
         <h2>Advanced</h2>
-        <PluginStack
+        <PluginStack<{ readOnly?: boolean }>
             showValidity={showValidity}
             storeKeys={storeKeys.push('data')}
             schema={schema.getIn(['properties', 'data'])}
@@ -22,4 +22,4 @@ export const TableAdvancedBase: React.ComponentType<WidgetProps & WithValue> = (
     </>
 }
 
-export const TableAdvanced = extractValue(memo(TableAdvancedBase))
+export const TableAdvanced: React.ComponentType<WidgetProps> = extractValue(memo(TableAdvancedBase))

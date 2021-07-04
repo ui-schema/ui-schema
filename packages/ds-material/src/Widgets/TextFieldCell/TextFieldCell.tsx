@@ -1,7 +1,11 @@
 import React, { CSSProperties, EventHandler } from 'react'
 import { useUID } from 'react-uid'
-import { mapSchema, checkNativeValidity, WidgetProps, TransTitle } from '@ui-schema/ui-schema'
-import { ValidityHelperText } from '../../Component/LocaleHelperText/LocaleHelperText'
+import { WidgetProps, WithScalarValue } from '@ui-schema/ui-schema'
+import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
+import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/schemaTypeIs'
+import { mapSchema } from '@ui-schema/ui-schema/Utils/schemaToNative'
+import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
+import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
 import InputBase from '@material-ui/core/InputBase'
 import Typography from '@material-ui/core/Typography'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
@@ -26,7 +30,7 @@ export interface StringRendererCellProps {
     labelledBy?: string
 }
 
-export const StringRendererCell: React.ComponentType<WidgetProps & StringRendererCellProps> = (
+export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarValue & StringRendererCellProps> = (
     {
         type,
         multiline, rows, rowsMax,
@@ -47,7 +51,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps & StringRendere
 
     inputProps = mapSchema(inputProps, schema)
 
-    if (schema.get('type') === 'number' && typeof inputProps['step'] === 'undefined') {
+    if (schemaTypeIs(schema.get('type') as SchemaTypesType, 'number') && typeof inputProps['step'] === 'undefined') {
         inputProps['step'] = 'any'
     }
 
@@ -55,10 +59,6 @@ export const StringRendererCell: React.ComponentType<WidgetProps & StringRendere
         inputProps['aria-labelledby'] = labelledBy
     } else {
         inputProps['aria-labelledby'] = 'uis-' + uid
-    }
-
-    if (schema.get('checkNativeValidity')) {
-        valid = checkNativeValidity(currentRef, valid)
     }
 
     if (!inputProps.style) {
@@ -81,12 +81,6 @@ export const StringRendererCell: React.ComponentType<WidgetProps & StringRendere
         }
     }
 
-    React.useEffect(() => {
-        if (currentRef) {
-            onChange(storeKeys, ['valid'], () => ({valid: valid}))
-        }
-    }, [onChange, storeKeys, valid])
-
     return <>
         {!labelledBy ? <Typography component={'span'} variant={'srOnly'} id={inputProps['aria-labelledby']}>
             <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
@@ -102,14 +96,14 @@ export const StringRendererCell: React.ComponentType<WidgetProps & StringRendere
             rowsMax={rowsMax}
             fullWidth
             margin={schema.getIn(['view', 'margin'])}
-            value={typeof value !== 'undefined' ? value : ''}
+            value={typeof value === 'string' || typeof value === 'number' ? value : ''}
             onClick={onClick}
             onFocus={onFocus}
             onBlur={onBlur}
             onKeyUp={onKeyUp}
             onKeyPress={e => {
                 const evt = e.nativeEvent
-                if (!forbidInvalidNumber(evt, schema.get('type') as string)) {
+                if (!forbidInvalidNumber(evt, schema.get('type') as SchemaTypesType)) {
                     onKeyPress && onKeyPress(evt)
                 }
             }}
@@ -117,10 +111,10 @@ export const StringRendererCell: React.ComponentType<WidgetProps & StringRendere
             onKeyDown={onKeyDown}
             onChange={(e) => {
                 const val = e.target.value
-                const schemaType = schema.get('type') as string
+                const schemaType = schema.get('type') as SchemaTypesType
                 const newVal = convertStringToNumber(val, schemaType)
                 if (
-                    (schemaType === 'number' || schemaType === 'integer')
+                    schemaTypeIsNumeric(schemaType)
                     && newVal === '' && e.target.validity.badInput
                 ) {
                     // forbid saving/deleting of invalid number at all
@@ -128,9 +122,12 @@ export const StringRendererCell: React.ComponentType<WidgetProps & StringRendere
                 }
                 onChange(
                     storeKeys, ['value'],
-                    () => ({value: newVal}),
-                    schema.get('deleteOnEmpty') as boolean || required,
-                    schema.get('type') as string
+                    {
+                        type: 'update',
+                        updater: () => ({value: newVal}),
+                        schema,
+                        required,
+                    }
                 )
             }}
             inputProps={inputProps}
@@ -143,7 +140,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps & StringRendere
     </>
 }
 
-export const TextRendererCell: React.ComponentType<WidgetProps & StringRendererCellProps> = ({schema, ...props}) => {
+export const TextRendererCell: React.ComponentType<WidgetProps & WithScalarValue & StringRendererCellProps> = ({schema, ...props}) => {
     return <StringRendererCell
         {...props}
         schema={schema}
@@ -153,7 +150,7 @@ export const TextRendererCell: React.ComponentType<WidgetProps & StringRendererC
     />
 }
 
-export const NumberRendererCell: React.ComponentType<WidgetProps & StringRendererCellProps> = (props) => {
+export const NumberRendererCell: React.ComponentType<WidgetProps & WithScalarValue & StringRendererCellProps> = (props) => {
     return <StringRendererCell
         {...props}
         type={'number'}

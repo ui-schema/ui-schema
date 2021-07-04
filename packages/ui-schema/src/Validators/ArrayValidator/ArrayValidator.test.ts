@@ -10,7 +10,7 @@ import {
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils'
 import { validateAdditionalItems } from '@ui-schema/ui-schema/Validators/ArrayValidator/ArrayValidator'
 import { ERROR_WRONG_TYPE } from '@ui-schema/ui-schema/Validators/TypeValidator/TypeValidator'
-import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
+import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorErrors'
 
 describe('validateArrayContent', () => {
     test.each([
@@ -640,6 +640,13 @@ describe('validateUniqueItems', () => {
             },
             List([1, 2, 2]),
             false,
+        ], [
+            {
+                type: 'array',
+                uniqueItems: true,
+            },
+            Map({prop_a: 2, prop_b: 2}),
+            true,
         ],
     ])('validateUniqueItems(%j, %j)', (schema, value, expected) => {
         expect(validateUniqueItems(createOrderedMap(schema), value)).toBe(expected)
@@ -648,13 +655,15 @@ describe('validateUniqueItems', () => {
 
 describe('arrayValidator', () => {
     test.each([
-        [OrderedMap<'type', string>({type: 'array'}), true],
-        [OrderedMap<'type', string>({type: 'string'}), false],
-        [OrderedMap<string, string>({}), false],
+        [OrderedMap<'type', string>({type: 'array'}), List(), true],
+        [OrderedMap<'type', string>({type: 'array'}), Map(), false],
+        [OrderedMap<'type', string>({type: 'string'}), List(), false],
+        [OrderedMap<string, string>({}), List(), false],
     ])(
         '.should(%j, %s)',
-        (schema, expectedValid) => {
-            expect(arrayValidator.should({schema})).toBe(expectedValid)
+        (schema, value, expectedValid) => {
+            // @ts-ignore
+            expect(arrayValidator.should({schema, value})).toBe(expectedValid)
         }
     )
 
@@ -718,10 +727,11 @@ describe('arrayValidator', () => {
             true,
         ],
     ])(
-        '.validate(%j, %s)',
+        '.handle(%j, %s)',
         (schema, value, error, expectedValid, expectedError) => {
-            const result = arrayValidator.validate({
+            const result = arrayValidator.handle({
                 schema: createOrderedMap(schema),
+                // @ts-ignore
                 value,
                 errors: createValidatorErrors(),
                 valid: true,

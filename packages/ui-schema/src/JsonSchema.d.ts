@@ -14,6 +14,7 @@ export interface SchemasDraft04 {
 }
 
 export interface JsonSchemaGeneral {
+    type: string | string[]
     readOnly?: boolean
     id?: string
     $id?: string
@@ -35,6 +36,8 @@ export interface JsonSchemaGeneral {
     'const'?: any | string | number
     'enum'?: any[]
     $comment?: string
+
+    [key: string]: any
 }
 
 export interface JsonSchemaConditionals {

@@ -4,9 +4,11 @@ import Dashboard from './dashboard/Dashboard';
 import Grid from '@material-ui/core/Grid';
 import {widgets} from '@ui-schema/ds-material';
 import {RichContent, RichContentInline} from '@ui-schema/material-slate';
-import {createDummyRenderer} from './component/MuiMainDummy';
 import {schemaDemoSlate, schemaDemoSlateSingle} from '../schemas/demoSlate';
 import {RichContentPane} from '@ui-schema/material-slate/Widgets/RichContentPane';
+import {browserT} from '../t';
+import {UIMetaProvider} from '@ui-schema/ui-schema';
+import {DummyRenderer} from './component/MuiMainDummy';
 
 const customWidgets = {...widgets};
 customWidgets.custom = {
@@ -15,8 +17,6 @@ customWidgets.custom = {
     RichContent: RichContent,
     RichContentInline: RichContentInline,
 };
-
-const DummyRenderer = createDummyRenderer(customWidgets);
 
 const Main = ({classes = {}}) => {
     return <React.Fragment>
@@ -30,7 +30,9 @@ const Main = ({classes = {}}) => {
 };
 
 export default () => <AppTheme>
-    <Dashboard main={Main}/>
+    <UIMetaProvider widgets={customWidgets} t={browserT}>
+        <Dashboard main={Main}/>
+    </UIMetaProvider>
 </AppTheme>
 
 export {customWidgets}

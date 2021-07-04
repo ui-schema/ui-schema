@@ -1,13 +1,16 @@
 import React from 'react'
-import { WidgetRenderer, TransTitle, WidgetProps } from '@ui-schema/ui-schema'
-
 import FormLabel from '@material-ui/core/FormLabel'
 import FormControl from '@material-ui/core/FormControl'
 import MuiFormGroup from '@material-ui/core/FormGroup'
 import { useTheme } from '@material-ui/core/styles'
+import { extractValue, WithValue } from '@ui-schema/ui-schema/UIStore'
+import { memo } from '@ui-schema/ui-schema/Utils'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
 
-export const FormGroup = (props: WidgetProps): React.ReactElement => {
-    const {storeKeys, ownKey} = props
+export const FormGroupBase: React.ComponentType<WidgetProps & WithValue> = (props) => {
+    const {storeKeys, ownKey, widgets} = props
+    const {WidgetRenderer} = widgets
     const {spacing} = useTheme()
     let {schema} = props
     // deleting the `widget` to directly use `PluginStack` for nesting
@@ -35,3 +38,5 @@ export const FormGroup = (props: WidgetProps): React.ReactElement => {
         {/*<FormHelperText>Be careful</FormHelperText>*/}
     </FormControl>
 }
+
+export const FormGroup: React.ComponentType<WidgetProps> = extractValue(memo(FormGroupBase))

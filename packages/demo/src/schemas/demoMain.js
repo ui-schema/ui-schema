@@ -337,7 +337,7 @@ const schemaDemoMain = {
             view: {
                 sizeMd: 3,
             },
-            tt: false,
+            ttEnum: false,
             'type': 'string',
             'widget': 'Select',
             'enum': ['-1', '-2', '0', '1', '2', '_abc', '__H', 'h'],
@@ -346,7 +346,7 @@ const schemaDemoMain = {
             view: {
                 sizeMd: 3,
             },
-            tt: false,
+            ttEnum: false,
             'type': 'number',
             'widget': 'Select',
             'enum': [-1, -2, 0, 1, 2],

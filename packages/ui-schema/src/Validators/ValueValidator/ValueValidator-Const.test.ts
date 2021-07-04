@@ -2,12 +2,21 @@ import { OrderedMap, List, Map } from 'immutable'
 import {
     validateConst, valueValidatorConst, ERROR_CONST_MISMATCH,
 } from '@ui-schema/ui-schema/Validators/ValueValidator'
-import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorStack/ValidatorErrors'
+import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorErrors'
 
 describe('validateConst', () => {
     test('validateConst', () => {
         expect(validateConst('string', 'text1', 'text1')).toBe(true)
         expect(validateConst('string', 'text1', 'text2')).toBe(false)
+        expect(validateConst(List(['string', 'integer', 'object']), 'text1', 'text1')).toBe(true)
+        expect(validateConst(List(['string', 'integer', 'null']), 'text1', 'text1')).toBe(true)
+        expect(validateConst(List(['string', 'integer', 'null']), null, null)).toBe(true)
+        expect(validateConst(List(['string', 'integer']), 'text1', 'text1')).toBe(true)
+        expect(validateConst(List(['string']), 'text1', 'text1')).toBe(true)
+        expect(validateConst(List(['string', 'integer', 'null']), 'text1', 'text2')).toBe(false)
+        expect(validateConst(List(['string', 'integer', 'object']), 'text1', 'text2')).toBe(false)
+        expect(validateConst(List(['string', 'integer']), 'text1', 'text2')).toBe(false)
+        expect(validateConst(List(['string']), 'text1', 'text2')).toBe(false)
 
         expect(validateConst('number', 1, 1)).toBe(true)
         expect(validateConst('number', 1, 2)).toBe(false)
@@ -43,6 +52,7 @@ describe('valueValidatorConst', () => {
         (schema, value, expected) => {
             expect(valueValidatorConst.should({
                 schema: OrderedMap(schema),
+                // @ts-ignore
                 value,
             })).toBe(expected)
         }
@@ -84,10 +94,11 @@ describe('valueValidatorConst', () => {
     ]
 
     test.each(valueValidatorConstTestValues)(
-        '.validate(%j, %s)',
+        '.handle(%j, %s)',
         (schema, value, error, expectedValid, expectedError) => {
-            const result = valueValidatorConst.validate({
+            const result = valueValidatorConst.handle({
                 schema: OrderedMap(schema),
+                // @ts-ignore
                 value,
                 errors: createValidatorErrors(),
                 valid: true,

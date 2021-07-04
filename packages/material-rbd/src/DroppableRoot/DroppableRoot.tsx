@@ -1,6 +1,6 @@
 import React from 'react'
 import { Droppable } from 'react-beautiful-dnd'
-import { beautifyKey, memo, OwnKey, StoreKeys, StoreSchemaType, Trans, useUI } from '@ui-schema/ui-schema'
+import { beautifyKey, memo, OwnKey, StoreKeys, StoreSchemaType, Trans, useSchemaRoot, useUI } from '@ui-schema/ui-schema'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import IcUnfoldMore from '@material-ui/icons/UnfoldMore'
@@ -30,6 +30,7 @@ const useStyle = makeStyles(({palette}) => ({
 
 export interface DroppableRootContentProps {
     storeKeys: StoreKeys
+    schema: StoreSchemaType
     type?: string
     ownKey?: string | number
     isDraggingOver: boolean
@@ -70,8 +71,9 @@ const EditorRootSelect = ({storeKeys, isDraggingOver}: { storeKeys: StoreKeys, i
 }
 
 // @ts-ignore
-const DroppableRootContent: React.ComponentType<DroppableRootContentProps> = ({type, storeKeys, isDraggingOver, openAll, ownKey}) => {
-    const {store, schema} = useUI()
+const DroppableRootContent: React.ComponentType<DroppableRootContentProps> = ({type, schema, storeKeys, isDraggingOver, openAll, ownKey}) => {
+    const {store} = useUI()
+    const {definitions} = useSchemaRoot()
     const data: DragDropItemList = store.getIn(storeKeys.size > 0 ? prependKey(storeKeys, 'values') : ['values'])
     return data && data.size ?
         data.toArray().map((item, i) =>
@@ -86,8 +88,7 @@ const DroppableRootContent: React.ComponentType<DroppableRootContentProps> = ({t
                 data={item}
                 schema={
                     // todo: get item schema from DragDropContext
-                    schema.getIn(['$defs', item.get('$block')]) ||
-                    schema.getIn(['definitions', item.get('$block')])
+                    definitions?.getIn([item.get('$block')])
                 }
                 parentSchema={schema}
                 open={openAll}
@@ -143,6 +144,7 @@ let DroppableRoot = (
                 >
                     <DroppableRootContent
                         type={type}
+                        schema={schema}
                         storeKeys={storeKeys}
                         ownKey={ownKey}
                         isDraggingOver={snapshot.isDraggingOver}

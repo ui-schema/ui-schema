@@ -1,45 +1,43 @@
 import * as React from 'react'
 import { PluginProps, PluginType } from '@ui-schema/ui-schema/PluginStack/Plugin'
-import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
-import { StoreKeys } from '@ui-schema/ui-schema/UIStore'
-import { GroupRendererProps, WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
-import { onErrors } from '@ui-schema/ui-schema/ValidatorStack'
+import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
+import { WidgetOverrideType, WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { AppliedPluginStackProps } from '@ui-schema/ui-schema/applyPluginStack'
 
-export type WidgetOverrideType<P extends {}> = React.ComponentType<P & WidgetProps>
+export type PluginStackInjectProps = 'currentPluginIndex' | 'ownKey' | 'requiredList' | 'required' | 'errors' | 'valid'
 
-export interface PluginStackProps {
-    level?: number
-    schema: StoreSchemaType
-    parentSchema: StoreSchemaType | undefined
-    storeKeys: StoreKeys
-    noGrid?: GroupRendererProps['noGrid']
+export type PluginStackProps<WP extends {} = {}, C extends {} = {}> = AppliedPluginStackProps<PluginProps<C>, C> & {
+    // level?: number
 
     // listen from a hoisted component for `errors` changing,
     // useful for some performance optimizes like at ds-material Accordions
-    onErrors?: onErrors
+    // onErrors?: onErrors
 
     // override widgets of MetaProvider for this particular PluginStack (passed down at some use cases)
-    widgets?: WidgetsBindingBase
+    // widgets?: WidgetsBindingBase
 
     // override any widget for just this PluginStack, not passed down further on
-    // better use `applyPluginStack` instead! https://ui-schema.bemit.codes/docs/core#applypluginstack
-    WidgetOverride?: WidgetOverrideType
+    // better use `applyPluginStack` instead! https://ui-schema.bemit.codes/docs/core-pluginstack#applypluginstack
+    // todo: actually `WidgetOverride` is a WidgetRenderer prop - and also passed through the plugins, so should be in PluginProps also - but not in WidgetProps
+    WidgetOverride?: WidgetOverrideType<WP, C>
 
     // all other props are passed down to all rendering Plugins and the final widget
-    // except defined `props` removed by `WidgetRenderer`: https://ui-schema.bemit.codes/docs/core#widgetrenderer
-    [key: string]: any
+    // except defined `props` removed by `WidgetRenderer`: https://ui-schema.bemit.codes/docs/core-renderer#widgetrenderer
+    // [key: string]: any
 }
 
-export function PluginStack<P extends PluginStackProps>(
-    props: P
+// - `WP` = extra supported/required widget props
+// - `C` = custom `meta context` or additional `config context`
+export function PluginStack<WP extends {} = {}, C extends {} = {}, P extends PluginStackProps<WP, C> = PluginStackProps<WP, C>>(
+    props: P & WP
 ): React.ReactElement
 
-export function PluginStackBase(
-    props: PluginStackProps
-): React.ReactElement
-
-export function getPlugin(current: number, pluginStack: []): PluginType | undefined
+/**
+ * Returns the next `Plugin` or when the plugin list is finished, the `WidgetRenderer`
+ * @param next index of the next plugin to use
+ * @param widgets the widgets binding, e.g. `props.widgets`
+ */
+export function getNextPlugin(next: number, widgets: WidgetsBindingBase): PluginType | React.ComponentType<WidgetProps>
 
 export function NextPluginRenderer<P extends PluginProps>(props: P): React.ReactElement<P>
 

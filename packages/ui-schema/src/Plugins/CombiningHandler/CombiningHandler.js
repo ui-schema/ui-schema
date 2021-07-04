@@ -1,11 +1,11 @@
 import React from 'react';
 import {Map} from 'immutable';
-import {NextPluginRenderer} from '../../PluginStack';
-import {mergeSchema} from '../../Utils/mergeSchema';
-import {handleIfElseThen} from '../ConditionalHandler';
+import {mergeSchema} from '@ui-schema/ui-schema/Utils/mergeSchema';
+import {handleIfElseThen} from '@ui-schema/ui-schema/Plugins/ConditionalHandler';
+import {getNextPlugin} from '@ui-schema/ui-schema/PluginStack/PluginStack';
 
 export const CombiningHandler = (props) => {
-    let {schema, value} = props;
+    let {schema, value, currentPluginIndex} = props;
 
     const allOf = schema.get('allOf');
     if(allOf) {
@@ -13,6 +13,7 @@ export const CombiningHandler = (props) => {
             // removing afterwards-handled keywords, otherwise they would merge wrongly/double evaluate
             schema = mergeSchema(schema, subSchema.delete('if').delete('else').delete('then').delete('allOf'));
 
+            // todo: `Record` support #140
             if(value && Map.isMap(value)) {
                 schema = handleIfElseThen(subSchema, value, schema);
             }
@@ -25,6 +26,7 @@ export const CombiningHandler = (props) => {
                     // further on nested `allOf` will be resolved by render flow
                     schema = mergeSchema(schema, subSchema1.delete('if').delete('else').delete('then'));
 
+                    // todo: `Record` support #140
                     if(value && Map.isMap(value)) {
                         schema = handleIfElseThen(subSchema1, value, schema);
                     }
@@ -32,6 +34,7 @@ export const CombiningHandler = (props) => {
             }
         });
     }
-
-    return <NextPluginRenderer {...props} schema={schema}/>;
+    const next = currentPluginIndex + 1;
+    const Plugin = getNextPlugin(next, props.widgets)
+    return <Plugin {...props} currentPluginIndex={next} schema={schema}/>
 };

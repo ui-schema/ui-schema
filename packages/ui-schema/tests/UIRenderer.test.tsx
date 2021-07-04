@@ -1,21 +1,26 @@
+/**
+ * @jest-environment jsdom
+ */
 import React, { PropsWithChildren } from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 import {
     toBeInTheDocument,
     toHaveClass,
+    // @ts-ignore
 } from '@testing-library/jest-dom/matchers'
 import { List } from 'immutable'
 import { UIGenerator } from '../src/UIGenerator/UIGenerator'
 import { MockWidgets } from './MockSchemaProvider.mock'
-import { createStore, extractValue, WithValue } from '@ui-schema/ui-schema/UIStore/UIStore'
+import { createStore, extractValue, WithValue } from '@ui-schema/ui-schema/UIStore'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
-import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, JsonSchema, UIGeneratorNested, TransTitle, ValidatorStack, ValidityReporter, WidgetProps, StoreSchemaType } from '@ui-schema/ui-schema'
+import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ExtractStorePlugin, JsonSchema, TransTitle, PluginSimpleStack, ValidityReporter, WidgetProps } from '@ui-schema/ui-schema'
 import { ReferencingHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
 import { validators } from '@ui-schema/ui-schema/Validators/validators'
-import { NextPluginRenderer } from '@ui-schema/ui-schema/PluginStack/PluginStack'
+import { PluginStack, NextPluginRenderer } from '@ui-schema/ui-schema/PluginStack'
 import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter/isInvalid'
 import { storeUpdater } from '@ui-schema/ui-schema/UIStore/storeUpdater'
+import { relTranslator } from '@ui-schema/ui-schema/Translate/relT'
 
 /**
  * This file serves as general integration test
@@ -35,17 +40,18 @@ widgets.RootRenderer = (props: PropsWithChildren<any>): React.ReactElement => <d
 // eslint-disable-next-line react/display-name
 widgets.GroupRenderer = (props: PropsWithChildren<any>): React.ReactElement => <div className={'group-renderer'}>{props.children}</div>
 widgets.pluginStack = [
-    // plugin to have every widget in it's own div to query against
+    // plugin to have every widget in it's own div - to query against in tests
     (props) => <div><NextPluginRenderer {...props}/></div>,
     ReferencingHandler,
+    ExtractStorePlugin,
     CombiningHandler,
     DefaultHandler,
     DependentHandler,
     ConditionalHandler,
-    ValidatorStack,
+    PluginSimpleStack,
     ValidityReporter,
 ]
-widgets.validators = validators
+widgets.pluginSimpleStack = validators
 
 // eslint-disable-next-line react/display-name
 widgets.types.string = (props: WidgetProps): React.ReactElement => {
@@ -66,12 +72,13 @@ widgets.types.array = extractValue((props: WidgetProps & WithValue): React.React
         {List.isList(props.value) ? props.value.map((val, i: number) =>
             <div key={i}>
                 <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
-                    {/* eslint-disable-next-line deprecation/deprecation */}
-                    <UIGeneratorNested
+                    {null}
+                    {/* @ts-ignore */}
+                    <PluginStack
                         showValidity={props.showValidity}
-                        storeKeys={props.storeKeys.push(i)}
-                        schema={props.schema.get('items') as StoreSchemaType}
                         // @ts-ignore
+                        schema={props.schema.get('items')} //parentSchema={schema}
+                        storeKeys={props.storeKeys.push(i)} //level={level + 1}
                         noGrid
                     />
                 </div>
@@ -87,6 +94,7 @@ const TestUIRenderer = (props: {
         demo_array2?: string[]
     }
     notT?: boolean
+    noStore?: boolean
 }) => {
 
     // needed variables and setters for the UIGenerator, create wherever you like
@@ -198,15 +206,15 @@ const TestUIRenderer = (props: {
 
     return <UIGenerator
         schema={schema}
-        store={store}
+        store={props.noStore ? undefined : store}
         onChange={onChange}
 
         showValidity
         widgets={widgets}
-        t={props.notT ? undefined : (text: string) => text}
+        t={props.notT ? relTranslator : (text: string) => text}
     >
         {/* (optional) add components which use the context of the Editor here */}
-        <div>schema-is-{isInvalid(store.getValidity()) ? 'invalid' : 'correct'}</div>
+        <div>store-is-{isInvalid(store.getValidity()) ? 'invalid' : 'correct'}</div>
     </UIGenerator>
 }
 
@@ -215,15 +223,26 @@ describe('UIGenerator Integration', () => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer data={{demo_number: 10, demo_array2: ['val-test']}}/>
         )
-        // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-renderer').length === 1).toBeTruthy()
         expect(container.querySelectorAll('.group-renderer').length > 0).toBeTruthy()
-        expect(queryByText('schema-is-correct') !== null).toBeTruthy()
+        expect(queryByText('store-is-correct') !== null).toBeTruthy()
+        expect(queryByText('store-is-invalid')).toBe(null)
         expect(queryByText('widget.demo_string.title') !== null).toBeTruthy()
         expect(queryAllByText('string-renderer').length === 4).toBeTruthy()
         expect(queryByText('string-with-error') === null).toBeTruthy()
         expect(queryByText('missing-type-number') !== null).toBeTruthy()
         expect(queryAllByText('array-renderer').length === 3).toBeTruthy()
+    })
+    it('TestUIRenderer no `store`', async () => {
+        const {queryByText, queryAllByText, container} = render(
+            <TestUIRenderer noStore/>
+        )
+        expect(container.querySelectorAll('.root-renderer').length).toBe(1)
+        expect(container.querySelectorAll('.group-renderer').length).toBe(0)
+
+        expect(queryByText('Demo String')).toBe(null)
+        expect(queryByText('widget.demo_string.title')).toBe(null)
+        expect(queryAllByText('string-renderer').length).toBe(0)
     })
     it('TestUIRenderer not `t`', async () => {
         const {queryByText, queryAllByText, container} = render(
@@ -232,8 +251,8 @@ describe('UIGenerator Integration', () => {
         expect(container.querySelectorAll('.root-renderer').length === 1).toBeTruthy()
         expect(container.querySelectorAll('.group-renderer').length > 0).toBeTruthy()
         expect(queryByText('Demo String') !== null).toBeTruthy()
-        expect(queryByText('widget.demo_string.title') === null).toBeTruthy()
-        expect(queryAllByText('string-renderer').length === 3).toBeTruthy()
+        expect(queryByText('widget.demo_string.title')).toBe(null)
+        expect(queryAllByText('string-renderer').length).toBe(3)
     })
     it('TestUIRenderer ConditionalCombining', async () => {
         const {queryByText, container} = render(
@@ -256,8 +275,8 @@ describe('UIGenerator Integration', () => {
         //expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-renderer').length === 1).toBeTruthy()
         expect(container.querySelectorAll('.group-renderer').length > 0).toBeTruthy()
-        //expect(queryByText('schema-is-correct') === null).toBeTruthy()
-        //expect(queryByText('schema-is-invalid') !== null).toBeTruthy()
+        //expect(queryByText('store-is-correct') === null).toBeTruthy()
+        //expect(queryByText('store-is-invalid') !== null).toBeTruthy()
         expect(queryByText('widget.demo_string.title') !== null).toBeTruthy()
         expect(queryByText('string-with-error') !== null).toBeTruthy()
         expect(queryAllByText('string-renderer').length === 2).toBeTruthy()

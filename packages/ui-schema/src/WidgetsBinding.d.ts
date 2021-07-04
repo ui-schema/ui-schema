@@ -1,8 +1,9 @@
 import React from 'react'
-import { PluginType } from '@ui-schema/ui-schema/PluginStack/Plugin'
-import { ValidatorPlugin } from '@ui-schema/ui-schema/ValidatorStack/ValidatorPlugin'
+import { ComponentPluginType } from '@ui-schema/ui-schema/PluginStack/Plugin'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { WidgetType } from '@ui-schema/ui-schema/Widget'
+import { WidgetRendererProps } from '@ui-schema/ui-schema/WidgetRenderer'
+import { PluginSimple } from '@ui-schema/ui-schema/PluginSimpleStack/PluginSimple'
 
 export interface GroupRendererProps {
     level: number
@@ -15,24 +16,37 @@ export interface GroupRendererProps {
 
 /**
  * Strict widget binding, without allowing any further root components
+ * - `C` = custom `UIMetaContext` definition
  */
-export interface WidgetsBindingBaseStrict {
-    ErrorFallback?: React.ComponentType<any>
+export interface WidgetsBindingBaseStrict<C extends {} = {}> {
+    ErrorFallback?: React.ComponentType<{
+        error: any | null
+        type?: string
+        widget?: string
+    }>
     // wraps the whole generator
     RootRenderer: React.ComponentType<any>
     // wraps any `object` that has no custom widget
     GroupRenderer: React.ComponentType<GroupRendererProps>
-    // widget plugin system
-    pluginStack: Array<PluginType>
-    // validator functions
-    validators: ValidatorPlugin[]
+    // final widget matching and rendering
+    WidgetRenderer: React.ComponentType<WidgetRendererProps>
+    // widget plugin system (react components)
+    pluginStack: ComponentPluginType[]
+    // props plugin system (vanilla JS functions based)
+    // > restructured from `validators` in `0.3.0`
+    pluginSimpleStack: PluginSimple[]
+
+    // actual validator function to use outside of render flow (in functions)
+    // > added in `0.3.0`
+    // validator: () => void
+
     // define native JSON-schema type widgets
-    types: { [key: string]: React.ComponentType<WidgetProps> }
+    types: { [key: string]: WidgetType<C> }
     // define custom widgets
-    custom: { [key: string]: React.ComponentType<WidgetProps> }
+    custom: { [key: string]: WidgetType<C> }
 }
 
-export type WidgetsBindingBase = WidgetsBindingBaseStrict & {
+export type WidgetsBindingBase<C extends {} = {}> = WidgetsBindingBaseStrict<C> & {
     // allow adding any further custom root components or further information
     [key: string]: React.ComponentType<any> | any
 }

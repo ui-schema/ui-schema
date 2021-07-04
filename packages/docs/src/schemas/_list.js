@@ -48,6 +48,7 @@ Including native-objects and native-types.
 # Table (array of arrays)
 
 - array of tuple array schemas for the rows
+- using multiple types for nullable behaviour
 `], ['Table: object', createOrderedMap(demoTable[1][1]), List(), `
 # Table (array of objects)
 
@@ -75,7 +76,7 @@ Custom widgets like steppers are defined per [design-system](/docs/overview#desi
 
 Combining sub-schemas is possible with [allOf](/docs/plugins#combininghandler), this example shows a combination of multiple simple sub-schemas.
 
-Each defined sub-schema is [merged](/docs/core#mergeschema) together, dynamically creating the schema for the current schema-level.
+Each defined sub-schema is [merged](/docs/core-utils#mergeschema) together, dynamically creating the schema for the current schema-level.
 
 - \`allOf\` is an \`array\` of any valid schemas
 - nesting of \`allOf\` is possible
@@ -114,7 +115,7 @@ A conditional schema enables on-the-fly schema changing based on schema-validati
 - when valid \`then\` is applied
 - when invalid \`else\` is applied when existing
 - if no \`if\` exists \`then|else\` have no effect
-- if there is something to apply, it is [merged](/docs/core#mergeschema) into the current one
+- if there is something to apply, it is [merged](/docs/core-utils#mergeschema) into the current one
 - this doesn't scale well, if you need to have multiple conditions look into [Conditional Multiple](/examples/Conditional-Multiple)
 
 **Try out** changing the \`country\`, for \`canada\` a new number field is added, for others the \`privacy\` is made required
