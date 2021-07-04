@@ -5,13 +5,6 @@ import {schemaTypeIs} from '@ui-schema/ui-schema/Utils/schemaTypeIs';
 
 export const ERROR_ADDITIONAL_PROPERTIES = 'additional-properties';
 
-/**
- * Return false when valid and string for an error
- *
- * @param schema
- * @param value
- * @return {List}
- */
 export const validateObject = (schema, value) => {
     let err = createValidatorErrors();
     if(
@@ -50,8 +43,11 @@ export const objectValidator = {
         return schemaTypeIs(schema.get('type'), 'object')
     },
     handle: ({schema, value, errors, valid}) => {
-        errors = validateObject(schema, value);
-        if(errors.hasError()) valid = false;
+        const objectErrors = validateObject(schema, value);
+        if(objectErrors?.hasError()) {
+            valid = false;
+            errors = errors.addErrors(objectErrors);
+        }
         return {errors, valid}
     },
 };
