@@ -122,9 +122,12 @@ export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarVal
                 }
                 onChange(
                     storeKeys, ['value'],
-                    () => ({value: newVal}),
-                    schema.get('deleteOnEmpty') as boolean || required,
-                    schema.get('type') as SchemaTypesType
+                    {
+                        type: 'update',
+                        updater: () => ({value: newVal}),
+                        schema,
+                        required,
+                    }
                 )
             }}
             inputProps={inputProps}

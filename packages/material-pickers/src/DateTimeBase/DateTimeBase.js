@@ -62,9 +62,13 @@ export const DateTimeBase = ({
             : null}
         onChange={(e) => {
             onChange(
-                storeKeys, ['value'], () => ({value: e ? date.format(e, dateFormatData) : ''}),
-                schema.get('deleteOnEmpty') || required,
-                schema.get('type'),
+                storeKeys, ['value'],
+                {
+                    type: 'update',
+                    updater: () => ({value: e ? date.format(e, dateFormatData) : ''}),
+                    schema,
+                    required,
+                },
             )
         }}
         {...additionalProps}

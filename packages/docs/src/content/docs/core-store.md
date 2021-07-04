@@ -205,6 +205,26 @@ const baseAction: UIStoreAction = {
 }
 ```
 
+### Action: Generic Update
+
+```typescript jsx
+onChange(
+    storeKeys, ['value'],
+    {
+        type: 'update',
+        updater: ({value: oldValue}) => ({value: oldValue + 'some-input'}),
+        schema,
+        required,
+    },
+)
+
+// or only an updater function:
+onChange(
+    storeKeys, ['value'],
+    ({value: oldValue}) => ({value: oldValue + 'some-input'}),
+)
+```
+
 ### Action: List Item Add
 
 ```javascript

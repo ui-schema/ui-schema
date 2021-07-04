@@ -1,14 +1,13 @@
 import {
     StoreKeys, UIStoreType,
     prependKey, addNestKey,
-    UIStoreStateData,
-    UIStoreUpdaterFn, onChangeHandlerGeneric,
-    UIStoreAction, UIStoreUpdaterData,
+    UIStoreStateData, UIStoreUpdaterData, StoreActions,
 } from '@ui-schema/ui-schema/UIStore/UIStore'
 import { scopeUpdaterValidity } from '@ui-schema/ui-schema/UIStore/scopeUpdaterValidity'
 import { scopeUpdaterInternals } from '@ui-schema/ui-schema/UIStore/scopeUpdaterInternals'
 import { scopeUpdaterValues } from '@ui-schema/ui-schema/UIStore/scopeUpdaterValues'
 import { actionHandler } from '@ui-schema/ui-schema/UIStore/storeActionHandler'
+import { storeUpdaterCreate, storeUpdaterType } from '@ui-schema/ui-schema/UIStore/storeUpdaterCreate'
 
 const getScopedValueFactory = (scope: keyof UIStoreStateData, nestKey?: string) =>
     <S extends UIStoreType>(storeKeys: StoreKeys, store: S) =>
@@ -28,9 +27,7 @@ export type ScopeOnChangeHandlerInternal = <S extends UIStoreType>(
 export type ScopeOnChangeHandler = <S extends UIStoreType>(
     store: S, storeKeys: StoreKeys,
     oldValue: any, newValue: any,
-    config?: {
-        [key: string]: any
-    }
+    action: StoreActions | undefined
 ) => S
 
 export type ScopeUpdaterMapType = {
@@ -63,53 +60,4 @@ const scopeUpdaterMap: ScopeUpdaterMapType = {
     },
 }
 
-export type storeUpdaterType = onChangeHandlerGeneric<<T extends UIStoreType>(store: T) => T>
-
-export const storeUpdater: storeUpdaterType = (
-    storeKeys,
-    scopes,
-    updaterOrAction,
-    deleteOnEmpty,
-    type
-) =>
-    <T extends UIStoreType>(store: T): T => {
-        let updaterFn: UIStoreUpdaterFn
-        let effect: UIStoreAction['effect'] | undefined
-        if (typeof updaterOrAction === 'object') {
-            updaterFn = actionHandler(updaterOrAction)
-            effect = updaterOrAction.effect
-        } else {
-            updaterFn = updaterOrAction
-        }
-
-        const values: { [k: string]: any } = {}
-        scopes.forEach(scope => {
-            const scopeUpdater = scopeUpdaterMap[scope]
-            if (!scopeUpdater) {
-                console.error('try to update unknown scope:', scope)
-                return
-            }
-            values[scope] = scopeUpdater.getter(storeKeys, store)
-        })
-
-        const res = updaterFn({...values})
-
-        scopes.forEach(scope => {
-            const scopeUpdater = scopeUpdaterMap[scope]
-            if (!scopeUpdater) {
-                console.error('try to update unknown scope:', scope)
-                return
-            }
-            store = scopeUpdater.handler(
-                store, storeKeys,
-                values[scope], res[scope],
-                {deleteOnEmpty: Boolean(deleteOnEmpty), type}
-            )
-        })
-
-        if (effect) {
-            effect(res, store)
-        }
-
-        return store
-    }
+export const storeUpdater: storeUpdaterType = storeUpdaterCreate(actionHandler, scopeUpdaterMap)

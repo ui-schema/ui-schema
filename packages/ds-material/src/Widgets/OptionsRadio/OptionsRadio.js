@@ -28,9 +28,12 @@ const OptionsRadio = ({
                             !schema.get('readOnly') &&
                             onChange(
                                 storeKeys, ['value'],
-                                () => ({value: enum_name}),
-                                schema.get('deleteOnEmpty') || required,
-                                schema.get('type'),
+                                {
+                                    type: 'update',
+                                    updater: () => ({value: enum_name}),
+                                    schema,
+                                    required,
+                                },
                             )
                         }
                     />}

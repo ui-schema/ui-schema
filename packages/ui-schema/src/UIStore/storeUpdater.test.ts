@@ -8,8 +8,8 @@ import {
     // @ts-ignore
 } from '@testing-library/jest-dom/matchers'
 import { List, Map, OrderedMap } from 'immutable'
-import { UIStore, StoreKeys, UIStoreType, UIStoreAction, UIStoreUpdaterFn, UIStoreUpdaterData } from '@ui-schema/ui-schema/UIStore/UIStore'
-import { storeUpdater } from '@ui-schema/ui-schema'
+import { UIStore, StoreKeys, UIStoreType, UIStoreUpdaterFn, UIStoreUpdaterData, UIStoreActionUpdate } from '@ui-schema/ui-schema/UIStore/UIStore'
+import { storeUpdater } from '@ui-schema/ui-schema/UIStore/storeUpdater'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 
@@ -24,7 +24,6 @@ describe('storeUpdater', () => {
             ({value}) => ({value}),
             undefined,
             undefined,
-            undefined,
             new UIStore({
                 values: OrderedMap({}),
             }),
@@ -37,7 +36,6 @@ describe('storeUpdater', () => {
             List(['prop_a']),
             ['value'],
             ({value}) => ({value: value + '--modified'}),
-            undefined,
             undefined,
             undefined,
             new UIStore({
@@ -56,7 +54,6 @@ describe('storeUpdater', () => {
             () => ({value: ''}),
             true,// deleteOnEmpty
             'string',// type
-            undefined,// `action`
             new UIStore({// expected
                 values: OrderedMap({}),
             }),
@@ -76,7 +73,6 @@ describe('storeUpdater', () => {
             }),
             undefined,// deleteOnEmpty
             undefined,// type
-            undefined,// `action`
             new UIStore({// expected
                 values: OrderedMap({
                     prop_a: 'some-string--modified',
@@ -102,7 +98,6 @@ describe('storeUpdater', () => {
         UIStoreUpdaterFn,
             boolean | undefined,
             string | undefined,
-            UIStoreAction | undefined,
         UIStoreType
     ][])('storeUpdater %j, %j', (
         store: UIStoreType,
@@ -111,10 +106,15 @@ describe('storeUpdater', () => {
         updater: UIStoreUpdaterFn,
         deleteOnEmpty: boolean | undefined,
         type: string | undefined,
-        action: UIStoreAction | undefined,
         expected: UIStoreType
     ) => {
-        const r = storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type, action)(store)
+        const action: UIStoreActionUpdate = {
+            type: 'update',
+            updater: updater,
+            ...(type ? {schema: Map({type})} : {}),
+            ...(deleteOnEmpty ? {required: true} : {}),
+        }
+        const r = storeUpdater(storeKeys, scopes, action)(store)
         const isExpected = r.equals(expected)
         if (!isExpected) {
             console.log(

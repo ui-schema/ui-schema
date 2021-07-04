@@ -44,15 +44,18 @@ const EditorJSBase: React.ComponentType<EditorJSProps> = (
         if (!currentState.current?.get('blocks')?.equals(newValue?.get('blocks'))) {
             onChange(
                 storeKeys, ['value', 'internal'],
-                ({internal: currentInternal = Map()}) => {
-                    currentState.current = newValue
-                    return {
-                        value: currentState.current,
-                        internal: currentInternal.set('isEmpty', Boolean(!(currentState.current?.get('blocks')?.size > 0))),
-                    }
-                },
-                required,
-                'object'
+                {
+                    type: 'update',
+                    updater: ({internal: currentInternal = Map()}) => {
+                        currentState.current = newValue
+                        return {
+                            value: currentState.current,
+                            internal: currentInternal.set('isEmpty', Boolean(!(currentState.current?.get('blocks')?.size > 0))),
+                        }
+                    },
+                    schema: Map({type: 'object'}),
+                    required,
+                }
             )
         }
     }, [onChange, storeKeys, required, currentState])
@@ -82,11 +85,14 @@ const EditorJSBase: React.ComponentType<EditorJSProps> = (
             }
             onChange(
                 storeKeys, ['internal'],
-                ({internal: currentInternal = Map()}) => ({
-                    internal: currentInternal.set('isEmpty', Boolean(!(value?.get('blocks')?.size > 0))),
-                }),
-                required,
-                'object'
+                {
+                    type: 'update',
+                    updater: ({internal: currentInternal = Map()}) => ({
+                        internal: currentInternal.set('isEmpty', Boolean(!(value?.get('blocks')?.size > 0))),
+                    }),
+                    schema: Map({type: 'object'}),
+                    required,
+                }
             )
         }
     }, [value, ready, editorRef, currentState, isEmpty, onEmptyChange])

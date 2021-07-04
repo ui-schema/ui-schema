@@ -83,8 +83,12 @@ const NumberSliderRenderer = ({
                     onClick={(index) =>
                         onChange(
                             storeKeys, ['value'],
-                            ({value: storeValue}) => ({value: storeValue.splice(index, 1)}),
-                            schema.get('deleteOnEmpty') || required, schema.get('type'),
+                            {
+                                type: 'update',
+                                updater: ({value: storeValue}) => ({value: storeValue.splice(index, 1)}),
+                                schema,
+                                required,
+                            },
                         )
                     }
                     canDelete={value && value.size > minItems}
@@ -102,9 +106,12 @@ const NumberSliderRenderer = ({
                     }
                     onChange(
                         storeKeys, ['value'],
-                        () => ({value: schemaTypeToDistinct(schema.get('type')) === 'array' ? List(newValue) : newValue * 1}),
-                        schema.get('deleteOnEmpty') || required,
-                        schema.get('type'),
+                        {
+                            type: 'update',
+                            updater: () => ({value: schemaTypeToDistinct(schema.get('type')) === 'array' ? List(newValue) : newValue * 1}),
+                            schema,
+                            required,
+                        },
                     )
                 }}
             />
@@ -113,8 +120,12 @@ const NumberSliderRenderer = ({
                 onClick={() =>
                     onChange(
                         storeKeys, ['value'],
-                        ({value: storeValue}) => ({value: storeValue ? storeValue.push(min) : List(defaultVal).push(min)}),
-                        schema.get('deleteOnEmpty') || required, schema.get('type'),
+                        {
+                            type: 'update',
+                            updater: ({value: storeValue}) => ({value: storeValue ? storeValue.push(min) : List(defaultVal).push(min)}),
+                            schema,
+                            required,
+                        },
                     )
                 }
             >

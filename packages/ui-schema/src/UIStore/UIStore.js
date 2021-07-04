@@ -64,6 +64,8 @@ export const shouldDeleteOnEmpty = (value, force, type) => {
     // todo: mv number out here, enforces that numbers can be cleared, but should only be forced for the `""` value in number types
     if(!force && !schemaTypeIsNumeric(type)) return false
 
+    if(valueTypeOf === 'undefined') return true
+
     if(
         (schemaTypeIs(type, 'string') && valueTypeOf === 'string') ||
         (schemaTypeIs(type, 'number') && (valueTypeOf === 'number' || valueTypeOf === 'string')) ||

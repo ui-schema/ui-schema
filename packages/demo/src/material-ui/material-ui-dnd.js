@@ -221,9 +221,9 @@ const SingleEditor = () => {
 
     const [store, setStore] = React.useState(() => createStore(List()));
 
-    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+    const onChange = React.useCallback((storeKeys, scopes, updater) => {
         setStore(prevStore => {
-            return storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
+            return storeUpdater(storeKeys, scopes, updater)(prevStore)
         })
     }, [setStore])
 

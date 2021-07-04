@@ -14,6 +14,7 @@ export const actionHandler: (action: StoreActions) => UIStoreUpdaterFn = (action
                     // todo: support `default` keyword
                     //       https://github.com/ui-schema/ui-schema/issues/143
                     value: value.push(
+                        // todo: multi type support #68
                         type === 'object' ? OrderedMap() :
                             // todo: handle tuple items default / `undefined of unexisting keys`
                             // `List.isList(items)` means it got tuple items
@@ -57,6 +58,8 @@ export const actionHandler: (action: StoreActions) => UIStoreUpdaterFn = (action
                 ),
                 ...r,
             })
+        case 'update':
+            return action.updater
         default:
             // @ts-ignore
             throw new Error('store updater for type not found: ' + action.type)

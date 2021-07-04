@@ -4,6 +4,7 @@ import Delete from '@material-ui/icons/Delete'
 import { StoreKeys, Trans, UIStoreContext, WidgetProps } from '@ui-schema/ui-schema'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip/Tooltip'
 import { TableRowProps } from '@ui-schema/ds-material'
+import { Map } from 'immutable'
 
 export interface TableRowActionDeleteProps {
     onChange: UIStoreContext['onChange']
@@ -37,9 +38,9 @@ export const TableRowActionDelete: React.ComponentType<TableRowActionDeleteProps
                             })
                         }
                     },
-                },
-                deleteOnEmpty,
-                'array'
+                    schema: Map({type: 'array'}),
+                    required: deleteOnEmpty,
+                }
             )
         }}
         size={'small'}

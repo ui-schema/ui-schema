@@ -154,8 +154,8 @@ export const DemoForm = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(data)));
     const [schema/*, setSchema*/] = React.useState(() => createOrderedMap(schemaBase));
 
-    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
-        setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
+    const onChange = React.useCallback((storeKeys, scopes, updater)  => {
+        setStore(storeUpdater(storeKeys, scopes, updater))
     }, [setStore])
 
     return <React.Fragment>
@@ -284,8 +284,8 @@ export const DemoForm = () => {
     // `useUIMeta` can be used safely, without performance impact (`useUI` has a performance impact)
     const {widgets, t} = useUIMeta()
 
-    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
-        setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
+    const onChange = React.useCallback((storeKeys, scopes, updater) => {
+        setStore(storeUpdater(storeKeys, scopes, updater))
     }, [setStore])
 
     return <React.Fragment>

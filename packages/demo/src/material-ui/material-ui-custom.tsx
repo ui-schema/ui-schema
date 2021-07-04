@@ -18,7 +18,7 @@ import { PluginStack } from '@ui-schema/ui-schema/PluginStack/PluginStack'
 import { applyPluginStack } from '@ui-schema/ui-schema/applyPluginStack'
 import { StringRenderer } from '@ui-schema/ds-material/Widgets/TextField'
 import { ObjectGroup } from '@ui-schema/ui-schema/ObjectGroup'
-import { memo } from '@ui-schema/ui-schema/Utils/memo/memo'
+import { memo } from '@ui-schema/ui-schema/Utils/memo'
 
 const customWidgets = {...widgets}
 const pluginStack = [...customWidgets.pluginStack]
@@ -100,8 +100,8 @@ const FreeFormEditor = () => {
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
     const [schema, setSchema] = React.useState<StoreSchemaType>(() => freeFormSchema)
 
-    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
-        setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
+    const onChange = React.useCallback((storeKeys, scopes, updater) => {
+        setStore(storeUpdater(storeKeys, scopes, updater))
     }, [setStore])
 
     const {handleStuff} = useUIMeta<UIMetaCustomContext>()

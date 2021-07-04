@@ -71,9 +71,12 @@ export const StringRenderer = ({
                 }
                 onChange(
                     storeKeys, ['value'],
-                    () => ({value: newVal}),
-                    schema.get('deleteOnEmpty') || required,
-                    schema.get('type'),
+                    {
+                        type: 'update',
+                        updater: () => ({value: newVal}),
+                        schema,
+                        required,
+                    },
                 )
             }}
             InputLabelProps={{shrink: schema.getIn(['view', 'shrink'])}}

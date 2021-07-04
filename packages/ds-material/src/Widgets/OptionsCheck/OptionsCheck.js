@@ -29,7 +29,7 @@ const checkActive = (list, name) => list && list.contains && typeof list.contain
 
 const OptionsCheckValue = extractValue(memo(({
                                                  enumVal, storeKeys, value, onChange, trans, tt,
-                                                 required, type, disabled,
+                                                 required, schema, disabled,
                                              }) =>
     enumVal ?
         enumVal.map((enum_name) => {
@@ -44,14 +44,16 @@ const OptionsCheckValue = extractValue(memo(({
                 onChange={() => {
                     onChange(
                         storeKeys, ['value'],
-                        ({value: val = List()}) =>
-                            ({
+                        {
+                            type: 'update',
+                            updater: ({value: val = List()}) => ({
                                 value: sortScalarList(checkActive(val, enum_name) ?
                                     val.delete(val.indexOf(enum_name)) :
                                     val.push(enum_name)),
                             }),
-                        required,
-                        type,
+                            schema,
+                            required,
+                        },
                     )
                 }}
                 label={<Trans
@@ -65,7 +67,7 @@ const OptionsCheckValue = extractValue(memo(({
         : null,
 ));
 
-const OptionsCheck = ({
+export const OptionsCheck = ({
                           ownKey, schema, storeKeys, showValidity, valid, required, errors,
                           row,
                       }) => {
@@ -80,7 +82,7 @@ const OptionsCheck = ({
             <OptionsCheckValue
                 enumVal={enumVal} storeKeys={storeKeys}
                 trans={schema.get('t')} tt={schema.get('ttEnum')}
-                required={required} type={schema.get('type')}
+                required={required} schema={schema}
                 disabled={schema.get('readOnly')}
             />
         </FormGroup>
@@ -88,5 +90,3 @@ const OptionsCheck = ({
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </FormControl>;
 };
-
-export {OptionsCheck};

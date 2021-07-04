@@ -57,27 +57,29 @@ export const RichText = ({
         }
     }, [internalValue, editorState, onChange, storeKeys.equals(prevStoreKeys.current)]);
 
-    const type = schema.get('type');
     const handleChange = React.useCallback((state) => {
         onChange(
             storeKeys, ['value', 'internal'],
-            ({internal: currentInternal = Map()}) => {
-                let stateHandler = state;
-                if(typeof stateHandler !== 'function') {
-                    // DraftJS onChange does not use a function to update the state, but we use it everywhere
-                    stateHandler = () => state;
-                }
+            {
+                type: 'update',
+                updater: ({internal: currentInternal = Map()}) => {
+                    let stateHandler = state;
+                    if(typeof stateHandler !== 'function') {
+                        // DraftJS onChange does not use a function to update the state, but we use it everywhere
+                        stateHandler = () => state;
+                    }
 
-                let newState = stateHandler(currentInternal.get('value') || createMap());
-                return {
-                    value: editorStateTo.markdown(newState),
-                    internal: currentInternal.set('value', newState),
-                }
+                    let newState = stateHandler(currentInternal.get('value') || createMap());
+                    return {
+                        value: editorStateTo.markdown(newState),
+                        internal: currentInternal.set('value', newState),
+                    }
+                },
+                schema,
+                required,
             },
-            schema.get('deleteOnEmpty') || required,
-            type,
         )
-    }, [onChange, storeKeys.equals(prevStoreKeys.current), required, type]);
+    }, [onChange, storeKeys.equals(prevStoreKeys.current), required, schema]);
 
     const handleKeyCommand = (command, editorState) => {
         if(onlyInline) return 'handled';

@@ -48,13 +48,16 @@ const Select = ({
                 !schema.get('readOnly') &&
                 onChange(
                     storeKeys, ['value'],
-                    () => ({
-                        value: multiple ?
-                            sortScalarList(List(e.target.value)) :
-                            e.target.value,
-                    }),
-                    schema.get('deleteOnEmpty') || required,
-                    schema.get('type'),
+                    {
+                        type: 'update',
+                        updater: () => ({
+                            value: multiple ?
+                                sortScalarList(List(e.target.value)) :
+                                e.target.value,
+                        }),
+                        schema,
+                        required,
+                    },
                 )
             }
         >

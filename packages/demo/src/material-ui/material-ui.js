@@ -78,9 +78,9 @@ const MainStore = () => {
     const [store, setStore] = React.useState(() => createStore(createMap(dataDemoMain)));
     const [schema, setSchema] = React.useState(() => createOrderedMap(schemaDemoMain));
 
-    const onChangeNext = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+    const onChangeNext = React.useCallback((storeKeys, scopes, updater) => {
         setStore(prevStore => {
-            const newStore = storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
+            const newStore = storeUpdater(storeKeys, scopes, updater)(prevStore)
             /*const newValue = newStore.getIn(prependKey(storeKeys, 'values'))
             const prevValue = prevStore.getIn(prependKey(storeKeys, 'values'))
             console.log(
@@ -113,8 +113,8 @@ const MainStore = () => {
 const DemoUser = () => {
     const [store, setStore] = React.useState(() => createEmptyStore());
 
-    const onChangeNext = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
-        setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
+    const onChangeNext = React.useCallback((storeKeys, scopes, updater) => {
+        setStore(storeUpdater(storeKeys, scopes, updater))
     }, [setStore])
 
     return <Grid container spacing={3} justify={'center'}>
@@ -277,8 +277,8 @@ const FreeFormEditor = () => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
 
-    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
-        setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
+    const onChange = React.useCallback((storeKeys, scopes, updater) => {
+        setStore(storeUpdater(storeKeys, scopes, updater))
     }, [setStore])
 
     return <React.Fragment>

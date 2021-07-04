@@ -4,7 +4,6 @@ import {useUID} from 'react-uid';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {Controlled as CodeMirror} from 'react-codemirror2';
 import {useWidgetCode} from '@ui-schema/material-code/CodeProvider/CodeProvider';
-import {useImmutable} from '@ui-schema/ui-schema/Utils/useImmutable';
 
 const useStyles = makeStyles({
     root: {
@@ -32,13 +31,12 @@ export const CodeRenderer = ({
     const [lines, setLines] = React.useState(1);
     const [editor, setEditor] = React.useState();
     const [focused, setFocused] = React.useState(false);
-    const currentStoreKeys = useImmutable(storeKeys)
 
     const classes = useStyles();
 
     React.useEffect(() => {
-        onChange(currentStoreKeys, ['valid'], () => ({valid: valid}))
-    }, [onChange, valid, currentStoreKeys]);
+        onChange(storeKeys, ['valid'], () => ({valid: valid}))
+    }, [onChange, valid, storeKeys]);
 
     React.useEffect(() => {
         if(editor && editor.refresh) {
@@ -62,14 +60,17 @@ export const CodeRenderer = ({
         setLines(changedEditor.doc.size);
     }, [setLines]);
 
-    const type = schema.get('type');
-    const deleteOnEmpty = schema.get('deleteOnEmpty') || required;
     const handleBeforeChange = React.useCallback((editor, data, storeValue) => {
         onChange(
-            currentStoreKeys, ['value'], () => ({value: storeValue}),
-            deleteOnEmpty, type,
+            storeKeys, ['value'],
+            {
+                type: 'update',
+                updater: () => ({value: storeValue}),
+                schema,
+                required,
+            },
         )
-    }, [onChange, currentStoreKeys, deleteOnEmpty, type]);
+    }, [onChange, storeKeys, required, schema]);
 
     const mode = modes?.[format] ? modes[format] : format
     const options = React.useMemo(() => ({

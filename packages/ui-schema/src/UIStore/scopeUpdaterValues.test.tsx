@@ -8,9 +8,8 @@ import {
     // @ts-ignore
 } from '@testing-library/jest-dom/matchers'
 import { List, Map, OrderedMap } from 'immutable'
-import { UIStore, StoreKeys, UIStoreType, createEmptyStore } from '@ui-schema/ui-schema/UIStore/UIStore'
+import { UIStore, StoreKeys, UIStoreType, createEmptyStore, StoreActions } from '@ui-schema/ui-schema/UIStore/UIStore'
 import { scopeUpdaterValues } from '@ui-schema/ui-schema/UIStore/scopeUpdaterValues'
-import { SchemaTypesType } from '@ui-schema/ui-schema'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 
@@ -21,7 +20,7 @@ describe('scopeUpdaterValues', () => {
             List([]),
             OrderedMap({}),
             OrderedMap({}),
-            {type: 'object'},
+            {schema: Map({type: 'object'})},
             new UIStore({
                 values: OrderedMap({}),
                 internals: Map({
@@ -33,7 +32,7 @@ describe('scopeUpdaterValues', () => {
             List([]),
             List([]),
             List([]),
-            {type: 'array'},
+            {schema: Map({type: 'array'})},
             new UIStore({
                 values: List([]),
                 internals: Map({
@@ -47,7 +46,7 @@ describe('scopeUpdaterValues', () => {
             List([]),
             OrderedMap({}),
             OrderedMap({}),
-            {type: 'object'},
+            {schema: Map({type: 'object'})},
             new UIStore({
                 values: OrderedMap({}),
             }),
@@ -69,10 +68,8 @@ describe('scopeUpdaterValues', () => {
             List([]),
             OrderedMap({}),
             undefined,
-            {type: 'object', deleteOnEmpty: true},
-            new UIStore({
-                values: undefined,
-            }),
+            {schema: Map({type: 'object'}), required: true},
+            new UIStore({}),
         ], [
             new UIStore({
                 values: OrderedMap({}),
@@ -80,7 +77,7 @@ describe('scopeUpdaterValues', () => {
             List(['prop_a']),
             undefined,
             'some-string',
-            {type: 'string'},
+            {schema: Map({type: 'string'})},
             new UIStore({
                 values: OrderedMap({
                     prop_a: 'some-string',
@@ -93,7 +90,9 @@ describe('scopeUpdaterValues', () => {
             List(['prop_a', 0]),
             undefined,
             'some-string',
-            {type: 'string'},
+            {
+                schema: Map({type: 'string'}),
+            },
             new UIStore({
                 values: OrderedMap({
                     prop_a: List([
@@ -110,7 +109,7 @@ describe('scopeUpdaterValues', () => {
             List(['prop_a']),
             'some-string',
             '',
-            {type: 'string', deleteOnEmpty: true},
+            {schema: Map({type: 'string'}), required: true},
             new UIStore({
                 values: OrderedMap({}),
             }),
@@ -121,7 +120,7 @@ describe('scopeUpdaterValues', () => {
             List(['prop_a']),
             'some-string',
             '',
-            {type: 'string', deleteOnEmpty: false},
+            {schema: Map({type: 'string'}), required: false},
             new UIStore({
                 values: OrderedMap({
                     prop_a: '',
@@ -138,7 +137,7 @@ describe('scopeUpdaterValues', () => {
             List(['prop_a', 'sub_a']),
             'some-string',
             '',
-            {type: 'string', deleteOnEmpty: true},
+            {schema: Map({type: 'string'}), required: true},
             new UIStore({
                 values: OrderedMap({
                     prop_a: OrderedMap({}),
@@ -155,7 +154,7 @@ describe('scopeUpdaterValues', () => {
             List(['prop_a', 'sub_a']),
             'some-string',
             '',
-            {type: 'string', deleteOnEmpty: false},
+            {schema: Map({type: 'string'}), required: false},
             new UIStore({
                 values: OrderedMap({
                     prop_a: OrderedMap({
@@ -177,7 +176,7 @@ describe('scopeUpdaterValues', () => {
             List(['prop_a', 0]),
             'some-string-0',
             '',
-            {type: 'string', deleteOnEmpty: true},
+            {schema: Map({type: 'string'}), required: true},
             new UIStore({
                 values: OrderedMap({
                     prop_a: List([
@@ -203,7 +202,7 @@ describe('scopeUpdaterValues', () => {
             List(['prop_a', 1]),
             'some-string-0',
             '',
-            {type: 'string', deleteOnEmpty: true},
+            {schema: Map({type: 'string'}), required: true},
             new UIStore({
                 values: OrderedMap({
                     prop_a: List([
@@ -229,7 +228,7 @@ describe('scopeUpdaterValues', () => {
             List(['prop_a', 3]),
             'some-string-0',
             '',
-            {type: 'string', deleteOnEmpty: true},
+            {schema: Map({type: 'string'}), required: true},
             new UIStore({
                 values: OrderedMap({
                     prop_a: List([
@@ -248,7 +247,7 @@ describe('scopeUpdaterValues', () => {
             List([]),
             'some-string',
             '',
-            {type: 'string', deleteOnEmpty: true},
+            {schema: Map({type: 'string'}), required: true},
             new UIStore({}).delete('values'),
         ], [
             new UIStore({
@@ -259,7 +258,7 @@ describe('scopeUpdaterValues', () => {
             List(['prop_a', 'sub_a']),
             'some-string-b',
             '',
-            {type: 'string', deleteOnEmpty: true},
+            {schema: Map({type: 'string'}), required: true},
             new UIStore({
                 values: OrderedMap({
                     prop_a: 'already-changed',
@@ -274,7 +273,7 @@ describe('scopeUpdaterValues', () => {
             List(['prop_a', 'sub_a']),
             undefined,
             '',
-            {type: 'string', deleteOnEmpty: true},
+            {schema: Map({type: 'string'}), required: true},
             new UIStore({
                 values: OrderedMap({
                     prop_a: OrderedMap({}),
@@ -289,7 +288,7 @@ describe('scopeUpdaterValues', () => {
             List(['prop_a', 'sub_a']),
             undefined,
             '',
-            {type: 'string', deleteOnEmpty: false},
+            {schema: Map({type: 'string'}), required: false},
             new UIStore({
                 values: OrderedMap({
                     prop_a: OrderedMap({
@@ -298,13 +297,13 @@ describe('scopeUpdaterValues', () => {
                 }),
             }),
         ],
-    ])('scopeUpdaterValues(%j, %s, %j): %j', <S extends UIStoreType>(
+    ])('scopeUpdaterValues(%j, %s, %j, %j, %j): %j', <S extends UIStoreType>(
         store: S, storeKeys: StoreKeys,
         oldValue: any, newValue: any,
-        config: { deleteOnEmpty?: boolean, type?: SchemaTypesType } | undefined,
+        action: StoreActions,
         expected: any
     ) => {
-        const r = scopeUpdaterValues(store, storeKeys, oldValue, newValue, config)
+        const r = scopeUpdaterValues(store, storeKeys, oldValue, newValue, action)
         const isExpected = r.equals(expected)
         if (!isExpected) {
             console.log(

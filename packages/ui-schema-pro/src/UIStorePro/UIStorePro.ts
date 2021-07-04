@@ -97,13 +97,13 @@ export const useStorePro = (
     const historyDebounce = React.useRef<any[]>([])
     const [store, setStore] = React.useState<UIStoreProType>(() => makeStorePro(type, initialStore) as UIStoreProType)
 
-    const onChange: onChangeHandler = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+    const onChange: onChangeHandler = React.useCallback((storeKeys, scopes, updater) => {
         const doValue = scopes.indexOf('value') !== -1
 
         setStore((prevStore: UIStoreProType) => {
             let newStore = prevStore.set(
                 'current',
-                storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore.current)
+                storeUpdater(storeKeys, scopes, updater)(prevStore.current)
             )
 
             if (!doValue) {

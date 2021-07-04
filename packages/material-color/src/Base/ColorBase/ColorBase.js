@@ -79,9 +79,12 @@ export const ColorBase = ({
                 setInputType(e && e.type);
                 onChange(
                     storeKeys, ['value'],
-                    () => ({value: convertColor(color, format)}),
-                    schema.get('deleteOnEmpty') || required,
-                    schema.get('type'),
+                    {
+                        type: 'update',
+                        updater: () => ({value: convertColor(color, format)}),
+                        schema,
+                        required,
+                    },
                 )
             }}
             onChangeComplete={() => {

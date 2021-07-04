@@ -42,6 +42,8 @@ export interface UIStoreUpdaterData {
 export interface UIStoreAction {
     type: string
     effect?: (newData: UIStoreUpdaterData, newStore: UIStoreType) => void
+    schema?: StoreSchemaType
+    required?: boolean
 }
 
 export interface UIStoreActionListItemAdd extends UIStoreAction {
@@ -60,7 +62,12 @@ export interface UIStoreActionListItemMove extends UIStoreAction {
     toIndex: number
 }
 
-export type StoreActions = UIStoreActionListItemAdd | UIStoreActionListItemDelete | UIStoreActionListItemMove
+export interface UIStoreActionUpdate extends UIStoreAction {
+    type: 'update'
+    updater: UIStoreUpdaterFn
+}
+
+export type StoreActions = UIStoreActionListItemAdd | UIStoreActionListItemDelete | UIStoreActionListItemMove | UIStoreActionUpdate
 
 export type UIStoreUpdaterFn<D extends UIStoreUpdaterData = UIStoreUpdaterData> = (data: D) => D
 
@@ -68,11 +75,6 @@ export type onChangeHandlerGeneric<R extends any = void> = (
     storeKeys: StoreKeys,
     scopes: (keyof UIStoreUpdaterData)[],
     updater: UIStoreUpdaterFn | StoreActions,
-    deleteOnEmpty?: boolean,
-    type?: SchemaTypesType,
-    config?: {
-        [key: string]: any
-    },
 ) => R
 
 export type onChangeHandler = onChangeHandlerGeneric<void>
