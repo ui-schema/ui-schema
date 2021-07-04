@@ -1,74 +1,72 @@
 {
-    "name": "@ui-schema/material-slate",
-    "version": "0.0.3",
-    "description": "Slate for UI-Schema with Material-UI",
-    "homepage": "https://ui-schema.bemit.codes",
-    "author": "Michael Becker <michael@bemit.codes>",
-    "license": "MIT",
-    "keywords": [
-        "ui-schema",
-        "json-schema",
-        "mui",
-        "material",
-        "material-ui",
-        "react",
-        "reactjs",
-        "react-component",
-        "slate",
-        "editor-js",
-        "react-editor-js",
-        "form"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ui-schema/ui-schema.git",
-        "directory": "packages/material-slate"
-    },
-    "bugs": {
-        "url": "https://github.com/ui-schema/ui-schema/issues"
-    },
-    "main": "index.js",
-    "module": "esm/index.js",
-    "scripts": {
-        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/material-slate/src build && rm -rf build/dts",
-        "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
-    },
-    "dependencies": {
-        "clsx": "^1.1.0",
-        "react-uid": "^2.2.0"
-    },
-    "devDependencies": {
-        "@material-ui/core": "^4.8",
-        "@material-ui/icons": "^4.8",
-        "@material-ui/lab": "^4.0.0-alpha.20",
-        "@ui-schema/ds-material": "~0.2.x",
-        "@ui-schema/ui-schema": ">=0.2.0-rc.0",
-        "@udecode/slate-plugins": "~0.75.2",
-        "immutable": "^4.0.0-rc.12",
-        "react": "^16.12",
-        "react-dom": "^16.12",
-        "slate": "~0.60.8",
-        "slate-history": "~0.60.8",
-        "slate-hyperscript": "~0.60.8",
-        "slate-react": "~0.60.8",
-        "styled-components": "^5.0.0"
-    },
-    "peerDependencies": {
-        "@material-ui/core": "^4.8",
-        "@material-ui/icons": "^4.8",
-        "@material-ui/lab": "^4.0.0-alpha.20",
-        "@udecode/slate-plugins": "~0.75.2",
-        "@ui-schema/ds-material": "~0.2.x",
-        "@ui-schema/ui-schema": ">=0.2.0-rc.0",
-        "immutable": "^4.0.0-rc.12",
-        "react": "^16.8",
-        "slate": "~0.60.8",
-        "slate-history": "~0.60.8",
-        "slate-hyperscript": "~0.60.8",
-        "slate-react": "~0.60.8",
-        "styled-components": "^5.0.0"
-    },
-    "publishConfig": {
-        "access": "public"
-    }
+	"name": "@ui-schema/material-slate",
+	"version": "0.0.4",
+	"description": "Slate for UI-Schema with Material-UI",
+	"homepage": "https://ui-schema.bemit.codes",
+	"author": "Michael Becker <michael@bemit.codes>",
+	"license": "MIT",
+	"keywords": [
+		"ui-schema",
+		"json-schema",
+		"mui",
+		"material",
+		"material-ui",
+		"react",
+		"reactjs",
+		"react-component",
+		"slate",
+		"editor-js",
+		"react-editor-js",
+		"form"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ui-schema/ui-schema.git",
+		"directory": "packages/material-slate"
+	},
+	"bugs": {
+		"url": "https://github.com/ui-schema/ui-schema/issues"
+	},
+	"main": "index.js",
+	"module": "esm/index.js",
+	"scripts": {
+		"dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/material-slate/src build && rm -rf build/dts",
+		"__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
+	},
+	"dependencies": {
+		"clsx": "^1.1.0",
+		"react-uid": "^2.2.0"
+	},
+	"devDependencies": {
+		"@material-ui/core": "^4.8",
+		"@material-ui/icons": "^4.8",
+		"@material-ui/lab": "^4.0.0-alpha.20",
+		"@udecode/slate-plugins": "~0.75.2",
+		"immutable": "^4.0.0-rc",
+		"react": "^16.12",
+		"react-dom": "^16.12",
+		"slate": "~0.60.8",
+		"slate-history": "~0.60.8",
+		"slate-hyperscript": "~0.60.8",
+		"slate-react": "~0.60.8",
+		"styled-components": "^5.0.0"
+	},
+	"peerDependencies": {
+		"@material-ui/core": "^4.8",
+		"@material-ui/icons": "^4.8",
+		"@material-ui/lab": "^4.0.0-alpha.20",
+		"@udecode/slate-plugins": "~0.75.2",
+		"@ui-schema/ds-material": "~0.3.0-alpha",
+		"@ui-schema/ui-schema": "~0.3.0-alpha",
+		"immutable": "^4.0.0-rc",
+		"react": "^16.8",
+		"slate": "~0.60.8",
+		"slate-history": "~0.60.8",
+		"slate-hyperscript": "~0.60.8",
+		"slate-react": "~0.60.8",
+		"styled-components": "^5.0.0"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
 }

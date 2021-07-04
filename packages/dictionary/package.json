@@ -1,6 +1,6 @@
 {
 	"name": "@ui-schema/dictionary",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"description": "",
 	"homepage": "https://ui-schema.bemit.codes",
 	"author": "Michael Becker <michael@bemit.codes>",
@@ -20,11 +20,11 @@
 	"main": "index.js",
 	"module": "esm/index.js",
 	"devDependencies": {
-		"immutable": "^4.0.0-rc.12"
+		"immutable": "^4.0.0-rc"
 	},
 	"peerDependencies": {
-		"@ui-schema/ui-schema": ">=0.2.0-rc.0",
-		"immutable": "^4.0.0-rc.12"
+		"@ui-schema/ui-schema": "~0.3.0-alpha",
+		"immutable": "^4.0.0-rc"
 	},
 	"scripts": {
 		"dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts build && rm -rf build/dts"
