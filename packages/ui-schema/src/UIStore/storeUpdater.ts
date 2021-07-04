@@ -2,12 +2,12 @@ import {
     StoreKeys, UIStoreType,
     prependKey, addNestKey,
     UIStoreStateData, UIStoreUpdaterData, StoreActions,
-} from '@ui-schema/ui-schema/UIStore/UIStore'
-import { scopeUpdaterValidity } from '@ui-schema/ui-schema/UIStore/scopeUpdaterValidity'
-import { scopeUpdaterInternals } from '@ui-schema/ui-schema/UIStore/scopeUpdaterInternals'
-import { scopeUpdaterValues } from '@ui-schema/ui-schema/UIStore/scopeUpdaterValues'
-import { actionHandler } from '@ui-schema/ui-schema/UIStore/storeActionHandler'
-import { storeUpdaterCreate, storeUpdaterType } from '@ui-schema/ui-schema/UIStore/storeUpdaterCreate'
+} from '@ui-schema/ui-schema/UIStore'
+import { scopeUpdaterValidity } from './scopeUpdaterValidity'
+import { scopeUpdaterInternals } from './scopeUpdaterInternals'
+import { scopeUpdaterValues } from './scopeUpdaterValues'
+import { actionHandler } from './storeActionHandler'
+import { storeUpdaterCreate, storeUpdaterType } from './storeUpdaterCreate'
 
 const getScopedValueFactory = (scope: keyof UIStoreStateData, nestKey?: string) =>
     <S extends UIStoreType>(storeKeys: StoreKeys, store: S) =>

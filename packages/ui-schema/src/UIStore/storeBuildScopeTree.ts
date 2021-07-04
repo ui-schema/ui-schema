@@ -1,5 +1,5 @@
 import { List, Map, OrderedMap, Record } from 'immutable'
-import { StoreKeys, UIStoreType, addNestKey, UIStoreStateData } from '@ui-schema/ui-schema/UIStore/UIStore'
+import { StoreKeys, UIStoreType, addNestKey, UIStoreStateData } from '@ui-schema/ui-schema/UIStore'
 
 export const storeBuildScopeTree = <S extends UIStoreType>(storeKeys: StoreKeys, scope: keyof UIStoreStateData, store: S, nestKey: string | undefined = undefined, ordered: boolean = false): S => {
     const relativeList: (string | number)[] = [scope]

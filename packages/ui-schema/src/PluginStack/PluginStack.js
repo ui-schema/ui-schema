@@ -1,9 +1,9 @@
 import React from 'react';
 import {List} from 'immutable';
 import {memo} from '@ui-schema/ui-schema/Utils/memo';
-import {useUIMeta} from '@ui-schema/ui-schema/UIMeta/UIMetaProvider';
+import {useUIMeta} from '@ui-schema/ui-schema/UIMeta';
 import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorErrors';
-import {useUIConfig} from '@ui-schema/ui-schema/UIStore/UIStoreProvider';
+import {useUIConfig} from '@ui-schema/ui-schema/UIStore';
 import {useImmutable} from '@ui-schema/ui-schema/Utils/useImmutable';
 
 class PluginStackErrorBoundary extends React.Component {
@@ -55,10 +55,10 @@ export const PluginStack = (props) => {
         }
     }
 
-    const ErrorBoundary = activeWidgets.ErrorFallback ? PluginStackErrorBoundary : React.Fragment;
+    const ErrorBoundary = activeWidgets?.ErrorFallback ? PluginStackErrorBoundary : React.Fragment;
 
     return props.schema ? <ErrorBoundary
-        FallbackComponent={activeWidgets.ErrorFallback}
+        FallbackComponent={activeWidgets?.ErrorFallback}
         type={schema.get('type')}
         widget={schema.get('widget')}
     >

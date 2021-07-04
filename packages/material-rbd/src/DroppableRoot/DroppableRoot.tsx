@@ -14,7 +14,7 @@ import { DragDropItemList } from '@ui-schema/material-rbd/DragDropProvider/useDr
 import { DraggableItem } from '@ui-schema/material-rbd/DraggableItem/DraggableItem'
 import { ItemAccordion } from '@ui-schema/material-rbd/DraggableItem/ItemAccordion'
 import { List, Map } from 'immutable'
-import { prependKey } from '@ui-schema/ui-schema/UIStore/UIStore'
+import { prependKey } from '@ui-schema/ui-schema/UIStore'
 
 const useStyle = makeStyles(({palette}) => ({
     dropZone: {
