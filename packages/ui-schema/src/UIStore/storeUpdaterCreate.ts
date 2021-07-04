@@ -40,7 +40,6 @@ export const storeUpdaterCreate: (
             values[scope], res[scope],
             updaterOrAction as StoreActions
         )
-        console.log('store at ' + scope, store?.toJS())
     })
 
     if (effect) {
