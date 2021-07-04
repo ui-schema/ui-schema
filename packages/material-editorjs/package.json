@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-editorjs",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "EditorJS for UI-Schema with Material-UI",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -30,7 +30,7 @@
     "main": "index.js",
     "module": "esm/index.js",
     "scripts": {
-        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts build && rm -rf build/dts",
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/material-editorjs/src build && rm -rf build/dts",
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "dependencies": {
