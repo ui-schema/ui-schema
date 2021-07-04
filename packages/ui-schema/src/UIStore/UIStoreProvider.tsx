@@ -1,6 +1,6 @@
 import React from 'react'
 import { List, Map } from 'immutable'
-import { addNestKey, onChangeHandler, StoreKeys, UIStoreType } from '@ui-schema/ui-schema/UIStore/UIStore'
+import { addNestKey, onChangeHandler, StoreKeys, UIStoreType } from '@ui-schema/ui-schema/UIStore'
 import { getDisplayName } from '@ui-schema/ui-schema/Utils/memo'
 
 export interface UIStoreContext {

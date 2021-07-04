@@ -12,14 +12,13 @@ import {
 import { List } from 'immutable'
 import { UIGenerator } from '../src/UIGenerator/UIGenerator'
 import { MockWidgets } from './MockSchemaProvider.mock'
-import { createStore, extractValue, WithValue } from '@ui-schema/ui-schema/UIStore'
+import { storeUpdater, createStore, extractValue, WithValue } from '@ui-schema/ui-schema/UIStore'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
 import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ExtractStorePlugin, JsonSchema, TransTitle, PluginSimpleStack, ValidityReporter, WidgetProps } from '@ui-schema/ui-schema'
 import { ReferencingHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
 import { validators } from '@ui-schema/ui-schema/Validators/validators'
 import { PluginStack, NextPluginRenderer } from '@ui-schema/ui-schema/PluginStack'
 import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter/isInvalid'
-import { storeUpdater } from '@ui-schema/ui-schema/UIStore/storeUpdater'
 import { relTranslator } from '@ui-schema/ui-schema/Translate/relT'
 
 /**

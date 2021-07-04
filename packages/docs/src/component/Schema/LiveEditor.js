@@ -26,7 +26,7 @@ import {DragDropProvider as DragDropProviderSimple} from '@ui-schema/material-rb
 import {makeDragDropContext as makeDragDropContextSimple} from '@ui-schema/material-rbd/DragDropProvider/makeDragDropContext';
 import {makeDragDropContext} from '@ui-schema/material-dnd/DragDropProvider/makeDragDropContext';
 import {DragDropProvider} from '@ui-schema/material-dnd/DragDropProvider/DragDropProvider';
-import {createEmptyStore} from '@ui-schema/ui-schema/UIStore/UIStore';
+import {createEmptyStore} from '@ui-schema/ui-schema/UIStore';
 
 const IconInput = ({
                        verticalSplit, title,

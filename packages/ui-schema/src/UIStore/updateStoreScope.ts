@@ -1,5 +1,4 @@
-import { prependKey } from '@ui-schema/ui-schema/UIStore/UIStore'
-import { ScopeOnChangeHandlerInternal } from '@ui-schema/ui-schema/UIStore/storeUpdater'
+import { prependKey, ScopeOnChangeHandlerInternal } from '@ui-schema/ui-schema/UIStore'
 
 export const updateStoreScope: ScopeOnChangeHandlerInternal = (store, scope, storeKeys, newValue) => {
     return store.setIn(

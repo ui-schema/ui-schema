@@ -1,7 +1,7 @@
-import { StoreActions, UIStoreUpdaterFn } from '@ui-schema/ui-schema/UIStore/UIStore'
+import { StoreActions, UIStoreUpdaterFn } from '@ui-schema/ui-schema/UIStore'
 import { List, Map, OrderedMap } from 'immutable'
-import { moveItem } from '@ui-schema/ui-schema/Utils/moveItem/moveItem'
-import { SchemaTypesType } from '@ui-schema/ui-schema'
+import { moveItem } from '@ui-schema/ui-schema/Utils/moveItem'
+import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 
 export const actionHandler: (action: StoreActions) => UIStoreUpdaterFn = (action) => {
     switch (action.type) {
