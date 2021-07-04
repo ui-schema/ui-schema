@@ -154,8 +154,8 @@ export const DemoForm = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(data)));
     const [schema/*, setSchema*/] = React.useState(() => createOrderedMap(schemaBase));
 
-    const onChange = React.useCallback((storeKeys, scopes, updater)  => {
-        setStore(storeUpdater(storeKeys, scopes, updater))
+    const onChange = React.useCallback((storeKeys, scopes, updateAction)  => {
+        setStore(storeUpdater(storeKeys, scopes, updateAction))
     }, [setStore])
 
     return <React.Fragment>
@@ -210,10 +210,13 @@ const Widget = ({
             onChange={(e) => {
                 onChange(
                     storeKeys, ['value'],
-                    // oldValue => newValue
-                    ({value}) => ({value: e.target.value}),
-                    schema.get('deleteOnEmpty') || required,
-                    schema.get('type'),
+                    {
+                        type: 'update',
+                        // oldValue => newValue
+                        updater: ({value}) => ({value: e.target.value}),
+                        schema: schema,
+                        required: required,
+                    }
                 )
             }}
         />
@@ -284,8 +287,8 @@ export const DemoForm = () => {
     // `useUIMeta` can be used safely, without performance impact (`useUI` has a performance impact)
     const {widgets, t} = useUIMeta()
 
-    const onChange = React.useCallback((storeKeys, scopes, updater) => {
-        setStore(storeUpdater(storeKeys, scopes, updater))
+    const onChange = React.useCallback((storeKeys, scopes, updateAction) => {
+        setStore(storeUpdater(storeKeys, scopes, updateAction))
     }, [setStore])
 
     return <React.Fragment>
