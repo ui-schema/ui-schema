@@ -40,9 +40,9 @@ customWidgets.custom = {
 
 const DraggableEditorSimple = ({schema}) => {
     const [store, setStore] = React.useState(() => createEmptyStore(schema.get('type')))
-    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+    const onChange = React.useCallback((storeKeys, scopes, action) => {
         setStore(prevStore => {
-            return storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
+            return storeUpdater(storeKeys, scopes, action)(prevStore)
         })
     }, [setStore])
 

@@ -25,7 +25,7 @@ const CheckInput = ({currentValue, onChange, label, value, classForm, classLabel
 };
 const checkActive = (list, name) => list && list.contains && typeof list.contains(name) !== 'undefined' ? list.contains(name) : false;
 
-const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChange, classLabel, classFormControl, classForm, schema, required, type}) => enumVal ?
+const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChange, classLabel, classFormControl, classForm, schema, required}) => enumVal ?
     enumVal.map((enum_name) => {
         const isActive = checkActive(value, enum_name)
 
@@ -39,14 +39,17 @@ const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChang
             onChange={() => {
                 onChange(
                     storeKeys, ['value'],
-                    ({value: val = List()}) =>
-                        ({
-                            value: sortScalarList(checkActive(val, enum_name) ?
-                                val.delete(val.indexOf(enum_name)) :
-                                val.push(enum_name)),
-                        }),
-                    required,
-                    type,
+                    {
+                        type: 'update',
+                        update: ({value: val = List()}) =>
+                            ({
+                                value: sortScalarList(checkActive(val, enum_name) ?
+                                    val.delete(val.indexOf(enum_name)) :
+                                    val.push(enum_name)),
+                            }),
+                        schema,
+                        required,
+                    },
                 )
             }}
             label={<Trans

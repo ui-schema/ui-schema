@@ -144,7 +144,5 @@ onChange(
                     val.push(enum_name)
             ),
         }),
-    required,
-    type,
 )
 ```

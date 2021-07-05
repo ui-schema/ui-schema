@@ -44,9 +44,12 @@ const StringRenderer = ({ownKey, schema, value, multiline = false, onChange, sto
                 const val = e.target.value
                 onChange(
                     storeKeys, ['value'],
-                    () => ({value: convertStringToNumber(val, schema.get('type'))}),
-                    schema.get('deleteOnEmpty') || required,
-                    schema.get('type'),
+                    {
+                        type: 'update',
+                        update: () => ({value: convertStringToNumber(val, schema.get('type'))}),
+                        schema,
+                        required,
+                    },
                 )
             }}
         />

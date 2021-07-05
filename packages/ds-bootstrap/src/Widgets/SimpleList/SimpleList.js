@@ -42,9 +42,12 @@ const SimpleList = extractValue(memo(({
                             onClick={() => {
                                 onChange(
                                     storeKeys, ['value'],
-                                    ({value: storeValue}) => ({value: storeValue.splice(i, 1)}),
-                                    schema.get('deleteOnEmpty') || required,
-                                    schema.get('type'),
+                                    {
+                                        type: 'update',
+                                        update: ({value: storeValue}) => ({value: storeValue.splice(i, 1)}),
+                                        schema,
+                                        required,
+                                    }
                                 )
                             }}/>
                     </div>
@@ -56,9 +59,12 @@ const SimpleList = extractValue(memo(({
                     onClick={() => {
                         onChange(
                             storeKeys, ['value'],
-                            ({value: storeValue = List()}) => ({value: storeValue.push('')}),
-                            schema.get('deleteOnEmpty') || required,
-                            schema.get('type'),
+                            {
+                                type: 'update',
+                                update: ({value: storeValue = List()}) => ({value: storeValue.push('')}),
+                                schema,
+                                required,
+                            }
                         )
                     }}/>
             </div>

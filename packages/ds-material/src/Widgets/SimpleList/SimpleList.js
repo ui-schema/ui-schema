@@ -82,9 +82,8 @@ let SimpleListBase = ({
                             {
                                 type: 'list-item-add',
                                 schema: schema,
+                                required,
                             },
-                            schema.get('deleteOnEmpty') || required,
-                            schema.get('type'),
                         )
                     }}
                     size={btnSize}

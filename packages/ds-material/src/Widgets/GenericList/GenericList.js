@@ -14,7 +14,11 @@ import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperT
 import {List, Map} from 'immutable';
 import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip/Tooltip';
 
-let GenericListItem = ({index, listSize, schema, notSortable, notDeletable, deleteOnEmpty, showValidity, onChange, storeKeys, level, btnSize}) => {
+let GenericListItem = (
+    {
+        index, listSize, schema, listRequired, notSortable, notDeletable, showValidity, onChange, storeKeys, level, btnSize,
+    },
+) => {
     const ownKeys = storeKeys.push(index)
     const itemsSchema = schema.get('items')
     const readOnly = schema.get('readOnly')
@@ -32,9 +36,9 @@ let GenericListItem = ({index, listSize, schema, notSortable, notDeletable, dele
                                     type: 'list-item-move',
                                     fromIndex: index,
                                     toIndex: index - 1,
+                                    schema,
+                                    required: listRequired,
                                 },
-                                deleteOnEmpty,
-                                'array',
                             )
                         }
                     >
@@ -62,9 +66,9 @@ let GenericListItem = ({index, listSize, schema, notSortable, notDeletable, dele
                                     type: 'list-item-move',
                                     fromIndex: index,
                                     toIndex: index + 1,
+                                    schema,
+                                    required: listRequired,
                                 },
-                                deleteOnEmpty,
-                                'array',
                             )
                         }
                     >
@@ -107,9 +111,9 @@ let GenericListItem = ({index, listSize, schema, notSortable, notDeletable, dele
                                 {
                                     type: 'list-item-delete',
                                     index: index,
+                                    schema,
+                                    required: listRequired,
                                 },
-                                deleteOnEmpty,
-                                'array',
                             )
                         }
                         size={btnSize}
@@ -146,8 +150,8 @@ let GenericListBase = ({
                 <GenericListItem
                     key={i} index={i} listSize={listSize}
                     btnSize={btnSize} storeKeys={storeKeys}
-                    deleteOnEmpty={schema.get('deleteOnEmpty') || required}
                     schema={schema} onChange={onChange}
+                    listRequired={required}
                     level={level}
                     notSortable={notSortable}
                     notDeletable={notDeletable}
@@ -162,10 +166,9 @@ let GenericListBase = ({
                                 storeKeys, ['value', 'internal'],
                                 {
                                     type: 'list-item-add',
-                                    schema: schema,
+                                    schema,
+                                    required,
                                 },
-                                schema.get('deleteOnEmpty') || required,
-                                schema.get('type'),
                             )
                         }}
                         size={btnSize}

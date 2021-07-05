@@ -34,13 +34,16 @@ const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChang
                 const target = e.target
                 onChange(
                     storeKeys, ['value'],
-                    () => ({
-                        value: multiple ?
-                            sortScalarList(List([...target.options].filter(o => o.selected).map(o => o.value))) :
-                            target.value,
-                    }),
-                    schema.get('deleteOnEmpty') || required,
-                    schema.get('type'),
+                    {
+                        type: 'update',
+                        update: () => ({
+                            value: multiple ?
+                                sortScalarList(List([...target.options].filter(o => o.selected).map(o => o.value))) :
+                                target.value,
+                        }),
+                        schema,
+                        required,
+                    },
                 )
             }}>
             {enum_val ? enum_val.map((enum_name) => {

@@ -105,9 +105,12 @@ const Widget = ({
             onChange={(e) => {
                 onChange(
                     storeKeys, ['value'],
-                    ({value: oldValue}) => ({value: e.target.value}),
-                    schema.get('deleteOnEmpty') || required,
-                    schema.get('type'),
+                    {
+                        type: 'update',
+                        updater: ({value: oldValue}) => ({value: e.target.value}),
+                        schema,
+                        required,
+                    }
                 )
             }}
         />

@@ -19,9 +19,12 @@ const RadioInput = ({classForm, enumName, classLabel, required, classFormControl
             onChange={() =>
                 onChange(
                     storeKeys, ['value'],
-                    () => ({value: enumName}),
-                    schema.get('deleteOnEmpty') || required,
-                    schema.get('type'),
+                    {
+                        type: 'update',
+                        update: () => ({value: enumName}),
+                        schema,
+                        required,
+                    }
                 )
             }
         />

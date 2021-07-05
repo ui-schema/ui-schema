@@ -1,6 +1,6 @@
 {
 	"name": "@ui-schema/dictionary",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"description": "",
 	"homepage": "https://ui-schema.bemit.codes",
 	"author": "Michael Becker <michael@bemit.codes>",
@@ -27,7 +27,7 @@
 		"immutable": "^4.0.0-rc"
 	},
 	"scripts": {
-		"dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts build && rm -rf build/dts"
+		"dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/dictionary/src build && rm -rf build/dts"
 	},
 	"publishConfig": {
 		"access": "public"

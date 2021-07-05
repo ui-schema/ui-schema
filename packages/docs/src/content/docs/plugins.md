@@ -771,9 +771,9 @@ const Main = () => {
 
     const [store, setStore] = React.useState((): UIStoreType => createStore(OrderedMap()))
 
-    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+    const onChange = React.useCallback((storeKeys, scopes, action) => {
         setStore((prevStore: UIStoreType) => {
-            return storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
+            return storeUpdater(storeKeys, scopes, action)(prevStore)
         })
     }, [setStore])
 

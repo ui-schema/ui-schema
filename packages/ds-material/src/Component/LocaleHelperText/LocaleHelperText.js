@@ -16,7 +16,7 @@ export const ValidityHelperText = ({showValidity, errors, schema, browserError})
         <FormHelperText error>
             {browserError}
         </FormHelperText> :
-        showValidity && errors.hasError() ?
+        showValidity && errors && errors.hasError() ?
             errors.getErrors().keySeq().map((type) =>
                 errors.getError(type).map((err, i) =>
                     <LocaleHelperText
