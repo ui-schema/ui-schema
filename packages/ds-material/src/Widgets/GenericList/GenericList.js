@@ -16,7 +16,7 @@ import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip/Toolti
 
 let GenericListItem = (
     {
-        index, listSize, schema, listRequired, notSortable, notDeletable, showValidity, onChange, storeKeys, level, btnSize,
+        index, listSize, schema, listRequired, notSortable, notDeletable, showValidity, onChange, storeKeys, schemaKeys, level, btnSize,
     },
 ) => {
     const ownKeys = storeKeys.push(index)
@@ -90,6 +90,7 @@ let GenericListItem = (
                                 {itemsSchema.get('items')?.map((item, j) => <PluginStack
                                     key={j}
                                     showValidity={showValidity}
+                                    schemaKeys={schemaKeys?.push('items').push('items').push(j)}
                                     storeKeys={ownKeys.push(j)}
                                     schema={item}
                                     parentSchema={schema}
@@ -101,6 +102,7 @@ let GenericListItem = (
                             showValidity={showValidity}
                             schema={itemsSchema} parentSchema={schema}
                             storeKeys={ownKeys} level={level + 1}
+                            schemaKeys={schemaKeys?.push('items')}
                         />}
 
                 {!readOnly && !notDeletable ? <Grid item style={{display: 'flex', flexShrink: 0}}>
@@ -132,7 +134,7 @@ let GenericListItem = (
 GenericListItem = memo(GenericListItem)
 
 let GenericListBase = ({
-                           storeKeys, ownKey, schema, listSize, onChange,
+                           storeKeys, schemaKeys, ownKey, schema, listSize, onChange,
                            showValidity, valid, errors, required, level,
                        }) => {
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
@@ -149,7 +151,7 @@ let GenericListBase = ({
             {Array(listSize).fill(null).map((val, i) =>
                 <GenericListItem
                     key={i} index={i} listSize={listSize}
-                    btnSize={btnSize} storeKeys={storeKeys}
+                    btnSize={btnSize} storeKeys={storeKeys} schemaKeys={schemaKeys}
                     schema={schema} onChange={onChange}
                     listRequired={required}
                     level={level}

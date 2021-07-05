@@ -11,7 +11,7 @@ import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip/Toolti
 import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
 
 let SimpleListItem = (
-    {showValidity, schema, storeKeys, notDeletable, btnSize, readOnly, required, onChange, level, index},
+    {showValidity, schema, schemaKeys, storeKeys, notDeletable, btnSize, readOnly, required, onChange, level, index},
 ) => {
     return <Grid key={index} item xs={12} style={{display: 'flex'}}>
         <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
@@ -19,6 +19,7 @@ let SimpleListItem = (
                 showValidity={showValidity} noGrid
                 schema={schema.get('items')} parentSchema={schema}
                 storeKeys={storeKeys.push(index)} level={level + 1}
+                schemaKeys={schemaKeys?.push('items')}
             />
         </div>
 
@@ -47,7 +48,7 @@ SimpleListItem = memo(SimpleListItem)
 export {SimpleListItem}
 
 let SimpleListBase = ({
-                          storeKeys, ownKey, schema, listSize, onChange,
+                          schemaKeys, storeKeys, ownKey, schema, listSize, onChange,
                           showValidity, valid, errors, required, level,
                       }) => {
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
@@ -66,6 +67,7 @@ let SimpleListBase = ({
                 showValidity={showValidity}
                 schema={schema}
                 storeKeys={storeKeys}
+                schemaKeys={schemaKeys}
                 btnSize={btnSize}
                 level={level}
                 notDeletable={notDeletable}
