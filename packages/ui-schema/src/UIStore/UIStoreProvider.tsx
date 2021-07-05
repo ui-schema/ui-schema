@@ -4,7 +4,7 @@ import { addNestKey, onChangeHandler, StoreKeys, UIStoreType } from '@ui-schema/
 import { getDisplayName } from '@ui-schema/ui-schema/Utils/memo'
 
 export interface UIStoreContext {
-    store: UIStoreType
+    store: UIStoreType | undefined
     onChange: onChangeHandler
     showValidity?: boolean | undefined
 }

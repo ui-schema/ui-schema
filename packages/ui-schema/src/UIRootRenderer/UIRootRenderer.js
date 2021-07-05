@@ -50,7 +50,9 @@ export const UIRootRenderer = ({schema, rootContext}) => {
 
     return <DumpRootRenderer
         rootRenderer={RootRenderer} isVirtual={schema?.get('hidden')}
-        schema={schema} storeKeys={List([])}
+        schema={schema}
+        storeKeys={List([])}
+        schemaKeys={List([])}
         // additional meta data, available from `SchemaRootProvider`
         rootContext={rootContext}
     />;

@@ -40,7 +40,7 @@ Saves and provides the `store`, `onChange` and `schema`.
     - `extractValidity` passes down: `validity`, `onChange`
 - Properties:
     - `store`: `UIStore` the immutable record storing the current ui generator state
-    - `onChange`: `function(storeKeys, scopes, updaterOrAction, deleteOnEmpty, type): void` [a function capable of updating the saved store](#store-updating--onchange)
+    - `onChange`: `function(storeKeys, scopes, updaterOrAction): void` [a function capable of updating the saved store](#store-updating--onchange)
     - `schema`: `OrderedMap` the full schema as an immutable map
     - `showValidity` boolean
 
@@ -141,9 +141,7 @@ Parameters:
     - a function receiving the scope values and returning the updated values
     - or a [store action](#store-actions)
     - `function({value, valid, internal}: {value: any, valid: any, internal: any}): {value: any, valid: any, internal: any}`
-- `deleteOnEmpty`: `boolean | undefined`, if the property should be deleted at all, treating [empty like in required HTML-inputs](/docs/schema#required-keyword)
-    - from widgets the required property/keyword turns this to `true`
-- `type`: `string | undefined`, the type of the value, may be unknown on some edge cases (like only updating validity), is needed for `deleteOnEmpty`
+    - using `action.schema` to handle e.g. `deleteOnEmpty`, treating [empty like in required HTML-inputs](/docs/schema#required-keyword)
 
 Does not return anything.
 
@@ -156,10 +154,10 @@ import {widgets} from '@ui-schema/ds-material';
 const Demo = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap({})));
 
-    const onChange = React.useCallback((storeKeys, scopes, updaterOrAction, deleteOnEmpty, type) => {
+    const onChange = React.useCallback((storeKeys, scopes, updaterOrAction) => {
         setStore(prevStore => {
             // `storeUpdater` executes the updater or handles the `action`
-            const newStore = storeUpdater(storeKeys, scopes, updaterOrAction, deleteOnEmpty, type)(prevStore)
+            const newStore = storeUpdater(storeKeys, scopes, updaterOrAction)(prevStore)
             return newStore
         })
     }, [setStore])
@@ -247,8 +245,6 @@ onChange(
         type: 'list-item-delete',
         index: index as number,
     },
-    deleteOnEmpty,
-    'array'
 )
 ```
 

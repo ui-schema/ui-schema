@@ -3,7 +3,7 @@ import {memo} from '@ui-schema/ui-schema/Utils/memo';
 import {PluginStack} from '@ui-schema/ui-schema/PluginStack';
 
 let ObjectRenderer = ({
-                          level, schema, storeKeys,
+                          level, schema, storeKeys, schemaKeys,
                           // todo: concept in validation
                           // for performance reasons, not pushing errors deeper
                           // eslint-disable-next-line no-unused-vars
@@ -32,7 +32,9 @@ let ObjectRenderer = ({
             key={childKey}
             {...props}
             schema={childSchema} parentSchema={schema}
-            storeKeys={storeKeys.push(childKey)} level={level + 1}
+            storeKeys={storeKeys.push(childKey)}
+            schemaKeys={schemaKeys?.push('properties').push(childKey)}
+            level={level + 1}
         />,
     ).valueSeq()
 

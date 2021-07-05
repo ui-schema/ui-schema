@@ -26,12 +26,12 @@ export const StringRenderer = ({
     inputProps = mapSchema(inputProps, schema);
 
     const hideTitle = schema.getIn(['view', 'hideTitle'])
-
     return <React.Fragment>
         <TextField
             label={hideTitle ? undefined : <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>}
             aria-label={hideTitle ? <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/> : undefined}
-            type={format || type}
+            // changing `type` to `text`, to be able to change invalid data
+            type={format || (typeof value === 'string' && type === 'number' ? 'text' : type)}
             disabled={schema.get('readOnly')}
             multiline={multiline}
             required={required}
@@ -43,7 +43,9 @@ export const StringRenderer = ({
             variant={schema.getIn(['view', 'variant'])}
             margin={schema.getIn(['view', 'margin'])}
             size={schema.getIn(['view', 'dense']) ? 'small' : 'medium'}
-            value={typeof value === 'string' || typeof value === 'number' ? value : ''}
+            value={
+                typeof value === 'string' || typeof value === 'number' ? value : ''
+            }
             onClick={onClick}
             onFocus={onFocus}
             onBlur={onBlur}
@@ -65,14 +67,15 @@ export const StringRenderer = ({
                     schemaTypeIsNumeric(schemaType)
                     && newVal === '' && e.target.validity.badInput
                 ) {
-                    // forbid saving of invalid number at all
-                    // deletes invalid number on-change
+                    // forbid saving/deleting of invalid number at all
                     return undefined
                 }
                 onChange(
                     storeKeys, ['value'],
                     {
                         type: 'update',
+                        // setting the actual val when invalid, e.g. at numbers, it allows to correct invalid data without a "reset"
+                        //updater: () => ({value: typeof newVal === 'undefined' ? val : newVal}),
                         updater: () => ({value: newVal}),
                         schema,
                         required,

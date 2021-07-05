@@ -3,7 +3,7 @@ import { showValidity, Errors, StoreSchemaType } from '@ui-schema/ui-schema/Comm
 
 export interface ValidityHelperTextProps {
     showValidity: showValidity | undefined
-    errors: Errors
+    errors?: Errors
     schema: StoreSchemaType
     browserError?: Node | React.ReactElement
 }

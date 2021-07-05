@@ -23,6 +23,7 @@ export const handleMoveUp = (onChange: onChangeHandler, storeKeys: StoreKeys): v
     onChange(
         storeKeys.splice(storeKeys.size - 1, 1) as StoreKeys,
         ['value', 'internal'],
+        // todo: move `schema`/`required` to action like `type: update`
         {
             type: 'list-item-move',
             fromIndex: ownKey,
@@ -35,6 +36,7 @@ export const handleMoveDown = (onChange: onChangeHandler, storeKeys: StoreKeys):
     onChange(
         storeKeys.splice(storeKeys.size - 1, 1) as StoreKeys,
         ['value', 'internal'],
+        // todo: move `schema`/`required` to action like `type: update`
         {
             type: 'list-item-move',
             fromIndex: storeKeys.last() as number,
@@ -184,6 +186,7 @@ export const handleDragEnd = (
     onChange(
         List(),
         ['value', 'internal'],
+        // todo: move `schema`/`required` to action like `type: update`
         ({value, internal = Map()}) => {
             if (storeKeysFrom.size < 2) {
                 // when in root list (single root array for whole schema)
