@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import { Step, Stepper, widgets } from '@ui-schema/ds-material'
-import { createOrderedMap, createStore, StoreKeys, StoreSchemaType, WidgetProps, loadSchemaUIApi, UIMetaProvider, UIStoreProvider, useUIMeta } from '@ui-schema/ui-schema'
+import { createOrderedMap, createStore, StoreKeys, StoreSchemaType, WidgetProps, loadSchemaUIApi, UIMetaProvider, UIStoreProvider, useUIMeta, WithValue, extractValue } from '@ui-schema/ui-schema'
 import { browserT } from '../t'
 import { UIApiProvider } from '@ui-schema/ui-schema/UIApi/UIApi'
 import { ReferencingNetworkHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
@@ -13,7 +13,7 @@ import { storeUpdater } from '@ui-schema/ui-schema/UIStore/storeUpdater'
 import { Table } from '@ui-schema/ds-material/Widgets/Table'
 import { NumberRendererCell, StringRendererCell, TextRendererCell } from '@ui-schema/ds-material/Widgets/TextFieldCell'
 import { TableAdvanced } from '@ui-schema/ds-material/Widgets/TableAdvanced/TableAdvanced'
-import { List, OrderedMap } from 'immutable'
+import { List, Map, OrderedMap } from 'immutable'
 import { PluginStack } from '@ui-schema/ui-schema/PluginStack/PluginStack'
 import { applyPluginStack } from '@ui-schema/ui-schema/applyPluginStack'
 import { StringRenderer } from '@ui-schema/ds-material/Widgets/TextField'
@@ -69,7 +69,6 @@ const Main = ({classes}: { classes: { paper: string } }) => {
             <Paper className={classes.paper}>
                 <Typography component={'p'} variant={'body1'}>
                     One root schema, but rendering the widgets fully manually in the root level.
-                    <del>without validating the root object for this strategy, technical limitation.</del>
                 </Typography>
                 <FreeFormEditor/>
             </Paper>
@@ -83,6 +82,20 @@ const freeFormSchema = createOrderedMap({
         name: {
             type: 'string',
         },
+        file: {
+            type: 'object',
+            properties: {
+                link: {
+                    type: 'string',
+                },
+                expiry: {
+                    type: 'string',
+                },
+                name: {
+                    type: 'string',
+                },
+            },
+        },
         city: {
             type: 'string',
             widget: 'Select',
@@ -94,6 +107,48 @@ const freeFormSchema = createOrderedMap({
 const storeKeys = List()
 
 const WidgetTextField = applyPluginStack(StringRenderer)
+
+const FileUpload: React.ComponentType<WidgetProps & WithValue> = ({storeKeys, onChange, schema, required, value}) => {
+    console.log('value', value && value.toJS ? value.toJS() : value)
+    return <div>
+        <input type={'file'} onChange={e => {
+            const formData = new FormData()
+            // @ts-ignore
+            formData.append('file', e.target.files[0])
+            // todo: handle `is uploading`
+            fetch('https://file.io', {method: 'POST', body: formData})
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status === 200) {
+                        console.log('file uploaded!', data)
+                        onChange(
+                            // !!! this `onChange` is only compatible with the newest `0.3.0-alpha` version!
+                            storeKeys, ['value'],
+                            {
+                                type: 'update',
+                                updater: ({value = Map()}) => ({
+                                    value: value.set('link', data.link).set('expires', data.expires).set('name', data.name),
+                                }),
+                                schema,
+                                required,
+                            }
+                        )
+                    } else {
+                        // todo: implement validity handling on error
+                        console.error('File upload error!', data)
+                    }
+                })
+        }}/>
+
+
+        {value?.get('link') ? <div>
+            <p>Uploaded File:</p>
+            <pre><code>{JSON.stringify(value?.toJS(), undefined, 4)}</code></pre>
+        </div> : 'no-file-uploaded'}
+    </div>
+}
+
+const WidgetFileUpload = applyPluginStack(extractValue(FileUpload))
 
 const FreeFormEditor = () => {
     const showValidity = true
@@ -134,6 +189,13 @@ let FreeFormEditorContent = (
         onSchema={setSchema}
     >
         <Grid container dir={'columns'} spacing={4}>
+            <WidgetFileUpload
+                level={1}
+                storeKeys={storeKeys.push('file') as StoreKeys}
+                schema={schema.getIn(['properties', 'file']) as unknown as StoreSchemaType}
+                parentSchema={schema}
+            />
+
             <WidgetTextField
                 level={1}
                 storeKeys={storeKeys.push('name') as StoreKeys}
