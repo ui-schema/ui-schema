@@ -27,7 +27,7 @@
 		"immutable": "^4.0.0-rc"
 	},
 	"scripts": {
-		"dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/dictionary/src build && rm -rf build/dts"
+		"dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/dictionary/src build && rm -rf build/dts && rm -rf build/**/*.test.*"
 	},
 	"publishConfig": {
 		"access": "public"

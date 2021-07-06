@@ -31,7 +31,7 @@ export default () => <React.Fragment>
             <path d="M0 10.2A1.8 1.8 0 001.8 12h1.8a8.4 8.4 0 018.4 8.4v1.8a1.8 1.8 0 001.8 1.8h8.4a1.8 1.8 0 001.8-1.8v-1.8C24 9.133 14.867 0 3.6 0H1.8A1.8 1.8 0 000 1.8v8.4z"/>
         </svg>
         {' '}
-        <Link href={'https://ui-schema.slack.com/join/shared_invite/zt-ntijwi5j-G3bVjGevxx0llwd5fAGnqQ#/shared-invite/email'}>Chat on Slack</Link>
+        <Link href={'https://join.slack.com/t/ui-schema/shared_invite/zt-smbsybk5-dFIRLEPCJerzDwtycaA71w'}>Chat on Slack</Link>
     </Typography>
     <hr style={{opacity: 0.1, margin: '4px 0 4px 26px'}}/>
     <Typography component={'p'} variant={'body1'}>

@@ -30,7 +30,7 @@
 	"main": "index.js",
 	"module": "esm/index.js",
 	"scripts": {
-		"dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/material-slate/src build && rm -rf build/dts",
+		"dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/material-slate/src build && rm -rf build/dts && rm -rf build/**/*.test.*",
 		"__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
 	},
 	"dependencies": {
