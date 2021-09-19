@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import React from 'react'
 import { Translator } from '@ui-schema/ui-schema/Translate/makeTranslator'
 import { createEmptyStore } from '@ui-schema/ui-schema/UIStore'
