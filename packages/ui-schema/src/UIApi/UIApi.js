@@ -15,7 +15,7 @@ export const UIApiContext = React.createContext({})
 
 export const useUIApi = () => React.useContext(UIApiContext)
 
-export const schemaLocalCachePath = 'uischema-cache' + window.location.port
+export const schemaLocalCachePath = 'uischema-cache' + (typeof window === 'undefined' ? 0 : window.location.port)
 
 const initialState = ({noCache = false}) => {
     let cached
