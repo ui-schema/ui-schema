@@ -334,58 +334,7 @@ export default function App() {
 
 ## Contributing
 
-1. Fork/Clone Repository, use branch `develop`
-2. Install root dev-dependencies (like lerna, webpack): `npm i`
-3. Start dev-server: `npm start`
-    - (will clean-dist + symlink-es-modules + init & hoist packages + starting demo app)
-    - `npm start -- --serve docs` also starts docs app
-4. Open browser on [localhost:4200](http://localhost:4200) for demo, [localhost:4201](http://localhost:4201) for docs
-5. Explore [packages](packages)
-8. Code -> Commit -> Pull Request -> Being Awesome!
-
-Changes from any package are reflected inside the demo/docs package.
-
-See current *[packages/demo@master](https://ui-schema-demo.netlify.app/)* or
-*[packages/demo@develop](https://develop--ui-schema-demo.netlify.app/)*
-
-- Start Documentation: `npm run docs` (needs running demo server)
-    - see [localhost:4201](http://localhost:4201)
-    - write in [packages/docs/src/content/docs](./packages/docs/src/content/docs)
-- Faster start, needs manual bootstrapping, hoisting and update handling
-    - `npm run serve` start all configured apps
-    - `npm run serve -- demo --serve docs` start specific apps (docs and demo here)
-
-Commands:
-
-- Developing test driven: `npm run tdd`
-    - needs manual bootstrapping, hoisting and update handling
-    - `npm run tdd -- -u --testPathPattern=src/Validators`
-        - with `-u|--update` for snapshot update testing
-        - with `--testPathPattern` to run all tests in a specific folder / path
-        - `npm run tdd -- --testPathPattern=PatternValidator -t patternValidator` for only one test and often only one file
-- Testing: `npm test`
-    - needs manual bootstrapping, hoisting and update handling
-- Build: `npm run build`
-    - needs manual bootstrapping and update handling
-- Clean node_modules and build dirs: `npm run clean`
-- Clean build dirs: `npm run clean-dist`
-- Add new node_module to one package: `lerna add <npm-package-name> --scope=@ui-schema/demo [--dev] [--peer]`, without `--scope` in all packages
-- Do not change `package.json` of packages manually, and if Bootstrap [lerna](https://lerna.js.org/): `npm run bootstrap` (maybe delet e `package-lock.json`), or simply open an issue
-- Add new package `lerna create <name>` and follow on screen, e.g.: `lerna create material-pickers` add package name `@ui-schema/material-pickerss`, creates folder `./packages/material-pickers`
-
-Publish, for main-repo only:
-
-1. Manual `lerna version <semver> --no-git-tag-version` is needed
-    - like `lerna version 0.0.2 --no-git-tag-version`, see [docs](https://github.com/lerna/lerna/tree/master/commands/version#lifecycle-scripts)
-2. Then tag the commit with the same version
-3. Push, CI will publish to npm using `npm run release -- --yes`
-    - this leads to: `lerna publish from-package --no-git-reset --yes`
-4. **todo:** automate version bump by git-tags w/ publish, and switch to independent lerna versioning
-
-Templates for monorepo packages:
-
-- [Additional DS Module](./tools/template-package)
-- [Design-System](./tools/template-ds)
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
@@ -402,10 +351,6 @@ The icons in the badges of the readme's are either from [simpleicons](https://si
 - [Play Icon © Chanut is Industries, CC BY 3.0](https://www.iconfinder.com/icons/928430/go_media_music_play_playing_start_icon)
 - [Experiment Icon © Ardiansyah Ardi, CC BY 3.0](https://www.iconfinder.com/icons/4951169/chemical_experiment_glass_lab_medical_icon)
 - [Doc Icons © PICOL, CC BY 3.0](https://www.iconfinder.com/iconsets/picol-vector)
-
-### Contributors
-
-By committing your code/creating a pull request to this repository you agree to release the code under the MIT License attached to the repository.
 
 ***
 
