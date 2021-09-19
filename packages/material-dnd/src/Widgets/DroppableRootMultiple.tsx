@@ -11,6 +11,8 @@ export const DroppableRootMultiple = ({schema, storeKeys}: WidgetProps): JSX.Ele
     const {widgets} = useUIMeta()
     const properties = (schema.get('properties') as OrderedMap<string, any>)
 
+    // todo: make `widget` mapping naming dynamic for `DroppableRootContent` and `DraggableBlock`
+
     if (!widgets.DroppableRootContent) {
         if (process.env.NODE_ENV === 'development') {
             console.error('Can not display DroppableRootMultiple, missing widgets.DroppableRootContent')

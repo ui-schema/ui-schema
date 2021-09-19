@@ -23,5 +23,5 @@ export const ValidatorErrors: ValidatorErrorsType
 
 export function createValidatorErrors(): ValidatorErrorsType
 
-export type onErrorHandler = (errors: ValidatorErrorsType) => void
+export type onErrorHandler = (errors: ValidatorErrorsType | undefined) => void
 export type onErrors = (cb: onErrorHandler) => void

@@ -12,7 +12,7 @@ import {useSwitchTheme} from '@control-ui/app/AppTheme';
 import {Drawer} from '@control-ui/app/Drawer';
 import {useDrawer} from '@control-ui/app/DrawerProvider';
 import {ListItemLink} from '@control-ui/kit/List';
-import {ListItemIcon} from '@control-ui/kit/List/ListItemIcon';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import {Logo} from '../asset/logo';
 import {schemas} from '../schemas/_list';
 import ListItemText from '@material-ui/core/ListItemText';

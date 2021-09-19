@@ -140,7 +140,6 @@ const FileUpload: React.ComponentType<WidgetProps & WithValue> = ({storeKeys, on
                 })
         }}/>
 
-
         {value?.get('link') ? <div>
             <p>Uploaded File:</p>
             <pre><code>{JSON.stringify(value?.toJS(), undefined, 4)}</code></pre>
@@ -153,7 +152,6 @@ const WidgetFileUpload = applyPluginStack(extractValue(FileUpload))
 const FreeFormEditor = () => {
     const showValidity = true
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
-    const [schema, setSchema] = React.useState<StoreSchemaType>(() => freeFormSchema)
 
     const onChange = React.useCallback((storeKeys, scopes, updater) => {
         setStore(storeUpdater(storeKeys, scopes, updater))
@@ -171,18 +169,15 @@ const FreeFormEditor = () => {
             <FreeFormEditorContent
                 storeKeys={storeKeys}
                 freeFormSchema={freeFormSchema}
-                setSchema={setSchema}
-                schema={schema}
                 showValidity={showValidity}
             />
         </UIStoreProvider>
     </React.Fragment>
 }
 
-let FreeFormEditorContent = (
-    // @ts-ignore
-    {storeKeys, freeFormSchema, setSchema, schema, showValidity}
-) => {
+// @ts-ignore
+let FreeFormEditorContent = ({storeKeys, freeFormSchema, showValidity}) => {
+    const [schema, setSchema] = React.useState<StoreSchemaType>(() => freeFormSchema)
     return <ObjectGroup
         storeKeys={storeKeys}
         schema={freeFormSchema} parentSchema={undefined}

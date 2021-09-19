@@ -5,6 +5,7 @@ import { TableRenderer } from '@ui-schema/ds-material/BaseComponents/Table/Table
 import { TableFooter } from '@ui-schema/ds-material/BaseComponents/Table/TableFooter'
 import { TableHeader } from '@ui-schema/ds-material/BaseComponents/Table/TableHeader'
 import { TableRowRenderer } from '@ui-schema/ds-material/BaseComponents/Table/TableRowRenderer'
+import { TableRendererExtractorProps } from '@ui-schema/ds-material/BaseComponents'
 
 const TableHeaderMemo = memo(TableHeader)
 const TableRowRendererMemo = memo(TableRowRenderer)
@@ -17,7 +18,7 @@ export const Table: React.ComponentType<WidgetProps> = (props) => {
         TableRowRenderer={TableRowRendererMemo}
         TableFooter={TableFooter}
         TableHeader={TableHeaderMemo}
-        rowsPerPage={props.schema.getIn(['view', 'rowsPerPage']) || rowsPerPageDefault}
-        rowsShowAll={props.schema.getIn(['view', 'rowsShowAll'])}
+        rowsPerPage={(props.schema.getIn(['view', 'rowsPerPage']) as TableRendererExtractorProps['rowsPerPage']) || rowsPerPageDefault}
+        rowsShowAll={props.schema.getIn(['view', 'rowsShowAll']) as TableRendererExtractorProps['rowsShowAll']}
     />
 }

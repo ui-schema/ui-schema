@@ -36,7 +36,7 @@
 	"devDependencies": {
 		"@material-ui/core": "^4.8",
 		"@material-ui/icons": "^4.8",
-		"immutable": "^4.0.0-rc",
+		"immutable": "^4.0.0-rc.15",
 		"react": "^16.12",
 		"react-color": "^2.18.1",
 		"react-dom": "^16.12"

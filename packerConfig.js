@@ -1,5 +1,5 @@
 const path = require('path');
-const {buildExternal, packer} = require('lerna-packer');
+const {buildExternal, packer, webpack} = require('lerna-packer');
 
 const apps = {
     demo: {
@@ -11,6 +11,7 @@ const apps = {
         dist: path.resolve(__dirname, 'dist', 'demo'),
         servedPath: '/',// todo: make package.json homepage dependent,
         vendors: ['react-error-boundary', 'immutable', '@material-ui/core', '@material-ui/icons'],
+        plugins: [],
     },
     docs: {
         root: path.resolve(__dirname, 'packages', 'docs'),
@@ -22,6 +23,12 @@ const apps = {
         servedPath: '/',
         vendors: ['react-error-boundary', 'immutable', '@material-ui/core', '@material-ui/icons'],
         copy: [{from: path.resolve(__dirname, 'schema'), to: path.resolve(__dirname, 'dist', 'docs', 'schema')}],
+        plugins: [
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+                'process.env.NODE_DEBUG': JSON.stringify(process.env.NODE_ENV),
+            }),
+        ],
     },
 };
 

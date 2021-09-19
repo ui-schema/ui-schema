@@ -7,7 +7,7 @@ export type ValuesJS = any[] | string | number | boolean | Object
 export interface UIStoreStateData<D = any> {
     values: D
     internals: UIStoreInternalsType
-    validity: Map<string | number, any>
+    validity: UIStoreValidityType
     meta: Map<string, any>
 }
 
@@ -16,11 +16,12 @@ export interface UIStoreState<D = any> extends UIStoreStateData<D> {
     valuesToJS: () => ValuesJS
     // todo: correct typing `getValues` return value
     getValues: () => D
-    getInternals: () => UIStoreInternalsType | undefined
-    getValidity: () => Map<string | number, any>
+    getInternals: () => UIStoreInternalsType
+    getValidity: () => UIStoreValidityType
 }
 
 export type UIStoreType<D = any> = RecordOf<UIStoreState<D>>
+
 /**
  * the `internals` are nested for safer generic usage, only the key `internals` is reserved (for nesting)
  * {} = {internals: Map({})}
@@ -29,6 +30,8 @@ export type UIStoreType<D = any> = RecordOf<UIStoreState<D>>
  * })}
  */
 export type UIStoreInternalsType = Map<string, any>
+
+export type UIStoreValidityType = Map<string | number, any>
 
 export const UIStore: UIStoreType
 

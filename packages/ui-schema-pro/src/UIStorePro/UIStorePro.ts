@@ -1,7 +1,6 @@
 import React from 'react'
 import {
     List, Map, Record,
-    // @ts-ignore
     RecordOf,
 } from 'immutable'
 import { createEmptyStore, onChangeHandler, storeUpdater, UIStoreType } from '@ui-schema/ui-schema/UIStore'
@@ -32,24 +31,26 @@ export interface UIStoreProData {
     opts: Map<string, any>
 }
 
-// @ts-ignore
-class UIStorePro extends Record({
+const UIStoreProRecord = Record({
     activeIndex: 0,
     current: createEmptyStore('object'),
     list: List([createEmptyStore('object')]),
     opts: Map(),
-}) implements UIStoreProData {
+} as UIStoreProData)
+
+export class UIStorePro extends UIStoreProRecord {
 }
 
-// @ts-ignore
 export type UIStoreProType = RecordOf<UIStoreProData>
 
 export const makeStorePro = (type: string, initialStore: UIStoreType | any = undefined): UIStoreProType => {
+    // @ts-ignore
     return new UIStorePro({
         activeIndex: 0,
         current: initialStore || createEmptyStore(type),
         list: List([initialStore || createEmptyStore(type)]),
-    })
+        opts: Map(),
+    } as UIStoreProData)
 }
 
 const initialChangeRater: { current: number, last: any } = {current: 0, last: undefined}

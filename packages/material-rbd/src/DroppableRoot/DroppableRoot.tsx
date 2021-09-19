@@ -74,13 +74,13 @@ const EditorRootSelect = ({storeKeys, isDraggingOver}: { storeKeys: StoreKeys, i
 const DroppableRootContent: React.ComponentType<DroppableRootContentProps> = ({type, schema, storeKeys, isDraggingOver, openAll, ownKey}) => {
     const {store} = useUI()
     const {definitions} = useSchemaRoot()
-    const data: DragDropItemList = store.getIn(storeKeys.size > 0 ? prependKey(storeKeys, 'values') : ['values'])
+    const data = store?.getIn(storeKeys.size > 0 ? prependKey(storeKeys, 'values') : ['values']) as DragDropItemList | undefined
     return data && data.size ?
         data.toArray().map((item, i) =>
             <DraggableItem
                 key={item.get('$bid') as string}
                 index={i}
-                itemsSize={data.size}
+                itemsSize={data?.size || 0}
                 type={type}
                 parentKeys={storeKeys}
                 storeKeys={storeKeys.push(i) as StoreKeys}
@@ -88,7 +88,7 @@ const DroppableRootContent: React.ComponentType<DroppableRootContentProps> = ({t
                 data={item}
                 schema={
                     // todo: get item schema from DragDropContext
-                    definitions?.getIn([item.get('$block')])
+                    definitions?.getIn([item.get('$block')]) as StoreSchemaType
                 }
                 parentSchema={schema}
                 open={openAll}

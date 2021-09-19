@@ -7,6 +7,7 @@ import { BlockAddHover } from '@ui-schema/material-dnd/BlockSelection/BlockAddHo
 import { makeStyles } from '@material-ui/core/styles'
 import { DroppableRootSelect } from '@ui-schema/material-dnd/DroppableRoot/DroppableRootSelect'
 import { BlockAddProps } from '@ui-schema/material-dnd/BlockSelection/BlockAddProps'
+import { List } from 'immutable'
 
 export interface DroppableRootContentProps {
     storeKeys: StoreKeys
@@ -37,7 +38,7 @@ let ContentTools = (
             schema: StoreSchemaType
         }
 ) => {
-    const allowed = schema.getIn(['dragDrop', 'allowed'])
+    const allowed = schema.getIn(['dragDrop', 'allowed']) as List<string>
 
     const availableBlocks = allowed ?
         blocks.filter((_i, k) => allowed.contains(k)) as DragDropAdvancedContextType['blocks'] :
@@ -50,7 +51,8 @@ let ContentTools = (
                 setAddSelectionIndex(-1)
             }
         }
-    }, [availableBlocks, storeKeys, addSelectionIndex])
+    }, [availableBlocks, storeKeys, addSelectionIndex, handleBlockAdd, setAddSelectionIndex])
+
     return <>
         {dataSize ? <BlockAddHover
             setAddSelectionIndex={setAddSelectionIndex}
@@ -97,8 +99,11 @@ export const DroppableRootContent: React.ComponentType<DroppableRootContentProps
 ) => {
     const classes = useStyle()
     const {store, onChange} = useUI()
-    const data: DragDropBlockList = store.getIn(storeKeys.size > 0 ? prependKey(storeKeys, 'values') : ['values'])
+    const data: DragDropBlockList | undefined = store?.getIn(storeKeys.size > 0 ? prependKey(storeKeys, 'values') : ['values']) as any
     const [addSelectionIndex, setAddSelectionIndex] = React.useState<number>(-1)
+    const blockIdSelector = '$bid'
+    const blocksSelector = '$block'
+
     return <div className={classes.dropZone}>
         <div style={{display: data?.size ? 'none' : 'block'}}>
             <DroppableRootSelect
@@ -114,15 +119,15 @@ export const DroppableRootContent: React.ComponentType<DroppableRootContentProps
         {data?.size ?
             data.toArray().map((item, i) =>
                 <ComponentBlock
-                    key={(item.get('$bid') as string) || i}
+                    key={(item.get(blockIdSelector) as string) || i}
                     type={type}
                     parentKeys={storeKeys}
                     storeKeys={storeKeys.push(i) as StoreKeys}
                     ownKey={i}
-                    blockId={item.get('$block') as string}
+                    blockId={item.get(blocksSelector) as string}
                     blocksSize={data.size}
                     parentSchema={schema}
-                    schema={blocks.get(item.get('$block') as string)}
+                    schema={blocks.get(item.get(blocksSelector) as string) as StoreSchemaType}
                     handleBlockDelete={handleBlockDelete}
                     moveDraggedValue={moveDraggedValue}
                     getSourceValues={getSourceValues}

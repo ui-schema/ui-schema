@@ -1,6 +1,6 @@
 import React from 'react'
 import { useUID } from 'react-uid'
-import { OwnKey, StoreSchemaType, TransTitle, WidgetProps, PluginStack, memo, ValidatorErrorsType } from '@ui-schema/ui-schema'
+import { OwnKey, StoreSchemaType, TransTitle, WidgetProps, PluginStack, memo, ValidatorErrorsType, onErrors } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
@@ -41,7 +41,7 @@ const AccordionStackBase: React.ComponentType<WidgetProps & AccordionStackBasePr
                 schema={schema}
                 parentSchema={parentSchema}
                 storeKeys={storeKeys} level={level}
-                onErrors={setErrors}
+                onErrors={setErrors as onErrors}
                 isVirtual={props.isVirtual || (parentSchema?.get('onClosedHidden') as boolean && !isOpen)}
             />
             <ValidityHelperText

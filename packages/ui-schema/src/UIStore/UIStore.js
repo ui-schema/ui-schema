@@ -9,9 +9,9 @@ const STR_VALIDITY = 'validity'
 export const UIStore = Record({
     values: undefined,
     // internals must be an map when it is an object in the root, for array a List and for other "any type"
-    internals: Map({}),
-    validity: Map({}),
-    meta: Map({}),
+    internals: Map(),
+    validity: Map(),
+    meta: Map(),
     valuesToJS: function() {
         const values = this.get(STR_VALUES)
         if(Map.isMap(values) || List.isList(values) || Record.isRecord(values)) return values.toJS()
@@ -35,8 +35,8 @@ export const createStore = (values) => {
         internals: Map({
             internals: List.isList(values) ? List() : Map(),
         }),
-        validity: Map({}),
-        meta: Map({}),
+        validity: Map(),
+        meta: Map(),
     })
 };
 
@@ -50,7 +50,7 @@ export const createEmptyStore = (type = 'object') => createStore(
                 0 :
                 type === 'boolean' ?
                     false :
-                    Map({}),
+                    Map(),
 );
 
 

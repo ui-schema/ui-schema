@@ -89,7 +89,7 @@ export const handleDragEnd = (
     // todo: how should onChange handle "batch updates" to correctly handle "deleteOnEmpty"
     if (storeKeysFrom.size < storeKeysTo.size) {
         // drag from a not-so-deep nested level, to a deeper nested level
-        const masterKeysTo = storeKeysTo.splice(storeKeysFrom.size, storeKeysTo.size - storeKeysFrom.size)
+        const masterKeysTo = storeKeysTo.splice(storeKeysFrom.size, storeKeysTo.size - storeKeysFrom.size) as StoreKeys
         if (
             masterKeysTo.splice(masterKeysTo.size - 1, 1)
                 .equals(storeKeysFrom.splice(storeKeysFrom.size - 1, 1))
@@ -98,21 +98,21 @@ export const handleDragEnd = (
                 // the root item is actually the drag parent of the nested one
                 // can not be dragged like this
                 return
-            } else if (masterKeysTo.last() > storeKeysFrom.last()) {
+            } else if (masterKeysTo.last<number>() > (storeKeysFrom.last() as number)) {
                 // the dragged item is before the root item of the nested one
                 // dragging downwards
                 if (hoverClientY < hoverQuarterY) {
                     return
                 }
                 targetKeys = storeKeysTo.splice(masterKeysTo.size - 1, 1, (masterKeysTo.last() as number) - 1) as StoreKeys
-            } else if (masterKeysTo.last() < storeKeysFrom.last()) {
+            } else if (masterKeysTo.last<number>() < (storeKeysFrom.last() as number)) {
                 // the dragged item is after the root item of the nested one
                 // dragging upwards
                 if (hoverClientY > (hoverQuarterY * 3)) {
                     return
                 }
 
-                if (!isEmptyPlaceholder || storeKeysTo.last() > 0) {
+                if (!isEmptyPlaceholder || storeKeysTo.last<number>() > 0) {
                     // move to position after the drop target, but only if it isn't the "empty list" placeholder
                     targetKeys = storeKeysTo.splice(storeKeysTo.size - 1, 1, (storeKeysTo.last() as number) + 1) as StoreKeys
                 }
@@ -136,13 +136,13 @@ export const handleDragEnd = (
                 if (isDraggingAfter) {
                     targetKeys = storeKeysTo.splice(storeKeysTo.size - 1, 1, (storeKeysTo.last() as number) + 1) as StoreKeys
                 }
-            } else if (masterKeysFrom.last() > storeKeysTo.last()) {
+            } else if ((masterKeysFrom.last() as number) > storeKeysTo.last<number>()) {
                 // the dragged item was after the root item of the nested one
                 // dragging upwards
                 if (hoverClientY > hoverQuarterY) {
                     return
                 }
-            } else if (masterKeysFrom.last() < storeKeysTo.last()) {
+            } else if ((masterKeysFrom.last() as number) < storeKeysTo.last<number>()) {
                 // the dragged item was before the root item of the nested one
                 // dragging downwards
                 if (hoverClientY < hoverQuarterY) {
@@ -159,7 +159,7 @@ export const handleDragEnd = (
         ) {
             // in lower half of any entry
             // when in same root, dragging upwards
-            if (!isSameDirectRoot && (!isEmptyPlaceholder || storeKeysTo.last() > 0)) {
+            if (!isSameDirectRoot && (!isEmptyPlaceholder || storeKeysTo.last<number>() > 0)) {
                 // move to position after the drop target, but only if it isn't the "empty list" placeholder
                 targetKeys = storeKeysTo.splice(storeKeysTo.size - 1, 1, (storeKeysTo.last() as number) + 1) as StoreKeys
             }

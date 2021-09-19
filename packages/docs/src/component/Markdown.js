@@ -1,8 +1,10 @@
 import React from 'react';
 import {Typography} from '@material-ui/core';
 import Loadable from 'react-loadable';
-import {Markdown as MarkdownBase, allowHtml} from '@control-ui/docs/Markdown/Markdown'
+import {Markdown as CuiMarkdown} from '@control-ui/docs/Markdown/Markdown'
 import {renderers as baseRenderers} from '@control-ui/docs/Markdown/MarkdownRenderers'
+import rehypeRaw from 'rehype-raw'
+import remarkGfm from 'remark-gfm'
 import {MdInlineCode} from '@control-ui/docs/Markdown/InlineCode';
 import {MdLink} from '@control-ui/docs/Markdown/Link';
 import {LinkableHeadline} from '@control-ui/docs/LinkableHeadline';
@@ -13,27 +15,36 @@ const Code = Loadable({
     loading: () => <LoadingCircular title={'Loading Web-IDE'}/>,
 });
 
+//const Code = () => <LoadingCircular title={'Loading Web-IDE'}/>
+//const Code = () => <CircularProgress component={'span'}/>
+
 const LinkInternalLocale = (p) => {
     return <MdLink {...p} href={0 !== p.href.indexOf('#') && -1 === p.href.indexOf('https://') && -1 === p.href.indexOf('http://') ? p.href.substr(1) : p.href}/>
 };
 
 // see: https://github.com/rexxars/react-markdown#node-types
 const renderers = baseRenderers(true);
-renderers.paragraph = p => <Typography {...p} component={'p'} variant={'body2'} gutterBottom/>;
-renderers.inlineCode = p => <MdInlineCode variant={'body1'} {...p}/>;
-renderers.code = p => <Code variant={'body2'} {...p}/>;
-renderers.heading = ({level, ...p}) => <Typography {...p} component={'h' + (level + 1)} variant={'subtitle' + (level)} style={{textDecoration: 'underline', marginTop: 48 / level}} gutterBottom/>;
-renderers.listItem = p => <Typography component={'li'} variant={'body2'} style={{fontWeight: 'bold'}}><span style={{fontWeight: 'normal', display: 'block'}}>{p.children}</span></Typography>;
-renderers.link = LinkInternalLocale;
+renderers.p = p => <Typography {...p} component={'p'} variant={'body2'} gutterBottom/>;
+renderers.code = ({inline, ...p}) => inline ? <MdInlineCode variant={'body1'} {...p}/> : <Code variant={'body2'} {...p}/>;
+const MarkdownH = ({level, ...p}) => <Typography {...p} component={'h' + (level + 1)} variant={'subtitle' + (level)} style={{textDecoration: 'underline', marginTop: 48 / level}} gutterBottom/>
+renderers.h1 = renderers.h2 = renderers.h3 = renderers.h4 = renderers.h5 = renderers.h6 = MarkdownH
+renderers.li = p => <Typography component={'li'} variant={'body2'} style={{fontWeight: 'bold'}}><span style={{fontWeight: 'normal', display: 'block'}}>{p.children}</span></Typography>;
+renderers.a = LinkInternalLocale;
 
 const renderersContent = baseRenderers(false);
-renderersContent.code = p => <Code variant={'body1'} {...p}/>;
-renderersContent.inlineCode = p => <MdInlineCode variant={'body1'} {...p}/>;
-renderersContent.heading = LinkableHeadline;
-renderersContent.link = LinkInternalLocale;
+renderersContent.code = ({inline, ...p}) => inline ? <MdInlineCode variant={'body1'} {...p}/> : <Code variant={'body1'} {...p}/>;
+renderersContent.h1 = renderersContent.h2 = renderersContent.h3 = renderersContent.h4 = renderersContent.h5 = renderersContent.h6 = LinkableHeadline;
+renderersContent.a = LinkInternalLocale;
 
-const astPlugins = [allowHtml()];
-const Markdown = ({source, content = false}) =>
-    <MarkdownBase source={source} astPlugins={astPlugins} renderers={content ? renderersContent : renderers}/>;
+const rehypePlugins = [rehypeRaw]
+const remarkPlugins = [remarkGfm]
 
-export {Markdown}
+export const Markdown = ({source}) => {
+    return source ?
+        <CuiMarkdown
+            source={source}
+            rehypePlugins={rehypePlugins}
+            remarkPlugins={remarkPlugins}
+            components={renderersContent}
+        /> : null
+}

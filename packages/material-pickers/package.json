@@ -38,7 +38,7 @@
 		"@material-ui/icons": "^4.8",
 		"@material-ui/pickers": "^3.2.10",
 		"@types/luxon": "^1.26.2",
-		"immutable": "^4.0.0-rc",
+		"immutable": "^4.0.0-rc.15",
 		"react": "^16.12",
 		"react-dom": "^16.12"
 	},

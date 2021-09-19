@@ -77,7 +77,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps> = (
             editorRef.current.clear()
             if (value) {
                 currentState.current = value
-                editorRef.current.render(value.toJS())
+                editorRef.current.render(value.toJS() as any)
             } else {
                 currentState.current = fromJSOrdered({
                     blocks: [],

@@ -1,6 +1,7 @@
 import React from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import { ClassNameMap } from '@material-ui/styles/withStyles'
+import { Theme } from '@material-ui/core/styles/createTheme'
 import { WidgetProps } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '@ui-schema/ds-material'
 import { MarkdownLabel } from '@ui-schema/material-slate/EditorWrapper/MarkdownLabel'
@@ -34,7 +35,8 @@ export const PaneWrapper: React.ComponentType<React.PropsWithChildren<{
     showValidity: WidgetProps['showValidity']
     valid: WidgetProps['valid']
     ownKey: WidgetProps['ownKey']
-    classes: Record<'wrapper' | 'editor', string>
+    //classes: Record<'wrapper' | 'editor', string>
+    classes: ClassNameMap<'wrapper' | 'editor'>
 }>> = (
     {
         schema,

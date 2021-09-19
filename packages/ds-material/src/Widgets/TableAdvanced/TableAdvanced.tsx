@@ -1,5 +1,5 @@
 import React from 'react'
-import { extractValue, memo, PluginStack, WidgetProps, WithValue } from '@ui-schema/ui-schema'
+import { extractValue, memo, PluginStack, StoreSchemaType, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 
 export const TableAdvancedBase: React.ComponentType<WidgetProps & WithValue> = (
     {
@@ -9,11 +9,10 @@ export const TableAdvancedBase: React.ComponentType<WidgetProps & WithValue> = (
     const {storeKeys} = props
     const readOnly = schema.get('readOnly') as boolean
     return <>
-        <h2>Advanced</h2>
         <PluginStack<{ readOnly?: boolean }>
             showValidity={showValidity}
             storeKeys={storeKeys.push('data')}
-            schema={schema.getIn(['properties', 'data'])}
+            schema={schema.getIn(['properties', 'data']) as StoreSchemaType}
             parentSchema={schema}
             level={level + 1}
             readOnly={readOnly}

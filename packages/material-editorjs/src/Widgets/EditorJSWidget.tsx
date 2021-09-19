@@ -63,7 +63,7 @@ export const EditorJSWidget = (
     const [focused, setFocused] = React.useState(false)
     const [ready, setReady] = React.useState(false)
     const [empty, setEmpty] = React.useState(true)
-    const dense = schema.getIn(['view', 'dense'])
+    const dense = schema.getIn(['view', 'dense']) as boolean
     const classes = useEditorStyles({dense})
     const inputClasses = useInputStyles()
 

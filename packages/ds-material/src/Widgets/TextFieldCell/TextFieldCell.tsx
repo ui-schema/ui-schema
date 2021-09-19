@@ -6,7 +6,7 @@ import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/sc
 import { mapSchema } from '@ui-schema/ui-schema/Utils/schemaToNative'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
-import InputBase from '@material-ui/core/InputBase'
+import InputBase, { InputBaseProps } from '@material-ui/core/InputBase'
 import Typography from '@material-ui/core/Typography'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
 import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
@@ -95,7 +95,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarVal
             inputRef={inputRef}
             rowsMax={rowsMax}
             fullWidth
-            margin={schema.getIn(['view', 'margin'])}
+            margin={schema.getIn(['view', 'margin']) as InputBaseProps['margin']}
             value={typeof value === 'string' || typeof value === 'number' ? value : ''}
             onClick={onClick}
             onFocus={onFocus}
@@ -144,8 +144,8 @@ export const TextRendererCell: React.ComponentType<WidgetProps & WithScalarValue
     return <StringRendererCell
         {...props}
         schema={schema}
-        rows={schema.getIn(['view', 'rows'])}
-        rowsMax={schema.getIn(['view', 'rowsMax'])}
+        rows={schema.getIn(['view', 'rows']) as number | undefined}
+        rowsMax={schema.getIn(['view', 'rowsMax']) as number | undefined}
         multiline
     />
 }

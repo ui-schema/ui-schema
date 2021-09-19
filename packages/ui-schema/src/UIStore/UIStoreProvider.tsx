@@ -1,6 +1,6 @@
 import React from 'react'
 import { List, Map } from 'immutable'
-import { addNestKey, onChangeHandler, StoreKeys, UIStoreType } from '@ui-schema/ui-schema/UIStore'
+import { addNestKey, onChangeHandler, StoreKeys, UIStoreInternalsType, UIStoreType } from '@ui-schema/ui-schema/UIStore'
 import { getDisplayName } from '@ui-schema/ui-schema/Utils/memo'
 
 export interface UIStoreContext {
@@ -67,7 +67,7 @@ export interface WithValidity {
     showValidity: UIStoreContext['showValidity']
 }
 
-export function doExtractValue<S extends UIStoreType>(storeKeys: StoreKeys, store: S): { value: any, internalValue: Map<string, any> } {
+export function doExtractValue<S extends UIStoreType>(storeKeys: StoreKeys, store: S): { value: any, internalValue: UIStoreInternalsType } {
     return {
         value:
             storeKeys.size ?
@@ -75,7 +75,7 @@ export function doExtractValue<S extends UIStoreType>(storeKeys: StoreKeys, stor
                 : store.getValues(),
         internalValue:
             storeKeys.size ?
-                store.getInternals() ? store.getInternals().getIn(addNestKey('internals', storeKeys)) || Map() : Map()
+                store.getInternals().getIn(addNestKey('internals', storeKeys)) as UIStoreInternalsType || Map()
                 : store.getInternals(),
     }
 }
@@ -107,7 +107,7 @@ export const extractValidity = <P extends WithValidity & { storeKeys: StoreKeys 
         // @ts-ignore
         return <Component
             {...p}
-            validity={p.storeKeys.size ? store.getValidity().getIn(p.storeKeys) : store.getValidity()}
+            validity={p.storeKeys.size ? store?.getValidity().getIn(p.storeKeys) : store?.getValidity()}
             onChange={onChange}
             showValidity={p.showValidity || showValidity}
         />

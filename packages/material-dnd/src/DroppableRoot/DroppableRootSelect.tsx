@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography'
 import { BlockAddProps } from '@ui-schema/material-dnd/BlockSelection/BlockAddProps'
 import { DraggableBlock } from '@ui-schema/material-dnd/DraggableBlock/DraggableBlock'
 import { DragDropAdvancedContextType } from '@ui-schema/material-dnd/DragDropProvider/useDragDropContext'
-import { Map } from 'immutable'
+import { List, Map } from 'immutable'
 
 export interface DroppableRootSelectProps {
     setAddSelectionIndex: BlockAddProps['setAddSelectionIndex']
@@ -27,7 +27,7 @@ export const DroppableRootSelect: React.ComponentType<DroppableRootSelectProps> 
     }
 ) => {
     const ref = React.useRef<HTMLDivElement>(null)
-    const allowedBlocks = schema.getIn(['dragDrop', 'allowed'])
+    const allowedBlocks = schema.getIn(['dragDrop', 'allowed']) as List<string>
     const [{handlerId}, drop] = useDrop(() => ({
         accept: 'BLOCK',
         hover(item: DraggableBlock, monitor: DropTargetMonitor) {

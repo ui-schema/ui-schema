@@ -49,6 +49,8 @@ export const PluginStack = (props) => {
     const isVirtual = Boolean(props.isVirtual || schema?.get('hidden'))
     let required = List([]);
     if(parentSchema) {
+        // todo: resolving `required` here is wrong, must be done after merging schema / resolving referenced
+        //      ! actual, it is correct here, as using `parentSchema`
         let tmp_required = parentSchema.get('required');
         if(tmp_required) {
             required = tmp_required;

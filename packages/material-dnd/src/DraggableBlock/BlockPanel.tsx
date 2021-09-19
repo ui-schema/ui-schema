@@ -22,8 +22,9 @@ import { BlockAddHover } from '@ui-schema/material-dnd/BlockSelection/BlockAddHo
 import { handleDragEnd, handleMoveDown, handleMoveUp } from '@ui-schema/material-dnd/DragDropProvider/storeHelper'
 import { memo } from '@ui-schema/ui-schema/Utils/memo/memo'
 import { Trans } from '@ui-schema/ui-schema'
+import { List } from 'immutable'
 
-let BlockPanel: React.ComponentType<DraggableBlockProps> = (
+const BlockPanelBase: React.ComponentType<DraggableBlockProps> = (
     {
         storeKeys, blockId, onChange,
         parentSchema, schema,
@@ -41,7 +42,7 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
     const [showInfo, setShowInfo] = React.useState(false)
     const [dragFocus, setDragFocus] = React.useState(false)
 
-    const allowedBlocks = parentSchema.getIn(['dragDrop', 'allowed'])
+    const allowedBlocks = parentSchema.getIn(['dragDrop', 'allowed']) as List<string>
     const refRoot = React.useRef<HTMLDivElement>(null)
     const [{handlerId}, drop] = useDrop<DraggableBlock, any, any>(() => ({
         accept: 'BLOCK',
@@ -73,7 +74,7 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
         isDragging: (monitor: DragSourceMonitor) => storeKeys.equals(monitor.getItem().storeKeys),
     }), [storeKeys, blockId])
 
-    const isLastEntry = storeKeys.last() >= blocksSize - 1
+    const isLastEntry = (storeKeys.last() as number) >= blocksSize - 1
 
     drop(preview(refRoot))
     return <Grow in ref={refRoot}>
@@ -96,7 +97,7 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
                 onMouseEnter={() => setDragFocus(true)}
                 onMouseLeave={() => setDragFocus(false)}
             >
-                <Fade in={dragFocus && storeKeys.last() > 0}>
+                <Fade in={dragFocus && (storeKeys.last() as number) > 0}>
                     <IconButton
                         color={'inherit'}
                         size={'medium'}
@@ -253,7 +254,7 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
                 </IconButton>
             </div>
 
-            {storeKeys.last() < blocksSize - 1 ? <BlockAddHover
+            {(storeKeys.last() as number) < blocksSize - 1 ? <BlockAddHover
                 setAddSelectionIndex={setAddSelectionIndex}
                 showAddSelection={false}
                 index={(storeKeys.last() as number) + 1}
@@ -270,6 +271,4 @@ let BlockPanel: React.ComponentType<DraggableBlockProps> = (
     </Grow>
 }
 
-// @ts-ignore
-BlockPanel = memo(BlockPanel)
-export { BlockPanel }
+export const BlockPanel = memo(BlockPanelBase)

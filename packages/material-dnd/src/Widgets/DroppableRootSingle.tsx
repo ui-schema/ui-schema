@@ -11,6 +11,8 @@ export const DroppableRootSingle: React.ComponentType<WidgetProps> = (
     const {blocks, handleBlockAdd, handleBlockDelete, getSourceValues,moveDraggedValue} = useDragDropContext()
     const {widgets} = useUIMeta()
 
+    // todo: make `widget` mapping naming dynamic for `DroppableRootContent` and `DraggableBlock`
+
     if (!widgets.DroppableRootContent) {
         if (process.env.NODE_ENV === 'development') {
             console.error('Can not display DraggableRootSingle, missing widgets.DroppableRootContent')

@@ -5,7 +5,7 @@ import { List, Map, OrderedMap } from 'immutable'
 import MuiTable from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableContainer from '@material-ui/core/TableContainer'
-import { TableRendererBaseProps, TableRendererExtractorProps, TableRowProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
+import { TableFooterProps, TableRendererBaseProps, TableRendererExtractorProps, TableRowProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
 import { TableContext } from '@ui-schema/ds-material/BaseComponents/Table/TableContext'
 
 export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<keyof WidgetProps, 'value' | 'errors' | 'valid'>> & Pick<WithValue, 'onChange'> & TableRendererBaseProps> = (
@@ -24,8 +24,8 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
     const uid = useUID()
     const [page, setPage] = React.useState(0)
     const [rows, setRows] = React.useState(rowsPerPage.first())
-    const btnSize = schema.getIn(['view', 'btnSize']) || 'small'
-    const dense = schema.getIn(['view', 'dense']) || false
+    const btnSize = (schema.getIn(['view', 'btnSize']) as TableFooterProps['btnSize'] | undefined) || 'small'
+    const dense = (schema.getIn(['view', 'dense']) as boolean) || false
     const itemsSchema = schema.get('items') as StoreSchemaType
     const readOnly = schema.get('readOnly') as boolean
 
@@ -132,4 +132,5 @@ export const TableRendererExtractor: React.ComponentType<WidgetProps & WithValue
     </TableContext.Provider>
 }
 
-export const TableRenderer = extractValue(memo(TableRendererExtractor))
+export const TableRendererMemo = memo(TableRendererExtractor)
+export const TableRenderer = extractValue(TableRendererMemo)

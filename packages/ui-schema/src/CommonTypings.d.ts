@@ -14,7 +14,7 @@ export type StoreSchemaTypeValues = StoreSchemaType | List<any> | Map<any, any> 
 
 export type StoreSchemaType = OrderedMap<OwnKey, StoreSchemaTypeValues>
 
-export type SchemaTypesType = List<string> | string[] | string | undefined
+export type SchemaTypesType = List<string> | string | undefined
 
 //export type StoreSchemaType = OrderedMapTyping<string, StoreSchemaType | string>
 
