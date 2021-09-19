@@ -1,47 +1,47 @@
 {
-	"name": "@ui-schema/pro",
-	"version": "0.0.8",
-	"description": "Components and Utilities for more advanced usages of UI-Schema",
-	"homepage": "https://ui-schema.bemit.codes/docs/pro",
-	"author": "Michael Becker <michael@bemit.codes>",
-	"license": "MIT",
-	"keywords": [
-		"ui-schema",
-		"json-schema",
-		"react",
-		"reactjs",
-		"react-component",
-		"ui-library",
-		"ux",
-		"ui",
-		"form-generator",
-		"react"
-	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/ui-schema/ui-schema.git",
-		"directory": "packages/ui-schema-pro"
-	},
-	"bugs": {
-		"url": "https://github.com/ui-schema/ui-schema/issues"
-	},
-	"main": "index.js",
-	"module": "esm/index.js",
-	"scripts": {
-		"dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/ui-schema-pro/src build && rm -rf build/dts && rm -rf build/**/*.test.*",
-		"__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
-	},
-	"devDependencies": {
-		"immutable": "^4.0.0-rc.15",
-		"react": "^16.12",
-		"react-dom": "^16.12"
-	},
-	"peerDependencies": {
-		"@ui-schema/ui-schema": "~0.3.0-alpha",
-		"immutable": "^4.0.0-rc",
-		"react": "^16.8 || ^17.0"
-	},
-	"publishConfig": {
-		"access": "public"
-	}
+    "name": "@ui-schema/pro",
+    "version": "0.0.8",
+    "description": "Components and Utilities for more advanced usages of UI-Schema",
+    "homepage": "https://ui-schema.bemit.codes/docs/pro",
+    "author": "Michael Becker <michael@bemit.codes>",
+    "license": "MIT",
+    "keywords": [
+        "ui-schema",
+        "json-schema",
+        "react",
+        "reactjs",
+        "react-component",
+        "ui-library",
+        "ux",
+        "ui",
+        "form-generator",
+        "react"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ui-schema/ui-schema.git",
+        "directory": "packages/ui-schema-pro"
+    },
+    "bugs": {
+        "url": "https://github.com/ui-schema/ui-schema/issues"
+    },
+    "main": "index.js",
+    "module": "esm/index.js",
+    "scripts": {
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/ui-schema-pro/src build && rm -rf build/dts && rm -rf build/**/*.test.*",
+        "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
+    },
+    "devDependencies": {
+        "immutable": "^4.0.0-rc.15",
+        "react": "^16.12",
+        "react-dom": "^16.12"
+    },
+    "peerDependencies": {
+        "@ui-schema/ui-schema": "~0.3.0-alpha",
+        "immutable": "^4.0.0-rc",
+        "react": "^16.8 || ^17.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
 }

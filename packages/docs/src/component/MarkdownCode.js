@@ -1,7 +1,7 @@
-import React from "react";
-import {Typography, useTheme,} from "@material-ui/core";
-import {RichCodeEditor, supportedModes} from "./RichCodeEditor";
-import DemoUIGenerator from "./Schema/DemoUIGenerator";
+import React from 'react';
+import {Typography, useTheme} from '@material-ui/core';
+import {RichCodeEditor, supportedModes} from './RichCodeEditor';
+import DemoUIGenerator from './Schema/DemoUIGenerator';
 
 const languageMapping = {
     js: 'javascript',
@@ -10,14 +10,14 @@ const languageMapping = {
     'ui-schema': 'json',
 };
 
-const Code = ({variant, ...p}) => {
+const Code = ({variant, className, ...p}) => {
     const {palette} = useTheme();
-
-    const currentMode = languageMapping[p.language] ? languageMapping[p.language] : p.language;
-    if(p.language === 'ui-schema') {
+    const language = className && className.indexOf('language-') === 0 ? className.substr('language-'.length) : undefined
+    const currentMode = languageMapping[language] ? languageMapping[language] : language;
+    if(language === 'ui-schema') {
         let value = {};
         try {
-            value = JSON.parse(p.value);
+            value = JSON.parse(p.children);
         } catch(e) {
             console.error(e);
         }
@@ -30,12 +30,12 @@ const Code = ({variant, ...p}) => {
 
     return supportedModes.indexOf(currentMode) === -1 ?
         <Typography component={'pre'} variant={variant} style={{background: palette.divider}} gutterBottom>
-            <Typography component={'code'} className={'code--' + p.language}>
-                {p.value}
+            <Typography component={'code'} className={'code--' + language}>
+                {p.children}
             </Typography>
         </Typography> :
         <RichCodeEditor
-            value={p.value} readOnly mode={currentMode}
+            value={p.children} readOnly mode={currentMode}
             fontSize={14} minLines={1} maxLines={30} enableShowAll
             style={{margin: '24px 0', transition: 'height 0.4s linear 0s'}}/>
 };
