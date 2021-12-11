@@ -18,7 +18,7 @@ const defaultDebounceTime: number = 380
 const defaultUpdateRate: number = 6
 // todo: implement
 // maximum number of store changes in the history
-// const defaultMaxItems: number = 200
+const defaultMaxItems: number = 1000
 
 export interface UIStoreProData {
     // index of the current active UIStore of the `list`
@@ -118,7 +118,7 @@ export const useStorePro = (
             }
             newStore = newStore.setIn(doingValueSelector, true)
 
-            historyChangeRater.current.current = historyChangeRater.current.current > 1000 ?
+            historyChangeRater.current.current = historyChangeRater.current.current > defaultMaxItems ?
                 0 : historyChangeRater.current.current + 1
             historyChangeRater.current.last = newStore.current.setIn(doingValueSelector, false)
             let historyAdded = false

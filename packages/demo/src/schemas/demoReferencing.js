@@ -130,7 +130,7 @@ export const schemaDemoReferencingRecursive = createOrderedMap({
         },
     },
     properties: {
-        person: {$ref: '#/definitions/person',},
+        person: {$ref: '#/definitions/person'},
     },
 });
 

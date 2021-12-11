@@ -2,19 +2,20 @@
 
 1. Fork/Clone Repository, use branch `develop`
 2. Install root dev-dependencies (like lerna, webpack): `npm i`
-3. Start dev-server: `npm start`
-    - (will clean-dist + symlink-es-modules + init & hoist packages + starting demo app)
+3. Install `packages` dependencies: `npm run bootstrap`
+4. Start dev-server: `npm start`
+    - (will clean-dist + linking packages + starting demo app)
     - `npm start -- --serve docs` also starts docs app
-4. Open browser on [localhost:4200](http://localhost:4200) for demo, [localhost:4201](http://localhost:4201) for docs
-5. Explore [packages](packages)
-8. Code -> Commit -> Pull Request -> Being Awesome!
+5. Open browser on [localhost:4200](http://localhost:4200) for demo, [localhost:4201](http://localhost:4201) for docs
+6. Explore [packages](packages)
+7. Code -> Commit -> Pull Request -> Being Awesome!
 
 Changes from any package are reflected inside the demo/docs package.
 
 See current *[packages/demo@master](https://ui-schema-demo.netlify.app/)* or
 *[packages/demo@develop](https://develop--ui-schema-demo.netlify.app/)*
 
-- Start Documentation: `npm run docs` (needs running demo server)
+- Start Documentation: `npm run docs` (needs bootstrap/linking packages beforehand)
     - see [localhost:4201](http://localhost:4201)
     - write in [packages/docs/src/content/docs](./packages/docs/src/content/docs)
 - Faster start, needs manual bootstrapping, hoisting and update handling
