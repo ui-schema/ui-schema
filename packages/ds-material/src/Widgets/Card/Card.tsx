@@ -15,13 +15,13 @@ export const CardRenderer = (props: WidgetProps): React.ReactElement => {
         style={schema.getIn(['view', 'bg']) === false ? {background: 'transparent'} : {}}
     >
         <CardContent>
-            <Typography
+            {schema.getIn(['view', 'hideTitle']) ? null : <Typography
                 variant={(schema.getIn(['view', 'titleVariant']) as TypographyProps['variant']) || 'h5'}
                 component={(schema.getIn(['view', 'titleComp']) as React.ElementType) || 'p'}
                 gutterBottom
             >
                 <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
-            </Typography>
+            </Typography>}
             {/* todo: add `description` support */}
             <ObjectRenderer {...props}/>
         </CardContent>
