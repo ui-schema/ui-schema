@@ -61,6 +61,11 @@ packer({
             root: path.resolve(__dirname, 'packages', 'ds-bootstrap'),
             entry: path.resolve(__dirname, 'packages', 'ds-bootstrap/src/'),
         },
+        kitDnd: {
+            name: '@ui-schema/kit-dnd',
+            root: path.resolve(__dirname, 'packages', 'kit-dnd'),
+            entry: path.resolve(__dirname, 'packages', 'kit-dnd/src/'),
+        },
         materialPickers: {
             name: '@ui-schema/material-pickers',
             root: path.resolve(__dirname, 'packages', 'material-pickers'),

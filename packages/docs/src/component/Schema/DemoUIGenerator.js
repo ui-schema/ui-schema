@@ -6,8 +6,9 @@ import style from 'codemirror/lib/codemirror.css';
 import themeDark from 'codemirror/theme/duotone-dark.css';
 import themeLight from 'codemirror/theme/duotone-light.css';
 import {WidgetCodeProvider} from '@ui-schema/material-code';
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {DndProvider} from 'react-dnd'
+import { DndProvider } from 'react-dnd'
+import { MultiBackend } from 'react-dnd-multi-backend'
+import { HTML5toTouch } from 'rdndmb-html5-to-touch'
 import LuxonAdapter from '@date-io/luxon';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import {DragDropProvider as DragDropProviderSimple} from '@ui-schema/material-rbd/DragDropProvider/DragDropProvider';
@@ -111,7 +112,7 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
         >
             <MuiPickersUtilsProvider utils={LuxonAdapter}>
                 <DragDropProvider contextValue={dragStoreContext.contextValue}>
-                    <DndProvider backend={HTML5Backend}>
+                    <DndProvider backend={MultiBackend} options={HTML5toTouch}>
                         <DragDropProviderSimple contextValue={dragStoreContextSimple.contextValue}>
                             <UIStoreProvider
                                 store={store}

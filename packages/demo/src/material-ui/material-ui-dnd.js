@@ -18,9 +18,9 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter/isInvalid';
 import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro';
 import {schemaDragDrop, schemaDragDropSingle} from '../schemas/demoDragDrop';
-//import {TouchBackend} from 'react-dnd-touch-backend'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {DndProvider} from 'react-dnd'
+import { DndProvider } from 'react-dnd'
+import { MultiBackend } from 'react-dnd-multi-backend'
+import { HTML5toTouch } from 'rdndmb-html5-to-touch'
 import {makeDragDropContext} from '@ui-schema/material-dnd/DragDropProvider/makeDragDropContext';
 import {DragDropProvider} from '@ui-schema/material-dnd/DragDropProvider/DragDropProvider';
 import {BlockPanel} from '@ui-schema/material-dnd/DraggableBlock/BlockPanel';
@@ -45,10 +45,6 @@ customWidgets.custom = {
     RichContent: RichContent,
     RichContentInline: RichContentInline,
 };
-
-const touchBackendOpts = {
-    //enableMouseEvents: true,
-}
 
 const loadSchema = (url, versions) => {
     console.log('Demo loadSchema (url, optional versions)', url, versions)
@@ -160,7 +156,7 @@ const MultiEditor = () => {
 
         <UIApiProvider loadSchema={loadSchema} noCache>
             <DragDropProvider contextValue={dragStoreContext.contextValue}>
-                <DndProvider backend={HTML5Backend} options={touchBackendOpts}>
+                <DndProvider backend={MultiBackend} options={HTML5toTouch}>
                     <UIStoreProvider
                         store={store.current}
                         onChange={onChange}
@@ -231,7 +227,7 @@ const SingleEditor = () => {
 
     return <React.Fragment>
         <DragDropProvider contextValue={dragStoreContext.contextValue}>
-            <DndProvider backend={HTML5Backend} options={touchBackendOpts}>
+            <DndProvider backend={MultiBackend} options={HTML5toTouch}>
                 <UIStoreProvider
                     store={store}
                     onChange={onChange}

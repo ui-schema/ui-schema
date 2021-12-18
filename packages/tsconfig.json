@@ -31,6 +31,12 @@
             "@ui-schema/ds-material/*": [
                 "ds-material/src/*"
             ],
+            "@ui-schema/kit-dnd": [
+                "kit-dnd/src"
+            ],
+            "@ui-schema/kit-dnd/*": [
+                "kit-dnd/src/*"
+            ],
             "@ui-schema/material-code": [
                 "material-code/src"
             ],

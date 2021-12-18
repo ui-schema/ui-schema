@@ -67,10 +67,12 @@ const BlockPanelBase: React.ComponentType<DraggableBlockProps> = (
     }), [allowedBlocks, refRoot, onChange, storeKeys, getSourceValues, moveDraggedValue])
 
     const [{isDragging}, drag, preview] = useDrag(() => ({
+        type: 'BLOCK',
         item: {storeKeys: storeKeys, type: 'BLOCK', $block: blockId},
         collect: (monitor: DragSourceMonitor) => ({
             isDragging: monitor.isDragging(),
         }),
+        // @ts-ignore
         isDragging: (monitor: DragSourceMonitor) => storeKeys.equals(monitor.getItem().storeKeys),
     }), [storeKeys, blockId])
 
