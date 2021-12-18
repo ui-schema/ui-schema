@@ -47,6 +47,28 @@
                 "@babel/preset-react",
                 "@babel/preset-typescript"
             ]
+        },
+        "node": {
+            "presets": [
+                [
+                    "@babel/preset-env",
+                    {
+                        "targets": {
+                            "node": "14"
+                        },
+                        "modules": false
+                    }
+                ],
+                [
+                    "@babel/preset-typescript",
+                    {
+                        "targets": {
+                            "node": "14"
+                        },
+                        "modules": false
+                    }
+                ]
+            ]
         }
     }
 }

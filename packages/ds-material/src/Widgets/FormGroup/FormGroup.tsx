@@ -16,6 +16,7 @@ export const FormGroupBase: React.ComponentType<WidgetProps & WithValue> = (prop
     // deleting the `widget` to directly use `PluginStack` for nesting
     // with `widget` it would lead to an endless loop
     // using e.g. default `object` renderer then
+    // @ts-ignore
     schema = schema.delete('widget')
     return <FormControl
         component="fieldset"

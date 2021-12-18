@@ -74,7 +74,7 @@ export type StoreActions = UIStoreActionListItemAdd | UIStoreActionListItemDelet
 
 export type UIStoreUpdaterFn<D extends UIStoreUpdaterData = UIStoreUpdaterData> = (data: D) => D
 
-export type onChangeHandlerGeneric<R extends any = void> = (
+export type onChangeHandlerGeneric<R = void> = (
     storeKeys: StoreKeys,
     scopes: (keyof UIStoreUpdaterData)[],
     updater: UIStoreUpdaterFn | StoreActions,

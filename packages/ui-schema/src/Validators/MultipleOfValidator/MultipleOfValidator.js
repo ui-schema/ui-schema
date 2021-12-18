@@ -23,8 +23,8 @@ const validateMultipleOf = (schema, value) => {
         strValue = typeof strValue === 'string' ?
             strValue.replace(/,/g, '.')
             : strValue
-        const decimalPlacesMultipleOf = str.indexOf('.') !== -1 ? str.substr(str.indexOf('.') + 1).length : 0
-        const decimalPlacesValue = strValue.indexOf('.') !== -1 ? strValue.substr(strValue.indexOf('.') + 1).length : 0
+        const decimalPlacesMultipleOf = str.indexOf('.') !== -1 ? str.slice(str.indexOf('.') + 1).length : 0
+        const decimalPlacesValue = strValue.indexOf('.') !== -1 ? strValue.slice(strValue.indexOf('.') + 1).length : 0
         const precisionFactor = decimalPlacesMultipleOf || decimalPlacesValue ?
             Math.pow(10, decimalPlacesMultipleOf > decimalPlacesValue ? decimalPlacesMultipleOf : decimalPlacesValue)
             : 1

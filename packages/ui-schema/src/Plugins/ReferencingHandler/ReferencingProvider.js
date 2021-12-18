@@ -9,14 +9,14 @@ export const isRelUrl = (schemaRef) => {
 }
 
 // todo: also remove GET params?
-const removeFragmentFromRevUrl = (url) => url.substr(
+const removeFragmentFromRevUrl = (url) => url.slice(
     url.indexOf('#/') !== -1 ? url.indexOf('#/') + 2 :
         url.indexOf('#') !== -1 ? url.indexOf('#') + 1 : 0,
 )
 
 export const getFragmentFromUrl = (url) => {
     const revUrl = [...url].reverse().join('')
-    const revUrlFragment = revUrl.substr(0,
+    const revUrlFragment = revUrl.slice(0,
         revUrl.indexOf('#/') !== -1 ? revUrl.indexOf('#/') :
             revUrl.indexOf('#') !== -1 ? revUrl.indexOf('#') : 0,
     )
@@ -38,7 +38,7 @@ export const makeUrlFromRef = (schemaRef, id) => {
     if(id) {
         const revId = [...id].reverse().join('')
         const revIdNoFragment = removeFragmentFromRevUrl(revId)
-        const uriBase = [...revIdNoFragment.substr(revIdNoFragment.indexOf('/'))].reverse().join('')
+        const uriBase = [...revIdNoFragment.slice(revIdNoFragment.indexOf('/'))].reverse().join('')
         schemaUrl = uriBase + schemaRef
     } else if(process.env.NODE_ENV === 'development') {
         console.warn('relative uri ref without root id', schemaRef)

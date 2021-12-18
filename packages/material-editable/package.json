@@ -40,7 +40,7 @@
 	"devDependencies": {
 		"@material-ui/core": "^4.8",
 		"@material-ui/icons": "^4.8",
-		"immutable": "^4.0.0-rc.15",
+		"immutable": "^4.0.0",
 		"react": "^16.12",
 		"react-dom": "^16.12",
 		"slate": "~0.60.8",
@@ -56,7 +56,7 @@
 		"@ui-schema/material-dnd": "~0.0.x",
 		"@ui-schema/material-slate": "~0.0.x",
 		"@ui-schema/ui-schema": "~0.3.0-alpha",
-		"immutable": "^4.0.0-rc",
+		"immutable": "^4.0.0",
 		"react": "^16.8"
 	},
 	"publishConfig": {

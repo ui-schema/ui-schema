@@ -19,7 +19,7 @@ const Code = Loadable({
 //const Code = () => <CircularProgress component={'span'}/>
 
 const LinkInternalLocale = (p) => {
-    return <MdLink {...p} href={0 !== p.href.indexOf('#') && -1 === p.href.indexOf('https://') && -1 === p.href.indexOf('http://') ? p.href.substr(1) : p.href}/>
+    return <MdLink {...p} href={0 !== p.href.indexOf('#') && -1 === p.href.indexOf('https://') && -1 === p.href.indexOf('http://') ? p.href.slice(1) : p.href}/>
 };
 
 // see: https://github.com/rexxars/react-markdown#node-types

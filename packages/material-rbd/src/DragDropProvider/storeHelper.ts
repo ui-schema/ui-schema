@@ -29,6 +29,7 @@ export const handleDragDropEnd = (
         if (type === '$single') {
             return (prevData as List<any>).splice(destItemId, 0, newBlock) as List<StoreSchemaType>
         }
+        // @ts-ignore
         return (prevData as DragDropItemLists).update(
             destRootId,
             (destRoot: DragDropItemList = List()) =>
@@ -49,6 +50,7 @@ export const handleDragDropEnd = (
         )
     }
 
+    // @ts-ignore
     return (prevData as DragDropItemLists)
         .update(srcRootId, (srcRoot: List<any> = List()) => srcRoot.splice(srcItemId, 1) as List<StoreSchemaType>)
         .update(destRootId, (destRoot: List<any> = List()) => destRoot.splice(destItemId, 0, srcItem) as List<StoreSchemaType>)

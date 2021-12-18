@@ -193,7 +193,7 @@ let ItemAccordionSummary = (
                 }}
                 variant={window.innerWidth < 960 ? 'body2' : 'body1'}
             >
-                {description.length > 40 ? description.substr(0, 40) + '...' : description}
+                {description.length > 40 ? description.slice(0, 40) + '...' : description}
             </Typography>}
         </Typography>
         <IconButton

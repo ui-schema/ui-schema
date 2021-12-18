@@ -41,6 +41,7 @@ let ContentTools = (
     const allowed = schema.getIn(['dragDrop', 'allowed']) as List<string>
 
     const availableBlocks = allowed ?
+        // @ts-ignore
         blocks.filter((_i, k) => allowed.contains(k)) as DragDropAdvancedContextType['blocks'] :
         blocks
 

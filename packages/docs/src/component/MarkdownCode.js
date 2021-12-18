@@ -12,7 +12,7 @@ const languageMapping = {
 
 const Code = ({variant, className, ...p}) => {
     const {palette} = useTheme();
-    const language = className && className.indexOf('language-') === 0 ? className.substr('language-'.length) : undefined
+    const language = className && className.indexOf('language-') === 0 ? className.slice('language-'.length) : undefined
     const currentMode = languageMapping[language] ? languageMapping[language] : language;
     if(language === 'ui-schema') {
         let value = {};

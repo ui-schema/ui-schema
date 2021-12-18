@@ -20,11 +20,11 @@
     "main": "index.js",
     "module": "esm/index.js",
     "devDependencies": {
-        "immutable": "^4.0.0-rc"
+        "immutable": "^4.0.0"
     },
     "peerDependencies": {
         "@ui-schema/ui-schema": "~0.3.0-alpha",
-        "immutable": "^4.0.0-rc"
+        "immutable": "^4.0.0"
     },
     "scripts": {
         "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/dictionary/src build && rm -rf build/dts && rm -rf build/**/*.test.*"

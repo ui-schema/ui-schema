@@ -48,7 +48,7 @@ const textTransform = (name, tt) => {
                     }
                     lastIndex++
                 } while(lastIndex < name.length)
-                return name.substr(0, lastIndex) + beauty(name.substr(lastIndex));
+                return name.slice(0, lastIndex) + beauty(name.slice(lastIndex));
             }
             break;
     }

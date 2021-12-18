@@ -77,7 +77,7 @@ const Item = (
                 storeKeys={storeKeys} level={1}
             />
         </Wrapper> : <PluginStack
-            schema={schema.setIn(['view', 'noGrid'], true)} parentSchema={parentSchema}
+            schema={schema.setIn(['view', 'noGrid'], true) as StoreSchemaType} parentSchema={parentSchema}
             storeKeys={storeKeys} level={1}
         />}
     </div>
