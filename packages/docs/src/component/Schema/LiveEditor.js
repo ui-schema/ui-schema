@@ -12,7 +12,6 @@ import {isInvalid, createOrderedMap, UIRootRenderer, createStore, useUI, storeUp
 import {RichCodeEditor, themes} from '../RichCodeEditor';
 import {Markdown} from '../Markdown';
 import PageNotFound from '../../page/PageNotFound';
-import {useTranslation} from 'react-i18next';
 import {schemas} from '../../schemas/_list';
 import style from 'codemirror/lib/codemirror.css';
 import themeDark from 'codemirror/theme/duotone-dark.css';
@@ -395,7 +394,6 @@ const useStyle = (styles) => {
 
 const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
     const history = useHistory();
-    const {i18n} = useTranslation();
     const {palette} = useTheme();
     let initialVertical = initialLocalBoolean('live-editor-vertical', 800 < window.innerWidth);// Vertical by default for desktop
     let initialRichIde = initialLocalBoolean('live-editor-rich-ide', true);
@@ -456,7 +454,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
         });
         setRenderChange(p => p + 1);
         history.push('/examples/' + (schemas[i][0].split(' ').join('-')));
-    }, [setActiveSchema, i18n, setShowValidity, setSchema, setStore, history]);
+    }, [setActiveSchema, setShowValidity, setSchema, setStore, history]);
 
     React.useEffect(() => {
         if(infoBox.current) {

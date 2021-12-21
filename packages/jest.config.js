@@ -1,4 +1,4 @@
-const packages = ['ui-schema', 'ds-bootstrap', 'ds-material', 'material-code', 'material-color', 'material-pickers', 'material-richtext'];
+const packages = ['ui-schema', 'ds-bootstrap', 'ds-material', 'material-code', 'material-color', 'material-pickers', 'material-richtext', 'kit-dnd'];
 
 const testMatches = []
 const testMatchesLint = []
@@ -27,6 +27,7 @@ const base = {
         '^@ui-schema/pro(.*)$': '<rootDir>/ui-schema-pro/src$1',
         '^@ui-schema/ds-bootstrap(.*)$': '<rootDir>/ds-bootstrap/src$1',
         '^@ui-schema/ds-material(.*)$': '<rootDir>/ds-material/src$1',
+        '^@ui-schema/kit-dnd(.*)$': '<rootDir>/kit-dnd/src$1',
     },
     moduleFileExtensions: [
         'ts',

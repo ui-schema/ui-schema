@@ -27,21 +27,17 @@
     "main": "index.js",
     "module": "esm/index.js",
     "scripts": {
-        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/kit-dnd/src build && rm -rf build/dts && rm -rf build/**/*.test.*",
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts build && rm -rf build/dts && rm -rf build/**/*.test.*",
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
-    },
-    "dependencies": {
-        "react-uid": "^2.2.0"
     },
     "devDependencies": {
         "immutable": "^4.0.0",
         "react": "^16.12",
-        "react-dnd": "^14.0.0",
-        "react-dom": "^16.12"
+        "react-dnd": "^14.0.0"
     },
     "peerDependencies": {
         "immutable": "^4.0.0",
-        "react": "^16.8",
+        "react": "^16.8 || ^17.0",
         "react-dnd": "^14.0.0"
     },
     "publishConfig": {

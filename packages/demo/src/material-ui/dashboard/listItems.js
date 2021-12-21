@@ -8,8 +8,8 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import WidgetsIcon from '@material-ui/icons/Widgets';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import {makeStyles} from "@material-ui/core";
-import {routesThemes} from "../../routes";
+import {makeStyles} from '@material-ui/core';
+import {routesThemes} from '../../routes';
 
 const useListItemStyles = makeStyles(theme => ({
     root: {
@@ -29,7 +29,7 @@ function ListItemLink(props) {
         () => React.forwardRef((itemProps, ref) =>
             normalLink ?
                 <a href={to} ref={ref} {...itemProps} /> :
-                <Link to={to} ref={ref} {...itemProps} />
+                <Link to={to} ref={ref} {...itemProps} />,
         ),
         [to, normalLink],
     );
@@ -46,7 +46,7 @@ export const mainListItems = (<div>
             key={route[0]}
             to={route[0]}
             primary={route[1]} icon={route[0] === '/' ? <DashboardIcon/> : <WidgetsIcon/>}
-        />
+        />,
     )}
     <ListItemLink to={'https://ui-schema.bemit.codes'} primary="Documentation" icon={<LayersIcon/>} normalLink/>
 </div>);
@@ -62,9 +62,12 @@ export const secondaryListItems = (
         <ListItemLink to={'/mui-pro'} primary="MUI UI Pro" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-editorjs'} primary="MUI EditorJS" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-rbd'} primary="MUI RBD" icon={<AssignmentIcon/>}/>
-        <ListItemLink to={'/mui-dnd'} primary="MUI DND" icon={<AssignmentIcon/>}/>
+        <ListItemLink to={'/mui-dnd'} primary="MUI DnD" icon={<AssignmentIcon/>}/>
+        <ListItemLink to={'/mui-dnd-grid'} primary="MUI DnD Grid" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-editable'} primary="MUI Editable" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-custom'} primary="MUI Custom" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-split'} primary="MUI Split" icon={<AssignmentIcon/>}/>
+        <ListItemLink to={'/kit-dnd'} primary="Kit DnD" icon={<AssignmentIcon/>}/>
+        <ListItemLink to={'/kit-dnd-grid'} primary="Kit DnD Grid" icon={<AssignmentIcon/>}/>
     </div>
 );

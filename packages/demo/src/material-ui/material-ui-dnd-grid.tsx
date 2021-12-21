@@ -1,51 +1,54 @@
-import React from 'react';
-import AppTheme from './layout/AppTheme';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import {ImmutableEditor, themeMaterial} from 'react-immutable-editor';
-import Dashboard from './dashboard/Dashboard';
-import {widgets} from '@ui-schema/ds-material';
-import {browserT} from '../t';
-import {MuiSchemaDebug} from './component/MuiSchemaDebug';
+import React from 'react'
+import AppTheme from './layout/AppTheme'
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import DialogContent from '@material-ui/core/DialogContent'
+// @ts-ignore
+import { ImmutableEditor, themeMaterial } from 'react-immutable-editor'
+import Dashboard from './dashboard/Dashboard'
+import { widgets } from '@ui-schema/ds-material'
+import { browserT } from '../t'
+import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import IcSave from '@material-ui/icons/Save'
 import IcClear from '@material-ui/icons/Clear'
 import IcHistory from '@material-ui/icons/History'
 import IcRedo from '@material-ui/icons/Redo'
 import IcUndo from '@material-ui/icons/Undo'
-import useTheme from '@material-ui/core/styles/useTheme';
-import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter/isInvalid';
-import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro';
-import {schemaDragDrop, schemaDragDropSingle} from '../schemas/demoDragDrop';
+import useTheme from '@material-ui/core/styles/useTheme'
+import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter/isInvalid'
+import { toHistory, useStorePro } from '@ui-schema/pro/UIStorePro'
+import { schemaDragDrop, schemaDragDropSingle } from '../schemas/demoDragDrop'
 import { DndProvider } from 'react-dnd'
 import { MultiBackend } from 'react-dnd-multi-backend'
 import { HTML5toTouch } from 'rdndmb-html5-to-touch'
-import {makeDragDropContext} from '@ui-schema/material-dnd/DragDropProvider/makeDragDropContext';
-import {DragDropProvider} from '@ui-schema/material-dnd/DragDropProvider/DragDropProvider';
-import {BlockPanel} from '@ui-schema/material-dnd/DraggableBlock/BlockPanel';
-import {createOrderedMap, createStore, storeUpdater, UIApiProvider, UIMetaProvider, UIStoreProvider} from '@ui-schema/ui-schema';
-import {List} from 'immutable';
-import {DroppableRootMultiple} from '@ui-schema/material-dnd/Widgets/DroppableRootMultiple';
-import {DroppableRootSingle} from '@ui-schema/material-dnd/Widgets/DroppableRootSingle';
-import {DroppableRootContent} from '@ui-schema/material-dnd/DroppableRoot/DroppableRootContent';
-import {DroppablePanel} from '@ui-schema/material-dnd/Widgets/DroppablePanel';
-import {RichContent, RichContentInline, RichContentPane} from '@ui-schema/material-slate';
-import {UIRootRenderer} from '@ui-schema/ui-schema/UIRootRenderer';
+import { makeDragDropContext } from '@ui-schema/material-dnd/DragDropProvider/makeDragDropContext'
+import { DragDropProvider } from '@ui-schema/material-dnd/DragDropProvider/DragDropProvider'
+import { BlockPanel } from '@ui-schema/material-dnd/DraggableBlock/BlockPanel'
+import { createOrderedMap, createStore, storeUpdater, UIApiProvider, UIMetaProvider, UIStoreProvider } from '@ui-schema/ui-schema'
+import { List } from 'immutable'
+import { DroppableRootMultiple } from '@ui-schema/material-dnd/Widgets/DroppableRootMultiple'
+import { DroppableRootSingle } from '@ui-schema/material-dnd/Widgets/DroppableRootSingle'
+import { DroppableRootContent } from '@ui-schema/material-dnd/DroppableRoot/DroppableRootContent'
+import { DroppablePanel } from '@ui-schema/material-dnd/Widgets/DroppablePanel'
+import { RichContent, RichContentInline, RichContentPane } from '@ui-schema/material-slate'
+import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer'
 
-const customWidgets = {...widgets};
+const customWidgets = {...widgets}
 customWidgets.DraggableBlock = BlockPanel
 customWidgets.DroppableRootContent = DroppableRootContent
 customWidgets.custom = {
     ...widgets.custom,
+    // @ts-ignore
     DroppableRootMultiple: DroppableRootMultiple,
     DroppableRootSingle: DroppableRootSingle,
     DroppablePanel: DroppablePanel,
     RichContentPane: RichContentPane,
     RichContent: RichContent,
     RichContentInline: RichContentInline,
-};
+}
 
+// @ts-ignore
 const loadSchema = (url, versions) => {
     console.log('Demo loadSchema (url, optional versions)', url, versions)
     return fetch(url).then(r => r.json())
@@ -100,10 +103,10 @@ const initialStore = createStore(createOrderedMap({
 const schema = schemaDragDrop
 
 const MultiEditor = () => {
-    const theme = useTheme();
+    const theme = useTheme()
 
-    const [showHistory, setShowHistory] = React.useState(false);
-    const [showValidity, setShowValidity] = React.useState(false);
+    const [showHistory, setShowHistory] = React.useState(false)
+    const [showValidity, setShowValidity] = React.useState(false)
 
     const prevOriginalStore = React.useRef(initialStore?.getValues())
     const {
@@ -112,6 +115,7 @@ const MultiEditor = () => {
         redoHistory, undoHistory,
     } = useStorePro({type: String(schema.get('type')), initialStore: initialStore})
 
+    // @ts-ignore
     const dragStoreContext = makeDragDropContext(onChange, schema.get('$defs') || schema.get('definitions'))
 
     // todo: multi type support #68
@@ -195,6 +199,7 @@ const MultiEditor = () => {
                     <ImmutableEditor
                         data={s.getValues()}
                         onChange={() => console.log('not implemented')}
+                        // @ts-ignore
                         getVal={keys => s.getValues().getIn(keys)}
                         theme={{
                             ...themeMaterial,
@@ -208,14 +213,14 @@ const MultiEditor = () => {
             </DialogContent>
         </Dialog>
     </React.Fragment>
-};
+}
 
 const schemaSingle = schemaDragDropSingle
 
 const SingleEditor = () => {
-    const [showValidity, setShowValidity] = React.useState(false);
+    const [showValidity, setShowValidity] = React.useState(false)
 
-    const [store, setStore] = React.useState(() => createStore(List()));
+    const [store, setStore] = React.useState(() => createStore(List()))
 
     const onChange = React.useCallback((storeKeys, scopes, updater) => {
         setStore(prevStore => {
@@ -223,6 +228,7 @@ const SingleEditor = () => {
         })
     }, [setStore])
 
+    // @ts-ignore
     const dragStoreContext = makeDragDropContext(onChange, schema.get('$defs') || schema.get('definitions'))
 
     return <React.Fragment>
@@ -246,19 +252,21 @@ const SingleEditor = () => {
             </div>
         </div>
     </React.Fragment>
-};
+}
 
 const Main = () => {
     return <React.Fragment>
         <MultiEditor/>
         <SingleEditor/>
     </React.Fragment>
-};
+}
 
+// @ts-ignore
+// eslint-disable-next-line react/display-name
 export default () => <AppTheme>
     <UIMetaProvider widgets={customWidgets} t={browserT}>
         <Dashboard main={Main}/>
     </UIMetaProvider>
 </AppTheme>
 
-export {customWidgets}
+export { customWidgets }
