@@ -1,5 +1,5 @@
 import React from 'react'
-import { memo, Trans, TransTitle, UIStoreActionListItemAdd, WidgetProps, WithOnChange } from '@ui-schema/ui-schema'
+import { memo, Trans, TransTitle, UIStoreActionListItemAdd, WidgetProps, WidgetsBindingFactory, WithOnChange } from '@ui-schema/ui-schema'
 import { AccessTooltipIcon } from '@ui-schema/ds-material'
 import IconButton from '@material-ui/core/IconButton'
 import Add from '@material-ui/icons/Add'
@@ -17,7 +17,7 @@ export const DropAreaBase = (
     {
         widgets,
         ...props
-    }: WidgetProps<{}, DragDropBlockComponentsBinding> & WithOnChange
+    }: WidgetProps<{}, WidgetsBindingFactory<DragDropBlockComponentsBinding>> & WithOnChange
 ): React.ReactElement => {
     const [showSelector, setShowSelector] = React.useState(false)
     const {schema, ownKey, storeKeys, onChange, required} = props

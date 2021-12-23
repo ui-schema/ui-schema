@@ -14,12 +14,7 @@ export interface GroupRendererProps {
     spacing?: number
 }
 
-/**
- * Strict widget binding, without allowing any further root components
- * - `C` = custom `UIMetaContext` definition
- */
-// eslint-disable-next-line  @typescript-eslint/no-unused-vars
-export interface WidgetsBindingBaseStrict<C extends {} = {}, W extends {} = {}> {
+export interface WidgetsBindingComponents {
     ErrorFallback?: React.ComponentType<{
         error: any | null
         type?: string
@@ -40,16 +35,25 @@ export interface WidgetsBindingBaseStrict<C extends {} = {}, W extends {} = {}> 
     // actual validator function to use outside of render flow (in functions)
     // > added in `0.3.0`
     // validator: () => void
-
-    // define native JSON-schema type widgets
-    //types: { [key: string]: WidgetType<C, W> }
-    types: { [key: string]: WidgetType<C> }
-    // define custom widgets
-    //custom: { [key: string]: WidgetType<C, W> }
-    custom: { [key: string]: WidgetType<C> }
 }
 
-export type WidgetsBindingBase<C extends {} = {}, W extends {} = {}> = WidgetsBindingBaseStrict<C, W> & {
-    // allow adding any further custom root components or further information
-    [key: string]: React.ComponentType<any> | any
+export interface WidgetsBindingWidgets<TW extends {} = {}, CW extends {} = {}> {
+    // define native JSON-schema type widgets
+    types: TW
+    // define custom widgets
+    custom: CW
+}
+
+/**
+ * widget binding
+ * - `C` = own `UIMetaContext` definition
+ * - `TW` = own type widgets definition
+ * - `CW` = own custom widgets definition
+ */
+export type WidgetsBindingFactory<W extends {} = {}, TW extends {} = {}, CW extends {} = {}> =
+    WidgetsBindingComponents & W &
+    WidgetsBindingWidgets<TW, CW>
+
+export type WidgetsBindingLooseComponents<C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory> = {
+    [key: string]: WidgetType<C, W>
 }

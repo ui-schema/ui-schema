@@ -7,7 +7,7 @@ import Label from '@material-ui/core/FormLabel'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import Dashboard from './dashboard/Dashboard'
-import { widgets } from '@ui-schema/ds-material'
+import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, widgets } from '@ui-schema/ds-material'
 import { browserT } from '../t'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter/isInvalid'
@@ -15,22 +15,21 @@ import { schemaDragDropSortableList1, schemaDragDropSortableList2, schemaDragDro
 import { DndProvider } from 'react-dnd'
 import { MultiBackend } from 'react-dnd-multi-backend'
 import { HTML5toTouch } from 'rdndmb-html5-to-touch'
-import { createEmptyStore, createStore, SchemaTypesType, StoreSchemaType, storeUpdater, UIMetaProvider, UIStoreProvider, UIStoreType } from '@ui-schema/ui-schema'
+import { createEmptyStore, createStore, SchemaTypesType, StoreSchemaType, storeUpdater, UIMetaProvider, UIStoreProvider, UIStoreType, WidgetProps, WidgetsBindingFactory, WithScalarValue } from '@ui-schema/ui-schema'
 import { List } from 'immutable'
-import { RichContent, RichContentInline, RichContentPane } from '@ui-schema/material-slate'
 import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer'
 import { KitDndProvider, useOnIntent } from '@ui-schema/kit-dnd'
 import { useOnDirectedMove } from '@ui-schema/material-dnd/useOnDirectedMove'
 import { DragDropSpec } from '@ui-schema/material-dnd/DragDropSpec'
 import { SortableList } from '@ui-schema/material-dnd/Widgets/SortableList/SortableList'
 
-const customWidgets = {...widgets}
+type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
+    SortableList: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>
+}>
+const customWidgets: CustomWidgetsBinding = {...widgets} as CustomWidgetsBinding
 customWidgets.custom = {
     ...widgets.custom,
     SortableList: SortableList,
-    RichContentPane: RichContentPane,
-    RichContent: RichContent,
-    RichContentInline: RichContentInline,
 }
 
 const schemas: [StoreSchemaType, boolean][] = [

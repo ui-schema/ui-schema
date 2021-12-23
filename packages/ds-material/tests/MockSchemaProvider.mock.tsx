@@ -5,11 +5,11 @@ import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap'
 import { UIProvider } from '@ui-schema/ui-schema/UIGenerator'
 import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
-import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
+import { WidgetsBindingFactory } from '@ui-schema/ui-schema/WidgetsBinding'
 import { UIMetaProvider, WidgetRenderer } from '@ui-schema/ui-schema'
 import { relTranslator } from '@ui-schema/ui-schema/Translate/relT'
 
-export const MockWidgets: WidgetsBindingBase = {
+export const MockWidgets: WidgetsBindingFactory = {
     ErrorFallback: () => null,
     RootRenderer: () => null,
     GroupRenderer: () => null,
@@ -24,7 +24,7 @@ export const MockSchema = createOrderedMap({type: 'object'})
 
 export const MockSchemaProvider: React.ComponentType<{
     t?: Translator
-    widgets: WidgetsBindingBase
+    widgets: WidgetsBindingFactory
     schema: StoreSchemaType
 }> = (
     {t, widgets, schema}
@@ -45,7 +45,7 @@ export const MockSchemaProvider: React.ComponentType<{
 
 export const MockSchemaMetaProvider: React.ComponentType<React.PropsWithChildren<{
     t?: Translator
-    widgets?: WidgetsBindingBase
+    widgets?: WidgetsBindingFactory
 }>> = (
     {t, widgets, children}
 ) => {

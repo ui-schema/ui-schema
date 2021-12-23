@@ -7,7 +7,7 @@ import Label from '@material-ui/core/FormLabel'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import Dashboard from './dashboard/Dashboard'
-import { widgets } from '@ui-schema/ds-material'
+import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, widgets } from '@ui-schema/ds-material'
 import { browserT } from '../t'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter/isInvalid'
@@ -25,7 +25,7 @@ import {
     UIMetaProvider,
     UIStoreProvider,
     UIStoreType,
-    WidgetsBindingBaseStrict,
+    WidgetsBindingFactory,
 } from '@ui-schema/ui-schema'
 import { OrderedMap } from 'immutable'
 import { RichContent, RichContentInline, RichContentPane } from '@ui-schema/material-slate'
@@ -40,7 +40,8 @@ import { DragDropBlockSelector } from '@ui-schema/material-dnd/DragDropBlockSele
 import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd/DragDropBlock'
 import { DropArea } from '@ui-schema/material-dnd/Widgets/DropArea'
 
-const customWidgets: WidgetsBindingBaseStrict<{}, DragDropBlockComponentsBinding> & DragDropBlockComponentsBinding = {
+export type CustomWidgetsBinding = WidgetsBindingFactory<DragDropBlockComponentsBinding, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}>>
+const customWidgets: CustomWidgetsBinding = {
     ...widgets,
     DndBlockSelector: DragDropBlockSelector,
     custom: {
@@ -50,7 +51,6 @@ const customWidgets: WidgetsBindingBaseStrict<{}, DragDropBlockComponentsBinding
         //DroppableRootSingle: DroppableRootSingle,
         //DroppablePanel: DroppablePanel,
         DropArea: DropArea,
-        // @ts-ignore
         DragDropArea: DragDropArea,
         SortableList: SortableList,
         RichContentPane: RichContentPane,
@@ -195,7 +195,7 @@ const Main = () => {
 // @ts-ignore
 // eslint-disable-next-line react/display-name
 export default () => <AppTheme>
-    <UIMetaProvider<{}, WidgetsBindingBaseStrict<{}, DragDropBlockComponentsBinding> & DragDropBlockComponentsBinding> widgets={customWidgets} t={browserT}>
+    <UIMetaProvider<{}, CustomWidgetsBinding> widgets={customWidgets} t={browserT}>
         <Dashboard main={Main}/>
     </UIMetaProvider>
 </AppTheme>

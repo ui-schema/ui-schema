@@ -114,7 +114,6 @@ export const StringRendererDebounced = <P extends WidgetProps = WidgetProps>(
                 const val = e.target.value
                 const schemaType = schema.get('type') as string
                 const newVal = convertStringToNumber(val, schemaType)
-                console.log(newVal)
                 if (
                     schemaTypeIsNumeric(schemaType)
                     && newVal === '' && e.target.validity.badInput

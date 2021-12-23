@@ -4,8 +4,8 @@ import Dashboard from './dashboard/Dashboard'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
-import { Step, Stepper, widgets } from '@ui-schema/ds-material'
-import { createOrderedMap, createStore, StoreKeys, StoreSchemaType, WidgetProps, loadSchemaUIApi, UIMetaProvider, UIStoreProvider, useUIMeta, WithValue, extractValue } from '@ui-schema/ui-schema'
+import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, Step, Stepper, widgets } from '@ui-schema/ds-material'
+import { createOrderedMap, createStore, StoreKeys, StoreSchemaType, WidgetProps, loadSchemaUIApi, UIMetaProvider, UIStoreProvider, useUIMeta, WithValue, extractValue, WidgetsBindingFactory } from '@ui-schema/ui-schema'
 import { browserT } from '../t'
 import { UIApiProvider } from '@ui-schema/ui-schema/UIApi/UIApi'
 import { ReferencingNetworkHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
@@ -20,7 +20,13 @@ import { StringRenderer } from '@ui-schema/ds-material/Widgets/TextField'
 import { ObjectGroup } from '@ui-schema/ui-schema/ObjectGroup'
 import { memo } from '@ui-schema/ui-schema/Utils/memo'
 
-const customWidgets = {...widgets}
+type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
+    Table: React.ComponentType<WidgetProps>
+    TableAdvanced: React.ComponentType<WidgetProps>
+    Stepper: React.ComponentType<WidgetProps>
+    Step: React.ComponentType<WidgetProps>
+}>
+const customWidgets: CustomWidgetsBinding = {...widgets} as CustomWidgetsBinding
 const pluginStack = [...customWidgets.pluginStack]
 // the referencing network handler should be at first position
 // must be before the `ReferencingHandler`, thus if the root schema for the level is a network schema,
@@ -157,7 +163,7 @@ const FreeFormEditor = () => {
         setStore(storeUpdater(storeKeys, scopes, updater))
     }, [setStore])
 
-    const {handleStuff} = useUIMeta<UIMetaCustomContext>()
+    const {handleStuff} = useUIMeta<UIMetaCustomContext, CustomWidgetsBinding>()
     console.log('handleStuff', handleStuff)
 
     return <React.Fragment>
@@ -251,7 +257,7 @@ export interface UIMetaCustomContext {
 // eslint-disable-next-line react/display-name,@typescript-eslint/explicit-module-boundary-types
 export default () => <AppTheme>
     <div>
-        <UIMetaProvider<UIMetaCustomContext> widgets={customWidgets} t={browserT} handleStuff={() => 'stuff'}>
+        <UIMetaProvider<UIMetaCustomContext, CustomWidgetsBinding> widgets={customWidgets} t={browserT} handleStuff={() => 'stuff'}>
             <UIApiProvider loadSchema={loadSchema} noCache>
                 <Dashboard main={Main}/>
             </UIApiProvider>

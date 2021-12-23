@@ -4,7 +4,7 @@ import { browserT } from '../t'
 import AppTheme from './layout/AppTheme'
 import Dashboard from './dashboard/Dashboard'
 import Grid from '@material-ui/core/Grid'
-import { widgets } from '@ui-schema/ds-material'
+import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, widgets } from '@ui-schema/ds-material'
 import { useDummy } from '../component/MainDummy'
 import { schemaCode } from '../schemas/demoSimples'
 import { WidgetCodeProvider, Code, WidgetCodeContextType } from '@ui-schema/material-code'
@@ -24,7 +24,7 @@ import themeDark from 'codemirror/theme/duotone-dark.css'
 import themeLight from 'codemirror/theme/duotone-light.css'
 import useTheme from '@material-ui/core/styles/useTheme'
 import { CodeSelectable } from '@ui-schema/material-code/CodeSelectable/CodeSelectable'
-import { UIMetaProvider } from '@ui-schema/ui-schema'
+import { UIMetaProvider, WidgetProps, WidgetsBindingFactory, WithScalarValue } from '@ui-schema/ui-schema'
 /*import themeMaterial from 'codemirror/theme/gruvbox-dark.css';
 import themeDark from 'codemirror/theme/xq-dark.css';
 import themeLight from 'codemirror/theme/xq-light.css';*/
@@ -36,8 +36,12 @@ const useStyle = (styles) => {
         return () => styles.unuse()
     }, [styles])
 }
-
-const customWidgets = {...widgets}
+type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
+    Code: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>
+    CodeSelectable: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>
+    //[k: string]: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>
+}>
+const customWidgets: CustomWidgetsBinding = {...widgets} as CustomWidgetsBinding
 customWidgets.custom = {
     ...widgets.custom,
     Code: Code,
