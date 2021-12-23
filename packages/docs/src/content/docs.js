@@ -14,8 +14,7 @@ import {demoSwitch} from './docs/widgets/SwitchDemo';
 import {demoTable} from './docs/widgets/TableDemo';
 import {demoTextField} from './docs/widgets/TextFieldDemo';
 import {demoEditorJS} from './docs/widgets/EditorJSDemo';
-import {demoDragnDropEditorSimple} from './docs/widgets/Drag-n-Drop-Editor-Simple';
-import {demoDragnDropEditor} from './docs/widgets/Drag-n-Drop-Editor';
+import {demoDragnDropGenericDemo} from './docs/material-dnd/widgets-genericDemo';
 
 const createDoc = (path, label, prefix, context) => ({
     doc: path,
@@ -68,12 +67,6 @@ export const routesWidgets = {
         createDoc('widgets/DateTimePickers', 'Date + Time Pickers', '', {
             demoUIGenerator: demoDateTimePickers,
         }),
-        createDoc('widgets/Drag-n-Drop-Editor', 'Drag \'n Drop Advanced', '', {
-            demoUIGenerator: demoDragnDropEditor,
-        }),
-        createDoc('widgets/Drag-n-Drop-Editor-Simple', 'Drag \'n Drop Simple', '', {
-            demoUIGenerator: demoDragnDropEditorSimple,
-        }),
         createDoc('widgets/EditorJS', 'EditorJS', '', {
             demoUIGenerator: demoEditorJS,
         }),
@@ -113,11 +106,38 @@ export const routesWidgets = {
     ],
 };
 
-export const routesDSMaterial = {
+export const routesKitDnd = {
     nav: {
-        label: 'DS Material Components',
+        label: 'Kit: DnD',
+        initialOpen: false,
+        to: '/docs/kit-dnd',
     },
     routes: [
-        createDoc('ds-material/Table', 'Table', ''),
+        createDoc('kit-dnd/kit-dnd', 'Overview', ''),
     ],
 };
+
+export const routesDSMaterial = [
+    {
+        nav: {
+            label: 'DS Material Components',
+            initialOpen: false,
+            to: '/docs/ds-material',
+        },
+        routes: [
+            createDoc('ds-material/Table', 'Table Base Component', ''),
+        ],
+    }, {
+        nav: {
+            label: 'Material-DND',
+            initialOpen: false,
+            to: '/docs/material-dnd',
+        },
+        routes: [
+            createDoc('material-dnd/overview', 'Overview', ''),
+            createDoc('material-dnd/widgets-generic', 'Widgets Generic', '', {
+                demoUIGenerator: demoDragnDropGenericDemo,
+            }),
+        ],
+    },
+];

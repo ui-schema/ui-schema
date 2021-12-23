@@ -108,7 +108,7 @@ npm i --save @ui-schema/ui-schema immutable @ui-schema/ds-material @material-ui/
 > there's also a [create-react-app demo](https://github.com/ui-schema/demo-cra)
 `}/> :
                             ds === 'bts' ? <Markdown content source={`
-> no priority currently for bootstrap widgets development
+> no priority currently for bootstrap widgets development, but happy about PRs
 \`\`\`bash
 npm i --save @ui-schema/ui-schema immutable @ui-schema/ds-bootstrap bootstrap
 \`\`\`

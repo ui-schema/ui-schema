@@ -1,226 +1,51 @@
 import React from 'react'
 import AppTheme from './layout/AppTheme'
 import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import DialogContent from '@material-ui/core/DialogContent'
-// @ts-ignore
-import { ImmutableEditor, themeMaterial } from 'react-immutable-editor'
+import Box from '@material-ui/core/Box'
+import MenuItem from '@material-ui/core/MenuItem'
+import Label from '@material-ui/core/FormLabel'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
 import Dashboard from './dashboard/Dashboard'
 import { widgets } from '@ui-schema/ds-material'
 import { browserT } from '../t'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
-import IcSave from '@material-ui/icons/Save'
-import IcClear from '@material-ui/icons/Clear'
-import IcHistory from '@material-ui/icons/History'
-import IcRedo from '@material-ui/icons/Redo'
-import IcUndo from '@material-ui/icons/Undo'
-import useTheme from '@material-ui/core/styles/useTheme'
 import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter/isInvalid'
-import { toHistory, useStorePro } from '@ui-schema/pro/UIStorePro'
-import { schemaDragDrop, schemaDragDropSingle } from '../schemas/demoDragDrop'
+import { schemaDragDropSortableList1, schemaDragDropSortableList2, schemaDragDropSortableList3, schemaDragDropSortableList4, schemaDragDropSortableList5 } from '../schemas/demoDragDrop'
 import { DndProvider } from 'react-dnd'
 import { MultiBackend } from 'react-dnd-multi-backend'
 import { HTML5toTouch } from 'rdndmb-html5-to-touch'
-import { makeDragDropContext } from '@ui-schema/material-dnd/DragDropProvider/makeDragDropContext'
-import { DragDropProvider } from '@ui-schema/material-dnd/DragDropProvider/DragDropProvider'
-import { BlockPanel } from '@ui-schema/material-dnd/DraggableBlock/BlockPanel'
-import { createOrderedMap, createStore, storeUpdater, UIApiProvider, UIMetaProvider, UIStoreProvider } from '@ui-schema/ui-schema'
+import { createEmptyStore, createStore, SchemaTypesType, StoreSchemaType, storeUpdater, UIMetaProvider, UIStoreProvider, UIStoreType } from '@ui-schema/ui-schema'
 import { List } from 'immutable'
-import { DroppableRootMultiple } from '@ui-schema/material-dnd/Widgets/DroppableRootMultiple'
-import { DroppableRootSingle } from '@ui-schema/material-dnd/Widgets/DroppableRootSingle'
-import { DroppableRootContent } from '@ui-schema/material-dnd/DroppableRoot/DroppableRootContent'
-import { DroppablePanel } from '@ui-schema/material-dnd/Widgets/DroppablePanel'
 import { RichContent, RichContentInline, RichContentPane } from '@ui-schema/material-slate'
 import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer'
+import { KitDndProvider, useOnIntent } from '@ui-schema/kit-dnd'
+import { useOnDirectedMove } from '@ui-schema/material-dnd/useOnDirectedMove'
+import { DragDropSpec } from '@ui-schema/material-dnd/DragDropSpec'
+import { SortableList } from '@ui-schema/material-dnd/Widgets/SortableList/SortableList'
 
 const customWidgets = {...widgets}
-customWidgets.DraggableBlock = BlockPanel
-customWidgets.DroppableRootContent = DroppableRootContent
 customWidgets.custom = {
     ...widgets.custom,
-    // @ts-ignore
-    DroppableRootMultiple: DroppableRootMultiple,
-    DroppableRootSingle: DroppableRootSingle,
-    DroppablePanel: DroppablePanel,
+    SortableList: SortableList,
     RichContentPane: RichContentPane,
     RichContent: RichContent,
     RichContentInline: RichContentInline,
 }
 
-// @ts-ignore
-const loadSchema = (url, versions) => {
-    console.log('Demo loadSchema (url, optional versions)', url, versions)
-    return fetch(url).then(r => r.json())
-}
-
-const initialStore = createStore(createOrderedMap({
-    main: [
-        {
-            '$bid': '_bjugvdhrqn9',
-            '$block': 'rich_content',
-            'content': [
-                {
-                    'type': 'h1',
-                    'children': [
-                        {
-                            'text': 'Hi!',
-                        },
-                    ],
-                },
-                {
-                    'type': 'p',
-                    'children': [
-                        {
-                            'text': 'Lorem Ipsum dolor sit amet.',
-                        },
-                    ],
-                },
-            ],
-        },
-        {
-            '$bid': '_nt5y5qws6p',
-            '$block': 'text',
-            'text': 'Adepisci ut sut mot.',
-        },
-        {
-            '$bid': '_q6s1lbxhs78',
-            '$block': 'teasers',
-            'list': [
-                {
-                    'headline': '1234',
-                    'content': ' sgdffdg fdg sdf',
-                },
-                {
-                    'headline': '56789',
-                    'content': 'fgsd vnjghj hg',
-                },
-            ],
-        },
-    ],
-}))
-
-const schema = schemaDragDrop
-
-const MultiEditor = () => {
-    const theme = useTheme()
-
-    const [showHistory, setShowHistory] = React.useState(false)
-    const [showValidity, setShowValidity] = React.useState(false)
-
-    const prevOriginalStore = React.useRef(initialStore?.getValues())
-    const {
-        reset: resetHistoryStore,
-        onChange, store, setStore,
-        redoHistory, undoHistory,
-    } = useStorePro({type: String(schema.get('type')), initialStore: initialStore})
-
-    // @ts-ignore
-    const dragStoreContext = makeDragDropContext(onChange, schema.get('$defs') || schema.get('definitions'))
-
-    // todo: multi type support #68
-    const type = String(schema.get('type'))
-    const reset = React.useCallback(() => {
-        resetHistoryStore(type, initialStore)
-        prevOriginalStore.current = initialStore?.getValues()
-    }, [type, resetHistoryStore, prevOriginalStore])
-
-    const changedStore = (
-        (!prevOriginalStore.current && store.current?.getValues().size > 0) ||
-        (prevOriginalStore.current && !prevOriginalStore.current?.equals(store.current?.getValues()))
-    )
-
-    return <React.Fragment>
-        <div>
-            <Button
-                startIcon={<IcUndo/>}
-                disabled={store.activeIndex === 0}
-                onClick={() => undoHistory(1)}
-            >undo</Button>
-            <Button
-                startIcon={<IcRedo/>}
-                disabled={store.activeIndex + 1 === store.list.size}
-                onClick={() => redoHistory(1)}
-            >redo</Button>
-            <Button
-                startIcon={<IcHistory/>}
-                disabled={store.list.size === 1}
-                onClick={() => setShowHistory(s => !s)}
-            >history</Button>
-            <Button
-                startIcon={<IcClear/>}
-                disabled={store.list.size === 1}
-                onClick={reset}
-            >clear</Button>
-            <Button
-                startIcon={<IcSave/>}
-                disabled={!changedStore}
-            >save</Button>
-        </div>
-
-        <UIApiProvider loadSchema={loadSchema} noCache>
-            <DragDropProvider contextValue={dragStoreContext.contextValue}>
-                <DndProvider backend={MultiBackend} options={HTML5toTouch}>
-                    <UIStoreProvider
-                        store={store.current}
-                        onChange={onChange}
-                        showValidity={showValidity}
-                    >
-                        <UIRootRenderer schema={schema}/>
-                        <MuiSchemaDebug schema={schema}/>
-                    </UIStoreProvider>
-                </DndProvider>
-            </DragDropProvider>
-        </UIApiProvider>
-
-        <div style={{width: '100%'}}>
-            <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
-            <div>
-                {isInvalid(store.current.getValidity()) ? 'invalid' : 'valid'}
-            </div>
-        </div>
-
-        <Dialog
-            onClose={() => setShowHistory(false)}
-            open={showHistory}
-        >
-            <DialogTitle style={{textAlign: 'center'}}>Store History</DialogTitle>
-            <DialogContent
-                style={{minWidth: 350}}
-            >
-                {store.list.map((s, i) => <div key={i} style={{marginBottom: 18}}>
-                    <Button
-                        style={{fontWeight: 'bold'}}
-                        onClick={() => {
-                            setStore(store => toHistory(store, i))
-                            setShowHistory(false)
-                        }}
-                    >Index: {i} {store.activeIndex === i ? 'is-active' : null}</Button>
-                    <ImmutableEditor
-                        data={s.getValues()}
-                        onChange={() => console.log('not implemented')}
-                        // @ts-ignore
-                        getVal={keys => s.getValues().getIn(keys)}
-                        theme={{
-                            ...themeMaterial,
-                            type: theme.palette.type,
-                            base00: theme.palette.background.paper,
-                            base0D: theme.palette.text.secondary,
-                            base0B: theme.palette.text.primary,
-                        }}
-                    />
-                </div>)}
-            </DialogContent>
-        </Dialog>
-    </React.Fragment>
-}
-
-const schemaSingle = schemaDragDropSingle
+const schemas: [StoreSchemaType, boolean][] = [
+    [schemaDragDropSortableList1, true],
+    [schemaDragDropSortableList2, false],
+    [schemaDragDropSortableList3, false],
+    [schemaDragDropSortableList4, true],
+    [schemaDragDropSortableList5, false],
+]
 
 const SingleEditor = () => {
     const [showValidity, setShowValidity] = React.useState(false)
 
-    const [store, setStore] = React.useState(() => createStore(List()))
+    const [schema, setSchema] = React.useState<number>(0)
+    const [store, setStore] = React.useState<UIStoreType>(() => createStore(List()))
 
     const onChange = React.useCallback((storeKeys, scopes, updater) => {
         setStore(prevStore => {
@@ -228,22 +53,43 @@ const SingleEditor = () => {
         })
     }, [setStore])
 
-    // @ts-ignore
-    const dragStoreContext = makeDragDropContext(onChange, schema.get('$defs') || schema.get('definitions'))
+    const {onIntent} = useOnIntent<HTMLDivElement, DragDropSpec>({edgeSize: 12})
+    const {onMove} = useOnDirectedMove<HTMLDivElement, DragDropSpec>(onIntent, onChange)
 
     return <React.Fragment>
-        <DragDropProvider contextValue={dragStoreContext.contextValue}>
+        <Box mb={2}>
+            <FormControl>
+                <Label>Select Schema</Label>
+                <Select
+                    value={schema}
+                    // @ts-ignore
+                    onChange={e => {
+                        // @ts-ignore
+                        const s = e.target.value as number
+                        setSchema(s)
+                        setStore(createEmptyStore(schemas[s][0].get('type') as SchemaTypesType))
+                    }}
+                    displayEmpty
+                >
+                    {schemas.map((schema, i) => (
+                        <MenuItem key={i} value={i} disabled={!schema[1]}>{schema[0].get('title')}</MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+        </Box>
+
+        <KitDndProvider<HTMLDivElement, DragDropSpec> onMove={onMove}>
             <DndProvider backend={MultiBackend} options={HTML5toTouch}>
                 <UIStoreProvider
                     store={store}
                     onChange={onChange}
                     showValidity={showValidity}
                 >
-                    <UIRootRenderer schema={schemaSingle}/>
-                    <MuiSchemaDebug schema={schemaSingle}/>
+                    <UIRootRenderer schema={schemas[schema][0]}/>
+                    <MuiSchemaDebug schema={schemas[schema][0]}/>
                 </UIStoreProvider>
             </DndProvider>
-        </DragDropProvider>
+        </KitDndProvider>
 
         <div style={{width: '100%'}}>
             <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
@@ -256,7 +102,6 @@ const SingleEditor = () => {
 
 const Main = () => {
     return <React.Fragment>
-        <MultiEditor/>
         <SingleEditor/>
     </React.Fragment>
 }

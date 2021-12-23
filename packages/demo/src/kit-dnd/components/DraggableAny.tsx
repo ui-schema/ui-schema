@@ -1,44 +1,39 @@
 import React from 'react'
-import { Draggable, DraggableProps } from '@ui-schema/kit-dnd/Draggable'
-import { DraggableBlock, DraggableBlockProps } from './DraggableBlock'
+import { DraggableBlock } from './DraggableBlock'
 import { DndValueList } from '@ui-schema/kit-dnd/KitDnd'
-import { DraggableArea, DraggableAreaProps } from './DraggableArea'
-import { List } from 'immutable'
+import { DraggableArea } from './DraggableArea'
+import { DraggableRendererProps } from '@ui-schema/kit-dnd/useDraggable'
 
 export interface DraggableAnyProps {
-    id: string
     list?: DndValueList
-    index: number
-    dataKeys: List<number>
-    allowedTypes: DraggableProps['allowedTypes']
-    itemCount: number
 }
 
-export const DraggableAny: React.ComponentType<DraggableAnyProps> = (
+export const DraggableAny: React.ComponentType<DraggableRendererProps & DraggableAnyProps> = (
     {
-        id, list, allowedTypes,
-        itemCount,
+        id, list,
         dataKeys, index,
+        isFirst, isLast, scope,
     }
 ) => {
     return typeof list === 'undefined' ?
-        <Draggable<HTMLDivElement, DraggableBlockProps>
-            Item={DraggableBlock}
+        <DraggableBlock
             id={id}
             index={index}
-            itemCount={itemCount}
-            itemType={'BLOCK'}
             dataKeys={dataKeys}
-            allowedTypes={allowedTypes}
+            isFirst={isFirst}
+            isLast={isLast}
+            scope={scope}
         /> :
-        <Draggable<HTMLDivElement, DraggableAreaProps>
-            Item={DraggableArea}
+        <DraggableArea
             id={id}
             index={index}
-            itemCount={itemCount}
-            itemType={'AREA'}
             dataKeys={dataKeys}
-            allowedTypes={allowedTypes}
+            isFirst={isFirst}
+            isLast={isLast}
+            scope={scope}
+            // if you build endless nestable grids, use a way that "skips" the list from here to the list-renderer,
+            // for performance, as otherwise all elements will re-render no matter how deep a change was
+            // e.g. use something React.createContext/useContext or redux
             list={list}
         />
 }

@@ -52,6 +52,8 @@ export interface UIStoreAction {
 export interface UIStoreActionListItemAdd extends UIStoreAction {
     type: 'list-item-add'
     schema: StoreSchemaType
+    // if not `undefined`, will be used as the added value
+    itemValue?: any | undefined
 }
 
 export interface UIStoreActionListItemDelete extends UIStoreAction {
@@ -70,7 +72,11 @@ export interface UIStoreActionUpdate extends UIStoreAction {
     updater: UIStoreUpdaterFn
 }
 
-export type StoreActions = UIStoreActionListItemAdd | UIStoreActionListItemDelete | UIStoreActionListItemMove | UIStoreActionUpdate
+export type StoreActions =
+    UIStoreActionListItemAdd |
+    UIStoreActionListItemDelete |
+    UIStoreActionListItemMove |
+    UIStoreActionUpdate
 
 export type UIStoreUpdaterFn<D extends UIStoreUpdaterData = UIStoreUpdaterData> = (data: D) => D
 

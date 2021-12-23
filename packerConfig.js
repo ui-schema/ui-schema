@@ -118,10 +118,5 @@ packer({
             root: path.resolve(__dirname, 'packages', 'material-dnd'),
             entry: path.resolve(__dirname, 'packages', 'material-dnd/src/'),
         },
-        materialRbd: {
-            name: '@ui-schema/material-rbd',
-            root: path.resolve(__dirname, 'packages', 'material-rbd'),
-            entry: path.resolve(__dirname, 'packages', 'material-rbd/src/'),
-        },
     },
 }, __dirname);

@@ -1,8 +1,8 @@
-# Kit DnD - for easy Drag 'n Drop in React
+# Kit DnD - Drag 'n Drop Tools
 
 A Drag 'n Drop toolkit based on `react-dnd` to simplify coding draggable lists and grid systems.
 
-```
+```bash
 npm install --save @ui-schema/kit-dnd immutable react-dnd
 
 # it doesn't require any other module of `@ui-schema`
@@ -12,19 +12,41 @@ Especially made in mind of endless nested grids and automatically generated UIs,
 
 Build around a stateless coordination system and calculating the intended UI and data actions by intended-movements (e.g. drag-hover by mouse).
 
-> At the moment requires that the `dataKeys`  (your-apps data-coordinates) is an immutable `List`.
+
+> 🚧 Work in progress, experimental [#159](https://github.com/ui-schema/ui-schema/issues/159)
 >
-> When and if support without immutable is added is unclear.
+> At the moment requires that the `dataKeys` (data-coordinates) is an immutable `List`.
 
 ## Style & Animation
 
-There a none, it's just bringing an ease around logic, there isn't even any HTML included.
+There is none, it's stuff around logic, there isn't any HTML included.
 
 Use a simple `flex` layout, and you are ready to go.
 
-## Components
+## Kit Contents
 
-## Utils
+### Components
+
+- `KitDndProvider`
+
+### Hook
+
+- `useDraggable`
+- `useOnIntent`
+
+### Functions
+
+- `calcIntentDataKeys`
+- `calcIntentPos`
+- `genId`
+- `addNestKey`
+- `checkIsOtherTarget`
+- `moveDraggedValue`
+
+### Typings
+
+- `KitDnd`
+- `DndValueList`
 
 ## Intents
 

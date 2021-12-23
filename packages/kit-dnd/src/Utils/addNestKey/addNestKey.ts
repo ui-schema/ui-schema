@@ -1,9 +1,9 @@
 import { List } from 'immutable'
 
 export const addNestKey = <D>(nestKey: string, keys: List<D>): List<D> =>
-    nestKey ?
+    (nestKey ?
         keys.reduce(
             (nk, sk) =>
                 nk.concat(sk, List([nestKey])),
             List([])
-        ) : keys
+        ) : keys) as List<D>

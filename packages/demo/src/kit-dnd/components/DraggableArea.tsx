@@ -1,26 +1,46 @@
 import React from 'react'
-import { DraggableRendererProps, DraggableProps } from '@ui-schema/kit-dnd/Draggable'
 import { DndValueList } from '@ui-schema/kit-dnd/KitDnd'
 import { DraggableAny } from './DraggableAny'
+import { DraggableRendererProps, useDraggable } from '@ui-schema/kit-dnd/useDraggable'
 
 export interface DraggableAreaProps {
     list: DndValueList | undefined
-    allowedTypes: DraggableProps['allowedTypes']
+    cols?: number
 }
 
-export const DraggableArea: React.ComponentType<DraggableAreaProps & DraggableRendererProps<HTMLDivElement, string>> = (
+const allowedTypes = ['BLOCK', 'AREA']
+
+export const DraggableArea: React.ComponentType<DraggableAreaProps & DraggableRendererProps> = (
     {
-        id, index, rootRef,
-        dragRef,
-        isDragging, isOver,
+        id, index,
         isFirst, isLast,
-        list,
         cols = 12,
-        dataKeys, allowedTypes,
+        dataKeys, scope,
+        list,
     }
 ) => {
+    const refRoot = React.useRef<HTMLDivElement | null>(null)
+
+    const item = React.useMemo(() => ({
+        type: 'AREA',
+        id: id,
+        dataKeys: dataKeys,
+        index: index,
+    }), [
+        id, dataKeys, index,
+    ])
+
+    const {
+        drop, preview, drag,
+        /*canDrop,*/ isOver,
+        isDragging,
+    } = useDraggable<HTMLDivElement>({
+        item, allowedTypes, scope, refRoot,
+    })
+
+    drop(preview(refRoot))
     return <div
-        ref={rootRef}
+        ref={refRoot}
         data-item-id={id}
         style={{
             maxWidth: ((cols / 12) * 100) + '%',
@@ -31,7 +51,8 @@ export const DraggableArea: React.ComponentType<DraggableAreaProps & DraggableRe
         }}
     >
         <div
-            ref={dragRef}
+            // @ts-ignore
+            ref={drag(refRoot)}
             style={{
                 padding: 6,
                 border: '1px solid #333333',
@@ -67,10 +88,11 @@ export const DraggableArea: React.ComponentType<DraggableAreaProps & DraggableRe
                     <DraggableAny
                         key={item.id}
                         dataKeys={dataKeys.push(index)}
-                        allowedTypes={allowedTypes}
                         index={j}
+                        isLast={j >= (list?.size - 1)}
+                        isFirst={j === 0}
                         {...item}
-                        itemCount={list.size}/>
+                    />
                 ).valueSeq()}
             </div>
         </div>

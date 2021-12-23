@@ -68,62 +68,61 @@ Widgets for `type`:
 
 Custom widgets for `widget`, special UIs and specific type handling:
 
-| Widget       | Component | Types | MUI | BTS | ? |
-| :---         | :----     | :----     | :---: | :---: | ---: |
-| `Text`       | [multiline text](/docs/widgets/TextField) | `string` | ✅ | ✅ | 🔵 |
-| `NumberSlider` | [slider as input](/docs/widgets/NumberSlider) | `number`<br>`array(number)`<br>`integer`<br>`array(integer)` | ✅ | 🔵 | 🔵 |
-| `Date`       | [date selector](/docs/widgets/DateTimePickers) | `string` | ✅ | 🔵 | 🔵 |
-| `DateTime`   | [date and time selector](/docs/widgets/DateTimePickers) | `string` | ✅ | 🔵 | 🔵 |
-| `Time`       | [time selector](/docs/widgets/DateTimePickers) | `string` | ✅ | 🔵 | 🔵 |
-| `Color`      | [color selector](/docs/widgets/Color) | `string` | ✅ | 🔵 | 🔵 |
-| `StringIcon` | [input + icon, normal text](/docs/widgets/TextField) | `string` | ✅ | 🔵 | 🔵 |
-| `TextIcon`   | [input + icon, multiline text](/docs/widgets/TextField) | `string` | ✅ | 🔵 | 🔵 |
-| `NumberIcon` | [input + icon, number](/docs/widgets/TextField) | `number` | ✅ | 🔵 | 🔵 |
-| `BoolIcon`   |    | | 🔵 | 🔵 | 🔵 |
-| | | | | | |
-| **Rich-Text** | | | | | |
-| `RichText`   | [multiline rich text editor](/docs/widgets/RichText) | `string` | ✅ | 🔵 | 🔵 |
-| `RichTextInline` | [single-line rich text editor](/docs/widgets/RichText) | `string` | ✅ | 🔵 | 🔵 |
-| `Code`, `CodeSelectable` | [text editor with syntax highlight](/docs/widgets/Code) | `string`, `array(string, string)` | ✅ | 🔵 | 🔵 |
-| `EditorJS`   | [EditorJS text editor](/docs/widgets/EditorJS) | `string` | ✅ℹ️ | 🔵 | 🔵 |
-| | | | | | |
-| **Lists** | | | | | |
-| `SimpleList`  | [strings and numbers as list](/docs/widgets/SimpleList) | `array(string)`<br>`array(number)` | ✅ | 🔵 | 🔵 |
-| `GenericList` | [objects/array as list](/docs/widgets/SimpleList) | `array({*})`, `array([*])` | ✅ | 🔵 | 🔵 |
-| | | | | | |
-| **Selection** | | | | | |
-| `OptionsCheck` | [checkboxes](/docs/widgets/OptionsList)  | `array` | ✅ | ✅ | 🔵 |
-| `OptionsRadio` | [radio buttons](/docs/widgets/OptionsList) | `string` | ✅ | ✅ | 🔵 |
-| `Select`     | [select one value](/docs/widgets/Select) | `string` | ✅ | ✅ | 🔵 |
-| `SelectMulti`  | [select n values](/docs/widgets/Select) | `array` | ✅ | ✅ | 🔵 |
-| `SelectGroup`  |    | | 🔵 | 🔵 | 🔵 |
-| | | | | | |
-| **Media** | | | | | |
-| `File`       | single file selector   | | 🔵 | 🔵 | 🔵 |
-| `Files`      | multiple files selector  | | 🔵 | 🔵 | 🔵 |
-| `Folder`     | single folder selector | | 🔵 | 🔵 | 🔵 |
-| `Folders`    | multiple folder selector  |  | 🔵 | 🔵 | 🔵 |
-| `MediaImage` | image selector, may support externals (like from youtube) | | 🔵 | 🔵 | 🔵 |
-| `MediaVideo` | video selector, may support externals | | 🔵 | 🔵 | 🔵 |
-| `MediaAudio` | audio selector, may support externals | | 🔵 | 🔵 | 🔵 |
-| `MediaGallery` | Media files selector, may support externals | | 🔵 | 🔵 | 🔵 |
-| | | | | | |
-| **Misc** | | | | | |
-| `Table`      | [table editor](/docs/widgets/Table)  | | ✅ℹ️ | 🔵 | 🔵 |
-| `Drag 'n Drop` | [endless nestable drag-drop lists](/docs/widgets/Drag-n-Drop-Editor)  | | ✅ℹ️ | 🔵 | 🔵 |
-| `Drag 'n Drop Lists`   | [simple drag-drop lists](/docs/widgets/Drag-n-Drop-Editor-Simple)  | | ✅ℹ️ | 🔵 | 🔵 |
-| `Accordions` | [accordion drop-downs](/docs/widgets/Accordions) for object properties with headline | `object` | ✅ | 🔵 | 🔵 |
-| `Card` | card with headline for object root and any sub-schema | `object` | ✅ | 🔵 | 🔵 |
-| `LabelBox` | box with label for object root and any sub-schema, without any styling | `object` | ✅ | 🔵 | 🔵 |
-| `FormGroup` | form group (fieldset) with label | `object` | ✅ | 🔵 | 🔵 |
-| `ExpansionPanel` | list headlines and sub-schema  | | 🔵 | 🔵 | 🔵 |
-| `Stepper`    | list with [sub-schema as steps](/docs/widgets/Stepper) | | ✅ℹ️ | 🔵 | 🔵 |
-| `Tabs`       | list with sub-schema as tabs | | 🔵 | 🔵 | 🔵 |
-| `Dialog`     | sub-schema as dialog | | 🔵 | 🔵 | 🔵 |
-| `TransferList` | double select list | | 🔵 | 🔵 | 🔵 |
-| `LocationSelect` | location/geo selection | | 🔵 | 🔵 | 🔵 |
-| `Price` | | | 🔵 | 🔵 | 🔵 |
-| `NumberButton` | | | 🔵 | 🔵 | 🔵 |
+| Widget                        | Component                                                                            | Types                                                        | MUI | BTS |   ? |
+|:------------------------------|:-------------------------------------------------------------------------------------|:-------------------------------------------------------------|:---:|:---:|----:|
+| `Text`                        | [multiline text](/docs/widgets/TextField)                                            | `string`                                                     |  ✅  |  ✅  |  🔵 |
+| `NumberSlider`                | [slider as input](/docs/widgets/NumberSlider)                                        | `number`<br>`array(number)`<br>`integer`<br>`array(integer)` |  ✅  | 🔵  |  🔵 |
+| `Date`                        | [date selector](/docs/widgets/DateTimePickers)                                       | `string`                                                     |  ✅  | 🔵  |  🔵 |
+| `DateTime`                    | [date and time selector](/docs/widgets/DateTimePickers)                              | `string`                                                     |  ✅  | 🔵  |  🔵 |
+| `Time`                        | [time selector](/docs/widgets/DateTimePickers)                                       | `string`                                                     |  ✅  | 🔵  |  🔵 |
+| `Color`                       | [color selector](/docs/widgets/Color)                                                | `string`                                                     |  ✅  | 🔵  |  🔵 |
+| `StringIcon`                  | [input + icon, normal text](/docs/widgets/TextField)                                 | `string`                                                     |  ✅  | 🔵  |  🔵 |
+| `TextIcon`                    | [input + icon, multiline text](/docs/widgets/TextField)                              | `string`                                                     |  ✅  | 🔵  |  🔵 |
+| `NumberIcon`                  | [input + icon, number](/docs/widgets/TextField)                                      | `number`                                                     |  ✅  | 🔵  |  🔵 |
+| `BoolIcon`                    |                                                                                      |                                                              | 🔵  | 🔵  |  🔵 |
+|                               |                                                                                      |                                                              |     |     |     |
+| **Rich-Text**                 |                                                                                      |                                                              |     |     |     |
+| `RichText`                    | [multiline rich text editor](/docs/widgets/RichText)                                 | `string`                                                     |  ✅  | 🔵  |  🔵 |
+| `RichTextInline`              | [single-line rich text editor](/docs/widgets/RichText)                               | `string`                                                     |  ✅  | 🔵  |  🔵 |
+| `Code`, `CodeSelectable`      | [text editor with syntax highlight](/docs/widgets/Code)                              | `string`, `array(string, string)`                            |  ✅  | 🔵  |  🔵 |
+| `EditorJS`                    | [EditorJS text editor](/docs/widgets/EditorJS)                                       | `string`                                                     | ✅ℹ️ | 🔵  |  🔵 |
+|                               |                                                                                      |                                                              |     |     |     |
+| **Lists**                     |                                                                                      |                                                              |     |     |     |
+| `SimpleList`                  | [strings and numbers as list](/docs/widgets/SimpleList)                              | `array(string)`<br>`array(number)`                           |  ✅  | 🔵  |  🔵 |
+| `GenericList`                 | [objects/array as list](/docs/widgets/SimpleList)                                    | `array({*})`, `array([*])`                                   |  ✅  | 🔵  |  🔵 |
+|                               |                                                                                      |                                                              |     |     |     |
+| **Selection**                 |                                                                                      |                                                              |     |     |     |
+| `OptionsCheck`                | [checkboxes](/docs/widgets/OptionsList)                                              | `array`                                                      |  ✅  |  ✅  |  🔵 |
+| `OptionsRadio`                | [radio buttons](/docs/widgets/OptionsList)                                           | `string`                                                     |  ✅  |  ✅  |  🔵 |
+| `Select`                      | [select one value](/docs/widgets/Select)                                             | `string`                                                     |  ✅  |  ✅  |  🔵 |
+| `SelectMulti`                 | [select n values](/docs/widgets/Select)                                              | `array`                                                      |  ✅  |  ✅  |  🔵 |
+| `SelectGroup`                 |                                                                                      |                                                              | 🔵  | 🔵  |  🔵 |
+|                               |                                                                                      |                                                              |     |     |     |
+| **Media**                     |                                                                                      |                                                              |     |     |     |
+| `File`                        | single file selector                                                                 |                                                              | 🔵  | 🔵  |  🔵 |
+| `Files`                       | multiple files selector                                                              |                                                              | 🔵  | 🔵  |  🔵 |
+| `Folder`                      | single folder selector                                                               |                                                              | 🔵  | 🔵  |  🔵 |
+| `Folders`                     | multiple folder selector                                                             |                                                              | 🔵  | 🔵  |  🔵 |
+| `MediaImage`                  | image selector, may support externals (like from youtube)                            |                                                              | 🔵  | 🔵  |  🔵 |
+| `MediaVideo`                  | video selector, may support externals                                                |                                                              | 🔵  | 🔵  |  🔵 |
+| `MediaAudio`                  | audio selector, may support externals                                                |                                                              | 🔵  | 🔵  |  🔵 |
+| `MediaGallery`                | Media files selector, may support externals                                          |                                                              | 🔵  | 🔵  |  🔵 |
+|                               |                                                                                      |                                                              |     |     |     |
+| **Misc**                      |                                                                                      |                                                              |     |     |     |
+| `Table`                       | [table editor](/docs/widgets/Table)                                                  |                                                              | ✅ℹ️ | 🔵  |  🔵 |
+| `Drag 'n Drop` as Grid & List | [material-dnd widgets](/docs/material-dnd/overview)                                  |                                                              | ✅ℹ️ | 🔵  |  🔵 |
+| `Accordions`                  | [accordion drop-downs](/docs/widgets/Accordions) for object properties with headline | `object`                                                     |  ✅  | 🔵  |  🔵 |
+| `Card`                        | card with headline for object root and any sub-schema                                | `object`                                                     |  ✅  | 🔵  |  🔵 |
+| `LabelBox`                    | box with label for object root and any sub-schema, without any styling               | `object`                                                     |  ✅  | 🔵  |  🔵 |
+| `FormGroup`                   | form group (fieldset) with label                                                     | `object`                                                     |  ✅  | 🔵  |  🔵 |
+| `ExpansionPanel`              | list headlines and sub-schema                                                        |                                                              | 🔵  | 🔵  |  🔵 |
+| `Stepper`                     | list with [sub-schema as steps](/docs/widgets/Stepper)                               |                                                              | ✅ℹ️ | 🔵  |  🔵 |
+| `Tabs`                        | list with sub-schema as tabs                                                         |                                                              | 🔵  | 🔵  |  🔵 |
+| `Dialog`                      | sub-schema as dialog                                                                 |                                                              | 🔵  | 🔵  |  🔵 |
+| `TransferList`                | double select list                                                                   |                                                              | 🔵  | 🔵  |  🔵 |
+| `LocationSelect`              | location/geo selection                                                               |                                                              | 🔵  | 🔵  |  🔵 |
+| `Price`                       |                                                                                      |                                                              | 🔵  | 🔵  |  🔵 |
+| `NumberButton`                |                                                                                      |                                                              | 🔵  | 🔵  |  🔵 |
 
 ℹ️= partly/work-in-progress
 

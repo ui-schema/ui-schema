@@ -3,10 +3,9 @@ import { List } from 'immutable'
 import { DndProvider } from 'react-dnd'
 import { MultiBackend } from 'react-dnd-multi-backend'
 import { HTML5toTouch } from 'rdndmb-html5-to-touch'
-import { Draggable } from '@ui-schema/kit-dnd/Draggable'
 import { DndIntents } from '@ui-schema/kit-dnd/KitDnd'
 import { useOnIntent } from '@ui-schema/kit-dnd/useOnIntent'
-import { DraggableBlock, DraggableBlockProps } from '../components/DraggableBlock'
+import { DraggableBlock } from '../components/DraggableBlock'
 import { KitDndProvider, KitDndProviderContextType } from '@ui-schema/kit-dnd/KitDndProvider/KitDndProvider'
 
 export const KitDndPlain = () => {
@@ -14,15 +13,17 @@ export const KitDndPlain = () => {
     const dataKeys = React.useMemo(() => List([]), [])
     const {onIntent} = useOnIntent<HTMLDivElement>()
 
-    const onMoved: KitDndProviderContextType<HTMLDivElement>['onMoved'] = React.useCallback((
+    const onMove: KitDndProviderContextType<HTMLDivElement>['onMove'] = React.useCallback((
         details
     ) => {
-        // example using `useCallback` for `onMoved`, it is important to not use `details` directly but to pass it to `onIntent`,
+        // example using `useCallback` for `onMove`, it is important to not use `details` directly but to pass it to `onIntent`,
         // use the data received by the `cb` instead -> or better use `useMemo`
-        onIntent(({item, toIndex}, intent, _intentKeys, done) => {
+        onIntent(({fromItem, toItem}, intent, _intentKeys, done) => {
             if (!intent) {
                 return
             }
+            const {index: toIndex} = toItem
+            const {index: fromIndex, id: fromId} = fromItem
             // example: only supporting `y` axis directions within one list, using `colY` to provide some no-drag gutters
             switch (intent.y) {
                 case DndIntents.up:
@@ -30,8 +31,8 @@ export const KitDndPlain = () => {
                         return
                     }
                     setList((list) =>
-                        list.splice(item.index, 1)
-                            .splice(toIndex, 0, item.id)
+                        list.splice(fromIndex, 1)
+                            .splice(toIndex, 0, fromId)
                     )
                     done()
                     return
@@ -40,8 +41,8 @@ export const KitDndPlain = () => {
                         return
                     }
                     setList((list) =>
-                        list.splice(item.index, 1)
-                            .splice(toIndex, 0, item.id)
+                        list.splice(fromIndex, 1)
+                            .splice(toIndex, 0, fromId)
                     )
                     done()
                     return
@@ -50,24 +51,20 @@ export const KitDndPlain = () => {
         })(details)
     }, [setList, onIntent])
 
-    const allowedTypes = React.useMemo(() => ['BLOCK'], [])
-
     return <>
         <h2>Plain Draggable</h2>
 
         <div style={{display: 'flex', flexDirection: 'column'}}>
             <DndProvider backend={MultiBackend} options={HTML5toTouch}>
-                <KitDndProvider onMoved={onMoved} scope={'a1'}>
+                <KitDndProvider<HTMLDivElement> onMove={onMove} scope={'a1'}>
                     {list.map((i, j) =>
-                        <Draggable<HTMLDivElement, DraggableBlockProps>
-                            Item={DraggableBlock}
+                        <DraggableBlock
                             key={i}
                             id={i}
                             index={j}
-                            itemCount={list.size}
-                            itemType={'BLOCK'}
+                            isLast={j >= (list?.size - 1)}
+                            isFirst={j === 0}
                             dataKeys={dataKeys}
-                            allowedTypes={allowedTypes}
                             fullDrag
                         />
                     )?.valueSeq()}

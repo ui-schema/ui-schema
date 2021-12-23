@@ -1,22 +1,43 @@
 import React from 'react'
-import { DraggableRendererProps } from '@ui-schema/kit-dnd/Draggable'
+import { DraggableRendererProps, useDraggable } from '@ui-schema/kit-dnd/useDraggable'
 
 export interface DraggableBlockProps {
     fullDrag?: boolean
+    cols?: number
 }
 
-export const DraggableBlock: React.ComponentType<DraggableRendererProps<HTMLDivElement, string> & DraggableBlockProps> = (
+const allowedTypes = ['BLOCK', 'AREA']
+
+export const DraggableBlock: React.ComponentType<DraggableRendererProps & DraggableBlockProps> = (
     {
-        id, index, rootRef,
-        dragRef,
-        isDragging, isOver,
+        id, index,
         isFirst, isLast,
         cols = 12,
         fullDrag,
+        dataKeys, scope,
     }
 ) => {
-    // @ts-ignore
-    const rr = fullDrag ? dragRef(rootRef) : rootRef
+    const refRoot = React.useRef<HTMLDivElement | null>(null)
+
+    const item = React.useMemo(() => ({
+        type: 'BLOCK',
+        id: id,
+        dataKeys: dataKeys,
+        index: index,
+    }), [
+        id, dataKeys, index,
+    ])
+
+    const {
+        drop, preview, drag,
+        /*canDrop,*/ isOver,
+        isDragging,
+    } = useDraggable<HTMLDivElement>({
+        item, allowedTypes, scope, refRoot,
+    })
+
+    drop(preview(refRoot))
+    const rr = fullDrag ? drag(refRoot) : refRoot
     return <div
         // @ts-ignore
         ref={rr}
@@ -41,7 +62,7 @@ export const DraggableBlock: React.ComponentType<DraggableRendererProps<HTMLDivE
                 transition: 'opacity 0.25s ease-out, background 0.16s ease-in',
             }}
         >
-            <span ref={fullDrag ? undefined : dragRef} style={{cursor: 'grab', padding: 6, fontSize: '1.5rem', lineHeight: '1.5rem'}}>☰</span>
+            <span ref={fullDrag ? undefined : drag} style={{cursor: 'grab', padding: 6, fontSize: '1.5rem', lineHeight: '1.5rem'}}>☰</span>
             <code style={{padding: '4px 8px', fontSize: '1rem'}}>{index + 1}.</code>
             <div style={{display: 'flex', flexDirection: 'column', marginLeft: 6}}>
                 <span>{id}</span>

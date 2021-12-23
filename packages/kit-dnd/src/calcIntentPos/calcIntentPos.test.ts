@@ -26,7 +26,6 @@ describe('calcIntentPos', () => {
             clientX: 5, clientY: 20,
             targetHeight: 50, targetWidth: 600,
             targetX: 0, targetY: 10,
-            // ((clientX - targetX) / (targetWidth / cols))
         }, {
             colX: 0,
             colY: 2,

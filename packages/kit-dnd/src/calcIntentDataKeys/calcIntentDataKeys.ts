@@ -44,6 +44,7 @@ export const calcIntentDataKeys = (
         // the root item is actually the drag parent of the nested one
         // can most likely not be dragged like this
         return {
+            // todo: add `listKey` support here, e.g. passing down `2` to here somehow?
             isParent: willBeParent && (fromDataKeys.size - toDataKeys.size) === 1,
             willBeParent,
             willBeDirectRoot,

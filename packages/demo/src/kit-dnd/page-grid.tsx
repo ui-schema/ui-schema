@@ -57,12 +57,10 @@ const KitDndAreas = () => {
         id: string | undefined
     }>({time: 0, timer: undefined, merge: undefined, id: undefined})
 
-    const onMoved: KitDndProviderContextType<HTMLDivElement>['onMoved'] = React.useCallback((details) => {
+    const onMove: KitDndProviderContextType<HTMLDivElement>['onMove'] = React.useCallback((details) => {
         onIntent((
             {
-                item,
-                toDataKeys, toIndex,
-                toType, targetId,
+                fromItem, toItem,
             },
             intent,
             intentKeys,
@@ -74,8 +72,17 @@ const KitDndAreas = () => {
             if (lastMergeTag.current.timer) {
                 window.clearTimeout(lastMergeTag.current.timer)
             }
-            const fromType = item.type
-            const fromKeys = item.dataKeys
+            const {
+                type: fromType,
+                dataKeys: fromKeys,
+                index: fromIndex,
+            } = fromItem
+            const {
+                type: toType,
+                index: toIndex,
+                dataKeys: toDataKeys,
+                id: targetId,
+            } = toItem
             const fromIsDroppable = fromType === 'AREA'
             const toIsDroppable = toType === 'AREA'
             if (
@@ -86,7 +93,7 @@ const KitDndAreas = () => {
                 return
             }
             console.log('  from  ' + fromType + '  to  ' + toType, intent, intentKeys)
-            console.log('  from  ' + fromType + '  to  ' + toType, fromKeys?.toJS(), item.index, toDataKeys.toJS(), toIndex)
+            console.log('  from  ' + fromType + '  to  ' + toType, fromKeys?.toJS(), fromIndex, toDataKeys.toJS(), toIndex)
 
             if (!toIsDroppable) {
                 // - BLOCK > BLOCK
@@ -103,7 +110,7 @@ const KitDndAreas = () => {
                     setAreas((areas) => {
                         return moveDraggedValue(
                             areas,
-                            addNestKey('list', fromKeys), item.index,
+                            addNestKey('list', fromKeys), fromIndex,
                             addNestKey('list', toDataKeys), toIndex,
                         )
                     })
@@ -128,7 +135,7 @@ const KitDndAreas = () => {
                     setAreas((areas) => {
                         areas = moveDraggedValue(
                             areas,
-                            addNestKey('list', fromKeys), item.index,
+                            addNestKey('list', fromKeys), fromIndex,
                             addNestKey('list', dk), toIndex,
                         )
                         done(dk, toIndex)
@@ -195,7 +202,7 @@ const KitDndAreas = () => {
                         const tks = addNestKey<string | number>('list', dk)
                         areas = moveDraggedValue(
                             areas,
-                            addNestKey('list', fromKeys), item.index,
+                            addNestKey('list', fromKeys), fromIndex,
                             tks, ti,
                         )
                         done(dk, ti)
@@ -210,7 +217,7 @@ const KitDndAreas = () => {
                         // no edges active
                         return
                     }
-                    // todo: only respects X-axis or Y-axis flow for areas, in XY-axis flow it would need to find the related area below it's own area
+                    // todo: only respects X-axis or Y-axis flow for blocks, in XY-axis flow it would need to find the related area below it's own area
                     if (intent.edgeX) {
                         if (intent.edgeX === 'right') {
                             // move to right of parent
@@ -269,8 +276,6 @@ const KitDndAreas = () => {
         })(details)
     }, [setAreas, onIntent, lastMergeTag])
 
-    const allowedTypes = React.useMemo(() => ['BLOCK', 'AREA'], [])
-
     return <>
         <div>
             <h2>Area Draggable</h2>
@@ -279,14 +284,14 @@ const KitDndAreas = () => {
         </div>
         <div style={{display: 'flex', flexDirection: 'row'}}>
             <DndProvider backend={MultiBackend} options={HTML5toTouch}>
-                <KitDndProvider onMoved={onMoved} scope={'a2'}>
+                <KitDndProvider<HTMLDivElement> onMove={onMove} scope={'a2'}>
                     {areas.map((area, j) =>
                         <DraggableAny
                             key={area.id}
                             dataKeys={dataKeys}
-                            allowedTypes={allowedTypes}
                             index={j}
-                            itemCount={areas.size}
+                            isLast={j >= (areas.size - 1)}
+                            isFirst={j === 0}
                             {...area}
                         />
                     )}

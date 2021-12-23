@@ -1,4 +1,5 @@
 import { List } from 'immutable'
+import { DropTargetMonitor } from 'react-dnd'
 
 export type DndIntentTypeY = 'same' | 'up' | 'down'
 export type DndIntentTypeX = 'same' | 'left' | 'right'
@@ -50,15 +51,13 @@ export interface ItemSpec {
     id: string
     index: number
     dataKeys: List<number>
-    scope?: string
-
-    // todo: stricter typing of the "id" property
-    //[k: string]: any
 }
 
-export type DndValue = {
-    id: string
-    list?: DndValueList
+export interface OnMovedEvent<C extends HTMLElement = HTMLElement, S extends ItemSpec = ItemSpec> {
+    toItem: S
+    // the actual item that is moved to the `to*` props
+    fromItem: S
+    // the html element of the item that `item` is dragged to
+    targetElement: C
+    monitor: DropTargetMonitor
 }
-export type DndValueList = List<DndValue>
-

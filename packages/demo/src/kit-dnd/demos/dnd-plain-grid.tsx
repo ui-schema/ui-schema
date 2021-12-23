@@ -3,7 +3,6 @@ import { List } from 'immutable'
 import { DndProvider } from 'react-dnd'
 import { MultiBackend } from 'react-dnd-multi-backend'
 import { HTML5toTouch } from 'rdndmb-html5-to-touch'
-import { Draggable } from '@ui-schema/kit-dnd/Draggable'
 import { useOnIntent } from '@ui-schema/kit-dnd/useOnIntent'
 import { DraggableBlock } from '../components/DraggableBlock'
 import { KitDndProvider, KitDndProviderContextType } from '@ui-schema/kit-dnd/KitDndProvider/KitDndProvider'
@@ -13,10 +12,10 @@ export const KitDndPlainGrid = () => {
     const dataKeys = React.useMemo(() => List([]), [])
     const {onIntent} = useOnIntent<HTMLDivElement>()
 
-    const onMoved: KitDndProviderContextType<HTMLDivElement>['onMoved'] = React.useMemo(() => {
-        // important, or more one way-to-do-it: using `useMemo` instead of `useCallback`, as the return on `onIntent` is compatible with `onMoved`
+    const onMove: KitDndProviderContextType<HTMLDivElement>['onMove'] = React.useMemo(() => {
+        // important, or more one way-to-do-it: using `useMemo` instead of `useCallback`, as the return on `onIntent` is compatible with `onMove`
         // just a bit cleaner to write then when using `useCallback`, not even possible to accidentally using the wrong `details` var
-        return onIntent(({item, targetId}, intent, _intentKeys, done) => {
+        return onIntent(({fromItem, toItem}, intent, _intentKeys, done) => {
             if (!intent) {
                 return
             }
@@ -25,11 +24,13 @@ export const KitDndPlainGrid = () => {
                 (intent.y !== 'same' || intent.x !== 'same') &&
                 !intent.edgeX && !intent.edgeY
             ) {
+                const {index: fromIndex, id: fromId} = fromItem
+                const {id: toId} = toItem
                 setList((list) => {
-                    const toIndex = list.findIndex(i => i === targetId)
+                    const toIndex = list.findIndex(i => i === toId)
                     if (toIndex !== -1) {
-                        list = list.splice(item.index, 1)
-                            .splice(toIndex, 0, item.id)
+                        list = list.splice(fromIndex, 1)
+                            .splice(toIndex, 0, fromId)
                     }
                     return list
                 })
@@ -40,23 +41,19 @@ export const KitDndPlainGrid = () => {
         })
     }, [setList, onIntent])
 
-    const allowedTypes = React.useMemo(() => ['BLOCK'], [])
-
     return <>
         <h2>Plain Grid Draggable</h2>
         <div style={{display: 'flex', flexWrap: 'wrap'}}>
             <DndProvider backend={MultiBackend} options={HTML5toTouch}>
-                <KitDndProvider onMoved={onMoved} scope={'a3'}>
+                <KitDndProvider<HTMLDivElement> onMove={onMove} scope={'a3'}>
                     {list.map((i, j) =>
-                        <Draggable<HTMLDivElement>
-                            Item={DraggableBlock}
+                        <DraggableBlock
                             key={i}
                             id={i}
                             index={j}
-                            itemCount={list.size}
-                            itemType={'BLOCK'}
+                            isLast={j >= (list?.size - 1)}
+                            isFirst={j === 0}
                             dataKeys={dataKeys}
-                            allowedTypes={allowedTypes}
                             cols={6}
                         />
                     )?.valueSeq()}

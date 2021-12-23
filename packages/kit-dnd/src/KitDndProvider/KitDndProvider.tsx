@@ -1,8 +1,10 @@
 import React from 'react'
-import { OnMovedEvent } from '@ui-schema/kit-dnd/Draggable'
+import { ItemSpec, OnMovedEvent } from '@ui-schema/kit-dnd/KitDnd'
 
-export interface KitDndProviderContextType<C extends HTMLElement = HTMLElement> {
-    onMoved: <E extends OnMovedEvent<C> = OnMovedEvent<C>>(details: E) => void
+export type onMovedType<C extends HTMLElement = HTMLElement, S extends ItemSpec = ItemSpec, E extends OnMovedEvent<C, S> = OnMovedEvent<C, S>> = (details: E) => void
+
+export interface KitDndProviderContextType<C extends HTMLElement = HTMLElement, S extends ItemSpec = ItemSpec> {
+    onMove: onMovedType<C, S>
     scope?: string
 }
 
@@ -11,21 +13,21 @@ export const KitDndProviderContext = React.createContext<KitDndProviderContextTy
 
 export const useKitDnd = <C extends HTMLElement = HTMLElement>(): KitDndProviderContextType<C> => React.useContext(KitDndProviderContext)
 
-export const KitDndProvider = <C extends HTMLElement = HTMLElement>(
+export const KitDndProvider = <C extends HTMLElement = HTMLElement, S extends ItemSpec = ItemSpec, CX extends KitDndProviderContextType<C, S> = KitDndProviderContextType<C, S>>(
     {
         children,
-        onMoved, scope,
-    }: React.PropsWithChildren<KitDndProviderContextType<C>>
+        onMove, scope,
+    }: React.PropsWithChildren<CX>
 ): React.ReactElement => {
 
-    const ctx: KitDndProviderContextType = React.useMemo(() => ({
-        onMoved, scope,
-    }), [
-        onMoved, scope,
+    const ctx: CX = React.useMemo(() => ({
+        onMove, scope,
+    }) as CX, [
+        onMove, scope,
     ])
 
+    // @ts-ignore
     return <KitDndProviderContext.Provider value={ctx}>
         {children}
     </KitDndProviderContext.Provider>
 }
-//export const KitDndProvider = memo(KitDndProviderBase)

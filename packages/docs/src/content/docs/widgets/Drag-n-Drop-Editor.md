@@ -17,7 +17,7 @@ It is recommended, when possible, to only add a schema reference as block defini
 
 > 🚧 Work in progress, basic for endless nested drag 'n drop works. Has hardcoded translations.
 
-❗ Drag 'n drop from different UIGenerators is currently not forbidden, it doesn't crash the app, but if the target UIGenerator has "a same entry" (by `storeKeys`), it will move that - instead of the actually dragged one. By overwriting the `contextValue` of `DragDropProvider`, you can specify custom functions `getSourceValues` and `moveDraggedValue` which should be used to e.g. get the values from higher hoisted stores, please open an issue with questions/feedback/usecases if you encounter anything.
+❗ Drag 'n drop from different UIGenerators is currently not forbidden, it doesn't crash the app, but if the target UIGenerator has "a same entry" (by `storeKeys`), it will move that - instead of the actually dragged one. By overwriting the `contextValue` of `DragDropBlockProvider`, you can specify custom functions `getSourceValues` and `moveDraggedValue` which should be used to e.g. get the values from higher hoisted stores, please open an issue with questions/feedback/usecases if you encounter anything.
 
 ❗ Doesn't support `required`/`deleteOnEmpty` for the array level of drag 'n drop, won't fix in the near future, as "drag between different roots in same UIGenerator" uses the whole store to get the needed data, will need a bigger adjustment for `onChange` to be able to "batch update" / "cross-receive store between batches" to get the dragged data.
 

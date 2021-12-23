@@ -1,7 +1,7 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 import {LoadingCircular} from '@control-ui/kit/Loading/LoadingCircular';
-import {routesDocs, routesDSMaterial, routesWidgets} from './content/docs';
+import {routesDocs, routesDSMaterial, routesKitDnd, routesWidgets} from './content/docs';
 import PageMain from './page/PageMain';
 
 export const routes = {
@@ -39,7 +39,8 @@ export const routes = {
             routes: [
                 ...routesDocs.routes,
                 ...routesWidgets.routes,
-                ...routesDSMaterial.routes,
+                ...routesDSMaterial,
+                ...routesKitDnd.routes,
             ],
         }, {
             path: '/examples/:schema?',

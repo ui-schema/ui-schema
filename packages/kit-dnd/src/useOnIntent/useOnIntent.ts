@@ -1,8 +1,7 @@
 import React from 'react'
 import { checkIsOtherTarget } from '@ui-schema/kit-dnd/Utils/checkIsOtherTarget'
-import { OnMovedEvent } from '@ui-schema/kit-dnd/Draggable'
 import { calcIntentPos, CalcDragIntentEvent, CalcDragIntentOptions } from '@ui-schema/kit-dnd/calcIntentPos'
-import { DndDragIntentKeys, DndDragIntentPos, ItemSpec } from '@ui-schema/kit-dnd/KitDnd'
+import { DndDragIntentKeys, DndDragIntentPos, ItemSpec, OnMovedEvent } from '@ui-schema/kit-dnd/KitDnd'
 import { calcIntentDataKeys } from '@ui-schema/kit-dnd/calcIntentDataKeys'
 import { List } from 'immutable'
 
@@ -10,8 +9,7 @@ export type OnIntentOptions = CalcDragIntentOptions
 
 export type onIntentFactory<C extends HTMLElement = HTMLElement,
     S extends ItemSpec = ItemSpec,
-    ID extends string = string,
-    E extends OnMovedEvent<C, S, ID> = OnMovedEvent<C, S, ID>>
+    E extends OnMovedEvent<C, S> = OnMovedEvent<C, S>>
     = (
     cb: (
         details: E,
@@ -21,19 +19,27 @@ export type onIntentFactory<C extends HTMLElement = HTMLElement,
     ) => void
 ) => (details: E) => void
 
-export const useOnIntent = <C extends HTMLElement = HTMLElement>(
+export const useOnIntent = <C extends HTMLElement = HTMLElement, S extends ItemSpec = ItemSpec>(
     {
         cols, edgeSize,
     }: OnIntentOptions = {}
-) => {
+): {
+    onIntent: onIntentFactory<C, S>
+} => {
     const initialHoverClientOffset = React.useRef<{ x: number, y: number } | undefined>()
-    const onIntent: onIntentFactory<C> = React.useCallback((cb) => {
+    const onIntent: onIntentFactory<C, S> = React.useCallback((cb) => {
         return (details) => {
             const {
-                toDataKeys, toIndex,
+                fromItem, toItem,
                 monitor, targetElement,
-                item,
             } = details
+
+            const {
+                dataKeys: toDataKeys, index: toIndex,
+            } = toItem
+            const {
+                dataKeys: fromDataKeys, index: fromIndex,
+            } = fromItem
 
             const clientOffset = monitor.getClientOffset()
             if (!initialHoverClientOffset.current) {
@@ -45,8 +51,8 @@ export const useOnIntent = <C extends HTMLElement = HTMLElement>(
             if (!checkIsOtherTarget({
                 toIndex,
                 toDataKeys,
-                fromIndex: item.index,
-                fromDataKeys: item.dataKeys,
+                fromIndex: fromIndex,
+                fromDataKeys: fromDataKeys,
             })) {
                 initialHoverClientOffset.current = {
                     x: clientOffset?.x || 0,
@@ -71,8 +77,8 @@ export const useOnIntent = <C extends HTMLElement = HTMLElement>(
             const intent = calcIntentPos(intentNumbers, {cols, edgeSize})
             const intentKeys = calcIntentDataKeys({
                 toIndex, toDataKeys,
-                fromDataKeys: item.dataKeys,
-                fromIndex: item.index,
+                fromDataKeys: fromDataKeys,
+                fromIndex: fromIndex,
             })
             const done = (keys?: List<number>, ix?: number) => {
                 initialHoverClientOffset.current = {
@@ -87,8 +93,8 @@ export const useOnIntent = <C extends HTMLElement = HTMLElement>(
                 //
                 // must be done before `onChange`, otherwise it
                 // updates the item after `collect`, thus wrong values at that moment
-                item.dataKeys = typeof keys === 'undefined' ? toDataKeys : keys
-                item.index = typeof keys === 'undefined' ? toIndex : typeof ix === 'number' ? ix : toIndex
+                fromItem.dataKeys = typeof keys === 'undefined' ? toDataKeys : keys
+                fromItem.index = typeof keys === 'undefined' ? toIndex : typeof ix === 'number' ? ix : toIndex
             }
 
             cb(details, intent, intentKeys, done)
