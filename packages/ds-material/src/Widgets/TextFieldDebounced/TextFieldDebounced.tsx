@@ -1,4 +1,4 @@
-import React, { CSSProperties, FocusEventHandler, KeyboardEventHandler, MouseEventHandler } from 'react'
+import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import { InputProps } from '@material-ui/core/Input'
 import { useUID } from 'react-uid'
@@ -6,43 +6,17 @@ import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
 import { mapSchema } from '@ui-schema/ui-schema/Utils/schemaToNative'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
-import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/schemaTypeIs'
+import { NumberRendererProps, StringRendererProps, TextRendererProps } from '@ui-schema/ds-material/Widgets/TextField'
 import { WidgetProps, WithScalarValue } from '@ui-schema/ui-schema'
+import { forbidInvalidNumber } from '@ui-schema/ds-material'
 
-export interface StringRendererBaseProps {
-    type?: string
-    style?: CSSProperties
-    onClick?: MouseEventHandler<HTMLDivElement> | undefined
-    onFocus?: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined
-    onBlur?: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined
-    onKeyUp?: KeyboardEventHandler<HTMLDivElement> | undefined
-    onKeyDown?: KeyboardEventHandler<HTMLDivElement> | undefined
-    /**
-     * @deprecated
-     */
-    onKeyPress?: (e: KeyboardEvent) => void | undefined
-    onKeyPressNative?: KeyboardEventHandler<HTMLDivElement> | undefined
-    inputProps?: InputProps['inputProps']
-    InputProps?: Partial<InputProps>
-    inputRef?: any
+export interface StringRendererDebouncedProps {
+    onKeyPress?: StringRendererProps['onKeyPressNative']
+    debounceTime?: number
 }
 
-export interface StringRendererProps extends StringRendererBaseProps {
-    multiline?: boolean
-    rows?: number
-    rowsMax?: number
-}
-
-export interface TextRendererProps extends StringRendererProps {
-    multiline?: true
-}
-
-export interface NumberRendererProps extends StringRendererBaseProps {
-    steps?: number | 'any'
-}
-
-export const StringRenderer = <P extends WidgetProps = WidgetProps>(
+export const StringRendererDebounced = <P extends WidgetProps = WidgetProps>(
     {
         type,
         multiline, rows, rowsMax,
@@ -50,15 +24,52 @@ export const StringRenderer = <P extends WidgetProps = WidgetProps>(
         showValidity, valid, errors, required,
         style,
         onClick, onFocus, onBlur, onKeyUp, onKeyDown,
-        onKeyPressNative: onKeyPress,
-        // eslint-disable-next-line deprecation/deprecation
-        onKeyPress: onKeyPressDeprecated,
+        onKeyPress,
         inputProps = {}, InputProps = {}, inputRef: customInputRef,
-    }: P & WithScalarValue & StringRendererProps
+        debounceTime = 340,
+    }: P & WithScalarValue & Omit<StringRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps
 ): React.ReactElement => {
+    const timer = React.useRef<undefined | number>(undefined)
+    const [compVal, setCompVal] = React.useState<string | number | undefined>(undefined)
     const uid = useUID()
     // todo: this could break law-of-hooks
     const inputRef = customInputRef || React.useRef()
+
+    React.useEffect(() => {
+        window.clearTimeout(timer.current)
+        setCompVal(value as string)
+    }, [value, timer])
+
+    const setter = React.useCallback((maybeVal: string | number | undefined) => {
+        const newVal = convertStringToNumber(maybeVal, schemaType)
+        if (schemaTypeIsNumeric(schemaType) && maybeVal === '') {
+            // forbid saving/deleting of invalid number at all
+            setCompVal('')
+            return undefined
+        }
+        onChange(
+            storeKeys, ['value'],
+            {
+                type: 'update',
+                updater: () => ({value: newVal}),
+                schema,
+                required,
+            },
+        )
+    }, [onChange, schema, required])
+
+    const schemaType = schema.get('type') as string
+    React.useEffect(() => {
+        timer.current = window.setTimeout(() => {
+            setter(compVal)
+        }, debounceTime)
+        return () => window.clearTimeout(timer.current)
+    }, [
+        compVal, setCompVal,
+        debounceTime,
+        schemaType, timer,
+        setter,
+    ])
 
     const format = schema.get('format')
 
@@ -82,19 +93,20 @@ export const StringRenderer = <P extends WidgetProps = WidgetProps>(
             variant={schema.getIn(['view', 'variant']) as any}
             margin={schema.getIn(['view', 'margin']) as InputProps['margin']}
             size={schema.getIn(['view', 'dense']) ? 'small' : 'medium'}
-            value={
-                typeof value === 'string' || typeof value === 'number' ? value : ''
-            }
+            value={typeof compVal === 'string' || typeof compVal === 'number' ? compVal : ''}
             onClick={onClick}
             onFocus={onFocus}
-            onBlur={onBlur}
-            onKeyUp={onKeyUp}
-            onKeyPress={onKeyPress ? onKeyPress : e => {
-                const evt = e.nativeEvent
-                if (!forbidInvalidNumber(evt, schema.get('type') as string)) {
-                    onKeyPressDeprecated && onKeyPressDeprecated(evt)
-                }
+            onBlur={onBlur ? onBlur : () => {
+                if (compVal === value) return
+                window.clearTimeout(timer.current)
+                setter(compVal)
             }}
+            onKeyUp={onKeyUp}
+            onKeyPress={
+                onKeyPress ?
+                    onKeyPress :
+                    e => forbidInvalidNumber(e.nativeEvent, schema.get('type') as string)
+            }
             id={'uis-' + uid}
             style={style}
             onKeyDown={onKeyDown}
@@ -102,6 +114,7 @@ export const StringRenderer = <P extends WidgetProps = WidgetProps>(
                 const val = e.target.value
                 const schemaType = schema.get('type') as string
                 const newVal = convertStringToNumber(val, schemaType)
+                console.log(newVal)
                 if (
                     schemaTypeIsNumeric(schemaType)
                     && newVal === '' && e.target.validity.badInput
@@ -109,17 +122,7 @@ export const StringRenderer = <P extends WidgetProps = WidgetProps>(
                     // forbid saving/deleting of invalid number at all
                     return undefined
                 }
-                onChange(
-                    storeKeys, ['value'],
-                    {
-                        type: 'update',
-                        // setting the actual val when invalid, e.g. at numbers, it allows correcting invalid data without a "reset"
-                        //updater: () => ({value: typeof newVal === 'undefined' ? val : newVal}),
-                        updater: () => ({value: newVal}),
-                        schema,
-                        required,
-                    },
-                )
+                setCompVal(newVal)
             }}
             InputLabelProps={{shrink: schema.getIn(['view', 'shrink']) as boolean}}
             InputProps={InputProps}
@@ -132,8 +135,8 @@ export const StringRenderer = <P extends WidgetProps = WidgetProps>(
     </React.Fragment>
 }
 
-export const TextRenderer = <P extends WidgetProps = WidgetProps>({schema, ...props}: P & WithScalarValue & TextRendererProps): React.ReactElement => {
-    return <StringRenderer
+export const TextRendererDebounced = <P extends WidgetProps = WidgetProps>({schema, ...props}: P & WithScalarValue & Omit<TextRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps): React.ReactElement => {
+    return <StringRendererDebounced
         {...props}
         schema={schema}
         rows={props.rows || schema.getIn(['view', 'rows'])}
@@ -142,7 +145,7 @@ export const TextRenderer = <P extends WidgetProps = WidgetProps>({schema, ...pr
     />
 }
 
-export const NumberRenderer = <P extends WidgetProps = WidgetProps>(props: P & WithScalarValue & NumberRendererProps): React.ReactElement => {
+export const NumberRendererDebounced = <P extends WidgetProps = WidgetProps>(props: P & WithScalarValue & Omit<NumberRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps): React.ReactElement => {
     const {schema, inputProps: inputPropsProps = {}, steps = 'any'} = props
     const schemaType = schema.get('type') as string | undefined
     const inputProps = React.useMemo(() => {
@@ -155,7 +158,7 @@ export const NumberRenderer = <P extends WidgetProps = WidgetProps>(props: P & W
         return inputPropsProps
     }, [inputPropsProps, schemaType])
 
-    return <StringRenderer
+    return <StringRendererDebounced
         {...props}
         inputProps={inputProps}
         type={'number'}

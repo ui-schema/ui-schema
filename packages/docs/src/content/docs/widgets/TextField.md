@@ -67,10 +67,24 @@ const widgets = {
             - if both are set, the `textarea` grows until `rowsMax` is reached
             - `hideTitle` does not show the title, but will use it as aria-label
     - `TextIconRenderer` supports an icon additionally
+    - `TextRendererDebounced` uses a debounced internal state
 - `NumberRenderer` supports `number`, `integer`
     - `NumberIconRenderer` supports an icon additionally
+    - `NumberRendererDebounced` uses a debounced internal state
 - `StringRenderer` base component used by both others and for `string`
     - `StringIconRenderer` supports an icon additionally
+    - `StringRendererDebounced` uses a debounced internal state
+
+## Debounced Widgets
+
+These widgets have an internal state and only after Xms the changes are synced to the actual UI Schema store.
+
+- if the store value changes for the widget, any pending changes are reset and the actual-store value is applied
+- if the user `blurs` the field, the value is applied directly, but only if the widget-value is different than the latest store value
+
+Configurable debounce time with the prop `debounceTime`, in ms, defaults to `340`.
+
+Not included in default `widgetsBinding`, can be used a drop-in replacement for the non-debounced versions.
 
 ## TextField Icons
 
