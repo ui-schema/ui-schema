@@ -1,6 +1,6 @@
 import {createOrderedMap} from '@ui-schema/ui-schema';
 
-const blocks = {
+export const blocks = {
     text: {
         type: 'object',
         properties: {
@@ -134,10 +134,16 @@ const blocks = {
     },
 }
 
-export const schemaDragDrop = createOrderedMap({
+export const schemaDragDropScoped = createOrderedMap({
     type: 'object',
-    widget: 'DroppableRootMultiple',
-    $defs: blocks,
+    widget: 'DroppableAreas',
+    title: 'Drag Drop Areas Scoped',
+    dragDrop: {
+        scoped: true,
+    },
+    view: {
+        showTitle: true,
+    },
     properties: {
         main: {
             type: 'array',
@@ -150,13 +156,148 @@ export const schemaDragDrop = createOrderedMap({
     },
 });
 
-export const schemaDragDropSingle = createOrderedMap({
+export const schemaDragDropNested = createOrderedMap({
+    type: 'object',
+    widget: 'LabelBox',
+    title: 'Drop Areas',
+    properties: {
+        main: {
+            type: 'array',
+            widget: 'DropArea',
+            view: {
+                showTitle: true,
+            },
+        },
+        suggestions: {
+            type: 'array',
+            widget: 'DropArea',
+            view: {
+                showTitle: true,
+            },
+        },
+    },
+});
+
+export const schemaDragDropSortableList1 = createOrderedMap({
     type: 'array',
-    widget: 'DroppableRootSingle',
-    $defs: blocks,
-    title: 'Single Editor',
-    dragDrop: {
-        //showOpenAll: true,
-        //allowed: ['address', 'addresses'],
+    widget: 'SortableList',
+    title: 'Sortable List',
+    items: {
+        type: 'object',
+        title: 'Idea',
+        properties: {
+            headline: {
+                type: 'string',
+            },
+            content: {
+                type: 'string',
+                widget: 'Text',
+            },
+        },
+    },
+});
+
+export const schemaDragDropSortableList2 = createOrderedMap({
+    type: 'array',
+    widget: 'SortableList',
+    title: 'Sortable List 2',
+    items: {
+        type: 'string',
+    },
+});
+
+export const schemaDragDropSortableList3 = createOrderedMap({
+    type: 'array',
+    widget: 'SortableList',
+    title: 'Sortable List 3',
+    items: {
+        type: 'array',
+        widget: 'SimpleList',
+        items: [{
+            type: 'string',
+        }, {
+            type: 'number',
+        }],
+    },
+});
+
+export const schemaDragDropSortableList4 = createOrderedMap({
+    type: 'object',
+    title: 'Sortable List 4',
+    properties: {
+        list_main: {
+            type: 'array',
+            widget: 'SortableList',
+            items: {
+                type: 'object',
+                properties: {
+                    name: {
+                        type: 'string',
+                    },
+                },
+            },
+        },
+        list_nested: {
+            type: 'array',
+            widget: 'SortableList',
+            items: {
+                type: 'object',
+                properties: {
+                    group: {
+                        type: 'string',
+                    },
+                    tasks: {
+                        type: 'array',
+                        widget: 'SortableList',
+                        items: {
+                            type: 'object',
+                            properties: {
+                                headline: {
+                                    type: 'string',
+                                },
+                                content: {
+                                    type: 'string',
+                                    widget: 'Text',
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    },
+});
+
+export const schemaDragDropSortableList5 = createOrderedMap({
+    type: 'properties',
+    title: 'Sortable List 5',
+    properties: {
+        list_main: {
+            type: 'array',
+            widget: 'SortableList',
+            items: {
+                type: 'string',
+            },
+        },
+        list_nested: {
+            type: 'array',
+            widget: 'SortableList',
+            items: {
+                type: 'array',
+                widget: 'SortableList',
+                items: {
+                    type: 'object',
+                    properties: {
+                        headline: {
+                            type: 'string',
+                        },
+                        content: {
+                            type: 'string',
+                            widget: 'Text',
+                        },
+                    },
+                },
+            },
+        },
     },
 });

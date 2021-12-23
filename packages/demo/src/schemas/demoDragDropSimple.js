@@ -76,7 +76,7 @@ export const schemaDragDrop = createOrderedMap({
     },
 });
 
-export const schemaDragDropSingle = createOrderedMap({
+export const schemaDragDropSortableList1 = createOrderedMap({
     type: 'array',
     widget: 'SimpleDroppableRootSingle',
     $defs: blocks,

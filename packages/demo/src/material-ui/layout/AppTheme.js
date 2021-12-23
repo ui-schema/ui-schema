@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Head from './Head';
-import {createMuiTheme} from '@material-ui/core';
+import {createTheme} from '@material-ui/core';
 import {ThemerProvider} from '../component/Theme';
 
-const themeDark = createMuiTheme({
+const themeDark = createTheme({
     palette: {
         type: 'dark',
         primary: {
@@ -38,7 +38,7 @@ const themeDark = createMuiTheme({
     },
 });
 
-const themeLight = createMuiTheme({
+const themeLight = createTheme({
     palette: {
         type: 'light',
         primary: {

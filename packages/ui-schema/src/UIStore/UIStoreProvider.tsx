@@ -47,17 +47,19 @@ export function useUIConfig<C extends {} = {}>(): C {
     return React.useContext(UIConfigContextObj)
 }
 
-export interface WithValue {
+export interface WithOnChange {
+    onChange: UIStoreContext['onChange']
+}
+
+export interface WithValue extends WithOnChange {
     value: any
     internalValue: any
-    onChange: UIStoreContext['onChange']
     showValidity: UIStoreContext['showValidity']
 }
 
-export interface WithScalarValue {
+export interface WithScalarValue extends WithOnChange {
     value: string | number | boolean | undefined | null
     internalValue: any
-    onChange: UIStoreContext['onChange']
     showValidity: UIStoreContext['showValidity']
 }
 
@@ -101,6 +103,7 @@ export const extractValue = <P extends Partial<WithValue> & { storeKeys: StoreKe
     return ExtractValue
 }
 export type ExtractValueOverwriteProps = { showValidity?: boolean }
+
 export const extractValidity = <P extends WithValidity & { storeKeys: StoreKeys }>(Component: React.ComponentType<P>): React.ComponentType<Omit<P, keyof WithValidity> & ExtractValueOverwriteProps> => {
     const ExtractValidity = (p: Omit<P, keyof WithValidity> & ExtractValueOverwriteProps) => {
         const {store, onChange, showValidity} = useUI()

@@ -28,7 +28,7 @@ const MyFallbackComponent: React.ComponentType<{
     </div>
 )
 
-export interface MuiWidgetBinding<C extends {} = {}> extends WidgetsBindingBase<C> {
+export interface MuiWidgetBinding<C extends {} = {}, W extends {} = {}> extends WidgetsBindingBase<C, W> {
     types: {
         string: React.ComponentType<WidgetProps<C> & WithScalarValue>
         boolean: React.ComponentType<WidgetProps<C> & WithScalarValue>
@@ -52,6 +52,7 @@ export interface MuiWidgetBinding<C extends {} = {}> extends WidgetsBindingBase<
         LabelBox: React.ComponentType<WidgetProps<C>>
         FormGroup: React.ComponentType<WidgetProps<C>>
     } & {
+        // todo: remove this generic typing and use better generics/factories
         // allow adding any further custom widgets
         [key: string]: WidgetType<C>
     }

@@ -10,6 +10,12 @@ packer({
             port: 4200,
             main: path.resolve(__dirname, 'packages', 'demo/src/index.js'),
             dist: path.resolve(__dirname, 'dist', 'demo'),
+            devServer: {
+                client: {
+                    overlay: false,
+                    progress: false,
+                },
+            },
             publicPath: '/',
             vendors: ['react-error-boundary', 'immutable', '@material-ui/core', '@material-ui/icons'],
             plugins: [],
@@ -22,6 +28,12 @@ packer({
             main: path.resolve(__dirname, 'packages', 'docs/src/index.js'),
             dist: path.resolve(__dirname, 'dist', 'docs'),
             publicPath: '/',
+            devServer: {
+                client: {
+                    overlay: false,
+                    progress: false,
+                },
+            },
             vendors: ['react-error-boundary', 'immutable', '@material-ui/core', '@material-ui/icons'],
             copy: [{from: path.resolve(__dirname, 'schema'), to: path.resolve(__dirname, 'dist', 'docs', 'schema')}],
             plugins: [
@@ -105,11 +117,6 @@ packer({
             name: '@ui-schema/material-dnd',
             root: path.resolve(__dirname, 'packages', 'material-dnd'),
             entry: path.resolve(__dirname, 'packages', 'material-dnd/src/'),
-        },
-        materialRbd: {
-            name: '@ui-schema/material-rbd',
-            root: path.resolve(__dirname, 'packages', 'material-rbd'),
-            entry: path.resolve(__dirname, 'packages', 'material-rbd/src/'),
         },
     },
 }, __dirname);

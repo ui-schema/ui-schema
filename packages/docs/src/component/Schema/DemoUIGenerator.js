@@ -6,16 +6,10 @@ import style from 'codemirror/lib/codemirror.css';
 import themeDark from 'codemirror/theme/duotone-dark.css';
 import themeLight from 'codemirror/theme/duotone-light.css';
 import {WidgetCodeProvider} from '@ui-schema/material-code';
-import { DndProvider } from 'react-dnd'
-import { MultiBackend } from 'react-dnd-multi-backend'
-import { HTML5toTouch } from 'rdndmb-html5-to-touch'
 import LuxonAdapter from '@date-io/luxon';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
-import {DragDropProvider as DragDropProviderSimple} from '@ui-schema/material-rbd/DragDropProvider/DragDropProvider';
-import {makeDragDropContext as makeDragDropContextSimple} from '@ui-schema/material-rbd/DragDropProvider/makeDragDropContext';
-import {makeDragDropContext} from '@ui-schema/material-dnd/DragDropProvider/makeDragDropContext';
-import {DragDropProvider} from '@ui-schema/material-dnd/DragDropProvider/DragDropProvider';
-import {OrderedMap} from 'immutable';
+import {KitDndProvider, useOnIntent} from '@ui-schema/kit-dnd';
+import {useOnDirectedMove} from '@ui-schema/material-dnd/useOnDirectedMove';
 
 const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, richIde, renderChange, theme, maxLines, enableShowAll}) => {
     return <RichCodeEditor
@@ -98,9 +92,8 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
             return storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
         })
     }, [setStore]);
-
-    const dragStoreContext = makeDragDropContext(onChange, OrderedMap.isMap(schema) ? schema.get('$defs') || schema.get('definitions') : OrderedMap())
-    const dragStoreContextSimple = makeDragDropContextSimple(onChange, OrderedMap.isMap(schema) ? schema.get('$defs') || schema.get('definitions') : OrderedMap())
+    const {onIntent} = useOnIntent({edgeSize: 12})
+    const {onMove} = useOnDirectedMove(onIntent, onChange)
 
     const tabSize = 2;
     const fontSize = 13;
@@ -111,37 +104,33 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
             modes={modes}
         >
             <MuiPickersUtilsProvider utils={LuxonAdapter}>
-                <DragDropProvider contextValue={dragStoreContext.contextValue}>
-                    <DndProvider backend={MultiBackend} options={HTML5toTouch}>
-                        <DragDropProviderSimple contextValue={dragStoreContextSimple.contextValue}>
-                            <UIStoreProvider
-                                store={store}
-                                onChange={onChange}
-                                showValidity={showValidity}
-                            >
-                                {showDebugger && !split ? <DebugSchemaEditor
-                                    schema={schema} setSchema={setSchema}
-                                    setJsonError={setJsonError} richIde
-                                    enableShowAll={!split} split={split}
-                                    id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
-                                /> : null}
+                <KitDndProvider onMove={onMove}>
+                    <UIStoreProvider
+                        store={store}
+                        onChange={onChange}
+                        showValidity={showValidity}
+                    >
+                        {showDebugger && !split ? <DebugSchemaEditor
+                            schema={schema} setSchema={setSchema}
+                            setJsonError={setJsonError} richIde
+                            enableShowAll={!split} split={split}
+                            id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
+                        /> : null}
 
-                                {jsonError ?
-                                    <Box style={{margin: '0 12px 0 12px'}}>
-                                        <Typography component={'h2'} variant={'h6'} color={'error'}>
-                                            JSON-Error:
-                                        </Typography>
+                        {jsonError ?
+                            <Box style={{margin: '0 12px 0 12px'}}>
+                                <Typography component={'h2'} variant={'h6'} color={'error'}>
+                                    JSON-Error:
+                                </Typography>
 
-                                        <Typography component={'p'} variant={'subtitle1'}>
-                                            {jsonError.replace('SyntaxError: JSON.parse: ', '')}
-                                        </Typography>
-                                    </Box> : null}
+                                <Typography component={'p'} variant={'subtitle1'}>
+                                    {jsonError.replace('SyntaxError: JSON.parse: ', '')}
+                                </Typography>
+                            </Box> : null}
 
-                                {typeof schema === 'string' ? null : <UIRootRenderer schema={schema}/>}
-                            </UIStoreProvider>
-                        </DragDropProviderSimple>
-                    </DndProvider>
-                </DragDropProvider>
+                        {typeof schema === 'string' ? null : <UIRootRenderer schema={schema}/>}
+                    </UIStoreProvider>
+                </KitDndProvider>
             </MuiPickersUtilsProvider>
         </WidgetCodeProvider>
 

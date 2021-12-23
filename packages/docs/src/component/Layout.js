@@ -20,7 +20,7 @@ import {ExpandLess, ExpandMore} from '@material-ui/icons';
 import {Divider, List, Collapse} from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
 import {NavListNested} from '@control-ui/kit/Menu/NavList';
-import {routesDocs, routesDSMaterial, routesWidgets} from '../content/docs';
+import {routesDocs, routesDSMaterial, routesKitDnd, routesWidgets} from '../content/docs';
 
 const title = '0.3.x'
 export const CustomHeader = () => {
@@ -47,8 +47,8 @@ export const CustomHeader = () => {
     </Header>;
 };
 
-const CollapseDrawer = ({toggle, icon, children, dense, style = undefined}) => {
-    const [open, setOpen] = React.useState(true)
+const CollapseDrawer = ({toggle, icon, children, dense, initialOpen = true, style = undefined}) => {
+    const [open, setOpen] = React.useState(initialOpen)
     return <React.Fragment>
         <ListItem button onClick={() => setOpen(o => !o)} dense={dense} style={style}>
             {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
@@ -89,13 +89,19 @@ export const CustomDrawer = () => {
                 onClick={closeOnClick}
             />
             <NavListNested
-                routes={[routesDSMaterial]}
+                routes={routesDSMaterial}
+                dense
+                filter={() => true}
+                onClick={closeOnClick}
+            />
+            <NavListNested
+                routes={[routesKitDnd]}
                 dense
                 filter={() => true}
                 onClick={closeOnClick}
             />
 
-            <CollapseDrawer toggle={'Schema Examples'} dense>
+            <CollapseDrawer toggle={'Schema Examples'} dense initialOpen={false}>
                 <List component="div" disablePadding style={{overflow: 'auto'}}>
                     {schemas.map((schema, i) => (
                         <ListItemLink

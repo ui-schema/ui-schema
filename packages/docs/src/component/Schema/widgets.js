@@ -12,15 +12,13 @@ import {
     ColorSketchStatic, ColorSketchDialog,
 } from '@ui-schema/material-color';
 import {LoadingCircular} from '@control-ui/kit/Loading/LoadingCircular';
-import {BlockPanel} from '@ui-schema/material-dnd/DraggableBlock/BlockPanel';
-import {DroppableRootContent} from '@ui-schema/material-dnd/DroppableRoot/DroppableRootContent';
 import {NumberRendererCell, StringRendererCell, TextRendererCell} from '@ui-schema/ds-material/Widgets/TextFieldCell';
 import {Table} from '@ui-schema/ds-material/Widgets/Table';
+import {DragDropBlockSelector} from '@ui-schema/material-dnd/DragDropBlockSelector';
 
 const customWidgets = {...widgets};
 
-customWidgets.DraggableBlock = BlockPanel
-customWidgets.DroppableRootContent = DroppableRootContent
+customWidgets.DndBlockSelector = DragDropBlockSelector
 
 const CustomTable = ({widgets, ...props}) => {
 
@@ -101,24 +99,16 @@ customWidgets.custom = {
         loader: () => import('./EditorJSComp').then(r => r.EditorJSComp),
         loading: () => <LoadingCircular title={'Loading EditorJS'}/>,
     }),
-    SimpleDroppableRootMultiple: Loadable({
-        loader: () => import('@ui-schema/material-rbd/Widgets/DroppableRootMultiple').then(r => r.DroppableRootMultiple),
+    SortableList: Loadable({
+        loader: () => import('@ui-schema/material-dnd/Widgets/SortableList').then(r => r.SortableList),
         loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
     }),
-    SimpleDroppableRootSingle: Loadable({
-        loader: () => import('@ui-schema/material-rbd/Widgets/DroppableRootSingle').then(r => r.DroppableRootSingle),
+    DragDropArea: Loadable({
+        loader: () => import('@ui-schema/material-dnd/Widgets/DragDropArea').then(r => r.DragDropArea),
         loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
     }),
-    DroppableRootMultiple: Loadable({
-        loader: () => import('@ui-schema/material-dnd/Widgets/DroppableRootMultiple').then(r => r.DroppableRootMultiple),
-        loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
-    }),
-    DroppableRootSingle: Loadable({
-        loader: () => import('@ui-schema/material-dnd/Widgets/DroppableRootSingle').then(r => r.DroppableRootSingle),
-        loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
-    }),
-    DroppablePanel: Loadable({
-        loader: () => import('@ui-schema/material-dnd/Widgets/DroppablePanel').then(r => r.DroppablePanel),
+    DropArea: Loadable({
+        loader: () => import('@ui-schema/material-dnd/Widgets/DropArea').then(r => r.DropArea),
         loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
     }),
 };

@@ -5,12 +5,12 @@ import { UIMetaContext } from '@ui-schema/ui-schema/UIMeta'
 import { GroupRendererProps } from '@ui-schema/ui-schema/WidgetsBinding'
 
 // todo: maybe base partly on `AppliedPluginStackProps`?
-export type WidgetOverrideType<P extends {} = {}, C extends {} = {}> =
-    React.ComponentType<P & WidgetProps<C>> |
-    React.ComponentType<P & WidgetProps<C> & Pick<WithValue, 'onChange'>> |
-    React.ComponentType<P & WidgetProps<C> & WithScalarValue>
+export type WidgetOverrideType<P extends {} = {}, C extends {} = {}, W extends {} = {}> =
+    React.ComponentType<P & WidgetProps<C, W>> |
+    React.ComponentType<P & WidgetProps<C, W> & Pick<WithValue, 'onChange'>> |
+    React.ComponentType<P & WidgetProps<C, W> & WithScalarValue>
 
-export type WidgetType<C extends {} = {}> = WidgetOverrideType<{}, C>
+export type WidgetType<C extends {} = {}, W extends {} = {}> = WidgetOverrideType<{}, C, W>
 
 /**
  * Base widget props which are expected to exist no matter which data "type" the widget is for
@@ -18,7 +18,7 @@ export type WidgetType<C extends {} = {}> = WidgetOverrideType<{}, C>
  * - for any-value-type widgets add `WithValue` and use the HOC `extractValue`
  * - `C` = custom `UIMetaContext` definition
  */
-export interface WidgetProps<C extends {} = {}> extends UIMetaContext<C> {
+export interface WidgetProps<C extends {} = {}, W extends {} = {}> extends UIMetaContext<C, W> {
     // the current schema level
     schema: StoreSchemaType
     // `parentSchema` must only be `undefined` in the root level of a schema

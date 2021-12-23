@@ -231,6 +231,7 @@ onChange(
     {
         type: 'list-item-add',
         schema: schema,
+        // itemValue?: any
     }
 )
 ```

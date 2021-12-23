@@ -85,12 +85,6 @@
             "@ui-schema/material-dnd/*": [
                 "material-dnd/src/*"
             ],
-            "@ui-schema/material-rbd": [
-                "material-rbd/src"
-            ],
-            "@ui-schema/material-rbd/*": [
-                "material-rbd/src/*"
-            ],
             "@ui-schema/ui-schema": [
                 "ui-schema/src"
             ],

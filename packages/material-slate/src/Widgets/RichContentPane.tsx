@@ -35,4 +35,4 @@ const RichContentPaneBase: React.ComponentType<WidgetProps & WithValue> = (props
     </PaneWrapper>
 }
 
-export const RichContentPane = extractValue(memo(RichContentPaneBase))
+export const RichContentPane: React.ComponentType<WidgetProps> = extractValue(memo(RichContentPaneBase))

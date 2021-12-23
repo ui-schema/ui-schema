@@ -12,22 +12,16 @@ import {isInvalid, createOrderedMap, UIRootRenderer, createStore, useUI, storeUp
 import {RichCodeEditor, themes} from '../RichCodeEditor';
 import {Markdown} from '../Markdown';
 import PageNotFound from '../../page/PageNotFound';
-import {useTranslation} from 'react-i18next';
 import {schemas} from '../../schemas/_list';
 import style from 'codemirror/lib/codemirror.css';
 import themeDark from 'codemirror/theme/duotone-dark.css';
 import themeLight from 'codemirror/theme/duotone-light.css';
 import {WidgetCodeProvider} from '@ui-schema/material-code';
-import { DndProvider } from 'react-dnd'
-import { MultiBackend } from 'react-dnd-multi-backend'
-import { HTML5toTouch } from 'rdndmb-html5-to-touch'
 import LuxonAdapter from '@date-io/luxon';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
-import {DragDropProvider as DragDropProviderSimple} from '@ui-schema/material-rbd/DragDropProvider/DragDropProvider';
-import {makeDragDropContext as makeDragDropContextSimple} from '@ui-schema/material-rbd/DragDropProvider/makeDragDropContext';
-import {makeDragDropContext} from '@ui-schema/material-dnd/DragDropProvider/makeDragDropContext';
-import {DragDropProvider} from '@ui-schema/material-dnd/DragDropProvider/DragDropProvider';
 import {createEmptyStore} from '@ui-schema/ui-schema/UIStore';
+import {KitDndProvider, useOnIntent} from '@ui-schema/kit-dnd';
+import {useOnDirectedMove} from '@ui-schema/material-dnd/useOnDirectedMove';
 
 const IconInput = ({
                        verticalSplit, title,
@@ -395,7 +389,6 @@ const useStyle = (styles) => {
 
 const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
     const history = useHistory();
-    const {i18n} = useTranslation();
     const {palette} = useTheme();
     let initialVertical = initialLocalBoolean('live-editor-vertical', 800 < window.innerWidth);// Vertical by default for desktop
     let initialRichIde = initialLocalBoolean('live-editor-rich-ide', true);
@@ -456,7 +449,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
         });
         setRenderChange(p => p + 1);
         history.push('/examples/' + (schemas[i][0].split(' ').join('-')));
-    }, [setActiveSchema, i18n, setShowValidity, setSchema, setStore, history]);
+    }, [setActiveSchema, setShowValidity, setSchema, setStore, history]);
 
     React.useEffect(() => {
         if(infoBox.current) {
@@ -496,148 +489,144 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
         })
     }, [setStore]);
 
-    const dragStoreContext = makeDragDropContext(onChange, jsonError || !schema?.get ? Map() : (schema.get('$defs') || schema.get('definitions')))
-    const dragStoreContextSimple = makeDragDropContextSimple(onChange, jsonError || !schema?.get ? Map() : (schema.get('$defs') || schema.get('definitions')))
+    const {onIntent} = useOnIntent({edgeSize: 12})
+    const {onMove} = useOnDirectedMove(onIntent, onChange)
 
     return <WidgetCodeProvider theme={palette.type === 'dark' ? 'duotone-dark' : 'duotone-light'}>
         <MuiPickersUtilsProvider utils={LuxonAdapter}>
-            <DragDropProvider contextValue={dragStoreContext.contextValue}>
-                <DndProvider backend={MultiBackend} options={HTML5toTouch}>
-                    <DragDropProviderSimple contextValue={dragStoreContextSimple.contextValue}>
-                        <UIStoreProvider store={store} onChange={onChange} showValidity={showValidity}>
-                            <div style={{display: 'flex', flexGrow: 2, overflow: 'auto', flexDirection: verticalSplit ? 'row' : 'column'}}>
-                                <div style={{
-                                    width: verticalSplit ? '45%' : '100%',
-                                    height: verticalSplit ? 'auto' : (jsonEditHeight + 'px'),
-                                    maxHeight: verticalSplit ? 'none' : '95vh',
-                                    display: 'flex', flexShrink: 0,
-                                    order: verticalSplit ? 1 : 3,
-                                    overflow: 'auto',
-                                }}>
+            <KitDndProvider onMove={onMove}>
+                <UIStoreProvider store={store} onChange={onChange} showValidity={showValidity}>
+                    <div style={{display: 'flex', flexGrow: 2, overflow: 'auto', flexDirection: verticalSplit ? 'row' : 'column'}}>
+                        <div style={{
+                            width: verticalSplit ? '45%' : '100%',
+                            height: verticalSplit ? 'auto' : (jsonEditHeight + 'px'),
+                            maxHeight: verticalSplit ? 'none' : '95vh',
+                            display: 'flex', flexShrink: 0,
+                            order: verticalSplit ? 1 : 3,
+                            overflow: 'auto',
+                        }}>
+                            <div style={{
+                                display: 'flex',
+                                flexDirection: verticalSplit ? 'column' : 'row',
+                                minWidth: verticalSplit ? 'auto' : 800,
+                                flexGrow: 2,
+                            }}>
+                                {verticalSplit ? <SchemaChanger
+                                    toggleInfoBox={toggleInfoBox} showInfo={showInfo} hasInfo={!!schemas[activeSchema][3]}
+                                    schemas={schemas} style={{marginLeft: 4}}
+                                    setRenderChange={setRenderChange} verticalSplit={verticalSplit}
+                                    activeSchema={activeSchema} changeSchema={changeSchema}
+                                /> : null}
+
+                                {schemas[activeSchema][3] ?
                                     <div style={{
-                                        display: 'flex',
-                                        flexDirection: verticalSplit ? 'column' : 'row',
-                                        minWidth: verticalSplit ? 'auto' : 800,
-                                        flexGrow: 2,
+                                        height: verticalSplit ? 'auto' : 'auto', display: 'flex', flexDirection: 'column', flexShrink: 0,
+                                        width: verticalSplit ? 'auto' : schemas[activeSchema][3] ? showInfo ? '33%' : 'auto' : showInfo ? '50%' : 'auto',
+                                        maxHeight: verticalSplit ? '35%' : 'none', paddingLeft: verticalSplit ? 0 : 6, marginRight: !verticalSplit && showInfo ? 12 : 0,
                                     }}>
-                                        {verticalSplit ? <SchemaChanger
-                                            toggleInfoBox={toggleInfoBox} showInfo={showInfo} hasInfo={!!schemas[activeSchema][3]}
-                                            schemas={schemas} style={{marginLeft: 4}}
-                                            setRenderChange={setRenderChange} verticalSplit={verticalSplit}
-                                            activeSchema={activeSchema} changeSchema={changeSchema}
-                                        /> : null}
+                                        <Button
+                                            variant={'outlined'} size={'small'}
+                                            style={{display: 'flex', lineHeight: 2.66, flexShrink: 0, minWidth: 0, color: 'inherit', border: 0, padding: '0 0 0 4px', cursor: 'pointer'}}
+                                            onClick={() => toggleInfoBox(o => !o)} onMouseUp={unFocus}>
+                                            {showInfo || verticalSplit ? 'Info:' : 'I·'}
 
-                                        {schemas[activeSchema][3] ?
-                                            <div style={{
-                                                height: verticalSplit ? 'auto' : 'auto', display: 'flex', flexDirection: 'column', flexShrink: 0,
-                                                width: verticalSplit ? 'auto' : schemas[activeSchema][3] ? showInfo ? '33%' : 'auto' : showInfo ? '50%' : 'auto',
-                                                maxHeight: verticalSplit ? '35%' : 'none', paddingLeft: verticalSplit ? 0 : 6, marginRight: !verticalSplit && showInfo ? 12 : 0,
-                                            }}>
-                                                <Button
-                                                    variant={'outlined'} size={'small'}
-                                                    style={{display: 'flex', lineHeight: 2.66, flexShrink: 0, minWidth: 0, color: 'inherit', border: 0, padding: '0 0 0 4px', cursor: 'pointer'}}
-                                                    onClick={() => toggleInfoBox(o => !o)} onMouseUp={unFocus}>
-                                                    {showInfo || verticalSplit ? 'Info:' : 'I·'}
+                                            {showInfo ?
+                                                <SpeakerNotesOff fontSize={'small'} style={{margin: 'auto ' + (verticalSplit ? 0 : 9) + 'px auto auto'}}/> :
+                                                <SpeakerNotes fontSize={'small'} style={{margin: 'auto ' + (verticalSplit ? 0 : 9) + 'px auto auto'}}/>}
+                                        </Button>
 
-                                                    {showInfo ?
-                                                        <SpeakerNotesOff fontSize={'small'} style={{margin: 'auto ' + (verticalSplit ? 0 : 9) + 'px auto auto'}}/> :
-                                                        <SpeakerNotes fontSize={'small'} style={{margin: 'auto ' + (verticalSplit ? 0 : 9) + 'px auto auto'}}/>}
-                                                </Button>
+                                        {showInfo ? <Paper style={{overflow: 'auto', padding: '0 6px 0 0'}} ref={infoBox}><Box mt={1} mb={1} ml={2} mr={verticalSplit ? 0 : 1.5}>
+                                            <div style={{overflow: 'visible', margin: 0}}>
+                                                <Markdown source={schemas[activeSchema][3]}/>
+                                            </div>
+                                        </Box></Paper> : null}
+                                    </div> : null}
 
-                                                {showInfo ? <Paper style={{overflow: 'auto', padding: '0 6px 0 0'}} ref={infoBox}><Box mt={1} mb={1} ml={2} mr={verticalSplit ? 0 : 1.5}>
-                                                    <div style={{overflow: 'visible', margin: 0}}>
-                                                        <Markdown source={schemas[activeSchema][3]}/>
-                                                    </div>
-                                                </Box></Paper> : null}
-                                            </div> : null}
-
-                                        <div style={{
-                                            height: 'auto', flexGrow: 2, flexShrink: 0, display: 'flex', flexDirection: 'column', width: 'auto',
-                                        }}>
-                                            <Typography component={'p'} variant={'overline'} style={{paddingLeft: 4}}>
-                                                Schema:
-                                            </Typography>
-                                            <SchemaJSONEditor
-                                                schema={schema}
-                                                setJsonError={setJsonError}
-                                                setSchema={onSchemaManual}
-                                                tabSize={tabSize}
-                                                fontSize={fontSize}
-                                                richIde={richIde}
-                                                renderChange={renderChange}
-                                                theme={editorTheme}
-                                            />
-                                        </div>
-
-                                        <div style={{
-                                            height: verticalSplit ? showStore ? '30%' : 'auto' : 'auto', display: 'flex', flexDirection: 'column', flexShrink: 1,
-                                            width: verticalSplit ? 'auto' : showStore ? '33%' : 'auto',
-                                            paddingLeft: verticalSplit ? 0 : 12, boxSizing: 'border-box',
-                                        }}>
-                                            <Button
-                                                variant={'outlined'} size={'small'}
-                                                style={{display: 'flex', lineHeight: 2.66, minWidth: 0, flexShrink: 0, color: 'inherit', border: 0, padding: '0 0 0 4px', cursor: 'pointer'}}
-                                                onClick={() => toggleDataBox(o => !o)} onMouseUp={unFocus}>
-                                                {showStore || verticalSplit ? 'Data:' : 'D·'}
-
-                                                {showStore ?
-                                                    <VisibilityOff fontSize={'small'} style={{margin: 'auto 0 auto auto'}}/> :
-                                                    <Visibility fontSize={'small'} style={{margin: 'auto 0 auto auto'}}/>}
-                                            </Button>
-                                            {schemas[activeSchema][3] && showStore ?
-                                                <SchemaDataDebug tabSize={tabSize} fontSize={fontSize} richIde={richIde} renderChange={renderChange} theme={editorTheme}/> :
-                                                null}
-                                        </div>
-                                    </div>
+                                <div style={{
+                                    height: 'auto', flexGrow: 2, flexShrink: 0, display: 'flex', flexDirection: 'column', width: 'auto',
+                                }}>
+                                    <Typography component={'p'} variant={'overline'} style={{paddingLeft: 4}}>
+                                        Schema:
+                                    </Typography>
+                                    <SchemaJSONEditor
+                                        schema={schema}
+                                        setJsonError={setJsonError}
+                                        setSchema={onSchemaManual}
+                                        tabSize={tabSize}
+                                        fontSize={fontSize}
+                                        richIde={richIde}
+                                        renderChange={renderChange}
+                                        theme={editorTheme}
+                                    />
                                 </div>
 
-                                <EditorsNav
-                                    setJsonError={setJsonError}
-                                    changeSplit={changeSplit}
-                                    verticalSplit={verticalSplit}
-                                    activeSchema={activeSchema}
-                                    changeSchema={changeSchema}
-                                    setTabSize={setTabSize}
-                                    tabSize={tabSize}
-                                    setFontSize={setFontSize}
-                                    fontSize={fontSize}
-                                    toggleRichIde={toggleRichIde}
-                                    richIde={richIde}
-                                    schemas={schemas}
-                                    showInfo={showInfo}
-                                    toggleInfoBox={toggleInfoBox}
-                                    hasInfo={!!schemas[activeSchema][3]}
-                                    jsonEditHeight={jsonEditHeight}
-                                    setJsonEditHeight={setJsonEditHeight}
-                                    setRenderChange={setRenderChange}
-                                    setEditorTheme={setEditorTheme}
-                                    editorTheme={editorTheme}
-                                />
+                                <div style={{
+                                    height: verticalSplit ? showStore ? '30%' : 'auto' : 'auto', display: 'flex', flexDirection: 'column', flexShrink: 1,
+                                    width: verticalSplit ? 'auto' : showStore ? '33%' : 'auto',
+                                    paddingLeft: verticalSplit ? 0 : 12, boxSizing: 'border-box',
+                                }}>
+                                    <Button
+                                        variant={'outlined'} size={'small'}
+                                        style={{display: 'flex', lineHeight: 2.66, minWidth: 0, flexShrink: 0, color: 'inherit', border: 0, padding: '0 0 0 4px', cursor: 'pointer'}}
+                                        onClick={() => toggleDataBox(o => !o)} onMouseUp={unFocus}>
+                                        {showStore || verticalSplit ? 'Data:' : 'D·'}
 
-                                <main className="App-main" style={{height: '100%', overflow: 'auto', maxWidth: 'none', margin: verticalSplit ? '0 auto' : 0, order: verticalSplit ? 3 : 1}}>
-                                    {jsonError ?
-                                        <Paper style={{margin: 12, padding: 24}}>
-                                            <Typography component={'h2'} variant={'h5'} color={'error'}>
-                                                JSON-Error:
-                                            </Typography>
-
-                                            <Typography component={'p'} variant={'subtitle1'} style={{marginTop: 12}}>
-                                                {jsonError.replace('SyntaxError: JSON.parse: ', '')}
-                                            </Typography>
-                                        </Paper> :
-                                        typeof schema === 'string' ? null : <Paper style={{margin: 12, padding: 24}}>
-                                            <UIRootRenderer schema={schema}/>
-
-                                            <InvalidLabel invalid={isInvalid(store.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>
-                                        </Paper>}
-
-                                    <div style={{height: 24, width: 1, flexShrink: 0}}/>
-                                </main>
+                                        {showStore ?
+                                            <VisibilityOff fontSize={'small'} style={{margin: 'auto 0 auto auto'}}/> :
+                                            <Visibility fontSize={'small'} style={{margin: 'auto 0 auto auto'}}/>}
+                                    </Button>
+                                    {schemas[activeSchema][3] && showStore ?
+                                        <SchemaDataDebug tabSize={tabSize} fontSize={fontSize} richIde={richIde} renderChange={renderChange} theme={editorTheme}/> :
+                                        null}
+                                </div>
                             </div>
-                        </UIStoreProvider>
-                    </DragDropProviderSimple>
-                </DndProvider>
-            </DragDropProvider>
+                        </div>
+
+                        <EditorsNav
+                            setJsonError={setJsonError}
+                            changeSplit={changeSplit}
+                            verticalSplit={verticalSplit}
+                            activeSchema={activeSchema}
+                            changeSchema={changeSchema}
+                            setTabSize={setTabSize}
+                            tabSize={tabSize}
+                            setFontSize={setFontSize}
+                            fontSize={fontSize}
+                            toggleRichIde={toggleRichIde}
+                            richIde={richIde}
+                            schemas={schemas}
+                            showInfo={showInfo}
+                            toggleInfoBox={toggleInfoBox}
+                            hasInfo={!!schemas[activeSchema][3]}
+                            jsonEditHeight={jsonEditHeight}
+                            setJsonEditHeight={setJsonEditHeight}
+                            setRenderChange={setRenderChange}
+                            setEditorTheme={setEditorTheme}
+                            editorTheme={editorTheme}
+                        />
+
+                        <main className="App-main" style={{height: '100%', overflow: 'auto', maxWidth: 'none', margin: verticalSplit ? '0 auto' : 0, order: verticalSplit ? 3 : 1}}>
+                            {jsonError ?
+                                <Paper style={{margin: 12, padding: 24}}>
+                                    <Typography component={'h2'} variant={'h5'} color={'error'}>
+                                        JSON-Error:
+                                    </Typography>
+
+                                    <Typography component={'p'} variant={'subtitle1'} style={{marginTop: 12}}>
+                                        {jsonError.replace('SyntaxError: JSON.parse: ', '')}
+                                    </Typography>
+                                </Paper> :
+                                typeof schema === 'string' ? null : <Paper style={{margin: 12, padding: 24}}>
+                                    <UIRootRenderer schema={schema}/>
+
+                                    <InvalidLabel invalid={isInvalid(store.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>
+                                </Paper>}
+
+                            <div style={{height: 24, width: 1, flexShrink: 0}}/>
+                        </main>
+                    </div>
+                </UIStoreProvider>
+            </KitDndProvider>
         </MuiPickersUtilsProvider>
     </WidgetCodeProvider>;
 };
