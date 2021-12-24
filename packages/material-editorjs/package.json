@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-editorjs",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "EditorJS for UI-Schema with Material-UI",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",

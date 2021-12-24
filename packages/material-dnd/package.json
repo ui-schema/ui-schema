@@ -1,7 +1,7 @@
 {
     "name": "@ui-schema/material-dnd",
-    "version": "0.0.5",
-    "description": "Drag and Drop Tools and Formbuilder for UI-Schema with Material-UI",
+    "version": "0.0.6",
+    "description": "Drag and Drop Tools and Widgets for UI-Schema with Material-UI",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
     "license": "MIT",
