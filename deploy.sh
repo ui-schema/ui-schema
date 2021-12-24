@@ -29,6 +29,10 @@ cd ds-material
 cp package.json build/ && cp package-lock.json build/ && cp README.md build/
 cd ../
 
+cd kit-dnd
+cp package.json build/ && cp package-lock.json build/ && cp README.md build/
+cd ../
+
 cd material-code
 cp package.json build/ && cp package-lock.json build/ && cp README.md build/
 cd ../
@@ -41,7 +45,7 @@ cd material-dnd
 cp package.json build/ && cp package-lock.json build/ && cp README.md build/
 cd ../
 
-cd material-rbd
+cd material-editable
 cp package.json build/ && cp package-lock.json build/ && cp README.md build/
 cd ../
 
@@ -58,10 +62,6 @@ cp package.json build/ && cp package-lock.json build/ && cp README.md build/
 cd ../
 
 cd material-slate
-cp package.json build/ && cp package-lock.json build/ && cp README.md build/
-cd ../
-
-cd material-editable
 cp package.json build/ && cp package-lock.json build/ && cp README.md build/
 cd ../
 
