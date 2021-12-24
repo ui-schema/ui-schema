@@ -5,7 +5,7 @@
     "dependencies": {
         "@control-ui/app": "0.0.19",
         "@control-ui/docs": "0.0.22",
-        "@control-ui/kit": "0.0.19",
+        "@control-ui/kit": "0.0.20",
         "@date-io/luxon": "^1.3.13",
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",

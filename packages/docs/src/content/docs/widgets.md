@@ -67,15 +67,15 @@ Received properties from `WidgetRenderer` or accumulated in plugins & pluginSimp
 
 Use typings:
 
-
 ```typescript jsx
 // for any scalar widgets:
-React.ComponentType<WidgetProps & WithScalarValue>
+React.ComponentType < WidgetProps & WithScalarValue >
 
 // or use e.g. the `extractValue` HOC:
-React.ComponentType<WidgetProps & WithValue>
+React.ComponentType < WidgetProps & WithValue >
 
-export const FormGroupBase: React.ComponentType<WidgetProps & WithValue> = (props) => {}
+export const FormGroupBase: React.ComponentType<WidgetProps & WithValue> = (props) => {
+}
 export const FormGroup: React.ComponentType<WidgetProps> = extractValue(memo(FormGroupBase))
 ```
 
@@ -236,27 +236,28 @@ export const customWidgets = {
 };
 ```
 
-Example widget binding with typings:
+Example widget binding **with typings**:
 
 ```typescript
 import React from "react";
-import { widgets, MuiWidgetBinding } from "@ui-schema/ds-material/widgetsBinding";
-import { WidgetProps } from "@ui-schema/ui-schema";
+import { widgets, MuiWidgetBinding, MuiWidgetsBindingTypes, MuiWidgetsBindingCustom } from "@ui-schema/ds-material/widgetsBinding";
+import { WidgetProps, WidgetsBindingFactory, WithScalarValue } from "@ui-schema/ui-schema";
 
-const CustomNumberRenderer = (props: WidgetProps) => /* todo: implement */ null;
-const CustomSelect = (props: WidgetProps) => /* todo: implement */ null;
+const CustomNumberRenderer = (props: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>) => /* todo: implement */ null;
+const CustomSelect = (props: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>) => /* todo: implement */ null;
 
 export interface CustomWidgetsType {
     types: {
-        integer: React.ComponentType<WidgetProps>
-        number: React.ComponentType<WidgetProps>
+        integer: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>
+        number: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>
     }
     custom: {
-        CustomSelect: React.ComponentType<WidgetProps>
+        CustomSelect: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>
     }
 }
 
-export const customWidgets: CustomWidgetsType & MuiWidgetBinding = {
+export type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<CustomWidgetsType>>
+export const customWidgets: CustomWidgetsBinding = {
     ...widgets,
     types: {
         ...widgets.types,

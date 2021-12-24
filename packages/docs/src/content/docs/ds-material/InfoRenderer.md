@@ -2,7 +2,7 @@
 
 A component that shows custom information to a user for a schema.
 
-Enable by adding it to the widgetsBinding:
+1. Adding it to the widgetsBinding:
 
 ```js
 import {widgets} from '@ui-schema/ds-material';
@@ -11,9 +11,11 @@ const customWidgets = {...widgets}
 customWidgets.InfoRenderer = InfoRenderer
 ```
 
-And add the `info` keyword to your component, anything treated as `true` will render the `InfoRenderer`.
+2. Add the `info` keyword to your component, anything treated as `true` will render the `InfoRenderer`.
 
-The component can be anything and should support:
+## Options
+
+The component can render anything and should support:
 
 - two variants as closed rendering:
     - `icon`, e.g. an `IconButton` with `Info` icon that opens a dialog
@@ -21,6 +23,8 @@ The component can be anything and should support:
 - two variants as opened rendering:
     - `embed`, should show it e.g. as introduction directly in the page
     - `modal`, should show it e.g. as a dialog
+- these are passed down by props and indicate what the best view option would be at their position
+    - for further control add e.g. `infoConfig` to the schema and use it inside your `InfoRenderer`
 
 The `InfoRenderer` receives props:
 

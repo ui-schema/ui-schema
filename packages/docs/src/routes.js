@@ -1,7 +1,7 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 import {LoadingCircular} from '@control-ui/kit/Loading/LoadingCircular';
-import {routesDocs, routesDSMaterial, routesKitDnd, routesWidgets} from './content/docs';
+import {routesDocs} from './content/docs';
 import PageMain from './page/PageMain';
 
 export const routes = {
@@ -21,7 +21,7 @@ export const routes = {
                         return <LoadingCircular {...props} title="Loading Home"/>
                     },
                 }),*/
-                component: PageMain
+                component: PageMain,
             },
         }, {
             path: '/docs/:docId+',
@@ -36,12 +36,7 @@ export const routes = {
                 }),
             },
             doc: true,
-            routes: [
-                ...routesDocs.routes,
-                ...routesWidgets.routes,
-                ...routesDSMaterial,
-                ...routesKitDnd.routes,
-            ],
+            routes: routesDocs.routes,
         }, {
             path: '/examples/:schema?',
             nav: {
