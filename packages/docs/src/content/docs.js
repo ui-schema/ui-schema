@@ -120,12 +120,22 @@ export const routesKitDnd = {
 export const routesDSMaterial = [
     {
         nav: {
-            label: 'DS Material Components',
+            label: 'DS Material',
             initialOpen: false,
             to: '/docs/ds-material',
         },
         routes: [
-            createDoc('ds-material/Table', 'Table Base Component', ''),
+            createDoc('ds-material/InfoRenderer', 'Info Renderer', ''),
+            {
+                nav: {
+                    label: 'Base Components',
+                    initialOpen: false,
+                    to: '/docs/ds-material/components',
+                },
+                routes: [
+                    createDoc('ds-material/components/Table', 'Table', ''),
+                ],
+            },
         ],
     }, {
         nav: {

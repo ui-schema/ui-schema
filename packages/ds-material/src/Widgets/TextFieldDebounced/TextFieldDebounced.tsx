@@ -2,6 +2,7 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import { InputProps } from '@material-ui/core/Input'
 import { useUID } from 'react-uid'
+import InputAdornment from '@material-ui/core/InputAdornment'
 import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
 import { mapSchema } from '@ui-schema/ui-schema/Utils/schemaToNative'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
@@ -9,14 +10,14 @@ import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStrin
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/schemaTypeIs'
 import { NumberRendererProps, StringRendererProps, TextRendererProps } from '@ui-schema/ds-material/Widgets/TextField'
 import { WidgetProps, WithScalarValue } from '@ui-schema/ui-schema'
-import { forbidInvalidNumber } from '@ui-schema/ds-material'
+import { forbidInvalidNumber, MuiWidgetBinding } from '@ui-schema/ds-material'
 
 export interface StringRendererDebouncedProps {
     onKeyPress?: StringRendererProps['onKeyPressNative']
     debounceTime?: number
 }
 
-export const StringRendererDebounced = <P extends WidgetProps = WidgetProps>(
+export const StringRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBinding> = WidgetProps<{}, MuiWidgetBinding>>(
     {
         type,
         multiline, rows, rowsMax,
@@ -26,7 +27,7 @@ export const StringRendererDebounced = <P extends WidgetProps = WidgetProps>(
         onClick, onFocus, onBlur, onKeyUp, onKeyDown,
         onKeyPress,
         inputProps = {}, InputProps = {}, inputRef: customInputRef,
-        debounceTime = 340,
+        debounceTime = 340, widgets,
     }: P & WithScalarValue & Omit<StringRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps
 ): React.ReactElement => {
     const timer = React.useRef<undefined | number>(undefined)
@@ -76,6 +77,16 @@ export const StringRendererDebounced = <P extends WidgetProps = WidgetProps>(
     inputProps = mapSchema(inputProps, schema)
 
     const hideTitle = schema.getIn(['view', 'hideTitle'])
+
+    const InfoRenderer = widgets?.InfoRenderer
+    if (InfoRenderer && schema?.get('info')) {
+        InputProps['endAdornment'] = <InputAdornment position="end">
+            <InfoRenderer
+                schema={schema} variant={'icon'} openAs={'modal'}
+                storeKeys={storeKeys} valid={valid} errors={errors}
+            />
+        </InputAdornment>
+    }
     return <React.Fragment>
         <TextField
             label={hideTitle ? undefined : <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>}
@@ -134,7 +145,12 @@ export const StringRendererDebounced = <P extends WidgetProps = WidgetProps>(
     </React.Fragment>
 }
 
-export const TextRendererDebounced = <P extends WidgetProps = WidgetProps>({schema, ...props}: P & WithScalarValue & Omit<TextRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps): React.ReactElement => {
+export const TextRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBinding> = WidgetProps<{}, MuiWidgetBinding>>(
+    {
+        schema,
+        ...props
+    }: P & WithScalarValue & Omit<TextRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps
+): React.ReactElement => {
     return <StringRendererDebounced
         {...props}
         schema={schema}
@@ -144,7 +160,7 @@ export const TextRendererDebounced = <P extends WidgetProps = WidgetProps>({sche
     />
 }
 
-export const NumberRendererDebounced = <P extends WidgetProps = WidgetProps>(props: P & WithScalarValue & Omit<NumberRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps): React.ReactElement => {
+export const NumberRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBinding> = WidgetProps<{}, MuiWidgetBinding>>(props: P & WithScalarValue & Omit<NumberRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps): React.ReactElement => {
     const {schema, inputProps: inputPropsProps = {}, steps = 'any'} = props
     const schemaType = schema.get('type') as string | undefined
     const inputProps = React.useMemo(() => {

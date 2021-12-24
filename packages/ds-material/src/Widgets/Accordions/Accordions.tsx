@@ -3,25 +3,28 @@ import { useUID } from 'react-uid'
 import { OwnKey, StoreSchemaType, TransTitle, WidgetProps, PluginStack, memo, ValidatorErrorsType, onErrors } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
 import Accordion from '@material-ui/core/Accordion'
+import Box from '@material-ui/core/Box'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 
 export interface AccordionStackBaseProps {
     isOpen: boolean
     setOpen: (handler: (ownKey: string) => string) => void
 }
 
-const AccordionStackBase: React.ComponentType<WidgetProps & AccordionStackBaseProps> = (props) => {
+const AccordionStackBase: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & AccordionStackBaseProps> = (props) => {
     const uid = useUID()
     const {
         storeKeys, schema,
         parentSchema, ownKey,
         showValidity, level,
-        isOpen, setOpen,
+        isOpen, setOpen, widgets, valid,
     } = props
     const [errors, setErrors] = React.useState<ValidatorErrorsType | undefined>()
+    const InfoRenderer = widgets?.InfoRenderer
 
     return <Accordion
         style={{width: '100%'}} expanded={isOpen}
@@ -35,7 +38,15 @@ const AccordionStackBase: React.ComponentType<WidgetProps & AccordionStackBasePr
                 <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
             </Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails style={{flexDirection: 'column'}}>
+            {InfoRenderer && schema?.get('info') ?
+                <Box>
+                    <InfoRenderer
+                        schema={schema} variant={'preview'} openAs={'embed'}
+                        storeKeys={storeKeys} valid={valid} errors={errors}
+                    />
+                </Box> : undefined}
+
             <PluginStack
                 {...props}
                 schema={schema}
@@ -53,12 +64,12 @@ const AccordionStackBase: React.ComponentType<WidgetProps & AccordionStackBasePr
 
 export const AccordionStack = memo(AccordionStackBase)
 
-export const AccordionsRendererBase = (
+export const AccordionsRendererBase = <W extends WidgetProps<{}, MuiWidgetBinding> = WidgetProps<{}, MuiWidgetBinding>>(
     {
         schema, storeKeys, level,
         errors, showValidity,
         ...props
-    }: WidgetProps
+    }: W
 ): React.ReactElement => {
     const [open, setOpen] = React.useState<string>(schema.get('defaultExpanded') as string || '')
 

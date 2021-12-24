@@ -34,6 +34,7 @@ import {List, OrderedMap} from 'immutable';
 import {PluginStack} from '@ui-schema/ui-schema/PluginStack/PluginStack';
 import {applyPluginStack} from '@ui-schema/ui-schema/applyPluginStack';
 import {StringRenderer} from '@ui-schema/ds-material/Widgets/TextField';
+import {InfoRenderer} from '@ui-schema/ds-material/Component/InfoRenderer';
 
 const customWidgets = {...widgets}
 const pluginStack = [...customWidgets.pluginStack]
@@ -43,6 +44,7 @@ const pluginStack = [...customWidgets.pluginStack]
 // maybe the network handlers adds a generic prop `resolveNetworkRef`, to request network schema inside e.g. an `if` from inside the ReferencingHandler
 pluginStack.splice(0, 0, ReferencingNetworkHandler)
 customWidgets.pluginStack = pluginStack
+customWidgets.InfoRenderer = InfoRenderer
 
 const CustomTable = ({widgets, ...props}) => {
     const customWidgets = React.useMemo(() => ({

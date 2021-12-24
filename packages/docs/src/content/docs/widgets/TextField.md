@@ -56,8 +56,10 @@ const widgets = {
     - `shrink` to `true` to always have the label up, e.g. native-date may look wrong otherwise in some browsers (use @ui-schema/material-pickers for best date/time support)
 - `formats`
     - supports browser based translations for format mismatch, schema key: `t: 'browser''` (will be moved to another way)
+- `info`
+    - supported by all except the `*Icon` widgets, to render the [InfoRenderer](/docs/ds-material/InfoRenderer)
 
-**Components:**
+**Widgets:**
 
 - `TextRenderer` supports multi-line text
     - extra keywords:

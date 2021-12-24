@@ -39,7 +39,9 @@ const widgets = {
 - `notDeletable` when `true` doesn't allow deletion of items
 - `notAddable` when `true` doesn't allow adding items
 - `notSortable` when `true` doesn't allow sorting of items
+- `info`
+    - to render the [InfoRenderer](/docs/ds-material/InfoRenderer)
 
-**Components:**
+**Widgets:**
 
 - `GenericList` for list sub-schemas

@@ -6,10 +6,11 @@ import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/sc
 import { mapSchema } from '@ui-schema/ui-schema/Utils/schemaToNative'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
-import InputBase, { InputBaseProps } from '@material-ui/core/InputBase'
+import InputBase, { InputBaseProps, InputBaseComponentProps } from '@material-ui/core/InputBase'
 import Typography from '@material-ui/core/Typography'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
 import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
+import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 
 export interface StringRendererCellProps {
     type?: string
@@ -23,14 +24,12 @@ export interface StringRendererCellProps {
     onKeyUp?: EventHandler<any>
     onKeyDown?: EventHandler<any>
     onKeyPress?: EventHandler<any>
-    inputProps?: {
-        [key: string]: any
-    }
+    inputProps?: Partial<InputBaseComponentProps>
     inputRef?: null | React.RefObject<any>
     labelledBy?: string
 }
 
-export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarValue & StringRendererCellProps> = (
+export const StringRendererCell: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & WithScalarValue & StringRendererCellProps> = (
     {
         type,
         multiline, rows, rowsMax,
@@ -38,8 +37,9 @@ export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarVal
         showValidity, valid, errors, required,
         style = {},
         onClick, onFocus, onBlur, onKeyUp, onKeyDown, onKeyPress,
-        inputProps = {}, inputRef: customInputRef,
-        labelledBy,
+        inputProps = {},
+        inputRef: customInputRef,
+        labelledBy, widgets,
     }
 ) => {
     const uid = useUID()
@@ -52,7 +52,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarVal
     inputProps = mapSchema(inputProps, schema)
 
     if (schemaTypeIs(schema.get('type') as SchemaTypesType, 'number') && typeof inputProps['step'] === 'undefined') {
-        inputProps['step'] = 'any'
+        //inputProps['step'] = 'any'
     }
 
     if (typeof labelledBy === 'string') {
@@ -66,7 +66,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarVal
     }
     const schemaAlign = schema.getIn(['view', 'align'])
     if (!inputProps.style.textAlign && schemaAlign) {
-        inputProps.style.textAlign = schemaAlign
+        inputProps.style.textAlign = schemaAlign as React.CSSProperties['textAlign'] | undefined
     }
     if (type === 'number') {
         // when a table cell is of type number, it should be aligned right
@@ -80,7 +80,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarVal
             inputProps.style['MozAppearance'] = 'textfield'
         }
     }
-
+    const InfoRenderer = widgets?.InfoRenderer
     return <>
         {!labelledBy ? <Typography component={'span'} variant={'srOnly'} id={inputProps['aria-labelledby']}>
             <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
@@ -131,6 +131,14 @@ export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarVal
                 )
             }}
             inputProps={inputProps}
+            endAdornment={
+                InfoRenderer && schema?.get('info') ?
+                    <InfoRenderer
+                        schema={schema} variant={'icon'} openAs={'modal'}
+                        storeKeys={storeKeys} valid={valid} errors={errors}
+                    /> :
+                    undefined
+            }
         />
 
         <ValidityHelperText
@@ -140,7 +148,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarVal
     </>
 }
 
-export const TextRendererCell: React.ComponentType<WidgetProps & WithScalarValue & StringRendererCellProps> = ({schema, ...props}) => {
+export const TextRendererCell: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & WithScalarValue & StringRendererCellProps> = ({schema, ...props}) => {
     return <StringRendererCell
         {...props}
         schema={schema}
@@ -150,7 +158,7 @@ export const TextRendererCell: React.ComponentType<WidgetProps & WithScalarValue
     />
 }
 
-export const NumberRendererCell: React.ComponentType<WidgetProps & WithScalarValue & StringRendererCellProps> = (props) => {
+export const NumberRendererCell: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & WithScalarValue & StringRendererCellProps> = (props) => {
     return <StringRendererCell
         {...props}
         type={'number'}

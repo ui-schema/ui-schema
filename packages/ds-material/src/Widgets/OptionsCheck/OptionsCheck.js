@@ -68,15 +68,22 @@ const OptionsCheckValue = extractValue(memo(({
 ));
 
 export const OptionsCheck = ({
-                          ownKey, schema, storeKeys, showValidity, valid, required, errors,
-                          row,
-                      }) => {
+                                 ownKey, schema, storeKeys, showValidity, valid, required, errors,
+                                 row, widgets,
+                             }) => {
     const enumVal = schema.get('enum');
     if(!enumVal) return null;
-
+    const InfoRenderer = widgets?.InfoRenderer
     return <FormControl required={required} error={!valid && showValidity} component="fieldset">
-        <FormLabel component="legend">
+        <FormLabel component="legend" style={{width: '100%'}}>
             <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+            {InfoRenderer && schema?.get('info') ?
+                <InfoRenderer
+                    schema={schema} variant={'icon'} openAs={'modal'}
+                    storeKeys={storeKeys} valid={valid} errors={errors}
+                    align={'right'} dense
+                /> :
+                undefined}
         </FormLabel>
         <FormGroup row={row}>
             <OptionsCheckValue

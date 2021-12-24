@@ -89,6 +89,9 @@ const schemaDemoMain = {
             type: 'string',
             minLength: 2,
             maxLength: 3,
+            info: [
+                'Some Info!',
+            ],
             /*enum: [
                 'test 1',
                 'test2',
@@ -144,6 +147,9 @@ const schemaDemoMain = {
         comment: {
             type: 'string',
             widget: 'Text',
+            info: [
+                'Some Info!',
+            ],
             view: {
                 sizeMd: 6,
                 //variant: 'filled',
@@ -199,6 +205,9 @@ const schemaDemoMain = {
             view: {
                 sizeMd: 3,
             },
+            info: [
+                'Some Info!',
+            ],
             enum: [
                 'sidebar_left',
                 'sidebar_right',

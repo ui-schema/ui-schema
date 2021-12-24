@@ -15,6 +15,7 @@ import { WidgetRenderer } from '@ui-schema/ui-schema/WidgetRenderer'
 import { validators } from '@ui-schema/ui-schema/Validators/validators'
 import { CardRenderer, FormGroup, LabelBox } from '@ui-schema/ds-material/Widgets'
 import { WidgetProps, WidgetsBindingFactory, WithScalarValue } from '@ui-schema/ui-schema'
+import { InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 
 const MyFallbackComponent: React.ComponentType<{
     error: any | null
@@ -53,7 +54,11 @@ export interface MuiWidgetsBindingCustom<C extends {} = {}, W extends MuiWidgetB
     FormGroup: React.ComponentType<WidgetProps<C, W>>
 }
 
-export type MuiWidgetBinding<C extends {} = {}> = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<C>, MuiWidgetsBindingCustom<C>>
+export interface MuiWidgetBindingExtra {
+    InfoRenderer?: React.ComponentType<InfoRendererProps>
+}
+
+export type MuiWidgetBinding<C extends {} = {}> = WidgetsBindingFactory<MuiWidgetBindingExtra, MuiWidgetsBindingTypes<C>, MuiWidgetsBindingCustom<C>>
 
 export const widgets: MuiWidgetBinding = {
     ErrorFallback: MyFallbackComponent,

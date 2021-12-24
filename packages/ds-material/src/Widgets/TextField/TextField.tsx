@@ -1,5 +1,6 @@
 import React, { CSSProperties, FocusEventHandler, KeyboardEventHandler, MouseEventHandler } from 'react'
 import TextField from '@material-ui/core/TextField'
+import InputAdornment from '@material-ui/core/InputAdornment'
 import { InputProps } from '@material-ui/core/Input'
 import { useUID } from 'react-uid'
 import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
@@ -9,6 +10,7 @@ import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStrin
 import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/schemaTypeIs'
 import { WidgetProps, WithScalarValue } from '@ui-schema/ui-schema'
+import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 
 export interface StringRendererBaseProps {
     type?: string
@@ -42,7 +44,7 @@ export interface NumberRendererProps extends StringRendererBaseProps {
     steps?: number | 'any'
 }
 
-export const StringRenderer = <P extends WidgetProps = WidgetProps>(
+export const StringRenderer = <P extends WidgetProps<{}, MuiWidgetBinding> = WidgetProps<{}, MuiWidgetBinding>>(
     {
         type,
         multiline, rows, rowsMax,
@@ -54,6 +56,7 @@ export const StringRenderer = <P extends WidgetProps = WidgetProps>(
         // eslint-disable-next-line deprecation/deprecation
         onKeyPress: onKeyPressDeprecated,
         inputProps = {}, InputProps = {}, inputRef: customInputRef,
+        widgets,
     }: P & WithScalarValue & StringRendererProps
 ): React.ReactElement => {
     const uid = useUID()
@@ -65,6 +68,15 @@ export const StringRenderer = <P extends WidgetProps = WidgetProps>(
     inputProps = mapSchema(inputProps, schema)
 
     const hideTitle = schema.getIn(['view', 'hideTitle'])
+    const InfoRenderer = widgets?.InfoRenderer
+    if (InfoRenderer && schema?.get('info')) {
+        InputProps['endAdornment'] = <InputAdornment position="end">
+            <InfoRenderer
+                schema={schema} variant={'icon'} openAs={'modal'}
+                storeKeys={storeKeys} valid={valid} errors={errors}
+            />
+        </InputAdornment>
+    }
     return <React.Fragment>
         <TextField
             label={hideTitle ? undefined : <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>}
@@ -132,7 +144,7 @@ export const StringRenderer = <P extends WidgetProps = WidgetProps>(
     </React.Fragment>
 }
 
-export const TextRenderer = <P extends WidgetProps = WidgetProps>({schema, ...props}: P & WithScalarValue & TextRendererProps): React.ReactElement => {
+export const TextRenderer = <P extends WidgetProps<{}, MuiWidgetBinding> = WidgetProps<{}, MuiWidgetBinding>>({schema, ...props}: P & WithScalarValue & TextRendererProps): React.ReactElement => {
     return <StringRenderer
         {...props}
         schema={schema}
@@ -142,7 +154,7 @@ export const TextRenderer = <P extends WidgetProps = WidgetProps>({schema, ...pr
     />
 }
 
-export const NumberRenderer = <P extends WidgetProps = WidgetProps>(props: P & WithScalarValue & NumberRendererProps): React.ReactElement => {
+export const NumberRenderer = <P extends WidgetProps<{}, MuiWidgetBinding> = WidgetProps<{}, MuiWidgetBinding>>(props: P & WithScalarValue & NumberRendererProps): React.ReactElement => {
     const {schema, inputProps: inputPropsProps = {}, steps = 'any'} = props
     const schemaType = schema.get('type') as string | undefined
     const inputProps = React.useMemo(() => {

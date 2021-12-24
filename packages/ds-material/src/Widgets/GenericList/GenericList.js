@@ -135,18 +135,27 @@ GenericListItem = memo(GenericListItem)
 
 let GenericListBase = ({
                            storeKeys, schemaKeys, ownKey, schema, listSize, onChange,
-                           showValidity, valid, errors, required, level,
+                           showValidity, valid, errors, required, level, widgets,
                        }) => {
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
     const notSortable = schema.get('notSortable')
     const notAddable = schema.get('notAddable')
     const notDeletable = schema.get('notDeletable')
+    const InfoRenderer = widgets?.InfoRenderer
 
     return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
         <Grid container spacing={2}>
             {!schema.getIn(['view', 'hideTitle']) ? <Grid item xs={12}>
                 <FormLabel component="legend"><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></FormLabel>
             </Grid> : null}
+
+            {InfoRenderer && schema?.get('info') ?
+                <Grid item xs={12}>
+                    <InfoRenderer
+                        schema={schema} variant={'preview'} openAs={'embed'}
+                        storeKeys={storeKeys} valid={valid} errors={errors}
+                    />
+                </Grid> : undefined}
 
             {Array(listSize).fill(null).map((val, i) =>
                 <GenericListItem
