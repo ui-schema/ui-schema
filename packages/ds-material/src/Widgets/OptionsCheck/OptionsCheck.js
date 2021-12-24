@@ -7,6 +7,7 @@ import {TransTitle, Trans, beautifyKey, extractValue, memo} from '@ui-schema/ui-
 import {useUID} from 'react-uid';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
 import {sortScalarList} from '@ui-schema/ui-schema/Utils/sortScalarList';
+import {getTranslatableEnum} from '@ui-schema/ui-schema/Translate';
 
 const OptionCheck = ({disabled, currentValue, label, onChange}) => {
     const uid = useUID();
@@ -35,7 +36,7 @@ const OptionsCheckValue = extractValue(memo(({
         enumVal.map((enum_name) => {
             const isActive = checkActive(value, enum_name)
 
-            const relativeT = List(['enum', enum_name]);
+            const relativeT = List(['enum', getTranslatableEnum(enum_name)]);
 
             return <OptionCheck
                 key={enum_name}
@@ -60,7 +61,7 @@ const OptionsCheckValue = extractValue(memo(({
                     schema={trans}
                     text={storeKeys.insert(0, 'widget').concat(relativeT).join('.')}
                     context={Map({'relative': relativeT})}
-                    fallback={beautifyKey(enum_name, tt)}
+                    fallback={beautifyKey(getTranslatableEnum(enum_name), tt)}
                 />}
             />
         }).valueSeq()

@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import {TransTitle, Trans, beautifyKey} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
+import {getTranslatableEnum} from '@ui-schema/ui-schema/Translate';
 
 const OptionsRadio = ({
                           ownKey, schema, value, onChange, storeKeys, showValidity, valid, required, errors,
@@ -49,9 +50,9 @@ const OptionsRadio = ({
                     />}
                     label={<Trans
                         schema={schema.get('t')}
-                        text={storeKeys.insert(0, 'widget').concat(List(['enum', enum_name])).join('.')}
-                        context={Map({'relative': List(['enum', enum_name])})}
-                        fallback={beautifyKey(enum_name, schema.get('ttEnum'))}
+                        text={storeKeys.insert(0, 'widget').concat(List(['enum', getTranslatableEnum(enum_name)])).join('.')}
+                        context={Map({'relative': List(['enum', getTranslatableEnum(enum_name)])})}
+                        fallback={beautifyKey(getTranslatableEnum(enum_name), schema.get('ttEnum'))}
                     />}
                 />
             }).valueSeq() : null}

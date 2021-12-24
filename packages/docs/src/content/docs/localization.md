@@ -8,8 +8,6 @@ Checkout the [dictionary package](#dictionary-package)!
 
 The `t` prop of `UIMetaProvider` and `UIGenerator` supports complex translators for dynamic translations and with any translation library.
 
-Native HTML inputs can use [native translations](#native-translation) - for some validations.
-
 > In your own widgets any translation lib can be used directly, when contributing to a design system use one of:
 > - `{ t } = useUIMeta()`
 > - `Trans`/`TransTitle`
@@ -72,6 +70,7 @@ Second example `DemoEnumWidget` is translating a widgets enum values, supporting
 import React from "react";
 import {Map, List} from "immutable";
 import {Trans, beautifyKey} from '@ui-schema/ui-schema';
+import {getTranslatableEnum} from '@ui-schema/ui-schema/Translate';
 
 const DemoWidget = ({ownKey, schema, storeKeys,}) => {
     return <Trans
@@ -85,13 +84,13 @@ const DemoWidget = ({ownKey, schema, storeKeys,}) => {
 const DemoEnumWidget = ({ownKey, schema, storeKeys,}) => {
     const enum_val = schema.get('enum');
     return enum_val.map((enum_name, i) => {
-        const relative = List(['enum', enum_name]);
+        const relative = List(['enum', getTranslatableEnum(enum_name)]);
         return <span key={i}>
             <Trans
                 schema={schema.get('t')}
                 text={storeKeys.insert(0, 'widget').concat(relative).join('.')}
                 context={Map({'relative': relative})}
-                fallback={beautifyKey(enum_name, schema.get('ttEnum'))}
+                fallback={beautifyKey(getTranslatableEnum(enum_name), schema.get('ttEnum'))}
             />
         </span>
     }).valueSeq() // as `enum_val` is an immutable list, this converts the map to an array compatible structure
@@ -137,38 +136,6 @@ const LocaleHelperText = ({text, schema, context}) => {
         />
     </FormHelperText>
 };
-```
-
-### Native Translation
-
-> ❌ concept only added in MUI StringRenderer
-
-Native browser translation is coupled to native-validation, thus only what browser can test, can be translated this way.
-
-It is helpful for simple forms which don't rely on complexer data models or validations.
-
-Adding the `t` keyword (not property) in a schema with `browser`, enables HTML translations.
-
-Native translation is limited to the following errors, only possible after first manual change, and one-message at all.
-
-- `valueMissing`
-- `typeMismatch`
-- `patternMismatch`
-- `tooLong`
-- `tooShort`
-- `rangeUnderflow`
-- `rangeOverflow`
-- `stepMismatch`
-- `badInput`
-
-Let the browser handle "incorrect email" message:
-
-```json
-{
-    "type": "string",
-    "format": "email",
-    "t": "browser"
-}
 ```
 
 ### Immutable as Dictionary
@@ -239,6 +206,26 @@ Keyword `t` is not default JSON-Schema, it is a `object` containing multiple or 
             "title": "Some english text"
         }
     }
+}
+```
+
+For `enum` values the `enum` sub-key is used together with an own `ttEnum` for transformations:
+
+```json
+{
+    "t": {
+        "de": {
+            "enum": {
+                "service": "Dienstleistung"
+            }
+        },
+        "en": {
+            "enum": {
+                "service": "Service"
+            }
+        }
+    },
+    "ttEnum": true
 }
 ```
 
@@ -336,3 +323,12 @@ The process is as follows:
 - find words, anything that is separated by spaces
 - uppercase the first letter of each found word
 - removing duplicate spaces
+
+### getTranslatableEnum
+
+Transforms `enum` values to translatable values, currently doesn't do much, used mostly where `ttEnum` is used.
+
+Transformations:
+
+- `boolean` to `yes`/`no`
+- `null` to `null`

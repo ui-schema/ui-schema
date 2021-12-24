@@ -194,6 +194,14 @@ const schemaDemoMain = {
                         sizeMd: 12,
                     },
                 },
+                yes_no: {
+                    type: 'boolean',
+                    widget: 'OptionsRadio',
+                    enum: [true, false],
+                    view: {
+                        sizeMd: 12,
+                    },
+                },
             },
             required: [
                 'center_item_content',
