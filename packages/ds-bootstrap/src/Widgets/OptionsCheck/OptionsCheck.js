@@ -41,7 +41,7 @@ const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChang
                     storeKeys, ['value'],
                     {
                         type: 'update',
-                        update: ({value: val = List()}) =>
+                        updater: ({value: val = List()}) =>
                             ({
                                 value: sortScalarList(checkActive(val, enum_name) ?
                                     val.delete(val.indexOf(enum_name)) :

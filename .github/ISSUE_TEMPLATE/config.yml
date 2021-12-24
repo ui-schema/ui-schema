@@ -1,11 +1,14 @@
 blank_issues_enabled: true
 contact_links:
-  - name: UI-Schema on Spectrum
-    url: https://spectrum.chat/ui-schema
-    about: Ask questions and discuss in our Spectrum community
-  - name: Material-UI
-    url: https://github.com/mui-org/material-ui
-    about: When not about the Design-System Bindings > Docs + Project of Material-UI
-  - name: Bootstrap
-    url: https://github.com/twbs/bootstrap
-    about: When not about the Design-System Bindings > Docs + Project of Bootstrap
+    -   name: UI-Schema Slack
+        url: https://join.slack.com/t/ui-schema/shared_invite/zt-smbsybk5-dFIRLEPCJerzDwtycaA71w
+        about: Ask questions and discuss in our Slack Community
+    -   name: Material-UI
+        url: https://github.com/mui-org/material-ui
+        about: "When you got question not about the design-system bindings: docs + project of **Material-UI**"
+    -   name: Bootstrap
+        url: https://github.com/twbs/bootstrap
+        about: "When you got question not about the design-system bindings: docs + project of **Bootstrap**"
+    -   name: React-DND
+        url: https://github.com/react-dnd/react-dnd/
+        about: "When you got question not about `kit-dnd` or `material-dnd`: docs + project of **react-dnd**"

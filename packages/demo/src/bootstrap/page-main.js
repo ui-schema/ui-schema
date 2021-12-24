@@ -13,9 +13,7 @@ const DemoGrid = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap({})));
 
     const onChangeNext = React.useCallback((storeKeys, scopes, updater) => {
-        setStore(prevStore => {
-            return storeUpdater(storeKeys, scopes, updater)(prevStore)
-        })
+        setStore(storeUpdater(storeKeys, scopes, updater))
     }, [setStore])
 
     return <UIGenerator
@@ -35,9 +33,7 @@ const MainStore = () => {
     const [schema, setSchema] = React.useState(schemaTestBts);
 
     const onChangeNext = React.useCallback((storeKeys, scopes, updater) => {
-        setStore(prevStore => {
-            return storeUpdater(storeKeys, scopes, updater)(prevStore)
-        })
+        setStore(storeUpdater(storeKeys, scopes, updater))
     }, [setStore])
 
     return <React.Fragment>

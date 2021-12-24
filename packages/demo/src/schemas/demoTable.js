@@ -17,6 +17,9 @@ export const schemaDemoTable = createOrderedMap({
                 type: 'integer',
                 title: 'ID',
                 //hidden: true,
+                info: [
+                    'Only accepts integers',
+                ],
                 view: {
                     align: 'center',
                 },

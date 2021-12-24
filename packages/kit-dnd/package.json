@@ -1,0 +1,46 @@
+{
+    "name": "@ui-schema/kit-dnd",
+    "version": "0.0.1",
+    "description": "Drag and Drop Tools for (not only) UI-Schema",
+    "homepage": "https://ui-schema.bemit.codes",
+    "author": "Michael Becker <michael@bemit.codes>",
+    "license": "MIT",
+    "keywords": [
+        "ui-schema",
+        "json-schema",
+        "react",
+        "reactjs",
+        "react-component",
+        "dnd",
+        "dnd-grid",
+        "dnd-lib",
+        "react-dnd"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ui-schema/ui-schema.git",
+        "directory": "packages/kit-dnd"
+    },
+    "bugs": {
+        "url": "https://github.com/ui-schema/ui-schema/issues"
+    },
+    "main": "index.js",
+    "module": "esm/index.js",
+    "scripts": {
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts build && rm -rf build/dts && rm -rf build/**/*.test.*",
+        "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
+    },
+    "devDependencies": {
+        "immutable": "^4.0.0",
+        "react": "^16.12",
+        "react-dnd": "^14.0.0"
+    },
+    "peerDependencies": {
+        "immutable": "^4.0.0",
+        "react": "^16.8 || ^17.0",
+        "react-dnd": "^14.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

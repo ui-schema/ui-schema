@@ -17,11 +17,11 @@ const RichContentBase: React.ComponentType<WidgetProps & WithValue> = (props) =>
 
     const {dense, focused, empty, onFocus, onBlur} = useSlate(schema, value)
 
-    const classes = useFormEditorStyles({dense, focused})
+    const classes = useFormEditorStyles({dense: dense as boolean, focused})
 
     return <FormWrapper
         ownKey={ownKey} storeKeys={storeKeys} schema={schema}
-        dense={dense} focused={focused} empty={empty}
+        dense={dense as boolean} focused={focused} empty={empty}
         errors={errors} showValidity={showValidity} valid={valid}
         classes={classes}
     >

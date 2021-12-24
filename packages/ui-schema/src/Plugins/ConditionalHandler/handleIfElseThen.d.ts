@@ -4,7 +4,7 @@ import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 /**
  * Handles schema if else then and returns the new merged schema which contains the merged value of `if` and `then`
  */
-export function handleIfElseThen<K>(
+export function handleIfElseThen(
     // the schema which contains the if / else / then part
     schema: StoreSchemaType,
     // the store which holds the value against which the `distSchema` is validated

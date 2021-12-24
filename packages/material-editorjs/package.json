@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-editorjs",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "EditorJS for UI-Schema with Material-UI",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -30,7 +30,7 @@
     "main": "index.js",
     "module": "esm/index.js",
     "scripts": {
-        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/material-editorjs/src build && rm -rf build/dts",
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/material-editorjs/src build && rm -rf build/dts && rm -rf build/**/*.test.*",
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "dependencies": {
@@ -43,7 +43,7 @@
         "@material-ui/icons": "^4.8",
         "@ui-schema/ds-material": "~0.3.0-alpha",
         "@ui-schema/ui-schema": "~0.3.0-alpha",
-        "immutable": "^4.0.0-rc",
+        "immutable": "^4.0.0",
         "react": "^16.12",
         "react-dom": "^16.12",
         "react-editor-js": "^1.6.0"
@@ -54,7 +54,7 @@
         "@material-ui/icons": "^4.8",
         "@ui-schema/ds-material": "~0.3.0-alpha",
         "@ui-schema/ui-schema": "~0.3.0-alpha",
-        "immutable": "^4.0.0-rc",
+        "immutable": "^4.0.0",
         "react": "^16.8",
         "react-editor-js": "^1.6.0"
     },

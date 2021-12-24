@@ -1,7 +1,7 @@
 import React from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Delete from '@material-ui/icons/Delete'
-import { StoreKeys, Trans, UIStoreContext, WidgetProps } from '@ui-schema/ui-schema'
+import { StoreKeys, StoreSchemaType, Trans, UIStoreContext, WidgetProps } from '@ui-schema/ui-schema'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip/Tooltip'
 import { TableRowProps } from '@ui-schema/ds-material'
 import { Map } from 'immutable'
@@ -38,7 +38,7 @@ export const TableRowActionDelete: React.ComponentType<TableRowActionDeleteProps
                             })
                         }
                     },
-                    schema: Map({type: 'array'}),
+                    schema: Map({type: 'array'}) as StoreSchemaType,
                     required: deleteOnEmpty,
                 }
             )

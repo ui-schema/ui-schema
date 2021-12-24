@@ -1,6 +1,7 @@
 ---
 name: New / Extend Widget
 about: Request & Describe a new Widget or new Widget Features
+labels: widget, use-case
 ---
 
 <!--

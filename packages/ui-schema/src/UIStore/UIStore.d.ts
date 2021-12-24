@@ -7,7 +7,7 @@ export type ValuesJS = any[] | string | number | boolean | Object
 export interface UIStoreStateData<D = any> {
     values: D
     internals: UIStoreInternalsType
-    validity: Map<string | number, any>
+    validity: UIStoreValidityType
     meta: Map<string, any>
 }
 
@@ -16,11 +16,12 @@ export interface UIStoreState<D = any> extends UIStoreStateData<D> {
     valuesToJS: () => ValuesJS
     // todo: correct typing `getValues` return value
     getValues: () => D
-    getInternals: () => UIStoreInternalsType | undefined
-    getValidity: () => Map<string | number, any>
+    getInternals: () => UIStoreInternalsType
+    getValidity: () => UIStoreValidityType
 }
 
 export type UIStoreType<D = any> = RecordOf<UIStoreState<D>>
+
 /**
  * the `internals` are nested for safer generic usage, only the key `internals` is reserved (for nesting)
  * {} = {internals: Map({})}
@@ -29,6 +30,8 @@ export type UIStoreType<D = any> = RecordOf<UIStoreState<D>>
  * })}
  */
 export type UIStoreInternalsType = Map<string, any>
+
+export type UIStoreValidityType = Map<string | number, any>
 
 export const UIStore: UIStoreType
 
@@ -49,6 +52,8 @@ export interface UIStoreAction {
 export interface UIStoreActionListItemAdd extends UIStoreAction {
     type: 'list-item-add'
     schema: StoreSchemaType
+    // if not `undefined`, will be used as the added value
+    itemValue?: any | undefined
 }
 
 export interface UIStoreActionListItemDelete extends UIStoreAction {
@@ -67,11 +72,15 @@ export interface UIStoreActionUpdate extends UIStoreAction {
     updater: UIStoreUpdaterFn
 }
 
-export type StoreActions = UIStoreActionListItemAdd | UIStoreActionListItemDelete | UIStoreActionListItemMove | UIStoreActionUpdate
+export type StoreActions =
+    UIStoreActionListItemAdd |
+    UIStoreActionListItemDelete |
+    UIStoreActionListItemMove |
+    UIStoreActionUpdate
 
 export type UIStoreUpdaterFn<D extends UIStoreUpdaterData = UIStoreUpdaterData> = (data: D) => D
 
-export type onChangeHandlerGeneric<R extends any = void> = (
+export type onChangeHandlerGeneric<R = void> = (
     storeKeys: StoreKeys,
     scopes: (keyof UIStoreUpdaterData)[],
     updater: UIStoreUpdaterFn | StoreActions,

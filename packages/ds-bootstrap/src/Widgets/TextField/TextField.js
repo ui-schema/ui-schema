@@ -46,7 +46,7 @@ const StringRenderer = ({ownKey, schema, value, multiline = false, onChange, sto
                     storeKeys, ['value'],
                     {
                         type: 'update',
-                        update: () => ({value: convertStringToNumber(val, schema.get('type'))}),
+                        updater: () => ({value: convertStringToNumber(val, schema.get('type'))}),
                         schema,
                         required,
                     },

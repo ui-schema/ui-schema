@@ -1,7 +1,6 @@
 import React from 'react'
 import {
     List, Map, Record,
-    // @ts-ignore
     RecordOf,
 } from 'immutable'
 import { createEmptyStore, onChangeHandler, storeUpdater, UIStoreType } from '@ui-schema/ui-schema/UIStore'
@@ -19,7 +18,7 @@ const defaultDebounceTime: number = 380
 const defaultUpdateRate: number = 6
 // todo: implement
 // maximum number of store changes in the history
-// const defaultMaxItems: number = 200
+const defaultMaxItems: number = 1000
 
 export interface UIStoreProData {
     // index of the current active UIStore of the `list`
@@ -32,24 +31,26 @@ export interface UIStoreProData {
     opts: Map<string, any>
 }
 
-// @ts-ignore
-class UIStorePro extends Record({
+const UIStoreProRecord = Record({
     activeIndex: 0,
     current: createEmptyStore('object'),
     list: List([createEmptyStore('object')]),
     opts: Map(),
-}) implements UIStoreProData {
+} as UIStoreProData)
+
+export class UIStorePro extends UIStoreProRecord {
 }
 
-// @ts-ignore
 export type UIStoreProType = RecordOf<UIStoreProData>
 
 export const makeStorePro = (type: string, initialStore: UIStoreType | any = undefined): UIStoreProType => {
+    // @ts-ignore
     return new UIStorePro({
         activeIndex: 0,
         current: initialStore || createEmptyStore(type),
         list: List([initialStore || createEmptyStore(type)]),
-    })
+        opts: Map(),
+    } as UIStoreProData)
 }
 
 const initialChangeRater: { current: number, last: any } = {current: 0, last: undefined}
@@ -117,7 +118,7 @@ export const useStorePro = (
             }
             newStore = newStore.setIn(doingValueSelector, true)
 
-            historyChangeRater.current.current = historyChangeRater.current.current > 1000 ?
+            historyChangeRater.current.current = historyChangeRater.current.current > defaultMaxItems ?
                 0 : historyChangeRater.current.current + 1
             historyChangeRater.current.last = newStore.current.setIn(doingValueSelector, false)
             let historyAdded = false

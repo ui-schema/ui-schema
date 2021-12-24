@@ -1,4 +1,4 @@
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import {createTheme} from "@material-ui/core/styles";
 
 const universal = {
     typography: {
@@ -33,7 +33,7 @@ const universal = {
     }
 };
 
-const themeDark = createMuiTheme({
+const themeDark = createTheme({
     palette: {
         type: "dark",
         primary: {
@@ -60,7 +60,7 @@ const themeDark = createMuiTheme({
     ...universal,
 });
 
-const themeLight = createMuiTheme({
+const themeLight = createTheme({
     palette: {
         type: "light",
         primary: {

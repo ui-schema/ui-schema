@@ -26,7 +26,7 @@ const BoolRenderer = ({ownKey, showValidity, required, errors, value, storeKeys,
                     storeKeys, ['value'],
                     {
                         type: 'update',
-                        update: ({value: storeValue}) => ({value: !storeValue}),
+                        updater: ({value: storeValue}) => ({value: !storeValue}),
                         schema,
                         required,
                     }

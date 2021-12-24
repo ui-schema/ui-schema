@@ -64,7 +64,7 @@ export const resolveRef = (ref, context, schemaVersion) => {
                     // till draft-07, hashtag in id
                     def.get('$id') === ref ||
                     // from 2019-09, fragment in anchor, without leading hashtag
-                    def.get('$anchor') === ref.substr(1)
+                    def.get('$anchor') === ref.slice(1)
                 )
             })
 

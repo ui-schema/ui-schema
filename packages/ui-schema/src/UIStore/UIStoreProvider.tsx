@@ -1,6 +1,6 @@
 import React from 'react'
 import { List, Map } from 'immutable'
-import { addNestKey, onChangeHandler, StoreKeys, UIStoreType } from '@ui-schema/ui-schema/UIStore'
+import { addNestKey, onChangeHandler, StoreKeys, UIStoreInternalsType, UIStoreType } from '@ui-schema/ui-schema/UIStore'
 import { getDisplayName } from '@ui-schema/ui-schema/Utils/memo'
 
 export interface UIStoreContext {
@@ -47,17 +47,19 @@ export function useUIConfig<C extends {} = {}>(): C {
     return React.useContext(UIConfigContextObj)
 }
 
-export interface WithValue {
+export interface WithOnChange {
+    onChange: UIStoreContext['onChange']
+}
+
+export interface WithValue extends WithOnChange {
     value: any
     internalValue: any
-    onChange: UIStoreContext['onChange']
     showValidity: UIStoreContext['showValidity']
 }
 
-export interface WithScalarValue {
+export interface WithScalarValue extends WithOnChange {
     value: string | number | boolean | undefined | null
     internalValue: any
-    onChange: UIStoreContext['onChange']
     showValidity: UIStoreContext['showValidity']
 }
 
@@ -67,7 +69,7 @@ export interface WithValidity {
     showValidity: UIStoreContext['showValidity']
 }
 
-export function doExtractValue<S extends UIStoreType>(storeKeys: StoreKeys, store: S): { value: any, internalValue: Map<string, any> } {
+export function doExtractValue<S extends UIStoreType>(storeKeys: StoreKeys, store: S): { value: any, internalValue: UIStoreInternalsType } {
     return {
         value:
             storeKeys.size ?
@@ -75,7 +77,7 @@ export function doExtractValue<S extends UIStoreType>(storeKeys: StoreKeys, stor
                 : store.getValues(),
         internalValue:
             storeKeys.size ?
-                store.getInternals() ? store.getInternals().getIn(addNestKey('internals', storeKeys)) || Map() : Map()
+                store.getInternals().getIn(addNestKey('internals', storeKeys)) as UIStoreInternalsType || Map()
                 : store.getInternals(),
     }
 }
@@ -101,13 +103,14 @@ export const extractValue = <P extends Partial<WithValue> & { storeKeys: StoreKe
     return ExtractValue
 }
 export type ExtractValueOverwriteProps = { showValidity?: boolean }
+
 export const extractValidity = <P extends WithValidity & { storeKeys: StoreKeys }>(Component: React.ComponentType<P>): React.ComponentType<Omit<P, keyof WithValidity> & ExtractValueOverwriteProps> => {
     const ExtractValidity = (p: Omit<P, keyof WithValidity> & ExtractValueOverwriteProps) => {
         const {store, onChange, showValidity} = useUI()
         // @ts-ignore
         return <Component
             {...p}
-            validity={p.storeKeys.size ? store.getValidity().getIn(p.storeKeys) : store.getValidity()}
+            validity={p.storeKeys.size ? store?.getValidity().getIn(p.storeKeys) : store?.getValidity()}
             onChange={onChange}
             showValidity={p.showValidity || showValidity}
         />

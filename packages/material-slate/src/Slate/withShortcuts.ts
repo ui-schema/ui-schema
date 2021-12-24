@@ -43,7 +43,7 @@ export const withShortcuts: (options: CustomOptions) => SlateHocType<ReactEditor
             const range = {anchor, focus: start}
             let beforeText = Editor.string(editor, range)
             const dotPos = beforeText.indexOf('.')
-            if (dotPos !== -1 && !isNaN(Number(beforeText.substr(0, dotPos)))) {
+            if (dotPos !== -1 && !isNaN(Number(beforeText.slice(0, dotPos)))) {
                 beforeText = '1'
             }
             const type = SHORTCUTS[beforeText]

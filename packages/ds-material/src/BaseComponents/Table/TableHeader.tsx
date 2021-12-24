@@ -5,6 +5,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import { TableHeaderProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
+import { TableCellSchemaImmutable } from '@ui-schema/ds-material/Widgets/Table/TableSchema'
 
 export const TableHeader: React.ComponentType<TableHeaderProps> = (
     {
@@ -19,9 +20,9 @@ export const TableHeader: React.ComponentType<TableHeaderProps> = (
     let cellSchema = (itemsSchema.get('items') as List<any>) || (itemsSchema.get('properties') as Map<string, any>)
     if (
         schemaTypeToDistinct(itemsSchema.get('type') as SchemaTypesType) === 'object' &&
-        itemsSchema.getIn(['rowSortOrder'])?.size
+        (itemsSchema.getIn(['rowSortOrder']) as TableCellSchemaImmutable['rowSortOrder'])?.size
     ) {
-        cellSchema = itemsSchema.getIn(['rowSortOrder'])
+        cellSchema = (itemsSchema.getIn(['rowSortOrder']) as TableCellSchemaImmutable['rowSortOrder'])
             // @ts-ignore
             .map((key: OwnKey) => cellSchema.get(key))
     }

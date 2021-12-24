@@ -1,6 +1,6 @@
 {
 	"name": "@ui-schema/material-code",
-	"version": "0.3.0-alpha.0",
+	"version": "0.3.0-alpha.1",
 	"description": "Code Input for UI-Schema with Material-UI",
 	"homepage": "https://ui-schema.bemit.codes",
 	"author": "Michael Becker <michael@bemit.codes>",
@@ -37,7 +37,7 @@
 		"@material-ui/core": "^4.8",
 		"@material-ui/icons": "^4.8",
 		"codemirror": "^5.52.0",
-		"immutable": "^4.0.0-rc",
+		"immutable": "^4.0.0",
 		"react": "^16.12",
 		"react-codemirror2": "^6.0.0",
 		"react-dom": "^16.12"
@@ -48,7 +48,7 @@
 		"@ui-schema/ds-material": "~0.3.0-alpha",
 		"@ui-schema/ui-schema": "~0.3.0-alpha",
 		"codemirror": "^5.52.0",
-		"immutable": "^4.0.0-rc",
+		"immutable": "^4.0.0",
 		"react": "^16.8",
 		"react-codemirror2": "^6.0.0"
 	},

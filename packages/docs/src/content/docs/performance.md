@@ -18,12 +18,13 @@ This ui renderer has multiple levels of performance optimization:
         - the root component accesses the hook, prepares the values, but doesn't render html by itself
         - this wraps another component which receives props and is a memoized function component
         - this wraps the actual component (e.g. `widget.RootRenderer`), and passes its props down and may decide on what to render based on the props
-        - only scalar value widgets get the value directly, for others only the pluginStack (these should use `extractValue`)
+        - only scalar value widgets get the value directly, for non-scalar values only the `pluginStack` receives the value - the widgets should use e.g. `extractValue`
         - *all rendering widgets are wrapped like that*
     - if you introduce a hook in a widget it is advised that the producing HTML components are also made "dump"
         - pure without using a hook that relies on the onChange of the SchemaUIStore context
         - e.g. wrap the component with `extractValue`, `extractValidity` and `memo` (all exported by `@ui-schema/ui-schema`)
         - `useUIMeta` can be used safely without introducing re-rendering
+        - `useUIConfig` can be used safely without introducing re-rendering (most likely, check your implementation)
         - this way only the widget whose `value` was changing is re-rendering.
 - memoization in the core:
     - widgets:

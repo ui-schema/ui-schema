@@ -3,8 +3,23 @@ import AppTheme from './layout/AppTheme'
 import Dashboard from './dashboard/Dashboard'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
-import { Step, Stepper, widgets } from '@ui-schema/ds-material'
-import { createOrderedMap, WidgetProps, loadSchemaUIApi, UIMetaProvider, UISchema, UIRootRenderer, UIStoreProvider, createStore, storeUpdater, isInvalid, UIStoreType, StoreSchemaType, DefaultHandlerProps } from '@ui-schema/ui-schema'
+import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, Step, Stepper, widgets } from '@ui-schema/ds-material'
+import {
+    createOrderedMap,
+    WidgetProps,
+    loadSchemaUIApi,
+    UIMetaProvider,
+    UISchema,
+    UIRootRenderer,
+    UIStoreProvider,
+    createStore,
+    storeUpdater,
+    isInvalid,
+    UIStoreType,
+    StoreSchemaType,
+    DefaultHandlerProps,
+    WidgetsBindingFactory,
+} from '@ui-schema/ui-schema'
 import { browserT } from '../t'
 import { UIApiProvider } from '@ui-schema/ui-schema/UIApi/UIApi'
 import { ReferencingNetworkHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
@@ -15,7 +30,13 @@ import { InjectSplitSchemaPlugin, InjectSplitSchemaRootContext } from '@ui-schem
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { OrderedMap } from 'immutable'
 
-const customWidgets = {...widgets}
+type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
+    Table: React.ComponentType<WidgetProps>
+    TableAdvanced: React.ComponentType<WidgetProps>
+    Stepper: React.ComponentType<WidgetProps>
+    Step: React.ComponentType<WidgetProps>
+}>
+const customWidgets: CustomWidgetsBinding = {...widgets} as CustomWidgetsBinding
 const pluginStack = [...customWidgets.pluginStack]
 // the referencing network handler should be at first position
 // must be before the `ReferencingHandler`, thus if the root schema for the level is a network schema,

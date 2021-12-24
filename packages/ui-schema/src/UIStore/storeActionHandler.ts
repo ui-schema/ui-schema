@@ -13,15 +13,19 @@ export const actionHandler: (action: StoreActions) => UIStoreUpdaterFn = (action
                 return ({
                     // todo: support `default` keyword
                     //       https://github.com/ui-schema/ui-schema/issues/143
-                    value: value.push(
-                        // todo: multi type support #68
-                        type === 'object' ? OrderedMap() :
-                            // todo: handle tuple items default / `undefined of unexisting keys`
-                            // `List.isList(items)` means it got tuple items
-                            List.isList(items) || type === 'array' ? List() :
-                                type === 'string' ? '' :
-                                    type === 'null' ? null :
-                                        undefined
+                    value: (
+                        value.push(
+                            typeof action.itemValue !== 'undefined' ?
+                                action.itemValue :
+                                // todo: multi type support #68
+                                type === 'object' ? OrderedMap() :
+                                    // todo: handle tuple items default / `undefined of unexisting keys`
+                                    // `List.isList(items)` means it got tuple items
+                                    List.isList(items) || type === 'array' ? List() :
+                                        type === 'string' ? '' :
+                                            type === 'null' ? null :
+                                                undefined
+                        )
                     ),
                     internal: internal.update('internals', (internalInternals = List()) =>
                         internalInternals.push(Map())

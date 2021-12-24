@@ -18,12 +18,10 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter/isInvalid';
 import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro';
 import {schemaDragDropEditableSingle, schemaEditable} from '../schemas/demoDragDropEditable';
-//import {TouchBackend} from 'react-dnd-touch-backend'
-import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
+import {MultiBackend} from 'react-dnd-multi-backend'
+import {HTML5toTouch} from 'rdndmb-html5-to-touch'
 import {DroppableRootMultiple} from '@ui-schema/material-dnd/Widgets/DroppableRootMultiple';
-import {makeDragDropContext} from '@ui-schema/material-dnd/DragDropProvider/makeDragDropContext';
-import {DragDropProvider} from '@ui-schema/material-dnd/DragDropProvider/DragDropProvider';
 import {BlockPanel} from '@ui-schema/material-dnd/DraggableBlock/BlockPanel';
 import {createStore, storeUpdater, UIApiProvider, UIMetaProvider, UIRootRenderer, UIStoreProvider} from '@ui-schema/ui-schema';
 import {OrderedMap} from 'immutable';
@@ -46,10 +44,6 @@ customWidgets.custom = {
     RichContentInline: RichContentInline,
 };
 
-const touchBackendOpts = {
-    //enableMouseEvents: true,
-}
-
 const loadSchema = (url, versions) => {
     console.log('Demo loadSchema (url, optional versions)', url, versions)
     return fetch(url).then(r => r.json())
@@ -71,8 +65,6 @@ const EditorEditablePro = () => {
         onChange, store, setStore,
         redoHistory, undoHistory,
     } = useStorePro({type: String(schema.get('type')), initialStore: initialStore})
-
-    const dragStoreContext = makeDragDropContext(onChange, schema.get('$defs') || schema.get('definitions'))
 
     const type = String(schema.get('type'))
     const reset = React.useCallback(() => {
@@ -114,18 +106,16 @@ const EditorEditablePro = () => {
         </div>
 
         <UIApiProvider loadSchema={loadSchema} noCache>
-            <DragDropProvider contextValue={dragStoreContext.contextValue}>
-                <DndProvider backend={HTML5Backend} options={touchBackendOpts}>
-                    <UIStoreProvider
-                        store={store.current}
-                        onChange={onChange}
-                        showValidity={showValidity}
-                    >
-                        <UIRootRenderer schema={schema}/>
-                        <MuiSchemaDebug schema={schema}/>
-                    </UIStoreProvider>
-                </DndProvider>
-            </DragDropProvider>
+            <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+                <UIStoreProvider
+                    store={store.current}
+                    onChange={onChange}
+                    showValidity={showValidity}
+                >
+                    <UIRootRenderer schema={schema}/>
+                    <MuiSchemaDebug schema={schema}/>
+                </UIStoreProvider>
+            </DndProvider>
         </UIApiProvider>
 
         <div style={{width: '100%'}}>

@@ -9,7 +9,7 @@ import { StoreKeys } from "@ui-schema/ui-schema/UIStore"
  * - `1+` when error was found and `count` = true
  */
 export function isInvalid(
-    validity: Map<any, undefined>,
+    validity?: Map<any, undefined>,
     scope?: StoreKeys,
     count?: boolean
 ): number

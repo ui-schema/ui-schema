@@ -1,5 +1,5 @@
 {
-    "parser": "babel-eslint",
+    "parser": "@babel/eslint-parser",
     "root": true,
     "extends": [
         "eslint:recommended"
@@ -128,7 +128,7 @@
                         "objects": "always-multiline",
                         "imports": "always-multiline",
                         "exports": "always-multiline",
-                        "functions": "never"
+                        "functions": "only-multiline"
                     }
                 ],
                 "react/prop-types": "off",

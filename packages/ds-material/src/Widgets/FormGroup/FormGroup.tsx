@@ -7,8 +7,9 @@ import { extractValue, WithValue } from '@ui-schema/ui-schema/UIStore'
 import { memo } from '@ui-schema/ui-schema/Utils'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
+import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 
-export const FormGroupBase: React.ComponentType<WidgetProps & WithValue> = (props) => {
+export const FormGroupBase: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & WithValue> = (props) => {
     const {storeKeys, ownKey, widgets} = props
     const {WidgetRenderer} = widgets
     const {spacing} = useTheme()
@@ -16,6 +17,7 @@ export const FormGroupBase: React.ComponentType<WidgetProps & WithValue> = (prop
     // deleting the `widget` to directly use `PluginStack` for nesting
     // with `widget` it would lead to an endless loop
     // using e.g. default `object` renderer then
+    // @ts-ignore
     schema = schema.delete('widget')
     return <FormControl
         component="fieldset"
@@ -39,4 +41,4 @@ export const FormGroupBase: React.ComponentType<WidgetProps & WithValue> = (prop
     </FormControl>
 }
 
-export const FormGroup: React.ComponentType<WidgetProps> = extractValue(memo(FormGroupBase))
+export const FormGroup: React.ComponentType<WidgetProps<{}, MuiWidgetBinding>> = extractValue(memo(FormGroupBase))

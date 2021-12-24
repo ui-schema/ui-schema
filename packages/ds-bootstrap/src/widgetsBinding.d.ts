@@ -1,8 +1,8 @@
-import React from "react"
-import { WidgetProps } from "@ui-schema/ui-schema/Widget"
-import { WidgetsBindingBase } from "@ui-schema/ui-schema/WidgetsBinding"
+import React from 'react'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { WidgetsBindingFactory } from '@ui-schema/ui-schema/WidgetsBinding'
 
-export interface BtsWidgetBinding extends WidgetsBindingBase {
+export interface BtsWidgetBinding extends WidgetsBindingFactory {
     types: {
         string: React.ComponentType<WidgetProps>
         boolean: React.ComponentType<WidgetProps>

@@ -36,7 +36,7 @@ const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChang
                     storeKeys, ['value'],
                     {
                         type: 'update',
-                        update: () => ({
+                        updater: () => ({
                             value: multiple ?
                                 sortScalarList(List([...target.options].filter(o => o.selected).map(o => o.value))) :
                                 target.value,

@@ -1,54 +1,62 @@
 {
-	"name": "@ui-schema/ds-material",
-	"version": "0.3.0-alpha.2",
-	"description": "Material-UI Binding for UI-Schema",
-	"homepage": "https://ui-schema.bemit.codes",
-	"author": "Michael Becker <michael@bemit.codes>",
-	"license": "MIT",
-	"keywords": [
-		"ui-schema",
-		"json-schema",
-		"mui",
-		"material",
-		"material-ui",
-		"react",
-		"reactjs",
-		"react-component",
-		"design-system",
-		"ui-library",
-		"ux",
-		"ui"
-	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/ui-schema/ui-schema.git",
-		"directory": "packages/ds-material"
-	},
-	"bugs": {
-		"url": "https://github.com/ui-schema/ui-schema/issues"
-	},
-	"main": "index.js",
-	"module": "esm/index.js",
-	"scripts": {
-		"dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/ds-material/src build && rm -rf build/dts",
-		"__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
-	},
-	"devDependencies": {
-		"@material-ui/core": "^4.8",
-		"@material-ui/icons": "^4.8",
-		"react": "^16.12",
-		"react-dom": "^16.12"
-	},
-	"dependencies": {
-		"react-uid": "^2.2.0"
-	},
-	"peerDependencies": {
-		"@material-ui/core": "^4.8",
-		"@material-ui/icons": "^4.8",
-		"@ui-schema/ui-schema": "~0.3.0-alpha",
-		"react": "^16.8 || ^17.0"
-	},
-	"publishConfig": {
-		"access": "public"
-	}
+    "name": "@ui-schema/ds-material",
+    "version": "0.3.0-alpha.3",
+    "description": "Material-UI Binding for UI-Schema",
+    "homepage": "https://ui-schema.bemit.codes",
+    "author": "Michael Becker <michael@bemit.codes>",
+    "license": "MIT",
+    "keywords": [
+        "ui-schema",
+        "json-schema",
+        "mui",
+        "material",
+        "material-ui",
+        "react",
+        "reactjs",
+        "react-component",
+        "design-system",
+        "ui-library",
+        "ux",
+        "ui"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ui-schema/ui-schema.git",
+        "directory": "packages/ds-material"
+    },
+    "bugs": {
+        "url": "https://github.com/ui-schema/ui-schema/issues"
+    },
+    "main": "index.js",
+    "module": "esm/index.js",
+    "scripts": {
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/ds-material/src build && rm -rf build/dts && rm -rf build/**/*.test.*",
+        "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
+    },
+    "devDependencies": {
+        "@material-ui/core": "^4.8",
+        "@material-ui/icons": "^4.8",
+        "@ui-schema/ui-schema": "~0.3.0-alpha",
+        "@types/react": "^16.8.6 || ^17.0.0",
+        "react": "^16.12",
+        "react-dom": "^16.12"
+    },
+    "dependencies": {
+        "react-uid": "^2.2.0"
+    },
+    "peerDependencies": {
+        "@material-ui/core": "^4.8",
+        "@material-ui/icons": "^4.8",
+        "@ui-schema/ui-schema": "~0.3.0-alpha",
+        "react": "^16.8 || ^17.0",
+        "@types/react": "^16.8.6 || ^17.0.0"
+    },
+    "peerDependenciesMeta": {
+        "@types/react": {
+            "optional": true
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    }
 }

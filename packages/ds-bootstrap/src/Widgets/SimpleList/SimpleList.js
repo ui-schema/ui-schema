@@ -44,7 +44,7 @@ const SimpleList = extractValue(memo(({
                                     storeKeys, ['value'],
                                     {
                                         type: 'update',
-                                        update: ({value: storeValue}) => ({value: storeValue.splice(i, 1)}),
+                                        updater: ({value: storeValue}) => ({value: storeValue.splice(i, 1)}),
                                         schema,
                                         required,
                                     }
@@ -61,7 +61,7 @@ const SimpleList = extractValue(memo(({
                             storeKeys, ['value'],
                             {
                                 type: 'update',
-                                update: ({value: storeValue = List()}) => ({value: storeValue.push('')}),
+                                updater: ({value: storeValue = List()}) => ({value: storeValue.push('')}),
                                 schema,
                                 required,
                             }

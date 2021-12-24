@@ -34,15 +34,17 @@ const widgets = {
 
 > currently doesn't support keyword `default` in the schemas direct descending `items`
 
-Supports extra keywords:
+**Supports extra keywords:**
 
 - `view`
     - `btnSize` either `small` (default) or `medium`
     - `hideTitle` when `true` doesn't show any title
 - `notDeletable` when `true` doesn't allow deletion of items
 - `notAddable` when `true` doesn't allow adding items
+- `info`
+    - to render the [InfoRenderer](/docs/ds-material/InfoRenderer)
 
-Components:
+**Widgets:**
 
 - `SimpleList` for list of multine-line, single-line texts or numbers
 
@@ -58,12 +60,12 @@ const widgets = {
 };
 ```
 
-Supports extra keywords:
+**Supports extra keywords:**
 
 - `view`
     - `btnSize` either `small` (default) - 18px or `medium` - 24px or `big` - 42px
 
-Components:
+**Widgets:**
 
 - `SimpleList` for list of multine-line, single-line texts or numbers
 

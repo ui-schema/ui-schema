@@ -14,7 +14,8 @@ import { pluginStack } from './pluginStack'
 import { WidgetRenderer } from '@ui-schema/ui-schema/WidgetRenderer'
 import { validators } from '@ui-schema/ui-schema/Validators/validators'
 import { CardRenderer, FormGroup, LabelBox } from '@ui-schema/ds-material/Widgets'
-import { WidgetProps, WidgetsBindingBase, WidgetType, WithScalarValue } from '@ui-schema/ui-schema'
+import { WidgetProps, WidgetsBindingFactory, WithScalarValue } from '@ui-schema/ui-schema'
+import { InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 
 const MyFallbackComponent: React.ComponentType<{
     error: any | null
@@ -28,34 +29,36 @@ const MyFallbackComponent: React.ComponentType<{
     </div>
 )
 
-export interface MuiWidgetBinding<C extends {} = {}> extends WidgetsBindingBase<C> {
-    types: {
-        string: React.ComponentType<WidgetProps<C> & WithScalarValue>
-        boolean: React.ComponentType<WidgetProps<C> & WithScalarValue>
-        number: React.ComponentType<WidgetProps<C> & WithScalarValue>
-        integer: React.ComponentType<WidgetProps<C> & WithScalarValue>
-    }
-    custom: {
-        Accordions: React.ComponentType<WidgetProps<C>>
-        Text: React.ComponentType<WidgetProps<C> & WithScalarValue>
-        StringIcon: React.ComponentType<WidgetProps<C> & WithScalarValue>
-        TextIcon: React.ComponentType<WidgetProps<C> & WithScalarValue>
-        NumberIcon: React.ComponentType<WidgetProps<C> & WithScalarValue>
-        NumberSlider: React.ComponentType<WidgetProps<C>>
-        SimpleList: React.ComponentType<WidgetProps<C>>
-        GenericList: React.ComponentType<WidgetProps<C>>
-        OptionsCheck: React.ComponentType<WidgetProps<C>>
-        OptionsRadio: React.ComponentType<WidgetProps<C>>
-        Select: React.ComponentType<WidgetProps<C> & WithScalarValue>
-        SelectMulti: React.ComponentType<WidgetProps<C>>
-        Card: React.ComponentType<WidgetProps<C>>
-        LabelBox: React.ComponentType<WidgetProps<C>>
-        FormGroup: React.ComponentType<WidgetProps<C>>
-    } & {
-        // allow adding any further custom widgets
-        [key: string]: WidgetType<C>
-    }
+export interface MuiWidgetsBindingTypes<C extends {} = {}, W extends MuiWidgetBinding = MuiWidgetBinding> {
+    string: React.ComponentType<WidgetProps<C, W> & WithScalarValue>
+    boolean: React.ComponentType<WidgetProps<C, W> & WithScalarValue>
+    number: React.ComponentType<WidgetProps<C, W> & WithScalarValue>
+    integer: React.ComponentType<WidgetProps<C, W> & WithScalarValue>
 }
+
+export interface MuiWidgetsBindingCustom<C extends {} = {}, W extends MuiWidgetBinding = MuiWidgetBinding> {
+    Accordions: React.ComponentType<WidgetProps<C, W>>
+    Text: React.ComponentType<WidgetProps<C, W> & WithScalarValue>
+    StringIcon: React.ComponentType<WidgetProps<C, W> & WithScalarValue>
+    TextIcon: React.ComponentType<WidgetProps<C, W> & WithScalarValue>
+    NumberIcon: React.ComponentType<WidgetProps<C, W> & WithScalarValue>
+    NumberSlider: React.ComponentType<WidgetProps<C, W>>
+    SimpleList: React.ComponentType<WidgetProps<C, W>>
+    GenericList: React.ComponentType<WidgetProps<C, W>>
+    OptionsCheck: React.ComponentType<WidgetProps<C, W>>
+    OptionsRadio: React.ComponentType<WidgetProps<C, W>>
+    Select: React.ComponentType<WidgetProps<C, W> & WithScalarValue>
+    SelectMulti: React.ComponentType<WidgetProps<C, W>>
+    Card: React.ComponentType<WidgetProps<C, W>>
+    LabelBox: React.ComponentType<WidgetProps<C, W>>
+    FormGroup: React.ComponentType<WidgetProps<C, W>>
+}
+
+export interface MuiWidgetBindingExtra {
+    InfoRenderer?: React.ComponentType<InfoRendererProps>
+}
+
+export type MuiWidgetBinding<C extends {} = {}> = WidgetsBindingFactory<MuiWidgetBindingExtra, MuiWidgetsBindingTypes<C>, MuiWidgetsBindingCustom<C>>
 
 export const widgets: MuiWidgetBinding = {
     ErrorFallback: MyFallbackComponent,

@@ -2,11 +2,12 @@ import React from 'react'
 import { OwnKey, PluginStack, SchemaTypesType, schemaTypeToDistinct, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 import { List, OrderedMap, Map } from 'immutable'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import { Theme } from '@material-ui/core/styles/createTheme'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import { TableRowProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
 import { TableRowActionDelete } from '@ui-schema/ds-material/BaseComponents/Table/TableRowActionDelete'
+import { TableCellSchemaImmutable } from '@ui-schema/ds-material/Widgets/Table/TableSchema'
 
 const useTableRowStyle = makeStyles<Theme, { dense: boolean }>((theme) => ({
     cell: {
@@ -43,11 +44,10 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
 
     if (
         schemaTypeToDistinct(schema.get('type') as SchemaTypesType) === 'object' &&
-        schema.getIn(['rowSortOrder'])?.size
+        (schema.getIn(['rowSortOrder']) as TableCellSchemaImmutable['rowSortOrder'])?.size
     ) {
-        let orderedCellSchema = OrderedMap()
-        schema.getIn(['rowSortOrder'])
-            // @ts-ignore
+        let orderedCellSchema = OrderedMap();
+        (schema.getIn(['rowSortOrder']) as TableCellSchemaImmutable['rowSortOrder'])
             .forEach((key: OwnKey) => {
                 orderedCellSchema = orderedCellSchema.set(key, cellSchema.get(key as number))
             })

@@ -1,35 +1,35 @@
 {
-	"name": "@ui-schema/dictionary",
-	"version": "0.0.8",
-	"description": "",
-	"homepage": "https://ui-schema.bemit.codes",
-	"author": "Michael Becker <michael@bemit.codes>",
-	"license": "MIT",
-	"keywords": [
-		"ui-schema",
-		"json-schema"
-	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/ui-schema/ui-schema.git",
-		"directory": "packages/dictionary"
-	},
-	"bugs": {
-		"url": "https://github.com/ui-schema/ui-schema/issues"
-	},
-	"main": "index.js",
-	"module": "esm/index.js",
-	"devDependencies": {
-		"immutable": "^4.0.0-rc"
-	},
-	"peerDependencies": {
-		"@ui-schema/ui-schema": "~0.3.0-alpha",
-		"immutable": "^4.0.0-rc"
-	},
-	"scripts": {
-		"dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/dictionary/src build && rm -rf build/dts"
-	},
-	"publishConfig": {
-		"access": "public"
-	}
+    "name": "@ui-schema/dictionary",
+    "version": "0.0.8",
+    "description": "",
+    "homepage": "https://ui-schema.bemit.codes",
+    "author": "Michael Becker <michael@bemit.codes>",
+    "license": "MIT",
+    "keywords": [
+        "ui-schema",
+        "json-schema"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ui-schema/ui-schema.git",
+        "directory": "packages/dictionary"
+    },
+    "bugs": {
+        "url": "https://github.com/ui-schema/ui-schema/issues"
+    },
+    "main": "index.js",
+    "module": "esm/index.js",
+    "devDependencies": {
+        "immutable": "^4.0.0"
+    },
+    "peerDependencies": {
+        "@ui-schema/ui-schema": "~0.3.0-alpha",
+        "immutable": "^4.0.0"
+    },
+    "scripts": {
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/dictionary/src build && rm -rf build/dts && rm -rf build/**/*.test.*"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
 }

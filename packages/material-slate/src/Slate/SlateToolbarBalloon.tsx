@@ -5,7 +5,7 @@ import IcUnderlined from '@material-ui/icons/FormatUnderlined'
 import IcStrikethrough from '@material-ui/icons/FormatStrikethrough'
 import IcCode from '@material-ui/icons/Code'
 import { useSlate } from 'slate-react'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import { Theme } from '@material-ui/core/styles/createTheme'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import {
     MARK_BOLD,

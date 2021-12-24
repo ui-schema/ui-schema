@@ -3,6 +3,9 @@ import Loadable from 'react-loadable'
 import { App } from '@control-ui/app/App'
 import { I18nProviderContext } from '@control-ui/app/I18nProvider'
 import { routes } from './routes'
+import { DndProvider } from 'react-dnd'
+import { MultiBackend } from 'react-dnd-multi-backend'
+import { HTML5toTouch } from 'rdndmb-html5-to-touch'
 import { Layout } from '@control-ui/app/Layout'
 import { CustomDrawer, CustomHeader } from './component/Layout'
 import { LoadingCircular } from '@control-ui/kit/Loading/LoadingCircular'
@@ -16,7 +19,9 @@ const Provider: React.ComponentType<React.PropsWithChildren<{}>> = ({children}) 
     <DocsProvider loader={(file: string) => import('./content/docs/' + file + '.md')}>
         <HeadlinesProvider>
             <UIMetaProvider widgets={customWidgets} t={browserT}>
-                {children}
+                <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+                    {children}
+                </DndProvider>
             </UIMetaProvider>
         </HeadlinesProvider>
     </DocsProvider>
@@ -49,6 +54,7 @@ const i18n: I18nProviderContext = {
 }
 
 const CustomApp: React.ComponentType<{}> = () => <App
+    // @ts-ignore
     routes={routes}
     Layout={CustomLayout}
     i18n={i18n}

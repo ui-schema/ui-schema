@@ -1,6 +1,7 @@
 ---
 name: Bug report
 about: Notice us about a bug in UI-Schema
+labels: bug
 ---
 
 <!--
@@ -8,7 +9,7 @@ about: Notice us about a bug in UI-Schema
 
     - Is the issue is present in the latest release?
     - You have searched the [issues](https://github.com/ui-schema/ui-schema/issues) of this repository and believe that this is not a duplicate.
-    
+
     Selected checkbox is [X]
 -->
 

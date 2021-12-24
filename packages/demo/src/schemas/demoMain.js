@@ -89,6 +89,9 @@ const schemaDemoMain = {
             type: 'string',
             minLength: 2,
             maxLength: 3,
+            info: [
+                'Some Info!',
+            ],
             /*enum: [
                 'test 1',
                 'test2',
@@ -144,6 +147,9 @@ const schemaDemoMain = {
         comment: {
             type: 'string',
             widget: 'Text',
+            info: [
+                'Some Info!',
+            ],
             view: {
                 sizeMd: 6,
                 //variant: 'filled',
@@ -188,6 +194,14 @@ const schemaDemoMain = {
                         sizeMd: 12,
                     },
                 },
+                yes_no: {
+                    type: 'boolean',
+                    widget: 'OptionsRadio',
+                    enum: [true, false],
+                    view: {
+                        sizeMd: 12,
+                    },
+                },
             },
             required: [
                 'center_item_content',
@@ -199,6 +213,9 @@ const schemaDemoMain = {
             view: {
                 sizeMd: 3,
             },
+            info: [
+                'Some Info!',
+            ],
             enum: [
                 'sidebar_left',
                 'sidebar_right',
@@ -246,6 +263,23 @@ const schemaDemoMain = {
                 'middle',
                 'big',
             ],
+        },
+        services: {
+            type: 'array',
+            widget: 'SelectChips',
+            //default: "adult",
+            view: {
+                sizeMd: 3,
+            },
+            items: {
+                type: 'string',
+                oneOf: [
+                    {const: 'development'},
+                    {const: 'design'},
+                    {const: 'hosting'},
+                    {const: 'consulting'},
+                ],
+            },
         },
         age: {
             type: 'string',

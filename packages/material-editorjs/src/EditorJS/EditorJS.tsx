@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactEditorJs from 'react-editor-js'
 import EditorJSType, { API, OutputData, EditorConfig } from '@editorjs/editorjs'
-import { onChangeHandler, StoreKeys, UIStoreInternalsType } from '@ui-schema/ui-schema'
+import { onChangeHandler, StoreKeys, StoreSchemaType, UIStoreInternalsType } from '@ui-schema/ui-schema'
 import { extractValue } from '@ui-schema/ui-schema/UIStore'
 import { List, Map, OrderedMap } from 'immutable'
 import { fromJSOrdered } from '@ui-schema/ui-schema/Utils/createMap/createMap'
@@ -53,7 +53,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps> = (
                             internal: currentInternal.set('isEmpty', Boolean(!(currentState.current?.get('blocks')?.size > 0))),
                         }
                     },
-                    schema: Map({type: 'object'}),
+                    schema: Map({type: 'object'}) as StoreSchemaType,
                     required,
                 }
             )
@@ -77,7 +77,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps> = (
             editorRef.current.clear()
             if (value) {
                 currentState.current = value
-                editorRef.current.render(value.toJS())
+                editorRef.current.render(value.toJS() as any)
             } else {
                 currentState.current = fromJSOrdered({
                     blocks: [],
@@ -90,7 +90,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps> = (
                     updater: ({internal: currentInternal = Map()}) => ({
                         internal: currentInternal.set('isEmpty', Boolean(!(value?.get('blocks')?.size > 0))),
                     }),
-                    schema: Map({type: 'object'}),
+                    schema: Map({type: 'object'}) as StoreSchemaType,
                     required,
                 }
             )

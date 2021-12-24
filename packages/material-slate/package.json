@@ -1,6 +1,6 @@
 {
 	"name": "@ui-schema/material-slate",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "Slate for UI-Schema with Material-UI",
 	"homepage": "https://ui-schema.bemit.codes",
 	"author": "Michael Becker <michael@bemit.codes>",
@@ -30,7 +30,7 @@
 	"main": "index.js",
 	"module": "esm/index.js",
 	"scripts": {
-		"dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/material-slate/src build && rm -rf build/dts",
+		"dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/material-slate/src build && rm -rf build/dts && rm -rf build/**/*.test.*",
 		"__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
 	},
 	"dependencies": {
@@ -40,9 +40,9 @@
 	"devDependencies": {
 		"@material-ui/core": "^4.8",
 		"@material-ui/icons": "^4.8",
-		"@material-ui/lab": "^4.0.0-alpha.20",
+		"@material-ui/lab": "^4.0.0-alpha.44",
 		"@udecode/slate-plugins": "~0.75.2",
-		"immutable": "^4.0.0-rc",
+		"immutable": "^4.0.0",
 		"react": "^16.12",
 		"react-dom": "^16.12",
 		"slate": "~0.60.8",
@@ -54,11 +54,11 @@
 	"peerDependencies": {
 		"@material-ui/core": "^4.8",
 		"@material-ui/icons": "^4.8",
-		"@material-ui/lab": "^4.0.0-alpha.20",
+		"@material-ui/lab": "^4.0.0-alpha.44",
 		"@udecode/slate-plugins": "~0.75.2",
 		"@ui-schema/ds-material": "~0.3.0-alpha",
 		"@ui-schema/ui-schema": "~0.3.0-alpha",
-		"immutable": "^4.0.0-rc",
+		"immutable": "^4.0.0",
 		"react": "^16.8",
 		"slate": "~0.60.8",
 		"slate-history": "~0.60.8",

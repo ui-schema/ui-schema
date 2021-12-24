@@ -41,6 +41,9 @@ Matches the rendered widget, keywords used:
     - in-schema reuse with `$defs`/`definitions`, `$id`, `$ref` etc. [ReferencingHandler](/docs/plugins#referencinghandler)
     - schema-id with `$id` and use `$ref` with `$id`
     - load schemas lazily from any API, [ReferencingNetworkHandler](/docs/plugins#referencingnetworkhandler)
+- `oneOf` for "one-schema must match" validation, only usable with specific widgets
+    - ❗ only checks some schema: everything [validateSchema](/docs/plugins#validateschema) supports
+    - supported by e.g. [`SelectChips`](/docs/widgets/SelectChips)
 
 >
 > extended with non-standard vocabulary for [UI purposes](#ui-schema-keywords)
@@ -193,76 +196,11 @@ Validators for latest version are used by default, incompatible changes are solv
 
 For latest issues/questions checkout the [github issues](https://github.com/ui-schema/ui-schema/issues).
 
-| Spec. | Group      | Keyword         | Status |
-| :---  | :---       | :---            | :--- |
-| [json-schema-core](https://json-schema.org/draft/2019-09/json-schema-core.html) <br> [json-schema-validation](https://json-schema.org/draft/2019-09/json-schema-validation.html) | | | nearly complete |
-| core |                  | `$comment` | |
-| validation |            | `readOnly` | per widget |
-| validation |            | `writeOnly` | per widget |
-| core |                  | `definitions`/`$defs` | ✅ |
-| core, till draft-06, till draft-07 for anything |   | `id`/`$id` | ✅ |
-| core, from 2019-09 |    | `$anchor` | ✅ |
-| core |                  | `$ref` | ✅ |
-| core |                  | `$recursiveAnchor` | ❌ |
-| core |                  | `$recursiveRef` | ❌ |
-| validation |            | `enum` | ✅ |
-| validation |            | `const` | ✅ |
-| validation |            | `default` | ✅ |
-| validation | `type`     | | ✅ |
-| |            | `string` | ✅ |
-| |            | `number` | ✅ |
-| |            | `integer` | ✅ |
-| |            | `boolean` | ✅ |
-| |            | `array` | ✅ |
-| |            | `object` | ✅ |
-| |            | `null` | ✅ |
-| | **Types** | | |
-| | `string`   | | ✅ |
-| validation |            | `format` | per widget |
-| validation |            | `pattern` | ✅ |
-| validation |            | `minLength` | ✅ |
-| validation |            | `maxLength` | ✅ |
-| core |                  | `contentEncoding` | per widget |
-| core |                  | `contentMediaType` | per widget |
-| | `number`/`integer` | | |
-| validation |            | `multipleOf` | ✅ |
-| validation |            | `minimum` | ✅ |
-| validation |            | `exclusiveMinimum` | ✅ |
-| validation |            | `maximum` | ✅ |
-| validation |            | `exclusiveMaximum` | ✅ |
-| | `boolean`  | | |
-| | | no type specific keywords | |
-| | `object`   | | |
-| core |                  | `properties` | ✅ |
-| validation |            | `required` | ✅ |
-| validation |            | `minProperties` | ✅ |
-| validation |            | `maxProperties` | ✅ |
-| core |                  | `additionalProperties` | ✅ |
-| core |                  | `patternProperties` | ❌ |
-| core |                  | `unevaluatedProperties` | ❌ |
-| core |                  | `propertyNames` | ✅ |
-| validation, till draft-07 |            | `dependencies` | ✅ |
-| core, from 2019-09 |            | `dependentSchemas` | ✅ |
-| core, from 2019-09 |            | `dependentRequired` | ✅ |
-| core |            | `if` | ✅ |
-| core |            | `else` | ✅ |
-| core |            | `then` | ✅ |
-| core |            | `allOf` | ✅ |
-| core |            | `allOf.if`/`allOf.not` | ✅ |
-| core |            | `if.not`/`else.not`/`then.not`/`allOf.not` | ✅ |
-| core |            | `oneOf` | ❌ |
-| core |            | `anyOf` | ❌ |
-| | `array`    | |  |
-| core |            | `items` | ✅ |
-| core |            | `unevaluatedItems` | ❌ |
-| validation |            | `minItems` | ✅ |
-| validation |            | `maxItems` | ✅ |
-| validation |            | `uniqueItems` | ✅ |
-| validation |            | `maxContains` | ✅ |
-| validation |            | `minContains` | ✅ |
-| core |            | `contains` | ✅ |
-| core |            | `additionalItems` | ✅ |
-| | `null`   | | ✅ |
+| Spec. | Group | Keyword | Status | | :--- | :--- | :--- | :-- | | [json-schema-core](https://json-schema.org/draft/2019-09/json-schema-core.html) <br> [json-schema-validation](https://json-schema.org/draft/2019-09/json-schema-validation.html) | | | nearly complete | | core | | `$comment` | | | validation | | `readOnly` | per widget | | validation | | `writeOnly` | per widget | | core | | `definitions`/`$defs` | ✅ | | core, till draft-06, till draft-07 for anything | | `id`/`$id` | ✅ | | core, from 2019-09 | | `$anchor` | ✅ | | core | | `$ref` | ✅ | | core | | `$recursiveAnchor` | ❌ | | core
+| | `$recursiveRef` | ❌ | | validation | | `enum` | ✅ | | validation | | `const` | ✅ | | validation | | `default` | ✅ | | validation | `type`     | | ✅ | | | | `string` | ✅ | | | | `number` | ✅ | | | | `integer` | ✅ | | | | `boolean` | ✅ | | | | `array` | ✅ | | | | `object` | ✅ | | | | `null` | ✅ | | | **Types** | | | | | `string`   | | ✅ | | validation | | `format` | per widget | | validation | | `pattern` | ✅ | | validation | | `minLength` | ✅ | | validation | | `maxLength` | ✅ | | core | | `contentEncoding` | per widget | | core | | `contentMediaType` | per widget | | | `number`/`integer` |
+| | | validation | | `multipleOf` | ✅ | | validation | | `minimum` | ✅ | | validation | | `exclusiveMinimum` | ✅ | | validation | | `maximum` | ✅ | | validation | | `exclusiveMaximum` | ✅ | | | `boolean`  | | | | | | no type specific keywords | | | | `object`   | | | | core | | `properties` | ✅ | | validation | | `required` | ✅ | | validation | | `minProperties` | ✅ | | validation | | `maxProperties` | ✅ | | core | | `additionalProperties` | ✅ | | core | | `patternProperties` | ❌ | | core | | `unevaluatedProperties` | ❌ | | core | | `propertyNames` | ✅ | | validation, till draft-07 |
+| `dependencies` | ✅ | | core, from 2019-09 | | `dependentSchemas` | ✅ | | core, from 2019-09 | | `dependentRequired` | ✅ | | core | | `if` | ✅ | | core | | `else` | ✅ | | core | | `then` | ✅ | | core | | `allOf` | ✅ | | core | | `allOf.if`/`allOf.not` | ✅ | | core | | `if.not`/`else.not`/`then.not`/`allOf.not` | ✅ | | core | | `oneOf` | ✅ | | core | | `anyOf` | ❌ | | | `array`    | | | | core | | `items` | ✅ | | core | | `unevaluatedItems` | ❌ | | validation | | `minItems` | ✅ | | validation | | `maxItems` | ✅ | | validation | | `uniqueItems` | ✅ | | validation | | `maxContains` | ✅ | |
+validation | | `minContains` | ✅ | | core | | `contains` | ✅ | | core | | `additionalItems` | ✅ | | | `null`   | | ✅ |
 
 ❌ = not implemented, ✅ = done
 

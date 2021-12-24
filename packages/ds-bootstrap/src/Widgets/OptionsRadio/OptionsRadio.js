@@ -21,7 +21,7 @@ const RadioInput = ({classForm, enumName, classLabel, required, classFormControl
                     storeKeys, ['value'],
                     {
                         type: 'update',
-                        update: () => ({value: enumName}),
+                        updater: () => ({value: enumName}),
                         schema,
                         required,
                     }

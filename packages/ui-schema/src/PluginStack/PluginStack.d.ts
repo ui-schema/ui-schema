@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { PluginProps, PluginType } from '@ui-schema/ui-schema/PluginStack/Plugin'
-import { WidgetsBindingBase } from '@ui-schema/ui-schema/WidgetsBinding'
+import { ComponentPluginType, PluginProps } from '@ui-schema/ui-schema/PluginStack/Plugin'
+import { WidgetsBindingFactory } from '@ui-schema/ui-schema/WidgetsBinding'
 import { WidgetOverrideType, WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { AppliedPluginStackProps } from '@ui-schema/ui-schema/applyPluginStack'
 
@@ -37,7 +37,7 @@ export function PluginStack<WP extends {} = {}, C extends {} = {}, P extends Plu
  * @param next index of the next plugin to use
  * @param widgets the widgets binding, e.g. `props.widgets`
  */
-export function getNextPlugin(next: number, widgets: WidgetsBindingBase): PluginType | React.ComponentType<WidgetProps>
+export function getNextPlugin<C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(next: number, widgets: W): ComponentPluginType<C, W> | React.ComponentType<WidgetProps<C, W>>
 
 export function NextPluginRenderer<P extends PluginProps>(props: P): React.ReactElement<P>
 

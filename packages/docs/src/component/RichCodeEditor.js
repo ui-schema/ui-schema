@@ -1,7 +1,7 @@
 import React from 'react';
-import {useUID} from "react-uid";
-import {Button, useTheme} from "@material-ui/core";
-import AceEditor from "react-ace";
+import {useUID} from 'react-uid';
+import {Button, useTheme} from '@material-ui/core';
+import AceEditor from 'react-ace';
 // todo: update react-ace to v8, using ace-builds instead of brace, creates strange `this.session = null` exceptions then and now
 import 'brace/ext/language_tools';
 import 'brace/ext/error_marker';
@@ -26,8 +26,8 @@ import 'brace/theme/clouds_midnight';
 import 'brace/theme/cobalt';
 import 'brace/theme/gruvbox';
 import 'brace/theme/monokai';
-import {AccessTooltipIcon} from "@control-ui/kit/Tooltip";
-import {UnfoldLess, UnfoldMore} from "@material-ui/icons";
+import {AccessTooltipIcon} from '@control-ui/kit/Tooltip';
+import {UnfoldLess, UnfoldMore} from '@material-ui/icons';
 
 /*import ace from 'ace-builds/src-noconflict/ace';
 import "ace-builds/src-noconflict/ext-language_tools";
@@ -57,11 +57,13 @@ ace.config.set("basePath", "https://cdn.jsdelivr.net/npm/ace-builds@1.4.8/src-no
 ace.config.setModuleUrl('ace/mode/javascript_worker', "https://cdn.jsdelivr.net/npm/ace-builds@1.4.8/src-noconflict/worker-javascript.js");*/
 
 const supportedModes = ['json', 'css', 'dockerfile', 'html', 'javascript', 'jsx', 'typescript', 'typescript jsx', 'mysql', 'php', 'powershell', 'scss', 'yaml'];
-const themes = ['clouds_midnight', 'cobalt', 'gruvbox', 'monokai',];
+const themes = ['clouds_midnight', 'cobalt', 'gruvbox', 'monokai'];
 
 const themesLight = ['chrome', 'github'];
 
-const RelativeDiv = ({children}) => <div style={{position: 'relative'}} children={children}/>;
+const RelativeDiv = ({children}) => <div style={{position: 'relative'}}>
+    {children}
+</div>;
 
 const RichCodeEditor = ({
                             value, onChange, readOnly, style = {},

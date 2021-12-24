@@ -8,6 +8,7 @@ import {
 import {TransTitle, Trans, beautifyKey, extractValue, memo} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText';
 import {sortScalarList} from '@ui-schema/ui-schema/Utils/sortScalarList';
+import {getTranslatableEnum} from '@ui-schema/ui-schema/Translate';
 
 const Select = ({
                     multiple,
@@ -71,16 +72,16 @@ const Select = ({
                         <Checkbox checked={currentValue.contains(enum_name)}/>
                         <ListItemText primary={<Trans
                             schema={schema.get('t')}
-                            text={storeKeys.insert(0, 'widget').concat(List(['enum', enum_name])).join('.')}
-                            context={Map({'relative': List(['enum', enum_name])})}
-                            fallback={beautifyKey(enum_name, schema.get('ttEnum')) + ''}
+                            text={storeKeys.insert(0, 'widget').concat(List(['enum', getTranslatableEnum(enum_name)])).join('.')}
+                            context={Map({'relative': List(['enum', getTranslatableEnum(enum_name)])})}
+                            fallback={beautifyKey(getTranslatableEnum(enum_name), schema.get('ttEnum')) + ''}
                         />}/>
                     </React.Fragment> :
                     <Trans
                         schema={schema.get('t')}
-                        text={storeKeys.insert(0, 'widget').concat(List(['enum', enum_name])).join('.')}
-                        context={Map({'relative': List(['enum', enum_name])})}
-                        fallback={beautifyKey(enum_name, schema.get('ttEnum')) + ''}
+                        text={storeKeys.insert(0, 'widget').concat(List(['enum', getTranslatableEnum(enum_name)])).join('.')}
+                        context={Map({'relative': List(['enum', getTranslatableEnum(enum_name)])})}
+                        fallback={beautifyKey(getTranslatableEnum(enum_name), schema.get('ttEnum')) + ''}
                     />}
                 </MenuItem>,
             ).valueSeq() : null}

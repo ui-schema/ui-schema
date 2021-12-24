@@ -1,4 +1,5 @@
 import React from 'react'
+import { ClassNameMap } from '@material-ui/styles/withStyles'
 import { extractValue, memo, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 import { SlateRenderer } from '@ui-schema/material-slate/Slate/SlateRenderer'
 import { ElementMapper } from '@ui-schema/material-slate/SlateElements/ElementMapper'
@@ -17,11 +18,11 @@ const RichContentPaneBase: React.ComponentType<WidgetProps & WithValue> = (props
 
     const {dense, focused, empty, onFocus, onBlur} = useSlate(schema, value)
 
-    const classes = usePaneEditorStyles({dense, focused})
+    const classes = usePaneEditorStyles({dense: dense as boolean, focused}) as ClassNameMap<'wrapper' | 'editor'>
 
     return <PaneWrapper
         ownKey={ownKey} storeKeys={storeKeys} schema={schema}
-        dense={dense} focused={focused} empty={empty}
+        dense={dense as boolean} focused={focused} empty={empty}
         errors={errors} showValidity={showValidity} valid={valid}
         classes={classes}
     >
@@ -34,4 +35,4 @@ const RichContentPaneBase: React.ComponentType<WidgetProps & WithValue> = (props
     </PaneWrapper>
 }
 
-export const RichContentPane = extractValue(memo(RichContentPaneBase))
+export const RichContentPane: React.ComponentType<WidgetProps> = extractValue(memo(RichContentPaneBase))

@@ -11,7 +11,10 @@ import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip/Toolti
 import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
 
 let SimpleListItem = (
-    {showValidity, schema, schemaKeys, storeKeys, notDeletable, btnSize, readOnly, required, onChange, level, index},
+    {
+        showValidity, schema, schemaKeys, storeKeys, notDeletable,
+        btnSize, readOnly, required, onChange, level, index,
+    },
 ) => {
     return <Grid key={index} item xs={12} style={{display: 'flex'}}>
         <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
@@ -50,16 +53,27 @@ export {SimpleListItem}
 let SimpleListBase = ({
                           schemaKeys, storeKeys, ownKey, schema, listSize, onChange,
                           showValidity, valid, errors, required, level,
+                          widgets,
                       }) => {
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
     const notAddable = schema.get('notAddable')
     const notDeletable = schema.get('notDeletable')
     const readOnly = schema.get('readOnly')
+    const InfoRenderer = widgets?.InfoRenderer
     return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
         <Grid container spacing={2}>
             {!schema.getIn(['view', 'hideTitle']) ? <Grid item xs={12}>
                 <FormLabel component="legend"><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></FormLabel>
             </Grid> : null}
+
+            {InfoRenderer && schema?.get('info') ?
+                <Grid item xs={12}>
+                    <InfoRenderer
+                        schema={schema} variant={'preview'} openAs={'embed'}
+                        storeKeys={storeKeys} valid={valid} errors={errors}
+                    />
+                </Grid> :
+                undefined}
 
             {Array.from(Array(listSize || 0)).map((itemVal, i) => <SimpleListItem
                 key={i}

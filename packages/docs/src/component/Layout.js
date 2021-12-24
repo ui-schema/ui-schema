@@ -12,7 +12,7 @@ import {useSwitchTheme} from '@control-ui/app/AppTheme';
 import {Drawer} from '@control-ui/app/Drawer';
 import {useDrawer} from '@control-ui/app/DrawerProvider';
 import {ListItemLink} from '@control-ui/kit/List';
-import {ListItemIcon} from '@control-ui/kit/List/ListItemIcon';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import {Logo} from '../asset/logo';
 import {schemas} from '../schemas/_list';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -20,7 +20,7 @@ import {ExpandLess, ExpandMore} from '@material-ui/icons';
 import {Divider, List, Collapse} from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
 import {NavListNested} from '@control-ui/kit/Menu/NavList';
-import {routesDocs, routesDSMaterial, routesWidgets} from '../content/docs';
+import {routesDocs} from '../content/docs';
 
 const title = '0.3.x'
 export const CustomHeader = () => {
@@ -47,8 +47,8 @@ export const CustomHeader = () => {
     </Header>;
 };
 
-const CollapseDrawer = ({toggle, icon, children, dense, style = undefined}) => {
-    const [open, setOpen] = React.useState(true)
+const CollapseDrawer = ({toggle, icon, children, dense, initialOpen = true, style = undefined}) => {
+    const [open, setOpen] = React.useState(initialOpen)
     return <React.Fragment>
         <ListItem button onClick={() => setOpen(o => !o)} dense={dense} style={style}>
             {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
@@ -75,27 +75,15 @@ export const CustomDrawer = () => {
             <ListItemLink to={'/'} primary={'Home'} dense showActive onClick={closeOnClick}/>
             <ListItemLink to={'/quick-start'} primary={'Quick-Start'} dense showActive onClick={closeOnClick}/>
             <ListItemLink to={'/examples'} primary={'Live Editor'} dense showActive onClick={closeOnClick}/>
-
+            <Divider/>
             <NavListNested
-                routes={[routesDocs]}
-                dense
-                filter={() => true}
-                onClick={closeOnClick}
-            />
-            <NavListNested
-                routes={[routesWidgets]}
-                dense
-                filter={() => true}
-                onClick={closeOnClick}
-            />
-            <NavListNested
-                routes={[routesDSMaterial]}
+                routes={routesDocs.routes}
                 dense
                 filter={() => true}
                 onClick={closeOnClick}
             />
 
-            <CollapseDrawer toggle={'Schema Examples'} dense>
+            <CollapseDrawer toggle={'Schema Examples'} dense initialOpen={false}>
                 <List component="div" disablePadding style={{overflow: 'auto'}}>
                     {schemas.map((schema, i) => (
                         <ListItemLink

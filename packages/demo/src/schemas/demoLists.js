@@ -110,6 +110,9 @@ const schemaLists = createOrderedMap({
                 sizeMd: 12,
                 btnSize: 'small',
             },
+            info: [
+                'Store some cities and streets and stuff',
+            ],
             items: {
                 type: 'array',
                 items: [
@@ -158,6 +161,9 @@ const schemaLists = createOrderedMap({
                 sizeMd: 12,
                 btnSize: 'small',
             },
+            info: [
+                'Add some labels and enjoy your coffee!',
+            ],
             default: [
                 'adfn',
                 'mnbvf',

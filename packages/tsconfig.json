@@ -31,6 +31,12 @@
             "@ui-schema/ds-material/*": [
                 "ds-material/src/*"
             ],
+            "@ui-schema/kit-dnd": [
+                "kit-dnd/src"
+            ],
+            "@ui-schema/kit-dnd/*": [
+                "kit-dnd/src/*"
+            ],
             "@ui-schema/material-code": [
                 "material-code/src"
             ],
@@ -78,12 +84,6 @@
             ],
             "@ui-schema/material-dnd/*": [
                 "material-dnd/src/*"
-            ],
-            "@ui-schema/material-rbd": [
-                "material-rbd/src"
-            ],
-            "@ui-schema/material-rbd/*": [
-                "material-rbd/src/*"
             ],
             "@ui-schema/ui-schema": [
                 "ui-schema/src"

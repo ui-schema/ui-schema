@@ -98,7 +98,10 @@ export const schemaDemoReferencing = createOrderedMap({
             ],
         },
         support_request: {'$ref': 'definitions.json#/support_request'},
-        person: {$ref: '#/definitions/person'},
+        person: {
+            $ref: '#/definitions/person',
+            info: ['List of persons and their related children, begin with the oldest known person.'],
+        },
         simple_string: {type: 'string'},
         simple_boolean: {type: 'boolean'},
     },
@@ -130,7 +133,7 @@ export const schemaDemoReferencingRecursive = createOrderedMap({
         },
     },
     properties: {
-        person: {$ref: '#/definitions/person',},
+        person: {$ref: '#/definitions/person'},
     },
 });
 

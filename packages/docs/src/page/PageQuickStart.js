@@ -56,7 +56,7 @@ const PageQuickStart = () => {
                 <Markdown content source={`
 # Quick-Start UI-Schema
 
-Quickly build a contact form that sends data to an API - if the user entered it correctly - and get to know how UI-Schema works.
+Quickly build a contact form that sends data to an API - if the user entered it correctly   .
 
 UI-Schema works with JSON-Schema and any design-system, each included design-system exports a widget binding for the UI renderer.
 
@@ -108,7 +108,7 @@ npm i --save @ui-schema/ui-schema immutable @ui-schema/ds-material @material-ui/
 > there's also a [create-react-app demo](https://github.com/ui-schema/demo-cra)
 `}/> :
                             ds === 'bts' ? <Markdown content source={`
-> no priority currently for bootstrap widgets development
+> no priority currently for bootstrap widgets development, but happy about PRs
 \`\`\`bash
 npm i --save @ui-schema/ui-schema immutable @ui-schema/ds-bootstrap bootstrap
 \`\`\`
@@ -163,6 +163,7 @@ export const Generator = () => {
     // here the state will be added
 
     return (
+        // move \`UIMetaProvider\` somewhere higher in your app
         <UIMetaProvider>
             <UIStoreProvider>
                 {/* here the components will be added */}
@@ -274,7 +275,8 @@ export const Generator = () => {
 
             widgets={widgets}
             t={relTranslator}
-        />` : ''} ${render === 'custom' ? `<UIMetaProvider
+        />` : ''} ${render === 'custom' ? `// move \`UIMetaProvider\` somewhere higher in your app
+        <UIMetaProvider
             widgets={widgets}
             t={relTranslator}
         >
@@ -485,6 +487,7 @@ export const Generator = () => {
     }, [setStore])
 
     return (
+        // move \`UIMetaProvider\` somewhere higher in your app
         <UIMetaProvider
             widgets={widgets}
             t={relTranslator}

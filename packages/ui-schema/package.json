@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ui-schema",
-    "version": "0.3.0-alpha.4",
+    "version": "0.3.0-alpha.5",
     "description": "UI and Form Generator for React using JSON-Schema for any Design-System",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -31,17 +31,24 @@
     "main": "index.js",
     "module": "esm/index.js",
     "scripts": {
-        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts build && rm -rf build/dts",
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts build && rm -rf build/dts && rm -rf build/**/*.test.*",
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "devDependencies": {
-        "immutable": "^4.0.0-rc",
+        "immutable": "^4.0.0",
+        "@types/react": "^16.8.6 || ^17.0.0",
         "react": "^16.12",
         "react-dom": "^16.12"
     },
     "peerDependencies": {
-        "immutable": "^4.0.0-rc",
-        "react": "^16.8 || ^17.0"
+        "immutable": "^4.0.0",
+        "react": "^16.8 || ^17.0",
+        "@types/react": "^16.8.6 || ^17.0.0"
+    },
+    "peerDependenciesMeta": {
+        "@types/react": {
+            "optional": true
+        }
     },
     "publishConfig": {
         "access": "public"
