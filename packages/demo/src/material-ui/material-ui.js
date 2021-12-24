@@ -35,6 +35,7 @@ import {PluginStack} from '@ui-schema/ui-schema/PluginStack/PluginStack';
 import {applyPluginStack} from '@ui-schema/ui-schema/applyPluginStack';
 import {StringRenderer} from '@ui-schema/ds-material/Widgets/TextField';
 import {InfoRenderer} from '@ui-schema/ds-material/Component/InfoRenderer';
+import {SelectChips} from '@ui-schema/ds-material/Widgets/SelectChips';
 
 const customWidgets = {...widgets}
 const pluginStack = [...customWidgets.pluginStack]
@@ -71,6 +72,7 @@ customWidgets.custom.Table = CustomTable
 customWidgets.custom.TableAdvanced = TableAdvanced
 customWidgets.custom.Stepper = Stepper
 customWidgets.custom.Step = Step
+customWidgets.custom.SelectChips = SelectChips
 
 //widgets.types.null = () => 'null'
 

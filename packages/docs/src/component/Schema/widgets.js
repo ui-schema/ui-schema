@@ -15,10 +15,9 @@ import {LoadingCircular} from '@control-ui/kit/Loading/LoadingCircular';
 import {NumberRendererCell, StringRendererCell, TextRendererCell} from '@ui-schema/ds-material/Widgets/TextFieldCell';
 import {Table} from '@ui-schema/ds-material/Widgets/Table';
 import {DragDropBlockSelector} from '@ui-schema/material-dnd/DragDropBlockSelector';
+import {SelectChips} from '@ui-schema/ds-material/Widgets/SelectChips';
 
 const customWidgets = {...widgets};
-
-customWidgets.DndBlockSelector = DragDropBlockSelector
 
 const CustomTable = ({widgets, ...props}) => {
 
@@ -44,8 +43,11 @@ const CustomTable = ({widgets, ...props}) => {
     />
 }
 
+customWidgets.DndBlockSelector = DragDropBlockSelector
+
 customWidgets.custom = {
     ...widgets.custom,
+    SelectChips: SelectChips,
     Stepper: Stepper,
     Step: Step,
     Table: CustomTable,

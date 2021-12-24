@@ -15,6 +15,7 @@ import {demoTable} from './docs/widgets/TableDemo';
 import {demoTextField} from './docs/widgets/TextFieldDemo';
 import {demoEditorJS} from './docs/widgets/EditorJSDemo';
 import {demoDragnDropGenericDemo} from './docs/material-dnd/widgets-genericDemo';
+import {demoSelectChips} from './docs/widgets/SelectChipsDemo';
 
 const createDoc = (path, label, prefix, context) => ({
     doc: path,
@@ -33,14 +34,23 @@ export const routesDocs = {
     routes: [
         createDoc('overview', 'Overview'),
         createDoc('schema', 'Schema'),
-        createDoc('design-systems', 'Design-Systems'),
-        createDoc('core', 'Core'),
-        createDoc('core-renderer', 'Core: Generator & Renderer'),
-        createDoc('core-meta', 'Core: Meta'),
-        createDoc('core-store', 'Core: Store'),
-        createDoc('core-pluginstack', 'Core: PluginStack'),
-        createDoc('core-uiapi', 'Core: UIApi'),
-        createDoc('core-utils', 'Core: Utils'),
+        createDoc('design-systems', 'Design-Systems'), {
+            nav: {
+                label: 'Core',
+                initialOpen: false,
+                to: 'core',
+                //toTest: /^\/core.*/g,
+            },
+            routes: [
+                createDoc('core', 'Core Overview'),
+                createDoc('core-renderer', 'Core: Generator & Renderer'),
+                createDoc('core-meta', 'Core: Meta'),
+                createDoc('core-store', 'Core: Store'),
+                createDoc('core-pluginstack', 'Core: PluginStack'),
+                createDoc('core-uiapi', 'Core: UIApi'),
+                createDoc('core-utils', 'Core: Utils'),
+            ],
+        },
         createDoc('widgets', 'Widgets & Widget Binding'),
         createDoc('widgets-composition', 'Widgets Composition'),
         createDoc('plugins', 'Plugins'),
@@ -87,6 +97,9 @@ export const routesWidgets = {
         }),
         createDoc('widgets/Select', 'Select', '', {
             demoUIGenerator: demoSelect,
+        }),
+        createDoc('widgets/SelectChips', 'Select Chips', '', {
+            demoUIGenerator: demoSelectChips,
         }),
         createDoc('widgets/SimpleList', 'Simple List', '', {
             demoUIGenerator: demoSimpleList,

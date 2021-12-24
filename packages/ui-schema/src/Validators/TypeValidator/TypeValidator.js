@@ -3,7 +3,7 @@ import {List, Map, Record} from 'immutable';
 export const ERROR_WRONG_TYPE = 'wrong-type';
 
 export const validateType = (value, type) => {
-    if(typeof value === 'undefined') return true;
+    if(typeof value === 'undefined' || typeof type === 'undefined') return true;
 
     const isValidType = (value, type) => {
         return typeof value === type;

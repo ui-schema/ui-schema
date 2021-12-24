@@ -39,6 +39,14 @@ export const mergeSchema = (aSchema, bSchema = Map()) => {
         aSchema = aSchema.update('enum', (enum_ = List()) => enum_.concat(bSchema.get('enum')).toSet().toList());
     }
 
+    if(bSchema.get('oneOf')) {
+        aSchema = aSchema.set('oneOf',
+            aSchema.get('oneOf') ?
+                aSchema.get('oneOf').concat(bSchema.get('oneOf')) :
+                bSchema.get('oneOf'),
+        );
+    }
+
     // merge all not-custom controlled values
     let bSchemaTmp = bSchema
     bSchemaTmp = bSchemaTmp.deleteAll(['properties', 'required', 'enum'])

@@ -1,13 +1,14 @@
-import {validateType} from "../Validators/TypeValidator/TypeValidator";
-import {ERROR_WRONG_TYPE} from "../Validators/TypeValidator/TypeValidator";
-import {ERROR_PATTERN, validatePattern} from "../Validators/PatternValidator/PatternValidator";
-import {validateMinMax} from "../Validators/MinMaxValidator/MinMaxValidator";
-import {ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum} from "../Validators/ValueValidator";
-import {ERROR_MULTIPLE_OF, validateMultipleOf} from "../Validators/MultipleOfValidator/MultipleOfValidator";
-import {validateContains} from "../Validators/ArrayValidator/ArrayValidator";
-import {ERROR_NOT_SET} from "../Validators/RequiredValidator/RequiredValidator";
-import {validateObject} from "../Validators/ObjectValidator/ObjectValidator";
+import {validateType} from '../Validators/TypeValidator/TypeValidator';
+import {ERROR_WRONG_TYPE} from '../Validators/TypeValidator/TypeValidator';
+import {ERROR_PATTERN, validatePattern} from '../Validators/PatternValidator/PatternValidator';
+import {validateMinMax} from '../Validators/MinMaxValidator/MinMaxValidator';
+import {ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum} from '../Validators/ValueValidator';
+import {ERROR_MULTIPLE_OF, validateMultipleOf} from '../Validators/MultipleOfValidator/MultipleOfValidator';
+import {validateContains} from '../Validators/ArrayValidator/ArrayValidator';
+import {ERROR_NOT_SET} from '../Validators/RequiredValidator/RequiredValidator';
+import {validateObject} from '../Validators/ObjectValidator/ObjectValidator';
 import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorErrors/ValidatorErrors';
+import {validateOneOf} from '@ui-schema/ui-schema/Validators/OneOfValidator';
 
 /**
  * Return false when valid and string/List for an error
@@ -33,7 +34,7 @@ export const validateSchema = (schema, value) => {
         err = err.addError(ERROR_WRONG_TYPE);
     } else if(!validatePattern(type, value, pattern)) {
         err = err.addError(ERROR_PATTERN);
-    } else if(!validateConst(type, schema.get('const'), value)) {
+    } else if(!validateConst(schema.get('const'), value)) {
         err = err.addError(ERROR_CONST_MISMATCH);
     } else if(!validateEnum(type, schema.get('enum'), value)) {
         err = err.addError(ERROR_ENUM_MISMATCH);
@@ -51,6 +52,10 @@ export const validateSchema = (schema, value) => {
         const errContains = validateContains(schema, value);
         if(errContains.hasError()) {
             return errContains;
+        }
+        const errOneOf = validateOneOf(schema.get('oneOf'), value)
+        if(errOneOf.errors.hasError()) {
+            return errOneOf.errors;
         }
     }
 

@@ -256,6 +256,23 @@ const schemaDemoMain = {
                 'big',
             ],
         },
+        services: {
+            type: 'array',
+            widget: 'SelectChips',
+            //default: "adult",
+            view: {
+                sizeMd: 3,
+            },
+            items: {
+                type: 'string',
+                oneOf: [
+                    {const: 'development'},
+                    {const: 'design'},
+                    {const: 'hosting'},
+                    {const: 'consulting'},
+                ],
+            },
+        },
         age: {
             type: 'string',
             widget: 'Select',
