@@ -2,9 +2,9 @@ import React from 'react'
 import {getNextPlugin} from '@ui-schema/ui-schema/PluginStack'
 import {useUIApi} from '@ui-schema/ui-schema/UIApi';
 import {Trans} from '@ui-schema/ui-schema/Translate/Trans/Trans';
-import {getCleanRefUrl, getFragmentFromUrl, isRelUrl, makeUrlFromRef} from '@ui-schema/ui-schema/Plugins/ReferencingHandler/ReferencingProvider';
-import {useSchemaRoot} from '@ui-schema/ui-schema/SchemaRootProvider/SchemaRootProvider';
-import {resolvePointer} from '@ui-schema/ui-schema/JSONPointer/resolvePointer';
+import {getCleanRefUrl, getFragmentFromUrl, isRelUrl, makeUrlFromRef} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
+import {useSchemaRoot} from '@ui-schema/ui-schema/SchemaRootProvider';
+import {resolvePointer} from '@ui-schema/ui-schema/JSONPointer';
 
 const getUrls = (schemaRef, id) => {
     let schemaUrl = schemaRef
@@ -22,7 +22,7 @@ export const useNetworkRef = () => {
     const {id} = useSchemaRoot()
 
     const loadSchema = React.useCallback((ref, rootId = '#', versions = undefined) => {
-        const {cleanUrl} = getUrls(ref, rootId === '#' ? id : rootId)
+        const {cleanUrl, schemaUrl} = getUrls(ref, rootId === '#' ? id : rootId)
         if(loader && cleanUrl) {
             loader(cleanUrl, versions).then()
         }

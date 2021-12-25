@@ -4,7 +4,7 @@ export const demoAccordions = [
 ### Demo
 `,
         {
-            '$id': 'http://localhost:4200/schemas/demoReferencing.json',
+            '$id': 'https://ui-schema.bemit.codes/schemas/demo-referencing-network.json',
             type: 'object',
             widget: 'Accordions',
             // $defs: {
@@ -92,7 +92,7 @@ export const demoAccordions = [
                         },
                     ],
                 },
-                support_request: {'$ref': 'definitions.json#/support_request'},
+                support_request: {'$ref': 'support_requests.json#$defs/end-user'},
                 person: {$ref: '#/definitions/person'},
             },
         }
