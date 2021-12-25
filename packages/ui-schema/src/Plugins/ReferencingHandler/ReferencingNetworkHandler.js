@@ -22,7 +22,7 @@ export const useNetworkRef = () => {
     const {id} = useSchemaRoot()
 
     const loadSchema = React.useCallback((ref, rootId = '#', versions = undefined) => {
-        const {cleanUrl, schemaUrl} = getUrls(ref, rootId === '#' ? id : rootId)
+        const {cleanUrl} = getUrls(ref, rootId === '#' ? id : rootId)
         if(loader && cleanUrl) {
             loader(cleanUrl, versions).then()
         }
