@@ -1,152 +1,170 @@
-import {createOrderedMap} from "@ui-schema/ui-schema";
+import {createOrderedMap} from '@ui-schema/ui-schema';
 
 const schemaMain = createOrderedMap({
-    type: "object",
-    title: "headline",
+    type: 'object',
+    title: 'headline',
     properties: {
         stepper: {
-            type: "object",
-            widget: "Stepper",
+            type: 'object',
+            widget: 'Stepper',
             properties: {
                 'step-1': {
-                    type: "object",
+                    type: 'object',
                     properties: {
                         name: {
-                            type: "string",
+                            type: 'string',
                             minLength: 2,
                             maxLength: 3,
                             view: {
                                 sizeMd: 6,
-                            }
+                            },
                         },
                         surname: {
-                            type: "string",
+                            type: 'string',
                             view: {
-                                sizeMd: 6
-                            }
+                                sizeMd: 6,
+                            },
                         },
                     },
                     required: [
-                        'surname'
-                    ]
+                        'surname',
+                    ],
                 },
                 'step-2': {
-                    type: "object",
-                    widget: "Step",
+                    type: 'object',
+                    widget: 'Step',
                     properties: {
                         topics: {
-                            type: "array",
-                            widget: "SelectMulti",
+                            type: 'array',
+                            widget: 'SelectMulti',
                             view: {
-                                sizeMd: 3
+                                sizeMd: 3,
                             },
-                            enum: [
-                                'theater',
-                                'crime',
-                                'sci-fi',
-                                'horror',
-                            ],
+                            items: {
+                                oneOf: [
+                                    {const: 'theater'},
+                                    {const: 'crime'},
+                                    {const: 'sci-fi'},
+                                    {const: 'horror'},
+                                ],
+                            },
                         },
-                    }
+                    },
                 },
                 'step-3': {
-                    type: "object",
-                    widget: "Step",
+                    type: 'object',
+                    widget: 'Step',
                     properties: {
                         accepted: {
-                            type: "boolean",
+                            type: 'boolean',
                         },
-                    }
+                    },
                 },
-            }
+            },
         },
         headline: {
-            type: "string",
+            type: 'string',
             view: {
                 sizeXs: 6,
                 sizeSm: 6,
                 sizeMd: 6,
                 sizeLg: 6,
                 sizeLx: 6,
-            }
+            },
         },
         qty: {
-            type: "number",
+            type: 'number',
             minimum: 2,
             maximum: 15,
             view: {
-                sizeMd: 3
-            }
+                sizeMd: 3,
+            },
         },
         length: {
-            type: "number",
+            type: 'number',
             multipleOf: 2,
             view: {
-                sizeMd: 3
-            }
+                sizeMd: 3,
+            },
         },
         text: {
-            type: "string",
-            widget: "Text",
+            type: 'string',
+            widget: 'Text',
             view: {
                 sizeMd: 12,
-            }
+            },
         },
         usaPhone: {
-            type: "string",
+            type: 'string',
             // only valid for: (888)555-1212 or 555-1212
-            pattern: "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$",
+            pattern: '^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$',
             view: {
-                sizeMd: 6
-            }
+                sizeMd: 6,
+            },
         },
         style: {
-            type: "object",
+            type: 'object',
             view: {
-                sizeMd: 6
+                sizeMd: 6,
             },
             properties: {
                 center_items: {
-                    type: "boolean",
+                    type: 'boolean',
                     default: true,
                     view: {
-                        sizeMd: 12
-                    }
+                        sizeMd: 12,
+                    },
                 },
                 center_item_content: {
-                    type: "boolean",
+                    type: 'boolean',
                     view: {
-                        sizeMd: 12
-                    }
-                }
+                        sizeMd: 12,
+                    },
+                },
             },
             required: [
-                'center_item_content'
-            ]
+                'center_item_content',
+            ],
         },
         layouts: {
-            type: "array",
-            widget: "OptionsCheck",
+            type: 'array',
+            widget: 'OptionsCheck',
             view: {
-                sizeMd: 3
+                sizeMd: 3,
             },
-            enum: [
-                'sidebar_left',
-                'sidebar_right',
-                'notice',
-                'content',
-                'footer',
-            ],
+            items: {
+                oneOf: [
+                    {
+                        const: 'sidebar_left',
+                        t: {
+                            de: {
+                                title: 'Linke Sidebar',
+                            },
+                            en: {
+                                title: 'Left Sidebar',
+                            },
+                        },
+                    }, {
+                        const: 'sidebar_right',
+                    }, {
+                        const: 'notice',
+                    }, {
+                        const: 'content',
+                    }, {
+                        const: 'footer',
+                    },
+                ],
+            },
             default: [
-                'sidebar_left'
+                'sidebar_left',
             ],
         },
         sizeDef: {
-            type: "string",
-            widget: "OptionsRadio",
-            default: "middle",
+            type: 'string',
+            widget: 'OptionsRadio',
+            default: 'middle',
             view: {
-                sizeMd: 3
+                sizeMd: 3,
             },
             enum: [
                 'small',
@@ -155,10 +173,10 @@ const schemaMain = createOrderedMap({
             ],
         },
         age: {
-            type: "string",
-            widget: "Select",
+            type: 'string',
+            widget: 'Select',
             view: {
-                sizeMd: 3
+                sizeMd: 3,
             },
             enum: [
                 'child',
@@ -168,23 +186,62 @@ const schemaMain = createOrderedMap({
             ],
         },
         ages: {
-            type: "array",
-            widget: "SelectMulti",
+            type: 'array',
+            widget: 'SelectMulti',
             view: {
-                sizeMd: 3
+                sizeMd: 3,
             },
-            enum: [
-                'child',
-                'teen',
-                'adult',
-                'senior',
-            ],
+            items: {
+                oneOf: [
+                    {
+                        const: 'child',
+                        t: {
+                            de: {
+                                title: 'Kind',
+                            },
+                            en: {
+                                title: 'Child',
+                            },
+                        },
+                    }, {
+                        const: 'teen',
+                        t: {
+                            de: {
+                                title: 'Jugendlicher',
+                            },
+                            en: {
+                                title: 'Teenager',
+                            },
+                        },
+                    }, {
+                        const: 'adult',
+                        t: {
+                            de: {
+                                title: 'Erwachsener',
+                            },
+                            en: {
+                                title: 'Adult',
+                            },
+                        },
+                    }, {
+                        const: '50plus',
+                        t: {
+                            de: {
+                                title: 'Senior',
+                            },
+                            en: {
+                                title: 'Senior',
+                            },
+                        },
+                    },
+                ],
+            },
         },
     },
     required: [
         'layouts',
-        'size'
-    ]
+        'size',
+    ],
 });
 
 const dataMain = createOrderedMap({
@@ -193,75 +250,75 @@ const dataMain = createOrderedMap({
 });
 
 const schemaUser = createOrderedMap({
-    type: "object",
-    title: "headline",
+    type: 'object',
+    title: 'headline',
     properties: {
         name: {
-            type: "string",
+            type: 'string',
             view: {
                 sizeMd: 6,
-            }
+            },
         },
         surname: {
-            type: "string",
+            type: 'string',
             view: {
-                sizeMd: 6
-            }
+                sizeMd: 6,
+            },
         },
         address: {
-            type: "object",
+            type: 'object',
             properties: {
                 street: {
-                    type: "string",
+                    type: 'string',
                     view: {
-                        sizeMd: 9
-                    }
+                        sizeMd: 9,
+                    },
                 },
                 street_no: {
-                    type: "string",
+                    type: 'string',
                     view: {
-                        sizeMd: 3
-                    }
+                        sizeMd: 3,
+                    },
                 },
                 city: {
-                    type: "string",
+                    type: 'string',
                     view: {
-                        sizeMd: 12
-                    }
+                        sizeMd: 12,
+                    },
                 },
                 country: {
-                    type: "string",
+                    type: 'string',
                     view: {
-                        sizeMd: 12
-                    }
+                        sizeMd: 12,
+                    },
                 },
-            }
+            },
         },
         birthday: {
-            type: "string",
-            format: "date",
+            type: 'string',
+            format: 'date',
             view: {
                 sizeMd: 6,
                 shrink: true,
-            }
+            },
         },
         seats: {
-            type: "number",
+            type: 'number',
             view: {
-                sizeMd: 6
+                sizeMd: 6,
             },
             default: 1,
             minimum: 0,
             maximum: 5,
         },
     },
-    required: ['seats']
+    required: ['seats'],
 });
 
 const dataUser = createOrderedMap({});
 
 export {
     schemaMain, dataMain,
-    schemaUser, dataUser
+    schemaUser, dataUser,
 }
 

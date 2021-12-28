@@ -65,12 +65,14 @@ const schemaDemoMain = {
                             view: {
                                 sizeMd: 3,
                             },
-                            enum: [
-                                'theater',
-                                'crime',
-                                'sci-fi',
-                                'horror',
-                            ],
+                            items: {
+                                oneOf: [
+                                    {const: 'theater'},
+                                    {const: 'crime'},
+                                    {const: 'sci-fi'},
+                                    {const: 'horror'},
+                                ],
+                            },
                         },
                     },
                 },
@@ -216,28 +218,32 @@ const schemaDemoMain = {
             info: [
                 'Some Info!',
             ],
-            enum: [
-                'sidebar_left',
-                'sidebar_right',
-                'notice',
-                'content',
-                'footer',
-            ],
+            items: {
+                oneOf: [
+                    {
+                        const: 'sidebar_left',
+                        t: {
+                            de: {
+                                title: 'Linke Sidebar',
+                            },
+                            en: {
+                                title: 'Left Sidebar',
+                            },
+                        },
+                    }, {
+                        const: 'sidebar_right',
+                    }, {
+                        const: 'notice',
+                    }, {
+                        const: 'content',
+                    }, {
+                        const: 'footer',
+                    },
+                ],
+            },
             default: [
                 'sidebar_left',
             ],
-            t: {
-                de: {
-                    enum: {
-                        sidebar_left: 'Linke Sidebar',
-                    },
-                },
-                en: {
-                    enum: {
-                        sidebar_left: 'Left Sidebar',
-                    },
-                },
-            },
         },
         size: {
             type: 'string',
@@ -310,29 +316,50 @@ const schemaDemoMain = {
                 minimum: 2,
             },*/
             uniqueItems: true,
-            enum: [
-                'child',
-                'teen',
-                'adult',
-                '50plus',
-            ],
-            t: {
-                de: {
-                    enum: {
-                        child: 'Kind',
-                        teen: 'Jugendlicher',
-                        adult: 'Erwachsener',
-                        '50plus': 'Senior',
+            items: {
+                oneOf: [
+                    {
+                        const: 'child',
+                        t: {
+                            de: {
+                                title: 'Kind',
+                            },
+                            en: {
+                                title: 'Child',
+                            },
+                        },
+                    }, {
+                        const: 'teen',
+                        t: {
+                            de: {
+                                title: 'Jugendlicher',
+                            },
+                            en: {
+                                title: 'Teenager',
+                            },
+                        },
+                    }, {
+                        const: 'adult',
+                        t: {
+                            de: {
+                                title: 'Erwachsener',
+                            },
+                            en: {
+                                title: 'Adult',
+                            },
+                        },
+                    }, {
+                        const: '50plus',
+                        t: {
+                            de: {
+                                title: 'Senior',
+                            },
+                            en: {
+                                title: 'Senior',
+                            },
+                        },
                     },
-                },
-                en: {
-                    enum: {
-                        child: 'Child',
-                        teen: 'Teenager',
-                        adult: 'Adult',
-                        '50plus': 'Senior',
-                    },
-                },
+                ],
             },
         },
         select_numbers1: {

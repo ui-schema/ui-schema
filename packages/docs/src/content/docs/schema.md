@@ -251,8 +251,7 @@ For latest issues/questions checkout the [github issues](https://github.com/ui-s
 | core |            | `else` | ✅ |
 | core |            | `then` | ✅ |
 | core |            | `allOf` | ✅ |
-| core |            | `allOf.if`/`allOf.not` | ✅ |
-| core |            | `if.not`/`else.not`/`then.not`/`allOf.not` | ✅ |
+| core |            | `not` | ✅ |
 | core |            | `oneOf` | ✅ |
 | core |            | `anyOf` | ❌ |
 | | `array`    | |  |

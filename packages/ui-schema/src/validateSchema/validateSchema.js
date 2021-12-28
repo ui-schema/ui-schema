@@ -36,7 +36,7 @@ export const validateSchema = (schema, value) => {
         err = err.addError(ERROR_PATTERN);
     } else if(!validateConst(schema.get('const'), value)) {
         err = err.addError(ERROR_CONST_MISMATCH);
-    } else if(!validateEnum(type, schema.get('enum'), value)) {
+    } else if(!validateEnum(schema.get('enum'), value)) {
         err = err.addError(ERROR_ENUM_MISMATCH);
     } else if(!validateMultipleOf(schema, value)) {
         err = err.addError(ERROR_MULTIPLE_OF);

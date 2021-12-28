@@ -1,14 +1,14 @@
 import React from 'react';
-import {TransTitle, useUIMeta, beautifyKey} from '@ui-schema/ui-schema';
+import {TransTitle, useUIMeta, beautifyKey, extractValue, memo, sortScalarList} from '@ui-schema/ui-schema';
 import {List, Map} from 'immutable';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
-export const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChange, required}) => {
-    const enum_val = schema.get('enum');
+export const SelectMulti = extractValue(memo(({schema, storeKeys, showValidity, errors, ownKey, value, onChange, required}) => {
     const {t} = useUIMeta();
 
-    if(!enum_val) return null;
     if(!schema) return null;
+    const oneOfValues = schema.getIn(['items', 'oneOf'])
+    if(!oneOfValues) return null
 
     let classForm = ['selectpicker', 'custom-select'];
     let classFormParent = ['form-group'];
@@ -18,12 +18,15 @@ export const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, 
     if(showValidity && !errors.hasError()) {
         classForm.push('was-validated');
     }
-    const currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '');
+    const currentValue = typeof value !== 'undefined' ? value :
+        schema.get('default') ? List(schema.get('default')) : List([]);
+
     return <div className={classFormParent.join(' ')}>
         <label><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></label>
         <select
-            value={currentValue}
+            value={currentValue.toArray()}
             className={classForm.join(' ')}
+            multiple
             onChange={(e) => {
                 const target = e.target
                 onChange({
@@ -31,27 +34,27 @@ export const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, 
                     scopes: ['value'],
                     type: 'update',
                     updater: () => ({
-                        value: target.value,
+                        value: sortScalarList(List([...target.options].filter(o => o.selected).map(o => o.value))),
                     }),
                     schema,
                     required,
                 })
             }}>
-            {enum_val ? enum_val.map((enum_name) => {
-                const s = enum_name + '';
-                const Translated = t(s, Map({relative: List(['enum', s])}), schema.get('t'));
+            {oneOfValues ? oneOfValues.map((oneOfSchema) => {
+                const oneOfVal = oneOfSchema.get('const') + '';
+                const Translated = t(oneOfVal, Map({relative: List(['title'])}), oneOfSchema.get('t'));
 
                 return <option
-                    key={enum_name}
-                    value={enum_name}
-                    defaultValue={currentValue === enum_name}>
+                    key={oneOfVal}
+                    value={oneOfVal}
+                    defaultValue={currentValue.toArray().includes(oneOfVal)}>
                     {typeof Translated === 'string' || typeof Translated === 'number' ?
                         Translated :
-                        beautifyKey(s, schema.get('ttEnum'))}
+                        beautifyKey(oneOfVal, oneOfSchema.get('tt'))}
                 </option>
 
             }).valueSeq() : null}
         </select>
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </div>
-};
+}));

@@ -64,7 +64,17 @@ export const schemaSimRadio = createOrderedMap({
 export const schemaSimCheck = createOrderedMap({
     type: 'array',
     widget: 'OptionsCheck',
-    enum: ['left', 'center', 'right'],
+    items: {
+        oneOf: [
+            {
+                const: 'left',
+            }, {
+                const: 'center',
+            }, {
+                const: 'right',
+            },
+        ],
+    },
     view: {
         sizeXs: 12,
     },
@@ -73,7 +83,17 @@ export const schemaSimCheck = createOrderedMap({
 export const schemaSimSelect = createOrderedMap({
     type: 'array',
     widget: 'SelectMulti',
-    enum: ['left', 'center', 'right'],
+    items: {
+        oneOf: [
+            {
+                const: 'left',
+            }, {
+                const: 'center',
+            }, {
+                const: 'right',
+            },
+        ],
+    },
     view: {
         sizeXs: 12,
     },

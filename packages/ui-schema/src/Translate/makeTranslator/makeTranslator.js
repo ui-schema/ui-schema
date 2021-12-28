@@ -16,6 +16,8 @@ export const makeTranslator = (dictionary, locale = '') =>
         const schemaT = relT(schema, context, locale);
         if(schemaT) return schemaT;
 
+        if(typeof text !== 'string') return undefined
+
         let trans = dictionary.getIn(text.split('.'));
 
         if(typeof trans === 'function') {
