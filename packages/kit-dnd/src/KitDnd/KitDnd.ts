@@ -43,14 +43,15 @@ export const DndIntents: {
     right: 'right',
 }
 
-export type PathKey = keyof any
+//export type PathKey = keyof any
+export type PathKey = string | number
 export type DataKeys = List<PathKey>
 
 export interface ItemSpec {
     type: string
     id: string
     index: number
-    dataKeys: List<number>
+    dataKeys: DataKeys
 }
 
 export interface OnMovedEvent<C extends HTMLElement = HTMLElement, S extends ItemSpec = ItemSpec> {

@@ -30,11 +30,9 @@ export const SortableListItemBase = <C extends HTMLElement = HTMLElement, S exte
         id: id,
         dataKeys: dataKeys,
         index: index,
-        storeKeys: storeKeys,
     }), [
         itemType,
         id, dataKeys, index,
-        storeKeys,
     ])
 
     const {

@@ -1,9 +1,8 @@
 import React from 'react'
 import { checkIsOtherTarget } from '@ui-schema/kit-dnd/Utils/checkIsOtherTarget'
 import { calcIntentPos, CalcDragIntentEvent, CalcDragIntentOptions } from '@ui-schema/kit-dnd/calcIntentPos'
-import { DndDragIntentKeys, DndDragIntentPos, ItemSpec, OnMovedEvent } from '@ui-schema/kit-dnd/KitDnd'
+import { DataKeys, DndDragIntentKeys, DndDragIntentPos, ItemSpec, OnMovedEvent } from '@ui-schema/kit-dnd/KitDnd'
 import { calcIntentDataKeys } from '@ui-schema/kit-dnd/calcIntentDataKeys'
-import { List } from 'immutable'
 
 export type OnIntentOptions = CalcDragIntentOptions
 
@@ -15,7 +14,7 @@ export type onIntentFactory<C extends HTMLElement = HTMLElement,
         details: E,
         intent: DndDragIntentPos | undefined,
         intentKeys: DndDragIntentKeys | undefined,
-        done: (keys?: List<number>, index?: number) => void
+        done: (keys?: DataKeys, index?: number) => void
     ) => void
 ) => (details: E) => void
 
@@ -80,7 +79,7 @@ export const useOnIntent = <C extends HTMLElement = HTMLElement, S extends ItemS
                 fromDataKeys: fromDataKeys,
                 fromIndex: fromIndex,
             })
-            const done = (keys?: List<number>, ix?: number) => {
+            const done = (keys?: DataKeys, ix?: number) => {
                 initialHoverClientOffset.current = {
                     x: clientOffset?.x || 0,
                     y: clientOffset?.y || 0,
