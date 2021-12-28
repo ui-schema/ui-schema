@@ -135,8 +135,7 @@ The `onChange` is responsible to update different parts of the [store](#uistore)
 
 Parameters:
 
-- `actions`
-    - one or multiple [store action](#store-actions)
+- `actions`, one or multiple [store action](#store-actions)
 
 Does not return anything.
 

@@ -12,7 +12,8 @@ import {
 import { List } from 'immutable'
 import { UIGenerator } from '../src/UIGenerator/UIGenerator'
 import { MockWidgets } from './MockSchemaProvider.mock'
-import { storeUpdater, createStore, extractValue, WithValue } from '@ui-schema/ui-schema/UIStore'
+import { createStore, extractValue, WithValue } from '@ui-schema/ui-schema/UIStore'
+import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
 import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ExtractStorePlugin, JsonSchema, TransTitle, PluginSimpleStack, ValidityReporter, WidgetProps } from '@ui-schema/ui-schema'
 import { ReferencingHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
@@ -199,8 +200,8 @@ const TestUIRenderer = (props: {
         required: ['demo_number'],
     } as JsonSchema))
 
-    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
-        setStore(storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type))
+    const onChange = React.useCallback((actions) => {
+        setStore(storeUpdater(actions))
     }, [setStore])
 
     return <UIGenerator
@@ -212,7 +213,6 @@ const TestUIRenderer = (props: {
         widgets={widgets}
         t={props.notT ? relTranslator : (text: string) => text}
     >
-        {/* (optional) add components which use the context of the Editor here */}
         <div>store-is-{isInvalid(store.getValidity()) ? 'invalid' : 'correct'}</div>
     </UIGenerator>
 }
@@ -222,15 +222,15 @@ describe('UIGenerator Integration', () => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer data={{demo_number: 10, demo_array2: ['val-test']}}/>
         )
-        expect(container.querySelectorAll('.root-renderer').length === 1).toBeTruthy()
-        expect(container.querySelectorAll('.group-renderer').length > 0).toBeTruthy()
+        expect(container.querySelectorAll('.root-renderer').length).toBe(1)
+        expect(container.querySelectorAll('.group-renderer').length).toBe(2)
         expect(queryByText('store-is-correct') !== null).toBeTruthy()
         expect(queryByText('store-is-invalid')).toBe(null)
         expect(queryByText('widget.demo_string.title') !== null).toBeTruthy()
-        expect(queryAllByText('string-renderer').length === 4).toBeTruthy()
+        expect(queryAllByText('string-renderer').length).toBe(4)
         expect(queryByText('string-with-error') === null).toBeTruthy()
         expect(queryByText('missing-type-number') !== null).toBeTruthy()
-        expect(queryAllByText('array-renderer').length === 3).toBeTruthy()
+        expect(queryAllByText('array-renderer').length).toBe(3)
     })
     it('TestUIRenderer no `store`', async () => {
         const {queryByText, queryAllByText, container} = render(
@@ -247,8 +247,8 @@ describe('UIGenerator Integration', () => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer notT/>
         )
-        expect(container.querySelectorAll('.root-renderer').length === 1).toBeTruthy()
-        expect(container.querySelectorAll('.group-renderer').length > 0).toBeTruthy()
+        expect(container.querySelectorAll('.root-renderer').length).toBe(1)
+        expect(container.querySelectorAll('.group-renderer').length).toBe(2)
         expect(queryByText('Demo String') !== null).toBeTruthy()
         expect(queryByText('widget.demo_string.title')).toBe(null)
         expect(queryAllByText('string-renderer').length).toBe(3)

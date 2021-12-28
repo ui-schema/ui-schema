@@ -20,7 +20,10 @@ export interface StringRendererDebouncedProps {
 export const StringRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBinding> = WidgetProps<{}, MuiWidgetBinding>>(
     {
         type,
-        multiline, rows, rowsMax,
+        multiline,
+        // eslint-disable-next-line deprecation/deprecation
+        rows, rowsMax,
+        minRows, maxRows,
         storeKeys, ownKey, schema, value, onChange,
         showValidity, valid, errors, required,
         style,
@@ -96,9 +99,15 @@ export const StringRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBindi
             multiline={multiline}
             required={required}
             error={!valid && showValidity}
-            rows={rows}
+            minRows={
+                typeof minRows === 'number' ? minRows :
+                    rows
+            }
+            maxRows={
+                typeof maxRows === 'number' ? maxRows :
+                    rowsMax
+            }
             inputRef={inputRef}
-            rowsMax={rowsMax}
             fullWidth
             variant={schema.getIn(['view', 'variant']) as any}
             margin={schema.getIn(['view', 'margin']) as InputProps['margin']}
@@ -153,8 +162,16 @@ export const TextRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBinding
     return <StringRendererDebounced
         {...props}
         schema={schema}
-        rows={props.rows || schema.getIn(['view', 'rows'])}
-        rowsMax={props.rowsMax || schema.getIn(['view', 'rowsMax'])}
+        minRows={
+            typeof props.minRows === 'number' ? props.minRows :
+                // eslint-disable-next-line deprecation/deprecation
+                (props.rows || schema.getIn(['view', 'rows']))
+        }
+        maxRows={
+            typeof props.maxRows === 'number' ? props.maxRows :
+                // eslint-disable-next-line deprecation/deprecation
+                (props.rowsMax || schema.getIn(['view', 'rowsMax']))
+        }
         multiline
     />
 }

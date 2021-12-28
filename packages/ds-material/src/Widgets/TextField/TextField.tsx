@@ -104,11 +104,11 @@ export const StringRenderer = <P extends WidgetProps<{}, MuiWidgetBinding> = Wid
                 typeof minRows === 'number' ? minRows :
                     rows
             }
-            inputRef={inputRef}
             maxRows={
                 typeof maxRows === 'number' ? maxRows :
                     rowsMax
             }
+            inputRef={inputRef}
             fullWidth
             variant={schema.getIn(['view', 'variant']) as any}
             margin={schema.getIn(['view', 'margin']) as InputProps['margin']}
