@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/pro",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "description": "Components and Utilities for more advanced usages of UI-Schema",
     "homepage": "https://ui-schema.bemit.codes/docs/pro",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -28,7 +28,7 @@
     "main": "index.js",
     "module": "esm/index.js",
     "scripts": {
-        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/ui-schema-pro/src build && rm -rf build/dts && rm -rf build/**/*.test.*",
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/ui-schema-pro/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*",
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "devDependencies": {

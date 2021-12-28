@@ -18,7 +18,7 @@ Checkout the [monorepo home](https://github.com/ui-schema/ui-schema) for more.
 
 **🚀 Demo: UI-Schema + Material Design + CRA**
 
-[![Run on CodeSandbox](https://img.shields.io/badge/run%20on%20CodeSandbox-blue?labelColor=fff&logoColor=505050&style=for-the-badge&logo=codesandbox)](https://codesandbox.io/s/github/ui-schema/demo-cra/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2FSchema%2FDemoUIGenerator.js)
+[![Run on CodeSandbox](https://img.shields.io/badge/run%20on%20CodeSandbox-blue?labelColor=fff&logoColor=505050&style=for-the-badge&logo=codesandbox)](https://codesandbox.io/s/github/ui-schema/demo-cra/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2FSchema%2FDemoEditor.js)
 
 [![Clone on Repl.it](https://img.shields.io/badge/Clone%20on%20repl.it-grey?labelColor=fff&style=for-the-badge)](https://repl.it/github/ui-schema/demo-cra)
 

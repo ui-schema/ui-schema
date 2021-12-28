@@ -1,6 +1,6 @@
 {
 	"name": "@ui-schema/material-slate",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"description": "Slate for UI-Schema with Material-UI",
 	"homepage": "https://ui-schema.bemit.codes",
 	"author": "Michael Becker <michael@bemit.codes>",
@@ -30,7 +30,7 @@
 	"main": "index.js",
 	"module": "esm/index.js",
 	"scripts": {
-		"dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/material-slate/src build && rm -rf build/dts && rm -rf build/**/*.test.*",
+		"dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/material-slate/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*",
 		"__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
 	},
 	"dependencies": {

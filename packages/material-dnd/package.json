@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-dnd",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "Drag and Drop Tools and Widgets for UI-Schema with Material-UI",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -28,7 +28,7 @@
     "main": "index.js",
     "module": "esm/index.js",
     "scripts": {
-        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/material-dnd/src build && rm -rf build/dts && rm -rf build/**/*.test.*",
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/material-dnd/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*",
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "dependencies": {

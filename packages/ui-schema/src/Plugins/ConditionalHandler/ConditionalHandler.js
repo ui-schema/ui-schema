@@ -2,7 +2,7 @@ import React from 'react';
 import {Map} from 'immutable';
 import {NextPluginRendererMemo} from '@ui-schema/ui-schema/PluginStack';
 import {handleIfElseThen} from './handleIfElseThen';
-import {schemaTypeIs} from '@ui-schema/ui-schema';
+import {schemaTypeIs} from '@ui-schema/ui-schema/Utils/schemaTypeIs';
 
 export const ConditionalHandler = (props) => {
     let {schema, value} = props;
