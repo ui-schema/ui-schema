@@ -33,7 +33,7 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<{}, MuiWidgetBindi
                     key={oneOfSchema.get('const')}
                     label={<Trans
                         schema={oneOfSchema.get('t') as unknown as StoreSchemaType}
-                        text={oneOfSchema.get('title') || storeKeys.insert(0, 'widget').push('title').join('.')}
+                        text={oneOfSchema.get('title') as string || oneOfSchema.get('const') as string}
                         context={Map({'relative': List(['title'])})}
                         fallback={oneOfSchema.get('title') || beautifyKey(oneOfSchema.get('const') as string | number, oneOfSchema.get('tt') as tt)}
                     />}
@@ -45,19 +45,19 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<{}, MuiWidgetBindi
                     color={'primary'}
                     onClick={() => {
                         !schema.get('readOnly') &&
-                        onChange(
-                            storeKeys, ['value'],
-                            {
-                                type: 'update',
-                                updater: ({value = List()}: { value?: List<string> }) => ({
-                                    value: value.indexOf(oneOfSchema.get('const') as string) === -1 ?
-                                        sortScalarList(value.push(oneOfSchema.get('const') as string)) :
-                                        sortScalarList(value.splice(value.indexOf(oneOfSchema.get('const') as string), 1)),
-                                }),
-                                schema,
-                                required,
-                            },
-                        )
+
+                        onChange({
+                            storeKeys,
+                            scopes: ['value'],
+                            type: 'update',
+                            schema,
+                            required,
+                            updater: ({value = List()}: { value?: List<string> }) => ({
+                                value: value.indexOf(oneOfSchema.get('const') as string) === -1 ?
+                                    sortScalarList(value.push(oneOfSchema.get('const') as string)) :
+                                    sortScalarList(value.splice(value.indexOf(oneOfSchema.get('const') as string), 1)),
+                            }),
+                        })
                     }}
                 />
             ).valueSeq() : null}

@@ -6,7 +6,7 @@ Checkout the [dictionary package](#dictionary-package)!
 
 ## Translation
 
-The `t` prop of `UIMetaProvider` and `UIGenerator` supports complex translators for dynamic translations and with any translation library.
+The `t` prop of `UIMetaProvider` and `UIGenerator` supports complex translators for dynamic translations with any translation library.
 
 > In your own widgets any translation lib can be used directly, when contributing to a design system use one of:
 > - `{ t } = useUIMeta()`

@@ -69,25 +69,31 @@ Helper for moving an item inside a `List`/`array`, useful for moving up/down ins
 import {useImmutable} from '@ui-schema/ui-schema/Utils/useImmutable'
 
 // moving "up" in an sortable list
-onChange(
-    storeKeys, ['value', 'internal'],
-    ({value, internal}) => ({
+onChange({
+    storeKeys,
+    scopes: ['value', 'internal'],
+    type: 'update',
+    updater: ({value, internal}) => ({
         value: moveItem(value, index, index - 1),
         internal: // todo implement
     }),
-    deleteOnEmpty,
-    'array',
-)
+    schema,
+    required,
+})
 
 // moving "down" in an sortable list
-onChange(
-    storeKeys, ['value', 'internal'], ({value, internal}) => ({
+onChange({
+    storeKeys,
+    scopes: ['value', 'internal'],
+    type: 'update',
+    updater: ({value, internal}) => ({
         value: moveItem(value, index, index + 1),
         internal: // todo implement
     }),
-    deleteOnEmpty,
-    'array',
-)
+    schema,
+    required,
+})
+
 ```
 
 ## memo / isEqual
@@ -134,9 +140,11 @@ Sorts `string` and `number` values inside a `List` in `asc` order, useful for be
 ```js
 import {sortScalarList} from '@ui-schema/ui-schema/Utils/sortScalarList';
 
-onChange(
-    storeKeys, ['value'],
-    ({value: val = List()}) =>
+onChange({
+    storeKeys,
+    scopes: ['value'],
+    type: 'update',
+    updater: ({value: val = List()}) =>
         ({
             value: sortScalarList(
                 val.contains(enum_name) ?
@@ -144,5 +152,7 @@ onChange(
                     val.push(enum_name)
             ),
         }),
-)
+    schema,
+    required,
+})
 ```

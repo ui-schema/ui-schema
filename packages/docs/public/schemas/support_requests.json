@@ -1,0 +1,16 @@
+{
+    "$defs": {
+        "end-user": {
+            "type": "object",
+            "properties": {
+                "issue": {
+                    "type": "string"
+                },
+                "comment": {
+                    "type": "string",
+                    "widget": "Text"
+                }
+            }
+        }
+    }
+}

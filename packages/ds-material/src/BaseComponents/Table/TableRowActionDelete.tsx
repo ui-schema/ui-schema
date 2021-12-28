@@ -25,23 +25,22 @@ export const TableRowActionDelete: React.ComponentType<TableRowActionDeleteProps
     return <IconButton
         color="inherit"
         onClick={() => {
-            onChange(
-                storeKeys.splice(-1, 1) as StoreKeys, ['value', 'internal'],
-                {
-                    type: 'list-item-delete',
-                    index: index,
-                    effect: ({value}) => {
-                        if (showRows !== -1) {
-                            setPage(p => {
-                                const nextPage = (Math.ceil(value.size / showRows) || 1) - 1
-                                return (p < nextPage ? p : nextPage)
-                            })
-                        }
-                    },
-                    schema: Map({type: 'array'}) as StoreSchemaType,
-                    required: deleteOnEmpty,
-                }
-            )
+            onChange({
+                type: 'list-item-delete',
+                storeKeys: storeKeys.splice(-1, 1) as StoreKeys,
+                scopes: ['value', 'internal'],
+                index: index,
+                effect: ({value}) => {
+                    if (showRows !== -1) {
+                        setPage(p => {
+                            const nextPage = (Math.ceil(value.size / showRows) || 1) - 1
+                            return (p < nextPage ? p : nextPage)
+                        })
+                    }
+                },
+                schema: Map({type: 'array'}) as StoreSchemaType,
+                required: deleteOnEmpty,
+            })
         }}
         size={'small'}
     >

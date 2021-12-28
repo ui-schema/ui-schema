@@ -35,18 +35,14 @@ export const BoolRenderer = (
             'aria-labelledby': labelledBy,
         }}
         onChange={() =>
-            onChange(
-                storeKeys, ['value'],
-                {
-                    type: 'update',
-                    updater: ({value: storeValue}) => ({value: !storeValue}),
-                    schema,
-                    required,
-                },
-                ({value: storeValue}) => ({value: !storeValue}),
-                schema.get('deleteOnEmpty') || required,
-                schema.get('type'),
-            )
+            onChange({
+                storeKeys,
+                scopes: ['value'],
+                type: 'update',
+                updater: ({value: storeValue}) => ({value: !storeValue}),
+                schema,
+                required,
+            })
         }
     />
 

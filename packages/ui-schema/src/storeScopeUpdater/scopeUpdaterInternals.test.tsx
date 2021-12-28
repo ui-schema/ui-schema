@@ -9,9 +9,13 @@ import {
 } from '@testing-library/jest-dom/matchers'
 import { List, Map } from 'immutable'
 import { UIStore, StoreKeys, UIStoreType } from '@ui-schema/ui-schema/UIStore/UIStore'
-import { scopeUpdaterInternals } from '@ui-schema/ui-schema/UIStore/scopeUpdaterInternals'
+import { scopeUpdaterInternals } from '@ui-schema/ui-schema/storeScopeUpdater/scopeUpdaterInternals'
 
 expect.extend({toBeInTheDocument, toHaveClass})
+
+/**
+ * npm run tdd -- -u --testPathPattern=src/storeScopeUpdater/scopeUpdaterInternals.test.tsx
+ */
 
 describe('scopeUpdaterInternals', () => {
     test.each([
@@ -20,7 +24,6 @@ describe('scopeUpdaterInternals', () => {
                 internals: Map({}),
             }),
             List([]),
-            undefined,
             undefined,
             //Map({}),
             new UIStore({
@@ -31,9 +34,6 @@ describe('scopeUpdaterInternals', () => {
                 internals: Map({}),
             }),
             List([]),
-            Map({
-                internals: Map({}),
-            }),
             Map({
                 value: 'some-state',
                 internals: Map({}),
@@ -50,9 +50,6 @@ describe('scopeUpdaterInternals', () => {
                 internals: Map({}),
             }),
             List([]),
-            Map({
-                internals: Map({}),
-            }),
             Map({
                 value: 'some-state',
                 internals: Map({}),
@@ -69,7 +66,6 @@ describe('scopeUpdaterInternals', () => {
                 internals: Map({}),
             }),
             List(['prop_a']),
-            undefined,
             Map({
                 value: 'some-state',
             }),
@@ -87,7 +83,6 @@ describe('scopeUpdaterInternals', () => {
                 internals: Map({}),
             }),
             List(['prop_a']),
-            Map({}),
             Map({
                 value: 'some-state',
             }),
@@ -105,7 +100,6 @@ describe('scopeUpdaterInternals', () => {
                 internals: Map({}),
             }),
             List(['prop_a', 0]),
-            undefined,
             Map({
                 value: 'some-state',
             }),
@@ -127,7 +121,6 @@ describe('scopeUpdaterInternals', () => {
                 internals: Map({}),
             }),
             List(['prop_a', 0, 'sub_a']),
-            undefined,
             Map({
                 value: 'some-state',
             }),
@@ -163,7 +156,6 @@ describe('scopeUpdaterInternals', () => {
                 }),
             }),
             List(['prop_a', 0, 'sub_a']),
-            undefined,
             Map({
                 value: 'some-state',
             }),
@@ -202,7 +194,6 @@ describe('scopeUpdaterInternals', () => {
                 }),
             }),
             List(['prop_a', 0, 'sub_a']),
-            Map({}),
             Map({
                 value: 'some-state',
             }),
@@ -226,10 +217,10 @@ describe('scopeUpdaterInternals', () => {
         ],
     ])('scopeUpdaterInternals(%j, %s, %j): %j', <S extends UIStoreType>(
         store: S, storeKeys: StoreKeys,
-        oldValue: any, newValue: any,
+        newValue: any,
         expected: any
     ) => {
-        const r = scopeUpdaterInternals(store, storeKeys, oldValue, newValue)
+        const r = scopeUpdaterInternals(store, storeKeys, newValue)
         const isExpected = r.equals(expected)
         if (!isExpected) {
             // @ts-ignore

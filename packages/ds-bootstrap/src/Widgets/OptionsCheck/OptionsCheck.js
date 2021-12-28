@@ -4,7 +4,7 @@ import {List, Map} from 'immutable';
 import {useUID} from 'react-uid';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
-const CheckInput = ({currentValue, onChange, label, value, classForm, classLabel, classFormControl}) => {
+const CheckInput = ({checked, onChange, label, value, classForm, classLabel, classFormControl}) => {
     const uid = useUID();
 
     return <div className={classForm}>
@@ -13,7 +13,7 @@ const CheckInput = ({currentValue, onChange, label, value, classForm, classLabel
             type="checkbox"
             className={classFormControl}
             value={value}
-            checked={currentValue}
+            checked={checked}
             onChange={onChange}/>
         <label
             className={classLabel}
@@ -25,38 +25,38 @@ const CheckInput = ({currentValue, onChange, label, value, classForm, classLabel
 };
 const checkActive = (list, name) => list && list.contains && typeof list.contains(name) !== 'undefined' ? list.contains(name) : false;
 
-const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChange, classLabel, classFormControl, classForm, schema, required}) => enumVal ?
-    enumVal.map((enum_name) => {
-        const isActive = checkActive(value, enum_name)
+const OptionsCheckValue = extractValue(memo(({oneOfValues, storeKeys, value, onChange, classLabel, classFormControl, classForm, schema, required}) => oneOfValues ?
+    oneOfValues.map((oneOfSchema) => {
+        const oneOfVal = oneOfSchema.get('const')
+        const isActive = checkActive(value, oneOfVal)
 
         return <CheckInput
-            key={enum_name}
-            value={enum_name}
+            key={oneOfVal}
+            checked={isActive}
             classForm={classForm}
             classLabel={classLabel}
             classFormControl={classFormControl}
             currentValue={isActive}
             onChange={() => {
-                onChange(
-                    storeKeys, ['value'],
-                    {
-                        type: 'update',
-                        updater: ({value: val = List()}) =>
-                            ({
-                                value: sortScalarList(checkActive(val, enum_name) ?
-                                    val.delete(val.indexOf(enum_name)) :
-                                    val.push(enum_name)),
-                            }),
-                        schema,
-                        required,
-                    },
-                )
+                onChange({
+                    storeKeys,
+                    scopes: ['value'],
+                    type: 'update',
+                    updater: ({value: val = List()}) =>
+                        ({
+                            value: sortScalarList(checkActive(val, oneOfVal) ?
+                                val.delete(val.indexOf(oneOfVal)) :
+                                val.push(oneOfVal)),
+                        }),
+                    schema,
+                    required,
+                })
             }}
             label={<Trans
-                schema={schema.get('t')}
-                text={storeKeys.insert(0, 'widget').concat(List(['enum', enum_name])).join('.')}
-                context={Map({'relative': List(['enum', enum_name])})}
-                fallback={beautifyKey(enum_name, schema.get('ttEnum'))}
+                schema={oneOfSchema.get('t')}
+                text={oneOfSchema.get('title') || oneOfSchema.get('const')}
+                context={Map({'relative': List(['title'])})}
+                fallback={oneOfSchema.get('title') || beautifyKey(oneOfSchema.get('const'), oneOfSchema.get('tt'))}
             />}
         />
     }).valueSeq()
@@ -64,9 +64,8 @@ const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChang
 ));
 
 const OptionsCheck = ({schema, storeKeys, showValidity, errors, ownKey, required}) => {
-    const enumVal = schema.get('enum');
-
-    if(!enumVal) return null;
+    const oneOfVal = schema.getIn(['items', 'oneOf'])
+    if(!oneOfVal) return null
 
     let classForm = ['custom-control', 'custom-checkbox'];
     let classLabel = ['custom-control-label', 'text-light'];
@@ -86,7 +85,7 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors, ownKey, required
             classForm={classForm.join(' ')}
             classLabel={classLabel.join(' ')}
             classFormControl={classFormControl.join(' ')}
-            enumVal={enumVal} storeKeys={storeKeys} schema={schema}/>
+            oneOfValues={oneOfVal} storeKeys={storeKeys} schema={schema}/>
 
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </React.Fragment>

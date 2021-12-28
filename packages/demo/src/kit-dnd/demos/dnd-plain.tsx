@@ -6,7 +6,7 @@ import { HTML5toTouch } from 'rdndmb-html5-to-touch'
 import { DndIntents } from '@ui-schema/kit-dnd/KitDnd'
 import { useOnIntent } from '@ui-schema/kit-dnd/useOnIntent'
 import { DraggableBlock } from '../components/DraggableBlock'
-import { KitDndProvider, KitDndProviderContextType } from '@ui-schema/kit-dnd/KitDndProvider/KitDndProvider'
+import { KitDndProvider, KitDndProviderContextType } from '@ui-schema/kit-dnd/KitDndProvider'
 
 export const KitDndPlain = () => {
     const [list, setList] = React.useState<List<string>>(List(['aaaa-1', 'abbb-2', 'accc-3']))

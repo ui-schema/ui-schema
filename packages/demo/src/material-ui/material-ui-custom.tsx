@@ -5,15 +5,21 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, Step, Stepper, widgets } from '@ui-schema/ds-material'
-import { createOrderedMap, createStore, StoreKeys, StoreSchemaType, WidgetProps, loadSchemaUIApi, UIMetaProvider, UIStoreProvider, useUIMeta, WithValue, extractValue, WidgetsBindingFactory } from '@ui-schema/ui-schema'
+import {
+    createOrderedMap, createStore,
+    StoreKeys, StoreSchemaType, WidgetProps,
+    UIMetaProvider, UIStoreProvider, useUIMeta,
+    WithValue, extractValue,
+    WidgetsBindingFactory,
+} from '@ui-schema/ui-schema'
 import { browserT } from '../t'
-import { UIApiProvider } from '@ui-schema/ui-schema/UIApi/UIApi'
+import { UIApiProvider, loadSchemaUIApi } from '@ui-schema/ui-schema/UIApi'
 import { ReferencingNetworkHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
-import { storeUpdater } from '@ui-schema/ui-schema/UIStore/storeUpdater'
+import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
 import { Table } from '@ui-schema/ds-material/Widgets/Table'
 import { NumberRendererCell, StringRendererCell, TextRendererCell } from '@ui-schema/ds-material/Widgets/TextFieldCell'
 import { TableAdvanced } from '@ui-schema/ds-material/Widgets/TableAdvanced/TableAdvanced'
-import { List, Map, OrderedMap } from 'immutable'
+import { List, OrderedMap } from 'immutable'
 import { PluginStack } from '@ui-schema/ui-schema/PluginStack'
 import { applyPluginStack } from '@ui-schema/ui-schema/applyPluginStack'
 import { StringRenderer } from '@ui-schema/ds-material/Widgets/TextField'
@@ -127,18 +133,20 @@ const FileUpload: React.ComponentType<WidgetProps & WithValue> = ({storeKeys, on
                 .then(data => {
                     if (data.status === 200) {
                         console.log('file uploaded!', data)
-                        onChange(
-                            // !!! this `onChange` is only compatible with the newest `0.3.0-alpha` version!
-                            storeKeys, ['value'],
-                            {
-                                type: 'update',
-                                updater: ({value = Map()}) => ({
-                                    value: value.set('link', data.link).set('expires', data.expires).set('name', data.name),
+                        onChange({
+                            type: 'set',
+                            scopes: ['value'],
+                            storeKeys: storeKeys,
+                            data: {
+                                value: OrderedMap({
+                                    link: data.link,
+                                    expires: data.expires,
+                                    name: data.name,
                                 }),
-                                schema,
-                                required,
-                            }
-                        )
+                            },
+                            schema,
+                            required,
+                        })
                     } else {
                         // todo: implement validity handling on error
                         console.error('File upload error!', data)
@@ -159,12 +167,12 @@ const FreeFormEditor = () => {
     const showValidity = true
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
 
-    const onChange = React.useCallback((storeKeys, scopes, updater) => {
-        setStore(storeUpdater(storeKeys, scopes, updater))
+    const onChange = React.useCallback((actions) => {
+        setStore(storeUpdater(actions))
     }, [setStore])
 
     const {handleStuff} = useUIMeta<UIMetaCustomContext, CustomWidgetsBinding>()
-    console.log('handleStuff', handleStuff)
+    console.log('handleStuff', store.toJS(), handleStuff)
 
     return <React.Fragment>
         <UIStoreProvider

@@ -42,21 +42,20 @@ const EditorJSBase: React.ComponentType<EditorJSProps> = (
     const onChangeEditor = React.useCallback((_api: API, newData?: OutputData) => {
         const newValue = fromJSOrdered(newData) as OrderedMap<any, any>
         if (!currentState.current?.get('blocks')?.equals(newValue?.get('blocks'))) {
-            onChange(
-                storeKeys, ['value', 'internal'],
-                {
-                    type: 'update',
-                    updater: ({internal: currentInternal = Map()}) => {
-                        currentState.current = newValue
-                        return {
-                            value: currentState.current,
-                            internal: currentInternal.set('isEmpty', Boolean(!(currentState.current?.get('blocks')?.size > 0))),
-                        }
-                    },
-                    schema: Map({type: 'object'}) as StoreSchemaType,
-                    required,
-                }
-            )
+            onChange({
+                storeKeys,
+                scopes: ['value', 'internal'],
+                type: 'update',
+                updater: ({internal: currentInternal = Map()}) => {
+                    currentState.current = newValue
+                    return {
+                        value: currentState.current,
+                        internal: currentInternal.set('isEmpty', Boolean(!(currentState.current?.get('blocks')?.size > 0))),
+                    }
+                },
+                schema: Map({type: 'object'}) as StoreSchemaType,
+                required,
+            })
         }
     }, [onChange, storeKeys, required, currentState])
 
@@ -83,17 +82,16 @@ const EditorJSBase: React.ComponentType<EditorJSProps> = (
                     blocks: [],
                 }) as OrderedMap<any, any>
             }
-            onChange(
-                storeKeys, ['internal'],
-                {
-                    type: 'update',
-                    updater: ({internal: currentInternal = Map()}) => ({
-                        internal: currentInternal.set('isEmpty', Boolean(!(value?.get('blocks')?.size > 0))),
-                    }),
-                    schema: Map({type: 'object'}) as StoreSchemaType,
-                    required,
-                }
-            )
+            onChange({
+                storeKeys,
+                scopes: ['internal'],
+                type: 'update',
+                updater: ({internal: currentInternal = Map()}) => ({
+                    internal: currentInternal.set('isEmpty', Boolean(!(value?.get('blocks')?.size > 0))),
+                }),
+                schema: Map({type: 'object'}) as StoreSchemaType,
+                required,
+            })
         }
     }, [value, ready, editorRef, currentState, isEmpty, onEmptyChange])
 

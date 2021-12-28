@@ -247,7 +247,7 @@ const rootStoreKeys = List()
 const EditorStub = () => {
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
 
-    const onChange = React.useCallback((...action) => setStore(storeUpdater(...action)), [setStore])
+    const onChange = React.useCallback((actions) => setStore(storeUpdater(actions)), [setStore])
 
     // use the `UIProvider` to skip the rendering of `RootRenderer`
     return <UIProvider

@@ -42,15 +42,16 @@ const StringRenderer = ({ownKey, schema, value, multiline = false, onChange, sto
             value={typeof value !== 'undefined' ? value : ''}
             onChange={(e) => {
                 const val = e.target.value
-                onChange(
-                    storeKeys, ['value'],
-                    {
-                        type: 'update',
-                        updater: () => ({value: convertStringToNumber(val, schema.get('type'))}),
-                        schema,
-                        required,
+                onChange({
+                    storeKeys,
+                    scopes: ['value'],
+                    type: 'set',
+                    data: {
+                        value: convertStringToNumber(val, schema.get('type')),
                     },
-                )
+                    schema,
+                    required,
+                })
             }}
         />
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>

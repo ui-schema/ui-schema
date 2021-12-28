@@ -1,5 +1,4 @@
-import { DndIntents, DndDragIntentKeys } from '@ui-schema/kit-dnd/KitDnd'
-import { List } from 'immutable'
+import { DndIntents, DndDragIntentKeys, DataKeys } from '@ui-schema/kit-dnd/KitDnd'
 
 /**
  * calculating the result of a drag-move action towards what store changes the keys may need to do
@@ -15,9 +14,9 @@ export const calcIntentDataKeys = (
         fromIndex, fromDataKeys,
     }: {
         toIndex: number
-        toDataKeys: List<number>
+        toDataKeys: DataKeys
         fromIndex: number
-        fromDataKeys: List<number>
+        fromDataKeys: DataKeys
     }
 ): DndDragIntentKeys | undefined => {
     if (fromDataKeys.size < toDataKeys.size) {
@@ -27,8 +26,9 @@ export const calcIntentDataKeys = (
         const toIndexRelativeFirst = toRelativeLeadingKeys.last()
         const willBeParent = toRelativeLeadingKeys.equals(fromDataKeys.push(fromIndex))
         const wasBeforeRelative =
+            typeof toIndexRelativeFirst === 'number' &&
             toRelativeLeadingKeys.splice(-1, 1).equals(fromDataKeys) &&
-            fromIndex < (toIndexRelativeFirst || 0)
+            fromIndex < (toIndexRelativeFirst)
 
         return {
             wasBeforeRelative: wasBeforeRelative,

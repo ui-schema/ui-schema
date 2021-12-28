@@ -120,15 +120,14 @@ export const StringRendererCell: React.ComponentType<WidgetProps<{}, MuiWidgetBi
                     // forbid saving/deleting of invalid number at all
                     return undefined
                 }
-                onChange(
-                    storeKeys, ['value'],
-                    {
-                        type: 'update',
-                        updater: () => ({value: newVal}),
-                        schema,
-                        required,
-                    }
-                )
+                onChange({
+                    storeKeys,
+                    scopes: ['value'],
+                    type: 'set',
+                    schema,
+                    required,
+                    data: {value: newVal},
+                })
             }}
             inputProps={inputProps}
             endAdornment={

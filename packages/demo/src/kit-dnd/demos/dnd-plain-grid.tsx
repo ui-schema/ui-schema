@@ -5,7 +5,7 @@ import { MultiBackend } from 'react-dnd-multi-backend'
 import { HTML5toTouch } from 'rdndmb-html5-to-touch'
 import { useOnIntent } from '@ui-schema/kit-dnd/useOnIntent'
 import { DraggableBlock } from '../components/DraggableBlock'
-import { KitDndProvider, KitDndProviderContextType } from '@ui-schema/kit-dnd/KitDndProvider/KitDndProvider'
+import { KitDndProvider, KitDndProviderContextType } from '@ui-schema/kit-dnd/KitDndProvider'
 
 export const KitDndPlainGrid = () => {
     const [list, setList] = React.useState<List<string>>(List(['caaa-1', 'cbbb-2', 'cccc-3', 'cddd-4', 'ceee-5']))

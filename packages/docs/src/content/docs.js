@@ -37,7 +37,7 @@ export const routesDocs = {
             nav: {
                 label: 'Core',
                 //initialOpen: false,
-                to: '/core',
+                toSection: /^(\/docs\/core$|\/docs\/core-)/,
             },
             routes: [
                 createDoc('core', 'Core Overview'),

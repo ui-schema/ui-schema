@@ -30,11 +30,9 @@ export const SortableListItemBase = <C extends HTMLElement = HTMLElement, S exte
         id: id,
         dataKeys: dataKeys,
         index: index,
-        storeKeys: storeKeys,
     }), [
         itemType,
         id, dataKeys, index,
-        storeKeys,
     ])
 
     const {
@@ -100,15 +98,14 @@ export const SortableListItemBase = <C extends HTMLElement = HTMLElement, S exte
                 style={{
                     padding: 6,
                 }}
-                onClick={() => onChange(
-                    storeKeys.splice(-1, 1), ['value', 'internal'],
-                    {
-                        type: 'list-item-delete',
-                        index: storeKeys.last() as number,
-                        schema,
-                        required: required,
-                    },
-                )}
+                onClick={() => onChange({
+                    storeKeys: storeKeys.splice(-1, 1),
+                    scopes: ['value', 'internal'],
+                    type: 'list-item-delete',
+                    index: storeKeys.last() as number,
+                    schema,
+                    required: required,
+                })}
             >
                 <IcDelete/>
             </IconButton>

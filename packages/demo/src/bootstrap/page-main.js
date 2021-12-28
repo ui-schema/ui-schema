@@ -7,7 +7,7 @@ import {UIGenerator, isInvalid, createOrderedMap, createStore} from '@ui-schema/
 import {browserT} from '../t';
 import {BtsSchemaDebug} from '../component/BtsSchemaDebug';
 import clsx from 'clsx';
-import {storeUpdater} from '@ui-schema/ui-schema/UIStore/storeUpdater';
+import {storeUpdater} from '@ui-schema/ui-schema/storeUpdater';
 
 const DemoGrid = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap({})));

@@ -30,16 +30,15 @@ let GenericListItem = (
                     {!readOnly && !notSortable && index > 0 ? <IconButton
                         size={btnSize} style={{margin: '0 auto'}}
                         onClick={() =>
-                            onChange(
-                                storeKeys, ['value', 'internal'],
-                                {
-                                    type: 'list-item-move',
-                                    fromIndex: index,
-                                    toIndex: index - 1,
-                                    schema,
-                                    required: listRequired,
-                                },
-                            )
+                            onChange({
+                                storeKeys,
+                                scopes: ['value', 'internal'],
+                                type: 'list-item-move',
+                                fromIndex: index,
+                                toIndex: index - 1,
+                                schema,
+                                required: listRequired,
+                            })
                         }
                     >
                         <AccessTooltipIcon title={<Trans text={'labels.move-to-position'} context={Map({nextIndex: index + 1 - 1})}/>}>
@@ -60,16 +59,15 @@ let GenericListItem = (
                     {!readOnly && !notSortable && index < listSize - 1 ? <IconButton
                         size={btnSize} style={{margin: '0 auto'}}
                         onClick={() =>
-                            onChange(
-                                storeKeys, ['value', 'internal'],
-                                {
-                                    type: 'list-item-move',
-                                    fromIndex: index,
-                                    toIndex: index + 1,
-                                    schema,
-                                    required: listRequired,
-                                },
-                            )
+                            onChange({
+                                storeKeys,
+                                scopes: ['value', 'internal'],
+                                type: 'list-item-move',
+                                fromIndex: index,
+                                toIndex: index + 1,
+                                schema,
+                                required: listRequired,
+                            })
                         }
                     >
                         <AccessTooltipIcon title={<Trans text={'labels.move-to-position'} context={Map({nextIndex: index + 1 + 1})}/>}>
@@ -108,15 +106,14 @@ let GenericListItem = (
                 {!readOnly && !notDeletable ? <Grid item style={{display: 'flex', flexShrink: 0}}>
                     <IconButton
                         onClick={() =>
-                            onChange(
-                                storeKeys, ['value', 'internal'],
-                                {
-                                    type: 'list-item-delete',
-                                    index: index,
-                                    schema,
-                                    required: listRequired,
-                                },
-                            )
+                            onChange({
+                                storeKeys,
+                                scopes: ['value', 'internal'],
+                                type: 'list-item-delete',
+                                index: index,
+                                schema,
+                                required: listRequired,
+                            })
                         }
                         size={btnSize}
                         style={{margin: '0 0 auto 0'}}
@@ -173,14 +170,13 @@ let GenericListBase = ({
                 {!schema.get('readOnly') && !notAddable ?
                     <IconButton
                         onClick={() => {
-                            onChange(
-                                storeKeys, ['value', 'internal'],
-                                {
-                                    type: 'list-item-add',
-                                    schema,
-                                    required,
-                                },
-                            )
+                            onChange({
+                                storeKeys,
+                                scopes: ['value', 'internal'],
+                                type: 'list-item-add',
+                                schema,
+                                required,
+                            })
                         }}
                         size={btnSize}
                     >

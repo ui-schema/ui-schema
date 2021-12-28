@@ -6,8 +6,12 @@ Widgets for multiple options, either as 'select 1 from n' or 'select n from n'.
 
 - type: `string`, `array`
 - widgets:
-    - `OptionsCheck` for checkboxes
-    - `OptionsRadio` for radio select
+    - `OptionsCheck` multiple check boxes
+        - use `items.oneOf[].const` to specify possible values and their restrictions
+        - produces `array` with selected values
+    - `OptionsRadio` radio inputs
+        - use `enum` to specify array of possible values
+        - produces `string` containing the selected value
 - view
     - grid keywords
 
@@ -44,10 +48,7 @@ const widgets = {
 **Widgets:**
 
 - `OptionsCheck` multiple check boxes
-    - use `enum` to specify array of values
-    - produces `array` with selected values
 - `OptionsRadio` radio inputs
-    - produces `string` containing the selected value
 
 ### Bootstrap
 
@@ -70,8 +71,4 @@ const widgets = {
 **Widgets:**
 
 - `OptionsRadio` radio inputs
-    - produces `string` containing the selected value
-
 - `OptionsCheck` multiple check boxes
-    - use `enum` to specify array of values
-    - produces `array` with selected values

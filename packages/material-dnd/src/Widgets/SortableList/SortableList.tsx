@@ -1,6 +1,6 @@
 import React from 'react'
 import { useUID } from 'react-uid'
-import { memo, StoreSchemaType, Trans, TransTitle, UIStoreActionListItemAdd, WidgetProps, WithOnChange } from '@ui-schema/ui-schema'
+import { memo, StoreSchemaType, Trans, TransTitle, UIStoreActionListItemAdd, UIStoreActionScoped, WidgetProps, WithOnChange } from '@ui-schema/ui-schema'
 import { AccessTooltipIcon } from '@ui-schema/ds-material'
 import IconButton from '@material-ui/core/IconButton'
 import Add from '@material-ui/icons/Add'
@@ -23,7 +23,7 @@ export const SortableListBase = (
     }: WidgetProps & WithOnChange & SortableListProps
 ): React.ReactElement => {
     const uid = useUID()
-    const {schema, ownKey, storeKeys, onChange, required} = props
+    const {schema, ownKey, storeKeys, onChange} = props
     const btnSize = schema.getIn(['view', 'btnSize']) || 'medium'
     //const notSortable = schema.get('notSortable')
     const notAddable = schema.get('notAddable')
@@ -53,17 +53,14 @@ export const SortableListBase = (
             {!schema.get('readOnly') && !notAddable ?
                 <IconButton
                     onClick={() => {
-                        onChange(
-                            storeKeys, ['value', 'internal'],
-                            {
-                                type: 'list-item-add',
-                                schema,
-                                required,
-                                itemValue: OrderedMap({
-                                    [idKey]: genId(),
-                                }),
-                            } as UIStoreActionListItemAdd,
-                        )
+                        onChange({
+                            storeKeys,
+                            scopes: ['value', 'internal'],
+                            type: 'list-item-add',
+                            itemValue: OrderedMap({
+                                [idKey]: genId(),
+                            }),
+                        } as UIStoreActionListItemAdd & UIStoreActionScoped)
                     }}
                     size={btnSize as 'small' | 'medium'}
                 >

@@ -77,15 +77,14 @@ export const ColorBase = ({
             }
             onChange={(color, e) => {
                 setInputType(e && e.type);
-                onChange(
-                    storeKeys, ['value'],
-                    {
-                        type: 'update',
-                        updater: () => ({value: convertColor(color, format)}),
-                        schema,
-                        required,
-                    },
-                )
+                onChange({
+                    storeKeys: storeKeys,
+                    scopes: ['value'],
+                    type: 'set',
+                    schema,
+                    required,
+                    data: {value: convertColor(color, format)},
+                })
             }}
             onChangeComplete={() => {
                 let type = inputType;

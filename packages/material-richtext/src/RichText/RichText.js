@@ -53,32 +53,38 @@ export const RichText = ({
 
     React.useEffect(() => {
         if(!internalValue.get('value') && editorState) {
-            onChange(storeKeys, ['internal'], ({internal: currentInternal = Map()}) => ({internal: currentInternal.set('value', editorState)}))
+            onChange({
+                storeKeys: storeKeys,
+                scopes: ['internal'],
+                type: 'update',
+                schema,
+                required,
+                updater: ({internal: currentInternal = Map()}) => ({internal: currentInternal.set('value', editorState)}),
+            })
         }
     }, [internalValue, editorState, onChange, storeKeys.equals(prevStoreKeys.current)]);
 
     const handleChange = React.useCallback((state) => {
-        onChange(
-            storeKeys, ['value', 'internal'],
-            {
-                type: 'update',
-                updater: ({internal: currentInternal = Map()}) => {
-                    let stateHandler = state;
-                    if(typeof stateHandler !== 'function') {
-                        // DraftJS onChange does not use a function to update the state, but we use it everywhere
-                        stateHandler = () => state;
-                    }
+        onChange({
+            storeKeys: storeKeys,
+            scopes: ['value', 'internal'],
+            type: 'update',
+            schema,
+            required,
+            updater: ({internal: currentInternal = Map()}) => {
+                let stateHandler = state;
+                if(typeof stateHandler !== 'function') {
+                    // DraftJS onChange does not use a function to update the state, but we use it everywhere
+                    stateHandler = () => state;
+                }
 
-                    let newState = stateHandler(currentInternal.get('value') || createMap());
-                    return {
-                        value: editorStateTo.markdown(newState),
-                        internal: currentInternal.set('value', newState),
-                    }
-                },
-                schema,
-                required,
+                let newState = stateHandler(currentInternal.get('value') || createMap());
+                return {
+                    value: editorStateTo.markdown(newState),
+                    internal: currentInternal.set('value', newState),
+                }
             },
-        )
+        })
     }, [onChange, storeKeys.equals(prevStoreKeys.current), required, schema]);
 
     const handleKeyCommand = (command, editorState) => {

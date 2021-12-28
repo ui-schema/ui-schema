@@ -9,11 +9,13 @@ export const SchemaDebug = ({StyledEditor, schema}) => {
         <StyledEditor
             data={store.getValues()}
             onChange={(keys, value) => {
-                onChange(
-                    List(keys), ['value'],
-                    () => ({value: value}),
-                    false,
-                )
+                onChange({
+                    storeKeys: List(keys),
+                    scopes: ['value'],
+                    type: 'update',
+                    updater: () => ({value: value}),
+                    required: false,
+                })
             }}
             getVal={keys => store.getValues().getIn(keys)}
         />

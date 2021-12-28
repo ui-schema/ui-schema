@@ -32,8 +32,18 @@ export interface StringRendererBaseProps {
 
 export interface StringRendererProps extends StringRendererBaseProps {
     multiline?: boolean
+    /**
+     * @deprecated use `minRows` instead
+     */
     rows?: number
+    /**
+     * @deprecated use `maxRows` instead
+     */
     rowsMax?: number
+
+    minRows?: number
+
+    maxRows?: number
 }
 
 export interface TextRendererProps extends StringRendererProps {
@@ -47,7 +57,10 @@ export interface NumberRendererProps extends StringRendererBaseProps {
 export const StringRenderer = <P extends WidgetProps<{}, MuiWidgetBinding> = WidgetProps<{}, MuiWidgetBinding>>(
     {
         type,
-        multiline, rows, rowsMax,
+        multiline,
+        // eslint-disable-next-line deprecation/deprecation
+        rows, rowsMax,
+        minRows, maxRows,
         storeKeys, ownKey, schema, value, onChange,
         showValidity, valid, errors, required,
         style,
@@ -87,9 +100,15 @@ export const StringRenderer = <P extends WidgetProps<{}, MuiWidgetBinding> = Wid
             multiline={multiline}
             required={required}
             error={!valid && showValidity}
-            rows={rows}
+            minRows={
+                typeof minRows === 'number' ? minRows :
+                    rows
+            }
+            maxRows={
+                typeof maxRows === 'number' ? maxRows :
+                    rowsMax
+            }
             inputRef={inputRef}
-            rowsMax={rowsMax}
             fullWidth
             variant={schema.getIn(['view', 'variant']) as any}
             margin={schema.getIn(['view', 'margin']) as InputProps['margin']}
@@ -121,17 +140,14 @@ export const StringRenderer = <P extends WidgetProps<{}, MuiWidgetBinding> = Wid
                     // forbid saving/deleting of invalid number at all
                     return undefined
                 }
-                onChange(
-                    storeKeys, ['value'],
-                    {
-                        type: 'update',
-                        // setting the actual val when invalid, e.g. at numbers, it allows correcting invalid data without a "reset"
-                        //updater: () => ({value: typeof newVal === 'undefined' ? val : newVal}),
-                        updater: () => ({value: newVal}),
-                        schema,
-                        required,
-                    },
-                )
+                onChange({
+                    storeKeys,
+                    scopes: ['value'],
+                    type: 'set',
+                    schema,
+                    required,
+                    data: {value: newVal},
+                })
             }}
             InputLabelProps={{shrink: schema.getIn(['view', 'shrink']) as boolean}}
             InputProps={InputProps}
@@ -148,8 +164,16 @@ export const TextRenderer = <P extends WidgetProps<{}, MuiWidgetBinding> = Widge
     return <StringRenderer
         {...props}
         schema={schema}
-        rows={props.rows || schema.getIn(['view', 'rows'])}
-        rowsMax={props.rowsMax || schema.getIn(['view', 'rowsMax'])}
+        minRows={
+            typeof props.minRows === 'number' ? props.minRows :
+                // eslint-disable-next-line deprecation/deprecation
+                (props.rows || schema.getIn(['view', 'rows']))
+        }
+        maxRows={
+            typeof props.maxRows === 'number' ? props.maxRows :
+                // eslint-disable-next-line deprecation/deprecation
+                (props.rowsMax || schema.getIn(['view', 'rowsMax']))
+        }
         multiline
     />
 }

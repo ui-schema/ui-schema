@@ -28,15 +28,14 @@ let SimpleListItem = (
 
         {!readOnly && !notDeletable ? <IconButton
             onClick={() => {
-                onChange(
-                    storeKeys, ['value', 'internal'],
-                    {
-                        type: 'list-item-delete',
-                        index: index,
-                    },
-                    schema.get('deleteOnEmpty') || required,
-                    schema.get('type'),
-                )
+                onChange({
+                    storeKeys,
+                    scopes: ['value', 'internal'],
+                    type: 'list-item-delete',
+                    index: index,
+                    schema,
+                    required,
+                })
             }}
             size={btnSize}
             style={{margin: 'auto 6px', flexShrink: 0}}
@@ -93,14 +92,13 @@ let SimpleListBase = ({
             <Grid item xs={12}>
                 {!readOnly && !notAddable ? <IconButton
                     onClick={() => {
-                        onChange(
-                            storeKeys, ['value', 'internal'],
-                            {
-                                type: 'list-item-add',
-                                schema: schema,
-                                required,
-                            },
-                        )
+                        onChange({
+                            storeKeys,
+                            scopes: ['value', 'internal'],
+                            type: 'list-item-add',
+                            schema: schema,
+                            required,
+                        })
                     }}
                     size={btnSize}
                 >

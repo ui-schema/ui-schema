@@ -8,9 +8,13 @@ import {
     // @ts-ignore
 } from '@testing-library/jest-dom/matchers'
 import { List, Map, OrderedMap } from 'immutable'
-import { storeBuildScopeTree, UIStore, createStore, StoreKeys, UIStoreType } from '@ui-schema/ui-schema/UIStore'
+import { UIStore, createStore, StoreKeys, UIStoreType, UIStoreStateData } from '@ui-schema/ui-schema/UIStore'
+import { storeBuildScopeTree } from '@ui-schema/ui-schema/storeBuildScopeTree/storeBuildScopeTree'
 
 expect.extend({toBeInTheDocument, toHaveClass})
+/**
+ * npm run tdd -- -u --testPathPattern=src/storeBuildScopeTree/storeBuildScopeTree.test.ts
+ */
 
 describe('storeBuildScopeTree', () => {
     test.each([
@@ -212,7 +216,7 @@ describe('storeBuildScopeTree', () => {
             }),
             true,
         ],
-    ])('storeBuildScopeTree(%j, %s, %j): %j', (storeKeys: StoreKeys, scope: string, store: UIStoreType, nestKey: string | undefined, ordered: boolean, expected: UIStoreType, expectedSameness: boolean) => {
+    ])('storeBuildScopeTree(%j, %s, %j): %j', (storeKeys: StoreKeys, scope: keyof UIStoreStateData, store: UIStoreType, nestKey: string | undefined, ordered: boolean, expected: UIStoreType, expectedSameness: boolean) => {
         const r = storeBuildScopeTree(storeKeys, scope, store, nestKey, ordered)
         const isExpected = r.equals(expected)
         if (isExpected !== expectedSameness) {

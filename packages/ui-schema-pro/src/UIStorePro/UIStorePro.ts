@@ -3,7 +3,8 @@ import {
     List, Map, Record,
     RecordOf,
 } from 'immutable'
-import { createEmptyStore, onChangeHandler, storeUpdater, UIStoreType } from '@ui-schema/ui-schema/UIStore'
+import { createEmptyStore, onChangeHandler, UIStoreType } from '@ui-schema/ui-schema/UIStore'
+import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
 
 export type redoHistory = (steps?: number) => void
 export type undoHistory = (steps?: number) => void
@@ -98,13 +99,16 @@ export const useStorePro = (
     const historyDebounce = React.useRef<any[]>([])
     const [store, setStore] = React.useState<UIStoreProType>(() => makeStorePro(type, initialStore) as UIStoreProType)
 
-    const onChange: onChangeHandler = React.useCallback((storeKeys, scopes, updater) => {
-        const doValue = scopes.indexOf('value') !== -1
+    const onChange: onChangeHandler = React.useCallback((actions) => {
+        if (!Array.isArray(actions)) {
+            actions = [actions]
+        }
+        const doValue = actions.reduce((doV, action) => doV || action.scopes.indexOf('value') !== -1, false)
 
         setStore((prevStore: UIStoreProType) => {
             let newStore = prevStore.set(
                 'current',
-                storeUpdater(storeKeys, scopes, updater)(prevStore.current)
+                storeUpdater(actions)(prevStore.current)
             )
 
             if (!doValue) {

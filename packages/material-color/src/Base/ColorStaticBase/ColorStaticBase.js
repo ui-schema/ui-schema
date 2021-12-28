@@ -18,15 +18,14 @@ export const ColorStaticBase = ({
             format === 'rgb'
         }
         onChange={(color) => {
-            onChange(
-                storeKeys, ['value'],
-                {
-                    type: 'update',
-                    updater: () => ({value: convertColor(color, format)}),
-                    schema,
-                    required,
-                },
-            )
+            onChange({
+                storeKeys: storeKeys,
+                scopes: ['value'],
+                type: 'set',
+                schema,
+                required,
+                data: {value: convertColor(color, format)},
+            })
         }}
         styles={styles}
         {...pickerProps}

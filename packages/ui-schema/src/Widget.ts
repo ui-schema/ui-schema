@@ -18,6 +18,7 @@ export type WidgetType<C extends {} = {}, W extends WidgetsBindingFactory = Widg
  * - for any-value-type widgets add `WithValue` and use the HOC `extractValue`
  * - `C` = custom `UIMetaContext` definition
  */
+// @ts-ignore
 export interface WidgetProps<C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory> extends UIMetaContext<C, W> {
     // the current schema level
     schema: StoreSchemaType

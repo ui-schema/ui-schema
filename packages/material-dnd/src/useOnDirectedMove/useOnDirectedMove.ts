@@ -1,13 +1,13 @@
 import { List, Map } from 'immutable'
 import { addNestKey, DndIntents, moveDraggedValue, onIntentFactory, onMovedType } from '@ui-schema/kit-dnd'
 import React from 'react'
-import { onChangeHandler } from '@ui-schema/ui-schema'
+import { onChangeHandler, StoreKeys } from '@ui-schema/ui-schema'
 import { DragDropSpec } from '@ui-schema/material-dnd/DragDropSpec'
 
 export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends DragDropSpec = DragDropSpec>(
     onIntent: onIntentFactory<C, S>,
     onChange: onChangeHandler,
-    debug?: boolean
+    debug?: boolean,
 ): {
     onMove: onMovedType<C, S>
 } => {
@@ -35,16 +35,17 @@ export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends
             }
             const {
                 type: fromType,
-                dataKeys: fromKeys,
+                dataKeys: fromDataKeys,
                 index: fromIndex,
                 isDroppable: fromIsDroppable,
                 listKey: fromListKey,
+                id: fromId,
             } = fromItem
             const {
                 type: toType,
                 index: toIndex,
                 dataKeys: toDataKeys,
-                id: targetId,
+                id: toId,
                 isDroppable: toIsDroppable,
                 listKey: toListKey,
             } = toItem
@@ -52,15 +53,15 @@ export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends
             // todo: refine intentKeys with listKey
             const intentKeys = {
                 ...rawIntentKeys,
-                isParent: Boolean(rawIntentKeys.isParent || (rawIntentKeys.willBeParent && toListKey && ((fromKeys.size - toDataKeys.size) <= 2))),
+                isParent: Boolean(rawIntentKeys.isParent || (rawIntentKeys.willBeParent && toListKey && ((fromDataKeys.size - toDataKeys.size) <= 2))),
                 ...(toListKey ? {
                     level:
-                        fromKeys.size === toDataKeys.size ?
-                            !fromKeys.equals(toDataKeys) ? DndIntents.switch : rawIntentKeys.level
+                        fromDataKeys.size === toDataKeys.size ?
+                            !fromDataKeys.equals(toDataKeys) ? DndIntents.switch : rawIntentKeys.level
                             : rawIntentKeys.level,
                     container:
-                        fromKeys.size === toDataKeys.size &&
-                        !fromKeys.equals(toDataKeys) ? undefined : rawIntentKeys.container,
+                        fromDataKeys.size === toDataKeys.size &&
+                        !fromDataKeys.equals(toDataKeys) ? undefined : rawIntentKeys.container,
                 } : {}),
             }
             if (
@@ -75,8 +76,8 @@ export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends
                 return
             }
             if (debug) {
-                console.log('  from  ' + fromType + '  to  ' + toType, fromIsDroppable, toIsDroppable, intent, intentKeys)
-                console.log('  from  ' + fromType + '  to  ' + toType, fromKeys?.toJS(), fromIndex, fromListKey, toDataKeys.toJS(), toIndex, toListKey)
+                console.log('  from  ' + fromType + '  to  ' + toType, fromId, fromIsDroppable, toIsDroppable, intent, intentKeys)
+                console.log('  from  ' + fromType + '  to  ' + toType, toId, fromDataKeys?.toJS(), fromIndex, fromListKey, toDataKeys.toJS(), toIndex, toListKey)
             }
 
             if (!toIsDroppable) {
@@ -93,7 +94,7 @@ export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends
                 let dk = toDataKeys
                 if (
                     intentKeys.level === 'down' &&
-                    (toDataKeys.size - fromKeys.size) >= 1
+                    (toDataKeys.size - fromDataKeys.size) >= 1
                 ) {
                     if (intentKeys.isParent || intentKeys.willBeParent) {
                         return
@@ -102,28 +103,34 @@ export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends
                     if (intentKeys.wasBeforeRelative) {
                         // was before this block in the relative store order
                         // thus the last relative key needs to be decreased
-                        dk = dk.update(fromKeys.size, (toIndexRelativeFirst) => (toIndexRelativeFirst as number) - 1)
+                        dk = dk.update(fromDataKeys.size,
+                            (toIndexRelativeFirst) =>
+                                typeof toIndexRelativeFirst === 'number' ?
+                                    toIndexRelativeFirst - 1 :
+                                    toIndexRelativeFirst
+                        )
                     }
                 }
                 // - switching within one array or between different relative roots
-                onChange(
-                    List(),
-                    ['value', 'internal'],
+                onChange({
+                    storeKeys: List() as StoreKeys,
+                    scopes: ['value', 'internal'],
                     // todo: move `schema`/`required` to action like `type: update`
-                    ({value, internal = Map()}) => {
+                    type: 'update',
+                    updater: ({value, internal = Map()}) => {
                         value = moveDraggedValue(
                             value,
-                            fromKeys, fromIndex,
+                            fromDataKeys, fromIndex,
                             dk, toIndex,
                         )
                         internal = moveDraggedValue(
                             internal,
-                            addNestKey<string | number>('internals', fromKeys).splice(0, 0, 'internals'), fromIndex,
+                            addNestKey<string | number>('internals', fromDataKeys).splice(0, 0, 'internals'), fromIndex,
                             addNestKey<string | number>('internals', dk).splice(0, 0, 'internals'), toIndex,
                         )
                         return {value, internal}
                     },
-                )
+                })
                 done(dk, toIndex)
                 return
             }
@@ -152,11 +159,12 @@ export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends
                 }
 
                 const setter = (doMerge: string | undefined) => {
-                    onChange(
-                        List(),
-                        ['value', 'internal'],
+                    onChange({
+                        storeKeys: List() as StoreKeys,
+                        scopes: ['value', 'internal'],
+                        type: 'update',
                         // todo: move `schema`/`required` to action like `type: update`
-                        ({value, internal = Map()}) => {
+                        updater: ({value, internal = Map()}) => {
                             let dk = toDataKeys
 
                             const orgTks = addNestKey<string | number>('list', toDataKeys.push(toIndex))
@@ -169,7 +177,7 @@ export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends
                             } else if ((intentKeys.level === 'down' || intentKeys.level === 'switch') && intentKeys.wasBeforeRelative) {
                                 // was before this block in the relative store order
                                 // thus the last relative key needs to be decreased
-                                dk = dk.update(fromKeys.size, (toIndexRelativeFirst) => (toIndexRelativeFirst as number) - 1)
+                                dk = dk.update(fromDataKeys.size, (toIndexRelativeFirst) => (toIndexRelativeFirst as number) - 1)
                                 dk = dk.push(toIndex)
                             } else if (doMerge) {
                                 if (doMerge === 'next') {
@@ -197,19 +205,19 @@ export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends
 
                             value = moveDraggedValue(
                                 value,
-                                fromKeys, fromIndex,
+                                fromDataKeys, fromIndex,
                                 dk, ti,
                             )
                             internal = moveDraggedValue(
                                 internal,
-                                addNestKey<string | number>('internals', fromKeys).splice(0, 0, 'internals'), fromIndex,
+                                addNestKey<string | number>('internals', fromDataKeys).splice(0, 0, 'internals'), fromIndex,
                                 addNestKey<string | number>('internals', dk).splice(0, 0, 'internals'), ti,
                             )
 
                             done(dk, ti)
                             return {value, internal}
                         },
-                    )
+                    })
                 }
 
                 let doMerge: string | undefined = undefined
@@ -245,12 +253,12 @@ export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends
                         const ts = new Date().getTime()
                         if (
                             lastMergeTag.current.merge !== doMerge ||
-                            lastMergeTag.current.id !== targetId
+                            lastMergeTag.current.id !== toId
                         ) {
                             window.clearTimeout(lastMergeTag.current.timer)
                             lastMergeTag.current.time = ts
                             lastMergeTag.current.merge = doMerge
-                            lastMergeTag.current.id = targetId
+                            lastMergeTag.current.id = toId
                             return
                         }
                         const sinceLastMerge = (ts - lastMergeTag.current.time)

@@ -261,8 +261,8 @@ export const Generator = () => {
     // or create empty store, based on the schema type:
     // const [store, setStore] = React.useState(() => createEmptyStore(schema.get('type'));
 
-    const onChange = React.useCallback((storeKeys, scopes, action) => {
-        setStore(storeUpdater(storeKeys, scopes, action))
+    const onChange = React.useCallback((actions) => {
+        setStore(storeUpdater(actions))
     }, [setStore])
 
     return (
@@ -348,8 +348,8 @@ We tell the editor also to display validity from start on.
 export const Generator = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(values)));
 
-    const onChange = React.useCallback((storeKeys, scopes, action) => {
-        setStore(storeUpdater(storeKeys, scopes, action))
+    const onChange = React.useCallback((actions) => {
+        setStore(storeUpdater(actions))
     }, [setStore])
 
     return (
@@ -482,8 +482,8 @@ const rootStoreKeys = List()
 export const Generator = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(values)));
 
-    const onChange = React.useCallback((storeKeys, scopes, action) => {
-        setStore(storeUpdater(storeKeys, scopes, action))
+    const onChange = React.useCallback((actions) => {
+        setStore(storeUpdater(actions))
     }, [setStore])
 
     return (

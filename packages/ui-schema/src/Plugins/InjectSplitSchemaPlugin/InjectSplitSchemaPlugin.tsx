@@ -1,6 +1,6 @@
 import React from 'react'
 import { getNextPlugin, PluginProps } from '@ui-schema/ui-schema/PluginStack'
-import { useSchemaRoot } from '@ui-schema/ui-schema/SchemaRootProvider/SchemaRootProvider'
+import { useSchemaRoot } from '@ui-schema/ui-schema/SchemaRootProvider'
 import { StoreSchemaType } from '@ui-schema/ui-schema'
 import { escapePointer } from '@ui-schema/ui-schema/JSONPointer/escapePointer'
 import { Map } from 'immutable'

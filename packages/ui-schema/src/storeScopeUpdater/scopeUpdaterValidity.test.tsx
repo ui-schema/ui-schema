@@ -9,16 +9,19 @@ import {
 } from '@testing-library/jest-dom/matchers'
 import { List, Map } from 'immutable'
 import { UIStore, StoreKeys, UIStoreType } from '@ui-schema/ui-schema/UIStore/UIStore'
-import { scopeUpdaterValidity } from '@ui-schema/ui-schema/UIStore/scopeUpdaterValidity'
+import { scopeUpdaterValidity } from '@ui-schema/ui-schema/storeScopeUpdater/scopeUpdaterValidity'
 
 expect.extend({toBeInTheDocument, toHaveClass})
+
+/**
+ * npm run tdd -- -u --testPathPattern=src/storeScopeUpdater/scopeUpdaterValidity.test.tsx
+ */
 
 describe('scopeUpdaterInternals', () => {
     test.each([
         [
             new UIStore({}),
             List([]),
-            undefined,
             false,
             new UIStore({
                 validity: Map({__valid: false}),
@@ -28,7 +31,6 @@ describe('scopeUpdaterInternals', () => {
                 validity: Map({__valid: false}),
             }),
             List([]),
-            undefined,
             undefined,
             new UIStore({
                 validity: Map({}),
@@ -38,7 +40,6 @@ describe('scopeUpdaterInternals', () => {
                 validity: Map({__valid: false}),
             }),
             List([]),
-            undefined,
             true,
             new UIStore({
                 validity: Map({__valid: true}),
@@ -48,7 +49,6 @@ describe('scopeUpdaterInternals', () => {
                 validity: Map({__valid: false}),
             }),
             List([]),
-            false,
             true,
             new UIStore({
                 validity: Map({__valid: true}),
@@ -60,7 +60,6 @@ describe('scopeUpdaterInternals', () => {
                 }),
             }),
             List(['prop_a']),
-            undefined,
             true,
             new UIStore({
                 validity: Map({
@@ -77,7 +76,6 @@ describe('scopeUpdaterInternals', () => {
                 }),
             }),
             List(['prop_a', 0]),
-            undefined,
             true,
             new UIStore({
                 validity: Map({
@@ -102,7 +100,6 @@ describe('scopeUpdaterInternals', () => {
                 }),
             }),
             List(['prop_a', 0]),
-            true,
             undefined,
             new UIStore({
                 validity: Map({
@@ -120,7 +117,6 @@ describe('scopeUpdaterInternals', () => {
                 }),
             }),
             List(['prop_a', 0]),
-            undefined,
             true,
             new UIStore({
                 validity: Map({
@@ -145,7 +141,6 @@ describe('scopeUpdaterInternals', () => {
                 }),
             }),
             List(['prop_a', 0]),
-            true,
             undefined,
             new UIStore({
                 validity: Map({
@@ -163,7 +158,6 @@ describe('scopeUpdaterInternals', () => {
                 }),
             }),
             List(['prop_a', 0, 'sub_a']),
-            undefined,
             true,
             new UIStore({
                 validity: Map({
@@ -193,7 +187,6 @@ describe('scopeUpdaterInternals', () => {
                 }),
             }),
             List(['prop_a', 0, 'sub_a']),
-            true,
             undefined,
             new UIStore({
                 validity: Map({
@@ -208,12 +201,12 @@ describe('scopeUpdaterInternals', () => {
                 }),
             }),
         ],
-    ])('scopeUpdaterValidity(%j, %s, %j): %j', <S extends UIStoreType>(
+    ])('scopeUpdaterValidity(%j, %s): %j', <S extends UIStoreType>(
         store: S, storeKeys: StoreKeys,
-        oldValue: any, newValue: any,
+        newValue: any,
         expected: any
     ) => {
-        const r = scopeUpdaterValidity(store, storeKeys, oldValue, newValue)
+        const r = scopeUpdaterValidity(store, storeKeys, newValue)
         const isExpected = r.equals(expected)
         if (!isExpected) {
             // @ts-ignore
@@ -234,15 +227,14 @@ describe('scopeUpdaterInternals', () => {
                 }),
             }),
             List(['__valid', 'prop_a']),
-            undefined,
             true,
         ],
-    ])('failure scopeUpdaterValidity(%j, %s, %j): %j', <S extends UIStoreType>(
+    ])('failure scopeUpdaterValidity(%j, %s): %j', <S extends UIStoreType>(
         store: S, storeKeys: StoreKeys,
-        oldValue: any, newValue: any
+        newValue: any
     ) => {
         try {
-            scopeUpdaterValidity(store, storeKeys, oldValue, newValue)
+            scopeUpdaterValidity(store, storeKeys, newValue)
             // no error, but must be error
             expect('no error').toBe('error')
         } catch (e) {

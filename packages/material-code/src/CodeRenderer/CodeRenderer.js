@@ -35,7 +35,14 @@ export const CodeRenderer = ({
     const classes = useStyles();
 
     React.useEffect(() => {
-        onChange(storeKeys, ['valid'], () => ({valid: valid}))
+        onChange({
+            storeKeys: storeKeys,
+            scopes: ['valid'],
+            type: 'set',
+            schema,
+            required,
+            data: {valid: valid},
+        })
     }, [onChange, valid, storeKeys]);
 
     React.useEffect(() => {
@@ -61,15 +68,14 @@ export const CodeRenderer = ({
     }, [setLines]);
 
     const handleBeforeChange = React.useCallback((editor, data, storeValue) => {
-        onChange(
-            storeKeys, ['value'],
-            {
-                type: 'update',
-                updater: () => ({value: storeValue}),
-                schema,
-                required,
-            },
-        )
+        onChange({
+            storeKeys: storeKeys,
+            scopes: ['value'],
+            type: 'set',
+            schema,
+            required,
+            data: {value: storeValue},
+        })
     }, [onChange, storeKeys, required, schema]);
 
     const mode = modes?.[format] ? modes[format] : format

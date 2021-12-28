@@ -1,32 +1,34 @@
-import { StoreActions, UIStoreUpdaterFn } from '@ui-schema/ui-schema/UIStore'
+import { UIStoreUpdaterFn } from '@ui-schema/ui-schema/UIStore'
 import { List, Map, OrderedMap } from 'immutable'
 import { moveItem } from '@ui-schema/ui-schema/Utils/moveItem'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
+import { StoreActionDefinite, UIStoreUpdaterData } from '@ui-schema/ui-schema/UIStoreActions'
 
-export const actionHandler: (action: StoreActions) => UIStoreUpdaterFn = (action) => {
+export const actionHandler: (action: StoreActionDefinite) => UIStoreUpdaterFn | UIStoreUpdaterData = (action) => {
     switch (action.type) {
         case 'list-item-add':
             return ({value = List(), internal = Map(), ...r}) => {
-                const schema = action.schema
-                const items = schema.get('items')
-                const type = schema.getIn(['items', 'type']) as SchemaTypesType
+                if ('itemValue' in action) {
+                    value = value.push(action.itemValue)
+                } else {
+                    const schema = action.schema
+                    const items = schema.get('items')
+                    const type = schema.getIn(['items', 'type']) as SchemaTypesType
+                    value = value.push(
+                        // todo: multi type support #68
+                        type === 'object' ? OrderedMap() :
+                            // todo: handle tuple items default / `undefined of unexisting keys`
+                            // `List.isList(items)` means it got tuple items
+                            List.isList(items) || type === 'array' ? List() :
+                                type === 'string' ? '' :
+                                    type === 'null' ? null :
+                                        undefined
+                    )
+                }
                 return ({
                     // todo: support `default` keyword
                     //       https://github.com/ui-schema/ui-schema/issues/143
-                    value: (
-                        value.push(
-                            typeof action.itemValue !== 'undefined' ?
-                                action.itemValue :
-                                // todo: multi type support #68
-                                type === 'object' ? OrderedMap() :
-                                    // todo: handle tuple items default / `undefined of unexisting keys`
-                                    // `List.isList(items)` means it got tuple items
-                                    List.isList(items) || type === 'array' ? List() :
-                                        type === 'string' ? '' :
-                                            type === 'null' ? null :
-                                                undefined
-                        )
-                    ),
+                    value: value,
                     internal: internal.update('internals', (internalInternals = List()) =>
                         internalInternals.push(Map())
                     ),
@@ -62,6 +64,8 @@ export const actionHandler: (action: StoreActions) => UIStoreUpdaterFn = (action
                 ),
                 ...r,
             })
+        case 'set':
+            return action.data
         case 'update':
             return action.updater
         default:

@@ -104,38 +104,32 @@ const schemaTestBts = createOrderedMap({
             view: {
                 sizeMd: 3
             },
-            enum: [
-                'chocolate',
-                'almonds',
-                'cream',
-                'apples',
-                'cheese',
-            ],
-            default: [
-                'chocolate'
-            ],
-            t: {
-                de: {
-                    title: 'Kuchen',
-                    enum: {
-                        chocolate: 'Schokolade',
-                        almonds: 'Mandeln',
-                        cream: 'Sahne',
-                        apples: 'Äpfel',
-                        cheese: 'Käse'
-                    }
-                },
-                en: {
-                    title: 'Cake',
-                    enum: {
-                        chocolate: 'chocolate',
-                        almonds: 'almonds',
-                        cream: 'cream',
-                        apples: 'apples',
-                        cheese: 'cheese'
-                    }
-                }
+            items: {
+                oneOf: [
+                    {
+                        const: 'sidebar_left',
+                        t: {
+                            de: {
+                                title: 'Linke Sidebar',
+                            },
+                            en: {
+                                title: 'Left Sidebar',
+                            },
+                        },
+                    }, {
+                        const: 'sidebar_right',
+                    }, {
+                        const: 'notice',
+                    }, {
+                        const: 'content',
+                    }, {
+                        const: 'footer',
+                    },
+                ],
             },
+            default: [
+                'sidebar_left'
+            ],
         },
         discount: {
             type: "string",
@@ -185,31 +179,50 @@ const schemaTestBts = createOrderedMap({
                 minimum: 2,
             },*/
             uniqueItems: true,
-            enum: [
-                'child',
-                'teen',
-                'adult',
-                '50plus',
-            ],
-            t: {
-                de: {
-                    title: 'Alter',
-                    enum: {
-                        child: 'Kind',
-                        teen: 'Jugendlicher',
-                        adult: 'Erwachsener',
-                        '50plus': 'Senior',
-                    }
-                },
-                en: {
-                    title: 'Ages',
-                    enum: {
-                        child: 'Child',
-                        teen: 'Teenager',
-                        adult: 'Adult',
-                        '50plus': 'Senior',
-                    }
-                }
+            items: {
+                oneOf: [
+                    {
+                        const: 'child',
+                        t: {
+                            de: {
+                                title: 'Kind',
+                            },
+                            en: {
+                                title: 'Child',
+                            },
+                        },
+                    }, {
+                        const: 'teen',
+                        t: {
+                            de: {
+                                title: 'Jugendlicher',
+                            },
+                            en: {
+                                title: 'Teenager',
+                            },
+                        },
+                    }, {
+                        const: 'adult',
+                        t: {
+                            de: {
+                                title: 'Erwachsener',
+                            },
+                            en: {
+                                title: 'Adult',
+                            },
+                        },
+                    }, {
+                        const: '50plus',
+                        t: {
+                            de: {
+                                title: 'Senior',
+                            },
+                            en: {
+                                title: 'Senior',
+                            },
+                        },
+                    },
+                ],
             },
         },
         tags: {

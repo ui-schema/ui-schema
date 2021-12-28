@@ -21,7 +21,7 @@ import {
     WidgetsBindingFactory,
 } from '@ui-schema/ui-schema'
 import { browserT } from '../t'
-import { UIApiProvider } from '@ui-schema/ui-schema/UIApi/UIApi'
+import { UIApiProvider } from '@ui-schema/ui-schema/UIApi'
 import { ReferencingNetworkHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
 import { Table } from '@ui-schema/ds-material/Widgets/Table'
 import { NumberRendererCell, StringRendererCell, TextRendererCell } from '@ui-schema/ds-material/Widgets/TextFieldCell'
@@ -130,9 +130,9 @@ const Main = () => {
 
     const [store, setStore] = React.useState((): UIStoreType => createStore(OrderedMap()))
 
-    const onChange = React.useCallback((storeKeys, scopes, updater) => {
+    const onChange = React.useCallback((actions) => {
         setStore((prevStore: UIStoreType) => {
-            return storeUpdater(storeKeys, scopes, updater)(prevStore)
+            return storeUpdater(actions)(prevStore)
         })
     }, [setStore])
 

@@ -40,15 +40,14 @@ const SimpleList = extractValue(memo(({
                         <IconMinus
                             btnSize={btnSize}
                             onClick={() => {
-                                onChange(
-                                    storeKeys, ['value'],
-                                    {
-                                        type: 'update',
-                                        updater: ({value: storeValue}) => ({value: storeValue.splice(i, 1)}),
-                                        schema,
-                                        required,
-                                    }
-                                )
+                                onChange({
+                                    storeKeys,
+                                    scopes: ['value'],
+                                    type: 'update',
+                                    updater: ({value: storeValue}) => ({value: storeValue.splice(i, 1)}),
+                                    schema,
+                                    required,
+                                })
                             }}/>
                     </div>
                 </div>,
@@ -57,15 +56,14 @@ const SimpleList = extractValue(memo(({
                 <IconPlus
                     btnSize={btnSize}
                     onClick={() => {
-                        onChange(
-                            storeKeys, ['value'],
-                            {
-                                type: 'update',
-                                updater: ({value: storeValue = List()}) => ({value: storeValue.push('')}),
-                                schema,
-                                required,
-                            }
-                        )
+                        onChange({
+                            storeKeys,
+                            scopes: ['value'],
+                            type: 'update',
+                            updater: ({value: storeValue = List()}) => ({value: storeValue.push('')}),
+                            schema,
+                            required,
+                        })
                     }}/>
             </div>
         </div>

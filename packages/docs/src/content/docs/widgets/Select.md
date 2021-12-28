@@ -7,11 +7,11 @@ Widgets for select input, either as 'select 1 from n' or 'select n from n'.
 - type: `string`, `array`
 - widget keywords:
     - `Select` for a single value select
-        - use `enum` to specify array of values
-        - produces `array` with selected values
+        - use `enum` to specify array of possible values
+        - produces `string` with selected value
     - `SelectMulti` for a multi-value select
-        - use `enum` to specify array of values
-        - produces `string` containing the selected value
+        - use `items.oneOf[].const` to specify possible values and their restrictions
+        - produces `array` containing the selected values
 - view
     - grid keywords
 
@@ -39,10 +39,7 @@ const widgets = {
 Components:
 
 - `Select` select single value
-    - produces `string` containing the selected value
 - `SelectMulti` select multiple values
-    - use `enum` to specify array of values
-    - produces `array` with selected values
 - supported extra keywords:
     - `view.dense` : `boolean` for a smaller select popup
 - See also [mui select component](https://material-ui.com/components/selects/)
@@ -65,7 +62,4 @@ const widgets = {
 Components:
 
 - `Select` select single value
-    - produces `string` containing the selected value
 - `SelectMulti` select multiple values
-    - use `enum` to specify array of values
-    - produces `array` with selected values

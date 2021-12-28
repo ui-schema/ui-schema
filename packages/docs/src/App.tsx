@@ -14,15 +14,24 @@ import { HeadlinesProvider } from '@control-ui/docs/LinkableHeadline'
 import { customWidgets } from './component/Schema/widgets'
 import { browserT } from './t'
 import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta'
+import { UIApiProvider } from '@ui-schema/ui-schema/UIApi'
+import { loadSchemaUIApi } from '@ui-schema/ui-schema'
+
+const loadSchema: loadSchemaUIApi = (url, versions) => {
+    console.log('loadSchema (url, optional versions)', url, versions)
+    return fetch(url).then(r => r.json())
+}
 
 const Provider: React.ComponentType<React.PropsWithChildren<{}>> = ({children}) => (
     <DocsProvider loader={(file: string) => import('./content/docs/' + file + '.md')}>
         <HeadlinesProvider>
-            <UIMetaProvider widgets={customWidgets} t={browserT}>
-                <DndProvider backend={MultiBackend} options={HTML5toTouch}>
-                    {children}
-                </DndProvider>
-            </UIMetaProvider>
+            <UIApiProvider loadSchema={loadSchema} noCache>
+                <UIMetaProvider widgets={customWidgets} t={browserT}>
+                    <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+                        {children}
+                    </DndProvider>
+                </UIMetaProvider>
+            </UIApiProvider>
         </HeadlinesProvider>
     </DocsProvider>
 )
