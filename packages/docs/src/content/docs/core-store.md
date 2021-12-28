@@ -40,7 +40,7 @@ Saves and provides the `store`, `onChange` and `schema`.
     - `extractValidity` passes down: `validity`, `onChange`
 - Properties:
     - `store`: `UIStore` the immutable record storing the current ui generator state
-    - `onChange`: `function(storeKeys, scopes, updaterOrAction): void` [a function capable of updating the saved store](#store-updating--onchange)
+    - `onChange`: `function(actions): void` [a function capable of updating the saved store](#store-updating--onchange)
     - `schema`: `OrderedMap` the full schema as an immutable map
     - `showValidity` boolean
 
@@ -135,29 +135,24 @@ The `onChange` is responsible to update different parts of the [store](#uistore)
 
 Parameters:
 
-- `storeKeys`: `List<string | number>`, the keys of the value to update
-- `scopes`: `string[]`, which scope to update, uses singular: `value`, `valid`, `internal`
-- `updaterOrAction`
-    - a function receiving the scope values and returning the updated values
-    - or a [store action](#store-actions)
-    - `function({value, valid, internal}: {value: any, valid: any, internal: any}): {value: any, valid: any, internal: any}`
-    - using `action.schema` to handle e.g. `deleteOnEmpty`, treating [empty like in required HTML-inputs](/docs/schema#required-keyword)
+- `actions`
+    - one or multiple [store action](#store-actions)
 
 Does not return anything.
 
 ```js
 import React from 'react';
 import {UIGenerator, createOrderedMap, createStore} from '@ui-schema/ui-schema';
-import {storeUpdater} from '@ui-schema/ui-schema/UIStore/storeUpdater';
+import {storeUpdater} from '@ui-schema/ui-schema/storeUpdater';
 import {widgets} from '@ui-schema/ds-material';
 
 const Demo = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap({})));
 
-    const onChange = React.useCallback((storeKeys, scopes, updaterOrAction) => {
+    const onChange = React.useCallback((actions) => {
         setStore(prevStore => {
             // `storeUpdater` executes the updater or handles the `action`
-            const newStore = storeUpdater(storeKeys, scopes, updaterOrAction)(prevStore)
+            const newStore = storeUpdater(actions)(prevStore)
             return newStore
         })
     }, [setStore])
@@ -182,22 +177,27 @@ Returns a function which must receive the current store, it will return the upda
 See example above on how to use it, additionally you can intercept the prevStore and nextStore through wrapping the function in logic.
 
 ```js
-import {storeUpdater} from '@ui-schema/ui-schema/UIStore/storeUpdater';
+import {storeUpdater} from '@ui-schema/ui-schema/storeUpdater';
 ```
 
 ## Store Actions
 
-Reusable logic hooks, create and change store values according to schema or specific actions from a single place of code, works similar to redux reducers.
+Actions to update the store, handled within [`storeUpdater`](#storeupdater), currently only expandable by replacing `storeUpdater` with a custom implementation.
 
-Typed actions which are handled within [`storeUpdater`](#storeupdater), currently only expandable by replacing `storeUpdater` with a custom implementation.
+The internal `scopeUpdaterValues` uses `action.schema` to handle e.g. `deleteOnEmpty`, treating [empty like in required HTML-inputs](/docs/schema#required-keyword).
+
+Each action requires:
+
+- `storeKeys`: `List<string | number>`, the keys of the value to update
+- `scopes`: `string[]`, which scope to update, uses singular: `value`, `valid`, `internal`
 
 ```typescript jsx
-import { UIStoreUpdaterData, UIStoreAction } from '@ui-schema/ui-schema/UIStore'
+import { UIStoreUpdaterData, UIStoreAction, UIStoreActionScoped } from '@ui-schema/ui-schema/UIStoreActions'
 
-const baseAction: UIStoreAction = {
+const baseAction: UIStoreAction & UIStoreActionScoped = {
     type: 'some-custom-action',
     // optional `effect` to do something else after internal data change,
-    // but before the next render
+    // but before the actual store-set/next render
     effect: (newData: UIStoreUpdaterData, newStore: UIStoreType): void => {
     }
 }
@@ -206,77 +206,155 @@ const baseAction: UIStoreAction = {
 ### Action: Generic Update
 
 ```typescript jsx
-onChange(
-    storeKeys, ['value'],
-    {
-        type: 'update',
-        updater: ({value: oldValue}) => ({value: oldValue + 'some-input'}),
-        schema,
-        required,
-    },
-)
+onChange({
+    storeKeys,
+    scopes: ['value'],
+    type: 'update',
+    updater: ({value: oldValue}) => ({value: oldValue + 'some-input'}),
+    schema,
+    required,
+})
+```
 
-// or only an updater function:
-onChange(
-    storeKeys, ['value'],
-    ({value: oldValue}) => ({value: oldValue + 'some-input'}),
-)
+### Action: Generic Set
+
+Setting a specific data point, without relying on the `oldValue`:
+
+```typescript jsx
+onChange({
+    storeKeys,
+    scopes: ['value'],
+    type: 'set',
+    data: {
+        value: 'some-input',
+        //internalValue: undefined
+        //valid: undefined
+    },
+    schema,
+    required,
+})
+
+// onChange / storeUpdater supports multiple actions
+
+onChange([{
+    storeKeys: storeKeys.push('prob-a'),
+    scopes: ['value'],
+    type: 'set',
+    data: {
+        value: 'some-input',
+        //internalValue: undefined
+        //valid: undefined
+    },
+    schema,
+    required,
+}, {
+    storeKeys: storeKeys.push('prob-b'),
+    scopes: ['value'],
+    type: 'set',
+    data: {
+        value: 'some-input',
+        //internalValue: undefined
+        //valid: undefined
+    },
+    schema,
+    required,
+}])
 ```
 
 ### Action: List Item Add
 
 ```javascript
-onChange(
-    storeKeys, ['value', 'internal'],
-    {
-        type: 'list-item-add',
-        schema: schema,
-        // itemValue?: any
-    }
-)
+onChange({
+    storeKeys,
+    scopes: ['value', 'internal'],
+    type: 'list-item-add',
+    schema: schema,
+})
+// OR with value:
+onChange({
+    storeKeys,
+    scopes: ['value', 'internal'],
+    type: 'list-item-add',
+    itemValue: any
+})
 ```
 
 ### Action: List Item Delete
 
 ```typescript jsx
-onChange(
+onChange({
     // use the `storeKeys` of the list - NOT of the `item`!
-    storeKeys.splice(-1, 1) as StoreKeys, ['value', 'internal'],
-    {
-        type: 'list-item-delete',
-        index: index as number,
-    },
-)
+    storeKeys: storeKeys.splice(-1, 1) as StoreKeys,
+    scopes: ['value', 'internal'],
+    type: 'list-item-delete',
+    index: index as number,
+})
 ```
 
 ### Action: List Item Move
 
 ```typescript jsx
 // move "up" in the list:
-onChange(
+onChange({
     // use the `storeKeys` of the list - NOT of the `item`!
-    storeKeys.splice(-1, 1) as StoreKeys, ['value', 'internal'],
-    {
-        type: 'list-item-move',
-        fromIndex: index,
-        toIndex: index - 1,
-    },
-    deleteOnEmpty,
-    'array',
-)
+    storeKeys: storeKeys.splice(-1, 1) as StoreKeys,
+    scopes: ['value', 'internal'],
+    type: 'list-item-move',
+    fromIndex: index,
+    toIndex: index - 1,
+})
 
 // move "down" in the list:
-onChange(
+onChange({
     // use the `storeKeys` of the list - NOT of the `item`!
-    storeKeys.splice(-1, 1) as StoreKeys, ['value', 'internal'],
-    {
-        type: 'list-item-move',
-        fromIndex: index,
-        toIndex: index + 1,
-    },
-    deleteOnEmpty,
-    'array',
+    storeKeys: storeKeys.splice(-1, 1) as StoreKeys,
+    scopes: ['value', 'internal'],
+    type: 'list-item-move',
+    fromIndex: index,
+    toIndex: index + 1,
+})
+```
+
+### UpdateFn Migration
+
+Before `0.3.0-alpha.6` the actions where optional, it was possible to use only an updater function.
+
+Code `~0.2.0` and `>=0.3.0-alpha & <= 0.3.0-alpha.5`:
+
+```typescript jsx
+onChange(
+    storeKeys, ['value'],
+    ({value}) => ({value: e.target.value}),
 )
+```
+
+Code `>=0.3.0-alpha & <= 0.3.0-alpha.5`:
+
+```typescript jsx
+onChange(
+    storeKeys, ['value'],
+    {
+        type: 'update',
+        // oldValue => newValue
+        updater: ({value}) => ({value: e.target.value}),
+        schema: schema,
+        required: required,
+    }
+)
+```
+
+Code since `0.3.0-alpha.6`:
+
+```typescript jsx
+onChange({
+    storeKeys: storeKeys,
+    scopes: ['value'],
+    type: 'update',
+    // oldValue => newValue
+    updater: ({value}) => ({value: e.target.value}),
+    schema: schema,
+    required: required,
+})
 ```
 
 ## UIConfigContext

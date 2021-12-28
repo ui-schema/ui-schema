@@ -48,15 +48,14 @@ export const StringRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBindi
             setCompVal('')
             return undefined
         }
-        onChange(
-            storeKeys, ['value'],
-            {
-                type: 'update',
-                updater: () => ({value: newVal}),
-                schema,
-                required,
-            },
-        )
+        onChange({
+            storeKeys,
+            scopes: ['value'],
+            type: 'set',
+            schema,
+            required,
+            data: {value: newVal},
+        })
     }, [storeKeys, onChange, schema, required])
 
     const schemaType = schema.get('type') as string

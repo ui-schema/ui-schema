@@ -1,14 +1,14 @@
 import React from 'react';
 import {createEmptyStore, isInvalid, UIRootRenderer, UIStoreProvider} from '@ui-schema/ui-schema';
-import {storeUpdater} from '@ui-schema/ui-schema/UIStore/storeUpdater';
+import {storeUpdater} from '@ui-schema/ui-schema/storeUpdater';
 
 const MainDummy = ({schema, Debugger, Button}) => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [store, setStore] = React.useState(() => createEmptyStore(schema.get('type')));
 
-    const onChangeNext = React.useCallback((storeKeys, scopes, updater) => {
+    const onChangeNext = React.useCallback((actions) => {
         setStore(prevStore => {
-            const newStore = storeUpdater(storeKeys, scopes, updater)(prevStore)
+            const newStore = storeUpdater(actions)(prevStore)
             /*const newValue = newStore.getIn(prependKey(storeKeys, 'values'))
             const prevValue = prevStore.getIn(prependKey(storeKeys, 'values'))
             console.log(

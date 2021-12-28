@@ -1,5 +1,6 @@
 import { OrderedMap, Map, List, RecordOf } from 'immutable'
-import { SchemaTypesType, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
+import { StoreActions, UIStoreUpdaterData } from '@ui-schema/ui-schema/UIStoreActions'
 
 export type Values<V> = List<V> | string | number | boolean | Map<string, V> | OrderedMap<string, V>
 export type ValuesJS = any[] | string | number | boolean | Object
@@ -35,55 +36,10 @@ export type UIStoreValidityType = Map<string | number, any>
 
 export const UIStore: UIStoreType
 
-export interface UIStoreUpdaterData {
-    value?: any
-    internal?: any
-    valid?: any
-    meta?: any
-}
-
-export interface UIStoreAction {
-    type: string
-    effect?: (newData: UIStoreUpdaterData, newStore: UIStoreType) => void
-    schema?: StoreSchemaType
-    required?: boolean
-}
-
-export interface UIStoreActionListItemAdd extends UIStoreAction {
-    type: 'list-item-add'
-    schema: StoreSchemaType
-    // if not `undefined`, will be used as the added value
-    itemValue?: any | undefined
-}
-
-export interface UIStoreActionListItemDelete extends UIStoreAction {
-    type: 'list-item-delete'
-    index: number
-}
-
-export interface UIStoreActionListItemMove extends UIStoreAction {
-    type: 'list-item-move'
-    fromIndex: number
-    toIndex: number
-}
-
-export interface UIStoreActionUpdate extends UIStoreAction {
-    type: 'update'
-    updater: UIStoreUpdaterFn
-}
-
-export type StoreActions =
-    UIStoreActionListItemAdd |
-    UIStoreActionListItemDelete |
-    UIStoreActionListItemMove |
-    UIStoreActionUpdate
-
 export type UIStoreUpdaterFn<D extends UIStoreUpdaterData = UIStoreUpdaterData> = (data: D) => D
 
 export type onChangeHandlerGeneric<R = void> = (
-    storeKeys: StoreKeys,
-    scopes: (keyof UIStoreUpdaterData)[],
-    updater: UIStoreUpdaterFn | StoreActions,
+    actions: StoreActions[] | StoreActions
 ) => R
 
 export type onChangeHandler = onChangeHandlerGeneric<void>

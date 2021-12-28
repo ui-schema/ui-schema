@@ -103,15 +103,16 @@ const Widget = ({
             required={required}
             value={value || ''}
             onChange={(e) => {
-                onChange(
-                    storeKeys, ['value'],
-                    {
-                        type: 'update',
-                        updater: ({value: oldValue}) => ({value: e.target.value}),
-                        schema,
-                        required,
-                    }
-                )
+                onChange({
+                    storeKeys,
+                    scopes: ['value'],
+                    type: 'set',
+                    data: {
+                        value: e.target.value,
+                    },
+                    schema,
+                    required,
+                })
             }}
         />
     </>

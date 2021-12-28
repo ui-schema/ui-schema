@@ -82,9 +82,9 @@ const MainStore = () => {
     const [store, setStore] = React.useState(() => createStore(createMap(dataDemoMain)));
     const [schema, setSchema] = React.useState(() => createOrderedMap(schemaDemoMain));
 
-    const onChangeNext = React.useCallback((storeKeys, scopes, updater) => {
+    const onChange = React.useCallback((actions) => {
         setStore(prevStore => {
-            const newStore = storeUpdater(storeKeys, scopes, updater)(prevStore)
+            const newStore = storeUpdater(actions)(prevStore)
             /*const newValue = newStore.getIn(prependKey(storeKeys, 'values'))
             const prevValue = prevStore.getIn(prependKey(storeKeys, 'values'))
             console.log(
@@ -100,7 +100,7 @@ const MainStore = () => {
     return <React.Fragment>
         <UIStoreProvider
             store={store}
-            onChange={onChangeNext}
+            onChange={onChange}
             showValidity={showValidity}
             //doNotDefault
         >
@@ -117,15 +117,15 @@ const MainStore = () => {
 const DemoUser = () => {
     const [store, setStore] = React.useState(() => createEmptyStore());
 
-    const onChangeNext = React.useCallback((storeKeys, scopes, updater) => {
-        setStore(storeUpdater(storeKeys, scopes, updater))
+    const onChange = React.useCallback((actions) => {
+        setStore(storeUpdater(actions))
     }, [setStore])
 
     return <Grid container spacing={3} justify={'center'}>
         <Grid item xs={12} md={6}>
             <UIStoreProvider
                 store={store}
-                onChange={onChangeNext}
+                onChange={onChange}
                 showValidity
             >
                 <UIRootRenderer schema={schemaUser}/>
@@ -281,8 +281,8 @@ const FreeFormEditor = () => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
 
-    const onChange = React.useCallback((storeKeys, scopes, updater) => {
-        setStore(storeUpdater(storeKeys, scopes, updater))
+    const onChange = React.useCallback((actions) => {
+        setStore(storeUpdater(actions))
     }, [setStore])
 
     return <React.Fragment>

@@ -22,12 +22,6 @@ let CodeSelectable = (props) => {
 
     const valFormat = value.get(0)
     React.useEffect(() => {
-        onChange(
-            storeKeys, ['value'], ({value: val = List()}) => ({value: val}),
-        )
-    }, [onChange, storeKeys])
-
-    React.useEffect(() => {
         if(valFormat) {
             setFormat(valFormat)
         }
@@ -58,9 +52,14 @@ let CodeSelectable = (props) => {
                 selected={f === format}
                 onClick={() => {
                     setOpen(null)
-                    onChange(
-                        storeKeys.push(0), ['value'], () => ({value: f}),
-                    )
+                    onChange({
+                        storeKeys: storeKeys.push(0),
+                        scopes: ['value'],
+                        type: 'set',
+                        schema,
+                        required,
+                        data: {value: f},
+                    })
                 }}
             >
                 <Trans text={'formats.' + f}/>

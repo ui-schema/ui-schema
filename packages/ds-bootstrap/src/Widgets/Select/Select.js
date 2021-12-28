@@ -32,19 +32,18 @@ const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChang
             multiple={multiple}
             onChange={(e) => {
                 const target = e.target
-                onChange(
-                    storeKeys, ['value'],
-                    {
-                        type: 'update',
-                        updater: () => ({
-                            value: multiple ?
-                                sortScalarList(List([...target.options].filter(o => o.selected).map(o => o.value))) :
-                                target.value,
-                        }),
-                        schema,
-                        required,
-                    },
-                )
+                onChange({
+                    storeKeys,
+                    scopes: ['value'],
+                    type: 'update',
+                    updater: () => ({
+                        value: multiple ?
+                            sortScalarList(List([...target.options].filter(o => o.selected).map(o => o.value))) :
+                            target.value,
+                    }),
+                    schema,
+                    required,
+                })
             }}>
             {enum_val ? enum_val.map((enum_name) => {
                 const s = enum_name + '';

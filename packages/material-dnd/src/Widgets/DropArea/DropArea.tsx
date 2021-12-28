@@ -1,5 +1,5 @@
 import React from 'react'
-import { memo, Trans, TransTitle, UIStoreActionListItemAdd, WidgetProps, WidgetsBindingFactory, WithOnChange } from '@ui-schema/ui-schema'
+import { memo, Trans, TransTitle, UIStoreActionListItemAddWithValue, UIStoreActionScoped, WidgetProps, WidgetsBindingFactory, WithOnChange } from '@ui-schema/ui-schema'
 import { AccessTooltipIcon } from '@ui-schema/ds-material'
 import IconButton from '@material-ui/core/IconButton'
 import Add from '@material-ui/icons/Add'
@@ -48,18 +48,15 @@ export const DropAreaBase = (
             onClose={() => setShowSelector(false)}
         >
             <Selector
-                onSelect={(block: DndBlock) => onChange(
-                    storeKeys, ['value', 'internal'],
-                    {
-                        type: 'list-item-add',
-                        schema,
-                        required,
-                        itemValue: OrderedMap({
-                            [block.idKey]: genId(),
-                            [block.typeKey]: block.type,
-                        }),
-                    } as UIStoreActionListItemAdd,
-                )}
+                onSelect={(block: DndBlock) => onChange({
+                    storeKeys,
+                    scopes: ['value', 'internal'],
+                    type: 'list-item-add',
+                    itemValue: OrderedMap({
+                        [block.idKey]: genId(),
+                        [block.typeKey]: block.type,
+                    }),
+                } as UIStoreActionListItemAddWithValue & UIStoreActionScoped)}
             />
         </Dialog>
 

@@ -81,15 +81,14 @@ const NumberSliderRenderer = ({
                 ThumbComponent={hasMulti ? p => <ThumbComponent
                     {...p}
                     onClick={(index) =>
-                        onChange(
-                            storeKeys, ['value'],
-                            {
-                                type: 'update',
-                                updater: ({value: storeValue}) => ({value: storeValue.splice(index, 1)}),
-                                schema,
-                                required,
-                            },
-                        )
+                        onChange({
+                            storeKeys,
+                            scopes: ['value'],
+                            type: 'update',
+                            updater: ({value: storeValue}) => ({value: storeValue.splice(index, 1)}),
+                            schema,
+                            required,
+                        })
                     }
                     canDelete={value && value.size > minItems}
                 /> : undefined}
@@ -104,29 +103,27 @@ const NumberSliderRenderer = ({
                     if(schema.get('readOnly')) {
                         return
                     }
-                    onChange(
-                        storeKeys, ['value'],
-                        {
-                            type: 'update',
-                            updater: () => ({value: schemaTypeToDistinct(schema.get('type')) === 'array' ? List(newValue) : newValue * 1}),
-                            schema,
-                            required,
-                        },
-                    )
+                    onChange({
+                        storeKeys,
+                        scopes: ['value'],
+                        type: 'update',
+                        updater: () => ({value: schemaTypeToDistinct(schema.get('type')) === 'array' ? List(newValue) : newValue * 1}),
+                        schema,
+                        required,
+                    })
                 }}
             />
             {!schema.get('readOnly') && hasMulti ? <IconButton
                 size={'small'} disabled={!canAdd} style={{margin: 'auto 6px'}}
                 onClick={() =>
-                    onChange(
-                        storeKeys, ['value'],
-                        {
-                            type: 'update',
-                            updater: ({value: storeValue}) => ({value: storeValue ? storeValue.push(min) : List(defaultVal).push(min)}),
-                            schema,
-                            required,
-                        },
-                    )
+                    onChange({
+                        storeKeys,
+                        scopes: ['value'],
+                        type: 'update',
+                        updater: ({value: storeValue}) => ({value: storeValue ? storeValue.push(min) : List(defaultVal).push(min)}),
+                        schema,
+                        required,
+                    })
                 }
             >
                 <AccessTooltipIcon title={<Trans text={'labels.add-number'}/>}>

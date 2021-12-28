@@ -7,7 +7,7 @@ import { widgets } from '@ui-schema/ds-material'
 import { createOrderedMap, createStore, UIMetaProvider, UIStoreProvider } from '@ui-schema/ui-schema'
 import { browserT } from '../t'
 import { ReferencingNetworkHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
-import { storeUpdater } from '@ui-schema/ui-schema/UIStore/storeUpdater'
+import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
 import { OrderedMap } from 'immutable'
 import { NumberRendererDebounced, StringRendererDebounced, TextRendererDebounced } from '@ui-schema/ds-material/Widgets/TextFieldDebounced/TextFieldDebounced'
 import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer/UIRootRenderer'
@@ -59,8 +59,8 @@ const FormComp = () => {
     const showValidity = true
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
 
-    const onChange = React.useCallback((storeKeys, scopes, updater) => {
-        setStore(storeUpdater(storeKeys, scopes, updater))
+    const onChange = React.useCallback((actions) => {
+        setStore(storeUpdater(actions))
     }, [setStore])
 
     return <React.Fragment>

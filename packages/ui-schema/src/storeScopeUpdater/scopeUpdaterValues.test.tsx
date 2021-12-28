@@ -8,17 +8,21 @@ import {
     // @ts-ignore
 } from '@testing-library/jest-dom/matchers'
 import { List, Map, OrderedMap } from 'immutable'
-import { UIStore, StoreKeys, UIStoreType, createEmptyStore, StoreActions } from '@ui-schema/ui-schema/UIStore/UIStore'
-import { scopeUpdaterValues } from '@ui-schema/ui-schema/UIStore/scopeUpdaterValues'
+import { UIStore, StoreKeys, UIStoreType, createEmptyStore } from '@ui-schema/ui-schema/UIStore'
+import { StoreActions } from '@ui-schema/ui-schema/UIStoreActions'
+import { scopeUpdaterValues } from '@ui-schema/ui-schema/storeScopeUpdater/scopeUpdaterValues'
 
 expect.extend({toBeInTheDocument, toHaveClass})
+
+/**
+ * npm run tdd -- -u --testPathPattern=src/storeScopeUpdater/scopeUpdaterValues.test.tsx
+ */
 
 describe('scopeUpdaterValues', () => {
     test.each([
         [
             createEmptyStore('object'),
             List([]),
-            OrderedMap({}),
             OrderedMap({}),
             {schema: Map({type: 'object'})},
             new UIStore({
@@ -29,7 +33,6 @@ describe('scopeUpdaterValues', () => {
             }),
         ], [
             createEmptyStore('array'),
-            List([]),
             List([]),
             List([]),
             {schema: Map({type: 'array'})},
@@ -45,7 +48,6 @@ describe('scopeUpdaterValues', () => {
             }),
             List([]),
             OrderedMap({}),
-            OrderedMap({}),
             {schema: Map({type: 'object'})},
             new UIStore({
                 values: OrderedMap({}),
@@ -56,7 +58,6 @@ describe('scopeUpdaterValues', () => {
             }),
             List([]),
             OrderedMap({}),
-            OrderedMap({}),
             undefined,
             new UIStore({
                 values: OrderedMap({}),
@@ -66,7 +67,6 @@ describe('scopeUpdaterValues', () => {
                 values: OrderedMap({}),
             }),
             List([]),
-            OrderedMap({}),
             undefined,
             {schema: Map({type: 'object'}), required: true},
             new UIStore({}),
@@ -75,7 +75,6 @@ describe('scopeUpdaterValues', () => {
                 values: OrderedMap({}),
             }),
             List(['prop_a']),
-            undefined,
             'some-string',
             {schema: Map({type: 'string'})},
             new UIStore({
@@ -88,7 +87,6 @@ describe('scopeUpdaterValues', () => {
                 values: OrderedMap({}),
             }),
             List(['prop_a', 0]),
-            undefined,
             'some-string',
             {
                 schema: Map({type: 'string'}),
@@ -107,7 +105,6 @@ describe('scopeUpdaterValues', () => {
                 }),
             }),
             List(['prop_a']),
-            'some-string',
             '',
             {schema: Map({type: 'string'}), required: true},
             new UIStore({
@@ -118,7 +115,6 @@ describe('scopeUpdaterValues', () => {
                 values: OrderedMap({}),
             }),
             List(['prop_a']),
-            'some-string',
             '',
             {schema: Map({type: 'string'}), required: false},
             new UIStore({
@@ -135,7 +131,6 @@ describe('scopeUpdaterValues', () => {
                 }),
             }),
             List(['prop_a', 'sub_a']),
-            'some-string',
             '',
             {schema: Map({type: 'string'}), required: true},
             new UIStore({
@@ -152,7 +147,6 @@ describe('scopeUpdaterValues', () => {
                 }),
             }),
             List(['prop_a', 'sub_a']),
-            'some-string',
             '',
             {schema: Map({type: 'string'}), required: false},
             new UIStore({
@@ -174,7 +168,6 @@ describe('scopeUpdaterValues', () => {
                 }),
             }),
             List(['prop_a', 0]),
-            'some-string-0',
             '',
             {schema: Map({type: 'string'}), required: true},
             new UIStore({
@@ -200,7 +193,6 @@ describe('scopeUpdaterValues', () => {
                 }),
             }),
             List(['prop_a', 1]),
-            'some-string-0',
             '',
             {schema: Map({type: 'string'}), required: true},
             new UIStore({
@@ -226,7 +218,6 @@ describe('scopeUpdaterValues', () => {
                 }),
             }),
             List(['prop_a', 3]),
-            'some-string-0',
             '',
             {schema: Map({type: 'string'}), required: true},
             new UIStore({
@@ -245,7 +236,6 @@ describe('scopeUpdaterValues', () => {
                 values: 'some-string',
             }),
             List([]),
-            'some-string',
             '',
             {schema: Map({type: 'string'}), required: true},
             new UIStore({}).delete('values'),
@@ -256,22 +246,6 @@ describe('scopeUpdaterValues', () => {
                 }),
             }),
             List(['prop_a', 'sub_a']),
-            'some-string-b',
-            '',
-            {schema: Map({type: 'string'}), required: true},
-            new UIStore({
-                values: OrderedMap({
-                    prop_a: 'already-changed',
-                }),
-            }),
-        ], [
-            new UIStore({
-                values: OrderedMap({
-                    prop_a: 'already-changed',
-                }),
-            }),
-            List(['prop_a', 'sub_a']),
-            undefined,
             '',
             {schema: Map({type: 'string'}), required: true},
             new UIStore({
@@ -286,7 +260,6 @@ describe('scopeUpdaterValues', () => {
                 }),
             }),
             List(['prop_a', 'sub_a']),
-            undefined,
             '',
             {schema: Map({type: 'string'}), required: false},
             new UIStore({
@@ -297,13 +270,13 @@ describe('scopeUpdaterValues', () => {
                 }),
             }),
         ],
-    ])('scopeUpdaterValues(%j, %s, %j, %j, %j): %j', <S extends UIStoreType>(
+    ])('scopeUpdaterValues(%j, %s, %j, %j): %j', <S extends UIStoreType>(
         store: S, storeKeys: StoreKeys,
-        oldValue: any, newValue: any,
+        newValue: any,
         action: StoreActions,
         expected: any
     ) => {
-        const r = scopeUpdaterValues(store, storeKeys, oldValue, newValue, action)
+        const r = scopeUpdaterValues(store, storeKeys, newValue, action)
         const isExpected = r.equals(expected)
         if (!isExpected) {
             console.log(

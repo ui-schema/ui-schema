@@ -37,20 +37,19 @@ const OptionsCheckValue = extractValue(memo(({enumVal, storeKeys, value, onChang
             classFormControl={classFormControl}
             currentValue={isActive}
             onChange={() => {
-                onChange(
-                    storeKeys, ['value'],
-                    {
-                        type: 'update',
-                        updater: ({value: val = List()}) =>
-                            ({
-                                value: sortScalarList(checkActive(val, enum_name) ?
-                                    val.delete(val.indexOf(enum_name)) :
-                                    val.push(enum_name)),
-                            }),
-                        schema,
-                        required,
-                    },
-                )
+                onChange({
+                    storeKeys,
+                    scopes: ['value'],
+                    type: 'update',
+                    updater: ({value: val = List()}) =>
+                        ({
+                            value: sortScalarList(checkActive(val, enum_name) ?
+                                val.delete(val.indexOf(enum_name)) :
+                                val.push(enum_name)),
+                        }),
+                    schema,
+                    required,
+                })
             }}
             label={<Trans
                 schema={schema.get('t')}

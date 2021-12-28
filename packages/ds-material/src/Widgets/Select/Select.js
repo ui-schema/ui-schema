@@ -47,19 +47,18 @@ const Select = ({
             }}
             onChange={(e) =>
                 !schema.get('readOnly') &&
-                onChange(
-                    storeKeys, ['value'],
-                    {
-                        type: 'update',
-                        updater: () => ({
-                            value: multiple ?
-                                sortScalarList(List(e.target.value)) :
-                                e.target.value,
-                        }),
-                        schema,
-                        required,
+                onChange({
+                    storeKeys,
+                    scopes: ['value'],
+                    type: 'set',
+                    schema,
+                    required,
+                    data: {
+                        value: multiple ?
+                            sortScalarList(List(e.target.value)) :
+                            e.target.value,
                     },
-                )
+                })
             }
         >
             {enum_val ? enum_val.map((enum_name, i) =>

@@ -61,15 +61,14 @@ export const DateTimeBase = ({
                         date.parse(value, dateFormatData)
             : null}
         onChange={(e) => {
-            onChange(
-                storeKeys, ['value'],
-                {
-                    type: 'update',
-                    updater: () => ({value: e ? date.format(e, dateFormatData) : ''}),
-                    schema,
-                    required,
-                },
-            )
+            onChange({
+                storeKeys: storeKeys,
+                scopes: ['value'],
+                type: 'set',
+                schema,
+                required,
+                data: {value: e ? date.format(e, dateFormatData) : ''},
+            })
         }}
         {...additionalProps}
     /></div>

@@ -155,8 +155,8 @@ export const DemoForm = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(data)));
     const [schema/*, setSchema*/] = React.useState(() => createOrderedMap(schemaBase));
 
-    const onChange = React.useCallback((storeKeys, scopes, updateAction)  => {
-        setStore(storeUpdater(storeKeys, scopes, updateAction))
+    const onChange = React.useCallback((actions) => {
+        setStore(storeUpdater(actions))
     }, [setStore])
 
     return <React.Fragment>
@@ -193,14 +193,14 @@ Easily create new widgets, this is all for a simple text (`type=string`) widget:
 
 ```typescript jsx
 import React from 'react';
-import { TransTitle, WidgetProps, WithValue } from '@ui-schema/ui-schema';
+import { TransTitle, WidgetProps, WithScalarValue } from '@ui-schema/ui-schema';
 
 const Widget = ({
                     value, ownKey, storeKeys, onChange,
                     required, schema,
                     errors, valid,
                     ...props
-                }: WidgetProps & WithValue) => {
+                }: WidgetProps & WithScalarValue) => {
     return <>
         <label><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></label>
 
@@ -209,16 +209,19 @@ const Widget = ({
             required={required}
             value={value || ''}
             onChange={(e) => {
-                onChange(
-                    storeKeys, ['value'],
-                    {
-                        type: 'update',
-                        // oldValue => newValue
-                        updater: ({value}) => ({value: e.target.value}),
-                        schema: schema,
-                        required: required,
-                    }
-                )
+                onChange({
+                    storeKeys,
+                    scopes: ['value'],
+                    // or use another StoreAction like `update`
+                    type: 'set',
+                    data: {
+                        value: e.target.value,
+                        //internalValue: undefined
+                        //valid: undefined
+                    },
+                    schema,
+                    required,
+                })
             }}
         />
     </>
@@ -288,8 +291,8 @@ export const DemoForm = () => {
     // `useUIMeta` can be used safely, without performance impact (`useUI` has a performance impact)
     const {widgets, t} = useUIMeta()
 
-    const onChange = React.useCallback((storeKeys, scopes, updateAction) => {
-        setStore(storeUpdater(storeKeys, scopes, updateAction))
+    const onChange = React.useCallback((actions) => {
+        setStore(storeUpdater(actions))
     }, [setStore])
 
     return <React.Fragment>

@@ -17,15 +17,14 @@ const RadioInput = ({classForm, enumName, classLabel, required, classFormControl
             className={classFormControl.join(' ')}
             checked={enumName === value}
             onChange={() =>
-                onChange(
-                    storeKeys, ['value'],
-                    {
-                        type: 'update',
-                        updater: () => ({value: enumName}),
-                        schema,
-                        required,
-                    }
-                )
+                onChange({
+                    storeKeys,
+                    scopes: ['value'],
+                    type: 'set',
+                    data: {value: enumName},
+                    schema,
+                    required,
+                })
             }
         />
         <label

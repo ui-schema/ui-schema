@@ -129,9 +129,9 @@ const SingleEditor = () => {
     const [schema, setSchema] = React.useState<number>(0)
     const [store, setStore] = React.useState<UIStoreType>(() => createStore(OrderedMap()))
 
-    const onChange = React.useCallback((storeKeys, scopes, updater) => {
+    const onChange = React.useCallback((actions) => {
         setStore(prevStore => {
-            return storeUpdater(storeKeys, scopes, updater)(prevStore)
+            return storeUpdater(actions)(prevStore)
         })
     }, [setStore])
 

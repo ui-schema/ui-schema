@@ -75,13 +75,12 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                             if (rows !== -1) {
                                 setPage(Number(Math.ceil((listSizeCurrent + 1) / rows)) - 1)
                             }
-                            onChange(
-                                storeKeys, ['value', 'internal'],
-                                {
-                                    type: 'list-item-add',
-                                    schema: schema,
-                                }
-                            )
+                            onChange({
+                                storeKeys,
+                                scopes: ['value', 'internal'],
+                                type: 'list-item-add',
+                                schema: schema,
+                            })
                         }}
                         size={btnSize}
                         style={{marginRight: 6}}
@@ -108,8 +107,8 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                     inputProps: {'aria-label': t ? t('pagination.rows-per-page') as string : 'per Page'},
                     //native: true,
                 }}
-                onChangePage={(_e, p) => setPage(p)}
-                onChangeRowsPerPage={(e) => {
+                onPageChange={(_e, p) => setPage(p)}
+                onRowsPerPageChange={(e) => {
                     setPage(0)
                     setRows(Number(e.target.value))
                 }}

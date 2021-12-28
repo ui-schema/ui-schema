@@ -89,15 +89,14 @@ export const AreaRendererBase = <C extends HTMLElement = HTMLElement, S extends 
                 style={{
                     padding: 6,
                 }}
-                onClick={() => onChange(
-                    storeKeys.splice(-1, 1), ['value', 'internal'],
-                    {
-                        type: 'list-item-delete',
-                        index: storeKeys.last() as number,
-                        schema,
-                        required: required,
-                    },
-                )}
+                onClick={() => onChange({
+                    storeKeys: storeKeys.splice(-1, 1),
+                    scopes: ['value', 'internal'],
+                    type: 'list-item-delete',
+                    index: storeKeys.last() as number,
+                    schema,
+                    required: required,
+                })}
             >
                 <IcDelete/>
             </IconButton>

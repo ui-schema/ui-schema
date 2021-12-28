@@ -8,9 +8,13 @@ import {
     // @ts-ignore
 } from '@testing-library/jest-dom/matchers'
 import { List, Map, OrderedMap } from 'immutable'
-import { UIStore, storeUpdater, StoreKeys, UIStoreType, UIStoreUpdaterFn, UIStoreUpdaterData, UIStoreActionUpdate } from '@ui-schema/ui-schema/UIStore'
+import { UIStore, StoreKeys, UIStoreType, UIStoreUpdaterFn } from '@ui-schema/ui-schema/UIStore'
+import { storeUpdater, UIStoreActionUpdate, UIStoreUpdaterData } from '@ui-schema/ui-schema'
 
 expect.extend({toBeInTheDocument, toHaveClass})
+/**
+ * npm run tdd -- -u --testPathPattern=src/storeUpdater/storeUpdater.test.ts
+ */
 
 describe('storeUpdater', () => {
     test.each([
@@ -109,11 +113,13 @@ describe('storeUpdater', () => {
     ) => {
         const action: UIStoreActionUpdate = {
             type: 'update',
+            storeKeys,
+            scopes,
             updater: updater,
             ...(type ? {schema: Map({type})} : {}),
             ...(deleteOnEmpty ? {required: true} : {}),
         }
-        const r = storeUpdater(storeKeys, scopes, action)(store)
+        const r = storeUpdater(action)(store)
         const isExpected = r.equals(expected)
         if (!isExpected) {
             console.log(

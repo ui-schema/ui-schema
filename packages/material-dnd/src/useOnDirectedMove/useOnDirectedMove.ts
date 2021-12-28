@@ -1,7 +1,7 @@
 import { List, Map } from 'immutable'
 import { addNestKey, DndIntents, moveDraggedValue, onIntentFactory, onMovedType } from '@ui-schema/kit-dnd'
 import React from 'react'
-import { onChangeHandler } from '@ui-schema/ui-schema'
+import { onChangeHandler, StoreKeys } from '@ui-schema/ui-schema'
 import { DragDropSpec } from '@ui-schema/material-dnd/DragDropSpec'
 
 export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends DragDropSpec = DragDropSpec>(
@@ -112,11 +112,12 @@ export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends
                     }
                 }
                 // - switching within one array or between different relative roots
-                onChange(
-                    List(),
-                    ['value', 'internal'],
+                onChange({
+                    storeKeys: List() as StoreKeys,
+                    scopes: ['value', 'internal'],
                     // todo: move `schema`/`required` to action like `type: update`
-                    ({value, internal = Map()}) => {
+                    type: 'update',
+                    updater: ({value, internal = Map()}) => {
                         value = moveDraggedValue(
                             value,
                             fromDataKeys, fromIndex,
@@ -129,7 +130,7 @@ export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends
                         )
                         return {value, internal}
                     },
-                )
+                })
                 done(dk, toIndex)
                 return
             }
@@ -158,11 +159,12 @@ export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends
                 }
 
                 const setter = (doMerge: string | undefined) => {
-                    onChange(
-                        List(),
-                        ['value', 'internal'],
+                    onChange({
+                        storeKeys: List() as StoreKeys,
+                        scopes: ['value', 'internal'],
+                        type: 'update',
                         // todo: move `schema`/`required` to action like `type: update`
-                        ({value, internal = Map()}) => {
+                        updater: ({value, internal = Map()}) => {
                             let dk = toDataKeys
 
                             const orgTks = addNestKey<string | number>('list', toDataKeys.push(toIndex))
@@ -215,7 +217,7 @@ export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends
                             done(dk, ti)
                             return {value, internal}
                         },
-                    )
+                    })
                 }
 
                 let doMerge: string | undefined = undefined

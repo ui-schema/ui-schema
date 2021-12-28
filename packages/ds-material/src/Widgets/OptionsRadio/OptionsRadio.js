@@ -37,15 +37,14 @@ const OptionsRadio = ({
                         checked={enum_name === isActive}
                         onChange={() =>
                             !schema.get('readOnly') &&
-                            onChange(
-                                storeKeys, ['value'],
-                                {
-                                    type: 'update',
-                                    updater: () => ({value: enum_name}),
-                                    schema,
-                                    required,
-                                },
-                            )
+                            onChange({
+                                storeKeys,
+                                scopes: ['value'],
+                                type: 'set',
+                                schema,
+                                required,
+                                data: {value: enum_name},
+                            })
                         }
                     />}
                     label={<Trans

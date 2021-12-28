@@ -62,7 +62,6 @@ export const secondaryListItems = (
         <ListItemLink to={'/mui-pickers'} primary="MUI-Pickers" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-pro'} primary="MUI UI Pro" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-editorjs'} primary="MUI EditorJS" icon={<AssignmentIcon/>}/>
-        <ListItemLink to={'/mui-rbd'} primary="MUI RBD" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-dnd'} primary="MUI DnD" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-dnd-grid'} primary="MUI DnD Grid" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-editable'} primary="MUI Editable" icon={<AssignmentIcon/>}/>

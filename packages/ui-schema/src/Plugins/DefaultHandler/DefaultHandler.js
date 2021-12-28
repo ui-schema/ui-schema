@@ -20,14 +20,24 @@ const DefaultHandler = (props) => {
         if(typeof defaultVal === 'undefined') return
 
         if(typeof valRef.current === 'undefined') {
-            onChange(storeKeys, ['value', 'internal'], ({internal = Map()}) => ({
-                value: defaultVal,
-                internal: internal.set('defaultHandled', true),
-            }))
+            onChange({
+                type: 'update',
+                storeKeys: storeKeys,
+                scopes: ['value', 'internal'],
+                updater: ({internal = Map()}) => ({
+                    value: defaultVal,
+                    internal: internal.set('defaultHandled', true),
+                }),
+            })
         } else {
-            onChange(storeKeys, ['internal'], ({internal = Map()}) => ({
-                internal: internal.set('defaultHandled', true),
-            }))
+            onChange({
+                type: 'update',
+                storeKeys: storeKeys,
+                scopes: ['internal'],
+                updater: ({internal = Map()}) => ({
+                    internal: internal.set('defaultHandled', true),
+                }),
+            })
         }
     }, [onChange, storeKeys, defaultHandled, defaultVal, valRef]);
 

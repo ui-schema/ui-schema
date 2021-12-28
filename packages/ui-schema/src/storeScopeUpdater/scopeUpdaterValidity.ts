@@ -1,9 +1,9 @@
-import { prependKey } from '@ui-schema/ui-schema/UIStore/UIStore'
-import { ScopeOnChangeHandler } from '@ui-schema/ui-schema/UIStore/storeUpdater'
-import { updateStoreScope } from '@ui-schema/ui-schema/UIStore/updateStoreScope'
+import { prependKey } from '@ui-schema/ui-schema/UIStore'
 import { List } from 'immutable'
+import { ScopeOnChangeHandler } from '@ui-schema/ui-schema/storeUpdater'
+import { updateStoreScope } from '@ui-schema/ui-schema/storeScopeUpdater'
 
-export const scopeUpdaterValidity: ScopeOnChangeHandler = (store, storeKeys, _oldValue, newValue) => {
+export const scopeUpdaterValidity: ScopeOnChangeHandler = (store, storeKeys, newValue) => {
     if (storeKeys.contains('__valid')) {
         throw new Error('forbidden property name `__valid` is used, not compatible with UIStore')
     }
