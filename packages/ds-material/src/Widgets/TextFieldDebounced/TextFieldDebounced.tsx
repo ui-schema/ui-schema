@@ -57,7 +57,7 @@ export const StringRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBindi
                 required,
             },
         )
-    }, [onChange, schema, required])
+    }, [storeKeys, onChange, schema, required])
 
     const schemaType = schema.get('type') as string
     React.useEffect(() => {

@@ -34,7 +34,7 @@ export const AreaRendererBase = <C extends HTMLElement = HTMLElement, S extends 
         isDroppable: isDroppable,
         index: index,
     }) as unknown as S, [
-        type,
+        type, listKey,
         id, index,
         storeKeys,
         isDroppable,
