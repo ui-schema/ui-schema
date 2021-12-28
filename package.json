@@ -36,7 +36,7 @@
         "eslint-plugin-jsx-a11y": "^6.5.1",
         "eslint-plugin-react-hooks": "^4.3.0",
         "lerna": "^3.22.1",
-        "lerna-packer": "0.4.4",
+        "lerna-packer": "0.4.6",
         "merge-dirs": "^0.2.1",
         "process": "^0.11.10",
         "symlink-dir": "^3.1.1"
