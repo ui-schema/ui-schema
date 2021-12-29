@@ -4,7 +4,7 @@ import { moveItem } from '@ui-schema/ui-schema/Utils/moveItem'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import { StoreActionDefinite, UIStoreUpdaterData } from '@ui-schema/ui-schema/UIStoreActions'
 
-export const actionHandler: (action: StoreActionDefinite) => UIStoreUpdaterFn | UIStoreUpdaterData = (action) => {
+export const actionHandler = <A extends StoreActionDefinite = StoreActionDefinite, D extends UIStoreUpdaterData = UIStoreUpdaterData>(action: A): UIStoreUpdaterFn | D => {
     switch (action.type) {
         case 'list-item-add':
             return ({value = List(), internal = Map(), ...r}) => {
@@ -65,7 +65,7 @@ export const actionHandler: (action: StoreActionDefinite) => UIStoreUpdaterFn | 
                 ...r,
             })
         case 'set':
-            return action.data
+            return action.data as D
         case 'update':
             return action.updater
         default:

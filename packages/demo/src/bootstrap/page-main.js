@@ -12,8 +12,8 @@ import {storeUpdater} from '@ui-schema/ui-schema/storeUpdater';
 const DemoGrid = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap({})));
 
-    const onChangeNext = React.useCallback((storeKeys, scopes, updater) => {
-        setStore(storeUpdater(storeKeys, scopes, updater))
+    const onChangeNext = React.useCallback((actions) => {
+        setStore(storeUpdater(actions))
     }, [setStore])
 
     return <UIGenerator
@@ -32,8 +32,8 @@ const MainStore = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(dataDemoMain)));
     const [schema, setSchema] = React.useState(schemaTestBts);
 
-    const onChangeNext = React.useCallback((storeKeys, scopes, updater) => {
-        setStore(storeUpdater(storeKeys, scopes, updater))
+    const onChangeNext = React.useCallback((actions) => {
+        setStore(storeUpdater(actions))
     }, [setStore])
 
     return <React.Fragment>

@@ -232,7 +232,7 @@ const Widget = ({
 
 **Recommended** usage with one `UIMetaProvider` for many `UIStoreProvider`, delivers improved performance and ease of extension, check that your `UIMetaProvider` isn't re-rendering when the `UIStoreProvider` re-renders with the React developer tools.
 
-Instead of using `UIRootRenderer` it's also possible to use [full custom rendering](/quick-start?type=custom) with e.g. [ObjectGroup](/docs/core-renderer#objectgroup).
+Instead of using `UIRootRenderer` it's also possible to use [full custom rendering](https://ui-schema.bemit.codes/quick-start?render=custom) with e.g. [ObjectGroup](https://ui-schema.bemit.codes/docs/core-renderer#objectgroup).
 
 ```js
 import React from 'react';

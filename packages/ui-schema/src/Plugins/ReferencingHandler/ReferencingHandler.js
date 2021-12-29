@@ -1,9 +1,8 @@
 import React from 'react';
-import {parseRefs} from '@ui-schema/ui-schema/Plugins/ReferencingHandler/parseRefs';
 import {Trans} from '@ui-schema/ui-schema/Translate';
 import {isRootSchema, SchemaRootProvider, useSchemaRoot} from '@ui-schema/ui-schema/SchemaRootProvider';
-import {useNetworkRef} from '@ui-schema/ui-schema/Plugins/ReferencingHandler/ReferencingNetworkHandler';
-import {NextPluginRendererMemo} from '@ui-schema/ui-schema/PluginStack/PluginStack';
+import {parseRefs, useNetworkRef} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
+import {NextPluginRendererMemo} from '@ui-schema/ui-schema/PluginStack';
 import {getSchemaId} from '@ui-schema/ui-schema/Utils/getSchema';
 
 export const ReferencingHandler = ({rootContext, ...props}) => {

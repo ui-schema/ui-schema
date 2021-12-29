@@ -2,7 +2,7 @@
 
 A component that shows custom information to a user for a schema.
 
-1. Adding it to the widgetsBinding:
+First add it to the widgetsBinding:
 
 ```js
 import {widgets} from '@ui-schema/ds-material';
@@ -11,7 +11,16 @@ const customWidgets = {...widgets}
 customWidgets.InfoRenderer = InfoRenderer
 ```
 
-2. Add the `info` keyword to your component, anything treated as `true` will render the `InfoRenderer`.
+Then add the `info` keyword to your schema, anything treated as `true` will render the `InfoRenderer`.
+
+```json
+{
+    "type": "string",
+    "info": [
+        "A line of contextual help."
+    ]
+}
+```
 
 ## Options
 

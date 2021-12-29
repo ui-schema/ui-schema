@@ -21,7 +21,7 @@ import { TouchTransition, PointerTransition, MultiBackendOptions } from 'dnd-mul
 import {
     createEmptyStore,
     createOrderedMap,
-    createStore,
+    createStore, onChangeHandler,
     SchemaTypesType,
     StoreSchemaType,
     storeUpdater,
@@ -149,7 +149,7 @@ const SingleEditor = () => {
     const [schema, setSchema] = React.useState<number>(0)
     const [store, setStore] = React.useState<UIStoreType>(() => createStore(OrderedMap()))
 
-    const onChange = React.useCallback((actions) => {
+    const onChange: onChangeHandler = React.useCallback((actions) => {
         setStore(prevStore => {
             return storeUpdater(actions)(prevStore)
         })

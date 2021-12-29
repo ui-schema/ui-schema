@@ -1,6 +1,6 @@
 import { OrderedMap, Map, List, RecordOf } from 'immutable'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
-import { StoreActions, UIStoreUpdaterData } from '@ui-schema/ui-schema/UIStoreActions'
+import { StoreActionDefinite, UIStoreActionScoped, UIStoreUpdaterData } from '@ui-schema/ui-schema/UIStoreActions'
 
 export type Values<V> = List<V> | string | number | boolean | Map<string, V> | OrderedMap<string, V>
 export type ValuesJS = any[] | string | number | boolean | Object
@@ -38,11 +38,11 @@ export const UIStore: UIStoreType
 
 export type UIStoreUpdaterFn<D extends UIStoreUpdaterData = UIStoreUpdaterData> = (data: D) => D
 
-export type onChangeHandlerGeneric<R = void> = (
-    actions: StoreActions[] | StoreActions
-) => R
+//export type OnChangeHandlerAction<A extends StoreActionDefinite = StoreActionDefinite> = UIStoreActionScoped<A>[] | UIStoreActionScoped<A>
 
-export type onChangeHandler = onChangeHandlerGeneric<void>
+export type onChangeHandler<R = void, A extends StoreActionDefinite = StoreActionDefinite> = (
+    actions: (UIStoreActionScoped & A)[] | (UIStoreActionScoped & A)
+) => R
 
 // UIMetaContext
 

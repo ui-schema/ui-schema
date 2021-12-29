@@ -423,7 +423,7 @@ Test the demo form below, it will send the entered data to [httpbin.org*](https:
                             <Markdown content source={`
 ## 5. Add Root Level Renderer
 
-Now we add the root level render, the \`CustomGroup\` is responsible to validate the root schema-level.
+Now we add the root level renderer, the \`CustomGroup\` is responsible to validate the root schema-level.
 
 It is recommended to nest \`type=object\` schemas for best and easiest conditional and referencing handling, otherwise checkout [ObjectGroup](/docs/core-renderer#objectgroup).
 `}/>

@@ -21,6 +21,7 @@
         "test": "jest -c=\"packages/jest.config.js\"",
         "tdd": "npm test -- --watch --watchman --coverage=false",
         "__release": "lerna run release --stream",
+        "sloc": "node ./sloc.js",
         "release": "lerna publish from-package --contents build --no-git-reset"
     },
     "author": "Michael Becker, https://mlbr.xyz",
@@ -45,5 +46,8 @@
         "cliOptions": {
             "maxWarnings": 0
         }
+    },
+    "dependencies": {
+        "sloc": "^0.2.1"
     }
 }
