@@ -9,6 +9,7 @@ import { matchBlock } from '@ui-schema/material-dnd/DndBlocksRenderer/matchBlock
 export interface DndBlocksRendererItemProps extends Pick<WidgetProps, 'storeKeys' | 'required'> {
     block: DndBlock
     listSchema: StoreSchemaType
+    noDragOnNodes?: string[]
 }
 
 export interface DndBlocksRendererProps extends Pick<WidgetProps, 'storeKeys' | 'required'> {

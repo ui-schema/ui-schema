@@ -7,6 +7,7 @@ export interface DndListItemComponentProps extends Pick<WidgetProps, 'storeKeys'
     fullDrag?: boolean
     onChange: WithOnChange['onChange']
     itemType: string
+    noDragOnNodes?: string[]
 }
 
 export interface DndListRendererProps extends Pick<WidgetProps, 'storeKeys' | 'required'> {

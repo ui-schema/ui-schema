@@ -14,7 +14,10 @@ import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter/isInvalid'
 import { schemaDragDropNested, schemaDragDropScoped } from '../schemas/demoDragDrop'
 import { DndProvider } from 'react-dnd'
 import { MultiBackend } from 'react-dnd-multi-backend'
-import { HTML5toTouch } from 'rdndmb-html5-to-touch'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { TouchBackend } from 'react-dnd-touch-backend'
+
+import { TouchTransition, PointerTransition, MultiBackendOptions } from 'dnd-multi-backend'
 import {
     createEmptyStore,
     createOrderedMap,
@@ -122,6 +125,23 @@ const schemas: [StoreSchemaType, boolean][] = [
     [schemaDragDropNested, true],
     [schemaDragDropScoped, true],
 ]
+
+export const HTML5toTouch: MultiBackendOptions = {
+    backends: [
+        {
+            id: 'html5',
+            backend: HTML5Backend,
+            transition: PointerTransition,
+        },
+        {
+            id: 'touch',
+            backend: TouchBackend,
+            options: {enableMouseEvents: true},
+            preview: true,
+            transition: TouchTransition,
+        },
+    ],
+}
 
 const SingleEditor = () => {
     const [showValidity, setShowValidity] = React.useState(false)
