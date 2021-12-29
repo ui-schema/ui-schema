@@ -34,21 +34,25 @@ export const StringRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBindi
     }: P & WithScalarValue & Omit<StringRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps
 ): React.ReactElement => {
     const timer = React.useRef<undefined | number>(undefined)
-    const [compVal, setCompVal] = React.useState<string | number | undefined>(undefined)
+    const [compVal, setCompVal] = React.useState<{
+        // `true` = is changed manually from this component, `false` = by e.g. store-change
+        changed: boolean
+        value: string | number | undefined
+    }>({changed: false, value: undefined})
     const uid = useUID()
     // todo: this could break law-of-hooks
     const inputRef = customInputRef || React.useRef()
 
     React.useEffect(() => {
         window.clearTimeout(timer.current)
-        setCompVal(value as string)
+        setCompVal({changed: false, value: value as string})
     }, [value, timer])
 
     const setter = React.useCallback((maybeVal: string | number | undefined) => {
         const newVal = convertStringToNumber(maybeVal, schemaType)
         if (schemaTypeIsNumeric(schemaType) && maybeVal === '') {
             // forbid saving/deleting of invalid number at all
-            setCompVal('')
+            setCompVal({value: '', changed: false})
             return undefined
         }
         onChange({
@@ -63,8 +67,9 @@ export const StringRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBindi
 
     const schemaType = schema.get('type') as string
     React.useEffect(() => {
+        if (typeof compVal.value === 'undefined' || !compVal.changed) return
         timer.current = window.setTimeout(() => {
-            setter(compVal)
+            setter(compVal.value)
         }, debounceTime)
         return () => window.clearTimeout(timer.current)
     }, [
@@ -112,13 +117,13 @@ export const StringRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBindi
             variant={schema.getIn(['view', 'variant']) as any}
             margin={schema.getIn(['view', 'margin']) as InputProps['margin']}
             size={schema.getIn(['view', 'dense']) ? 'small' : 'medium'}
-            value={typeof compVal === 'string' || typeof compVal === 'number' ? compVal : ''}
+            value={typeof compVal.value === 'string' || typeof compVal.value === 'number' ? compVal.value : ''}
             onClick={onClick}
             onFocus={onFocus}
             onBlur={onBlur ? onBlur : () => {
-                if (compVal === value) return
+                if (compVal.value === value) return
                 window.clearTimeout(timer.current)
-                setter(compVal)
+                setter(compVal.value)
             }}
             onKeyUp={onKeyUp}
             onKeyPress={
@@ -140,7 +145,7 @@ export const StringRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBindi
                     // forbid saving/deleting of invalid number at all
                     return undefined
                 }
-                setCompVal(newVal)
+                setCompVal({changed: true, value: newVal})
             }}
             InputLabelProps={{shrink: schema.getIn(['view', 'shrink']) as boolean}}
             InputProps={InputProps}
