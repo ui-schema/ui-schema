@@ -10,6 +10,7 @@ import { DndListItemComponentProps } from '@ui-schema/material-dnd/DndListRender
 import { List } from 'immutable'
 import { DraggableRendererProps, useDraggable } from '@ui-schema/kit-dnd/useDraggable'
 import { DragDropSpec } from '@ui-schema/material-dnd/DragDropSpec'
+import { handleMouseMoveInDraggable } from '@ui-schema/material-dnd/handleMouseMoveInDraggable'
 
 export const SortableListItemBase = <C extends HTMLElement = HTMLElement, S extends DragDropSpec = DragDropSpec>(
     {
@@ -20,6 +21,7 @@ export const SortableListItemBase = <C extends HTMLElement = HTMLElement, S exte
         fullDrag,
         itemType, dataKeys, scope,
         storeKeys, schema, parentSchema,
+        noDragOnNodes = ['INPUT'],
     }: DndListItemComponentProps & DraggableRendererProps
 ): React.ReactElement => {
     const refRoot = React.useRef<C | null>(null)
@@ -39,6 +41,7 @@ export const SortableListItemBase = <C extends HTMLElement = HTMLElement, S exte
         drop, preview, drag,
         // canDrop, isOver,
         isDragging,
+        setDisableDrag, canDrag,
     } = useDraggable<C, S>({
         item: item as S,
         allowedTypes, scope, refRoot,
@@ -82,7 +85,20 @@ export const SortableListItemBase = <C extends HTMLElement = HTMLElement, S exte
                 <IcDrag/>
             </IconButton>
 
-            <Box style={{flexGrow: 1}} mx={1} my={2}>
+            <Box
+                style={{flexGrow: 1}} mx={1} my={2}
+                onMouseMoveCapture={
+                    handleMouseMoveInDraggable(
+                        noDragOnNodes,
+                        canDrag,
+                        setDisableDrag,
+                    )
+                }
+                onMouseLeave={(e) => {
+                    e.stopPropagation()
+                    setDisableDrag(false)
+                }}
+            >
                 {schema.getIn(['view', 'showTitle']) ? <Typography
                     variant={(schema.getIn(['view', 'titleVariant']) as TypographyProps['variant']) || 'subtitle1'}
                     component={(schema.getIn(['view', 'titleComp']) as React.ElementType) || 'p'}

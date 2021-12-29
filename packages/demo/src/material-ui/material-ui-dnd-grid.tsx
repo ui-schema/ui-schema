@@ -14,11 +14,14 @@ import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter/isInvalid'
 import { schemaDragDropNested, schemaDragDropScoped } from '../schemas/demoDragDrop'
 import { DndProvider } from 'react-dnd'
 import { MultiBackend } from 'react-dnd-multi-backend'
-import { HTML5toTouch } from 'rdndmb-html5-to-touch'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { TouchBackend } from 'react-dnd-touch-backend'
+
+import { TouchTransition, PointerTransition, MultiBackendOptions } from 'dnd-multi-backend'
 import {
     createEmptyStore,
     createOrderedMap,
-    createStore,
+    createStore, onChangeHandler,
     SchemaTypesType,
     StoreSchemaType,
     storeUpdater,
@@ -123,13 +126,30 @@ const schemas: [StoreSchemaType, boolean][] = [
     [schemaDragDropScoped, true],
 ]
 
+export const HTML5toTouch: MultiBackendOptions = {
+    backends: [
+        {
+            id: 'html5',
+            backend: HTML5Backend,
+            transition: PointerTransition,
+        },
+        {
+            id: 'touch',
+            backend: TouchBackend,
+            options: {enableMouseEvents: true},
+            preview: true,
+            transition: TouchTransition,
+        },
+    ],
+}
+
 const SingleEditor = () => {
     const [showValidity, setShowValidity] = React.useState(false)
 
     const [schema, setSchema] = React.useState<number>(0)
     const [store, setStore] = React.useState<UIStoreType>(() => createStore(OrderedMap()))
 
-    const onChange = React.useCallback((actions) => {
+    const onChange: onChangeHandler = React.useCallback((actions) => {
         setStore(prevStore => {
             return storeUpdater(actions)(prevStore)
         })

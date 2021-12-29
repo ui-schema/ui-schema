@@ -41,7 +41,10 @@ export const useDraggable = <C extends HTMLElement = HTMLElement, S extends Item
     isDragging: boolean
     drag: ConnectDragSource
     preview: ConnectDragPreview
+    setDisableDrag: React.Dispatch<React.SetStateAction<boolean>>
+    canDrag: boolean
 } => {
+    const [disableDrag, setDisableDrag] = React.useState<boolean>(false)
     const {onMove, scope} = useKitDnd<C>()
 
     const [{isOver, canDrop}, drop] = useDrop<S, S, { handlerId: (Identifier | null), isOver: boolean, canDrop: boolean }>(() => ({
@@ -76,12 +79,16 @@ export const useDraggable = <C extends HTMLElement = HTMLElement, S extends Item
         },
     }), [item, localScope, scope, allowedTypes, refRoot])
 
-    const [{isDragging}, drag, preview] = useDrag<S, S, { isDragging: boolean }>(() => ({
+    const [{canDrag, isDragging}, drag, preview] = useDrag<S, S, { isDragging: boolean, canDrag: boolean }>(() => ({
         type: localScope ? localScope : (scope ? '_' + scope : '_') as string,
         item: {...item},
         collect: (monitor: DragSourceMonitor<S>) => ({
             isDragging: monitor.isDragging(),
+            canDrag: monitor.canDrag(),
         }),
+        canDrag: () => {
+            return !disableDrag
+        },
         isDragging: (monitor: DragSourceMonitor<S>) => {
             const {index, dataKeys} = item
             const tmpItem = monitor.getItem() as S
@@ -94,11 +101,14 @@ export const useDraggable = <C extends HTMLElement = HTMLElement, S extends Item
                 itemDataKeys.equals(!List.isList(dataKeys) ? List(dataKeys) : dataKeys)
         },
     }), [
-        item, localScope, scope,
+        item, localScope, scope, disableDrag,
     ])
 
     return {
         isOver, canDrop, drop,
         isDragging, drag, preview,
+        setDisableDrag,
+        // todo: somehow `canDrag` isn't `false` when it is internally `false`
+        canDrag: canDrag && !disableDrag,
     }
 }

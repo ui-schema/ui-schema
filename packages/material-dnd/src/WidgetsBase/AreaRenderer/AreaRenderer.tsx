@@ -9,6 +9,7 @@ import { List } from 'immutable'
 import { DraggableRendererProps, useDraggable } from '@ui-schema/kit-dnd/useDraggable'
 import { DragDropSpec } from '@ui-schema/material-dnd/DragDropSpec'
 import { DndBlocksRendererItemProps } from '@ui-schema/material-dnd/DndBlocksRenderer'
+import { handleMouseMoveInDraggable } from '@ui-schema/material-dnd/handleMouseMoveInDraggable'
 
 export const AreaRendererBase = <C extends HTMLElement = HTMLElement, S extends DragDropSpec = DragDropSpec>(
     {
@@ -16,6 +17,7 @@ export const AreaRendererBase = <C extends HTMLElement = HTMLElement, S extends 
         onChange, required,
         storeKeys, listSchema,
         block,
+        noDragOnNodes = ['INPUT'],
     }: Omit<DraggableRendererProps, 'scope' | 'dataKeys'> & DndBlocksRendererItemProps & WithOnChange
 ): React.ReactElement => {
     const refRoot = React.useRef<C | null>(null)
@@ -43,6 +45,7 @@ export const AreaRendererBase = <C extends HTMLElement = HTMLElement, S extends 
     const {
         drop, preview, drag,
         isDragging,
+        setDisableDrag, canDrag,
     } = useDraggable<C, S>({
         item: item as S,
         allowedTypes, refRoot,
@@ -54,6 +57,7 @@ export const AreaRendererBase = <C extends HTMLElement = HTMLElement, S extends 
         // @ts-ignore
         ref={drag(refRoot)}
         data-item-id={id}
+        draggable={canDrag}
         style={{
             flexBasis: '100%',
             padding: 3,
@@ -81,7 +85,21 @@ export const AreaRendererBase = <C extends HTMLElement = HTMLElement, S extends 
                 <IcDrag/>
             </IconButton>
 
-            <Box style={{flexGrow: 1}} mx={1} my={2}>
+            <Box
+                style={{flexGrow: 1}}
+                mx={1} my={2}
+                onMouseMoveCapture={
+                    handleMouseMoveInDraggable(
+                        noDragOnNodes,
+                        canDrag,
+                        setDisableDrag,
+                    )
+                }
+                onMouseLeave={(e) => {
+                    e.stopPropagation()
+                    setDisableDrag(false)
+                }}
+            >
                 <PluginStack schema={schema} parentSchema={listSchema} storeKeys={storeKeys}/>
             </Box>
 
