@@ -24,7 +24,7 @@ import themeDark from 'codemirror/theme/duotone-dark.css'
 import themeLight from 'codemirror/theme/duotone-light.css'
 import useTheme from '@material-ui/core/styles/useTheme'
 import { CodeSelectable } from '@ui-schema/material-code/CodeSelectable/CodeSelectable'
-import { UIMetaProvider, WidgetProps, WidgetsBindingFactory, WithScalarValue } from '@ui-schema/ui-schema'
+import { UIMetaProvider, WidgetsBindingFactory } from '@ui-schema/ui-schema'
 /*import themeMaterial from 'codemirror/theme/gruvbox-dark.css';
 import themeDark from 'codemirror/theme/xq-dark.css';
 import themeLight from 'codemirror/theme/xq-light.css';*/
@@ -36,11 +36,7 @@ const useStyle = (styles) => {
         return () => styles.unuse()
     }, [styles])
 }
-type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
-    Code: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>
-    CodeSelectable: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>
-    //[k: string]: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>
-}>
+type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}>>
 const customWidgets: CustomWidgetsBinding = {...widgets} as CustomWidgetsBinding
 customWidgets.custom = {
     ...widgets.custom,

@@ -6,7 +6,7 @@ import { AppliedPluginStackProps } from '@ui-schema/ui-schema/applyPluginStack'
 
 export type PluginStackInjectProps = 'currentPluginIndex' | 'ownKey' | 'requiredList' | 'required' | 'errors' | 'valid'
 
-export type PluginStackProps<WP extends {} = {}, C extends {} = {}> = AppliedPluginStackProps<PluginProps<C>, C> & {
+export type PluginStackProps<WP extends {} = {}, C extends {} = {}> = AppliedPluginStackProps<C, PluginProps> & {
     // level?: number
 
     // listen from a hoisted component for `errors` changing,
@@ -37,7 +37,7 @@ export function PluginStack<WP extends {} = {}, C extends {} = {}, P extends Plu
  * @param next index of the next plugin to use
  * @param widgets the widgets binding, e.g. `props.widgets`
  */
-export function getNextPlugin<C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(next: number, widgets: W): ComponentPluginType<C, W> | React.ComponentType<WidgetProps<C, W>>
+export function getNextPlugin<C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(next: number, widgets: W): ComponentPluginType<C, W> | React.ComponentType<WidgetProps<W>>
 
 export function NextPluginRenderer<P extends PluginProps>(props: P): React.ReactElement<P>
 

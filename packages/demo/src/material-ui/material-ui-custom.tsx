@@ -4,13 +4,14 @@ import Dashboard from './dashboard/Dashboard'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
-import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, Step, Stepper, widgets } from '@ui-schema/ds-material'
+import LinearProgress from '@material-ui/core/LinearProgress'
+import { MuiWidgetBinding, MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, Select, Step, Stepper, widgets } from '@ui-schema/ds-material'
 import {
     createOrderedMap, createStore,
     StoreKeys, StoreSchemaType, WidgetProps,
     UIMetaProvider, UIStoreProvider, useUIMeta,
     WithValue, extractValue,
-    WidgetsBindingFactory,
+    WidgetsBindingFactory, WithScalarValue,
 } from '@ui-schema/ui-schema'
 import { browserT } from '../t'
 import { UIApiProvider, loadSchemaUIApi } from '@ui-schema/ui-schema/UIApi'
@@ -25,13 +26,9 @@ import { applyPluginStack } from '@ui-schema/ui-schema/applyPluginStack'
 import { StringRenderer } from '@ui-schema/ds-material/Widgets/TextField'
 import { ObjectGroup } from '@ui-schema/ui-schema/ObjectGroup'
 import { memo } from '@ui-schema/ui-schema/Utils/memo'
+import { useProgress, PROGRESS_DONE, PROGRESS_ERROR, PROGRESS_START } from '@ui-schema/ui-schema/UIApi'
 
-type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
-    Table: React.ComponentType<WidgetProps>
-    TableAdvanced: React.ComponentType<WidgetProps>
-    Stepper: React.ComponentType<WidgetProps>
-    Step: React.ComponentType<WidgetProps>
-}>
+type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}>>
 const customWidgets: CustomWidgetsBinding = {...widgets} as CustomWidgetsBinding
 const pluginStack = [...customWidgets.pluginStack]
 // the referencing network handler should be at first position
@@ -41,7 +38,7 @@ const pluginStack = [...customWidgets.pluginStack]
 pluginStack.splice(0, 0, ReferencingNetworkHandler)
 customWidgets.pluginStack = pluginStack
 
-const CustomTable: React.ComponentType<WidgetProps> = ({widgets, ...props}) => {
+const CustomTable: React.ComponentType<WidgetProps<MuiWidgetBinding>> = ({widgets, ...props}) => {
     const customWidgets = React.useMemo(() => ({
         ...widgets,
         types: {
@@ -94,6 +91,9 @@ const freeFormSchema = createOrderedMap({
         name: {
             type: 'string',
         },
+        country: {
+            type: 'string',
+        },
         file: {
             type: 'object',
             properties: {
@@ -121,7 +121,6 @@ const storeKeys = List()
 const WidgetTextField = applyPluginStack(StringRenderer)
 
 const FileUpload: React.ComponentType<WidgetProps & WithValue> = ({storeKeys, onChange, schema, required, value}) => {
-    console.log('value', value && value.toJS ? value.toJS() : value)
     return <div>
         <input type={'file'} onChange={e => {
             const formData = new FormData()
@@ -163,6 +162,35 @@ const FileUpload: React.ComponentType<WidgetProps & WithValue> = ({storeKeys, on
 
 const WidgetFileUpload = applyPluginStack(extractValue(FileUpload))
 
+const CountrySelect: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithScalarValue> = ({schema, ...props}) => {
+    const [countries, setCountries] = React.useState<List<string>>(List())
+    const [loading, setLoading] = useProgress()
+
+    React.useEffect(() => {
+        setLoading(PROGRESS_START)
+        fetch('https://restcountries.com/v3.1/subregion/europe', {method: 'GET'})
+            .then(r => r.json())
+            .then(data => {
+                setCountries(List(data.map((d: { name: { common: string } }) => d.name.common)))
+                setLoading(PROGRESS_DONE)
+            })
+            .catch(() => {
+                setLoading(PROGRESS_ERROR)
+            })
+    }, [setCountries, setLoading])
+
+    if (loading === PROGRESS_START) {
+        return <LinearProgress/>
+    }
+
+    return <Select
+        {...props}
+        schema={schema.set('enum', countries)}
+    />
+}
+
+const WidgetCountrySelect = applyPluginStack(CountrySelect)
+
 const FreeFormEditor = () => {
     const showValidity = true
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
@@ -202,6 +230,13 @@ let FreeFormEditorContent = ({storeKeys, freeFormSchema, showValidity}) => {
                 level={1}
                 storeKeys={storeKeys.push('file') as StoreKeys}
                 schema={schema.getIn(['properties', 'file']) as unknown as StoreSchemaType}
+                parentSchema={schema}
+            />
+
+            <WidgetCountrySelect
+                level={1}
+                storeKeys={storeKeys.push('country') as StoreKeys}
+                schema={schema.getIn(['properties', 'country']) as unknown as StoreSchemaType}
                 parentSchema={schema}
             />
 

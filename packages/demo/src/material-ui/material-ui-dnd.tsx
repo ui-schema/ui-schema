@@ -24,7 +24,7 @@ import { DragDropSpec } from '@ui-schema/material-dnd/DragDropSpec'
 import { SortableList } from '@ui-schema/material-dnd/Widgets/SortableList/SortableList'
 
 type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
-    SortableList: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>
+    SortableList: React.ComponentType<WidgetProps<CustomWidgetsBinding> & WithScalarValue>
 }>
 const customWidgets: CustomWidgetsBinding = {...widgets} as CustomWidgetsBinding
 customWidgets.custom = {

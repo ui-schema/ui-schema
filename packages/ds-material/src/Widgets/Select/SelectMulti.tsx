@@ -10,7 +10,7 @@ import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelpe
 import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 
-export const SelectMultiBase: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & WithValue> = (
+export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue> = (
     {
         storeKeys, ownKey, schema, value, onChange,
         showValidity, valid, required, errors, t,

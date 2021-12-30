@@ -1,13 +1,14 @@
 import {
-    prependKey, shouldDeleteOnEmpty, StoreKeys,
+    prependKey, shouldDeleteOnEmpty, StoreKeys, UIStoreType,
 } from '@ui-schema/ui-schema/UIStore'
 import { List, Map } from 'immutable'
-import { SchemaTypesType } from '@ui-schema/ui-schema'
-import { ScopeOnChangeHandler } from '@ui-schema/ui-schema/storeUpdater'
+import { SchemaTypesType, UIStoreActions } from '@ui-schema/ui-schema'
 import { updateStoreScope } from '@ui-schema/ui-schema/storeScopeUpdater/updateStoreScope'
 import { storeBuildScopeTree } from '@ui-schema/ui-schema/storeBuildScopeTree'
 
-export const scopeUpdaterValues: ScopeOnChangeHandler = (store, storeKeys, newValue, action) => {
+export const scopeUpdaterValues = <S extends UIStoreType = UIStoreType, A extends UIStoreActions = UIStoreActions>(
+    store: S, storeKeys: StoreKeys, newValue: any, action: A
+): S => {
     //if (typeof oldValue === 'undefined') {
     // initializing the tree for correct data types
     // https://github.com/ui-schema/ui-schema/issues/119

@@ -54,7 +54,7 @@ export interface NumberRendererProps extends StringRendererBaseProps {
     steps?: number | 'any'
 }
 
-export const StringRenderer = <P extends WidgetProps<{}, MuiWidgetBinding> = WidgetProps<{}, MuiWidgetBinding>>(
+export const StringRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>(
     {
         type,
         multiline,
@@ -160,7 +160,7 @@ export const StringRenderer = <P extends WidgetProps<{}, MuiWidgetBinding> = Wid
     </React.Fragment>
 }
 
-export const TextRenderer = <P extends WidgetProps<{}, MuiWidgetBinding> = WidgetProps<{}, MuiWidgetBinding>>({schema, ...props}: P & WithScalarValue & TextRendererProps): React.ReactElement => {
+export const TextRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>({schema, ...props}: P & WithScalarValue & TextRendererProps): React.ReactElement => {
     return <StringRenderer
         {...props}
         schema={schema}
@@ -178,7 +178,7 @@ export const TextRenderer = <P extends WidgetProps<{}, MuiWidgetBinding> = Widge
     />
 }
 
-export const NumberRenderer = <P extends WidgetProps<{}, MuiWidgetBinding> = WidgetProps<{}, MuiWidgetBinding>>(props: P & WithScalarValue & NumberRendererProps): React.ReactElement => {
+export const NumberRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>(props: P & WithScalarValue & NumberRendererProps): React.ReactElement => {
     const {schema, inputProps: inputPropsProps = {}, steps = 'any'} = props
     const schemaType = schema.get('type') as string | undefined
     const inputProps = React.useMemo(() => {

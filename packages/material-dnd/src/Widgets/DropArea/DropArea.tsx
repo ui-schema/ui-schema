@@ -17,7 +17,7 @@ export const DropAreaBase = (
     {
         widgets,
         ...props
-    }: WidgetProps<{}, WidgetsBindingFactory<DragDropBlockComponentsBinding>> & WithOnChange
+    }: WidgetProps<WidgetsBindingFactory<DragDropBlockComponentsBinding>> & WithOnChange
 ): React.ReactElement => {
     const [showSelector, setShowSelector] = React.useState(false)
     const {schema, ownKey, storeKeys, onChange, required} = props

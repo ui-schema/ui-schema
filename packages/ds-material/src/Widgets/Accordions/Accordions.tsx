@@ -15,7 +15,7 @@ export interface AccordionStackBaseProps {
     setOpen: (handler: (ownKey: string) => string) => void
 }
 
-const AccordionStackBase: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & AccordionStackBaseProps> = (props) => {
+const AccordionStackBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & AccordionStackBaseProps> = (props) => {
     const uid = useUID()
     const {
         storeKeys, schema,
@@ -64,7 +64,7 @@ const AccordionStackBase: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> 
 
 export const AccordionStack = memo(AccordionStackBase)
 
-export const AccordionsRendererBase = <W extends WidgetProps<{}, MuiWidgetBinding> = WidgetProps<{}, MuiWidgetBinding>>(
+export const AccordionsRendererBase = <W extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>(
     {
         schema, storeKeys, level,
         errors, showValidity,

@@ -8,7 +8,7 @@ import Box from '@material-ui/core/Box'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 import { List, Map, OrderedMap } from 'immutable'
 
-export const SelectChipsBase: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & WithValue> = (
+export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue> = (
     {
         storeKeys, ownKey, schema, value, onChange,
         showValidity, errors, required,

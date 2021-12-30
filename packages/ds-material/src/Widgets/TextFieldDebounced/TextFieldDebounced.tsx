@@ -17,7 +17,7 @@ export interface StringRendererDebouncedProps {
     debounceTime?: number
 }
 
-export const StringRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBinding> = WidgetProps<{}, MuiWidgetBinding>>(
+export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>(
     {
         type,
         multiline,
@@ -158,7 +158,7 @@ export const StringRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBindi
     </React.Fragment>
 }
 
-export const TextRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBinding> = WidgetProps<{}, MuiWidgetBinding>>(
+export const TextRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>(
     {
         schema,
         ...props
@@ -181,7 +181,7 @@ export const TextRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBinding
     />
 }
 
-export const NumberRendererDebounced = <P extends WidgetProps<{}, MuiWidgetBinding> = WidgetProps<{}, MuiWidgetBinding>>(props: P & WithScalarValue & Omit<NumberRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps): React.ReactElement => {
+export const NumberRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>(props: P & WithScalarValue & Omit<NumberRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps): React.ReactElement => {
     const {schema, inputProps: inputPropsProps = {}, steps = 'any'} = props
     const schemaType = schema.get('type') as string | undefined
     const inputProps = React.useMemo(() => {

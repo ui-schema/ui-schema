@@ -10,7 +10,7 @@ import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelpe
 import { getTranslatableEnum } from '@ui-schema/ui-schema/Translate'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 
-export const Select: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & WithScalarValue> = (
+export const Select: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithScalarValue> = (
     {
         storeKeys, ownKey, schema, value, onChange,
         showValidity, valid, required, errors, t,
