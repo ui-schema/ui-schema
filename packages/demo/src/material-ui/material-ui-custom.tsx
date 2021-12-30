@@ -126,7 +126,6 @@ const storeKeys = List()
 const WidgetTextField = applyPluginStack(StringRenderer)
 
 const FileUpload: React.ComponentType<WidgetProps & WithValue> = ({storeKeys, onChange, schema, required, value}) => {
-    console.log('value', value && value.toJS ? value.toJS() : value)
     return <div>
         <input type={'file'} onChange={e => {
             const formData = new FormData()
@@ -177,7 +176,6 @@ const CountrySelect: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & Wit
         fetch('https://restcountries.com/v3.1/subregion/europe', {method: 'GET'})
             .then(r => r.json())
             .then(data => {
-                console.log(data)
                 setCountries(List(data.map((d: { name: { common: string } }) => d.name.common)))
                 setLoading(PROGRESS_DONE)
             })
