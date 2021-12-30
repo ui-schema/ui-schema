@@ -37,7 +37,7 @@ export function PluginStack<WP extends {} = {}, C extends {} = {}, P extends Plu
  * @param next index of the next plugin to use
  * @param widgets the widgets binding, e.g. `props.widgets`
  */
-export function getNextPlugin<C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(next: number, widgets: W): ComponentPluginType<C, W> | React.ComponentType<WidgetProps<C, W>>
+export function getNextPlugin<C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(next: number, widgets: W): ComponentPluginType<C, W> | React.ComponentType<WidgetProps<W>>
 
 export function NextPluginRenderer<P extends PluginProps>(props: P): React.ReactElement<P>
 

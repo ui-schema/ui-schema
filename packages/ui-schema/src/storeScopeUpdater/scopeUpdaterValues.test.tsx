@@ -9,7 +9,7 @@ import {
 } from '@testing-library/jest-dom/matchers'
 import { List, Map, OrderedMap } from 'immutable'
 import { UIStore, StoreKeys, UIStoreType, createEmptyStore } from '@ui-schema/ui-schema/UIStore'
-import { StoreActionDefinite } from '@ui-schema/ui-schema/UIStoreActions'
+import { UIStoreActions } from '@ui-schema/ui-schema/UIStoreActions'
 import { scopeUpdaterValues } from '@ui-schema/ui-schema/storeScopeUpdater/scopeUpdaterValues'
 
 expect.extend({toBeInTheDocument, toHaveClass})
@@ -273,7 +273,7 @@ describe('scopeUpdaterValues', () => {
     ])('scopeUpdaterValues(%j, %s, %j, %j): %j', <S extends UIStoreType>(
         store: S, storeKeys: StoreKeys,
         newValue: any,
-        action: StoreActionDefinite,
+        action: UIStoreActions,
         expected: any
     ) => {
         const r = scopeUpdaterValues(store, storeKeys, newValue, action)

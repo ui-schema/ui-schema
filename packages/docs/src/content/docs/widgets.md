@@ -244,16 +244,16 @@ import React from "react";
 import { widgets, MuiWidgetBinding, MuiWidgetsBindingTypes, MuiWidgetsBindingCustom } from "@ui-schema/ds-material/widgetsBinding";
 import { WidgetProps, WidgetsBindingFactory, WithScalarValue } from "@ui-schema/ui-schema";
 
-const CustomNumberRenderer = (props: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>) => /* todo: implement */ null;
-const CustomSelect = (props: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>) => /* todo: implement */ null;
+const CustomNumberRenderer = (props: React.ComponentType<WidgetProps<CustomWidgetsBinding> & WithScalarValue>) => /* todo: implement */ null;
+const CustomSelect = (props: React.ComponentType<WidgetProps<CustomWidgetsBinding> & WithScalarValue>) => /* todo: implement */ null;
 
 export interface CustomWidgetsType {
     types: {
-        integer: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>
-        number: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>
+        integer: React.ComponentType<WidgetProps<CustomWidgetsBinding> & WithScalarValue>
+        number: React.ComponentType<WidgetProps<CustomWidgetsBinding> & WithScalarValue>
     }
     custom: {
-        CustomSelect: React.ComponentType<WidgetProps<{}, CustomWidgetsBinding> & WithScalarValue>
+        CustomSelect: React.ComponentType<WidgetProps<CustomWidgetsBinding> & WithScalarValue>
     }
 }
 

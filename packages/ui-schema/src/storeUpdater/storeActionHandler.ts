@@ -2,9 +2,9 @@ import { UIStoreUpdaterFn } from '@ui-schema/ui-schema/UIStore'
 import { List, Map, OrderedMap } from 'immutable'
 import { moveItem } from '@ui-schema/ui-schema/Utils/moveItem'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
-import { StoreActionDefinite, UIStoreUpdaterData } from '@ui-schema/ui-schema/UIStoreActions'
+import { UIStoreActions, UIStoreUpdaterData } from '@ui-schema/ui-schema/UIStoreActions'
 
-export const actionHandler = <A extends StoreActionDefinite = StoreActionDefinite, D extends UIStoreUpdaterData = UIStoreUpdaterData>(action: A): UIStoreUpdaterFn | D => {
+export const actionHandler = <A extends UIStoreActions = UIStoreActions, D extends UIStoreUpdaterData = UIStoreUpdaterData>(action: A): UIStoreUpdaterFn | D => {
     switch (action.type) {
         case 'list-item-add':
             return ({value = List(), internal = Map(), ...r}) => {

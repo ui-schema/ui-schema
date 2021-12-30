@@ -60,7 +60,7 @@ import { WidgetProps, WithScalarValue } from '@ui-schema/ui-schema'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 
-export const Widget: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & WithScalarValue> = (
+export const Widget: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithScalarValue> = (
     {
         widgets, schema, valid, errors, storeKeys,
     }

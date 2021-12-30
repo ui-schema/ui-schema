@@ -85,7 +85,7 @@ export interface OptionsCheckRendererProps {
     row?: boolean
 }
 
-export const OptionsCheck: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & OptionsCheckRendererProps> = (
+export const OptionsCheck: React.ComponentType<WidgetProps<MuiWidgetBinding> & OptionsCheckRendererProps> = (
     {
         ownKey, schema, storeKeys, showValidity, valid, required, errors,
         row, widgets,

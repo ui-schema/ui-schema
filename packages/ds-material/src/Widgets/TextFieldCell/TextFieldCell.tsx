@@ -29,7 +29,7 @@ export interface StringRendererCellProps {
     labelledBy?: string
 }
 
-export const StringRendererCell: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & WithScalarValue & StringRendererCellProps> = (
+export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithScalarValue & StringRendererCellProps> = (
     {
         type,
         multiline, rows, rowsMax,
@@ -147,7 +147,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<{}, MuiWidgetBi
     </>
 }
 
-export const TextRendererCell: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & WithScalarValue & StringRendererCellProps> = ({schema, ...props}) => {
+export const TextRendererCell: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithScalarValue & StringRendererCellProps> = ({schema, ...props}) => {
     return <StringRendererCell
         {...props}
         schema={schema}
@@ -157,7 +157,7 @@ export const TextRendererCell: React.ComponentType<WidgetProps<{}, MuiWidgetBind
     />
 }
 
-export const NumberRendererCell: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & WithScalarValue & StringRendererCellProps> = (props) => {
+export const NumberRendererCell: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithScalarValue & StringRendererCellProps> = (props) => {
     return <StringRendererCell
         {...props}
         type={'number'}

@@ -30,12 +30,7 @@ import { InjectSplitSchemaPlugin, InjectSplitSchemaRootContext } from '@ui-schem
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { OrderedMap } from 'immutable'
 
-type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
-    Table: React.ComponentType<WidgetProps>
-    TableAdvanced: React.ComponentType<WidgetProps>
-    Stepper: React.ComponentType<WidgetProps>
-    Step: React.ComponentType<WidgetProps>
-}>
+type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}>>
 const customWidgets: CustomWidgetsBinding = {...widgets} as CustomWidgetsBinding
 const pluginStack = [...customWidgets.pluginStack]
 // the referencing network handler should be at first position

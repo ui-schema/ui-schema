@@ -28,12 +28,7 @@ import { ObjectGroup } from '@ui-schema/ui-schema/ObjectGroup'
 import { memo } from '@ui-schema/ui-schema/Utils/memo'
 import { useProgress, PROGRESS_DONE, PROGRESS_ERROR, PROGRESS_START } from '@ui-schema/ui-schema/UIApi'
 
-type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
-    Table: React.ComponentType<WidgetProps>
-    TableAdvanced: React.ComponentType<WidgetProps>
-    Stepper: React.ComponentType<WidgetProps>
-    Step: React.ComponentType<WidgetProps>
-}>
+type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}>>
 const customWidgets: CustomWidgetsBinding = {...widgets} as CustomWidgetsBinding
 const pluginStack = [...customWidgets.pluginStack]
 // the referencing network handler should be at first position
@@ -43,7 +38,7 @@ const pluginStack = [...customWidgets.pluginStack]
 pluginStack.splice(0, 0, ReferencingNetworkHandler)
 customWidgets.pluginStack = pluginStack
 
-const CustomTable: React.ComponentType<WidgetProps> = ({widgets, ...props}) => {
+const CustomTable: React.ComponentType<WidgetProps<MuiWidgetBinding>> = ({widgets, ...props}) => {
     const customWidgets = React.useMemo(() => ({
         ...widgets,
         types: {
@@ -167,7 +162,7 @@ const FileUpload: React.ComponentType<WidgetProps & WithValue> = ({storeKeys, on
 
 const WidgetFileUpload = applyPluginStack(extractValue(FileUpload))
 
-const CountrySelect: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & WithScalarValue> = ({schema, ...props}) => {
+const CountrySelect: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithScalarValue> = ({schema, ...props}) => {
     const [countries, setCountries] = React.useState<List<string>>(List())
     const [loading, setLoading] = useProgress()
 

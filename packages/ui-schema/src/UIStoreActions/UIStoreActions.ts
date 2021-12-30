@@ -7,13 +7,13 @@ export interface UIStoreUpdaterData {
     meta?: any
 }
 
-export type UIStoreActionScoped<D extends UIStoreUpdaterData = UIStoreUpdaterData, S extends UIStoreType = UIStoreType> = {
+export type UIStoreActionScoped<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> = {
     storeKeys: StoreKeys
     scopes: (keyof D)[]
     effect?: (newData: D, newStore: S) => void
 }
 
-export interface UIStoreAction {
+export interface UIStoreAction extends UIStoreActionScoped {
     type: string
     schema?: StoreSchemaType
     required?: boolean
@@ -52,7 +52,7 @@ export interface UIStoreActionSet<D extends UIStoreUpdaterData = UIStoreUpdaterD
     data: D
 }
 
-export type StoreActionDefinite =
+export type UIStoreActions =
     UIStoreActionListItemAdd |
     UIStoreActionListItemDelete |
     UIStoreActionListItemMove |
