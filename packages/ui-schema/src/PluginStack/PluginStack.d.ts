@@ -6,7 +6,7 @@ import { AppliedPluginStackProps } from '@ui-schema/ui-schema/applyPluginStack'
 
 export type PluginStackInjectProps = 'currentPluginIndex' | 'ownKey' | 'requiredList' | 'required' | 'errors' | 'valid'
 
-export type PluginStackProps<WP extends {} = {}, C extends {} = {}> = AppliedPluginStackProps<PluginProps<C>, C> & {
+export type PluginStackProps<WP extends {} = {}, C extends {} = {}> = AppliedPluginStackProps<C, PluginProps> & {
     // level?: number
 
     // listen from a hoisted component for `errors` changing,

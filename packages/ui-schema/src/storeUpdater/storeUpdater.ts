@@ -63,8 +63,6 @@ export const scopeUpdaterMap: ScopeUpdaterMapType = {
     },
 }
 
-//export const storeUpdater: storeUpdaterType = storeUpdaterCreate(actionHandler, scopeUpdaterMap)
-
 export const storeUpdater =
     <S extends UIStoreType = UIStoreType,
         A extends UIStoreActions = UIStoreActions>(

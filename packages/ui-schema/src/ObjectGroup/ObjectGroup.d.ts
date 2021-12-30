@@ -5,5 +5,5 @@ export interface ObjectGroupProps {
     onSchema?: (schema: StoreSchemaType) => void
 }
 
-export const ObjectGroup: React.ComponentType<AppliedPluginStackProps<ObjectGroupProps & WidgetProps>>
+export const ObjectGroup: React.ComponentType<AppliedPluginStackProps<{}, ObjectGroupProps & WidgetProps>>
 
