@@ -4,13 +4,14 @@ import Dashboard from './dashboard/Dashboard'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
-import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, Step, Stepper, widgets } from '@ui-schema/ds-material'
+import LinearProgress from '@material-ui/core/LinearProgress'
+import { MuiWidgetBinding, MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, Select, Step, Stepper, widgets } from '@ui-schema/ds-material'
 import {
     createOrderedMap, createStore,
     StoreKeys, StoreSchemaType, WidgetProps,
     UIMetaProvider, UIStoreProvider, useUIMeta,
     WithValue, extractValue,
-    WidgetsBindingFactory,
+    WidgetsBindingFactory, WithScalarValue,
 } from '@ui-schema/ui-schema'
 import { browserT } from '../t'
 import { UIApiProvider, loadSchemaUIApi } from '@ui-schema/ui-schema/UIApi'
@@ -25,6 +26,7 @@ import { applyPluginStack } from '@ui-schema/ui-schema/applyPluginStack'
 import { StringRenderer } from '@ui-schema/ds-material/Widgets/TextField'
 import { ObjectGroup } from '@ui-schema/ui-schema/ObjectGroup'
 import { memo } from '@ui-schema/ui-schema/Utils/memo'
+import { useProgress, PROGRESS_DONE, PROGRESS_ERROR, PROGRESS_START } from '@ui-schema/ui-schema/UIApi'
 
 type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
     Table: React.ComponentType<WidgetProps>
@@ -92,6 +94,9 @@ const freeFormSchema = createOrderedMap({
     type: 'object',
     properties: {
         name: {
+            type: 'string',
+        },
+        country: {
             type: 'string',
         },
         file: {
@@ -163,6 +168,36 @@ const FileUpload: React.ComponentType<WidgetProps & WithValue> = ({storeKeys, on
 
 const WidgetFileUpload = applyPluginStack(extractValue(FileUpload))
 
+const CountrySelect: React.ComponentType<WidgetProps<{}, MuiWidgetBinding> & WithScalarValue> = ({schema, ...props}) => {
+    const [countries, setCountries] = React.useState<List<string>>(List())
+    const [loading, setLoading] = useProgress()
+
+    React.useEffect(() => {
+        setLoading(PROGRESS_START)
+        fetch('https://restcountries.com/v3.1/subregion/europe', {method: 'GET'})
+            .then(r => r.json())
+            .then(data => {
+                console.log(data)
+                setCountries(List(data.map((d: { name: { common: string } }) => d.name.common)))
+                setLoading(PROGRESS_DONE)
+            })
+            .catch(() => {
+                setLoading(PROGRESS_ERROR)
+            })
+    }, [setCountries, setLoading])
+
+    if (loading === PROGRESS_START) {
+        return <LinearProgress/>
+    }
+
+    return <Select
+        {...props}
+        schema={schema.set('enum', countries)}
+    />
+}
+
+const WidgetCountrySelect = applyPluginStack(CountrySelect)
+
 const FreeFormEditor = () => {
     const showValidity = true
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
@@ -202,6 +237,13 @@ let FreeFormEditorContent = ({storeKeys, freeFormSchema, showValidity}) => {
                 level={1}
                 storeKeys={storeKeys.push('file') as StoreKeys}
                 schema={schema.getIn(['properties', 'file']) as unknown as StoreSchemaType}
+                parentSchema={schema}
+            />
+
+            <WidgetCountrySelect
+                level={1}
+                storeKeys={storeKeys.push('country') as StoreKeys}
+                schema={schema.getIn(['properties', 'country']) as unknown as StoreSchemaType}
                 parentSchema={schema}
             />
 
