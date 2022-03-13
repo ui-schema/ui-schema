@@ -3,7 +3,7 @@ import {getNextPlugin} from '@ui-schema/ui-schema/PluginStack'
 import {useUIApi} from '@ui-schema/ui-schema/UIApi';
 import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
 import {getCleanRefUrl, getFragmentFromUrl, isRelUrl, makeUrlFromRef} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
-import {useSchemaRoot} from '@ui-schema/ui-schema/SchemaRootProvider/SchemaRootProvider';
+import {useSchemaRoot} from '@ui-schema/ui-schema/SchemaRootProvider';
 import {resolvePointer} from '@ui-schema/ui-schema/JSONPointer';
 
 const getUrls = (schemaRef, id) => {
