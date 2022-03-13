@@ -31,6 +31,7 @@ const schemaDatePickers = createOrderedMap({
             'type': 'string',
             'format': 'date+time',
             'widget': 'DateTime',
+            'title': 'Time (view as date, save as ms)',
             'date': {
                 'variant': 'inline',
                 'clearable': true,

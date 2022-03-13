@@ -10,7 +10,7 @@ import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperT
 import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip/Tooltip';
 import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
 
-let SimpleListItem = (
+export const SimpleListItemBase = (
     {
         showValidity, schema, schemaKeys, storeKeys, notDeletable,
         btnSize, readOnly, required, onChange, level, index,
@@ -46,14 +46,13 @@ let SimpleListItem = (
         </IconButton> : null}
     </Grid>
 }
-SimpleListItem = memo(SimpleListItem)
-export {SimpleListItem}
+export const SimpleListItem = memo(SimpleListItemBase)
 
-let SimpleListBase = ({
-                          schemaKeys, storeKeys, ownKey, schema, listSize, onChange,
-                          showValidity, valid, errors, required, level,
-                          widgets,
-                      }) => {
+export const SimpleListInner = ({
+                                    schemaKeys, storeKeys, ownKey, schema, listSize, onChange,
+                                    showValidity, valid, errors, required, level,
+                                    widgets,
+                                }) => {
     const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
     const notAddable = schema.get('notAddable')
     const notDeletable = schema.get('notDeletable')
@@ -74,20 +73,21 @@ let SimpleListBase = ({
                 </Grid> :
                 undefined}
 
-            {Array.from(Array(listSize || 0)).map((itemVal, i) => <SimpleListItem
-                key={i}
-                index={i}
-                showValidity={showValidity}
-                schema={schema}
-                storeKeys={storeKeys}
-                schemaKeys={schemaKeys}
-                btnSize={btnSize}
-                level={level}
-                notDeletable={notDeletable}
-                readOnly={readOnly}
-                required={required}
-                onChange={onChange}
-            />)}
+            {Array.from(Array(listSize || 0)).map((itemVal, i) =>
+                <SimpleListItem
+                    key={i}
+                    index={i}
+                    showValidity={showValidity}
+                    schema={schema}
+                    storeKeys={storeKeys}
+                    schemaKeys={schemaKeys}
+                    btnSize={btnSize}
+                    level={level}
+                    notDeletable={notDeletable}
+                    readOnly={readOnly}
+                    required={required}
+                    onChange={onChange}
+                />)}
 
             <Grid item xs={12}>
                 {!readOnly && !notAddable ? <IconButton
@@ -117,13 +117,14 @@ let SimpleListBase = ({
         </Grid>
     </FormControl>
 }
-SimpleListBase = memo(SimpleListBase)
-const SimpleListWrapper = ({
-                               value,
-                               // eslint-disable-next-line no-unused-vars
-                               internalValue,
-                               ...props
-                           }) => {
+export const SimpleListBase = memo(SimpleListInner)
+
+export const SimpleListWrapper = ({
+                                      value,
+                                      // eslint-disable-next-line no-unused-vars
+                                      internalValue,
+                                      ...props
+                                  }) => {
     return <SimpleListBase listSize={value?.size} {...props}/>
 }
 export const SimpleList = extractValue(SimpleListWrapper)
