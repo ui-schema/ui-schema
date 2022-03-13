@@ -1,5 +1,5 @@
 import React from 'react';
-import {beautifyKey} from '@ui-schema/ui-schema';
+import {TransTitle} from '@ui-schema/ui-schema';
 import {useUID} from 'react-uid';
 import {useUtils} from '@material-ui/pickers';
 import {List} from 'immutable';
@@ -31,45 +31,50 @@ export const DateTimeBase = ({
 
     const justify = schema.getIn(['view', 'justify']);
 
-    return <div style={{
-        display: 'flex',
-        justifyContent: justify === 'left' ? 'flex-start' :
-            justify === 'right' ? 'flex-end' : 'center',
-    }}><Component
-        error={!valid && showValidity}
-        required={required}
-        id={'uis-' + uid}
-        views={views}
-        format={dateFormat}
-        fullWidth
-        label={beautifyKey(ownKey, schema.get('tt'))}
-        margin={schema.getIn(['view', 'dense'])}
-        disableToolbar={schema.getIn(['date', 'toolbar']) !== true}
-        autoOk={schema.getIn(['date', 'autoOk']) !== false}
-        variant={schema.getIn(['date', 'variant'])}
-        minDate={schema.getIn(['date', 'minDate']) ?
-            date.date(schema.getIn(['date', 'minDate'])) : undefined}
-        maxDate={schema.getIn(['date', 'maxDate']) ?
-            date.date(schema.getIn(['date', 'maxDate'])) : undefined}
-        openTo={schema.getIn(['date', 'openTo'])}
-        disableFuture={schema.getIn(['date', 'disableFuture'])}
-        disablePast={schema.getIn(['date', 'disablePast'])}
-        value={value ?
-            value === 'now' ? date.date() :
-                dateFormatData === 'X' ? fromSeconds(value) :
-                    dateFormatData === 'x' ? fromSeconds(value / 1000) :
-                        date.parse(value, dateFormatData)
-            : null}
-        onChange={(e) => {
-            onChange({
-                storeKeys: storeKeys,
-                scopes: ['value'],
-                type: 'set',
-                schema,
-                required,
-                data: {value: e ? date.format(e, dateFormatData) : ''},
-            })
+    return <div
+        style={{
+            display: 'flex',
+            justifyContent: justify === 'left' ? 'flex-start' :
+                justify === 'right' ? 'flex-end' : 'center',
         }}
-        {...additionalProps}
-    /></div>
+    >
+        <Component
+            error={!valid && showValidity}
+            required={required}
+            id={'uis-' + uid}
+            views={views}
+            format={dateFormat}
+            fullWidth
+            label={<TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>}
+            // todo: support with `dense=boolean` standard (which seems to be `none` together with a custom `TextFieldComponent`)
+            margin={schema.getIn(['view', 'dense'])}
+            disableToolbar={schema.getIn(['date', 'toolbar']) !== true}
+            autoOk={schema.getIn(['date', 'autoOk']) !== false}
+            variant={schema.getIn(['date', 'variant'])}
+            minDate={schema.getIn(['date', 'minDate']) ?
+                date.date(schema.getIn(['date', 'minDate'])) : undefined}
+            maxDate={schema.getIn(['date', 'maxDate']) ?
+                date.date(schema.getIn(['date', 'maxDate'])) : undefined}
+            openTo={schema.getIn(['date', 'openTo'])}
+            disableFuture={schema.getIn(['date', 'disableFuture'])}
+            disablePast={schema.getIn(['date', 'disablePast'])}
+            value={value ?
+                value === 'now' ? date.date() :
+                    dateFormatData === 'X' ? fromSeconds(value) :
+                        dateFormatData === 'x' ? fromSeconds(value / 1000) :
+                            date.parse(value, dateFormatData)
+                : null}
+            onChange={(e) => {
+                onChange({
+                    storeKeys: storeKeys,
+                    scopes: ['value'],
+                    type: 'set',
+                    schema,
+                    required,
+                    data: {value: e ? date.format(e, dateFormatData) : ''},
+                })
+            }}
+            {...additionalProps}
+        />
+    </div>
 };
