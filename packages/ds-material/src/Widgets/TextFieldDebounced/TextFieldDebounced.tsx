@@ -10,6 +10,7 @@ import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStrin
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/schemaTypeIs'
 import { NumberRendererProps, StringRendererProps, TextRendererProps } from '@ui-schema/ds-material/Widgets/TextField'
 import { WidgetProps, WithScalarValue } from '@ui-schema/ui-schema'
+import { useDebounceValue } from '@ui-schema/ui-schema/Utils/useDebounceValue'
 import { forbidInvalidNumber, MuiWidgetBinding } from '@ui-schema/ds-material'
 
 export interface StringRendererDebouncedProps {
@@ -33,28 +34,11 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
         debounceTime = 340, widgets,
     }: P & WithScalarValue & Omit<StringRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps
 ): React.ReactElement => {
-    const timer = React.useRef<undefined | number>(undefined)
-    const [compVal, setCompVal] = React.useState<{
-        // `true` = is changed manually from this component, `false` = by e.g. store-change
-        changed: boolean
-        value: string | number | undefined
-    }>({changed: false, value: undefined})
     const uid = useUID()
     // todo: this could break law-of-hooks
     const inputRef = customInputRef || React.useRef()
 
-    React.useEffect(() => {
-        window.clearTimeout(timer.current)
-        setCompVal({changed: false, value: value as string})
-    }, [value, timer])
-
-    const setter = React.useCallback((maybeVal: string | number | undefined) => {
-        const newVal = convertStringToNumber(maybeVal, schemaType)
-        if (schemaTypeIsNumeric(schemaType) && maybeVal === '') {
-            // forbid saving/deleting of invalid number at all
-            setCompVal({value: '', changed: false})
-            return undefined
-        }
+    const setter = React.useCallback((newVal: string | number | undefined) => {
         onChange({
             storeKeys,
             scopes: ['value'],
@@ -65,19 +49,7 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
         })
     }, [storeKeys, onChange, schema, required])
 
-    const schemaType = schema.get('type') as string
-    React.useEffect(() => {
-        if (typeof compVal.value === 'undefined' || !compVal.changed) return
-        timer.current = window.setTimeout(() => {
-            setter(compVal.value)
-        }, debounceTime)
-        return () => window.clearTimeout(timer.current)
-    }, [
-        compVal, setCompVal,
-        debounceTime,
-        schemaType, timer,
-        setter,
-    ])
+    const {bounceVal, setBounceVal, bubbleBounce} = useDebounceValue<string | number>(value as string | number | undefined, debounceTime, setter)
 
     const format = schema.get('format')
 
@@ -99,7 +71,7 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
             label={hideTitle ? undefined : <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>}
             aria-label={hideTitle ? <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/> as unknown as string : undefined}
             // changing `type` to `text`, to be able to change invalid data
-            type={(format || (typeof value === 'string' && type === 'number' ? 'text' : type)) as InputProps['type']}
+            type={(format || (typeof bounceVal.value === 'string' && type === 'number' ? 'text' : type)) as InputProps['type']}
             disabled={schema.get('readOnly') as boolean | undefined}
             multiline={multiline}
             required={required}
@@ -117,13 +89,11 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
             variant={schema.getIn(['view', 'variant']) as any}
             margin={schema.getIn(['view', 'margin']) as InputProps['margin']}
             size={schema.getIn(['view', 'dense']) ? 'small' : 'medium'}
-            value={typeof compVal.value === 'string' || typeof compVal.value === 'number' ? compVal.value : ''}
+            value={typeof bounceVal.value === 'string' || typeof bounceVal.value === 'number' ? bounceVal.value : ''}
             onClick={onClick}
             onFocus={onFocus}
             onBlur={onBlur ? onBlur : () => {
-                if (compVal.value === value) return
-                window.clearTimeout(timer.current)
-                setter(compVal.value)
+                bubbleBounce(value as string)
             }}
             onKeyUp={onKeyUp}
             onKeyPress={
@@ -145,7 +115,7 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
                     // forbid saving/deleting of invalid number at all
                     return undefined
                 }
-                setCompVal({changed: true, value: newVal})
+                setBounceVal({changed: true, value: newVal})
             }}
             InputLabelProps={{shrink: schema.getIn(['view', 'shrink']) as boolean}}
             InputProps={InputProps}

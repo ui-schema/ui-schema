@@ -59,6 +59,50 @@ const Comp = () => {
 }
 ```
 
+## useDebounceValue
+
+Hook for executing onChange handlers after a delay or after the user ended editing - using a separately state, which is kept in-sync on downstream updates.
+
+```typescript jsx
+import { useDebounceValue } from '@ui-schema/ui-schema/Utils/useDebounceValue'
+import { WithScalarValue } from '@ui-schema/ui-schema/UIStore'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+
+const Comp: React.ComponentType<WidgetProps & WithScalarValue> = (
+    {onChange, storeKeys, schema, required, value},
+) => {
+
+    // the `setter` is executed when the value has been changed by either `bubbleBounce` or after the delay, triggered by the `onChange`
+    const setter = React.useCallback((newVal: string | number | undefined) => {
+        onChange({
+            storeKeys,
+            scopes: ['value'],
+            type: 'set',
+            schema,
+            required,
+            data: {value: newVal},
+        })
+    }, [storeKeys, onChange, schema, required])
+
+    const debounceTime = 340
+    const {bounceVal, setBounceVal, bubbleBounce} = useDebounceValue<string | number>(value as string | number | undefined, debounceTime, setter)
+
+    return <input
+        type={'text'}
+        value={bounceVal.value || ''}
+        onBlur={() => {
+            // triggers a direct run, with comparision to the latest known-value,
+            // executes `setter` only when `bounceVal.value` is not `value`
+            bubbleBounce(value)
+        }}
+        onChange={(e) => {
+            const val = e.target.value
+            setBounceVal({changed: true, value: val})
+        }}
+    />
+}
+```
+
 ## moveItem
 
 Helper for moving an item inside a `List`/`array`, useful for moving up/down inside a list widget.
