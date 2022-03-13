@@ -1,4 +1,4 @@
-export const isRelUrl = (schemaRef) => {
+export const isRelUrl = (schemaRef: string): boolean => {
     return (
         schemaRef.indexOf('https://') !== 0 &&
         schemaRef.indexOf('http://') !== 0 &&
@@ -14,7 +14,7 @@ const removeFragmentFromRevUrl = (url) => url.slice(
         url.indexOf('#') !== -1 ? url.indexOf('#') + 1 : 0,
 )
 
-export const getFragmentFromUrl = (url) => {
+export const getFragmentFromUrl = (url: string): string => {
     const revUrl = [...url].reverse().join('')
     const revUrlFragment = revUrl.slice(0,
         revUrl.indexOf('#/') !== -1 ? revUrl.indexOf('#/') :
@@ -23,8 +23,8 @@ export const getFragmentFromUrl = (url) => {
     return [...revUrlFragment].reverse().join('')
 }
 
-export const getCleanRefUrl = (schemaRef) => {
-    if(schemaRef) {
+export const getCleanRefUrl = (schemaRef: string | undefined): string | undefined => {
+    if (typeof schemaRef === 'string') {
         const revId = [...schemaRef].reverse().join('')
         const revIdNoFragment = removeFragmentFromRevUrl(revId)
         schemaRef = [...revIdNoFragment].reverse().join('')
@@ -33,14 +33,14 @@ export const getCleanRefUrl = (schemaRef) => {
     return schemaRef
 }
 
-export const makeUrlFromRef = (schemaRef, id) => {
+export const makeUrlFromRef = (schemaRef: string, id: string | undefined) => {
     let schemaUrl = schemaRef
-    if(id) {
+    if (id) {
         const revId = [...id].reverse().join('')
         const revIdNoFragment = removeFragmentFromRevUrl(revId)
         const uriBase = [...revIdNoFragment.slice(revIdNoFragment.indexOf('/'))].reverse().join('')
         schemaUrl = uriBase + schemaRef
-    } else if(process.env.NODE_ENV === 'development') {
+    } else if (process.env.NODE_ENV === 'development') {
         console.warn('relative uri ref without root id', schemaRef)
     }
     return schemaUrl

@@ -25,7 +25,7 @@ import {schemaNumberSlider} from '../schemas/demoNumberSlider';
 import {DummyRenderer} from './component/MuiMainDummy';
 import {useDummy} from '../component/MainDummy';
 import {UIApiProvider} from '@ui-schema/ui-schema/UIApi';
-import {ReferencingNetworkHandler} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
+// import {ReferencingNetworkHandler} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
 import {schemaDemoTable, schemaDemoTableAdvanced, schemaDemoTableMap, schemaDemoTableMapBig} from '../schemas/demoTable';
 import {Table} from '@ui-schema/ds-material/Widgets/Table';
 import {NumberRendererCell, StringRendererCell, TextRendererCell} from '@ui-schema/ds-material/Widgets/TextFieldCell';
@@ -43,7 +43,7 @@ const pluginStack = [...customWidgets.pluginStack]
 // must be before the `ReferencingHandler`, thus if the root schema for the level is a network schema,
 // the network handler can download it, and the normal referencing handler may handle references inside of e.g. `if`
 // maybe the network handlers adds a generic prop `resolveNetworkRef`, to request network schema inside e.g. an `if` from inside the ReferencingHandler
-pluginStack.splice(0, 0, ReferencingNetworkHandler)
+// pluginStack.splice(0, 0, ReferencingNetworkHandler)
 customWidgets.pluginStack = pluginStack
 customWidgets.InfoRenderer = InfoRenderer
 

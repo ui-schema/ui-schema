@@ -1,4 +1,4 @@
-import { parseRefs, SchemaRefsPending, useNetworkRef } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
+import { parseRefs, SchemaRefsPending, useSchemaNetworkRef } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
 import React from 'react'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { SchemaRootContext } from '@ui-schema/ui-schema/SchemaRootProvider'
@@ -12,7 +12,7 @@ export const useSchemaRef = (
     schema: StoreSchemaType
     refsPending: SchemaRefsPending
 } => {
-    const {getSchema, loadSchema} = useNetworkRef()
+    const {getSchema, loadSchema} = useSchemaNetworkRef()
 
     const parseRes: {
         schema: StoreSchemaType
@@ -31,7 +31,6 @@ export const useSchemaRef = (
     if (refsPending.size <= 0) {
         schema = parseRes.schema
     }
-
     React.useEffect(() => {
         if (refsPending.size > 0) {
             refsPending.forEach((refs, rootId) => {

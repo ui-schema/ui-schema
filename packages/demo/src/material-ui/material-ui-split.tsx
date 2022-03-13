@@ -22,7 +22,6 @@ import {
 } from '@ui-schema/ui-schema'
 import { browserT } from '../t'
 import { UIApiProvider } from '@ui-schema/ui-schema/UIApi'
-import { ReferencingNetworkHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
 import { Table } from '@ui-schema/ds-material/Widgets/Table'
 import { NumberRendererCell, StringRendererCell, TextRendererCell } from '@ui-schema/ds-material/Widgets/TextFieldCell'
 import { TableAdvanced } from '@ui-schema/ds-material/Widgets/TableAdvanced/TableAdvanced'
@@ -37,8 +36,8 @@ const pluginStack = [...customWidgets.pluginStack]
 // must be before the `ReferencingHandler`, thus if the root schema for the level is a network schema,
 // the network handler can download it, and the normal referencing handler may handle references inside of e.g. `if`
 // maybe the network handlers adds a generic prop `resolveNetworkRef`, to request network schema inside e.g. an `if` from inside the ReferencingHandler
-pluginStack.splice(0, 0, ReferencingNetworkHandler)
-pluginStack.splice(2, 0, InjectSplitSchemaPlugin)
+// pluginStack.splice(0, 0, ReferencingNetworkHandler)
+pluginStack.splice(1, 0, InjectSplitSchemaPlugin)
 customWidgets.pluginStack = pluginStack
 
 const CustomTable: React.ComponentType<WidgetProps> = ({widgets, ...props}) => {
