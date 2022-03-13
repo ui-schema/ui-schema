@@ -77,7 +77,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                 >
                     {
                         schemaTypeToDistinct(item.get('type')) === 'object' ?
-                            <GroupRenderer level={0} schema={item} className={classes.groupRenderer}>
+                            <GroupRenderer level={0} schema={item} className={classes.groupRenderer} storeKeys={storeKeys}>
                                 <PluginStackMemo<{ [k: string]: any }>
                                     showValidity={showValidity}
                                     storeKeys={storeKeys.push(j as OwnKey)}

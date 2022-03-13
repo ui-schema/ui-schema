@@ -4,8 +4,8 @@ import { StoreKeys } from '@ui-schema/ui-schema/UIStore'
 
 export class PluginStackErrorBoundary extends React.Component<{
     FallbackComponent: WidgetsBindingComponents['ErrorFallback']
-    type: string | unknown
-    widget: string | unknown
+    type: string | undefined
+    widget: string | undefined
     storeKeys: StoreKeys
 }> {
     state: { error: any } = {

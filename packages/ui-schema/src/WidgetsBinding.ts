@@ -8,7 +8,7 @@ import { StoreKeys } from '@ui-schema/ui-schema/UIStore'
 
 export interface GroupRendererProps {
     storeKeys: StoreKeys
-    schemaKeys: StoreKeys
+    schemaKeys?: StoreKeys
     level: number
     schema: StoreSchemaType
     noGrid?: boolean
