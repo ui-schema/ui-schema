@@ -22,6 +22,7 @@ export const moveDraggedValue = <S extends DndValueStore = DndValueStore>(
         // first remove element from source
         .updateIn(
             fromKeys,
+            // @ts-ignore
             (list: List<DndValueStore | DndValueStoreItem> = List()): List<DndValueStore | DndValueStoreItem> => {
                 if ('splice' in list) {
                     return list.splice(fromIndex as number, 1)

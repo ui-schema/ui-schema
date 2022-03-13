@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable'
-import { addNestKey, DndIntents, moveDraggedValue, onIntentFactory, onMovedType } from '@ui-schema/kit-dnd'
+import { addNestKey, DndIntents, moveDraggedValue, onIntentFactory, onMovedType, PathKey } from '@ui-schema/kit-dnd'
 import React from 'react'
 import { onChangeHandler, StoreKeys } from '@ui-schema/ui-schema'
 import { DragDropSpec } from '@ui-schema/material-dnd/DragDropSpec'
@@ -105,9 +105,9 @@ export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends
                         // thus the last relative key needs to be decreased
                         dk = dk.update(fromDataKeys.size,
                             (toIndexRelativeFirst) =>
-                                typeof toIndexRelativeFirst === 'number' ?
+                                (typeof toIndexRelativeFirst === 'number' ?
                                     toIndexRelativeFirst - 1 :
-                                    toIndexRelativeFirst
+                                    toIndexRelativeFirst) as PathKey
                         )
                     }
                 }

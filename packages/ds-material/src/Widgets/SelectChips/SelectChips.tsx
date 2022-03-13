@@ -20,7 +20,7 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
     const oneOfVal = schema.getIn(['items', 'oneOf'])
     if (!oneOfVal) return null
 
-    const currentValue = (typeof value !== 'undefined' ? value : (List(schema.get('default')) || List())) as List<string>
+    const currentValue = (typeof value !== 'undefined' ? value : (List(schema.get('default') as string[]) || List())) as List<string>
 
     return <Box>
         <Typography color={showValidity && !valid ? 'error' : undefined}>
@@ -68,4 +68,4 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
     </Box>
 }
 
-export const SelectChips = extractValue(memo(SelectChipsBase))
+export const SelectChips = extractValue(memo(SelectChipsBase)) as React.ComponentType<WidgetProps<MuiWidgetBinding>>

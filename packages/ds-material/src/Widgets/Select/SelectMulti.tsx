@@ -23,7 +23,7 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
     if (!oneOfValues) return null
 
     const currentValue = typeof value !== 'undefined' ? value :
-        schema.get('default') ? List(schema.get('default')) : List()
+        schema.get('default') ? List(schema.get('default') as string[]) : List()
 
     return <FormControl
         required={required} error={!valid && showValidity} fullWidth
@@ -57,7 +57,7 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
                     schema,
                     required,
                     data: {
-                        value: sortScalarList(List(e.target.value)),
+                        value: sortScalarList(List(e.target.value as any[])),
                     },
                 })
             }
@@ -84,5 +84,5 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
     </FormControl>
 }
 
-export const SelectMulti = extractValue(memo(SelectMultiBase))
+export const SelectMulti = extractValue(memo(SelectMultiBase)) as React.ComponentType<WidgetProps<MuiWidgetBinding>>
 

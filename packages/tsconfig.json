@@ -17,6 +17,7 @@
         "resolveJsonModule": true,
         "skipLibCheck": true,
         "noUnusedLocals": true,
+        "noImplicitAny": false,
         "noUnusedParameters": true,
         "paths": {
             "@ui-schema/ds-bootstrap": [
