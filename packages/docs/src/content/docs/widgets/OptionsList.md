@@ -12,12 +12,10 @@ Widgets for multiple options, either as 'select 1 from n' or 'select n from n'.
     - `OptionsRadio` radio inputs
         - use `enum` to specify array of possible values
         - produces `string` containing the selected value
-- view
-    - grid keywords
-
-- [String Type Keywords](/docs/schema#type-string)
-- [Object Type Keywords](/docs/schema#type-object)
-- [View Keywords](/docs/schema#view-keyword)
+- schema keywords
+    - [String Type Keywords](/docs/schema#type-string)
+    - [Object Type Keywords](/docs/schema#type-object)
+    - [View Keywords](/docs/schema#view-keyword)
 
 ## Design System
 
@@ -42,12 +40,15 @@ const widgets = {
 
 **Supports extra keywords:**
 
+- `view` keywords:
+    - `dense`: `true` for a smaller select
 - `info`
     - to render the [InfoRenderer](/docs/ds-material/InfoRenderer)
 
 **Widgets:**
 
 - `OptionsCheck` multiple check boxes
+    - `readOnly` inside `oneOf` schema: `boolean` to disable individual options
 - `OptionsRadio` radio inputs
 
 ### Bootstrap

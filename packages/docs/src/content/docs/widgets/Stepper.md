@@ -10,17 +10,15 @@ A stepper is a widget that renders a sub-schema after another, it is only possib
 - validation of whole stepper is completed after all steps have been rendered
 - creates an object out of all
 - the stepper controls it's own `showValidity`, this overwrites an existing `false` to `true`
-  - this highlights only the invalid of the stepper, not the containing schema
-  - if the containing schema should display validity, the stepper will do it also
-  - it reset's it's own `showValidity` on switching steps
+    - this highlights only the invalid of the stepper, not the containing schema
+    - if the containing schema should display validity, the stepper will do it also
+    - it reset's it's own `showValidity` on switching steps
 - type: `object`
 - widget keywords:
     - `Stepper` for the root object containing steps
-- view
-    - grid keywords
-
-- [Object Type Keywords](/docs/schema#type-object)
-- [View Keywords](/docs/schema#view-keyword)
+- schema keywords
+    - [Object Type Keywords](/docs/schema#type-object)
+    - [View Keywords](/docs/schema#view-keyword)
 
 ## Design System
 

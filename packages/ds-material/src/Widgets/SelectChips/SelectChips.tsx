@@ -28,7 +28,7 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
         </Typography>
 
         <Box mt={1} style={{display: 'flex', flexWrap: 'wrap'}}>
-            {oneOfVal ? (oneOfVal as List<OrderedMap<string, string>>).map((oneOfSchema) =>
+            {oneOfVal ? (oneOfVal as List<OrderedMap<string, any>>).map((oneOfSchema) =>
                 <Chip
                     key={oneOfSchema.get('const')}
                     label={<Trans
@@ -38,10 +38,11 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
                         fallback={oneOfSchema.get('title') || beautifyKey(oneOfSchema.get('const') as string | number, oneOfSchema.get('tt') as tt)}
                     />}
                     style={{marginRight: 4, marginBottom: 4}}
-                    size={'small'}
+                    size={schema.getIn(['view', 'size']) === 'medium' ? 'medium' : 'small'}
                     variant={
                         currentValue?.indexOf(oneOfSchema.get('const') as string) === -1 ? 'outlined' : 'default'
                     }
+                    disabled={schema.get('readOnly') as boolean || oneOfSchema.get('readOnly') as boolean}
                     color={'primary'}
                     onClick={() => {
                         !schema.get('readOnly') &&

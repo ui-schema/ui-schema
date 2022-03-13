@@ -2,7 +2,7 @@ import React from 'react';
 import {Grid} from '@material-ui/core';
 import {getNextPlugin} from '@ui-schema/ui-schema';
 
-const SchemaGridItem = ({schema, children, defaultMd, style, className, classes}) => {
+export const SchemaGridItem = ({schema, children, defaultMd, style, className, classes}) => {
     const view = schema ? schema.get('view') : undefined;
 
     const viewXs = view ? (view.get('sizeXs') || 12) : 12;
@@ -26,9 +26,9 @@ const SchemaGridItem = ({schema, children, defaultMd, style, className, classes}
     </Grid>
 };
 
-const RootRenderer = props => <Grid container spacing={0}>{props.children}</Grid>;
+export const RootRenderer = props => <Grid container spacing={0}>{props.children}</Grid>;
 
-const GroupRenderer = ({schema, noGrid, children, style, className, spacing = 2}) =>
+export const GroupRenderer = ({schema, noGrid, children, style, className, spacing = 2}) =>
     noGrid ? children :
         <Grid
             container wrap={'wrap'}
@@ -39,7 +39,7 @@ const GroupRenderer = ({schema, noGrid, children, style, className, spacing = 2}
             {children}
         </Grid>;
 
-const SchemaGridHandler = (props) => {
+export const SchemaGridHandler = (props) => {
     const {schema, noGrid, isVirtual, currentPluginIndex} = props;
     const next = currentPluginIndex + 1;
     const Plugin = getNextPlugin(next, props.widgets)
@@ -58,4 +58,3 @@ const SchemaGridHandler = (props) => {
     </SchemaGridItem>;
 };
 
-export {SchemaGridHandler, SchemaGridItem, RootRenderer, GroupRenderer};

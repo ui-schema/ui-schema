@@ -24,7 +24,11 @@ export const Select: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithSca
 
     const currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '')
 
-    return <FormControl required={required} error={!valid && showValidity} fullWidth>
+    return <FormControl
+        required={required} error={!valid && showValidity} fullWidth
+        size={schema.getIn(['view', 'dense']) ? 'small' : undefined}
+        disabled={schema.get('readOnly') as boolean}
+    >
         <InputLabel id={'uis-' + uid}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></InputLabel>
         <MuiSelect
             labelId={'uis-' + uid}
@@ -36,6 +40,7 @@ export const Select: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithSca
                     Translated :
                     beautifyKey(selected as string, schema.get('ttEnum') as tt) + ''
             }}
+            disabled={schema.get('readOnly') as boolean}
             onChange={(e) =>
                 !schema.get('readOnly') &&
                 onChange({
@@ -54,7 +59,7 @@ export const Select: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithSca
                 <MenuItem
                     key={enum_name + '-' + i}
                     value={enum_name as string | number}
-                    dense={schema.getIn(['view', 'dense']) as boolean}
+                    dense={schema.getIn(['view', 'denseOptions']) as boolean}
                 >
                     <Trans
                         schema={schema.get('t') as StoreSchemaType}

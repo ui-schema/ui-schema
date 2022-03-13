@@ -12,12 +12,10 @@ Widgets for select input, either as 'select 1 from n' or 'select n from n'.
     - `SelectMulti` for a multi-value select
         - use `items.oneOf[].const` to specify possible values and their restrictions
         - produces `array` containing the selected values
-- view
-    - grid keywords
-
-- [String Type Keywords](/docs/schema#type-string)
-- [Object Type Keywords](/docs/schema#type-object)
-- [View Keywords](/docs/schema#view-keyword)
+- schema keywords
+    - [String Type Keywords](/docs/schema#type-string)
+    - [Object Type Keywords](/docs/schema#type-object)
+    - [View Keywords](/docs/schema#view-keyword)
 
 ## Design System
 
@@ -36,12 +34,18 @@ const widgets = {
 };
 ```
 
-Components:
+**Supports extra keywords:**
+
+- `view` keywords:
+    - `dense`: `true` for a smaller select field
+    - `denseOptions`: `true` for only smaller options
+- only for `SelectMulti`:
+    - `readOnly` inside `oneOf` schema: `boolean` to disable individual options
+
+**Widgets:**
 
 - `Select` select single value
 - `SelectMulti` select multiple values
-- supported extra keywords:
-    - `view.dense` : `boolean` for a smaller select popup
 - See also [mui select component](https://material-ui.com/components/selects/)
 
 ### Bootstrap

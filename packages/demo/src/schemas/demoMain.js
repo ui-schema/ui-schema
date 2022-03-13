@@ -292,6 +292,7 @@ const schemaDemoMain = {
             widget: 'Select',
             //default: "adult",
             view: {
+                denseOptions: true,
                 sizeMd: 3,
             },
             enum: [
@@ -320,6 +321,7 @@ const schemaDemoMain = {
                 oneOf: [
                     {
                         const: 'child',
+                        readOnly: true,
                         t: {
                             de: {
                                 title: 'Kind',

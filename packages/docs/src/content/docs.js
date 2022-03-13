@@ -27,149 +27,162 @@ const createDoc = (path, label, prefix, context) => ({
     context,
 });
 
+export const routesCore = [
+    createDoc('overview', 'Overview'),
+    createDoc('schema', 'Schema'), {
+        nav: {
+            label: 'Core',
+            //initialOpen: false,
+            toSection: /^(\/docs\/core$|\/docs\/core-)/,
+        },
+        routes: [
+            createDoc('core', 'Core Overview'),
+            createDoc('core-renderer', 'Core: Generator & Renderer'),
+            createDoc('core-meta', 'Core: Meta'),
+            createDoc('core-store', 'Core: Store'),
+            createDoc('core-pluginstack', 'Core: PluginStack'),
+            createDoc('core-uiapi', 'Core: UIApi'),
+            createDoc('core-utils', 'Core: Utils'),
+        ],
+    }, {
+        nav: {
+            label: 'Design-System & Widgets',
+            initialOpen: false,
+            toSection: /^(\/docs\/design-systems|\/docs\/widgets$|\/docs\/widgets-composition$)/,
+        },
+        routes: [
+            createDoc('design-systems', 'Design-System'),
+            createDoc('widgets', 'Widget Binding'),
+            createDoc('widgets-composition', 'Widgets Composition'),
+        ],
+    },
+    createDoc('plugins', 'Plugins'),
+    createDoc('localization', 'Localization'),
+    createDoc('performance', 'Performance'),
+]
+
+export const routesFurtherDesignSystem = [
+    {
+        nav: {
+            label: 'Widgets List',
+            toSection: /^\/docs\/widgets\//,
+        },
+        routes: [
+            createDoc('widgets/Accordions', 'Accordions', '', {
+                demoUIGenerator: demoAccordions,
+            }),
+            createDoc('widgets/Code', 'Code Editor', '', {
+                demoUIGenerator: demoCode,
+            }),
+            createDoc('widgets/Color', 'Color Picker', '', {
+                demoUIGenerator: demoColor,
+            }),
+            createDoc('widgets/DateTimePickers', 'Date + Time Pickers', '', {
+                demoUIGenerator: demoDateTimePickers,
+            }),
+            createDoc('widgets/EditorJS', 'EditorJS', '', {
+                demoUIGenerator: demoEditorJS,
+            }),
+            createDoc('widgets/GenericList', 'Generic List', '', {
+                demoUIGenerator: demoGenericList,
+            }),
+            createDoc('widgets/GridHandler', 'Grid Handler', '', {
+                demoUIGenerator: demoGridHandler,
+            }),
+            createDoc('widgets/OptionsList', 'Options List', '', {
+                demoUIGenerator: demoOptionsList,
+            }),
+            createDoc('widgets/RichText', 'Rich-Text / Rich-Content', '', {
+                demoUIGenerator: demoRichText,
+            }),
+            createDoc('widgets/NumberSlider', 'Number Slider', '', {
+                demoUIGenerator: demoNumberSlider,
+            }),
+            createDoc('widgets/Select', 'Select', '', {
+                demoUIGenerator: demoSelect,
+            }),
+            createDoc('widgets/SelectChips', 'Select Chips', '', {
+                demoUIGenerator: demoSelectChips,
+            }),
+            createDoc('widgets/SimpleList', 'Simple List', '', {
+                demoUIGenerator: demoSimpleList,
+            }),
+            createDoc('widgets/Stepper', 'Stepper', '', {
+                demoUIGenerator: demoStepper,
+            }),
+            createDoc('widgets/Switch', 'Switch', '', {
+                demoUIGenerator: demoSwitch,
+            }),
+            createDoc('widgets/Table', 'Table', '', {
+                demoUIGenerator: demoTable,
+            }),
+            createDoc('widgets/TextField', 'TextField', '', {
+                demoUIGenerator: demoTextField,
+            }),
+        ],
+    }, {
+        nav: {
+            label: 'DS Material',
+            initialOpen: false,
+            to: '/docs/ds-material',
+        },
+        routes: [
+            createDoc('ds-material/InfoRenderer', 'Info Renderer', ''),
+            {
+                nav: {
+                    label: 'Base Components',
+                    initialOpen: false,
+                    to: '/docs/ds-material/components',
+                },
+                routes: [
+                    createDoc('ds-material/Table', 'Table', ''),
+                ],
+            },
+        ],
+    }, {
+        nav: {
+            label: 'Material-DND',
+            initialOpen: false,
+            to: '/docs/material-dnd',
+        },
+        routes: [
+            createDoc('material-dnd/overview', 'Overview', ''),
+            createDoc('material-dnd/widgets-generic', 'Widgets Generic', '', {
+                demoUIGenerator: demoDragnDropGenericDemo,
+            }),
+        ],
+    },
+]
+
+export const routesFurtherAddOns = [
+    {
+        nav: {
+            label: 'Kit: DnD',
+            initialOpen: false,
+            to: '/docs/kit-dnd',
+        },
+        routes: [
+            createDoc('kit-dnd/kit-dnd', 'Overview', ''),
+        ],
+    }, {
+        nav: {
+            label: 'Pro Extensions',
+            initialOpen: false,
+            to: '/pro',
+        },
+        routes: [
+            createDoc('pro', 'UIStorePro'),
+        ],
+    },
+]
+
 export const routesDocs = {
     nav: {
         label: 'Documentation',
     },
     routes: [
-        createDoc('overview', 'Overview'),
-        createDoc('schema', 'Schema'), {
-            nav: {
-                label: 'Core',
-                //initialOpen: false,
-                toSection: /^(\/docs\/core$|\/docs\/core-)/,
-            },
-            routes: [
-                createDoc('core', 'Core Overview'),
-                createDoc('core-renderer', 'Core: Generator & Renderer'),
-                createDoc('core-meta', 'Core: Meta'),
-                createDoc('core-store', 'Core: Store'),
-                createDoc('core-pluginstack', 'Core: PluginStack'),
-                createDoc('core-uiapi', 'Core: UIApi'),
-                createDoc('core-utils', 'Core: Utils'),
-            ],
-        }, {
-            nav: {
-                label: 'Design-System & Widgets',
-                initialOpen: false,
-                toSection: /^(\/docs\/design-systems|\/docs\/widgets$|\/docs\/widgets-composition$)/,
-            },
-            routes: [
-                createDoc('design-systems', 'Design-System'),
-                createDoc('widgets', 'Widget Binding'),
-                createDoc('widgets-composition', 'Widgets Composition'),
-            ],
-        },
-        createDoc('plugins', 'Plugins'),
-        createDoc('localization', 'Localization'),
-        createDoc('performance', 'Performance'),
-        {
-            nav: {
-                label: 'Widgets List',
-                toSection: /^\/docs\/widgets\//,
-            },
-            routes: [
-                createDoc('widgets/Accordions', 'Accordions', '', {
-                    demoUIGenerator: demoAccordions,
-                }),
-                createDoc('widgets/Code', 'Code Editor', '', {
-                    demoUIGenerator: demoCode,
-                }),
-                createDoc('widgets/Color', 'Color Picker', '', {
-                    demoUIGenerator: demoColor,
-                }),
-                createDoc('widgets/DateTimePickers', 'Date + Time Pickers', '', {
-                    demoUIGenerator: demoDateTimePickers,
-                }),
-                createDoc('widgets/EditorJS', 'EditorJS', '', {
-                    demoUIGenerator: demoEditorJS,
-                }),
-                createDoc('widgets/GenericList', 'Generic List', '', {
-                    demoUIGenerator: demoGenericList,
-                }),
-                createDoc('widgets/GridHandler', 'Grid Handler', '', {
-                    demoUIGenerator: demoGridHandler,
-                }),
-                createDoc('widgets/OptionsList', 'Options List', '', {
-                    demoUIGenerator: demoOptionsList,
-                }),
-                createDoc('widgets/RichText', 'Rich-Text / Rich-Content', '', {
-                    demoUIGenerator: demoRichText,
-                }),
-                createDoc('widgets/NumberSlider', 'Number Slider', '', {
-                    demoUIGenerator: demoNumberSlider,
-                }),
-                createDoc('widgets/Select', 'Select', '', {
-                    demoUIGenerator: demoSelect,
-                }),
-                createDoc('widgets/SelectChips', 'Select Chips', '', {
-                    demoUIGenerator: demoSelectChips,
-                }),
-                createDoc('widgets/SimpleList', 'Simple List', '', {
-                    demoUIGenerator: demoSimpleList,
-                }),
-                createDoc('widgets/Stepper', 'Stepper', '', {
-                    demoUIGenerator: demoStepper,
-                }),
-                createDoc('widgets/Switch', 'Switch', '', {
-                    demoUIGenerator: demoSwitch,
-                }),
-                createDoc('widgets/Table', 'Table', '', {
-                    demoUIGenerator: demoTable,
-                }),
-                createDoc('widgets/TextField', 'TextField', '', {
-                    demoUIGenerator: demoTextField,
-                }),
-            ],
-        }, {
-            nav: {
-                label: 'DS Material',
-                initialOpen: false,
-                to: '/docs/ds-material',
-            },
-            routes: [
-                createDoc('ds-material/InfoRenderer', 'Info Renderer', ''),
-                {
-                    nav: {
-                        label: 'Base Components',
-                        initialOpen: false,
-                        to: '/docs/ds-material/components',
-                    },
-                    routes: [
-                        createDoc('ds-material/Table', 'Table', ''),
-                    ],
-                },
-            ],
-        }, {
-            nav: {
-                label: 'Material-DND',
-                initialOpen: false,
-                to: '/docs/material-dnd',
-            },
-            routes: [
-                createDoc('material-dnd/overview', 'Overview', ''),
-                createDoc('material-dnd/widgets-generic', 'Widgets Generic', '', {
-                    demoUIGenerator: demoDragnDropGenericDemo,
-                }),
-            ],
-        }, {
-            nav: {
-                label: 'Kit: DnD',
-                initialOpen: false,
-                to: '/docs/kit-dnd',
-            },
-            routes: [
-                createDoc('kit-dnd/kit-dnd', 'Overview', ''),
-            ],
-        }, {
-            nav: {
-                label: 'Pro Extensions',
-                initialOpen: false,
-                to: '/pro',
-            },
-            routes: [
-                createDoc('pro', 'UIStorePro'),
-            ],
-        },
+        ...routesCore,
+        ...routesFurtherDesignSystem,
+        ...routesFurtherAddOns,
     ],
 };

@@ -7,10 +7,9 @@ Widget for single `boolean`.
 - type: `boolean`
 - widget keywords:
     - `Switch` for checkboxes
-- view
-    - grid keywords
-
-- [Type Properties](/docs/schema#type-boolean)
+- schema keywords
+    - [Type Keywords](/docs/schema#type-boolean)
+    - [View Keywords](/docs/schema#view-keyword)
 
 ## Design System
 

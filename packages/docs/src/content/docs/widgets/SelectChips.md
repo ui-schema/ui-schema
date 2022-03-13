@@ -9,8 +9,9 @@ Widgets for select input for muli-selection.
     - `SelectChips`
         - use `items.oneOf[].const` to specify array of values
         - produces `array` with selected values
-- view
-    - grid keywords
+- schema keywords
+    - [Type Keywords](/docs/schema#type-array)
+    - [View Keywords](/docs/schema#view-keyword)
 
 ## Design System
 
@@ -36,3 +37,5 @@ Widgets:
             - the `title` if supplied
             - the `const` value as fallback
         - see demo schema below for an example
+- supported extra keywords:
+    - `view.size` : `small|medium` for the chips size, `small` is default

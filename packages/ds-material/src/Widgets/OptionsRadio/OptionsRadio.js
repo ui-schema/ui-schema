@@ -17,7 +17,11 @@ const OptionsRadio = ({
     const isActive = typeof value !== 'undefined' ? value : (schema.get('default') || '');
 
     const InfoRenderer = widgets?.InfoRenderer
-    return <FormControl required={required} error={!valid && showValidity} component="fieldset">
+    return <FormControl
+        required={required} error={!valid && showValidity} component="fieldset" fullWidth
+        size={schema.getIn(['view', 'dense']) ? 'small' : undefined}
+        disabled={schema.get('readOnly')}
+    >
         <FormLabel component="legend" style={{width: '100%'}}>
             <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
             {InfoRenderer && schema?.get('info') ?
@@ -28,7 +32,7 @@ const OptionsRadio = ({
                 /> :
                 undefined}
         </FormLabel>
-        <RadioGroup row={row}>
+        <RadioGroup row={row} disabled={schema.get('readOnly')}>
             {enumVal ? enumVal.map((enum_name) => {
                 return <FormControlLabel
                     key={enum_name}

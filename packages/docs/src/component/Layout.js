@@ -20,7 +20,7 @@ import {ExpandLess, ExpandMore} from '@material-ui/icons';
 import {Divider, List, Collapse} from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
 import {NavListNested} from '@control-ui/kit/Menu/NavList';
-import {routesDocs} from '../content/docs';
+import {routesCore, routesFurtherAddOns, routesFurtherDesignSystem} from '../content/docs';
 
 const title = '0.3.x'
 export const CustomHeader = () => {
@@ -77,7 +77,21 @@ export const CustomDrawer = () => {
             <ListItemLink to={'/examples'} primary={'Live Editor'} dense showActive onClick={closeOnClick}/>
             <Divider/>
             <NavListNested
-                routes={routesDocs.routes}
+                routes={routesCore}
+                dense
+                filter={() => true}
+                onClick={closeOnClick}
+            />
+            <Divider/>
+            <NavListNested
+                routes={routesFurtherDesignSystem}
+                dense
+                filter={() => true}
+                onClick={closeOnClick}
+            />
+            <Divider/>
+            <NavListNested
+                routes={routesFurtherAddOns}
                 dense
                 filter={() => true}
                 onClick={closeOnClick}
