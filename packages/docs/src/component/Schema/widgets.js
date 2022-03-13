@@ -89,14 +89,6 @@ customWidgets.custom = {
         loader: () => import('@ui-schema/material-pickers').then(r => r.TimePicker),
         loading: () => <LoadingCircular title={'Loading Time Widget'}/>,
     }),
-    RichText: Loadable({
-        loader: () => import('@ui-schema/material-richtext/RichText').then(r => r.RichText),
-        loading: () => <LoadingCircular title={'Loading RichText Widget'}/>,
-    }),
-    RichTextInline: Loadable({
-        loader: () => import('@ui-schema/material-richtext/RichTextInline').then(r => r.RichTextInline),
-        loading: () => <LoadingCircular title={'Loading RichText Widget'}/>,
-    }),
     EditorJS: Loadable({
         loader: () => import('./EditorJSComp').then(r => r.EditorJSComp),
         loading: () => <LoadingCircular title={'Loading EditorJS'}/>,

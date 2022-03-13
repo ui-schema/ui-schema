@@ -25,6 +25,7 @@ A match by `widget` supersedes the `type` matching, this is a simple example of 
 
 ```js
 import {StringRenderer, OptionsCheck} from "@ui-schema/ds-material";
+
 const widgets = {
     types: {
         string: StringRenderer,
@@ -82,8 +83,7 @@ Custom widgets for `widget`, special UIs and specific type handling:
 | `BoolIcon`                    |                                                                                      |                                                              | 🔵  | 🔵  |  🔵 |
 |                               |                                                                                      |                                                              |     |     |     |
 | **Rich-Text**                 |                                                                                      |                                                              |     |     |     |
-| `RichText`                    | [multiline rich text editor](/docs/widgets/RichText)                                 | `string`                                                     |  ✅  | 🔵  |  🔵 |
-| `RichTextInline`              | [single-line rich text editor](/docs/widgets/RichText)                               | `string`                                                     |  ✅  | 🔵  |  🔵 |
+| `Rich*`                       | [rich content + text editor](/docs/widgets/RichText)                                 | `string`,`object`                                            |  ✅  | 🔵  |  🔵 |
 | `Code`, `CodeSelectable`      | [text editor with syntax highlight](/docs/widgets/Code)                              | `string`, `array(string, string)`                            |  ✅  | 🔵  |  🔵 |
 | `EditorJS`                    | [EditorJS text editor](/docs/widgets/EditorJS)                                       | `string`                                                     | ✅ℹ️ | 🔵  |  🔵 |
 |                               |                                                                                      |                                                              |     |     |     |

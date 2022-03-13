@@ -84,11 +84,6 @@ packer({
             root: path.resolve(__dirname, 'packages', 'material-pickers'),
             entry: path.resolve(__dirname, 'packages', 'material-pickers/src/'),
         },
-        materialRichtext: {
-            name: '@ui-schema/material-richtext',
-            root: path.resolve(__dirname, 'packages', 'material-richtext'),
-            entry: path.resolve(__dirname, 'packages', 'material-richtext/src/'),
-        },
         materialSlate: {
             name: '@ui-schema/material-slate',
             root: path.resolve(__dirname, 'packages', 'material-slate'),

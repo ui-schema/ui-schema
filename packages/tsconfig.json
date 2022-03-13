@@ -56,12 +56,6 @@
             "@ui-schema/material-pickers/*": [
                 "material-pickers/src/*"
             ],
-            "@ui-schema/material-richtext": [
-                "material-richtext/src"
-            ],
-            "@ui-schema/material-richtext/*": [
-                "material-richtext/src/*"
-            ],
             "@ui-schema/material-editable": [
                 "material-editable/src"
             ],

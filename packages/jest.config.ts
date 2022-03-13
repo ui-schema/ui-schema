@@ -1,6 +1,6 @@
 import type { Config } from '@jest/types'
 
-const packages: string[] = ['ui-schema', 'ds-bootstrap', 'ds-material', 'material-code', 'material-color', 'material-pickers', 'material-richtext', 'kit-dnd']
+const packages: string[] = ['ui-schema', 'ds-bootstrap', 'ds-material', 'material-code', 'material-color', 'material-pickers', 'kit-dnd']
 
 const testMatchesLint: string[] = []
 

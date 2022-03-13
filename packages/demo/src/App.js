@@ -9,7 +9,6 @@ import {asyncComponent} from './component/AsyncComponent';
 const MaterialUi = asyncComponent(() => import('./material-ui/material-ui'), 'Material-UI', 'page');
 const MaterialUiCode = asyncComponent(() => import('./material-ui/material-ui-code'), 'Material-UI Code', 'page');
 const MaterialUiColor = asyncComponent(() => import('./material-ui/material-ui-color'), 'Material-UI Color', 'page');
-const MaterialUiRich = asyncComponent(() => import('./material-ui/material-ui-rich'), 'Material-UI Rich Text', 'page');
 const MaterialUiPickers = asyncComponent(() => import('./material-ui/material-ui-pickers'), 'Material-UI Pickers', 'page');
 const MaterialUiPro = asyncComponent(() => import('./material-ui/material-ui-pro'), 'Material-UI Pro', 'page');
 const MaterialUiDnd = asyncComponent(() => import('./material-ui/material-ui-dnd'), 'Material-UI DnD', 'page');
@@ -28,7 +27,6 @@ const App = () => <Router>
     <Switch>
         <Route path="/mui-code" component={MaterialUiCode}/>
         <Route path="/mui-color" component={MaterialUiColor}/>
-        <Route path="/mui-richtext" component={MaterialUiRich}/>
         <Route path="/mui-slate" component={MaterialUiSlate}/>
         <Route path="/mui-pickers" component={MaterialUiPickers}/>
         <Route path="/mui-pro" component={MaterialUiPro}/>

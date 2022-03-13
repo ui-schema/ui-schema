@@ -6,8 +6,8 @@ Widgets for rich-text and rich-content inputs, design-system implementation.
 
 - types: `string`, `array`
 - widget keywords:
-    - `RichText`: only DraftJS, in future also for SlateJS
-    - `RichTextInline`: only DraftJS, in future also for SlateJS
+    - ~`RichText`: only DraftJS, in future also for SlateJS~
+    - ~`RichTextInline`: only DraftJS, in future also for SlateJS~
     - `RichContent`: only SlateJS
     - `RichContentInline`: only SlateJS (very experimental)
     - `RichContentPane`: only SlateJS, for a more typical editor without looking like a typical text input, without title/label
@@ -121,6 +121,8 @@ Rich text editor based on [DraftJS](https://draftjs.org/) with the styles like a
 - markdown syntax support to automatic transform markdown input into rich-text
 
 > ℹ️ as DraftJS seems to be abandoned / without active development, it is recommended to use the SlateJS integration
+>
+> ℹ️ as not compatible with immutable v4, this widget package is no longer maintained
 
 ```bash
 npm i --save @ui-schema/material-richtext draft-js draft-js-plugins-editor
