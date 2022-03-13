@@ -20,6 +20,7 @@ export interface GroupRendererProps {
 export interface WidgetsBindingComponents {
     ErrorFallback?: React.ComponentType<{
         error: any | null
+        storeKeys: StoreKeys
         type?: string
         widget?: string
     }>
