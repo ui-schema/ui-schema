@@ -22,12 +22,12 @@ Convenience Provider for both: UIStore & UIMeta, just pass everything down to th
 import React from "react";
 import {
     UIProvider, UIRootRenderer,
-    isInvalid, useUI,
+    isInvalid, useUIStore,
 } from "@ui-schema/ui-schema";
 
 const CustomFooter = ({someCustomProp}) => {
     // access the editor context, also available e.g.: useSchemaWidgets, useSchemaData
-    const {store} = useUI();
+    const {store} = useUIStore();
 
     return <p style={{fontWeight: someCustomProp ? 'bold' : 'normal'}}>
         {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}

@@ -47,7 +47,7 @@ pluginStack.splice(0, 0, ReferencingNetworkHandler)
 customWidgets.pluginStack = pluginStack
 customWidgets.InfoRenderer = InfoRenderer
 
-const CustomTable = ({widgets, ...props}) => {
+const CustomTableBase = ({widgets, ...props}) => {
     const customWidgets = React.useMemo(() => ({
         ...widgets,
         types: {
@@ -67,6 +67,7 @@ const CustomTable = ({widgets, ...props}) => {
         widgets={customWidgets}
     />
 }
+const CustomTable = React.memo(CustomTableBase)
 
 customWidgets.custom.Table = CustomTable
 customWidgets.custom.TableAdvanced = TableAdvanced

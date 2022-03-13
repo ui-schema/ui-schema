@@ -1,5 +1,6 @@
-import { doExtractValue, getDisplayName, StoreKeys, useUI } from '@ui-schema/ui-schema'
 import React from 'react'
+import { StoreKeys, useUIStore } from '@ui-schema/ui-schema/UIStore'
+import { getDisplayName } from '@ui-schema/ui-schema/Utils/memo'
 import { DndBlock, useBlocks } from '@ui-schema/material-dnd/DragDropBlockProvider'
 import { matchBlock } from '@ui-schema/material-dnd/DndBlocksRenderer/matchBlock'
 import { Map, OrderedMap } from 'immutable'
@@ -18,8 +19,8 @@ export const injectBlock = <P extends WithDndBlock & {
         // todo: optimize/remove block matching, as this could be expensive on big lists and many available blocks
         //       especially as it is re-matching every level in one PluginStack tree, on each change, no matter how deep the change was
         const {blocks} = useBlocks()
-        const {store} = useUI()
-        const val = store ? doExtractValue(p.storeKeys, store) : undefined
+        const {store} = useUIStore()
+        const val = store?.extractValues(p.storeKeys)
         const block = React.useMemo(() => {
             if (!val || !val.value) return
             if (!OrderedMap.isOrderedMap(val.value) && !Map.isMap(val.value)) {

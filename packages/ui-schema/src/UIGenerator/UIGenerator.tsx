@@ -2,11 +2,12 @@ import React from 'react'
 import { UIStoreProvider, UIStoreContext } from '@ui-schema/ui-schema/UIStore'
 import { UIMetaContext, UIMetaProvider } from '@ui-schema/ui-schema/UIMeta'
 import { UIRootRenderer, UIRootRendererProps } from '@ui-schema/ui-schema/UIRootRenderer'
+import { UIStoreActionsContext } from '@ui-schema/ui-schema/UIStoreActions'
 
 /**
  * Main Component to create a schema based UI generator
  */
-export const UIGenerator: React.ComponentType<React.PropsWithChildren<UIMetaContext & UIStoreContext & UIRootRendererProps>> = (
+export const UIGenerator: React.ComponentType<React.PropsWithChildren<UIMetaContext & UIStoreContext & UIStoreActionsContext & UIRootRendererProps>> = (
     {
         children,
         ...props
@@ -19,7 +20,7 @@ export const UIGenerator: React.ComponentType<React.PropsWithChildren<UIMetaCont
     </UIProvider>
 )
 
-export const UIProvider: React.ComponentType<React.PropsWithChildren<UIMetaContext & UIStoreContext>> = (
+export const UIProvider: React.ComponentType<React.PropsWithChildren<UIMetaContext & UIStoreContext & UIStoreActionsContext>> = (
     {
         children,
         store, onChange,

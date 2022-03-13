@@ -1,11 +1,11 @@
-import { StoreKeys, StoreSchemaType, Translator, UIStoreContext, WidgetProps, WithValue } from '@ui-schema/ui-schema'
+import { onChangeHandler, StoreKeys, StoreSchemaType, Translator, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 import React from 'react'
 import { List, OrderedMap } from 'immutable'
 
 export interface TableRowProps {
     // unique id of `Table` for labelledBy generation
     uid: string
-    listSize: number
+    //listSize: number
     dense: boolean
     setPage: React.Dispatch<React.SetStateAction<number>>
     showRows: number | undefined
@@ -28,7 +28,7 @@ export interface TablePaginationActionsProps {
     count: number
     page: number
     rowsPerPage: number
-    onChangePage: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void
+    onPageChange: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void
 }
 
 export interface TableHeaderProps {
@@ -51,7 +51,7 @@ export interface TableFooterProps {
     listSizeCurrent: number
     rows: number
     setRows: React.Dispatch<React.SetStateAction<number>>
-    onChange: UIStoreContext['onChange']
+    onChange: onChangeHandler
     storeKeys: WidgetProps['storeKeys']
     schema: WidgetProps['schema']
     showValidity: WidgetProps['showValidity']

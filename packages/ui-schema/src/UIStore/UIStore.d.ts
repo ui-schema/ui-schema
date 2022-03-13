@@ -19,6 +19,10 @@ export interface UIStoreState<D = any> extends UIStoreStateData<D> {
     getValues: () => D
     getInternals: () => UIStoreInternalsType
     getValidity: () => UIStoreValidityType
+    extractValues: <V>(storeKeys: StoreKeys) => {
+        value: V | undefined
+        internalValue: UIStoreInternalsType | undefined
+    }
 }
 
 export type UIStoreType<D = any> = RecordOf<UIStoreState<D>>
@@ -38,9 +42,9 @@ export const UIStore: UIStoreType
 
 export type UIStoreUpdaterFn<D extends UIStoreUpdaterData = UIStoreUpdaterData> = (data: D) => D
 
-export type onChangeHandler<R = void, A = UIStoreActions> = (
+export type onChangeHandler<A = UIStoreActions> = (
     actions: A[] | A
-) => R
+) => void
 
 // UIMetaContext
 

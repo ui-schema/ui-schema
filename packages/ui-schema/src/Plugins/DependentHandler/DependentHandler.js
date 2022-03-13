@@ -1,12 +1,12 @@
 import React from 'react';
 import {getNextPlugin, NextPluginRendererMemo} from '@ui-schema/ui-schema/PluginStack';
-import {useUI} from '@ui-schema/ui-schema/UIStore';
+import {useUIStore} from '@ui-schema/ui-schema/UIStore';
 import {mergeSchema} from '@ui-schema/ui-schema/Utils/mergeSchema';
 import {List, Map} from 'immutable';
 
 const DependentRenderer = ({dependencies, dependentSchemas, dependentRequired, ...props}) => {
     let {schema, storeKeys} = props;
-    const {store} = useUI();
+    const {store} = useUIStore();
 
     const currentValues = storeKeys.size ? store.getValues().getIn(storeKeys) : store.getValues();
 

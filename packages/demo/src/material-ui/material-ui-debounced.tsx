@@ -4,7 +4,7 @@ import Dashboard from './dashboard/Dashboard'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import { widgets } from '@ui-schema/ds-material'
-import { createOrderedMap, createStore, UIMetaProvider, UIStoreProvider } from '@ui-schema/ui-schema'
+import { createOrderedMap, createStore, UIMetaProvider, UIStoreActions, UIStoreProvider, UIStoreType } from '@ui-schema/ui-schema'
 import { browserT } from '../t'
 import { ReferencingNetworkHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
 import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
@@ -59,12 +59,12 @@ const FormComp = () => {
     const showValidity = true
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
 
-    const onChange = React.useCallback((actions) => {
-        setStore(storeUpdater(actions))
+    const onChange = React.useCallback((actions: UIStoreActions[] | UIStoreActions) => {
+        setStore(storeUpdater<UIStoreType>(actions))
     }, [setStore])
 
     return <React.Fragment>
-        <UIStoreProvider
+        <UIStoreProvider<{}, any, UIStoreActions>
             store={store}
             onChange={onChange}
             showValidity={showValidity}

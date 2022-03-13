@@ -1,5 +1,5 @@
 import React from 'react'
-import { OwnKey, PluginStack, SchemaTypesType, schemaTypeToDistinct, WidgetProps, WithValue } from '@ui-schema/ui-schema'
+import { memo, OwnKey, PluginStack, SchemaTypesType, schemaTypeToDistinct, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 import { List, OrderedMap, Map } from 'immutable'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { Theme } from '@material-ui/core/styles/createTheme'
@@ -22,6 +22,8 @@ const useTableRowStyle = makeStyles<Theme, { dense: boolean }>((theme) => ({
                 `${theme.spacing(1.5)}px ${theme.spacing(1)}px`,*/
     },
 }))
+
+const PluginStackMemo = memo(PluginStack)
 
 export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps & Pick<WithValue, 'onChange'>> = (
     {
@@ -60,7 +62,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
     return <TableRow>
         {cellSchema.map((item, j) =>
             item.get('hidden') === true ?
-                <PluginStack
+                <PluginStackMemo
                     key={j}
                     storeKeys={storeKeys.push(j as OwnKey)}
                     schema={item}
@@ -76,7 +78,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                     {
                         schemaTypeToDistinct(item.get('type')) === 'object' ?
                             <GroupRenderer level={0} schema={item} className={classes.groupRenderer}>
-                                <PluginStack<{ [k: string]: any }>
+                                <PluginStackMemo<{ [k: string]: any }>
                                     showValidity={showValidity}
                                     storeKeys={storeKeys.push(j as OwnKey)}
                                     schema={item.setIn(['view', 'hideTitle'], true)}
@@ -92,7 +94,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                                     // labelledBy={'uis-' + uid + '-tbl-' + j}
                                 />
                             </GroupRenderer> :
-                            <PluginStack<{ [k: string]: any }>
+                            <PluginStackMemo<{ [k: string]: any }>
                                 showValidity={showValidity}
                                 storeKeys={storeKeys.push(j as OwnKey)}
                                 schema={item.setIn(['view', 'hideTitle'], true)}

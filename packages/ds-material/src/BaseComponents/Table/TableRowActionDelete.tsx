@@ -1,13 +1,13 @@
 import React from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Delete from '@material-ui/icons/Delete'
-import { StoreKeys, StoreSchemaType, Trans, UIStoreContext, WidgetProps } from '@ui-schema/ui-schema'
+import { onChangeHandler, StoreKeys, StoreSchemaType, Trans, WidgetProps } from '@ui-schema/ui-schema'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip/Tooltip'
 import { TableRowProps } from '@ui-schema/ds-material'
 import { Map } from 'immutable'
 
 export interface TableRowActionDeleteProps {
-    onChange: UIStoreContext['onChange']
+    onChange: onChangeHandler
     storeKeys: WidgetProps['storeKeys']
     showRows: TableRowProps['showRows']
     setPage: TableRowProps['setPage']
