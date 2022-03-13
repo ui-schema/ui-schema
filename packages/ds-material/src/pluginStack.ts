@@ -1,4 +1,4 @@
-import { SchemaGridHandler } from './Grid'
+import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
 import {
     DefaultHandler, DependentHandler,
     ConditionalHandler, CombiningHandler,
