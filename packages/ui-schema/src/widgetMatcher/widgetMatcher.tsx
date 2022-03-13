@@ -21,16 +21,14 @@ export function widgetMatcher<W extends WidgetsBindingFactory<{}, WidgetsBinding
         schemaType,
         widgets,
         NoWidget: NoWidgetCustom,
-    }:
-        {
-            isVirtual: boolean
-            //WidgetOverride?: PluginStackProps['WidgetOverride']
-            WidgetOverride?: WidgetOverrideType<{}, {}, W>
-            widgetName: string | undefined
-            schemaType: SchemaTypesType
-            widgets: W
-            NoWidget?: React.ComponentType<NoWidgetProps>
-        }
+    }: {
+        isVirtual: boolean
+        WidgetOverride?: WidgetOverrideType<{}, {}, W>
+        widgetName: string | undefined
+        schemaType: SchemaTypesType
+        widgets: W
+        NoWidget?: React.ComponentType<NoWidgetProps>
+    }
 ): WidgetType<{}, W> | null {
     const NoW = NoWidgetCustom || NoWidget
     let Widget: WidgetType<{}, W> | null = null

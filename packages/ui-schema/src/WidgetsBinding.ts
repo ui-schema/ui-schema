@@ -5,6 +5,7 @@ import { WidgetType } from '@ui-schema/ui-schema/Widget'
 import { WidgetRendererProps } from '@ui-schema/ui-schema/WidgetRenderer'
 import { PluginSimple } from '@ui-schema/ui-schema/PluginSimpleStack/PluginSimple'
 import { StoreKeys } from '@ui-schema/ui-schema/UIStore'
+import { List } from 'immutable'
 
 export interface GroupRendererProps {
     storeKeys: StoreKeys
@@ -17,13 +18,15 @@ export interface GroupRendererProps {
     spacing?: number
 }
 
+export interface ErrorFallbackProps {
+    error: any | null
+    storeKeys: StoreKeys
+    type?: string | List<string>
+    widget?: string
+}
+
 export interface WidgetsBindingComponents {
-    ErrorFallback?: React.ComponentType<{
-        error: any | null
-        storeKeys: StoreKeys
-        type?: string
-        widget?: string
-    }>
+    ErrorFallback?: React.ComponentType<ErrorFallbackProps>
     // wraps the whole generator
     RootRenderer: React.ComponentType<any>
     // wraps any `object` that has no custom widget

@@ -12,8 +12,8 @@ export const VirtualArrayRenderer = (
             key={i}
             schema={
                 List.isList(schema.get('items')) ?
-                    schema.get('items').get(i)
-                    : schema.get('items')
+                    schema.get('items').get(i) :
+                    schema.get('items')
             }
             parentSchema={schema}
             storeKeys={storeKeys.push(i)}

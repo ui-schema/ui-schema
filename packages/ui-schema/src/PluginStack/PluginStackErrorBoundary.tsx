@@ -1,10 +1,11 @@
 import React from 'react'
-import { WidgetsBindingComponents } from '@ui-schema/ui-schema/WidgetsBinding'
+import { ErrorFallbackProps } from '@ui-schema/ui-schema/WidgetsBinding'
 import { StoreKeys } from '@ui-schema/ui-schema/UIStore'
+import { List } from 'immutable'
 
 export class PluginStackErrorBoundary extends React.Component<{
-    FallbackComponent: WidgetsBindingComponents['ErrorFallback']
-    type: string | undefined
+    FallbackComponent: React.ComponentType<ErrorFallbackProps>
+    type: string | List<string> | undefined
     widget: string | undefined
     storeKeys: StoreKeys
 }> {
@@ -23,16 +24,12 @@ export class PluginStackErrorBoundary extends React.Component<{
     render() {
         if (this.state.error) {
             const FallbackComponent = this.props.FallbackComponent
-            if (FallbackComponent) {
-                return <FallbackComponent
-                    error={this.state.error}
-                    type={this.props.type}
-                    widget={this.props.widget}
-                    storeKeys={this.props.storeKeys}
-                />
-            }
-            // todo: multi type support #68
-            return 'error-' + this.props.type + (this.props.widget ? '-' + this.props.widget : '')
+            return <FallbackComponent
+                error={this.state.error}
+                type={this.props.type}
+                widget={this.props.widget}
+                storeKeys={this.props.storeKeys}
+            />
         }
         return this.props.children
     }
