@@ -18,7 +18,7 @@ packer({
             },
             publicPath: '/',
             vendors: ['react-error-boundary', 'immutable', '@material-ui/core', '@material-ui/icons'],
-            plugins: [],
+            // plugins: [],
         },
         docs: {
             root: path.resolve(__dirname, 'packages', 'docs'),
@@ -119,4 +119,17 @@ packer({
             entry: path.resolve(__dirname, 'packages', 'material-dnd/src/'),
         },
     },
-}, __dirname);
+}, __dirname)
+    .then(([execs, elapsed]) => {
+        if(execs.indexOf('doServe') !== -1) {
+            console.log('[packer] is now serving (after ' + elapsed + 'ms)')
+        } else {
+            console.log('[packer] finished successfully (after ' + elapsed + 'ms)', execs)
+            process.exit(0)
+        }
+    })
+    .catch((e) => {
+        console.error('[packer] finished with error(s)', e)
+        process.exit(1)
+    })
+
