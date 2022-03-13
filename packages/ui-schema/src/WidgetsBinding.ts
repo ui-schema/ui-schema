@@ -4,8 +4,11 @@ import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { WidgetType } from '@ui-schema/ui-schema/Widget'
 import { WidgetRendererProps } from '@ui-schema/ui-schema/WidgetRenderer'
 import { PluginSimple } from '@ui-schema/ui-schema/PluginSimpleStack/PluginSimple'
+import { StoreKeys } from '@ui-schema/ui-schema/UIStore'
 
 export interface GroupRendererProps {
+    storeKeys: StoreKeys
+    schemaKeys: StoreKeys
     level: number
     schema: StoreSchemaType
     noGrid?: boolean
