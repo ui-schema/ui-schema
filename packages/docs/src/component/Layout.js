@@ -21,6 +21,11 @@ import {Divider, List, Collapse} from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
 import {NavListNested} from '@control-ui/kit/Menu/NavList';
 import {routesCore, routesFurtherAddOns, routesFurtherDesignSystem} from '../content/docs';
+import {useConsent} from '@bemit/consent-ui-react'
+import {ConsentUiBoxDialog, dialogPositions} from '@bemit/consent-ui-mui'
+import {Layout} from '@control-ui/app/Layout';
+import Loadable from 'react-loadable';
+import {LoadingCircular} from '@control-ui/kit/Loading/LoadingCircular';
 
 const title = '0.3.x'
 export const CustomHeader = () => {
@@ -61,6 +66,52 @@ const CollapseDrawer = ({toggle, icon, children, dense, initialOpen = true, styl
         </Collapse>
     </React.Fragment>
 };
+
+const PageNotFound = Loadable({
+    loader: () => import('../page/PageNotFound'),
+    // eslint-disable-next-line react/display-name
+    loading: () => <LoadingCircular title={'Not Found'}/>,
+})
+
+export const CustomLayout = () => {
+    const {ready, hasChosen, showUi} = useConsent()
+    const [showDetails, setShowDetails] = React.useState(Boolean(hasChosen))
+    return <>
+        <Layout
+            Header={CustomHeader}
+            Drawer={CustomDrawer}
+            NotFound={PageNotFound}
+            mainContentStyle={{position: 'relative'}}
+        />
+
+        <ConsentUiBoxDialog
+            layout={'dense'}
+            //showSelectEssential
+            open={Boolean(ready && (!hasChosen || showUi))}
+            showDetails={Boolean(showDetails || (showUi && hasChosen))}
+            setShowDetails={showDetails || (ready && hasChosen && showUi) ? undefined : setShowDetails}
+            showSelectEssential={showDetails}
+            fullWidthDetails
+            maxWidthDetails={'md'}
+            maxWidth={'sm'}
+            dialogPosition={dialogPositions.bottom}
+            labels={{
+                btnOnlyEssential: 'only essential',
+                btnAcceptDefault: 'accept all',
+                btnAcceptSave: 'save selected',
+                detailsHide: 'hide details',
+                detailsShow: 'more',
+                serviceActive: 'service active',
+                servicesActive: 'services active',
+                //detailsTitle: 'Details',
+                policyLabel: 'Privacy',
+                servicePolicyLabel: 'Service Policy',
+                serviceStores: 'Stores:',
+                serviceReceives: 'Receives:',
+            }}
+        />
+    </>
+}
 
 export const CustomDrawer = () => {
     const {setOpen} = useDrawer()
