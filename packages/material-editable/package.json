@@ -1,6 +1,6 @@
 {
 	"name": "@ui-schema/material-editable",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "Editable for UI-Schema with Material-UI using Drag 'n Drop",
 	"homepage": "https://ui-schema.bemit.codes",
 	"author": "Michael Becker <michael@bemit.codes>",
