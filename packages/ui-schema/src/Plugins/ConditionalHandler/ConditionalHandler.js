@@ -15,6 +15,7 @@ export const ConditionalHandler = (props) => {
         //   this can come from a state where the combining schema has not been resolved (yet)
         //   also an `if` can only be inside an `Map`/object
         // todo: `Record` support #140
+        // todo: only when `type` object?
         schemaTypeIs(schema.get('type'), 'object') &&
         Map.isMap(value)
     ) {
