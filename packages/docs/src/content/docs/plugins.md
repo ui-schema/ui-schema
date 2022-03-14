@@ -682,7 +682,9 @@ Uses the `ReferencingNetworkHandler` hook `useNetworkRef` to handle resolving, w
 
 ### ReferencingNetworkHandler
 
-> A recommended plugin, loads the first/root reference of a schema level, also done by ReferencingHandler, but not beforehand parsing.
+> Deprecated, not needed anymore, just use `ReferencingHandler`
+>
+> Loads the first/root reference of a schema level, also done by `ReferencingHandler`, but not beforehand parsing.
 >
 > **Not added in default `pluginStack`, needs the additional provider `UIApiProvider`**
 
@@ -716,10 +718,8 @@ import { InjectSplitSchemaPlugin, InjectSplitSchemaRootContext } from '@ui-schem
 
 const customWidgets = {...widgets}
 const pluginStack = [...customWidgets.pluginStack]
-// the referencing network handler should be at first position
-// the InjectSplitSchema should be after the ReferencingHandler (so after both ref handler)
-pluginStack.splice(0, 0, ReferencingNetworkHandler)
-pluginStack.splice(2, 0, InjectSplitSchemaPlugin)
+// the InjectSplitSchema should be after the ReferencingHandler
+pluginStack.splice(1, 0, InjectSplitSchemaPlugin)
 customWidgets.pluginStack = pluginStack
 
 const schemaData = createOrderedMap({
@@ -789,34 +789,10 @@ const Main = () => {
 
 ### ExtractStorePlugin
 
-Default plugin to extract the store, using `extractValue`.
+Default plugin to extract the store values for one schema-level, using the HOC `extractValue`.
 
 **Included in `widgets.pluginStack` by default.**
 
-Customize the code to extract with custom values / replacing the plugin, [see source for the super simple HOC plugin](https://github.com/ui-schema/ui-schema/blob/develop/packages/ui-schema/src/Plugins/ExtractStorePlugin/ExtractStorePlugin.tsx).
-
-It is best to replace the `ExtractStorePlugin` with a custom plugin - if you write any custom HOC plugin. Instead of adding many HOC plugins which would rely on `NextPluginRendererMemo`, which would introduce many React render levels and thus may introduce performance issues.
-
 > the PluginProps/extractValue typing is a bit unstable atm. [issue #91](https://github.com/ui-schema/ui-schema/issues/91)
 
-```typescript jsx
-import { extractValue } from '@ui-schema/ui-schema/UIStore'
-
-// `WithValue` with "after extractValue", otherwise without that partial typing!
-export const customHoc = <P extends Partial<WithValue> & { storeKeys: StoreKeys }>(Component: React.ComponentType<P>): React.ComponentType<Omit<P, keyof WithValue> & ExtractValueOverwriteProps> => {
-    const ExtractValue = (p: Omit<P, keyof WithValue> & ExtractValueOverwriteProps) => {
-        const {somethingCustom} = useSomeCustomHook()
-        // @ts-ignore
-        return store ? <Component
-            {...p}
-            {...doSomeThing(p.storeKeys, somethingCustom)}
-        /> : null
-    }
-    ExtractValue.displayName = `SomeThingDone(${getDisplayName(Component)})`
-    return ExtractValue
-}
-
-// @ts-ignore
-export const ExtractStorePlugin: React.ComponentType<PluginProps> =
-    extractValue(customHoc(NextPluginRendererMemo))
-```
+Also check the `UIStore.extractValues(storeKeys)` function for custom extractions.

@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactEditorJs from 'react-editor-js'
 import EditorJSType, { API, OutputData, EditorConfig } from '@editorjs/editorjs'
-import { onChangeHandler, StoreKeys, StoreSchemaType, UIStoreInternalsType } from '@ui-schema/ui-schema'
+import { StoreKeys, StoreSchemaType, WithValue } from '@ui-schema/ui-schema'
 import { extractValue } from '@ui-schema/ui-schema/UIStore'
 import { List, Map, OrderedMap } from 'immutable'
 import { fromJSOrdered } from '@ui-schema/ui-schema/Utils/createMap/createMap'
@@ -13,15 +13,12 @@ export interface EditorJSProps {
     onReady?: () => void
     onEmptyChange: (empty: boolean) => void
     ready?: boolean
-    onChange: onChangeHandler
     storeKeys: StoreKeys
     required?: boolean
-    internalValue: UIStoreInternalsType
-    value?: OrderedMap<'time' | 'blocks' | 'version', any>
     tools: EditorConfig['tools']
 }
 
-const EditorJSBase: React.ComponentType<EditorJSProps> = (
+const EditorJSBase: React.ComponentType<EditorJSProps & WithValue> = (
     {
         uid,
         onFocus,
@@ -123,4 +120,4 @@ const EditorJSBase: React.ComponentType<EditorJSProps> = (
     </ReactEditorJs>
 }
 
-export const EditorJS = extractValue(EditorJSBase)
+export const EditorJS = extractValue(EditorJSBase) as React.ComponentType<EditorJSProps>

@@ -23,9 +23,13 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
     if (!oneOfValues) return null
 
     const currentValue = typeof value !== 'undefined' ? value :
-        schema.get('default') ? List(schema.get('default')) : List()
+        schema.get('default') ? List(schema.get('default') as string[]) : List()
 
-    return <FormControl required={required} error={!valid && showValidity} fullWidth>
+    return <FormControl
+        required={required} error={!valid && showValidity} fullWidth
+        disabled={schema.get('readOnly') as boolean}
+        size={schema.getIn(['view', 'dense']) ? 'small' : undefined}
+    >
         <InputLabel id={'uis-' + uid}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></InputLabel>
         <MuiSelect
             labelId={'uis-' + uid}
@@ -43,6 +47,7 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
                         beautifyKey(s, oneOfValue?.get('tt') as tt) + ''
                 }).join(', ')
             }}
+            disabled={schema.get('readOnly') as boolean}
             onChange={(e) =>
                 !schema.get('readOnly') &&
                 onChange({
@@ -52,7 +57,7 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
                     schema,
                     required,
                     data: {
-                        value: sortScalarList(List(e.target.value)),
+                        value: sortScalarList(List(e.target.value as any[])),
                     },
                 })
             }
@@ -61,7 +66,8 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
                 <MenuItem
                     key={oneOfSchema.get('const') + '-' + i}
                     value={oneOfSchema.get('const') as string}
-                    dense={schema.getIn(['view', 'dense']) as boolean}
+                    dense={schema.getIn(['view', 'denseOptions']) as boolean}
+                    disabled={oneOfSchema.get('readOnly') as boolean}
                 >
                     <Checkbox checked={currentValue.contains(oneOfSchema.get('const'))}/>
                     <ListItemText primary={<Trans
@@ -78,5 +84,5 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
     </FormControl>
 }
 
-export const SelectMulti = extractValue(memo(SelectMultiBase))
+export const SelectMulti = extractValue(memo(SelectMultiBase)) as React.ComponentType<WidgetProps<MuiWidgetBinding>>
 

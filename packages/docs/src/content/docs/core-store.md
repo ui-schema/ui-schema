@@ -17,6 +17,7 @@ Values are stored in `UIStore`, an immutable record, created with [createStore](
 - `UIStore.getValues()`:`{*}` returns the values
 - `UIStore.getInternals()`:`{Map}` returns the internal values
 - `UIStore.getValidity()`:`{Map}` returns the validity
+- `UIStore.extractValues<V>(storeKeys: StoreKeys)`:`{value, internalValue}` extracts the `values` and `internals` values for a specific store position, the position is defined by `storeKeys` (e.g. which are passed to widgets)
 
 Use the [updater functions](#store-updating--onchange) and [store actions](#store-actions) for store changes from widgets.
 
@@ -33,10 +34,14 @@ import { UIStoreType } from '@ui-schema/ui-schema/UIStore'
 Saves and provides the `store`, `onChange` and `schema`.
 
 - Provider: `UIStoreProvider`
-- Hook: `useUI`
-    - returns: `{store: UIStore, onChange: function, schema: OrderedMap}`
+- Hook: `useUI` (*deprecated v0.3.0*, use `useUIStore` and `useUIStoreActions` instead)
+    - returns: `{store: UIStoreType<D> | undefined, onChange: onChangeHandler<UIStoreActions>, showValidity: boolean}`
+- Hook: `useUIStore<any>`
+    - returns: `{store: UIStoreType<D> | undefined, showValidity: boolean}`
+- Hook: `useUIStoreActions<UIStoreActions>`
+    - returns: `{onChange: onChangeHandler<UIStoreActions>}`
 - HOC to get the current values by `storeKeys` for one widget:
-    - `extractValue` passes down: `value`, `internalValue`, `onChange`, `showValidity`
+    - `extractValue` passes down: `value`, `internalValue`, `onChange`, `showValidity`, uses `UIStore.extractValues` internally
     - `extractValidity` passes down: `validity`, `onChange`
 - Properties:
     - `store`: `UIStore` the immutable record storing the current ui generator state
@@ -66,13 +71,13 @@ Example Hook:
 
 ```js
 import React from "react";
-import {isInvalid, useUI} from "@ui-schema/ui-schema";
+import {isInvalid, useUIStore, useUIStoreActions} from "@ui-schema/ui-schema";
 
 const Comp = ({storeKeys, ...props}) => {
+    const {store} = useUIStore();
     const {
-        onChange, // also passed down in props: `props.onChange`
-        store,
-    } = useUI();
+        onChange, // also passed down in props: `props.onChange` for widgets
+    } = useUIStoreActions();
 
     store.getValidity();  // better to use the HOC `extractValidity`
     store.getInternals(); // better to use the HOC `extractValue`

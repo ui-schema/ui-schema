@@ -9,7 +9,7 @@ import {
 } from '@testing-library/jest-dom/matchers'
 import { List, Map } from 'immutable'
 import { UIStore, createStore, StoreKeys, UIStoreType } from '@ui-schema/ui-schema/UIStore'
-import { doExtractValue } from '@ui-schema/ui-schema/UIStore'
+import { doExtractValues } from '@ui-schema/ui-schema/UIStore'
 import { isEqual } from '@ui-schema/ui-schema/Utils/memo'
 import { fromJSOrdered } from '@ui-schema/ui-schema/Utils/createMap'
 
@@ -124,12 +124,12 @@ describe('UIStoreProvider', () => {
             },
             true,
         ],
-    ])('doExtractValue(%j, %j): %j', (storeKeys: StoreKeys, store: UIStoreType, expected: any, expectedSameness: boolean) => {
-        const r = doExtractValue(storeKeys, store)
+    ])('doExtractValues(%j, %j): %j', (storeKeys: StoreKeys, store: UIStoreType, expected: any, expectedSameness: boolean) => {
+        const r = doExtractValues(storeKeys, store)
         const isExpected = isEqual(r, expected)
         if (isExpected !== expectedSameness) {
             // @ts-ignore
-            console.log('failed doExtractValue', storeKeys.toJS(), store.toJS(), r, expected)
+            console.log('failed doExtractValues', storeKeys.toJS(), store.toJS(), r, expected)
         }
         expect(isExpected).toBe(expectedSameness)
     })

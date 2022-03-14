@@ -36,7 +36,7 @@ const checkActive = (list: List<any>, name: string | undefined | number) => list
 const OptionsCheckValueBase: React.ComponentType<{
     storeKeys: StoreKeys
     required?: boolean
-    oneOfValues?: List<OrderedMap<string, string>>
+    oneOfValues?: List<OrderedMap<string, any>>
     schema: StoreSchemaType
     disabled?: boolean
 } & WithValue> = (
@@ -53,7 +53,7 @@ const OptionsCheckValueBase: React.ComponentType<{
             return <OptionCheck
                 key={oneOfVal}
                 checked={isActive}
-                disabled={disabled}
+                disabled={Boolean(disabled || oneOfSchema.get('readOnly') as boolean)}
                 onChange={() => {
                     onChange({
                         storeKeys,
@@ -94,7 +94,11 @@ export const OptionsCheck: React.ComponentType<WidgetProps<MuiWidgetBinding> & O
     const oneOfVal = schema.getIn(['items', 'oneOf'])
     if (!oneOfVal) return null
     const InfoRenderer = widgets?.InfoRenderer
-    return <FormControl required={required} error={!valid && showValidity} component="fieldset">
+    return <FormControl
+        required={required} error={!valid && showValidity} component="fieldset" fullWidth
+        size={schema.getIn(['view', 'dense']) ? 'small' : undefined}
+        disabled={schema.get('readOnly') as boolean}
+    >
         <FormLabel component="legend" style={{width: '100%'}}>
             <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
             {InfoRenderer && schema?.get('info') ?

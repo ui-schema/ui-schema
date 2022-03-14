@@ -8,7 +8,7 @@ import {
     Visibility, VisibilityOff,
     FormatSize, FormatShapes, Code, SpaceBar, RestorePage, HorizontalSplit, VerticalSplit,
 } from '@material-ui/icons';
-import {isInvalid, createOrderedMap, UIRootRenderer, createStore, useUI, storeUpdater, UIStoreProvider} from '@ui-schema/ui-schema';
+import {isInvalid, createOrderedMap, UIRootRenderer, createStore, storeUpdater, UIStoreProvider, useUIStore} from '@ui-schema/ui-schema';
 import {RichCodeEditor, themes} from '../RichCodeEditor';
 import {Markdown} from '../Markdown';
 import PageNotFound from '../../page/PageNotFound';
@@ -323,7 +323,7 @@ const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, r
 };
 
 const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme}) => {
-    const {store} = useUI();
+    const {store} = useUIStore();
 
     return <RichCodeEditor
         value={Map.isMap(store.getValues()) || List.isList(store.getValues()) ? JSON.stringify(store.valuesToJS(), null, tabSize) : store.valuesToJS()}

@@ -1,5 +1,6 @@
 import {Record, Map, List} from 'immutable';
 import {schemaTypeIs, schemaTypeIsNumeric} from '@ui-schema/ui-schema/Utils/schemaTypeIs';
+import {doExtractValues} from '@ui-schema/ui-schema/UIStore';
 
 // only to enable better minification, DO NOT EXPORT
 const STR_INTERNALS = 'internals'
@@ -26,6 +27,9 @@ export const UIStore = Record({
     },
     getValidity: function() {
         return this.get(STR_VALIDITY)
+    },
+    extractValues: function(storeKeys) {
+        return doExtractValues(storeKeys, this)
     },
 });
 

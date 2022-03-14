@@ -7,8 +7,6 @@ Widgets for selecting one, two or multiple numbers from a specified range, with 
 - type: `number`, `integer`, `array(number)`, `array(integer)`
 - widget keyword:
     - `NumberSlider`
-- view
-    - grid keywords
 - type `number`, `integer` works with number validation keywords:
     - `multipleOf` defines the step size
     - `minimum`, `exclusiveMinimum` defines the minimum selectable, sets the default
@@ -19,9 +17,9 @@ Widgets for selecting one, two or multiple numbers from a specified range, with 
     - `minItems` controls the initial thumb quantity, `2` default, a minimum of `2` are needed
     - `maxItems` controls the maximum thumb quantity, if set controls max thumbs that can be added
         - if the same as `minItems` does not allow adding/removing items
-
-- [Type Properties](/docs/schema#type-array)
-- [View Keywords](/docs/schema#view-keyword)
+- schema keywords
+    - [Type Keywords](/docs/schema#type-array)
+    - [View Keywords](/docs/schema#view-keyword)
 
 ## Design System
 

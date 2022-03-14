@@ -7,15 +7,13 @@ Widgets for complex structures in arrays.
 - type: `array`
 - widget keyword:
     - `GenericList`
-- view
-    - grid keywords
 - works with the `items` keyword of arrays
     - can be any sub-schema
     - can be any widget
     - can be a list of sub-schemas (array-tuple)
-
-- [Type Properties](/docs/schema#type-array)
-- [View Keywords](/docs/schema#view-keyword)
+- schema keywords
+    - [Type Keywords](/docs/schema#type-array)
+    - [View Keywords](/docs/schema#view-keyword)
 
 ## Design System
 

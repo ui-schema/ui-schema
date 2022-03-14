@@ -28,7 +28,7 @@ Matches the rendered widget, keywords used:
 - `title` what should be used as title, supported by [TransTitle](/docs/localization#example-transtitle)
 - `description` should be used as description (e.g. alt description) *(per widget)*
 - `$comment` is recommended to leave maintaining notes
-- `readOnly` restricts that the a value can not be changed
+- `readOnly` restricts that the a value can not be changed [issue #33](https://github.com/ui-schema/ui-schema/issues/33)
     - currently:
         - does not influence `default`
         - for SimpleList/GenericList only for the array level, if also the values must be read only, the keyword must be set on all
@@ -294,8 +294,21 @@ Vocabularies (**not up to date**):
 ### View Keyword
 
 - `sizeXs`, `sizeSm`, `sizeMd`, `sizeLg`, `sizeXl` to build responsive UIs
-    - takes a `number` between `1` and `12`
-    - see [GridHandler](/docs/widgets/GridHandler)
+    - takes a `number` between `1` and `12` (for typical 12-column grid systems)
+    - any schema root, where a widget may be rendered
+    - see [GridHandler](/docs/widgets/GridHandler) for details and demo schemas
+
+```json
+{
+    "view": {
+        "sizeXs": 12,
+        "sizeSm": 6,
+        "sizeMd": 7,
+        "sizeLg": 8,
+        "sizeXl": 9
+    }
+}
+```
 
 ### Hidden Keyword / Virtualization
 

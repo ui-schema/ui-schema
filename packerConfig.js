@@ -18,7 +18,7 @@ packer({
             },
             publicPath: '/',
             vendors: ['react-error-boundary', 'immutable', '@material-ui/core', '@material-ui/icons'],
-            plugins: [],
+            // plugins: [],
         },
         docs: {
             root: path.resolve(__dirname, 'packages', 'docs'),
@@ -40,6 +40,7 @@ packer({
                 new webpack.DefinePlugin({
                     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
                     'process.env.NODE_DEBUG': JSON.stringify(process.env.NODE_ENV),
+                    'process.env.REACT_APP_G_TAG': JSON.stringify(process.env.REACT_APP_G_TAG || ''),
                 }),
             ],
         },
@@ -83,11 +84,6 @@ packer({
             root: path.resolve(__dirname, 'packages', 'material-pickers'),
             entry: path.resolve(__dirname, 'packages', 'material-pickers/src/'),
         },
-        materialRichtext: {
-            name: '@ui-schema/material-richtext',
-            root: path.resolve(__dirname, 'packages', 'material-richtext'),
-            entry: path.resolve(__dirname, 'packages', 'material-richtext/src/'),
-        },
         materialSlate: {
             name: '@ui-schema/material-slate',
             root: path.resolve(__dirname, 'packages', 'material-slate'),
@@ -119,4 +115,17 @@ packer({
             entry: path.resolve(__dirname, 'packages', 'material-dnd/src/'),
         },
     },
-}, __dirname);
+}, __dirname)
+    .then(([execs, elapsed]) => {
+        if(execs.indexOf('doServe') !== -1) {
+            console.log('[packer] is now serving (after ' + elapsed + 'ms)')
+        } else {
+            console.log('[packer] finished successfully (after ' + elapsed + 'ms)', execs)
+            process.exit(0)
+        }
+    })
+    .catch((e) => {
+        console.error('[packer] finished with error(s)', e)
+        process.exit(1)
+    })
+

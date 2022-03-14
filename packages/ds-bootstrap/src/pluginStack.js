@@ -1,12 +1,13 @@
 import {SchemaGridHandler} from './Grid';
 import {
-    DefaultHandler, ValidityReporter, DependentHandler,
-    PluginSimpleStack,
-    ConditionalHandler, CombiningHandler, ExtractStorePlugin,
-} from '@ui-schema/ui-schema';
-import {ReferencingHandler} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
+    DefaultHandler, DependentHandler,
+    ConditionalHandler, CombiningHandler,
+    ReferencingHandler, ExtractStorePlugin,
+} from '@ui-schema/ui-schema/Plugins';
+import {ValidityReporter} from '@ui-schema/ui-schema/ValidityReporter';
+import {PluginSimpleStack} from '@ui-schema/ui-schema/PluginSimpleStack';
 
-const pluginStack = [
+export const pluginStack = [
     ReferencingHandler,
     SchemaGridHandler,
     ExtractStorePlugin,
@@ -17,5 +18,3 @@ const pluginStack = [
     PluginSimpleStack,
     ValidityReporter,
 ];
-
-export {pluginStack};

@@ -34,4 +34,4 @@ const RichContentBase: React.ComponentType<WidgetProps & WithValue> = (props) =>
     </FormWrapper>
 }
 
-export const RichContent = extractValue(memo(RichContentBase))
+export const RichContent = extractValue(memo(RichContentBase)) as React.ComponentType<WidgetProps>

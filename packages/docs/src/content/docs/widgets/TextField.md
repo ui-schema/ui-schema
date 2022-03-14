@@ -15,11 +15,9 @@ Widgets for native HTML text inputs, usable for `string` (single/multiline), `nu
     - `StringIcon` for single-line text with icon
     - `TextIcon` for multi-line text with icon
     - `NumberIcon` for number input with icon
-- view
-    - grid keywords
-
-- [Type Properties](/docs/schema#type-string)
-- [View Keywords](/docs/schema#view-keyword)
+- schema keywords
+    - [Type Keywords](/docs/schema#type-string)
+    - [View Keywords](/docs/schema#view-keyword)
 
 ## Design System
 

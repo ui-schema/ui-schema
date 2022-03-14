@@ -36,6 +36,8 @@ export interface UISchema {
         margin?: string | 'none' | 'dense' | 'normal'
         // only for some widgets;
         dense?: boolean
+        // only for some widgets;
+        denseOptions?: boolean
         // only for some widgets; if e.g. transparent background
         bg?: boolean
         // only for some widgets; e.g. [MUI] if the TextInput label should be showed like something is entered already

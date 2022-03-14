@@ -10,8 +10,6 @@ These components are the wire/grid in which the widgets are rendered.
     - has the GridHandler as children
     - each native-object is wrapped with this (default), each property of an `object` results in a new child
 - `GridHandler`, plugin in the pluginStack, you should not need to configure/add it
-    - view
-        - [View Keywords](/docs/schema#view-keyword)
     - if the prop `noGrid` is passed through the stack, the grid item is not rendered
     - added to the widget-stack
         - thus each widget is automatically wrapped with the needed grid handler to build responsive grid
@@ -30,6 +28,14 @@ Disabling the GridHandler with `noGrid` can - for example - be done by passing i
 ## Design System
 
 ### Material-UI
+
+- `GroupRenderer`
+    - schema keywords
+        - `view.spacing` is used as `spacing` for material-ui grid
+- `GridHandler`
+    - schema keywords
+        - `view.align` is used as `style.textAlign`
+        - `view.noGrid` same as `noGrid` prop
 
 ```js
 import {

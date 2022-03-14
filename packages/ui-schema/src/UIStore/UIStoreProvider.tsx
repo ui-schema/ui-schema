@@ -1,12 +1,10 @@
 import React from 'react'
-import { List, Map } from 'immutable'
-import { addNestKey, onChangeHandler, StoreKeys, UIStoreInternalsType, UIStoreType } from '@ui-schema/ui-schema/UIStore'
-import { getDisplayName } from '@ui-schema/ui-schema/Utils/memo'
+import { UIStoreType } from '@ui-schema/ui-schema/UIStore'
+import { UIStoreActionsContext, UIStoreActionsProvider, UIStoreActions } from '@ui-schema/ui-schema/UIStoreActions'
 
-export interface UIStoreContext {
-    store: UIStoreType | undefined
-    onChange: onChangeHandler
-    showValidity?: boolean | undefined
+export interface UIStoreContext<D = any> {
+    store: UIStoreType<D> | undefined
+    showValidity?: boolean
 }
 
 // @ts-ignore
@@ -24,21 +22,32 @@ export const UIConfigProvider: React.ComponentType<React.PropsWithChildren<{}>> 
     </UIConfigContextObj.Provider>
 }
 
-export function UIStoreProvider<C extends {} = {}>(
+export function UIStoreProvider<C extends {} = {}, D = any, A = UIStoreActions>(
     {
         children,
         showValidity, onChange, store,
         ...props
-    }: React.PropsWithChildren<UIStoreContext & C>
+    }: React.PropsWithChildren<UIStoreContext<D> & UIStoreActionsContext<A> & C>
 ): React.ReactElement {
-    return <UIStoreContextObj.Provider value={{showValidity, onChange, store}}>
+    // todo: add memo of ctx-value
+    return <UIStoreContextObj.Provider value={{showValidity, store}}>
         <UIConfigProvider {...props}>
-            {children}
+            <UIStoreActionsProvider<A> onChange={onChange}>
+                {children}
+            </UIStoreActionsProvider>
         </UIConfigProvider>
     </UIStoreContextObj.Provider>
 }
 
+/**
+ * @deprecated
+ */
 export const useUI = (): UIStoreContext => {
+    return useUIStore()
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-constraint
+export const useUIStore = <D extends any = any>(): UIStoreContext<D> => {
     return React.useContext(UIStoreContextObj)
 }
 
@@ -48,12 +57,12 @@ export function useUIConfig<C extends {} = {}>(): C {
 }
 
 export interface WithOnChange {
-    onChange: UIStoreContext['onChange']
+    onChange: UIStoreActionsContext['onChange']
 }
 
 export interface WithValue extends WithOnChange {
-    value: any
-    internalValue: any
+    value: any | undefined
+    internalValue: any | undefined
     showValidity: UIStoreContext['showValidity']
 }
 
@@ -65,56 +74,6 @@ export interface WithScalarValue extends WithOnChange {
 
 export interface WithValidity {
     validity: any
-    onChange: UIStoreContext['onChange']
+    onChange: UIStoreActionsContext['onChange']
     showValidity: UIStoreContext['showValidity']
-}
-
-export function doExtractValue<S extends UIStoreType>(storeKeys: StoreKeys, store: S): { value: any, internalValue: UIStoreInternalsType } {
-    return {
-        value:
-            storeKeys.size ?
-                (Map.isMap(store.getValues()) || List.isList(store.getValues()) ? store.getValues().getIn(storeKeys) : undefined)
-                : store.getValues(),
-        internalValue:
-            storeKeys.size ?
-                store.getInternals().getIn(addNestKey('internals', storeKeys)) as UIStoreInternalsType || Map()
-                : store.getInternals(),
-    }
-}
-
-export type ExtractValueNonOverwriteProps = Partial<Exclude<keyof WithValue, 'showValidity'>>
-/**
- * HOC to extract the value with the storeKeys, pushing only the component's value and onChange to it, not the whole store
- */
-//export const extractValue = <P extends { storeKeys: StoreKeys, showValidity?: boolean }>(Component: React.ComponentType<P & WithValue>): React.ComponentType<Pick<P, Exclude<keyof P, ExtractValueNonOverwriteProps>>> => {
-export const extractValue = <P extends Partial<WithValue> & { storeKeys: StoreKeys }>(Component: React.ComponentType<P>): React.ComponentType<Omit<P, keyof WithValue> & ExtractValueOverwriteProps> => {
-    const ExtractValue = (p: Omit<P, keyof WithValue> & ExtractValueOverwriteProps) => {
-        const {store, onChange, showValidity} = useUI()
-        // @ts-ignore
-        return store ? <Component
-            // `showValidity` is overridable by render flow, e.g. nested Stepper
-            {...p}
-            showValidity={p.showValidity || showValidity}
-            onChange={onChange}
-            {...doExtractValue(p.storeKeys, store)}
-        /> : null
-    }
-    ExtractValue.displayName = `ExtractValue(${getDisplayName(Component)})`
-    return ExtractValue
-}
-export type ExtractValueOverwriteProps = { showValidity?: boolean }
-
-export const extractValidity = <P extends WithValidity & { storeKeys: StoreKeys }>(Component: React.ComponentType<P>): React.ComponentType<Omit<P, keyof WithValidity> & ExtractValueOverwriteProps> => {
-    const ExtractValidity = (p: Omit<P, keyof WithValidity> & ExtractValueOverwriteProps) => {
-        const {store, onChange, showValidity} = useUI()
-        // @ts-ignore
-        return <Component
-            {...p}
-            validity={p.storeKeys.size ? store?.getValidity().getIn(p.storeKeys) : store?.getValidity()}
-            onChange={onChange}
-            showValidity={p.showValidity || showValidity}
-        />
-    }
-    ExtractValidity.displayName = `ExtractValidity(${getDisplayName(Component)})`
-    return ExtractValidity
 }

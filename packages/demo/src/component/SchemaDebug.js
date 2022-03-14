@@ -1,9 +1,11 @@
-import {useUI} from '@ui-schema/ui-schema/UIStore';
+import {useUIStore} from '@ui-schema/ui-schema/UIStore';
 import React from 'react';
 import {List} from 'immutable';
+import {useUIStoreActions} from '@ui-schema/ui-schema';
 
 export const SchemaDebug = ({StyledEditor, schema}) => {
-    const {store, onChange} = useUI();
+    const {store} = useUIStore();
+    const {onChange} = useUIStoreActions();
 
     return <React.Fragment>
         <StyledEditor

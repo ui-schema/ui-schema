@@ -46,11 +46,13 @@ The `InfoRenderer` receives props:
 
 ## Example Component
 
-This component is included in the design system and provides a simple implementation, in a custom you could read it from an API, render markdown and so on.
+This component is included in the design system and provides a basic implementation.
+
+It uses the `info` keyword to either render it directly `string` or for each line `string[]`.
 
 [Source Code](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/Component/InfoRenderer)
 
-It uses the `info` keyword to either render it directly `string` or for each line `string[]`.
+> Use a custom implementation for loading contextual info from an API, render markdown and so on.
 
 Example usage:
 

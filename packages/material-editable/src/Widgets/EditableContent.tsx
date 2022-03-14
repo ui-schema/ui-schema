@@ -5,4 +5,4 @@ const EditableContentBase: React.ComponentType<WidgetProps & WithValue> = () => 
     return <div>Dummy</div>
 }
 
-export const EditableContent = extractValue(EditableContentBase)
+export const EditableContent = extractValue(EditableContentBase) as React.ComponentType<WidgetProps>

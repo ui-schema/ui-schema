@@ -1,7 +1,7 @@
 import {
     StoreKeys, UIStoreType,
     prependKey, addNestKey,
-    UIStoreStateData, onChangeHandler,
+    UIStoreStateData,
 } from '@ui-schema/ui-schema/UIStore'
 import { actionHandler } from '@ui-schema/ui-schema/storeUpdater/storeActionHandler'
 import { scopeUpdaterValues, scopeUpdaterInternals, scopeUpdaterValidity } from '@ui-schema/ui-schema/storeScopeUpdater'
@@ -26,8 +26,6 @@ export type ScopeUpdaterMapType<D extends UIStoreUpdaterData = UIStoreUpdaterDat
         getter: <S extends UIStoreType>(storeKeys: StoreKeys, store: S) => any
     }
 }
-
-export type storeUpdaterType<S extends UIStoreType = UIStoreType, A extends UIStoreActions = UIStoreActions> = onChangeHandler<(store: S) => S, A>
 
 const getScopedValueFactory = (scope: keyof UIStoreStateData, nestKey?: string) =>
     <S extends UIStoreType>(storeKeys: StoreKeys, store: S) =>
@@ -67,53 +65,50 @@ export const storeUpdater =
     <S extends UIStoreType = UIStoreType,
         A extends UIStoreActions = UIStoreActions>(
         actions: A[] | A
-    ) => (
-        store: S
-    ): S => {
+    ) => {
         if (!Array.isArray(actions)) {
             actions = [actions]
         }
-        store = actions.reduce((store, action) => {
-            const {scopes, effect, storeKeys} = action
+        return (oldStore: S): S =>
+            (actions as A[]).reduce((store, action) => {
+                const {scopes, effect, storeKeys} = action
 
-            // @ts-ignore
-            const scopeUpdater: ScopeUpdaterMapType = {}
-            scopes.forEach(scope => {
-                if (!scopeUpdaterMap[scope]) {
-                    throw new Error('scopeUpdater for `' + scope + '` not found')
-                }
-                scopeUpdater[scope] = scopeUpdaterMap[scope]
-            })
-
-            const handler = actionHandler<A>(action)
-            let res: UIStoreUpdaterData
-            if (typeof handler === 'function') {
                 // @ts-ignore
-                const values: UIStoreUpdaterData = {}
-
+                const scopeUpdater: ScopeUpdaterMapType = {}
                 scopes.forEach(scope => {
-                    values[scope] = scopeUpdater[scope]?.getter(storeKeys, store)
+                    if (!scopeUpdaterMap[scope]) {
+                        throw new Error('scopeUpdater for `' + scope + '` not found')
+                    }
+                    scopeUpdater[scope] = scopeUpdaterMap[scope]
                 })
 
-                res = handler(values)
-            } else {
-                res = handler
-            }
+                const handler = actionHandler<A>(action)
+                let res: UIStoreUpdaterData
+                if (typeof handler === 'function') {
+                    // @ts-ignore
+                    const values: UIStoreUpdaterData = {}
 
-            scopes.forEach(scope => {
-                store = scopeUpdater[scope]?.setter(
-                    store, storeKeys,
-                    res[scope],
-                    action,
-                ) || store
-            })
+                    scopes.forEach(scope => {
+                        values[scope] = scopeUpdater[scope]?.getter(storeKeys, store)
+                    })
 
-            if (effect) {
-                effect(res, store)
-            }
+                    res = handler(values)
+                } else {
+                    res = handler
+                }
 
-            return store
-        }, store)
+                scopes.forEach(scope => {
+                    store = scopeUpdater[scope]?.setter(
+                        store, storeKeys,
+                        res[scope],
+                        action,
+                    ) || store
+                })
 
-        return store
+                if (effect) {
+                    effect(res, store)
+                }
+
+                return store
+            }, oldStore)
     }

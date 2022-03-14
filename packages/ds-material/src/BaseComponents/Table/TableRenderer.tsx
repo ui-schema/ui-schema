@@ -79,7 +79,7 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
                                 showRows={isVirtual ? undefined : rows}
                                 uid={uid}
                                 // todo: some table rows like `DragDrop` would need info like "is-first-row", "is-last-row", "is-only-row"
-                                listSize={listSize}
+                                //listSize={listSize}
                                 dense={dense}
                             />
                         }) : null}
@@ -132,5 +132,5 @@ export const TableRendererExtractor: React.ComponentType<WidgetProps & WithValue
     </TableContext.Provider>
 }
 
-export const TableRendererMemo = memo(TableRendererExtractor)
-export const TableRenderer = extractValue(TableRendererMemo)
+export const TableRendererMemo = memo(TableRendererExtractor) as React.ComponentType<WidgetProps & WithValue & TableRendererExtractorProps>
+export const TableRenderer = extractValue(TableRendererMemo) as React.ComponentType<WidgetProps & TableRendererExtractorProps>

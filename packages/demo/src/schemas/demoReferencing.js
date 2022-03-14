@@ -166,7 +166,7 @@ export const schemaDemoReferencingNetworkB = createOrderedMap({
     },
     properties: {
         address: {
-            $id: 'http://localhost:4200/non-existing-schema.json',
+            // $id: 'http://localhost:4200/non-existing-schema.json',
             type: 'object',
             allOf: [
                 {
@@ -191,7 +191,8 @@ export const schemaDemoReferencingNetworkB = createOrderedMap({
                     },
                 },
                 {
-                    $ref: 'api/address-schema.json',
+                    //$ref: 'api/address-schema.json',
+                    $ref: 'address-schema.json',
                 },
                 {
                     properties: {

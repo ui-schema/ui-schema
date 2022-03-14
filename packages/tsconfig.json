@@ -17,6 +17,7 @@
         "resolveJsonModule": true,
         "skipLibCheck": true,
         "noUnusedLocals": true,
+        "noImplicitAny": false,
         "noUnusedParameters": true,
         "paths": {
             "@ui-schema/ds-bootstrap": [
@@ -54,12 +55,6 @@
             ],
             "@ui-schema/material-pickers/*": [
                 "material-pickers/src/*"
-            ],
-            "@ui-schema/material-richtext": [
-                "material-richtext/src"
-            ],
-            "@ui-schema/material-richtext/*": [
-                "material-richtext/src/*"
             ],
             "@ui-schema/material-editable": [
                 "material-editable/src"

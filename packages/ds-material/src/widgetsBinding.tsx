@@ -14,18 +14,15 @@ import { pluginStack } from './pluginStack'
 import { WidgetRenderer } from '@ui-schema/ui-schema/WidgetRenderer'
 import { validators } from '@ui-schema/ui-schema/Validators/validators'
 import { CardRenderer, FormGroup, LabelBox } from '@ui-schema/ds-material/Widgets'
-import { WidgetProps, WidgetsBindingFactory, WidgetType, WithScalarValue } from '@ui-schema/ui-schema'
+import { ErrorFallbackProps, WidgetProps, WidgetsBindingFactory, WidgetType, WithScalarValue } from '@ui-schema/ui-schema'
 import { InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
+import { List } from 'immutable'
 
-const MyFallbackComponent: React.ComponentType<{
-    error: any | null
-    type?: string
-    widget?: string
-}> = ({type, widget}) => (
+const MyFallbackComponent: React.ComponentType<ErrorFallbackProps> = ({type, widget}) => (
     <div>
         <p><strong>System Error in Widget!</strong></p>
-        <p><strong>Type:</strong> {type}</p>
-        <p><strong>Widget:</strong> {widget}</p>
+        <p><strong>Type:</strong> {List.isList(type) ? type.join(', ') : (type || '-')}</p>
+        <p><strong>Widget:</strong> {widget || '-'}</p>
     </div>
 )
 
