@@ -40,7 +40,7 @@ packer({
                 new webpack.DefinePlugin({
                     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
                     'process.env.NODE_DEBUG': JSON.stringify(process.env.NODE_ENV),
-                    'process.env.REACT_APP_G_TAG': JSON.stringify(process.env.REACT_APP_G_TAG || 'G-0PGCF34TJK'),
+                    'process.env.REACT_APP_G_TAG': JSON.stringify(process.env.REACT_APP_G_TAG || ''),
                 }),
             ],
         },
