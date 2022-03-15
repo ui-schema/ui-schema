@@ -3,11 +3,12 @@ import { OwnKey, StoreKeys, UIStoreContext, WithOnChange, WithScalarValue } from
 import { Errors, required, valid, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { UIMetaContext } from '@ui-schema/ui-schema/UIMeta'
 import { GroupRendererProps, WidgetsBindingFactory } from '@ui-schema/ui-schema/WidgetsBinding'
+import { UIStoreActions } from '@ui-schema/ui-schema/UIStoreActions'
 
 // todo: maybe base partly on `AppliedPluginStackProps`?
-export type WidgetOverrideType<C extends {} = {}, P extends {} = {}, W = WidgetsBindingFactory> =
+export type WidgetOverrideType<C extends {} = {}, P extends {} = {}, W = WidgetsBindingFactory, A = UIStoreActions> =
     React.ComponentType<P & WidgetProps<W> & C> |
-    React.ComponentType<P & WidgetProps<W> & C & WithOnChange> |
+    React.ComponentType<P & WidgetProps<W> & C & WithOnChange<A>> |
     React.ComponentType<P & WidgetProps<W> & C & WithScalarValue>
 
 export type WidgetType<C extends {} = {}, W = WidgetsBindingFactory> = WidgetOverrideType<C, {}, W>

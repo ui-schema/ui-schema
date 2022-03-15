@@ -42,9 +42,7 @@ export const UIStore: UIStoreType
 
 export type UIStoreUpdaterFn<D extends UIStoreUpdaterData = UIStoreUpdaterData> = (data: D) => D
 
-export type onChangeHandler<A = UIStoreActions> = (
-    actions: A[] | A
-) => void
+export type onChangeHandler<A = UIStoreActions> = (actions: A[] | A) => void
 
 // UIMetaContext
 

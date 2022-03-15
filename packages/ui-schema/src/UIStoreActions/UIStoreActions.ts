@@ -42,9 +42,9 @@ export interface UIStoreActionListItemMove extends UIStoreAction {
     toIndex: number
 }
 
-export interface UIStoreActionUpdate extends UIStoreAction {
+export interface UIStoreActionUpdate<D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreAction {
     type: 'update'
-    updater: UIStoreUpdaterFn
+    updater: UIStoreUpdaterFn<D>
 }
 
 export interface UIStoreActionSet<D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreAction {
@@ -52,10 +52,10 @@ export interface UIStoreActionSet<D extends UIStoreUpdaterData = UIStoreUpdaterD
     data: D
 }
 
-export type UIStoreActions =
+export type UIStoreActions<D extends UIStoreUpdaterData = UIStoreUpdaterData> =
     UIStoreActionListItemAdd |
     UIStoreActionListItemDelete |
     UIStoreActionListItemMove |
-    UIStoreActionUpdate |
-    UIStoreActionSet
+    UIStoreActionUpdate<D> |
+    UIStoreActionSet<D>
 

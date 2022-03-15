@@ -1,5 +1,5 @@
 import React from 'react'
-import { UIStoreType } from '@ui-schema/ui-schema/UIStore'
+import { onChangeHandler, UIStoreType } from '@ui-schema/ui-schema/UIStore'
 import { UIStoreActionsContext, UIStoreActionsProvider, UIStoreActions } from '@ui-schema/ui-schema/UIStoreActions'
 
 export interface UIStoreContext<D = any> {
@@ -56,24 +56,26 @@ export function useUIConfig<C extends {} = {}>(): C {
     return React.useContext(UIConfigContextObj)
 }
 
-export interface WithOnChange {
-    onChange: UIStoreActionsContext['onChange']
+export interface WithOnChange<A = UIStoreActions> {
+    onChange: onChangeHandler<A>
 }
 
-export interface WithValue extends WithOnChange {
+export interface WithValue<A = UIStoreActions> {
     value: any | undefined
     internalValue: any | undefined
     showValidity: UIStoreContext['showValidity']
+    onChange: onChangeHandler<A>
 }
 
-export interface WithScalarValue extends WithOnChange {
+export interface WithScalarValue<A = UIStoreActions> {
     value: string | number | boolean | undefined | null
     internalValue: any
     showValidity: UIStoreContext['showValidity']
+    onChange: onChangeHandler<A>
 }
 
-export interface WithValidity {
+export interface WithValidity<A = UIStoreActions> {
     validity: any
-    onChange: UIStoreActionsContext['onChange']
+    onChange: onChangeHandler<A>
     showValidity: UIStoreContext['showValidity']
 }
