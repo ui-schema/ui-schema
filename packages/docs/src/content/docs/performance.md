@@ -1,6 +1,6 @@
 # Performance
 
-> some nice flow/flame-graph pictures should be added here
+> see [this issue](https://github.com/ui-schema/ui-schema/issues/115#issuecomment-812146801) for flowcharts of a performance optimization
 
 This ui renderer has multiple levels of performance optimization:
 

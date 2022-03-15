@@ -42,12 +42,11 @@ Saves and provides the `store`, `onChange` and `schema`.
     - returns: `{onChange: onChangeHandler<UIStoreActions>}`
 - HOC to get the current values by `storeKeys` for one widget:
     - `extractValue` passes down: `value`, `internalValue`, `onChange`, `showValidity`, uses `UIStore.extractValues` internally
-    - `extractValidity` passes down: `validity`, `onChange`
+    - `extractValidity` passes down: `validity`, `onChange`, `showValidity`
 - Properties:
     - `store`: `UIStore` the immutable record storing the current ui generator state
     - `onChange`: `function(actions): void` [a function capable of updating the saved store](#store-updating--onchange)
-    - `schema`: `OrderedMap` the full schema as an immutable map
-    - `showValidity` boolean
+    - `showValidity`: `boolean|undefined`
 
 See [core functions to update store](#store-updating--onchange) and [check `UIConfigContext` for other per-store/generator config](#uiconfigcontext).
 
@@ -57,13 +56,11 @@ Example creating the provider:
 import React from "react";
 import {UIStoreProvider} from "@ui-schema/ui-schema";
 
-const CustomProvider = ({store, onChange, schema, children}) => {
+const CustomProvider = ({store, onChange, children}) => {
     return <UIStoreProvider
         store={store}
         onChange={onChange}
-        schema={schema}
-        children={children}
-    />;
+    >{children}</UIStoreProvider>;
 }
 ```
 

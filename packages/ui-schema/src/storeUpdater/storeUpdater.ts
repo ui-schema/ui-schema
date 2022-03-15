@@ -1,11 +1,11 @@
 import {
     StoreKeys, UIStoreType,
     prependKey, addNestKey,
-    UIStoreStateData,
+    UIStoreStateData, UIStoreUpdaterFn,
 } from '@ui-schema/ui-schema/UIStore'
-import { actionHandler } from '@ui-schema/ui-schema/storeUpdater/storeActionHandler'
 import { scopeUpdaterValues, scopeUpdaterInternals, scopeUpdaterValidity } from '@ui-schema/ui-schema/storeScopeUpdater'
 import { UIStoreActions, UIStoreUpdaterData } from '@ui-schema/ui-schema/UIStoreActions'
+import { storeActionReducers } from '@ui-schema/ui-schema/storeUpdater'
 
 // todo: unify this type and the `setter` in `ScopeUpdaterMapType`
 export type ScopeOnChangeHandler<S extends UIStoreType = UIStoreType, A extends UIStoreActions = UIStoreActions> = (
@@ -15,27 +15,34 @@ export type ScopeOnChangeHandler<S extends UIStoreType = UIStoreType, A extends 
     action?: A | undefined
 ) => S
 
-export type ScopeUpdaterMapType<D extends UIStoreUpdaterData = UIStoreUpdaterData> = {
-    [k in keyof D]: {
-        setter: <S extends UIStoreType, A extends UIStoreActions = UIStoreActions>(
+export type ScopeUpdaterMapType<D extends UIStoreUpdaterData = UIStoreUpdaterData, A extends UIStoreActions = UIStoreActions> = {
+    [k in keyof D]: ({
+        setter: <S extends UIStoreType>(
             store: S,
             storeKeys: StoreKeys,
             newValue: any,
             action?: A | undefined
         ) => S
         getter: <S extends UIStoreType>(storeKeys: StoreKeys, store: S) => any
-    }
+    } | {
+        /**
+         * experimental, skips the store setter/getter for a specific scope
+         */
+        noStore: true
+    })
 }
 
-const getScopedValueFactory = (scope: keyof UIStoreStateData, nestKey?: string) =>
+export const getScopedValueFactory = <D extends UIStoreStateData = UIStoreStateData>(scope: keyof D, nestKey?: string) =>
     <S extends UIStoreType>(storeKeys: StoreKeys, store: S) =>
         store.getIn(
             storeKeys.size ?
-                prependKey(nestKey ? addNestKey(nestKey, storeKeys) : storeKeys, scope)
-                : [scope]
+                prependKey(nestKey ?
+                    addNestKey(nestKey, storeKeys) :
+                    storeKeys, scope as string) :
+                [scope]
         )
 
-export const scopeUpdaterMap: ScopeUpdaterMapType = {
+export const scopeUpdaterMapDefault: ScopeUpdaterMapType = {
     value: {
         // `store.values`
         // @ts-ignore
@@ -61,11 +68,11 @@ export const scopeUpdaterMap: ScopeUpdaterMapType = {
     },
 }
 
-export const storeUpdater =
-    <S extends UIStoreType = UIStoreType,
-        A extends UIStoreActions = UIStoreActions>(
-        actions: A[] | A
-    ) => {
+export const createStoreUpdater = <S extends UIStoreType = UIStoreType, A extends UIStoreActions = UIStoreActions, D extends UIStoreUpdaterData = UIStoreUpdaterData, SM extends ScopeUpdaterMapType<D, A> = ScopeUpdaterMapType<D, A>>(
+    actionReducers: (action: A) => UIStoreUpdaterFn<D> | D,
+    scopeUpdaterMap: SM,
+) => {
+    return (actions: A[] | A) => {
         if (!Array.isArray(actions)) {
             actions = [actions]
         }
@@ -73,37 +80,44 @@ export const storeUpdater =
             (actions as A[]).reduce((store, action) => {
                 const {scopes, effect, storeKeys} = action
 
-                // @ts-ignore
-                const scopeUpdater: ScopeUpdaterMapType = {}
-                scopes.forEach(scope => {
+                const scopeUpdater: SM = scopes.reduce((su, scope) => {
                     if (!scopeUpdaterMap[scope]) {
                         throw new Error('scopeUpdater for `' + scope + '` not found')
                     }
-                    scopeUpdater[scope] = scopeUpdaterMap[scope]
-                })
+                    su[scope] = scopeUpdaterMap[scope]
+                    return su
+                }, {} as SM)
 
-                const handler = actionHandler<A>(action)
-                let res: UIStoreUpdaterData
+                const handler = actionReducers(action)
+                let res: D
                 if (typeof handler === 'function') {
-                    // @ts-ignore
-                    const values: UIStoreUpdaterData = {}
+                    const values: D = scopes.reduce((vs, scope) => {
+                        const su = scopeUpdater[scope]
+                        if (!su || ('noStore' in su && su.noStore)) return vs
+                        if ('getter' in su) {
+                            vs[scope] = su.getter(storeKeys, store)
+                        }
+                        return vs
+                    }, {} as D)
 
-                    scopes.forEach(scope => {
-                        values[scope] = scopeUpdater[scope]?.getter(storeKeys, store)
-                    })
-
-                    res = handler(values)
+                    res = handler(values) as D
                 } else {
                     res = handler
                 }
 
-                scopes.forEach(scope => {
-                    store = scopeUpdater[scope]?.setter(
-                        store, storeKeys,
-                        res[scope],
-                        action,
-                    ) || store
-                })
+                store = scopes.reduce((s, scope) => {
+                    const su = scopeUpdater[scope]
+                    if (!su || ('noStore' in su && su.noStore)) return s
+                    if ('setter' in su) {
+                        s = su.setter(
+                            s, storeKeys,
+                            res[scope],
+                            action,
+                        )
+                    }
+
+                    return s
+                }, store)
 
                 if (effect) {
                     effect(res, store)
@@ -111,4 +125,12 @@ export const storeUpdater =
 
                 return store
             }, oldStore)
+    }
+}
+
+export const storeUpdater =
+    <S extends UIStoreType = UIStoreType, A extends UIStoreActions = UIStoreActions>(
+        actions: A[] | A
+    ) => {
+        return createStoreUpdater<S, A>(storeActionReducers, scopeUpdaterMapDefault)(actions)
     }

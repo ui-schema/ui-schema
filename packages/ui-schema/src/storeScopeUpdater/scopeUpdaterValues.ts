@@ -7,7 +7,7 @@ import { updateStoreScope } from '@ui-schema/ui-schema/storeScopeUpdater/updateS
 import { storeBuildScopeTree } from '@ui-schema/ui-schema/storeBuildScopeTree'
 
 export const scopeUpdaterValues = <S extends UIStoreType = UIStoreType, A extends UIStoreActions = UIStoreActions>(
-    store: S, storeKeys: StoreKeys, newValue: any, action: A
+    store: S, storeKeys: StoreKeys, newValue: any, action: A,
 ): S => {
     //if (typeof oldValue === 'undefined') {
     // initializing the tree for correct data types

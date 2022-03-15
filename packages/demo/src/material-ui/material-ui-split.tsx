@@ -18,7 +18,7 @@ import {
     UIStoreType,
     StoreSchemaType,
     DefaultHandlerProps,
-    WidgetsBindingFactory,
+    WidgetsBindingFactory, onChangeHandler,
 } from '@ui-schema/ui-schema'
 import { browserT } from '../t'
 import { UIApiProvider } from '@ui-schema/ui-schema/UIApi'
@@ -124,7 +124,7 @@ const Main = () => {
 
     const [store, setStore] = React.useState((): UIStoreType => createStore(OrderedMap()))
 
-    const onChange = React.useCallback((actions) => {
+    const onChange: onChangeHandler = React.useCallback((actions) => {
         setStore((prevStore: UIStoreType) => {
             return storeUpdater(actions)(prevStore)
         })
