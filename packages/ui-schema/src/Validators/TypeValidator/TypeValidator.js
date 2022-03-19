@@ -26,8 +26,8 @@ export const validateType = (value, type) => {
     }
     if(type === 'object') {
         return null !== value && (
-            (typeof value === 'object' || Map.isMap(value)) &&
-            !(Array.isArray(value) || List.isList(value))
+            !(Array.isArray(value) || List.isList(value)) &&
+            (typeof value === 'object' || Map.isMap(value) || Record.isRecord(value))
         );
     }
 

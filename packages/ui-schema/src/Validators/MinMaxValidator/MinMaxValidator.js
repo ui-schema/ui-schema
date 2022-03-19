@@ -1,4 +1,4 @@
-import {List, Map} from 'immutable';
+import {List, Map, Record} from 'immutable';
 import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorErrors';
 import {schemaTypeIs, schemaTypeIsNumeric} from '@ui-schema/ui-schema/Utils/schemaTypeIs';
 
@@ -61,7 +61,7 @@ export const validateMinMax = (schema, value) => {
         let maxProperties = schema.get('maxProperties');
 
         if(minProperties) {
-            if(Map.isMap(value)) {
+            if(Map.isMap(value) || Record.isRecord(value)) {
                 if(value.keySeq().size < minProperties) {
                     errors = errors.addError(ERROR_MIN_LENGTH, Map({min: minProperties}));
                 }
@@ -73,7 +73,7 @@ export const validateMinMax = (schema, value) => {
         }
 
         if(maxProperties) {
-            if(Map.isMap(value)) {
+            if(Map.isMap(value) || Record.isRecord(value)) {
                 if(value.keySeq().size > maxProperties) {
                     errors = errors.addError(ERROR_MAX_LENGTH, Map({max: maxProperties}));
                 }

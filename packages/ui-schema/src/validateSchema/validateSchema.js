@@ -66,7 +66,7 @@ export const validateSchema = (schema, value) => {
  * Validating the value, property for property.
  *
  * @param {Map} schema
- * @param {Map} value
+ * @param {Map|Record} value
  * @return {List<*>}
  */
 export const validateSchemaObject = (schema, value) => {
