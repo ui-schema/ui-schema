@@ -1,6 +1,6 @@
 # Design Systems
 
-Through widgets, the schema can work with any design system or individual component library, just use the properties to build the supported behaviour needed.
+Widgets implement how the schema works, use a design system or individual component library - add the `props`, `HOCs` and `hooks` of UI-Schema to build the required behaviour.
 
 Bindings for some popular design-systems are provided, otherwise see how to [create your own binding](/docs/widgets#create-design-system-binding) or how to [overwrite widgets for existing bindings](/docs/widgets#adding--overwriting-widgets).
 

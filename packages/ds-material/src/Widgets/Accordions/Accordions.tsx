@@ -1,6 +1,6 @@
 import React from 'react'
 import { useUID } from 'react-uid'
-import { OwnKey, StoreSchemaType, TransTitle, WidgetProps, PluginStack, memo, ValidatorErrorsType, onErrors } from '@ui-schema/ui-schema'
+import { OwnKey, StoreSchemaType, TransTitle, WidgetProps, PluginStack, memo, ValidatorErrorsType } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
 import Accordion from '@material-ui/core/Accordion'
 import Box from '@material-ui/core/Box'
@@ -52,7 +52,7 @@ const AccordionStackBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & Ac
                 schema={schema}
                 parentSchema={parentSchema}
                 storeKeys={storeKeys} level={level}
-                onErrors={setErrors as onErrors}
+                onErrors={setErrors}
                 isVirtual={props.isVirtual || (parentSchema?.get('onClosedHidden') as boolean && !isOpen)}
             />
             <ValidityHelperText
