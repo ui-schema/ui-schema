@@ -4,18 +4,18 @@ import {
     UIStoreStateData, UIStoreUpdaterFn,
 } from '@ui-schema/ui-schema/UIStore'
 import { scopeUpdaterValues, scopeUpdaterInternals, scopeUpdaterValidity } from '@ui-schema/ui-schema/storeScopeUpdater'
-import { UIStoreActions, UIStoreUpdaterData } from '@ui-schema/ui-schema/UIStoreActions'
+import { UIStoreAction, UIStoreActions, UIStoreUpdaterData } from '@ui-schema/ui-schema/UIStoreActions'
 import { storeActionReducers } from '@ui-schema/ui-schema/storeUpdater'
 
 // todo: unify this type and the `setter` in `ScopeUpdaterMapType`
-export type ScopeOnChangeHandler<S extends UIStoreType = UIStoreType, A extends UIStoreActions = UIStoreActions> = (
+export type ScopeOnChangeHandler<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData, A = UIStoreActions<S, D>> = (
     store: S,
     storeKeys: StoreKeys,
     newValue: any,
     action?: A | undefined
 ) => S
 
-export type ScopeUpdaterMapType<D extends UIStoreUpdaterData = UIStoreUpdaterData, A extends UIStoreActions = UIStoreActions> = {
+export type ScopeUpdaterMapType<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData, A = UIStoreActions<S, D>> = {
     [k in keyof D]: ({
         setter: <S extends UIStoreType>(
             store: S,
@@ -68,7 +68,7 @@ export const scopeUpdaterMapDefault: ScopeUpdaterMapType = {
     },
 }
 
-export const createStoreUpdater = <S extends UIStoreType = UIStoreType, A extends UIStoreActions = UIStoreActions, D extends UIStoreUpdaterData = UIStoreUpdaterData, SM extends ScopeUpdaterMapType<D, A> = ScopeUpdaterMapType<D, A>>(
+export const createStoreUpdater = <S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData, A extends UIStoreAction<S, D> = UIStoreActions<S, D>, SM extends ScopeUpdaterMapType<S, D, A> = ScopeUpdaterMapType<S, D, A>>(
     actionReducers: (action: A) => UIStoreUpdaterFn<D> | D,
     scopeUpdaterMap: SM,
 ) => {
@@ -129,8 +129,11 @@ export const createStoreUpdater = <S extends UIStoreType = UIStoreType, A extend
 }
 
 export const storeUpdater =
-    <S extends UIStoreType = UIStoreType, A extends UIStoreActions = UIStoreActions>(
+    <S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData, A extends UIStoreActions<S, D> = UIStoreActions<S, D>>(
         actions: A[] | A
     ) => {
-        return createStoreUpdater<S, A>(storeActionReducers, scopeUpdaterMapDefault)(actions)
+        return createStoreUpdater<S, D, A>(
+            storeActionReducers as (action: A) => UIStoreUpdaterFn<D> | D,
+            scopeUpdaterMapDefault as ScopeUpdaterMapType<S, D, A>,
+        )(actions)
     }

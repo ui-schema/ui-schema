@@ -63,19 +63,19 @@ export interface WithOnChange<A = UIStoreActions> {
 export interface WithValue<A = UIStoreActions> {
     value: any | undefined
     internalValue: any | undefined
-    showValidity: UIStoreContext['showValidity']
+    showValidity?: UIStoreContext['showValidity']
     onChange: onChangeHandler<A>
 }
 
 export interface WithScalarValue<A = UIStoreActions> {
     value: string | number | boolean | undefined | null
     internalValue: any
-    showValidity: UIStoreContext['showValidity']
+    showValidity?: UIStoreContext['showValidity']
     onChange: onChangeHandler<A>
 }
 
 export interface WithValidity<A = UIStoreActions> {
     validity: any
     onChange: onChangeHandler<A>
-    showValidity: UIStoreContext['showValidity']
+    showValidity?: UIStoreContext['showValidity']
 }

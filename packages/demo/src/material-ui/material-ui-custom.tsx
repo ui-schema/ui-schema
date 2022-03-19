@@ -11,7 +11,7 @@ import {
     StoreKeys, StoreSchemaType, WidgetProps,
     UIMetaProvider, UIStoreProvider, useUIMeta,
     WithValue, extractValue,
-    WidgetsBindingFactory, WithScalarValue,
+    WidgetsBindingFactory, WithScalarValue, onChangeHandler,
 } from '@ui-schema/ui-schema'
 import { browserT } from '../t'
 import { UIApiProvider, loadSchemaUIApi } from '@ui-schema/ui-schema/UIApi'
@@ -194,7 +194,7 @@ const FreeFormEditor = () => {
     const showValidity = true
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
 
-    const onChange = React.useCallback((actions) => {
+    const onChange: onChangeHandler = React.useCallback((actions) => {
         setStore(storeUpdater(actions))
     }, [setStore])
 
