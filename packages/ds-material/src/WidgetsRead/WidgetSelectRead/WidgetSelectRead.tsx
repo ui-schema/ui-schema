@@ -25,10 +25,10 @@ export const WidgetSelectRead: React.ComponentType<WidgetProps<MuiWidgetBinding>
     const InfoRenderer = widgets?.InfoRenderer
     const hasInfo = Boolean(InfoRenderer && schema?.get('info'))
     const {readDense} = useUIMeta<UIMetaReadContextType>()
-    if(!schema) return null
+    if (!schema) return null
 
     const enum_val = schema.get('enum')
-    if(!enum_val) return null
+    if (!enum_val) return null
 
     const Translated = typeof value === 'string' ?
         t(value as string, Map({relative: List(['enum', value as string | number])}), schema.get('t') as StoreSchemaType) : undefined
@@ -49,14 +49,14 @@ export const WidgetSelectRead: React.ComponentType<WidgetProps<MuiWidgetBinding>
             </Box>
 
             <Typography variant={schema.getIn(['view', 'dense']) || readDense ? 'body2' : 'body1'}>
-                {typeof Translated === 'string' || typeof Translated === 'number' ?
+                {typeof Translated === 'string' || typeof Translated === 'function' || typeof Translated === 'number' ?
                     typeof Translated === 'function' ?
                         // @ts-ignore
                         <Translated/> :
-                        typeof value !== 'undefined' ?
-                            beautifyKey(value as string, schema.get('ttEnum') as tt) + '' :
-                            '-' :
-                    '-'}
+                        Translated :
+                    typeof value !== 'undefined' ?
+                        beautifyKey(value as string, schema.get('ttEnum') as tt) + '' :
+                        '-'}
             </Typography>
 
             <ValidityHelperText
