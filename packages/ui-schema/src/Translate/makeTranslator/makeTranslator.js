@@ -1,4 +1,5 @@
 import {relT} from '@ui-schema/ui-schema/Translate/relT';
+import {Map} from 'immutable';
 
 /**
  * Dictionary Factory
@@ -12,7 +13,7 @@ import {relT} from '@ui-schema/ui-schema/Translate/relT';
  * @return {function(string, {}): string|React.ComponentType}
  */
 export const makeTranslator = (dictionary, locale = '') =>
-    (text, context = {}, schema = undefined) => {
+    (text, context = Map(), schema = undefined) => {
         const schemaT = relT(schema, context, locale);
         if(schemaT) return schemaT;
 
