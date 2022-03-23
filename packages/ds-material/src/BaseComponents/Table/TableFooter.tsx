@@ -11,6 +11,7 @@ import { TableFooterProps } from '@ui-schema/ds-material/BaseComponents/Table/Ta
 import { TableContextType, withTable } from '@ui-schema/ds-material/BaseComponents/Table/TableContext'
 import { Map } from 'immutable'
 import { ListButton } from '@ui-schema/ds-material/Component'
+import { IconButtonProps } from '@material-ui/core/IconButton'
 
 export interface TableFooterErrorsBaseProps {
     colSize: number | undefined
@@ -64,6 +65,7 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
         colSize,
         showValidity,
         rowsPerPage, rowsShowAll,
+        noFirstPageButton, noLastPageButton,
     }
 ) => {
     return <MuiTableFooter>
@@ -119,7 +121,19 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                     setPage(0)
                     setRows(Number(e.target.value))
                 }}
-                // @ts-ignore
+                backIconButtonProps={{
+                    size: btnSize,
+                    // using these props as a wrapper - as otherwise not possible to pass down
+                    noFirstPageButton: noFirstPageButton,
+                } as unknown as IconButtonProps}
+                nextIconButtonProps={{
+                    size: btnSize,
+                    style: {
+                        padding: btnSize === 'small' ? 2 : undefined,
+                    },
+                    // using these props as a wrapper - as otherwise not possible to pass down
+                    noLastPageButton: noLastPageButton,
+                } as unknown as IconButtonProps}
                 ActionsComponent={TablePaginationActions}
                 labelRowsPerPage={t ? t('pagination.rows-per-page') as string + ':' : undefined}
                 labelDisplayedRows={({from, to, count}) => `${to !== -1 ? (from + '-' + to) : count} ${t ? t('pagination.of') as string : 'of'} ${count !== -1 ? count : 0}`}

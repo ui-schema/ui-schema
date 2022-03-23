@@ -19,6 +19,7 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
         TableFooter,
         TableHeader,
         listSize, t,
+        noFirstPageButton, noLastPageButton,
         btnAddShowLabel, btnAddStyle,
         rowsPerPage, rowsShowAll,
         btnSize: btnSizeProp,
@@ -115,6 +116,8 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
                     readOnly={readOnly}
                     rowsPerPage={rowsPerPage}
                     rowsShowAll={rowsShowAll}
+                    noFirstPageButton={noFirstPageButton}
+                    noLastPageButton={noLastPageButton}
                 />
             </MuiTable>
         </TableContainer>

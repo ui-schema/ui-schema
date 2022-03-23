@@ -25,6 +25,8 @@ export interface TableRendererBaseProps extends TableRendererExtractorProps {
     t?: Translator
     btnAddShowLabel?: boolean
     btnAddStyle?: React.CSSProperties
+    noFirstPageButton?: boolean
+    noLastPageButton?: boolean
 }
 
 export interface TablePaginationActionsProps {
@@ -63,6 +65,8 @@ export interface TableFooterProps extends ListButtonOverwrites {
     rowsShowAll?: boolean
     btnShowLabel?: boolean
     btnStyle?: React.CSSProperties
+    noFirstPageButton?: boolean
+    noLastPageButton?: boolean
 }
 
 export type TableValue = List<List<any> | OrderedMap<string, any>>
