@@ -19,6 +19,7 @@ const MaterialUiSlate = asyncComponent(() => import('./material-ui/material-ui-s
 const MaterialUiCustom = asyncComponent(() => import('./material-ui/material-ui-custom'), 'Material-UI Custom', 'page');
 const MaterialUiDebounced = asyncComponent(() => import('./material-ui/material-ui-debounced'), 'Material-UI Debounced', 'page');
 const MaterialUiSplit = asyncComponent(() => import('./material-ui/material-ui-split'), 'Material-UI Split Schema', 'page');
+const MaterialUiReadWrite = asyncComponent(() => import('./material-ui/material-ui-read-write'), 'Material-UI Read Write', 'page');
 const Bootstrap = asyncComponent(() => import('./bootstrap/page-main'), 'Bootstrap', 'page');
 const KitDnd = asyncComponent(() => import('./kit-dnd/page-dnd'), 'Kit DnD', 'page');
 const KitDndGrid = asyncComponent(() => import('./kit-dnd/page-grid'), 'Kit DnD Kit', 'page');
@@ -32,6 +33,7 @@ const App = () => <Router>
         <Route path="/mui-pro" component={MaterialUiPro}/>
         <Route path="/mui-editorjs" component={MaterialUiEditorJS}/>
         <Route path="/mui-dnd" component={MaterialUiDnd}/>
+        <Route path="/mui-read-write" component={MaterialUiReadWrite}/>
         <Route path="/mui-dnd-grid" component={MaterialUiDndGrid}/>
         {/*<Route path="/mui-editable" component={MaterialUiEditable}/>*/}
         <Route path="/mui-custom" component={MaterialUiCustom}/>

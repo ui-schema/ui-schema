@@ -71,7 +71,6 @@ export const DragDropAreaBase = (
                     onClick={() => setShowSelector(o => !o)}
                     size={btnSize as 'small' | 'medium'}
                 >
-                    {/* @ts-ignore */}
                     <AccessTooltipIcon title={<Trans text={'labels.add-item'}/>}>
                         <Add fontSize={'inherit'}/>
                     </AccessTooltipIcon>
