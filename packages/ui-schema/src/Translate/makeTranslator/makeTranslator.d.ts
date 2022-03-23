@@ -12,6 +12,8 @@ export type Translator = (
 ) => translation
 
 export const makeTranslator: (
-    dictionary: Map<string | number, { [key: string | number]: Map<string | number, { [key: string | number]: any }> | string | number | Function | React.ComponentType }>,
+    dictionary: Map<string | number, {
+        [key: string | number]: Map<string | number, { [key: string | number]: any }> | string | number | Function | React.ComponentType
+    }>,
     locale?: string
 ) => Translator

@@ -21,7 +21,7 @@ export const makeTranslator = (dictionary, locale = '') =>
         let trans = dictionary.getIn(text.split('.'));
 
         if(typeof trans === 'function') {
-            return trans(context);
+            return trans(context, locale);
         }
 
         return trans;

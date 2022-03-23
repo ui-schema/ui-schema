@@ -4,13 +4,12 @@ Widget for data tables.
 
 [![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-ui-generator) [![supports Material-UI Binding](https://img.shields.io/badge/Material-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=material-ui)](#material-ui)
 
-- type: `array(array | object)`,
+- type: `array(array | object)`
 - widget keywords:
     - `Table` **(usable, beta)**
     - `TableAdvanced` **(in-dev)**
 - view
-    - does not support grid keywords in direct nested schemas, disables grid for own stack, but supports for nested `object`
-
+    - does not support grid keywords in direct nested schemas, disables grid for own stack, but supported inside nested `object`
 - [Array Type Properties](/docs/schema#type-array)
 - [Object Type Properties](/docs/schema#type-object)
 
@@ -25,6 +24,8 @@ Widget for data tables.
 > Not intended for 1000s of entries, just a few hundred - depending on used schemas & plugins
 
 Special `Table` component for complex, always validated, lists. Using custom widgets without labels. Hidden rows from pagination are still validated, using `isVirtual` prop.
+
+> see the [table base components](https://ui-schema.bemit.codes/docs/ds-material/Table) for further customization
 
 **Supports extra keywords:**
 
@@ -84,8 +85,6 @@ customWidgets.custom = {
 **Components:**
 
 Currently included cell components are based on the `TextField` components and support the same features - except label/title related options. The title related schema keywords are used by `Table` for the `TableHeader` cell contents.
-
-> todo: more code sharing through utils
 
 - `TextRendererCell` supports multi-line text
     - **extra keywords:**

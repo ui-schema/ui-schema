@@ -14,7 +14,7 @@ import { pluginStack } from './pluginStack'
 import { WidgetRenderer } from '@ui-schema/ui-schema/WidgetRenderer'
 import { validators } from '@ui-schema/ui-schema/Validators/validators'
 import { CardRenderer, FormGroup, LabelBox } from '@ui-schema/ds-material/Widgets'
-import { ErrorFallbackProps, WidgetProps, WidgetsBindingFactory, WidgetType, WithScalarValue } from '@ui-schema/ui-schema'
+import { ErrorFallbackProps, UIStoreActions, WidgetProps, WidgetsBindingFactory, WidgetType, WithScalarValue } from '@ui-schema/ui-schema'
 import { InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { List } from 'immutable'
 
@@ -33,24 +33,8 @@ export interface MuiWidgetsBindingTypes<C extends {} = {}, W extends MuiWidgetBi
     integer: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
 }
 
-export interface MuiWidgetsBindingCustom<C extends {} = {}, W extends MuiWidgetBinding = MuiWidgetBinding> {
-    Accordions: React.ComponentType<WidgetProps<W> & C>
-    Text: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
-    StringIcon: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
-    TextIcon: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
-    NumberIcon: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
-    NumberSlider: React.ComponentType<WidgetProps<W> & C>
-    SimpleList: React.ComponentType<WidgetProps<W> & C>
-    GenericList: React.ComponentType<WidgetProps<W> & C>
-    OptionsCheck: React.ComponentType<WidgetProps<W> & C>
-    OptionsRadio: React.ComponentType<WidgetProps<W> & C>
-    Select: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
-    SelectMulti: React.ComponentType<WidgetProps<W> & C>
-    Card: React.ComponentType<WidgetProps<W> & C>
-    LabelBox: React.ComponentType<WidgetProps<W> & C>
-    FormGroup: React.ComponentType<WidgetProps<W> & C>
-
-    [key: string]: WidgetType<C, W> | WidgetType<C>
+export interface MuiWidgetsBindingCustom<C extends {} = {}, W extends MuiWidgetBinding = MuiWidgetBinding, A = UIStoreActions> {
+    [key: string]: WidgetType<C, W, A> | WidgetType<C, WidgetsBindingFactory, A>
 }
 
 export interface MuiWidgetBindingExtra {
