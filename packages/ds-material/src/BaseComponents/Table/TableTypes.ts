@@ -1,6 +1,7 @@
 import { onChangeHandler, StoreKeys, StoreSchemaType, Translator, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 import React from 'react'
 import { List, OrderedMap } from 'immutable'
+import { ListButtonOverwrites } from '@ui-schema/ds-material/Component'
 
 export interface TableRowProps {
     // unique id of `Table` for labelledBy generation
@@ -22,6 +23,8 @@ export interface TableRendererExtractorProps {
 export interface TableRendererBaseProps extends TableRendererExtractorProps {
     listSize: number
     t?: Translator
+    btnAddShowLabel?: boolean
+    btnAddStyle?: React.CSSProperties
 }
 
 export interface TablePaginationActionsProps {
@@ -41,7 +44,7 @@ export interface TableHeaderProps {
     uid: string
 }
 
-export interface TableFooterProps {
+export interface TableFooterProps extends ListButtonOverwrites {
     t?: Translator
     dense?: boolean
     readOnly?: boolean
@@ -55,10 +58,11 @@ export interface TableFooterProps {
     storeKeys: WidgetProps['storeKeys']
     schema: WidgetProps['schema']
     showValidity: WidgetProps['showValidity']
-    btnSize: 'small' | 'medium'
     colSize: number
     rowsPerPage: List<number | { label: string, value: number }>
     rowsShowAll?: boolean
+    btnShowLabel?: boolean
+    btnStyle?: React.CSSProperties
 }
 
 export type TableValue = List<List<any> | OrderedMap<string, any>>

@@ -122,6 +122,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                 index={ownKey as number}
                 deleteOnEmpty={deleteOnEmpty as boolean}
                 showRows={showRows}
+                schema={parentSchema}
             />
         </TableCell> : null}
     </TableRow>

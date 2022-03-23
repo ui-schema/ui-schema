@@ -13,13 +13,14 @@ export interface TableRowActionDeleteProps {
     setPage: TableRowProps['setPage']
     index: number
     deleteOnEmpty: boolean
+    schema: StoreSchemaType | undefined
 }
 
 export const TableRowActionDelete: React.ComponentType<TableRowActionDeleteProps> = (
     {
         onChange, storeKeys,
         showRows = 0, setPage,
-        index, deleteOnEmpty,
+        index, deleteOnEmpty, schema,
     }
 ) => {
     return <IconButton
@@ -44,9 +45,12 @@ export const TableRowActionDelete: React.ComponentType<TableRowActionDeleteProps
         }}
         size={'small'}
     >
-        {/* @ts-ignore */}
-        <AccessTooltipIcon title={<Trans text={'labels.remove-row'}/>}>
-            <Delete fontSize={'inherit'}/>
+        <AccessTooltipIcon
+            title={
+                <Trans text={'labels.remove-row'} context={Map({actionLabels: schema?.get('tableActionLabels')})}/>
+            }
+        >
+            <Delete fontSize={'inherit'} style={{margin: 2}}/>
         </AccessTooltipIcon>
     </IconButton>
 }

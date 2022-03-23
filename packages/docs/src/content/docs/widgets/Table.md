@@ -38,6 +38,7 @@ Special `Table` component for complex, always validated, lists. Using custom wid
     - `view.rowsShowAll`, when `true` allows displaying all rows
 - `readOnly`
 - `sortOrder`: `string[]`, only for `object` types, relative key of the properties to render in that order
+- `tableActionLabels` used for named-label translation with keys `remove`, `add`
 
 **Restrictions (atm):**
 
