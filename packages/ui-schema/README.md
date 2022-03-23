@@ -28,7 +28,7 @@ Design Systems:
 
 [![Join UI-Schema on Slack](https://img.shields.io/badge/Join%20UI%20Schema%20on%20Slack-blue?labelColor=fff&logoColor=505050&color=7B16FF&style=for-the-badge&logo=slack)](https://join.slack.com/t/ui-schema/shared_invite/zt-smbsybk5-dFIRLEPCJerzDwtycaA71w)
 
-**🚀 Demo: UI Schema + Material Design + Create React App**: <ins>[Demo Source](https://github.com/ui-schema/demo-cra)</ins>
+**🚀 Demo: UI Schema + Material Design + Create React App**: *[Demo Source](https://github.com/ui-schema/demo-cra)*
 
 *[Demo Source](https://github.com/ui-schema/demo-cra)*
 
