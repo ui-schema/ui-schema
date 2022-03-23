@@ -37,7 +37,7 @@
         "react-dom": "^16.12"
     },
     "peerDependencies": {
-        "@ui-schema/ui-schema": "~0.3.0-alpha",
+        "@ui-schema/ui-schema": "~0.3.0-beta",
         "immutable": "^4.0.0",
         "react": "^16.8 || ^17.0"
     },
