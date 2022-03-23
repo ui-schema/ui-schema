@@ -6,14 +6,16 @@ import IconButton from '@material-ui/core/IconButton';
 import Add from '@material-ui/icons/Add';
 import Remove from '@material-ui/icons/Remove';
 import {TransTitle, extractValue, memo, PluginStack} from '@ui-schema/ui-schema';
-import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
-import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip/Tooltip';
+import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText';
+import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip';
+import {ListButton} from '@ui-schema/ds-material/Component/ListButton';
 import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
+import {Map} from 'immutable';
 
 export const SimpleListItemBase = (
     {
         showValidity, schema, schemaKeys, storeKeys, notDeletable,
-        btnSize, readOnly, required, onChange, level, index,
+        readOnly, required, onChange, level, index,
     },
 ) => {
     return <Grid key={index} item xs={12} style={{display: 'flex'}}>
@@ -26,34 +28,43 @@ export const SimpleListItemBase = (
             />
         </div>
 
-        {!readOnly && !notDeletable ? <IconButton
-            onClick={() => {
-                onChange({
-                    storeKeys,
-                    scopes: ['value', 'internal'],
-                    type: 'list-item-delete',
-                    index: index,
-                    schema,
-                    required,
-                })
-            }}
-            size={btnSize}
-            style={{margin: 'auto 6px', flexShrink: 0}}
-        >
-            <AccessTooltipIcon title={<Trans text={'labels.remove-entry'}/>}>
-                <Remove fontSize={'inherit'}/>
-            </AccessTooltipIcon>
-        </IconButton> : null}
+        {!readOnly && !notDeletable ?
+            <IconButton
+                onClick={() => {
+                    onChange({
+                        storeKeys,
+                        scopes: ['value', 'internal'],
+                        type: 'list-item-delete',
+                        index: index,
+                        schema,
+                        required,
+                    })
+                }}
+                size={'small'}
+                style={{margin: 'auto 6px', flexShrink: 0}}
+            >
+                <AccessTooltipIcon title={<Trans text={'labels.remove-entry'}/>}>
+                    <Remove fontSize={'inherit'} style={{margin: 2}}/>
+                </AccessTooltipIcon>
+            </IconButton> : null}
     </Grid>
 }
 export const SimpleListItem = memo(SimpleListItemBase)
 
-export const SimpleListInner = ({
-                                    schemaKeys, storeKeys, ownKey, schema, listSize, onChange,
-                                    showValidity, valid, errors, required, level,
-                                    widgets,
-                                }) => {
-    const btnSize = schema.getIn(['view', 'btnSize']) || 'small';
+export const SimpleListInner = (
+    {
+        schemaKeys, storeKeys, ownKey, schema, listSize, onChange,
+        showValidity, valid, errors, required, level,
+        widgets,
+        btnAddShowLabel, btnAddStyle,
+        btnSize: btnSizeProp,
+        btnVariant: btnVariantProp,
+        btnColor: btnColorProp,
+    },
+) => {
+    const btnSize = (schema.getIn(['view', 'btnSize']) || btnSizeProp || 'small')
+    const btnVariant = (schema.getIn(['view', 'btnVariant']) || btnVariantProp || undefined)
+    const btnColor = (schema.getIn(['view', 'btnColor']) || btnColorProp || undefined)
     const notAddable = schema.get('notAddable')
     const notDeletable = schema.get('notDeletable')
     const readOnly = schema.get('readOnly')
@@ -90,22 +101,30 @@ export const SimpleListInner = ({
                 />)}
 
             <Grid item xs={12}>
-                {!readOnly && !notAddable ? <IconButton
-                    onClick={() => {
-                        onChange({
-                            storeKeys,
-                            scopes: ['value', 'internal'],
-                            type: 'list-item-add',
-                            schema: schema,
-                            required,
-                        })
-                    }}
-                    size={btnSize}
-                >
-                    <AccessTooltipIcon title={<Trans text={'labels.add-entry'}/>}>
-                        <Add fontSize={'inherit'}/>
-                    </AccessTooltipIcon>
-                </IconButton> : null}
+                {!readOnly && !notAddable ?
+                    <ListButton
+                        onClick={() => {
+                            onChange({
+                                storeKeys,
+                                scopes: ['value', 'internal'],
+                                type: 'list-item-add',
+                                schema,
+                                required,
+                            })
+                        }}
+                        btnSize={btnSize}
+                        btnVariant={btnVariant}
+                        btnColor={btnColor}
+                        showLabel={btnAddShowLabel}
+                        style={btnAddStyle}
+                        Icon={Add}
+                        title={
+                            <Trans
+                                text={'labels.add-entry'}
+                                context={Map({actionLabels: schema.get('tableActionLabels')})}
+                            />
+                        }
+                    /> : null}
 
                 <ValidityHelperText
                     /* only pass down errors which are not for a specific sub-schema */

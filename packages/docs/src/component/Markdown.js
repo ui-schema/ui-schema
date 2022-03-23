@@ -28,13 +28,18 @@ renderers.p = p => <Typography {...p} component={'p'} variant={'body2'} gutterBo
 renderers.code = ({inline, ...p}) => inline ? <MdInlineCode variant={'body1'} {...p}/> : <Code variant={'body2'} {...p}/>;
 const MarkdownH = ({level, ...p}) => <Typography {...p} component={'h' + (level + 1)} variant={'subtitle' + (level)} style={{textDecoration: 'underline', marginTop: 48 / level}} gutterBottom/>
 renderers.h1 = renderers.h2 = renderers.h3 = renderers.h4 = renderers.h5 = renderers.h6 = MarkdownH
-renderers.li = p => <Typography component={'li'} variant={'body2'} style={{fontWeight: 'bold'}}><span style={{fontWeight: 'normal', display: 'block'}}>{p.children}</span></Typography>;
+renderers.li = p => <Typography component={'li'} variant={'body2'} style={{fontWeight: 'bold'}}>
+    <span style={{fontWeight: 'normal', display: 'block', marginBottom: 2}}>{p.children}</span>
+</Typography>;
 renderers.a = LinkInternalLocale;
 
 const renderersContent = baseRenderers(false);
 renderersContent.code = ({inline, ...p}) => inline ? <MdInlineCode variant={'body1'} {...p}/> : <Code variant={'body1'} {...p}/>;
 renderersContent.h1 = renderersContent.h2 = renderersContent.h3 = renderersContent.h4 = renderersContent.h5 = renderersContent.h6 = LinkableHeadline;
 renderersContent.a = LinkInternalLocale;
+renderersContent.li = p => <Typography component={'li'} variant={'body1'} style={{fontWeight: 'bold'}}>
+    <span style={{fontWeight: 'normal', display: 'block', marginBottom: 2}}>{p.children}</span>
+</Typography>;
 
 const rehypePlugins = [rehypeRaw]
 const remarkPlugins = [remarkGfm]

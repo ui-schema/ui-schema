@@ -1,9 +1,7 @@
 import React from 'react'
-import IconButton from '@material-ui/core/IconButton'
 import Add from '@material-ui/icons/Add'
 import { memo, Trans, WidgetProps } from '@ui-schema/ui-schema'
-import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
-import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip/Tooltip'
+import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import TablePagination from '@material-ui/core/TablePagination'
 import MuiTableFooter from '@material-ui/core/TableFooter'
 import TableCell from '@material-ui/core/TableCell'
@@ -11,6 +9,9 @@ import TableRow from '@material-ui/core/TableRow'
 import { TablePaginationActions } from '@ui-schema/ds-material/BaseComponents/Table/TablePaginationActions'
 import { TableFooterProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
 import { TableContextType, withTable } from '@ui-schema/ds-material/BaseComponents/Table/TableContext'
+import { Map } from 'immutable'
+import { ListButton } from '@ui-schema/ds-material/Component'
+import { IconButtonProps } from '@material-ui/core/IconButton'
 
 export interface TableFooterErrorsBaseProps {
     colSize: number | undefined
@@ -59,9 +60,12 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
         storeKeys,
         schema,
         btnSize,
+        btnStyle, btnVariant, btnColor,
+        btnShowLabel,
         colSize,
         showValidity,
         rowsPerPage, rowsShowAll,
+        noFirstPageButton, noLastPageButton,
     }
 ) => {
     return <MuiTableFooter>
@@ -70,7 +74,7 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                 size={dense ? 'small' : 'medium'}
             >
                 {!readOnly ?
-                    <IconButton
+                    <ListButton
                         onClick={() => {
                             if (rows !== -1) {
                                 setPage(Number(Math.ceil((listSizeCurrent + 1) / rows)) - 1)
@@ -79,17 +83,22 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                                 storeKeys,
                                 scopes: ['value', 'internal'],
                                 type: 'list-item-add',
-                                schema: schema,
+                                schema,
                             })
                         }}
-                        size={btnSize}
-                        style={{marginRight: 6}}
-                    >
-                        {/* @ts-ignore */}
-                        <AccessTooltipIcon title={<Trans text={'labels.add-row'}/>}>
-                            <Add fontSize={'inherit'}/>
-                        </AccessTooltipIcon>
-                    </IconButton> : null}
+                        btnSize={btnSize}
+                        btnVariant={btnVariant}
+                        btnColor={btnColor}
+                        showLabel={btnShowLabel}
+                        style={btnStyle}
+                        Icon={Add}
+                        title={
+                            <Trans
+                                text={'labels.add-row'}
+                                context={Map({actionLabels: schema.get('tableActionLabels')})}
+                            />
+                        }
+                    /> : null}
             </TableCell>
 
             <TablePagination
@@ -112,7 +121,19 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                     setPage(0)
                     setRows(Number(e.target.value))
                 }}
-                // @ts-ignore
+                backIconButtonProps={{
+                    size: btnSize,
+                    // using these props as a wrapper - as otherwise not possible to pass down
+                    noFirstPageButton: noFirstPageButton,
+                } as unknown as IconButtonProps}
+                nextIconButtonProps={{
+                    size: btnSize,
+                    style: {
+                        padding: btnSize === 'small' ? 2 : undefined,
+                    },
+                    // using these props as a wrapper - as otherwise not possible to pass down
+                    noLastPageButton: noLastPageButton,
+                } as unknown as IconButtonProps}
                 ActionsComponent={TablePaginationActions}
                 labelRowsPerPage={t ? t('pagination.rows-per-page') as string + ':' : undefined}
                 labelDisplayedRows={({from, to, count}) => `${to !== -1 ? (from + '-' + to) : count} ${t ? t('pagination.of') as string : 'of'} ${count !== -1 ? count : 0}`}

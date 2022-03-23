@@ -11,7 +11,7 @@ export type WidgetOverrideType<C extends {} = {}, P extends {} = {}, W = Widgets
     React.ComponentType<P & WidgetProps<W> & C & WithOnChange<A>> |
     React.ComponentType<P & WidgetProps<W> & C & WithScalarValue>
 
-export type WidgetType<C extends {} = {}, W = WidgetsBindingFactory> = WidgetOverrideType<C, {}, W>
+export type WidgetType<C extends {} = {}, W = WidgetsBindingFactory, A = UIStoreActions> = WidgetOverrideType<C, {}, W, A>
 
 /**
  * Base widget props which are expected to exist no matter which data "type" the widget is for

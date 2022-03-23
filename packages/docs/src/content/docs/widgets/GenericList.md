@@ -19,6 +19,8 @@ Widgets for complex structures in arrays.
 
 ### Material-UI
 
+> see the [GenericList base components](https://ui-schema.bemit.codes/docs/ds-material/GenericList) for further customization and details about label translation
+
 ```js
 import {GenericList} from "@ui-schema/ds-material/Widgets/GenericList";
 
@@ -32,8 +34,13 @@ const widgets = {
 **Supports extra keywords:**
 
 - `view`
-    - `btnSize` either `small` (default) or `medium`
+    - `btnSize` either `small` (default) or `medium`, used for the add-button
+    - `deleteBtnSize` either `small` (default) or `medium`, used for the delete-button
+    - `btnVariant` either `text | outlined | contained`, used for the add-button
+    - `btnVariant` either `text | outlined | contained`, used for the add-button
+    - `btnColor` either `inherit | primary | secondary | default`, used for the add-button
     - `hideTitle` when `true` doesn't show any title
+- `listActionLabels` used for [named-label translation](https://ui-schema.bemit.codes/docs/ds-material/GenericList#translation--labels)
 - `notDeletable` when `true` doesn't allow deletion of items
 - `notAddable` when `true` doesn't allow adding items
 - `notSortable` when `true` doesn't allow sorting of items

@@ -136,6 +136,7 @@ export const routesFurtherDesignSystem = [
                 },
                 routes: [
                     createDoc('ds-material/Table', 'Table', ''),
+                    createDoc('ds-material/GenericList', 'GenericList', ''),
                 ],
             },
         ],

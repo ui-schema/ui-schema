@@ -9,8 +9,14 @@ export const labels = {
     'add-entry': 'Add entry',
     'entry': 'Entry',
     'remove-entry': 'Remove entry',
-    'add-item': 'Add item',
-    'remove-item': 'Remove item',
+    'add-item': (context, locale) =>
+        context?.getIn(['actionLabels', locale, 'add']) ?
+            context?.getIn(['actionLabels', locale, 'add']) :
+            'Add item',
+    'remove-item': (context, locale) =>
+        context?.getIn(['actionLabels', locale, 'remove']) ?
+            context?.getIn(['actionLabels', locale, 'remove']) :
+            'Remove item',
     'add-row': 'Add row',
     'remove-row': 'Remove row',
     'remove-rows': 'Remove rows',

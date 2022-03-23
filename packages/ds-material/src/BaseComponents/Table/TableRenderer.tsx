@@ -5,10 +5,11 @@ import { List, Map, OrderedMap } from 'immutable'
 import MuiTable from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableContainer from '@material-ui/core/TableContainer'
-import { TableFooterProps, TableRendererBaseProps, TableRendererExtractorProps, TableRowProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
+import { TableRendererBaseProps, TableRendererExtractorProps, TableRowProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
 import { TableContext } from '@ui-schema/ds-material/BaseComponents/Table/TableContext'
+import { ListButtonOverwrites } from '@ui-schema/ds-material/Component'
 
-export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<keyof WidgetProps, 'value' | 'errors' | 'valid'>> & Pick<WithValue, 'onChange'> & TableRendererBaseProps> = (
+export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<keyof WidgetProps, 'value' | 'errors' | 'valid'>> & Pick<WithValue, 'onChange'> & TableRendererBaseProps & ListButtonOverwrites> = (
     {
         storeKeys, ownKey, schema, onChange,
         showValidity, level,
@@ -18,13 +19,21 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
         TableFooter,
         TableHeader,
         listSize, t,
+        noFirstPageButton, noLastPageButton,
+        btnAddShowLabel, btnAddStyle,
         rowsPerPage, rowsShowAll,
+        btnSize: btnSizeProp,
+        btnVariant: btnVariantProp,
+        btnColor: btnColorProp,
     }
 ) => {
     const uid = useUID()
     const [page, setPage] = React.useState(0)
     const [rows, setRows] = React.useState(rowsPerPage.first())
-    const btnSize = (schema.getIn(['view', 'btnSize']) as TableFooterProps['btnSize'] | undefined) || 'small'
+    const btnSize = (schema.getIn(['view', 'btnSize']) || btnSizeProp || 'small') as ListButtonOverwrites['btnSize']
+    const btnVariant = (schema.getIn(['view', 'btnVariant']) || btnVariantProp || undefined) as ListButtonOverwrites['btnVariant']
+    const btnColor = (schema.getIn(['view', 'btnColor']) || btnColorProp || undefined) as ListButtonOverwrites['btnColor']
+
     const dense = (schema.getIn(['view', 'dense']) as boolean) || false
     const itemsSchema = schema.get('items') as StoreSchemaType
     const readOnly = schema.get('readOnly') as boolean
@@ -91,6 +100,10 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
                     listSize={listSize}
                     listSizeCurrent={listSize}
                     btnSize={btnSize}
+                    btnVariant={btnVariant}
+                    btnColor={btnColor}
+                    btnShowLabel={btnAddShowLabel}
+                    btnStyle={btnAddStyle}
                     schema={schema}
                     setPage={setPage}
                     page={page}
@@ -103,6 +116,8 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
                     readOnly={readOnly}
                     rowsPerPage={rowsPerPage}
                     rowsShowAll={rowsShowAll}
+                    noFirstPageButton={noFirstPageButton}
+                    noLastPageButton={noLastPageButton}
                 />
             </MuiTable>
         </TableContainer>

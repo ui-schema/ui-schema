@@ -8,7 +8,7 @@ This page contains more in-depth docs and thoughts about the [widgets](/docs/wid
 
 Built with the ReactJS native [render flow](https://reactjs.org/docs/state-and-lifecycle.html#the-data-flows-down) and [hoisted states](https://reactjs.org/docs/lifting-state-up.html#lifting-state-up) as foundation, leaning a few principles from [`redux`](https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow) / [`flux`](https://facebook.github.io/flux/docs/in-depth-overview).
 
-Rendering [atomic conditional](https://reactjs.org/docs/conditional-rendering.html) and [pure](https://medium.com/technofunnel/working-with-react-pure-components-166ded26ae48) wrapper components around single schema levels. According to the assumed [happy path according to schema & data](#happy-path).
+Rendering [atomic conditional](https://reactjs.org/docs/conditional-rendering.html) and [pure](https://medium.com/technofunnel/working-with-react-pure-components-166ded26ae48) wrapper components around single schema levels. Forming a [typical AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) by the [happy path according to schema & data](#happy-path).
 
 A lot of [component composition](https://www.robinwieruch.de/react-component-composition) by the `PluginStack`, around `WidgetOverride` or/and the [`widgets` binding](/docs/widgets#create-design-system-binding) to get / specify the needed custom react components for each usage, thus nearly no HTML/output inside the core.
 
@@ -16,35 +16,33 @@ Custom [`React.Context` / Providers](https://reactjs.org/docs/context.html) are 
 
 Using an additional [props plugins system](/docs/core-pluginstack#simple-plugins) for a shallower component tree of e.g. validators.
 
-
 ## Widgets & Component Plugins
 
-Each plugin or widget should only need to do one specific thing, in one specific schema layer, leading to [enhanced performance](https://reactjs.org/docs/optimizing-performance.html#shouldcomponentupdate-in-action) and optimizing [reconciliation levels](https://reactjs.org/docs/reconciliation.html). Forming a [typical AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) renderer based on schema keywords and data structures - stored in a central [immutable data-structure](/docs/core-store).
+Each plugin or widget should only need to do one specific thing, in one specific schema layer, leading to [enhanced performance](https://reactjs.org/docs/optimizing-performance.html#shouldcomponentupdate-in-action) and optimizing [reconciliation levels](https://reactjs.org/docs/reconciliation.html). The values are stored in a central [immutable data-structure](/docs/core-store), accessible per schema-level by the schema-position with `storeKeys` (a list of the keys (`string|number`)), the `storeKeys` need to be passed down in nested components (e.g. `object`).
 
 > check also the base concepts about [performance](/docs/performance), especially keep an eye open for `non-scalar` widget infos and `memo`
 
 The AST and plugins are rendered by [`PluginStack`](/docs/core-pluginstack) - initially started by [`UIRootRenderer`](/docs/core-renderer#uirootrenderer).
 
- A plugin or widget can use more than only it's own schema/store level in various ways.
+A plugin or widget can use more than only it's own schema/store level in various ways.
 
 - `ObjectRenderer` uses one schema-level, to build the next level automatically, by nesting of `PluginStack`
- - if the next level can only be rendered when the `value` is known, a non-scalar widget (`array`/`object`) must use `extractValue` to extract exactly it's own store values (`value`, `internalValue`), e.g. building a table out of array tuple items schemas
- - the `UIApi`/`ReferencingNetworkHandler` components use [React hooks](https://reactjs.org/docs/hooks-intro.html) to connect to `UIApiProvider` from within the plugin component.
+- if the next level can only be rendered when the `value` is known, a non-scalar widget (`array`/`object`) must use `extractValue` to extract exactly it's own store values (`value`, `internalValue`), e.g. building a table out of array tuple items schemas
+- the `UIApi`/`ReferencingNetworkHandler` components use [React hooks](https://reactjs.org/docs/hooks-intro.html) to connect to `UIApiProvider` from within the plugin component.
 
 ## Rendering Basics
 
 Special entry point components start the UI Rendering, connecting to and/or creating some contexts & providers and/or relying on given props to do something, according to their definite position in `schema` and data (`storeKeys`).
 
-
 See [flowchart of @ui-schema/ui-schema](/docs/core#flowchart), textual example: `UIMetaProvider` > `UIStoreProvider` > `UIRootRenderer` > `widgets.RootRenderer` > `PluginStack` > optional `ErrorBoundary` with `widgets.ErrorFallback` > `widgets.pluginStack` including `widgets.simplePuginStack` > `WidgetRenderer` > widget matching > `WidgetRenderer` > actual `Widget`.
 
 ### Happy Path
 
-From within the rendering engine, the `schema` is used to automatically create the required UI to enter data.
+From within the rendering engine, the `schema` is used to automatically create the UI to "enter data for a specific schema-level".
 
 To be able to do this, the render engine must reduce the `schema` and data to specific behaviour & rendering instructions.
 
-For some JSON-Schema keywords / keyword combinations it can not automatically know: what exactly it should do & render. This could be due to [illogical schemas](https://json-schema.org/understanding-json-schema/reference/combining.html#illogical-schemas) or uncertain parts [like subschema independence](https://json-schema.org/understanding-json-schema/reference/combining.html#subschema-independence).
+For some JSON-Schema keywords / keyword combinations it can not exactly know what it should do & what to render. This could be due to [illogical schemas](https://json-schema.org/understanding-json-schema/reference/combining.html#illogical-schemas) or uncertain parts [like subschema independence](https://json-schema.org/understanding-json-schema/reference/combining.html#subschema-independence) - or just because there would be too many options to automatically solve (like with `array`, multiple scalar types).
 
 #### Example for subschema independence
 
@@ -72,6 +70,11 @@ Together with cases like: `deleteOnEmpty` within `array` [issue #106](https://gi
 ### HTML in Core
 
 > todo: document the 2-3 positions, where either HTML or simple strings are returned by the render components in core and how to replace them with custom output.
+
+These are the only positions where `@ui-schema/ui-schema` renders HTML/text directly, most can be replaced with a widgets binding.
+
+- in `widgetMatcher` (and thus also `WidgetRenderer`) the `NoWidget` renders an empty fragment when no widget is matching
+- in `Plugins/ReferencingHandler` the `Trans` component is rendered with `labels.loading` and fallback `Loading` while missing schemas are loaded AND it is not virtual
 
 ## Overriding by **Provider**
 

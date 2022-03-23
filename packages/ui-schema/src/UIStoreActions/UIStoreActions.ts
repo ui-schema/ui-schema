@@ -13,49 +13,52 @@ export type UIStoreActionScoped<S extends UIStoreType = UIStoreType, D extends U
     effect?: (newData: D, newStore: S) => void
 }
 
-export interface UIStoreAction extends UIStoreActionScoped {
+export interface UIStoreAction<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreActionScoped<S, D> {
     type: string
     schema?: StoreSchemaType
     required?: boolean
 }
 
-export type UIStoreActionListItemAdd = UIStoreActionListItemAddWithValue | UIStoreActionListItemAddWithSchema
 
-export interface UIStoreActionListItemAddWithValue extends UIStoreAction {
+export interface UIStoreActionListItemAddWithValue<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreAction<S, D> {
     type: 'list-item-add'
     itemValue: any
 }
 
-export interface UIStoreActionListItemAddWithSchema extends UIStoreAction {
+export interface UIStoreActionListItemAddWithSchema<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreAction<S, D> {
     type: 'list-item-add'
     schema: StoreSchemaType
 }
 
-export interface UIStoreActionListItemDelete extends UIStoreAction {
+export type UIStoreActionListItemAdd<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> =
+    UIStoreActionListItemAddWithValue<S, D> |
+    UIStoreActionListItemAddWithSchema<S, D>
+
+export interface UIStoreActionListItemDelete<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreAction<S, D> {
     type: 'list-item-delete'
     index: number
 }
 
-export interface UIStoreActionListItemMove extends UIStoreAction {
+export interface UIStoreActionListItemMove<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreAction<S, D> {
     type: 'list-item-move'
     fromIndex: number
     toIndex: number
 }
 
-export interface UIStoreActionUpdate<D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreAction {
+export interface UIStoreActionUpdate<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreAction<S, D> {
     type: 'update'
     updater: UIStoreUpdaterFn<D>
 }
 
-export interface UIStoreActionSet<D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreAction {
+export interface UIStoreActionSet<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreAction<S, D> {
     type: 'set'
     data: D
 }
 
-export type UIStoreActions<D extends UIStoreUpdaterData = UIStoreUpdaterData> =
-    UIStoreActionListItemAdd |
-    UIStoreActionListItemDelete |
-    UIStoreActionListItemMove |
-    UIStoreActionUpdate<D> |
-    UIStoreActionSet<D>
+export type UIStoreActions<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> =
+    UIStoreActionListItemAdd<S, D> |
+    UIStoreActionListItemDelete<S, D> |
+    UIStoreActionListItemMove<S, D> |
+    UIStoreActionUpdate<S, D> |
+    UIStoreActionSet<S, D>
 

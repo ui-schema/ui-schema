@@ -50,6 +50,16 @@ const schemaLists = createOrderedMap({
                     'end_check': true,
                 },
             ],
+            listActionLabels: {
+                en: {
+                    add: 'New event',
+                    remove: 'Remove event',
+                },
+                de: {
+                    add: 'Neue Veranstaltung',
+                    remove: 'Lösche Veranstaltung',
+                },
+            },
             view: {
                 sizeXs: 12,
                 sizeMd: 12,

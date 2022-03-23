@@ -1,4 +1,4 @@
-import {List, Map, Seq} from 'immutable';
+import {List, Map, Record, Seq} from 'immutable';
 
 export function isImmutableDeep(maybeImmutable, curr = true) {
     if(typeof maybeImmutable !== 'object' || maybeImmutable === null) {
@@ -12,6 +12,8 @@ export function isImmutableDeep(maybeImmutable, curr = true) {
         if(List.isList(maybeImmutable)) {
             Seq(maybeImmutable).forEach(e => curr = isImmutableDeep(e, curr))
         } else if(Map.isMap(maybeImmutable)) {
+            Seq(maybeImmutable).forEach(e => curr = isImmutableDeep(e, curr))
+        } else if(Record.isRecord(maybeImmutable)) {
             Seq(maybeImmutable).forEach(e => curr = isImmutableDeep(e, curr))
         } else {
             if(process.env.NODE_ENV === 'development') {

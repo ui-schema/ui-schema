@@ -1,4 +1,4 @@
-# DS Material
+# DS Material Table
 
 Base components for the `Table` widget, to build custom table widgets, check the [widget docs here](/docs/widgets/Table).
 

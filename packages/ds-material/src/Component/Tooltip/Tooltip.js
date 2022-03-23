@@ -1,8 +1,8 @@
-import React from "react";
-import Tooltip from "@material-ui/core/Tooltip";
-import Typography from "@material-ui/core/Typography";
+import React from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
 
-const AccessTooltipIcon = ({title, children}) => <React.Fragment>
+export const AccessTooltipIcon = ({title, children}) => <React.Fragment>
     <Tooltip title={title}>
         {children}
     </Tooltip>
@@ -10,5 +10,3 @@ const AccessTooltipIcon = ({title, children}) => <React.Fragment>
         {title}
     </Typography>
 </React.Fragment>;
-
-export {AccessTooltipIcon}

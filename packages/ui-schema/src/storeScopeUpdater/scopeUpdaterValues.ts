@@ -1,7 +1,7 @@
 import {
     prependKey, shouldDeleteOnEmpty, StoreKeys, UIStoreType,
 } from '@ui-schema/ui-schema/UIStore'
-import { List, Map } from 'immutable'
+import { List, Map, Record } from 'immutable'
 import { SchemaTypesType, UIStoreActions } from '@ui-schema/ui-schema'
 import { updateStoreScope } from '@ui-schema/ui-schema/storeScopeUpdater/updateStoreScope'
 import { storeBuildScopeTree } from '@ui-schema/ui-schema/storeBuildScopeTree'
@@ -25,7 +25,7 @@ export const scopeUpdaterValues = <S extends UIStoreType = UIStoreType, A extend
             //       also tests are missing atm.
             if (List.isList(parentStore)) {
                 store = store.setIn(prependKey(storeKeys, 'values'), null)
-            } else if (Map.isMap(parentStore)) {
+            } else if (Map.isMap(parentStore) || Record.isRecord(parentStore)) {
                 store = store.deleteIn(prependKey(storeKeys, 'values'))
             }
         } else {
