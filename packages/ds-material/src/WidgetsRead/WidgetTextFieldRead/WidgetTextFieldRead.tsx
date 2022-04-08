@@ -1,11 +1,11 @@
 import React, { MouseEventHandler } from 'react'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
-import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
 import { useUIMeta, WidgetProps, WithScalarValue } from '@ui-schema/ui-schema'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 import { UIMetaReadContextType } from '@ui-schema/ui-schema/UIMetaReadContext'
+import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
 
 export interface StringRendererBaseProps {
     onClick?: MouseEventHandler<HTMLDivElement> | undefined
@@ -19,44 +19,40 @@ export interface StringRendererReadProps extends StringRendererBaseProps {
 export const StringRendererRead = <P extends WidgetProps<MuiWidgetBinding> & UIMetaReadContextType = WidgetProps<MuiWidgetBinding> & UIMetaReadContextType>(
     {
         multiline,
-        storeKeys, ownKey, schema, value,
+        storeKeys, schema, value,
         showValidity, valid, errors,
         style,
         onClick,
         widgets,
     }: P & WithScalarValue & StringRendererReadProps,
 ): React.ReactElement => {
-    const hideTitle = schema.getIn(['view', 'hideTitle'])
+    const hideTitle = Boolean(schema.getIn(['view', 'hideTitle']))
     const InfoRenderer = widgets?.InfoRenderer
     const lines = multiline && typeof value === 'string' ? value.split('\n') : []
     const hasInfo = Boolean(InfoRenderer && schema?.get('info'))
     const {readDense} = useUIMeta<UIMetaReadContextType>()
     return <>
         <Box onClick={onClick} style={style}>
-            <Box style={{display: 'flex', opacity: 0.75}}>
-                {hideTitle ? null :
-                    <Typography variant={'caption'} color={'textSecondary'}>
-                        <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
-                    </Typography>}
-                {hasInfo ? <Box>
-                    {InfoRenderer && schema?.get('info') ?
-                        <InfoRenderer
-                            schema={schema} variant={'icon'} openAs={'modal'}
-                            storeKeys={storeKeys} valid={valid} errors={errors}
-                        /> : null}
-                </Box> : null}
-            </Box>
+            <TitleBoxRead
+                hideTitle={hideTitle}
+                hasInfo={hasInfo}
+                InfoRenderer={InfoRenderer}
+                valid={valid}
+                errors={errors}
+                storeKeys={storeKeys}
+                schema={schema}
+            />
             {multiline ?
                 typeof value === 'string' ?
                     lines.map((line, i) =>
                         <Typography
                             key={i}
                             gutterBottom={i < lines.length - 1}
-                            variant={schema.getIn(['view', 'dense']) || readDense ? 'body2' : 'body1'}
+                            variant={readDense ? 'body2' : 'body1'}
                         >{line}</Typography>,
                     ) :
                     <Typography><span style={{opacity: 0.65}}>-</span></Typography> :
-                <Typography variant={schema.getIn(['view', 'dense']) || readDense ? 'body2' : 'body1'}>
+                <Typography variant={readDense ? 'body2' : 'body1'}>
                     {typeof value === 'string' || typeof value === 'number' ?
                         value : <span style={{opacity: 0.65}}>-</span>
                     }

@@ -1,0 +1,34 @@
+# BooleanRead
+
+Read-only widget for standard `boolean` type, works with the [UIMetaReadContextType](/docs/core-meta#read-context).
+
+- type: `boolean`
+- schema keywords
+    - [Type Keywords](/docs/schema#type-string)
+    - [View Keywords](/docs/schema#view-keyword)
+
+## Components
+
+```js
+import {WidgetBooleanRead} from '@ui-schema/ds-material/WidgetsRead'
+
+const widgets = {
+    types: {
+        boolean: WidgetBooleanRead,
+    },
+};
+```
+
+**Supports extra keywords:**
+
+- `view`
+    - `hideTitle`
+- `info`
+    - supported by all except the `*Icon` widgets, to render the [InfoRenderer](/docs/ds-material/InfoRenderer)
+
+**Widgets:**
+
+- `WidgetBooleanRead` for `boolean`
+    - extra props:
+        - `IconYes` to change the `true` icon
+        - `IconNo` to change the `false` icon

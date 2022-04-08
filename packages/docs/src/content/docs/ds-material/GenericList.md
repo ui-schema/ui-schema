@@ -73,7 +73,7 @@ Use the [GenericListContent.tsx](https://github.com/ui-schema/ui-schema/tree/mas
 - `sr-only` = `screen-reader-only` text `span` for a11y
 - supports named-label: uses the `context` to pass down `actionLabels` for a not-generic-labelling, the given key is the intended action-key for the label
 
-For `actionLabels` handling, see [dictionary/en/labels](https://github.com/ui-schema/ui-schema/tree/master/packages/dictionary/en/labels.js) as an example.
+For `actionLabels` handling, see [dictionary/en/labels](https://github.com/ui-schema/ui-schema/tree/master/packages/dictionary/src/en/labels.js) as an example.
 
 Example schema structure that activates `actionLabels`, with support for multiple languages and different buttons:
 

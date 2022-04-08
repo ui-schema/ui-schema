@@ -139,6 +139,20 @@ export const routesFurtherDesignSystem = [
                     createDoc('ds-material/GenericList', 'GenericList', ''),
                 ],
             },
+            {
+                nav: {
+                    label: 'Widgets: Read-Only',
+                    initialOpen: false,
+                    to: '/docs/ds-material/widgets-read',
+                },
+                routes: [
+                    createDoc('ds-material/widgets-read/BooleanRead', 'BooleanRead', '', {}),
+                    createDoc('ds-material/widgets-read/ChipsRead', 'ChipsRead', '', {}),
+                    createDoc('ds-material/widgets-read/EnumRead', 'EnumRead', '', {}),
+                    createDoc('ds-material/widgets-read/OneOfRead', 'OneOfRead', '', {}),
+                    createDoc('ds-material/widgets-read/TextFieldRead', 'TextFieldRead', '', {}),
+                ],
+            },
         ],
     }, {
         nav: {

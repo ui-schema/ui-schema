@@ -25,7 +25,7 @@ Widget for data tables.
 
 Special `Table` component for complex, always validated, lists. Using custom widgets without labels. Hidden rows from pagination are still validated, using `isVirtual` prop.
 
-> see the [table base components](https://ui-schema.bemit.codes/docs/ds-material/Table) for further customization
+> see the [table base components](/docs/ds-material/Table) for further customization
 
 **Supports extra keywords:**
 

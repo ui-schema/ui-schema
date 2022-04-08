@@ -3,7 +3,7 @@ import AppTheme from './layout/AppTheme'
 import Dashboard from './dashboard/Dashboard'
 import Grid, { GridSpacing } from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
-import { MuiWidgetBinding, widgets } from '@ui-schema/ds-material'
+import { MuiWidgetBinding, SelectChips, widgets } from '@ui-schema/ds-material'
 import {
     createOrderedMap, createStore,
     GroupRendererProps,
@@ -17,10 +17,15 @@ import { OrderedMap } from 'immutable'
 import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer/UIRootRenderer'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { UIMetaReadContextType } from '@ui-schema/ui-schema/UIMetaReadContext'
-import { NumberRendererRead, StringRendererRead, TextRendererRead, WidgetSelectRead } from '@ui-schema/ds-material/WidgetsRead'
+import {
+    NumberRendererRead, StringRendererRead, TextRendererRead,
+    WidgetBooleanRead, WidgetChipsRead,
+    WidgetEnumRead, WidgetOneOfRead,
+} from '@ui-schema/ds-material/WidgetsRead'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 
+// custom `GroupRenderer` that supports `is-read and display-dense`
 const GroupRenderer: React.ComponentType<GroupRendererProps> = ({schema, children, noGrid}) => {
     const {readDense, readActive} = useUIMeta<UIMetaReadContextType>()
     return noGrid ? children as unknown as React.ReactElement :
@@ -28,25 +33,15 @@ const GroupRenderer: React.ComponentType<GroupRendererProps> = ({schema, childre
             container
             spacing={
                 readActive && readDense ? 1 :
-                    typeof schema.getIn(['view', 'spacing']) === 'number' ? schema.getIn(['view', 'spacing']) as GridSpacing | undefined
-                        : 2}
+                    typeof schema.getIn(['view', 'spacing']) === 'number' ?
+                        schema.getIn(['view', 'spacing']) as GridSpacing | undefined :
+                        2
+            }
             wrap={'wrap'}
         >
             {children}
         </Grid>
 }
-
-const customWidgets = {...widgets}
-customWidgets.GroupRenderer = GroupRenderer
-const pluginStack = [...customWidgets.pluginStack]
-// the referencing network handler should be at first position
-// must be before the `ReferencingHandler`, thus if the root schema for the level is a network schema,
-// the network handler can download it, and the normal referencing handler may handle references inside of e.g. `if`
-// maybe the network handlers adds a generic prop `resolveNetworkRef`, to request network schema inside e.g. an `if` from inside the ReferencingHandler
-// pluginStack.splice(0, 0, ReferencingNetworkHandler)
-customWidgets.pluginStack = pluginStack
-
-//widgets.types.null = () => 'null'
 
 const Main = ({classes}: { classes: { paper: string } }) => {
     return <React.Fragment>
@@ -71,10 +66,83 @@ const formSchema = createOrderedMap({
         },
         value: {
             type: 'number',
+            view: {
+                sizeMd: 6,
+            },
+        },
+        checker: {
+            type: 'boolean',
+            view: {
+                sizeMd: 6,
+            },
         },
         comment: {
             type: 'string',
             widget: 'Text',
+        },
+
+        layouts: {
+            type: 'array',
+            widget: 'OptionsCheck',
+            view: {
+                sizeMd: 3,
+            },
+            items: {
+                oneOf: [
+                    {
+                        const: 'notice',
+                    }, {
+                        const: 'content',
+                    }, {
+                        const: 'footer',
+                    },
+                ],
+            },
+        },
+        sizeDef: {
+            type: 'string',
+            widget: 'OptionsRadio',
+            default: 'middle',
+            view: {
+                sizeMd: 3,
+            },
+            enum: [
+                'small',
+                'middle',
+                'big',
+            ],
+        },
+        topics: {
+            type: 'array',
+            widget: 'SelectMulti',
+            view: {
+                sizeMd: 3,
+            },
+            items: {
+                oneOf: [
+                    {const: 'theater'},
+                    {const: 'crime'},
+                    {const: 'sci-fi'},
+                    {const: 'horror'},
+                ],
+            },
+        },
+        services: {
+            type: 'array',
+            widget: 'SelectChips',
+            //default: "adult",
+            view: {
+                sizeMd: 3,
+            },
+            items: {
+                type: 'string',
+                oneOf: [
+                    {const: 'development'},
+                    {const: 'design'},
+                    {const: 'hosting'},
+                    {const: 'consulting'},
+                ],
+            },
         },
     },
 })
@@ -88,20 +156,34 @@ export interface ReadWidgetsBinding {
     }
 }
 
+// Notice: `customWidgets` are supplied by the global `UIMetaProvider` at the end of this file,
+//         while `readWidgets` are supplied in the nested `UIMetaProvider` - which re-uses everything else from the global provider
+const customWidgets = {...widgets}
+customWidgets.GroupRenderer = GroupRenderer
+customWidgets.custom = {
+    ...customWidgets.custom,
+    SelectChips: SelectChips,
+}
+
 const readWidgets: ReadWidgetsBinding = {
     types: {
         string: StringRendererRead,
         number: NumberRendererRead,
         int: NumberRendererRead,
+        boolean: WidgetBooleanRead,
     },
     custom: {
         Text: TextRendererRead,
-        Select: WidgetSelectRead,
+        Select: WidgetEnumRead,
+        SelectMulti: WidgetOneOfRead,
+        SelectChips: WidgetChipsRead,
+        OptionsRadio: WidgetEnumRead,
+        OptionsCheck: WidgetOneOfRead,
     },
 }
 
 const ReadableWritableEditor = () => {
-    const {widgets, t} = useUIMeta()
+    const {widgets, ...metaCtx} = useUIMeta()
     const showValidity = true
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
     const [edit, setEdit] = React.useState(false)
@@ -122,7 +204,12 @@ const ReadableWritableEditor = () => {
             <Button onClick={() => setEdit(e => !e)}>{edit ? 'ready only' : 'edit'}</Button>
             <Button disabled={edit} onClick={() => setDense(e => !e)}>{dense ? 'normal-size' : 'dense'}</Button>
         </Box>
-        <UIMetaProvider<UIMetaReadContextType> widgets={customWidgetsRtd} t={t} readActive={!edit} readDense={dense}>
+        <UIMetaProvider<UIMetaReadContextType>
+            // re-use & overwrite of the global meta-context
+            widgets={customWidgetsRtd} {...metaCtx}
+            // custom meta-ctx only available within this UIMetaProvider context
+            readActive={!edit} readDense={dense}
+        >
             <UIStoreProvider<{}, any, UIStoreActions>
                 store={store}
                 onChange={onChange}
@@ -135,11 +222,10 @@ const ReadableWritableEditor = () => {
     </React.Fragment>
 }
 
-// eslint-disable-next-line react/display-name,@typescript-eslint/explicit-module-boundary-types
-export default () => <AppTheme>
-    <div>
+// eslint-disable-next-line react/display-name
+export default (): React.ReactElement =>
+    <AppTheme>
         <UIMetaProvider widgets={customWidgets} t={browserT}>
             <Dashboard main={Main}/>
         </UIMetaProvider>
-    </div>
-</AppTheme>
+    </AppTheme>

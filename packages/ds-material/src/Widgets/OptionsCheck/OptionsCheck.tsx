@@ -43,9 +43,9 @@ const OptionsCheckValueBase: React.ComponentType<{
     {
         oneOfValues, storeKeys, value, onChange,
         required, schema, disabled,
-    }
-) => <>
-    {oneOfValues ?
+    },
+) => (
+    oneOfValues ?
         oneOfValues.map((oneOfSchema) => {
             const oneOfVal = oneOfSchema.get('const')
             const isActive = checkActive(value, oneOfVal)
@@ -76,8 +76,8 @@ const OptionsCheckValueBase: React.ComponentType<{
                 />}
             />
         }).valueSeq()
-        : null}
-</>
+        : null
+) as unknown as React.ReactElement
 
 const OptionsCheckValue = extractValue(memo(OptionsCheckValueBase))
 

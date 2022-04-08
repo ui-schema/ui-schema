@@ -12,13 +12,11 @@ export interface UIMetaContext<W = WidgetsBindingFactory> {
     t: Translator
 }
 
-//export type UIMetaContext<C extends {} = {}, W = WidgetsBindingFactory> = C & UIMetaContextData<W>
-/*export interface UIMetaContext<C extends {} = {}, W = WidgetsBindingFactory> extends UIMetaContextData<W> {
-
-}*/
-
-export function UIMetaProvider<C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>({children, ...props}: React.PropsWithChildren<UIMetaContext<W> & C>): React.ReactElement {
-    return <UIMetaContextObj.Provider value={props}>
+export function UIMetaProvider<C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(
+    {children, ...props}: React.PropsWithChildren<UIMetaContext<W> & C>,
+): React.ReactElement {
+    const ctx = React.useMemo(() => ({...props}), [...Object.values(props)])
+    return <UIMetaContextObj.Provider value={ctx}>
         {children}
     </UIMetaContextObj.Provider>
 }
