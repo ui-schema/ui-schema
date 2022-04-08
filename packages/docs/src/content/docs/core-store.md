@@ -64,7 +64,7 @@ const CustomProvider = ({store, onChange, children}) => {
 }
 ```
 
-Example Hook:
+**Example Hook:**
 
 ```js
 import React from "react";
@@ -87,7 +87,7 @@ const Comp = ({storeKeys, ...props}) => {
 };
 ```
 
-Example HOC:
+**Example HOC:**
 
 ```js
 import React from "react";
@@ -183,7 +183,7 @@ import {storeUpdater} from '@ui-schema/ui-schema/storeUpdater';
 
 ## Store Actions
 
-Actions to update the store, handled within [`storeUpdater`](#storeupdater), currently only expandable by replacing `storeUpdater` with a custom implementation.
+Actions to update the store, handled within [`storeUpdater`](#storeupdater), the way to define custom handlers is [not that easy yet #163](https://github.com/ui-schema/ui-schema/issues/163).
 
 The internal `scopeUpdaterValues` uses `action.schema` to handle e.g. `deleteOnEmpty`, treating [empty like in required HTML-inputs](/docs/schema#required-keyword).
 

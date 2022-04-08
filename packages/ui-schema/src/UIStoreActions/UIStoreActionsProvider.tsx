@@ -22,6 +22,6 @@ export function UIStoreActionsProvider<A = UIStoreActions>(
     </UIStoreActionsContextObj.Provider>
 }
 
-export const useUIStoreActions = <A extends UIStoreActions = UIStoreActions>(): UIStoreActionsContext<A> => {
-    return React.useContext(UIStoreActionsContextObj)
+export function useUIStoreActions<A = UIStoreActions>(): UIStoreActionsContext<A> {
+    return React.useContext(UIStoreActionsContextObj) as unknown as UIStoreActionsContext<A>
 }

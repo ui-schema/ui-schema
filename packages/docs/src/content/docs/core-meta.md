@@ -14,7 +14,7 @@ Saves additional functions and meta-data for all renderers & generators.
         - all passed in `props` are available in HOOKs and HOCs
         - the `PluginStack` passes down all - but allows to overwrite any by supplying the same `props` to `<PluginStack/>`
 
-Example Hook:
+## Hook useUIMeta
 
 ```js
 import React from "react";
@@ -28,7 +28,7 @@ const Comp = () => {
 };
 ```
 
-Example HOC:
+## HOC withUIMeta
 
 ```js
 import React from "react";
@@ -44,7 +44,63 @@ const Comp = withUIMeta(
 );
 ```
 
-### Typescript Custom UIMetaContext
+## Read-Context
+
+Only a special typing, works together with special components for a "read-or-write" mode.
+
+> Check the [Material-UI demo code](https://github.com/ui-schema/ui-schema/blob/master/packages/demo/src/material-ui/material-ui-read-write.tsx) as implementation example
+
+```typescript tsx
+import React from 'react'
+import {
+    UIMetaProvider, UIStoreProvider,
+    useUIMeta,
+    UIStoreActions, UIStoreType, onChangeHandler, StoreSchemaType,
+} from '@ui-schema/ui-schema'
+import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer'
+import { UIMetaReadContextType } from '@ui-schema/ui-schema/UIMetaReadContext'
+
+const ReadableWritableEditor: React.ComponentType<{
+    onChange: onChangeHandler
+    store: UIStoreType
+    schema: StoreSchemaType
+    showValidity?: boolean
+}> = ({onChange, store, schema}) => {
+    const {widgets, ...metaCtx} = useUIMeta()
+    const [edit, setEdit] = React.useState(false)
+    const [dense, setDense] = React.useState(false)
+
+    const customWidgetsRtd = React.useMemo(() => ({
+        // todo: you maybe want to add an custom `GroupRenderer` to `widgets` which supports the `readDense` mode
+        ...widgets,
+        types: edit ? widgets.types : readWidgets.types,
+        custom: edit ? widgets.custom : readWidgets.custom,
+    }), [widgets, edit, readWidgets])
+
+    return <React.Fragment>
+        <div>
+            <button onClick={() => setEdit(e => !e)}>{edit ? 'ready only' : 'edit'}</button>
+            <button disabled={edit} onClick={() => setDense(e => !e)}>{dense ? 'normal-size' : 'dense'}</button>
+        </div>
+        <UIMetaProvider<UIMetaReadContextType>
+            // re-use & overwrite of the global meta-context
+            widgets={customWidgetsRtd} {...metaCtx}
+            // custom meta-ctx only available within this UIMetaProvider context
+            readActive={!edit} readDense={dense}
+        >
+            <UIStoreProvider<{}, any, UIStoreActions>
+                store={store}
+                onChange={onChange}
+                showValidity={showValidity}
+            >
+                <UIRootRenderer schema={schema}/>
+            </UIStoreProvider>
+        </UIMetaProvider>
+    </React.Fragment>
+}
+```
+
+## Typescript Custom UIMetaContext
 
 Customize `UIMetaContext`:
 

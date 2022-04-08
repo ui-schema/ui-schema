@@ -1,2 +1,6 @@
+export * from './WidgetBooleanRead'
+export * from './WidgetChipsRead'
+export * from './WidgetEnumRead'
+export * from './WidgetOneOfRead'
 export * from './WidgetSelectRead'
 export * from './WidgetTextFieldRead'

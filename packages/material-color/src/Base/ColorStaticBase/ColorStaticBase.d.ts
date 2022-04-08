@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { ColorBaseProps } from '@ui-schema/material-color/Base'
 
 export interface ColorStaticBaseProps extends WidgetProps{
-    ColorPicker: React.ComponentType
+    ColorPicker: ColorBaseProps['ColorPicker']
     styles: React.CSSProperties
     pickerProps: object
 }
