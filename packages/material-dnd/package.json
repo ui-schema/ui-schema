@@ -35,6 +35,7 @@
         "react-uid": "^2.2.0"
     },
     "devDependencies": {
+        "@types/react": "^16.8.6",
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
         "@ui-schema/kit-dnd": "~0.0.5",
@@ -46,8 +47,8 @@
     "peerDependencies": {
         "@material-ui/core": "^4.8",
         "@material-ui/icons": "^4.8",
-        "@ui-schema/ds-material": "~0.3.0-beta",
-        "@ui-schema/ui-schema": "~0.3.0-beta",
+        "@ui-schema/ds-material": "~0.3.0",
+        "@ui-schema/ui-schema": "~0.3.0",
         "@ui-schema/kit-dnd": "~0.0.5",
         "immutable": "^4.0.0",
         "react": "^16.8",

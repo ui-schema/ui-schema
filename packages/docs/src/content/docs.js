@@ -16,6 +16,7 @@ import {demoTextField} from './docs/widgets/TextFieldDemo';
 import {demoEditorJS} from './docs/widgets/EditorJSDemo';
 import {demoDragnDropGenericDemo} from './docs/material-dnd/widgets-genericDemo';
 import {demoSelectChips} from './docs/widgets/SelectChipsDemo';
+import {demoCard} from './docs/widgets/CardDemo';
 
 const createDoc = (path, label, prefix, context) => ({
     doc: path,
@@ -48,17 +49,28 @@ export const routesCore = [
         nav: {
             label: 'Design-System & Widgets',
             initialOpen: false,
-            toSection: /^(\/docs\/design-systems|\/docs\/widgets$|\/docs\/widgets-composition$)/,
+            //toSection: /^(\/docs\/design-systems|\/docs\/widgets$|\/docs\/widgets-composition$)/,
+            toSection: /^(\/docs\/design-systems|\/docs\/widgets$)/,
         },
         routes: [
             createDoc('design-systems', 'Design-System'),
             createDoc('widgets', 'Widget Binding'),
-            createDoc('widgets-composition', 'Widgets Composition'),
         ],
     },
     createDoc('plugins', 'Plugins'),
     createDoc('localization', 'Localization'),
     createDoc('performance', 'Performance'),
+    createDoc('widgets-composition', 'Composition Concepts'), {
+        nav: {
+            label: 'Updates / Migration',
+            initialOpen: false,
+            toSection: /^(\/docs\/updates)/,
+        },
+        routes: [
+            createDoc('updates/overview', 'Overview'),
+            createDoc('updates/v0.2.0-v0.3.0', 'v0.2.0 to v0.3.0'),
+        ],
+    },
 ]
 
 export const routesFurtherDesignSystem = [
@@ -70,6 +82,9 @@ export const routesFurtherDesignSystem = [
         routes: [
             createDoc('widgets/Accordions', 'Accordions', '', {
                 demoUIGenerator: demoAccordions,
+            }),
+            createDoc('widgets/Card', 'Card', '', {
+                demoUIGenerator: demoCard,
             }),
             createDoc('widgets/Code', 'Code Editor', '', {
                 demoUIGenerator: demoCode,

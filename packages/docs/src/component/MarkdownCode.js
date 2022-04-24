@@ -37,7 +37,8 @@ const Code = ({variant, className, ...p}) => {
         <RichCodeEditor
             value={p.children} readOnly mode={currentMode}
             fontSize={14} minLines={1} maxLines={30} enableShowAll
-            style={{margin: '24px 0', transition: 'height 0.4s linear 0s'}}/>
+            style={{margin: '0 0 12px 0', transition: 'height 0.4s linear 0s'}}
+        />
 };
 
 export default Code

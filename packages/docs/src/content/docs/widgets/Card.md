@@ -1,4 +1,4 @@
-# Accordions
+# Card
 
 Widgets for `object` which makes each property an accordion dropdown.
 
@@ -6,21 +6,15 @@ Widgets for `object` which makes each property an accordion dropdown.
 
 - type: `object`
 - widgets:
-    - `Accordions`
-
-## Material-UI
+    - `Card`
 
 **Supports extra keywords:**
 
-- `onClosedHidden`, `boolean`, when `true` renders the whole PluginStack virtually when it is closed, for some edge case performance optimizing
-- `defaultExpanded`, `string`, name of the by-default expanded property
 - `view.ev`, `number`, only for variant `elevation` to control the elevation level
 - `view.variant`, `elevation | outlined`, the used `Accordion` variant for the summary
-- `view.titleVariant`, `string`, the used `Typography` variant for the summary
+- `view.bg`, `boolean`, when `false`  the used `Typography` variant for the summary
+- `view.hideTitle`, `boolean`, when `true` does not show the title
+- `view.titleVariant`, `string`, the used `Typography` variant
+- `view.titleComp`, `string`, the used `Typography` component
 - on property-schema:
     - `info`, to render the [InfoRenderer](/docs/ds-material/InfoRenderer)
-
-**Supports `props`:**
-
-- `SummaryTitle` to render a custom summary component instead of the standard title
-    - supported by `AccordionsRenderer`, `AccordionStack` components of `@ui-schema/ds-material/Widgets/Accordions`

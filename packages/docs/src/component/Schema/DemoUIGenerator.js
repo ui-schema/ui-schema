@@ -1,6 +1,8 @@
 import React from 'react';
 import {Button, Box, Typography, useTheme} from '@material-ui/core';
-import {createOrderedMap, UIRootRenderer, isInvalid, createEmptyStore, storeUpdater, UIStoreProvider} from '@ui-schema/ui-schema';
+import {createOrderedMap, UIRootRenderer, createEmptyStore, storeUpdater} from '@ui-schema/ui-schema';
+import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter';
+import {UIStoreProvider} from '@ui-schema/ui-schema/UIStore';
 import {RichCodeEditor} from '../RichCodeEditor';
 import style from 'codemirror/lib/codemirror.css';
 import themeDark from 'codemirror/theme/duotone-dark.css';
@@ -19,7 +21,7 @@ const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, r
         theme={theme}
         enableShowAll={enableShowAll}
         renderChange={renderChange}
-        value={typeof schema === 'string' ? schema : JSON.stringify(schema.toJS(), null, tabSize)}
+        value={typeof schema === 'string' ? schema : JSON.stringify(schema?.toJS(), null, tabSize)}
         onChange={(newValue) => {
             try {
                 setJsonError(false);
@@ -35,7 +37,7 @@ const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, r
 
 const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme, maxLines, store}) => {
     return <RichCodeEditor
-        value={typeof store.getValues() !== 'string' && typeof store.getValues() !== 'number' && typeof store.getValues() !== 'boolean' && store.getValues() ? JSON.stringify(store.valuesToJS(), null, tabSize) : store.getValues()}
+        value={typeof store?.getValues() !== 'string' && typeof store?.getValues() !== 'number' && typeof store?.getValues() !== 'boolean' && store?.getValues() ? JSON.stringify(store?.valuesToJS(), null, tabSize) : store?.getValues()}
         theme={theme}
         tabSize={tabSize}
         fontSize={fontSize}
@@ -70,8 +72,8 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
 
     // default schema state - begin
     const [showValidity /*setShowValidity*/] = React.useState(true);
-    const [schema, setSchema] = React.useState(createOrderedMap(activeSchema));
-    const [store, setStore] = React.useState(() => createEmptyStore(schema.get('type')));
+    const [schema, setSchema] = React.useState(undefined);
+    const [store, setStore] = React.useState(undefined);
     // end - default schema state
 
     React.useEffect(() => {
@@ -79,7 +81,7 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
         setSchema(() => schema);
         setStore(oldStore => {
             const newStore = createEmptyStore(schema.get('type'))
-            if(newStore.values.equals && newStore.values.equals(oldStore.values)) {
+            if(newStore.values.equals && newStore.values.equals(oldStore?.values)) {
                 // only change the store, when the values have really changed - otherwise it could overwrite the already changed validity
                 return oldStore
             }
@@ -87,11 +89,12 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
         });
     }, [activeSchema, setSchema, setStore]);
 
-    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+    const onChange = React.useCallback((actions) => {
         setStore(prevStore => {
-            return storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
+            return storeUpdater(actions)(prevStore)
         })
     }, [setStore]);
+
     const {onIntent} = useOnIntent({edgeSize: 12})
     const {onMove} = useOnDirectedMove(onIntent, onChange)
 
@@ -110,12 +113,13 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
                         onChange={onChange}
                         showValidity={showValidity}
                     >
-                        {showDebugger && !split ? <DebugSchemaEditor
-                            schema={schema} setSchema={setSchema}
-                            setJsonError={setJsonError} richIde
-                            enableShowAll={!split} split={split}
-                            id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
-                        /> : null}
+                        {showDebugger && !split ?
+                            <DebugSchemaEditor
+                                schema={schema} setSchema={setSchema}
+                                setJsonError={setJsonError} richIde
+                                enableShowAll={!split} split={split}
+                                id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
+                            /> : null}
 
                         {jsonError ?
                             <Box style={{margin: '0 12px 0 12px'}}>
@@ -128,7 +132,7 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
                                 </Typography>
                             </Box> : null}
 
-                        {typeof schema === 'string' ? null : <UIRootRenderer schema={schema}/>}
+                        {typeof schema === 'string' || !store ? null : <UIRootRenderer schema={schema}/>}
                     </UIStoreProvider>
                 </KitDndProvider>
             </MuiPickersUtilsProvider>

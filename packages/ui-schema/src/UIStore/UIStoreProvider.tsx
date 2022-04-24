@@ -29,8 +29,8 @@ export function UIStoreProvider<C extends {} = {}, D = any, A = UIStoreActions>(
         ...props
     }: React.PropsWithChildren<UIStoreContext<D> & UIStoreActionsContext<A> & C>
 ): React.ReactElement {
-    // todo: add memo of ctx-value
-    return <UIStoreContextObj.Provider value={{showValidity, store}}>
+    const ctx = React.useMemo(() => ({showValidity, store}), [showValidity, store])
+    return <UIStoreContextObj.Provider value={ctx}>
         <UIConfigProvider {...props}>
             <UIStoreActionsProvider<A> onChange={onChange}>
                 {children}

@@ -17,14 +17,15 @@ export const LabelBox = (props: WidgetProps): React.ReactElement => {
         pb={schema.getIn(['view', 'pb']) as number}
         pl={schema.getIn(['view', 'pl']) as number}
     >
-        {schema.getIn(['view', 'hideTitle']) ? null : <Typography
-            gutterBottom
-            variant={(schema.getIn(['view', 'titleVariant']) as TypographyProps['variant']) || 'h5'}
-            component={(schema.getIn(['view', 'titleComp']) as React.ElementType) || 'p'}
-        >
-            <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
-        </Typography>}
-        {/* todo: add `description` support */}
+        {schema.getIn(['view', 'hideTitle']) ? null :
+            <Typography
+                gutterBottom
+                variant={(schema.getIn(['view', 'titleVariant']) as TypographyProps['variant']) || 'h5'}
+                component={(schema.getIn(['view', 'titleComp']) as React.ElementType) || 'p'}
+            >
+                <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+                {/* todo: add `info` support */}
+            </Typography>}
         <ObjectRenderer {...props}/>
     </Box>
 }

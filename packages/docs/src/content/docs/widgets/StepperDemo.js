@@ -33,6 +33,14 @@ const demoStepperSchema = {
                     view: {
                         sizeMd: 3
                     },
+                    'items': {
+                        'oneOf': [
+                            {'const': 'theater'},
+                            {'const': 'crime'},
+                            {'const': 'sci-fi'},
+                            {'const': 'horror'},
+                        ],
+                    },
                     enum: [
                         'theater',
                         'crime',

@@ -20,6 +20,7 @@
         "@material-ui/pickers": "^3.2.10",
         "@types/luxon": "^1.26.2",
         "@udecode/slate-plugins": "~0.75.2",
+        "@types/react": "^16.8.6",
         "@types/react-loadable": "^5.5.4",
         "@types/react-router-dom": "^5.1.7",
         "codemirror": "^5.52.0",

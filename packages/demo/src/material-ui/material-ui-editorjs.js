@@ -64,6 +64,8 @@ const Main = () => {
         redoHistory, undoHistory,
     } = useStorePro({type: String(schema.get('type')), initialStore: initialStore})
 
+    console.log(store.toJS())
+
     const type = String(schema.get('type'))
     const reset = React.useCallback(() => {
         resetHistoryStore(type, initialStore)

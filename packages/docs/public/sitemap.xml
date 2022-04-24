@@ -136,4 +136,18 @@
         <loc>https://ui-schema.bemit.codes/docs/widgets/Color</loc>
         <changefreq>monthly</changefreq>
     </url>
+
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/material-dnd/overview</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/material-dnd/widgets-generic</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/kit-dnd/kit-dnd</loc>
+        <changefreq>monthly</changefreq>
+    </url>
 </urlset>
