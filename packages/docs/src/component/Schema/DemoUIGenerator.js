@@ -141,9 +141,9 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
         {typeof schema === 'string' ? null :
             onClick ? <Button
                 variant={'contained'}
-                disabled={!!isInvalid(store.getValidity())}
+                disabled={!!isInvalid(store?.getValidity())}
                 style={{marginTop: 12}}
-                onClick={() => isInvalid(store.getValidity()) ? undefined : onClick(store)}>Send</Button> : null}
+                onClick={() => isInvalid(store?.getValidity()) ? undefined : onClick(store)}>Send</Button> : null}
 
         {showDebugger ? <Box style={{display: 'flex', flexWrap: 'wrap', margin: '12px 0 24px 0'}}>
             {split ? <DebugSchemaEditor
