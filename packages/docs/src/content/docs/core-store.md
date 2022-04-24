@@ -318,45 +318,7 @@ onChange({
 
 ### UpdateFn Migration
 
-Before `0.3.0-alpha.6` the actions where optional, it was possible to use only an updater function.
-
-Code `~0.2.0` and `>=0.3.0-alpha & <= 0.3.0-alpha.5`:
-
-```typescript jsx
-onChange(
-    storeKeys, ['value'],
-    ({value}) => ({value: e.target.value}),
-)
-```
-
-Code `>=0.3.0-alpha & <= 0.3.0-alpha.5`:
-
-```typescript jsx
-onChange(
-    storeKeys, ['value'],
-    {
-        type: 'update',
-        // oldValue => newValue
-        updater: ({value}) => ({value: e.target.value}),
-        schema: schema,
-        required: required,
-    }
-)
-```
-
-Code since `0.3.0-alpha.6`:
-
-```typescript jsx
-onChange({
-    storeKeys: storeKeys,
-    scopes: ['value'],
-    type: 'update',
-    // oldValue => newValue
-    updater: ({value}) => ({value: e.target.value}),
-    schema: schema,
-    required: required,
-})
-```
+> content has moved to [Updated Notes v0.2.0 to v0.3.0](/docs/updates/v0.2.0-v0.3.0#onchange--store-updater)
 
 ## UIConfigContext
 

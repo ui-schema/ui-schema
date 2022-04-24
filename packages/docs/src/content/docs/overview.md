@@ -112,7 +112,7 @@ Custom widgets for `widget`, special UIs and specific type handling:
 | `Table`                       | [table editor](/docs/widgets/Table)                                                  |                                                              | ✅ℹ️ | 🔵  |  🔵 |
 | `Drag 'n Drop` as Grid & List | [material-dnd widgets](/docs/material-dnd/overview)                                  |                                                              | ✅ℹ️ | 🔵  |  🔵 |
 | `Accordions`                  | [accordion drop-downs](/docs/widgets/Accordions) for object properties with headline | `object`                                                     |  ✅  | 🔵  |  🔵 |
-| `Card`                        | card with headline for object root and any sub-schema                                | `object`                                                     |  ✅  | 🔵  |  🔵 |
+| `Card`                        | [card with headline for object root and any sub-schema](/docs/widgets/Card)          | `object`                                                     |  ✅  | 🔵  |  🔵 |
 | `LabelBox`                    | box with label for object root and any sub-schema, without any styling               | `object`                                                     |  ✅  | 🔵  |  🔵 |
 | `FormGroup`                   | form group (fieldset) with label                                                     | `object`                                                     |  ✅  | 🔵  |  🔵 |
 | `ExpansionPanel`              | list headlines and sub-schema                                                        |                                                              | 🔵  | 🔵  |  🔵 |

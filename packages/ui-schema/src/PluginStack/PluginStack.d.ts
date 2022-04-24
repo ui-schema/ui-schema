@@ -39,6 +39,9 @@ export function PluginStack<WP extends {} = {}, C extends {} = {}, P extends Plu
  */
 export function getNextPlugin<C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(next: number, widgets: W): ComponentPluginType<C, W> | React.ComponentType<WidgetProps<W>>
 
+/**
+ * @internal use `getNextPlugin` instead, or when needed the `NextPluginRendererMemo` component
+ */
 export function NextPluginRenderer<P extends PluginProps>(props: P): React.ReactElement<P>
 
 export function NextPluginRendererMemo<P extends PluginProps>(props: P): React.ReactElement<P>

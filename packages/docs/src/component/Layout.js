@@ -114,6 +114,7 @@ export const CustomLayout = () => {
 }
 
 export const CustomDrawer = () => {
+    const {toggleUi} = useConsent()
     const {setOpen} = useDrawer()
     const {breakpoints} = useTheme();
     const closeOnClick = React.useCallback(() => {
@@ -160,6 +161,9 @@ export const CustomDrawer = () => {
             <Divider/>
             <ListItemLink to={'/impress'} primary={'Impress'} dense showActive onClick={closeOnClick}/>
             <ListItemLink to={'/privacy'} primary={'Privacy Policy'} dense showActive onClick={closeOnClick}/>
+            <ListItem button onClick={() => toggleUi()} dense>
+                <ListItemText primary={'Privacy Settings'} primaryTypographyProps={{variant: 'body2'}}/>
+            </ListItem>
             <Divider/>
         </List>
     </Drawer>;

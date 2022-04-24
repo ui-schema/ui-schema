@@ -69,21 +69,7 @@ Together with cases like: `deleteOnEmpty` within `array` [issue #106](https://gi
 
 ### HTML in Core
 
-> todo: document the 2-3 positions, where either HTML or simple strings are returned by the render components in core and how to replace them with custom output.
-
 These are the only positions where `@ui-schema/ui-schema` renders HTML/text directly, most can be replaced with a widgets binding.
 
 - in `widgetMatcher` (and thus also `WidgetRenderer`) the `NoWidget` renders an empty fragment when no widget is matching
 - in `Plugins/ReferencingHandler` the `Trans` component is rendered with `labels.loading` and fallback `Loading` while missing schemas are loaded AND it is not virtual
-
-## Overriding by **Provider**
-
-> todo
-
-## Overriding by **props**
-
-> todo
-
-## Overriding by **keywords**
-
-> todo

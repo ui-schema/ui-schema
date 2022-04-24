@@ -33,6 +33,9 @@ packer({
                     overlay: false,
                     progress: false,
                 },
+                historyApiFallback: {
+                    disableDotRule: true,
+                },
             },
             vendors: ['react-error-boundary', 'immutable', '@material-ui/core', '@material-ui/icons'],
             copy: [{from: path.resolve(__dirname, 'schema'), to: path.resolve(__dirname, 'dist', 'docs', 'schema')}],

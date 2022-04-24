@@ -90,7 +90,7 @@ JSON Schema keywords are used to validate the data, the UI is created from that 
 
 ## Versions
 
-For updates see [github release notes](https://github.com/ui-schema/ui-schema/releases).
+For updates see [github release notes](https://github.com/ui-schema/ui-schema/releases), also check the update and migration notes for [breaking core changes](https://ui-schema.bemit.codes/docs/updates/overview).
 
 This project adheres to [semver](https://semver.org/), until `1.0.0` and beginning with `0.1.0`: all `0.x.0` releases are like MAJOR releases and all `0.0.x` like MINOR or PATCH, modules below `0.1.0` should be considered experimental.
 

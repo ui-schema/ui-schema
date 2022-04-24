@@ -31,8 +31,7 @@ const widgets = {
 
 - `view`
     - `hideTitle`
-- `info`
-    - supported by all except the `*Icon` widgets, to render the [InfoRenderer](/docs/ds-material/InfoRenderer)
+- `info` to render the [InfoRenderer](/docs/ds-material/InfoRenderer)
 
 **Widgets:**
 

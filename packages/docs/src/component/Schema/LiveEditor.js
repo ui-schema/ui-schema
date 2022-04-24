@@ -326,7 +326,7 @@ const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme}) => {
     const {store} = useUIStore();
 
     return <RichCodeEditor
-        value={Map.isMap(store.getValues()) || List.isList(store.getValues()) ? JSON.stringify(store.valuesToJS(), null, tabSize) : store.valuesToJS()}
+        value={Map.isMap(store?.getValues()) || List.isList(store?.getValues()) ? JSON.stringify(store?.valuesToJS(), null, tabSize) : store?.valuesToJS()}
         theme={theme}
         tabSize={tabSize}
         fontSize={fontSize}
@@ -619,7 +619,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
                                 typeof schema === 'string' ? null : <Paper style={{margin: 12, padding: 24}}>
                                     <UIRootRenderer schema={schema}/>
 
-                                    <InvalidLabel invalid={isInvalid(store.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>
+                                    <InvalidLabel invalid={isInvalid(store?.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>
                                 </Paper>}
 
                             <div style={{height: 24, width: 1, flexShrink: 0}}/>

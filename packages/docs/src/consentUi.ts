@@ -46,7 +46,7 @@ export const customConsentUi: ConsentUiInfoDefinition = {
                     id: brandProvider,
                     title: brandProvider,
                     group: 'essential',
-                    desc: ['The owner of this app, provides login, register functionality and system features.'],
+                    desc: ['The owner of this app, manages hosting and provides system features.'],
                     stores: [
                         {
                             title: 'Consent Manager',

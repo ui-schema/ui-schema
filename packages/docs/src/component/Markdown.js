@@ -32,11 +32,13 @@ renderers.li = p => <Typography component={'li'} variant={'body2'} style={{fontW
     <span style={{fontWeight: 'normal', display: 'block', marginBottom: 2}}>{p.children}</span>
 </Typography>;
 renderers.a = LinkInternalLocale;
+renderers.pre = ({children}) => <pre style={{margin: 0}}>{children}</pre>;
 
 const renderersContent = baseRenderers(false);
 renderersContent.code = ({inline, ...p}) => inline ? <MdInlineCode variant={'body1'} {...p}/> : <Code variant={'body1'} {...p}/>;
 renderersContent.h1 = renderersContent.h2 = renderersContent.h3 = renderersContent.h4 = renderersContent.h5 = renderersContent.h6 = LinkableHeadline;
 renderersContent.a = LinkInternalLocale;
+renderersContent.pre = ({children}) => <pre style={{margin: 0}}>{children}</pre>;
 renderersContent.li = p => <Typography component={'li'} variant={'body1'} style={{fontWeight: 'bold'}}>
     <span style={{fontWeight: 'normal', display: 'block', marginBottom: 2}}>{p.children}</span>
 </Typography>;

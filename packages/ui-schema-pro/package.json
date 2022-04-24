@@ -32,12 +32,13 @@
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "devDependencies": {
+        "@types/react": "^16.8.6",
         "immutable": "^4.0.0",
         "react": "^16.12",
         "react-dom": "^16.12"
     },
     "peerDependencies": {
-        "@ui-schema/ui-schema": "~0.3.0-beta",
+        "@ui-schema/ui-schema": "~0.3.0",
         "immutable": "^4.0.0",
         "react": "^16.8 || ^17.0"
     },
