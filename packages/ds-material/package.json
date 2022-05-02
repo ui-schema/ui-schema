@@ -37,6 +37,8 @@
         "@mui/material": "^5.1",
         "@mui/styles": "^5.1",
         "@mui/icons-material": "^5.1",
+        "@emotion/react": "^11.9.0",
+        "@emotion/styled": "^11.8.1",
         "@ui-schema/ui-schema": "~0.4.0-alpha",
         "@types/react": "^17.0",
         "immutable": "^4.0.0",
