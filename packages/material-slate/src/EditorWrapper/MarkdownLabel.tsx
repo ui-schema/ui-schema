@@ -1,8 +1,8 @@
 import React from 'react'
-import IconButton from '@material-ui/core/IconButton'
-import Typography from '@material-ui/core/Typography'
-import { Theme } from '@material-ui/core/styles/createTheme'
-import makeStyles from '@material-ui/core/styles/makeStyles'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import { Theme } from '@mui/material/styles/createTheme'
+import makeStyles from "@mui/styles/makeStyles"
 import { Trans } from '@ui-schema/ui-schema/Translate/Trans'
 
 // eslint-disable-next-line react/display-name

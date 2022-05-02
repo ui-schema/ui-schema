@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/dictionary",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "description": "",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -23,7 +23,7 @@
         "immutable": "^4.0.0"
     },
     "peerDependencies": {
-        "@ui-schema/ui-schema": "~0.3.0",
+        "@ui-schema/ui-schema": "~0.3.0 || ~0.4.0-alpha",
         "immutable": "^4.0.0"
     },
     "scripts": {

@@ -1,8 +1,8 @@
 import React from 'react';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import {grey} from '@material-ui/core/colors';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import makeStyles from "@mui/styles/makeStyles";
+import {grey} from '@mui/material/colors';
 import {TransTitle} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component';
 

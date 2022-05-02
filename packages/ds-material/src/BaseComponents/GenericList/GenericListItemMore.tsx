@@ -1,9 +1,9 @@
 import React from 'react'
-import IconButton from '@material-ui/core/IconButton'
+import IconButton from '@mui/material/IconButton'
 import { Trans } from '@ui-schema/ui-schema'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
 import { GenericListItemSharedProps } from '@ui-schema/ds-material'
-import Delete from '@material-ui/icons/Delete'
+import Delete from '@mui/icons-material/Delete'
 import { Map } from 'immutable'
 
 export const GenericListItemMore = (

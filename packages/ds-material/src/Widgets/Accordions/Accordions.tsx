@@ -8,12 +8,12 @@ import {
 } from '@ui-schema/ui-schema'
 import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import Accordion, { AccordionProps } from '@material-ui/core/Accordion'
-import Box from '@material-ui/core/Box'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import Typography, { TypographyProps } from '@material-ui/core/Typography'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import Accordion, { AccordionProps } from '@mui/material/Accordion'
+import Box from '@mui/material/Box'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import Typography, { TypographyProps } from '@mui/material/Typography'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 
 export interface AccordionStackBaseProps {

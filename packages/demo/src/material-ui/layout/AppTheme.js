@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Head from './Head';
-import {createTheme} from '@material-ui/core';
+import {createTheme} from '@mui/material';
 import {ThemerProvider} from '../component/Theme';
+import CssBaseline from '@mui/material/CssBaseline';
 
 const themeDark = createTheme({
     palette: {
-        type: 'dark',
+        mode: 'dark',
         primary: {
-            main: '#05aeca',
-            dark: '#033944',
+            main: '#08b1d7',
+            dark: '#055262',
         },
         secondary: {
             light: '#d8eed4',
@@ -28,19 +29,11 @@ const themeDark = createTheme({
             hoverOpacity: 0.2,
         },
     },
-    overrides: {
-        MuiTypography: {
-            srOnly: {
-                // fix for unnecessary scroll on `html` on some really big pages
-                top: '-999em',
-            },
-        },
-    },
 });
 
 const themeLight = createTheme({
     palette: {
-        type: 'light',
+        mode: 'light',
         primary: {
             main: '#0599b2',
             dark: '#033944',
@@ -52,7 +45,7 @@ const themeLight = createTheme({
         },
         background: {
             paper: '#e8e8e8',
-            default: '#acc9c5',
+            default: '#dae7e5',
         },
         text: {
             primary: '#001f29',
@@ -60,14 +53,6 @@ const themeLight = createTheme({
         },
         action: {
             hoverOpacity: 0.2,
-        },
-    },
-    overrides: {
-        MuiTypography: {
-            srOnly: {
-                // fix for unnecessary scroll on `html` on some really big pages
-                top: '-999em',
-            },
         },
     },
 });
@@ -87,6 +72,7 @@ export default function AppTheme(props) {
             <Head>
                 <meta name="robots" content="noindex,nofollow"/>
             </Head>
+            <CssBaseline/>
             {children}
         </ThemerProvider>
     );

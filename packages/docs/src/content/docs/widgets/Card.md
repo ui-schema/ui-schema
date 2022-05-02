@@ -17,4 +17,4 @@ Widgets for `object` which makes each property an accordion dropdown.
 - `view.titleVariant`, `string`, the used `Typography` variant
 - `view.titleComp`, `string`, the used `Typography` component
 - on property-schema:
-    - `info`, to render the [InfoRenderer](/docs/ds-material/InfoRenderer)
+    - `info`, to render the [InfoRenderer](/docs/ds-material/Component/InfoRenderer)

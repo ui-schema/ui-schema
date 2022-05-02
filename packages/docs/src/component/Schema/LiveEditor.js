@@ -1,13 +1,13 @@
 import React from 'react';
 import {useRouteMatch, useHistory} from 'react-router-dom'
 import {Map, List} from 'immutable'
-import {FormControl, Select, MenuItem, Box, Button, Paper, Typography, useTheme} from '@material-ui/core';
+import {FormControl, Select, MenuItem, Box, Button, Paper, Typography, useTheme} from '@mui/material';
 import {
     DragHandle, Opacity,
     SpeakerNotes, SpeakerNotesOff, Add, Remove,
     Visibility, VisibilityOff,
     FormatSize, FormatShapes, Code, SpaceBar, RestorePage, HorizontalSplit, VerticalSplit,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import {isInvalid, createOrderedMap, UIRootRenderer, createStore, storeUpdater, UIStoreProvider, useUIStore} from '@ui-schema/ui-schema';
 import {RichCodeEditor, themes} from '../RichCodeEditor';
 import {Markdown} from '../Markdown';
@@ -17,8 +17,8 @@ import style from 'codemirror/lib/codemirror.css';
 import themeDark from 'codemirror/theme/duotone-dark.css';
 import themeLight from 'codemirror/theme/duotone-light.css';
 import {WidgetCodeProvider} from '@ui-schema/material-code';
-import LuxonAdapter from '@date-io/luxon';
-import {MuiPickersUtilsProvider} from '@material-ui/pickers';
+// import LuxonAdapter from '@date-io/luxon';
+// import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import {createEmptyStore} from '@ui-schema/ui-schema/UIStore';
 import {KitDndProvider, useOnIntent} from '@ui-schema/kit-dnd';
 import {useOnDirectedMove} from '@ui-schema/material-dnd/useOnDirectedMove';
@@ -493,7 +493,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
     const {onMove} = useOnDirectedMove(onIntent, onChange)
 
     return <WidgetCodeProvider theme={palette.type === 'dark' ? 'duotone-dark' : 'duotone-light'}>
-        <MuiPickersUtilsProvider utils={LuxonAdapter}>
+        {/*<MuiPickersUtilsProvider utils={LuxonAdapter}>*/}
             <KitDndProvider onMove={onMove}>
                 <UIStoreProvider store={store} onChange={onChange} showValidity={showValidity}>
                     <div style={{display: 'flex', flexGrow: 2, overflow: 'auto', flexDirection: verticalSplit ? 'row' : 'column'}}>
@@ -627,7 +627,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
                     </div>
                 </UIStoreProvider>
             </KitDndProvider>
-        </MuiPickersUtilsProvider>
+        {/*</MuiPickersUtilsProvider>*/}
     </WidgetCodeProvider>;
 };
 

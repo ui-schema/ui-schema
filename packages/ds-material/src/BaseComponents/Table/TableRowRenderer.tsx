@@ -1,10 +1,10 @@
 import React from 'react'
 import { memo, OwnKey, PluginStack, SchemaTypesType, schemaTypeToDistinct, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 import { List, OrderedMap, Map } from 'immutable'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import { Theme } from '@material-ui/core/styles/createTheme'
-import TableCell from '@material-ui/core/TableCell'
-import TableRow from '@material-ui/core/TableRow'
+import makeStyles from "@mui/styles/makeStyles"
+import { Theme } from '@mui/material/styles/createTheme'
+import TableCell from '@mui/material/TableCell'
+import TableRow from '@mui/material/TableRow'
 import { TableRowProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
 import { TableRowActionDelete } from '@ui-schema/ds-material/BaseComponents/Table/TableRowActionDelete'
 import { TableCellSchemaImmutable } from '@ui-schema/ds-material/Widgets/Table/TableSchema'
@@ -12,8 +12,8 @@ import { TableCellSchemaImmutable } from '@ui-schema/ds-material/Widgets/Table/T
 const useTableRowStyle = makeStyles<Theme, { dense: boolean }>((theme) => ({
     cell: {
         padding: ({dense}) =>
-            dense ? `${theme.spacing(0)}px ${theme.spacing(0.5)}px` :
-                `${theme.spacing(1)}px ${theme.spacing(1.5)}px`,
+            dense ? `${theme.spacing(0)} ${theme.spacing(0.5)}` :
+                `${theme.spacing(1)} ${theme.spacing(1.5)}`,
         overflow: 'hidden',
     },
     groupRenderer: {

@@ -1,11 +1,10 @@
 import React from 'react'
 import clsx from 'clsx'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import { Theme } from '@material-ui/core/styles/createTheme'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-// @ts-ignore
-import { styles as inputStyles } from '@material-ui/core/Input/Input'
+import makeStyles from '@mui/styles/makeStyles'
+import { Theme } from '@mui/material/styles/createTheme'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
+import { inputClasses } from '@mui/material/Input'
 import { TransTitle, WidgetProps } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '@ui-schema/ds-material'
 import { MarkdownLabel } from '@ui-schema/material-slate/EditorWrapper/MarkdownLabel'
@@ -27,18 +26,16 @@ export const useFormEditorStyles = makeStyles<Theme, { dense: boolean, focused: 
             pointerEvents: ({focused}) => focused ? 'all' : 'none',
             transition: 'opacity 0.25s ease-out',
             margin: 0,
-            padding: '0 ' + theme.spacing(1) + 'px 0 ' + theme.spacing(1) + 'px',
+            padding: '0 ' + theme.spacing(1) + ' 0 ' + theme.spacing(1),
             justifyContent: 'center',
             position: 'absolute',
-            top: ({dense}: { dense?: boolean }) => ((dense ? theme.spacing(2 + 0.375) : theme.spacing(2 + 0.75)) * -1),
+            top: ({dense}: { dense?: boolean }) => ((dense ? theme.spacing((2 + 0.375) * -1) : theme.spacing((2 + 0.75) * -1))),
             left: 0,
             right: 0,
             minHeight: 0,
         },
     },
 }))
-
-const useSlateInputStyles = makeStyles(inputStyles)
 
 export const FormWrapper: React.ComponentType<React.PropsWithChildren<{
     dense: boolean
@@ -66,7 +63,6 @@ export const FormWrapper: React.ComponentType<React.PropsWithChildren<{
         classes,
     }
 ) => {
-    const inputClasses = useSlateInputStyles()
     const hideMd = schema.getIn(['view', 'hideMd'])
     return <FormControl className={classes.wrapper}>
         {!hideMd ?

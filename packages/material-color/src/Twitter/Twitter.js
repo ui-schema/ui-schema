@@ -2,7 +2,7 @@ import {restrictColors} from "../Base/restrictColors";
 import {ColorBase} from "../Base/ColorBase/ColorBase";
 import React from "react";
 import merge from "deepmerge";
-import useTheme from "@material-ui/core/styles/useTheme";
+import useTheme from "@mui/material/styles/useTheme";
 import {TwitterPicker} from 'react-color';
 import {ColorStaticBase} from "../Base/ColorStaticBase/ColorStaticBase";
 

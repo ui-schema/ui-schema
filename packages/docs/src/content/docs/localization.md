@@ -120,7 +120,7 @@ Each design-system includes helper component for error translations, this way yo
 
 ```jsx harmony
 import React from "react";
-import FormHelperText from "@material-ui/core/FormHelperText";
+import FormHelperText from "@mui/material/FormHelperText";
 import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
 
 const LocaleHelperText = ({text, schema, context}) => {
@@ -180,13 +180,13 @@ export const LocalizedGenerator = p =>
     <UIGenerator t={tEN} {...p}/>
 ```
 
-> ❗ the function `makeTranslator` was named `t` up to `v0.2.0-rc.0`, the exported function `t` (not keyword, not property) will be removed in `v0.3.0`
+> ❗ the function `makeTranslator` was named `t` up to `v0.2.0-rc.0`, the exported function `t` (not keyword, not property) was removed in `v0.3.0`
 
 ### Translation in schema
 
 Keyword `t` is not default JSON-Schema, it is a `object` containing multiple or one language with multiple translation keys, which may be nested.
 
-> should work with dynamic properties/values in the future
+> should work with dynamic properties/values in the future [#182](https://github.com/ui-schema/ui-schema/issues/182)
 
 ```json
 {
@@ -243,7 +243,7 @@ npm i --save @ui-schema/dictionary
 
 ```jsx
 import React from 'react';
-import AccountBox from '@material-ui/icons/AccountBox';
+import AccountBox from '@mui/icons-material/AccountBox';
 import {createMap} from '@ui-schema/ui-schema/Utils/createMap'
 import {makeTranslator} from '@ui-schema/ui-schema/Translate/makeTranslator';
 import * as en from '@ui-schema/dictionary/en'

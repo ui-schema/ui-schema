@@ -1,0 +1,13 @@
+{
+    "extends": "../tsconfig.json",
+    "include": [
+        "demo/src",
+        "src"
+    ],
+    "exclude": [
+        "src/**/*.test.*"
+    ],
+    "compilerOptions": {
+        "outDir": "build/dts"
+    }
+}

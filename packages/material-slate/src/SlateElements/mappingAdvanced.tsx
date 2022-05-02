@@ -1,6 +1,6 @@
 import React from 'react'
 import { Transforms } from 'slate'
-import Checkbox from '@material-ui/core/Checkbox'
+import Checkbox from '@mui/material/Checkbox'
 import { ReactEditor, useSlateStatic, useReadOnly } from 'slate-react'
 import { pluginOptions } from '@ui-schema/material-slate/Slate/pluginOptions'
 import { ElementMapping } from '@ui-schema/material-slate/SlateElements/ElementMapper'

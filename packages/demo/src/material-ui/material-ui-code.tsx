@@ -3,7 +3,7 @@ import { DummyRenderer } from './component/MuiMainDummy'
 import { browserT } from '../t'
 import AppTheme from './layout/AppTheme'
 import Dashboard from './dashboard/Dashboard'
-import Grid from '@material-ui/core/Grid'
+import Grid from '@mui/material/Grid'
 import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, widgets } from '@ui-schema/ds-material'
 import { useDummy } from '../component/MainDummy'
 import { schemaCode } from '../schemas/demoSimples'
@@ -22,7 +22,7 @@ import themeMaterial from 'codemirror/theme/darcula.css';*/
 import themeDark from 'codemirror/theme/duotone-dark.css'
 // @ts-ignore
 import themeLight from 'codemirror/theme/duotone-light.css'
-import useTheme from '@material-ui/core/styles/useTheme'
+import useTheme from '@mui/material/styles/useTheme'
 import { CodeSelectable } from '@ui-schema/material-code/CodeSelectable/CodeSelectable'
 import { UIMetaProvider, WidgetsBindingFactory } from '@ui-schema/ui-schema'
 /*import themeMaterial from 'codemirror/theme/gruvbox-dark.css';
@@ -56,9 +56,9 @@ const Main = ({classes = {}}) => {
     const {palette} = useTheme()
 
     useStyle(style)
-    useStyle(palette.type === 'dark' ? themeDark : themeLight)
+    useStyle(palette.mode === 'dark' ? themeDark : themeLight)
 
-    return <WidgetCodeProvider theme={palette.type === 'dark' ? 'duotone-dark' : 'duotone-light'} modes={modes}>
+    return <WidgetCodeProvider theme={palette.mode === 'dark' ? 'duotone-dark' : 'duotone-light'} modes={modes}>
         <Grid item xs={12}>
             <DummyRenderer id={'schemaCode'} open schema={schemaCode} toggleDummy={toggleDummy} getDummy={getDummy} classes={classes}/>
         </Grid>

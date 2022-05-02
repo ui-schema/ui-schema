@@ -8,10 +8,10 @@ import {dataDemoMain, schemaDemoMain, schemaUser} from '../schemas/demoMain';
 import {schemaDemoReferencing, schemaDemoReferencingNetwork, schemaDemoReferencingNetworkB} from '../schemas/demoReferencing';
 import {schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect, schemaNull, schemaSimInteger} from '../schemas/demoSimples';
 import {schemaGrid} from '../schemas/demoGrid';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import {Button} from '@material-ui/core';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import {Button} from '@mui/material';
 import {Step, Stepper, widgets} from '@ui-schema/ds-material';
 import {
     isInvalid, createOrderedMap, createMap,

@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/pro",
-    "version": "0.0.11",
+    "version": "0.0.12",
     "description": "Components and Utilities for more advanced usages of UI-Schema",
     "homepage": "https://ui-schema.bemit.codes/docs/pro",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -32,15 +32,21 @@
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "devDependencies": {
-        "@types/react": "^16.8.6",
+        "@types/react": "^17.0",
         "immutable": "^4.0.0",
-        "react": "^16.12",
-        "react-dom": "^16.12"
+        "react": "^17.0",
+        "react-dom": "^17.0"
     },
     "peerDependencies": {
-        "@ui-schema/ui-schema": "~0.3.0",
+        "@ui-schema/ui-schema": "~0.4.0-alpha",
         "immutable": "^4.0.0",
-        "react": "^16.8 || ^17.0"
+        "react": "^16.8 || ^17.0 || ^18.0",
+        "@types/react": "^16.8 || ^17.0 || ^18.0"
+    },
+    "peerDependenciesMeta": {
+        "@types/react": {
+            "optional": true
+        }
     },
     "publishConfig": {
         "access": "public"

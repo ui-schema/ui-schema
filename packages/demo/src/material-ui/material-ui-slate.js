@@ -1,7 +1,7 @@
 import React from 'react';
 import AppTheme from './layout/AppTheme';
 import Dashboard from './dashboard/Dashboard';
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 import {widgets} from '@ui-schema/ds-material';
 import {RichContent, RichContentInline} from '@ui-schema/material-slate';
 import {schemaDemoSlate, schemaDemoSlateSingle} from '../schemas/demoSlate';

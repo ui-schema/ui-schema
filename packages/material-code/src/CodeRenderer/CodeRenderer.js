@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import {useUID} from 'react-uid';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import {Controlled as CodeMirror} from 'react-codemirror2';
 import {useWidgetCode} from '@ui-schema/material-code/CodeProvider/CodeProvider';
 

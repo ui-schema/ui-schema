@@ -2,7 +2,7 @@ import {restrictColors} from "../Base/restrictColors";
 import {SwatchesPicker} from 'react-color';
 import {ColorBase} from "../Base/ColorBase/ColorBase";
 import React from "react";
-import useTheme from "@material-ui/core/styles/useTheme";
+import useTheme from "@mui/material/styles/useTheme";
 
 export const ColorSwatches = (props) => {
     const {palette} = useTheme();

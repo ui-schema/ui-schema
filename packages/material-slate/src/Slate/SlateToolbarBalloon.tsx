@@ -1,12 +1,12 @@
 import React from 'react'
-import IcBold from '@material-ui/icons/FormatBold'
-import IcItalic from '@material-ui/icons/FormatItalic'
-import IcUnderlined from '@material-ui/icons/FormatUnderlined'
-import IcStrikethrough from '@material-ui/icons/FormatStrikethrough'
-import IcCode from '@material-ui/icons/Code'
+import IcBold from '@mui/icons-material/FormatBold'
+import IcItalic from '@mui/icons-material/FormatItalic'
+import IcUnderlined from '@mui/icons-material/FormatUnderlined'
+import IcStrikethrough from '@mui/icons-material/FormatStrikethrough'
+import IcCode from '@mui/icons-material/Code'
 import { useSlate } from 'slate-react'
-import { Theme } from '@material-ui/core/styles/createTheme'
-import makeStyles from '@material-ui/core/styles/makeStyles'
+import { Theme } from '@mui/material/styles/createTheme'
+import makeStyles from "@mui/styles/makeStyles"
 import {
     MARK_BOLD,
     MARK_ITALIC,

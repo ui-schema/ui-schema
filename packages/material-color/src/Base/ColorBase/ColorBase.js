@@ -1,6 +1,6 @@
 import React from 'react';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Palette from '@material-ui/icons/Palette';
+import InputAdornment from '@mui/material/InputAdornment';
+import Palette from '@mui/icons-material/Palette';
 import {StringRenderer} from '@ui-schema/ds-material';
 import {convertColor} from '../transformers';
 import merge from 'deepmerge';
@@ -59,14 +59,15 @@ export const ColorBase = ({
             onChange={onChange}
             storeKeys={storeKeys}
             inputRef={inputRef}
+            // no longer setting `focus` on elements `setFocus`, as otherwise e.g. `Dialog` can not be cloased again
+            // the dialog is opened because of `onClick`, after closing the dialog, the input is focused automatically
             onClick={() => setHasFocus(true)}
-            onFocus={() => setHasFocus(true)}
             InputProps={InputProps}
             {...props}
         />
 
         {hasFocus ? <PickerWrapper
-            setFocus={() => setHasFocus(false)}
+            setFocus={setHasFocus}
             hasFocus={hasFocus}
         ><ColorPicker
             color={value || ''}

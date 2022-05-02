@@ -1,6 +1,6 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import useTheme from '@material-ui/core/styles/useTheme';
+import Paper from '@mui/material/Paper';
+import useTheme from '@mui/material/styles/useTheme';
 import {ImmutableEditor, themeMaterial} from "react-immutable-editor";
 import {SchemaDebug} from "../../component/SchemaDebug";
 
@@ -10,8 +10,8 @@ const MuiJsonEditor = p => {
         square
         variant={'outlined'}
         style={{
-            margin: theme.spacing(2) + 'px ' + theme.spacing(1) + 'px',
-            padding: '0 ' + theme.spacing(1) + 'px',
+            margin: theme.spacing(2) + ' ' + theme.spacing(1),
+            padding: '0 ' + theme.spacing(1),
         }}
         elevation={0}>
 

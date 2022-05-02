@@ -4,18 +4,16 @@ import clsx from 'clsx'
 import { TransTitle } from '@ui-schema/ui-schema/Translate'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { EditorJS } from '@ui-schema/material-editorjs/EditorJS/EditorJS'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import FormControl from '@material-ui/core/FormControl'
+import makeStyles from '@mui/styles/makeStyles'
+import FormControl from '@mui/material/FormControl'
 import { EditorConfig } from '@editorjs/editorjs'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-// @ts-ignore
-import { styles as inputStyles } from '@material-ui/core/Input/Input'
+import { inputClasses } from '@mui/material/Input'
+import { Theme } from '@mui/material/styles'
 
-import InputLabel from '@material-ui/core/InputLabel'
+import InputLabel from '@mui/material/InputLabel'
 
-const useInputStyles = makeStyles(inputStyles)
-
-export const useEditorStyles = makeStyles(theme => ({
+export const useEditorStyles = makeStyles<Theme>(theme => ({
     wrapper: {
         display: 'flex',
         flexDirection: 'column',
@@ -65,7 +63,6 @@ export const EditorJSWidget = (
     const [empty, setEmpty] = React.useState(true)
     const dense = schema.getIn(['view', 'dense']) as boolean
     const classes = useEditorStyles({dense})
-    const inputClasses = useInputStyles()
 
     return <FormControl className={classes.wrapper}>
         {!hideTitle && !schema.getIn(['view', 'hideTitle']) ?

@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-pickers",
-    "version": "0.3.0",
+    "version": "0.4.0-alpha.0",
     "description": "Date+Time Pickers for UI-Schema with Material-UI",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -34,23 +34,31 @@
         "react-uid": "^2.2.0"
     },
     "devDependencies": {
-        "@types/react": "^16.8.6",
-        "@types/luxon": "^1.26.2",
-        "@material-ui/core": "^4.8",
-        "@material-ui/icons": "^4.8",
-        "@material-ui/pickers": "^3.2.10",
+        "@date-io/luxon": "^2.10.11",
+        "@types/luxon": "^2.3.0",
+        "luxon": "^2.3.0",
+        "@types/react": "^17.0",
+        "@types/react-dom": "^17.0",
+        "@mui/material": "^5.1",
+        "@mui/system": "^5.1",
+        "@mui/icons-material": "^5.1",
+        "@emotion/react": "^11.9.0",
+        "@emotion/styled": "^11.8.1",
+        "@mui/x-date-pickers": "^5.0.0-alpha.0",
+        "@ui-schema/ds-material": "~0.4.0-alpha",
+        "@ui-schema/ui-schema": "~0.4.0-alpha",
         "immutable": "^4.0.0",
-        "react": "^16.12",
-        "react-dom": "^16.12"
+        "react": "^17.0",
+        "scheduler": "^0.18.0",
+        "react-dom": "^17.0"
     },
     "peerDependencies": {
-        "@material-ui/core": "^4.8",
-        "@material-ui/icons": "^4.8",
-        "@material-ui/pickers": "^3.0.0",
-        "@ui-schema/ds-material": "~0.3.0",
-        "@ui-schema/ui-schema": "~0.3.0",
+        "@mui/material": "^5.1",
+        "@mui/x-date-pickers": "^5.0.0-alpha.0",
+        "@ui-schema/ui-schema": "~0.4.0-alpha",
         "immutable": "^4.0.0",
-        "react": "^16.8"
+        "react": "^17.0.2 || ^18.0.0",
+        "react-dom": "^17.0.2 || ^18.0.0"
     },
     "publishConfig": {
         "access": "public"

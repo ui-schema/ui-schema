@@ -6,6 +6,7 @@
 4. Start dev-server: `npm start`
     - (will clean-dist + start demo app)
     - to starts docs app: `npm start -- --serve docs`
+    - to starts picker demo app: `npm start -- --serve pickersDemo`
 5. Open browser on [localhost:4200](http://localhost:4200) for demo, [localhost:4201](http://localhost:4201) for docs
 6. Explore [packages](packages)
 7. Code -> Commit -> Pull Request -> Being Awesome!

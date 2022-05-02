@@ -43,7 +43,7 @@ const widgets = {
 - `view` keywords:
     - `dense`: `true` for a smaller select
 - `info`
-    - to render the [InfoRenderer](/docs/ds-material/InfoRenderer)
+    - to render the [InfoRenderer](/docs/ds-material/Component/InfoRenderer)
 
 **Widgets:**
 

@@ -3,8 +3,8 @@ import { useUIMeta, beautifyKey, WidgetProps, tt, StoreSchemaType, WithScalarVal
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 import React, { MouseEventHandler } from 'react'
-import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
 import { UIMetaReadContextType } from '@ui-schema/ui-schema/UIMetaReadContext'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
 

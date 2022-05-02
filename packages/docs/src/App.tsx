@@ -1,5 +1,6 @@
 import React from 'react'
 import { App } from '@control-ui/app/App'
+import { BrowserRouter } from 'react-router-dom'
 import { I18nProviderContext } from '@control-ui/app/I18nProvider'
 import { routes } from './routes'
 import { DndProvider } from 'react-dnd'
@@ -15,7 +16,10 @@ import { loadSchemaUIApi } from '@ui-schema/ui-schema'
 import { customConsentUi } from './consentUi'
 import { ConsentUiProvider } from '@bemit/consent-ui-react'
 import { pluginGoogle, prepareConsent } from '@bemit/consent-ui'
+import { DocsIndexProvider } from '@control-ui/docs/DocsIndexProvider'
+import { DocsSearchProvider } from '@control-ui/docs/DocsSearchProvider'
 import { CustomLayout } from './component/Layout'
+import { LoadingCircular } from '@control-ui/kit/Loading/LoadingCircular'
 
 const loadSchema: loadSchemaUIApi = (url, versions) => {
     console.log('loadSchema (url, optional versions)', url, versions)
@@ -38,18 +42,29 @@ if (process.env.REACT_APP_G_TAG) {
     })
 }
 
+const indexRefs = {
+    modules: 'docs/index.json',
+    pages: 'docs/index-pages.json',
+}
+
+const docsLoader = (file: string): Promise<string> => import('./content/' + file + '.md')
+
 const Provider: React.ComponentType<React.PropsWithChildren<{}>> = ({children}) => (
     <ConsentUiProvider locale={'en'} definition={customConsentUi} ownId={'bemit'}>
-        <DocsProvider loader={(file: string) => import('./content/docs/' + file + '.md')}>
-            <HeadlinesProvider>
-                <UIApiProvider loadSchema={loadSchema} noCache>
-                    <UIMetaProvider widgets={customWidgets} t={browserT}>
-                        <DndProvider backend={MultiBackend} options={HTML5toTouch}>
-                            {children}
-                        </DndProvider>
-                    </UIMetaProvider>
-                </UIApiProvider>
-            </HeadlinesProvider>
+        <DocsProvider loader={docsLoader}>
+            <DocsIndexProvider indexRefs={indexRefs}>
+                <DocsSearchProvider localKey={'uis-search-history'} bindKey={'k'}>
+                    <HeadlinesProvider>
+                        <UIApiProvider loadSchema={loadSchema} noCache>
+                            <UIMetaProvider widgets={customWidgets} t={browserT}>
+                                <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+                                    {children}
+                                </DndProvider>
+                            </UIMetaProvider>
+                        </UIApiProvider>
+                    </HeadlinesProvider>
+                </DocsSearchProvider>
+            </DocsIndexProvider>
         </DocsProvider>
     </ConsentUiProvider>
 )
@@ -66,12 +81,18 @@ const i18n: I18nProviderContext = {
     expiration: 0,
 }
 
-const CustomApp: React.ComponentType<{}> = () => <App
-    // @ts-ignore
-    routes={routes}
-    Layout={CustomLayout}
-    i18n={i18n}
-    Provider={Provider}
-/>
+// eslint-disable-next-line react/display-name
+export const loading = (title) => (props) => <LoadingCircular {...props} title={title}/>
+const readyRoutes = routes(loading)
+const CustomApp: React.ComponentType<{}> = () =>
+    <BrowserRouter basename={'/'}>
+        <App
+            // @ts-ignore
+            routes={readyRoutes}
+            Layout={CustomLayout}
+            i18n={i18n}
+            Provider={Provider}
+        />
+    </BrowserRouter>
 
 export default CustomApp

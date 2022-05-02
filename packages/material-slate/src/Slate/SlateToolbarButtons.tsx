@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useSlate } from 'slate-react'
-import ToggleButton from '@material-ui/lab/ToggleButton'
+import ToggleButton from '@mui/lab/ToggleButton'
 import {
     getPreventDefaultHandler,
     someNode, toggleNodeType,

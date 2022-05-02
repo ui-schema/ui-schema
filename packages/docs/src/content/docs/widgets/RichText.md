@@ -70,7 +70,7 @@ Supports extra keywords:
     - `editor.hideBalloon`: when `true` doesn't show the balloon toolbar
 
 ```bash
-npm i --save @ui-schema/material-slate @material-ui/lab slate slate-react slate-history slate-hyperscript styled-components @udecode/slate-plugins
+npm i --save @ui-schema/material-slate @mui/lab slate slate-react slate-history slate-hyperscript styled-components @udecode/slate-plugins
 ```
 
 > needs ~0.60 of slate packages and ~0.75 of @udecode/slate-plugins

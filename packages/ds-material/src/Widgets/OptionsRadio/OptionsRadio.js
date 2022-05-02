@@ -2,7 +2,7 @@ import React from 'react';
 import {Map, List} from 'immutable';
 import {
     FormControl, FormLabel, FormControlLabel, RadioGroup, Radio,
-} from '@material-ui/core';
+} from '@mui/material';
 import {TransTitle, Trans, beautifyKey} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
 import {getTranslatableEnum} from '@ui-schema/ui-schema/Translate';

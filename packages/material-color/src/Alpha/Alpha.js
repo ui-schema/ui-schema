@@ -1,4 +1,4 @@
-import useTheme from "@material-ui/core/styles/useTheme";
+import useTheme from "@mui/material/styles/useTheme";
 import {ColorBase} from "../Base/ColorBase/ColorBase";
 import React from "react";
 import {styleWrapper} from "../styleWrapper";

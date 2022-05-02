@@ -6,11 +6,11 @@ import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/sc
 import { mapSchema } from '@ui-schema/ui-schema/Utils/schemaToNative'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
-import InputBase, { InputBaseProps, InputBaseComponentProps } from '@material-ui/core/InputBase'
-import Typography from '@material-ui/core/Typography'
+import InputBase, { InputBaseProps, InputBaseComponentProps } from '@mui/material/InputBase'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
 import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
+import { visuallyHidden } from '@mui/utils'
 
 export interface StringRendererCellProps {
     type?: string
@@ -82,9 +82,9 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBindin
     }
     const InfoRenderer = widgets?.InfoRenderer
     return <>
-        {!labelledBy ? <Typography component={'span'} variant={'srOnly'} id={inputProps['aria-labelledby']}>
+        {!labelledBy ? <span style={visuallyHidden} id={inputProps['aria-labelledby']}>
             <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
-        </Typography> : null}
+        </span> : null}
         <InputBase
             type={format || type}
             disabled={schema.get('readOnly') as boolean}
@@ -93,7 +93,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBindin
             error={!valid && showValidity}
             rows={rows}
             inputRef={inputRef}
-            rowsMax={rowsMax}
+            maxRows={rowsMax}
             fullWidth
             margin={schema.getIn(['view', 'margin']) as InputBaseProps['margin']}
             value={typeof value === 'string' || typeof value === 'number' ? value : ''}

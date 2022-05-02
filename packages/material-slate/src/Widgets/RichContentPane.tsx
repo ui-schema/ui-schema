@@ -1,5 +1,5 @@
 import React from 'react'
-import { ClassNameMap } from '@material-ui/styles/withStyles'
+import { ClassNameMap } from '@mui/styles/withStyles'
 import { extractValue, memo, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 import { SlateRenderer } from '@ui-schema/material-slate/Slate/SlateRenderer'
 import { ElementMapper } from '@ui-schema/material-slate/SlateElements/ElementMapper'

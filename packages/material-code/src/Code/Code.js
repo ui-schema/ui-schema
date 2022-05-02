@@ -1,6 +1,6 @@
 import React from 'react';
 import {beautifyKey, Trans} from '@ui-schema/ui-schema';
-import FormLabel from '@material-ui/core/FormLabel';
+import FormLabel from '@mui/material/FormLabel';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
 import {CodeRenderer} from '@ui-schema/material-code/CodeRenderer';
 

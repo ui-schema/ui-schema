@@ -14,17 +14,12 @@ import { pluginStack } from './pluginStack'
 import { WidgetRenderer } from '@ui-schema/ui-schema/WidgetRenderer'
 import { validators } from '@ui-schema/ui-schema/Validators/validators'
 import { CardRenderer, FormGroup, LabelBox } from '@ui-schema/ds-material/Widgets'
-import { ErrorFallbackProps, UIStoreActions, WidgetProps, WidgetsBindingFactory, WidgetType, WithScalarValue } from '@ui-schema/ui-schema'
+import { WidgetProps, WidgetType } from '@ui-schema/ui-schema/Widget'
+import { UIStoreActions } from '@ui-schema/ui-schema/UIStoreActions'
+import { WithScalarValue } from '@ui-schema/ui-schema/UIStore'
+import { WidgetsBindingFactory } from '@ui-schema/ui-schema/WidgetsBinding'
 import { InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
-import { List } from 'immutable'
-
-const MyFallbackComponent: React.ComponentType<ErrorFallbackProps> = ({type, widget}) => (
-    <div>
-        <p><strong>System Error in Widget!</strong></p>
-        <p><strong>Type:</strong> {List.isList(type) ? type.join(', ') : (type || '-')}</p>
-        <p><strong>Widget:</strong> {widget || '-'}</p>
-    </div>
-)
+import { ErrorFallback } from '@ui-schema/ds-material/ErrorFallback'
 
 export interface MuiWidgetsBindingTypes<C extends {} = {}, W extends MuiWidgetBinding = MuiWidgetBinding> {
     string: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
@@ -44,7 +39,7 @@ export interface MuiWidgetBindingExtra {
 export type MuiWidgetBinding<C extends {} = {}> = WidgetsBindingFactory<MuiWidgetBindingExtra, MuiWidgetsBindingTypes<C>, MuiWidgetsBindingCustom<C>>
 
 export const widgets: MuiWidgetBinding = {
-    ErrorFallback: MyFallbackComponent,
+    ErrorFallback: ErrorFallback,
     RootRenderer,
     GroupRenderer,
     WidgetRenderer,

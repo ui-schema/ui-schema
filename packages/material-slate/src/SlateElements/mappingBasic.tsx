@@ -1,12 +1,13 @@
 import React from 'react'
 import { pluginOptions } from '@ui-schema/material-slate/Slate/pluginOptions'
-import Typography from '@material-ui/core/Typography'
-import makeStyles from '@material-ui/core/styles/makeStyles'
+import Typography from '@mui/material/Typography'
+import makeStyles from "@mui/styles/makeStyles"
 import { ElementMapping } from '@ui-schema/material-slate/SlateElements/ElementMapper'
+import { Theme } from '@mui/material/styles/createTheme'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles<Theme>(theme => ({
     quote: {
-        padding: theme.spacing(1) + 'px ' + theme.spacing(2) + 'px ' + theme.spacing(0.5) + 'px ' + theme.spacing(2) + 'px',
+        padding: theme.spacing(1) + ' ' + theme.spacing(2) + ' ' + theme.spacing(0.5) + ' ' + theme.spacing(2),
         position: 'relative',
         borderLeft: '0 solid ' + theme.palette.divider,
         '&:before': {

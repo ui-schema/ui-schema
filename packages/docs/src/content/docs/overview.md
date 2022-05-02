@@ -8,7 +8,7 @@ It is possible to connect any design system, included or planned support:
 
 | Package      | Based on            | Status |
 | :---         | :---                 | ---: |
-| `@ui-schema/ds-material`  | [@material-ui/core (MUI)](https://material-ui.com/) to use [Material Design](https://material.io/) | ✅ |
+| `@ui-schema/ds-material`  | [@mui/material (MUI)](https://material-ui.com/) to use [Material Design](https://material.io/) | ✅ |
 | `@ui-schema/ds-bootstrap` | [bootstrap (BTS)](https://getbootstrap.com/) semantic HTMLs to use with any Bootstrap theme | ✅ |
 | `@ui-schema/ds-blueprint` | [blueprintjs (BPT)](https://blueprintjs.com/docs/) | 🔵 |
 | `@ui-schema/ds-semanticui` | [semantic-ui (SUI)](https://react.semantic-ui.com/usage/) | 🔵 |
@@ -73,9 +73,9 @@ Custom widgets for `widget`, special UIs and specific type handling:
 |:------------------------------|:-------------------------------------------------------------------------------------|:-------------------------------------------------------------|:---:|:---:|----:|
 | `Text`                        | [multiline text](/docs/widgets/TextField)                                            | `string`                                                     |  ✅  |  ✅  |  🔵 |
 | `NumberSlider`                | [slider as input](/docs/widgets/NumberSlider)                                        | `number`<br>`array(number)`<br>`integer`<br>`array(integer)` |  ✅  | 🔵  |  🔵 |
-| `Date`                        | [date selector](/docs/widgets/DateTimePickers)                                       | `string`                                                     |  ✅  | 🔵  |  🔵 |
-| `DateTime`                    | [date and time selector](/docs/widgets/DateTimePickers)                              | `string`                                                     |  ✅  | 🔵  |  🔵 |
-| `Time`                        | [time selector](/docs/widgets/DateTimePickers)                                       | `string`                                                     |  ✅  | 🔵  |  🔵 |
+| `Date`                        | [date selector](/docs/material-pickers/Overview)                                       | `string`                                                     |  ✅  | 🔵  |  🔵 |
+| `DateTime`                    | [date and time selector](/docs/material-pickers/Overview)                              | `string`                                                     |  ✅  | 🔵  |  🔵 |
+| `Time`                        | [time selector](/docs/material-pickers/Overview)                                       | `string`                                                     |  ✅  | 🔵  |  🔵 |
 | `Color`                       | [color selector](/docs/widgets/Color)                                                | `string`                                                     |  ✅  | 🔵  |  🔵 |
 | `StringIcon`                  | [input + icon, normal text](/docs/widgets/TextField)                                 | `string`                                                     |  ✅  | 🔵  |  🔵 |
 | `TextIcon`                    | [input + icon, multiline text](/docs/widgets/TextField)                              | `string`                                                     |  ✅  | 🔵  |  🔵 |

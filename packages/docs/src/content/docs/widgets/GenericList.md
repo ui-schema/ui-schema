@@ -45,7 +45,7 @@ const widgets = {
 - `notAddable` when `true` doesn't allow adding items
 - `notSortable` when `true` doesn't allow sorting of items
 - `info`
-    - to render the [InfoRenderer](/docs/ds-material/InfoRenderer)
+    - to render the [InfoRenderer](/docs/ds-material/Component/InfoRenderer)
 
 **Widgets:**
 

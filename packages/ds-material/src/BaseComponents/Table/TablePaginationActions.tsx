@@ -1,15 +1,16 @@
 import React from 'react'
-import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles'
-import IconButton from '@material-ui/core/IconButton'
-import FirstPageIcon from '@material-ui/icons/FirstPage'
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
-import LastPageIcon from '@material-ui/icons/LastPage'
+import { useTheme, Theme, createStyles } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import IconButton from '@mui/material/IconButton'
+import FirstPageIcon from '@mui/icons-material/FirstPage'
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
+import LastPageIcon from '@mui/icons-material/LastPage'
 import { AccessTooltipIcon } from '@ui-schema/ds-material'
 import { Trans } from '@ui-schema/ui-schema'
-import { TablePaginationActionsProps } from '@material-ui/core/TablePagination/TablePaginationActions'
+import { TablePaginationActionsProps } from '@mui/material/TablePagination/TablePaginationActions'
 
-const useStyles1 = makeStyles((theme: Theme) =>
+const useStyles1 = makeStyles<Theme>((theme: Theme) =>
     createStyles({
         root: {
             flexShrink: 0,

@@ -15,7 +15,7 @@ export function withTable<P extends {}>(Component: React.ComponentType<P & Table
         const {errors, valid} = useTable()
         return <Component valid={valid} errors={errors} {...p}/>
     }
-    WithTable.displayName = `ExtractValidity(${getDisplayName(Component)})`
+    WithTable.displayName = `WithTable(${getDisplayName(Component)})`
     return WithTable
 }
 

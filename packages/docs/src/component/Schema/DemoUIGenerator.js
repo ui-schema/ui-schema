@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Box, Typography, useTheme} from '@material-ui/core';
+import {Button, Box, Typography, useTheme} from '@mui/material';
 import {createOrderedMap, UIRootRenderer, createEmptyStore, storeUpdater} from '@ui-schema/ui-schema';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter';
 import {UIStoreProvider} from '@ui-schema/ui-schema/UIStore';
@@ -8,8 +8,8 @@ import style from 'codemirror/lib/codemirror.css';
 import themeDark from 'codemirror/theme/duotone-dark.css';
 import themeLight from 'codemirror/theme/duotone-light.css';
 import {WidgetCodeProvider} from '@ui-schema/material-code';
-import LuxonAdapter from '@date-io/luxon';
-import {MuiPickersUtilsProvider} from '@material-ui/pickers';
+// import LuxonAdapter from '@date-io/luxon';
+// import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import {KitDndProvider, useOnIntent} from '@ui-schema/kit-dnd';
 import {useOnDirectedMove} from '@ui-schema/material-dnd/useOnDirectedMove';
 
@@ -62,7 +62,7 @@ const modes = {
     },
 }
 
-const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, split = true, uiStyle}) => {
+const DemoUIGenerator = ({activeSchema, id = '0', onClick = undefined, showDebugger = true, split = true, uiStyle = undefined}) => {
     const [jsonError, setJsonError] = React.useState(false);
     const [maxLines /*setMaxLines*/] = React.useState(15);
     const {palette} = useTheme();
@@ -106,36 +106,36 @@ const DemoUIGenerator = ({activeSchema, id = 0, onClick, showDebugger = true, sp
             theme={palette.type === 'dark' ? 'duotone-dark' : 'duotone-light'}
             modes={modes}
         >
-            <MuiPickersUtilsProvider utils={LuxonAdapter}>
-                <KitDndProvider onMove={onMove}>
-                    <UIStoreProvider
-                        store={store}
-                        onChange={onChange}
-                        showValidity={showValidity}
-                    >
-                        {showDebugger && !split ?
-                            <DebugSchemaEditor
-                                schema={schema} setSchema={setSchema}
-                                setJsonError={setJsonError} richIde
-                                enableShowAll={!split} split={split}
-                                id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
-                            /> : null}
+            {/*<MuiPickersUtilsProvider utils={LuxonAdapter}>*/}
+            <KitDndProvider onMove={onMove}>
+                <UIStoreProvider
+                    store={store}
+                    onChange={onChange}
+                    showValidity={showValidity}
+                >
+                    {showDebugger && !split ?
+                        <DebugSchemaEditor
+                            schema={schema} setSchema={setSchema}
+                            setJsonError={setJsonError} richIde
+                            enableShowAll={!split} split={split}
+                            id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
+                        /> : null}
 
-                        {jsonError ?
-                            <Box style={{margin: '0 12px 0 12px'}}>
-                                <Typography component={'h2'} variant={'h6'} color={'error'}>
-                                    JSON-Error:
-                                </Typography>
+                    {jsonError ?
+                        <Box style={{margin: '0 12px 0 12px'}}>
+                            <Typography component={'h2'} variant={'h6'} color={'error'}>
+                                JSON-Error:
+                            </Typography>
 
-                                <Typography component={'p'} variant={'subtitle1'}>
-                                    {jsonError.replace('SyntaxError: JSON.parse: ', '')}
-                                </Typography>
-                            </Box> : null}
+                            <Typography component={'p'} variant={'subtitle1'}>
+                                {jsonError.replace('SyntaxError: JSON.parse: ', '')}
+                            </Typography>
+                        </Box> : null}
 
-                        {typeof schema === 'string' || !store ? null : <UIRootRenderer schema={schema}/>}
-                    </UIStoreProvider>
-                </KitDndProvider>
-            </MuiPickersUtilsProvider>
+                    {typeof schema === 'string' || !store ? null : <UIRootRenderer schema={schema}/>}
+                </UIStoreProvider>
+            </KitDndProvider>
+            {/*</MuiPickersUtilsProvider>*/}
         </WidgetCodeProvider>
 
         {typeof schema === 'string' ? null :

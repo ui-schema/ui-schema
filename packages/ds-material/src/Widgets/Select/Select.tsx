@@ -4,7 +4,7 @@ import { useUID } from 'react-uid'
 import {
     FormControl, InputLabel,
     MenuItem, Select as MuiSelect,
-} from '@material-ui/core'
+} from '@mui/material'
 import { TransTitle, Trans, beautifyKey, WidgetProps, tt, StoreSchemaType, WithScalarValue } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { getTranslatableEnum } from '@ui-schema/ui-schema/Translate'

@@ -30,15 +30,18 @@ import { relTranslator } from '@ui-schema/ui-schema/Translate/relT'
  * - checking basic error pass through
  *
  * todo: test on details and behaviour instead of only does-render-stuff
+ *
+ * npm test -- --testPathPattern=UIRenderer.test.tsx -u
  */
 
 expect.extend({toBeInTheDocument, toHaveClass})
 const widgets = MockWidgets
+// todo: add custom ErrorFallback, otherwise some errors may be catched there - and the test will not fail
 
 // eslint-disable-next-line react/display-name
 widgets.RootRenderer = (props: PropsWithChildren<any>): React.ReactElement => <div className={'root-renderer'}>{props.children}</div>
 // eslint-disable-next-line react/display-name
-widgets.GroupRenderer = (props: PropsWithChildren<any>): React.ReactElement => <div className={'group-renderer'}>{props.children}</div>
+widgets.GroupRenderer = ({children}): React.ReactElement => <div className={'group-renderer'}>{children}</div>
 widgets.pluginStack = [
     // plugin to have every widget in it's own div - to query against in tests
     (props) => <div><NextPluginRenderer {...props}/></div>,
@@ -236,12 +239,14 @@ describe('UIGenerator Integration', () => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer noStore/>
         )
+        // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-renderer').length).toBe(1)
-        expect(container.querySelectorAll('.group-renderer').length).toBe(0)
+        expect(container.querySelectorAll('.group-renderer').length).toBe(2)
 
         expect(queryByText('Demo String')).toBe(null)
-        expect(queryByText('widget.demo_string.title')).toBe(null)
-        expect(queryAllByText('string-renderer').length).toBe(0)
+        expect(queryByText('widget.demo_string.title') !== null).toBeTruthy()
+        expect(queryAllByText('string-renderer').length).toBe(2)
+        expect(queryByText('store-is-invalid') !== null).toBeTruthy()
     })
     it('TestUIRenderer not `t`', async () => {
         const {queryByText, queryAllByText, container} = render(

@@ -1,9 +1,9 @@
 import React from 'react'
 import { TransTitle, WidgetProps } from '@ui-schema/ui-schema'
 import { ObjectRenderer } from '@ui-schema/ui-schema/ObjectRenderer'
-import Card, { CardProps } from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import Typography, { TypographyProps } from '@material-ui/core/Typography'
+import Card, { CardProps } from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Typography, { TypographyProps } from '@mui/material/Typography'
 
 export const CardRenderer = (props: WidgetProps): React.ReactElement => {
     const {schema, storeKeys, ownKey} = props
