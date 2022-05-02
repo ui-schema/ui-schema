@@ -10,11 +10,11 @@ Built with the ReactJS native [render flow](https://reactjs.org/docs/state-and-l
 
 Rendering [atomic conditional](https://reactjs.org/docs/conditional-rendering.html) and [pure](https://medium.com/technofunnel/working-with-react-pure-components-166ded26ae48) wrapper components around single schema levels. Forming a [typical AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) by the [happy path according to schema & data](#happy-path).
 
-A lot of [component composition](https://www.robinwieruch.de/react-component-composition) by the `PluginStack`, around `WidgetOverride` or/and the [`widgets` binding](/docs/widgets#create-design-system-binding) to get / specify the needed custom react components for each usage, thus nearly no HTML/output inside the core.
+A lot of [component composition](https://www.robinwieruch.de/react-component-composition) by the `PluginStack`, around `WidgetOverride` or/and the [`widgets` binding](/docs/widgets#create-design-system-binding) to get / specify the needed custom react components for each usage, thus there is [no HTML-output inside the core](#output-in-core).
 
 Custom [`React.Context` / Providers](https://reactjs.org/docs/context.html) are used for handling store updates and extracting with special [HOCs](https://reactjs.org/docs/higher-order-components.html) (connecting `store` to `props`), but enabling `store`/`state` management by typical stuff like `React.useState`, `React.useReducer` or redux reducers.
 
-Using an additional [props plugins system](/docs/core-pluginstack#simple-plugins) for a shallower component tree of e.g. validators.
+Using an additional [plugins system based on props](/docs/core-pluginstack#simple-plugins) for a shallower component tree of e.g. validators.
 
 ## Widgets & Component Plugins
 
@@ -34,7 +34,7 @@ A plugin or widget can use more than only it's own schema/store level in various
 
 Special entry point components start the UI Rendering, connecting to and/or creating some contexts & providers and/or relying on given props to do something, according to their definite position in `schema` and data (`storeKeys`).
 
-See [flowchart of @ui-schema/ui-schema](/docs/core#flowchart), textual example: `UIMetaProvider` > `UIStoreProvider` > `UIRootRenderer` > `widgets.RootRenderer` > `PluginStack` > optional `ErrorBoundary` with `widgets.ErrorFallback` > `widgets.pluginStack` including `widgets.simplePuginStack` > `WidgetRenderer` > widget matching > `WidgetRenderer` > actual `Widget`.
+See [flowchart of @ui-schema/ui-schema](/docs/core#flowchart), textual example: `UIMetaProvider` > `UIStoreProvider` > `UIRootRenderer` > `widgets.RootRenderer` > `PluginStack` > optional `ErrorBoundary` with `widgets.ErrorFallback` > `widgets.pluginStack` including `widgets.simplePuginStack` > `WidgetRenderer` > widget matching > actual `Widget`.
 
 ### Happy Path
 
@@ -67,9 +67,11 @@ For some JSON-Schema keywords / keyword combinations it can not exactly know wha
 
 Together with cases like: `deleteOnEmpty` within `array` [issue #106](https://github.com/ui-schema/ui-schema/issues/106), the happy-path also influences what data store updates really do.
 
-### HTML in Core
+### Output in Core
 
-These are the only positions where `@ui-schema/ui-schema` renders HTML/text directly, most can be replaced with a widgets binding.
+These are the only positions where `@ui-schema/ui-schema` renders output directly.
 
-- in `widgetMatcher` (and thus also `WidgetRenderer`) the `NoWidget` renders an empty fragment when no widget is matching
-- in `Plugins/ReferencingHandler` the `Trans` component is rendered with `labels.loading` and fallback `Loading` while missing schemas are loaded AND it is not virtual
+- error info in `widgetMatcher` (and thus also `WidgetRenderer`) renders an empty fragment with `missing-*` text when no widget is matching
+    - can be changed with a custom `WidgetRenderer` and the prop-component `NoWidget`, bind the custom renderer to `widgets.WidgetRenderer`
+- loading info in `Plugins/ReferencingHandler`while missing schemas are loaded AND it is not virtual
+    - the `Trans` component is rendered with `labels.loading` and with fallback text `Loading`

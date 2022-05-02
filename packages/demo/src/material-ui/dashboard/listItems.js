@@ -1,15 +1,15 @@
 import React from 'react';
 import {NavLink as Link} from 'react-router-dom';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIc from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import WidgetsIcon from '@material-ui/icons/Widgets';
-import LayersIcon from '@material-ui/icons/Layers';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import IcCode from '@material-ui/icons/Code';
-import {makeStyles} from '@material-ui/core';
+import ListItem from '@mui/material/ListItem';
+import ListItemIc from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import WidgetsIcon from '@mui/icons-material/Widgets';
+import LayersIcon from '@mui/icons-material/Layers';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import IcCode from '@mui/icons-material/Code';
+import makeStyles from '@mui/styles/makeStyles'
 import {routesThemes} from '../../routes';
 
 const useListItemStyles = makeStyles(theme => ({

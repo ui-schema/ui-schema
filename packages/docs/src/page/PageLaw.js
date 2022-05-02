@@ -1,11 +1,11 @@
-import React from "react";
-import {Paper,} from "@material-ui/core";
-import {PageContent} from "@control-ui/kit/PageContent";
-import {Head} from "@control-ui/kit/Head";
+import React from 'react';
+import {Paper} from '@mui/material';
+import {PageContent} from '@control-ui/kit/PageContent';
+import {HeadMeta} from '@control-ui/kit/HeadMeta';
 
 const DocsHandler = ({children}) => {
     return <>
-        <Head title={'UI-Schema'}/>
+        <HeadMeta title={'UI-Schema'}/>
         <PageContent>
             <Paper elevation={4} style={{margin: 12, padding: 24}}>
                 {children}

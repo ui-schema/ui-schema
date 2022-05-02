@@ -1,20 +1,20 @@
 import React from 'react';
 import clsx from 'clsx';
-import {darken, makeStyles} from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
-import MenuIcon from '@material-ui/icons/Menu';
-import InvertColorsIcon from '@material-ui/icons/InvertColors';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import {darken} from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import Badge from '@mui/material/Badge';
+import MenuIcon from '@mui/icons-material/Menu';
+import InvertColorsIcon from '@mui/icons-material/InvertColors';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import {AppDrawer} from "../layout/Drawer";
 import {Main} from "../layout/Main";
 import {useThemer} from "../component/Theme";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import {blueGrey} from "@material-ui/core/colors";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import {blueGrey} from "@mui/material/colors";
 
 const drawerWidth = 240;
 
@@ -128,7 +128,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Dashboard(props) {
     const classes = useStyles();
-    const {switchTheme} = useThemer();
+    const switchTheme = useThemer();
     const [open, setOpen] = React.useState(true);
 
     const handleDrawerOpen = () => {
@@ -140,7 +140,6 @@ export default function Dashboard(props) {
 
     return (
         <div className={classes.root}>
-            <CssBaseline/>
             <div className={classes.rootAppBar}>
                 <div className={classes.toolbarIcon} style={{marginLeft: '176px'}}>
                     <IconButton onClick={handleDrawerClose}>

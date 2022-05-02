@@ -1,14 +1,14 @@
 import React from 'react'
 import {
     FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox,
-} from '@material-ui/core'
+} from '@mui/material'
 import { Map, List, OrderedMap } from 'immutable'
 import { TransTitle, Trans, beautifyKey, extractValue, memo, WidgetProps, StoreKeys, WithValue, tt, StoreSchemaType } from '@ui-schema/ui-schema'
 import { useUID } from 'react-uid'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
 import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
-import { SwitchBaseProps } from '@material-ui/core/internal/SwitchBase'
+import { SwitchBaseProps } from '@mui/material/internal/SwitchBase'
 
 const OptionCheck: React.ComponentType<{
     disabled?: boolean

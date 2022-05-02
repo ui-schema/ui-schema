@@ -1,13 +1,13 @@
 import React from 'react'
 import { beautifyKey, extractValue, memo, StoreSchemaType, Trans, tt, useUIMeta, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
-import Chip from '@material-ui/core/Chip'
-import Box from '@material-ui/core/Box'
+import Chip from '@mui/material/Chip'
+import Box from '@mui/material/Box'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 import { List, Map, OrderedMap } from 'immutable'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
 import { UIMetaReadContextType } from '@ui-schema/ui-schema/UIMetaReadContext'
-import Typography from '@material-ui/core/Typography'
+import Typography from '@mui/material/Typography'
 
 export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue> = (
     {
@@ -52,7 +52,7 @@ export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetBindi
                         />}
                         style={{marginRight: 4, marginBottom: readDense ? 2 : 4}}
                         size={!readDense && schema.getIn(['view', 'size']) === 'medium' ? 'medium' : 'small'}
-                        variant={'default'}
+                        variant={'filled'}
                         color={'primary'}
                     />
                 ).valueSeq() :

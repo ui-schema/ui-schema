@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/kit-dnd",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "Drag and Drop Tools for (not only) UI-Schema",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -32,12 +32,14 @@
     },
     "devDependencies": {
         "immutable": "^4.0.0",
-        "react": "^16.12",
+        "@types/react": "^17.0",
+        "react": "^17.0",
         "react-dnd": "^14.0.0"
     },
     "peerDependencies": {
         "immutable": "^4.0.0",
-        "react": "^16.8 || ^17.0",
+        "@types/react": "^16.8 || ^17.0 || ^18.0",
+        "react": "^16.8 || ^17.0 || ^18.0",
         "react-dnd": "^14.0.0"
     },
     "publishConfig": {

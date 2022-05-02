@@ -1,5 +1,5 @@
 import React from 'react';
-import {Typography, useTheme} from '@material-ui/core';
+import {Typography, useTheme} from '@mui/material';
 import {RichCodeEditor, supportedModes} from './RichCodeEditor';
 import DemoUIGenerator from './Schema/DemoUIGenerator';
 

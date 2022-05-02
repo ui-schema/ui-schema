@@ -1,9 +1,9 @@
 import React from 'react'
 import { List, Map } from 'immutable'
 import { OwnKey, SchemaTypesType, schemaTypeToDistinct, TransTitle } from '@ui-schema/ui-schema'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
+import TableCell from '@mui/material/TableCell'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
 import { TableHeaderProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
 import { TableCellSchemaImmutable } from '@ui-schema/ds-material/Widgets/Table/TableSchema'
 

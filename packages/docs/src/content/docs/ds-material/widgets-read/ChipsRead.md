@@ -23,7 +23,7 @@ const widgets = {
 
 - `view`
     - `hideTitle`
-- `info` to render the [InfoRenderer](/docs/ds-material/InfoRenderer)
+- `info` to render the [InfoRenderer](/docs/ds-material/Component/InfoRenderer)
 
 **Widgets:**
 

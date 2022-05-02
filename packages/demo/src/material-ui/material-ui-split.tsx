@@ -1,8 +1,8 @@
 import React from 'react'
 import AppTheme from './layout/AppTheme'
 import Dashboard from './dashboard/Dashboard'
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
+import Grid from '@mui/material/Grid'
+import Button from '@mui/material/Button'
 import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, Step, Stepper, widgets } from '@ui-schema/ds-material'
 import {
     createOrderedMap,

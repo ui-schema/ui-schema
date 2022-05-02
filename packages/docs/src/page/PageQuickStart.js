@@ -1,11 +1,11 @@
 import React from 'react';
-import {Typography, Box, Grid, Button, Paper} from '@material-ui/core';
+import {Typography, Box, Grid, Button, Paper} from '@mui/material';
 import {Markdown} from '../component/Markdown';
 import DemoUIGenerator from '../component/Schema/DemoUIGenerator';
 import {RichCodeEditor} from '../component/RichCodeEditor';
 import {useHistory} from 'react-router-dom';
 import {HeadlineMenu} from '@control-ui/docs/LinkableHeadline';
-import {Head} from '@control-ui/kit/Head';
+import {HeadMeta} from '@control-ui/kit/HeadMeta';
 import {PageBox, PageContent} from '@control-ui/kit/PageContent';
 import {LoadingCircular} from '@control-ui/kit/Loading/LoadingCircular';
 
@@ -47,7 +47,7 @@ const PageQuickStart = () => {
     }, [hash]);
 
     return <>
-        <Head
+        <HeadMeta
             title={'Quick-Start UI-Schema'}
             description={'In 6 steps to a React form that sends data to an API! Build with JSON-Schema and Material-UI or Bootstrap'}
         />
@@ -80,7 +80,7 @@ See the [**list of widgets**](/docs/overview#widget-list) for the different desi
                     </Grid>
                 </Grid>
 
-                <HeadlineMenu initial disableNavLink/>
+                <HeadlineMenu initial disableNavLink onClickKeepOpen/>
             </PageBox>
 
             <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
@@ -100,17 +100,25 @@ First select the design-system and install ui-schema and dependencies.
                     <Grid item xs={12} style={{marginTop: 24}}>
                         {ds === 'mui' ? <Markdown content source={`
 \`\`\`bash
-npm i --save @ui-schema/ui-schema immutable @ui-schema/ds-material @material-ui/core @material-ui/icons
+npm i --save @ui-schema/ui-schema immutable \\
+    @ui-schema/ds-material \\
+    @mui/material @mui/styles @mui/icons-material
 \`\`\`
 
 > for version constraints [check the ds-material/package.json](https://github.com/ui-schema/ui-schema/blob/master/packages/ds-material/package.json)
+
+> first time with MUI? [head to the mui.com quick start](https://mui.com/material-ui/getting-started/installation/)
+>
+> - ds-material@v0.3.0 supports \`@material-core\`
+> - 🚧 ds-material@v0.4.0.alpha uses  \`@mui/material\` and requires currently \`@mui/styles\`
 
 > there's also a [create-react-app demo](https://github.com/ui-schema/demo-cra)
 `}/> :
                             ds === 'bts' ? <Markdown content source={`
 > no priority currently for bootstrap widgets development, but happy about PRs
 \`\`\`bash
-npm i --save @ui-schema/ui-schema immutable @ui-schema/ds-bootstrap bootstrap
+npm i --save @ui-schema/ui-schema immutable \\
+    @ui-schema/ds-bootstrap bootstrap
 \`\`\`
 `}/> :
                                 'unsupported'

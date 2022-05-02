@@ -69,7 +69,7 @@ export interface UISchema {
         // only for some widgets; margin bottom
         mb?: number
     }
-    // only for some widgets; https://ui-schema.bemit.codes/docs/widgets/DateTimePickers
+    // only for some widgets; https://ui-schema.bemit.codes/docs/material-pickers/Overview
     date?: {
         // format used to display
         format?: string

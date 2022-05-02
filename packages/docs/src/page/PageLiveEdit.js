@@ -1,10 +1,10 @@
 import React from "react";
-import {Head} from "@control-ui/kit/Head";
+import {HeadMeta} from "@control-ui/kit/HeadMeta";
 import LiveEditor from '../component/Schema/LiveEditor'
 
 function PageLiveEdit() {
     return <>
-        <Head
+        <HeadMeta
             title={'Examples and Live-Editor · UI-Schema'}
             description={'JSON-Schema examples and the rendered UI for it, from simple to conditional combining schemas.'}
         />

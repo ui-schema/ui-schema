@@ -55,7 +55,7 @@ const widgets = {
 - `formats`
     - supports browser based translations for format mismatch, schema key: `t: 'browser''` (will be moved to another way)
 - `info`
-    - supported by all except the `*Icon` widgets, to render the [InfoRenderer](/docs/ds-material/InfoRenderer)
+    - supported by all except the `*Icon` widgets, to render the [InfoRenderer](/docs/ds-material/Component/InfoRenderer)
 
 **Widgets:**
 
@@ -108,7 +108,7 @@ When using the `ui-schema` immutable translator define them like:
 
 ```jsx harmony
 import React from "react";
-import AccountBox from "@material-ui/icons/AccountBox";
+import AccountBox from "@mui/icons-material/AccountBox";
 
 const dicEN = createMap({
     icons: {

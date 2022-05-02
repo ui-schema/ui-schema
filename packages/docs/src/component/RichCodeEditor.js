@@ -1,6 +1,6 @@
 import React from 'react';
 import {useUID} from 'react-uid';
-import {Button, useTheme} from '@material-ui/core';
+import {Button, useTheme} from '@mui/material';
 import AceEditor from 'react-ace';
 // todo: update react-ace to v8, using ace-builds instead of brace, creates strange `this.session = null` exceptions then and now
 import 'brace/ext/language_tools';
@@ -27,7 +27,7 @@ import 'brace/theme/cobalt';
 import 'brace/theme/gruvbox';
 import 'brace/theme/monokai';
 import {AccessTooltipIcon} from '@control-ui/kit/Tooltip';
-import {UnfoldLess, UnfoldMore} from '@material-ui/icons';
+import {UnfoldLess, UnfoldMore} from '@mui/icons-material';
 
 /*import ace from 'ace-builds/src-noconflict/ace';
 import "ace-builds/src-noconflict/ext-language_tools";

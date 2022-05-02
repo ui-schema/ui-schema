@@ -3,9 +3,9 @@ import { Map, List, OrderedMap } from 'immutable'
 import { Trans, beautifyKey, extractValue, memo, WidgetProps, StoreKeys, tt, StoreSchemaType, useUIMeta } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
-import Box from '@material-ui/core/Box'
+import Box from '@mui/material/Box'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
-import Typography from '@material-ui/core/Typography'
+import Typography from '@mui/material/Typography'
 import { UIMetaReadContextType } from '@ui-schema/ui-schema/UIMetaReadContext'
 
 const checkActive = (list: List<any>, name: string | undefined | number) => list && list.contains && typeof list.contains(name) !== 'undefined' ? list.contains(name) : false

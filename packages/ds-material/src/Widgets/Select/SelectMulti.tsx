@@ -4,7 +4,7 @@ import { useUID } from 'react-uid'
 import {
     FormControl, Checkbox, InputLabel,
     MenuItem, Select as MuiSelect, ListItemText,
-} from '@material-ui/core'
+} from '@mui/material'
 import { TransTitle, Trans, beautifyKey, extractValue, memo, WidgetProps, WithValue, StoreSchemaType, tt } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'

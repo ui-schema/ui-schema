@@ -200,7 +200,7 @@ The created component applies the typescript definitions of the actual widget, b
 ```typescript jsx
 import React from 'react'
 import { List } from 'immutable'
-import Grid from '@material-ui/core/Grid'
+import Grid from '@mui/material/Grid'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { StringRenderer } from '@ui-schema/ds-material/Widgets/TextField'

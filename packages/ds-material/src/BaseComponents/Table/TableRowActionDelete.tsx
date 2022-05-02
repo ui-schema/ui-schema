@@ -1,6 +1,6 @@
 import React from 'react'
-import IconButton from '@material-ui/core/IconButton'
-import Delete from '@material-ui/icons/Delete'
+import IconButton from '@mui/material/IconButton'
+import Delete from '@mui/icons-material/Delete'
 import { onChangeHandler, StoreKeys, StoreSchemaType, Trans, WidgetProps } from '@ui-schema/ui-schema'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip/Tooltip'
 import { TableRowProps } from '@ui-schema/ds-material'

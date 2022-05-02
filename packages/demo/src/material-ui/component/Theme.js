@@ -1,10 +1,13 @@
 import React from 'react';
-import {MuiThemeProvider} from "@material-ui/core";
+import {StyledEngineProvider, ThemeProvider} from '@mui/material/styles';
 
 const store_item = 'theme';
 
-const ThemerContext = React.createContext({});
+const ThemerContext = React.createContext(undefined);
 
+/**
+ * @return {() => void}
+ */
 const useThemer = () => React.useContext(ThemerContext);
 const withThemer = Component => props => {
     const theme = useThemer();
@@ -31,11 +34,13 @@ const ThemerProvider = ({themes, initial, children} = {}) => {
         });
     }, [theme, setTheme, themes]);
 
-    return <ThemerContext.Provider value={{switchTheme}}>
-        <MuiThemeProvider theme={themes && themes[theme] ? themes[theme] : {}}>
-            {children}
-        </MuiThemeProvider>
-    </ThemerContext.Provider>
+    return <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={themes && themes[theme] ? themes[theme] : {}}>
+            <ThemerContext.Provider value={switchTheme}>
+                {children}
+            </ThemerContext.Provider>
+        </ThemeProvider>
+    </StyledEngineProvider>
 };
 
 export {

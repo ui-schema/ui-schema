@@ -1,5 +1,5 @@
 import {SliderPicker} from 'react-color';
-import useTheme from "@material-ui/core/styles/useTheme";
+import useTheme from "@mui/material/styles/useTheme";
 import {ColorBase} from "../Base/ColorBase/ColorBase";
 import {ColorStaticBase} from "../Base/ColorStaticBase/ColorStaticBase";
 import React from "react";
@@ -27,7 +27,7 @@ export const ColorSliderStatic = (props) => {
                 background: palette.background.paper,
                 boxShadow: 0,
                 width: '100%',
-                padding: spacing(1) + 'px 0 0 0'
+                padding: spacing(1) + ' 0 0 0'
             },
         }
     };

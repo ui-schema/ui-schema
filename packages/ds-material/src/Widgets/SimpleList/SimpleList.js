@@ -1,10 +1,10 @@
 import React from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import Grid from '@material-ui/core/Grid';
-import FormLabel from '@material-ui/core/FormLabel';
-import IconButton from '@material-ui/core/IconButton';
-import Add from '@material-ui/icons/Add';
-import Remove from '@material-ui/icons/Remove';
+import FormControl from '@mui/material/FormControl';
+import Grid from '@mui/material/Grid';
+import FormLabel from '@mui/material/FormLabel';
+import IconButton from '@mui/material/IconButton';
+import Add from '@mui/icons-material/Add';
+import Remove from '@mui/icons-material/Remove';
 import {TransTitle, extractValue, memo, PluginStack} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText';
 import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip';

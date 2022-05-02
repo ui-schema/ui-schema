@@ -1,7 +1,7 @@
 import React from 'react'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import { ClassNameMap } from '@material-ui/styles/withStyles'
-import { Theme } from '@material-ui/core/styles/createTheme'
+import makeStyles from "@mui/styles/makeStyles"
+import { ClassNameMap } from '@mui/styles/withStyles'
+import { Theme } from '@mui/material/styles/createTheme'
 import { WidgetProps } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '@ui-schema/ds-material'
 import { MarkdownLabel } from '@ui-schema/material-slate/EditorWrapper/MarkdownLabel'
@@ -19,7 +19,7 @@ export const usePaneEditorStyles = makeStyles<Theme, { dense: boolean, focused: 
         '& .slate-HeadingToolbar': {
             borderBottom: 0,
             margin: 0,
-            padding: `${theme.spacing(0.5)}px ${theme.spacing(1)}px`,
+            padding: `${theme.spacing(0.5)} ${theme.spacing(1)}`,
             justifyContent: 'center',
         },
     },

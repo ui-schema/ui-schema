@@ -18,7 +18,7 @@ Widgets for `object` which makes each property an accordion dropdown.
 - `view.variant`, `elevation | outlined`, the used `Accordion` variant for the summary
 - `view.titleVariant`, `string`, the used `Typography` variant for the summary
 - on property-schema:
-    - `info`, to render the [InfoRenderer](/docs/ds-material/InfoRenderer)
+    - `info`, to render the [InfoRenderer](/docs/ds-material/Component/InfoRenderer)
 
 **Supports `props`:**
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import AppTheme from './layout/AppTheme'
 import Dashboard from './dashboard/Dashboard'
-import Grid, { GridSpacing } from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
+import Grid, { GridSpacing } from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
 import { MuiWidgetBinding, SelectChips, widgets } from '@ui-schema/ds-material'
 import {
     createOrderedMap, createStore,
@@ -22,8 +22,8 @@ import {
     WidgetBooleanRead, WidgetChipsRead,
     WidgetEnumRead, WidgetOneOfRead,
 } from '@ui-schema/ds-material/WidgetsRead'
-import Button from '@material-ui/core/Button'
-import Box from '@material-ui/core/Box'
+import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
 
 // custom `GroupRenderer` that supports `is-read and display-dense`
 const GroupRenderer: React.ComponentType<GroupRendererProps> = ({schema, children, noGrid}) => {

@@ -1,17 +1,17 @@
 import React from 'react'
-import Add from '@material-ui/icons/Add'
+import Add from '@mui/icons-material/Add'
 import { memo, Trans, WidgetProps } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import TablePagination from '@material-ui/core/TablePagination'
-import MuiTableFooter from '@material-ui/core/TableFooter'
-import TableCell from '@material-ui/core/TableCell'
-import TableRow from '@material-ui/core/TableRow'
+import TablePagination from '@mui/material/TablePagination'
+import MuiTableFooter from '@mui/material/TableFooter'
+import TableCell from '@mui/material/TableCell'
+import TableRow from '@mui/material/TableRow'
 import { TablePaginationActions } from '@ui-schema/ds-material/BaseComponents/Table/TablePaginationActions'
 import { TableFooterProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
 import { TableContextType, withTable } from '@ui-schema/ds-material/BaseComponents/Table/TableContext'
 import { Map } from 'immutable'
 import { ListButton } from '@ui-schema/ds-material/Component'
-import { IconButtonProps } from '@material-ui/core/IconButton'
+import { IconButtonProps } from '@mui/material/IconButton'
 
 export interface TableFooterErrorsBaseProps {
     colSize: number | undefined

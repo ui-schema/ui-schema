@@ -2,9 +2,9 @@ import React from 'react'
 import { beautifyKey, extractValue, memo, sortScalarList, StoreSchemaType, Trans, tt, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
-import Typography from '@material-ui/core/Typography'
-import Chip from '@material-ui/core/Chip'
-import Box from '@material-ui/core/Box'
+import Typography from '@mui/material/Typography'
+import Chip from '@mui/material/Chip'
+import Box from '@mui/material/Box'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 import { List, Map, OrderedMap } from 'immutable'
 
@@ -40,7 +40,7 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
                     style={{marginRight: 4, marginBottom: 4}}
                     size={schema.getIn(['view', 'size']) === 'medium' ? 'medium' : 'small'}
                     variant={
-                        currentValue?.indexOf(oneOfSchema.get('const') as string) === -1 ? 'outlined' : 'default'
+                        currentValue?.indexOf(oneOfSchema.get('const') as string) === -1 ? 'outlined' : 'filled'
                     }
                     disabled={schema.get('readOnly') as boolean || oneOfSchema.get('readOnly') as boolean}
                     color={'primary'}

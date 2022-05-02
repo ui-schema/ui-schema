@@ -1,8 +1,9 @@
 import React from 'react'
-import IconButton from '@material-ui/core/IconButton'
-import Typography from '@material-ui/core/Typography'
-import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp'
-import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
+import { visuallyHidden } from '@mui/utils'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp'
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
 import { Trans } from '@ui-schema/ui-schema'
 import { Map } from 'immutable'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip/Tooltip'
@@ -42,9 +43,7 @@ export const GenericListItemPos = (
             style={{margin: '6px 0', minWidth: '2rem'}}
         >
             {index + 1}.
-            <Typography component={'span'} variant={'srOnly'}>
-                <Trans text={'labels.entry'}/>
-            </Typography>
+            <span style={visuallyHidden}><Trans text={'labels.entry'}/></span>
         </Typography>
 
         {!readOnly && !notSortable && index < listSize - 1 ?

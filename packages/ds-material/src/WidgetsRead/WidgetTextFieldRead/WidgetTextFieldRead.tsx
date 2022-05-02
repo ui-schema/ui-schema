@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from 'react'
-import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
 import { useUIMeta, WidgetProps, WithScalarValue } from '@ui-schema/ui-schema'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'

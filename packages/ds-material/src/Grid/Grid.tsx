@@ -1,10 +1,10 @@
 import React from 'react'
-import Grid, { GridSize } from '@material-ui/core/Grid'
+import Grid, { GridSize } from '@mui/material/Grid'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { getNextPlugin, PluginProps } from '@ui-schema/ui-schema/PluginStack'
 import { OrderedMap } from 'immutable'
 import { GroupRendererProps } from '@ui-schema/ui-schema'
-import { GridSpacing } from '@material-ui/core/Grid/Grid'
+import { GridSpacing } from '@mui/material/Grid/Grid'
 
 export const SchemaGridItem: React.ComponentType<React.PropsWithChildren<{
     schema: StoreSchemaType

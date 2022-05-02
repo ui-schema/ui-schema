@@ -1,6 +1,6 @@
 import { AccessTooltipIcon } from '@ui-schema/ds-material'
-import Button, { ButtonProps } from '@material-ui/core/Button'
-import IconButton, { IconButtonProps } from '@material-ui/core/IconButton'
+import Button, { ButtonProps } from '@mui/material/Button'
+import IconButton, { IconButtonProps } from '@mui/material/IconButton'
 import React from 'react'
 
 export interface ListButtonOverwrites {

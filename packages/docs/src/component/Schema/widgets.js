@@ -78,7 +78,7 @@ customWidgets.custom = {
         loader: () => import('@ui-schema/material-code').then(r => r.CodeSelectable),
         loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
     }),
-    DateTime: Loadable({
+    /*DateTime: Loadable({
         loader: () => import('@ui-schema/material-pickers').then(r => r.DateTimePicker),
         loading: () => <LoadingCircular title={'Loading DateTime Widget'}/>,
     }),
@@ -89,7 +89,7 @@ customWidgets.custom = {
     Time: Loadable({
         loader: () => import('@ui-schema/material-pickers').then(r => r.TimePicker),
         loading: () => <LoadingCircular title={'Loading Time Widget'}/>,
-    }),
+    }),*/
     EditorJS: Loadable({
         loader: () => import('./EditorJSComp').then(r => r.EditorJSComp),
         loading: () => <LoadingCircular title={'Loading EditorJS'}/>,

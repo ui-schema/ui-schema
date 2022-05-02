@@ -17,7 +17,25 @@ packer({
                 },
             },
             publicPath: '/',
-            vendors: ['react-error-boundary', 'immutable', '@material-ui/core', '@material-ui/icons'],
+            vendors: ['react-error-boundary', 'immutable', '@mui/material', '@mui/icons-material'],
+            // plugins: [],
+        },
+        pickersDemo: {
+            root: path.resolve(__dirname, 'packages', 'material-pickers'),
+            rootSrc: 'demo/src',
+            template: path.resolve(__dirname, 'packages', 'material-pickers/demo/public/index.html'),
+            contentBase: path.resolve(__dirname, 'packages', 'material-pickers/demo/public'),// dev-server
+            port: 4202,
+            main: path.resolve(__dirname, 'packages', 'material-pickers/demo/src/index.tsx'),
+            dist: path.resolve(__dirname, 'dist', 'pickers-demo'),
+            devServer: {
+                client: {
+                    overlay: false,
+                    progress: false,
+                },
+            },
+            publicPath: '/',
+            // vendors: ['react-error-boundary', 'immutable', '@mui/material', '@mui/icons-material'],
             // plugins: [],
         },
         docs: {
@@ -25,7 +43,7 @@ packer({
             template: path.resolve(__dirname, 'packages', 'docs/public/index.html'),
             contentBase: path.resolve(__dirname, 'packages', 'docs/public'),// dev-server
             port: 4201,
-            main: path.resolve(__dirname, 'packages', 'docs/src/index.js'),
+            main: path.resolve(__dirname, 'packages', 'docs/src/index.tsx'),
             dist: path.resolve(__dirname, 'dist', 'docs'),
             publicPath: '/',
             devServer: {
@@ -37,7 +55,7 @@ packer({
                     disableDotRule: true,
                 },
             },
-            vendors: ['react-error-boundary', 'immutable', '@material-ui/core', '@material-ui/icons'],
+            vendors: ['react-error-boundary', 'immutable', '@mui/material', '@mui/icons-material'],
             copy: [{from: path.resolve(__dirname, 'schema'), to: path.resolve(__dirname, 'dist', 'docs', 'schema')}],
             plugins: [
                 new webpack.DefinePlugin({
@@ -46,6 +64,7 @@ packer({
                     'process.env.REACT_APP_G_TAG': JSON.stringify(process.env.REACT_APP_G_TAG || 'G-0PGCF34TJK'),
                 }),
             ],
+            noParse: [require.resolve('typescript/lib/typescript.js')],
         },
     },
     packages: {

@@ -1,6 +1,6 @@
 import React from 'react';
-import Dialog from '@material-ui/core/Dialog'
-import Button from '@material-ui/core/Button'
+import Dialog from '@mui/material/Dialog'
+import Button from '@mui/material/Button'
 import {ColorBase} from '../ColorBase/ColorBase';
 import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
 

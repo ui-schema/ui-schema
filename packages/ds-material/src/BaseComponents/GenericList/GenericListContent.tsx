@@ -1,13 +1,13 @@
 import React from 'react'
-import FormControl from '@material-ui/core/FormControl'
-import Grid from '@material-ui/core/Grid'
-import FormLabel from '@material-ui/core/FormLabel'
+import FormControl from '@mui/material/FormControl'
+import Grid from '@mui/material/Grid'
+import FormLabel from '@mui/material/FormLabel'
 import { TransTitle, StoreKeys, WidgetProps, WithOnChange } from '@ui-schema/ui-schema'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 import { GenericListFooterProps, GenericListItemProps, GenericListItemSharedProps } from '@ui-schema/ds-material/BaseComponents'
-import Box from '@material-ui/core/Box'
-import { GridSpacing } from '@material-ui/core/Grid/Grid'
+import Box from '@mui/material/Box'
+import { GridSpacing } from '@mui/material/Grid/Grid'
 
 export interface GenericListContentProps extends ListButtonOverwrites {
     btnAddShowLabel?: boolean

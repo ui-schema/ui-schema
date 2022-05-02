@@ -9,7 +9,7 @@ Bindings for some popular design-systems are provided, otherwise see how to [cre
 Install:
 
 ```bash
-npm i --save @ui-schema/ui-schema @ui-schema/ds-material @material-ui/core @material-ui/icons immutable
+npm i --save @ui-schema/ui-schema @ui-schema/ds-material @mui/material @mui/icons-material immutable
 ```
 
 ## Bootstrap

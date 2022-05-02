@@ -40,7 +40,7 @@ const widgets = {
 - `notDeletable` when `true` doesn't allow deletion of items
 - `notAddable` when `true` doesn't allow adding items
 - `info`
-    - to render the [InfoRenderer](/docs/ds-material/InfoRenderer)
+    - to render the [InfoRenderer](/docs/ds-material/Component/InfoRenderer)
 
 **Widgets:**
 
