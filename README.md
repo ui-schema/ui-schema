@@ -56,6 +56,7 @@ JSON Schema keywords are used to validate the data, the UI is created from that 
     - customize design system behaviour with e.g. widget compositions
     - easy binding of own design systems and custom widgets
     - [auto-rendering by data & schema](https://ui-schema.bemit.codes/quick-start) or [full-custom forms](https://ui-schema.bemit.codes/quick-start?render=custom) with autowired widgets
+    - easily add advanced features like [read-or-write mode](https://ui-schema.bemit.codes/docs/core-meta#read-context)
 - flexible translation of widgets
     - with any library ([`t` prop (Translator)](https://ui-schema.bemit.codes/docs/localization#translation), [`Trans` component](https://ui-schema.bemit.codes/docs/localization#trans-component))
     - in-schema translations ([`t` keyword](https://ui-schema.bemit.codes/docs/localization#translation-in-schema))
@@ -90,11 +91,13 @@ JSON Schema keywords are used to validate the data, the UI is created from that 
 
 ## Versions
 
-For updates see [github release notes](https://github.com/ui-schema/ui-schema/releases), also check the update and migration notes for [breaking core changes](https://ui-schema.bemit.codes/docs/updates/overview).
-
 This project adheres to [semver](https://semver.org/), until `1.0.0` and beginning with `0.1.0`: all `0.x.0` releases are like MAJOR releases and all `0.0.x` like MINOR or PATCH, modules below `0.1.0` should be considered experimental.
 
-Check [this discussion](https://github.com/ui-schema/ui-schema/discussions/184) for the current roadmap.
+**Get the latest version - or [help build it](CONTRIBUTING.md):**
+
+- [latest releases](https://github.com/ui-schema/ui-schema/releases) (GitHub release notes)
+- [update and migration notes](https://ui-schema.bemit.codes/updates) (docs page)
+- [current roadmap](https://github.com/ui-schema/ui-schema/discussions/184) (GitHub discussion)
 
 ## Example Basic UIGenerator
 
@@ -107,7 +110,9 @@ import React from 'react';
 
 // Import Schema UI Generator
 import {
-    UIGenerator, isInvalid, createOrderedMap, createStore, storeUpdater, relTranslator,
+    UIGenerator, relTranslator,
+    createOrderedMap, createStore,
+    storeUpdater, isInvalid,
 } from '@ui-schema/ui-schema';
 
 // Get the widgets binding for your design-system
@@ -190,12 +195,14 @@ Easily create new widgets, this is all for a simple text (`type=string`) widget:
 import React from 'react';
 import { TransTitle, WidgetProps, WithScalarValue } from '@ui-schema/ui-schema';
 
-const Widget = ({
-                    value, ownKey, storeKeys, onChange,
-                    required, schema,
-                    errors, valid,
-                    ...props
-                }: WidgetProps & WithScalarValue) => {
+const Widget = (
+    {
+        value, ownKey, storeKeys, onChange,
+        required, schema,
+        errors, valid,
+        ...props
+    }: WidgetProps & WithScalarValue,
+) => {
     return <>
         <label><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></label>
 
@@ -290,7 +297,7 @@ export const DemoForm = () => {
         setStore(storeUpdater(actions))
     }, [setStore])
 
-    return <React.Fragment>
+    return <>
         <UIStoreProvider
             store={store}
             onChange={onChange}
@@ -312,13 +319,14 @@ export const DemoForm = () => {
             }
         >send!
         </button>
-    </React.Fragment>
+    </>
 };
 
 export default function App() {
     return <UIMetaProvider
         widgets={widgets}
         t={relTranslator}
+        // never pass down functions like this - always use e.g. `React.useCallback`, check performance docs for more
         //t={(text, context, schema) => {/* add translations */}}
     >
         {/*
@@ -341,7 +349,7 @@ This project is free software distributed under the **MIT License**.
 
 See: [LICENSE](LICENSE).
 
-© 2021 bemit UG (haftungsbeschränkt)
+© 2022 bemit UG (haftungsbeschränkt)
 
 ### License Icons
 

@@ -30,17 +30,13 @@ Design Systems:
 
 **🚀 Demo: UI Schema + Material Design + Create React App**: *[Demo Source](https://github.com/ui-schema/demo-cra)*
 
-*[Demo Source](https://github.com/ui-schema/demo-cra)*
-
 > 🔥 **Professional service & support available, [reach out now](https://bemit.codes/get-quote)!**
 
 ---
 
 ## Versions
 
-For updates see [github release notes](https://github.com/ui-schema/ui-schema/releases).
-
-This project adheres to [semver](https://semver.org/), until `1.0.0` and beginning with `0.1.0`: all `0.x.0` releases are like MAJOR releases and all `0.0.x` like MINOR or PATCH.
+Check the [main README](https://github.com/ui-schema/ui-schema#versions) for details.
 
 ## License
 

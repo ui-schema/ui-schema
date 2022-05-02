@@ -42,6 +42,11 @@
         "react": "^16.8 || ^17.0 || ^18.0",
         "react-dnd": "^14.0.0"
     },
+    "peerDependenciesMeta": {
+        "@types/react": {
+            "optional": true
+        }
+    },
     "publishConfig": {
         "access": "public"
     }
