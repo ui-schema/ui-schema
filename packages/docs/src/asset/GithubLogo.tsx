@@ -1,8 +1,12 @@
 import React from 'react'
 import { useTheme } from '@mui/material'
 
+const GithubIcon: React.ComponentType<{
+    width?: number
+    fill?: string
+    style?: React.CSSProperties
 // eslint-disable-next-line react/display-name
-const GithubIcon: React.ComponentType<{ fill?: string, style?: React.CSSProperties }> = React.forwardRef(({fill, style = {}}, ref) => {
+}> = React.forwardRef(({width = 20, fill, style = {}}, ref) => {
     const theme = useTheme()
 
     return <svg
@@ -10,7 +14,7 @@ const GithubIcon: React.ComponentType<{ fill?: string, style?: React.CSSProperti
         ref={ref}
         role="img"
         style={{
-            width: 20,
+            width: width,
             verticalAlign: 'middle',
             padding: 1,
             ...style,
