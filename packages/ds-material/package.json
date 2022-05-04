@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ds-material",
-    "version": "0.4.0-alpha.0",
+    "version": "0.4.0-alpha.1",
     "description": "Material-UI Binding for UI-Schema",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -35,7 +35,6 @@
     },
     "devDependencies": {
         "@mui/material": "^5.1",
-        "@mui/styles": "^5.1",
         "@mui/icons-material": "^5.1",
         "@emotion/react": "^11.9.0",
         "@emotion/styled": "^11.8.1",
@@ -50,7 +49,6 @@
     },
     "peerDependencies": {
         "@mui/material": "^5.1",
-        "@mui/styles": "^5.1",
         "@mui/icons-material": "^5.1",
         "@ui-schema/ui-schema": "~0.4.0-alpha",
         "react": "^17.0 || ^18.0",

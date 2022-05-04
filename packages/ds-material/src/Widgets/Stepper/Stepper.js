@@ -1,5 +1,4 @@
 import React from 'react';
-import makeStyles from "@mui/styles/makeStyles";
 import MuiStepper from '@mui/material/Stepper';
 import MuiStep from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
@@ -10,19 +9,8 @@ import {extractValidity} from '@ui-schema/ui-schema/UIStore';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter';
 import {PluginStack} from '@ui-schema/ui-schema/PluginStack';
 import {TransTitle} from '@ui-schema/ui-schema/Translate/TransTitle';
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        width: '100%',
-    },
-    button: {
-        marginRight: theme.spacing(1),
-    },
-    instructions: {
-        marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(1),
-    },
-}));
+import Box from '@mui/material/Box';
+import {useTheme} from '@mui/material/styles';
 
 export const Step = ({schema, storeKeys, level, ...p}) => {
     return <PluginStack
@@ -36,11 +24,9 @@ export const Stepper = extractValidity(memo(
     ({
          schema, storeKeys, validity, level,
      }) => {
-        if(!schema) return null;
-
+        const theme = useTheme()
         const [showValidity, setShowValidity] = React.useState(false);
 
-        const classes = useStyles();
         const [activeStep, setActiveStep] = React.useState(0);
         const steps = schema.get('properties');
         const stepOrder = steps.keySeq();
@@ -64,31 +50,31 @@ export const Stepper = extractValidity(memo(
             setActiveStep(0);
         };
 
-        return <div className={classes.root}>
+        return <div style={{width: '100%'}}>
             <MuiStepper activeStep={activeStep}>
                 {steps.map((step, name) => {
                     const stepProps = {};
                     const labelProps = {};
                     return (
                         <MuiStep key={name} {...stepProps}>
-                            <StepLabel {...labelProps}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={name}/></StepLabel>
+                            <StepLabel {...labelProps}><TransTitle schema={schema.get('title') ? schema : schema.set('title', name)} storeKeys={storeKeys}/></StepLabel>
                         </MuiStep>
                     );
                 }).valueSeq()}
             </MuiStepper>
             <div>
                 {activeStep === stepOrder.size ? (
-                    <div>
-                        <Typography className={classes.instructions}>
+                    <Box pb={2}>
+                        <Typography gutterBottom>
                             All steps completed - you&apos;re finished
                         </Typography>
-                        <Button onClick={handleReset} className={classes.button}>
+                        <Button onClick={handleReset} style={{marginRight: theme.spacing(1)}}>
                             Reset
                         </Button>
-                    </div>
+                    </Box>
                 ) : (
-                    <div>
-                        <Typography className={classes.instructions}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={stepOrder.get(activeStep)}/></Typography>
+                    <Box pb={2}>
+                        <Typography gutterBottom><TransTitle schema={schema} storeKeys={storeKeys.push(stepOrder.get(activeStep))}/></Typography>
 
                         <PluginStack
                             showValidity={showValidity}
@@ -97,7 +83,7 @@ export const Stepper = extractValidity(memo(
                         />
 
                         <div style={{margin: '24px 0 0 0'}}>
-                            <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                            <Button disabled={activeStep === 0} onClick={handleBack} style={{marginRight: theme.spacing(1)}}>
                                 Back
                             </Button>
 
@@ -105,12 +91,11 @@ export const Stepper = extractValidity(memo(
                                 variant="contained"
                                 color="primary"
                                 onClick={handleNext}
-                                className={classes.button}
                             >
                                 {activeStep === steps.size - 1 ? 'Finish' : 'Next'}
                             </Button>
                         </div>
-                    </div>
+                    </Box>
                 )}
             </div>
         </div>;

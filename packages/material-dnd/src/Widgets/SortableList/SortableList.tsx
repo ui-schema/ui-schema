@@ -23,7 +23,7 @@ export const SortableListBase = (
     }: WidgetProps & WithOnChange & SortableListProps
 ): React.ReactElement => {
     const uid = useUID()
-    const {schema, ownKey, storeKeys, onChange} = props
+    const {schema, storeKeys, onChange} = props
     const btnSize = schema.getIn(['view', 'btnSize']) || 'medium'
     //const notSortable = schema.get('notSortable')
     const notAddable = schema.get('notAddable')
@@ -36,7 +36,7 @@ export const SortableListBase = (
             component={(schema.getIn(['view', 'titleComp']) as React.ElementType) || 'p'}
             gutterBottom
         >
-            <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+            <TransTitle schema={schema} storeKeys={storeKeys}/>
         </Typography>}
 
         <DndListRenderer

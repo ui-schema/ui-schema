@@ -33,7 +33,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBindin
     {
         type,
         multiline, rows, rowsMax,
-        storeKeys, ownKey, schema, value, onChange,
+        storeKeys, schema, value, onChange,
         showValidity, valid, errors, required,
         style = {},
         onClick, onFocus, onBlur, onKeyUp, onKeyDown, onKeyPress,
@@ -83,7 +83,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBindin
     const InfoRenderer = widgets?.InfoRenderer
     return <>
         {!labelledBy ? <span style={visuallyHidden} id={inputProps['aria-labelledby']}>
-            <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+            <TransTitle schema={schema} storeKeys={storeKeys}/>
         </span> : null}
         <InputBase
             type={format || type}

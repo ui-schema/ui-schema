@@ -11,7 +11,7 @@ import {extractValue} from '@ui-schema/ui-schema/UIStore';
 import {List} from 'immutable';
 
 let CodeSelectable = (props) => {
-    const {valid, showValidity, value = List(), onChange, storeKeys, ownKey, schema, required, errors} = props
+    const {valid, showValidity, value = List(), onChange, storeKeys, schema, required, errors} = props
 
     const [open, setOpen] = React.useState(null)
     const [format, setFormat] = React.useState(() => schema.get('formatDefault') || schema.getIn(['format', 0]))
@@ -34,7 +34,7 @@ let CodeSelectable = (props) => {
             onKeyDown={(e) => e.key === 'Enter' ? setOpen(e.currentTarget) : undefined}
         >
             {!hideTitle ?
-                beautifyKey(ownKey, schema.get('tt')) + (required ? ' *' : '')
+                beautifyKey(storeKeys.last(), schema.get('tt')) + (required ? ' *' : '')
                 : null}
             {!hideTitle && ' ('}
             <Trans text={'formats.' + format}/>

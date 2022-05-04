@@ -13,7 +13,6 @@ const RichContentPaneBase: React.ComponentType<WidgetProps & WithValue> = (props
         errors,
         showValidity,
         valid,
-        ownKey,
     } = props
 
     const {dense, focused, empty, onFocus, onBlur} = useSlate(schema, value)
@@ -21,7 +20,7 @@ const RichContentPaneBase: React.ComponentType<WidgetProps & WithValue> = (props
     const classes = usePaneEditorStyles({dense: dense as boolean, focused}) as ClassNameMap<'wrapper' | 'editor'>
 
     return <PaneWrapper
-        ownKey={ownKey} storeKeys={storeKeys} schema={schema}
+        storeKeys={storeKeys} schema={schema}
         dense={dense as boolean} focused={focused} empty={empty}
         errors={errors} showValidity={showValidity} valid={valid}
         classes={classes}

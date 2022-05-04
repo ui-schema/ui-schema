@@ -1,6 +1,6 @@
-import { PluginProps } from "@ui-schema/ui-schema/PluginStack/Plugin"
-import { PluginSimple } from "@ui-schema/ui-schema/PluginSimpleStack/PluginSimple"
-import { Errors } from "@ui-schema/ui-schema/CommonTypings"
+import { PluginProps } from '@ui-schema/ui-schema/PluginStack/Plugin'
+import { PluginSimple } from '@ui-schema/ui-schema/PluginSimpleStack/PluginSimple'
+import { Errors } from '@ui-schema/ui-schema/CommonTypings'
 
 export const ERROR_NOT_SET = 'required-not-set'
 
@@ -14,7 +14,7 @@ export const ERROR_NOT_SET = 'required-not-set'
 export function checkValueExists(type: string, value: any): boolean
 
 export interface RequiredValidatorType extends PluginSimple {
-    should: ({requiredList, ownKey}: Partial<PluginProps>) => boolean
+    should: ({requiredList, storeKeys}: Partial<PluginProps>) => boolean
     handle: (
         {schema, value, errors, valid}: Partial<PluginProps>
     ) => {

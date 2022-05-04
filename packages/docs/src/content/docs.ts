@@ -336,6 +336,9 @@ export const routesFurtherDesignSystem = [
                     }),
                 ],
             },
+            createDoc('ds-material/GridContainer', 'GridContainer', {
+                module: defineModule('ui-schema', 'ds-material', 'ds-material', 'GridContainer'),
+            }),
             createDoc('ds-material/ErrorFallback', 'ErrorFallback', {
                 module: defineModule('ui-schema', 'ds-material', 'ds-material', 'ErrorFallback'),
             }),

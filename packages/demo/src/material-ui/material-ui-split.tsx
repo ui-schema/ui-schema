@@ -10,11 +10,11 @@ import {
     loadSchemaUIApi,
     UIMetaProvider,
     UISchema,
-    UIRootRenderer,
     UIStoreProvider,
     createStore,
     storeUpdater,
     isInvalid,
+    injectPluginStack,
     UIStoreType,
     StoreSchemaType,
     DefaultHandlerProps,
@@ -28,6 +28,7 @@ import { TableAdvanced } from '@ui-schema/ds-material/Widgets/TableAdvanced/Tabl
 import { InjectSplitSchemaPlugin, InjectSplitSchemaRootContext } from '@ui-schema/ui-schema/Plugins/InjectSplitSchemaPlugin'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { OrderedMap } from 'immutable'
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 
 type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}>>
 const customWidgets: CustomWidgetsBinding = {...widgets} as CustomWidgetsBinding
@@ -89,7 +90,7 @@ const schemaData = createOrderedMap({
         },
     },
     required: ['name', 'postal_code'],
-})
+}) as unknown as StoreSchemaType
 
 const schemaStyle = createOrderedMap({
     '': {
@@ -119,6 +120,7 @@ const rootContext: InjectSplitSchemaRootContext = {schemaStyle: schemaStyle as S
 
 export type CustomConfig = Partial<DefaultHandlerProps>
 
+const GridStack = injectPluginStack(GridContainer)
 const Main = () => {
     const [showValidity, setShowValidity] = React.useState(false)
 
@@ -138,7 +140,11 @@ const Main = () => {
                 showValidity={showValidity}
                 //doNotDefault
             >
-                <UIRootRenderer<InjectSplitSchemaRootContext> schema={schemaData} rootContext={rootContext}/>
+                <GridStack<{ rootContext?: InjectSplitSchemaRootContext }>
+                    isRoot
+                    schema={schemaData}
+                    rootContext={rootContext}
+                />
                 <MuiSchemaDebug schema={schemaData}/>
             </UIStoreProvider>
 

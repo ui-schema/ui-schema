@@ -4,16 +4,19 @@ import clsx from 'clsx'
 import { TransTitle } from '@ui-schema/ui-schema/Translate'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { EditorJS } from '@ui-schema/material-editorjs/EditorJS/EditorJS'
-import makeStyles from '@mui/styles/makeStyles'
 import FormControl from '@mui/material/FormControl'
-import { EditorConfig } from '@editorjs/editorjs'
-import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { inputClasses } from '@mui/material/Input'
-import { Theme } from '@mui/material/styles'
-
+import Box from '@mui/material/Box'
 import InputLabel from '@mui/material/InputLabel'
+import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
+import { EditorConfig } from '@editorjs/editorjs'
+import { inputClasses } from '@mui/material/Input'
+import { Theme, useTheme } from '@mui/material/styles'
+import { SxProps } from '@mui/system'
 
-export const useEditorStyles = makeStyles<Theme>(theme => ({
+export const useEditorStyles = (theme: Theme, {dense}: { dense?: boolean }): {
+    wrapper: SxProps
+    editor: SxProps
+} => ({
     wrapper: {
         display: 'flex',
         flexDirection: 'column',
@@ -22,8 +25,8 @@ export const useEditorStyles = makeStyles<Theme>(theme => ({
     editor: {
         position: 'relative',
         marginTop: theme.spacing(2),
-        minHeight: ({dense}: { dense?: boolean }) => dense ? theme.spacing(2.375 + 0.375 + 0.875) : theme.spacing(2.375 + 0.75 + 0.875),
-        paddingTop: ({dense}: { dense?: boolean }) => dense ? theme.spacing(0.375) : theme.spacing(0.75),
+        minHeight: dense ? theme.spacing(2.375 + 0.375 + 0.875) : theme.spacing(2.375 + 0.75 + 0.875),
+        paddingTop: dense ? theme.spacing(0.375) : theme.spacing(0.75),
         paddingBottom: theme.spacing(0.875),
         '& .cdx-block': {
             lineHeight: '1.2em',
@@ -43,7 +46,7 @@ export const useEditorStyles = makeStyles<Theme>(theme => ({
             maxWidth: 'none',
         },
     },
-}))
+})
 
 export interface RichContentProps {
     tools: EditorConfig['tools']
@@ -52,7 +55,7 @@ export interface RichContentProps {
 
 export const EditorJSWidget = (
     {
-        schema, storeKeys, ownKey,
+        schema, storeKeys,
         showValidity, valid, errors,
         required, tools, hideTitle,
     }: WidgetProps & RichContentProps
@@ -62,21 +65,22 @@ export const EditorJSWidget = (
     const [ready, setReady] = React.useState(false)
     const [empty, setEmpty] = React.useState(true)
     const dense = schema.getIn(['view', 'dense']) as boolean
-    const classes = useEditorStyles({dense})
+    const theme = useTheme()
+    const styles = useEditorStyles(theme, {dense})
 
-    return <FormControl className={classes.wrapper}>
+    return <FormControl sx={styles.wrapper}>
         {!hideTitle && !schema.getIn(['view', 'hideTitle']) ?
             <InputLabel
                 focused={focused} shrink={focused || !empty}
                 margin={dense ? 'dense' : undefined}
                 error={!valid}
             >
-                <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+                <TransTitle schema={schema} storeKeys={storeKeys}/>
             </InputLabel> : null}
 
-        <div
+        <Box
+            sx={styles.editor}
             className={clsx(
-                classes.editor,
                 inputClasses.underline,
                 focused ? inputClasses.focused : null
             )}
@@ -92,7 +96,7 @@ export const EditorJSWidget = (
                 tools={tools}
                 required={Boolean(schema.get('deleteOnEmpty') || required)}
             />
-        </div>
+        </Box>
 
         <ValidityHelperText
             /* only pass down errors which are not for a specific sub-schema */

@@ -29,7 +29,7 @@ export const TitleBoxRead: React.ComponentType<TitleBoxReadProps> = (
                 variant={'caption'}
                 color={!valid ? 'error' : 'textSecondary'}
             >
-                <TransTitle schema={schema} storeKeys={storeKeys} ownKey={storeKeys.last()}/>
+                <TransTitle schema={schema} storeKeys={storeKeys}/>
             </Typography>}
         {hasInfo ? <Box>
             {InfoRenderer && schema?.get('info') ?

@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-dnd",
-    "version": "0.0.13",
+    "version": "0.0.14",
     "description": "Drag and Drop Tools and Widgets for UI-Schema with Material-UI",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -37,7 +37,6 @@
     "devDependencies": {
         "@types/react": "^17.0",
         "@mui/material": "^5.1",
-        "@mui/styles": "^5.1",
         "@mui/icons-material": "^5.1",
         "@ui-schema/kit-dnd": "~0.0.6",
         "immutable": "^4.0.0",
@@ -47,7 +46,6 @@
     },
     "peerDependencies": {
         "@mui/material": "^5.1",
-        "@mui/styles": "^5.1",
         "@mui/icons-material": "^5.1",
         "@ui-schema/ds-material": "~0.4.0-alpha",
         "@ui-schema/ui-schema": "~0.4.0-alpha",

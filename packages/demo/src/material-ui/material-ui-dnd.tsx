@@ -15,13 +15,13 @@ import { schemaDragDropSortableList1, schemaDragDropSortableList2, schemaDragDro
 import { DndProvider } from 'react-dnd'
 import { MultiBackend } from 'react-dnd-multi-backend'
 import { HTML5toTouch } from 'rdndmb-html5-to-touch'
-import { createEmptyStore, createStore, SchemaTypesType, StoreSchemaType, storeUpdater, UIMetaProvider, UIStoreProvider, UIStoreType, WidgetProps, WidgetsBindingFactory, WithScalarValue } from '@ui-schema/ui-schema'
+import { createEmptyStore, createStore, injectPluginStack, SchemaTypesType, StoreSchemaType, storeUpdater, UIMetaProvider, UIStoreProvider, UIStoreType, WidgetProps, WidgetsBindingFactory, WithScalarValue } from '@ui-schema/ui-schema'
 import { List } from 'immutable'
-import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer'
 import { KitDndProvider, useOnIntent } from '@ui-schema/kit-dnd'
 import { useOnDirectedMove } from '@ui-schema/material-dnd/useOnDirectedMove'
 import { DragDropSpec } from '@ui-schema/material-dnd/DragDropSpec'
 import { SortableList } from '@ui-schema/material-dnd/Widgets/SortableList/SortableList'
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 
 type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
     SortableList: React.ComponentType<WidgetProps<CustomWidgetsBinding> & WithScalarValue>
@@ -33,13 +33,14 @@ customWidgets.custom = {
 }
 
 const schemas: [StoreSchemaType, boolean][] = [
-    [schemaDragDropSortableList1, true],
-    [schemaDragDropSortableList2, false],
-    [schemaDragDropSortableList3, false],
-    [schemaDragDropSortableList4, true],
-    [schemaDragDropSortableList5, false],
+    [schemaDragDropSortableList1 as StoreSchemaType, true],
+    [schemaDragDropSortableList2 as StoreSchemaType, false],
+    [schemaDragDropSortableList3 as StoreSchemaType, false],
+    [schemaDragDropSortableList4 as StoreSchemaType, true],
+    [schemaDragDropSortableList5 as StoreSchemaType, false],
 ]
 
+const GridStack = injectPluginStack(GridContainer)
 const SingleEditor = () => {
     const [showValidity, setShowValidity] = React.useState(false)
 
@@ -84,7 +85,7 @@ const SingleEditor = () => {
                     onChange={onChange}
                     showValidity={showValidity}
                 >
-                    <UIRootRenderer schema={schemas[schema][0]}/>
+                    <GridStack isRoot schema={schemas[schema][0]}/>
                     <MuiSchemaDebug schema={schemas[schema][0]}/>
                 </UIStoreProvider>
             </DndProvider>

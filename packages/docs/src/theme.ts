@@ -83,7 +83,7 @@ const themeDark = createTheme({
         },
         background: {
             // paper: '#111017',
-            paper: '#0f0e13',
+            paper: '#121015',
             // default: '#070b13',
             default: '#06050d',
         },

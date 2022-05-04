@@ -1,33 +1,36 @@
 import React from 'react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import makeStyles from "@mui/styles/makeStyles";
 import {grey} from '@mui/material/colors';
 import {TransTitle} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component';
+import {useTheme} from '@mui/material/styles';
 
-const switchStyle = makeStyles(theme => ({
+const useStyles = (theme, {error}) => ({
     switchBase: {
-        color: ({error}) => error ? theme.palette.error.main : (theme.palette.type === 'dark' ? grey[400] : grey[50]),
+        color: error ? theme.palette.error.main : (theme.palette.type === 'dark' ? grey[400] : grey[50]),
     },
-    checked: {},
     track: {
-        backgroundColor: ({error}) => error ? theme.palette.error.dark : (theme.palette.type === 'dark' ? grey[500] : grey[300]),
+        backgroundColor: error ? theme.palette.error.dark : (theme.palette.type === 'dark' ? grey[500] : grey[300]),
     },
-}));
+});
 
 export const BoolRenderer = (
     {
-        ownKey, value, onChange, schema, storeKeys, showValidity, valid, required, errors,
+        value, onChange, schema, storeKeys, showValidity, valid, required, errors,
         labelledBy = undefined,
     },
 ) => {
     const currentVal = Boolean(value);
 
-    const classes = switchStyle({error: !valid && showValidity});
+    const theme = useTheme()
+    const styles = useStyles(theme, {error: !valid && showValidity});
 
     const control = <Switch
-        classes={classes}
+        sx={{
+            '& .MuiSwitch-switchBase': styles.switchBase,
+            '& .MuiSwitch-track': styles.track,
+        }}
         required={required}
         checked={currentVal}
         disabled={schema.get('readOnly')}
@@ -52,7 +55,7 @@ export const BoolRenderer = (
             <FormControlLabel
                 disabled={schema.get('readOnly')}
                 control={control}
-                label={<><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>{required ? ' *' : ''}</>}
+                label={<><TransTitle schema={schema} storeKeys={storeKeys}/>{required ? ' *' : ''}</>}
             />}
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </>

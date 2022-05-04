@@ -12,7 +12,7 @@ const TableRowRendererMemo = memo(TableRowRenderer)
 
 const rowsPerPageDefault = List([5, 10, 25])
 
-export const Table: React.ComponentType<WidgetProps> = (props) => {
+export const Table: React.FC<WidgetProps> = (props) => {
     return <TableRenderer
         {...props}
         TableRowRenderer={TableRowRendererMemo}

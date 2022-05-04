@@ -9,7 +9,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import Button from '@mui/material/Button'
 import { browserT } from './t'
-import { createEmptyStore, isInvalid, storeUpdater, UIStoreType, UIMetaProvider, UIRootRenderer, UIStoreProvider, WidgetProps, WithScalarValue, StoreSchemaType } from '@ui-schema/ui-schema'
+import { createEmptyStore, isInvalid, storeUpdater, UIStoreType, UIMetaProvider, UIStoreProvider, WidgetProps, WithScalarValue, StoreSchemaType, injectPluginStack } from '@ui-schema/ui-schema'
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker'
@@ -20,6 +20,7 @@ import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker'
 import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker'
 import { StaticTimePicker } from '@mui/x-date-pickers/StaticTimePicker'
 import { List } from 'immutable'
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 
 const getExtraProps = (schema: StoreSchemaType, type: 'date' | 'date-time' | 'time') => {
     const data: { [k: string]: any } = {}
@@ -109,7 +110,7 @@ customWidgets.custom = {
 }
 
 const schema = schemaDatePickers
-
+const GridStack = injectPluginStack(GridContainer)
 const Main = () => {
     const [showValidity, setShowValidity] = React.useState(false)
     const [store, setStore] = React.useState<UIStoreType>(() => createEmptyStore(schema.get('type') as string))
@@ -127,7 +128,7 @@ const Main = () => {
             onChange={onChangeNext}
             showValidity={showValidity}
         >
-            <UIRootRenderer schema={schema}/>
+            <GridStack isRoot schema={schema}/>
         </UIStoreProvider>
 
         <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>

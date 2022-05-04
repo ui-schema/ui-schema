@@ -25,7 +25,7 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
         // eslint-disable-next-line deprecation/deprecation
         rows, rowsMax,
         minRows, maxRows,
-        storeKeys, ownKey, schema, value, onChange,
+        storeKeys, schema, value, onChange,
         showValidity, valid, errors, required,
         style,
         onClick, onFocus, onBlur, onKeyUp, onKeyDown,
@@ -68,8 +68,8 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
     }
     return <React.Fragment>
         <TextField
-            label={hideTitle ? undefined : <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>}
-            aria-label={hideTitle ? <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/> as unknown as string : undefined}
+            label={hideTitle ? undefined : <TransTitle schema={schema} storeKeys={storeKeys}/>}
+            aria-label={hideTitle ? <TransTitle schema={schema} storeKeys={storeKeys}/> as unknown as string : undefined}
             // changing `type` to `text`, to be able to change invalid data
             type={(format || (typeof bounceVal.value === 'string' && type === 'number' ? 'text' : type)) as InputProps['type']}
             disabled={schema.get('readOnly') as boolean | undefined}

@@ -63,7 +63,7 @@ const OptionsCheckValue = extractValue(memo(({oneOfValues, storeKeys, value, onC
     : null,
 ));
 
-const OptionsCheck = ({schema, storeKeys, showValidity, errors, ownKey, required}) => {
+const OptionsCheck = ({schema, storeKeys, showValidity, errors, required}) => {
     const oneOfVal = schema.getIn(['items', 'oneOf'])
     if(!oneOfVal) return null
 
@@ -78,7 +78,7 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors, ownKey, required
     }
 
     return <React.Fragment>
-        <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+        <TransTitle schema={schema} storeKeys={storeKeys}/>
         <OptionsCheckValue
             required={required}
             type={schema.get('type')}

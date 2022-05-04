@@ -49,7 +49,8 @@ export const UIRootRenderer = ({schema, rootContext}) => {
     }
 
     return <DumpRootRenderer
-        rootRenderer={RootRenderer} isVirtual={schema?.get('hidden')}
+        rootRenderer={RootRenderer}
+        isVirtual={schema?.get('hidden')}
         schema={schema}
         storeKeys={List([])}
         schemaKeys={List([])}

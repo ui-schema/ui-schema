@@ -6,6 +6,7 @@ import { UIStoreActionsContext } from '@ui-schema/ui-schema/UIStoreActions'
 
 /**
  * Main Component to create a schema based UI generator
+ * @deprecated use the provider setup directly [migration notes](https://ui-schema.bemit.codes/updates/v0.3.0-v0.4.0#deprecations)
  */
 export const UIGenerator: React.ComponentType<React.PropsWithChildren<UIMetaContext & UIStoreContext & UIStoreActionsContext & UIRootRendererProps>> = (
     {
@@ -13,13 +14,18 @@ export const UIGenerator: React.ComponentType<React.PropsWithChildren<UIMetaCont
         ...props
     }
 ) => (
+    // eslint-disable-next-line deprecation/deprecation
     <UIProvider {...props}>
+        {/* eslint-disable-next-line deprecation/deprecation */}
         <UIRootRenderer schema={props.schema}/>
         {children}
         {/* providing a dynamic ui context and rendering the root renderer */}
     </UIProvider>
 )
 
+/**
+ * @deprecated use the provider setup directly [migration notes](https://ui-schema.bemit.codes/updates/v0.3.0-v0.4.0#deprecations)
+ */
 export const UIProvider: React.ComponentType<React.PropsWithChildren<UIMetaContext & UIStoreContext & UIStoreActionsContext>> = (
     {
         children,

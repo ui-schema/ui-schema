@@ -13,4 +13,7 @@ export interface UIRootRendererProps<C extends {} = { [k: string]: any }> {
     rootContext?: C
 }
 
+/**
+ * @deprecated use e.g. `GridContainer` with `PluginStack` directly
+ */
 export function UIRootRenderer<C extends {} = {}>(props: UIRootRendererProps<C>): React.ReactElement

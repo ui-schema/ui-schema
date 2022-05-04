@@ -1,7 +1,9 @@
 import React from 'react';
-import {createEmptyStore, isInvalid, UIRootRenderer, UIStoreProvider} from '@ui-schema/ui-schema';
+import {createEmptyStore, injectPluginStack, isInvalid, UIStoreProvider} from '@ui-schema/ui-schema';
 import {storeUpdater} from '@ui-schema/ui-schema/storeUpdater';
+import {GridContainer} from '@ui-schema/ds-material/GridContainer';
 
+const GridStack = injectPluginStack(GridContainer)
 const MainDummy = ({schema, Debugger, Button}) => {
     const [showValidity, setShowValidity] = React.useState(false);
     const [store, setStore] = React.useState(() => createEmptyStore(schema.get('type')));
@@ -27,7 +29,7 @@ const MainDummy = ({schema, Debugger, Button}) => {
             onChange={onChangeNext}
             showValidity={showValidity}
         >
-            <UIRootRenderer schema={schema}/>
+            <GridStack isRoot schema={schema}/>
             <Debugger schema={schema}/>
         </UIStoreProvider>
 

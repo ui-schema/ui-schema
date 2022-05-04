@@ -52,7 +52,7 @@ const DependentRenderer = ({dependencies, dependentSchemas, dependentRequired, .
 };
 
 export const DependentHandler = (props) => {
-    let {storeKeys, ownKey, schema, currentPluginIndex} = props;
+    let {storeKeys, schema, currentPluginIndex} = props;
     const next = currentPluginIndex + 1;
     const Plugin = getNextPlugin(next, props.widgets)
 
@@ -66,7 +66,6 @@ export const DependentHandler = (props) => {
             dependentSchemas={dependentSchemas}
             dependentRequired={dependentRequired}
             storeKeys={storeKeys}
-            ownKey={ownKey}
             {...props}/> :
         <Plugin {...props} currentPluginIndex={next}/>
 };

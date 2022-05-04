@@ -4,9 +4,10 @@ import { ObjectRenderer } from '@ui-schema/ui-schema/ObjectRenderer'
 import Card, { CardProps } from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography, { TypographyProps } from '@mui/material/Typography'
+import Box from '@mui/material/Box'
 
 export const CardRenderer = (props: WidgetProps): React.ReactElement => {
-    const {schema, storeKeys, ownKey} = props
+    const {schema, storeKeys} = props
 
     return <Card
         elevation={schema.getIn(['view', 'ev']) as CardProps['elevation']}
@@ -20,10 +21,12 @@ export const CardRenderer = (props: WidgetProps): React.ReactElement => {
                     component={(schema.getIn(['view', 'titleComp']) || 'p') as React.ElementType}
                     gutterBottom
                 >
-                    <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+                    <TransTitle schema={schema} storeKeys={storeKeys}/>
                 </Typography>}
             {/* todo: add `description` support */}
-            <ObjectRenderer {...props}/>
+            <Box py={1}>
+                <ObjectRenderer {...props}/>
+            </Box>
         </CardContent>
     </Card>
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import {PluginStack} from '@ui-schema/ui-schema/PluginStack'
-import {getDisplayName} from '@ui-schema/ui-schema/Utils/memo'
+import {getDisplayName, memo} from '@ui-schema/ui-schema/Utils/memo'
 
 export function applyPluginStack(CustomWidget) {
     const CustomStack = (p) =>
@@ -10,5 +10,17 @@ export function applyPluginStack(CustomWidget) {
         />
 
     CustomStack.displayName = `ApplyPluginStack(${getDisplayName(CustomWidget)})`
-    return CustomStack
+    return memo(CustomStack)
+}
+
+export function injectPluginStack(Wrapper, CustomWidget) {
+    const CustomStack = (p) =>
+        <PluginStack
+            {...p}
+            StackWrapper={Wrapper}
+            WidgetOverride={CustomWidget}
+        />
+
+    CustomStack.displayName = `InjectPluginStack(${getDisplayName(Wrapper)})`
+    return memo(CustomStack)
 }

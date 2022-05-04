@@ -36,7 +36,7 @@ const RadioInput = ({classForm, enumName, classLabel, required, classFormControl
     </div>
 };
 
-const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, required, errors, ownKey}) => {
+const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, required, errors}) => {
     const enumVal = schema.get('enum');
     if(!enumVal) return null;
 
@@ -51,7 +51,7 @@ const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, require
     }
 
     return <React.Fragment>
-        <label><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></label>
+        <label><TransTitle schema={schema} storeKeys={storeKeys}/></label>
         {enumVal ? enumVal.map((enum_name) => {
             return <RadioInput
                 key={enum_name}
@@ -59,7 +59,6 @@ const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, require
                 enumName={enum_name}
                 classLabel={classLabel}
                 required={required}
-                ownKey={ownKey}
                 classFormControl={classFormControl}
                 value={value}
                 onChange={onChange}

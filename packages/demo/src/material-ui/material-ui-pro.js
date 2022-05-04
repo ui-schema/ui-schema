@@ -20,7 +20,9 @@ import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter/isInvalid';
 import {fromJSOrdered} from '@ui-schema/ui-schema/Utils/createMap';
 import {createStore, UIStoreProvider} from '@ui-schema/ui-schema/UIStore';
 import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro';
-import {UIMetaProvider, UIRootRenderer} from '@ui-schema/ui-schema';
+import {UIMetaProvider} from '@ui-schema/ui-schema/UIMeta';
+import {GridContainer} from '@ui-schema/ds-material/GridContainer';
+import {injectPluginStack} from '@ui-schema/ui-schema/applyPluginStack';
 
 const customWidgets = {...widgets};
 customWidgets.custom = {
@@ -65,7 +67,7 @@ const initialStore = createStore(fromJSOrdered({
 }))
 
 const schema = schemaDemoReferencingRecursive
-
+const GridStack = injectPluginStack(GridContainer)
 const Main = () => {
     const theme = useTheme();
 
@@ -125,7 +127,7 @@ const Main = () => {
             onChange={onChange}
             showValidity={showValidity}
         >
-            <UIRootRenderer schema={schema}/>
+            <GridStack isRoot schema={schema}/>
             <MuiSchemaDebug schema={schema}/>
         </UIStoreProvider>
 

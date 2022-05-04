@@ -38,7 +38,7 @@ expect.extend({toBeInTheDocument, toHaveClass})
 const widgets = MockWidgets
 // todo: add custom ErrorFallback, otherwise some errors may be catched there - and the test will not fail
 
-// eslint-disable-next-line react/display-name
+// eslint-disable-next-line react/display-name,deprecation/deprecation
 widgets.RootRenderer = (props: PropsWithChildren<any>): React.ReactElement => <div className={'root-renderer'}>{props.children}</div>
 // eslint-disable-next-line react/display-name
 widgets.GroupRenderer = ({children}): React.ReactElement => <div className={'group-renderer'}>{children}</div>
@@ -60,7 +60,7 @@ widgets.pluginSimpleStack = validators
 widgets.types.string = (props: WidgetProps): React.ReactElement => {
     return <>
         <span>string-renderer</span>
-        <span><TransTitle schema={props.schema} ownKey={props.ownKey} storeKeys={props.storeKeys}/></span>
+        <span><TransTitle schema={props.schema} storeKeys={props.storeKeys}/></span>
         {props.valid ? null : <span>string-with-error</span>}
         {props.errors.hasError() ? <span>{JSON.stringify(props.errors.errorsToJS())}</span> : null}
     </>
@@ -70,7 +70,7 @@ widgets.types.string = (props: WidgetProps): React.ReactElement => {
 widgets.types.array = extractValue((props: WidgetProps & WithValue): React.ReactElement => {
     return <>
         <span>array-renderer</span>
-        <span><TransTitle schema={props.schema} ownKey={props.ownKey} storeKeys={props.storeKeys}/></span>
+        <span><TransTitle schema={props.schema} storeKeys={props.storeKeys}/></span>
         {/* @ts-ignore */}
         {List.isList(props.value) ? props.value.map((val, i: number) =>
             <div key={i}>
@@ -207,6 +207,7 @@ const TestUIRenderer = (props: {
         setStore(storeUpdater(actions))
     }, [setStore])
 
+    // eslint-disable-next-line deprecation/deprecation
     return <UIGenerator
         schema={schema}
         store={props.noStore ? undefined : store}

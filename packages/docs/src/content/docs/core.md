@@ -13,8 +13,9 @@ It supports different ways of creation and UI orchestration, focused for a great
 - [UIApi](/docs/core-uiapi): utilities for network connected forms
 - [Utils](/docs/core-utils): common utilities for immutable and other logic parts
 
-
 ## UIProvider
+
+> ⚠ deprecated, will be removed in `v0.5.0`
 
 Convenience Provider for both: UIStore & UIMeta, just pass everything down to the provider, the UIRootRenderer connects to the provider automatically. Only recommended for small usages, for most cases a lifted up `UIMetaProvider` makes more sense.
 

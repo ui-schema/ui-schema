@@ -26,7 +26,7 @@ const ThumbComponent = ({onClick, canDelete, children, ...p}) => {
 
 const NumberSliderRenderer = ({
                                   multipleOf, min, max, enumVal, constVal, defaultVal,
-                                  storeKeys, ownKey, schema, value, onChange,
+                                  storeKeys, schema, value, onChange,
                                   showValidity, valid, errors, required,
                                   minItems, maxItems,
                               }) => {
@@ -65,7 +65,7 @@ const NumberSliderRenderer = ({
 
     return <React.Fragment>
         <Typography id={'uis-' + uid} gutterBottom color={!valid && showValidity ? 'error' : 'initial'}>
-            <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>{required ? ' *' : null}
+            <TransTitle schema={schema} storeKeys={storeKeys}/>{required ? ' *' : null}
         </Typography>
 
         <Box style={{display: 'flex'}} mt={schema.getIn(['view', 'mt'])} mb={schema.getIn(['view', 'mb'])}>

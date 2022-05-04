@@ -23,7 +23,7 @@ import ListItem from '@mui/material/ListItem'
 import { NavListNested } from '@control-ui/kit/NavList'
 import { routesCore, routesFurtherAddOns, routesFurtherDesignSystem } from '../content/docs'
 import { useConsent } from '@bemit/consent-ui-react'
-// import {ConsentUiBoxDialog, dialogPositions} from '@bemit/consent-ui-mui'
+import { ConsentUiBoxDialog, dialogPositions } from '@bemit/consent-ui-mui'
 import { Layout, LayoutProps } from '@control-ui/app/Layout'
 import Loadable from 'react-loadable'
 import { LoadingCircular } from '@control-ui/kit/Loading/LoadingCircular'
@@ -31,7 +31,7 @@ import { RouteCascade } from '@control-ui/routes/RouteCascade'
 import { useSearch } from '@control-ui/docs/DocsSearchProvider'
 import { SearchBox } from './SearchBox'
 
-const title = '0.3.0 & 0.4.0-alpha.x'
+const title = '0.4.0-alpha'
 export const CustomHeader: React.ComponentType = () => {
     const {switchTheme} = useSwitchTheme()
     const {setOpen} = useSearch()
@@ -103,11 +103,7 @@ export const Routing: LayoutProps['Content'] = React.memo(RoutingBase)
 
 export const CustomLayout = () => {
     const location = useLocation()
-    // @ts-ignore
-    // eslint-disable-next-line
     const {ready, hasChosen, showUi} = useConsent()
-    // @ts-ignore
-    // eslint-disable-next-line
     const [showDetails, setShowDetails] = React.useState(Boolean(hasChosen))
     return <>
         {/* @ts-ignore */}
@@ -121,7 +117,7 @@ export const CustomLayout = () => {
             <SearchBox/>
         </Layout>
 
-        {/*<ConsentUiBoxDialog
+        <ConsentUiBoxDialog
             layout={'dense'}
             //showSelectEssential
             open={Boolean(ready && (!hasChosen || showUi))}
@@ -146,7 +142,7 @@ export const CustomLayout = () => {
                 serviceStores: 'Stores:',
                 serviceReceives: 'Receives:',
             }}
-        />*/}
+        />
     </>
 }
 

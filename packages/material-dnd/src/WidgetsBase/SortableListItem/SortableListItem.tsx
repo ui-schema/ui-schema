@@ -104,7 +104,7 @@ export const SortableListItemBase = <C extends HTMLElement = HTMLElement, S exte
                     component={(schema.getIn(['view', 'titleComp']) as React.ElementType) || 'p'}
                     gutterBottom
                 >
-                    <TransTitle schema={schema} storeKeys={storeKeys} ownKey={index}/>
+                    <TransTitle schema={schema} storeKeys={storeKeys}/>
                 </Typography> : null}
 
                 <PluginStack schema={schema} parentSchema={parentSchema} storeKeys={storeKeys}/>

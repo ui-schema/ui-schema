@@ -4,7 +4,7 @@
 
 This page lists and explains the included plugins and validators.
 
-> ❗ The plugins binding / `validateSchema` pass down & execution will have a breaking change in `v0.4.0`, split up into own modules, [see issue](https://github.com/ui-schema/ui-schema/issues/100)
+> ❗ The plugins binding / `validateSchema` pass down & execution will have a breaking change in `v0.5.0`, split up into own modules, [see issue](https://github.com/ui-schema/ui-schema/issues/100)
 
 ## Widget / Schema Plugins
 

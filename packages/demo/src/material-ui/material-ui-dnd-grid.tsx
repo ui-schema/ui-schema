@@ -21,7 +21,7 @@ import { TouchTransition, PointerTransition, MultiBackendOptions } from 'dnd-mul
 import {
     createEmptyStore,
     createOrderedMap,
-    createStore, onChangeHandler,
+    createStore, injectPluginStack, onChangeHandler,
     SchemaTypesType,
     StoreSchemaType,
     storeUpdater,
@@ -32,7 +32,6 @@ import {
 } from '@ui-schema/ui-schema'
 import { OrderedMap } from 'immutable'
 import { RichContent, RichContentInline, RichContentPane } from '@ui-schema/material-slate'
-import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer'
 import { DndBlock, DragDropBlockProvider } from '@ui-schema/material-dnd/DragDropBlockProvider'
 import { KitDndProvider, useOnIntent } from '@ui-schema/kit-dnd'
 import { useOnDirectedMove } from '@ui-schema/material-dnd/useOnDirectedMove'
@@ -42,6 +41,7 @@ import { DragDropArea } from '@ui-schema/material-dnd/Widgets/DragDropArea'
 import { DragDropBlockSelector } from '@ui-schema/material-dnd/DragDropBlockSelector'
 import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd/DragDropBlock'
 import { DropArea } from '@ui-schema/material-dnd/Widgets/DropArea'
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 
 export type CustomWidgetsBinding = WidgetsBindingFactory<DragDropBlockComponentsBinding, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
     DragDropArea: React.ComponentType<WidgetProps<MuiWidgetBinding & DragDropBlockComponentsBinding> & WithOnChange>
@@ -125,8 +125,8 @@ const blocks: DndBlock[] = [
 ]
 
 const schemas: [StoreSchemaType, boolean][] = [
-    [schemaDragDropNested, true],
-    [schemaDragDropScoped, true],
+    [schemaDragDropNested as StoreSchemaType, true],
+    [schemaDragDropScoped as StoreSchemaType, true],
 ]
 
 export const HTML5toTouch: MultiBackendOptions = {
@@ -146,6 +146,7 @@ export const HTML5toTouch: MultiBackendOptions = {
     ],
 }
 
+const GridStack = injectPluginStack(GridContainer)
 const SingleEditor = () => {
     const [showValidity, setShowValidity] = React.useState(false)
 
@@ -193,7 +194,7 @@ const SingleEditor = () => {
                         onChange={onChange}
                         showValidity={showValidity}
                     >
-                        <UIRootRenderer schema={schemas[schema][0]}/>
+                        <GridStack isRoot schema={schemas[schema][0]}/>
                         <MuiSchemaDebug schema={schemas[schema][0]}/>
                     </UIStoreProvider>
                 </DndProvider>

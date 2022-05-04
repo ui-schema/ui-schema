@@ -3,7 +3,7 @@ import {TransTitle, useUIMeta, beautifyKey, extractValue, memo, sortScalarList} 
 import {List, Map} from 'immutable';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
-export const SelectMulti = extractValue(memo(({schema, storeKeys, showValidity, errors, ownKey, value, onChange, required}) => {
+export const SelectMulti = extractValue(memo(({schema, storeKeys, showValidity, errors, value, onChange, required}) => {
     const {t} = useUIMeta();
 
     if(!schema) return null;
@@ -22,7 +22,7 @@ export const SelectMulti = extractValue(memo(({schema, storeKeys, showValidity, 
         schema.get('default') ? List(schema.get('default')) : List([]);
 
     return <div className={classFormParent.join(' ')}>
-        <label><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></label>
+        <label><TransTitle schema={schema} storeKeys={storeKeys}/></label>
         <select
             value={currentValue.toArray()}
             className={classForm.join(' ')}

@@ -21,9 +21,9 @@ const checkValueExists = (type, value) => {
 };
 
 const requiredValidator = {
-    should: ({requiredList, ownKey}) => {
+    should: ({requiredList, storeKeys}) => {
         if(requiredList && List.isList(requiredList)) {
-            return requiredList.contains(ownKey);
+            return requiredList.contains(storeKeys.last());
         }
         return false
     },

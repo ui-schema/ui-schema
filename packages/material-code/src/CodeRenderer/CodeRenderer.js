@@ -1,26 +1,9 @@
 import React from 'react';
+import Box from '@mui/material/Box';
 import clsx from 'clsx';
 import {useUID} from 'react-uid';
-import makeStyles from "@mui/styles/makeStyles";
-import {Controlled as CodeMirror} from 'react-codemirror2';
-import {useWidgetCode} from '@ui-schema/material-code/CodeProvider/CodeProvider';
-
-const useStyles = makeStyles({
-    root: {
-        flex: '1 1 auto',
-        marginTop: 0,
-        height: '100%',
-        position: 'relative',
-        '& .CodeMirror': {
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: '100%',
-        },
-    },
-});
+import {Controlled as CodeMirror} from '@ui-schema/material-code/ReactCodeMirror';
+import {useWidgetCode} from '@ui-schema/material-code/CodeProvider';
 
 export const CodeRenderer = ({
                                  storeKeys, schema, value, onChange,
@@ -31,8 +14,6 @@ export const CodeRenderer = ({
     const [lines, setLines] = React.useState(1);
     const [editor, setEditor] = React.useState();
     const [focused, setFocused] = React.useState(false);
-
-    const classes = useStyles();
 
     React.useEffect(() => {
         onChange({
@@ -85,16 +66,33 @@ export const CodeRenderer = ({
         ...(theme ? {theme} : {}),
     }), [format, theme, mode]);
 
-    return <div
-        style={{
+    const onFocus = React.useCallback(() => setFocused(true), [setFocused])
+    const onBlur = React.useCallback(() => setFocused(false), [setFocused])
+
+    return <Box
+        sx={{
+            display: 'flex',
             minHeight: '2rem',
             height: lines ? ((lines + 1) * height) + 6 : 'auto',
             position: 'relative',
+            ['& .' + 'uis-' + uid]: {
+                flex: '1 1 auto',
+                marginTop: 0,
+                height: '100%',
+                position: 'relative',
+            },
+            '& .CodeMirror': {
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: '100%',
+            },
         }}
     >
         <CodeMirror
             className={clsx(
-                classes.root,
                 'uis-' + uid,
                 'MuiInput-underline',
                 focused ? 'Mui-focused' : null,
@@ -103,9 +101,9 @@ export const CodeRenderer = ({
             value={value}
             onBeforeChange={handleBeforeChange}
             onChange={handleOnChange}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
+            onFocus={onFocus}
+            onBlur={onBlur}
             options={options}
         />
-    </div>
+    </Box>
 };

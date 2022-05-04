@@ -53,7 +53,7 @@ export const SimpleListItem = memo(SimpleListItemBase)
 
 export const SimpleListInner = (
     {
-        schemaKeys, storeKeys, ownKey, schema, listSize, onChange,
+        schemaKeys, storeKeys, schema, listSize, onChange,
         showValidity, valid, errors, required, level,
         widgets,
         btnAddShowLabel, btnAddStyle,
@@ -72,7 +72,7 @@ export const SimpleListInner = (
     return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
         <Grid container spacing={2}>
             {!schema.getIn(['view', 'hideTitle']) ? <Grid item xs={12}>
-                <FormLabel component="legend"><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></FormLabel>
+                <FormLabel component="legend"><TransTitle schema={schema} storeKeys={storeKeys}/></FormLabel>
             </Grid> : null}
 
             {InfoRenderer && schema?.get('info') ?
