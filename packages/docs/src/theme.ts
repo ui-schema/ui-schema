@@ -88,7 +88,8 @@ const themeDark = createTheme({
             default: '#06050d',
         },
         text: {
-            primary: '#abb8b9',
+            // primary: '#abb8b9',
+            primary: '#b0bebf',
             secondary: '#9b88ad',
         },
         action: {

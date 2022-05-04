@@ -19,7 +19,7 @@ const Code = Loadable({
 //const Code = () => <CircularProgress component={'span'}/>
 
 const LinkInternalLocale = (p) => {
-    return <MdLink {...p} href={0 !== p.href.indexOf('#') && -1 === p.href.indexOf('https://') && -1 === p.href.indexOf('http://') ? p.href.slice(1) : p.href}/>
+    return <MdLink {...p} currentDomain={window.location.protocol + '//' + window.location.host}/>
 }
 
 // see: https://github.com/rexxars/react-markdown#node-types

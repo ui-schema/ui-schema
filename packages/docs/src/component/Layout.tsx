@@ -108,6 +108,7 @@ export const CustomLayout = () => {
     return <>
         {/* @ts-ignore */}
         <Layout
+            containerStyle={{height: '100%'}}
             Header={CustomHeader}
             Drawer={CustomDrawer}
             Content={Routing}

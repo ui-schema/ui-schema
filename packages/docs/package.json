@@ -8,11 +8,11 @@
         "page-index": "ts-node -r tsconfig-paths/register cli/page-index.ts"
     },
     "dependencies": {
-        "@control-ui/app": "0.0.22",
-        "@control-ui/docs": "0.0.28",
+        "@control-ui/app": "0.0.23",
+        "@control-ui/docs": "0.0.29",
         "@control-ui/docs-ts": "0.0.4",
-        "@control-ui/kit": "0.0.23",
-        "@control-ui/md": "0.0.2",
+        "@control-ui/kit": "0.0.24",
+        "@control-ui/md": "0.0.3",
         "@control-ui/routes": "0.0.4",
         "@mui/material": "^5.1",
         "@mui/styles": "^5.1",
