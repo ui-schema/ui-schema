@@ -46,7 +46,6 @@ export const FormWrapper: React.ComponentType<React.PropsWithChildren<{
     errors: WidgetProps['errors']
     showValidity: WidgetProps['showValidity']
     valid: WidgetProps['valid']
-    ownKey: WidgetProps['ownKey']
     classes: Record<'wrapper' | 'editor', string>
 }>> = (
     {
@@ -55,7 +54,6 @@ export const FormWrapper: React.ComponentType<React.PropsWithChildren<{
         errors,
         showValidity,
         valid,
-        ownKey,
         children,
         dense,
         focused,
@@ -79,7 +77,7 @@ export const FormWrapper: React.ComponentType<React.PropsWithChildren<{
                 error={!valid}
                 style={{pointerEvents: 'none'}}
             >
-                <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+                <TransTitle schema={schema} storeKeys={storeKeys}/>
             </InputLabel> : null}
         <div
             className={clsx(

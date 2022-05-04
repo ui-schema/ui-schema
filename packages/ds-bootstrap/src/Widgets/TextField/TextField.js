@@ -14,7 +14,7 @@ export const convertStringToNumber = (value, type) => {
     return value
 }
 
-const StringRenderer = ({ownKey, schema, value, multiline = false, onChange, storeKeys, showValidity, required, errors, type, rows}) => {
+const StringRenderer = ({schema, value, multiline = false, onChange, storeKeys, showValidity, required, errors, type, rows}) => {
     const format = schema.get('format');
     const uid = useUID();
 
@@ -33,7 +33,7 @@ const StringRenderer = ({ownKey, schema, value, multiline = false, onChange, sto
     }
 
     return <div className={classFormGroup.join(' ')}>
-        <label htmlFor={'uis-' + uid}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></label>
+        <label htmlFor={'uis-' + uid}><TransTitle schema={schema} storeKeys={storeKeys}/></label>
         <Renderer
             className={classFormControl.join(' ')}
             type={format || type}

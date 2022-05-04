@@ -47,7 +47,6 @@ Overwrite `props` rules for any `widgets.pluginStack` plugin:
 - [`UIConfigContext`](/docs/core-store#uiconfigcontext) is overwriting only the `UIMetaContext`, added to every plugin stack by default
 - [`UIStoreContext`](/docs/core-store#uistoreprovider) must be added from within plugins, but only extracted using `storeKeys` as [interface `WithValue`](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/UIStore/UIStoreProvider.tsx) on a schema level, [done by `ExtractStorePlugin`](/docs/plugins#extractstoreplugin)
 
-
 ### Typescript Custom PluginStack props
 
 `PluginStack` allows to specify the needed `props`, when using `WidgetOverride` it automatically types those props. All `props` passed to `PluginStack` are passed down, but the typing is stricter since `0.3.0`.
@@ -194,6 +193,8 @@ Function to build autowiring components, which are fully typed with the actual w
 
 The created component applies the typescript definitions of the actual widget, but omits those injected by `PluginStack`.
 
+Since `0.4.0-alpha.1`, this function also applies [`memo`](/docs/core-utils#memo--isequal) to the final component.
+
 > todo: currently omits properties (also the `PluginStack`), which are possible because of the used plugins,
 > this should be optimized to automatically suggest the props of currently applied `widgets.pluginStack` (when possible)
 
@@ -268,6 +269,40 @@ const EditorStub = () => {
             parentSchema={freeFormSchema}
         />
     </UIProvider>
+}
+```
+
+## injectPluginStack
+
+> ⚠ new since `v0.4.0-alpha.1`
+
+Utility to wire-up wrapper components inside the performance-area of the `PluginStack` and not of the parent component (and additionally inside the `ErrorBoundary` of the `PluginStack`).
+
+Similar to `applyPluginStack`, but this function allows to wrap the whole `PluginStack` with another component - and optionally supports the same `CustomWidget` part with a second param.
+
+This function also applies [`memo`](/docs/core-utils#memo--isequal) to the final component.
+
+> this function is typesafe, and works like [`applyPluginStack`](#applypluginstack) in that matter
+
+```typescript jsx
+import React from 'react'
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
+import { applyPluginStack } from '@ui-schema/ui-schema/applyPluginStack'
+
+// wire up:
+const GridStack = injectPluginStack(GridContainer)
+
+const Stepper = injectPluginStack(GridContainer, WidgetStepper)
+
+const FancyWidget = () => {
+    // somewhere below `UIStoreProvider`
+    // here as the "root schema" renderer:
+    return <>
+        <GridStack
+            isRoot
+            schema={customSchema}
+        />
+    </>
 }
 ```
 

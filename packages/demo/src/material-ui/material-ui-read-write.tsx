@@ -9,12 +9,11 @@ import {
     GroupRendererProps,
     UIMetaProvider, UIStoreProvider,
     useUIMeta, WidgetType,
-    UIStoreActions, UIStoreType,
+    UIStoreActions, UIStoreType, injectPluginStack,
 } from '@ui-schema/ui-schema'
 import { browserT } from '../t'
 import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
 import { OrderedMap } from 'immutable'
-import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer/UIRootRenderer'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { UIMetaReadContextType } from '@ui-schema/ui-schema/UIMetaReadContext'
 import {
@@ -24,6 +23,7 @@ import {
 } from '@ui-schema/ds-material/WidgetsRead'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 
 // custom `GroupRenderer` that supports `is-read and display-dense`
 const GroupRenderer: React.ComponentType<GroupRendererProps> = ({schema, children, noGrid}) => {
@@ -182,6 +182,7 @@ const readWidgets: ReadWidgetsBinding = {
     },
 }
 
+const GridStack = injectPluginStack(GridContainer)
 const ReadableWritableEditor = () => {
     const {widgets, ...metaCtx} = useUIMeta()
     const showValidity = true
@@ -215,7 +216,7 @@ const ReadableWritableEditor = () => {
                 onChange={onChange}
                 showValidity={showValidity}
             >
-                <UIRootRenderer schema={formSchema}/>
+                <GridStack isRoot schema={formSchema}/>
                 <MuiSchemaDebug schema={formSchema}/>
             </UIStoreProvider>
         </UIMetaProvider>

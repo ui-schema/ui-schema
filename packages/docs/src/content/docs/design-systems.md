@@ -8,8 +8,11 @@ Bindings for some popular design-systems are provided, otherwise see how to [cre
 
 Install:
 
+> supports `@material-ui/core` up to `0.3.0`, since `0.4.0` supports `@mui/material`
+
 ```bash
-npm i --save @ui-schema/ui-schema @ui-schema/ds-material @mui/material @mui/icons-material immutable
+npm i --save @ui-schema/ui-schema @ui-schema/ds-material \
+  @mui/material @mui/icons-material immutable
 ```
 
 ## Bootstrap

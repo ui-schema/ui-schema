@@ -4,9 +4,9 @@ import {Markdown} from '../component/Markdown';
 import DemoUIGenerator from '../component/Schema/DemoUIGenerator';
 import {RichCodeEditor} from '../component/RichCodeEditor';
 import {useHistory} from 'react-router-dom';
-import {HeadlineMenu} from '@control-ui/docs/LinkableHeadline';
+import {LinkableHeadlineMenu} from '@control-ui/docs/LinkableHeadline';
 import {HeadMeta} from '@control-ui/kit/HeadMeta';
-import {PageBox, PageContent} from '@control-ui/kit/PageContent';
+import {PageContent} from '@control-ui/kit/PageContent';
 import {LoadingCircular} from '@control-ui/kit/Loading/LoadingCircular';
 
 const demoSchema = {
@@ -52,7 +52,7 @@ const PageQuickStart = () => {
             description={'In 6 steps to a React form that sends data to an API! Build with JSON-Schema and Material-UI or Bootstrap'}
         />
         <PageContent maxWidth={'md'}>
-            <PageBox style={{margin: 12, padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}}>
+            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                 <Markdown content source={`
 # Quick-Start UI-Schema
 
@@ -64,13 +64,12 @@ See the [**list of widgets**](/docs/overview#widget-list) for the different desi
 `}/>
 
                 <Markdown content source={`
-**UIGenerator vs. Custom UI**, UI-Schema supports either:
+**Automatic vs. Custom UI**, UI Schema supports either:
 
-- full automatic UI generation by schema and data, or:
-- custom UI with autowired and always validated widgets and partial-automatic generation
+- full automatic UI generation by JSON-Schema and data, *or:*
+- custom UI with autowired and always validated widgets / partial-automatic rendering
 
 `}/>
-
                 <Grid container>
                     <Grid item xs={6} style={{paddingRight: 6}}>
                         <Button fullWidth variant={render === 'automatic' ? 'contained' : 'outlined'} color={'secondary'} onClick={() => setRender('automatic')}>Automatic</Button>
@@ -80,10 +79,10 @@ See the [**list of widgets**](/docs/overview#widget-list) for the different desi
                     </Grid>
                 </Grid>
 
-                <HeadlineMenu initial disableNavLink onClickKeepOpen/>
-            </PageBox>
+                <LinkableHeadlineMenu initial disableNavLink onClickKeepOpen/>
+            </Paper>
 
-            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                 <Markdown content source={`
 ## 1. Install
 
@@ -102,15 +101,15 @@ First select the design-system and install ui-schema and dependencies.
 \`\`\`bash
 npm i --save @ui-schema/ui-schema immutable \\
     @ui-schema/ds-material \\
-    @mui/material @mui/styles @mui/icons-material
+    @mui/material @mui/icons-material
 \`\`\`
 
 > for version constraints [check the ds-material/package.json](https://github.com/ui-schema/ui-schema/blob/master/packages/ds-material/package.json)
 
 > first time with MUI? [head to the mui.com quick start](https://mui.com/material-ui/getting-started/installation/)
 >
-> - ds-material@v0.3.0 supports \`@material-core\`
-> - 🚧 ds-material@v0.4.0.alpha uses  \`@mui/material\` and requires currently \`@mui/styles\`
+> - \`ds-material@v0.3.0\` supports \`@material-core\`
+> - 🚧 \`ds-material@v0.4.0.alpha\` supports \`@mui/material\`
 
 > there's also a [create-react-app demo](https://github.com/ui-schema/demo-cra)
 `}/> :
@@ -128,7 +127,7 @@ npm i --save @ui-schema/ui-schema immutable \\
             </Paper>
 
             {render === 'custom' ?
-                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                     <Markdown content source={`
 ## 2. Create Demo Generator
 
@@ -186,13 +185,13 @@ export const Generator = () => {
                 </Paper> : null}
 
             {render === 'automatic' ?
-                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                     <Markdown content source={`
 ## 2. Create Demo Generator
 
 Create a file which serves as demo: \`DemoGenerator.js\`
 
-Add a empty provider in the file with the needed imports.
+Add an empty provider in the file with the needed imports.
 `}/>
 
                     <Grid container>
@@ -201,27 +200,30 @@ Add a empty provider in the file with the needed imports.
 \`\`\`jsx
 import React from "react";
 
-// Import UI Generator
+// "global" ui-config
+import { UIMetaProvider, useUIMeta } from '@ui-schema/ui-schema/UIMeta';
+// for data-stores / data-binding
 import {
-    UIGenerator,                   // main component
-    isInvalid,                     // for validity checking
-    createEmptyStore, createStore, // for initial data-store creation
-    createMap, createOrderedMap,   // for deep immutables
-    storeUpdater,                  // for on change handling
-} from "@ui-schema/ui-schema";
+    UIStoreProvider,
+    createEmptyStore, createStore,
+    storeUpdater,
+} from '@ui-schema/ui-schema/UIStore';
 
+// util for \`PluginStack\` rendering
+import { injectPluginStack } from '@ui-schema/ui-schema/applyPluginStack';
 
-// individual components, e.g. use one \`UIMetaProvider\` for many \`UIStoreProvider\` instead of \`UIGenerator\`
-import { UIStoreProvider } from '@ui-schema/ui-schema/UIStore';
-import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta';
-// instead of \`UIGenerator\` use \`UIRootRenderer\` and pass down the schema
-import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer';
-
-// Simple translator for in-schema translation, keyword \`t\`
-import { relTranslator } from '@ui-schema/ui-schema/Translate/relT'
+// for validity checking
+import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter';
+// for deep immutables
+import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap';
+// for \`t\` keyword support / basic in-schema translation
+import { relTranslator } from '@ui-schema/ui-schema/Translate/relT';
 
 // import the widgets for your design-system.
 ${ds === 'mui' ? 'import { widgets } from "@ui-schema/ds-material";' : 'import { widgets } from "@ui-schema/ds-bootstrap";'}
+
+// root-level grid container
+${ds === 'mui' ? 'import { GridContainer } from "@ui-schema/ds-material/GridContainer";' : 'import { GridContainer } from "@ui-schema/ds-bootstrap/GridContainer";'}
 
 // Empty Demo Schema & Data/Values
 const schema = createOrderedMap({});
@@ -231,9 +233,12 @@ export const Generator = () => {
     // here the state will be added
 
     return (
-        <UIGenerator
-            /* here the props will be added */
-        />
+        // move \`UIMetaProvider\` somewhere higher in your app, use one meta provider for multiple store providers
+        <UIMetaProvider>
+            <UIStoreProvider>
+                {/* here the components will be added */}
+            </UIStoreProvider>
+        </UIMetaProvider>
     )
 };
 \`\`\`
@@ -242,11 +247,13 @@ export const Generator = () => {
                     </Grid>
                 </Paper> : null}
 
-            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                 <Markdown content source={`
 ## 3. Create Store State, Add Schema
 
-Each ${render === 'automatic' ? 'UIGenerator' : 'UIStoreProvider'} needs to receive a \`store\` and \`onChange\` to work with the data and have something to save validity and internal values. The store must be an \`UIStore\`, which is based on a [immutable](https://immutable-js.github.io/immutable-js/) Record.
+Each \`UIStoreProvider\` needs to receive a \`store\` and \`onChange\` to work with the data and have something to save validity and internal values. The store must be an \`UIStore\`, which is based on a [immutable](https://immutable-js.github.io/immutable-js/) Record.
+
+With \`PluginStack\` (and related utils) components can be wired up with the render engine, for improved performance in big editors.
 
 The schema in this example is bundled with the component and not dynamic, also the schema must be immutable. A minimal valid schema is an empty \`object\` schema.
 `}/>
@@ -262,6 +269,9 @@ const schema = createOrderedMap({
 
 const values = {};
 
+// wire up the grid container component with the render engine:
+const GridStack = injectPluginStack(GridContainer)
+
 export const Generator = () => {
     // Create a state with the data, transforming into immutable on first mount
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(values)));
@@ -274,16 +284,7 @@ export const Generator = () => {
     }, [setStore])
 
     return (
-        ${render === 'automatic' ? `<UIGenerator
-            schema={schema}
-
-            store={store}
-            onChange={onChange}
-            showValidity={true}
-
-            widgets={widgets}
-            t={relTranslator}
-        />` : ''} ${render === 'custom' ? `// move \`UIMetaProvider\` somewhere higher in your app
+        // move \`UIMetaProvider\` somewhere higher in your app
         <UIMetaProvider
             widgets={widgets}
             t={relTranslator}
@@ -293,9 +294,9 @@ export const Generator = () => {
                 onChange={onChange}
                 showValidity={true}
             >
-
+                <GridStack isRoot schema={schema}/>
             </UIStoreProvider>
-        </UIMetaProvider>` : ''}
+        </UIMetaProvider>
     )
 };
 \`\`\`
@@ -304,7 +305,7 @@ export const Generator = () => {
                 </Grid>
             </Paper>
 
-            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                 <Grid container>
                     <Grid item xs={12}>
                         <Markdown content source={`
@@ -339,7 +340,7 @@ const schema = createOrderedMap(${JSON.stringify(demoSchema, null, 2)});
                 </> : null}
             </Paper>
             {render === 'automatic' ?
-                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                     <Grid container>
                         <Grid item xs={12}>
                             <Markdown content source={`
@@ -353,6 +354,8 @@ We tell the editor also to display validity from start on.
                         <Grid item xs={12}>
                             <Markdown content source={`
 \`\`\`jsx
+const GridStack = injectPluginStack(GridContainer)
+
 export const Generator = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(values)));
 
@@ -362,16 +365,19 @@ export const Generator = () => {
 
     return (
         <React.Fragment>
-            <UIGenerator
-                schema={schema}
-
-                store={store}
-                onChange={onChange}
-
+            <UIMetaProvider
                 widgets={widgets}
+                t={relTranslator}
+            >
+                <UIStoreProvider
+                    store={store}
+                    onChange={onChange}
+                    showValidity={true}
+                >
+                    <GridStack isRoot schema={schema}/>
+                </UIStoreProvider>
+            </UIMetaProvider>
 
-                showValidity={true}
-            />
             {/* add your sending button, in the onClick check for validity and do the needed action */}
             <button
                 disabled={!!isInvalid(store.getValidity())}
@@ -425,7 +431,7 @@ Test the demo form below, it will send the entered data to [httpbin.org*](https:
                 </Paper> : null}
 
             {render === 'custom' ? <>
-                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                     <Grid container>
                         <Grid item xs={12}>
                             <Markdown content source={`
@@ -526,7 +532,7 @@ export const Generator = () => {
                     </Grid>
                 </Paper>
 
-                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto'}} elevation={4}>
+                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                     <Grid container>
                         <Grid item xs={12}>
                             <Markdown content source={`

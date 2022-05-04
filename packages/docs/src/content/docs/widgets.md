@@ -56,7 +56,7 @@ Received properties from `WidgetRenderer` or accumulated in plugins & pluginSimp
 - `value` : `{*}` Plugins receive for any value, Widgets only for scalar
 - `onChange` : `{function}` store updater function, see [updating utils](/docs/core-store#store-updating--onchange)
 - `storeKeys` : `{List}`
-- `ownKey` : `{string|integer}`
+- `ownKey` : `{string|integer}` *deprecated, will be removed in `0.5.0` use `storeKeys.last()` instead*
 - `schema` : `{Map}` the schema of the current widget
 - `parentSchema` : `{Map}` the schema of the parent widget
 - `level` : `{integer}` how deep in the schema it is, incremented automatically for native-objects, must be done manually when using `PluginStack`
@@ -90,13 +90,13 @@ import React from 'react';
 import { TransTitle, WidgetProps } from '@ui-schema/ui-schema';
 
 const Widget = ({
-                    value, ownKey, storeKeys, onChange,
+                    value, storeKeys, onChange,
                     required, schema,
                     errors, valid,
                     ...props
                 }: WidgetProps) => {
     return <>
-        <label><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></label>
+        <label><TransTitle schema={schema} storeKeys={storeKeys}/></label>
 
         <input
             type={'text'}

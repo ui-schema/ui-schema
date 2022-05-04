@@ -1,61 +1,57 @@
 {
-	"name": "@ui-schema/material-code",
-	"version": "0.4.0-alpha.0",
-	"description": "Code Input for UI-Schema with Material-UI",
-	"homepage": "https://ui-schema.bemit.codes",
-	"author": "Michael Becker <michael@bemit.codes>",
-	"license": "MIT",
-	"keywords": [
-		"ui-schema",
-		"json-schema",
-		"mui",
-		"material",
-		"material-ui",
-		"react",
-		"reactjs",
-		"react-component",
-		"codemirror",
-		"form"
-	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/ui-schema/ui-schema.git",
-		"directory": "packages/material-code"
-	},
-	"bugs": {
-		"url": "https://github.com/ui-schema/ui-schema/issues"
-	},
-	"main": "index.js",
-	"module": "esm/index.js",
-	"scripts": {
-		"__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
-	},
-	"dependencies": {
-		"react-uid": "^2.2.0"
-	},
-	"devDependencies": {
+    "name": "@ui-schema/material-code",
+    "version": "0.4.0-alpha.1",
+    "description": "Code Input for UI-Schema with Material-UI",
+    "homepage": "https://ui-schema.bemit.codes",
+    "author": "Michael Becker <michael@bemit.codes>",
+    "license": "MIT",
+    "keywords": [
+        "ui-schema",
+        "json-schema",
+        "mui",
+        "material",
+        "material-ui",
+        "react",
+        "reactjs",
+        "react-component",
+        "codemirror",
+        "form"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ui-schema/ui-schema.git",
+        "directory": "packages/material-code"
+    },
+    "bugs": {
+        "url": "https://github.com/ui-schema/ui-schema/issues"
+    },
+    "main": "index.js",
+    "module": "esm/index.js",
+    "scripts": {
+        "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
+    },
+    "dependencies": {
+        "react-uid": "^2.2.0"
+    },
+    "devDependencies": {
         "@types/react": "^17.0",
-		"@mui/material": "^5.1",
-        "@mui/styles": "^5.1",
-		"@mui/icons-material": "^5.1",
-		"codemirror": "^5.52.0",
-		"immutable": "^4.0.0",
-		"react": "^17.0",
-		"react-codemirror2": "^6.0.0",
-		"react-dom": "^17.0"
-	},
-	"peerDependencies": {
-		"@mui/material": "^5.1",
-        "@mui/styles": "^5.1",
-		"@mui/icons-material": "^5.1",
-		"@ui-schema/ds-material": "~0.4.0-alpha",
-		"@ui-schema/ui-schema": "~0.4.0-alpha",
-		"codemirror": "^5.52.0",
-		"immutable": "^4.0.0",
-		"react": "^17.0 || ^18.0",
-		"react-codemirror2": "^6.0.0"
-	},
-	"publishConfig": {
-		"access": "public"
-	}
+        "@mui/material": "^5.1",
+        "@mui/icons-material": "^5.1",
+        "codemirror": "^5.52.0",
+        "immutable": "^4.0.0",
+        "react": "^17.0",
+        "react-dom": "^17.0"
+    },
+    "peerDependencies": {
+        "@mui/material": "^5.1",
+        "@mui/icons-material": "^5.1",
+        "@ui-schema/ds-material": "~0.4.0-alpha",
+        "@ui-schema/ui-schema": "~0.4.0-alpha",
+        "codemirror": "^5.52.0",
+        "immutable": "^4.0.0",
+        "react": "^17.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
 }

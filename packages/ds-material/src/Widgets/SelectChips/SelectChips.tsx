@@ -10,7 +10,7 @@ import { List, Map, OrderedMap } from 'immutable'
 
 export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue> = (
     {
-        storeKeys, ownKey, schema, value, onChange,
+        storeKeys, schema, value, onChange,
         showValidity, errors, required,
         valid,
     }
@@ -24,7 +24,7 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
 
     return <Box>
         <Typography color={showValidity && !valid ? 'error' : undefined}>
-            <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+            <TransTitle schema={schema} storeKeys={storeKeys}/>
         </Typography>
 
         <Box mt={1} style={{display: 'flex', flexWrap: 'wrap'}}>

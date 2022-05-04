@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-color",
-    "version": "0.4.0-alpha.0",
+    "version": "0.4.0-alpha.1",
     "description": "",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -33,7 +33,6 @@
     "devDependencies": {
         "@mui/icons-material": "^5.1",
         "@mui/material": "^5.1",
-        "@mui/styles": "^5.1",
         "@types/react": "^17.0",
         "immutable": "^4.0.0",
         "react": "^17.0",
@@ -43,7 +42,6 @@
     "peerDependencies": {
         "@mui/icons-material": "^5.1",
         "@mui/material": "^5.1",
-        "@mui/styles": "^5.1",
         "@ui-schema/ds-material": "~0.4.0-alpha",
         "@ui-schema/ui-schema": "~0.4.0-alpha",
         "immutable": "^4.0.0",

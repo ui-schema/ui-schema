@@ -3,10 +3,19 @@ import { ComponentPluginType, PluginProps } from '@ui-schema/ui-schema/PluginSta
 import { WidgetsBindingFactory } from '@ui-schema/ui-schema/WidgetsBinding'
 import { WidgetOverrideType, WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { AppliedPluginStackProps } from '@ui-schema/ui-schema/applyPluginStack'
+import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { StoreKeys } from '@ui-schema/ui-schema/UIStore'
 
-export type PluginStackInjectProps = 'currentPluginIndex' | 'ownKey' | 'requiredList' | 'required' | 'errors' | 'valid'
+export type PluginStackWrapperProps = {
+    children: React.ReactNode
+    schema: StoreSchemaType
+    storeKeys: StoreKeys
+    schemaKeys: StoreKeys
+}
 
-export type PluginStackProps<WP extends {} = {}, C extends {} = {}> = AppliedPluginStackProps<C, PluginProps> & {
+export type PluginStackInjectProps = 'currentPluginIndex' | 'ownKey' | 'requiredList' | 'required' | 'errors' | 'valid' | 'storeKeys' | 'parentSchema'
+
+export type PluginStackProps<PWidget extends {} = {}, C extends {} = {}, PWrapper extends {} = {}> = AppliedPluginStackProps<C, PluginProps> & {
     // level?: number
 
     // listen from a hoisted component for `errors` changing,
@@ -19,17 +28,24 @@ export type PluginStackProps<WP extends {} = {}, C extends {} = {}> = AppliedPlu
     // override any widget for just this PluginStack, not passed down further on
     // better use `applyPluginStack` instead! https://ui-schema.bemit.codes/docs/core-pluginstack#applypluginstack
     // todo: actually `WidgetOverride` is a WidgetRenderer prop - and also passed through the plugins, so should be in PluginProps also - but not in WidgetProps
-    WidgetOverride?: WidgetOverrideType<WP, C>
+    WidgetOverride?: WidgetOverrideType<PWidget, C>
+
+    // wraps the whole stack internally, as interfacing for the utility function `injectPluginStack`
+    // only rendered when not "virtual"
+    StackWrapper?: React.ComponentType<PluginStackWrapperProps & PWrapper>
+
+    wrapperProps?: PWrapper
+
 
     // all other props are passed down to all rendering Plugins and the final widget
     // except defined `props` removed by `WidgetRenderer`: https://ui-schema.bemit.codes/docs/core-renderer#widgetrenderer
     // [key: string]: any
 }
 
-// - `WP` = extra supported/required widget props
+// - `PWidget` = extra supported/required widget props
 // - `C` = custom `meta context` or additional `config context`
-export function PluginStack<WP extends {} = {}, C extends {} = {}, P extends PluginStackProps<WP, C> = PluginStackProps<WP, C>>(
-    props: P & WP
+export function PluginStack<PWidget extends {} = {}, C extends {} = {}, P extends PluginStackProps<PWidget, C> = PluginStackProps<PWidget, C>>(
+    props: P & PWidget
 ): React.ReactElement
 
 /**

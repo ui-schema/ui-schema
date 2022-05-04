@@ -20,7 +20,7 @@ export const DropAreaBase = (
     }: WidgetProps<WidgetsBindingFactory<DragDropBlockComponentsBinding>> & WithOnChange
 ): React.ReactElement => {
     const [showSelector, setShowSelector] = React.useState(false)
-    const {schema, ownKey, storeKeys, onChange, required} = props
+    const {schema, storeKeys, onChange, required} = props
     const btnSize = schema.getIn(['view', 'btnSize']) || 'medium'
     //const notSortable = schema.get('notSortable')
     const notAddable = schema.get('notAddable')
@@ -33,7 +33,7 @@ export const DropAreaBase = (
             component={(schema.getIn(['view', 'titleComp']) as React.ElementType) || 'p'}
             gutterBottom
         >
-            <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+            <TransTitle schema={schema} storeKeys={storeKeys}/>
         </Typography> : null}
 
         <DndBlocksRenderer

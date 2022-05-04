@@ -2,13 +2,17 @@
 
 Components responsible for the actual rendering of plugins and then finally the widget, using data and functions from the `UI Store` and `UI Meta` providers (or all in one as `UIProvider`)
 
-> ❗ These components will have a breaking change in `v0.4.0`, split up into own modules, [see issue](https://github.com/ui-schema/ui-schema/issues/100)
+> ❗ These components will have a breaking change in `v0.5.0`, split up into own modules, [see issue](https://github.com/ui-schema/ui-schema/issues/100)
 
 ## UIGenerator
+
+> ⚠ deprecated, will be removed in `v0.5.0`
 
 Convenience, single-entry-point UI Schema generator, starts the whole schema and renders the RootRenderer with `UIRootRenderer`, **checkout the [quick-start](/quick-start)** for a full example!
 
 ## UIRootRenderer
+
+> ⚠ deprecated, will be removed in `v0.5.0`
 
 Connects to the current context and starts parsing the schema, renders the `widgets.RootRenderer`.
 
@@ -17,8 +21,8 @@ Starts rendering the root level schema with [`PluginStack`](/docs/core-pluginsta
 `widgets.RootRenderer` is rendered inside it, within a memoized component.
 
 ```javascript
-import { UIStoreProvider } from '@ui-schema/ui-schema/UIStore';
-import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer';
+import {UIStoreProvider} from '@ui-schema/ui-schema/UIStore';
+import {UIRootRenderer} from '@ui-schema/ui-schema/UIRootRenderer';
 
 <UIStoreProvider
     store={store}

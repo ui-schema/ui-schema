@@ -31,7 +31,7 @@ import {Table} from '@ui-schema/ds-material/Widgets/Table';
 import {NumberRendererCell, StringRendererCell, TextRendererCell} from '@ui-schema/ds-material/Widgets/TextFieldCell';
 import {TableAdvanced} from '@ui-schema/ds-material/Widgets/TableAdvanced';
 import {List, OrderedMap} from 'immutable';
-import {PluginStack} from '@ui-schema/ui-schema/PluginStack/PluginStack';
+import {PluginStack} from '@ui-schema/ui-schema/PluginStack';
 import {applyPluginStack} from '@ui-schema/ui-schema/applyPluginStack';
 import {StringRenderer} from '@ui-schema/ds-material/Widgets/TextField';
 import {InfoRenderer} from '@ui-schema/ds-material/Component/InfoRenderer';

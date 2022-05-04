@@ -76,7 +76,7 @@ const DocContent: React.FC<{
                 <Typography variant={'body2'}>
                     <Link
                         target={'_blank'} rel="noreferrer noopener nofollow"
-                        href={'https://github.com/ui-schema/ui-schema/tree/develop/packages/docs/src/content/docs/' + id + '.md'}
+                        href={'https://github.com/ui-schema/ui-schema/tree/develop/packages/docs/src/content/' + id + '.md'}
                     >Edit Page</Link>
                 </Typography>
             </div>

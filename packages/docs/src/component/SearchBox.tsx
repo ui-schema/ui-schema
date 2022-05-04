@@ -1,4 +1,5 @@
 import React from 'react'
+import IcHistory from '@mui/icons-material/History'
 import IcSearch from '@mui/icons-material/Search'
 import IcDelete from '@mui/icons-material/Delete'
 import Dialog from '@mui/material/Dialog'
@@ -93,7 +94,7 @@ export const SearchBox: React.ComponentType = () => {
     const {index} = useDocsIndex<CustomDocsIndex>()
     const {routes} = useRouter()
     const setter = React.useCallback((t) => setSearchTerm(t), [setSearchTerm])
-    const {bounceVal, setBounceVal, bubbleBounce} = useDebounceValue<string>('', 115, setter)
+    const {bounceVal, setBounceVal, bubbleBounce} = useDebounceValue<string>(searchTerm, 115, setter)
     const {history, addTerm, clearHistory, bindKey} = useSearchHistory()
     // @ts-ignore
     const searchFns = useSearchMatching<CustomDocsIndex>(index, matchMaker)
@@ -116,7 +117,7 @@ export const SearchBox: React.ComponentType = () => {
 
     React.useEffect(() => {
         if (open) return
-        setBounceVal({value: ''})
+        setBounceVal({value: '', changed: true})
     }, [setBounceVal, open])
 
     React.useEffect(() => {
@@ -159,6 +160,10 @@ export const SearchBox: React.ComponentType = () => {
         }
     }, [searchTerm, routes, searchFns, showHeadlines])
 
+    // @ts-ignore
+    // eslint-disable-next-line deprecation/deprecation
+    const platform = navigator?.userAgentData?.platform || navigator?.platform
+
     return <Dialog
         open={open} onClose={() => setOpen(false)}
         maxWidth={'sm'} fullWidth
@@ -188,10 +193,11 @@ export const SearchBox: React.ComponentType = () => {
                 onBlur={() => {
                     bubbleBounce(searchTerm as string)
                     if (
-                        searchResult?.term === searchTerm &&
+                        typeof bounceVal.value === 'string' &&
+                        searchResult?.term === bounceVal.value &&
                         searchResult?.found > 0
                     ) {
-                        addTerm(searchResult.term)
+                        addTerm(bounceVal.value)
                     }
                 }}
             />
@@ -210,7 +216,14 @@ export const SearchBox: React.ComponentType = () => {
 
         <Box style={{display: 'flex'}}>
             {searchTerm.trim().length > 0 && searchTerm.trim().length < 3 ? <Typography variant={'caption'}>min. length: 3</Typography> : null}
-            <Typography variant={'caption'} style={{marginLeft: 'auto'}}>open with: CMD + K</Typography>
+            {typeof bindKey === 'string' && platform.indexOf('iP') !== 0 ?
+                <Typography variant={'caption'} style={{marginLeft: 'auto'}}>
+                    {'open with: '}
+                    {platform.indexOf('Mac') === 0 ? '⌘' : 'CTRL'}
+                    {' + '}
+                    {bindKey.toUpperCase()}
+                </Typography>
+                : null}
         </Box>
 
         <Collapse
@@ -254,9 +267,12 @@ export const SearchBox: React.ComponentType = () => {
             style={{overflow: 'auto', marginTop: 6}}
         >
             <Paper style={{borderRadius: 5}} variant={'outlined'}>
-                <Box p={2}>
-                    <Typography variant={'subtitle1'} gutterBottom style={{display: 'flex'}}>
-                        History
+                <Box pt={2} pr={2} pl={1}>
+                    <Typography variant={'subtitle1'} gutterBottom style={{display: 'flex', alignItems: 'center'}} color={'primary'}>
+                        <IcHistory fontSize={'small'}/>
+
+                        <span style={{paddingLeft: 8, paddingRight: 4}}>History</span>
+
                         <Tooltip title={'clear history'}>
                             <IconButton
                                 size={'small'}
@@ -265,10 +281,12 @@ export const SearchBox: React.ComponentType = () => {
                             ><IcDelete/></IconButton>
                         </Tooltip>
                     </Typography>
+                </Box>
+                <Box pb={2}>
                     <List>
                         {[...history].reverse().map((h, i) =>
-                            <ListItemButton key={i} onClick={() => setSearchTerm(h)}>
-                                <ListItemText>{h}</ListItemText>
+                            <ListItemButton key={i} onClick={() => setSearchTerm(h)} dense>
+                                <ListItemText primary={h}/>
                             </ListItemButton>)}
                     </List>
                 </Box>

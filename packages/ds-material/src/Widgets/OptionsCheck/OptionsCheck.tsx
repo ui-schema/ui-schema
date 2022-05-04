@@ -87,7 +87,7 @@ export interface OptionsCheckRendererProps {
 
 export const OptionsCheck: React.ComponentType<WidgetProps<MuiWidgetBinding> & OptionsCheckRendererProps> = (
     {
-        ownKey, schema, storeKeys, showValidity, valid, required, errors,
+        schema, storeKeys, showValidity, valid, required, errors,
         row, widgets,
     }
 ) => {
@@ -100,7 +100,7 @@ export const OptionsCheck: React.ComponentType<WidgetProps<MuiWidgetBinding> & O
         disabled={schema.get('readOnly') as boolean}
     >
         <FormLabel component="legend" style={{width: '100%'}}>
-            <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+            <TransTitle schema={schema} storeKeys={storeKeys}/>
             {InfoRenderer && schema?.get('info') ?
                 <InfoRenderer
                     schema={schema} variant={'icon'} openAs={'modal'}

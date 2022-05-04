@@ -88,7 +88,7 @@ export const GenericListItemBase = (
                     </Grid> : null}
             </Grid>
         </Grid>,
-        index < listSize - 1 ? <Divider key={'b'} style={{width: '100%'}}/> : null,
+        index < listSize - 1 ? <Grid key={'b'} item xs={12} style={{display: 'flex'}}><Divider style={{width: '100%'}}/></Grid> : null,
     ] as unknown as React.ReactElement
 }
 export const GenericListItem = memo(GenericListItemBase)

@@ -7,18 +7,23 @@ import {useUIConfig} from '@ui-schema/ui-schema/UIStore';
 import {useImmutable} from '@ui-schema/ui-schema/Utils/useImmutable';
 import {PluginStackErrorBoundary} from '@ui-schema/ui-schema/PluginStack';
 
+const errorContainer = createValidatorErrors()
+
 // `extractValue` has moved to own plugin `ExtractStorePlugin` since `0.3.0`
 // `withUIMeta` and `mema` are not needed for performance optimizing since `0.3.0` at this position
-export const PluginStack = (props) => {
+export const PluginStack = ({StackWrapper, wrapperProps, ...props}) => {
     const {widgets, ...meta} = useUIMeta()
     const config = useUIConfig()
     const {
         level = 0, parentSchema,
-        storeKeys, schema,
+        storeKeys = List([]),
+        schemaKeys = List([]),
+        schema,
         widgets: customWidgets,
     } = props;
     // central reference integrity of `storeKeys` for all plugins and the receiving widget, otherwise `useImmutable` is needed more times, e.g. 3 times in plugins + 1x time in widget
     const currentStoreKeys = useImmutable(storeKeys)
+    const currentSchemaKeys = useImmutable(schemaKeys)
     const activeWidgets = customWidgets || widgets
 
     const isVirtual = Boolean(props.isVirtual || schema?.get('hidden'))
@@ -34,6 +39,24 @@ export const PluginStack = (props) => {
 
     const ErrorBoundary = activeWidgets?.ErrorFallback ? PluginStackErrorBoundary : React.Fragment;
 
+    const stack = <NextPluginRenderer
+        {...meta}
+        {...config}
+        {...props}
+        currentPluginIndex={-1}
+        widgets={activeWidgets}
+        level={level}
+        storeKeys={currentStoreKeys}
+        schemaKeys={currentSchemaKeys}
+        // todo: remove `ownKey` with `0.5.0`
+        ownKey={storeKeys.last()}
+        requiredList={required}
+        required={false}
+        errors={errorContainer}
+        isVirtual={isVirtual}
+        valid
+    />;
+
     return props.schema ?
         <ErrorBoundary
             FallbackComponent={activeWidgets?.ErrorFallback}
@@ -41,22 +64,14 @@ export const PluginStack = (props) => {
             widget={schema.get('widget')}
             storeKeys={currentStoreKeys}
         >
-            <NextPluginRenderer
-                {...meta}
-                {...config}
-                {...props}
-                currentPluginIndex={-1}
-                widgets={activeWidgets}
-                level={level}
-                storeKeys={currentStoreKeys}
-                ownKey={storeKeys.get(storeKeys.count() - 1)}
-                requiredList={required}
-                required={false}
-                errors={createValidatorErrors()}
-                isVirtual={isVirtual}
-                valid
-            />
-        </ErrorBoundary> : null;
+            {StackWrapper && !isVirtual ?
+                <StackWrapper
+                    schema={schema}
+                    storeKeys={currentStoreKeys}
+                    schemaKeys={currentSchemaKeys}
+                    {...(wrapperProps || {})}
+                >{stack}</StackWrapper> : stack}
+        </ErrorBoundary> : null
 };
 
 export const getNextPlugin = (next, {pluginStack: ps, WidgetRenderer}) =>

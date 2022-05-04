@@ -3,7 +3,7 @@ import {TransTitle, useUIMeta, beautifyKey} from '@ui-schema/ui-schema';
 import {List, Map} from 'immutable';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
-export const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, onChange, required}) => {
+export const Select = ({schema, storeKeys, showValidity, errors, value, onChange, required}) => {
     const enum_val = schema.get('enum');
     const {t} = useUIMeta();
 
@@ -20,7 +20,7 @@ export const Select = ({schema, storeKeys, showValidity, errors, ownKey, value, 
     }
     const currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '');
     return <div className={classFormParent.join(' ')}>
-        <label><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></label>
+        <label><TransTitle schema={schema} storeKeys={storeKeys}/></label>
         <select
             value={currentValue}
             className={classForm.join(' ')}

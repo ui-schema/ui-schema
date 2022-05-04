@@ -10,7 +10,7 @@ import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 
 export const FormGroupBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue> = (props) => {
-    const {storeKeys, ownKey, widgets} = props
+    const {storeKeys, widgets} = props
     const {WidgetRenderer} = widgets
     const {spacing} = useTheme()
     let {schema} = props
@@ -27,7 +27,7 @@ export const FormGroupBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & 
         }}
     >
         <FormLabel component="legend">
-            <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+            <TransTitle schema={schema} storeKeys={storeKeys}/>
         </FormLabel>
         <MuiFormGroup
             style={{

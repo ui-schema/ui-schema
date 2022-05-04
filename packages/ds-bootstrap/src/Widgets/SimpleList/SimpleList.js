@@ -5,7 +5,7 @@ import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperT
 import {IconPlus, IconMinus} from '@ui-schema/ds-bootstrap/Component/Icons/Icons';
 
 const SimpleList = extractValue(memo(({
-                                          storeKeys, ownKey, schema, value, onChange,
+                                          storeKeys, schema, value, onChange,
                                           showValidity, errors, required,
                                       }) => {
 
@@ -21,7 +21,7 @@ const SimpleList = extractValue(memo(({
     }
 
     return <React.Fragment>
-        <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+        <TransTitle schema={schema} storeKeys={storeKeys}/>
         <div>
             {value ? value.map((val, i) =>
                 <div

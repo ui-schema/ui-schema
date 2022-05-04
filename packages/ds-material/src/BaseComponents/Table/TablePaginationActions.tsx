@@ -1,6 +1,5 @@
 import React from 'react'
-import { useTheme, Theme, createStyles } from '@mui/material/styles'
-import makeStyles from '@mui/styles/makeStyles'
+import { useTheme } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
@@ -10,17 +9,7 @@ import { AccessTooltipIcon } from '@ui-schema/ds-material'
 import { Trans } from '@ui-schema/ui-schema'
 import { TablePaginationActionsProps } from '@mui/material/TablePagination/TablePaginationActions'
 
-const useStyles1 = makeStyles<Theme>((theme: Theme) =>
-    createStyles({
-        root: {
-            flexShrink: 0,
-            marginLeft: theme.spacing(2.5),
-        },
-    })
-)
-
 export const TablePaginationActions: React.ComponentType<TablePaginationActionsProps> = (props) => {
-    const classes = useStyles1()
     const theme = useTheme()
     const {
         count, page, rowsPerPage, onPageChange,
@@ -54,7 +43,7 @@ export const TablePaginationActions: React.ComponentType<TablePaginationActionsP
     }
 
     return (
-        <div className={classes.root}>
+        <div style={{flexShrink: 0, marginLeft: theme.spacing(2.5)}}>
             {noFirstPageButton ? null :
                 <IconButton
                     onClick={handleFirstPageButtonClick}

@@ -2,7 +2,7 @@
 
 Checkout the [dictionary package](#dictionary-package)!
 
-> ❗ These components will have a breaking change in `v0.4.0`, split up into own modules, [see issue](https://github.com/ui-schema/ui-schema/issues/100)
+> ❗ These components will have a breaking change in `v0.5.0`, split up into own modules, [see issue](https://github.com/ui-schema/ui-schema/issues/100)
 
 ## Translation
 
@@ -72,16 +72,16 @@ import {Map, List} from "immutable";
 import {Trans, beautifyKey} from '@ui-schema/ui-schema';
 import {getTranslatableEnum} from '@ui-schema/ui-schema/Translate';
 
-const DemoWidget = ({ownKey, schema, storeKeys,}) => {
+const DemoWidget = ({schema, storeKeys}) => {
     return <Trans
         schema={schema.get('t')}
         text={schema.get('title') || storeKeys.insert(0, 'widget').push('title').join('.')}
         context={Map({'relative': List(['title'])})}
-        fallback={schema.get('title') || beautifyKey(ownKey, schema.get('tt'))}
+        fallback={schema.get('title') || beautifyKey(storeKeys.last(), schema.get('tt'))}
     />
 };
 
-const DemoEnumWidget = ({ownKey, schema, storeKeys,}) => {
+const DemoEnumWidget = ({schema, storeKeys}) => {
     const enum_val = schema.get('enum');
     return enum_val.map((enum_name, i) => {
         const relative = List(['enum', getTranslatableEnum(enum_name)]);
@@ -105,11 +105,10 @@ The above example can be used to translate enum and anything, as titles are ofte
 import React from "react";
 import {TransTitle} from '@ui-schema/ui-schema/Translate/TransTitle';
 
-const DemoWidget = ({ownKey, schema, storeKeys,}) => {
+const DemoWidget = ({schema, storeKeys}) => {
     return <TransTitle
         schema={schema}
         storeKeys={storeKeys}
-        ownKey={ownKey}
     />
 };
 ```

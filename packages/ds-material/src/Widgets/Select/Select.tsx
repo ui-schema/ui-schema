@@ -10,9 +10,9 @@ import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelpe
 import { getTranslatableEnum } from '@ui-schema/ui-schema/Translate'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 
-export const Select: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithScalarValue> = (
+export const Select: React.FC<WidgetProps<MuiWidgetBinding> & WithScalarValue> = (
     {
-        storeKeys, ownKey, schema, value, onChange,
+        storeKeys, schema, value, onChange,
         showValidity, valid, required, errors, t,
     }
 ) => {
@@ -29,7 +29,7 @@ export const Select: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithSca
         size={schema.getIn(['view', 'dense']) ? 'small' : undefined}
         disabled={schema.get('readOnly') as boolean}
     >
-        <InputLabel id={'uis-' + uid}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></InputLabel>
+        <InputLabel id={'uis-' + uid}><TransTitle schema={schema} storeKeys={storeKeys}/></InputLabel>
         <MuiSelect
             labelId={'uis-' + uid}
             id={'uis-' + uid + '-label'}

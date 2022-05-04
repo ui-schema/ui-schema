@@ -70,8 +70,15 @@ Supports extra keywords:
     - `editor.hideBalloon`: when `true` doesn't show the balloon toolbar
 
 ```bash
-npm i --save @ui-schema/material-slate @mui/lab slate slate-react slate-history slate-hyperscript styled-components @udecode/slate-plugins
+npm i --save @ui-schema/material-slate \
+  @mui/styles @mui/lab \
+  slate slate-react \
+  slate-history slate-hyperscript \
+  styled-components \
+  @udecode/slate-plugins
 ```
+
+> relies on `@mui/styles` as `peerDependency` - the last `@ui-schema/material*` package with this dependency
 
 > needs ~0.60 of slate packages and ~0.75 of @udecode/slate-plugins
 

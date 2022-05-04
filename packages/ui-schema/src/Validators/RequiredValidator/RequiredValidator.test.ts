@@ -33,16 +33,16 @@ describe('checkValueExists', () => {
 
 describe('requiredValidator', () => {
     test.each(([
-        [List(['name']), 'name', true],
-        [List(['name']), 'street', false],
+        [List(['name']), List(['name']), true],
+        [List(['name']), List(['street']), false],
         [undefined, 'name', false],
         [undefined, 'name', false],
     ]) as [List<string> | undefined, string, boolean][])(
         '.should(%j, %s)',
-        (requiredList, ownKey, expectedValid) => {
+        (requiredList, storeKeys, expectedValid) => {
             expect(requiredValidator.should({
                 requiredList: requiredList,
-                ownKey,
+                storeKeys,
             })).toBe(expectedValid)
         }
     )

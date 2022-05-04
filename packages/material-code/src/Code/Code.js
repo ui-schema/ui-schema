@@ -5,7 +5,7 @@ import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperT
 import {CodeRenderer} from '@ui-schema/material-code/CodeRenderer';
 
 export const Code = (props) => {
-    const {valid, showValidity, ownKey, schema, required, errors} = props
+    const {valid, showValidity, storeKeys, schema, required, errors} = props
     const format = schema.get('format')
 
     if(process.env.NODE_ENV === 'development' && typeof format !== 'string') {
@@ -16,7 +16,7 @@ export const Code = (props) => {
     return <>
         <FormLabel error={!valid && showValidity} style={{marginBottom: 12, display: 'block'}}>
             {!hideTitle ?
-                beautifyKey(ownKey, schema.get('tt')) + (required ? ' *' : '')
+                beautifyKey(storeKeys.last(), schema.get('tt')) + (required ? ' *' : '')
                 : null}
             {!hideTitle && ' ('}
             <Trans text={'formats.' + format}/>

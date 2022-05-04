@@ -12,7 +12,7 @@ import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 
 export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue> = (
     {
-        storeKeys, ownKey, schema, value, onChange,
+        storeKeys, schema, value, onChange,
         showValidity, valid, required, errors, t,
     }
 ) => {
@@ -30,7 +30,7 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
         disabled={schema.get('readOnly') as boolean}
         size={schema.getIn(['view', 'dense']) ? 'small' : undefined}
     >
-        <InputLabel id={'uis-' + uid}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/></InputLabel>
+        <InputLabel id={'uis-' + uid}><TransTitle schema={schema} storeKeys={storeKeys}/></InputLabel>
         <MuiSelect
             labelId={'uis-' + uid}
             id={'uis-' + uid + '-label'}

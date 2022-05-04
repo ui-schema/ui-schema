@@ -46,7 +46,7 @@ export const WidgetDateTimePicker: React.FC<WidgetProps & WithScalarValue & Widg
     }
 
     return <Picker
-        label={<TransTitle schema={schema} storeKeys={storeKeys} ownKey={storeKeys.last()}/>}
+        label={<TransTitle schema={schema} storeKeys={storeKeys}/>}
         value={dateValue}
         inputFormat={dateFormat}
         orientation={orientation}

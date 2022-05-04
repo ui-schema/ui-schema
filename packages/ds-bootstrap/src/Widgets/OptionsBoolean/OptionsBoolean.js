@@ -1,9 +1,10 @@
 import React from 'react';
+import {useUID} from 'react-uid';
 import {TransTitle} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
 
-const BoolRenderer = ({ownKey, showValidity, required, errors, value, storeKeys, onChange, schema}) => {
-
+const BoolRenderer = ({showValidity, required, errors, value, storeKeys, onChange, schema}) => {
+    const id = useUID()
     let classForm = ['custom-control', 'custom-switch'];
     let classLabel = ['custom-control-label', 'text-light'];
     let classFormControl = ['custom-control-input'];
@@ -18,7 +19,7 @@ const BoolRenderer = ({ownKey, showValidity, required, errors, value, storeKeys,
 
     return <div className={classForm.join(' ')}>
         <input
-            type="checkbox" className={classFormControl.join(' ')} id={ownKey}
+            type="checkbox" className={classFormControl.join(' ')} id={'uis-' + id}
             checked={currentChecked}
             required={required}
             onChange={() =>
@@ -32,7 +33,7 @@ const BoolRenderer = ({ownKey, showValidity, required, errors, value, storeKeys,
                 })
             }
         />
-        <label className={classLabel.join(' ')} htmlFor={ownKey}><TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>{(required ? ' *' : '')}</label>
+        <label className={classLabel.join(' ')} htmlFor={'uis-' + id}><TransTitle schema={schema} storeKeys={storeKeys}/>{(required ? ' *' : '')}</label>
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </div>;
 };

@@ -8,7 +8,7 @@ import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperT
 import {getTranslatableEnum} from '@ui-schema/ui-schema/Translate';
 
 const OptionsRadio = ({
-                          ownKey, schema, value, onChange, storeKeys, showValidity, valid, required, errors,
+                          schema, value, onChange, storeKeys, showValidity, valid, required, errors,
                           row, widgets,
                       }) => {
     const enumVal = schema.get('enum');
@@ -23,7 +23,7 @@ const OptionsRadio = ({
         disabled={schema.get('readOnly')}
     >
         <FormLabel component="legend" style={{width: '100%'}}>
-            <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+            <TransTitle schema={schema} storeKeys={storeKeys}/>
             {InfoRenderer && schema?.get('info') ?
                 <InfoRenderer
                     schema={schema} variant={'icon'} openAs={'modal'}

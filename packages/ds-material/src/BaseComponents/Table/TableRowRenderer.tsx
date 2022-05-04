@@ -1,27 +1,22 @@
 import React from 'react'
-import { memo, OwnKey, PluginStack, SchemaTypesType, schemaTypeToDistinct, WidgetProps, WithValue } from '@ui-schema/ui-schema'
+import { KeyType, memo, PluginStack, SchemaTypesType, schemaTypeToDistinct, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 import { List, OrderedMap, Map } from 'immutable'
-import makeStyles from "@mui/styles/makeStyles"
 import { Theme } from '@mui/material/styles/createTheme'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import { TableRowProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
 import { TableRowActionDelete } from '@ui-schema/ds-material/BaseComponents/Table/TableRowActionDelete'
 import { TableCellSchemaImmutable } from '@ui-schema/ds-material/Widgets/Table/TableSchema'
+import { useTheme } from '@mui/material/styles'
+import { SxProps } from '@mui/system'
 
-const useTableRowStyle = makeStyles<Theme, { dense: boolean }>((theme) => ({
-    cell: {
-        padding: ({dense}) =>
-            dense ? `${theme.spacing(0)} ${theme.spacing(0.5)}` :
-                `${theme.spacing(1)} ${theme.spacing(1.5)}`,
-        overflow: 'hidden',
-    },
-    groupRenderer: {
-        /*padding: ({dense}) =>
-            dense ? `${theme.spacing(1)}px ${theme.spacing(0.5)}px` :
-                `${theme.spacing(1.5)}px ${theme.spacing(1)}px`,*/
-    },
-}))
+const useStyles = (theme: Theme, {dense}: { dense: boolean }): SxProps => ({
+    padding:
+        dense ?
+            `${theme.spacing(0)} ${theme.spacing(0.5)}` :
+            `${theme.spacing(1)} ${theme.spacing(1.5)}`,
+    overflow: 'hidden',
+})
 
 const PluginStackMemo = memo(PluginStack)
 
@@ -29,7 +24,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
     {
         parentSchema, schema,
         showValidity, widgets,
-        storeKeys, ownKey,
+        storeKeys,
         level,
         uid,
         onChange, required,
@@ -38,7 +33,8 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
         showRows,
     }
 ) => {
-    const classes = useTableRowStyle({dense})
+    const theme = useTheme()
+    const styles = useStyles(theme, {dense})
     // only supporting array tuple schemas or objects for table rows / items
     let cellSchema = (schema.get('items') as List<any>) || (schema.get('properties') as Map<string, any>)
     const readOnly = Boolean(parentSchema?.get('readOnly'))
@@ -50,7 +46,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
     ) {
         let orderedCellSchema = OrderedMap();
         (schema.getIn(['rowSortOrder']) as TableCellSchemaImmutable['rowSortOrder'])
-            .forEach((key: OwnKey) => {
+            .forEach((key: KeyType) => {
                 orderedCellSchema = orderedCellSchema.set(key, cellSchema.get(key as number))
             })
         // @ts-ignore
@@ -64,7 +60,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
             item.get('hidden') === true ?
                 <PluginStackMemo
                     key={j}
-                    storeKeys={storeKeys.push(j as OwnKey)}
+                    storeKeys={storeKeys.push(j as KeyType)}
                     schema={item}
                     parentSchema={parentSchema}
                     level={level + 1}
@@ -72,15 +68,15 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                 /> :
                 <TableCell
                     key={j}
-                    className={classes.cell}
+                    sx={styles}
                     align={schemaTypeToDistinct(item.get('type')) === 'boolean' ? 'center' : undefined}
                 >
                     {
                         schemaTypeToDistinct(item.get('type')) === 'object' ?
-                            <GroupRenderer level={0} schema={item} className={classes.groupRenderer} storeKeys={storeKeys}>
+                            <GroupRenderer level={0} schema={item} storeKeys={storeKeys}>
                                 <PluginStackMemo<{ [k: string]: any }>
                                     showValidity={showValidity}
-                                    storeKeys={storeKeys.push(j as OwnKey)}
+                                    storeKeys={storeKeys.push(j as KeyType)}
                                     schema={item.setIn(['view', 'hideTitle'], true)}
                                     parentSchema={parentSchema}
                                     level={level + 1}
@@ -96,7 +92,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                             </GroupRenderer> :
                             <PluginStackMemo<{ [k: string]: any }>
                                 showValidity={showValidity}
-                                storeKeys={storeKeys.push(j as OwnKey)}
+                                storeKeys={storeKeys.push(j as KeyType)}
                                 schema={item.setIn(['view', 'hideTitle'], true)}
                                 parentSchema={parentSchema}
                                 level={level + 1}
@@ -114,16 +110,17 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                 </TableCell>
         ).valueSeq()}
 
-        {!readOnly ? <TableCell className={classes.cell}>
-            <TableRowActionDelete
-                storeKeys={storeKeys}
-                onChange={onChange}
-                setPage={setPage}
-                index={ownKey as number}
-                deleteOnEmpty={deleteOnEmpty as boolean}
-                showRows={showRows}
-                schema={parentSchema}
-            />
-        </TableCell> : null}
+        {!readOnly ?
+            <TableCell sx={styles}>
+                <TableRowActionDelete
+                    storeKeys={storeKeys}
+                    onChange={onChange}
+                    setPage={setPage}
+                    index={storeKeys.last() as number}
+                    deleteOnEmpty={deleteOnEmpty as boolean}
+                    showRows={showRows}
+                    schema={parentSchema}
+                />
+            </TableCell> : null}
     </TableRow>
 }

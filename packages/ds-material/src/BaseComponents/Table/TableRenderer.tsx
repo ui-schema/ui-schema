@@ -11,7 +11,7 @@ import { ListButtonOverwrites } from '@ui-schema/ds-material/Component'
 
 export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<keyof WidgetProps, 'value' | 'errors' | 'valid'>> & Pick<WithValue, 'onChange'> & TableRendererBaseProps & ListButtonOverwrites> = (
     {
-        storeKeys, ownKey, schema, onChange,
+        storeKeys, schema, onChange,
         showValidity, level,
         // widgets must come from an own wrapper component, to overwrite/enable any widgets for special `TableCell` formatting
         widgets,
@@ -55,7 +55,7 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
 
     return <>
         {!schema.getIn(['view', 'hideTitle']) ?
-            <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/> : null}
+            <TransTitle schema={schema} storeKeys={storeKeys}/> : null}
 
         <TableContainer>
             <MuiTable size={dense ? 'small' : 'medium'}>

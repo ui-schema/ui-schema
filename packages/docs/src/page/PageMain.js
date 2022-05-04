@@ -26,7 +26,7 @@ export default function PageMain() {
                         <strong>UI and Form generator</strong> for React, build around a <strong>powerful widget system</strong>, made for <strong>beautiful and great experiences</strong>!
                     </Typography>
                     <Typography component={'p'} variant={'body1'} gutterBottom>
-                        Use <strong>JSON-Schema</strong> to define data-structures and <strong>render the UI automatically</strong>, use widgets to customize the rendering per-schema level - validation and data-binding is handled within UI Schema for you.
+                        Use <strong>JSON-Schema</strong> to define data-structures and <strong>render the UI automatically</strong>, customize everything with components - UI Schema handles all the validation and data-bindings to give you a great DX.
                     </Typography>
                     <Typography component={'p'} variant={'body1'} gutterBottom>
                         Widgets are defined per <strong>design-system</strong>, use the ds-binding you need or <Link to={'/docs/widgets'} primary={<strong>create your own easily</strong>}/>.

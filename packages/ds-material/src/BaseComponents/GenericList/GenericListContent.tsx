@@ -23,7 +23,7 @@ export interface GenericListContentProps extends ListButtonOverwrites {
 
 export const GenericListContent = <P extends WidgetProps<MuiWidgetBinding>>(
     {
-        storeKeys, schemaKeys, ownKey, schema, listSize, onChange,
+        storeKeys, schemaKeys, schema, listSize, onChange,
         showValidity, valid, errors, required, level, widgets,
         ComponentItemMore, ComponentItemPos,
         ComponentItem, ComponentFooter,
@@ -54,7 +54,7 @@ export const GenericListContent = <P extends WidgetProps<MuiWidgetBinding>>(
             <Box mb={1}>
                 <Box mb={1}>
                     <FormLabel component="legend">
-                        <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+                        <TransTitle schema={schema} storeKeys={storeKeys}/>
                     </FormLabel>
                 </Box>
 

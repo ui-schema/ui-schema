@@ -32,6 +32,7 @@ export const MockSchemaProvider: React.ComponentType<{
     // @ts-ignore
     const [store, setStore] = React.useState(() => createEmptyStore(schema && schema.get('type')))
 
+    // eslint-disable-next-line deprecation/deprecation
     return <UIProvider
         store={store}
         onChange={setStore}

@@ -2,7 +2,7 @@ import React from 'react'
 import { OrderedMap } from 'immutable'
 import { useUID } from 'react-uid'
 import {
-    OwnKey, StoreSchemaType, WidgetProps, ValidatorErrorsType, WithValidity,
+    KeyType, StoreSchemaType, WidgetProps, ValidatorErrorsType, WithValidity,
     TransTitle, PluginStack, memo,
     extractValidity, StoreKeys,
 } from '@ui-schema/ui-schema'
@@ -28,7 +28,7 @@ const AccordionStackBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & Ac
     const uid = useUID()
     const {
         storeKeys, schema,
-        parentSchema, ownKey,
+        parentSchema,
         showValidity, level,
         isOpen, setOpen, valid, widgets,
     } = props
@@ -38,6 +38,8 @@ const AccordionStackBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & Ac
     const titleVariant = parentSchema?.getIn(['view', 'titleVariant']) as TypographyProps['variant']
     const childInvalid = isInvalid(validity)
     const InfoRenderer = widgets?.InfoRenderer
+
+    const ownKey = storeKeys.last()
 
     return <Accordion
         style={{width: '100%'}} expanded={isOpen}
@@ -58,7 +60,7 @@ const AccordionStackBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & Ac
                     isOpen={isOpen}
                 /> :
                 <Typography color={!showValidity || (!childInvalid && valid) ? undefined : 'error'} variant={titleVariant}>
-                    <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+                    <TransTitle schema={schema} storeKeys={storeKeys}/>
                 </Typography>}
         </AccordionSummary>
         <AccordionDetails style={{flexDirection: 'column'}}>
@@ -111,12 +113,11 @@ export const AccordionsRendererBase = <W extends WidgetProps<MuiWidgetBinding> =
     const properties = schema.get('properties') as OrderedMap<string, any> | undefined
 
     return <>
-        {properties?.map((childSchema: StoreSchemaType, childKey: OwnKey): React.ReactElement =>
+        {properties?.map((childSchema: StoreSchemaType, childKey: KeyType): React.ReactElement =>
             <AccordionStack
                 key={childKey}
                 {...props}
                 schema={childSchema}
-                ownKey={childKey}
                 parentSchema={schema}
                 storeKeys={storeKeys.push(childKey)}
                 level={level + 1}

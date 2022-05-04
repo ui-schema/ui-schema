@@ -34,7 +34,6 @@ export const PaneWrapper: React.ComponentType<React.PropsWithChildren<{
     errors: WidgetProps['errors']
     showValidity: WidgetProps['showValidity']
     valid: WidgetProps['valid']
-    ownKey: WidgetProps['ownKey']
     //classes: Record<'wrapper' | 'editor', string>
     classes: ClassNameMap<'wrapper' | 'editor'>
 }>> = (

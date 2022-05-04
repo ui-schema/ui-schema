@@ -4,13 +4,13 @@ import Dashboard from './dashboard/Dashboard'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import { widgets } from '@ui-schema/ds-material'
-import { createOrderedMap, createStore, UIMetaProvider, UIStoreActions, UIStoreProvider, UIStoreType } from '@ui-schema/ui-schema'
+import { createOrderedMap, createStore, injectPluginStack, JsonSchema, UIMetaProvider, UIStoreActions, UIStoreProvider } from '@ui-schema/ui-schema'
 import { browserT } from '../t'
 import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
 import { OrderedMap } from 'immutable'
 import { NumberRendererDebounced, StringRendererDebounced, TextRendererDebounced } from '@ui-schema/ds-material/Widgets/TextFieldDebounced/TextFieldDebounced'
-import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer/UIRootRenderer'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 
 const customWidgets = {...widgets}
 const pluginStack = [...customWidgets.pluginStack]
@@ -52,26 +52,25 @@ const formSchema = createOrderedMap({
             widget: 'Text',
         },
     },
-})
+} as JsonSchema)
 
+const GridStack = injectPluginStack(GridContainer)
 const FormComp = () => {
     const showValidity = true
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
 
     const onChange = React.useCallback((actions: UIStoreActions[] | UIStoreActions) => {
-        setStore(storeUpdater<UIStoreType>(actions))
+        setStore(storeUpdater(actions))
     }, [setStore])
 
-    return <React.Fragment>
-        <UIStoreProvider<{}, any, UIStoreActions>
-            store={store}
-            onChange={onChange}
-            showValidity={showValidity}
-        >
-            <UIRootRenderer schema={formSchema}/>
-            <MuiSchemaDebug schema={formSchema}/>
-        </UIStoreProvider>
-    </React.Fragment>
+    return <UIStoreProvider<{}, any, UIStoreActions>
+        store={store}
+        onChange={onChange}
+        showValidity={showValidity}
+    >
+        <GridStack isRoot schema={formSchema}/>
+        <MuiSchemaDebug schema={formSchema}/>
+    </UIStoreProvider>
 }
 
 // eslint-disable-next-line react/display-name,@typescript-eslint/explicit-module-boundary-types

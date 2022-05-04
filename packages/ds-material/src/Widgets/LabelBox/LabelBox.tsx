@@ -5,7 +5,7 @@ import Box from '@mui/material/Box'
 import Typography, { TypographyProps } from '@mui/material/Typography'
 
 export const LabelBox = (props: WidgetProps): React.ReactElement => {
-    const {schema, storeKeys, ownKey} = props
+    const {schema, storeKeys} = props
 
     return <Box
         mt={schema.getIn(['view', 'mt']) as number}
@@ -23,7 +23,7 @@ export const LabelBox = (props: WidgetProps): React.ReactElement => {
                 variant={(schema.getIn(['view', 'titleVariant']) as TypographyProps['variant']) || 'h5'}
                 component={(schema.getIn(['view', 'titleComp']) as React.ElementType) || 'p'}
             >
-                <TransTitle schema={schema} storeKeys={storeKeys} ownKey={ownKey}/>
+                <TransTitle schema={schema} storeKeys={storeKeys}/>
                 {/* todo: add `info` support */}
             </Typography>}
         <ObjectRenderer {...props}/>

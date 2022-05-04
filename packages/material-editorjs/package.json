@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-editorjs",
-    "version": "0.0.11",
+    "version": "0.0.12",
     "description": "EditorJS for UI-Schema with Material-UI",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -41,7 +41,7 @@
         "@types/react": "^17.0",
         "@editorjs/editorjs": "^2.19.2-rc.1",
         "@mui/material": "^5.1",
-        "@mui/styles": "^5.1",
+        "@mui/system": "^5.1",
         "@mui/icons-material": "^5.1",
         "@ui-schema/ds-material": "~0.4.0-alpha",
         "@ui-schema/ui-schema": "~0.4.0-alpha",
@@ -53,7 +53,6 @@
     "peerDependencies": {
         "@editorjs/editorjs": "^2.19.2-rc.1",
         "@mui/material": "^5.1",
-        "@mui/styles": "^5.1",
         "@mui/icons-material": "^5.1",
         "@ui-schema/ds-material": "~0.4.0-alpha",
         "@ui-schema/ui-schema": "~0.4.0-alpha",

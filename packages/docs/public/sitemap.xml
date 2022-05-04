@@ -242,6 +242,10 @@
         <changefreq>weekly</changefreq>
     </url>
     <url>
+        <loc>https://ui-schema.bemit.codes/docs/ds-material/GridContainer</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
         <loc>https://ui-schema.bemit.codes/docs/ds-material/ErrorFallback</loc>
         <changefreq>weekly</changefreq>
     </url>

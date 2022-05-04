@@ -5,9 +5,9 @@ env:
 
 on:
     push:
-        branches: [master, develop]
+        branches: [ master, develop ]
     pull_request:
-        branches: [master, develop]
+        branches: [ master, develop ]
 #    create:
 #        tags:
 #            - '[0-9]+.[0-9]+.[0-9]+*'
@@ -20,7 +20,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                node-version: [14.x]
+                node-version: [ 14.x ]
         steps:
             -   uses: actions/checkout@v2
             -   name: Set Branch
