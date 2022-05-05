@@ -37,7 +37,7 @@ export const routes = (loading: any): DocRouteModule<Comp> => ({
                 content: {
                     component: Loadable({
                         loader: () => import('./page/DocsDetails'),
-                        loading: loading('Loading Docs'),
+                        loading: loading('Loading Docs Viewer'),
                     }) as Comp,
                 },
             },
@@ -57,7 +57,7 @@ export const routes = (loading: any): DocRouteModule<Comp> => ({
                 content: {
                     component: Loadable({
                         loader: () => import('./page/DocsDetails'),
-                        loading: loading('Loading Docs'),
+                        loading: loading('Loading Docs Viewer'),
                     }) as Comp,
                 },
             },

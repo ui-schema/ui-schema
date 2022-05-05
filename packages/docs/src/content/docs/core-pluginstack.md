@@ -200,7 +200,6 @@ Since `0.4.0-alpha.1`, this function also applies [`memo`](/docs/core-utils#memo
 
 ```typescript jsx
 import React from 'react'
-import { List } from 'immutable'
 import Grid from '@mui/material/Grid'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
@@ -244,7 +243,6 @@ const freeFormSchema = createOrderedMap({
     },
 })
 
-const rootStoreKeys = List()
 const EditorStub = () => {
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
 
@@ -263,10 +261,8 @@ const EditorStub = () => {
           * using `memo`, they don't re-render even when `store` has changed
           */}
         <CustomGroup
-            level={0}
-            storeKeys={rootStoreKeys}
-            schema={freeFormSchema}
-            parentSchema={freeFormSchema}
+            isRoot // new prop since `0.4.0-alpha.1`
+            schema={schema}
         />
     </UIProvider>
 }

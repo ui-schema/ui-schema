@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import Loadable from 'react-loadable'
 import CuiMarkdown from 'react-markdown'
 import { renderers as baseRenderers } from '@control-ui/md/MarkdownRenderers'
@@ -24,7 +24,9 @@ const LinkInternalLocale = (p) => {
 
 // see: https://github.com/rexxars/react-markdown#node-types
 const renderers = baseRenderers(true)
-renderers.p = p => <Typography {...p} component={'p'} variant={'body2'} gutterBottom/>
+renderers.p = (p) => {
+    return <Typography {...p} component={'p'} variant={'body2'} gutterBottom/>
+}
 // @ts-ignore
 renderers.code = ({inline, ...p}) => inline ? <MdInlineCode variant={'body1'} {...p}/> : <Code variant={'body2'} {...p}/>
 // @ts-ignore
@@ -39,13 +41,32 @@ renderers.pre = ({children}) => <pre style={{margin: 0}}>{children}</pre>
 const renderersContent = baseRenderers(false)
 // @ts-ignore
 renderersContent.code = ({inline, ...p}) => inline ? <MdInlineCode variant={'body1'} {...p}/> : <Code variant={'body1'} {...p}/>
+renderersContent.p = (p) => {
+    return <Typography {...p} component={'p'} variant={'body1'} gutterBottom/>
+}
 // @ts-ignore
-renderersContent.h1 = renderersContent.h2 = renderersContent.h3 = renderersContent.h4 = renderersContent.h5 = renderersContent.h6 = LinkableHeadline
+renderersContent.h1 = renderersContent.h3 = renderersContent.h4 = renderersContent.h5 = renderersContent.h6 = LinkableHeadline
 renderersContent.a = LinkInternalLocale
-renderersContent.pre = ({children}) => <pre style={{margin: 0}}>{children}</pre>
-renderersContent.li = p => <Typography component={'li'} variant={'body1'} style={{fontWeight: 'bold'}}>
-    <span style={{fontWeight: 'normal', display: 'block', marginBottom: 2}}>{p.children}</span>
-</Typography>
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+renderersContent.li = ({node, style = {}, ordered, children, ...p}) =>
+    <Typography component={'li'} variant={'body1'} style={{fontWeight: 'bold', ...style}}{...p}>
+        <span style={{fontWeight: 'normal', display: 'block', marginBottom: 2}}>{children}</span>
+    </Typography>
+
+renderersContent.h2 = ({children, ...p}) => {
+    return p.id === 'footnote-label' ?
+        <Typography variant={'h2'} {...p}>Footnotes</Typography> :
+        <LinkableHeadline {...p}>{children}</LinkableHeadline>
+}
+
+// @ts-ignore
+renderersContent.section = p => {
+    return p.className === 'footnotes' ?
+        <Box mt={2}>
+            {p.children}
+        </Box> : p.children
+}
 
 const rehypePlugins = [rehypeRaw]
 const remarkPlugins = [remarkGfm]

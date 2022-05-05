@@ -54,15 +54,15 @@ export function createEmptyStore(type?: SchemaTypesType): UIStoreType<[] | '' | 
 
 // UIStore / Immutable Manipulation Functions
 
-export type KeyType = string | number
+export type StoreKeyType = string | number
 /**
- * @deprecated use `KeyType` instead
+ * @deprecated use `StoreKeyType` instead
  */
-export type OwnKey = KeyType
+export type OwnKey = StoreKeyType
 
-export type StoreKeys = List<KeyType>
+export type StoreKeys = List<StoreKeyType>
 
-export function prependKey<O extends KeyType = KeyType, S extends StoreKeys<O>>(storeKeys: S, key: O): S
+export function prependKey<O extends StoreKeyType = StoreKeyType, S extends StoreKeys<O>>(storeKeys: S, key: O): S
 
 export function shouldDeleteOnEmpty(value: any, force?: boolean, type?: SchemaTypesType): boolean
 

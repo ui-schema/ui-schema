@@ -1,5 +1,5 @@
 import React from 'react'
-import { KeyType, memo, PluginStack, SchemaTypesType, schemaTypeToDistinct, WidgetProps, WithValue } from '@ui-schema/ui-schema'
+import { StoreKeyType, memo, PluginStack, SchemaTypesType, schemaTypeToDistinct, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 import { List, OrderedMap, Map } from 'immutable'
 import { Theme } from '@mui/material/styles/createTheme'
 import TableCell from '@mui/material/TableCell'
@@ -46,7 +46,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
     ) {
         let orderedCellSchema = OrderedMap();
         (schema.getIn(['rowSortOrder']) as TableCellSchemaImmutable['rowSortOrder'])
-            .forEach((key: KeyType) => {
+            .forEach((key: StoreKeyType) => {
                 orderedCellSchema = orderedCellSchema.set(key, cellSchema.get(key as number))
             })
         // @ts-ignore
@@ -60,7 +60,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
             item.get('hidden') === true ?
                 <PluginStackMemo
                     key={j}
-                    storeKeys={storeKeys.push(j as KeyType)}
+                    storeKeys={storeKeys.push(j as StoreKeyType)}
                     schema={item}
                     parentSchema={parentSchema}
                     level={level + 1}
@@ -76,7 +76,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                             <GroupRenderer level={0} schema={item} storeKeys={storeKeys}>
                                 <PluginStackMemo<{ [k: string]: any }>
                                     showValidity={showValidity}
-                                    storeKeys={storeKeys.push(j as KeyType)}
+                                    storeKeys={storeKeys.push(j as StoreKeyType)}
                                     schema={item.setIn(['view', 'hideTitle'], true)}
                                     parentSchema={parentSchema}
                                     level={level + 1}
@@ -92,7 +92,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                             </GroupRenderer> :
                             <PluginStackMemo<{ [k: string]: any }>
                                 showValidity={showValidity}
-                                storeKeys={storeKeys.push(j as KeyType)}
+                                storeKeys={storeKeys.push(j as StoreKeyType)}
                                 schema={item.setIn(['view', 'hideTitle'], true)}
                                 parentSchema={parentSchema}
                                 level={level + 1}

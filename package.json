@@ -21,7 +21,7 @@
         "profile": "cross-env NODE_OPTIONS='--max-old-space-size=4096' NODE_ENV=production node packerConfig.js --build --profile",
         "clean": "npm run clean-dist && lerna clean -y",
         "clean-dist": "node packerConfig.js --clean",
-        "bootstrap": "lerna bootstrap -- --legacy-peer-deps --force-local",
+        "bootstrap": "lerna bootstrap --force-local -- --legacy-peer-deps",
         "hoist": "lerna bootstrap --hoist -- --legacy-peer-deps",
         "link": "lerna link --force-local",
         "test": "jest -c=\"packages/jest.config.ts\"",

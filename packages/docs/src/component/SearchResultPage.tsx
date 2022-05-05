@@ -9,6 +9,8 @@ import IcPage from '@mui/icons-material/Article'
 import Slide from '@mui/material/Slide'
 import IcTag from '@mui/icons-material/Tag'
 import useTheme from '@mui/material/styles/useTheme'
+import { useDrawer } from '@control-ui/app/DrawerProvider'
+import { useMediaQuery } from '@mui/material'
 
 export const SearchResultPage: React.FC<{
     match: any
@@ -20,8 +22,10 @@ export const SearchResultPage: React.FC<{
         showHeadlines,
     },
 ) => {
-    const {palette} = useTheme()
+    const {setOpen: setDrawerOpen} = useDrawer()
     const {setOpen} = useSearch()
+    const {palette, breakpoints} = useTheme()
+    const isMd = useMediaQuery(breakpoints.up('md'))
     const headlineMatches = match.matchKeys?.filter(
         (mk: any) =>
             mk.key === 'headings.headline' && (
@@ -32,7 +36,12 @@ export const SearchResultPage: React.FC<{
     return <Box mb={1} style={{overflow: 'hidden'}}>
         <SearchLink
             to={match.pagePath}
-            onClick={() => setOpen(false)}
+            onClick={() => {
+                setOpen(false)
+                if (!isMd) {
+                    setDrawerOpen(false)
+                }
+            }}
             style={{/*textDecoration: 'none', */position: 'relative', zIndex: 2}}
         >
             <Paper variant={'outlined'} style={{borderRadius: 5}}>
@@ -67,7 +76,12 @@ export const SearchResultPage: React.FC<{
                         <Box ml={2}>
                             <SearchLink
                                 to={match.pagePath + '#' + match.headings[mk.index].fragment}
-                                onClick={() => setOpen(false)}
+                                onClick={() => {
+                                    setOpen(false)
+                                    if (!isMd) {
+                                        setDrawerOpen(false)
+                                    }
+                                }}
                                 style={{/*textDecoration: 'none', */padding: '8px 0', color: 'inherit', display: 'flex', alignItems: 'center'}}
                             >
                                 <IcTag/>

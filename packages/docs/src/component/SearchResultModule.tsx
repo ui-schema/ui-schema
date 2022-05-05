@@ -5,6 +5,8 @@ import Typography from '@mui/material/Typography'
 import Highlighter from 'react-highlight-words'
 import { SearchHighlight, SearchLink } from './SearchBoxUtils'
 import { useSearch } from '@control-ui/docs/DocsSearchProvider'
+import { useDrawer } from '@control-ui/app/DrawerProvider'
+import { useMediaQuery, useTheme } from '@mui/material'
 
 export const SearchResultModule: React.FC<{
     match: any
@@ -15,11 +17,17 @@ export const SearchResultModule: React.FC<{
     },
 ) => {
     const {setOpen} = useSearch()
+    const {setOpen: setDrawerOpen} = useDrawer()
+    const {breakpoints} = useTheme()
+    const isMd = useMediaQuery(breakpoints.up('md'))
     return <Box mb={1}>
         <SearchLink
             to={match.pagePath + '#doc-module--' + match.module}
             onClick={() => {
                 setOpen(false)
+                if (!isMd) {
+                    setDrawerOpen(false)
+                }
             }}
             // style={{textDecoration: 'none'}}
         >

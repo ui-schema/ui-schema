@@ -1,9 +1,20 @@
-import { createTheme } from '@mui/material/styles'
+import { createTheme, Theme } from '@mui/material/styles'
 
 const headingFont = 'Roboto Slab, Baskerville, Baskerville Old Face, Garamond, Times New Roman, serif'
 const headingBody = 'IBM Plex Sans, Source Code Pro, Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif'
 
-const universal = {
+export type PartialTheme = { [K in keyof Theme]: Partial<Theme[K]> }
+
+const universal: Pick<PartialTheme, 'typography' | 'shape' | 'breakpoints'> = {
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 840,
+            md: 900,
+            lg: 1460,
+            xl: 1860,
+        },
+    },
     typography: {
         // fontSize: 14,
         fontFamily: headingBody,
@@ -125,7 +136,7 @@ const themeLight = createTheme({
             default: '#e7e7e8',
         },
         text: {
-            primary: '#212037',
+            primary: '#2f2f3d',
             secondary: '#6d388a',
         },
         action: {

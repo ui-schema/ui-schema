@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Box, Typography, useTheme} from '@mui/material';
+import {Button, Box, Typography, useTheme, useMediaQuery} from '@mui/material';
 import {createOrderedMap, UIRootRenderer, createEmptyStore, storeUpdater} from '@ui-schema/ui-schema';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter';
 import {UIStoreProvider} from '@ui-schema/ui-schema/UIStore';
@@ -65,7 +65,8 @@ const modes = {
 const DemoUIGenerator = ({activeSchema, id = '0', onClick = undefined, showDebugger = true, split = true, uiStyle = undefined}) => {
     const [jsonError, setJsonError] = React.useState(false);
     const [maxLines /*setMaxLines*/] = React.useState(15);
-    const {palette} = useTheme();
+    const {palette, breakpoints} = useTheme();
+    const isMd = useMediaQuery(breakpoints.up('md'))
 
     useStyle(style);
     useStyle(palette.type === 'dark' ? themeDark : themeLight);
@@ -119,6 +120,7 @@ const DemoUIGenerator = ({activeSchema, id = '0', onClick = undefined, showDebug
                             setJsonError={setJsonError} richIde
                             enableShowAll={!split} split={split}
                             id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
+                            width={split && isMd ? '50%' : '100%'}
                         /> : null}
 
                     {jsonError ?
@@ -149,11 +151,13 @@ const DemoUIGenerator = ({activeSchema, id = '0', onClick = undefined, showDebug
             {split ? <DebugSchemaEditor
                 schema={schema} setSchema={setSchema}
                 setJsonError={setJsonError} richIde
-                enableShowAll={!split} split={split}
+                enableShowAll
+                split={split}
                 id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
+                width={split && isMd ? '50%' : '100%'}
             /> : null}
 
-            <Box style={{width: split ? '50%' : '100%', paddingLeft: split ? 6 : 0}}>
+            <Box style={{width: split && isMd ? '50%' : '100%', paddingLeft: split ? 6 : 0}}>
                 <Typography component={'p'} variant={'overline'} style={{paddingLeft: 4}}>
                     Data:
                 </Typography>
@@ -166,7 +170,7 @@ const DemoUIGenerator = ({activeSchema, id = '0', onClick = undefined, showDebug
     </div>;
 };
 
-const DebugSchemaEditor = ({split, ...props}) => <Box style={{width: split ? '50%' : '100%', paddingRight: split ? 6 : 0}}>
+const DebugSchemaEditor = ({split, width, ...props}) => <Box style={{width: width, paddingRight: split ? 6 : 0}}>
     <Typography component={'p'} variant={'overline'} style={{paddingLeft: 4}}>
         Schema:
     </Typography>

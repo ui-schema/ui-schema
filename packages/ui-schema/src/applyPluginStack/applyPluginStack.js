@@ -21,6 +21,6 @@ export function injectPluginStack(Wrapper, CustomWidget) {
             WidgetOverride={CustomWidget}
         />
 
-    CustomStack.displayName = `InjectPluginStack(${getDisplayName(Wrapper)})`
+    CustomStack.displayName = `InjectPluginStack(${getDisplayName(Wrapper)}${CustomWidget ? `(${getDisplayName(CustomWidget)})` : ''})`
     return memo(CustomStack)
 }
