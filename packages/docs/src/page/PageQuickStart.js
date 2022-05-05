@@ -1,10 +1,14 @@
 import React from 'react';
-import {Typography, Box, Grid, Button, Paper} from '@mui/material';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
 import {Markdown} from '../component/Markdown';
 import DemoUIGenerator from '../component/Schema/DemoUIGenerator';
 import {RichCodeEditor} from '../component/RichCodeEditor';
 import {useHistory} from 'react-router-dom';
-import {LinkableHeadlineMenu} from '@control-ui/docs/LinkableHeadline';
+import {LinkableHeadlineMenu, useHeadlines} from '@control-ui/docs/LinkableHeadline';
 import {HeadMeta} from '@control-ui/kit/HeadMeta';
 import {PageContent} from '@control-ui/kit/PageContent';
 import {LoadingCircular} from '@control-ui/kit/Loading/LoadingCircular';
@@ -32,9 +36,20 @@ const demoSchema = {
 
 const PageQuickStart = () => {
     const history = useHistory();
+    const [, setHeadlines] = useHeadlines();
+
     const urlParams = new URLSearchParams(window.location.search);
-    const [render, setRender] = React.useState(urlParams.get('render') === 'custom' ? 'custom' : 'automatic');
-    const [ds, setDS] = React.useState('mui');
+    const [render, setInternalRender] = React.useState(urlParams.get('render') === 'custom' ? 'custom' : 'automatic');
+    const [ds, setInternalDS] = React.useState(urlParams.get('ds') === 'bts' ? 'bts' : 'mui');
+
+    const setDS = (nextDs) => {
+        history.push(history.location.pathname + '?ds=' + nextDs + '&render=' + render)
+        setInternalDS(nextDs)
+    }
+    const setRender = (nextRender) => {
+        history.push(history.location.pathname + '?ds=' + ds + '&render=' + nextRender)
+        setInternalRender(nextRender)
+    }
 
     const hash = history.location.hash;
     React.useEffect(() => {
@@ -45,6 +60,21 @@ const PageQuickStart = () => {
             }
         }
     }, [hash]);
+
+    React.useEffect(() => {
+        // todo: add the custom sorter as option to `LinkableHeadlineMenu`
+        setHeadlines(h => {
+            h = [...h]
+            h = h.sort((a, b) => {
+                    return a?.level === 1 ? -1 :
+                        isNaN(Number(a?.children?.[0]?.[0])) ? 1 :
+                            isNaN(Number(b?.children?.[0]?.[0])) ? -1 :
+                                Number(a?.children?.[0]?.[0]) < Number(b?.children?.[0]?.[0]) ? -1 : 1
+                },
+            )
+            return h
+        })
+    }, [render]);
 
     return <>
         <HeadMeta
@@ -236,7 +266,7 @@ export const Generator = () => {
         // move \`UIMetaProvider\` somewhere higher in your app, use one meta provider for multiple store providers
         <UIMetaProvider>
             <UIStoreProvider>
-                {/* here the components will be added */}
+                {/* here the ui-engine components will be added */}
             </UIStoreProvider>
         </UIMetaProvider>
     )
@@ -255,7 +285,7 @@ Each \`UIStoreProvider\` needs to receive a \`store\` and \`onChange\` to work w
 
 With \`PluginStack\` (and related utils) components can be wired up with the render engine, for improved performance in big editors.
 
-The schema in this example is bundled with the component and not dynamic, also the schema must be immutable. A minimal valid schema is an empty \`object\` schema.
+The schema in this example is bundled with the component and not dynamic, the schema must be an \`immutable\`. A minimal valid schema is an empty \`object\` schema.
 `}/>
 
                 <Grid container>
@@ -268,10 +298,10 @@ const schema = createOrderedMap({
 });
 
 const values = {};
-
+${render === 'automatic' ? `
 // wire up the grid container component with the render engine:
 const GridStack = injectPluginStack(GridContainer)
-
+` : ''}
 export const Generator = () => {
     // Create a state with the data, transforming into immutable on first mount
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(values)));
@@ -294,7 +324,7 @@ export const Generator = () => {
                 onChange={onChange}
                 showValidity={true}
             >
-                <GridStack isRoot schema={schema}/>
+                ${render === 'automatic' ? '<GridStack isRoot schema={schema}/>' : '{/* ... */}'}
             </UIStoreProvider>
         </UIMetaProvider>
     )
@@ -489,10 +519,6 @@ let CustomGroup: React.ComponentType<WidgetProps> = (props) => {
 // wiring this component
 CustomGroup = applyPluginStack(CustomGroup)
 
-// for storing at which store position a widget is,
-// as it is immutable, doesn't need to be newly created in component
-const rootStoreKeys = List()
-
 export const Generator = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(values)));
 
@@ -517,10 +543,8 @@ export const Generator = () => {
                   * using memo, they don't re-render even when store has changed
                   */}
                 <CustomGroup
-                    level={0}
-                    storeKeys={rootStoreKeys}
+                    isRoot
                     schema={schema}
-                    parentSchema={schema}
                 />
             </UIStoreProvider>
         </UIMetaProvider>

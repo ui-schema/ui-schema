@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import { InvertColors as InvertColorsIcon } from '@mui/icons-material'
 import GithubLogo from '../asset/GithubLogo'
@@ -18,7 +19,7 @@ import { Logo } from '../asset/logo'
 import { schemas } from '../schemas/_list'
 import ListItemText from '@mui/material/ListItemText'
 import { ExpandLess, ExpandMore } from '@mui/icons-material'
-import { Divider, List, Collapse } from '@mui/material'
+import { Divider, List, Collapse, useMediaQuery } from '@mui/material'
 import ListItem from '@mui/material/ListItem'
 import { NavListNested } from '@control-ui/kit/NavList'
 import { routesCore, routesFurtherAddOns, routesFurtherDesignSystem } from '../content/docs'
@@ -29,26 +30,54 @@ import Loadable from 'react-loadable'
 import { LoadingCircular } from '@control-ui/kit/Loading/LoadingCircular'
 import { RouteCascade } from '@control-ui/routes/RouteCascade'
 import { useSearch } from '@control-ui/docs/DocsSearchProvider'
+import { getUserCtrlKey, getUserPlatform } from '@control-ui/kit/Helper/getUserPlatform'
 import { SearchBox } from './SearchBox'
 
 const title = '0.4.0-alpha'
 export const CustomHeader: React.ComponentType = () => {
     const {switchTheme} = useSwitchTheme()
     const {setOpen} = useSearch()
+    const {breakpoints} = useTheme()
+    const isSm = useMediaQuery(breakpoints.up('sm'))
+    const platform = getUserPlatform()
     return <Header>
-        <RouterLink to={'/'}>
-            <Logo width={26} style={{marginLeft: 6, display: 'block'}}/>
+        <RouterLink to={'/'} style={{display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit', marginRight: 8}}>
+            <Logo width={26} style={{marginLeft: 6, display: 'block', flexShrink: 0}}/>
+            {title ? <Typography component="p" variant="h6" style={{flexShrink: 0, margin: '0 auto 0 8px'}}>
+                {title}
+            </Typography> : null}
         </RouterLink>
 
-        {title ? <Typography component="p" variant="h6" style={{flexShrink: 0, margin: '0 auto 0 8px'}}>
-            {title}
-        </Typography> : null}
-
-        <IconButton color="inherit" onClick={() => setOpen(true)} style={{marginLeft: 'auto'}}>
-            <AccessTooltipIcon title={'search'}>
-                <IcSearch/>
-            </AccessTooltipIcon>
-        </IconButton>
+        <AccessTooltipIcon title={'search'}>
+            <Button
+                variant={'outlined'} color={'inherit'}
+                onClick={() => setOpen(o => !o)}
+                startIcon={<IcSearch/>}
+                size={'small'}
+                style={{
+                    marginLeft: 'auto',
+                    marginRight: 8,
+                    borderRadius: 8,
+                    flexShrink: 1,
+                    flexGrow: isSm ? 0 : 1,
+                    minWidth: 20,
+                    maxWidth: isSm ? undefined : 85,
+                }}
+            >
+                {isSm ?
+                    <span style={{
+                        textAlign: 'right', fontWeight: 'bold',
+                        lineHeight: '0.965em', fontSize: '0.875rem',
+                        opacity: 0.8,
+                        marginLeft: 'auto',
+                        paddingLeft: 6,
+                        minWidth: 76,
+                    }}>
+                        {getUserCtrlKey(platform)}{' + K'}
+                    </span> :
+                    <span style={{marginLeft: 'auto'}}/>}
+            </Button>
+        </AccessTooltipIcon>
 
         <LinkIconButton size={'medium'} to={'https://github.com/ui-schema/ui-schema'} color="inherit" style={{color: 'inherit'}}>
             <GithubLogo fill="currentColor"/>

@@ -71,7 +71,9 @@ const RichCodeEditor = ({
                             minLines = 10, maxLines = undefined, getEditor, enableShowAll = false,
                         }) => {
     const uid = useUID();
-    const [showAll, setShowAll] = React.useState(0);// triple state/dual-type needed, 0 as default, true when open, false when closed
+    // triple state/dual-type needed, 0 as default, true when open, false when closed,
+    // is used to detect "it will have lines when closed again" - as otherwise, once opened, the "has-scrollbars" check is `false` and the show-less button will be hidden
+    const [showAll, setShowAll] = React.useState(0);
     const [editor, setEditor] = React.useState({});
     const scrollBar = editor && editor.container ? editor.container.querySelector('.ace_scrollbar-v') : undefined;
     const {palette} = useTheme();
@@ -79,7 +81,7 @@ const RichCodeEditor = ({
     React.useEffect(() => {
         if(editor && editor.resize && editor.renderer) {
             editor.resize();
-            editor.renderer.updateFull();
+            editor.renderer.updateFull(true);
         }
     }, [editor, renderChange]);
 
@@ -138,7 +140,7 @@ const RichCodeEditor = ({
             }}
         />
         {enableShowAll && (typeof showAll === 'boolean' || (editor && editor.container && scrollBar && scrollBar.clientHeight && scrollBar.clientWidth)) ?
-            <Button style={{position: 'absolute', bottom: 27, right: 20, minWidth: 'auto'}} onClick={() => setShowAll(p => !p)}>
+            <Button style={{position: 'absolute', bottom: 27, right: 20, minWidth: 'auto', zIndex: 1}} onClick={() => setShowAll(p => !p)}>
                 <AccessTooltipIcon title={showAll ? 'Show less lines' : 'Show all lines'}>
                     {showAll ? <UnfoldLess fontSize={'small'}/> : <UnfoldMore fontSize={'small'}/>}
                 </AccessTooltipIcon>

@@ -1,6 +1,8 @@
 import React from 'react'
-import { useTheme, Paper, Link } from '@mui/material'
+import { useTheme, Paper, Link, useMediaQuery, Button } from '@mui/material'
 import IcToc from '@mui/icons-material/Toc'
+import IcShowFull from '@mui/icons-material/Expand'
+import IcShowCompact from '@mui/icons-material/Compress'
 import { HeadMeta } from '@control-ui/kit/HeadMeta'
 import { ScrollUpButton } from '@control-ui/kit/ScrollUpButton'
 import PageNotFound from './PageNotFound'
@@ -34,7 +36,10 @@ const DocContent: React.FC<{
 }> = ({content, id, progress, doc}) => {
     const {palette} = useTheme()
     const [loadingModuleDocs, setLoadingModuleDocs] = React.useState<boolean>(false)
+    const [fullWidth, setFullWidth] = React.useState(window.localStorage.getItem('docs-details--fullWidth') === 'yes')
     const [modules, setModules] = React.useState<any>(undefined)
+    const {breakpoints} = useTheme()
+    const isLg = useMediaQuery(breakpoints.up('lg'))
     const module = doc?.docModule
     React.useEffect(() => {
         if (!module || (module && moduleDocsCache.current[module.modulePath])) {
@@ -71,9 +76,22 @@ const DocContent: React.FC<{
     }, [content])
 
     return <>
-        <PageContent maxWidth={'md'}>
-            <div style={{display: 'block', textAlign: 'right', margin: '4px 12px'}}>
-                <Typography variant={'body2'}>
+        <PageContent maxWidth={isLg && fullWidth ? 'xl' : 'md'} style={{flexGrow: 1}}>
+            <div style={{display: 'flex', alignItems: 'center', margin: '4px 12px'}}>
+                {isLg ?
+                    <Button
+                        onClick={() => {
+                            setFullWidth(f => {
+                                const n = !f
+                                window.localStorage.setItem('docs-details--fullWidth', n ? 'yes' : 'no')
+                                return n
+                            })
+                        }}
+                        color={'secondary'} size={'small'}
+                    >
+                        {fullWidth ? <IcShowCompact style={{transform: 'rotate(90deg)'}}/> : <IcShowFull style={{transform: 'rotate(90deg)'}}/>}
+                    </Button> : null}
+                <Typography variant={'body2'} style={{marginLeft: 'auto'}}>
                     <Link
                         target={'_blank'} rel="noreferrer noopener nofollow"
                         href={'https://github.com/ui-schema/ui-schema/tree/develop/packages/docs/src/content/' + id + '.md'}
@@ -97,15 +115,17 @@ const DocContent: React.FC<{
             {progress === 'success' && !loadingModuleDocs ?
                 <>
                     {doc?.demos?.schema ?
-                        <div style={{display: 'block', textAlign: 'right', margin: '0 12px'}}>
-                            <Link
-                                target={'_blank'} rel="noreferrer noopener nofollow"
-                                href={'https://github.com/ui-schema/ui-schema/tree/develop/packages/docs/src/content/docs/' + id + 'Demo.js'}
-                            >Edit Demos</Link>
+                        <div style={{display: 'block', textAlign: 'right', margin: '0 12px 4px 12px'}}>
+                            <Typography variant={'body2'} style={{marginLeft: 'auto'}}>
+                                <Link
+                                    target={'_blank'} rel="noreferrer noopener nofollow"
+                                    href={'https://github.com/ui-schema/ui-schema/tree/develop/packages/docs/src/content/' + id + 'Demo.js'}
+                                >Edit Demos</Link>
+                            </Typography>
                         </div> : null}
 
                     {doc?.demos?.schema ?
-                        <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', borderRadius: 5}} variant={'outlined'}>
+                        <Paper style={{marginBottom: 12, padding: 24, display: 'flex', flexDirection: 'column', borderRadius: 5}} variant={'outlined'}>
                             <Markdown
                                 source={`
 ## Demo UI Generator
@@ -125,44 +145,46 @@ Examples of this widget, using \`ds-material\`. Type in/change the input and che
                             <DocsDetailsModules modules={modules}/>
                         </Paper> : null}
                 </> : null}
-
-            <Paper
-                style={{
-                    margin: '0 12px',
-                    // padding: '0 12px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    overflowX: 'auto',
-                    opacity: progress === 'success' ? 1 : 0,
-                    transition: '0.32s opacity ease-out',
-                    flexShrink: 0,
-                    position: 'sticky',
-                    bottom: 12,
-                    left: 0,
-                    right: 0,
-                    zIndex: 10,
-                    maxHeight: '90vh',
-                    maxWidth: 420,
-                    borderRadius: 5,
-                    //borderTop: '1px solid ' + palette.primary.main,
-                    //background: palette.primary.main,
-                    boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12)',
-                }}
-                // elevation={4}
-                variant={'outlined'}
-            >
-                <LinkableHeadlineMenu
-                    disableNavLink
-                    //style={{margin: 0, padding: 0}}
-                    startIcon={<IcToc/>}
-                    titleStyle={{color: palette.background.paper, fontWeight: 'bold', background: palette.primary.main}}
-                    btnVariant={'contained'}
-                    disablePadding
-                    bindKey={'m'}
-                    //linkItemStyle={{color: palette.background.paper}}
-                />
-            </Paper>
         </PageContent>
+
+        <Paper
+            style={{
+                margin: '0 12px',
+                // padding: '0 12px',
+                display: 'flex',
+                flexDirection: 'column',
+                overflowX: 'auto',
+                opacity: progress === 'success' ? 1 : 0,
+                transition: '0.32s opacity ease-out',
+                flexShrink: 0,
+                position: 'sticky',
+                bottom: 12,
+                left: 0,
+                right: 0,
+                zIndex: 10,
+                maxHeight: '85vh',
+                maxWidth: 375,
+                borderRadius: 5,
+                //borderTop: '1px solid ' + palette.primary.main,
+                //background: palette.primary.main,
+                boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12)',
+            }}
+            // elevation={4}
+            variant={'outlined'}
+        >
+            <LinkableHeadlineMenu
+                disableNavLink
+                //style={{margin: 0, padding: 0}}
+                startIcon={<IcToc/>}
+                titleStyle={{color: palette.background.paper, fontWeight: 'bold', background: palette.primary.main}}
+                btnVariant={'contained'}
+                disablePadding
+                bindKey={'m'}
+                linkListStyle={{display: 'flex', flexDirection: 'column', overflow: 'auto'}}
+                // collapseStyle={{overflow: 'auto'}}
+                //linkItemStyle={{color: palette.background.paper}}
+            />
+        </Paper>
     </>
 }
 
@@ -209,7 +231,7 @@ const DocsDetails: React.FC<{ scrollContainer: React.MutableRefObject<HTMLDivEle
             matchDocKey={'docId'}
             scrollContainer={scrollContainer}
             title={doc => doc?.nav?.label ?
-                doc.nav.label + ' · UI Schema' : 'UI Schema Documentation'}
+                doc.nav.label + ' · UI Schema Docs' : 'UI Schema Documentation'}
             NotFound={PageNotFound}
             // @ts-ignore
             Content={DocContent}

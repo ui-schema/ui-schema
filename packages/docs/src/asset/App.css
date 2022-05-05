@@ -13,9 +13,13 @@
     // leads to no-spin when FF uses too much RAM
 }*/
 
+html, body {
+    height: 100%;
+}
+
 #root {
     overflow: auto;
-    height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
 }

@@ -160,14 +160,16 @@ export const SearchBox: React.ComponentType = () => {
         }
     }, [searchTerm, routes, searchFns, showHeadlines])
 
-    // @ts-ignore
-    // eslint-disable-next-line deprecation/deprecation
-    const platform = navigator?.userAgentData?.platform || navigator?.platform
-
     return <Dialog
         open={open} onClose={() => setOpen(false)}
         maxWidth={'sm'} fullWidth
-        PaperProps={{style: {background: 'transparent', overflow: 'visible'}, elevation: 0}}
+        PaperProps={{
+            style: {
+                background: 'transparent', overflow: 'visible',
+                margin: '24px 32px 32px 12px',
+            },
+            elevation: 0,
+        }}
         TransitionProps={{
             style: {
                 alignItems: 'flex-start',
@@ -189,6 +191,13 @@ export const SearchBox: React.ComponentType = () => {
                             <IcSearch/>
                         </InputAdornment>
                     ),
+                    endAdornment:
+                        searchTerm && searchTerm.length >= 3 ?
+                            <InputAdornment position="end">
+                                <IconButton onClick={() => setSearchTerm('')}>
+                                    <IcHistory/>
+                                </IconButton>
+                            </InputAdornment> : null,
                 }}
                 onBlur={() => {
                     bubbleBounce(searchTerm as string)
@@ -214,17 +223,10 @@ export const SearchBox: React.ComponentType = () => {
             </Button>
         </Paper>
 
-        <Box style={{display: 'flex'}}>
-            {searchTerm.trim().length > 0 && searchTerm.trim().length < 3 ? <Typography variant={'caption'}>min. length: 3</Typography> : null}
-            {typeof bindKey === 'string' && platform.indexOf('iP') !== 0 ?
-                <Typography variant={'caption'} style={{marginLeft: 'auto'}}>
-                    {'open with: '}
-                    {platform.indexOf('Mac') === 0 ? '⌘' : 'CTRL'}
-                    {' + '}
-                    {bindKey.toUpperCase()}
-                </Typography>
-                : null}
-        </Box>
+        {searchTerm.trim().length > 0 && searchTerm.trim().length < 3 ?
+            <Box style={{display: 'flex'}}>
+                <Typography variant={'caption'}>min. length: 3</Typography>
+            </Box> : null}
 
         <Collapse
             in={Boolean(searchResult)} timeout="auto" unmountOnExit
@@ -267,7 +269,7 @@ export const SearchBox: React.ComponentType = () => {
             style={{overflow: 'auto', marginTop: 6}}
         >
             <Paper style={{borderRadius: 5}} variant={'outlined'}>
-                <Box pt={2} pr={2} pl={1}>
+                <Box pt={1} pr={2} pl={1}>
                     <Typography variant={'subtitle1'} gutterBottom style={{display: 'flex', alignItems: 'center'}} color={'primary'}>
                         <IcHistory fontSize={'small'}/>
 
@@ -285,7 +287,7 @@ export const SearchBox: React.ComponentType = () => {
                 <Box pb={2}>
                     <List>
                         {[...history].reverse().map((h, i) =>
-                            <ListItemButton key={i} onClick={() => setSearchTerm(h)} dense>
+                            <ListItemButton key={i} onClick={() => setSearchTerm(h)} style={{paddingLeft: 32}}>
                                 <ListItemText primary={h}/>
                             </ListItemButton>)}
                     </List>

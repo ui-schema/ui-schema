@@ -3,6 +3,8 @@
 > 🚧 Work in progress, docs for `v0.4.0-alpha` of `@ui-schema/material-pickers`
 >
 > full rewrite for `mui@v5` support, not supporting all old features yet
+>
+> will stay in alpha, as long as `@mui/x-date-pickers` is in alpha [#187](https://github.com/ui-schema/ui-schema/issues/187)
 
 ```bash
 npm i --save @ui-schema/material-pickers @mui/x-date-pickers
@@ -12,7 +14,7 @@ npm i --save @ui-schema/material-pickers @mui/x-date-pickers
 
 Wire up the provided basic widgets, add support for further props and for those pickers you want.
 
-Use this basic function for a basic start:
+Use this basic function for a start:
 
 ```typescript jsx
 import React from 'react'

@@ -4,24 +4,31 @@ import {useUID} from 'react-uid';
 import Add from '@mui/icons-material/Add';
 import Delete from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
-import Slider from '@mui/material/Slider';
+import Slider, {SliderThumb} from '@mui/material/Slider';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import {TransTitle, extractValue, memo, Trans, schemaTypeIs, schemaTypeToDistinct, schemaTypeIsNumeric} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
 import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip/Tooltip';
 
-const ThumbComponent = ({onClick, canDelete, children, ...p}) => {
-    return <span {...p}>
+const ThumbComponent = ({onDelete, canDelete, children, ...p}) => {
+    const [hover, setHover] = React.useState(false)
+    return <SliderThumb
+        {...p}
+        onFocus={onDelete ? () => setHover(true) : undefined}
+        onBlur={onDelete ? () => setHover(false) : undefined}
+        onMouseEnter={onDelete ? () => setHover(true) : undefined}
+        onMouseLeave={onDelete ? () => setHover(false) : undefined}
+    >
         {children}
 
-        {canDelete && -1 !== p.className.indexOf('-open') ? <IconButton
+        {onDelete && canDelete && (hover || -1 !== p.className.indexOf('-active')) ? <IconButton
             size={'small'}
-            style={{position: 'absolute', zIndex: 100, bottom: -30}}
-            onClick={() => onClick(p['data-index'])}>
+            style={{position: 'absolute', zIndex: 100, bottom: -30, padding: 6}}
+            onClick={() => onDelete(p['data-index'])}>
             <Delete fontSize={'inherit'}/>
         </IconButton> : null}
-    </span>
+    </SliderThumb>
 };
 
 const NumberSliderRenderer = ({
@@ -64,7 +71,7 @@ const NumberSliderRenderer = ({
     }
 
     return <React.Fragment>
-        <Typography id={'uis-' + uid} gutterBottom color={!valid && showValidity ? 'error' : 'initial'}>
+        <Typography id={'uis-' + uid} gutterBottom color={!valid && showValidity ? 'error' : undefined}>
             <TransTitle schema={schema} storeKeys={storeKeys}/>{required ? ' *' : null}
         </Typography>
 
@@ -76,22 +83,42 @@ const NumberSliderRenderer = ({
                 step={typeof enumVal !== 'undefined' || typeof constVal !== 'undefined' ? null : multipleOf}
                 track={schema.getIn(['view', 'track'])}
                 marks={marks.length ? marks : schema.getIn(['view', 'marks'])}
+                size={schema.getIn(['view', 'size'])}
                 min={min}
                 max={max}
-                ThumbComponent={hasMulti ? p => <ThumbComponent
-                    {...p}
-                    onClick={(index) =>
-                        onChange({
-                            storeKeys,
-                            scopes: ['value'],
-                            type: 'update',
-                            updater: ({value: storeValue}) => ({value: storeValue.splice(index, 1)}),
-                            schema,
-                            required,
-                        })
-                    }
-                    canDelete={value && value.size > minItems}
-                /> : undefined}
+                components={{
+                    Thumb: ThumbComponent,
+                }}
+                /*components={{
+                    Thumb: hasMulti ? p => <ThumbComponent
+                        {...p}
+                        onClick={(index) =>
+                            onChange({
+                                storeKeys,
+                                scopes: ['value'],
+                                type: 'update',
+                                updater: ({value: storeValue}) => ({value: storeValue.splice(index, 1)}),
+                                schema,
+                                required,
+                            })
+                        }
+                        canDelete={value && value.size > minItems}
+                    /> : ThumbComponent,
+                }}*/
+                componentsProps={{
+                    thumb: {
+                        onDelete: hasMulti ? (index) =>
+                            onChange({
+                                storeKeys,
+                                scopes: ['value'],
+                                type: 'update',
+                                updater: ({value: storeValue}) => ({value: storeValue.splice(index, 1)}),
+                                schema,
+                                required,
+                            }) : undefined,
+                        canDelete: hasMulti && value && value.size > minItems,
+                    },
+                }}
                 value={(schemaTypeToDistinct(schema.get('type')) === 'array' ?
                     value && value.size ? value.toJS() : defaultVal :
                     typeof value === 'number' ? value : defaultVal)}

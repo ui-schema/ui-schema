@@ -1,6 +1,6 @@
 import React from 'react'
 import { List, Map } from 'immutable'
-import { KeyType, SchemaTypesType, schemaTypeToDistinct, TransTitle } from '@ui-schema/ui-schema'
+import { StoreKeyType, SchemaTypesType, schemaTypeToDistinct, TransTitle } from '@ui-schema/ui-schema'
 import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
@@ -24,7 +24,7 @@ export const TableHeader: React.ComponentType<TableHeaderProps> = (
     ) {
         cellSchema = (itemsSchema.getIn(['rowSortOrder']) as TableCellSchemaImmutable['rowSortOrder'])
             // @ts-ignore
-            .map((key: KeyType) => cellSchema.get(key))
+            .map((key: StoreKeyType) => cellSchema.get(key))
     }
     return <TableHead>
         {validItemSchema ?
@@ -34,7 +34,7 @@ export const TableHeader: React.ComponentType<TableHeaderProps> = (
                         <div id={'uis-' + uid + '-tbl-' + j}>
                             <TransTitle
                                 schema={item}
-                                storeKeys={storeKeys.push(j as KeyType)}
+                                storeKeys={storeKeys.push(j as StoreKeyType)}
                             />
                             {!schema.getIn(['view', 'hideItemsTitle']) &&
                             schemaTypeToDistinct(item.get('type')) === 'object' ?

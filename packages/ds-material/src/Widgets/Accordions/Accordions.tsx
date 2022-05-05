@@ -2,7 +2,7 @@ import React from 'react'
 import { OrderedMap } from 'immutable'
 import { useUID } from 'react-uid'
 import {
-    KeyType, StoreSchemaType, WidgetProps, ValidatorErrorsType, WithValidity,
+    StoreKeyType, StoreSchemaType, WidgetProps, ValidatorErrorsType, WithValidity,
     TransTitle, PluginStack, memo,
     extractValidity, StoreKeys,
 } from '@ui-schema/ui-schema'
@@ -113,7 +113,7 @@ export const AccordionsRendererBase = <W extends WidgetProps<MuiWidgetBinding> =
     const properties = schema.get('properties') as OrderedMap<string, any> | undefined
 
     return <>
-        {properties?.map((childSchema: StoreSchemaType, childKey: KeyType): React.ReactElement =>
+        {properties?.map((childSchema: StoreSchemaType, childKey: StoreKeyType): React.ReactElement =>
             <AccordionStack
                 key={childKey}
                 {...props}
