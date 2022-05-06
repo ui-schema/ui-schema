@@ -18,7 +18,7 @@ packer({
                 },
             },
             publicPath: '/',
-            webpackConfig: {
+            /*webpackConfig: {
                 build: {
                     optimization: {
                         concatenateModules: false,
@@ -27,7 +27,7 @@ packer({
                         usedExports: false,
                     },
                 },
-            },
+            },*/
             // plugins: [],
         },
         pickersDemo: {
@@ -45,7 +45,7 @@ packer({
                 },
             },
             publicPath: '/',
-            webpackConfig: {
+            /*webpackConfig: {
                 build: {
                     optimization: {
                         concatenateModules: false,
@@ -54,7 +54,7 @@ packer({
                         usedExports: false,
                     },
                 },
-            },
+            },*/
             // plugins: [],
         },
         docs: {

@@ -13,7 +13,7 @@
         "build": "npm run build-babel && npm run dtsgen && npm run build-webpack",
         "build-all": "cross-env NODE_ENV=production CI=true node packerConfig.js --build --babel --webpack",
         "build-babel": "cross-env NODE_ENV=production CI=true node packerConfig.js --build --babel",
-        "build-webpack": "cross-env NODE_ENV=production CI=true node packerConfig.js --build --webpack --profile",
+        "build-webpack": "cross-env NODE_ENV=production CI=true node packerConfig.js --build --webpack",
         "static-gen": "npm run sitemaps && npm run doc-gen && npm run page-index",
         "sitemaps": "lerna run sitemap",
         "doc-gen": "lerna run doc-gen",
