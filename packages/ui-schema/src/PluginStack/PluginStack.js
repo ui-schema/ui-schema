@@ -37,8 +37,6 @@ export const PluginStack = ({StackWrapper, wrapperProps, ...props}) => {
         }
     }
 
-    const ErrorBoundary = activeWidgets?.ErrorFallback ? PluginStackErrorBoundary : React.Fragment;
-
     const stack = <NextPluginRenderer
         {...meta}
         {...config}
@@ -57,21 +55,27 @@ export const PluginStack = ({StackWrapper, wrapperProps, ...props}) => {
         valid
     />;
 
-    return props.schema ?
-        <ErrorBoundary
-            FallbackComponent={activeWidgets?.ErrorFallback}
-            type={schema.get('type')}
-            widget={schema.get('widget')}
+    const wrappedStack = StackWrapper && !isVirtual ?
+        <StackWrapper
+            schema={schema}
             storeKeys={currentStoreKeys}
-        >
-            {StackWrapper && !isVirtual ?
-                <StackWrapper
-                    schema={schema}
-                    storeKeys={currentStoreKeys}
-                    schemaKeys={currentSchemaKeys}
-                    {...(wrapperProps || {})}
-                >{stack}</StackWrapper> : stack}
-        </ErrorBoundary> : null
+            schemaKeys={currentSchemaKeys}
+            {...(wrapperProps || {})}
+        >{stack}</StackWrapper> :
+        stack
+
+    return props.schema ?
+        activeWidgets?.ErrorFallback ?
+            <PluginStackErrorBoundary
+                FallbackComponent={activeWidgets.ErrorFallback}
+                type={schema.get('type')}
+                widget={schema.get('widget')}
+                storeKeys={currentStoreKeys}
+            >
+                {wrappedStack}
+            </PluginStackErrorBoundary> :
+            wrappedStack :
+        null
 };
 
 export const getNextPlugin = (next, {pluginStack: ps, WidgetRenderer}) =>

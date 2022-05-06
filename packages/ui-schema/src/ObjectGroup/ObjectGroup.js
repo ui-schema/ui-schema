@@ -11,8 +11,6 @@ const ObjectGroupBase = ({schema, children, onSchema}) => {
         }
     }, [onSchema, currentSchema])
 
-    return <>
-        {children}
-    </>
+    return children
 };
 export const ObjectGroup = applyPluginStack(ObjectGroupBase);
