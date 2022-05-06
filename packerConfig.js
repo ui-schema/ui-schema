@@ -18,17 +18,6 @@ packer({
                 },
             },
             publicPath: '/',
-            /*webpackConfig: {
-                build: {
-                    optimization: {
-                        concatenateModules: false,
-                        splitChunks: {usedExports: false},
-                        providedExports: false,
-                        usedExports: false,
-                    },
-                },
-            },*/
-            // plugins: [],
         },
         pickersDemo: {
             root: path.resolve(__dirname, 'packages', 'material-pickers'),
@@ -45,17 +34,6 @@ packer({
                 },
             },
             publicPath: '/',
-            /*webpackConfig: {
-                build: {
-                    optimization: {
-                        concatenateModules: false,
-                        splitChunks: {usedExports: false},
-                        providedExports: false,
-                        usedExports: false,
-                    },
-                },
-            },*/
-            // plugins: [],
         },
         docs: {
             root: path.resolve(__dirname, 'packages', 'docs'),

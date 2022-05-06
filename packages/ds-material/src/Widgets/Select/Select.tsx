@@ -1,19 +1,28 @@
 import React from 'react'
 import { Map, List } from 'immutable'
 import { useUID } from 'react-uid'
-import {
-    FormControl, InputLabel,
-    MenuItem, Select as MuiSelect,
-} from '@mui/material'
-import { TransTitle, Trans, beautifyKey, WidgetProps, tt, StoreSchemaType, WithScalarValue } from '@ui-schema/ui-schema'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import MuiSelect, { SelectProps as MuiSelectProps } from '@mui/material/Select'
+import { WithScalarValue } from '@ui-schema/ui-schema/UIStore'
+import { TransTitle, Trans } from '@ui-schema/ui-schema/Translate'
+import { beautifyKey, tt } from '@ui-schema/ui-schema/Utils/beautify'
+import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { getTranslatableEnum } from '@ui-schema/ui-schema/Translate'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 
-export const Select: React.FC<WidgetProps<MuiWidgetBinding> & WithScalarValue> = (
+export interface SelectProps {
+    variant?: MuiSelectProps['variant']
+}
+
+export const Select: React.FC<WidgetProps<MuiWidgetBinding> & WithScalarValue & SelectProps> = (
     {
         storeKeys, schema, value, onChange,
         showValidity, valid, required, errors, t,
+        variant,
     }
 ) => {
     const uid = useUID()
@@ -28,12 +37,16 @@ export const Select: React.FC<WidgetProps<MuiWidgetBinding> & WithScalarValue> =
         required={required} error={!valid && showValidity} fullWidth
         size={schema.getIn(['view', 'dense']) ? 'small' : undefined}
         disabled={schema.get('readOnly') as boolean}
+        variant={variant}
     >
-        <InputLabel id={'uis-' + uid}><TransTitle schema={schema} storeKeys={storeKeys}/></InputLabel>
+        <InputLabel id={'uis-' + uid + '-label'}><TransTitle schema={schema} storeKeys={storeKeys}/></InputLabel>
         <MuiSelect
-            labelId={'uis-' + uid}
-            id={'uis-' + uid + '-label'}
+            labelId={'uis-' + uid + '-label'}
+            id={'uis-' + uid}
             value={currentValue}
+            variant={variant}
+            // note: for variant `outlined` the label needs to be also here, as we don't know e.g. theme provider overrides, it is applied all the time
+            label={<TransTitle schema={schema} storeKeys={storeKeys}/>}
             renderValue={selected => {
                 const Translated = t(selected as string, Map({relative: List(['enum', selected as string | number])}), schema.get('t') as StoreSchemaType)
                 return typeof Translated === 'string' || typeof Translated === 'number' ?

@@ -64,6 +64,6 @@ jobs:
                 if: github.ref == 'refs/heads/master'
                 #if: startsWith(github.ref, 'refs/tags/')
                 run: |
-                    ./deploy.sh
+                    ./publish.sh
                 env:
                     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
