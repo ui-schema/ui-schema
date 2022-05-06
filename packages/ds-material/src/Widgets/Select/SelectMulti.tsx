@@ -1,19 +1,31 @@
 import React from 'react'
 import { Map, List, OrderedMap } from 'immutable'
 import { useUID } from 'react-uid'
-import {
-    FormControl, Checkbox, InputLabel,
-    MenuItem, Select as MuiSelect, ListItemText,
-} from '@mui/material'
-import { TransTitle, Trans, beautifyKey, extractValue, memo, WidgetProps, WithValue, StoreSchemaType, tt } from '@ui-schema/ui-schema'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import MuiSelect, { SelectProps as MuiSelectProps } from '@mui/material/Select'
+import Checkbox from '@mui/material/Checkbox'
+import ListItemText from '@mui/material/ListItemText'
+import { extractValue, WithValue } from '@ui-schema/ui-schema/UIStore'
+import { TransTitle, Trans } from '@ui-schema/ui-schema/Translate'
+import { beautifyKey, tt } from '@ui-schema/ui-schema/Utils/beautify'
+import { memo } from '@ui-schema/ui-schema/Utils/memo'
+import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
+import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
 
-export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue> = (
+export interface SelectMultiProps {
+    variant?: MuiSelectProps['variant']
+}
+
+export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue & SelectMultiProps> = (
     {
         storeKeys, schema, value, onChange,
         showValidity, valid, required, errors, t,
+        variant,
     }
 ) => {
     const uid = useUID()
@@ -29,11 +41,15 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
         required={required} error={!valid && showValidity} fullWidth
         disabled={schema.get('readOnly') as boolean}
         size={schema.getIn(['view', 'dense']) ? 'small' : undefined}
+        variant={variant}
     >
-        <InputLabel id={'uis-' + uid}><TransTitle schema={schema} storeKeys={storeKeys}/></InputLabel>
+        <InputLabel id={'uis-' + uid + '-label'}><TransTitle schema={schema} storeKeys={storeKeys}/></InputLabel>
         <MuiSelect
-            labelId={'uis-' + uid}
-            id={'uis-' + uid + '-label'}
+            labelId={'uis-' + uid + '-label'}
+            id={'uis-' + uid}
+            variant={variant}
+            // note: for variant `outlined` the label needs to be also here, as we don't know e.g. theme provider overrides, it is applied all the time
+            label={<TransTitle schema={schema} storeKeys={storeKeys}/>}
             value={currentValue.toArray()}
             multiple
             renderValue={selected => {

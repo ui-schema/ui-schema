@@ -1,14 +1,35 @@
 import React from 'react';
 import {useRouteMatch, useHistory} from 'react-router-dom'
 import {Map, List} from 'immutable'
-import {FormControl, Select, MenuItem, Box, Button, Paper, Typography, useTheme} from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import useTheme from '@mui/material/styles/useTheme';
+import DragHandle from '@mui/icons-material/DragHandle';
+import Opacity from '@mui/icons-material/Opacity';
+import SpeakerNotes from '@mui/icons-material/SpeakerNotes';
+import SpeakerNotesOff from '@mui/icons-material/SpeakerNotesOff';
+import Add from '@mui/icons-material/Add';
+import Remove from '@mui/icons-material/Remove';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import FormatSize from '@mui/icons-material/FormatSize';
+import FormatShapes from '@mui/icons-material/FormatShapes';
+import Code from '@mui/icons-material/Code';
+import SpaceBar from '@mui/icons-material/SpaceBar';
+import RestorePage from '@mui/icons-material/RestorePage';
+import HorizontalSplit from '@mui/icons-material/HorizontalSplit';
+import VerticalSplit from '@mui/icons-material/VerticalSplit';
 import {
-    DragHandle, Opacity,
-    SpeakerNotes, SpeakerNotesOff, Add, Remove,
-    Visibility, VisibilityOff,
-    FormatSize, FormatShapes, Code, SpaceBar, RestorePage, HorizontalSplit, VerticalSplit,
-} from '@mui/icons-material';
-import {isInvalid, createOrderedMap, UIRootRenderer, createStore, storeUpdater, UIStoreProvider, useUIStore} from '@ui-schema/ui-schema';
+    isInvalid, createOrderedMap,
+    createStore, storeUpdater, useUIStore,
+    UIStoreProvider, injectPluginStack,
+} from '@ui-schema/ui-schema';
+import {GridContainer} from '@ui-schema/ds-material/GridContainer';
 import {RichCodeEditor, themes} from '../RichCodeEditor';
 import {Markdown} from '../Markdown';
 import PageNotFound from '../../page/PageNotFound';
@@ -170,17 +191,17 @@ const IdeThemeChange = ({editorTheme, verticalSplit, setEditorTheme}) => {
     /> : null;
 };
 
-const EditorsNav = ({
-                        verticalSplit, changeSplit,
-                        setTabSize, tabSize,
-                        setFontSize, fontSize,
-                        activeSchema, changeSchema,
-                        toggleRichIde, richIde,
-                        schemas,
-                        showInfo, toggleInfoBox, hasInfo,
-                        setJsonEditHeight, setRenderChange,
-                        setEditorTheme, editorTheme,
-                    }) => {
+const EditorsNavBase = ({
+                            verticalSplit, changeSplit,
+                            setTabSize, tabSize,
+                            setFontSize, fontSize,
+                            activeSchema, changeSchema,
+                            toggleRichIde, richIde,
+                            schemas,
+                            showInfo, toggleInfoBox, hasInfo,
+                            setJsonEditHeight, setRenderChange,
+                            setEditorTheme, editorTheme,
+                        }) => {
     const [upDownHandler, setUpDownHandler] = React.useState(false);
 
     const handleMouseDown = React.useCallback((e) => {
@@ -308,6 +329,7 @@ const EditorsNav = ({
         </div>
     </EditorsNavWrapper>
 };
+const EditorsNav = React.memo(EditorsNavBase)
 
 const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, richIde, renderChange, theme}) => {
     return <RichCodeEditor
@@ -394,6 +416,66 @@ const useStyle = (styles) => {
     }, [styles]);
 };
 
+const EditorSchemaInfoBase = (
+    {
+        verticalSplit, toggleInfoBox, info, infoBox, showInfo, setRenderChange, activeSchema, changeSchema, schema,
+        setJsonError, onSchemaManual, tabSize, fontSize, richIde, renderChange, editorTheme,
+    },
+) => {
+    return <>
+        {verticalSplit ? <SchemaChanger
+            toggleInfoBox={toggleInfoBox} showInfo={showInfo} hasInfo={!!schema}
+            schemas={schemas} style={{marginLeft: 4}}
+            setRenderChange={setRenderChange} verticalSplit={verticalSplit}
+            activeSchema={activeSchema} changeSchema={changeSchema}
+        /> : null}
+
+        {schema ?
+            <div style={{
+                height: verticalSplit ? 'auto' : 'auto', display: 'flex', flexDirection: 'column', flexShrink: 0,
+                width: verticalSplit ? 'auto' : schema ? showInfo ? '33%' : 'auto' : showInfo ? '50%' : 'auto',
+                maxHeight: verticalSplit ? '35%' : 'none', paddingLeft: verticalSplit ? 0 : 6, marginRight: !verticalSplit && showInfo ? 12 : 0,
+            }}>
+                <Button
+                    variant={'outlined'} size={'small'}
+                    style={{display: 'flex', lineHeight: 2.66, flexShrink: 0, minWidth: 0, color: 'inherit', border: 0, padding: '0 0 0 4px', cursor: 'pointer'}}
+                    onClick={() => toggleInfoBox(o => !o)} onMouseUp={unFocus}>
+                    {showInfo || verticalSplit ? 'Info:' : 'I·'}
+
+                    {showInfo ?
+                        <SpeakerNotesOff fontSize={'small'} style={{margin: 'auto ' + (verticalSplit ? 0 : 9) + 'px auto auto'}}/> :
+                        <SpeakerNotes fontSize={'small'} style={{margin: 'auto ' + (verticalSplit ? 0 : 9) + 'px auto auto'}}/>}
+                </Button>
+
+                {showInfo ? <Paper style={{overflow: 'auto', padding: '0 6px 0 0'}} ref={infoBox}><Box mt={1} mb={1} ml={2} mr={verticalSplit ? 0 : 1.5}>
+                    <div style={{overflow: 'visible', margin: 0}}>
+                        <Markdown source={info}/>
+                    </div>
+                </Box></Paper> : null}
+            </div> : null}
+
+        <div style={{
+            height: 'auto', flexGrow: 2, flexShrink: 0, display: 'flex', flexDirection: 'column', width: 'auto',
+        }}>
+            <Typography component={'p'} variant={'overline'} style={{paddingLeft: 4}}>
+                Schema:
+            </Typography>
+            <SchemaJSONEditor
+                schema={schema}
+                setJsonError={setJsonError}
+                setSchema={onSchemaManual}
+                tabSize={tabSize}
+                fontSize={fontSize}
+                richIde={richIde}
+                renderChange={renderChange}
+                theme={editorTheme}
+            />
+        </div>
+    </>
+}
+const EditorSchemaInfo = React.memo(EditorSchemaInfoBase)
+
+const GridStack = injectPluginStack(GridContainer)
 const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
     const history = useHistory();
     const {palette} = useTheme();
@@ -518,54 +600,24 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
                             minWidth: verticalSplit ? 'auto' : 800,
                             flexGrow: 2,
                         }}>
-                            {verticalSplit ? <SchemaChanger
-                                toggleInfoBox={toggleInfoBox} showInfo={showInfo} hasInfo={!!schemas[activeSchema][3]}
-                                schemas={schemas} style={{marginLeft: 4}}
-                                setRenderChange={setRenderChange} verticalSplit={verticalSplit}
-                                activeSchema={activeSchema} changeSchema={changeSchema}
-                            /> : null}
-
-                            {schemas[activeSchema][3] ?
-                                <div style={{
-                                    height: verticalSplit ? 'auto' : 'auto', display: 'flex', flexDirection: 'column', flexShrink: 0,
-                                    width: verticalSplit ? 'auto' : schemas[activeSchema][3] ? showInfo ? '33%' : 'auto' : showInfo ? '50%' : 'auto',
-                                    maxHeight: verticalSplit ? '35%' : 'none', paddingLeft: verticalSplit ? 0 : 6, marginRight: !verticalSplit && showInfo ? 12 : 0,
-                                }}>
-                                    <Button
-                                        variant={'outlined'} size={'small'}
-                                        style={{display: 'flex', lineHeight: 2.66, flexShrink: 0, minWidth: 0, color: 'inherit', border: 0, padding: '0 0 0 4px', cursor: 'pointer'}}
-                                        onClick={() => toggleInfoBox(o => !o)} onMouseUp={unFocus}>
-                                        {showInfo || verticalSplit ? 'Info:' : 'I·'}
-
-                                        {showInfo ?
-                                            <SpeakerNotesOff fontSize={'small'} style={{margin: 'auto ' + (verticalSplit ? 0 : 9) + 'px auto auto'}}/> :
-                                            <SpeakerNotes fontSize={'small'} style={{margin: 'auto ' + (verticalSplit ? 0 : 9) + 'px auto auto'}}/>}
-                                    </Button>
-
-                                    {showInfo ? <Paper style={{overflow: 'auto', padding: '0 6px 0 0'}} ref={infoBox}><Box mt={1} mb={1} ml={2} mr={verticalSplit ? 0 : 1.5}>
-                                        <div style={{overflow: 'visible', margin: 0}}>
-                                            <Markdown source={schemas[activeSchema][3]}/>
-                                        </div>
-                                    </Box></Paper> : null}
-                                </div> : null}
-
-                            <div style={{
-                                height: 'auto', flexGrow: 2, flexShrink: 0, display: 'flex', flexDirection: 'column', width: 'auto',
-                            }}>
-                                <Typography component={'p'} variant={'overline'} style={{paddingLeft: 4}}>
-                                    Schema:
-                                </Typography>
-                                <SchemaJSONEditor
-                                    schema={schema}
-                                    setJsonError={setJsonError}
-                                    setSchema={onSchemaManual}
-                                    tabSize={tabSize}
-                                    fontSize={fontSize}
-                                    richIde={richIde}
-                                    renderChange={renderChange}
-                                    theme={editorTheme}
-                                />
-                            </div>
+                            <EditorSchemaInfo
+                                verticalSplit={verticalSplit}
+                                toggleInfoBox={toggleInfoBox}
+                                info={schemas[activeSchema][3]}
+                                schema={schema}
+                                infoBox={infoBox}
+                                showInfo={showInfo}
+                                setRenderChange={setRenderChange}
+                                activeSchema={activeSchema}
+                                changeSchema={changeSchema}
+                                setJsonError={setJsonError}
+                                onSchemaManual={onSchemaManual}
+                                tabSize={tabSize}
+                                fontSize={fontSize}
+                                richIde={richIde}
+                                renderChange={renderChange}
+                                editorTheme={editorTheme}
+                            />
 
                             <div style={{
                                 height: verticalSplit ? showStore ? '30%' : 'auto' : 'auto', display: 'flex', flexDirection: 'column', flexShrink: 1,
@@ -624,7 +676,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
                                 </Typography>
                             </Paper> :
                             typeof schema === 'string' ? null : <Paper style={{margin: 12, padding: 24}}>
-                                <UIRootRenderer schema={schema}/>
+                                <GridStack schema={schema}/>
 
                                 <InvalidLabel invalid={isInvalid(store?.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>
                             </Paper>}

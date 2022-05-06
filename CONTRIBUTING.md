@@ -21,7 +21,7 @@ See current *[packages/demo@master](https://ui-schema-demo.netlify.app/)* or
     - write in [packages/docs/src/content/docs](./packages/docs/src/content/docs)
 - Faster start, needs manual bootstrapping and update handling
     - `npm run serve` start all configured apps
-    - `npm run serve -- demo --serve docs` start specific apps (docs and demo here)
+    - `npm run serve -- demo --serve docs` start specific apps (docs and demo here) *[needs a lot of RAM]*
 
 **Commands:**
 

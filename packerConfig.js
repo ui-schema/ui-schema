@@ -1,5 +1,6 @@
 const path = require('path');
 const {packer, webpack} = require('lerna-packer');
+const {makeModulePackageJson, copyRootPackageJson, transformForEsModule} = require('lerna-packer/packer/modulePackages');
 
 packer({
     apps: {
@@ -17,8 +18,6 @@ packer({
                 },
             },
             publicPath: '/',
-            vendors: ['react-error-boundary', 'immutable', '@mui/material', '@mui/icons-material'],
-            // plugins: [],
         },
         pickersDemo: {
             root: path.resolve(__dirname, 'packages', 'material-pickers'),
@@ -35,8 +34,6 @@ packer({
                 },
             },
             publicPath: '/',
-            // vendors: ['react-error-boundary', 'immutable', '@mui/material', '@mui/icons-material'],
-            // plugins: [],
         },
         docs: {
             root: path.resolve(__dirname, 'packages', 'docs'),
@@ -55,7 +52,96 @@ packer({
                     disableDotRule: true,
                 },
             },
-            vendors: ['react-error-boundary', 'immutable', '@mui/material', '@mui/icons-material'],
+            cacheGroups: {
+                uis: {
+                    test: /[\\/]packages[\\/]ui-schema[\\/]/,
+                    reuseExistingChunk: true,
+                    usedExports: true,
+                    name: 'uis',
+                    chunks: 'all',
+                    minChunks: 1,
+                    minSize: 100,
+                    enforce: true,
+                },
+                dsm: {
+                    test: /[\\/]packages[\\/]ds-material[\\/]/,
+                    reuseExistingChunk: true,
+                    usedExports: true,
+                    name: 'dsm',
+                    chunks: 'all',
+                    minChunks: 1,
+                    minSize: 100,
+                    enforce: true,
+                },
+                mx: {
+                    test: /[\\/]packages[\\/]material-/,
+                    reuseExistingChunk: true,
+                    usedExports: true,
+                    name: 'mx',
+                    chunks: 'all',
+                    minChunks: 1,
+                    minSize: 100,
+                    enforce: true,
+                },
+                react: {
+                    test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+                    // reuseExistingChunk: true,
+                    usedExports: true,
+                    name: 'react',
+                    priority: 10,
+                    chunks: 'all',
+                    enforce: true,
+                },
+                common1: {
+                    test: /[\\/]node_modules[\\/](@mui|@emotion|@control-ui[\\/]app|@control-ui[\\/]kit|react-loadable)[\\/]/,
+                    // reuseExistingChunk: true,
+                    usedExports: true,
+                    name: 'c1',
+                    priority: 9,
+                    chunks: 'all',
+                    minChunks: 1,
+                    minSize: 375000,
+                    maxSize: 475000,
+                    // enforce: true,
+                },
+                common2: {
+                    test: /[\\/]node_modules[\\/](immutable|react-helmet|react-error-boundary|react-uid|react-router|react-router-dom|i18next*|react-i18next|@bemit)[\\/]/,
+                    // reuseExistingChunk: true,
+                    usedExports: true,
+                    name: 'c2',
+                    priority: 8,
+                    chunks: 'all',
+                    minChunks: 1,
+                    minSize: 150000,
+                    maxSize: 500000,
+                },
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    reuseExistingChunk: true,
+                    usedExports: true,
+                    name: 'vendor',
+                    chunks: 'all',
+                    priority: -2,
+                    minChunks: 5,
+                    maxSize: 265000,
+                },
+                defaultVendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10,
+                    reuseExistingChunk: true,
+                },
+            },
+            webpackConfig: {
+                build: {
+                    optimization: {
+                        splitChunks: {
+                            usedExports: true,
+                            maxAsyncRequests: 35,
+                            maxInitialRequests: 35,
+                        },
+                    },
+                },
+            },
             copy: [{from: path.resolve(__dirname, 'schema'), to: path.resolve(__dirname, 'dist', 'docs', 'schema')}],
             plugins: [
                 new webpack.DefinePlugin({
@@ -137,7 +223,14 @@ packer({
             entry: path.resolve(__dirname, 'packages', 'material-dnd/src/'),
         },
     },
-}, __dirname)
+}, __dirname, {
+    afterEsModules: (packages, pathBuild) => {
+        return Promise.all([
+            makeModulePackageJson(transformForEsModule)(packages, pathBuild),
+            copyRootPackageJson()(packages, pathBuild),
+        ])
+    },
+})
     .then(([execs, elapsed]) => {
         if(execs.indexOf('doServe') !== -1) {
             console.log('[packer] is now serving (after ' + elapsed + 'ms)')
