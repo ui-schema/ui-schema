@@ -49,6 +49,7 @@
         "react-loadable": "^5.5.0",
         "symlink-dir": "^3.1.1",
         "sloc": "^0.2.1",
+        "typescript": "^4.5.3",
         "ts-node": "^10.7.0"
     },
     "jest-runner-eslint": {
