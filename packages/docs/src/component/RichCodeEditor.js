@@ -27,7 +27,8 @@ import 'brace/theme/cobalt';
 import 'brace/theme/gruvbox';
 import 'brace/theme/monokai';
 import {AccessTooltipIcon} from '@control-ui/kit/Tooltip';
-import {UnfoldLess, UnfoldMore} from '@mui/icons-material';
+import UnfoldLess from '@mui/icons-material/UnfoldLess';
+import UnfoldMore from '@mui/icons-material/UnfoldMore';
 
 /*import ace from 'ace-builds/src-noconflict/ace';
 import "ace-builds/src-noconflict/ext-language_tools";
