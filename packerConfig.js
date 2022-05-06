@@ -18,6 +18,16 @@ packer({
                 },
             },
             publicPath: '/',
+            webpackConfig: {
+                build: {
+                    optimization: {
+                        concatenateModules: false,
+                        splitChunks: {usedExports: false},
+                        providedExports: false,
+                        usedExports: false,
+                    },
+                },
+            },
             // plugins: [],
         },
         pickersDemo: {
@@ -35,6 +45,16 @@ packer({
                 },
             },
             publicPath: '/',
+            webpackConfig: {
+                build: {
+                    optimization: {
+                        concatenateModules: false,
+                        splitChunks: {usedExports: false},
+                        providedExports: false,
+                        usedExports: false,
+                    },
+                },
+            },
             // plugins: [],
         },
         docs: {
@@ -225,13 +245,13 @@ packer({
             entry: path.resolve(__dirname, 'packages', 'material-dnd/src/'),
         },
     },
-    }, __dirname, {
-        afterEsModules: (packages, pathBuild) => {
-            return Promise.all([
-                makeModulePackageJson(transformForEsModule)(packages, pathBuild),
-                copyRootPackageJson()(packages, pathBuild),
-            ])
-        },
+}, __dirname, {
+    afterEsModules: (packages, pathBuild) => {
+        return Promise.all([
+            makeModulePackageJson(transformForEsModule)(packages, pathBuild),
+            copyRootPackageJson()(packages, pathBuild),
+        ])
+    },
 })
     .then(([execs, elapsed]) => {
         if(execs.indexOf('doServe') !== -1) {
