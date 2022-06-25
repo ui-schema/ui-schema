@@ -266,6 +266,10 @@
         <changefreq>weekly</changefreq>
     </url>
     <url>
+        <loc>https://ui-schema.bemit.codes/docs/material-code/material-code</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
         <loc>https://ui-schema.bemit.codes/docs/material-dnd/overview</loc>
         <changefreq>weekly</changefreq>
     </url>
@@ -275,6 +279,10 @@
     </url>
     <url>
         <loc>https://ui-schema.bemit.codes/docs/kit-dnd/kit-dnd</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/kit-codemirror/kit-codemirror</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>

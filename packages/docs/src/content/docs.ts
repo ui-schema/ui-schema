@@ -1,5 +1,5 @@
 import { demoAccordions } from './docs/widgets/AccordionsDemo'
-import { demoCode } from './docs/widgets/CodeDemo'
+import { demoCode } from './docs/material-code/material-codeDemo'
 import { demoColor } from './docs/widgets/ColorDemo'
 import { demoDateTimePickers } from './docs/widgets/DateTimePickersDemo'
 import { demoGenericList } from './docs/widgets/GenericListDemo'
@@ -28,16 +28,17 @@ export interface DocRouteModule<C = any> extends DocRoute<C> {
 const createDoc = (
     path: string,
     label: string,
-    {prefix = '', module, ...extras}: {
+    {prefix = '', module, hidden, ...extras}: {
         routes?: DocRouteModule[]
         demos?: DocRouteModule['demos']
         prefix?: string
+        hidden?: boolean
         module?: DocRouteModule['docModule']
     } = {},
 ): DocRouteModule => ({
     doc: 'docs/' + path,
     path: prefix + '/docs/' + path,
-    nav: {
+    nav: hidden ? undefined : {
         to: '/docs/' + path,
         initialOpen: false,
         label,
@@ -118,9 +119,7 @@ export const routesFurtherDesignSystem = [
                 },
             }),
             createDoc('widgets/Code', 'Code Editor', {
-                demos: {
-                    schema: demoCode,
-                },
+                hidden: true,
             }),
             createDoc('widgets/Color', 'Color Picker', {
                 demos: {
@@ -128,6 +127,7 @@ export const routesFurtherDesignSystem = [
                 },
             }),
             createDoc('widgets/DateTimePickers', 'Date + Time Pickers', {
+                hidden: true,
                 demos: {
                     schema: demoDateTimePickers,
                 },
@@ -366,6 +366,19 @@ export const routesFurtherDesignSystem = [
         ],
     }, {
         nav: {
+            label: 'Material Code',
+            initialOpen: false,
+            to: '/docs/material-code',
+        },
+        routes: [
+            createDoc('material-code/material-code', 'Overview', {
+                demos: {
+                    schema: demoCode,
+                },
+            }),
+        ],
+    }, {
+        nav: {
             label: 'Material-DND',
             initialOpen: false,
             to: '/docs/material-dnd',
@@ -390,6 +403,15 @@ export const routesFurtherAddOns = [
         },
         routes: [
             createDoc('kit-dnd/kit-dnd', 'Overview'),
+        ],
+    }, {
+        nav: {
+            label: 'Kit: CodeMirror',
+            initialOpen: false,
+            to: '/docs/kit-codemirror',
+        },
+        routes: [
+            createDoc('kit-codemirror/kit-codemirror', 'Overview'),
         ],
     }, {
         nav: {

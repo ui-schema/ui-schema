@@ -12,7 +12,7 @@ const demoCode = [
                     widget: 'Code',
                     view: {
                         sizeXs: 12,
-                    }
+                    },
                 },
                 code_bg: {
                     type: 'string',
@@ -21,12 +21,13 @@ const demoCode = [
                     view: {
                         sizeXs: 12,
                         bg: true,
-                    }
+                    },
                 },
                 code_selectable: {
                     type: 'array',
                     format: ['json', 'js', 'html'],
                     widget: 'CodeSelectable',
+                    formatDefault: 'json',
                 },
                 code_no_title: {
                     type: 'string',
@@ -38,8 +39,9 @@ const demoCode = [
                 },
                 code_selectable_no_title: {
                     type: 'array',
-                    format: ['json', 'js', 'html'],
+                    format: ['json', 'js', 'css', 'html'],
                     widget: 'CodeSelectable',
+                    formatDefault: 'js',
                     view: {
                         hideTitle: true,
                     },
@@ -47,8 +49,8 @@ const demoCode = [
                 normal_string: {
                     type: 'string',
                 },
-            }
-        }
+            },
+        },
     ],
 ];
 
