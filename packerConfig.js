@@ -202,11 +202,6 @@ packer({
             root: path.resolve(__dirname, 'packages', 'material-editable'),
             entry: path.resolve(__dirname, 'packages', 'material-editable/src/'),
         },
-        materialCode: {
-            name: '@ui-schema/material-code',
-            root: path.resolve(__dirname, 'packages', 'material-code'),
-            entry: path.resolve(__dirname, 'packages', 'material-code/src/'),
-        },
         materialColor: {
             name: '@ui-schema/material-color',
             root: path.resolve(__dirname, 'packages', 'material-color'),

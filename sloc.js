@@ -9,7 +9,6 @@ const include = [
     path.resolve(__dirname, 'packages', 'ds-bootstrap/src'),
     path.resolve(__dirname, 'packages', 'ds-material/src'),
     path.resolve(__dirname, 'packages', 'kit-dnd/src'),
-    path.resolve(__dirname, 'packages', 'material-code/src'),
     path.resolve(__dirname, 'packages', 'material-color/src'),
     path.resolve(__dirname, 'packages', 'material-dnd/src'),
     path.resolve(__dirname, 'packages', 'material-editable/src'),

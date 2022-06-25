@@ -1,6 +1,6 @@
 import type { Config } from '@jest/types'
 
-const packages: string[] = ['ui-schema', 'ds-bootstrap', 'ds-material', 'material-code', 'material-color', 'material-pickers', 'kit-dnd']
+const packages: string[] = ['ui-schema', 'ds-bootstrap', 'ds-material', 'material-color', 'material-pickers', 'kit-dnd']
 
 const testMatchesLint: string[] = []
 
@@ -22,7 +22,6 @@ const base: Partial<Config.InitialOptions> = {
         '^@ui-schema/pro(.*)$': '<rootDir>/ui-schema-pro/src$1',
         '^@ui-schema/ds-bootstrap(.*)$': '<rootDir>/ds-bootstrap/src$1',
         '^@ui-schema/ds-material(.*)$': '<rootDir>/ds-material/src$1',
-        '^@ui-schema/material-code(.*)$': '<rootDir>/material-code/src$1',
         '^@ui-schema/kit-dnd(.*)$': '<rootDir>/kit-dnd/src$1',
     },
     moduleFileExtensions: [

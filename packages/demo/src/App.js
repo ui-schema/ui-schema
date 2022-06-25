@@ -7,7 +7,6 @@ import {
 import {asyncComponent} from './component/AsyncComponent';
 
 const MaterialUi = asyncComponent(() => import('./material-ui/material-ui'), 'Material-UI', 'page');
-const MaterialUiCode = asyncComponent(() => import('./material-ui/material-ui-code'), 'Material-UI Code', 'page');
 const MaterialUiColor = asyncComponent(() => import('./material-ui/material-ui-color'), 'Material-UI Color', 'page');
 const MaterialUiPro = asyncComponent(() => import('./material-ui/material-ui-pro'), 'Material-UI Pro', 'page');
 const MaterialUiDnd = asyncComponent(() => import('./material-ui/material-ui-dnd'), 'Material-UI DnD', 'page');
@@ -25,7 +24,6 @@ const KitDndGrid = asyncComponent(() => import('./kit-dnd/page-grid'), 'Kit DnD 
 
 const App = () => <Router>
     <Switch>
-        <Route path="/mui-code" component={MaterialUiCode}/>
         <Route path="/mui-color" component={MaterialUiColor}/>
         <Route path="/mui-slate" component={MaterialUiSlate}/>
         <Route path="/mui-pro" component={MaterialUiPro}/>

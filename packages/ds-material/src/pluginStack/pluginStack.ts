@@ -6,7 +6,7 @@ import {
 } from '@ui-schema/ui-schema/Plugins'
 import { PluginSimpleStack } from '@ui-schema/ui-schema/PluginSimpleStack'
 import { ValidityReporter } from '@ui-schema/ui-schema/ValidityReporter'
-import { ComponentPluginType } from '@ui-schema/ui-schema'
+import { ComponentPluginType } from '@ui-schema/ui-schema/PluginStack'
 
 export const pluginStack: ComponentPluginType[] = [
     ReferencingHandler,
