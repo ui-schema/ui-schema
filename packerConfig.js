@@ -2,6 +2,27 @@ const path = require('path');
 const {packer, webpack} = require('lerna-packer');
 const {makeModulePackageJson, copyRootPackageJson, transformForEsModule} = require('lerna-packer/packer/modulePackages');
 
+// todo: once no `.d.ts` are used, remove the `copy-files` again / use lerna-packer default again
+const legacyBabelTargets = [
+    {
+        distSuffix: '',
+        args: [
+            '--env-name', 'cjs', '--no-comments', '--copy-files',
+            '--extensions', '.ts', '--extensions', '.tsx', '--extensions', '.js', '--extensions', '.jsx',
+            '--ignore', '**/*.d.ts',
+            '--ignore', '**/*.test.tsx', '--ignore', '**/*.test.ts', '--ignore', '**/*.test.js',
+        ],
+    },
+    {
+        distSuffix: '/esm', args: [
+            '--no-comments',
+            '--extensions', '.ts', '--extensions', '.tsx', '--extensions', '.js', '--extensions', '.jsx',
+            '--ignore', '**/*.d.ts',
+            '--ignore', '**/*.test.tsx', '--ignore', '**/*.test.ts', '--ignore', '**/*.test.js',
+        ],
+    },
+]
+
 packer({
     apps: {
         demo: {
@@ -160,6 +181,7 @@ packer({
             name: '@ui-schema/ui-schema',
             root: path.resolve(__dirname, 'packages', 'ui-schema'),
             entry: path.resolve(__dirname, 'packages', 'ui-schema/src/'),
+            babelTargets: legacyBabelTargets,
         },
         uiSchemaPro: {
             name: '@ui-schema/pro',
@@ -176,11 +198,13 @@ packer({
             name: '@ui-schema/ds-material',
             root: path.resolve(__dirname, 'packages', 'ds-material'),
             entry: path.resolve(__dirname, 'packages', 'ds-material/src/'),
+            babelTargets: legacyBabelTargets,
         },
         dsBootstrap: {
             name: '@ui-schema/ds-bootstrap',
             root: path.resolve(__dirname, 'packages', 'ds-bootstrap'),
             entry: path.resolve(__dirname, 'packages', 'ds-bootstrap/src/'),
+            babelTargets: legacyBabelTargets,
         },
         kitDnd: {
             name: '@ui-schema/kit-dnd',
@@ -206,6 +230,7 @@ packer({
             name: '@ui-schema/material-color',
             root: path.resolve(__dirname, 'packages', 'material-color'),
             entry: path.resolve(__dirname, 'packages', 'material-color/src/'),
+            babelTargets: legacyBabelTargets,
         },
         materialEditorJs: {
             name: '@ui-schema/material-editorjs',
