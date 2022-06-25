@@ -34,10 +34,6 @@ import {RichCodeEditor, themes} from '../RichCodeEditor';
 import {Markdown} from '../Markdown';
 import PageNotFound from '../../page/PageNotFound';
 import {schemas} from '../../schemas/_list';
-import style from 'codemirror/lib/codemirror.css';
-import themeDark from 'codemirror/theme/duotone-dark.css';
-import themeLight from 'codemirror/theme/duotone-light.css';
-import {WidgetCodeProvider} from '@ui-schema/material-code';
 // import LuxonAdapter from '@date-io/luxon';
 // import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import {createEmptyStore} from '@ui-schema/ui-schema/UIStore';
@@ -409,12 +405,6 @@ const searchActiveSchema = (schemas, schema) => {
 
     return found;
 };
-const useStyle = (styles) => {
-    React.useEffect(() => {
-        styles.use();
-        return () => styles.unuse();
-    }, [styles]);
-};
 
 const EditorSchemaInfoBase = (
     {
@@ -478,7 +468,6 @@ const EditorSchemaInfo = React.memo(EditorSchemaInfoBase)
 const GridStack = injectPluginStack(GridContainer)
 const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
     const history = useHistory();
-    const {palette} = useTheme();
     let initialVertical = initialLocalBoolean('live-editor-vertical', 800 < window.innerWidth);// Vertical by default for desktop
     let initialRichIde = initialLocalBoolean('live-editor-rich-ide', true);
     const [verticalSplit, setVerticalSplit] = React.useState(initialVertical);
@@ -492,9 +481,6 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
     const [renderChange, setRenderChange] = React.useState(0);// Ace Editor Re-Size Re-Calc
     const [editorTheme, setEditorTheme] = React.useState('gruvbox');
     const infoBox = React.useRef();// to scroll to top of info text when toggling/switching sides
-
-    useStyle(style);
-    useStyle(palette.type === 'dark' ? themeDark : themeLight);
 
     // default schema state - begin
     const [showValidity, setShowValidity] = React.useState(false);
@@ -581,7 +567,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
     const {onIntent} = useOnIntent({edgeSize: 12})
     const {onMove} = useOnDirectedMove(onIntent, onChange)
 
-    return <WidgetCodeProvider theme={palette.type === 'dark' ? 'duotone-dark' : 'duotone-light'}>
+    return <>
         {/*<MuiPickersUtilsProvider utils={LuxonAdapter}>*/}
         <KitDndProvider onMove={onMove}>
             <UIStoreProvider store={store} onChange={onChange} showValidity={showValidity}>
@@ -687,7 +673,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
             </UIStoreProvider>
         </KitDndProvider>
         {/*</MuiPickersUtilsProvider>*/}
-    </WidgetCodeProvider>;
+    </>;
 };
 
 const Editor = () => {

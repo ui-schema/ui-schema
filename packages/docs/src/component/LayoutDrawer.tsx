@@ -15,6 +15,7 @@ import ListItem from '@mui/material/ListItem'
 import { NavListItemAuto, NavListNested } from '@control-ui/kit/NavList'
 import { routesCore, routesFurtherAddOns, routesFurtherDesignSystem } from '../content/docs'
 import { useConsent } from '@bemit/consent-ui-react'
+import { Route } from '@control-ui/routes'
 
 const CollapseDrawer: React.ComponentType<React.PropsWithChildren<{
     toggle: string | React.ReactElement
@@ -54,6 +55,9 @@ export const LayoutDrawerBase: React.ComponentType = () => {
             setOpen(false)
         }
     }, [breakpoints, setOpen])
+    const routeFiler = React.useCallback((route: Route) => {
+        return Boolean(route.nav)
+    }, [])
     return <Drawer drawerWidth={260}>
         <List>
             <ListItemLink to={'/'} primary={'Home'} dense disableNavLink={false} exact onClick={closeOnClick}/>
@@ -63,6 +67,7 @@ export const LayoutDrawerBase: React.ComponentType = () => {
             <NavListNested
                 // @ts-ignore
                 routes={routesCore}
+                filter={routeFiler}
                 dense
                 onClick={closeOnClick}
                 ListItem={NavListItemAutoMemo}
@@ -73,6 +78,7 @@ export const LayoutDrawerBase: React.ComponentType = () => {
             <NavListNested
                 // @ts-ignore
                 routes={routesFurtherDesignSystem}
+                filter={routeFiler}
                 dense
                 onClick={closeOnClick}
                 ListItem={NavListItemAutoMemo}
@@ -81,6 +87,7 @@ export const LayoutDrawerBase: React.ComponentType = () => {
             <Divider/>
             <NavListNested
                 routes={routesFurtherAddOns}
+                filter={routeFiler}
                 dense
                 onClick={closeOnClick}
                 ListItem={NavListItemAutoMemo}

@@ -71,11 +71,11 @@ customWidgets.custom = {
     ColorSketchStatic,
     ColorSketchDialog,
     Code: Loadable({
-        loader: () => import('@ui-schema/material-code').then(r => r.Code),
+        loader: () => import('../CustomCodeWidgets').then(r => r.CustomWidgetCode),
         loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
     }),
     CodeSelectable: Loadable({
-        loader: () => import('@ui-schema/material-code').then(r => r.CodeSelectable),
+        loader: () => import('../CustomCodeWidgets').then(r => r.CustomWidgetCodeSelectable),
         loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
     }),
     /*DateTime: Loadable({

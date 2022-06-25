@@ -84,7 +84,7 @@ Custom widgets for `widget`, special UIs and specific type handling:
 |                               |                                                                                      |                                                              |     |     |     |
 | **Rich-Text**                 |                                                                                      |                                                              |     |     |     |
 | `Rich*`                       | [rich content + text editor](/docs/widgets/RichText)                                 | `string`,`object`                                            |  ✅  | 🔵  |  🔵 |
-| `Code`, `CodeSelectable`      | [text editor with syntax highlight](/docs/widgets/Code)                              | `string`, `array(string, string)`                            |  ✅  | 🔵  |  🔵 |
+| `Code`, `CodeSelectable`      | [text editor with syntax highlight](/docs/material-code/material-code)                              | `string`, `array(string, string)`, `object`                   |  ✅  | 🔵  |  🔵 |
 | `EditorJS`                    | [EditorJS text editor](/docs/widgets/EditorJS)                                       | `string`                                                     | ✅ℹ️ | 🔵  |  🔵 |
 |                               |                                                                                      |                                                              |     |     |     |
 | **Lists**                     |                                                                                      |                                                              |     |     |     |

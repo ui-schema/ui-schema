@@ -1,14 +1,17 @@
-# Kit Code
+# Kit CodeMirror
 
 Thin-wrapper for CodeMirror v6 to use as React Component, with hooks and stuff to build more advanced editors easily.
 
 ```bash
-npm install --save @ui-schema/kit-code @codemirror/state @codemirror/view
+npm install --save @ui-schema/kit-codemirror @codemirror/state @codemirror/view
 
 # doesn't require any other module of `@ui-schema`
 ```
 
-> 🚧 Work in progress, experimental [#188](https://github.com/ui-schema/ui-schema/issues/188)
+>
+> 🚧 Work in progress, semi stable [#188](https://github.com/ui-schema/ui-schema/issues/188)
+>
+> For issues and more check the separate [ui-schema/react-codemirror repository](https://github.com/ui-schema/react-codemirror)
 
 Contains only the CodeMirror extensions which are necessary to provide the necessities for ReactJS, but nothing else.
 
@@ -21,7 +24,7 @@ Contains only the CodeMirror extensions which are necessary to provide the neces
 >
 > Otherwise the editor may be destroyed unnecessary and will behave wrongly.
 >
-> For "react-style-extension" updates, check the `classNamesContent` props implementation as an inspiration: [CodeMirror.tsx](https://github.com/ui-schema/react-codemirror/blob/main/packages/kit-code/src/CodeMirror/CodeMirror.tsx), [useEditorClasses.ts](https://github.com/ui-schema/react-codemirror/blob/main/packages/kit-code/src/useEditorClasses/useEditorClasses.ts)
+> For "react-style-extension" updates, check the `classNamesContent` props implementation as an inspiration: [CodeMirror.tsx](https://github.com/ui-schema/react-codemirror/blob/main/packages/kit-codemirror/src/CodeMirror/CodeMirror.tsx), [useEditorClasses.ts](https://github.com/ui-schema/react-codemirror/blob/main/packages/kit-codemirror/src/useEditorClasses/useEditorClasses.ts)
 
 ## Components
 
@@ -33,7 +36,7 @@ The `CodeMirror` component serves as read-to-use ReactJS integration.
 import React from 'react'
 import { lineNumbers } from '@codemirror/view'
 import { syntaxHighlighting, defaultHighlightStyle } from '@codemirror/language'
-import { CodeMirrorComponentProps, CodeMirrorOnChange, CodeMirror, CodeMirrorProps } from '@ui-schema/kit-code/CodeMirror'
+import { CodeMirrorComponentProps, CodeMirrorOnChange, CodeMirror, CodeMirrorProps } from '@ui-schema/kit-codemirror/CodeMirror'
 
 export const CustomCodeMirror: React.FC<{}> = () => {
     const [value, setValue] = React.useState('')
@@ -77,7 +80,7 @@ export const CustomCodeMirror: React.FC<{}> = () => {
 
 The `useCodeMirror` hook is used by the `CodeMirror` component and can be used to easily built more customizations / an own `CodeMirror` component.
 
-See the file [CodeMirror.tsx](https://github.com/ui-schema/react-codemirror/blob/main/packages/kit-code/src/CodeMirror/CodeMirror.tsx) as example.
+See the file [CodeMirror.tsx](https://github.com/ui-schema/react-codemirror/blob/main/packages/kit-codemirror/src/CodeMirror/CodeMirror.tsx) as example.
 
 **Params:**
 
@@ -98,8 +101,8 @@ Simple hook-style codemirror extension, already included in the `CodeMirror` com
 import React from 'react'
 import { EditorView } from '@codemirror/view'
 import { Compartment, Extension } from '@codemirror/state'
-import { useCodeMirror } from '@ui-schema/kit-code/useCodeMirror'
-import { useEditorClasses } from '@ui-schema/kit-code/useEditorClasses'
+import { useCodeMirror } from '@ui-schema/kit-codemirror/useCodeMirror'
+import { useEditorClasses } from '@ui-schema/kit-codemirror/useEditorClasses'
 
 const CodeEditor = () => {
     // refs for extensions need to be created before the extension
