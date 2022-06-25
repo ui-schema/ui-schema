@@ -51,7 +51,7 @@ For some JSON-Schema keywords / keyword combinations it can not exactly know wha
 - this can only be assumed by existing data
     - but not always, not fully reliable
 - a custom `widget` that supports "user can select which one", can handle those schemas correctly
-    - todo: there isn't a `anyOf` validator atm.
+    - *todo:* there isn't a `anyOf` validator atm.
 
 #### Example for multiple types
 

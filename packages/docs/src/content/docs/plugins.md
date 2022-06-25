@@ -10,15 +10,15 @@ This page lists and explains the included plugins and validators.
 
 Widget plugins which work with default JSON-Schema keywords:
 
-| Plugin                                              | Package              | Handles              | Added Props | Status |
-| :---                                                | :---                 | :---                 | :---        | :--- |
-| [DefaultHandler](#defaulthandler)                   | @ui-schema/ui-schema | keyword `default`    | - | ✔ |
-| [ValidityReporter](#validityreporter)               | @ui-schema/ui-schema | setting validity changes | - | ✔ |
-| [DependentHandler](#dependenthandler)               | @ui-schema/ui-schema | keywords `dependencies`, `dependentSchemas`, `dependentRequired` | - | ✔ |
-| [ConditionalHandler](#conditionalhandler)           | @ui-schema/ui-schema | keywords `allOf`, `if`, `else`, `then`, `not` | - | ✔ |
-| [CombiningHandler](#combininghandler)               | @ui-schema/ui-schema | keyword `allOf`, `oneOf`, `anyOf`, ... | - | ✔(allOf) ❗ |
-| [ReferencingHandler](#referencinghandler) | @ui-schema/ui-schema | keywords `$defs`, `$anchor`, `$id`, `$ref` ... | ... | ✔ |
-| [ReferencingNetworkHandler](#referencingnetworkhandler) | @ui-schema/ui-schema | keywords `$ref` | ... | ✔ |
+| Plugin                                                  | Package              | Handles                                                          | Added Props | Status       |
+|:--------------------------------------------------------| :---                 |:-----------------------------------------------------------------| :---        |:-------------|
+| [DefaultHandler](#defaulthandler)                       | @ui-schema/ui-schema | keyword `default`                                                | - | ✔            |
+| [ValidityReporter](#validityreporter)                   | @ui-schema/ui-schema | setting validity changes                                         | - | ✔            |
+| [DependentHandler](#dependenthandler)                   | @ui-schema/ui-schema | keywords `dependencies`, `dependentSchemas`, `dependentRequired` | - | ✔            |
+| [ConditionalHandler](#conditionalhandler)               | @ui-schema/ui-schema | keywords `allOf`, `if`, `else`, `then`, `not`                    | - | ✔            |
+| [CombiningHandler](#combininghandler)                   | @ui-schema/ui-schema | keyword `allOf`                                                  | - | ✔            |
+| [ReferencingHandler](#referencinghandler)               | @ui-schema/ui-schema | keywords `$defs`, `$anchor`, `$id`, `$ref` ...                   | ... | ✔            |
+| [ReferencingNetworkHandler](#referencingnetworkhandler) | @ui-schema/ui-schema | keywords `$ref`                                                  | ... | ✔            |
 
 ## Widget / Extra Plugins
 
@@ -31,17 +31,19 @@ Widget plugins which implement further custom logics, mostly not included by def
 
 ## Validation Plugins
 
-| Plugin               | Package              | Validity Fn.         | Handles              | Added Props |
-| :---                 | :---                 | :---                 | :---                 | :---        |
-| minMaxValidator      | @ui-schema/ui-schema | validateMinMax       | min/max validity     | `valid`, `errors` |
-| typeValidator        | @ui-schema/ui-schema | validateType         | keyword `type`       | `valid`, `errors` |
-| valueValidatorConst  | @ui-schema/ui-schema | validateConst        | keywords `type`, `const` | `valid`, `errors` |
-| valueValidatorEnum   | @ui-schema/ui-schema | validateEnum         | keywords `type`, `enum` | `valid`, `errors` |
-| [multipleOfValidator](#multipleofvalidator)  | @ui-schema/ui-schema | validateMultipleOf   | keywords `type:number,integer`, `multipleOf` | `valid`, `errors` |
-| [patternValidator](#patternvalidator)     | @ui-schema/ui-schema | validatePattern      | keywords `type:string`, `pattern` | `valid`, `errors` |
-| arrayValidator       | @ui-schema/ui-schema |                      | `type:array`          | `valid`, `errors` |
-| objectValidator      | @ui-schema/ui-schema |                      | `type:object`, `additionalProperties`, `propertyNames` | `valid`, `errors` |
-| requiredValidator    | @ui-schema/ui-schema | checkValueExists     | keywords `type:object`, `required` | `valid`, `errors`, `required` |
+| Plugin                                      | Package              | Validity Fn.       | Handles                                                         | Added Props                   |
+|:--------------------------------------------|:---------------------|:-------------------|:----------------------------------------------------------------|:------------------------------|
+| minMaxValidator                             | @ui-schema/ui-schema | validateMinMax     | min/max validity                                                | `valid`, `errors`             |
+| typeValidator                               | @ui-schema/ui-schema | validateType       | keyword `type`                                                  | `valid`, `errors`             |
+| valueValidatorConst                         | @ui-schema/ui-schema | validateConst      | keywords `const`                                                | `valid`, `errors`             |
+| valueValidatorEnum                          | @ui-schema/ui-schema | validateEnum       | keywords `enum`                                                 | `valid`, `errors`             |
+| [multipleOfValidator](#multipleofvalidator) | @ui-schema/ui-schema | validateMultipleOf | keywords `type:number,integer`, `multipleOf`                    | `valid`, `errors`             |
+| [patternValidator](#patternvalidator)       | @ui-schema/ui-schema | validatePattern    | keywords `type:string`, `pattern`                               | `valid`, `errors`             |
+| oneOfValidator                              | @ui-schema/ui-schema | validateOneOf      | keywords `type:*`, `oneOf`                                      | `valid`, `errors`             |
+| arrayValidator                              | @ui-schema/ui-schema |                    | `type:array`                                                    | `valid`, `errors`             |
+| objectValidator                             | @ui-schema/ui-schema |                    | `type:object`, keywords `additionalProperties`, `propertyNames` | `valid`, `errors`             |
+| requiredValidator                           | @ui-schema/ui-schema | checkValueExists   | keywords `type:object`, `required`                              | `valid`, `errors`, `required` |
+| emailValidator                              | @ui-schema/ui-schema |                    | keywords `type:object`, `required`                              | `valid`, `errors`             |
 
 - sub-schema validation/array validation is done by `validateSchema`
 

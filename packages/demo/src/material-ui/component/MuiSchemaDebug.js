@@ -19,7 +19,7 @@ const MuiJsonEditor = p => {
             {...p}
             theme={{
                 ...themeMaterial,
-                type: theme.palette.type,
+                type: theme.palette.mode,
                 base00: theme.palette.background.paper,
                 base0D: theme.palette.text.secondary,
                 base0B: theme.palette.text.primary,

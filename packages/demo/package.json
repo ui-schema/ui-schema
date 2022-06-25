@@ -24,7 +24,6 @@
         "@types/react": "^17.0",
         "@types/react-loadable": "^5.5.4",
         "@types/react-router-dom": "^5.1.7",
-        "codemirror": "^5.52.0",
         "bootstrap": "^4.4.1",
         "clsx": "^1.1.0",
         "immutable": "^4.0.0",

@@ -5,7 +5,7 @@ const headingBody = 'IBM Plex Sans, Source Code Pro, Calibri, Candara, Segoe, Se
 
 export type PartialTheme = { [K in keyof Theme]: Partial<Theme[K]> }
 
-const universal: Pick<PartialTheme, 'typography' | 'shape' | 'breakpoints'> = {
+const universal: Pick<PartialTheme, 'typography' | 'shape' | 'breakpoints' | 'components'> = {
     breakpoints: {
         values: {
             xs: 0,
@@ -44,13 +44,13 @@ const universal: Pick<PartialTheme, 'typography' | 'shape' | 'breakpoints'> = {
         },
         body1: {
             fontFamily: headingBody,
-            fontSize: '1rem',
-            letterSpacing: '0.001235em',
+            fontSize: '0.93125rem',
+            letterSpacing: '0.0067235em',
         },
         body2: {
             fontFamily: headingBody,
             fontSize: '0.875rem',
-            letterSpacing: '0.00215em',
+            letterSpacing: '0.004215em',
         },
         subtitle1: {
             fontFamily: headingFont,
@@ -66,6 +66,13 @@ const universal: Pick<PartialTheme, 'typography' | 'shape' | 'breakpoints'> = {
     },
     shape: {
         borderRadius: 0,
+    },
+    components: {
+        MuiOutlinedInput: {
+            styleOverrides: {
+                root: {borderRadius: 4},
+            },
+        },
     },
     /*components: {
         MuiCssBaseline: {
@@ -109,7 +116,7 @@ const themeDark = createTheme({
     },
     ...universal,
     components: {
-        // ...universal.components,
+        ...universal.components,
         MuiPaper: {
             styleOverrides: {root: {backgroundImage: 'unset'}},
         },
@@ -145,7 +152,7 @@ const themeLight = createTheme({
     },
     ...universal,
     components: {
-        // ...universal.components,
+        ...universal.components,
         MuiLink: {
             styleOverrides: {underlineAlways: {textDecoration: 'none'}},
         },
