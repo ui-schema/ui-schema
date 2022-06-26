@@ -1,6 +1,6 @@
 import React from 'react'
 import { beautifyKey, extractValue, memo, StoreSchemaType, Trans, tt, useUIMeta, WidgetProps, WithValue } from '@ui-schema/ui-schema'
-import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
+import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'

@@ -1,5 +1,6 @@
 import { demoAccordions } from './docs/widgets/AccordionsDemo'
 import { demoCode } from './docs/material-code/material-codeDemo'
+import { demoColorful } from './docs/material-colorful/material-colorfulDemo'
 import { demoColor } from './docs/widgets/ColorDemo'
 import { demoDateTimePickers } from './docs/widgets/DateTimePickersDemo'
 import { demoGenericList } from './docs/widgets/GenericListDemo'
@@ -122,9 +123,7 @@ export const routesFurtherDesignSystem = [
                 hidden: true,
             }),
             createDoc('widgets/Color', 'Color Picker', {
-                demos: {
-                    schema: demoColor,
-                },
+                hidden: true,
             }),
             createDoc('widgets/DateTimePickers', 'Date + Time Pickers', {
                 hidden: true,
@@ -374,6 +373,32 @@ export const routesFurtherDesignSystem = [
             createDoc('material-code/material-code', 'Overview', {
                 demos: {
                     schema: demoCode,
+                },
+            }),
+        ],
+    }, {
+        nav: {
+            label: 'Material Color',
+            initialOpen: false,
+            to: '/docs/material-color',
+        },
+        routes: [
+            createDoc('material-color/material-color', 'Overview', {
+                demos: {
+                    schema: demoColor,
+                },
+            }),
+        ],
+    }, {
+        nav: {
+            label: 'Material Colorful',
+            initialOpen: false,
+            to: '/docs/material-colorful',
+        },
+        routes: [
+            createDoc('material-colorful/material-colorful', 'Overview', {
+                demos: {
+                    schema: demoColorful,
                 },
             }),
         ],

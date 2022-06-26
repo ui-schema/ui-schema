@@ -21,15 +21,16 @@ export const injectBlock = <P extends WithDndBlock & {
         const {blocks} = useBlocks()
         const {store} = useUIStore()
         const val = store?.extractValues(p.storeKeys)
+        const storeKeys = p.storeKeys
         const block = React.useMemo(() => {
             if (!val || !val.value) return
             if (!OrderedMap.isOrderedMap(val.value) && !Map.isMap(val.value)) {
-                console.log(p.storeKeys.toJS(), val)
-                throw new Error('Detected non-object in injectBlock, atm. only objects are supported as list elements at storeKeys:' + p.storeKeys.toArray().join('.'))
+                console.log(storeKeys.toJS(), val)
+                throw new Error('Detected non-object in injectBlock, atm. only objects are supported as list elements at storeKeys:' + storeKeys.toArray().join('.'))
             }
             //console.log('matchBlock',p.storeKeys.toJS())
             return matchBlock(blocks, val.value as any)
-        }, [val, blocks])
+        }, [val, blocks, storeKeys])
         // @ts-ignore
         return store ? <Component
             {...p} block={block?.block} blockId={block?.id}

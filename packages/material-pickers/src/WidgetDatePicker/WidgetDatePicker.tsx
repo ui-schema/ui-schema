@@ -39,10 +39,9 @@ export const WidgetDatePicker: React.FC<WidgetProps & WithScalarValue & WidgetDa
     )
 
     const openTo = schema.getIn(['date', 'openTo']) as CalendarPickerView
-    let orientation = schema.getIn(['date', 'orientation']) as 'landscape' | 'portrait' | undefined
-    if (!orientation && !views) {
-        console.error('WidgetDatePicker invalid, `orientation`=`landscape` requires `views`')
-        orientation = undefined
+    const orientation = schema.getIn(['date', 'orientation']) as 'landscape' | 'portrait' | undefined
+    if (!views) {
+        console.error('WidgetDatePicker invalid, requires `views` at: ', storeKeys.toJS())
     }
 
     return <Picker

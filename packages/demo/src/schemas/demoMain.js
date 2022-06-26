@@ -264,10 +264,10 @@ const schemaDemoMain = {
             view: {
                 sizeMd: 3,
             },
-            enum: [
-                'small',
-                'middle',
-                'big',
+            oneOf: [
+                {const: 'small'},
+                {const: 'middle'},
+                {const: 'big', tt: 'upper'},
             ],
         },
         services: {
@@ -300,6 +300,59 @@ const schemaDemoMain = {
                 'teen',
                 'adult',
                 '50plus',
+            ],
+        },
+        age_oneof: {
+            type: 'string',
+            widget: 'Select',
+            //default: "adult",
+            view: {
+                denseOptions: true,
+                sizeMd: 3,
+            },
+            oneOf: [
+                {
+                    const: 'child',
+                    readOnly: true,
+                    t: {
+                        de: {
+                            title: 'Kind',
+                        },
+                        en: {
+                            title: 'Child',
+                        },
+                    },
+                }, {
+                    const: 'teen',
+                    t: {
+                        de: {
+                            title: 'Jugendlicher',
+                        },
+                        en: {
+                            title: 'Teenager',
+                        },
+                    },
+                }, {
+                    const: 'adult',
+                    t: {
+                        de: {
+                            title: 'Erwachsener',
+                        },
+                        en: {
+                            title: 'Adult',
+                        },
+                    },
+                }, {
+                    const: '50plus',
+                    t: {
+                        de: {
+                            title: 'Senior',
+                        },
+                        en: {
+                            title: 'Senior',
+                        },
+                    },
+                },
             ],
         },
         ages: {

@@ -1,12 +1,13 @@
 import React from 'react'
-import { beautifyKey, extractValue, memo, sortScalarList, StoreSchemaType, Trans, tt, WidgetProps, WithValue } from '@ui-schema/ui-schema'
-import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
-import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
+import { extractValue, memo, sortScalarList, StoreSchemaType, WidgetProps, WithValue } from '@ui-schema/ui-schema'
+import { Trans, TransTitle } from '@ui-schema/ui-schema/Translate'
+import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
-import { List, Map, OrderedMap } from 'immutable'
+import { List } from 'immutable'
+import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 
 export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue> = (
     {
@@ -15,10 +16,7 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
         valid,
     }
 ) => {
-    if (!schema) return null
-
-    const oneOfVal = schema.getIn(['items', 'oneOf'])
-    if (!oneOfVal) return null
+    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as StoreSchemaType)
 
     const currentValue = (typeof value !== 'undefined' ? value : (List(schema.get('default') as string[]) || List())) as List<string>
 
@@ -28,25 +26,25 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
         </Typography>
 
         <Box mt={1} style={{display: 'flex', flexWrap: 'wrap'}}>
-            {oneOfVal ? (oneOfVal as List<OrderedMap<string, any>>).map((oneOfSchema) =>
+            {valueSchemas?.map(({value: itemValue, text, fallback, context, schema: itemSchema}) =>
                 <Chip
-                    key={oneOfSchema.get('const')}
+                    key={itemValue}
                     label={<Trans
-                        schema={oneOfSchema.get('t') as unknown as StoreSchemaType}
-                        text={oneOfSchema.get('title') as string || oneOfSchema.get('const') as string}
-                        context={Map({'relative': List(['title'])})}
-                        fallback={oneOfSchema.get('title') || beautifyKey(oneOfSchema.get('const') as string | number, oneOfSchema.get('tt') as tt)}
+                        schema={itemSchema?.get('t') as unknown as StoreSchemaType}
+                        text={text}
+                        context={context}
+                        fallback={fallback}
                     />}
                     style={{marginRight: 4, marginBottom: 4}}
                     size={schema.getIn(['view', 'size']) === 'medium' ? 'medium' : 'small'}
                     variant={
-                        currentValue?.indexOf(oneOfSchema.get('const') as string) === -1 ? 'outlined' : 'filled'
+                        currentValue?.indexOf(itemValue as string) === -1 ? 'outlined' : 'filled'
                     }
-                    disabled={schema.get('readOnly') as boolean || oneOfSchema.get('readOnly') as boolean}
+                    disabled={schema.get('readOnly') as boolean || itemSchema?.get('readOnly') as boolean}
                     color={'primary'}
                     onClick={() => {
                         !schema.get('readOnly') &&
-
+                        !itemSchema?.get('readOnly') &&
                         onChange({
                             storeKeys,
                             scopes: ['value'],
@@ -54,14 +52,14 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
                             schema,
                             required,
                             updater: ({value = List()}: { value?: List<string> }) => ({
-                                value: value.indexOf(oneOfSchema.get('const') as string) === -1 ?
-                                    sortScalarList(value.push(oneOfSchema.get('const') as string)) :
-                                    sortScalarList(value.splice(value.indexOf(oneOfSchema.get('const') as string), 1)),
+                                value: value.indexOf(itemValue as string) === -1 ?
+                                    sortScalarList(value.push(itemValue as string)) :
+                                    sortScalarList(value.splice(value.indexOf(itemValue as string), 1)),
                             }),
                         })
                     }}
                 />
-            ).valueSeq() : null}
+            ).valueSeq()}
         </Box>
 
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>

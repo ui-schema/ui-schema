@@ -11,7 +11,6 @@ const include = [
     path.resolve(__dirname, 'packages', 'kit-dnd/src'),
     path.resolve(__dirname, 'packages', 'material-color/src'),
     path.resolve(__dirname, 'packages', 'material-dnd/src'),
-    path.resolve(__dirname, 'packages', 'material-editable/src'),
     path.resolve(__dirname, 'packages', 'material-editorjs/src'),
     path.resolve(__dirname, 'packages', 'material-pickers/src'),
     // path.resolve(__dirname, 'packages', 'material-richtext/src'),

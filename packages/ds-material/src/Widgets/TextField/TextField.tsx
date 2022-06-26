@@ -5,7 +5,7 @@ import { InputProps } from '@mui/material/Input'
 import { useUID } from 'react-uid'
 import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
 import { mapSchema } from '@ui-schema/ui-schema/Utils/schemaToNative'
-import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
+import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
 import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/schemaTypeIs'
@@ -74,6 +74,7 @@ export const StringRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetP
 ): React.ReactElement => {
     const uid = useUID()
     // todo: this could break law-of-hooks
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const inputRef = customInputRef || React.useRef()
 
     const format = schema.get('format')
@@ -189,7 +190,7 @@ export const NumberRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetP
             }
         }
         return inputPropsProps
-    }, [inputPropsProps, schemaType])
+    }, [inputPropsProps, steps, schemaType])
 
     return <StringRenderer
         {...props}

@@ -46,7 +46,7 @@ const DependentRenderer = ({dependencies, dependentSchemas, dependentRequired, .
             }
         });
         return parsedSchema
-    }, [currentValues, schema])
+    }, [currentValues, schema, dependencies, dependentSchemas, dependentRequired])
 
     return <NextPluginRendererMemo {...props} schema={parsedSchema}/>;
 };

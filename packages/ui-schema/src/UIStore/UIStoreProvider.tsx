@@ -16,6 +16,7 @@ const UIConfigContextObj = React.createContext<{}>({})
 export const UIConfigProvider: React.ComponentType<React.PropsWithChildren<{}>> = (
     {children, ...props}
 ) => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const value = React.useMemo(() => ({...props}), [...Object.values(props)])
     return <UIConfigContextObj.Provider value={value}>
         {children}

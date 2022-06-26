@@ -270,6 +270,14 @@
         <changefreq>weekly</changefreq>
     </url>
     <url>
+        <loc>https://ui-schema.bemit.codes/docs/material-color/material-color</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/material-colorful/material-colorful</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
         <loc>https://ui-schema.bemit.codes/docs/material-dnd/overview</loc>
         <changefreq>weekly</changefreq>
     </url>

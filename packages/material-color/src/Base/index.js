@@ -1,5 +1,0 @@
-export * from './ColorBase'
-export * from './ColorDialogBase'
-export * from './ColorStaticBase'
-export * from './restrictColors'
-export * from './transformers'

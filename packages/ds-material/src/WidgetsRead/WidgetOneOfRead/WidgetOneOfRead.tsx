@@ -1,7 +1,7 @@
 import React from 'react'
 import { Map, List, OrderedMap } from 'immutable'
 import { Trans, beautifyKey, extractValue, memo, WidgetProps, StoreKeys, tt, StoreSchemaType, useUIMeta } from '@ui-schema/ui-schema'
-import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
+import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 import Box from '@mui/material/Box'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
@@ -54,8 +54,8 @@ export const WidgetOneOfRead: React.ComponentType<WidgetProps<MuiWidgetBinding>>
     const oneOfVal = schema.getIn(['items', 'oneOf'])
     const InfoRenderer = widgets?.InfoRenderer
     const hasInfo = Boolean(InfoRenderer && schema?.get('info')) as boolean | undefined
-    if (!oneOfVal) return null
     const {readDense} = useUIMeta<UIMetaReadContextType>()
+    if (!oneOfVal) return null
     return <Box>
         <TitleBoxRead
             hideTitle={hideTitle}

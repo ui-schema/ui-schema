@@ -34,7 +34,6 @@
         "popper.js": "^1.16.1",
         "prop-types": "^15.7.2",
         "react": "^17.0",
-        "react-color": "^2.0.0",
         "react-dnd": "^14.0.0",
         "rdndmb-html5-to-touch": "^7.0.0-alpha.1",
         "react-dnd-multi-backend": "^7.0.0-alpha.4",

@@ -49,7 +49,7 @@ export const DndBlocksRendererBase = (
             }
             return matchBlock(blocks, val)
         }).toArray()
-    }, [blocks, value])
+    }, [blocks, value, storeKeys])
 
     return <>
         {matched?.map((info, j: number) => {

@@ -16,6 +16,7 @@ const SchemaRootContext = React.createContext({
 export const SchemaRootProviderBase = ({id, schema, children, ...further} = {}) => {
     const context = React.useMemo(() => ({
         id, schema, ...further,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }), [id, schema, ...Object.values(further)])
 
     return <SchemaRootContext.Provider value={context}>

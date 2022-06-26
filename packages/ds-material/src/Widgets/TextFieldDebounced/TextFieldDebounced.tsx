@@ -5,7 +5,7 @@ import { useUID } from 'react-uid'
 import InputAdornment from '@mui/material/InputAdornment'
 import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
 import { mapSchema } from '@ui-schema/ui-schema/Utils/schemaToNative'
-import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
+import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/schemaTypeIs'
 import { NumberRendererProps, StringRendererProps, TextRendererProps } from '@ui-schema/ds-material/Widgets/TextField'
@@ -36,6 +36,7 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
 ): React.ReactElement => {
     const uid = useUID()
     // todo: this could break law-of-hooks
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const inputRef = customInputRef || React.useRef()
 
     const setter = React.useCallback((newVal: string | number | undefined) => {
@@ -162,7 +163,7 @@ export const NumberRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
             }
         }
         return inputPropsProps
-    }, [inputPropsProps, schemaType])
+    }, [inputPropsProps, steps, schemaType])
 
     return <StringRendererDebounced
         {...props}
