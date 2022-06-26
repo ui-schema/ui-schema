@@ -38,12 +38,6 @@
             "@ui-schema/kit-dnd/*": [
                 "kit-dnd/src/*"
             ],
-            "@ui-schema/material-color": [
-                "material-color/src"
-            ],
-            "@ui-schema/material-color/*": [
-                "material-color/src/*"
-            ],
             "@ui-schema/material-pickers": [
                 "material-pickers/src"
             ],

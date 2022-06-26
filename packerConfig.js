@@ -226,12 +226,6 @@ packer({
             root: path.resolve(__dirname, 'packages', 'material-editable'),
             entry: path.resolve(__dirname, 'packages', 'material-editable/src/'),
         },
-        materialColor: {
-            name: '@ui-schema/material-color',
-            root: path.resolve(__dirname, 'packages', 'material-color'),
-            entry: path.resolve(__dirname, 'packages', 'material-color/src/'),
-            babelTargets: legacyBabelTargets,
-        },
         materialEditorJs: {
             name: '@ui-schema/material-editorjs',
             root: path.resolve(__dirname, 'packages', 'material-editorjs'),

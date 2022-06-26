@@ -12,11 +12,34 @@ import {
     ColorCircleStatic, ColorTwitterStatic,
     ColorSketchStatic, ColorSketchDialog,
 } from '@ui-schema/material-color';
+import {memo} from '@ui-schema/ui-schema/Utils/memo';
+import {extractValue} from '@ui-schema/ui-schema/UIStore';
 import {LoadingCircular} from '@control-ui/kit/Loading/LoadingCircular';
 import {NumberRendererCell, StringRendererCell, TextRendererCell} from '@ui-schema/ds-material/Widgets/TextFieldCell';
 import {Table} from '@ui-schema/ds-material/Widgets/Table';
 import {DragDropBlockSelector} from '@ui-schema/material-dnd/DragDropBlockSelector';
 import {SelectChips} from '@ui-schema/ds-material/Widgets/SelectChips';
+import {WidgetColorful} from '@ui-schema/material-colorful'
+import {
+    HexColorPicker,
+    HslaColorPicker,
+    RgbaColorPicker,
+    RgbaStringColorPicker,
+} from 'react-colorful'
+
+const ColorfulHex = (props) => <WidgetColorful ColorfulPicker={HexColorPicker} {...props}/>
+const ColorfulHslaBase = (props) => <WidgetColorful ColorfulPicker={HslaColorPicker} {...props}/>
+const ColorfulHsla = extractValue(memo(ColorfulHslaBase))
+const ColorfulRgbaBase =
+    (props) =>
+        <WidgetColorful
+            // todo: find a way to safely type the inner `ColorfulPicker`, as this is not incorrect per-se,
+            //       as the widget handles string vs. object on change / rendering
+            // @ts-ignore
+            ColorfulPicker={props.schema.get('type') === 'string' ? RgbaStringColorPicker : RgbaColorPicker}
+            {...props}
+        />
+const ColorfulRgba = extractValue(memo(ColorfulRgbaBase))
 
 const customWidgets = {...widgets};
 
@@ -70,6 +93,9 @@ customWidgets.custom = {
     ColorTwitterStatic,
     ColorSketchStatic,
     ColorSketchDialog,
+    Colorful: ColorfulHex,
+    ColorfulHsla: ColorfulHsla,
+    ColorfulRgba: ColorfulRgba,
     Code: Loadable({
         loader: () => import('../CustomCodeWidgets').then(r => r.CustomWidgetCode),
         loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
