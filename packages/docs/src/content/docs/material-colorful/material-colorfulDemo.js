@@ -9,6 +9,7 @@ const demoColorful = [
                 color: {
                     type: 'string',
                     widget: 'Colorful',
+                    default: '#05aeca',
                     view: {
                         sizeXs: 12,
                         sizeMd: 6,

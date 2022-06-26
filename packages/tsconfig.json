@@ -44,12 +44,6 @@
             "@ui-schema/material-pickers/*": [
                 "material-pickers/src/*"
             ],
-            "@ui-schema/material-editable": [
-                "material-editable/src"
-            ],
-            "@ui-schema/material-editable/*": [
-                "material-editable/src/*"
-            ],
             "@ui-schema/material-slate": [
                 "material-slate/src"
             ],

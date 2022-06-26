@@ -1,4 +1,4 @@
-# Color Picker
+# Color Picker: react-color
 
 [![Component Examples](https://img.shields.io/badge/Examples-green?labelColor=1d3d39&color=1a6754&logoColor=ffffff&style=flat-square&logo=plex)](#demo-ui-generator)
 

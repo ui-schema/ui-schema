@@ -37,10 +37,6 @@ cd material-dnd
 cp README.md build/ && cp ../../LICENSE build/
 cd ../
 
-cd material-editable
-cp README.md build/ && cp ../../LICENSE build/
-cd ../
-
 cd material-editorjs
 cp README.md build/ && cp ../../LICENSE build/
 cd ../
