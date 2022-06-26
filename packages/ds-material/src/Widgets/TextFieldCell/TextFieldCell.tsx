@@ -44,6 +44,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBindin
 ) => {
     const uid = useUID()
     // todo: this could break law-of-hooks
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const inputRef = customInputRef || React.useRef()
 
     const format = schema.get('format') as string | undefined

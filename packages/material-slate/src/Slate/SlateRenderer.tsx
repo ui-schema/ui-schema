@@ -61,6 +61,7 @@ let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithVa
         onlyInline = false,
         plugins,
         renderLeaf,
+        withPlugins: withPluginsProp,
     }
 ) => {
     const enableOnly = schema.getIn(['editor', 'enableOnly']) as editorEnableOnly
@@ -71,7 +72,7 @@ let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithVa
                     {children}
                 </ElementMapper>,
         ]
-    }, [enableOnly])
+    }, [ElementMapper, enableOnly])
 
     const valueRef = React.useRef(value)
     const handledInitial = React.useRef(false)
@@ -116,10 +117,11 @@ let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithVa
         }
     }, [valueIsSameOrInitialised, handledInitial, valueRef, schema, required, onChange, onlyInline, storeKeys])
 
+    const withPluginFn = withPluginsProp || withPlugins
     // @ts-ignore
     const editor: ReactEditor = React.useMemo(
-        () => pipe(createEditor() as ReactEditor, withReact, withHistory, ...withPlugins({enableOnly, onlyInline})),
-        [withPlugins, enableOnly, onlyInline]
+        () => pipe(createEditor() as ReactEditor, withReact, withHistory, ...withPluginFn({enableOnly, onlyInline})),
+        [withPluginFn, enableOnly, onlyInline]
     )
 
     const onChangeHandler = React.useCallback((editorValue) => {

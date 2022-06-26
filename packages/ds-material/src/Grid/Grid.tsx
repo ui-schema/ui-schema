@@ -64,21 +64,21 @@ export const GroupRenderer: React.ComponentType<React.PropsWithChildren<GroupRen
         </Grid>
 
 export const SchemaGridHandler: React.ComponentType<PluginProps> = (props) => {
-    const {schema, noGrid, isVirtual, currentPluginIndex} = props
+    const {schema, noGrid: noGridProp, isVirtual, currentPluginIndex} = props
     const next = currentPluginIndex + 1
     const Plugin = getNextPlugin(next, props.widgets)
-
-    if (noGrid || isVirtual || schema.getIn(['view', 'noGrid'])) {
-        return <Plugin {...props} currentPluginIndex={next}/>
-    }
 
     const align = schema.getIn(['view', 'align'])
     const style: React.CSSProperties = React.useMemo(() => ({
         textAlign: align as React.CSSProperties['textAlign'],
     }), [align])
 
-    return <SchemaGridItem schema={schema} style={style}>
-        <Plugin {...props} currentPluginIndex={next}/>
-    </SchemaGridItem>
+    const noGrid = (noGridProp || isVirtual || schema.getIn(['view', 'noGrid']))
+    const nestedNext = <Plugin {...props} currentPluginIndex={next}/>
+
+    return noGrid ? nestedNext :
+        <SchemaGridItem schema={schema} style={style}>
+            {nestedNext}
+        </SchemaGridItem>
 }
 

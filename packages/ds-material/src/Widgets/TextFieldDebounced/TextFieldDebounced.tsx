@@ -36,6 +36,7 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
 ): React.ReactElement => {
     const uid = useUID()
     // todo: this could break law-of-hooks
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const inputRef = customInputRef || React.useRef()
 
     const setter = React.useCallback((newVal: string | number | undefined) => {
@@ -162,7 +163,7 @@ export const NumberRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
             }
         }
         return inputPropsProps
-    }, [inputPropsProps, schemaType])
+    }, [inputPropsProps, steps, schemaType])
 
     return <StringRendererDebounced
         {...props}

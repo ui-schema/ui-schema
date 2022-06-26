@@ -3,7 +3,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import {NumberRenderer, StringRenderer, TextRenderer} from '@ui-schema/ds-material/Widgets/TextField';
 import {Trans} from '@ui-schema/ui-schema';
 
-const computeIcon = (schema, baseInputProps) => {
+const useComputeIcon = (schema, baseInputProps) => {
     const icon = schema.getIn(['view', 'icon']);
     let iconEnd = schema.getIn(['view', 'iconEnd']);
 
@@ -22,11 +22,11 @@ const computeIcon = (schema, baseInputProps) => {
         }
 
         return inputProps;
-    }, [icon, baseInputProps]);
+    }, [icon, iconEnd, baseInputProps]);
 };
 
 const StringIconRenderer = ({schema, ...props}) => {
-    const InputProps = computeIcon(schema, props.InputProps);
+    const InputProps = useComputeIcon(schema, props.InputProps);
     return <StringRenderer
         {...props}
         schema={schema}
@@ -35,7 +35,7 @@ const StringIconRenderer = ({schema, ...props}) => {
 };
 
 const TextIconRenderer = ({schema, ...props}) => {
-    const InputProps = computeIcon(schema, props.InputProps);
+    const InputProps = useComputeIcon(schema, props.InputProps);
     return <TextRenderer
         {...props}
         schema={schema}
@@ -44,7 +44,7 @@ const TextIconRenderer = ({schema, ...props}) => {
 };
 
 const NumberIconRenderer = ({schema, ...props}) => {
-    const InputProps = computeIcon(schema, props.InputProps);
+    const InputProps = useComputeIcon(schema, props.InputProps);
     return <NumberRenderer
         {...props}
         schema={schema}

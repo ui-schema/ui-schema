@@ -15,6 +15,7 @@ export interface UIMetaContext<W = WidgetsBindingFactory> {
 export function UIMetaProvider<C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(
     {children, ...props}: React.PropsWithChildren<UIMetaContext<W> & C>,
 ): React.ReactElement {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const ctx = React.useMemo(() => ({...props}), [...Object.values(props)])
     return <UIMetaContextObj.Provider value={ctx}>
         {children}

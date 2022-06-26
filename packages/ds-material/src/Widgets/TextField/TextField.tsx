@@ -74,6 +74,7 @@ export const StringRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetP
 ): React.ReactElement => {
     const uid = useUID()
     // todo: this could break law-of-hooks
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const inputRef = customInputRef || React.useRef()
 
     const format = schema.get('format')
@@ -189,7 +190,7 @@ export const NumberRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetP
             }
         }
         return inputPropsProps
-    }, [inputPropsProps, schemaType])
+    }, [inputPropsProps, steps, schemaType])
 
     return <StringRenderer
         {...props}
