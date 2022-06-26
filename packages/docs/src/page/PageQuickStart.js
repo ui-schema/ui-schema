@@ -74,7 +74,7 @@ const PageQuickStart = () => {
             )
             return h
         })
-    }, [render]);
+    }, [render, setHeadlines]);
 
     return <>
         <HeadMeta
