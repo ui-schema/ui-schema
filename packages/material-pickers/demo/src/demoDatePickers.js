@@ -36,6 +36,7 @@ const schemaDatePickers = createOrderedMap({
                 'toolbar': true,
                 'format': 'yyyy-MM-ddTZZ',
                 'formatData': 'x',
+                views: ['year', 'month', 'day', 'hours', 'minutes', 'seconds'],
             },
         },
         time: {
@@ -76,6 +77,7 @@ const schemaDatePickers = createOrderedMap({
             default: '10:11',
             date: {
                 clearable: true,
+                views: ['hours', 'minutes'],
             },
             view: {
                 sizeXs: 12,
@@ -123,6 +125,7 @@ const schemaDatePickers = createOrderedMap({
                 clearable: true,
                 format: 'dd.MM.yyyy HH:mm',
                 formatData: 'yyyy/dd/MM HH:mm',
+                views: ['year', 'month', 'day', 'hours', 'minutes'],
             },
             view: {
                 sizeXs: 12,
@@ -151,6 +154,7 @@ const schemaDatePickers = createOrderedMap({
             default: '2017-10-30 12:11',
             date: {
                 clearable: true,
+                views: ['year', 'month', 'day', 'hours', 'minutes'],
             },
             view: {
                 sizeXs: 12,
@@ -242,6 +246,7 @@ const schemaDatePickers = createOrderedMap({
                 orientation: 'landscape',
                 autoOk: true,
                 toolbar: true,
+                views: ['year', 'month', 'day'],
             },
             view: {
                 sizeXs: 12,
