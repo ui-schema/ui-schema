@@ -198,7 +198,7 @@ const ReadableWritableEditor = () => {
         ...widgets,
         types: edit ? widgets.types : readWidgets.types,
         custom: edit ? widgets.custom : readWidgets.custom,
-    }), [widgets, edit, readWidgets])
+    }), [widgets, edit])
 
     return <React.Fragment>
         <Box mb={1}>
