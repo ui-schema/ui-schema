@@ -1,5 +1,4 @@
 import React from 'react'
-import { Map, List } from 'immutable'
 import { useUID } from 'react-uid'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
@@ -7,12 +6,11 @@ import MenuItem from '@mui/material/MenuItem'
 import MuiSelect, { SelectProps as MuiSelectProps } from '@mui/material/Select'
 import { WithScalarValue } from '@ui-schema/ui-schema/UIStore'
 import { TransTitle, Trans } from '@ui-schema/ui-schema/Translate'
-import { beautifyKey, tt } from '@ui-schema/ui-schema/Utils/beautify'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { getTranslatableEnum } from '@ui-schema/ui-schema/Translate'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
+import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 
 export interface SelectProps {
     variant?: MuiSelectProps['variant']
@@ -26,13 +24,11 @@ export const Select: React.FC<WidgetProps<MuiWidgetBinding> & WithScalarValue & 
     }
 ) => {
     const uid = useUID()
-    if (!schema) return null
 
-    const enum_val = schema.get('enum')
-    if (!enum_val) return null
+    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema)
 
-    const currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '')
-
+    const currentValue = typeof value !== 'undefined' ? value : (schema?.get('default') || '')
+    const denseOptions = schema.getIn(['view', 'denseOptions']) as boolean
     return <FormControl
         required={required} error={!valid && showValidity} fullWidth
         size={schema.getIn(['view', 'dense']) ? 'small' : undefined}
@@ -48,10 +44,11 @@ export const Select: React.FC<WidgetProps<MuiWidgetBinding> & WithScalarValue & 
             // note: for variant `outlined` the label needs to be also here, as we don't know e.g. theme provider overrides, it is applied all the time
             label={<TransTitle schema={schema} storeKeys={storeKeys}/>}
             renderValue={selected => {
-                const Translated = t(selected as string, Map({relative: List(['enum', selected as string | number])}), schema.get('t') as StoreSchemaType)
+                const valueSchema = valueSchemas?.find(oof => oof.value === selected)
+                const Translated = t(selected, valueSchema?.context, valueSchema?.schema?.get('t') as StoreSchemaType)
                 return typeof Translated === 'string' || typeof Translated === 'number' ?
                     Translated :
-                    beautifyKey(selected as string, schema.get('ttEnum') as tt) + ''
+                    valueSchema?.fallback
             }}
             disabled={schema.get('readOnly') as boolean}
             onChange={(e) =>
@@ -68,20 +65,21 @@ export const Select: React.FC<WidgetProps<MuiWidgetBinding> & WithScalarValue & 
                 })
             }
         >
-            {enum_val ? (enum_val as List<string | number>).map((enum_name, i) =>
+            {valueSchemas?.map(({value, text, fallback, context, schema}, i) =>
                 <MenuItem
-                    key={enum_name + '-' + i}
-                    value={enum_name as string | number}
-                    dense={schema.getIn(['view', 'denseOptions']) as boolean}
+                    key={value + '-' + i}
+                    value={value as string | number}
+                    dense={denseOptions}
+                    disabled={schema?.get('readOnly') as boolean}
                 >
                     <Trans
-                        schema={schema.get('t') as StoreSchemaType}
-                        text={storeKeys.insert(0, 'widget').concat(List(['enum', getTranslatableEnum(enum_name)])).join('.')}
-                        context={Map({'relative': List(['enum', getTranslatableEnum(enum_name)])})}
-                        fallback={beautifyKey(getTranslatableEnum(enum_name), schema.get('ttEnum') as tt) + ''}
+                        schema={schema?.get('t') as StoreSchemaType}
+                        text={text}
+                        context={context}
+                        fallback={fallback}
                     />
                 </MenuItem>,
-            ).valueSeq() : null}
+            ).valueSeq()}
         </MuiSelect>
 
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>

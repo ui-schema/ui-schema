@@ -1,20 +1,20 @@
 import React from 'react';
-import {Map, List} from 'immutable';
-import {
-    FormControl, FormLabel, FormControlLabel, RadioGroup, Radio,
-} from '@mui/material';
-import {TransTitle, Trans, beautifyKey} from '@ui-schema/ui-schema';
-import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText';
-import {getTranslatableEnum} from '@ui-schema/ui-schema/Translate';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import RadioGroup from '@mui/material/RadioGroup';
+import Radio from '@mui/material/Radio';
+import {TransTitle, Trans} from '@ui-schema/ui-schema/Translate';
+import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText';
+import {useOptionsFromSchema} from '@ui-schema/ds-material/Utils'
 
 const OptionsRadio = ({
                           schema, value, onChange, storeKeys, showValidity, valid, required, errors,
                           row, widgets,
                       }) => {
-    const enumVal = schema.get('enum');
-    if(!enumVal) return null;
+    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema)
 
-    const isActive = typeof value !== 'undefined' ? value : (schema.get('default') || '');
+    const activeValue = typeof value !== 'undefined' ? value : (schema.get('default') || '');
 
     const InfoRenderer = widgets?.InfoRenderer
     return <FormControl
@@ -33,32 +33,32 @@ const OptionsRadio = ({
                 undefined}
         </FormLabel>
         <RadioGroup row={row} disabled={schema.get('readOnly')}>
-            {enumVal ? enumVal.map((enum_name) => {
-                return <FormControlLabel
-                    key={enum_name}
+            {valueSchemas?.map(({value, text, fallback, context, schema}) =>
+                <FormControlLabel
+                    key={value}
                     control={<Radio
-                        value={enum_name}
-                        checked={enum_name === isActive}
+                        value={value}
+                        checked={value === activeValue}
                         onChange={() =>
-                            !schema.get('readOnly') &&
+                            !schema?.get('readOnly') &&
                             onChange({
                                 storeKeys,
                                 scopes: ['value'],
                                 type: 'set',
                                 schema,
                                 required,
-                                data: {value: enum_name},
+                                data: {value: value},
                             })
                         }
                     />}
                     label={<Trans
-                        schema={schema.get('t')}
-                        text={storeKeys.insert(0, 'widget').concat(List(['enum', getTranslatableEnum(enum_name)])).join('.')}
-                        context={Map({'relative': List(['enum', getTranslatableEnum(enum_name)])})}
-                        fallback={beautifyKey(getTranslatableEnum(enum_name), schema.get('ttEnum'))}
+                        schema={schema?.get('t')}
+                        text={text}
+                        context={context}
+                        fallback={fallback}
                     />}
-                />
-            }).valueSeq() : null}
+                />,
+            ).valueSeq()}
         </RadioGroup>
 
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>

@@ -1,14 +1,17 @@
 import React from 'react'
-import {
-    FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox,
-} from '@mui/material'
-import { Map, List, OrderedMap } from 'immutable'
-import { TransTitle, Trans, beautifyKey, extractValue, memo, WidgetProps, StoreKeys, WithValue, tt, StoreSchemaType } from '@ui-schema/ui-schema'
+import FormControl from '@mui/material/FormControl'
+import FormLabel from '@mui/material/FormLabel'
+import FormGroup from '@mui/material/FormGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Checkbox from '@mui/material/Checkbox'
+import { List } from 'immutable'
+import { TransTitle, Trans, extractValue, memo, WidgetProps, StoreKeys, WithValue, StoreSchemaType } from '@ui-schema/ui-schema'
 import { useUID } from 'react-uid'
-import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText/LocaleHelperText'
+import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 import { SwitchBaseProps } from '@mui/material/internal/SwitchBase'
+import { OptionValueSchema, useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 
 const OptionCheck: React.ComponentType<{
     disabled?: boolean
@@ -33,27 +36,25 @@ const OptionCheck: React.ComponentType<{
 
 const checkActive = (list: List<any>, name: string | undefined | number) => list && list.contains && typeof list.contains(name) !== 'undefined' ? list.contains(name) : false
 
-const OptionsCheckValueBase: React.ComponentType<{
+const OptionsCheckValuesBase: React.ComponentType<{
     storeKeys: StoreKeys
     required?: boolean
-    oneOfValues?: List<OrderedMap<string, any>>
+    valueSchemas?: List<OptionValueSchema>
     schema: StoreSchemaType
     disabled?: boolean
 } & WithValue> = (
     {
-        oneOfValues, storeKeys, value, onChange,
-        required, schema, disabled,
+        valueSchemas, storeKeys, value, onChange,
+        required, schema: parentSchema, disabled,
     },
 ) => (
-    oneOfValues ?
-        oneOfValues.map((oneOfSchema) => {
-            const oneOfVal = oneOfSchema.get('const')
+    valueSchemas ?
+        valueSchemas.map(({value: oneOfVal, schema, text, fallback, context}) => {
             const isActive = checkActive(value, oneOfVal)
-
             return <OptionCheck
                 key={oneOfVal}
                 checked={isActive}
-                disabled={Boolean(disabled || oneOfSchema.get('readOnly') as boolean)}
+                disabled={Boolean(disabled || schema?.get('readOnly') as boolean)}
                 onChange={() => {
                     onChange({
                         storeKeys,
@@ -64,22 +65,22 @@ const OptionsCheckValueBase: React.ComponentType<{
                                 val.delete(val.indexOf(oneOfVal)) :
                                 val.push(oneOfVal)),
                         }),
-                        schema,
+                        schema: parentSchema,
                         required,
                     })
                 }}
                 label={<Trans
-                    schema={oneOfSchema.get('t') as unknown as StoreSchemaType}
-                    text={oneOfSchema.get('title') as string || oneOfSchema.get('const') as string}
-                    context={Map({'relative': List(['title'])})}
-                    fallback={oneOfSchema.get('title') || beautifyKey(oneOfSchema.get('const') as string | number, oneOfSchema.get('tt') as tt)}
+                    schema={schema?.get('t') as unknown as StoreSchemaType}
+                    text={text}
+                    context={context}
+                    fallback={fallback}
                 />}
             />
         }).valueSeq()
         : null
 ) as unknown as React.ReactElement
 
-const OptionsCheckValue = extractValue(memo(OptionsCheckValueBase))
+const OptionsCheckValues = extractValue(memo(OptionsCheckValuesBase))
 
 export interface OptionsCheckRendererProps {
     row?: boolean
@@ -91,8 +92,7 @@ export const OptionsCheck: React.ComponentType<WidgetProps<MuiWidgetBinding> & O
         row, widgets,
     }
 ) => {
-    const oneOfVal = schema.getIn(['items', 'oneOf'])
-    if (!oneOfVal) return null
+    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as StoreSchemaType)
     const InfoRenderer = widgets?.InfoRenderer
     return <FormControl
         required={required} error={!valid && showValidity} component="fieldset" fullWidth
@@ -110,8 +110,8 @@ export const OptionsCheck: React.ComponentType<WidgetProps<MuiWidgetBinding> & O
                 undefined}
         </FormLabel>
         <FormGroup row={row}>
-            <OptionsCheckValue
-                oneOfValues={oneOfVal as List<OrderedMap<string, string>>} storeKeys={storeKeys}
+            <OptionsCheckValues
+                valueSchemas={valueSchemas} storeKeys={storeKeys}
                 required={required} schema={schema}
                 disabled={schema.get('readOnly') as boolean}
             />
