@@ -7,6 +7,7 @@ import {
     ERROR_MULTIPLE_OF,
     ERROR_NOT_FOUND_CONTAINS,
     ERROR_NOT_SET,
+    ERROR_ONE_OF_INVALID,
     ERROR_PATTERN,
     ERROR_WRONG_TYPE,
     ERROR_ADDITIONAL_ITEMS,
@@ -19,7 +20,9 @@ import {typeToString} from '@ui-schema/dictionary/Utils/typeToString';
 export const errors = {
     [ERROR_NOT_SET]: 'Please fill out this field',
     [ERROR_CONST_MISMATCH]: (context) => `Expected value is: ${context.get('const')}`,
-    [ERROR_ENUM_MISMATCH]: (context) => `Please choose one valid entry, one of: ${context.get('enum')}`,
+    [ERROR_ENUM_MISMATCH]: (context) => `Please choose a valid entry, one of: ${context.get('enum')}`,
+    // receives `schema` as context, e.g. use `context.get('oneOf')` to add more infos:
+    [ERROR_ONE_OF_INVALID]: () => `Please choose a valid entry.`,
     [ERROR_DUPLICATE_ITEMS]: 'Remove duplicate entries',
     [ERROR_NOT_FOUND_CONTAINS]: 'Minimum one entry must exist like specified',
     [ERROR_MIN_LENGTH]: (context) => `Min. Length: ${typeof context.get('min') !== 'undefined' ? context.get('min') : typeof context.get('exclMin') !== 'undefined' ? context.get('exclMin') + 1 : '-'}`,
