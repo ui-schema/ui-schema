@@ -13,6 +13,9 @@ export interface WidgetEnumReadProps {
     style?: React.CSSProperties
 }
 
+/**
+ * @deprecated use `WidgetOptionsRead` instead
+ */
 export const WidgetEnumRead: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithScalarValue & WidgetEnumReadProps> = (
     {
         storeKeys, schema, value,

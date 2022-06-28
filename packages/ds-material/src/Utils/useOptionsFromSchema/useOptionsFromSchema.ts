@@ -36,7 +36,7 @@ export const useOptionsFromSchema = <V = string | number>(
             value: enumSchema.get('const'),
             schema: enumSchema,
             text: enumSchema.get('title') || enumSchema.get('const') as string | number,
-            fallback: schema?.get('title') || beautifyKey(enumSchema.get('const') as string | number, enumSchema.get('tt') as tt),
+            fallback: enumSchema?.get('title') || beautifyKey(enumSchema.get('const') as string | number, enumSchema.get('tt') as tt),
             context: Map({'relative': List(['title'])}),
         }))
     }
