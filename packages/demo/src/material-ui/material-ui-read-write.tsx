@@ -19,11 +19,11 @@ import { UIMetaReadContextType } from '@ui-schema/ui-schema/UIMetaReadContext'
 import {
     NumberRendererRead, StringRendererRead, TextRendererRead,
     WidgetBooleanRead, WidgetChipsRead,
-    WidgetEnumRead, WidgetOneOfRead,
 } from '@ui-schema/ds-material/WidgetsRead'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
+import { WidgetOptionsRead } from '@ui-schema/ds-material/WidgetsRead/WidgetOptionsRead'
 
 // custom `GroupRenderer` that supports `is-read and display-dense`
 const GroupRenderer: React.ComponentType<GroupRendererProps> = ({schema, children, noGrid}) => {
@@ -174,11 +174,11 @@ const readWidgets: ReadWidgetsBinding = {
     },
     custom: {
         Text: TextRendererRead,
-        Select: WidgetEnumRead,
-        SelectMulti: WidgetOneOfRead,
+        Select: WidgetOptionsRead,
+        SelectMulti: WidgetOptionsRead,
         SelectChips: WidgetChipsRead,
-        OptionsRadio: WidgetEnumRead,
-        OptionsCheck: WidgetOneOfRead,
+        OptionsRadio: WidgetOptionsRead,
+        OptionsCheck: WidgetOptionsRead,
     },
 }
 

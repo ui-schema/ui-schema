@@ -43,6 +43,9 @@ const OneOfArrayValuesBase: React.ComponentType<{
 
 const OneOfArrayValues = extractValue(memo(OneOfArrayValuesBase))
 
+/**
+ * @deprecated use `WidgetOptionsRead` instead
+ */
 export const WidgetOneOfRead: React.ComponentType<WidgetProps<MuiWidgetBinding>> = (
     {
         schema, storeKeys, showValidity,

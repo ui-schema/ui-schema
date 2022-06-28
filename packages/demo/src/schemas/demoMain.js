@@ -232,6 +232,7 @@ const schemaDemoMain = {
                         },
                     }, {
                         const: 'sidebar_right',
+                        title: 'right sidebar',
                     }, {
                         const: 'notice',
                     }, {
@@ -266,7 +267,7 @@ const schemaDemoMain = {
             },
             oneOf: [
                 {const: 'small'},
-                {const: 'middle'},
+                {const: 'middle', title: 'md'},
                 {const: 'big', tt: 'upper'},
             ],
         },

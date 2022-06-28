@@ -33,9 +33,9 @@ const OptionsRadio = ({
                 undefined}
         </FormLabel>
         <RadioGroup row={row} disabled={schema.get('readOnly')}>
-            {valueSchemas?.map(({value, text, fallback, context, schema}) =>
+            {valueSchemas?.map(({value, text, fallback, context, schema}, i) =>
                 <FormControlLabel
-                    key={value}
+                    key={i}
                     control={<Radio
                         value={value}
                         checked={value === activeValue}

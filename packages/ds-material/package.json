@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ds-material",
-    "version": "0.4.0-alpha.6",
+    "version": "0.4.0-beta.0",
     "description": "Material-UI Binding for UI-Schema",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",

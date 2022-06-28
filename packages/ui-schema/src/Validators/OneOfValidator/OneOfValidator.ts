@@ -41,7 +41,7 @@ export const oneOfValidator: PluginSimple = {
         if (tmpErrors.errorCount > 0) {
             valid = false
             errors = errors?.addChildErrors(tmpErrors.errors)
-            errors = errors?.addError(ERROR_ONE_OF_INVALID)
+            errors = errors?.addError(ERROR_ONE_OF_INVALID, schema)
         }
         return {errors, valid}
     },

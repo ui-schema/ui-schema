@@ -49,10 +49,10 @@ const OptionsCheckValuesBase: React.ComponentType<{
     },
 ) => (
     valueSchemas ?
-        valueSchemas.map(({value: oneOfVal, schema, text, fallback, context}) => {
+        valueSchemas.map(({value: oneOfVal, schema, text, fallback, context}, i) => {
             const isActive = checkActive(value, oneOfVal)
             return <OptionCheck
-                key={oneOfVal}
+                key={i}
                 checked={isActive}
                 disabled={Boolean(disabled || schema?.get('readOnly') as boolean)}
                 onChange={() => {
