@@ -5,9 +5,9 @@ env:
 
 on:
     push:
-        branches: [ master, develop ]
+        branches: [ master, develop, feature/develop-0.5.0 ]
     pull_request:
-        branches: [ master, develop ]
+        branches: [ master, develop, feature/develop-0.5.0 ]
 #    create:
 #        tags:
 #            - '[0-9]+.[0-9]+.[0-9]+*'
