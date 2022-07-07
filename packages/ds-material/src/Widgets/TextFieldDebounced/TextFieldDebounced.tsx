@@ -14,7 +14,7 @@ import { useDebounceValue } from '@ui-schema/ui-schema/Utils/useDebounceValue'
 import { forbidInvalidNumber, MuiWidgetBinding } from '@ui-schema/ds-material'
 
 export interface StringRendererDebouncedProps {
-    onKeyPress?: StringRendererProps['onKeyPressNative']
+    onKeyPress?: StringRendererProps['onKeyPress']
     debounceTime?: number
 }
 
@@ -22,8 +22,6 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
     {
         type,
         multiline,
-        // eslint-disable-next-line deprecation/deprecation
-        rows, rowsMax,
         minRows, maxRows,
         storeKeys, schema, value, onChange,
         showValidity, valid, errors, required,
@@ -77,14 +75,8 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
             multiline={multiline}
             required={required}
             error={!valid && showValidity}
-            minRows={
-                typeof minRows === 'number' ? minRows :
-                    rows
-            }
-            maxRows={
-                typeof maxRows === 'number' ? maxRows :
-                    rowsMax
-            }
+            minRows={minRows}
+            maxRows={maxRows}
             inputRef={inputRef}
             fullWidth
             variant={schema.getIn(['view', 'variant']) as any}
@@ -97,14 +89,13 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
                 bubbleBounce(value as string)
             }}
             onKeyUp={onKeyUp}
-            onKeyPress={
-                onKeyPress ?
-                    onKeyPress :
+            onKeyDown={
+                onKeyDown ? onKeyDown :
                     e => forbidInvalidNumber(e.nativeEvent, schema.get('type') as string)
             }
+            onKeyPress={onKeyPress}
             id={'uis-' + uid}
             style={style}
-            onKeyDown={onKeyDown}
             onChange={(e) => {
                 const val = e.target.value
                 const schemaType = schema.get('type') as string
@@ -140,13 +131,11 @@ export const TextRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> = 
         schema={schema}
         minRows={
             typeof props.minRows === 'number' ? props.minRows :
-                // eslint-disable-next-line deprecation/deprecation
-                (props.rows || schema.getIn(['view', 'rows']))
+                schema.getIn(['view', 'rows'])
         }
         maxRows={
             typeof props.maxRows === 'number' ? props.maxRows :
-                // eslint-disable-next-line deprecation/deprecation
-                (props.rowsMax || schema.getIn(['view', 'rowsMax']))
+                schema.getIn(['view', 'rowsMax'])
         }
         multiline
     />

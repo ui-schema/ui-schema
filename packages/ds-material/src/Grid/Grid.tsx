@@ -43,9 +43,6 @@ export const SchemaGridItem: React.ComponentType<React.PropsWithChildren<{
     </Grid>
 }
 
-export const RootRenderer: React.ComponentType<React.PropsWithChildren<{}>> =
-    ({children}) => <Grid container spacing={0}>{children}</Grid>
-
 export const GroupRenderer: React.ComponentType<React.PropsWithChildren<GroupRendererProps>> = (
     {
         schema, noGrid,

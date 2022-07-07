@@ -34,8 +34,6 @@ const SchemaGridItem = ({children, schema}) => {
     </div>
 };
 
-const RootRenderer = props => <div className={'row'}>{props.children}</div>;
-
 const GroupRenderer = ({children}) => <div className={clsx('row', 'px-0')}>
     {children}
 </div>;
@@ -52,4 +50,4 @@ const SchemaGridHandler = (props) => {
     </SchemaGridItem>;
 };
 
-export {SchemaGridHandler, SchemaGridItem, RootRenderer, GroupRenderer};
+export {SchemaGridHandler, SchemaGridItem, GroupRenderer};

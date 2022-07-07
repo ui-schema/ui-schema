@@ -12,11 +12,11 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import {Button} from '@mui/material';
-import {Step, Stepper, widgets} from '@ui-schema/ds-material';
+import {GridContainer, Step, Stepper, widgets} from '@ui-schema/ds-material';
 import {
     isInvalid, createOrderedMap, createMap,
     createStore, createEmptyStore,
-    UIMetaProvider, UIRootRenderer, UIStoreProvider, storeUpdater,
+    UIMetaProvider, UIStoreProvider, storeUpdater, injectPluginStack,
 } from '@ui-schema/ui-schema';
 import {MuiSchemaDebug} from './component/MuiSchemaDebug';
 import {browserT} from '../t';
@@ -77,6 +77,7 @@ customWidgets.custom.SelectChips = SelectChips
 
 //widgets.types.null = () => 'null'
 
+const GridStack = injectPluginStack(GridContainer)
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false);
@@ -105,7 +106,7 @@ const MainStore = () => {
             showValidity={showValidity}
             //doNotDefault
         >
-            <UIRootRenderer schema={schema}/>
+            <GridStack isRoot schema={schema}/>
             <MuiSchemaDebug setSchema={setSchema} schema={schema}/>
         </UIStoreProvider>
 
@@ -129,7 +130,7 @@ const DemoUser = () => {
                 onChange={onChange}
                 showValidity
             >
-                <UIRootRenderer schema={schemaUser}/>
+                <GridStack isRoot schema={schemaUser}/>
                 <MuiSchemaDebug schema={schemaUser}/>
             </UIStoreProvider>
         </Grid>

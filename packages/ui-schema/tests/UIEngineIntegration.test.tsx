@@ -5,22 +5,26 @@ import React, { PropsWithChildren } from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 import {
-    toBeInTheDocument,
-    toHaveClass,
     // @ts-ignore
+    toBeInTheDocument, toHaveClass,
 } from '@testing-library/jest-dom/matchers'
 import { List } from 'immutable'
-import { UIGenerator } from '../src/UIGenerator/UIGenerator'
 import { MockWidgets } from './MockSchemaProvider.mock'
-import { createStore, extractValue, WithValue } from '@ui-schema/ui-schema/UIStore'
+import { createStore, extractValue, UIStoreProvider, WithValue } from '@ui-schema/ui-schema/UIStore'
 import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
-import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ExtractStorePlugin, JsonSchema, TransTitle, PluginSimpleStack, ValidityReporter, WidgetProps } from '@ui-schema/ui-schema'
-import { ReferencingHandler } from '@ui-schema/ui-schema/Plugins/ReferencingHandler'
-import { validators } from '@ui-schema/ui-schema/Validators/validators'
+import {
+    CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler,
+    ReferencingHandler, ExtractStorePlugin, ValidityReporter,
+    JsonSchema, TransTitle,
+    PluginSimpleStack, WidgetProps,
+} from '@ui-schema/ui-schema'
+import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta'
+import { validators } from '@ui-schema/ui-schema/Validators'
 import { PluginStack, NextPluginRenderer } from '@ui-schema/ui-schema/PluginStack'
 import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter/isInvalid'
 import { relTranslator } from '@ui-schema/ui-schema/Translate/relT'
+import { injectPluginStack } from '@ui-schema/ui-schema/applyPluginStack'
 
 /**
  * This file serves as general integration test
@@ -38,8 +42,6 @@ expect.extend({toBeInTheDocument, toHaveClass})
 const widgets = MockWidgets
 // todo: add custom ErrorFallback, otherwise some errors may be catched there - and the test will not fail
 
-// eslint-disable-next-line react/display-name,deprecation/deprecation
-widgets.RootRenderer = (props: PropsWithChildren<any>): React.ReactElement => <div className={'root-renderer'}>{props.children}</div>
 // eslint-disable-next-line react/display-name
 widgets.GroupRenderer = ({children}): React.ReactElement => <div className={'group-renderer'}>{children}</div>
 widgets.pluginStack = [
@@ -88,6 +90,10 @@ widgets.types.array = extractValue((props: WidgetProps & WithValue): React.React
             </div>).valueSeq() : null}
     </>
 })
+
+// note: for DS which implement a grid system, this is the `GridContainer`/`GridStack` components
+const RootContainer = ({children}: PropsWithChildren<any>): React.ReactElement => <div className={'root-container'}>{children}</div>
+const RootStack = injectPluginStack(RootContainer)
 
 const TestUIRenderer = (props: {
     data?: {
@@ -206,19 +212,20 @@ const TestUIRenderer = (props: {
     const onChange = React.useCallback((actions) => {
         setStore(storeUpdater(actions))
     }, [setStore])
-
-    // eslint-disable-next-line deprecation/deprecation
-    return <UIGenerator
-        schema={schema}
-        store={props.noStore ? undefined : store}
-        onChange={onChange}
-
-        showValidity
+    return <UIMetaProvider
+        // @ts-ignore
         widgets={widgets}
         t={props.notT ? relTranslator : (text: string) => text}
     >
+        <UIStoreProvider
+            store={props.noStore ? undefined : store}
+            onChange={onChange}
+            showValidity
+        >
+            <RootStack isRoot schema={schema}/>
+        </UIStoreProvider>
         <div>store-is-{isInvalid(store.getValidity()) ? 'invalid' : 'correct'}</div>
-    </UIGenerator>
+    </UIMetaProvider>
 }
 
 describe('UIGenerator Integration', () => {
@@ -226,7 +233,7 @@ describe('UIGenerator Integration', () => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer data={{demo_number: 10, demo_array2: ['val-test']}}/>
         )
-        expect(container.querySelectorAll('.root-renderer').length).toBe(1)
+        expect(container.querySelectorAll('.root-container').length).toBe(1)
         expect(container.querySelectorAll('.group-renderer').length).toBe(2)
         expect(queryByText('store-is-correct') !== null).toBeTruthy()
         expect(queryByText('store-is-invalid')).toBe(null)
@@ -241,7 +248,7 @@ describe('UIGenerator Integration', () => {
             <TestUIRenderer noStore/>
         )
         // expect(container).toMatchSnapshot()
-        expect(container.querySelectorAll('.root-renderer').length).toBe(1)
+        expect(container.querySelectorAll('.root-container').length).toBe(1)
         expect(container.querySelectorAll('.group-renderer').length).toBe(2)
 
         expect(queryByText('Demo String')).toBe(null)
@@ -253,7 +260,7 @@ describe('UIGenerator Integration', () => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer notT/>
         )
-        expect(container.querySelectorAll('.root-renderer').length).toBe(1)
+        expect(container.querySelectorAll('.root-container').length).toBe(1)
         expect(container.querySelectorAll('.group-renderer').length).toBe(2)
         expect(queryByText('Demo String') !== null).toBeTruthy()
         expect(queryByText('widget.demo_string.title')).toBe(null)
@@ -264,7 +271,7 @@ describe('UIGenerator Integration', () => {
             <TestUIRenderer data={{demo_string: 'test'}}/>
         )
         // expect(container).toMatchSnapshot()
-        expect(container.querySelectorAll('.root-renderer').length === 1).toBeTruthy()
+        expect(container.querySelectorAll('.root-container').length === 1).toBeTruthy()
         expect(container.querySelectorAll('.group-renderer').length > 0).toBeTruthy()
         expect(queryByText('widget.demo_string.title') == null).toBeTruthy()
         expect(queryByText('missing-custom-Text') !== null).toBeTruthy()
@@ -278,7 +285,7 @@ describe('UIGenerator Integration', () => {
             }}/>
         )
         //expect(container).toMatchSnapshot()
-        expect(container.querySelectorAll('.root-renderer').length === 1).toBeTruthy()
+        expect(container.querySelectorAll('.root-container').length === 1).toBeTruthy()
         expect(container.querySelectorAll('.group-renderer').length > 0).toBeTruthy()
         //expect(queryByText('store-is-correct') === null).toBeTruthy()
         //expect(queryByText('store-is-invalid') !== null).toBeTruthy()

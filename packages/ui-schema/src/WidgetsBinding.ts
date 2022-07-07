@@ -27,11 +27,6 @@ export interface ErrorFallbackProps {
 
 export interface WidgetsBindingComponents {
     ErrorFallback?: React.ComponentType<ErrorFallbackProps>
-    /**
-     * wraps the whole generator
-     * @deprecated use the new `injectPluginStack` with a `GridContainer` [migration notes](https://ui-schema.bemit.codes/updates/v0.3.0-v0.4.0#deprecations)
-     */
-    RootRenderer?: React.ComponentType<any>
     // wraps any `object` that has no custom widget
     GroupRenderer: React.ComponentType<GroupRendererProps>
     /**

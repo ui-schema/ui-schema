@@ -21,10 +21,9 @@ export interface StringRendererBaseProps {
     onKeyUp?: KeyboardEventHandler<HTMLDivElement> | undefined
     onKeyDown?: KeyboardEventHandler<HTMLDivElement> | undefined
     /**
-     * @deprecated
+     * @deprecated may not be available in newer browser [MDN spec](https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onkeypress)
      */
-    onKeyPress?: (e: KeyboardEvent) => void | undefined
-    onKeyPressNative?: KeyboardEventHandler<HTMLDivElement> | undefined
+    onKeyPress?: KeyboardEventHandler<HTMLDivElement> | undefined
     inputProps?: InputProps['inputProps']
     InputProps?: Partial<InputProps>
     inputRef?: any
@@ -32,17 +31,7 @@ export interface StringRendererBaseProps {
 
 export interface StringRendererProps extends StringRendererBaseProps {
     multiline?: boolean
-    /**
-     * @deprecated use `minRows` instead
-     */
-    rows?: number
-    /**
-     * @deprecated use `maxRows` instead
-     */
-    rowsMax?: number
-
     minRows?: number
-
     maxRows?: number
 }
 
@@ -58,16 +47,13 @@ export const StringRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetP
     {
         type,
         multiline,
-        // eslint-disable-next-line deprecation/deprecation
-        rows, rowsMax,
         minRows, maxRows,
         storeKeys, schema, value, onChange,
         showValidity, valid, errors, required,
         style,
         onClick, onFocus, onBlur, onKeyUp, onKeyDown,
-        onKeyPressNative: onKeyPress,
         // eslint-disable-next-line deprecation/deprecation
-        onKeyPress: onKeyPressDeprecated,
+        onKeyPress,
         inputProps = {}, InputProps = {}, inputRef: customInputRef,
         widgets,
     }: P & WithScalarValue & StringRendererProps
@@ -101,35 +87,25 @@ export const StringRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetP
             multiline={multiline}
             required={required}
             error={!valid && showValidity}
-            minRows={
-                typeof minRows === 'number' ? minRows :
-                    rows
-            }
-            maxRows={
-                typeof maxRows === 'number' ? maxRows :
-                    rowsMax
-            }
+            minRows={minRows}
+            maxRows={maxRows}
             inputRef={inputRef}
             fullWidth
             variant={schema.getIn(['view', 'variant']) as any}
             margin={schema.getIn(['view', 'margin']) as InputProps['margin']}
             size={schema.getIn(['view', 'dense']) ? 'small' : 'medium'}
-            value={
-                typeof value === 'string' || typeof value === 'number' ? value : ''
-            }
+            value={typeof value === 'string' || typeof value === 'number' ? value : ''}
             onClick={onClick}
             onFocus={onFocus}
             onBlur={onBlur}
             onKeyUp={onKeyUp}
-            onKeyPress={onKeyPress ? onKeyPress : e => {
-                const evt = e.nativeEvent
-                if (!forbidInvalidNumber(evt, schema.get('type') as string)) {
-                    onKeyPressDeprecated && onKeyPressDeprecated(evt)
-                }
-            }}
-            id={'uis-' + uid}
+            onKeyDown={
+                onKeyDown ? onKeyDown :
+                    e => forbidInvalidNumber(e.nativeEvent, schema.get('type') as string)
+            }
+            onKeyPress={onKeyPress}
             style={style}
-            onKeyDown={onKeyDown}
+            id={'uis-' + uid}
             onChange={(e) => {
                 const val = e.target.value
                 const schemaType = schema.get('type') as string
@@ -167,13 +143,11 @@ export const TextRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetPro
         schema={schema}
         minRows={
             typeof props.minRows === 'number' ? props.minRows :
-                // eslint-disable-next-line deprecation/deprecation
-                (props.rows || schema.getIn(['view', 'rows']))
+                schema.getIn(['view', 'rows'])
         }
         maxRows={
             typeof props.maxRows === 'number' ? props.maxRows :
-                // eslint-disable-next-line deprecation/deprecation
-                (props.rowsMax || schema.getIn(['view', 'rowsMax']))
+                schema.getIn(['view', 'rowsMax'])
         }
         multiline
     />

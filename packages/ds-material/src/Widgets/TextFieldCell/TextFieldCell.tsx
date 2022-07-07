@@ -15,14 +15,17 @@ import { visuallyHidden } from '@mui/utils'
 export interface StringRendererCellProps {
     type?: string
     multiline?: boolean
-    rows?: number
-    rowsMax?: number
+    minRows?: number
+    maxRows?: number
     style?: CSSProperties
     onClick?: EventHandler<any>
     onFocus?: EventHandler<any>
     onBlur?: EventHandler<any>
     onKeyUp?: EventHandler<any>
     onKeyDown?: EventHandler<any>
+    /**
+     * @deprecated may not be available in newer browser [MDN spec](https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onkeypress)
+     */
     onKeyPress?: EventHandler<any>
     inputProps?: Partial<InputBaseComponentProps>
     inputRef?: null | React.RefObject<any>
@@ -32,11 +35,13 @@ export interface StringRendererCellProps {
 export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithScalarValue & StringRendererCellProps> = (
     {
         type,
-        multiline, rows, rowsMax,
+        multiline, minRows, maxRows,
         storeKeys, schema, value, onChange,
         showValidity, valid, errors, required,
         style = {},
-        onClick, onFocus, onBlur, onKeyUp, onKeyDown, onKeyPress,
+        onClick, onFocus, onBlur, onKeyUp, onKeyDown,
+        // eslint-disable-next-line deprecation/deprecation
+        onKeyPress,
         inputProps = {},
         inputRef: customInputRef,
         labelledBy, widgets,
@@ -92,9 +97,9 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBindin
             multiline={multiline}
             required={required}
             error={!valid && showValidity}
-            rows={rows}
             inputRef={inputRef}
-            maxRows={rowsMax}
+            minRows={minRows}
+            maxRows={maxRows}
             fullWidth
             margin={schema.getIn(['view', 'margin']) as InputBaseProps['margin']}
             value={typeof value === 'string' || typeof value === 'number' ? value : ''}
@@ -102,14 +107,12 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBindin
             onFocus={onFocus}
             onBlur={onBlur}
             onKeyUp={onKeyUp}
-            onKeyPress={e => {
-                const evt = e.nativeEvent
-                if (!forbidInvalidNumber(evt, schema.get('type') as SchemaTypesType)) {
-                    onKeyPress && onKeyPress(evt)
-                }
-            }}
+            onKeyDown={
+                onKeyDown ? onKeyDown :
+                    e => forbidInvalidNumber(e.nativeEvent, schema.get('type') as string)
+            }
+            onKeyPress={onKeyPress}
             style={style}
-            onKeyDown={onKeyDown}
             onChange={(e) => {
                 const val = e.target.value
                 const schemaType = schema.get('type') as SchemaTypesType
@@ -152,8 +155,14 @@ export const TextRendererCell: React.ComponentType<WidgetProps<MuiWidgetBinding>
     return <StringRendererCell
         {...props}
         schema={schema}
-        rows={schema.getIn(['view', 'rows']) as number | undefined}
-        rowsMax={schema.getIn(['view', 'rowsMax']) as number | undefined}
+        minRows={
+            typeof props.minRows === 'number' ? props.minRows :
+                schema.getIn(['view', 'rows']) as number
+        }
+        maxRows={
+            typeof props.maxRows === 'number' ? props.maxRows :
+                schema.getIn(['view', 'rowsMax']) as number
+        }
         multiline
     />
 }

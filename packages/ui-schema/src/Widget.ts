@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { StoreKeyType, StoreKeys, UIStoreContext, WithOnChange, WithScalarValue } from '@ui-schema/ui-schema/UIStore'
+import { StoreKeys, UIStoreContext, WithOnChange, WithScalarValue } from '@ui-schema/ui-schema/UIStore'
 import { Errors, required, valid, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { UIMetaContext } from '@ui-schema/ui-schema/UIMeta'
 import { GroupRendererProps, WidgetsBindingFactory } from '@ui-schema/ui-schema/WidgetsBinding'
@@ -28,11 +28,6 @@ export interface WidgetProps<W = WidgetsBindingFactory> extends UIMetaContext<W>
     // the current level in the schema, e.g. `0` for root, `1` for the first properties
     level: number
 
-    /**
-     * the last index of the current widget
-     * @deprecated use `storeKeys.last()` instead, internally it is still passed down, will be removed in `0.5.0` [migration notes](https://ui-schema.bemit.codes/updates/v0.3.0-v0.4.0#deprecations)
-     */
-    ownKey?: StoreKeyType
     // all indices of the current widget
     storeKeys: StoreKeys
 

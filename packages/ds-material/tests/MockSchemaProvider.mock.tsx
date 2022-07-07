@@ -1,17 +1,21 @@
+/**
+ * @jest-environment jsdom
+ */
 import React from 'react'
 import { Translator } from '@ui-schema/ui-schema/Translate/makeTranslator'
-import { createEmptyStore } from '@ui-schema/ui-schema/UIStore'
+import { createEmptyStore, UIStoreProvider } from '@ui-schema/ui-schema/UIStore'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap'
-import { UIProvider } from '@ui-schema/ui-schema/UIGenerator'
-import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { WidgetsBindingFactory } from '@ui-schema/ui-schema/WidgetsBinding'
-import { UIMetaProvider, WidgetRenderer } from '@ui-schema/ui-schema'
-import { relTranslator } from '@ui-schema/ui-schema/Translate/relT'
+import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta'
+import { WidgetRenderer } from '@ui-schema/ui-schema/WidgetRenderer'
+import { relTranslator } from '@ui-schema/ui-schema/Translate'
+import { PluginStack } from '@ui-schema/ui-schema/PluginStack'
+import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
+import { UIStoreActions } from '@ui-schema/ui-schema/UIStoreActions'
 
 export const MockWidgets: WidgetsBindingFactory = {
     ErrorFallback: () => null,
-    RootRenderer: () => null,
     GroupRenderer: () => null,
     WidgetRenderer: WidgetRenderer,
     pluginStack: [],
@@ -32,16 +36,22 @@ export const MockSchemaProvider: React.ComponentType<{
     // @ts-ignore
     const [store, setStore] = React.useState(() => createEmptyStore(schema && schema.get('type')))
 
-    // eslint-disable-next-line deprecation/deprecation
-    return <UIProvider
-        store={store}
-        onChange={setStore}
+    const onChange = React.useCallback((actions: UIStoreActions[] | UIStoreActions) => {
+        setStore(storeUpdater(actions))
+    }, [setStore])
+
+    return <UIMetaProvider
         // @ts-ignore
         widgets={widgets}
         t={t || relTranslator}
     >
-        <UIRootRenderer schema={schema}/>
-    </UIProvider>
+        <UIStoreProvider
+            store={store}
+            onChange={onChange}
+        >
+            <PluginStack isRoot schema={schema}/>
+        </UIStoreProvider>
+    </UIMetaProvider>
 }
 
 export const MockSchemaMetaProvider: React.ComponentType<React.PropsWithChildren<{

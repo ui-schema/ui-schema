@@ -20,17 +20,7 @@ const getUrls = (schemaRef: string, id) => {
     }
 }
 
-/**
- * @deprecated use `loadSchemaRefPlugin`, will be removed at v0.3.0
- */
-export type loadSchema = loadSchemaRefPlugin
-
 export type loadSchemaRefPlugin = (ref: string, rootId?: string, versions?: string[]) => void
-
-/**
- * @deprecated use `loadSchemaRefPlugin`, will be removed at v0.3.0
- */
-export type getSchema = getSchemaRefPlugin
 
 export type getSchemaRefPlugin = (ref: string, rootId?: string, version?: string) => StoreSchemaType | null
 
@@ -84,7 +74,4 @@ export const useSchemaNetworkRef = (): {
 
     return {getSchema, loadSchema}
 }
-/**
- * @deprecated
- */
-export const useNetworkRef = useSchemaNetworkRef
+

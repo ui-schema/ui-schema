@@ -13,7 +13,7 @@ export type PluginStackWrapperProps = {
     schemaKeys: StoreKeys
 }
 
-export type PluginStackInjectProps = 'currentPluginIndex' | 'ownKey' | 'requiredList' | 'required' | 'errors' | 'valid' | 'storeKeys' | 'parentSchema'
+export type PluginStackInjectProps = 'currentPluginIndex' | 'requiredList' | 'required' | 'errors' | 'valid' | 'storeKeys' | 'parentSchema'
 
 export type PluginStackProps<PWidget extends {} = {}, C extends {} = {}, PWrapper extends {} = {}> = AppliedPluginStackProps<C, PluginProps> & {
     // level?: number

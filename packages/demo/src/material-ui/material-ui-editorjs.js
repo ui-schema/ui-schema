@@ -7,7 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import {ImmutableEditor, themeMaterial} from 'react-immutable-editor';
 import Dashboard from './dashboard/Dashboard';
-import {widgets} from '@ui-schema/ds-material';
+import {GridContainer, widgets} from '@ui-schema/ds-material';
 import {browserT} from '../t';
 import {MuiSchemaDebug} from './component/MuiSchemaDebug';
 import IcSave from '@mui/icons-material/Save'
@@ -25,7 +25,7 @@ import List from '@editorjs/list'
 import Header from '@editorjs/header'
 import Table from '@editorjs/table'
 import {schemaDemoEditorJS} from '../schemas/demoEditorJS';
-import {UIMetaProvider, UIRootRenderer, UIStoreProvider} from '@ui-schema/ui-schema';
+import {injectPluginStack, UIMetaProvider, UIStoreProvider} from '@ui-schema/ui-schema';
 
 const tools = {
     paragraph: Paragraph,
@@ -48,7 +48,7 @@ customWidgets.custom = {
 };
 
 const initialStore = undefined
-
+const GridStack = injectPluginStack(GridContainer)
 const schema = schemaDemoEditorJS
 
 const Main = () => {
@@ -110,7 +110,7 @@ const Main = () => {
             onChange={onChange}
             showValidity={showValidity}
         >
-            <UIRootRenderer schema={schema}/>
+            <GridStack isRoot schema={schema}/>
             <MuiSchemaDebug schema={schema}/>
         </UIStoreProvider>
 

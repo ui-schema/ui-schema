@@ -199,7 +199,7 @@ export const widgets = {
     GroupRenderer,
     WidgetRenderer,
     pluginStack,
-    validators,
+    pluginSimpleStack: validators,
     types: {
         // supply your needed native-type widgets
         string: StringRenderer,

@@ -55,10 +55,6 @@ export function createEmptyStore(type?: SchemaTypesType): UIStoreType<[] | '' | 
 // UIStore / Immutable Manipulation Functions
 
 export type StoreKeyType = string | number
-/**
- * @deprecated use `StoreKeyType` instead
- */
-export type OwnKey = StoreKeyType
 
 export type StoreKeys = List<StoreKeyType>
 

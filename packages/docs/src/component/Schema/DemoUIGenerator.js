@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Box, Typography, useTheme, useMediaQuery} from '@mui/material';
-import {createOrderedMap, UIRootRenderer, createEmptyStore, storeUpdater} from '@ui-schema/ui-schema';
+import {createOrderedMap, createEmptyStore, storeUpdater, injectPluginStack} from '@ui-schema/ui-schema';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter';
 import {UIStoreProvider} from '@ui-schema/ui-schema/UIStore';
 import {RichCodeEditor} from '../RichCodeEditor';
@@ -8,6 +8,7 @@ import {RichCodeEditor} from '../RichCodeEditor';
 // import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import {KitDndProvider, useOnIntent} from '@ui-schema/kit-dnd';
 import {useOnDirectedMove} from '@ui-schema/material-dnd/useOnDirectedMove';
+import {GridContainer} from '@ui-schema/ds-material';
 
 const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, richIde, renderChange, theme, maxLines, enableShowAll}) => {
     return <RichCodeEditor
@@ -43,6 +44,8 @@ const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme, maxLi
         readOnly
     />
 };
+
+const GridStack = injectPluginStack(GridContainer)
 
 const DemoUIGenerator = ({activeSchema, id = '0', onClick = undefined, showDebugger = true, split = true, uiStyle = undefined}) => {
     const [jsonError, setJsonError] = React.useState(false);
@@ -109,7 +112,7 @@ const DemoUIGenerator = ({activeSchema, id = '0', onClick = undefined, showDebug
                         </Typography>
                     </Box> : null}
 
-                {typeof schema === 'string' || !store ? null : <UIRootRenderer schema={schema}/>}
+                {typeof schema === 'string' || !store ? null : <GridStack isRoot schema={schema}/>}
             </UIStoreProvider>
         </KitDndProvider>
         {/*</MuiPickersUtilsProvider>*/}

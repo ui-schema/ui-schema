@@ -115,7 +115,7 @@ const schemaStyle = createOrderedMap({
 } as { [k: string]: UISchema })
 
 // keep the `rootContext` reference integration!
-// e.g. be sure it does not force a re-render of UIRootRenderer with `React.useMemo` and maybe `useImmutable`
+// e.g. be sure it does not force a re-render of the root plugin stack, with `React.useMemo` and maybe `useImmutable`
 const rootContext: InjectSplitSchemaRootContext = {schemaStyle: schemaStyle as StoreSchemaType}
 
 export type CustomConfig = Partial<DefaultHandlerProps>

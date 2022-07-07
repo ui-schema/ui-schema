@@ -45,13 +45,14 @@ import {
     */
 } from "@ui-schema/ds-material/Grid";
 import {pluginStack} from "@ui-schema/ds-material/pluginStack";
-import {validators} from "@ui-schema/ui-schema/Validators/validators";
+import {validators} from "@ui-schema/ui-schema/Validators";
 
 const widgets = {
     RootRenderer,
     GroupRenderer,
-    validators,
     pluginStack: pluginStack,
+    pluginSimpleStack: validators,
+    // ... rest of non-type widget ...
     types: {},
     custom: {},
 };

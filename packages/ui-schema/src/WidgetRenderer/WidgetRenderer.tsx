@@ -28,7 +28,7 @@ export const WidgetRenderer: React.ComponentType<WidgetRendererProps> = (
         requiredList,
         // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
         currentPluginIndex,
-        // `props` contains all props accumulated in the PluginStack, UIRootRenderer etc.
+        // `props` contains all props accumulated in the PluginStack
         ...props
     },
 ) => {

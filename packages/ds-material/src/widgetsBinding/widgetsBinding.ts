@@ -9,7 +9,7 @@ import { SimpleList } from '@ui-schema/ds-material/Widgets/SimpleList'
 import { GenericList } from '@ui-schema/ds-material/Widgets/GenericList'
 import { NumberSlider } from '@ui-schema/ds-material/Widgets/NumberSlider'
 import { AccordionsRenderer } from '@ui-schema/ds-material/Widgets/Accordions'
-import { RootRenderer, GroupRenderer } from '@ui-schema/ds-material/Grid'
+import { GroupRenderer } from '@ui-schema/ds-material/Grid'
 import { pluginStack } from '@ui-schema/ds-material/pluginStack'
 import { WidgetRenderer } from '@ui-schema/ui-schema/WidgetRenderer'
 import { validators } from '@ui-schema/ui-schema/Validators/validators'
@@ -40,7 +40,6 @@ export type MuiWidgetBinding<C extends {} = {}> = WidgetsBindingFactory<MuiWidge
 
 export const widgets: MuiWidgetBinding = {
     ErrorFallback: ErrorFallback,
-    RootRenderer,
     GroupRenderer,
     WidgetRenderer,
     pluginStack,

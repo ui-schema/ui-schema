@@ -5,7 +5,7 @@ import {BoolRenderer} from './Widgets/OptionsBoolean';
 import {OptionsCheck} from './Widgets/OptionsCheck';
 import {OptionsRadio} from './Widgets/OptionsRadio';
 import {SimpleList} from './Widgets/SimpleList';
-import {RootRenderer, GroupRenderer} from './Grid';
+import {GroupRenderer} from './Grid';
 import {pluginStack} from './pluginStack';
 import {WidgetRenderer} from '@ui-schema/ui-schema/WidgetRenderer';
 import {validators} from '@ui-schema/ui-schema/Validators/validators';
@@ -20,7 +20,6 @@ const MyFallbackComponent = ({type, widget}) => (
 
 export const widgets = {
     ErrorFallback: MyFallbackComponent,
-    RootRenderer,
     GroupRenderer,
     WidgetRenderer,
     pluginStack,

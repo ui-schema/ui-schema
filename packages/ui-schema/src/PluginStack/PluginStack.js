@@ -46,8 +46,6 @@ export const PluginStack = ({StackWrapper, wrapperProps, ...props}) => {
         level={level}
         storeKeys={currentStoreKeys}
         schemaKeys={currentSchemaKeys}
-        // todo: remove `ownKey` with `0.5.0`
-        ownKey={storeKeys.last()}
         requiredList={required}
         required={false}
         errors={errorContainer}

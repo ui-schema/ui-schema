@@ -40,13 +40,6 @@ export function UIStoreProvider<C extends {} = {}, D = any, A = UIStoreActions>(
     </UIStoreContextObj.Provider>
 }
 
-/**
- * @deprecated
- */
-export const useUI = (): UIStoreContext => {
-    return useUIStore()
-}
-
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-constraint
 export const useUIStore = <D extends any = any>(): UIStoreContext<D> => {
     return React.useContext(UIStoreContextObj)
