@@ -1,6 +1,8 @@
 import React from 'react'
 import Add from '@mui/icons-material/Add'
-import { memo, Trans, WidgetProps } from '@ui-schema/ui-schema'
+import { Translate } from '@ui-schema/react/Translate'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { memo } from '@ui-schema/react/Utils/memo'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import TablePagination from '@mui/material/TablePagination'
 import MuiTableFooter from '@mui/material/TableFooter'
@@ -93,7 +95,7 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                         style={btnStyle}
                         Icon={Add}
                         title={
-                            <Trans
+                            <Translate
                                 text={'labels.add-row'}
                                 context={Map({actionLabels: schema.get('tableActionLabels')})}
                             />

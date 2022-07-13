@@ -1,6 +1,7 @@
 import React from 'react'
-import { TransTitle, WidgetProps } from '@ui-schema/ui-schema'
-import { ObjectRenderer } from '@ui-schema/ui-schema/ObjectRenderer'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import Box from '@mui/material/Box'
 import Typography, { TypographyProps } from '@mui/material/Typography'
 
@@ -23,7 +24,7 @@ export const LabelBox = (props: WidgetProps): React.ReactElement => {
                 variant={(schema.getIn(['view', 'titleVariant']) as TypographyProps['variant']) || 'h5'}
                 component={(schema.getIn(['view', 'titleComp']) as React.ElementType) || 'p'}
             >
-                <TransTitle schema={schema} storeKeys={storeKeys}/>
+                <TranslateTitle schema={schema} storeKeys={storeKeys}/>
                 {/* todo: add `info` support */}
             </Typography>}
         <ObjectRenderer {...props}/>

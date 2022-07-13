@@ -7,7 +7,7 @@ import {
 import {ValidityReporter} from '@ui-schema/ui-schema/ValidityReporter';
 import {PluginSimpleStack} from '@ui-schema/ui-schema/PluginSimpleStack';
 
-export const pluginStack = [
+export const widgetPlugins = [
     ReferencingHandler,
     SchemaGridHandler,
     ExtractStorePlugin,

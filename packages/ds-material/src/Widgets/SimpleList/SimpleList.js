@@ -5,11 +5,14 @@ import FormLabel from '@mui/material/FormLabel';
 import IconButton from '@mui/material/IconButton';
 import Add from '@mui/icons-material/Add';
 import Remove from '@mui/icons-material/Remove';
-import {TransTitle, extractValue, memo, PluginStack} from '@ui-schema/ui-schema';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText';
 import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip';
 import {ListButton} from '@ui-schema/ds-material/Component/ListButton';
-import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
+import {memo} from '@ui-schema/react/Utils/memo';
+import {extractValue} from '@ui-schema/react/UIStore';
+import {WidgetEngine} from '@ui-schema/react/WidgetEngine';
+import {Translate} from '@ui-schema/react/Translate';
+import {TranslateTitle} from '@ui-schema/react/TranslateTitle';
 import {Map} from 'immutable';
 
 export const SimpleListItemBase = (
@@ -20,7 +23,7 @@ export const SimpleListItemBase = (
 ) => {
     return <Grid key={index} item xs={12} style={{display: 'flex'}}>
         <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
-            <PluginStack
+            <WidgetEngine
                 showValidity={showValidity} noGrid
                 schema={schema.get('items')} parentSchema={schema}
                 storeKeys={storeKeys.push(index)} level={level + 1}
@@ -43,7 +46,7 @@ export const SimpleListItemBase = (
                 size={'small'}
                 style={{margin: 'auto 6px', flexShrink: 0}}
             >
-                <AccessTooltipIcon title={<Trans text={'labels.remove-entry'}/>}>
+                <AccessTooltipIcon title={<Translate text={'labels.remove-entry'}/>}>
                     <Remove fontSize={'inherit'} style={{margin: 2}}/>
                 </AccessTooltipIcon>
             </IconButton> : null}
@@ -72,7 +75,7 @@ export const SimpleListInner = (
     return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
         <Grid container spacing={2}>
             {!schema.getIn(['view', 'hideTitle']) ? <Grid item xs={12}>
-                <FormLabel component="legend"><TransTitle schema={schema} storeKeys={storeKeys}/></FormLabel>
+                <FormLabel component="legend"><TranslateTitle schema={schema} storeKeys={storeKeys}/></FormLabel>
             </Grid> : null}
 
             {InfoRenderer && schema?.get('info') ?
@@ -119,7 +122,7 @@ export const SimpleListInner = (
                         style={btnAddStyle}
                         Icon={Add}
                         title={
-                            <Trans
+                            <Translate
                                 text={'labels.add-entry'}
                                 context={Map({actionLabels: schema.get('tableActionLabels')})}
                             />

@@ -510,7 +510,7 @@
 						x="16.19" dy="1.2em" class="st14">plugins to render?</tspan></text>		</g>
 		<g id="shape21-117" v:mID="21" v:groupContext="shape" v:layerMember="0" transform="translate(76.5354,-820.63)">
 			<title>Process.21</title>
-			<desc>&#60;Plugin/&#62; uses getPlugin and widgets.pluginStack</desc>
+			<desc>&#60;Plugin/&#62; uses getPlugin and widgets.widgetPlugins</desc>
 			<v:custProps>
 				<v:cp v:nameU="Cost" v:lbl="Cost" v:prompt="" v:type="7" v:format="@" v:sortKey="" v:invis="false" v:ask="false"
 						v:langID="1033" v:cal="0"/>
@@ -539,7 +539,7 @@
 			<v:textRect cx="58.3937" cy="1651.18" width="116.79" height="42.5197"/>
 			<rect x="0" y="1629.92" width="116.787" height="42.5197" class="st13"/>
 			<text x="40.3" y="1643.98" class="st12" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>&#60;Plugin/&#62;<v:lf/><tspan
-						x="25.84" dy="1.2em" class="st5">uses getPlugin and </tspan><tspan x="24.41" dy="1.2em" class="st5">widgets.pluginStack</tspan></text>		</g>
+						x="25.84" dy="1.2em" class="st5">uses getPlugin and </tspan><tspan x="24.41" dy="1.2em" class="st5">widgets.widgetPlugins</tspan></text>		</g>
 		<g id="shape22-122" v:mID="22" v:groupContext="shape" v:layerMember="0" transform="translate(76.5354,-754.016)">
 			<title>Process.22</title>
 			<desc>&#60;WidgetRenderer/&#62;</desc>
@@ -658,7 +658,7 @@
 						x="-57.06" dy="1.2em" class="st14"> </tspan>and widgets.types / widgets.custom</text>		</g>
 		<g id="shape32-163" v:mID="32" v:groupContext="shape" v:layerMember="1" transform="translate(186.236,-841.89)">
 			<title>Dynamic connector.32</title>
-			<desc>for each widgets.pluginStack</desc>
+			<desc>for each widgets.widgetPlugins</desc>
 			<v:userDefs>
 				<v:ud v:nameU="visNavOrder" v:val="VT0(28000):26"/>
 			</v:userDefs>
@@ -667,7 +667,7 @@
 			<path d="M7.09 1672.44 L20.37 1672.44 L20.37 1544.88 L13.13 1544.88" class="st1"/>
 			<rect v:rectContext="textBkgnd" x="-15.5079" y="1626.16" width="72.4016" height="19.1997" class="st3"/>
 			<text x="6.37" y="1633.36" class="st4" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>for each<v:lf/><tspan
-						x="-15.51" dy="1.2em" class="st14"> </tspan>widgets.pluginStack  </text>		</g>
+						x="-15.51" dy="1.2em" class="st14"> </tspan>widgets.widgetPlugins  </text>		</g>
 		<g id="shape62-171" v:mID="62" v:groupContext="shape" v:layerMember="1" transform="translate(127.843,-545.669)">
 			<title>Dynamic connector.62</title>
 			<desc>no</desc>

@@ -1,6 +1,6 @@
 import React from 'react'
 import IconButton from '@mui/material/IconButton'
-import { Trans } from '@ui-schema/ui-schema'
+import { Translate } from '@ui-schema/react/Translate'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
 import { GenericListItemSharedProps } from '@ui-schema/ds-material'
 import Delete from '@mui/icons-material/Delete'
@@ -31,7 +31,7 @@ export const GenericListItemMore = (
             >
                 <AccessTooltipIcon
                     title={
-                        <Trans text={'labels.remove-item'} context={Map({actionLabels: schema.get('listActionLabels')})}/>
+                        <Translate text={'labels.remove-item'} context={Map({actionLabels: schema.get('listActionLabels')})}/>
                     }
                 >
                     <Delete fontSize={'inherit'} style={{margin: btnSize === 'small' ? 2 : undefined}}/>

@@ -1,6 +1,13 @@
 import React from 'react'
 import { useUID } from 'react-uid'
-import { TransTitle, extractValue, memo, PluginStack, WidgetProps, WithValue, StoreSchemaType, useUIMeta, schemaTypeIsAny, SchemaTypesType } from '@ui-schema/ui-schema'
+import { extractValue, WithValue } from '@ui-schema/react/UIStore'
+import { useUIMeta } from '@ui-schema/react/UIMeta'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
+import { schemaTypeIsAny } from '@ui-schema/system/schemaTypeIs'
 import { List, Map, OrderedMap } from 'immutable'
 import MuiTable from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -8,6 +15,7 @@ import TableContainer from '@mui/material/TableContainer'
 import { TableRendererBaseProps, TableRendererExtractorProps, TableRowProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
 import { TableContext } from '@ui-schema/ds-material/BaseComponents/Table/TableContext'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<keyof WidgetProps, 'value' | 'errors' | 'valid'>> & Pick<WithValue, 'onChange'> & TableRendererBaseProps & ListButtonOverwrites> = (
     {
@@ -35,7 +43,7 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
     const btnColor = (schema.getIn(['view', 'btnColor']) || btnColorProp || undefined) as ListButtonOverwrites['btnColor']
 
     const dense = (schema.getIn(['view', 'dense']) as boolean) || false
-    const itemsSchema = schema.get('items') as StoreSchemaType
+    const itemsSchema = schema.get('items') as UISchemaMap
     const readOnly = schema.get('readOnly') as boolean
 
     const currentRows = rows === -1 ? listSize || 0 : rows
@@ -55,7 +63,7 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
 
     return <>
         {!schema.getIn(['view', 'hideTitle']) ?
-            <TransTitle schema={schema} storeKeys={storeKeys}/> : null}
+            <TranslateTitle schema={schema} storeKeys={storeKeys}/> : null}
 
         <TableContainer>
             <MuiTable size={dense ? 'small' : 'medium'}>
@@ -73,7 +81,7 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
                     {validItemSchema && listSize ?
                         Array(listSize).fill(null).map((_val: any, i) => {
                             const isVirtual = (i as number) < currentRowsStartVisible || (i as number) >= (currentRowsStartVisible + currentRows)
-                            return <PluginStack<TableRowProps>
+                            return <WidgetEngine<TableRowProps>
                                 key={i}
                                 storeKeys={storeKeys.push(i as number)}
                                 schema={itemsSchema}

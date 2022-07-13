@@ -6,7 +6,7 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import LastPageIcon from '@mui/icons-material/LastPage'
 import { AccessTooltipIcon } from '@ui-schema/ds-material'
-import { Trans } from '@ui-schema/ui-schema'
+import { Translate } from '@ui-schema/react/Translate'
 import { TablePaginationActionsProps } from '@mui/material/TablePagination/TablePaginationActions'
 
 export const TablePaginationActions: React.ComponentType<TablePaginationActionsProps> = (props) => {
@@ -50,7 +50,7 @@ export const TablePaginationActions: React.ComponentType<TablePaginationActionsP
                     disabled={page === 0}
                     size={btnSize}
                 >
-                    <AccessTooltipIcon title={<Trans text={'pagination.first-page'}/>}>
+                    <AccessTooltipIcon title={<Translate text={'pagination.first-page'}/>}>
                         {theme.direction === 'rtl' ? <LastPageIcon style={iconStyle}/> : <FirstPageIcon style={iconStyle}/>}
                     </AccessTooltipIcon>
                 </IconButton>}
@@ -59,7 +59,7 @@ export const TablePaginationActions: React.ComponentType<TablePaginationActionsP
                 size={btnSize}
                 {...backIconButtonProps}
             >
-                <AccessTooltipIcon title={<Trans text={'pagination.prev-page'}/>}>
+                <AccessTooltipIcon title={<Translate text={'pagination.prev-page'}/>}>
                     {theme.direction === 'rtl' ? <KeyboardArrowRight style={iconStyle}/> : <KeyboardArrowLeft style={iconStyle}/>}
                 </AccessTooltipIcon>
             </IconButton>
@@ -72,7 +72,7 @@ export const TablePaginationActions: React.ComponentType<TablePaginationActionsP
                 size={btnSize}
                 {...nextIconButtonProps}
             >
-                <AccessTooltipIcon title={<Trans text={'pagination.next-page'}/>}>
+                <AccessTooltipIcon title={<Translate text={'pagination.next-page'}/>}>
                     {theme.direction === 'rtl' ? <KeyboardArrowLeft style={iconStyle}/> : <KeyboardArrowRight style={iconStyle}/>}
                 </AccessTooltipIcon>
             </IconButton>
@@ -85,7 +85,7 @@ export const TablePaginationActions: React.ComponentType<TablePaginationActionsP
                         padding: btnSize === 'small' ? 2 : undefined,
                     }}
                 >
-                    <AccessTooltipIcon title={<Trans text={'pagination.last-page'}/>}>
+                    <AccessTooltipIcon title={<Translate text={'pagination.last-page'}/>}>
                         {theme.direction === 'rtl' ? <FirstPageIcon style={iconStyle}/> : <LastPageIcon style={iconStyle}/>}
                     </AccessTooltipIcon>
                 </IconButton>}

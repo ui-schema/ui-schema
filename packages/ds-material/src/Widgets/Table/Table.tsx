@@ -1,6 +1,7 @@
 import React from 'react'
 import { List } from 'immutable'
-import { memo, WidgetProps } from '@ui-schema/ui-schema'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { WidgetProps } from '@ui-schema/react/Widgets'
 import { TableRenderer } from '@ui-schema/ds-material/BaseComponents/Table/TableRenderer'
 import { TableFooter } from '@ui-schema/ds-material/BaseComponents/Table/TableFooter'
 import { TableHeader } from '@ui-schema/ds-material/BaseComponents/Table/TableHeader'

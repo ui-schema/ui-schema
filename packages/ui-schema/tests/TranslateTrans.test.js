@@ -12,7 +12,7 @@ import {Trans} from '../src/Translate/Trans/Trans';
 import {createMap} from '../src/Utils/createMap';
 import {makeTranslator} from '../src/Translate/makeTranslator';
 import {Map} from 'immutable';
-import {ERROR_MIN_LENGTH} from '@ui-schema/ui-schema/Validators';
+import {ERROR_MIN_LENGTH} from '@ui-schema/json-schema/Validators';
 
 expect.extend({toBeInTheDocument, toHaveClass})
 

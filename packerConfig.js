@@ -25,13 +25,13 @@ const legacyBabelTargets = [
 
 packer({
     apps: {
-        demo: {
-            root: path.resolve(__dirname, 'packages', 'demo'),
-            template: path.resolve(__dirname, 'packages', 'demo/public/index.html'),
-            contentBase: path.resolve(__dirname, 'packages', 'demo/public'),// dev-server
+        demoWeb: {
+            root: path.resolve(__dirname, 'packages', 'demo-web'),
+            template: path.resolve(__dirname, 'packages', 'demo-web/public/index.html'),
+            contentBase: path.resolve(__dirname, 'packages', 'demo-web/public'),// dev-server
             port: 4200,
-            main: path.resolve(__dirname, 'packages', 'demo/src/index.js'),
-            dist: path.resolve(__dirname, 'dist', 'demo'),
+            main: path.resolve(__dirname, 'packages', 'demo-web/src/index.js'),
+            dist: path.resolve(__dirname, 'dist', 'demo-web'),
             devServer: {
                 client: {
                     overlay: false,
@@ -174,6 +174,9 @@ packer({
             noParse: [require.resolve('typescript/lib/typescript.js')],
         },
     },
+    backends: {
+        // demoServer: {},
+    },
     packages: {
         // the keys are the commonjs names that is applied to externals
         // this is the same as `@babel/plugin-transform-modules-commonjs` applies
@@ -183,11 +186,36 @@ packer({
             entry: path.resolve(__dirname, 'packages', 'ui-schema/src/'),
             babelTargets: legacyBabelTargets,
         },
-        uiSchemaPro: {
-            name: '@ui-schema/pro',
-            root: path.resolve(__dirname, 'packages', 'ui-schema-pro'),
-            entry: path.resolve(__dirname, 'packages', 'ui-schema-pro/src/'),
+        uiSchemaSystem: {
+            name: '@ui-schema/system',
+            root: path.resolve(__dirname, 'packages', 'uis-system'),
+            entry: path.resolve(__dirname, 'packages', 'uis-system/src/'),
         },
+        uiSchemaReact: {
+            name: '@ui-schema/react',
+            root: path.resolve(__dirname, 'packages', 'uis-react'),
+            entry: path.resolve(__dirname, 'packages', 'uis-react/src/'),
+        },
+        uiSchemaReactJsonSchema: {
+            name: '@ui-schema/react-json-schema',
+            root: path.resolve(__dirname, 'packages', 'uis-react-json-schema'),
+            entry: path.resolve(__dirname, 'packages', 'uis-react-json-schema/src/'),
+        },
+        uiSchemaJsonSchema: {
+            name: '@ui-schema/json-schema',
+            root: path.resolve(__dirname, 'packages', 'uis-json-schema'),
+            entry: path.resolve(__dirname, 'packages', 'uis-json-schema/src/'),
+        },
+        uiSchemaJsonPointer: {
+            name: '@ui-schema/json-pointer',
+            root: path.resolve(__dirname, 'packages', 'uis-json-pointer'),
+            entry: path.resolve(__dirname, 'packages', 'uis-json-pointer/src/'),
+        },
+        /*uiSchemaPro: {
+            name: '@ui-schema/pro',
+            root: path.resolve(__dirname, 'packages', 'uis-pro'),
+            entry: path.resolve(__dirname, 'packages', 'uis-pro/src/'),
+        },*/
         uiSchemaDictionary: {
             name: '@ui-schema/dictionary',
             root: path.resolve(__dirname, 'packages', 'dictionary'),
@@ -200,7 +228,7 @@ packer({
             entry: path.resolve(__dirname, 'packages', 'ds-material/src/'),
             babelTargets: legacyBabelTargets,
         },
-        dsBootstrap: {
+        /*dsBootstrap: {
             name: '@ui-schema/ds-bootstrap',
             root: path.resolve(__dirname, 'packages', 'ds-bootstrap'),
             entry: path.resolve(__dirname, 'packages', 'ds-bootstrap/src/'),
@@ -230,7 +258,7 @@ packer({
             name: '@ui-schema/material-dnd',
             root: path.resolve(__dirname, 'packages', 'material-dnd'),
             entry: path.resolve(__dirname, 'packages', 'material-dnd/src/'),
-        },
+        },*/
     },
 }, __dirname, {
     afterEsModules: (packages, pathBuild) => {

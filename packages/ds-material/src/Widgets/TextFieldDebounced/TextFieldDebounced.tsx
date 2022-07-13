@@ -3,22 +3,23 @@ import TextField from '@mui/material/TextField'
 import { InputProps } from '@mui/material/Input'
 import { useUID } from 'react-uid'
 import InputAdornment from '@mui/material/InputAdornment'
-import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
-import { mapSchema } from '@ui-schema/ui-schema/Utils/schemaToNative'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
-import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/schemaTypeIs'
+import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/system/schemaTypeIs'
 import { NumberRendererProps, StringRendererProps, TextRendererProps } from '@ui-schema/ds-material/Widgets/TextField'
-import { WidgetProps, WithScalarValue } from '@ui-schema/ui-schema'
-import { useDebounceValue } from '@ui-schema/ui-schema/Utils/useDebounceValue'
-import { forbidInvalidNumber, MuiWidgetBinding } from '@ui-schema/ds-material'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WithScalarValue } from '@ui-schema/react/UIStore'
+import { useDebounceValue } from '@ui-schema/react/Utils/useDebounceValue'
+import { forbidInvalidNumber, InfoRendererType, MuiWidgetBinding } from '@ui-schema/ds-material'
 
 export interface StringRendererDebouncedProps {
     onKeyPress?: StringRendererProps['onKeyPress']
     debounceTime?: number
 }
 
-export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>(
+export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>> = WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>>>(
     {
         type,
         multiline,
@@ -52,7 +53,7 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
 
     const format = schema.get('format')
 
-    inputProps = mapSchema(inputProps, schema)
+    inputProps = schemaRulesToNative(inputProps, schema)
 
     const hideTitle = schema.getIn(['view', 'hideTitle'])
 
@@ -67,8 +68,8 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
     }
     return <React.Fragment>
         <TextField
-            label={hideTitle ? undefined : <TransTitle schema={schema} storeKeys={storeKeys}/>}
-            aria-label={hideTitle ? <TransTitle schema={schema} storeKeys={storeKeys}/> as unknown as string : undefined}
+            label={hideTitle ? undefined : <TranslateTitle schema={schema} storeKeys={storeKeys}/>}
+            aria-label={hideTitle ? <TranslateTitle schema={schema} storeKeys={storeKeys}/> as unknown as string : undefined}
             // changing `type` to `text`, to be able to change invalid data
             type={(format || (typeof bounceVal.value === 'string' && type === 'number' ? 'text' : type)) as InputProps['type']}
             disabled={schema.get('readOnly') as boolean | undefined}

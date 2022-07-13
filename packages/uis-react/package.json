@@ -1,0 +1,61 @@
+{
+    "name": "@ui-schema/react",
+    "version": "0.0.1",
+    "private": true,
+    "description": "JSON-Schema based UI and Form Generator for React, for any Design-System",
+    "homepage": "https://ui-schema.bemit.codes",
+    "author": "Michael Becker <michael@bemit.codes>",
+    "license": "MIT",
+    "keywords": [
+        "ui-schema",
+        "json-schema",
+        "react",
+        "reactjs",
+        "react-component",
+        "react-native",
+        "design-system",
+        "ui-library",
+        "ux",
+        "ui",
+        "form-generator",
+        "react",
+        "design-system"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ui-schema/ui-schema.git",
+        "directory": "packages/uis-react"
+    },
+    "bugs": {
+        "url": "https://github.com/ui-schema/ui-schema/issues"
+    },
+    "main": "index.js",
+    "module": "esm/index.js",
+    "scripts": {
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*",
+        "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
+    },
+    "devDependencies": {
+        "@ui-schema/system": "~0.0.1",
+        "@ui-schema/json-schema": "~0.0.1",
+        "immutable": "^4.0.0",
+        "@types/react": "^17.0",
+        "react": "^17.0",
+        "react-dom": "^17.0"
+    },
+    "peerDependencies": {
+        "@ui-schema/system": "~0.0.1",
+        "@ui-schema/json-schema": "~0.0.1",
+        "immutable": "^4.0.0",
+        "react": "^16.8 || ^17.0 || ^18.0",
+        "@types/react": "^16.8 || ^17.0 || ^18.0"
+    },
+    "peerDependenciesMeta": {
+        "@types/react": {
+            "optional": true
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

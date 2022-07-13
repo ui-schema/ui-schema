@@ -1,18 +1,20 @@
-import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { List, Map } from 'immutable'
-import { beautifyKey, getTranslatableEnum, StoreKeys, tt } from '@ui-schema/ui-schema'
+import { getTranslatableEnum } from '@ui-schema/system/getTranslatableEnum'
+import { StoreKeys } from '@ui-schema/react/UIStore'
+import { beautifyKey, tt } from '@ui-schema/system/Utils/beautify'
 
 export interface OptionValueSchema<V = string | number> {
     value: V
     text: string
     fallback: string
     context: any
-    schema: StoreSchemaType | undefined
+    schema: UISchemaMap | undefined
 }
 
 export const useOptionsFromSchema = <V = string | number>(
     storeKeys: StoreKeys,
-    schema: StoreSchemaType | undefined,
+    schema: UISchemaMap | undefined,
 ): {
     enumValues: List<V> | undefined
     valueSchemas: List<OptionValueSchema> | undefined

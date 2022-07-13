@@ -2,12 +2,15 @@ import React from 'react'
 import FormControl from '@mui/material/FormControl'
 import Grid from '@mui/material/Grid'
 import FormLabel from '@mui/material/FormLabel'
-import { TransTitle, StoreKeys, WidgetProps, WithOnChange } from '@ui-schema/ui-schema'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { StoreKeys, WithOnChange } from '@ui-schema/react/UIStore'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
+import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { GenericListFooterProps, GenericListItemProps, GenericListItemSharedProps } from '@ui-schema/ds-material/BaseComponents'
 import Box from '@mui/material/Box'
 import { GridSpacing } from '@mui/material/Grid/Grid'
+import { InfoRendererType } from '@ui-schema/ds-material/Component/InfoRenderer'
 
 export interface GenericListContentProps extends ListButtonOverwrites {
     btnAddShowLabel?: boolean
@@ -21,7 +24,7 @@ export interface GenericListContentProps extends ListButtonOverwrites {
     listSpacing?: GridSpacing
 }
 
-export const GenericListContent = <P extends WidgetProps<MuiWidgetBinding>>(
+export const GenericListContent = <P extends WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>>>(
     {
         storeKeys, schemaKeys, schema, listSize, onChange,
         showValidity, valid, errors, required, level, widgets,
@@ -54,7 +57,7 @@ export const GenericListContent = <P extends WidgetProps<MuiWidgetBinding>>(
             <Box mb={1}>
                 <Box mb={1}>
                     <FormLabel component="legend">
-                        <TransTitle schema={schema} storeKeys={storeKeys}/>
+                        <TranslateTitle schema={schema} storeKeys={storeKeys}/>
                     </FormLabel>
                 </Box>
 

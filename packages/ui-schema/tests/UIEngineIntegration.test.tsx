@@ -10,7 +10,7 @@ import {
 } from '@testing-library/jest-dom/matchers'
 import { List } from 'immutable'
 import { MockWidgets } from './MockSchemaProvider.mock'
-import { createStore, extractValue, UIStoreProvider, WithValue } from '@ui-schema/ui-schema/UIStore'
+import { createStore, extractValue, UIStoreProvider, WithValue } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
 import {
@@ -20,7 +20,7 @@ import {
     PluginSimpleStack, WidgetProps,
 } from '@ui-schema/ui-schema'
 import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta'
-import { validators } from '@ui-schema/ui-schema/Validators'
+import { validators } from '@ui-schema/json-schema/Validators'
 import { PluginStack, NextPluginRenderer } from '@ui-schema/ui-schema/PluginStack'
 import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter/isInvalid'
 import { relTranslator } from '@ui-schema/ui-schema/Translate/relT'
@@ -44,7 +44,7 @@ const widgets = MockWidgets
 
 // eslint-disable-next-line react/display-name
 widgets.GroupRenderer = ({children}): React.ReactElement => <div className={'group-renderer'}>{children}</div>
-widgets.pluginStack = [
+widgets.widgetPlugins = [
     // plugin to have every widget in it's own div - to query against in tests
     (props) => <div><NextPluginRenderer {...props}/></div>,
     ReferencingHandler,

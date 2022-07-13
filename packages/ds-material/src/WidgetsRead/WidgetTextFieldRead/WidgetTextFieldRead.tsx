@@ -2,10 +2,13 @@ import React, { MouseEventHandler } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { useUIMeta, WidgetProps, WithScalarValue } from '@ui-schema/ui-schema'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
-import { UIMetaReadContextType } from '@ui-schema/ui-schema/UIMetaReadContext'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WithScalarValue } from '@ui-schema/react/UIStore'
+import { useUIMeta } from '@ui-schema/react/UIMeta'
+import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
+import { InfoRendererType } from '@ui-schema/ds-material/Component'
 
 export interface StringRendererBaseProps {
     onClick?: MouseEventHandler<HTMLDivElement> | undefined
@@ -16,7 +19,7 @@ export interface StringRendererReadProps extends StringRendererBaseProps {
     style?: React.CSSProperties
 }
 
-export const StringRendererRead = <P extends WidgetProps<MuiWidgetBinding> & UIMetaReadContextType = WidgetProps<MuiWidgetBinding> & UIMetaReadContextType>(
+export const StringRendererRead = <P extends WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>> & UIMetaReadContextType>(
     {
         multiline,
         storeKeys, schema, value,

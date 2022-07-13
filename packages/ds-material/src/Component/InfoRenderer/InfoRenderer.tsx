@@ -1,4 +1,6 @@
-import { StoreKeys, StoreSchemaType, WidgetProps } from '@ui-schema/ui-schema'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { StoreKeys } from '@ui-schema/react/UIStore'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
@@ -16,12 +18,14 @@ export interface InfoRendererProps {
     dense?: boolean
     align?: 'right' | 'left'
 
-    schema: StoreSchemaType
+    schema: UISchemaMap
     storeKeys: StoreKeys
 
     valid?: boolean
     errors?: WidgetProps['errors']
 }
+
+export type InfoRendererType<P extends InfoRendererProps = InfoRendererProps> = React.ComponentType<P>
 
 export const InfoRenderer: React.ComponentType<InfoRendererProps> = (
     {

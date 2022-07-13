@@ -1,4 +1,7 @@
-import { onChangeHandler, StoreKeys, StoreSchemaType, Translator, WidgetProps, WithValue } from '@ui-schema/ui-schema'
+import { onChangeHandler, StoreKeys, WithValue } from '@ui-schema/react/UIStore'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { Translator } from '@ui-schema/system/Translator'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import React from 'react'
 import { List, OrderedMap } from 'immutable'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component'
@@ -39,8 +42,8 @@ export interface TablePaginationActionsProps {
 export interface TableHeaderProps {
     validItemSchema: boolean
     dense: boolean
-    schema: StoreSchemaType
-    itemsSchema: StoreSchemaType
+    schema: UISchemaMap
+    itemsSchema: UISchemaMap
     storeKeys: StoreKeys
     readOnly: boolean
     uid: string

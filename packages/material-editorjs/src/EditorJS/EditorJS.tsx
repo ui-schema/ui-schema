@@ -2,7 +2,7 @@ import React from 'react'
 import ReactEditorJs from 'react-editor-js'
 import EditorJSType, { API, OutputData, EditorConfig } from '@editorjs/editorjs'
 import { StoreKeys, StoreSchemaType, WithValue } from '@ui-schema/ui-schema'
-import { extractValue } from '@ui-schema/ui-schema/UIStore'
+import { extractValue } from '@ui-schema/react/UIStore'
 import { List, Map, OrderedMap } from 'immutable'
 import { fromJSOrdered } from '@ui-schema/ui-schema/Utils/createMap/createMap'
 

@@ -1,12 +1,14 @@
 import React from 'react'
 import { OrderedMap } from 'immutable'
 import { useUID } from 'react-uid'
-import {
-    StoreKeyType, StoreSchemaType, WidgetProps, ValidatorErrorsType, WithValidity,
-    TransTitle, PluginStack, memo,
-    extractValidity, StoreKeys,
-} from '@ui-schema/ui-schema'
-import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { extractValidity, StoreKeys, WithValidity, StoreKeyType } from '@ui-schema/react/UIStore'
+import { isInvalid } from '@ui-schema/react/ValidityReporter'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import Accordion, { AccordionProps } from '@mui/material/Accordion'
 import Box from '@mui/material/Box'
@@ -14,7 +16,8 @@ import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import Typography, { TypographyProps } from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
+import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { InfoRendererType } from '@ui-schema/ds-material/Component/InfoRenderer'
 
 export interface AccordionStackBaseProps {
     isOpen: boolean
@@ -22,7 +25,7 @@ export interface AccordionStackBaseProps {
     SummaryTitle?: AccordionsRendererProps['SummaryTitle']
 }
 
-const AccordionStackBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & AccordionStackBaseProps & WithValidity> = (
+const AccordionStackBase: React.ComponentType<WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>> & AccordionStackBaseProps & WithValidity> = (
     {validity, SummaryTitle, ...props},
 ) => {
     const uid = useUID()
@@ -60,7 +63,7 @@ const AccordionStackBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & Ac
                     isOpen={isOpen}
                 /> :
                 <Typography color={!showValidity || (!childInvalid && valid) ? undefined : 'error'} variant={titleVariant}>
-                    <TransTitle schema={schema} storeKeys={storeKeys}/>
+                    <TranslateTitle schema={schema} storeKeys={storeKeys}/>
                 </Typography>}
         </AccordionSummary>
         <AccordionDetails style={{flexDirection: 'column'}}>
@@ -72,7 +75,7 @@ const AccordionStackBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & Ac
                     />
                 </Box> : undefined}
 
-            <PluginStack
+            <WidgetEngine
                 {...props}
                 schema={schema}
                 parentSchema={parentSchema}
@@ -95,8 +98,8 @@ export interface AccordionsRendererProps {
         childInvalid: boolean
         valid: boolean
         isOpen: boolean
-        schema: StoreSchemaType
-        parentSchema: StoreSchemaType | undefined
+        schema: UISchemaMap
+        parentSchema: UISchemaMap | undefined
         storeKeys: StoreKeys
     }>
 }
@@ -113,7 +116,7 @@ export const AccordionsRendererBase = <W extends WidgetProps<MuiWidgetBinding> =
     const properties = schema.get('properties') as OrderedMap<string, any> | undefined
 
     return <>
-        {properties?.map((childSchema: StoreSchemaType, childKey: StoreKeyType): React.ReactElement =>
+        {properties?.map((childSchema: UISchemaMap, childKey: StoreKeyType): React.ReactElement =>
             <AccordionStack
                 key={childKey}
                 {...props}

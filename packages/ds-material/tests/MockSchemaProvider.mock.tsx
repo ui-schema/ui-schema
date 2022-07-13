@@ -2,24 +2,24 @@
  * @jest-environment jsdom
  */
 import React from 'react'
-import { Translator } from '@ui-schema/ui-schema/Translate/makeTranslator'
-import { createEmptyStore, UIStoreProvider } from '@ui-schema/ui-schema/UIStore'
-import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap'
-import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
-import { WidgetsBindingFactory } from '@ui-schema/ui-schema/WidgetsBinding'
-import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta'
-import { WidgetRenderer } from '@ui-schema/ui-schema/WidgetRenderer'
-import { relTranslator } from '@ui-schema/ui-schema/Translate'
-import { PluginStack } from '@ui-schema/ui-schema/PluginStack'
-import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
-import { UIStoreActions } from '@ui-schema/ui-schema/UIStoreActions'
+import { Translator } from '@ui-schema/system/Translator'
+import { createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
+import { createOrderedMap } from '@ui-schema/react/Utils/createMap'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { UIMetaProvider } from '@ui-schema/react/UIMeta'
+import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
+import { translateRelative } from '@ui-schema/system/TranslatorRelative'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
+import { storeUpdater } from '@ui-schema/react/storeUpdater'
+import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 
 export const MockWidgets: WidgetsBindingFactory = {
     ErrorFallback: () => null,
     GroupRenderer: () => null,
     WidgetRenderer: WidgetRenderer,
-    pluginStack: [],
-    pluginSimpleStack: [],
+    widgetPlugins: [],
+    schemaPlugins: [],
     types: {},
     custom: {},
 }
@@ -29,7 +29,7 @@ export const MockSchema = createOrderedMap({type: 'object'})
 export const MockSchemaProvider: React.ComponentType<{
     t?: Translator
     widgets: WidgetsBindingFactory
-    schema: StoreSchemaType
+    schema: UISchemaMap
 }> = (
     {t, widgets, schema}
 ) => {
@@ -43,13 +43,13 @@ export const MockSchemaProvider: React.ComponentType<{
     return <UIMetaProvider
         // @ts-ignore
         widgets={widgets}
-        t={t || relTranslator}
+        t={t || translateRelative}
     >
         <UIStoreProvider
             store={store}
             onChange={onChange}
         >
-            <PluginStack isRoot schema={schema}/>
+            <WidgetEngine isRoot schema={schema}/>
         </UIStoreProvider>
     </UIMetaProvider>
 }
@@ -64,7 +64,7 @@ export const MockSchemaMetaProvider: React.ComponentType<React.PropsWithChildren
     return <UIMetaProvider
         // @ts-ignore
         widgets={widgets}
-        t={t || relTranslator}
+        t={t || translateRelative}
     >
         {children}
     </UIMetaProvider>

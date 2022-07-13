@@ -26,4 +26,4 @@ By committing your code/creating a pull request to this repository you agree to 
 
 ***
 
-Created by [Michael Becker](https://mlbr.xyz)
+Created by [Michael Becker](https://i-am-digital.eu)

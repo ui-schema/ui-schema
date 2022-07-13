@@ -1,13 +1,13 @@
 import React from 'react'
 import Grid, { GridSize } from '@mui/material/Grid'
-import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
-import { getNextPlugin, PluginProps } from '@ui-schema/ui-schema/PluginStack'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { getNextPlugin, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { OrderedMap } from 'immutable'
-import { GroupRendererProps } from '@ui-schema/ui-schema'
+import { GroupRendererProps } from '@ui-schema/react/Widgets'
 import { GridSpacing } from '@mui/material/Grid/Grid'
 
 export const SchemaGridItem: React.ComponentType<React.PropsWithChildren<{
-    schema: StoreSchemaType
+    schema: UISchemaMap
     defaultMd?: GridSize
     style?: React.CSSProperties
     className?: string
@@ -60,7 +60,7 @@ export const GroupRenderer: React.ComponentType<React.PropsWithChildren<GroupRen
             {children}
         </Grid>
 
-export const SchemaGridHandler: React.ComponentType<PluginProps> = (props) => {
+export const SchemaGridHandler = <P extends WidgetPluginProps>(props: P): React.ReactElement => {
     const {schema, noGrid: noGridProp, isVirtual, currentPluginIndex} = props
     const next = currentPluginIndex + 1
     const Plugin = getNextPlugin(next, props.widgets)

@@ -1,5 +1,5 @@
 import React from 'react'
-import { WidgetProps } from '@ui-schema/ui-schema'
+import { WidgetProps } from '@ui-schema/react/Widgets'
 import { StringRendererProps, NumberRendererProps, TextRendererProps } from '@ui-schema/ds-material/Widgets/TextField'
 
 export function StringIconRenderer<P extends WidgetProps>(props: P & StringRendererProps): React.ReactElement

@@ -10,4 +10,4 @@ import { PluginType } from '@ui-schema/ui-schema/PluginStack/Plugin'
  * - PluginSimpleStack
  * - ValidityReporter
  */
-export const pluginStack: Array<PluginType>
+export const widgetPlugins: Array<PluginType>

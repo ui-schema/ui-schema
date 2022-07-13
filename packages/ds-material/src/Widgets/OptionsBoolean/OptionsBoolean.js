@@ -2,7 +2,7 @@ import React from 'react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import {grey} from '@mui/material/colors';
-import {TransTitle} from '@ui-schema/ui-schema';
+import {TranslateTitle} from '@ui-schema/react/TranslateTitle';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component';
 import {useTheme} from '@mui/material/styles';
 
@@ -55,7 +55,7 @@ export const BoolRenderer = (
             <FormControlLabel
                 disabled={schema.get('readOnly')}
                 control={control}
-                label={<><TransTitle schema={schema} storeKeys={storeKeys}/>{required ? ' *' : ''}</>}
+                label={<><TranslateTitle schema={schema} storeKeys={storeKeys}/>{required ? ' *' : ''}</>}
             />}
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </>

@@ -1,5 +1,10 @@
 import React from 'react'
-import { StoreKeyType, memo, PluginStack, SchemaTypesType, schemaTypeToDistinct, WidgetProps, WithValue } from '@ui-schema/ui-schema'
+import { StoreKeyType, WithValue } from '@ui-schema/react/UIStore'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
+import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
+import { schemaTypeToDistinct } from '@ui-schema/system/schemaTypeToDistinct'
 import { List, OrderedMap, Map } from 'immutable'
 import { Theme } from '@mui/material/styles/createTheme'
 import TableCell from '@mui/material/TableCell'
@@ -18,7 +23,7 @@ const useStyles = (theme: Theme, {dense}: { dense: boolean }): SxProps => ({
     overflow: 'hidden',
 })
 
-const PluginStackMemo = memo(PluginStack)
+const WidgetEngineMemo = memo(WidgetEngine)
 
 export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps & Pick<WithValue, 'onChange'>> = (
     {
@@ -58,7 +63,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
     return <TableRow>
         {cellSchema.map((item, j) =>
             item.get('hidden') === true ?
-                <PluginStackMemo
+                <WidgetEngineMemo
                     key={j}
                     storeKeys={storeKeys.push(j as StoreKeyType)}
                     schema={item}
@@ -74,7 +79,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                     {
                         schemaTypeToDistinct(item.get('type')) === 'object' ?
                             <GroupRenderer level={0} schema={item} storeKeys={storeKeys}>
-                                <PluginStackMemo<{ [k: string]: any }>
+                                <WidgetEngineMemo<{ [k: string]: any }>
                                     showValidity={showValidity}
                                     storeKeys={storeKeys.push(j as StoreKeyType)}
                                     schema={item.setIn(['view', 'hideTitle'], true)}
@@ -90,7 +95,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                                     // labelledBy={'uis-' + uid + '-tbl-' + j}
                                 />
                             </GroupRenderer> :
-                            <PluginStackMemo<{ [k: string]: any }>
+                            <WidgetEngineMemo<{ [k: string]: any }>
                                 showValidity={showValidity}
                                 storeKeys={storeKeys.push(j as StoreKeyType)}
                                 schema={item.setIn(['view', 'hideTitle'], true)}

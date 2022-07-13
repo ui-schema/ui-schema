@@ -5,13 +5,19 @@ import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import { List } from 'immutable'
-import { TransTitle, Trans, extractValue, memo, WidgetProps, StoreKeys, WithValue, StoreSchemaType } from '@ui-schema/ui-schema'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { StoreKeys, WithValue, extractValue } from '@ui-schema/react/UIStore'
+import { Translate } from '@ui-schema/react/Translate'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { useUID } from 'react-uid'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
+import { sortScalarList } from '@ui-schema/system/Utils/sortScalarList'
+import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { SwitchBaseProps } from '@mui/material/internal/SwitchBase'
 import { OptionValueSchema, useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
+import { InfoRendererType } from '@ui-schema/ds-material/Component'
 
 const OptionCheck: React.ComponentType<{
     disabled?: boolean
@@ -40,7 +46,7 @@ const OptionsCheckValuesBase: React.ComponentType<{
     storeKeys: StoreKeys
     required?: boolean
     valueSchemas?: List<OptionValueSchema>
-    schema: StoreSchemaType
+    schema: UISchemaMap
     disabled?: boolean
 } & WithValue> = (
     {
@@ -69,8 +75,8 @@ const OptionsCheckValuesBase: React.ComponentType<{
                         required,
                     })
                 }}
-                label={<Trans
-                    schema={schema?.get('t') as unknown as StoreSchemaType}
+                label={<Translate
+                    schema={schema?.get('t') as unknown as UISchemaMap}
                     text={text}
                     context={context}
                     fallback={fallback}
@@ -86,13 +92,13 @@ export interface OptionsCheckRendererProps {
     row?: boolean
 }
 
-export const OptionsCheck: React.ComponentType<WidgetProps<MuiWidgetBinding> & OptionsCheckRendererProps> = (
+export const OptionsCheck = <P extends WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>> & OptionsCheckRendererProps>(
     {
         schema, storeKeys, showValidity, valid, required, errors,
         row, widgets,
-    }
-) => {
-    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as StoreSchemaType)
+    }: P,
+): React.ReactElement => {
+    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as UISchemaMap)
     const InfoRenderer = widgets?.InfoRenderer
     return <FormControl
         required={required} error={!valid && showValidity} component="fieldset" fullWidth
@@ -100,7 +106,7 @@ export const OptionsCheck: React.ComponentType<WidgetProps<MuiWidgetBinding> & O
         disabled={schema.get('readOnly') as boolean}
     >
         <FormLabel component="legend" style={{width: '100%'}}>
-            <TransTitle schema={schema} storeKeys={storeKeys}/>
+            <TranslateTitle schema={schema} storeKeys={storeKeys}/>
             {InfoRenderer && schema?.get('info') ?
                 <InfoRenderer
                     schema={schema} variant={'icon'} openAs={'modal'}

@@ -1,7 +1,7 @@
 import React from 'react';
 import InputAdornment from '@mui/material/InputAdornment';
 import {NumberRenderer, StringRenderer, TextRenderer} from '@ui-schema/ds-material/Widgets/TextField';
-import {Trans} from '@ui-schema/ui-schema';
+import {Translate} from '@ui-schema/react/Translate';
 
 const useComputeIcon = (schema, baseInputProps) => {
     const icon = schema.getIn(['view', 'icon']);
@@ -11,13 +11,13 @@ const useComputeIcon = (schema, baseInputProps) => {
         let inputProps = baseInputProps || {};
         if(icon && (typeof iconEnd === 'boolean' && !iconEnd || typeof iconEnd !== 'boolean')) {
             inputProps['startAdornment'] = <InputAdornment position="start">
-                <Trans text={'icons.' + icon}/>
+                <Translate text={'icons.' + icon}/>
             </InputAdornment>;
         }
 
         if(typeof iconEnd !== 'boolean' && iconEnd) {
             inputProps['endAdornment'] = <InputAdornment position="end">
-                <Trans text={'icons.' + iconEnd}/>
+                <Translate text={'icons.' + iconEnd}/>
             </InputAdornment>;
         }
 

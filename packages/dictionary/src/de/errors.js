@@ -14,15 +14,15 @@ import {
     ERROR_MIN_CONTAINS,
     ERROR_MAX_CONTAINS,
     ERROR_ADDITIONAL_PROPERTIES,
-} from '@ui-schema/ui-schema/Validators';
-import {typeToString} from '@ui-schema/dictionary/Utils/typeToString';
+} from '@ui-schema/json-schema/Validators';
+import {typeToString} from '@ui-schema/dictionary/typeToString';
 
 export const errors = {
     [ERROR_NOT_SET]: 'Bitte fülle das Feld aus',
     [ERROR_CONST_MISMATCH]: (context) => `Erwartet wird der Wert: ${context.get('const')}`,
     [ERROR_ENUM_MISMATCH]: (context) => `Bitte wähle einen validen Eintrag, z.B.: ${context.get('enum')}`,
     // receives `schema` as context, e.g. use `context.get('oneOf')` to add more infos:
-    [ERROR_ONE_OF_INVALID]: () => `Bitte wähle einen validen Eintrag`,
+    [ERROR_ONE_OF_INVALID]: () => 'Bitte wähle einen validen Eintrag',
     [ERROR_DUPLICATE_ITEMS]: 'Entferne Duplikate aus der Liste',
     [ERROR_NOT_FOUND_CONTAINS]: 'Minimum ein Eintrag muss wie spezifiziert existieren',
     [ERROR_MIN_LENGTH]: (context) => `Min. Länge: ${typeof context.get('min') !== 'undefined' ? context.get('min') : typeof context.get('exclMin') !== 'undefined' ? context.get('exclMin') + 1 : '-'}`,

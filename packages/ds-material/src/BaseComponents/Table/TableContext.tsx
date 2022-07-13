@@ -1,5 +1,6 @@
 import React from 'react'
-import { getDisplayName, WidgetProps } from '@ui-schema/ui-schema'
+import { getDisplayName } from '@ui-schema/react/Utils/memo'
+import { WidgetProps } from '@ui-schema/react/Widgets'
 
 export interface TableContextType {
     valid: WidgetProps['valid']

@@ -6,9 +6,9 @@ import {OptionsCheck} from './Widgets/OptionsCheck';
 import {OptionsRadio} from './Widgets/OptionsRadio';
 import {SimpleList} from './Widgets/SimpleList';
 import {GroupRenderer} from './Grid';
-import {pluginStack} from './pluginStack';
-import {WidgetRenderer} from '@ui-schema/ui-schema/WidgetRenderer';
-import {validators} from '@ui-schema/ui-schema/Validators/validators';
+import {widgetPlugins} from './widgetPlugins';
+import {WidgetRenderer} from '@ui-schema/react/WidgetRenderer';
+import {validators} from '@ui-schema/json-schema/Validators/validators';
 
 const MyFallbackComponent = ({type, widget}) => (
     <div>
@@ -22,7 +22,7 @@ export const widgets = {
     ErrorFallback: MyFallbackComponent,
     GroupRenderer,
     WidgetRenderer,
-    pluginStack,
+    widgetPlugins,
     pluginSimpleStack: validators,
     types: {
         string: StringRenderer,

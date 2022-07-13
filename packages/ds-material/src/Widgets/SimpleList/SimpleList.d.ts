@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
-import { WithOnChange, WithValue } from '@ui-schema/ui-schema'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WithOnChange, WithValue } from '@ui-schema/react/UIStore'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component'
 
 export type SimpleListItemProps = Pick<WidgetProps, 'showValidity' | 'schema' | 'storeKeys' | 'notDeletable' | 'readOnly' | 'required' | 'onChange' | 'level' | 'index'>

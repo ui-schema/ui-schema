@@ -1,0 +1,54 @@
+{
+    "name": "@ui-schema/pro",
+    "version": "0.0.12",
+    "description": "Components and Utilities for more advanced usages of UI-Schema",
+    "homepage": "https://ui-schema.bemit.codes/docs/pro",
+    "author": "Michael Becker <michael@bemit.codes>",
+    "license": "MIT",
+    "keywords": [
+        "ui-schema",
+        "json-schema",
+        "react",
+        "reactjs",
+        "react-component",
+        "ui-library",
+        "ux",
+        "ui",
+        "form-generator",
+        "react"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ui-schema/ui-schema.git",
+        "directory": "packages/uis-pro"
+    },
+    "bugs": {
+        "url": "https://github.com/ui-schema/ui-schema/issues"
+    },
+    "main": "index.js",
+    "module": "esm/index.js",
+    "scripts": {
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/uis-pro/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*",
+        "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
+    },
+    "devDependencies": {
+        "@types/react": "^17.0",
+        "immutable": "^4.0.0",
+        "react": "^17.0",
+        "react-dom": "^17.0"
+    },
+    "peerDependencies": {
+        "@ui-schema/ui-schema": "~0.4.0-alpha",
+        "immutable": "^4.0.0",
+        "react": "^16.8 || ^17.0 || ^18.0",
+        "@types/react": "^16.8 || ^17.0 || ^18.0"
+    },
+    "peerDependenciesMeta": {
+        "@types/react": {
+            "optional": true
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

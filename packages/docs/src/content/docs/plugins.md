@@ -56,7 +56,7 @@ import {
 } from '@ui-schema/ui-schema';
 
 const widgets = {
-    pluginStack: [
+    widgetPlugins: [
         // ... other plugins
         PluginSimpleStack, // executes the `pluginSimpleStack`
         ValidityReporter,  // after `PluginSimpleStack`
@@ -688,7 +688,7 @@ Uses the `ReferencingNetworkHandler` hook `useNetworkRef` to handle resolving, w
 >
 > Loads the first/root reference of a schema level, also done by `ReferencingHandler`, but not beforehand parsing.
 >
-> **Not added in default `pluginStack`, needs the additional provider `UIApiProvider`**
+> **Not added in default `widgetPlugins`, needs the additional provider `UIApiProvider`**
 
 Plugin allows loading schemas from external APIs, uses the [UIApi](/docs/core-uiapi#uiapi) component to handle the schema loading and caching.
 
@@ -699,9 +699,9 @@ Plugin allows loading schemas from external APIs, uses the [UIApi](/docs/core-ui
 Add to plugin stack:
 
 ```jsx
-const pluginStack = [...widgets.pluginStack]
-pluginStack.splice(1, 0, ReferencingNetworkHandler)
-widgets.pluginStack = pluginStack
+const widgetPlugins = [...widgets.widgetPlugins]
+widgetPlugins.splice(1, 0, ReferencingNetworkHandler)
+widgets.widgetPlugins = widgetPlugins
 ```
 
 ### InjectSplitSchemaPlugin
@@ -719,10 +719,10 @@ import { widgets } from '@ui-schema/ds-material'
 import { InjectSplitSchemaPlugin, InjectSplitSchemaRootContext } from '@ui-schema/ui-schema/Plugins/InjectSplitSchemaPlugin'
 
 const customWidgets = {...widgets}
-const pluginStack = [...customWidgets.pluginStack]
+const widgetPlugins = [...customWidgets.widgetPlugins]
 // the InjectSplitSchema should be after the ReferencingHandler
-pluginStack.splice(1, 0, InjectSplitSchemaPlugin)
-customWidgets.pluginStack = pluginStack
+widgetPlugins.splice(1, 0, InjectSplitSchemaPlugin)
+customWidgets.widgetPlugins = widgetPlugins
 
 const schemaData = createOrderedMap({
     // id is not needed when using the `rootContext` prop
@@ -793,7 +793,7 @@ const Main = () => {
 
 Default plugin to extract the store values for one schema-level, using the HOC `extractValue`.
 
-**Included in `widgets.pluginStack` by default.**
+**Included in `widgets.widgetPlugins` by default.**
 
 > the PluginProps/extractValue typing is a bit unstable atm. [issue #91](https://github.com/ui-schema/ui-schema/issues/91)
 

@@ -3,22 +3,22 @@
  */
 import React from 'react'
 import { Translator } from '@ui-schema/ui-schema/Translate/makeTranslator'
-import { createEmptyStore, UIStoreProvider } from '@ui-schema/ui-schema/UIStore'
+import { createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
-import { WidgetsBindingFactory } from '@ui-schema/ui-schema/WidgetsBinding'
+import { WidgetsBindingFactory } from '@ui-schema/react/WidgetsBinding'
 import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta'
-import { WidgetRenderer } from '@ui-schema/ui-schema/WidgetRenderer'
+import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { relTranslator } from '@ui-schema/ui-schema/Translate'
 import { PluginStack } from '@ui-schema/ui-schema/PluginStack'
 import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
-import { UIStoreActions } from '@ui-schema/ui-schema/UIStoreActions'
+import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 
 export const MockWidgets: WidgetsBindingFactory = {
     ErrorFallback: () => null,
     GroupRenderer: () => null,
     WidgetRenderer: WidgetRenderer,
-    pluginStack: [],
+    widgetPlugins: [],
     pluginSimpleStack: [],
     types: {},
     custom: {},

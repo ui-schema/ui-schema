@@ -4,7 +4,8 @@ import FormLabel from '@mui/material/FormLabel';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
-import {TransTitle, Trans} from '@ui-schema/ui-schema/Translate';
+import {Translate} from '@ui-schema/react/Translate';
+import {TranslateTitle} from '@ui-schema/react/TranslateTitle';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText';
 import {useOptionsFromSchema} from '@ui-schema/ds-material/Utils'
 
@@ -23,7 +24,7 @@ const OptionsRadio = ({
         disabled={schema.get('readOnly')}
     >
         <FormLabel component="legend" style={{width: '100%'}}>
-            <TransTitle schema={schema} storeKeys={storeKeys}/>
+            <TranslateTitle schema={schema} storeKeys={storeKeys}/>
             {InfoRenderer && schema?.get('info') ?
                 <InfoRenderer
                     schema={schema} variant={'icon'} openAs={'modal'}
@@ -51,7 +52,7 @@ const OptionsRadio = ({
                             })
                         }
                     />}
-                    label={<Trans
+                    label={<Translate
                         schema={schema?.get('t')}
                         text={text}
                         context={context}

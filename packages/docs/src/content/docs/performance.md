@@ -18,7 +18,7 @@ This ui renderer has multiple levels of performance optimization:
         - the root component accesses the hook, prepares the values, but doesn't render html by itself
         - this wraps another component which receives props and is a memoized function component
         - this wraps the actual component (e.g. `widget.RootRenderer`), and passes its props down and may decide on what to render based on the props
-        - only scalar value widgets get the value directly, for non-scalar values only the `pluginStack` receives the value - the widgets should use e.g. `extractValue`
+        - only scalar value widgets get the value directly, for non-scalar values only the `widgetPlugins` receives the value - the widgets should use e.g. `extractValue`
         - *all rendering widgets are wrapped like that*
     - if you introduce a hook in a widget it is advised that the producing HTML components are also made "dump"
         - pure without using a hook that relies on the onChange of the SchemaUIStore context
@@ -35,7 +35,7 @@ This ui renderer has multiple levels of performance optimization:
     - only the `store` immutable is changing, for each current field it's value is retrieved by the HOCs (e.g. `extractValue`) and pushed to the widget
     - core:
         - `PluginStack` not memoized, optimization in the wrapping level is mostly better
-            - since `0.3.0` the re-render is triggered within the `widgets.pluginStack` by e.g. `ExtractStorePlugin`
+            - since `0.3.0` the re-render is triggered within the `widgets.widgetPlugins` by e.g. `ExtractStorePlugin`
             - receives the widget/widget stack and is the internal entry for starting/nesting the schema with rendering the first `Plugin`
         - `ExtractStorePlugin` is memoized and injects the schema-level `value`/`internalValue`/`onChange` into the `props` for the next plugins in the stack
             - this component will re-render anytime something in the `store` changes

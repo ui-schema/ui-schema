@@ -1,18 +1,20 @@
 import React from 'react'
 import FormHelperText from '@mui/material/FormHelperText'
-import { Trans } from '@ui-schema/ui-schema/Translate/Trans'
-import { showValidity, Errors, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { Translate } from '@ui-schema/react/Translate'
+import { showValidity } from '@ui-schema/system/CommonTypings'
+import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 export interface ValidityHelperTextProps {
     showValidity: showValidity | undefined
-    errors?: Errors
-    schema: StoreSchemaType
+    errors?: ValidatorErrorsType
+    schema: UISchemaMap
     browserError?: Node | React.ReactElement
 }
 
 export interface LocaleHelperTextProps {
     text: string
-    schema: StoreSchemaType
+    schema: UISchemaMap
     context?: any
     error?: boolean
 }
@@ -23,7 +25,7 @@ export const LocaleHelperText: React.FC<LocaleHelperTextProps> = (
     },
 ) => {
     return <FormHelperText error={error}>
-        <Trans text={text} context={
+        <Translate text={text} context={
             context ? context.set('type', schema.get('type'))
                 .set('widget', schema.get('widget')) : undefined
         }/>

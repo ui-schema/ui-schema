@@ -34,7 +34,7 @@ A plugin or widget can use more than only it's own schema/store level in various
 
 Special entry point components start the UI Rendering, connecting to and/or creating some contexts & providers and/or relying on given props to do something, according to their definite position in `schema` and data (`storeKeys`).
 
-See [flowchart of @ui-schema/ui-schema](/docs/core#flowchart), textual example: `UIMetaProvider` > `UIStoreProvider` > `UIRootRenderer` > `widgets.RootRenderer` > `PluginStack` > optional `ErrorBoundary` with `widgets.ErrorFallback` > `widgets.pluginStack` including `widgets.simplePuginStack` > `WidgetRenderer` > widget matching > actual `Widget`.
+See [flowchart of @ui-schema/ui-schema](/docs/core#flowchart), textual example: `UIMetaProvider` > `UIStoreProvider` > `UIRootRenderer` > `widgets.RootRenderer` > `PluginStack` > optional `ErrorBoundary` with `widgets.ErrorFallback` > `widgets.widgetPlugins` including `widgets.simplePuginStack` > `WidgetRenderer` > widget matching > actual `Widget`.
 
 ### Happy Path
 

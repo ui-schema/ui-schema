@@ -126,7 +126,7 @@ import {createOrderedMap} from '@ui-schema/ui-schema/Utils/createMap';
 import {
     UIStoreProvider,
     createStore, storeUpdater,
-} from '@ui-schema/ui-schema/UIStore';
+} from '@ui-schema/react/UIStore';
 import {UIMetaProvider, useUIMeta} from '@ui-schema/ui-schema/UIMeta';
 import {injectPluginStack} from '@ui-schema/ui-schema/applyPluginStack';
 // basic in-schema translator / `t` keyword support
@@ -284,4 +284,4 @@ The icons in the badges of the readme's are either from [simpleicons](https://si
 
 ***
 
-Created by [Michael Becker](https://mlbr.xyz)
+Created by [Michael Becker](https://i-am-digital.eu)

@@ -1,15 +1,22 @@
 import React from 'react'
-import { beautifyKey, extractValue, memo, StoreSchemaType, Trans, tt, useUIMeta, WidgetProps, WithValue } from '@ui-schema/ui-schema'
+import { extractValue, WithValue } from '@ui-schema/react/UIStore'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { useUIMeta } from '@ui-schema/react/UIMeta'
+import { Translate } from '@ui-schema/react/Translate'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { beautifyKey, tt } from '@ui-schema/system/Utils/beautify'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
+import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { List, Map, OrderedMap } from 'immutable'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
-import { UIMetaReadContextType } from '@ui-schema/ui-schema/UIMetaReadContext'
+import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
 import Typography from '@mui/material/Typography'
+import { InfoRendererType } from '@ui-schema/ds-material/Component'
 
-export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue> = (
+export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>> & WithValue> = (
     {
         storeKeys, schema, value,
         showValidity, errors,
@@ -44,8 +51,8 @@ export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetBindi
                 oneOfValues.map((oneOfSchema) =>
                     <Chip
                         key={oneOfSchema.get('const')}
-                        label={<Trans
-                            schema={oneOfSchema.get('t') as unknown as StoreSchemaType}
+                        label={<Translate
+                            schema={oneOfSchema.get('t') as unknown as UISchemaMap}
                             text={oneOfSchema.get('title') as string || oneOfSchema.get('const') as string}
                             context={Map({'relative': List(['title'])})}
                             fallback={oneOfSchema.get('title') || beautifyKey(oneOfSchema.get('const') as string | number, oneOfSchema.get('tt') as tt)}

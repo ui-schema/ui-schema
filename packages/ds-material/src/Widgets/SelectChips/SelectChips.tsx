@@ -1,11 +1,16 @@
 import React from 'react'
-import { extractValue, memo, sortScalarList, StoreSchemaType, WidgetProps, WithValue } from '@ui-schema/ui-schema'
-import { Trans, TransTitle } from '@ui-schema/ui-schema/Translate'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { extractValue, WithValue } from '@ui-schema/react/UIStore'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { sortScalarList } from '@ui-schema/system/Utils/sortScalarList'
+import { Translate } from '@ui-schema/react/Translate'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
+import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { List } from 'immutable'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 
@@ -16,21 +21,21 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
         valid,
     }
 ) => {
-    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as StoreSchemaType)
+    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as UISchemaMap)
 
     const currentValue = (typeof value !== 'undefined' ? value : (List(schema.get('default') as string[]) || List())) as List<string>
 
     return <Box>
         <Typography color={showValidity && !valid ? 'error' : undefined}>
-            <TransTitle schema={schema} storeKeys={storeKeys}/>
+            <TranslateTitle schema={schema} storeKeys={storeKeys}/>
         </Typography>
 
         <Box mt={1} style={{display: 'flex', flexWrap: 'wrap'}}>
             {valueSchemas?.map(({value: itemValue, text, fallback, context, schema: itemSchema}) =>
                 <Chip
                     key={itemValue}
-                    label={<Trans
-                        schema={itemSchema?.get('t') as unknown as StoreSchemaType}
+                    label={<Translate
+                        schema={itemSchema?.get('t') as unknown as UISchemaMap}
                         text={text}
                         context={context}
                         fallback={fallback}

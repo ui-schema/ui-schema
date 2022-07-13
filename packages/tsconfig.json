@@ -68,11 +68,41 @@
             "@ui-schema/ui-schema/*": [
                 "ui-schema/src/*"
             ],
+            "@ui-schema/system": [
+                "uis-system/src"
+            ],
+            "@ui-schema/system/*": [
+                "uis-system/src/*"
+            ],
+            "@ui-schema/react": [
+                "uis-react/src"
+            ],
+            "@ui-schema/react/*": [
+                "uis-react/src/*"
+            ],
+            "@ui-schema/react-json-schema": [
+                "uis-react-json-schema/src"
+            ],
+            "@ui-schema/react-json-schema/*": [
+                "uis-react-json-schema/src/*"
+            ],
+            "@ui-schema/json-pointer": [
+                "uis-json-pointer/src"
+            ],
+            "@ui-schema/json-pointer/*": [
+                "uis-json-pointer/src/*"
+            ],
+            "@ui-schema/json-schema": [
+                "uis-json-schema/src"
+            ],
+            "@ui-schema/json-schema/*": [
+                "uis-json-schema/src/*"
+            ],
             "@ui-schema/pro": [
-                "ui-schema-pro/src"
+                "uis-pro/src"
             ],
             "@ui-schema/pro/*": [
-                "ui-schema-pro/src/*"
+                "uis-pro/src/*"
             ],
             "@ui-schema/dictionary": [
                 "dictionary/src"

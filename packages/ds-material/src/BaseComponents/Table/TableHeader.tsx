@@ -1,6 +1,9 @@
 import React from 'react'
 import { List, Map } from 'immutable'
-import { StoreKeyType, SchemaTypesType, schemaTypeToDistinct, TransTitle } from '@ui-schema/ui-schema'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { StoreKeyType } from '@ui-schema/react/UIStore'
+import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
+import { schemaTypeToDistinct } from '@ui-schema/system/schemaTypeToDistinct'
 import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
@@ -32,7 +35,7 @@ export const TableHeader: React.ComponentType<TableHeaderProps> = (
                 {cellSchema.map((item, j) =>
                     !item.get('hidden') ? <TableCell key={j}>
                         <div id={'uis-' + uid + '-tbl-' + j}>
-                            <TransTitle
+                            <TranslateTitle
                                 schema={item}
                                 storeKeys={storeKeys.push(j as StoreKeyType)}
                             />
@@ -42,7 +45,7 @@ export const TableHeader: React.ComponentType<TableHeaderProps> = (
                                     {' ('}
                                     {item.get('properties')?.keySeq()
                                         .map((key: string, i: number) => <React.Fragment key={key}>
-                                            <TransTitle
+                                            <TranslateTitle
                                                 schema={item.getIn(['properties', key])}
                                                 storeKeys={storeKeys.push(j as number).push(key)}
                                             />

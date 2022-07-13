@@ -5,7 +5,7 @@
     "private": true,
     "main": "index.js",
     "scripts": {
-        "start": "npm run clean-dist && npm run serve -- demo",
+        "start": "npm run clean-dist && npm run serve -- demoWeb",
         "docs": "npm run serve -- docs",
         "serve": "cross-env NODE_ENV=development node packerConfig.js --serve",
         "prebuild": "npm run clean-dist && npm run static-gen",
@@ -31,7 +31,7 @@
         "sloc": "node ./sloc.js",
         "release": "lerna publish from-package --contents build --no-git-reset"
     },
-    "author": "Michael Becker, https://mlbr.xyz",
+    "author": "Michael Becker, https://i-am-digital.eu",
     "license": "MIT",
     "devDependencies": {
         "@types/react": "^17.0",

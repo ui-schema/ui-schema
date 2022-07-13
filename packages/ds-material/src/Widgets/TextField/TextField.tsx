@@ -3,14 +3,16 @@ import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
 import { InputProps } from '@mui/material/Input'
 import { useUID } from 'react-uid'
-import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
-import { mapSchema } from '@ui-schema/ui-schema/Utils/schemaToNative'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
 import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
-import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/schemaTypeIs'
-import { WidgetProps, WithScalarValue } from '@ui-schema/ui-schema'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
+import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/system/schemaTypeIs'
+import { WithScalarValue } from '@ui-schema/react/UIStore'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { InfoRendererType } from '@ui-schema/ds-material/Component'
 
 export interface StringRendererBaseProps {
     type?: string
@@ -43,7 +45,7 @@ export interface NumberRendererProps extends StringRendererBaseProps {
     steps?: number | 'any'
 }
 
-export const StringRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>(
+export const StringRenderer = <P extends WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>> = WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>>>(
     {
         type,
         multiline,
@@ -65,7 +67,7 @@ export const StringRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetP
 
     const format = schema.get('format')
 
-    inputProps = mapSchema(inputProps, schema)
+    inputProps = schemaRulesToNative(inputProps, schema)
 
     const hideTitle = schema.getIn(['view', 'hideTitle'])
     const InfoRenderer = widgets?.InfoRenderer
@@ -79,8 +81,8 @@ export const StringRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetP
     }
     return <React.Fragment>
         <TextField
-            label={hideTitle ? undefined : <TransTitle schema={schema} storeKeys={storeKeys}/>}
-            aria-label={hideTitle ? <TransTitle schema={schema} storeKeys={storeKeys}/> as unknown as string : undefined}
+            label={hideTitle ? undefined : <TranslateTitle schema={schema} storeKeys={storeKeys}/>}
+            aria-label={hideTitle ? <TranslateTitle schema={schema} storeKeys={storeKeys}/> as unknown as string : undefined}
             // changing `type` to `text`, to be able to change invalid data
             type={(format || (typeof value === 'string' && type === 'number' ? 'text' : type)) as InputProps['type']}
             disabled={schema.get('readOnly') as boolean | undefined}

@@ -1,8 +1,8 @@
 import { List } from 'immutable'
-import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
-import { schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/schemaTypeIs'
+import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
+import { schemaTypeIsNumeric } from '@ui-schema/system/schemaTypeIs'
 
-const numberKeys = List(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',', '-'])
+const numberKeys = List(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',', '-', 'Backspace', 'Delete'])
 
 /**
  * Checks for allowed chars in native HTML `input` fields, to disable anything invalid for number fields

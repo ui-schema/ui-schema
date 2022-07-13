@@ -40,7 +40,7 @@ This is easily done by starting a new `PluginStack` - a new schema-level so to s
 
 See [PluginStack typings](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/PluginStack/PluginStack.d.ts) for more details about `props`.
 
-Overwrite `props` rules for any `widgets.pluginStack` plugin:
+Overwrite `props` rules for any `widgets.widgetPlugins` plugin:
 
 - `props` passed directly to `PluginStack` overwrite any other, except [`PluginStackInjectProps`](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/PluginStack/PluginStack.d.ts)
 - [`UIMetaContext`](/docs/core-meta) are overwritten by any other, added to every plugin stack by default
@@ -196,7 +196,7 @@ The created component applies the typescript definitions of the actual widget, b
 Since `0.4.0-alpha.1`, this function also applies [`memo`](/docs/core-utils#memo--isequal) to the final component.
 
 > todo: currently omits properties (also the `PluginStack`), which are possible because of the used plugins,
-> this should be optimized to automatically suggest the props of currently applied `widgets.pluginStack` (when possible)
+> this should be optimized to automatically suggest the props of currently applied `widgets.widgetPlugins` (when possible)
 
 ```typescript jsx
 import React from 'react'
@@ -336,7 +336,7 @@ Example Binding:
 import {PluginSimpleStack} from '@ui-schema/ui-schema';
 
 const widgets = {
-    pluginStack: [
+    widgetPlugins: [
         // ... other plugins
         PluginSimpleStack, // executes the `pluginSimpleStack`
         // ... other plugins
@@ -412,7 +412,7 @@ export {NewPlugin}
     - automatically render the plugins nested
     - `newProp` is available in the widget and the next plugins
 
-Design system binding in `widgets.pluginStack`.
+Design system binding in `widgets.widgetPlugins`.
 
 See also:
 

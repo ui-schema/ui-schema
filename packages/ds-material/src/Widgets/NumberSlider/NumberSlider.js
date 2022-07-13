@@ -7,7 +7,12 @@ import Box from '@mui/material/Box';
 import Slider, {SliderThumb} from '@mui/material/Slider';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import {TransTitle, extractValue, memo, Trans, schemaTypeIs, schemaTypeToDistinct, schemaTypeIsNumeric} from '@ui-schema/ui-schema';
+import {Translate} from '@ui-schema/react/Translate';
+import {TranslateTitle} from '@ui-schema/react/TranslateTitle';
+import {memo} from '@ui-schema/react/Utils/memo';
+import {extractValue} from '@ui-schema/react/UIStore';
+import {schemaTypeToDistinct} from '@ui-schema/system/schemaTypeToDistinct';
+import {schemaTypeIs, schemaTypeIsNumeric} from '@ui-schema/system/schemaTypeIs';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText';
 import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip';
 
@@ -72,7 +77,7 @@ const NumberSliderRenderer = ({
 
     return <React.Fragment>
         <Typography id={'uis-' + uid} gutterBottom color={!valid && showValidity ? 'error' : undefined}>
-            <TransTitle schema={schema} storeKeys={storeKeys}/>{required ? ' *' : null}
+            <TranslateTitle schema={schema} storeKeys={storeKeys}/>{required ? ' *' : null}
         </Typography>
 
         <Box style={{display: 'flex'}} mt={schema.getIn(['view', 'mt'])} mb={schema.getIn(['view', 'mb'])}>
@@ -153,7 +158,7 @@ const NumberSliderRenderer = ({
                     })
                 }
             >
-                <AccessTooltipIcon title={<Trans text={'labels.add-number'}/>}>
+                <AccessTooltipIcon title={<Translate text={'labels.add-number'}/>}>
                     <Add fontSize={'inherit'}/>
                 </AccessTooltipIcon>
             </IconButton> : null}
