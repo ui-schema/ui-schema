@@ -1,24 +1,19 @@
 {
     "name": "@ui-schema/system",
-    "version": "0.0.1",
+    "version": "0.5.0-alpha.0",
     "private": true,
-    "description": "JSON-Schema based UI and Form Generator for React, for any Design-System",
+    "description": "System lib for schema based Validators and UI/Form generators",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
     "license": "MIT",
     "keywords": [
         "ui-schema",
         "json-schema",
-        "react",
-        "reactjs",
-        "react-component",
-        "react-native",
         "design-system",
         "ui-library",
         "ux",
         "ui",
         "form-generator",
-        "react",
         "design-system"
     ],
     "repository": {

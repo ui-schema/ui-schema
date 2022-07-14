@@ -1,0 +1,31 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "isolatedModules": true,
+        "module": "ES2020",
+        "target": "ES2020",
+        "jsx": "preserve",
+        "removeComments": false,
+        "moduleResolution": "node",
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "noErrorTruncation": true,
+        "allowJs": true,
+        "declaration": false,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "esModuleInterop": true,
+        "outDir": "build"
+    },
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "src/**/*.test.*",
+        "src/**/*.spec.*"
+    ]
+}

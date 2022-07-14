@@ -1,14 +1,13 @@
 {
     "name": "@ui-schema/json-pointer",
-    "version": "0.0.1",
+    "version": "0.5.0-alpha.0",
     "private": true,
-    "description": "JSON-Schema based UI and Form Generator for React, for any Design-System",
+    "description": "JSON-Pointer implementation.",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
     "license": "MIT",
     "keywords": [
-        "ui-schema",
-        "json-schema"
+        "json-pointer"
     ],
     "repository": {
         "type": "git",
@@ -18,8 +17,16 @@
     "bugs": {
         "url": "https://github.com/ui-schema/ui-schema/issues"
     },
-    "main": "index.js",
-    "module": "esm/index.js",
+    "main": "build/index.js",
+    "module": "build/esm/index.js",
+    "type": "module",
+    "exports": {
+        ".": "./build/esm/index.js",
+        "./escapePointer": "./build/esm/escapePointer/index.js",
+        "./resolvePointer": "./build/esm/resolvePointer/index.js",
+        "./pointerToKeySeq": "./build/esm/pointerToKeySeq/index.js",
+        "./unescapePointer": "./build/esm/unescapePointer/index.js"
+    },
     "scripts": {
         "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*",
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
@@ -28,10 +35,10 @@
         "immutable": "^4.0.0"
     },
     "devDependencies": {
-        "@ui-schema/system": "~0.0.1"
+        "@ui-schema/system": "~0.5.0-alpha.0"
     },
     "peerDependencies": {
-        "@ui-schema/system": "~0.0.1"
+        "@ui-schema/system": "~0.5.0-alpha.0"
     },
     "publishConfig": {
         "access": "public"

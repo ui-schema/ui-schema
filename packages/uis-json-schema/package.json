@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/json-schema",
-    "version": "0.0.1",
+    "version": "0.5.0-alpha.0",
     "private": true,
     "description": "JSON-Schema based UI and Form Generator for React, for any Design-System",
     "homepage": "https://ui-schema.bemit.codes",
@@ -26,13 +26,13 @@
     },
     "dependencies": {
         "immutable": "^4.0.0",
-        "@ui-schema/json-pointer": "~0.0.1"
+        "@ui-schema/json-pointer": "~0.5.0-alpha.0"
     },
     "devDependencies": {
-        "@ui-schema/system": "~0.0.1"
+        "@ui-schema/system": "~0.5.0-alpha.0"
     },
     "peerDependencies": {
-        "@ui-schema/system": "~0.0.1"
+        "@ui-schema/system": "~0.5.0-alpha.0"
     },
     "publishConfig": {
         "access": "public"

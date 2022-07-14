@@ -28,29 +28,32 @@
         "test": "jest -c=\"packages/jest.config.ts\"",
         "tdd": "npm test -- --watch --watchman --coverage=false",
         "__release": "lerna run release --stream",
+        "validate": "cross-env NODE_ENV=development node --experimental-json-modules packages/demo-server/build/cli.js validate",
+        "pointer": "cross-env NODE_ENV=development node --experimental-json-modules packages/demo-server/build/cli.js pointer",
         "sloc": "node ./sloc.js",
         "release": "lerna publish from-package --contents build --no-git-reset"
     },
     "author": "Michael Becker, https://i-am-digital.eu",
     "license": "MIT",
     "devDependencies": {
-        "@types/react": "^17.0",
         "@babel/plugin-proposal-nullish-coalescing-operator": "^7.13.8",
         "@babel/plugin-proposal-optional-chaining": "^7.13.8",
+        "@types/react": "^17.0",
         "@types/testing-library__jest-dom": "^5.14.0",
         "assert": "^2.0.0",
         "cross-env": "^6.0.3",
         "eslint-plugin-jsx-a11y": "^6.5.1",
         "eslint-plugin-react-hooks": "^4.3.0",
         "lerna": "^3.22.1",
-        "lerna-packer": "0.6.3",
+        "lerna-packer": "0.6.4",
         "merge-dirs": "^0.2.1",
+        "nodemon": "^2.0.19",
         "process": "^0.11.10",
         "react-loadable": "^5.5.0",
-        "symlink-dir": "^3.1.1",
         "sloc": "^0.2.1",
-        "typescript": "^4.5.3",
-        "ts-node": "^10.7.0"
+        "symlink-dir": "^3.1.1",
+        "ts-node": "^10.7.0",
+        "typescript": "^4.5.3"
     },
     "jest-runner-eslint": {
         "cliOptions": {

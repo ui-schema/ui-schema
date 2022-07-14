@@ -1,0 +1,72 @@
+{
+    "name": "@ui-schema/demo-server",
+    "private": true,
+    "version": "0.1.0",
+    "description": "scribble",
+    "author": {
+        "name": "bemit",
+        "url": "https://bemit.codes"
+    },
+    "contributors": [
+        {
+            "name": "Michael Becker",
+            "url": "https://i-am-digital.eu"
+        }
+    ],
+    "license": "proprietary",
+    "type": "module",
+    "dependencies": {
+        "cross-env": "^7.0.3",
+        "cross-spawn": "^7.0.3",
+        "dotenv": "^14.2.0",
+        "express": "^4.17.1",
+        "nanoid": "^3.1.32",
+        "@types/on-headers": "^2.1.30",
+        "immutable": "^4.0.0",
+        "ajv": "^8.11.0",
+        "on-headers": "^1.0.2",
+        "liquidjs": "^9.36.0",
+        "@ui-schema/system": "~0.5.0-alpha.0",
+        "@ui-schema/json-schema": "~0.5.0-alpha.0",
+        "@ui-schema/json-pointer": "~0.5.0-alpha.0",
+        "@babel/runtime": "^7.14.6",
+        "nodemon": "^2.0.12",
+        "superagent": "^7.1.1",
+        "service-service": "~0.1.0",
+        "cors": "^2.8.5",
+        "concurrently": "^5.3.0",
+        "symlink-dir": "^5.0.1",
+        "luxon": "^2.4.0"
+    },
+    "devDependencies": {
+        "@types/luxon": "^2.0.4",
+        "@types/nanoid": "^3.0.0",
+        "@types/superagent": "^4.1.14",
+        "@types/cors": "^2.8.12",
+        "@types/express": "^4.17.13",
+        "@typescript-eslint/eslint-plugin": "^4.31.2",
+        "@typescript-eslint/parser": "^4.31.2",
+        "rimraf": "^3.0.2",
+        "symlink-dir": "^5.0.1",
+        "ts-jest": "^27.0.5"
+    },
+    "scripts": {
+        "tasks": "gulp --tasks",
+        "start": "mkdirp build && echo // > build/server.js && concurrently --kill-others \"npm run babel -- -w\" \"cross-env NODE_ENV=development nodemon build/server.js\"",
+        "predev": "npm run clean && mkdirp build",
+        "dev": "cross-env NODE_ENV=development concurrently --kill-others \"npm:watch-babel\" \"npm:watch-server\"",
+        "watch-babel": "npm run babel -- -w",
+        "watch-server": "nodemon -w ./build ./build/server.js",
+        "prebuild": "npm run clean",
+        "build": "npm run tsc",
+        "postbuild": "npm test",
+        "test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest",
+        "tsc": "tsc --project tsconfig.json",
+        "tdd": "cross-env NODE_ENV=development npm test -- --watchAll --watchman --coverage=false",
+        "babel": "cross-env NODE_ENV=node babel src -d build --extensions \".ts,.js\" --copy-files",
+        "clean": "rimraf build"
+    },
+    "nodemonConfig": {
+        "delay": 120
+    }
+}
