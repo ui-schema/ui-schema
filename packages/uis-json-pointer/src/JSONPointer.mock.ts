@@ -1,5 +1,9 @@
 import { List } from 'immutable'
 
+//
+// npm run test -- --testPathPattern=uis-json-pointer/src
+//
+
 export const testCases: {
     pointer: string
     keySeqPointer?: List<string | number>

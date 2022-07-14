@@ -21,7 +21,7 @@
     "module": "build/esm/index.js",
     "type": "module",
     "exports": {
-        ".": "./build/esm/index.js",
+        ".": "./build/index.js",
         "./escapePointer": "./build/esm/escapePointer/index.js",
         "./resolvePointer": "./build/esm/resolvePointer/index.js",
         "./pointerToKeySeq": "./build/esm/pointerToKeySeq/index.js",

@@ -42,11 +42,28 @@
         },
         "test": {
             "presets": [
-                "@babel/preset-env",
-                "@babel/preset-react",
-                "@babel/preset-typescript"
+                [
+                    "@babel/preset-env",
+                    {
+                        "targets": {
+                            "node": "14"
+                        },
+                        "modules": false
+                    }
+                ],
+                [
+                    "@babel/preset-typescript",
+                    {
+                        "targets": {
+                            "node": "14"
+                        },
+                        "modules": false
+                    }
+                ],
+                "@babel/preset-react"
             ],
             "plugins": [
+                "transform-es2015-modules-commonjs",
                 "@babel/plugin-transform-runtime"
             ]
         },

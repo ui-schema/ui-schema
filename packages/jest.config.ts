@@ -1,6 +1,6 @@
 import type { Config } from '@jest/types'
 
-const packages: string[] = ['ui-schema', 'uis-pro', 'ds-bootstrap', 'ds-material', 'material-dnd', 'material-pickers', 'material-slate', 'kit-dnd']
+const packages: string[] = ['ui-schema', 'uis-pro', 'uis-json-pointer', 'ds-bootstrap', 'ds-material', 'material-dnd', 'material-pickers', 'material-slate', 'kit-dnd']
 
 const testMatchesLint: string[] = []
 
@@ -14,12 +14,23 @@ const base: Partial<Config.InitialOptions> = {
     /*transformIgnorePatterns: [
         'node_modules/?!(@ui-schema)',
     ],*/
-    /*transform: {
-        '^.+\\.tsx?$': 'ts-jest',
+    transform: {
+        // '^.+\\.ts$': 'babel-jest',
+        '^.+\\.ts$': 'ts-jest',
+    },
+    /*extensionsToTreatAsEsm: ['.ts'],
+    globals: {
+        'ts-jest': {
+            useESM: true,
+        },
     },*/
     moduleNameMapper: {
+        '^(\\.{1,2}/.*)\\.js$': '$1',// todo: validate ESM testing (and JSDom/react compat.), somehow this mapper was all needed - no further ts-jest/babel adjustments
         '^@ui-schema/ui-schema(.*)$': '<rootDir>/ui-schema/src$1',
         '^@ui-schema/pro(.*)$': '<rootDir>/uis-pro/src$1',
+        // '^@ui-schema/json-pointer(.*)': '<rootDir>/json-pointer/src$1',
+        '^@ui-schema/json-pointer(.*)$': '<rootDir>/uis-json-pointer/src$1',
+        // '^@ui-schema/json-pointer(.*)': '<rootDir>/json-pointer/src/$1',
         '^@ui-schema/ds-bootstrap(.*)$': '<rootDir>/ds-bootstrap/src$1',
         '^@ui-schema/ds-material(.*)$': '<rootDir>/ds-material/src$1',
         '^@ui-schema/kit-dnd(.*)$': '<rootDir>/kit-dnd/src$1',
@@ -49,7 +60,7 @@ const config: Config.InitialOptions = {
         ...packages.map(pkg => ({
             displayName: 'test-' + pkg,
             ...base,
-            moduleDirectories: ['node_modules', '<rootDir>/' + pkg + '/node_modules'],
+            moduleDirectories: ['node_modules', '<rootDir>/' + pkg + '/node_modules'/*, '<rootDir>/' + pkg, '<rootDir>/' + pkg + '/src'*/],
             //moduleDirectories: ['node_modules', '<rootDir>/ui-schema/node_modules', '<rootDir>/ds-material/node_modules'],
             // todo: check why `transformIgnorePatterns`, combined with multi-projects/lerna 0.5.3 upgrade, throws `TypeError: /node_modules/jest-runner-eslint/build/runner/index.js: node_modules/@ampproject/remapping/dist/remapping.umd.js: _remapping(...) is not a function`
             /*transformIgnorePatterns: [

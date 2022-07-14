@@ -2,11 +2,10 @@ import { List } from 'immutable'
 import { unescapePointer } from '@ui-schema/json-pointer/unescapePointer'
 
 function isInt(value) {
-    let x
     if (isNaN(value)) {
         return false
     }
-    x = parseFloat(value)
+    const x = parseFloat(value)
     return (x | 0) === x
 }
 
