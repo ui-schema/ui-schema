@@ -233,11 +233,8 @@ import React from "react";
 // "global" ui-config
 import { UIMetaProvider, useUIMeta } from '@ui-schema/ui-schema/UIMeta';
 // for data-stores / data-binding
-import {
-    UIStoreProvider,
-    createEmptyStore, createStore,
-    storeUpdater,
-} from '@ui-schema/ui-schema/UIStore';
+import { UIStoreProvider, createEmptyStore, createStore } from '@ui-schema/ui-schema/UIStore';
+import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater';
 
 // util for \`PluginStack\` rendering
 import { injectPluginStack } from '@ui-schema/ui-schema/applyPluginStack';

@@ -107,7 +107,7 @@ This project adheres to [semver](https://semver.org/), until `1.0.0` and beginni
 
 ## Example UI Schema
 
-First time? [Take the quick-start](https://ui-schema.bemit.codes/quick-start) or take a look into the [create-react-app UI Schema example](https://github.com/ui-schema/demo-cra).
+First time? [Take the quick-start](https://ui-schema.bemit.codes/quick-start) or take a look into the MUI demo repos: [create-react-app & JS (simple)](https://github.com/ui-schema/demo-cra) or [create-react-app & Typescript (advanced)](https://github.com/ui-schema/demo-cra-ts).
 
 Example setup of a renderer, followed by a [simple text widget](#example-simple-text-widget).
 
@@ -119,10 +119,8 @@ import React from 'react';
 // Import Schema UI Provider and Render engine
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter';
 import {createOrderedMap} from '@ui-schema/ui-schema/Utils/createMap';
-import {
-    UIStoreProvider,
-    createStore, storeUpdater,
-} from '@ui-schema/ui-schema/UIStore';
+import {UIStoreProvider, createStore} from '@ui-schema/ui-schema/UIStore';
+import {storeUpdater} from '@ui-schema/ui-schema/storeUpdater';
 import {UIMetaProvider, useUIMeta} from '@ui-schema/ui-schema/UIMeta';
 // new in `0.4.0-alpha.1`:
 // import {injectPluginStack} from '@ui-schema/ui-schema/applyPluginStack';
