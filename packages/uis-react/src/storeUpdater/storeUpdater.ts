@@ -82,7 +82,7 @@ export const createStoreUpdater = <S extends UIStoreType = UIStoreType, D extend
 
                 const scopeUpdater: SM = scopes.reduce((su, scope) => {
                     if (!scopeUpdaterMap[scope]) {
-                        throw new Error('scopeUpdater for `' + scope + '` not found')
+                        throw new Error('scopeUpdater for `' + (scope as string) + '` not found')
                     }
                     su[scope] = scopeUpdaterMap[scope]
                     return su
