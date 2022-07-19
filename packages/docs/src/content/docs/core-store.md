@@ -318,7 +318,7 @@ onChange({
 
 ### UpdateFn Migration
 
-> content has moved to [Updated Notes v0.2.0 to v0.3.0](/docs/updates/v0.2.0-v0.3.0#onchange--store-updater)
+> content has moved to [Updated Notes v0.2.0 to v0.3.0](/updates/v0.2.0-v0.3.0#onchange--store-updater)
 
 ## UIConfigContext
 
