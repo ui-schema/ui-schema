@@ -12,6 +12,17 @@ The `t` prop of `UIMetaProvider` and `UIGenerator` supports complex translators 
 > - `{ t } = useUIMeta()`
 > - `Trans`/`TransTitle`
 
+to support just the `t` keyword:
+
+```jsx harmony
+import {relTranslator} from '@ui-schema/ui-schema/Translate/relT';
+import {UIMetaProvider} from '@ui-schema/ui-schema/UIMeta';
+
+<UIMetaProvider t={relTranslator}/>
+```
+
+to support custom translators and the `t` keyword:
+
 ```jsx harmony
 import {relT} from '@ui-schema/ui-schema/Translate/relT';
 import {Translator} from '@ui-schema/ui-schema/Translate/makeTranslator';
@@ -30,9 +41,6 @@ const translate = (text, context, schema) => {
     return translator(text, context, schema)
 };
 
-// pass down, depending how you use in either of:
-<UIGenerator t={translate}/>
-
 <UIMetaProvider t={translate}/>
 ```
 
@@ -43,10 +51,11 @@ const translate = (text, context, schema) => {
 - `context` is optional data which may be used in the sentence
     - is an immutable `Map`
     - e.g. `context.get('min')` is used in the min-max validation error
-        - can be translated with `Minimum Length: 6`
-        - value would be `6`
-    - widgets title/value translation have the context `relative`, which contains e.g. `title` or `enum.<value>`
-- `schema` is the content of the schema keyword `t`
+        - can be used liked `'Minimum Length: ' + context.get('min')`
+        - e.g. creates `Minimum Length: 6`, value would be `6`
+    - widgets title/value translation use the context `relative`, which contains e.g. `title` or `enum.<value>`
+        - for examples check the [example widget translation](#example-widget-translation)
+- `schema` is the schema-level of the current to be translated element
 - **return** of `t` can be:
     - simple `string`
     - a `function` that creates the string
@@ -99,7 +108,7 @@ const DemoEnumWidget = ({schema, storeKeys}) => {
 
 #### Example TransTitle
 
-The above example can be used to translate enum and anything, as titles are often used and offer a generic way, the component `TransTitle` can be used also.
+The above example can be used to translate anything, as titles are often used and offer a generic way, the component `TransTitle` can be used also, which works identically to the above example.
 
 ```jsx harmony
 import React from "react";
@@ -112,6 +121,10 @@ const DemoWidget = ({schema, storeKeys}) => {
     />
 };
 ```
+
+#### Example Options Translation
+
+> todo: add example using the `useOptionsFromSchema` strategy for universal `enum`/`oneOf` support; currently only in ds-material
 
 #### Example Error Translation
 
