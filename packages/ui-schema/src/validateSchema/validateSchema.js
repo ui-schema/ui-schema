@@ -1,13 +1,12 @@
-import {validateType} from '../Validators/TypeValidator/TypeValidator';
-import {ERROR_WRONG_TYPE} from '../Validators/TypeValidator/TypeValidator';
-import {ERROR_PATTERN, validatePattern} from '../Validators/PatternValidator/PatternValidator';
-import {validateMinMax} from '../Validators/MinMaxValidator/MinMaxValidator';
-import {ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum} from '../Validators/ValueValidator';
-import {ERROR_MULTIPLE_OF, validateMultipleOf} from '../Validators/MultipleOfValidator/MultipleOfValidator';
-import {validateContains} from '../Validators/ArrayValidator/ArrayValidator';
-import {ERROR_NOT_SET} from '../Validators/RequiredValidator/RequiredValidator';
-import {validateObject} from '../Validators/ObjectValidator/ObjectValidator';
-import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorErrors/ValidatorErrors';
+import {validateType, ERROR_WRONG_TYPE} from '@ui-schema/ui-schema/Validators/TypeValidator';
+import {ERROR_PATTERN, validatePattern} from '@ui-schema/ui-schema/Validators/PatternValidator';
+import {validateMinMax} from '@ui-schema/ui-schema/Validators/MinMaxValidator';
+import {ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum} from '@ui-schema/ui-schema/Validators/ValueValidator';
+import {ERROR_MULTIPLE_OF, validateMultipleOf} from '@ui-schema/ui-schema/Validators/MultipleOfValidator';
+import {validateContains} from '@ui-schema/ui-schema/Validators/ArrayValidator';
+import {ERROR_NOT_SET} from '@ui-schema/ui-schema/Validators/RequiredValidator';
+import {validateObject} from '@ui-schema/ui-schema/Validators/ObjectValidator';
+import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorErrors';
 import {validateOneOf} from '@ui-schema/ui-schema/Validators/OneOfValidator';
 
 /**
@@ -15,9 +14,10 @@ import {validateOneOf} from '@ui-schema/ui-schema/Validators/OneOfValidator';
  *
  * @param schema
  * @param value
+ * @param recursively
  * @return {ValidatorErrorsType}
  */
-export const validateSchema = (schema, value) => {
+export const validateSchema = (schema, value, recursively = false) => {
     let type = schema.get('type');
     let pattern = schema.get('pattern');
 
@@ -26,7 +26,7 @@ export const validateSchema = (schema, value) => {
     if(not) {
         // supporting `not` for any validations
         // https://json-schema.org/understanding-json-schema/reference/combining.html#not
-        let tmpNot = validateSchema(not, value);
+        let tmpNot = validateSchema(not, value, recursively);
         return tmpNot.hasError() ? tmpNot.addError('not-is-valid') : err;
     }
 
@@ -45,7 +45,7 @@ export const validateSchema = (schema, value) => {
         if(errMinMax.hasError()) {
             return errMinMax;
         }
-        const errObj = validateObject(schema, value);
+        const errObj = validateObject(schema, value, recursively);
         if(errObj.hasError()) {
             return errObj;
         }
@@ -53,7 +53,7 @@ export const validateSchema = (schema, value) => {
         if(errContains.hasError()) {
             return errContains;
         }
-        const errOneOf = validateOneOf(schema.get('oneOf'), value)
+        const errOneOf = validateOneOf(schema.get('oneOf'), value, recursively)
         if(errOneOf.errors.hasError()) {
             return errOneOf.errors;
         }

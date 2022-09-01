@@ -26,6 +26,7 @@
         "hoist": "lerna bootstrap --hoist -- --legacy-peer-deps",
         "link": "lerna link --force-local",
         "test": "jest -c=\"packages/jest.config.ts\"",
+        "jest-clear": "jest -c=\"packages/jest.config.ts\" --detectOpenHandles --forceExit --clearCache",
         "tdd": "npm test -- --watch --watchman --coverage=false",
         "__release": "lerna run release --stream",
         "sloc": "node ./sloc.js",

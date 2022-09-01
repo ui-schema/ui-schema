@@ -1,13 +1,12 @@
-import {validateSchemaObject} from '@ui-schema/ui-schema/validateSchema';
+import {validateSchema} from '@ui-schema/ui-schema/validateSchema';
 import {mergeSchema} from '@ui-schema/ui-schema/Utils/mergeSchema';
 
-export const handleIfElseThen = (schema, store, distSchema) => {
+export const handleIfElseThen = (schema, value, distSchema) => {
     const keyIf = schema.get('if');
     const keyThen = schema.get('then');
     const keyElse = schema.get('else');
-
     if(keyIf) {
-        if(0 === validateSchemaObject(keyIf, store).errCount) {
+        if(0 === validateSchema(keyIf, value, true).errCount) {
             // no errors in schema found, `then` should be rendered
             if(keyThen) {
                 distSchema = mergeSchema(distSchema, keyThen);
