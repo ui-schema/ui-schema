@@ -58,7 +58,7 @@ export const WidgetOneOfRead: React.ComponentType<WidgetProps<MuiWidgetBinding>>
     const InfoRenderer = widgets?.InfoRenderer
     const hasInfo = Boolean(InfoRenderer && schema?.get('info')) as boolean | undefined
     const {readDense} = useUIMeta<UIMetaReadContextType>()
-    if (!oneOfVal) return null
+    if(!oneOfVal) return null
     return <Box>
         <TitleBoxRead
             hideTitle={hideTitle}

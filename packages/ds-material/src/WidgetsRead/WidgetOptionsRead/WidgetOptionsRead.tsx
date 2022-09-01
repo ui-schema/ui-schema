@@ -2,7 +2,6 @@ import React, { MouseEventHandler } from 'react'
 import { List } from 'immutable'
 import { Trans } from '@ui-schema/ui-schema/Translate'
 import { memo } from '@ui-schema/ui-schema/Utils/memo'
-import { useUIMeta } from '@ui-schema/ui-schema/UIMeta'
 import { StoreKeys, extractValue, WithScalarValue } from '@ui-schema/ui-schema/UIStore'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
@@ -59,7 +58,7 @@ const SingleOptionItem: React.ComponentType<{
 ) => {
     const activeSchema = typeof value === 'undefined' ? undefined : valueSchemas?.find(s => s.value === value)
 
-    return <Typography variant={dense ? 'body2' : 'body1'} color={activeSchema ? undefined : 'error'}>
+    return <Typography variant={dense ? 'body2' : 'body1'} color={typeof value === 'undefined' || activeSchema ? undefined : 'error'}>
         {activeSchema && typeof value !== 'undefined' ?
             <Trans
                 schema={activeSchema.schema?.get('t')}
@@ -76,18 +75,18 @@ export interface WidgetOptionsReadProps {
     style?: React.CSSProperties
 }
 
-export const WidgetOptionsRead: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithScalarValue & WidgetOptionsReadProps> = (
+export const WidgetOptionsRead: React.ComponentType<WidgetProps<MuiWidgetBinding> & UIMetaReadContextType & WithScalarValue & WidgetOptionsReadProps> = (
     {
         schema, storeKeys, showValidity,
         valid, errors, value,
         widgets,
         onClick, style,
+        readDense,
     }
 ) => {
     const hideTitle = schema.getIn(['view', 'hideTitle']) as boolean | undefined
     const InfoRenderer = widgets?.InfoRenderer
     const hasInfo = Boolean(InfoRenderer && schema?.get('info')) as boolean | undefined
-    const {readDense} = useUIMeta<UIMetaReadContextType>()
     const isMultiOption = Boolean(schema.get('items'))
     const {valueSchemas} = useOptionsFromSchema(
         storeKeys,

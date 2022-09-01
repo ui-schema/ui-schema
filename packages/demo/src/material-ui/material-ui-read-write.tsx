@@ -9,7 +9,7 @@ import {
     GroupRendererProps,
     UIMetaProvider, UIStoreProvider,
     useUIMeta, WidgetType,
-    UIStoreActions, UIStoreType, injectPluginStack,
+    UIStoreActions, UIStoreType, injectPluginStack, isInvalid,
 } from '@ui-schema/ui-schema'
 import { browserT } from '../t'
 import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
@@ -185,7 +185,7 @@ const readWidgets: ReadWidgetsBinding = {
 const GridStack = injectPluginStack(GridContainer)
 const ReadableWritableEditor = () => {
     const {widgets, ...metaCtx} = useUIMeta()
-    const showValidity = true
+    const [showValidity, setShowValidity] = React.useState(true)
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
     const [edit, setEdit] = React.useState(false)
     const [dense, setDense] = React.useState(false)
@@ -220,6 +220,12 @@ const ReadableWritableEditor = () => {
                 <MuiSchemaDebug schema={formSchema}/>
             </UIStoreProvider>
         </UIMetaProvider>
+        <div style={{width: '100%', marginTop: 24}}>
+            <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
+            <div>
+                {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
+            </div>
+        </div>
     </React.Fragment>
 }
 

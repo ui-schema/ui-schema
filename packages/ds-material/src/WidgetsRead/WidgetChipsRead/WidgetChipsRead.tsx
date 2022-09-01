@@ -1,5 +1,5 @@
 import React from 'react'
-import { beautifyKey, extractValue, memo, StoreSchemaType, Trans, tt, useUIMeta, WidgetProps, WithValue } from '@ui-schema/ui-schema'
+import { beautifyKey, extractValue, memo, StoreSchemaType, Trans, tt, WidgetProps, WithValue } from '@ui-schema/ui-schema'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
@@ -9,18 +9,18 @@ import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
 import { UIMetaReadContextType } from '@ui-schema/ui-schema/UIMetaReadContext'
 import Typography from '@mui/material/Typography'
 
-export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue> = (
+export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & UIMetaReadContextType & WithValue> = (
     {
         storeKeys, schema, value,
         showValidity, errors,
         valid, widgets,
+        readDense,
     },
 ) => {
-    const {readDense} = useUIMeta<UIMetaReadContextType>()
-    if (!schema) return null
+    if(!schema) return null
 
     const oneOfVal = schema.getIn(['items', 'oneOf'])
-    if (!oneOfVal) return null
+    if(!oneOfVal) return null
 
     const hideTitle = schema.getIn(['view', 'hideTitle']) as boolean | undefined
     const InfoRenderer = widgets?.InfoRenderer
