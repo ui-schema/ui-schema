@@ -196,18 +196,43 @@ const schemaDemoMain = {
                         sizeMd: 12,
                     },
                 },
-                yes_no: {
+                view_dense: {
                     type: 'boolean',
-                    widget: 'OptionsRadio',
-                    enum: [true, false],
+                    default: true,
                     view: {
                         sizeMd: 12,
+                        dense: true,
+                    },
+                },
+                label_bottom: {
+                    type: 'boolean',
+                    default: true,
+                    view: {
+                        sizeMd: 12,
+                        labelPlacement: 'bottom',
+                        color: 'secondary',
+                    },
+                },
+                label_start: {
+                    type: 'boolean',
+                    default: true,
+                    view: {
+                        sizeMd: 12,
+                        labelPlacement: 'start',
                     },
                 },
             },
             required: [
                 'center_item_content',
             ],
+        },
+        yes_no: {
+            type: 'boolean',
+            widget: 'OptionsRadio',
+            enum: [true, false],
+            view: {
+                sizeMd: 3,
+            },
         },
         layouts: {
             type: 'array',
@@ -285,6 +310,25 @@ const schemaDemoMain = {
                     {const: 'design'},
                     {const: 'hosting'},
                     {const: 'consulting'},
+                ],
+            },
+        },
+        services_second: {
+            type: 'array',
+            widget: 'SelectChips',
+            default: ['it-system'],
+            view: {
+                sizeMd: 3,
+                color: 'secondary',
+                size: 'medium',
+            },
+            items: {
+                type: 'string',
+                oneOf: [
+                    {const: 'marketing'},
+                    {const: 'it-admin'},
+                    {const: 'it-system'},
+                    {const: 'telecom'},
                 ],
             },
         },

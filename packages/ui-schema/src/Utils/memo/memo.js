@@ -1,46 +1,16 @@
-import React from "react";
-import {List, Map, Record} from 'immutable';
-import {getDisplayName} from "./getDisplayName";
+import React from 'react';
+import {getDisplayName} from './getDisplayName';
+import {isEqualObject} from '@ui-schema/ui-schema/Utils/isEqualObject';
 
-const compare = (prev, next) => {
-    if(List.isList(next) || Map.isMap(next) || Record.isRecord(next)) {
-        return next.equals(prev);
-    } else if(Array.isArray(next)) {
-        return prev === next;
-    } else if(typeof next === 'object') {
-        return Object.is(prev, next);
-    }
-
-    // these should be any scalar values
-    return prev === next;
-};
-
-export const isEqual = (prevProps, nextProps) => {
-    const prevKeys = Object.keys(prevProps);
-    const nextKeys = Object.keys(nextProps);
-    if(
-        prevKeys.length !== nextKeys.length ||
-        !prevKeys.every(v => nextKeys.includes(v))
-    ) {
-        return false;
-    }
-
-    for(let next in nextProps) {
-        if(!compare(prevProps[next], nextProps[next])) {
-            return false;
-        }
-    }
-
-    return true;
-}
+export const isEqual = isEqualObject
 
 /**
- * Immutable compatible `React.memo` comparision
+ * Immutable compatible `React.memo` comparison
  * @param Component
  * @return {function({}): *}
  */
 export const memo = Component => {
-    const Memoized = React.memo(Component, isEqual);
+    const Memoized = React.memo(Component, isEqualObject);
     Memoized.displayName = getDisplayName(Component);
     return Memoized;
 };

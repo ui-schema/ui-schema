@@ -5,10 +5,9 @@ import { ValidatorErrorsType } from '@ui-schema/ui-schema/ValidatorErrors'
 
 export const ERROR_ADDITIONAL_PROPERTIES = 'additional-properties'
 
-export function validateObject(schema: StoreSchemaType, value: any): ValidatorErrorsType
+export function validateObject(schema: StoreSchemaType, value: any, recursively?: boolean): ValidatorErrorsType
 
 export interface ObjectValidatorType extends PluginSimple {
-    should: ({schema}: Partial<PluginProps>) => boolean
     handle: (
         {schema, value, errors, valid}: Partial<PluginProps>
     ) => {

@@ -1,15 +1,10 @@
 import {Map} from 'immutable';
-import {schemaTypeIsNumeric} from '@ui-schema/ui-schema/Utils/schemaTypeIs';
 
 const ERROR_MULTIPLE_OF = 'multiple-of';
 
 const validateMultipleOf = (schema, value) => {
-    const type = schema.get('type');
     let multipleOf = schema.get('multipleOf');
-    if(
-        schemaTypeIsNumeric(type) && typeof value === 'number' &&
-        typeof multipleOf !== 'undefined'
-    ) {
+    if(typeof value === 'number' && typeof multipleOf === 'number') {
         // dealing with JS floating point issues,
         // custom floating point to int/ceil logic
         // according to the precision of the most precise value (either `value` or `multipleOf`)

@@ -1,15 +1,15 @@
-import { List, Map, OrderedMap } from 'immutable'
+import { List, Map } from 'immutable'
 import {
     validateItems,
     validateContains,
     validateUniqueItems,
     validateArrayContent,
+    validateAdditionalItems,
     ERROR_DUPLICATE_ITEMS,
     arrayValidator,
 } from '@ui-schema/ui-schema/Validators/ArrayValidator'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils'
-import { validateAdditionalItems } from '@ui-schema/ui-schema/Validators/ArrayValidator/ArrayValidator'
-import { ERROR_WRONG_TYPE } from '@ui-schema/ui-schema/Validators/TypeValidator/TypeValidator'
+import { ERROR_WRONG_TYPE } from '@ui-schema/ui-schema/Validators/TypeValidator'
 import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorErrors'
 
 describe('validateArrayContent', () => {
@@ -215,7 +215,7 @@ describe('validateArrayContent', () => {
         ]), [1, 'text', true], true, false, 0],*/
     ])('validateArrayContent(%j, %j, %s): %s', (schema, value, additionalItems, expected) => {
         const r = validateArrayContent(schema, value, additionalItems)
-        if (r.err.errCount !== expected) {
+        if(r.err.errCount !== expected) {
             // @ts-ignore
             console.log('failed validateArrayContent', schema.toJS(), value && value.toJS ? value.toJS() : value, r.err.toJS())
         }
@@ -362,7 +362,7 @@ describe('validateItems', () => {
         }, [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], 0],
     ])('validateItems(%j, %j)', (schema, value, expected) => {
         const r = validateItems(createOrderedMap(schema), value)
-        if (r.errCount !== expected) {
+        if(r.errCount !== expected) {
             // @ts-ignore
             console.log('failed validateItems', schema.toJS(), value && value.toJS ? value.toJS() : value, r.toJS())
         }
@@ -655,15 +655,15 @@ describe('validateUniqueItems', () => {
 
 describe('arrayValidator', () => {
     test.each([
-        [OrderedMap<'type', string>({type: 'array'}), List(), true],
-        [OrderedMap<'type', string>({type: 'array'}), Map(), false],
-        [OrderedMap<'type', string>({type: 'string'}), List(), false],
-        [OrderedMap<string, string>({}), List(), false],
+        [List(), true],
+        [[], true],
+        [Map(), false],
+        ['some-text', false],
     ])(
         '.should(%j, %s)',
-        (schema, value, expectedValid) => {
+        (value, expectedValid) => {
             // @ts-ignore
-            expect(arrayValidator.should({schema, value})).toBe(expectedValid)
+            expect(arrayValidator.should({value})).toBe(expectedValid)
         }
     )
 
@@ -737,9 +737,9 @@ describe('arrayValidator', () => {
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            if (error.size) {
+            if(error.size) {
                 expect(result.errors.hasError(error.get(0))).toBe(expectedError)
-                if (result.errors.hasError(error.get(0))) {
+                if(result.errors.hasError(error.get(0))) {
                     expect(result.errors.getError(error.get(0)).get(0)?.equals(error.get(1))).toBe(expectedError)
                 }
             } else {

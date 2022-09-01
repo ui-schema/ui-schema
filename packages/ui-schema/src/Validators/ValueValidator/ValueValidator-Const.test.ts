@@ -8,7 +8,6 @@ describe('validateConst', () => {
     test('validateConst', () => {
         expect(validateConst('text1', 'text1')).toBe(true)
         expect(validateConst('text1', 'text2')).toBe(false)
-        expect(validateConst(null, null)).toBe(true)
 
         expect(validateConst(1, 1)).toBe(true)
         expect(validateConst(1, 2)).toBe(false)

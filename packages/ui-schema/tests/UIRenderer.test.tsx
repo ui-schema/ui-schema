@@ -148,9 +148,8 @@ const TestUIRenderer = (props: {
         properties: {
             demo_string: {
                 type: 'string',
-                pattern: '^$|.+',
                 minLength: 0,
-                maxLength: 2,
+                maxLength: 6,
             },
             demo_number: {
                 $ref: '#demo_number',
@@ -178,6 +177,8 @@ const TestUIRenderer = (props: {
                         const: 'test',
                     },
                 },
+                // without `required` this now (>=0.4.3) would resolve always after fixing ConditionalHandler
+                required: ['demo_string'],
             },
             then: {
                 properties: {
@@ -222,10 +223,11 @@ const TestUIRenderer = (props: {
 }
 
 describe('UIGenerator Integration', () => {
-    it('TestUIRenderer', async () => {
+    it('TestUIRenderer', async() => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer data={{demo_number: 10, demo_array2: ['val-test']}}/>
         )
+        // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-renderer').length).toBe(1)
         expect(container.querySelectorAll('.group-renderer').length).toBe(2)
         expect(queryByText('store-is-correct') !== null).toBeTruthy()
@@ -236,7 +238,7 @@ describe('UIGenerator Integration', () => {
         expect(queryByText('missing-type-number') !== null).toBeTruthy()
         expect(queryAllByText('array-renderer').length).toBe(3)
     })
-    it('TestUIRenderer no `store`', async () => {
+    it('TestUIRenderer no `store`', async() => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer noStore/>
         )
@@ -249,7 +251,7 @@ describe('UIGenerator Integration', () => {
         expect(queryAllByText('string-renderer').length).toBe(2)
         expect(queryByText('store-is-invalid') !== null).toBeTruthy()
     })
-    it('TestUIRenderer not `t`', async () => {
+    it('TestUIRenderer not `t`', async() => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer notT/>
         )
@@ -259,20 +261,20 @@ describe('UIGenerator Integration', () => {
         expect(queryByText('widget.demo_string.title')).toBe(null)
         expect(queryAllByText('string-renderer').length).toBe(3)
     })
-    it('TestUIRenderer ConditionalCombining', async () => {
+    it('TestUIRenderer ConditionalCombining', async() => {
         const {queryByText, container} = render(
             <TestUIRenderer data={{demo_string: 'test'}}/>
         )
         // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-renderer').length === 1).toBeTruthy()
         expect(container.querySelectorAll('.group-renderer').length > 0).toBeTruthy()
-        expect(queryByText('widget.demo_string.title') == null).toBeTruthy()
+        expect(queryByText('widget.demo_string.title') === null).toBeTruthy()
         expect(queryByText('missing-custom-Text') !== null).toBeTruthy()
     })
-    it('TestUIRendererError', async () => {
+    it('TestUIRendererError', async() => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer data={{
-                demo_string: '4444a', demo_number: 83,
+                demo_string: 'to-long-text', demo_number: 83,
                 // @ts-ignore
                 demo_array: 'not-an-array',
             }}/>

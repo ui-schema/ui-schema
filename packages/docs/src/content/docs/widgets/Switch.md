@@ -31,6 +31,10 @@ const widgets = {
 
 - `view`
     - `hideTitle` when `true` doesn't show any title
+    - `titleVariant`, `string`, the used `Typography` variant for the label
+    - `dense` when `true` shows small switch and uses `body2` for the label (when `titleVariant` is not used)
+    - `labelPlacement`: `start | end | bottom | top`
+    - `color`: the MUI color for the switch
 - `readOnly`
 
 **Components:**

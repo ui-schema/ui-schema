@@ -6,7 +6,8 @@ import Highlighter from 'react-highlight-words'
 import { SearchHighlight, SearchLink } from './SearchBoxUtils'
 import { useSearch } from '@control-ui/docs/DocsSearchProvider'
 import { useDrawer } from '@control-ui/app/DrawerProvider'
-import { useMediaQuery, useTheme } from '@mui/material'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import useTheme from '@mui/material/styles/useTheme'
 
 export const SearchResultModule: React.FC<{
     match: any
@@ -25,7 +26,7 @@ export const SearchResultModule: React.FC<{
             to={match.pagePath + '#doc-module--' + match.module}
             onClick={() => {
                 setOpen(false)
-                if (!isMd) {
+                if(!isMd) {
                     setDrawerOpen(false)
                 }
             }}

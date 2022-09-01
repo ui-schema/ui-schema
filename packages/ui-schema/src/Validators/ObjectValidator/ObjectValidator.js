@@ -1,18 +1,17 @@
 import {List, Map, Record} from 'immutable';
 import {createValidatorErrors} from '@ui-schema/ui-schema/ValidatorErrors';
 import {validateSchema} from '@ui-schema/ui-schema/validateSchema';
-import {schemaTypeIs} from '@ui-schema/ui-schema/Utils/schemaTypeIs';
+import {ERROR_NOT_SET, checkValueExists} from '@ui-schema/ui-schema/Validators/RequiredValidator';
 
 export const ERROR_ADDITIONAL_PROPERTIES = 'additional-properties';
 
-export const validateObject = (schema, value) => {
+export const validateObject = (schema, value, recursively = false) => {
     let err = createValidatorErrors();
-    if(
-        !schemaTypeIs(schema.get('type'), 'object') ||
-        !(Map.isMap(value) || Record.isRecord(value) || typeof value === 'object') || List.isList(value) || Array.isArray(value)) {
-        return err
-    }
-    if(schema.get('additionalProperties') === false && schema.get('properties') && typeof value === 'object') {
+    const isRealObject = typeof value !== 'undefined' &&
+        ((typeof value === 'object' && value !== null) || Map.isMap(value) || Record.isRecord(value)) &&
+        !(List.isList(value) || Array.isArray(value))
+
+    if(schema.get('additionalProperties') === false && schema.get('properties') && isRealObject) {
         let hasAdditional = false;
         const keys = Map.isMap(value) || Record.isRecord(value) ? value.keySeq() : Object.keys(value);
         const schemaKeys = schema.get('properties').keySeq();
@@ -25,23 +24,35 @@ export const validateObject = (schema, value) => {
         }
     }
 
-    if(schema.get('propertyNames') && typeof value === 'object') {
+    if(schema.get('propertyNames') && isRealObject) {
         const keys = Map.isMap(value) || Record.isRecord(value) ? value.keySeq() : Object.keys(value);
         keys.forEach(key => {
-            let tmp_err = validateSchema(schema.get('propertyNames').set('type', 'string'), key);
+            let tmp_err = validateSchema(schema.get('propertyNames').set('type', 'string'), key, recursively);
             if(tmp_err.hasError()) {
                 err = err.addErrors(tmp_err);
             }
         });
     }
 
+    if(recursively && schema.get('properties')) {
+        schema.get('properties').forEach((subSchema, key) => {
+            let val = isRealObject ? Map.isMap(value) || Record.isRecord(value) ? value.get(key) : value[key] : undefined;
+            if(schema.get('required')?.contains(key) && !checkValueExists(subSchema.get('type'), val)) {
+                err = err.addError(ERROR_NOT_SET);
+                return;
+            }
+
+            let t = validateSchema(subSchema, val, recursively);
+            if(t.hasError()) {
+                err = err.addErrors(t);
+            }
+        })
+    }
+
     return err;
 };
 
 export const objectValidator = {
-    should: ({schema}) => {
-        return schemaTypeIs(schema.get('type'), 'object')
-    },
     handle: ({schema, value, errors, valid}) => {
         const objectErrors = validateObject(schema, value);
         if(objectErrors?.hasError()) {

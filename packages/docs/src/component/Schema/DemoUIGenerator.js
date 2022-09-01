@@ -1,5 +1,9 @@
 import React from 'react';
-import {Button, Box, Typography, useTheme, useMediaQuery} from '@mui/material';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import useTheme from '@mui/material/styles/useTheme';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import {createOrderedMap, UIRootRenderer, createEmptyStore, storeUpdater} from '@ui-schema/ui-schema';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter';
 import {UIStoreProvider} from '@ui-schema/ui-schema/UIStore';

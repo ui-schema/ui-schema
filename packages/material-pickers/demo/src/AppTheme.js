@@ -1,7 +1,6 @@
 import React from 'react';
-import {createTheme} from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
-import {StyledEngineProvider, ThemeProvider} from '@mui/material/styles';
+import {createTheme, StyledEngineProvider, ThemeProvider} from '@mui/material/styles';
 
 const themeDark = createTheme({
     palette: {
