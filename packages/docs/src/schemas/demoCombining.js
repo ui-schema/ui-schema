@@ -44,7 +44,8 @@ const schemaCombiningConditional = createOrderedMap({
                                         type: 'string',
                                         const: "illinois"
                                     }
-                                }
+                                },
+                                required: ["state"],
                             },
                             then: {
                                 properties: {
@@ -67,7 +68,8 @@ const schemaCombiningConditional = createOrderedMap({
                                         type: 'string',
                                         enum: ["ny", "florida"]
                                     }
-                                }
+                                },
+                                required: ["state"],
                             },
                             then: {
                                 properties: {
@@ -88,7 +90,8 @@ const schemaCombiningConditional = createOrderedMap({
                                         type: 'string',
                                         const: "florida"
                                     }
-                                }
+                                },
+                                required: ["state"],
                             },
                             then: {
                                 properties: {
@@ -112,7 +115,8 @@ const schemaCombiningConditional = createOrderedMap({
                                 type: 'string',
                                 minLength: 6,
                             }
-                        }
+                        },
+                        required: ["phone"],
                     },
                     then: {
                         properties: {

@@ -388,7 +388,8 @@ const schemaWConditional = createOrderedMap({
                         type: 'string',
                         const: "canada"
                     }
-                }
+                },
+                required: ['country'],
             },
             then: {
                 properties: {
@@ -404,7 +405,8 @@ const schemaWConditional = createOrderedMap({
                         type: 'string',
                         const: "eu"
                     }
-                }
+                },
+                required: ['country'],
             },
             then: {
                 properties: {
@@ -420,7 +422,8 @@ const schemaWConditional = createOrderedMap({
                         type: 'string',
                         const: "usa"
                     }
-                }
+                },
+                required: ['country'],
             },
             then: {
                 properties: {
@@ -464,7 +467,8 @@ const schemaWConditional = createOrderedMap({
                     const: "usa"
                 }
             }
-        }
+        },
+        required: ['country'],
     },
     then: {
         properties: {
@@ -530,7 +534,8 @@ const schemaWCombining = createOrderedMap({
                                 type: 'string',
                                 const: "rlp"
                             }
-                        }
+                        },
+                        required: ['state'],
                     },
                     then: {
                         properties: {
@@ -552,7 +557,8 @@ const schemaWCombining = createOrderedMap({
                                 type: 'string',
                                 minLength: 6,
                             }
-                        }
+                        },
+                        required: ['phone'],
                     },
                     then: {
                         properties: {
@@ -603,7 +609,8 @@ Example with multiple `if`, nested `allOf`:
                                         "type": "string",
                                         "const": "rlp"
                                     }
-                                }
+                                },
+                                "required": ["state"],
                             },
                             "then": {
                                 "properties": {
@@ -625,7 +632,8 @@ Example with multiple `if`, nested `allOf`:
                                         "type": "string",
                                         "const": "ny"
                                     }
-                                }
+                                },
+                                "required": ["state"],
                             },
                             "then": {
                                 "properties": {
@@ -650,7 +658,8 @@ Example with multiple `if`, nested `allOf`:
                                 "type": "string",
                                 "minLength": 6
                             }
-                        }
+                        },
+                        "required": ["phone"],
                     },
                     "then": {
                         "properties": {
