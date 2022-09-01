@@ -70,6 +70,7 @@ export const WidgetEngine = <PWidget extends {} = {}, C extends {} = {}, P exten
     const currentSchemaKeys = useImmutable(schemaKeys)
     const activeWidgets = customWidgets || widgets
 
+    // todo: resolving `hidden` here is wrong, must be done after merging schema / resolving referenced
     const isVirtual = Boolean(props.isVirtual || schema?.get('hidden'))
     let required = List([])
     if (parentSchema) {

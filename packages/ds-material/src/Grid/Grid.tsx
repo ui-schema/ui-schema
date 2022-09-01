@@ -70,6 +70,8 @@ export const SchemaGridHandler = <P extends WidgetPluginProps>(props: P): React.
         textAlign: align as React.CSSProperties['textAlign'],
     }), [align])
 
+    // todo: support `hidden: true` for object type here? e.g. only available after if/else/then eval
+    // todo: using `noGrid` may produce an empty `GridContainer` (when all props e.g. hidden/noGrid), can this be optimized?
     const noGrid = (noGridProp || isVirtual || schema.getIn(['view', 'noGrid']))
     const nestedNext = <Plugin {...props} currentPluginIndex={next}/>
 

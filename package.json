@@ -1,6 +1,6 @@
 {
-    "name": "ui-schema",
-    "version": "0.0.1",
+    "name": "@ui-schema/dev",
+    "version": "0.5.0-alpha",
     "description": "",
     "private": true,
     "main": "index.js",

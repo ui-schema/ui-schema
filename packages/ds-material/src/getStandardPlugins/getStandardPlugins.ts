@@ -16,8 +16,8 @@ export const getStandardPlugins = <C extends {} = {}>(): {
     schemaPlugins: SchemaPlugin[]
 } => {
     const widgetPlugins: WidgetPluginType<C>[] = [
-        ReferencingHandler,
-        SchemaGridHandler,
+        ReferencingHandler,// must be before AND maybe after combining/conditional?
+        SchemaGridHandler,// todo: Grid must be after e.g. ConditionalHandler, but why was it this high? wasn't that because of e.g. conditional object grids?
         ExtractStorePlugin,
         CombiningHandler,
         DefaultHandler,
