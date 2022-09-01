@@ -11,11 +11,11 @@ Check [this discussion](https://github.com/ui-schema/ui-schema/discussions/184) 
 
 ## Changelog
 
-This serves as overview of releases and changes - follow the [#releases channel in slack](https://ui-schema.slack.com/archives/C03DMRE88Q7) for the same content, but with the option for direct help and feedback ([slack invite link in readme](https://github.com/ui-schema/ui-schema/tree/0.4.1#ui-schema-for-react)).
+This serves as overview of releases and changes - follow the [#releases channel in slack](https://ui-schema.slack.com/archives/C03DMRE88Q7) for the same content, but with the option for direct help and feedback ([slack invite link in readme](https://github.com/ui-schema/ui-schema/tree/0.4.3#ui-schema-for-react)).
 
 ### v0.4.4
 
-> @ 2022-09-28
+> @ 2022-09-01
 
 *Changed json-schema validation implementations.*
 
