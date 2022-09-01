@@ -1,8 +1,8 @@
-import { isEqual } from '@ui-schema/react/Utils/memo/memo'
-import { createMap } from '@ui-schema/ui-schema/Utils'
+import { isEqualObject } from '@ui-schema/system/Utils/isEqualObject'
+import { createMap } from '@ui-schema/ui-schema/Utils/createMap'
 import { List } from 'immutable'
 
-describe('isEqual', () => {
+describe('isEqualObject', () => {
     test.each([
         [{a: 'name'}, {a: 'name'}, true],
         [{a: 'name'}, {a: 'names'}, false],
@@ -20,9 +20,9 @@ describe('isEqual', () => {
         [{a: List(['name']), b: true}, {a: List(['name']), b: true}, true],
         [{a: List(['name']), b: true}, {a: List(['name']), b: false}, false],
     ])(
-        'isEqual(%j, %s)',
+        'isEqualObject(%j, %s)',
         (prevProps, nextProps, expectedValid) => {
-            expect(isEqual(prevProps, nextProps)).toBe(expectedValid)
+            expect(isEqualObject(prevProps, nextProps)).toBe(expectedValid)
         }
     )
 })

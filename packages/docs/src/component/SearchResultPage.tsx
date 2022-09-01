@@ -10,7 +10,7 @@ import Slide from '@mui/material/Slide'
 import IcTag from '@mui/icons-material/Tag'
 import useTheme from '@mui/material/styles/useTheme'
 import { useDrawer } from '@control-ui/app/DrawerProvider'
-import { useMediaQuery } from '@mui/material'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 export const SearchResultPage: React.FC<{
     match: any
@@ -38,7 +38,7 @@ export const SearchResultPage: React.FC<{
             to={match.pagePath}
             onClick={() => {
                 setOpen(false)
-                if (!isMd) {
+                if(!isMd) {
                     setDrawerOpen(false)
                 }
             }}
@@ -78,7 +78,7 @@ export const SearchResultPage: React.FC<{
                                 to={match.pagePath + '#' + match.headings[mk.index].fragment}
                                 onClick={() => {
                                     setOpen(false)
-                                    if (!isMd) {
+                                    if(!isMd) {
                                         setDrawerOpen(false)
                                     }
                                 }}

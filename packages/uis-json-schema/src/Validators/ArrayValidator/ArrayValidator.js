@@ -2,7 +2,6 @@ import {List, Map} from 'immutable';
 import {validateSchema} from '@ui-schema/json-schema/validateSchema';
 import {createValidatorErrors} from '@ui-schema/system/ValidatorErrors';
 import {ERROR_WRONG_TYPE} from '@ui-schema/json-schema/Validators/TypeValidator';
-import {schemaTypeIs} from '@ui-schema/system/schemaTypeIs';
 
 export const ERROR_DUPLICATE_ITEMS = 'duplicate-items';
 export const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains';
@@ -66,7 +65,8 @@ export const validateArrayContent = (itemsSchema, value, additionalItems = true)
     ) {
         // a nested "one-schema-for-all" array, nested in the current array
         console.log('nested one-schema-for-all', itemsSchema?.toJS())
-    }*/ else if(!schemaTypeIs(itemsSchema.get('type'), 'array')) {
+    }*/ else if(Array.isArray(value) || List.isList(value)) {
+        // }*/ else if(!schemaTypeIs(itemsSchema.get('type'), 'array')) {
         // no nested array, one-schema for all items
         // not validating array content of array here, must be validated with next schema level
         for(let val of value) {
@@ -112,7 +112,7 @@ export const validateItems = (schema, value) => {
 
 export const validateContains = (schema, value) => {
     let errors = createValidatorErrors();
-    if(!schemaTypeIs(schema.get('type'), 'array')) return errors;
+    if(!(Array.isArray(value) || List.isList(value))) return errors;
 
     const contains = schema.get('contains');
     if(!contains) return errors;
@@ -165,9 +165,8 @@ export const validateUniqueItems = (schema, value) => {
 }
 
 export const arrayValidator = {
-    should: ({schema, value}) => {
-        return schemaTypeIs(schema.get('type'), 'array') &&
-            (List.isList(value) || Array.isArray(value))
+    should: ({value}) => {
+        return List.isList(value) || Array.isArray(value)
     },
     handle: ({schema, value, errors, valid}) => {
         // unique-items sub-schema is intended for dynamics and for statics, e.g. Selects could have duplicates but also a SimpleList of strings
@@ -186,7 +185,7 @@ export const arrayValidator = {
          * - e.g. 2 out of 3 are invalid, only one error is visible on the parent-component
          * - but when the items are not valid, the parent should also know that something is invalid
          * - providing context `arrayItems = true` for errors makes it possible to distinct the errors in the parent-component
-         * - full sub-schema validation is done (and possible) if the sub-schema is rendered through e.g. WidgetEngine isVirtual
+         * - full sub-schema validation is done (and possible) if the sub-schema is rendered through e.g. PluginStack isVirtual
          */
         let items = schema.get('items');
         if(items && value) {

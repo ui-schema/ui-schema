@@ -1,4 +1,3 @@
-import { Map, OrderedMap } from 'immutable'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 /**
@@ -7,9 +6,8 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 export function handleIfElseThen(
     // the schema which contains the if / else / then part
     schema: UISchemaMap,
-    // the store which holds the value against which the `distSchema` is validated
-    // todo: should be named `value` not `store`
-    store: Map<string | number, any> | OrderedMap<string | number, any>,
+    // the value against which the `distSchema` is validated
+    value: any,
     // the schema which must be valid for having `then` applied
-    distSchema: UISchemaMap
+    distSchema: UISchemaMap,
 ): UISchemaMap

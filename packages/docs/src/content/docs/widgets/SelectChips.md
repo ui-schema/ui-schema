@@ -38,4 +38,5 @@ Widgets:
             - the `const` value as fallback
         - see demo schema below for an example
 - supported extra keywords:
-    - `view.size` : `small|medium` for the chips size, `small` is default
+    - `view.size`: `small|medium` for the chips size, `small` is default
+    - `view.color`: the MUI color for the chip

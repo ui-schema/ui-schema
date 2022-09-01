@@ -5,7 +5,6 @@ import {validateMinMax} from '../Validators/MinMaxValidator/MinMaxValidator';
 import {ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum} from '../Validators/ValueValidator';
 import {ERROR_MULTIPLE_OF, validateMultipleOf} from '../Validators/MultipleOfValidator/MultipleOfValidator';
 import {validateContains} from '../Validators/ArrayValidator/ArrayValidator';
-import {ERROR_NOT_SET} from '../Validators/RequiredValidator/RequiredValidator';
 import {validateObject} from '../Validators/ObjectValidator/ObjectValidator';
 import {createValidatorErrors} from '@ui-schema/system/ValidatorErrors/ValidatorErrors';
 import {validateOneOf} from '@ui-schema/json-schema/Validators/OneOfValidator';
@@ -15,9 +14,10 @@ import {validateOneOf} from '@ui-schema/json-schema/Validators/OneOfValidator';
  *
  * @param schema
  * @param value
+ * @param recursively
  * @return {ValidatorErrorsType}
  */
-export const validateSchema = (schema, value) => {
+export const validateSchema = (schema, value, recursively = false) => {
     let type = schema.get('type');
     let pattern = schema.get('pattern');
 
@@ -26,7 +26,7 @@ export const validateSchema = (schema, value) => {
     if(not) {
         // supporting `not` for any validations
         // https://json-schema.org/understanding-json-schema/reference/combining.html#not
-        let tmpNot = validateSchema(not, value);
+        let tmpNot = validateSchema(not, value, recursively);
         return tmpNot.hasError() ? tmpNot.addError('not-is-valid') : err;
     }
 
@@ -45,7 +45,7 @@ export const validateSchema = (schema, value) => {
         if(errMinMax.hasError()) {
             return errMinMax;
         }
-        const errObj = validateObject(schema, value);
+        const errObj = validateObject(schema, value, recursively);
         if(errObj.hasError()) {
             return errObj;
         }
@@ -53,39 +53,11 @@ export const validateSchema = (schema, value) => {
         if(errContains.hasError()) {
             return errContains;
         }
-        const errOneOf = validateOneOf(schema.get('oneOf'), value)
+        const errOneOf = validateOneOf(schema.get('oneOf'), value, recursively)
         if(errOneOf.errors.hasError()) {
             return errOneOf.errors;
         }
     }
-
-    return err;
-};
-
-/**
- * Validating the value, property for property.
- *
- * @param {Map} schema
- * @param {Map|Record} value
- * @return {List<*>}
- */
-export const validateSchemaObject = (schema, value) => {
-    let err = createValidatorErrors();
-    let properties = schema.get('properties');
-    if(!properties) return err;
-
-    properties.forEach((subSchema, key) => {
-        let val = value.get(key);
-        if(typeof val === 'undefined') {
-            err = err.addError(ERROR_NOT_SET);
-            return;
-        }
-
-        let t = validateSchema(subSchema, val);
-        if(t.hasError()) {
-            err = err.addErrors(t);
-        }
-    });
 
     return err;
 };

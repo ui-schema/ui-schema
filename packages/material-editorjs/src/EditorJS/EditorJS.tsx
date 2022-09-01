@@ -38,7 +38,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps & WithValue> = (
     const currentState = React.useRef<OrderedMap<any, any> | undefined>(undefined)
     const onChangeEditor = React.useCallback((_api: API, newData?: OutputData) => {
         const newValue = fromJSOrdered(newData) as OrderedMap<any, any>
-        if (!currentState.current?.get('blocks')?.equals(newValue?.get('blocks'))) {
+        if(!currentState.current?.get('blocks')?.equals(newValue?.get('blocks'))) {
             onChange({
                 storeKeys,
                 scopes: ['value', 'internal'],
@@ -59,7 +59,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps & WithValue> = (
     const isEmpty = internalValue.get('isEmpty') || !(value?.get('blocks')?.size > 0)
 
     React.useEffect(() => {
-        if (
+        if(
             // init only when ready and editor ref
             ready && editorRef.current &&
             (
@@ -71,7 +71,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps & WithValue> = (
             )
         ) {
             editorRef.current.clear()
-            if (value) {
+            if(value) {
                 currentState.current = value
                 editorRef.current.render(value.toJS() as any)
             } else {
@@ -90,7 +90,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps & WithValue> = (
                 required,
             })
         }
-    }, [value, ready, editorRef, currentState, isEmpty, onEmptyChange])
+    }, [value, ready, editorRef, currentState, isEmpty, onChange, required, storeKeys, onEmptyChange])
 
     React.useEffect(() => {
         onEmptyChange(Boolean(typeof isEmpty === 'undefined' ? true : isEmpty))

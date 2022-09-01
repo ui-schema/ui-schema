@@ -4,7 +4,7 @@ import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { UIStoreActionSet } from '@ui-schema/react/UIStoreActions'
 import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
 import { MuiPickersAdapterContext } from '@mui/x-date-pickers/LocalizationProvider'
-import { TextField } from '@mui/material'
+import TextField from '@mui/material/TextField'
 import { BaseDateTimePickerProps } from '@mui/x-date-pickers/DateTimePicker/shared'
 import { List } from 'immutable'
 import { CalendarOrClockPickerView } from '@mui/x-date-pickers/internals/models'
@@ -40,7 +40,7 @@ export const WidgetDateTimePicker: React.FC<WidgetProps & WithScalarValue & Widg
 
     const openTo = schema.getIn(['date', 'openTo']) as CalendarOrClockPickerView
     const orientation = schema.getIn(['date', 'orientation']) as 'landscape' | 'portrait' | undefined
-    if (!views) {
+    if(!views) {
         console.error('WidgetDatePicker invalid, requires `views` at: ', storeKeys.toJS())
     }
 
@@ -53,7 +53,7 @@ export const WidgetDateTimePicker: React.FC<WidgetProps & WithScalarValue & Widg
         views={views}
         readOnly={schema.get('readOnly') as boolean}
         onChange={(e) => {
-            if (!utils) return
+            if(!utils) return
             onChange({
                 storeKeys: storeKeys,
                 scopes: ['value'],

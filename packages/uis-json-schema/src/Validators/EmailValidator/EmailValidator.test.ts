@@ -78,7 +78,7 @@ describe('emailValidator', () => {
                 format: 'email',
             }),
             'some-text',
-            false,
+            true,
         ], [
             OrderedMap({
                 type: 'string',

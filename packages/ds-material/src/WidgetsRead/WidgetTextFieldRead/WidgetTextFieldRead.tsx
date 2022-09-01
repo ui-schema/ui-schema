@@ -4,7 +4,6 @@ import Typography from '@mui/material/Typography'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { WithScalarValue } from '@ui-schema/react/UIStore'
-import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
@@ -26,14 +25,13 @@ export const StringRendererRead = <P extends WidgetProps<MuiWidgetBinding<{ Info
         showValidity, valid, errors,
         style,
         onClick,
-        widgets,
+        widgets, readDense,
     }: P & WithScalarValue & StringRendererReadProps,
 ): React.ReactElement => {
     const hideTitle = Boolean(schema.getIn(['view', 'hideTitle']))
     const InfoRenderer = widgets?.InfoRenderer
     const lines = multiline && typeof value === 'string' ? value.split('\n') : []
     const hasInfo = Boolean(InfoRenderer && schema?.get('info'))
-    const {readDense} = useUIMeta<UIMetaReadContextType>()
     return <>
         <Box onClick={onClick} style={style}>
             <TitleBoxRead

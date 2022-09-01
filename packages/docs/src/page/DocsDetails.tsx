@@ -1,5 +1,9 @@
 import React from 'react'
-import { useTheme, Paper, Link, useMediaQuery, Button } from '@mui/material'
+import Paper from '@mui/material/Paper'
+import Link from '@mui/material/Link'
+import Button from '@mui/material/Button'
+import useTheme from '@mui/material/styles/useTheme'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import IcToc from '@mui/icons-material/Toc'
 import IcShowFull from '@mui/icons-material/Expand'
 import IcShowCompact from '@mui/icons-material/Compress'
@@ -42,7 +46,7 @@ const DocContent: React.FC<{
     const isLg = useMediaQuery(breakpoints.up('lg'))
     const module = doc?.docModule
     React.useEffect(() => {
-        if (!module || (module && moduleDocsCache.current[module.modulePath])) {
+        if(!module || (module && moduleDocsCache.current[module.modulePath])) {
             setModules(module ? moduleDocsCache.current[module.modulePath] : undefined)
             setLoadingModuleDocs(false)
             return
@@ -63,12 +67,12 @@ const DocContent: React.FC<{
     }, [module])
 
     const mdData = React.useMemo(() => {
-        if (!content) return undefined
+        if(!content) return undefined
         const lines: string[] = content.split('\n')
         // todo: add correct front-matter extraction, but e.g. `front-matter` is no longer maintained/browser-optimized
-        if (lines[0] === '---') {
+        if(lines[0] === '---') {
             const i = lines.slice(1).findIndex((l: string) => l === '---')
-            if (i !== -1) {
+            if(i !== -1) {
                 lines.splice(0, i + 2)
             }
         }

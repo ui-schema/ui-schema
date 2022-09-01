@@ -1,4 +1,4 @@
-import { List, Map, OrderedMap } from 'immutable'
+import { List, Map } from 'immutable'
 import {
     validateItems,
     validateContains,
@@ -7,7 +7,7 @@ import {
     ERROR_DUPLICATE_ITEMS,
     arrayValidator,
 } from '@ui-schema/json-schema/Validators/ArrayValidator'
-import { createOrderedMap } from '@ui-schema/ui-schema/Utils'
+import { createOrderedMap } from '@ui-schema/react/Utils/createMap'
 import { validateAdditionalItems } from '@ui-schema/json-schema/Validators/ArrayValidator/ArrayValidator'
 import { ERROR_WRONG_TYPE } from '@ui-schema/json-schema/Validators/TypeValidator/TypeValidator'
 import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
@@ -655,15 +655,15 @@ describe('validateUniqueItems', () => {
 
 describe('arrayValidator', () => {
     test.each([
-        [OrderedMap<'type', string>({type: 'array'}), List(), true],
-        [OrderedMap<'type', string>({type: 'array'}), Map(), false],
-        [OrderedMap<'type', string>({type: 'string'}), List(), false],
-        [OrderedMap<string, string>({}), List(), false],
+        [List(), true],
+        [[], true],
+        [Map(), false],
+        ['some-text', false],
     ])(
         '.should(%j, %s)',
-        (schema, value, expectedValid) => {
+        (value, expectedValid) => {
             // @ts-ignore
-            expect(arrayValidator.should({schema, value})).toBe(expectedValid)
+            expect(arrayValidator.should({value})).toBe(expectedValid)
         }
     )
 

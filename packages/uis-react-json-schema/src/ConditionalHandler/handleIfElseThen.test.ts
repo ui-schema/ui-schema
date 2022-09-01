@@ -3,6 +3,15 @@ import { createOrderedMap } from '@ui-schema/react/Utils/createMap'
 import { handleIfElseThen } from '@ui-schema/react-json-schema/ConditionalHandler'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
+/**
+ * npm test -- --testPathPattern=ConditionalHandler --watch --watchman --coverage=false
+ * npm run tdd -- --testPathPattern=ConditionalHandler
+ * npm run tdd -- --runTestsByPath=packages/ui-schema/src/Plugins/ConditionalHandler
+ * npm run tdd -- --runTestsByPath "./packages/ui-schema/src/Plugins/ConditionalHandler"
+ * npm run tdd -- --runTestsByPath "./packages/ui-schema/src/Plugins/ConditionalHandler/handleIfElseThen.test.ts" --selectProjects test-ui-schema
+ * npm run test -- --runTestsByPath "./packages/ui-schema/src/Plugins/ConditionalHandler/handleIfElseThen.test.ts"
+ * npm run test -- --runTestsByPath "./packages/ui-schema/src/Plugins/ConditionalHandler/handleIfElseThen.test.ts" --selectProjects test-ui-schema
+ */
 describe('handleIfElseThen', () => {
     test.each([
         [
@@ -256,9 +265,58 @@ describe('handleIfElseThen', () => {
             }),// expectedSchema
             true,// expected
         ],
+        [
+            createOrderedMap({
+                type: 'number',
+                if: {
+                    minimum: 10,
+                },
+                then: {
+                    maximum: 40,
+                },
+                else: {
+                    maximum: 8,
+                },
+            }/* as JsonSchema*/),
+            12,
+            createOrderedMap({
+                type: 'number',
+            }),// distSchema
+            createOrderedMap({
+                type: 'number',
+                maximum: 40,
+            }),// expectedSchema
+            true,// expected
+        ],
+        [
+            createOrderedMap({
+                type: 'number',
+                if: {
+                    minimum: 10,
+                },
+                then: {
+                    maximum: 40,
+                },
+                else: {
+                    maximum: 8,
+                },
+            }/* as JsonSchema*/),
+            6,
+            createOrderedMap({
+                type: 'number',
+            }),// distSchema
+            createOrderedMap({
+                type: 'number',
+                maximum: 8,
+            }),// expectedSchema
+            true,// expected
+        ],
     ] as [UISchemaMap, Map<string, string | number>, UISchemaMap, UISchemaMap, boolean][])(
         'handleIfElseThen(%j, store, distSchema)',
         (schema, store, distSchema, expectedSchema, expected) => {
+            /*if(handleIfElseThen(schema, store, distSchema).equals(expectedSchema) !== expected) {
+                console.log(handleIfElseThen(schema, store, distSchema).toJS())
+            }*/
             expect(handleIfElseThen(schema, store, distSchema).equals(expectedSchema)).toBe(expected)
         }
     )

@@ -1,5 +1,6 @@
 import React from 'react';
-import {Paper, Typography} from '@mui/material';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import {PageTitle, PageContent} from '@control-ui/kit/PageContent';
 import NavProject from '../component/NavProject';
 import {HeadMeta} from '@control-ui/kit/HeadMeta';

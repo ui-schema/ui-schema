@@ -154,9 +154,8 @@ const TestUIRenderer = (props: {
         properties: {
             demo_string: {
                 type: 'string',
-                pattern: '^$|.+',
                 minLength: 0,
-                maxLength: 2,
+                maxLength: 6,
             },
             demo_number: {
                 $ref: '#demo_number',
@@ -184,6 +183,8 @@ const TestUIRenderer = (props: {
                         const: 'test',
                     },
                 },
+                // without `required` this now (>=0.4.3) would resolve always after fixing ConditionalHandler
+                required: ['demo_string'],
             },
             then: {
                 properties: {

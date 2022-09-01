@@ -185,7 +185,7 @@ const readWidgets: ReadWidgetsBinding = {
 const GridStack = injectWidgetEngine(GridContainer)
 const ReadableWritableEditor = () => {
     const {widgets, ...metaCtx} = useUIMeta()
-    const showValidity = true
+    const [showValidity, setShowValidity] = React.useState(true)
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
     const [edit, setEdit] = React.useState(false)
     const [dense, setDense] = React.useState(false)
@@ -220,6 +220,12 @@ const ReadableWritableEditor = () => {
                 <MuiSchemaDebug schema={formSchema}/>
             </UIStoreProvider>
         </UIMetaProvider>
+        <div style={{width: '100%', marginTop: 24}}>
+            <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
+            <div>
+                {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
+            </div>
+        </div>
     </React.Fragment>
 }
 

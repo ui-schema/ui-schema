@@ -27,6 +27,7 @@
         "link": "lerna link --force-local",
         "test": "jest -c=\"packages/jest.config.ts\"",
         "test_": "cross-env NODE_OPTIONS=--experimental-vm-modules jest -c=\"packages/jest.config.ts\"",
+        "jest-clear": "jest -c=\"packages/jest.config.ts\" --detectOpenHandles --forceExit --clearCache",
         "tdd": "npm test -- --watch --watchman --coverage=false",
         "__release": "lerna run release --stream",
         "validate": "cross-env NODE_ENV=development node --experimental-json-modules packages/demo-server/build/cli.js validate",

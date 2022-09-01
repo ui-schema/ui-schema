@@ -46,7 +46,7 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
                         currentValue?.indexOf(itemValue as string) === -1 ? 'outlined' : 'filled'
                     }
                     disabled={schema.get('readOnly') as boolean || itemSchema?.get('readOnly') as boolean}
-                    color={'primary'}
+                    color={(schema.getIn(['view', 'color']) as any) || 'primary'}
                     onClick={() => {
                         !schema.get('readOnly') &&
                         !itemSchema?.get('readOnly') &&

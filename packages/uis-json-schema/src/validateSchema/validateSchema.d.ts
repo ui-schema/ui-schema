@@ -4,10 +4,6 @@ import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
 
 export function validateSchema(
     schema: UISchemaMap,
-    value: Map<string | number, any> | OrderedMap<string | number, any>
-): ValidatorErrorsType
-
-export function validateSchemaObject(
-    schema: UISchemaMap,
-    value: Map<string | number, any> | OrderedMap<string | number, any>
+    value: Map<string | number, any> | OrderedMap<string | number, any>,
+    recursively?: boolean,
 ): ValidatorErrorsType

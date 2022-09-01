@@ -1,5 +1,6 @@
 import React from 'react';
-import {Typography, useTheme} from '@mui/material';
+import Typography from '@mui/material/Typography';
+import useTheme from '@mui/material/styles/useTheme';
 import {RichCodeEditor, supportedModes} from './RichCodeEditor';
 import DemoUIGenerator from './Schema/DemoUIGenerator';
 

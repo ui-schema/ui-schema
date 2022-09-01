@@ -2,7 +2,6 @@ import React, { MouseEventHandler } from 'react'
 import { List } from 'immutable'
 import { Translate } from '@ui-schema/react/Translate'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { StoreKeys, extractValue, WithScalarValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
@@ -12,7 +11,7 @@ import Box from '@mui/material/Box'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
 import Typography from '@mui/material/Typography'
 import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
-import { InfoRendererType, OptionValueSchema, useOptionsFromSchema } from '@ui-schema/ds-material'
+import { OptionValueSchema, useOptionsFromSchema } from '@ui-schema/ds-material'
 
 const checkActive = (list: List<any>, name: string | undefined | number) => list && list.contains && typeof list.contains(name) !== 'undefined' ? list.contains(name) : false
 
@@ -59,7 +58,7 @@ const SingleOptionItem: React.ComponentType<{
 ) => {
     const activeSchema = typeof value === 'undefined' ? undefined : valueSchemas?.find(s => s.value === value)
 
-    return <Typography variant={dense ? 'body2' : 'body1'} color={activeSchema ? undefined : 'error'}>
+    return <Typography variant={dense ? 'body2' : 'body1'} color={typeof value === 'undefined' || activeSchema ? undefined : 'error'}>
         {activeSchema && typeof value !== 'undefined' ?
             <Translate
                 schema={activeSchema.schema?.get('t')}
@@ -76,18 +75,18 @@ export interface WidgetOptionsReadProps {
     style?: React.CSSProperties
 }
 
-export const WidgetOptionsRead: React.ComponentType<WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>> & WithScalarValue & WidgetOptionsReadProps> = (
+export const WidgetOptionsRead: React.ComponentType<WidgetProps<MuiWidgetBinding> & UIMetaReadContextType & WithScalarValue & WidgetOptionsReadProps> = (
     {
         schema, storeKeys, showValidity,
         valid, errors, value,
         widgets,
         onClick, style,
+        readDense,
     }
 ) => {
     const hideTitle = schema.getIn(['view', 'hideTitle']) as boolean | undefined
     const InfoRenderer = widgets?.InfoRenderer
     const hasInfo = Boolean(InfoRenderer && schema?.get('info')) as boolean | undefined
-    const {readDense} = useUIMeta<UIMetaReadContextType>()
     const isMultiOption = Boolean(schema.get('items'))
     const {valueSchemas} = useOptionsFromSchema(
         storeKeys,

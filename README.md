@@ -57,12 +57,12 @@ Use JSON Schema to validate data and automatically create UIs with it - UI-Schem
 
 ## Features
 
-- add any design-system and custom widget
+- add any design-system or custom widget
     - easily create isolated and atomic widgets, with autowired data and validations
     - customize design system behaviour with e.g. widget compositions
     - easy binding of own design systems and custom widgets
-    - [auto-rendering by data & schema](https://ui-schema.bemit.codes/quick-start) or [full-custom forms](https://ui-schema.bemit.codes/quick-start?render=custom) with autowired widgets
     - easily add advanced features like [read-or-write mode](https://ui-schema.bemit.codes/docs/core-meta#read-context)
+- [auto-rendering by data & schema](https://ui-schema.bemit.codes/quick-start) or [full-custom forms](https://ui-schema.bemit.codes/quick-start?render=custom) with autowired widgets
 - flexible translation of widgets
     - with any library ([`t` prop (Translator)](https://ui-schema.bemit.codes/docs/localization#translation), [`Trans` component](https://ui-schema.bemit.codes/docs/localization#trans-component))
     - in-schema translations ([`t` keyword](https://ui-schema.bemit.codes/docs/localization#translation-in-schema))

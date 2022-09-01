@@ -1,11 +1,20 @@
-import {Map} from 'immutable';
+import {isEqual} from '@ui-schema/system/Utils/isEqual';
+import {fromJS, List, Map, Record} from 'immutable';
 
 export const ERROR_CONST_MISMATCH = 'const-mismatch';
 
 export const validateConst = (_const, value) => {
-    return typeof _const === 'undefined' || typeof value === 'undefined' ?
-        // todo: add deep check with List/Map.equals
-        true : (value === _const);
+    if(typeof _const === 'undefined' || typeof value === 'undefined') return true
+    let tValue = value
+    if(Array.isArray(value)) {
+        tValue = List(fromJS(value))
+    } else if(
+        typeof value === 'object' && value !== null &&
+        !List.isList(value) && !Map.isMap(value) && !Record.isRecord(value)
+    ) {
+        tValue = Map(fromJS(value))
+    }
+    return isEqual(tValue, _const)
 };
 
 export const valueValidatorConst = {

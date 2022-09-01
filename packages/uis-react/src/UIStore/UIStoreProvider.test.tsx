@@ -10,7 +10,7 @@ import {
 import { List, Map } from 'immutable'
 import { UIStore, createStore, StoreKeys, UIStoreType } from '@ui-schema/react/UIStore'
 import { doExtractValues } from '@ui-schema/react/UIStore'
-import { isEqual } from '@ui-schema/react/Utils/memo'
+import { isEqualObject } from '@ui-schema/system/Utils/isEqualObject'
 import { fromJSOrdered } from '@ui-schema/react/Utils/createMap'
 
 expect.extend({toBeInTheDocument, toHaveClass})
@@ -126,8 +126,8 @@ describe('UIStoreProvider', () => {
         ],
     ])('doExtractValues(%j, %j): %j', (storeKeys: StoreKeys, store: UIStoreType, expected: any, expectedSameness: boolean) => {
         const r = doExtractValues(storeKeys, store)
-        const isExpected = isEqual(r, expected)
-        if (isExpected !== expectedSameness) {
+        const isExpected = isEqualObject(r, expected)
+        if(isExpected !== expectedSameness) {
             // @ts-ignore
             console.log('failed doExtractValues', storeKeys.toJS(), store.toJS(), r, expected)
         }

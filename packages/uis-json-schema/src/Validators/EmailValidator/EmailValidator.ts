@@ -1,6 +1,4 @@
-import { SchemaPlugin } from '@ui-schema/react/SchemaPluginsAdapter'
-import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
-import { schemaTypeIs } from '@ui-schema/system/schemaTypeIs'
+import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
 
 export const ERROR_EMAIL_INVALID = 'email-invalid'
 
@@ -10,7 +8,6 @@ export const emailValidator: SchemaPlugin = {
         return Boolean(
             schema &&
             typeof value === 'string' &&
-            schemaTypeIs(schema.get('type') as SchemaTypesType, 'string') &&
             schema.get('format') === 'email'
         )
     },
@@ -19,7 +16,10 @@ export const emailValidator: SchemaPlugin = {
         /*
          *  regex from https://emailregex.com/
          */
-        if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value)) {
+        if (
+            typeof value === 'string' &&
+            !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value)
+        ) {
             valid = false
             errors = errors?.addError(ERROR_EMAIL_INVALID)
         }

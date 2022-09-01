@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
@@ -25,12 +24,12 @@ export const WidgetBooleanRead = <P extends WidgetProps<MuiWidgetBinding<{ InfoR
         style,
         widgets,
         IconYes, IconNo,
+        readDense,
     }: P & WithScalarValue & WidgetBooleanReadProps,
 ): React.ReactElement => {
     const hideTitle = Boolean(schema.getIn(['view', 'hideTitle']))
     const InfoRenderer = widgets?.InfoRenderer
     const hasInfo = Boolean(InfoRenderer && schema?.get('info'))
-    const {readDense} = useUIMeta<UIMetaReadContextType>()
     return <>
         <Box style={style}>
             <TitleBoxRead

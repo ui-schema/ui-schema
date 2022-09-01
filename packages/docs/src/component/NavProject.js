@@ -1,6 +1,7 @@
 import React from 'react';
 import GithubLogo from '../asset/GithubLogo';
-import {Link, Typography} from '@mui/material';
+import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
 import {Markdown} from './Markdown';
 
 export default () => <React.Fragment>

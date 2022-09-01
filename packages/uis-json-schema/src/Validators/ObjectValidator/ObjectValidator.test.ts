@@ -103,20 +103,6 @@ describe('validateObject', () => {
 
 describe('objectValidator', () => {
     test.each([
-        [OrderedMap({type: 'object'}), true],
-        [OrderedMap({type: List(['object'])}), true],
-        [OrderedMap({type: List(['string'])}), false],
-        [OrderedMap({type: List(['string', 'object'])}), true],
-        [OrderedMap({type: 'string'}), false],
-        [OrderedMap<string, {}>({}), false],
-    ])(
-        '.should(%j, %s)',
-        (schema, expectedValid) => {
-            expect(objectValidator.should({schema})).toBe(expectedValid)
-        }
-    )
-
-    test.each([
         [
             {type: 'object'},
             {},

@@ -121,13 +121,15 @@ export const WidgetEngine = <PWidget extends {} = {}, C extends {} = {}, P exten
         null as unknown as React.ReactElement
 }
 
-export const getNextPlugin = <C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(
-    next: number,
-    {widgetPlugins: wps, WidgetRenderer}: W
-): WidgetPluginType<C, W> | React.ComponentType<WidgetRendererProps<W>> =>
-    wps && next < wps.length ?
-        wps[next] as WidgetPluginType<C, W> // todo: throw exception here, was: || (() => 'plugin-error') :
-        : WidgetRenderer as React.ComponentType<WidgetRendererProps<W>>
+export const getNextPlugin =
+    <C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(
+        next: number,
+        {widgetPlugins: wps, WidgetRenderer}: W
+    ): WidgetPluginType<C, W> | React.ComponentType<WidgetRendererProps<W>> =>
+        wps && next < wps.length ?
+            // todo: throw exception here, was: || (() => 'plugin-error') :
+            wps[next] as WidgetPluginType<C, W> :
+            WidgetRenderer as React.ComponentType<WidgetRendererProps<W>>
 
 export const NextPluginRenderer = <P extends WidgetPluginProps>({currentPluginIndex, ...props}: P): React.ReactElement => {
     const next = currentPluginIndex + 1

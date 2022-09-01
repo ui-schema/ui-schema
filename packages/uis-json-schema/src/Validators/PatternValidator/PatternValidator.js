@@ -1,10 +1,9 @@
 import {Map} from 'immutable';
-import {schemaTypeIs} from '@ui-schema/system/schemaTypeIs';
 
 const ERROR_PATTERN = 'pattern-not-matching';
 
 const validatePattern = (type, value, pattern) => {
-    if(schemaTypeIs(type, 'string') && typeof value === 'string' && pattern) {
+    if(typeof value === 'string' && pattern) {
         return null !== value.match(pattern);
     }
 
