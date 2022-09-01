@@ -23,6 +23,7 @@ import { DocRoute } from '@control-ui/docs'
 import { useRouter } from '@control-ui/routes/RouterProvider'
 import { useLocation } from 'react-router-dom'
 import { filterRoutes } from '@control-ui/routes'
+import Box from '@mui/material/Box'
 
 const moduleDocsCache: {
     current: {
@@ -136,16 +137,24 @@ const DocContent: React.FC<{
 
 Examples of this widget, using \`ds-material\`. Type in/change the input and check the data or change the schema (e.g. add specific keywords from above), the demo generators are showing invalid directly.
 `}/>
-                            {doc?.demos?.schema.map(([demoText, demoSchema], i) =>
+                            {doc?.demos?.schema.map(([demoText, demoSchema, demoData], i) =>
                                 <React.Fragment key={i}>
-                                    <Markdown source={demoText}/>
-                                    <DemoUIGenerator activeSchema={demoSchema} id={'i-' + i}/>
+                                    {demoText ?
+                                        <Box mb={2}>
+                                            <Markdown source={demoText}/>
+                                        </Box> : null}
+                                    <DemoUIGenerator
+                                        activeSchema={demoSchema}
+                                        data={demoData}
+                                        readOnly={doc?.demos?.readOnly}
+                                        id={'i-' + i}
+                                    />
                                 </React.Fragment>)}
                         </Paper>
                         : null}
 
                     {doc?.docModule ?
-                        <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', borderRadius: 5}} variant={'outlined'}>
+                        <Paper style={{margin: '24px 0 12px 0', padding: 24, display: 'flex', flexDirection: 'column', borderRadius: 5}} variant={'outlined'}>
                             <DocsDetailsModules modules={modules}/>
                         </Paper> : null}
                 </> : null}

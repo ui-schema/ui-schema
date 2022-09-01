@@ -7,17 +7,19 @@ Check [this discussion](https://github.com/ui-schema/ui-schema/discussions/184) 
 - [v0.2.0 to **v0.3.0**](/updates/v0.2.0-v0.3.0)
 - [v0.3.0 to **v0.4.0**](/updates/v0.3.0-v0.4.0) *(stable)*
 
-> [meaning emojis](https://gist.github.com/elbakerino/1cd946c4269681d659eede5c828920b7)
-
 ## Changelog
 
 This serves as overview of releases and changes - follow the [#releases channel in slack](https://ui-schema.slack.com/archives/C03DMRE88Q7) for the same content, but with the option for direct help and feedback ([slack invite link in readme](https://github.com/ui-schema/ui-schema/tree/0.4.3#ui-schema-for-react)).
+
+> - the code tag `mui` refers to `ds-material` or is used as `material-*` package prefix
+> - the code tag `uis`/`ui-schema` refers to `ui-schema` or is used as core package prefix
+> - [meaning of emojis](https://gist.github.com/elbakerino/1cd946c4269681d659eede5c828920b7)
 
 ### v0.4.4
 
 > @ 2022-09-01
 
-*Changed json-schema validation implementations.*
+*Changed json-schema validation implementations / mui widget features.*
 
 - 🐛 `ui-schema` fix `ConditionalHandler`
 - ♻️ `ui-schema` adjust validators to support recursive validations of objects

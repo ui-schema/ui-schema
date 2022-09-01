@@ -138,10 +138,13 @@ npm i --save @ui-schema/ui-schema immutable \\
 
 > first time with MUI? [head to the mui.com quick start](https://mui.com/material-ui/getting-started/installation/)
 >
-> - \`ds-material@v0.3.0\` supports \`@material-ui/core\` (v4)
-> - 🚧 \`ds-material@v0.4.0.alpha\` supports \`@mui/material\` (v5)
+> - \`<= ds-material@v0.3.x\` supports \`@material-ui/core\` (v4)
+> - \`>= ds-material@v0.4.x\` supports \`@mui/material\` (v5)
 
-> there's also a [create-react-app demo](https://github.com/ui-schema/demo-cra) with a [codesandbox](https://codesandbox.io/s/github/ui-schema/demo-cra/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2FSchema%2FDemoEditor.js)
+> More the demo person?
+>
+> - [simple create-react-app demo](https://github.com/ui-schema/demo-cra) with a [codesandbox](https://codesandbox.io/s/github/ui-schema/demo-cra/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2FSchema%2FDemoEditor.js)
+> - [complexer examples using TypeScript and create-react-app](https://github.com/ui-schema/demo-cra-ts) with a [codesandbox](https://codesandbox.io/s/github/ui-schema/demo-cra-ts/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2Fpages%2FPageSimpleForm.tsx)
 `}/> :
                             ds === 'bts' ? <Markdown content source={`
 > no priority currently for bootstrap widgets development, but happy about PRs
