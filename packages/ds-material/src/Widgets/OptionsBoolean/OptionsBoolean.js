@@ -1,42 +1,45 @@
 import React from 'react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import {grey} from '@mui/material/colors';
-import {TransTitle} from '@ui-schema/ui-schema';
+import {TransTitle} from '@ui-schema/ui-schema/Translate/TransTitle';
 import {ValidityHelperText} from '@ui-schema/ds-material/Component';
-import {useTheme} from '@mui/material/styles';
-
-const useStyles = (theme, {error}) => ({
-    switchBase: {
-        color: error ? theme.palette.error.main : (theme.palette.type === 'dark' ? grey[400] : grey[50]),
-    },
-    track: {
-        backgroundColor: error ? theme.palette.error.dark : (theme.palette.type === 'dark' ? grey[500] : grey[300]),
-    },
-});
 
 export const BoolRenderer = (
     {
         value, onChange, schema, storeKeys, showValidity, valid, required, errors,
         labelledBy = undefined,
+        checkedIcon, edge, icon,
     },
 ) => {
     const currentVal = Boolean(value);
 
-    const theme = useTheme()
-    const styles = useStyles(theme, {error: !valid && showValidity});
-
+    const iconProps = {
+        ...(checkedIcon ? {
+            checkedIcon: checkedIcon,
+        } : {}),
+        ...(icon ? {
+            icon: icon,
+        } : {}),
+    }
     const control = <Switch
         sx={{
-            '& .MuiSwitch-switchBase': styles.switchBase,
-            '& .MuiSwitch-track': styles.track,
+            '& .MuiSwitch-switchBase': {
+                color: !valid && showValidity ? 'error.main' : undefined,
+            },
+            '& .MuiSwitch-track': {
+                backgroundColor: !valid && showValidity ? 'error.dark' : undefined,
+            },
         }}
+        color={schema.getIn(['view', 'color'])}
         required={required}
         checked={currentVal}
         disabled={schema.get('readOnly')}
         inputProps={{
             'aria-labelledby': labelledBy,
         }}
+        size={schema.getIn(['view', 'dense']) ? 'small' : undefined}
+        edge={edge}
+        {...iconProps}
         onChange={() =>
             onChange({
                 storeKeys,
@@ -55,6 +58,14 @@ export const BoolRenderer = (
             <FormControlLabel
                 disabled={schema.get('readOnly')}
                 control={control}
+                labelPlacement={schema.getIn(['view', 'labelPlacement'])}
+                componentsProps={{
+                    typography: {
+                        variant:
+                            schema.getIn(['view', 'titleVariant']) ||
+                            (schema.getIn(['view', 'dense']) ? 'body2' : undefined),
+                    },
+                }}
                 label={<><TransTitle schema={schema} storeKeys={storeKeys}/>{required ? ' *' : ''}</>}
             />}
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>

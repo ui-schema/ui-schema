@@ -91,7 +91,7 @@ const Comp: React.ComponentType<WidgetProps & WithScalarValue> = (
         type={'text'}
         value={bounceVal.value || ''}
         onBlur={() => {
-            // triggers a direct run, with comparision to the latest known-value,
+            // triggers a direct run, with comparison to the latest known-value,
             // executes `setter` only when `bounceVal.value` is not `value`
             bubbleBounce(value)
         }}
