@@ -292,7 +292,7 @@ import {ConditionalHandler} from '@ui-schema/ui-schema/Plugins/ConditionalHandle
 
 Enables on-the-fly sub-schema rendering based on current objects data.
 
-- `if` the sub-schema against which the object is validated [spec](https://json-schema.org/understanding-json-schema/reference/conditionals.html#if-then-else)
+- `if` the sub-schema against which the value is validated [spec](https://json-schema.org/understanding-json-schema/reference/conditionals.html#if-then-else)
 - `else` when valid, else is applied
 - `then` when invalid, then is applied
 - `not` sub-schema that must be invalid
@@ -312,46 +312,47 @@ Example schema that shows `accept` and makes it required when not selected `cana
 
 ```js
 const schemaWConditional = createOrderedMap({
-    type: "object",
+    type: 'object',
     properties: {
         country: {
-            type: "string",
+            type: 'string',
             widget: 'Select',
             enum: [
-                "usa",
-                "canada",
-                "eu"
+                'usa',
+                'canada',
+                'eu',
             ],
-            default: "eu"
-        }
+            default: 'eu',
+        },
     },
     required: [
-        "country"
+        'country',
     ],
     if: {
         properties: {
-            "country": {
+            'country': {
                 type: 'string',
-                const: "canada"
-            }
-        }
+                const: 'canada',
+            },
+        },
+        required: ['country'],
     },
     then: {
         properties: {
-            "maple_trees": {
-                type: "number"
-            }
+            'maple_trees': {
+                type: 'number',
+            },
         },
     },
     else: {
         properties: {
-            "accept": {
-                type: "boolean",
+            'accept': {
+                type: 'boolean',
                 const: true,
-            }
+            },
         },
         required: [
-            "accept"
+            'accept',
         ],
     }
 });

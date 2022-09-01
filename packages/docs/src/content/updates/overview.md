@@ -7,9 +7,28 @@ Check [this discussion](https://github.com/ui-schema/ui-schema/discussions/184) 
 - [v0.2.0 to **v0.3.0**](/updates/v0.2.0-v0.3.0)
 - [v0.3.0 to **v0.4.0**](/updates/v0.3.0-v0.4.0) *(stable)*
 
+> [meaning emojis](https://gist.github.com/elbakerino/1cd946c4269681d659eede5c828920b7)
+
 ## Changelog
 
 This serves as overview of releases and changes - follow the [#releases channel in slack](https://ui-schema.slack.com/archives/C03DMRE88Q7) for the same content, but with the option for direct help and feedback ([slack invite link in readme](https://github.com/ui-schema/ui-schema/tree/0.4.1#ui-schema-for-react)).
+
+### v0.4.4
+
+> @ 2022-09-28
+
+*Changed json-schema validation implementations.*
+
+- 🐛 `ui-schema` fix `ConditionalHandler`
+- ♻️ `ui-schema` adjust validators to support recursive validations of objects
+- ♻️ `ui-schema` adjusted value-type specific validators to no longer rely on `type` keyword
+- ✨ `mui` widget `OptionsBoolean` (`Switch`) new keywords and props
+- ✨ `mui` widget `SelectChips` add `view.color` keyword
+- 🐛 `mui` widget `WidgetOptionsRead` label for empty entries
+- ♻️ `mui` read widgets remove `useMeta` usage
+- 🪥 `mui-pickers` optimize `@mui/material` import paths
+
+[Release notes](https://github.com/ui-schema/ui-schema/releases/tag/0.4.4)
 
 ### v0.4.3
 
@@ -20,7 +39,7 @@ This serves as overview of releases and changes - follow the [#releases channel 
 - fix `ds-material` usage of `oneOf` `title`
 - add error context to `oneOf` validation error
 - added translation for `oneOf` error in `/dictionary`
-- `ds-material` deprecated `WidgetOneOfRead`, `WidgetEnumRead`
+- `ds-material` **deprecated:** `WidgetOneOfRead`, `WidgetEnumRead`
 - `ds-material` new universal `WidgetOptionsRead` for `enum`, `oneOf` and `items.oneOf` (single and multi select)
 
 [Release notes](https://github.com/ui-schema/ui-schema/releases/tag/0.4.3)

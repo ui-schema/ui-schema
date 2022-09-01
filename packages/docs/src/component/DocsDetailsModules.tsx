@@ -2,7 +2,7 @@ import React from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { LinkableHeadline } from '@control-ui/docs/LinkableHeadline'
-import { Alert } from '@mui/material'
+import Alert from '@mui/material/Alert'
 import { TsDocModuleCollection } from '@control-ui/docs-ts/TsDocModule'
 import { TsDocsModuleRenderer, TsDocs } from '@control-ui/docs-ts/TsDocs'
 import { MdInlineCode } from '@control-ui/md/MdInlineCode'
@@ -18,6 +18,8 @@ const ModuleHeadline: React.ComponentType<React.PropsWithChildren<{
 }
 
 const renderer: TsDocsModuleRenderer = {
+    // todo: fix typing in control-ui
+    // @ts-ignore
     InlineCode: MdInlineCode,
     Markdown: Markdown as React.ComponentType<{ source: string, dense?: boolean }>,
     ModuleHeadline: ModuleHeadline,

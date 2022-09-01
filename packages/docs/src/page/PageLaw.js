@@ -1,5 +1,5 @@
 import React from 'react';
-import {Paper} from '@mui/material';
+import Paper from '@mui/material/Paper';
 import {PageContent} from '@control-ui/kit/PageContent';
 import {HeadMeta} from '@control-ui/kit/HeadMeta';
 

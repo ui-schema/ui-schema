@@ -11,7 +11,7 @@ import {schemaGrid} from '../schemas/demoGrid';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import {Button} from '@mui/material';
+import Button from '@mui/material/Button';
 import {Step, Stepper, widgets} from '@ui-schema/ds-material';
 import {
     isInvalid, createOrderedMap, createMap,
