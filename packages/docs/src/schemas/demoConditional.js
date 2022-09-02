@@ -24,7 +24,8 @@ const schemaConditional = createOrderedMap({
                 type: 'string',
                 const: "canada"
             }
-        }
+        },
+        required: ["country"],
     },
     then: {
         properties: {
@@ -75,7 +76,8 @@ const schemaConditionalAllOf = createOrderedMap({
                         type: 'string',
                         const: "canada"
                     }
-                }
+                },
+                required: ["country"],
             },
             then: {
                 properties: {
@@ -91,7 +93,8 @@ const schemaConditionalAllOf = createOrderedMap({
                         type: 'string',
                         enum: ["eu", "de"]
                     }
-                }
+                },
+                required: ["country"],
             },
             then: {
                 properties: {
@@ -107,7 +110,8 @@ const schemaConditionalAllOf = createOrderedMap({
                         type: 'string',
                         const: "de"
                     }
-                }
+                },
+                required: ["country"],
             },
             then: {
                 required: ['privacy'],
@@ -124,7 +128,8 @@ const schemaConditionalAllOf = createOrderedMap({
                         type: 'string',
                         const: "usa"
                     }
-                }
+                },
+                required: ["country"],
             },
             then: {
                 properties: {

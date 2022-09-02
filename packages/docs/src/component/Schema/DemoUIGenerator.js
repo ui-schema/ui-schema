@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import useTheme from '@mui/material/styles/useTheme';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import {createOrderedMap, createEmptyStore, storeUpdater, injectPluginStack} from '@ui-schema/ui-schema';
+import {createOrderedMap, injectPluginStack, createEmptyStore, createStore, storeUpdater, UIMetaProvider, useUIMeta, fromJSOrdered} from '@ui-schema/ui-schema';
 import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter';
 import {UIStoreProvider} from '@ui-schema/ui-schema/UIStore';
 import {RichCodeEditor} from '../RichCodeEditor';
@@ -13,6 +13,11 @@ import {RichCodeEditor} from '../RichCodeEditor';
 import {KitDndProvider, useOnIntent} from '@ui-schema/kit-dnd';
 import {useOnDirectedMove} from '@ui-schema/material-dnd/useOnDirectedMove';
 import {GridContainer} from '@ui-schema/ds-material';
+import {
+    NumberRendererRead, StringRendererRead, TextRendererRead,
+    WidgetBooleanRead, WidgetChipsRead, WidgetOptionsRead,
+} from '@ui-schema/ds-material/WidgetsRead';
+import {List, OrderedMap} from 'immutable';
 
 const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, richIde, renderChange, theme, maxLines, enableShowAll}) => {
     return <RichCodeEditor
@@ -51,9 +56,20 @@ const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme, maxLi
 
 const GridStack = injectPluginStack(GridContainer)
 
-const DemoUIGenerator = ({activeSchema, id = '0', onClick = undefined, showDebugger = true, split = true, uiStyle = undefined}) => {
+const DemoUIGenerator = (
+    {
+        activeSchema, id = '0',
+        showDebugger = true, split = true,
+        readOnly = false,
+        onClick = undefined,
+        uiStyle = undefined,
+        data = undefined,
+    },
+) => {
     const [jsonError, setJsonError] = React.useState(false);
+    const [showReadOnly, setShowReadOnly] = React.useState(false);
     const [maxLines /*setMaxLines*/] = React.useState(15);
+    const {widgets, ...mainMeta} = useUIMeta();
     const {breakpoints} = useTheme();
     const isMd = useMediaQuery(breakpoints.up('md'))
 
@@ -64,17 +80,27 @@ const DemoUIGenerator = ({activeSchema, id = '0', onClick = undefined, showDebug
     // end - default schema state
 
     React.useEffect(() => {
+        setShowReadOnly(Boolean(readOnly))
+        return () => setShowReadOnly(false)
+    }, [readOnly, activeSchema])
+
+    React.useEffect(() => {
         let schema = createOrderedMap(activeSchema);
         setSchema(() => schema);
         setStore(oldStore => {
-            const newStore = createEmptyStore(schema.get('type'))
+            const newStore = data ?
+                createStore(
+                    Array.isArray(data) ? List(fromJSOrdered(data)) : OrderedMap(fromJSOrdered(data)),
+                ) :
+                createEmptyStore(schema.get('type'))
             if(newStore.values.equals && newStore.values.equals(oldStore?.values)) {
                 // only change the store, when the values have really changed - otherwise it could overwrite the already changed validity
                 return oldStore
             }
             return newStore
         });
-    }, [activeSchema, setSchema, setStore]);
+        return () => setSchema(undefined);
+    }, [activeSchema, setSchema, setStore, data]);
 
     const onChange = React.useCallback((actions) => {
         setStore(prevStore => {
@@ -85,48 +111,85 @@ const DemoUIGenerator = ({activeSchema, id = '0', onClick = undefined, showDebug
     const {onIntent} = useOnIntent({edgeSize: 12})
     const {onMove} = useOnDirectedMove(onIntent, onChange)
 
+    const activeWidgets = React.useMemo(() => ({
+        ...widgets,
+        types: {
+            ...widgets.types,
+            ...(showReadOnly ? {
+                string: StringRendererRead,
+                number: NumberRendererRead,
+                int: NumberRendererRead,
+                boolean: WidgetBooleanRead,
+            } : {}),
+        },
+        custom: {
+            ...widgets.custom,
+            ...(showReadOnly ? {
+                Text: TextRendererRead,
+                Select: WidgetOptionsRead,
+                SelectMulti: WidgetOptionsRead,
+                SelectChips: WidgetChipsRead,
+                OptionsRadio: WidgetOptionsRead,
+                OptionsCheck: WidgetOptionsRead,
+            } : {}),
+        },
+    }), [widgets, showReadOnly])
+
     const tabSize = 2;
     const fontSize = 13;
 
     return <div style={uiStyle}>
         {/*<MuiPickersUtilsProvider utils={LuxonAdapter}>*/}
-        <KitDndProvider onMove={onMove}>
-            <UIStoreProvider
-                store={store}
-                onChange={onChange}
-                showValidity={showValidity}
-            >
-                {showDebugger && !split ?
-                    <DebugSchemaEditor
-                        schema={schema} setSchema={setSchema}
-                        setJsonError={setJsonError} richIde
-                        enableShowAll={!split} split={split}
-                        id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
-                        width={split && isMd ? '50%' : '100%'}
-                    /> : null}
+        <UIMetaProvider widgets={activeWidgets} {...mainMeta}>
+            <KitDndProvider onMove={onMove}>
+                <UIStoreProvider
+                    store={store}
+                    onChange={onChange}
+                    showValidity={showValidity}
+                >
+                    {showDebugger && !split ?
+                        <DebugSchemaEditor
+                            schema={schema} setSchema={setSchema}
+                            setJsonError={setJsonError} richIde
+                            enableShowAll={!split} split={split}
+                            id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
+                            width={split && isMd ? '50%' : '100%'}
+                        /> : null}
 
-                {jsonError ?
-                    <Box style={{margin: '0 12px 0 12px'}}>
-                        <Typography component={'h2'} variant={'h6'} color={'error'}>
-                            JSON-Error:
-                        </Typography>
+                    {jsonError ?
+                        <Box style={{margin: '0 12px 0 12px'}}>
+                            <Typography component={'h2'} variant={'h6'} color={'error'}>
+                                JSON-Error:
+                            </Typography>
 
-                        <Typography component={'p'} variant={'subtitle1'}>
-                            {jsonError.replace('SyntaxError: JSON.parse: ', '')}
-                        </Typography>
-                    </Box> : null}
+                            <Typography component={'p'} variant={'subtitle1'}>
+                                {jsonError.replace('SyntaxError: JSON.parse: ', '')}
+                            </Typography>
+                        </Box> : null}
 
-                {typeof schema === 'string' || !store ? null : <GridStack isRoot schema={schema}/>}
-            </UIStoreProvider>
-        </KitDndProvider>
+                    {typeof schema === 'string' || !store ? null : <GridStack isRoot schema={schema}/>}
+                </UIStoreProvider>
+            </KitDndProvider>
+        </UIMetaProvider>
         {/*</MuiPickersUtilsProvider>*/}
 
+        {data && readOnly ?
+            <Box style={{display: 'flex'}}>
+                <Button
+                    variant={'outlined'} size={'small'}
+                    style={{marginTop: 12, marginLeft: 'auto'}}
+                    onClick={() => setShowReadOnly(s => !s)}
+                >{showReadOnly ? 'edit mode' : 'read mode'}</Button>
+            </Box> : null}
+
         {typeof schema === 'string' ? null :
-            onClick ? <Button
-                variant={'contained'}
-                disabled={!!isInvalid(store?.getValidity())}
-                style={{marginTop: 12}}
-                onClick={() => isInvalid(store?.getValidity()) ? undefined : onClick(store)}>Send</Button> : null}
+            onClick ?
+                <Button
+                    variant={'contained'}
+                    disabled={!!isInvalid(store?.getValidity())}
+                    style={{marginTop: 12}}
+                    onClick={() => isInvalid(store?.getValidity()) ? undefined : onClick(store)}
+                >Send</Button> : null}
 
         {showDebugger ? <Box style={{display: 'flex', flexWrap: 'wrap', margin: '12px 0 24px 0'}}>
             {split ? <DebugSchemaEditor

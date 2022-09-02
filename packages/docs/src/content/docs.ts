@@ -20,6 +20,10 @@ import { demoSelectChips } from './docs/widgets/SelectChipsDemo'
 import { demoCard } from './docs/widgets/CardDemo'
 import { TsDocModule } from '@control-ui/docs-ts/TsDocModule'
 import { DocRoute } from '@control-ui/docs'
+import { demoOptionsRead } from './docs/ds-material/widgets-read/OptionsReadDemo'
+import { demoBooleanRead } from './docs/ds-material/widgets-read/BooleanReadDemo'
+import { demoChipsRead } from './docs/ds-material/widgets-read/ChipsReadDemo'
+import { demoTextFieldRead } from './docs/ds-material/widgets-read/TextFieldReadDemo'
 
 export interface DocRouteModule<C = any> extends DocRoute<C> {
     docModule?: TsDocModule
@@ -314,11 +318,17 @@ export const routesFurtherDesignSystem = [
                 },
                 routes: [
                     createDoc('ds-material/widgets-read/BooleanRead', 'BooleanRead', {
-                        demos: {},
+                        demos: {
+                            readOnly: true,
+                            schema: demoBooleanRead,
+                        },
                         module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetBooleanRead', ['WidgetBooleanRead.tsx']),
                     }),
                     createDoc('ds-material/widgets-read/ChipsRead', 'ChipsRead', {
-                        demos: {},
+                        demos: {
+                            readOnly: true,
+                            schema: demoChipsRead,
+                        },
                         module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetChipsRead', ['WidgetChipsRead.tsx']),
                     }),
                     createDoc('ds-material/widgets-read/EnumRead', 'EnumRead', {
@@ -329,8 +339,18 @@ export const routesFurtherDesignSystem = [
                         demos: {},
                         module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetOneOfRead', ['WidgetOneOfRead.tsx']),
                     }),
+                    createDoc('ds-material/widgets-read/OptionsRead', 'OptionsRead', {
+                        demos: {
+                            readOnly: true,
+                            schema: demoOptionsRead,
+                        },
+                        module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetOptionsRead', ['WidgetOptionsRead.tsx']),
+                    }),
                     createDoc('ds-material/widgets-read/TextFieldRead', 'TextFieldRead', {
-                        demos: {},
+                        demos: {
+                            readOnly: true,
+                            schema: demoTextFieldRead,
+                        },
                         module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetTextFieldRead', ['WidgetTextFieldRead.tsx']),
                     }),
                 ],
