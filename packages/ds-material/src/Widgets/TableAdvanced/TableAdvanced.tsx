@@ -4,9 +4,9 @@ import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 
-export const TableAdvancedBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue> = (
+export const TableAdvancedBase: React.ComponentType<WidgetProps<MuiWidgetsBinding> & WithValue> = (
     {
         showValidity, schema, level, ...props
     }
@@ -26,4 +26,4 @@ export const TableAdvancedBase: React.ComponentType<WidgetProps<MuiWidgetBinding
     </>
 }
 
-export const TableAdvanced: React.ComponentType<WidgetProps<MuiWidgetBinding>> = extractValue(memo(TableAdvancedBase))
+export const TableAdvanced: React.ComponentType<WidgetProps<MuiWidgetsBinding>> = extractValue(memo(TableAdvancedBase))

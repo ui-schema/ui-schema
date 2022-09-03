@@ -14,7 +14,7 @@ import { memo } from '@ui-schema/react/Utils/memo'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { sortScalarList } from '@ui-schema/system/Utils/sortScalarList'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 
@@ -22,7 +22,7 @@ export interface SelectMultiProps {
     variant?: MuiSelectProps['variant']
 }
 
-export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue & SelectMultiProps> = (
+export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetsBinding> & WithValue & SelectMultiProps> = (
     {
         storeKeys, schema, value, onChange,
         showValidity, valid, required, errors, t,
@@ -98,5 +98,5 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
     </FormControl>
 }
 
-export const SelectMulti = extractValue(memo(SelectMultiBase)) as <P extends WidgetProps<MuiWidgetBinding>>(props: P) => React.ReactElement
+export const SelectMulti = extractValue(memo(SelectMultiBase)) as <P extends WidgetProps<MuiWidgetsBinding>>(props: P) => React.ReactElement
 

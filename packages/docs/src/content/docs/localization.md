@@ -256,7 +256,7 @@ npm i --save @ui-schema/dictionary
 ```jsx
 import React from 'react';
 import AccountBox from '@mui/icons-material/AccountBox';
-import {createMap} from '@ui-schema/ui-schema/Utils/createMap'
+import {createMap} from '@ui-schema/system/Utils/createMap'
 import {makeTranslator} from '@ui-schema/ui-schema/Translate/makeTranslator';
 import * as en from '@ui-schema/dictionary/en'
 import * as de from '@ui-schema/dictionary/de'

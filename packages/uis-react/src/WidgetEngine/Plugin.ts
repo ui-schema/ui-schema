@@ -3,8 +3,9 @@ import { List } from 'immutable'
 import { WidgetsBindingFactory, WidgetProps } from '@ui-schema/react/Widgets'
 import { WidgetPluginPayload } from '@ui-schema/system/WidgetPlugin'
 import { onErrorHandler } from '@ui-schema/system/ValidatorErrors'
+import { WithValue } from '@ui-schema/react/UIStore'
 
-export interface WidgetPluginProps<W extends WidgetsBindingFactory = WidgetsBindingFactory> extends WidgetProps<W>, WidgetPluginPayload {
+export interface WidgetPluginProps<W extends WidgetsBindingFactory = WidgetsBindingFactory> extends WidgetProps<W>, WidgetPluginPayload, WithValue {
     // must be transformed from list to boolean `required` by a plugin
     requiredList?: List<any>
 

@@ -12,14 +12,14 @@ import { NumberRendererProps, StringRendererProps, TextRendererProps } from '@ui
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { useDebounceValue } from '@ui-schema/react/Utils/useDebounceValue'
-import { forbidInvalidNumber, InfoRendererType, MuiWidgetBinding } from '@ui-schema/ds-material'
+import { forbidInvalidNumber, InfoRendererType, MuiWidgetsBinding } from '@ui-schema/ds-material'
 
 export interface StringRendererDebouncedProps {
     onKeyPress?: StringRendererProps['onKeyPress']
     debounceTime?: number
 }
 
-export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>> = WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>>>(
+export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> = WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>>>(
     {
         type,
         multiline,
@@ -121,7 +121,7 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding<{
     </React.Fragment>
 }
 
-export const TextRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>(
+export const TextRendererDebounced = <P extends WidgetProps<MuiWidgetsBinding> = WidgetProps<MuiWidgetsBinding>>(
     {
         schema,
         ...props
@@ -142,7 +142,7 @@ export const TextRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> = 
     />
 }
 
-export const NumberRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>(props: P & WithScalarValue & Omit<NumberRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps): React.ReactElement => {
+export const NumberRendererDebounced = <P extends WidgetProps<MuiWidgetsBinding> = WidgetProps<MuiWidgetsBinding>>(props: P & WithScalarValue & Omit<NumberRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps): React.ReactElement => {
     const {schema, inputProps: inputPropsProps = {}, steps = 'any'} = props
     const schemaType = schema.get('type') as string | undefined
     const inputProps = React.useMemo(() => {

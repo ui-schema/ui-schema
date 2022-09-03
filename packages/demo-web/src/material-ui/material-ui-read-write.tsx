@@ -1,9 +1,9 @@
 import React from 'react'
 import AppTheme from './layout/AppTheme'
-import Dashboard from './dashboard/Dashboard'
+import Dashboard from './layout/Dashboard'
 import Grid, { GridSpacing } from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
-import { MuiWidgetBinding, SelectChips, widgets } from '@ui-schema/ds-material'
+import { MuiWidgetsBinding, SelectChips, widgets } from '@ui-schema/ds-material'
 import {
     createOrderedMap, createStore,
     GroupRendererProps,
@@ -149,10 +149,10 @@ const formSchema = createOrderedMap({
 
 export interface ReadWidgetsBinding {
     types: {
-        [k: string]: WidgetType<UIMetaReadContextType, MuiWidgetBinding>
+        [k: string]: WidgetType<UIMetaReadContextType, MuiWidgetsBinding>
     }
     custom: {
-        [k: string]: WidgetType<UIMetaReadContextType, MuiWidgetBinding>
+        [k: string]: WidgetType<UIMetaReadContextType, MuiWidgetsBinding>
     }
 }
 

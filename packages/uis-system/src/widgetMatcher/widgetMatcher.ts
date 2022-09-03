@@ -1,10 +1,9 @@
 import { schemaTypeToDistinct } from '@ui-schema/system/schemaTypeToDistinct'
 import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
-import { WidgetType } from '@ui-schema/react/Widgets'
-import { ErrorNoWidgetMatching } from '@ui-schema/system/widgetMatcher/ErrorNoWidgetMatching'
-import { WidgetBindingRoot } from '@ui-schema/system/WidgetBinding'
+import { ErrorNoWidgetMatching } from '@ui-schema/system/widgetMatcher'
+import { WidgetsBindingRoot } from '@ui-schema/system/WidgetsBinding'
 
-export function widgetMatcher<W extends WidgetBindingRoot>(
+export function widgetMatcher<TW extends {} = {}, CW extends {} = {}, W extends WidgetsBindingRoot<TW, CW> = WidgetsBindingRoot<TW, CW>>(
     {
         widgetName,
         schemaType,
@@ -14,16 +13,14 @@ export function widgetMatcher<W extends WidgetBindingRoot>(
         schemaType: SchemaTypesType
         widgets: W
     }
-): WidgetType<{}, W> | null {
-    let Widget: WidgetType<{}, W> | null = null
+): TW | CW | null {
+    let Widget: TW | CW | null = null
 
-    // getting the to-render component based on if it finds a custom object-widget or a widget extending native-types,
+    // getting the to-render widget based on if it finds a custom object-widget or a widget extending native-types,
     if (widgetName && widgets.custom) {
         if (widgets.custom[widgetName]) {
-            Widget = widgets.custom[widgetName] as WidgetType<{}, W>
+            Widget = widgets.custom[widgetName] as TW | CW
         } else {
-            // eslint-disable-next-line react/display-name
-            // Widget = () => <NoW scope={'custom'} matching={widgetName}/>
             throw new ErrorNoWidgetMatching()
                 .setScope('custom')
                 .setMatching(widgetName)
@@ -33,7 +30,7 @@ export function widgetMatcher<W extends WidgetBindingRoot>(
 
         if (distinctInputType) {
             if (widgets.types[distinctInputType]) {
-                Widget = widgets.types[distinctInputType] as WidgetType<{}, W>
+                Widget = widgets.types[distinctInputType] as TW | CW
             } else if (distinctInputType === 'null') {
                 Widget = null
             } else {

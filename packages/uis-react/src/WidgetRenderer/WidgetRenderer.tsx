@@ -15,7 +15,7 @@ export interface WidgetRendererProps<W extends WidgetsBindingFactory = WidgetsBi
     currentPluginIndex?: number
 }
 
-export const WidgetRenderer = <W extends WidgetsBindingFactory = WidgetsBindingFactory, P extends WidgetRendererProps = WidgetRendererProps>(
+export const WidgetRenderer = <W extends WidgetsBindingFactory = WidgetsBindingFactory, P extends WidgetRendererProps = WidgetRendererProps, WT extends WidgetType<{}, W> = WidgetType<{}, W>>(
     {
         // we do not want `value`/`internalValue` to be passed to non-scalar widgets for performance reasons
         value, internalValue,
@@ -38,14 +38,16 @@ export const WidgetRenderer = <W extends WidgetsBindingFactory = WidgetsBindingF
 
     const schemaType = schema.get('type') as SchemaTypesType | undefined
     const widgetName = schema.get('widget') as string | undefined
-    let Widget: WidgetType<{}, W> | null = null
+    let Widget: WT | null = null
     try {
         Widget =
             isVirtual ?
-                VirtualWidgetRenderer as WidgetType<{}, W> :
+                VirtualWidgetRenderer as WT :
                 WidgetOverride ?
-                    WidgetOverride as WidgetType<{}, W> :
-                    widgetMatcher<W>({
+                    // todo: fix/change 0.5.0 WidgetOverride typing
+                    WidgetOverride as unknown as WT :
+                    // @ts-ignore
+                    widgetMatcher<WT, WT, W>({
                         widgetName: widgetName,
                         schemaType: schemaType,
                         widgets: widgets as W,

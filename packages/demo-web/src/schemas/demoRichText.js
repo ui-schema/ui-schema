@@ -1,4 +1,4 @@
-import {createOrderedMap} from '@ui-schema/react/Utils/createMap';
+import {createOrderedMap} from '@ui-schema/system/Utils/createMap';
 
 const schemaRichText = createOrderedMap({
     type: 'object',

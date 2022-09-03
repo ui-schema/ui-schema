@@ -198,12 +198,6 @@ packer({
     packages: {
         // the keys are the commonjs names that is applied to externals
         // this is the same as `@babel/plugin-transform-modules-commonjs` applies
-        uiSchema: {
-            name: '@ui-schema/ui-schema',
-            root: path.resolve(__dirname, 'packages', 'ui-schema'),
-            entry: path.resolve(__dirname, 'packages', 'ui-schema/src/'),
-            babelTargets: legacyBabelTargets,
-        },
         uiSchemaSystem: {
             name: '@ui-schema/system',
             doServeWatch: true,

@@ -201,7 +201,7 @@ Since `0.4.0-alpha.1`, this function also applies [`memo`](/docs/core-utils#memo
 ```typescript jsx
 import React from 'react'
 import Grid from '@mui/material/Grid'
-import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap'
+import { createOrderedMap } from '@ui-schema/system/Utils/createMap'
 import { WidgetProps } from '@ui-schema/ui-schema/Widget'
 import { StringRenderer } from '@ui-schema/ds-material/Widgets/TextField'
 import { applyPluginStack } from '@ui-schema/ui-schema/applyPluginStack'

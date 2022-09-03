@@ -16,7 +16,7 @@ import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import Typography, { TypographyProps } from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { InfoRendererType } from '@ui-schema/ds-material/Component/InfoRenderer'
 
 export interface AccordionStackBaseProps {
@@ -25,7 +25,7 @@ export interface AccordionStackBaseProps {
     SummaryTitle?: AccordionsRendererProps['SummaryTitle']
 }
 
-const AccordionStackBase: React.ComponentType<WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>> & AccordionStackBaseProps & WithValidity> = (
+const AccordionStackBase: React.ComponentType<WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> & AccordionStackBaseProps & WithValidity> = (
     {validity, SummaryTitle, ...props},
 ) => {
     const uid = useUID()
@@ -104,7 +104,7 @@ export interface AccordionsRendererProps {
     }>
 }
 
-export const AccordionsRendererBase = <W extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>(
+export const AccordionsRendererBase = <W extends WidgetProps<MuiWidgetsBinding> = WidgetProps<MuiWidgetsBinding>>(
     {
         schema, storeKeys, level,
         errors, showValidity,

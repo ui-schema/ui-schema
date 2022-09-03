@@ -2,7 +2,7 @@ import React from 'react'
 import { List, Map, OrderedMap } from 'immutable'
 import { handleIfElseThen } from '@ui-schema/react-json-schema/ConditionalHandler'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { mergeSchema } from '@ui-schema/react/Utils/mergeSchema'
+import { mergeSchema } from '@ui-schema/system/Utils/mergeSchema'
 
 export const handleSchemaCombine = (schema: UISchemaMap, value: Map<string | number, any> | OrderedMap<string | number, any>): UISchemaMap => {
     const allOf = schema.get('allOf') as List<UISchemaMap>

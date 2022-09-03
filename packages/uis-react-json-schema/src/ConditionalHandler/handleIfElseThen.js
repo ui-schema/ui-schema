@@ -1,5 +1,5 @@
 import {validateSchema} from '@ui-schema/json-schema/validateSchema';
-import {mergeSchema} from '@ui-schema/react/Utils/mergeSchema';
+import {mergeSchema} from '@ui-schema/system/Utils/mergeSchema';
 
 export const handleIfElseThen = (schema, value, distSchema) => {
     const keyIf = schema.get('if');

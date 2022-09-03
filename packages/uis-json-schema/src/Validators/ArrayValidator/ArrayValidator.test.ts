@@ -7,9 +7,9 @@ import {
     ERROR_DUPLICATE_ITEMS,
     arrayValidator,
 } from '@ui-schema/json-schema/Validators/ArrayValidator'
-import { createOrderedMap } from '@ui-schema/react/Utils/createMap'
-import { validateAdditionalItems } from '@ui-schema/json-schema/Validators/ArrayValidator/ArrayValidator'
-import { ERROR_WRONG_TYPE } from '@ui-schema/json-schema/Validators/TypeValidator/TypeValidator'
+import { createOrderedMap } from '@ui-schema/system/Utils/createMap'
+import { validateAdditionalItems } from '@ui-schema/json-schema/Validators/ArrayValidator'
+import { ERROR_WRONG_TYPE } from '@ui-schema/json-schema/Validators/TypeValidator'
 import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 
 describe('validateArrayContent', () => {

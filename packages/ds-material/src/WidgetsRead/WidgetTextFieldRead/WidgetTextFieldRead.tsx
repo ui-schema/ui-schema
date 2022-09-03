@@ -4,21 +4,21 @@ import Typography from '@mui/material/Typography'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { WithScalarValue } from '@ui-schema/react/UIStore'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
 import { InfoRendererType } from '@ui-schema/ds-material/Component'
 
-export interface StringRendererBaseProps {
+export interface StringRendererReadBaseProps {
     onClick?: MouseEventHandler<HTMLDivElement> | undefined
 }
 
-export interface StringRendererReadProps extends StringRendererBaseProps {
+export interface StringRendererReadProps extends StringRendererReadBaseProps {
     multiline?: boolean
     style?: React.CSSProperties
 }
 
-export const StringRendererRead = <P extends WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>> & UIMetaReadContextType>(
+export const StringRendererRead = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> & UIMetaReadContextType>(
     {
         multiline,
         storeKeys, schema, value,
@@ -66,11 +66,11 @@ export const StringRendererRead = <P extends WidgetProps<MuiWidgetBinding<{ Info
     </>
 }
 
-export const TextRendererRead = <P extends WidgetProps<MuiWidgetBinding> & UIMetaReadContextType = WidgetProps<MuiWidgetBinding> & UIMetaReadContextType>(
+export const TextRendererRead = <P extends WidgetProps<MuiWidgetsBinding> & UIMetaReadContextType = WidgetProps<MuiWidgetsBinding> & UIMetaReadContextType>(
     {
         schema,
         ...props
-    }: P & WithScalarValue & StringRendererBaseProps,
+    }: P & WithScalarValue & StringRendererReadBaseProps,
 ): React.ReactElement => {
     return <StringRendererRead
         {...props}
@@ -79,8 +79,8 @@ export const TextRendererRead = <P extends WidgetProps<MuiWidgetBinding> & UIMet
     />
 }
 
-export const NumberRendererRead = <P extends WidgetProps<MuiWidgetBinding> & UIMetaReadContextType = WidgetProps<MuiWidgetBinding> & UIMetaReadContextType>(
-    props: P & WithScalarValue & StringRendererBaseProps,
+export const NumberRendererRead = <P extends WidgetProps<MuiWidgetsBinding> & UIMetaReadContextType = WidgetProps<MuiWidgetsBinding> & UIMetaReadContextType>(
+    props: P & WithScalarValue & StringRendererReadBaseProps,
 ): React.ReactElement => {
     return <StringRendererRead
         {...props}

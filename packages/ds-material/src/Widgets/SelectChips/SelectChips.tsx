@@ -10,11 +10,11 @@ import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelpe
 import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { List } from 'immutable'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 
-export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue> = (
+export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetsBinding> & WithValue> = (
     {
         storeKeys, schema, value, onChange,
         showValidity, errors, required,
@@ -71,4 +71,4 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
     </Box>
 }
 
-export const SelectChips = extractValue(memo(SelectChipsBase)) as React.ComponentType<WidgetProps<MuiWidgetBinding>>
+export const SelectChips = extractValue(memo(SelectChipsBase)) as React.ComponentType<WidgetProps<MuiWidgetsBinding>>

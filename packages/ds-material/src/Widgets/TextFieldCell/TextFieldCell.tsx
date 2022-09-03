@@ -10,7 +10,7 @@ import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelpe
 import InputBase, { InputBaseProps, InputBaseComponentProps } from '@mui/material/InputBase'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
 import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { visuallyHidden } from '@mui/utils'
 import { InfoRendererType } from '@ui-schema/ds-material/Component'
 
@@ -34,7 +34,7 @@ export interface StringRendererCellProps {
     labelledBy?: string
 }
 
-export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>> & WithScalarValue & StringRendererCellProps> = (
+export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> & WithScalarValue & StringRendererCellProps> = (
     {
         type,
         multiline, minRows, maxRows,
@@ -153,7 +153,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBindin
     </>
 }
 
-export const TextRendererCell: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithScalarValue & StringRendererCellProps> = ({schema, ...props}) => {
+export const TextRendererCell: React.ComponentType<WidgetProps<MuiWidgetsBinding> & WithScalarValue & StringRendererCellProps> = ({schema, ...props}) => {
     return <StringRendererCell
         {...props}
         schema={schema}
@@ -169,7 +169,7 @@ export const TextRendererCell: React.ComponentType<WidgetProps<MuiWidgetBinding>
     />
 }
 
-export const NumberRendererCell: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithScalarValue & StringRendererCellProps> = (props) => {
+export const NumberRendererCell: React.ComponentType<WidgetProps<MuiWidgetsBinding> & WithScalarValue & StringRendererCellProps> = (props) => {
     return <StringRendererCell
         {...props}
         type={'number'}

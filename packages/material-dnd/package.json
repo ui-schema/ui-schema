@@ -48,7 +48,6 @@
         "@mui/material": "^5.1",
         "@mui/icons-material": "^5.1",
         "@ui-schema/ds-material": "~0.4.0-alpha",
-        "@ui-schema/ui-schema": "~0.4.0-alpha",
         "@ui-schema/kit-dnd": "~0.0.6",
         "immutable": "^4.0.0",
         "react": "^17.0 || ^18.0",

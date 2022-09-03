@@ -44,7 +44,6 @@
         "@mui/system": "^5.1",
         "@mui/icons-material": "^5.1",
         "@ui-schema/ds-material": "~0.4.0-alpha",
-        "@ui-schema/ui-schema": "~0.4.0-alpha",
         "immutable": "^4.0.0",
         "react": "^17.0",
         "react-dom": "^17.0",
@@ -55,7 +54,6 @@
         "@mui/material": "^5.1",
         "@mui/icons-material": "^5.1",
         "@ui-schema/ds-material": "~0.4.0-alpha",
-        "@ui-schema/ui-schema": "~0.4.0-alpha",
         "immutable": "^4.0.0",
         "react": "^17.0 || ^18.0",
         "react-editor-js": "^1.6.0"

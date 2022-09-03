@@ -1,6 +1,6 @@
 import React from 'react';
 import {Step, Stepper} from '@ui-schema/ds-material';
-import {widgets} from '@ui-schema/ds-material/widgetsBinding';
+import {widgets} from '@ui-schema/ds-material/WidgetsBinding';
 import Loadable from 'react-loadable';
 import {
     Color, ColorDialog,

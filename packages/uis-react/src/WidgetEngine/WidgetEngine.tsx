@@ -11,8 +11,6 @@ import { AppliedWidgetEngineProps } from '@ui-schema/react/applyWidgetEngine'
 import { WidgetOverrideType, WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { WidgetRendererProps } from '@ui-schema/react/WidgetRenderer'
 
-const errorContainer = createValidatorErrors()
-
 export type WidgetEngineWrapperProps = {
     children: React.ReactNode
     schema: UISchemaMap
@@ -22,7 +20,7 @@ export type WidgetEngineWrapperProps = {
 
 export type WidgetEngineInjectProps = 'currentPluginIndex' | 'requiredList' | 'required' | 'errors' | 'valid' | 'storeKeys' | 'parentSchema'
 
-export type WidgetEngineProps<PWidget extends {} = {}, C extends {} = {}, PWrapper extends {} = {}> = AppliedWidgetEngineProps<C, WidgetPluginProps> & {
+export type WidgetEngineProps<PWidget extends WidgetProps = WidgetProps, C extends {} = {}, PWrapper extends {} = {}> = AppliedWidgetEngineProps<C, PWidget> & {
     // level?: number
 
     // listen from a hoisted component for `errors` changing,
@@ -35,7 +33,7 @@ export type WidgetEngineProps<PWidget extends {} = {}, C extends {} = {}, PWrapp
     // override any widget for just this WidgetEngine, not passed down further on
     // better use `applyWidgetEngine` instead! https://ui-schema.bemit.codes/docs/core-pluginstack#applypluginstack
     // todo: actually `WidgetOverride` is a WidgetRenderer prop - and also passed through the plugins, so should be in PluginProps also - but not in WidgetProps
-    WidgetOverride?: WidgetOverrideType<PWidget, C>
+    WidgetOverride?: WidgetOverrideType<C>
 
     // wraps the whole stack internally, as interfacing for the utility function `injectWidgetEngine`
     // only rendered when not "virtual"
@@ -51,7 +49,7 @@ export type WidgetEngineProps<PWidget extends {} = {}, C extends {} = {}, PWrapp
 
 // `extractValue` has moved to own plugin `ExtractStorePlugin` since `0.3.0`
 // `withUIMeta` and `mema` are not needed for performance optimizing since `0.3.0` at this position
-export const WidgetEngine = <PWidget extends {} = {}, C extends {} = {}, P extends WidgetEngineProps<PWidget, C> = WidgetEngineProps<PWidget, C>>(
+export const WidgetEngine = <PWidget extends WidgetProps = WidgetProps, C extends {} = {}, P extends WidgetEngineProps<PWidget, C> = WidgetEngineProps<PWidget, C>>(
     {StackWrapper, wrapperProps, ...props}: P & PWidget
 ): React.ReactElement => {
     const {widgets, ...meta} = useUIMeta()
@@ -68,6 +66,7 @@ export const WidgetEngine = <PWidget extends {} = {}, C extends {} = {}, P exten
     // central reference integrity of `storeKeys` for all plugins and the receiving widget, otherwise `useImmutable` is needed more times, e.g. 3 times in plugins + 1x time in widget
     const currentStoreKeys = useImmutable(storeKeys)
     const currentSchemaKeys = useImmutable(schemaKeys)
+    const errorContainer = createValidatorErrors()
     const activeWidgets = customWidgets || widgets
 
     // todo: resolving `hidden` here is wrong, must be done after merging schema / resolving referenced
@@ -132,9 +131,10 @@ export const getNextPlugin =
             wps[next] as WidgetPluginType<C, W> :
             WidgetRenderer as React.ComponentType<WidgetRendererProps<W>>
 
-export const NextPluginRenderer = <P extends WidgetPluginProps>({currentPluginIndex, ...props}: P): React.ReactElement => {
+export const NextPluginRenderer = <C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory, P extends WidgetPluginProps<W> & C = WidgetPluginProps<W> & C>({currentPluginIndex, ...props}: P): React.ReactElement => {
     const next = currentPluginIndex + 1
-    const Plugin = getNextPlugin(next, props.widgets)
+    const Plugin = getNextPlugin<C, W>(next, props.widgets)
+    // @ts-ignore
     return <Plugin {...props} currentPluginIndex={next}/>
 }
 export const NextPluginRendererMemo = memo(NextPluginRenderer) as <P extends WidgetPluginProps>(props: P) => React.ReactElement

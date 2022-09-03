@@ -3,7 +3,7 @@ import {
     validateObject, objectValidator, ERROR_ADDITIONAL_PROPERTIES,
 } from '@ui-schema/json-schema/Validators/ObjectValidator'
 import { createMap, createOrderedMap } from '@ui-schema/ui-schema/Utils'
-import { ERROR_PATTERN } from '@ui-schema/json-schema/Validators/PatternValidator/PatternValidator'
+import { ERROR_PATTERN } from '@ui-schema/json-schema/Validators/PatternValidator'
 import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 
 describe('validateObject', () => {

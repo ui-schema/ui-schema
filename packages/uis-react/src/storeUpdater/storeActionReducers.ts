@@ -1,6 +1,6 @@
 import { UIStoreType, UIStoreUpdaterFn } from '@ui-schema/react/UIStore'
 import { List, Map, OrderedMap } from 'immutable'
-import { moveItem } from '@ui-schema/react/Utils/moveItem'
+import { moveItem } from '@ui-schema/system/Utils/moveItem'
 import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
 import { UIStoreActions, UIStoreUpdaterData } from '@ui-schema/react/UIStoreActions'
 

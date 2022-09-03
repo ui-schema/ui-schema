@@ -4,7 +4,7 @@ import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 
-export interface MuiWidgetsBindingTypes<C extends {} = {}, W extends MuiWidgetBinding = MuiWidgetBinding> {
+export interface MuiWidgetsBindingTypes<C extends {} = {}, W extends MuiWidgetsBinding = MuiWidgetsBinding> {
     string?: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
     boolean?: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
     number?: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
@@ -12,8 +12,8 @@ export interface MuiWidgetsBindingTypes<C extends {} = {}, W extends MuiWidgetBi
     object?: React.ComponentType<WidgetProps<W> & C>
 }
 
-export interface MuiWidgetsBindingCustom<C extends {} = {}, W extends MuiWidgetBinding = MuiWidgetBinding, A = UIStoreActions> {
+export interface MuiWidgetsBindingCustom<C extends {} = {}, W extends MuiWidgetsBinding = MuiWidgetsBinding, A = UIStoreActions> {
     [key: string]: WidgetType<C, W, A> | WidgetType<C, WidgetsBindingFactory, A>
 }
 
-export type MuiWidgetBinding<WE extends {} = {}, C extends {} = {}> = WidgetsBindingFactory<WE, MuiWidgetsBindingTypes<C>, MuiWidgetsBindingCustom<C>>
+export type MuiWidgetsBinding<WE extends {} = {}, C extends {} = {}> = WidgetsBindingFactory<WE, MuiWidgetsBindingTypes<C>, MuiWidgetsBindingCustom<C>>

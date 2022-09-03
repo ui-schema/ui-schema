@@ -62,12 +62,6 @@
             "@ui-schema/material-dnd/*": [
                 "material-dnd/src/*"
             ],
-            "@ui-schema/ui-schema": [
-                "ui-schema/src"
-            ],
-            "@ui-schema/ui-schema/*": [
-                "ui-schema/src/*"
-            ],
             "@ui-schema/system": [
                 "uis-system/src"
             ],

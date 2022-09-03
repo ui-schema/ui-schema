@@ -8,11 +8,11 @@ import {
     GenericListItem,
     GenericListItemMore, GenericListItemPos,
 } from '@ui-schema/ds-material/BaseComponents/GenericList'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 
 export const GenericListContentMemo = memo(GenericListContent)
 
-export const GenericList = (props: WidgetProps<MuiWidgetBinding> & WithOnChange): React.ReactElement => {
+export const GenericList = (props: WidgetProps<MuiWidgetsBinding> & WithOnChange): React.ReactElement => {
     const {store} = useUIStore()
     const {value} = store?.extractValues<List<any>>(props.storeKeys) || {}
     // extracting and calculating the list size here, not passing down the actual list for performance reasons

@@ -11,7 +11,7 @@ import { List, Map } from 'immutable'
 import { UIStore, createStore, StoreKeys, UIStoreType } from '@ui-schema/react/UIStore'
 import { doExtractValues } from '@ui-schema/react/UIStore'
 import { isEqualObject } from '@ui-schema/system/Utils/isEqualObject'
-import { fromJSOrdered } from '@ui-schema/react/Utils/createMap'
+import { fromJSOrdered } from '@ui-schema/system/Utils/createMap'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 

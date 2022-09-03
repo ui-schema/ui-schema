@@ -60,7 +60,6 @@
 		"@mui/lab": "^5.0.0-alpha.45",
 		"@udecode/slate-plugins": "~0.75.2",
 		"@ui-schema/ds-material": "~0.4.0-alpha",
-		"@ui-schema/ui-schema": "~0.4.0-alpha",
 		"immutable": "^4.0.0",
 		"react": "^17.0 || ^18.0",
 		"slate": "~0.60.8",

@@ -41,11 +41,16 @@ List of renamed functions, components etc., most are also moved to other package
 
 ### DS Material
 
+- adjusted root import paths, no longer exports the actual widgets directly - only with sub-folder
 - `widgetsBinding` case adjusted to `*W*idgetsBinding`, no longer exports `widgets`
+- `WidgetBinding | WidgetsBinding | MuiWidgetsBinding` types, folder and file names normalized to be `WidgetsBinding`
 - previous `widgetsBinding.widgets` now exported with multiple modular functions:
-    - `defineBinding(partialBinding)` just generates the basic structure without any plugins or widgets
+    - separate files in `WidgetsDefault`, to be able to only import the ones really used in your app
+    - import all: `import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'`
+    - import modular, e.g. `import {define} from '@ui-schema/ds-material/WidgetsDefault/define'`
+    - `define(partialBinding)` just generates the basic structure without any plugins or widgets
         - accepts the rest of the binding as parameter
-    - `getStandardPlugins()` returns `schemaPlugins` and `widgetPlugins`
-    - `getTypeWidgets()` just returns `types` widgets
-    - `getCustomWidgets()` just returns some recommended `custom` widgets
+    - `plugins()` returns `schemaPlugins` and `widgetPlugins`
+    - `widgetsTypes()` just returns `types` widgets
+    - `widgetsCustom()` just returns some recommended `custom` widgets
 - `pluginStack` removed, now included directly in `widgetsBinding`

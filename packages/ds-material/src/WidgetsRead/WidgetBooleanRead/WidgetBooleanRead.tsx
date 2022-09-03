@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
 import { InfoRendererType } from '@ui-schema/ds-material/Component'
@@ -17,7 +17,7 @@ export interface WidgetBooleanReadProps {
     IconNo?: React.ComponentType<{ fontSize?: 'default' | 'inherit' | 'large' | 'medium' | 'small' }>
 }
 
-export const WidgetBooleanRead = <P extends WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>> & UIMetaReadContextType = WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>> & UIMetaReadContextType>(
+export const WidgetBooleanRead = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> & UIMetaReadContextType = WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> & UIMetaReadContextType>(
     {
         storeKeys, schema, value,
         showValidity, valid, errors,

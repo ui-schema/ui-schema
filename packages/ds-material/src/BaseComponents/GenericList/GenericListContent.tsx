@@ -6,7 +6,7 @@ import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { StoreKeys, WithOnChange } from '@ui-schema/react/UIStore'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { GenericListFooterProps, GenericListItemProps, GenericListItemSharedProps } from '@ui-schema/ds-material/BaseComponents'
 import Box from '@mui/material/Box'
 import { GridSpacing } from '@mui/material/Grid/Grid'
@@ -24,7 +24,7 @@ export interface GenericListContentProps extends ListButtonOverwrites {
     listSpacing?: GridSpacing
 }
 
-export const GenericListContent = <P extends WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>>>(
+export const GenericListContent = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>>>(
     {
         storeKeys, schemaKeys, schema, listSize, onChange,
         showValidity, valid, errors, required, level, widgets,

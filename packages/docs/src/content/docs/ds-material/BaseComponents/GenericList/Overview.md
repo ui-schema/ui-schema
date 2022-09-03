@@ -13,14 +13,14 @@ import {
     GenericListItem,
     GenericListItemMore, GenericListItemPos,
 } from '@ui-schema/ds-material/BaseComponents/GenericList'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 
 // it is important to use `memo` from `@ui-schema/ui-schema` for the content component,
 // as the generic list will re-render on each change of anything in the store,
 // with passing down `listSize` and not other data, the `GenericListContent` will only re-render when the `listSize` changes
 export const GenericListContentMemo = memo(GenericListContent)
 
-export const GenericList = (props: WidgetProps<MuiWidgetBinding> & WithOnChange): React.ReactElement => {
+export const GenericList = (props: WidgetProps<MuiWidgetsBinding> & WithOnChange): React.ReactElement => {
     const {store} = useUIStore()
     // info: `store?.extractValues` is new since `0.3.0-alpha.11` and can be used instead of the `extractValue` HOC
     const {value} = store?.extractValues<List<any>>(props.storeKeys) || {}
@@ -42,7 +42,7 @@ export const GenericList = (props: WidgetProps<MuiWidgetBinding> & WithOnChange)
 Easily define own schema keywords, for options which are only supported by `props`:
 
 ```typescript jsx
-export const GenericList = (props: WidgetProps<MuiWidgetBinding> & WithOnChange): React.ReactElement => {
+export const GenericList = (props: WidgetProps<MuiWidgetsBinding> & WithOnChange): React.ReactElement => {
     const {store} = useUIStore()
     const {value} = store?.extractValues<List<any>>(props.storeKeys) || {}
     // extracting and calculating the list size here, not passing down the actual list for performance reasons

@@ -6,7 +6,7 @@ import { WidgetRendererProps } from '@ui-schema/react/WidgetRenderer'
 import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
 import { StoreKeys, WithValue } from '@ui-schema/react/UIStore'
 import { List } from 'immutable'
-import { WidgetBindingRoot } from '@ui-schema/system/WidgetBinding'
+import { WidgetsBindingRoot } from '@ui-schema/system/WidgetsBinding'
 
 export interface NoWidgetProps {
     storeKeys: StoreKeys
@@ -61,4 +61,4 @@ export interface WidgetsBindingComponents {
  */
 export type WidgetsBindingFactory<W extends {} = {}, TW extends {} = {}, CW extends {} = {}> =
     WidgetsBindingComponents & W &
-    WidgetBindingRoot<TW, CW>
+    WidgetsBindingRoot<TW, CW>

@@ -6,8 +6,8 @@ import MenuItem from '@mui/material/MenuItem'
 import Label from '@mui/material/FormLabel'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
-import Dashboard from './dashboard/Dashboard'
-import { MuiWidgetBinding, MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, widgets } from '@ui-schema/ds-material'
+import Dashboard from './layout/Dashboard'
+import { MuiWidgetsBinding, MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, widgets } from '@ui-schema/ds-material'
 import { browserT } from '../t'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { isInvalid } from '@ui-schema/react/ValidityReporter/isInvalid'
@@ -44,7 +44,7 @@ import { DropArea } from '@ui-schema/material-dnd/Widgets/DropArea'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 
 export type CustomWidgetsBinding = WidgetsBindingFactory<DragDropBlockComponentsBinding, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
-    DragDropArea: React.ComponentType<WidgetProps<MuiWidgetBinding & DragDropBlockComponentsBinding> & WithOnChange>
+    DragDropArea: React.ComponentType<WidgetProps<MuiWidgetsBinding & DragDropBlockComponentsBinding> & WithOnChange>
 }>
 
 const customWidgets: CustomWidgetsBinding = {

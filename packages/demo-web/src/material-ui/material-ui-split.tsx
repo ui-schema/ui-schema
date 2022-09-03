@@ -1,6 +1,6 @@
 import React from 'react'
 import AppTheme from './layout/AppTheme'
-import Dashboard from './dashboard/Dashboard'
+import Dashboard from './layout/Dashboard'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, Step, Stepper, widgets } from '@ui-schema/ds-material'

@@ -1,5 +1,5 @@
 import { Map } from 'immutable'
-import { createOrderedMap } from '@ui-schema/react/Utils/createMap'
+import { createOrderedMap } from '@ui-schema/system/Utils/createMap'
 import { handleIfElseThen } from '@ui-schema/react-json-schema/ConditionalHandler'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 

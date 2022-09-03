@@ -1,6 +1,6 @@
 import React from 'react';
 import AppTheme from './layout/AppTheme';
-import Dashboard from './dashboard/Dashboard';
+import Dashboard from './layout/Dashboard';
 import Grid from '@mui/material/Grid';
 import {getWidgets} from '@ui-schema/ds-material/WidgetsBinding';
 import {RichContent, RichContentInline} from '@ui-schema/material-slate';

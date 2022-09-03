@@ -6,7 +6,7 @@ import { StoreKeys, extractValue, WithScalarValue } from '@ui-schema/react/UISto
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import Box from '@mui/material/Box'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
 import Typography from '@mui/material/Typography'
@@ -75,7 +75,7 @@ export interface WidgetOptionsReadProps {
     style?: React.CSSProperties
 }
 
-export const WidgetOptionsRead: React.ComponentType<WidgetProps<MuiWidgetBinding> & UIMetaReadContextType & WithScalarValue & WidgetOptionsReadProps> = (
+export const WidgetOptionsRead: React.ComponentType<WidgetProps<MuiWidgetsBinding> & UIMetaReadContextType & WithScalarValue & WidgetOptionsReadProps> = (
     {
         schema, storeKeys, showValidity,
         valid, errors, value,

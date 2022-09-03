@@ -1,4 +1,4 @@
-import { beautifyKey, tt, strReplaceAll } from '@ui-schema/ui-schema/Utils/beautify'
+import { beautifyKey, tt, strReplaceAll } from '@ui-schema/system/Utils/beautify'
 
 describe('strReplaceAll', () => {
     test.each(([

@@ -14,7 +14,7 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { useUID } from 'react-uid'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { sortScalarList } from '@ui-schema/system/Utils/sortScalarList'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { SwitchBaseProps } from '@mui/material/internal/SwitchBase'
 import { OptionValueSchema, useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 import { InfoRendererType } from '@ui-schema/ds-material/Component'
@@ -92,7 +92,7 @@ export interface OptionsCheckRendererProps {
     row?: boolean
 }
 
-export const OptionsCheck = <P extends WidgetProps<MuiWidgetBinding<{ InfoRenderer?: InfoRendererType }>> & OptionsCheckRendererProps>(
+export const OptionsCheck = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> & OptionsCheckRendererProps>(
     {
         schema, storeKeys, showValidity, valid, required, errors,
         row, widgets,

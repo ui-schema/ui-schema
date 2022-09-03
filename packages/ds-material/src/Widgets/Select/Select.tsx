@@ -10,12 +10,12 @@ import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 
 export type SelectProps = {
     variant?: MuiSelectProps['variant']
-} & WidgetProps<MuiWidgetBinding> & WithScalarValue
+} & WidgetProps<MuiWidgetsBinding> & WithScalarValue
 
 export const Select = <P extends SelectProps>(
     {

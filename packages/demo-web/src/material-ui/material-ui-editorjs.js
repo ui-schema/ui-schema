@@ -6,7 +6,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import {ImmutableEditor, themeMaterial} from 'react-immutable-editor';
-import Dashboard from './dashboard/Dashboard';
+import Dashboard from './layout/Dashboard';
 import {GridContainer, widgets} from '@ui-schema/ds-material';
 import {browserT} from '../t';
 import {MuiSchemaDebug} from './component/MuiSchemaDebug';

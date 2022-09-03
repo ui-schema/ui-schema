@@ -5,7 +5,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import {ImmutableEditor, themeMaterial} from 'react-immutable-editor';
-import Dashboard from './dashboard/Dashboard';
+import Dashboard from './layout/Dashboard';
 import {widgets} from '@ui-schema/ds-material';
 import {browserT} from '../t';
 import {MuiSchemaDebug} from './component/MuiSchemaDebug';
@@ -17,7 +17,7 @@ import IcRedo from '@mui/icons-material/Redo'
 import IcUndo from '@mui/icons-material/Undo'
 import useTheme from '@mui/material/styles/useTheme';
 import {isInvalid} from '@ui-schema/react/ValidityReporter/isInvalid';
-import {fromJSOrdered} from '@ui-schema/react/Utils/createMap';
+import {fromJSOrdered} from '@ui-schema/system/Utils/createMap';
 import {createStore, UIStoreProvider} from '@ui-schema/react/UIStore';
 import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro';
 import {UIMetaProvider} from '@ui-schema/react/UIMeta';

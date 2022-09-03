@@ -1,13 +1,13 @@
-import {validateType} from '../Validators/TypeValidator/TypeValidator';
-import {ERROR_WRONG_TYPE} from '../Validators/TypeValidator/TypeValidator';
-import {ERROR_PATTERN, validatePattern} from '../Validators/PatternValidator/PatternValidator';
-import {validateMinMax} from '../Validators/MinMaxValidator/MinMaxValidator';
+import {validateType} from '../Validators/TypeValidator';
+import {ERROR_WRONG_TYPE} from '../Validators/TypeValidator';
+import {ERROR_PATTERN, validatePattern} from '../Validators/PatternValidator';
+import {validateMinMax} from '../Validators/MinMaxValidator';
 import {ERROR_CONST_MISMATCH, ERROR_ENUM_MISMATCH, validateConst, validateEnum} from '../Validators/ValueValidator';
-import {ERROR_MULTIPLE_OF, validateMultipleOf} from '../Validators/MultipleOfValidator/MultipleOfValidator';
-import {validateContains} from '../Validators/ArrayValidator/ArrayValidator';
-import {validateObject} from '../Validators/ObjectValidator/ObjectValidator';
-import {createValidatorErrors} from '@ui-schema/system/ValidatorErrors/ValidatorErrors';
-import {validateOneOf} from '@ui-schema/json-schema/Validators/OneOfValidator';
+import {ERROR_MULTIPLE_OF, validateMultipleOf} from '../Validators/MultipleOfValidator';
+import {validateContains} from '../Validators/ArrayValidator';
+import {validateObject} from '../Validators/ObjectValidator';
+import {validateOneOf} from '../Validators/OneOfValidator';
+import {createValidatorErrors} from '@ui-schema/system/ValidatorErrors';
 
 /**
  * Return false when valid and string/List for an error
