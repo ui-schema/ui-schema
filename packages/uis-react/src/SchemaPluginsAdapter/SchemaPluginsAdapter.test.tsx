@@ -7,7 +7,7 @@ import { render } from '@testing-library/react'
 // @ts-ignore
 import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
 import { SchemaPluginsAdapter, handleSchemaPluginsAdapter } from './SchemaPluginsAdapter'
-import { createOrderedMap } from '@ui-schema/system/Utils/createMap'
+import { createOrderedMap } from '@ui-schema/system/createMap'
 import { WidgetRenderer } from '../WidgetRenderer/WidgetRenderer'
 
 expect.extend({toBeInTheDocument, toHaveClass})

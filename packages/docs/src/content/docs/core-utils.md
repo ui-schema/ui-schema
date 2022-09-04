@@ -13,7 +13,7 @@ import {beautify} from '@ui-schema/system/Utils/beautify'
 Deep change directly from `{}` or `[]` to `Map`/`List` structures:
 
 ```js
-import {createMap} from '@ui-schema/system/Utils/createMap'
+import {createMap} from '@ui-schema/system/createMap'
 
 let dataMap = createMap({});
 ```
@@ -23,7 +23,7 @@ let dataMap = createMap({});
 Deep change directly from `{}` or `[]` to `OrderedMap`/`List` structures:
 
 ```js
-import {createOrderedMap} from '@ui-schema/system/Utils/createMap'
+import {createOrderedMap} from '@ui-schema/system/createMap'
 
 let dataMap = createOrderedMap({});
 ```
@@ -36,7 +36,7 @@ Function to deep change an object into an ordered map, will change the objects p
 import {OrderedMap} from 'immutable'
 import {fromJSOrdered} from '@ui-schema/ui-schema/Utils/fromJSOrdered'
 
-let dataMap = new OrderedMap(fromJSOrdered({}));
+let dataMap = OrderedMap(fromJSOrdered({}));
 ```
 
 ## useImmutable

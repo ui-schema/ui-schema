@@ -125,6 +125,16 @@ export type JsonSchemaPure =
     JsonSchemaConditionals |
     JsonSchemaRoot
 
+export type JsonSchemaPureAny =
+    Partial<JsonSchemaString> &
+    Partial<JsonSchemaArray> &
+    Partial<JsonSchemaObject> &
+    Partial<JsonSchemaNumber> &
+    Partial<JsonSchemaBoolean> &
+    Partial<JsonSchemaNull> &
+    Partial<JsonSchemaConditionals> &
+    Partial<JsonSchemaRoot>
+
 // todo: this export breaks the build in external pure tsc (not babel/webpack) builds
 //       m.b. note: like in the [private] orbiter-publish app
 //export type JsonSchemaKeyValue<K> =

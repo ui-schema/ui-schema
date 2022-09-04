@@ -118,7 +118,7 @@ import React from 'react';
 
 // Import Schema UI Provider and Render engine
 import {isInvalid} from '@ui-schema/react/ValidityReporter';
-import {createOrderedMap} from '@ui-schema/reactsystem/Utils/createMap';
+import {createOrderedMap} from '@ui-schema/system/createMap';
 import {UIStoreProvider, createStore} from '@ui-schema/react/UIStore';
 import {storeUpdater} from '@ui-schema/react/storeUpdater';
 import {UIMetaProvider, useUIMeta} from '@ui-schema/react/UIMeta';

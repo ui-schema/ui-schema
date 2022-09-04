@@ -41,26 +41,29 @@ export const InfoRenderer: React.ComponentType<InfoRendererProps> = (
             typeof schema.get('info') === 'string' ? schema.get('info') : null}
     </>
     return <>
-        {variant === 'icon' ? <IconButton
-            onClick={() => setOpen(true)}
-            size={dense ? 'small' : 'medium'}
-            style={{float: align ? align : undefined}}
-        >
-            <IcInfo/>
-        </IconButton> : <Button
-            onClick={() => setOpen(o => !o)}
-        >
-            Show Info
-        </Button>}
+        {variant === 'icon' ?
+            <IconButton
+                onClick={() => setOpen(true)}
+                size={dense ? 'small' : 'medium'}
+                style={{float: align ? align : undefined}}
+            >
+                <IcInfo/>
+            </IconButton> :
+            <Button
+                onClick={() => setOpen(o => !o)}
+            >
+                Show Info
+            </Button>}
 
-        {openAs === 'modal' ? <Dialog open={open} onClose={() => setOpen(false)}>
-            <DialogTitle>Info</DialogTitle>
-            <DialogContent>
-                {content}
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => setOpen(false)}>close</Button>
-            </DialogActions>
-        </Dialog> : open ? content : null}
+        {openAs === 'modal' ?
+            <Dialog open={open} onClose={() => setOpen(false)}>
+                <DialogTitle>Info</DialogTitle>
+                <DialogContent>
+                    {content}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpen(false)}>close</Button>
+                </DialogActions>
+            </Dialog> : open ? content : null}
     </>
 }

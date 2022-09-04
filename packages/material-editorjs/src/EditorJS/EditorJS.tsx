@@ -4,7 +4,7 @@ import EditorJSType, { API, OutputData, EditorConfig } from '@editorjs/editorjs'
 import { StoreKeys, StoreSchemaType, WithValue } from '@ui-schema/ui-schema'
 import { extractValue } from '@ui-schema/react/UIStore'
 import { List, Map, OrderedMap } from 'immutable'
-import { fromJSOrdered } from '@ui-schema/system/Utils/createMap'
+import { fromJSOrdered } from '@ui-schema/system/createMap'
 
 export interface EditorJSProps {
     uid: string

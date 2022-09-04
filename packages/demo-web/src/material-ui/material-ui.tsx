@@ -18,7 +18,7 @@ import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 // import {getStandardPlugins} from '@ui-schema/ds-material/getStandardPlugins';
 // import {getCustomWidgets} from '@ui-schema/ds-material/getCustomWidgets';
 // import {getTypeWidgets} from '@ui-schema/ds-material/getTypeWidgets';
-import { createOrderedMap, createMap } from '@ui-schema/system/Utils/createMap'
+import { createOrderedMap, createMap } from '@ui-schema/system/createMap'
 import { isInvalid } from '@ui-schema/react/ValidityReporter'
 import { createStore, createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'

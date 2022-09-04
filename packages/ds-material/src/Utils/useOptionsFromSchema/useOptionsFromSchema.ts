@@ -24,7 +24,7 @@ export const useOptionsFromSchema = <V = string | number>(
 
     if (schema?.get('enum')) {
         enumValues = schema?.get('enum')
-        valueSchemas = schema?.get('enum').map(enumVal => ({
+        valueSchemas = enumValues?.map(enumVal => ({
             value: enumVal,
             schema: schema,
             text: storeKeys.insert(0, 'widget').concat(List(['enum', getTranslatableEnum(enumVal)])).join('.'),

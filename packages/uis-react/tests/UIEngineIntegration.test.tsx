@@ -12,7 +12,7 @@ import { List } from 'immutable'
 import { MockWidgets } from './MockSchemaProvider.mock'
 import { createStore, extractValue, UIStoreProvider, WithValue } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
-import { createOrderedMap } from '@ui-schema/system/Utils/createMap'
+import { createOrderedMap } from '@ui-schema/system/createMap'
 import {
     CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler,
     ReferencingHandler, ExtractStorePlugin, ValidityReporter,

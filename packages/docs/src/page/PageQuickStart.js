@@ -245,7 +245,7 @@ import { injectPluginStack } from '@ui-schema/ui-schema/applyPluginStack';
 // for validity checking
 import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter';
 // for deep immutables
-import { createOrderedMap } from '@ui-schema/system/Utils/createMap';
+import { createOrderedMap } from '@ui-schema/system/createMap';
 // for \`t\` keyword support / basic in-schema translation
 import { relTranslator } from '@ui-schema/ui-schema/Translate/relT';
 

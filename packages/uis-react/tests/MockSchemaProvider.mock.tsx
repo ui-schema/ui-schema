@@ -4,7 +4,7 @@
 import React from 'react'
 import { Translator } from '@ui-schema/ui-schema/Translate/makeTranslator'
 import { createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
-import { createOrderedMap } from '@ui-schema/system/Utils/createMap'
+import { createOrderedMap } from '@ui-schema/system/createMap'
 import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import { WidgetsBindingFactory } from '@ui-schema/react/WidgetsBinding'
 import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta'

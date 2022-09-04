@@ -7,7 +7,7 @@ import { render } from '@testing-library/react'
 // @ts-ignore
 import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
 import { WidgetRenderer } from './WidgetRenderer'
-import { createOrderedMap } from '@ui-schema/system/Utils/createMap'
+import { createOrderedMap } from '@ui-schema/system/createMap'
 import { VirtualArrayRenderer, VirtualWidgetsMapping } from '@ui-schema/react/VirtualWidgetRenderer'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'

@@ -1,4 +1,4 @@
-import { createMap, createOrderedMap } from "@ui-schema/system/Utils/createMap"
+import { createMap, createOrderedMap } from "@ui-schema/system/createMap"
 import { List, Map, OrderedMap } from "immutable"
 
 describe('createMap', () => {

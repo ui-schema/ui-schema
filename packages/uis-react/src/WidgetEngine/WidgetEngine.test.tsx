@@ -7,7 +7,7 @@ import { render } from '@testing-library/react'
 // @ts-ignore
 import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
 import { NextPluginRenderer, NextPluginRendererMemo, WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import { createOrderedMap } from '@ui-schema/system/Utils/createMap'
+import { createOrderedMap } from '@ui-schema/system/createMap'
 import { List } from 'immutable'
 import { WidgetRenderer } from '@ui-schema/ui-schema'
 

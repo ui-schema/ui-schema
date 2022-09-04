@@ -17,7 +17,7 @@ import IcRedo from '@mui/icons-material/Redo'
 import IcUndo from '@mui/icons-material/Undo'
 import useTheme from '@mui/material/styles/useTheme';
 import {isInvalid} from '@ui-schema/react/ValidityReporter/isInvalid';
-import {fromJSOrdered} from '@ui-schema/system/Utils/createMap';
+import {fromJSOrdered} from '@ui-schema/system/createMap';
 import {createStore, UIStoreProvider} from '@ui-schema/react/UIStore';
 import {toHistory, useStorePro} from '@ui-schema/pro/UIStorePro';
 import {UIMetaProvider} from '@ui-schema/react/UIMeta';

@@ -1,4 +1,4 @@
-import {createOrderedMap} from '@ui-schema/system/Utils/createMap';
+import {createOrderedMap} from '@ui-schema/system/createMap';
 
 export const schemaDemoTable = createOrderedMap({
     type: 'array',

@@ -1,5 +1,5 @@
 import { mergeSchema } from '@ui-schema/system/Utils/mergeSchema'
-import { createOrderedMap } from '@ui-schema/system/Utils/createMap'
+import { createOrderedMap } from '@ui-schema/system/createMap'
 
 describe('mergeSchema', () => {
     /*test.each([

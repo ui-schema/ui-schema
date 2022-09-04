@@ -1,5 +1,5 @@
 import { isEqualObject } from '@ui-schema/system/Utils/isEqualObject'
-import { createMap } from '@ui-schema/system/Utils/createMap'
+import { createMap } from '@ui-schema/system/createMap'
 import { List } from 'immutable'
 
 describe('isEqualObject', () => {
