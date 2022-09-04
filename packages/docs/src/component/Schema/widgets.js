@@ -1,5 +1,4 @@
 import React from 'react';
-import {Step, Stepper} from '@ui-schema/ds-material';
 import {widgets} from '@ui-schema/ds-material/WidgetsBinding';
 import Loadable from 'react-loadable';
 import {
@@ -72,8 +71,6 @@ customWidgets.DndBlockSelector = DragDropBlockSelector
 customWidgets.custom = {
     ...widgets.custom,
     SelectChips: SelectChips,
-    Stepper: Stepper,
-    Step: Step,
     Table: CustomTable,
     Color,
     ColorDialog,

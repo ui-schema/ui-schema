@@ -102,6 +102,6 @@ export class ValidatorErrors extends Record({
     }
 }
 
-export const createValidatorErrors = (): ValidatorErrors => {
-    return new ValidatorErrors()
+export const createValidatorErrors = (): ValidatorErrorsType => {
+    return new ValidatorErrors() as unknown as ValidatorErrorsType
 }

@@ -164,4 +164,8 @@ export type JsonSchemaKeys =
 // The two main typings for json schema & ui schema
 //
 
-export type JsonSchema = JsonSchemaPure & UISchema
+/**
+ * @todo switch from `JsonSchemaPureAny` to `JsonSchemaPure` again for stricter in-js typings,
+ *       `PureAny` atm. is needed that e.g. `contains` nested schemas work with the new nested OrderedMap typing
+ */
+export type JsonSchema = JsonSchemaPureAny & UISchema

@@ -7,4 +7,4 @@ export type StoreSchemaTypeValuesJS = string | number | boolean | null | any[] |
 
 export type StoreSchemaTypeValues = UISchemaMap | List<any> | Map<any, any> | StoreSchemaTypeValuesJS
 
-export type SchemaTypesType = List<string> | string | undefined
+export type SchemaTypesType = List<string> | string[] | string | undefined

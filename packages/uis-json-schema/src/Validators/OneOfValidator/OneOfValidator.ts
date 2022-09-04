@@ -1,4 +1,4 @@
-import { List } from 'immutable'
+import { List, Map } from 'immutable'
 import { validateSchema } from '@ui-schema/json-schema/validateSchema'
 import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
@@ -6,16 +6,16 @@ import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
 
 export const ERROR_ONE_OF_INVALID = 'one-of-is-invalid'
 
-export const validateOneOf = (oneOfSchemas: UISchemaMap, value: any, recursively: boolean = false) => {
+export const validateOneOf = (oneOfSchemas: List<UISchemaMap>, value: any, recursively: boolean = false) => {
     let errors = createValidatorErrors()
     let errorCount = 0
-    if(
+    if (
         (List.isList(oneOfSchemas) || Array.isArray(oneOfSchemas))
     ) {
         const schemas = List.isList(oneOfSchemas) ? oneOfSchemas.toArray() : oneOfSchemas
-        for(const schema of schemas) {
+        for (const schema of schemas) {
             const tmpErr = validateSchema(schema as unknown as UISchemaMap, value, recursively)
-            if(tmpErr.hasError()) {
+            if (tmpErr.hasError()) {
                 errors = errors.addErrors(tmpErr)
                 errorCount++
             } else {
@@ -37,12 +37,14 @@ export const oneOfValidator: SchemaPlugin = {
         return List.isList(schema?.get('oneOf'))
     },
     handle: ({schema, value, errors, valid}) => {
-        // @ts-ignore
-        const tmpErrors = validateOneOf(schema?.get('oneOf'), value)
-        if(tmpErrors.errorCount > 0) {
-            valid = false
-            errors = errors?.addChildErrors(tmpErrors.errors)
-            errors = errors?.addError(ERROR_ONE_OF_INVALID, schema)
+        const oneOfSchemas = schema?.get('oneOf')
+        if (oneOfSchemas) {
+            const tmpErrors = validateOneOf(oneOfSchemas, value)
+            if (tmpErrors.errorCount > 0) {
+                valid = false
+                errors = errors?.addChildErrors(tmpErrors.errors)
+                errors = errors?.addError(ERROR_ONE_OF_INVALID, schema as Map<string, any>)
+            }
         }
         return {errors, valid}
     },

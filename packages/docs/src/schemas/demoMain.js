@@ -1,10 +1,10 @@
-import {createOrderedMap} from '@ui-schema/ui-schema';
+import {createOrderedMap} from '@ui-schema/system/createMap';
 
 const schemaMain = createOrderedMap({
     type: 'object',
     title: 'headline',
     properties: {
-        stepper: {
+        /*stepper: {
             type: 'object',
             widget: 'Stepper',
             properties: {
@@ -61,7 +61,7 @@ const schemaMain = createOrderedMap({
                     },
                 },
             },
-        },
+        },*/
         headline: {
             type: 'string',
             view: {

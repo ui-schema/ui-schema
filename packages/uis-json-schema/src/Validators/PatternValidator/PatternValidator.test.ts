@@ -6,17 +6,17 @@ import { SchemaTypesType } from '@ui-schema/ui-schema'
 
 describe('validatePattern', () => {
     test.each([
-        ['string', 'blabla', '^[bla]*$', true],
-        ['string', 'wawawa', '^[bla]*$', false],
-        ['string', 'wawawa', undefined, true],
-        [['string'], 'wawawa', undefined, true],
-        [['string'], 'wawawa', '^[bla]*$', false],
-        [['integer', 'string'], 'wawawa', '^[bla]*$', false],
-        [['integer', 'string'], 122, '^[bla]*$', true],
-        ['array', [], '^[bla]*$', true],
-        ['array', [], undefined, true],
-    ])('validatePattern(%j, %j, %j): %j', (type: SchemaTypesType, value: any, pattern: string | undefined, expected: boolean) => {
-        expect(validatePattern(type, value, pattern)).toBe(expected)
+        ['blabla', '^[bla]*$', true],
+        ['wawawa', '^[bla]*$', false],
+        ['wawawa', undefined, true],
+        ['wawawa', undefined, true],
+        ['wawawa', '^[bla]*$', false],
+        ['wawawa', '^[bla]*$', false],
+        [122, '^[bla]*$', true],
+        [[], '^[bla]*$', true],
+        [[], undefined, true],
+    ])('validatePattern(%j, %j, %j): %j', (value: any, pattern: string | undefined, expected: boolean) => {
+        expect(validatePattern(value, pattern)).toBe(expected)
     })
 })
 

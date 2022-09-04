@@ -3,7 +3,8 @@ import AppTheme from './layout/AppTheme'
 import Dashboard from './layout/Dashboard'
 import Grid, { GridSpacing } from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
-import { MuiWidgetsBinding, SelectChips, widgets } from '@ui-schema/ds-material'
+import { MuiWidgetsBinding, widgets } from '@ui-schema/ds-material'
+import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
 import {
     createOrderedMap, createStore,
     GroupRendererProps,

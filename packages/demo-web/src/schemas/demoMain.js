@@ -198,7 +198,7 @@ const schemaDemoMain = {
                 },
                 view_dense: {
                     type: 'boolean',
-                    default: true,
+                    // default: true,
                     view: {
                         sizeMd: 12,
                         dense: true,
@@ -206,7 +206,7 @@ const schemaDemoMain = {
                 },
                 label_bottom: {
                     type: 'boolean',
-                    default: true,
+                    // default: true,
                     view: {
                         sizeMd: 12,
                         labelPlacement: 'bottom',
@@ -215,7 +215,7 @@ const schemaDemoMain = {
                 },
                 label_start: {
                     type: 'boolean',
-                    default: true,
+                    // default: true,
                     view: {
                         sizeMd: 12,
                         labelPlacement: 'start',

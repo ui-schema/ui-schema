@@ -3,7 +3,6 @@ import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
 export const ERROR_EMAIL_INVALID = 'email-invalid'
 
 export const emailValidator: SchemaPlugin = {
-    // @ts-ignore
     should: ({schema, value}) => {
         return Boolean(
             schema &&
@@ -11,7 +10,6 @@ export const emailValidator: SchemaPlugin = {
             schema.get('format') === 'email'
         )
     },
-    // @ts-ignore
     handle: ({value, errors, valid}) => {
         /*
          *  regex from https://emailregex.com/

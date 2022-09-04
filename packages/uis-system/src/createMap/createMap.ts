@@ -1,13 +1,13 @@
 import { Seq, List, Map, OrderedMap, fromJS, Record } from 'immutable'
 
 export type ValueOrImmutableOrdered<V = any> =
-    V extends any[] ? List<ValueOrImmutableOrdered<V[number]>> :
-        V extends null ? V :
+    V extends string | number | boolean | null ? V :
+        V extends any[] ? List<ValueOrImmutableOrdered<V[number]>> :
             V extends {} ? NestedOrderedMap<V> : V
 
 export type ValueOrImmutable<V = any> =
-    V extends any[] ? List<ValueOrImmutable<V[number]>> :
-        V extends null ? V :
+    V extends string | number | boolean | null ? V :
+        V extends any[] ? List<ValueOrImmutable<V[number]>> :
             V extends {} ? NestedMap<V> : V
 
 export type NestedOrderedMap<S extends {} = {}> =
@@ -20,7 +20,7 @@ export type NestedMap<S extends {} = {}> =
         get: <K extends keyof S = keyof S>(k: K) => ValueOrImmutable<S[K]>
     } & Map<keyof S, ValueOrImmutable<S[keyof S]>>
 
-export function fromJSOrdered<P>(js: P): P extends any[] | {} ? ValueOrImmutableOrdered<P> : P {
+export function fromJSOrdered<P>(js: P): ValueOrImmutableOrdered<P> {
     if (Map.isMap(js) || OrderedMap.isOrderedMap(js) || List.isList(js) || Record.isRecord(js)) {
         if (process.env.NODE_ENV === 'development') {
             console.warn('converting immutable to immutable may lead to wrong types')

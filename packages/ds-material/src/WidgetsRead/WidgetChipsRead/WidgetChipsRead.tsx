@@ -15,7 +15,7 @@ import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
 import Typography from '@mui/material/Typography'
 import { InfoRendererType } from '@ui-schema/ds-material/Component'
 
-export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetsBinding> & UIMetaReadContextType & WithValue> = (
+export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetsBinding & { InfoRenderer?: InfoRendererType }> & UIMetaReadContextType & WithValue> = (
     {
         storeKeys, schema, value,
         showValidity, errors,
@@ -23,10 +23,10 @@ export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetsBind
         readDense,
     },
 ) => {
-    if(!schema) return null
+    if (!schema) return null
 
     const oneOfVal = schema.getIn(['items', 'oneOf'])
-    if(!oneOfVal) return null
+    if (!oneOfVal) return null
 
     const hideTitle = schema.getIn(['view', 'hideTitle']) as boolean | undefined
     const InfoRenderer = widgets?.InfoRenderer
