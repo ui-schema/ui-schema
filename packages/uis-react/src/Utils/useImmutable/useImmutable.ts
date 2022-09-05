@@ -1,14 +1,15 @@
 import React from 'react'
-import {isImmutable, Record} from 'immutable'
+import { isImmutable, List, Map, Record } from 'immutable'
 
 /*
  * If the value passed in is structurally equal to the one saved in the ref,
  * it will return the one saved in the ref to preserve reference equality
  */
-export function useImmutable(value) {
+export function useImmutable<T = List<any> | Map<any, any> | any>(value: T): T {
     const currentState = React.useRef(value)
-    if(
+    if (
         (!isImmutable(currentState.current) && !Record.isRecord(value)) ||
+        // @ts-ignore
         !currentState.current?.equals(value)
     ) {
         // update the referenced immutable when:

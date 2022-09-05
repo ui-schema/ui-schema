@@ -34,13 +34,17 @@ export function fromJSOrdered<P>(js: P): ValueOrImmutableOrdered<P> {
             Seq(js as {}).map(fromJSOrdered).toOrderedMap() as ValueOrImmutableOrdered<P>
 }
 
+// todo: check why since `immutable@4.0.0-alpha` `new List|Map(fromJSOrdered(d))` worked,
+//       at beginning, i think this was required, but why is with `immutable@4.1` `fromJSOrdered(d)` enough and already returns `OrderedMap|List`?
+//       this would mean, `List(fromJSOrdered<P>(data)) | OrderedMap(fromJSOrdered<P>(data))` converts immutable to immutable and thus to wrong data,
+//       but it seems it doesn't? also check immutable docs, as the `fromJSOrdered` was copied either from there or from github
 export const createOrdered = <P extends {} | any[]>(data: P): ValueOrImmutableOrdered<P> =>
     Array.isArray(data) ?
-        List(fromJSOrdered(data)) as ValueOrImmutableOrdered<P> :
-        OrderedMap(fromJSOrdered(data)) as ValueOrImmutableOrdered<P>
+        List(fromJSOrdered<P>(data)) as ValueOrImmutableOrdered<P> :
+        OrderedMap(fromJSOrdered<P>(data)) as ValueOrImmutableOrdered<P>
 
 export const createOrderedMap = <P extends {} = {}>(data: P): NestedOrderedMap<P> =>
-    OrderedMap(fromJSOrdered(data)) as unknown as NestedOrderedMap<P>
+    OrderedMap(fromJSOrdered<P>(data)) as unknown as NestedOrderedMap<P>
 
 export const createMap = <P extends {} = {}>(data: P): NestedMap<P> =>
     Map(fromJS(data)) as unknown as NestedMap<P>

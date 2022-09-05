@@ -42,7 +42,7 @@ List of renamed functions, components etc., most are also moved to other package
 #### React Plugins
 
 - removed `ExtractStorePlugin`, included now in `WidgetEngine` directly (for the moment, experimenting performance/typing)
-- removed `level` property
+- removed `level` property, use `schemaKeys`/`storeKeys` to calc. that when necessary
 
 ### DS Material
 

@@ -1,18 +1,41 @@
-import {List, Map} from 'immutable';
-import {resolveRef, SchemaRefPending} from '@ui-schema/react-json-schema/ReferencingHandler';
-import {isRootSchema} from '@ui-schema/react-json-schema/SchemaRootProvider';
-import {getSchemaId} from '@ui-schema/system/Utils/getSchema';
+import { List, Map } from 'immutable'
+import { getSchemaRefPlugin, resolveRef, SchemaRefPending } from '@ui-schema/react-json-schema/ReferencingHandler'
+import { isRootSchema, SchemaRootContext } from '@ui-schema/react-json-schema/SchemaRootProvider'
+import { getSchemaId } from '@ui-schema/system/Utils/getSchema'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+
+/**
+ * Pending references, grouped by root id, with requested versions per-schema,
+ * `#` for no-custom context `$id`:
+ * @example
+ * {
+ *     '#': {'ref-url': ['*', 'version']},
+ *     'http://localhost/schema-1.json': {'schema-1b.json': ['*', '1.2']},
+ * }
+ */
+export type SchemaRefsPending = Map<string, Map<string, List<string>>>
+
+export interface ParseRefsContent {
+    // the active root-id
+    id?: string
+    // the definitions, could be get from ReferencingProvider
+    defs?: SchemaRootContext['definitions']
+    // the root schema, could be get from SchemaRootProvider
+    root?: UISchemaMap
+    // try to get a loaded schema
+    getLoadedSchema?: getSchemaRefPlugin
+}
 
 const handleResolve = (keywords, condition, schema, context, recursive, pending) => {
     Object.keys(keywords).forEach(keyword => {
         // schemaMap can be a `Map` or a `List`
         const schemaMap = schema.get(keyword)
-        if(schemaMap && condition(schemaMap)) {
+        if (schemaMap && condition(schemaMap)) {
             schema = schema.set(keyword, schemaMap.map((subSchema) => {
                 const res = parseRefs(subSchema, context, keywords[keyword] || recursive, pending)
                 pending = res.pending
                 return res.schema
-            }));
+            }))
         }
     })
 
@@ -27,7 +50,10 @@ const checkNestedMapSchema = {
 // all keywords which are an array of schemas
 const checkNestedArraySchema = {}
 
-const parseRefsInRenderingKeywords = (schema, context, recursive, pending = Map()) => {
+const parseRefsInRenderingKeywords = (schema: UISchemaMap, context: ParseRefsContent, recursive: boolean = false, pending: SchemaRefsPending = Map() as SchemaRefsPending): {
+    schema: UISchemaMap
+    pending: SchemaRefsPending
+} => {
     // for all schema keywords which will be rendered, only the root references must be resolved,
     // but not if they are within an e.g. `if`
     // - e.g. references within `properties` doesn't need to be resolved before they are rendered
@@ -71,7 +97,10 @@ const checkSchema = {
     contains: true,
 }
 
-const parseRefsInConditionalKeywords = (schema, context, recursive = false, pending = Map()) => {
+const parseRefsInConditionalKeywords = (schema: UISchemaMap, context: ParseRefsContent, recursive = false, pending: SchemaRefsPending = Map() as SchemaRefsPending): {
+    schema: UISchemaMap
+    pending: SchemaRefsPending
+} => {
     // all schema keywords which are never rendered must be resolved endless-recursive
     // - e.g. `if` is used from within the ConditionalHandler, but it will never be rendered through `WidgetEngine`
     //   thus any `$ref` can not be resolved at render-flow, but must be resolved beforehand
@@ -84,9 +113,10 @@ const parseRefsInConditionalKeywords = (schema, context, recursive = false, pend
 
     Object.keys(checkSchema).forEach(keyword => {
         const schemaCond = res.schema.get(keyword)
-        if(schemaCond && Map.isMap(schemaCond)) {
+        if (schemaCond && Map.isMap(schemaCond)) {
+            // @ts-ignore
             const resCheckSchema = parseRefs(schemaCond, context, checkSchema[keyword] || recursive, res.pending)
-            res.schema = res.schema.set(keyword, resCheckSchema.schema);
+            res.schema = res.schema.set(keyword, resCheckSchema.schema)
             res.pending = resCheckSchema.pending
         }
     })
@@ -104,7 +134,7 @@ const parseRefsInConditionalKeywords = (schema, context, recursive = false, pend
     // items is either a schema or a list of schemas,
     // here one-schema for all items
     const items = res.schema.get('items')
-    if(items && Map.isMap(items)) {
+    if (items && Map.isMap(items)) {
         const itemsSchema = parseRefs(items, context, recursive, res.pending)
         res.schema = res.schema.set('items', itemsSchema.schema)
         res.pending = itemsSchema.pending
@@ -113,25 +143,33 @@ const parseRefsInConditionalKeywords = (schema, context, recursive = false, pend
     return res
 }
 
-export const parseRefs = (schema, context, recursive = false, pending = Map()) => {
+export const parseRefs = (
+    schema: UISchemaMap,
+    context: ParseRefsContent,
+    recursive: boolean = false,
+    pending: SchemaRefsPending = Map() as SchemaRefsPending,
+): {
+    schema: UISchemaMap
+    pending: SchemaRefsPending
+} => {
     const ref = schema.get('$ref')
     const schemaVersion = schema.get('version')
-    if(ref) {
+    if (ref) {
         // 1. if schema is a reference itself, resolve it
         //    then with the next code, references in the reference are resolved
         try {
-            let resolved = resolveRef(ref, context, schemaVersion)
+            const resolved = resolveRef(ref, context, schemaVersion)
             // merging resolved ref with current schema, using mergeDeep, but not with `$ref`
             // - for recursion protection and without `version`, to be sure to get the latest `version`
             // todo: json-schema multi-schema validation
             schema = resolved ? resolved.mergeDeep(schema.delete('version').delete('$ref')) : schema
-        } catch(e) {
-            if(e instanceof SchemaRefPending) {
+        } catch (e) {
+            if (e instanceof SchemaRefPending) {
                 const id = context.id || '#'
                 pending = pending.updateIn([id, ref], (refPref = List()) => {
                     const v = schema.get('version') || '*'
-                    if(!refPref.contains(v)) {
-                        refPref = refPref.push(v)
+                    if (!(refPref as List<string>).contains(v)) {
+                        refPref = (refPref as List<string>).push(v)
                     }
                     return refPref
                 })
@@ -141,22 +179,26 @@ export const parseRefs = (schema, context, recursive = false, pending = Map()) =
         }
     }
 
-    if(isRootSchema(schema)) {
+    if (isRootSchema(schema)) {
         // change context if new root schema
         // enforces this before going deeper when nested/recursive
         context = {...context}
         context.id = getSchemaId(schema)
         context.root = schema
+        // @ts-ignore
         context.defs = schema.get('definitions') || schema.get('$defs')
     }
 
-    let res = {schema, pending}
+    let res: {
+        schema: UISchemaMap
+        pending: SchemaRefsPending
+    } = {schema, pending}
 
     // 2. handle conditionals
     res = parseRefsInConditionalKeywords(res.schema, context, recursive, res.pending)
 
     // 3. handle validation/applicator schema
-    if(recursive) {
+    if (recursive) {
         res = parseRefsInRenderingKeywords(res.schema, context, recursive, res.pending)
     }
 

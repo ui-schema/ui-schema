@@ -1,10 +1,10 @@
-import React from 'react';
-import {getNextPlugin} from '@ui-schema/react/WidgetEngine';
-import {useImmutable} from '@ui-schema/react/Utils/useImmutable';
+import React from 'react'
+import { getNextPlugin, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 
-export const ValidityReporter = (props) => {
+export const ValidityReporter: React.FC<WidgetPluginProps> = (props) => {
     const [customError, setCustomError] = React.useState(false)
-    const {onChange, showValidity, storeKeys, valid, currentPluginIndex} = props;
+    const {onChange, showValidity, storeKeys, valid, currentPluginIndex} = props
 
     const storeKeysRef = useImmutable(storeKeys)
 
@@ -21,7 +21,7 @@ export const ValidityReporter = (props) => {
                 valid: realValid,
             },
         })
-    }, [realValid, onChange, storeKeysRef]);
+    }, [realValid, onChange, storeKeysRef])
 
     React.useEffect(() => {
         // delete own validity state on component unmount
@@ -40,9 +40,10 @@ export const ValidityReporter = (props) => {
             storeKeys: storeKeysRef,
             scopes: ['valid'],
         })*/
-    }, [onChange, storeKeysRef]);
+    }, [onChange, storeKeysRef])
 
-    const next = currentPluginIndex + 1;
+    const next = currentPluginIndex + 1
     const Plugin = getNextPlugin(next, props.widgets)
-    return <Plugin {...props} currentPluginIndex={next} valid={valid} showValidity={showValidity} setCustomError={setCustomError}/>;
-};
+    // @ts-ignore
+    return <Plugin {...props} currentPluginIndex={next} valid={valid} showValidity={showValidity} setCustomError={setCustomError}/>
+}

@@ -1,9 +1,11 @@
-import {resolvePointer} from '@ui-schema/json-pointer/resolvePointer';
+import { resolvePointer } from '@ui-schema/json-pointer/resolvePointer'
+import { ParseRefsContent } from '@ui-schema/react-json-schema/ReferencingHandler/parseRefs'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 export class SchemaRefPending extends Error {
 }
 
-export const resolveRef = (ref, context, schemaVersion) => {
+export const resolveRef = (ref: string, context: ParseRefsContent, schemaVersion?: string): UISchemaMap => {
     const {
         // the id of the parent schema
         id,
@@ -17,43 +19,43 @@ export const resolveRef = (ref, context, schemaVersion) => {
 
     let schema
 
-    if(ref.indexOf('#/definitions/') === 0 || ref.indexOf('#/$defs/') === 0) {
+    if (ref.indexOf('#/definitions/') === 0 || ref.indexOf('#/$defs/') === 0) {
         // intercept JSON Pointer for definitions
-        const refId = ref.replace(/^#\/definitions\//, '').replace(/^#\/\$defs\//, '');
-        if(!defs) {
-            if(process.env.NODE_ENV === 'development') {
+        const refId = ref.replace(/^#\/definitions\//, '').replace(/^#\/\$defs\//, '')
+        if (!defs) {
+            if (process.env.NODE_ENV === 'development') {
                 console.error('definitions needed for $ref resolution', ref)
             }
-        } else if(defs.get(refId)) {
-            schema = resolvePointer('#/' + refId, defs);
+        } else if (defs.get(refId)) {
+            schema = resolvePointer('#/' + refId, defs)
         } else {
-            if(process.env.NODE_ENV === 'development') {
+            if (process.env.NODE_ENV === 'development') {
                 console.error('definition not found for $ref', ref, refId)
             }
         }
 
-    } else if(ref.indexOf('#/') === 0 || ref === '#') {
+    } else if (ref.indexOf('#/') === 0 || ref === '#') {
         // JSON Pointer
 
-        if(!rootSchema) {
-            if(process.env.NODE_ENV === 'development') {
+        if (!rootSchema) {
+            if (process.env.NODE_ENV === 'development') {
                 console.error('rootSchema needed for $ref resolution', ref)
             }
         } else {
             const targeted = resolvePointer(ref, rootSchema)
-            if(targeted) {
+            if (targeted) {
                 schema = targeted
             } else {
-                if(process.env.NODE_ENV === 'development') {
+                if (process.env.NODE_ENV === 'development') {
                     console.error('JSON Pointer target schema not found for $ref', ref, rootSchema?.toJS())
                 }
             }
         }
-    } else if(ref.indexOf('#') === 0) {
+    } else if (ref.indexOf('#') === 0) {
         // get by `$id` or since 2019-09 by `$anchor` in definitions
 
-        if(!defs) {
-            if(process.env.NODE_ENV === 'development') {
+        if (!defs) {
+            if (process.env.NODE_ENV === 'development') {
                 console.error('definitions needed for $ref resolution', ref)
             }
         } else {
@@ -68,10 +70,10 @@ export const resolveRef = (ref, context, schemaVersion) => {
                 )
             })
 
-            if(def) {
+            if (def) {
                 schema = def
             } else {
-                if(process.env.NODE_ENV === 'development') {
+                if (process.env.NODE_ENV === 'development') {
                     console.error('definition not found for $ref', ref)
                 }
             }
@@ -84,12 +86,12 @@ export const resolveRef = (ref, context, schemaVersion) => {
         // handle network referenced schemas,
         // `getLoadedSchema` may be coming from `useNetworkRef`, which relies on the `UIApiProvider`
         // but could also be otherwise passed down with the context from a custom `ReferencingHandler` implementation
-        if(getLoadedSchema) {
+        if (getLoadedSchema) {
             const loadedSchema = getLoadedSchema(ref, id, schemaVersion)
-            if(loadedSchema) {
+            if (loadedSchema) {
                 return loadedSchema
             }
-        } else if(process.env.NODE_ENV === 'development') {
+        } else if (process.env.NODE_ENV === 'development') {
             console.error('getLoadedSchema does not exist in resolveRef, maybe UIApiProvider missing?')
         }
         throw new SchemaRefPending(ref)
