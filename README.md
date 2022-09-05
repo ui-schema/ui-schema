@@ -64,7 +64,7 @@ Use JSON Schema to validate data and automatically create UIs with it - UI-Schem
     - easily add advanced features like [read-or-write mode](https://ui-schema.bemit.codes/docs/core-meta#read-context)
 - [auto-rendering by data & schema](https://ui-schema.bemit.codes/quick-start) or [full-custom forms](https://ui-schema.bemit.codes/quick-start?render=custom) with autowired widgets
 - flexible translation of widgets
-    - with any library ([`t` prop (Translator)](https://ui-schema.bemit.codes/docs/localization#translation), [`Trans` component](https://ui-schema.bemit.codes/docs/localization#trans-component))
+    - with any library ([`t` prop (Translator)](https://ui-schema.bemit.codes/docs/localization#translation), [`Translate` component](https://ui-schema.bemit.codes/docs/localization#trans-component))
     - in-schema translations ([`t` keyword](https://ui-schema.bemit.codes/docs/localization#translation-in-schema))
     - label text transforms ([`tt`/`ttEnum` keyword](https://ui-schema.bemit.codes/docs/localization#text-transform))
     - single or multi-language
@@ -122,7 +122,7 @@ import {createOrderedMap} from '@ui-schema/system/createMap';
 import {UIStoreProvider, createStore} from '@ui-schema/react/UIStore';
 import {storeUpdater} from '@ui-schema/react/storeUpdater';
 import {UIMetaProvider, useUIMeta} from '@ui-schema/react/UIMeta';
-import {injectPluginStack} from '@ui-schema/react/applyPluginStack';
+import {injectWidgetEngine} from '@ui-schema/react/applyWidgetEngine';
 // basic in-schema translator / `t` keyword support
 import {translateRelative} from '@ui-schema/system/TranslatorRelative';
 // Get the widgets binding for your design-system
@@ -161,7 +161,7 @@ const schemaBase = {
 // or fetch from API
 const data = {};
 
-const GridStack = injectPluginStack(GridContainer)
+const GridStack = injectWidgetEngine(GridContainer)
 
 export const DemoForm = () => {
     // optional state for display errors/validity
@@ -230,7 +230,7 @@ Easily create new widgets, this is all for a simple text (`type=string`) widget:
 
 ```typescript jsx
 import React from 'react';
-import { TransTitle, WidgetProps, WithScalarValue } from '@ui-schema/ui-schema';
+import { TranslateTitle, WidgetProps, WithScalarValue } from '@ui-schema/ui-schema';
 
 const Widget = (
     {
@@ -241,7 +241,7 @@ const Widget = (
     }: WidgetProps & WithScalarValue,
 ) => {
     return <>
-        <label><TransTitle schema={schema} storeKeys={storeKeys}/></label>
+        <label><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
 
         <input
             type={'text'}

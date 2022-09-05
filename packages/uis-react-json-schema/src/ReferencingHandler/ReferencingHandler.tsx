@@ -8,7 +8,7 @@ import { useSchemaRef } from '@ui-schema/react-json-schema/ReferencingHandler'
 import { NextPluginRendererMemo, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { getSchemaId } from '@ui-schema/system/Utils/getSchema'
 
-export const ReferencingHandler = <P extends WidgetPluginProps & { rootContext?: { [k: string]: any } }>({rootContext, ...props}: P): React.ReactElement => {
+export const ReferencingHandler: React.FC<WidgetPluginProps & { rootContext?: { [k: string]: any } }> = ({rootContext, ...props}) => {
     const {schema: baseSchema, isVirtual} = props
     const {schema: maybeRootSchema, definitions: maybeDefinitions, ...nestedRootProps} = useSchemaRoot()
     const isRoot = Boolean(isRootSchema(baseSchema) || rootContext || baseSchema.get('definitions') || baseSchema.get('$defs'))

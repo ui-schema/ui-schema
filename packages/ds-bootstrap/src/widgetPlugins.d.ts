@@ -1,4 +1,4 @@
-import { PluginType } from '@ui-schema/ui-schema/PluginStack/Plugin'
+import { WidgetPluginType } from '@ui-schema/react/WidgetEngine'
 
 /**
  * Plugin stack contains:
@@ -10,4 +10,4 @@ import { PluginType } from '@ui-schema/ui-schema/PluginStack/Plugin'
  * - PluginSimpleStack
  * - ValidityReporter
  */
-export const widgetPlugins: Array<PluginType>
+export const widgetPlugins: Array<WidgetPluginType>

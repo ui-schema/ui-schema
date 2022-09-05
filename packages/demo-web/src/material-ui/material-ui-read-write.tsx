@@ -3,15 +3,8 @@ import AppTheme from './layout/AppTheme'
 import Dashboard from './layout/Dashboard'
 import Grid, { GridSpacing } from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
-import { MuiWidgetsBinding, widgets } from '@ui-schema/ds-material'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
-import {
-    createOrderedMap, createStore,
-    GroupRendererProps,
-    UIMetaProvider, UIStoreProvider,
-    useUIMeta, WidgetType,
-    UIStoreActions, UIStoreType, injectWidgetEngine,
-} from '@ui-schema/ui-schema'
 import { browserT } from '../t'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { OrderedMap } from 'immutable'
@@ -23,8 +16,18 @@ import {
 } from '@ui-schema/ds-material/WidgetsRead'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
+import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { WidgetOptionsRead } from '@ui-schema/ds-material/WidgetsRead/WidgetOptionsRead'
+import { GroupRendererProps, WidgetType } from '@ui-schema/react/Widgets'
+import { UIMetaProvider, useUIMeta } from '@ui-schema/react/UIMeta'
+import { createOrderedMap } from '@ui-schema/system/createMap'
+import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
+import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
+import { createStore, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
+import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
+import { isInvalid } from '@ui-schema/react/ValidityReporter'
+import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 
 // custom `GroupRenderer` that supports `is-read and display-dense`
 const GroupRenderer: React.ComponentType<GroupRendererProps> = ({schema, children, noGrid}) => {
@@ -42,16 +45,6 @@ const GroupRenderer: React.ComponentType<GroupRendererProps> = ({schema, childre
         >
             {children}
         </Grid>
-}
-
-const Main = ({classes}: { classes: { paper: string } }) => {
-    return <React.Fragment>
-        <Grid item xs={12}>
-            <Paper className={classes.paper}>
-                <ReadableWritableEditor/>
-            </Paper>
-        </Grid>
-    </React.Fragment>
 }
 
 const formSchema = createOrderedMap({
@@ -159,15 +152,24 @@ export interface ReadWidgetsBinding {
 
 // Notice: `customWidgets` are supplied by the global `UIMetaProvider` at the end of this file,
 //         while `readWidgets` are supplied in the nested `UIMetaProvider` - which re-uses everything else from the global provider
-const customWidgets = {...widgets}
-customWidgets.GroupRenderer = GroupRenderer
-customWidgets.custom = {
-    ...customWidgets.custom,
-    SelectChips: SelectChips,
+const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
+const customWidgets = {
+    ...WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
+        InfoRenderer: InfoRenderer,
+        widgetPlugins: widgetPlugins,
+        schemaPlugins: schemaPlugins,
+        types: WidgetsDefault.widgetsTypes(),
+        custom: {
+            ...WidgetsDefault.widgetsCustom(),
+            SelectChips: SelectChips,
+        },
+    }),
+    GroupRenderer: GroupRenderer,
 }
 
 const readWidgets: ReadWidgetsBinding = {
     types: {
+        object: ObjectRenderer,
         string: StringRendererRead,
         number: NumberRendererRead,
         int: NumberRendererRead,
@@ -234,6 +236,19 @@ const ReadableWritableEditor = () => {
 export default (): React.ReactElement =>
     <AppTheme>
         <UIMetaProvider widgets={customWidgets} t={browserT}>
-            <Dashboard main={Main}/>
+            <Dashboard>
+                <Grid item xs={12}>
+                    <Paper
+                        sx={{
+                            p: 2,
+                            display: 'flex',
+                            overflow: 'auto',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        <ReadableWritableEditor/>
+                    </Paper>
+                </Grid>
+            </Dashboard>
         </UIMetaProvider>
     </AppTheme>

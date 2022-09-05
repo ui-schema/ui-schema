@@ -2,7 +2,7 @@ import React from 'react'
 import IconButton from '@mui/material/IconButton'
 import { Translate } from '@ui-schema/react/Translate'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
-import { GenericListItemSharedProps } from '@ui-schema/ds-material'
+import { GenericListItemSharedProps } from '@ui-schema/ds-material/BaseComponents/GenericList'
 import Delete from '@mui/icons-material/Delete'
 import { Map } from 'immutable'
 

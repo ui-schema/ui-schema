@@ -1,8 +1,7 @@
-import { List, OrderedMap } from 'immutable'
 import {
     validateObject, objectValidator, ERROR_ADDITIONAL_PROPERTIES,
 } from '@ui-schema/json-schema/Validators/ObjectValidator'
-import { createMap, createOrderedMap } from '@ui-schema/ui-schema/Utils'
+import { createMap, createOrderedMap } from '@ui-schema/system/createMap'
 import { ERROR_PATTERN } from '@ui-schema/json-schema/Validators/PatternValidator'
 import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 

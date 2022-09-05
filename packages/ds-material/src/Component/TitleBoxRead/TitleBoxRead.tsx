@@ -12,6 +12,7 @@ export interface TitleBoxReadProps {
     hasInfo?: boolean
     schema: UISchemaMap
     storeKeys: StoreKeys
+    schemaKeys?: StoreKeys
     valid?: boolean
     errors?: ValidatorErrorsType
     InfoRenderer?: React.ComponentType<InfoRendererProps>
@@ -19,7 +20,7 @@ export interface TitleBoxReadProps {
 
 export const TitleBoxRead: React.ComponentType<TitleBoxReadProps> = (
     {
-        schema, storeKeys,
+        schema, storeKeys, schemaKeys,
         errors, valid,
         hideTitle,
         hasInfo,
@@ -38,7 +39,7 @@ export const TitleBoxRead: React.ComponentType<TitleBoxReadProps> = (
             {InfoRenderer && schema?.get('info') ?
                 <InfoRenderer
                     schema={schema} variant={'icon'} openAs={'modal'}
-                    storeKeys={storeKeys} valid={valid} errors={errors}
+                    storeKeys={storeKeys} schemaKeys={schemaKeys} valid={valid} errors={errors}
                 /> : null}
         </Box> : null}
     </Box>

@@ -62,11 +62,11 @@ To get the errors of that schema level, use `onErrors` from [`WidgetRenderer`](#
 ```typescript jsx
 const freeFormSchema = OrderedMap()
 
-const WidgetTextField = applyPluginStack(StringRenderer)
+const WidgetTextField = applyWidgetEngine(StringRenderer)
 
 const FreeFormEditor = () => {
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
-    const [schema, setSchema] = React.useState<StoreSchemaType>(() => freeFormSchema)
+    const [schema, setSchema] = React.useState<UISchemaMap>(() => freeFormSchema)
 
     const onChange = React.useCallback((...update) => setStore(storeUpdater(...update)), [setStore])
 
@@ -86,10 +86,10 @@ const FreeFormEditor = () => {
             <Grid container dir={'columns'} spacing={4}>
                 <WidgetTextField
                     storeKeys={storeKeys.push('name') as StoreKeys}
-                    schema={schema.getIn(['properties', 'name']) as unknown as StoreSchemaType}
+                    schema={schema.getIn(['properties', 'name']) as unknown as UISchemaMap}
                     parentSchema={schema}
 
-                    // using `applyPluginStack`, this free-form widget is fully typed
+                    // using `applyWidgetEngine`, this free-form widget is fully typed
                     // with the actual props of the widget component
                     multiline={false}
                 />

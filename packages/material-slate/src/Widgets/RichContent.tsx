@@ -1,5 +1,7 @@
 import React from 'react'
-import { extractValue, memo, WidgetProps, WithValue } from '@ui-schema/ui-schema'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { extractValue, WithValue } from '@ui-schema/react/UIStore'
+import { memo } from '@ui-schema/react/Utils/memo'
 import { SlateRenderer } from '@ui-schema/material-slate/Slate/SlateRenderer'
 import { ElementMapper } from '@ui-schema/material-slate/SlateElements/ElementMapper'
 import { FormWrapper, useFormEditorStyles } from '@ui-schema/material-slate/EditorWrapper/FormWrapper'

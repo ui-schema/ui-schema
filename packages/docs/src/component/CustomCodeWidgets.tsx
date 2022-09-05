@@ -1,16 +1,16 @@
 import React from 'react'
-import {
-    WidgetProps, WithScalarValue, memo, WithValue, StoreKeyType,
-} from '@ui-schema/ui-schema'
 import Button from '@mui/material/Button'
 import { json } from '@codemirror/lang-json'
 import { javascript } from '@codemirror/lang-javascript'
 import { html } from '@codemirror/lang-html'
 import { css } from '@codemirror/lang-css'
-import { extractValue } from '@ui-schema/ui-schema/UIStore'
-import { WidgetCode } from '@ui-schema/material-code'
-import { WidgetCodeSelectable } from '@ui-schema/material-code/WidgetCodeSelectable'
+import { extractValue, WithScalarValue, WithValue } from '@ui-schema/react/UIStore'
+// import { WidgetCode } from '@ui-schema/material-code'
+// import { WidgetCodeSelectable } from '@ui-schema/material-code/WidgetCodeSelectable'
 import { CustomCodeMirror } from './CustomCodeMirror'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { StoreKeyType } from '@ui-schema/system/ValueStore'
+import { memo } from '@ui-schema/react/Utils/memo'
 
 export const CustomWidgetCode: React.ComponentType<WidgetProps & WithScalarValue> = (props) => {
     const format = props.schema.get('format')
@@ -22,6 +22,8 @@ export const CustomWidgetCode: React.ComponentType<WidgetProps & WithScalarValue
         ...(format === 'css' ? [css()] : []),
     ], [format])
 
+    // @ts-ignore
+    // eslint-disable-next-line react/jsx-no-undef
     return <WidgetCode
         {...props}
         CodeMirror={CustomCodeMirror}
@@ -35,7 +37,7 @@ const CustomWidgetCodeSelectableBase: React.ComponentType<WidgetProps & WithValu
     {value, ...props},
 ) => {
     const {schema, onChange, storeKeys} = props
-    const valueType = schema.get('type') as 'array' | 'object'
+    const valueType = schema.get('type') as unknown as 'array' | 'object'
     // supporting different types requires mapping the actual key of `format` and `value` inside the non-scalar value of this component
     // - for tuples: [0: format, 1: code]
     // - for objects: {lang, code}
@@ -52,6 +54,8 @@ const CustomWidgetCodeSelectableBase: React.ComponentType<WidgetProps & WithValu
         ...(format === 'css' ? [css()] : []),
     ], [format])
 
+    // @ts-ignore
+    // eslint-disable-next-line react/jsx-no-undef
     return <WidgetCodeSelectable
         {...props}
         CodeMirror={CustomCodeMirror}

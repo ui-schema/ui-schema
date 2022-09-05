@@ -37,7 +37,7 @@ export const ValidityHelperText: React.FC<ValidityHelperTextProps> = (
         showValidity, errors, schema, browserError,
     },
 ) =>
-    (schema.get('t') === 'browser' && browserError ?
+    (schema.get('tBy') === 'browser' && browserError ?
         <FormHelperText error>
             {browserError}
         </FormHelperText> :

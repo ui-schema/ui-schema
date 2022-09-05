@@ -1,22 +1,21 @@
-import React from 'react';
-import {Dashboard} from './Dashboard';
-import {schemaTestBts, dataDemoMain} from '../schemas/demoBts';
-import {schemaGrid} from '../schemas/demoGrid';
-import {GridContainer, widgets} from '@ui-schema/ds-bootstrap';
-import {
-    UIMetaProvider, UIStoreProvider,
-    createOrderedMap, createStore,
-    injectPluginStack,
-    isInvalid,
-} from '@ui-schema/ui-schema';
-import {browserT} from '../t';
-import {BtsSchemaDebug} from '../component/BtsSchemaDebug';
-import clsx from 'clsx';
-import {storeUpdater} from '@ui-schema/react/storeUpdater';
+import React from 'react'
+import { Dashboard } from './Dashboard'
+import { schemaTestBts, dataDemoMain } from '../schemas/demoBts'
+import { schemaGrid } from '../schemas/demoGrid'
+import { GridContainer, widgets } from '@ui-schema/ds-bootstrap'
+import { browserT } from '../t'
+import { BtsSchemaDebug } from '../component/BtsSchemaDebug'
+import clsx from 'clsx'
+import { storeUpdater } from '@ui-schema/react/storeUpdater'
+import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
+import { createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
+import { createOrderedMap } from '@ui-schema/system/createMap'
+import { UIMetaProvider } from '@ui-schema/react/UIMeta'
+import { isInvalid } from '@ui-schema/react/ValidityReporter'
 
-const GridStack = injectPluginStack(GridContainer)
+const GridStack = injectWidgetEngine(GridContainer)
 const DemoGrid = () => {
-    const [store, setStore] = React.useState(() => createStore(createOrderedMap({})));
+    const [store, setStore] = React.useState(() => createStore(createOrderedMap({})))
 
     const onChange = React.useCallback((actions) => {
         setStore(storeUpdater(actions))
@@ -32,12 +31,12 @@ const DemoGrid = () => {
             <BtsSchemaDebug/>
         </UIStoreProvider>
     </UIMetaProvider>
-};
+}
 
 const MainStore = () => {
-    const [showValidity, setShowValidity] = React.useState(false);
-    const [store, setStore] = React.useState(() => createStore(createOrderedMap(dataDemoMain)));
-    const [schema, setSchema] = React.useState(schemaTestBts);
+    const [showValidity, setShowValidity] = React.useState(false)
+    const [store, setStore] = React.useState(() => createStore(createOrderedMap(dataDemoMain)))
+    const [schema, setSchema] = React.useState(schemaTestBts)
 
     const onChange = React.useCallback((actions) => {
         setStore(storeUpdater(actions))
@@ -59,8 +58,9 @@ const MainStore = () => {
         {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
 
     </React.Fragment>
-};
+}
 
+// eslint-disable-next-line react/display-name
 export default () => {
     return <Dashboard>
         <div>
@@ -68,4 +68,4 @@ export default () => {
             <DemoGrid/>
         </div>
     </Dashboard>
-};
+}

@@ -1,7 +1,12 @@
 import React from 'react';
-import {TransTitle, useUIMeta, beautifyKey, extractValue, memo, sortScalarList} from '@ui-schema/ui-schema';
+import {beautifyKey} from '@ui-schema/system/Utils/beautify';
+import {TranslateTitle} from '@ui-schema/react/TranslateTitle';
+import {useUIMeta} from '@ui-schema/react/UIMeta';
+import {extractValue} from '@ui-schema/react/UIStore';
+import {memo} from '@ui-schema/react/Utils/memo';
+import {sortScalarList} from '@ui-schema/system/Utils/sortScalarList';
 import {List, Map} from 'immutable';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {ValidityHelperText} from '../../Component/LocaleHelperText';
 
 export const SelectMulti = extractValue(memo(({schema, storeKeys, showValidity, errors, value, onChange, required}) => {
     const {t} = useUIMeta();
@@ -22,7 +27,7 @@ export const SelectMulti = extractValue(memo(({schema, storeKeys, showValidity, 
         schema.get('default') ? List(schema.get('default')) : List([]);
 
     return <div className={classFormParent.join(' ')}>
-        <label><TransTitle schema={schema} storeKeys={storeKeys}/></label>
+        <label><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
         <select
             value={currentValue.toArray()}
             className={classForm.join(' ')}

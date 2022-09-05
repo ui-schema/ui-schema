@@ -1,5 +1,6 @@
 import { Map } from 'immutable'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchema } from '@ui-schema/json-schema/Definitions'
+import { ValueOrImmutableOrdered } from '@ui-schema/system/createMap'
 
 export type TranslatorContext = Map<string | number, any>
 // @todo: somehow allow adding further specifics, e.g. `React.ComponentType` in `/react`
@@ -8,7 +9,7 @@ export type translation = string | number | undefined | Function// | React.Compo
 export type Translator = (
     text: string,
     context?: TranslatorContext,
-    schema?: UISchemaMap
+    schema?: ValueOrImmutableOrdered<UISchema['t']>
 ) => translation
 
 // @todo: somehow allow adding further specifics, e.g. `React.ComponentType` in `/react`

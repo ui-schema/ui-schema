@@ -38,7 +38,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetsBindi
     {
         type,
         multiline, minRows, maxRows,
-        storeKeys, schema, value, onChange,
+        storeKeys, schemaKeys, schema, value, onChange,
         showValidity, valid, errors, required,
         style = {},
         onClick, onFocus, onBlur, onKeyUp, onKeyDown,
@@ -111,7 +111,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetsBindi
             onKeyUp={onKeyUp}
             onKeyDown={
                 onKeyDown ? onKeyDown :
-                    e => forbidInvalidNumber(e.nativeEvent, schema.get('type') as string)
+                    e => forbidInvalidNumber(e.nativeEvent, schema.get('type') as unknown as string)
             }
             onKeyPress={onKeyPress}
             style={style}
@@ -140,7 +140,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetsBindi
                 InfoRenderer && schema?.get('info') ?
                     <InfoRenderer
                         schema={schema} variant={'icon'} openAs={'modal'}
-                        storeKeys={storeKeys} valid={valid} errors={errors}
+                        storeKeys={storeKeys} schemaKeys={schemaKeys} valid={valid} errors={errors}
                     /> :
                     undefined
             }

@@ -35,6 +35,7 @@ export const FormGroupBase: React.ComponentType<WidgetProps<MuiWidgetsBinding> &
                 marginBottom: spacing(1),
             }}
         >
+            {/* @ts-ignore */}
             <WidgetRenderer {...props} schema={schema}/>
         </MuiFormGroup>
         {/*<FormHelperText>Be careful</FormHelperText>*/}

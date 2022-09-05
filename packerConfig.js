@@ -226,11 +226,11 @@ packer({
             root: path.resolve(__dirname, 'packages', 'uis-json-pointer'),
             entry: path.resolve(__dirname, 'packages', 'uis-json-pointer/src/'),
         },
-        /*uiSchemaPro: {
+        uiSchemaPro: {
             name: '@ui-schema/pro',
             root: path.resolve(__dirname, 'packages', 'uis-pro'),
             entry: path.resolve(__dirname, 'packages', 'uis-pro/src/'),
-        },*/
+        },
         uiSchemaDictionary: {
             name: '@ui-schema/dictionary',
             root: path.resolve(__dirname, 'packages', 'dictionary'),
@@ -243,7 +243,7 @@ packer({
             entry: path.resolve(__dirname, 'packages', 'ds-material/src/'),
             babelTargets: legacyBabelTargets,
         },
-        /*dsBootstrap: {
+        dsBootstrap: {
             name: '@ui-schema/ds-bootstrap',
             root: path.resolve(__dirname, 'packages', 'ds-bootstrap'),
             entry: path.resolve(__dirname, 'packages', 'ds-bootstrap/src/'),
@@ -273,7 +273,7 @@ packer({
             name: '@ui-schema/material-dnd',
             root: path.resolve(__dirname, 'packages', 'material-dnd'),
             entry: path.resolve(__dirname, 'packages', 'material-dnd/src/'),
-        },*/
+        },
     },
 }, __dirname, {
     afterEsModules: (packages, pathBuild, isServing) => {

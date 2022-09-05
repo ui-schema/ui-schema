@@ -1,5 +1,4 @@
 export * from './beautify'
-export * from './createMap'
 export * from './getSchema'
 export * from './isEqual'
 export * from './isEqualObject'

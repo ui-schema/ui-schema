@@ -23,7 +23,7 @@ import { ButtonProps } from '@mui/material/Button'
 export type SimpleListItemProps = Pick<WidgetProps, 'schemaKeys' | 'showValidity' | 'schema' | 'storeKeys' | 'required'> & {
     notDeletable?: boolean
     readOnly?: boolean
-    index?: number
+    index: number
     btnSize?: IconButtonProps['size']
 }
 
@@ -33,7 +33,7 @@ export const SimpleListItemBase: React.FC<SimpleListItemProps & Pick<WithValue, 
         readOnly, required, onChange, index, btnSize,
     },
 ) => {
-    return <Grid key={index} item xs={12} style={{display: 'flex'}}>
+    return <Grid item xs={12} style={{display: 'flex'}}>
         <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
             <WidgetEngine
                 showValidity={showValidity} noGrid
@@ -94,7 +94,7 @@ export const SimpleListInner: React.FC<WidgetProps<MuiWidgetsBinding & { InfoRen
                 <Grid item xs={12}>
                     <InfoRenderer
                         schema={schema} variant={'preview'} openAs={'embed'}
-                        storeKeys={storeKeys} valid={valid} errors={errors}
+                        storeKeys={storeKeys} schemaKeys={schemaKeys} valid={valid} errors={errors}
                     />
                 </Grid> :
                 undefined}

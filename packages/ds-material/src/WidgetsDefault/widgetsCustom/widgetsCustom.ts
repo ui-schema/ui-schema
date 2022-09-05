@@ -11,19 +11,20 @@ import { CardRenderer } from '@ui-schema/ds-material/Widgets/Card'
 import { FormGroup } from '@ui-schema/ds-material/Widgets/FormGroup'
 import { LabelBox } from '@ui-schema/ds-material/Widgets/LabelBox'
 import { MuiWidgetsBindingCustom } from '@ui-schema/ds-material/WidgetsBinding'
+import { WidgetType } from '@ui-schema/react/Widgets'
 
 export const widgetsCustom = <C extends {} = {}>(): MuiWidgetsBindingCustom<C> => {
     return {
         Accordions: AccordionsRenderer,
         Text: TextRenderer,
-        StringIcon: StringIconRenderer,
-        TextIcon: TextIconRenderer,
-        NumberIcon: NumberIconRenderer,
+        StringIcon: StringIconRenderer as WidgetType<C>,
+        TextIcon: TextIconRenderer as WidgetType<C>,
+        NumberIcon: NumberIconRenderer as WidgetType<C>,
         NumberSlider: NumberSlider,
-        SimpleList: SimpleList,
+        SimpleList: SimpleList as WidgetType<C>,
         GenericList: GenericList,
-        OptionsCheck: OptionsCheck,
-        OptionsRadio: OptionsRadio,
+        OptionsCheck: OptionsCheck as WidgetType<C>,
+        OptionsRadio: OptionsRadio as WidgetType<C>,
         Select: Select,
         SelectMulti: SelectMulti,
         Card: CardRenderer,

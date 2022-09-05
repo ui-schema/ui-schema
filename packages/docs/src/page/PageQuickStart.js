@@ -181,7 +181,7 @@ import {
     createEmptyStore, createStore, // for initial data-store creation
     createMap, createOrderedMap,   // for deep immutables
     storeUpdater,                  // for on change handling
-    PluginStack, applyPluginStack, // for creating custom positioned widgets
+    PluginStack, applyWidgetEngine, // for creating custom positioned widgets
     ObjectGroup,                   // for handling schema level "type-object"
 } from "@ui-schema/ui-schema";
 
@@ -240,7 +240,7 @@ import { UIStoreProvider, createEmptyStore, createStore } from '@ui-schema/ui-sc
 import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater';
 
 // util for \`PluginStack\` rendering
-import { injectPluginStack } from '@ui-schema/ui-schema/applyPluginStack';
+import { injectWidgetEngine } from '@ui-schema/ui-schema/applyWidgetEngine';
 
 // for validity checking
 import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter';
@@ -300,7 +300,7 @@ const schema = createOrderedMap({
 const values = {};
 ${render === 'automatic' ? `
 // wire up the grid container component with the render engine:
-const GridStack = injectPluginStack(GridContainer)
+const GridStack = injectWidgetEngine(GridContainer)
 ` : ''}
 export const Generator = () => {
     // Create a state with the data, transforming into immutable on first mount
@@ -384,7 +384,7 @@ We tell the editor also to display validity from start on.
                         <Grid item xs={12}>
                             <Markdown content source={`
 \`\`\`jsx
-const GridStack = injectPluginStack(GridContainer)
+const GridStack = injectWidgetEngine(GridContainer)
 
 export const Generator = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(values)));
@@ -477,9 +477,9 @@ It is recommended to nest \`type=object\` schemas for best and easiest condition
 \`\`\`jsx
 import {StringRenderer} from '@ui-schema/${ds === 'mui' ? 'ds-material' : 'ds-bootstrap'}/Widgets/TextField'
 
-// using applyPluginStack, this widget is fully typed
+// using applyWidgetEngine, this widget is fully typed
 // with the actual props of the widget component StringRenderer
-const WidgetTextField = applyPluginStack(StringRenderer)
+const WidgetTextField = applyWidgetEngine(StringRenderer)
 
 // custom group component, needed to also validate the root level
 // this one works for objects
@@ -502,19 +502,19 @@ let CustomGroup: React.ComponentType<WidgetProps> = (props) => {
 
         <PluginStack
             storeKeys={storeKeys.push('comment') as StoreKeys}
-            schema={schemaLevel.getIn(['properties', 'comment']) as unknown as StoreSchemaType}
+            schema={schemaLevel.getIn(['properties', 'comment']) as unknown as UISchemaMap}
             parentSchema={schemaLevel}
         />
 
         <PluginStack
             storeKeys={storeKeys.push('accept_privacy') as StoreKeys}
-            schema={schemaLevel.getIn(['properties', 'accept_privacy']) as unknown as StoreSchemaType}
+            schema={schemaLevel.getIn(['properties', 'accept_privacy']) as unknown as UISchemaMap}
             parentSchema={schemaLevel}
         />
     </Grid>
 }
 // wiring this component
-CustomGroup = applyPluginStack(CustomGroup)
+CustomGroup = applyWidgetEngine(CustomGroup)
 
 export const Generator = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(values)));

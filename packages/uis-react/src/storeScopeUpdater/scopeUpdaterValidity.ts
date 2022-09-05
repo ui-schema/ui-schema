@@ -9,6 +9,7 @@ export const scopeUpdaterValidity: ScopeOnChangeHandler = (store, storeKeys, new
     }
     storeKeys = storeKeys.map(k => k?.toString()) as List<string>
     if (typeof newValue === 'undefined') {
+        // @ts-ignore
         store = store.deleteIn(prependKey(storeKeys.push('__valid'), 'validity'))
     } else {
         store = updateStoreScope(

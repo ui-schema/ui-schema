@@ -1,9 +1,9 @@
 import React from 'react'
 import { useUID } from 'react-uid'
 import clsx from 'clsx'
-import { TransTitle } from '@ui-schema/ui-schema/Translate'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
-import { EditorJS } from '@ui-schema/material-editorjs/EditorJS/EditorJS'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { EditorJS } from '@ui-schema/material-editorjs/EditorJS'
 import FormControl from '@mui/material/FormControl'
 import Box from '@mui/material/Box'
 import InputLabel from '@mui/material/InputLabel'
@@ -67,6 +67,10 @@ export const EditorJSWidget = (
     const dense = schema.getIn(['view', 'dense']) as boolean
     const theme = useTheme()
     const styles = useEditorStyles(theme, {dense})
+    const onFocus = React.useCallback(() => setFocused(true), [])
+    const onBlur = React.useCallback(() => setFocused(false), [])
+    const onReady = React.useCallback(() => setReady(true), [])
+    const onEmptyChange = React.useCallback((e) => setEmpty(e), [])
 
     return <FormControl sx={styles.wrapper}>
         {!hideTitle && !schema.getIn(['view', 'hideTitle']) ?
@@ -75,7 +79,7 @@ export const EditorJSWidget = (
                 margin={dense ? 'dense' : undefined}
                 error={!valid}
             >
-                <TransTitle schema={schema} storeKeys={storeKeys}/>
+                <TranslateTitle schema={schema} storeKeys={storeKeys}/>
             </InputLabel> : null}
 
         <Box
@@ -88,10 +92,10 @@ export const EditorJSWidget = (
             <EditorJS
                 uid={uid}
                 ready={ready}
-                onFocus={() => setFocused(true)}
-                onBlur={() => setFocused(false)}
-                onReady={() => setReady(true)}
-                onEmptyChange={(e) => setEmpty(e)}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                onReady={onReady}
+                onEmptyChange={onEmptyChange}
                 storeKeys={storeKeys}
                 tools={tools}
                 required={Boolean(schema.get('deleteOnEmpty') || required)}

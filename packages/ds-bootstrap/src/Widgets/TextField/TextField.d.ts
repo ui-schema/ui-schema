@@ -1,5 +1,5 @@
 import React from 'react'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { WidgetProps } from '@ui-schema/react/Widgets'
 
 export interface StringRendererProps extends WidgetProps {
     multiline?: boolean

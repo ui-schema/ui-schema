@@ -2,9 +2,8 @@ import { OrderedMap, List, Map } from 'immutable'
 import {
     validateMinMax, minMaxValidator, ERROR_MAX_LENGTH, ERROR_MIN_LENGTH,
 } from '@ui-schema/json-schema/Validators/MinMaxValidator'
-import { createMap, createOrderedMap } from '@ui-schema/ui-schema/Utils'
-import { JsonSchema } from '@ui-schema/json-schema/JsonSchema'
-import { UISchema } from '@ui-schema/ui-schema/UISchema'
+import { createMap, createOrderedMap } from '@ui-schema/system/createMap'
+import { UISchema, JsonSchema } from '@ui-schema/json-schema/Definitions'
 import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 
 describe('validateMinMax', () => {

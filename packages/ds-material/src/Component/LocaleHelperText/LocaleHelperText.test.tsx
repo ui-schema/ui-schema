@@ -8,9 +8,9 @@ import { render } from '@testing-library/react'
 import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
 import { createMap, createOrderedMap } from '@ui-schema/system/createMap'
 import { ValidityHelperText } from './LocaleHelperText'
-import { createValidatorErrors } from '@ui-schema/ui-schema'
 import { Map } from 'immutable'
 import { MockSchemaMetaProvider } from '../../../tests/MockSchemaProvider.mock'
+import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 
@@ -44,7 +44,7 @@ describe('LocaleHelperText', () => {
             <MockSchemaMetaProvider>
                 {/* @ts-ignore */}
                 <ValidityHelperText
-                    schema={createOrderedMap({t: 'browser'})}
+                    schema={createOrderedMap({tBy: 'browser'})}
                     browserError={<span>browser-error</span>}
                 />
             </MockSchemaMetaProvider>

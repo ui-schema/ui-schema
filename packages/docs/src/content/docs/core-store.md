@@ -91,7 +91,7 @@ const Comp = ({storeKeys, ...props}) => {
 
 ```js
 import React from "react";
-import {memo} from "@ui-schema/ui-schema/Utils/memo";
+import {memo} from "@ui-schema/react/Utils/memo";
 import {extractValue} from "@ui-schema/ui-schema/UIStore";
 
 // `extractValue` uses `storeKeys` to get the `value`/`internalValue` from the store
@@ -344,7 +344,7 @@ Should be used for seldom-changing-values, e.g. is used for the `doNotDefault` c
 <PluginStack<DefaultHandlerProps>
     showValidity={showValidity}
     storeKeys={storeKeys.push('city') as StoreKeys}
-    schema={schema.getIn(['properties', 'city']) as unknown as StoreSchemaType}
+    schema={schema.getIn(['properties', 'city']) as unknown as UISchemaMap}
     parentSchema={schema}
     // possible also to overwrite:
     doNotDefault={false}

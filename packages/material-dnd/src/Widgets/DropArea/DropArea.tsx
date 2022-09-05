@@ -1,6 +1,11 @@
 import React from 'react'
-import { memo, Trans, TransTitle, UIStoreActionListItemAddWithValue, UIStoreActionScoped, WidgetProps, WidgetsBindingFactory, WithOnChange } from '@ui-schema/ui-schema'
-import { AccessTooltipIcon } from '@ui-schema/ds-material'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { WithOnChange } from '@ui-schema/react/UIStore'
+import { Translate } from '@ui-schema/react/Translate'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { UIStoreActionListItemAddWithValue, UIStoreActionScoped } from '@ui-schema/react/UIStoreActions'
+import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
 import IconButton from '@mui/material/IconButton'
 import Add from '@mui/icons-material/Add'
 import Box from '@mui/material/Box'
@@ -11,7 +16,7 @@ import { genId } from '@ui-schema/kit-dnd'
 import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd/DragDropBlock'
 import { DndBlocksRenderer } from '@ui-schema/material-dnd/DndBlocksRenderer'
 import { DndBlock } from '@ui-schema/material-dnd/DragDropBlockProvider'
-import { AreaRenderer } from '@ui-schema/material-dnd/WidgetsBase/AreaRenderer/AreaRenderer'
+import { AreaRenderer } from '@ui-schema/material-dnd/WidgetsBase/AreaRenderer'
 
 export const DropAreaBase = (
     {
@@ -28,13 +33,14 @@ export const DropAreaBase = (
     const Selector = widgets.DndBlockSelector
 
     return <>
-        {schema.getIn(['view', 'showTitle']) ? <Typography
-            variant={(schema.getIn(['view', 'titleVariant']) as TypographyProps['variant']) || 'h5'}
-            component={(schema.getIn(['view', 'titleComp']) as React.ElementType) || 'p'}
-            gutterBottom
-        >
-            <TransTitle schema={schema} storeKeys={storeKeys}/>
-        </Typography> : null}
+        {schema.getIn(['view', 'showTitle']) ?
+            <Typography
+                variant={(schema.getIn(['view', 'titleVariant']) as TypographyProps['variant']) || 'h5'}
+                component={(schema.getIn(['view', 'titleComp']) as React.ElementType) || 'p'}
+                gutterBottom
+            >
+                <TranslateTitle schema={schema} storeKeys={storeKeys}/>
+            </Typography> : null}
 
         <DndBlocksRenderer
             listSchema={schema}
@@ -66,7 +72,7 @@ export const DropAreaBase = (
                     onClick={() => setShowSelector(o => !o)}
                     size={btnSize as 'small' | 'medium'}
                 >
-                    <AccessTooltipIcon title={<Trans text={'labels.add-item'}/>}>
+                    <AccessTooltipIcon title={<Translate text={'labels.add-item'}/>}>
                         <Add fontSize={'inherit'}/>
                     </AccessTooltipIcon>
                 </IconButton> : null}

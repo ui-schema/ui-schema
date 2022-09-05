@@ -1,4 +1,4 @@
-import { createMap } from '@ui-schema/ui-schema'
+import { createMap } from '@ui-schema/system/createMap'
 import { getGridClasses } from '@ui-schema/ds-bootstrap/Grid'
 
 describe('getGridClasses', () => {

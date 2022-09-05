@@ -1,4 +1,4 @@
-import {createOrderedMap} from '@ui-schema/ui-schema';
+import {createOrderedMap} from '@ui-schema/system/createMap';
 
 const schemaDatePickers = createOrderedMap({
     type: 'object',

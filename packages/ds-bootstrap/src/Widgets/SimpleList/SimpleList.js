@@ -1,7 +1,10 @@
 import React from 'react';
-import {TransTitle, extractValue, memo, PluginStack} from '@ui-schema/ui-schema';
+import {TranslateTitle} from '@ui-schema/react/TranslateTitle';
+import {memo} from '@ui-schema/react/Utils/memo';
+import {extractValue} from '@ui-schema/react/UIStore';
+import {WidgetEngine} from '@ui-schema/react/WidgetEngine';
 import {List} from 'immutable';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {ValidityHelperText} from '../../Component/LocaleHelperText';
 import {IconPlus, IconMinus} from '@ui-schema/ds-bootstrap/Component/Icons/Icons';
 
 const SimpleList = extractValue(memo(({
@@ -21,13 +24,13 @@ const SimpleList = extractValue(memo(({
     }
 
     return <React.Fragment>
-        <TransTitle schema={schema} storeKeys={storeKeys}/>
+        <TranslateTitle schema={schema} storeKeys={storeKeys}/>
         <div>
             {value ? value.map((val, i) =>
                 <div
                     key={i}
                     className={classFormGroup.join(' ')}>
-                    <PluginStack
+                    <WidgetEngine
                         className={classFormControl.join(' ')}
                         showValidity={showValidity}
                         storeKeys={storeKeys.push(i)}

@@ -8,9 +8,9 @@ import { render } from '@testing-library/react'
 import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { List } from 'immutable'
-import { createValidatorErrors } from '@ui-schema/ui-schema'
 import { StringRendererCell } from './TextFieldCell'
 import { MockSchemaMetaProvider } from '../../../tests/MockSchemaProvider.mock'
+import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 

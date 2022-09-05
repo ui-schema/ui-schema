@@ -4,20 +4,22 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import useTheme from '@mui/material/styles/useTheme';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import {createOrderedMap, injectPluginStack, createEmptyStore, createStore, storeUpdater, UIMetaProvider, useUIMeta, fromJSOrdered} from '@ui-schema/ui-schema';
-import {isInvalid} from '@ui-schema/ui-schema/ValidityReporter';
-import {UIStoreProvider} from '@ui-schema/ui-schema/UIStore';
+import {isInvalid} from '@ui-schema/react/ValidityReporter';
+import {createEmptyStore, createStore, UIStoreProvider} from '@ui-schema/react/UIStore';
 import {RichCodeEditor} from '../RichCodeEditor';
 // import LuxonAdapter from '@date-io/luxon';
 // import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import {KitDndProvider, useOnIntent} from '@ui-schema/kit-dnd';
 import {useOnDirectedMove} from '@ui-schema/material-dnd/useOnDirectedMove';
-import {GridContainer} from '@ui-schema/ds-material';
+import {GridContainer} from '@ui-schema/ds-material/GridContainer';
 import {
     NumberRendererRead, StringRendererRead, TextRendererRead,
     WidgetBooleanRead, WidgetChipsRead, WidgetOptionsRead,
 } from '@ui-schema/ds-material/WidgetsRead';
-import {List, OrderedMap} from 'immutable';
+import {createOrdered, createOrderedMap} from '@ui-schema/system/createMap';
+import {injectWidgetEngine} from '@ui-schema/react/applyWidgetEngine';
+import {UIMetaProvider, useUIMeta} from '@ui-schema/react/UIMeta';
+import {storeUpdater} from '@ui-schema/react/storeUpdater';
 
 const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, richIde, renderChange, theme, maxLines, enableShowAll}) => {
     return <RichCodeEditor
@@ -54,7 +56,7 @@ const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme, maxLi
     />
 };
 
-const GridStack = injectPluginStack(GridContainer)
+const GridStack = injectWidgetEngine(GridContainer)
 
 const DemoUIGenerator = (
     {
@@ -89,9 +91,7 @@ const DemoUIGenerator = (
         setSchema(() => schema);
         setStore(oldStore => {
             const newStore = data ?
-                createStore(
-                    Array.isArray(data) ? List(fromJSOrdered(data)) : OrderedMap(fromJSOrdered(data)),
-                ) :
+                createStore(createOrdered(data)) :
                 createEmptyStore(schema.get('type'))
             if(newStore.values.equals && newStore.values.equals(oldStore?.values)) {
                 // only change the store, when the values have really changed - otherwise it could overwrite the already changed validity
@@ -192,14 +192,15 @@ const DemoUIGenerator = (
                 >Send</Button> : null}
 
         {showDebugger ? <Box style={{display: 'flex', flexWrap: 'wrap', margin: '12px 0 24px 0'}}>
-            {split ? <DebugSchemaEditor
-                schema={schema} setSchema={setSchema}
-                setJsonError={setJsonError} richIde
-                enableShowAll
-                split={split}
-                id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
-                width={split && isMd ? '50%' : '100%'}
-            /> : null}
+            {split ?
+                <DebugSchemaEditor
+                    schema={schema} setSchema={setSchema}
+                    setJsonError={setJsonError} richIde
+                    enableShowAll
+                    split={split}
+                    id={id} tabSize={tabSize} fontSize={fontSize} maxLines={maxLines}
+                    width={split && isMd ? '50%' : '100%'}
+                /> : null}
 
             <Box style={{width: split && isMd ? '50%' : '100%', paddingLeft: split ? 6 : 0}}>
                 <Typography component={'p'} variant={'overline'} style={{paddingLeft: 4}}>

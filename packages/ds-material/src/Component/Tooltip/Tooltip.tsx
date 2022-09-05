@@ -19,5 +19,5 @@ export const AccessTooltipIcon: React.FC<React.PropsWithChildren<{ title: string
             {children}
         </Tooltip>
 
-        <span style={visuallyHidden}>{title}</span>
+        <span style={visuallyHidden as React.CSSProperties}>{title}</span>
     </React.Fragment>

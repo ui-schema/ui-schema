@@ -38,6 +38,7 @@ List of renamed functions, components etc., most are also moved to other package
 - `pluginSimpleStack` to `schemaPlugins`
 - added `ObjectRenderer` as `type.object` / no longer as hard coded default
 - added `NoWidget` as `NoWidget` / no longer as hard coded default
+- browser error translation switched from `"t": "browser"` to `"tBy": "browser"`
 
 #### React Plugins
 

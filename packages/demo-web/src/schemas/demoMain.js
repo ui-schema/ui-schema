@@ -28,7 +28,7 @@ const schemaDemoMain = {
                         email: {
                             type: 'string',
                             format: 'email',
-                            t: 'browser',
+                            tBy: 'browser',
                             view: {
                                 sizeMd: 6,
                             },

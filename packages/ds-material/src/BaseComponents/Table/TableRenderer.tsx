@@ -12,8 +12,7 @@ import { List, Map, OrderedMap } from 'immutable'
 import MuiTable from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
-import { TableRendererBaseProps, TableRendererExtractorProps, TableRowProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
-import { TableContext } from '@ui-schema/ds-material/BaseComponents/Table/TableContext'
+import { TableRendererBaseProps, TableRendererExtractorProps, TableRowProps, TableContext } from '@ui-schema/ds-material/BaseComponents/Table'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
@@ -81,7 +80,7 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
                     {validItemSchema && listSize ?
                         Array(listSize).fill(null).map((_val: any, i) => {
                             const isVirtual = (i as number) < currentRowsStartVisible || (i as number) >= (currentRowsStartVisible + currentRows)
-                            return <WidgetEngine<TableRowProps>
+                            return <WidgetEngine<TableRowProps & WidgetProps>
                                 key={i}
                                 storeKeys={storeKeys.push(i as number)}
                                 schema={itemsSchema}

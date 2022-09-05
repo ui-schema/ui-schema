@@ -2,7 +2,6 @@ import { OrderedMap } from 'immutable'
 import { describe, test, expect } from '@jest/globals'
 import { validatePattern, patternValidator, ERROR_PATTERN } from '@ui-schema/json-schema/Validators/PatternValidator'
 import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
-import { SchemaTypesType } from '@ui-schema/ui-schema'
 
 describe('validatePattern', () => {
     test.each([

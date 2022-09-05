@@ -9,8 +9,8 @@ import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matche
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { StringRendererDebounced } from './TextFieldDebounced'
 import { List } from 'immutable'
-import { createValidatorErrors } from '@ui-schema/ui-schema'
 import { MockSchemaMetaProvider } from '../../../tests/MockSchemaProvider.mock'
+import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 

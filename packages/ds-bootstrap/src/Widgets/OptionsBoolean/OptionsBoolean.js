@@ -1,7 +1,7 @@
 import React from 'react';
 import {useUID} from 'react-uid';
-import {TransTitle} from '@ui-schema/ui-schema';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {TranslateTitle} from '@ui-schema/react/TranslateTitle';
+import {ValidityHelperText} from '../../Component/LocaleHelperText';
 
 const BoolRenderer = ({showValidity, required, errors, value, storeKeys, onChange, schema}) => {
     const id = useUID()
@@ -33,7 +33,7 @@ const BoolRenderer = ({showValidity, required, errors, value, storeKeys, onChang
                 })
             }
         />
-        <label className={classLabel.join(' ')} htmlFor={'uis-' + id}><TransTitle schema={schema} storeKeys={storeKeys}/>{(required ? ' *' : '')}</label>
+        <label className={classLabel.join(' ')} htmlFor={'uis-' + id}><TranslateTitle schema={schema} storeKeys={storeKeys}/>{(required ? ' *' : '')}</label>
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </div>;
 };

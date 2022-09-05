@@ -24,7 +24,7 @@ import { getUserCtrlKey, getUserPlatform } from '@control-ui/kit/Helper/getUserP
 import { SearchBox } from './SearchBox'
 import { LayoutDrawer } from './LayoutDrawer'
 
-const title = '0.4.x'
+const title = '0.5.x-alpha'
 export const CustomHeaderBase: React.ComponentType = () => {
     const {switchTheme} = useSwitchTheme()
     const {setOpen} = useSearch()

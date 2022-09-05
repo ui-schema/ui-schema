@@ -1,12 +1,13 @@
 import React from 'react'
 import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { translation, Translator, TranslatorContext } from '@ui-schema/system/Translator'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchema } from '@ui-schema/json-schema/Definitions'
+import { ValueOrImmutableOrdered } from '@ui-schema/system/createMap'
 
 export interface TranslateProps {
     text: string
     context?: TranslatorContext
-    schema?: UISchemaMap
+    schema?: ValueOrImmutableOrdered<UISchema['t']>
     fallback?: translation
     // overwrite the context `t` function
     t?: Translator

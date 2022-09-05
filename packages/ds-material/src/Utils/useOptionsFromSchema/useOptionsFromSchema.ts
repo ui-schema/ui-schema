@@ -24,15 +24,20 @@ export const useOptionsFromSchema = <V = string | number>(
 
     if (schema?.get('enum')) {
         enumValues = schema?.get('enum')
+        // @ts-ignore
         valueSchemas = enumValues?.map(enumVal => ({
             value: enumVal,
             schema: schema,
+            // @ts-ignore
             text: storeKeys.insert(0, 'widget').concat(List(['enum', getTranslatableEnum(enumVal)])).join('.'),
+            // @ts-ignore
             fallback: beautifyKey(getTranslatableEnum(enumVal), schema?.get('ttEnum') as tt) + '',
+            // @ts-ignore
             context: Map({'relative': List(['enum', getTranslatableEnum(enumVal)])}),
         }))
     } else if (schema?.get('oneOf')) {
         const oneOfValues = schema?.get('oneOf')
+        // @ts-ignore
         enumValues = oneOfValues.map(oneOf => oneOf.get('const'))
         valueSchemas = oneOfValues?.map(enumSchema => ({
             value: enumSchema.get('const'),

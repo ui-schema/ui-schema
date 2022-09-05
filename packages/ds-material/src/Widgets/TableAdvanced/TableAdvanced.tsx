@@ -14,7 +14,7 @@ export const TableAdvancedBase: React.ComponentType<WidgetProps<MuiWidgetsBindin
     const {storeKeys, schemaKeys} = props
     const readOnly = schema.get('readOnly') as boolean
     return <>
-        <WidgetEngine<{ readOnly?: boolean }>
+        <WidgetEngine<{ readOnly?: boolean } & WidgetProps>
             showValidity={showValidity}
             storeKeys={storeKeys.push('data')}
             schemaKeys={schemaKeys?.push('properties').push('data')}

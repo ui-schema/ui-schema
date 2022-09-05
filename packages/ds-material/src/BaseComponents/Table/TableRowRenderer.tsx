@@ -9,9 +9,8 @@ import { List, OrderedMap, Map } from 'immutable'
 import { Theme } from '@mui/material/styles/createTheme'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
-import { TableRowProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
-import { TableRowActionDelete } from '@ui-schema/ds-material/BaseComponents/Table/TableRowActionDelete'
-import { TableCellSchemaImmutable } from '@ui-schema/ds-material/Widgets/Table/TableSchema'
+import { TableRowProps, TableRowActionDelete } from '@ui-schema/ds-material/BaseComponents/Table'
+import { TableCellSchemaImmutable } from '@ui-schema/ds-material/Widgets/Table'
 import { useTheme } from '@mui/material/styles'
 import { SxProps } from '@mui/system'
 
@@ -79,7 +78,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                     {
                         schemaTypeToDistinct(item.get('type')) === 'object' ?
                             <GroupRenderer schema={item} storeKeys={storeKeys} schemaKeys={schemaKeys}>
-                                <WidgetEngineMemo<{ [k: string]: any }>
+                                <WidgetEngineMemo<{ [k: string]: any } & WidgetProps>
                                     showValidity={showValidity}
                                     storeKeys={storeKeys.push(j as StoreKeyType)}
                                     schemaKeys={cellSchemaKeyword ? schemaKeys?.push(cellSchemaKeyword).push(j as StoreKeyType) : undefined}
@@ -95,7 +94,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                                     // labelledBy={'uis-' + uid + '-tbl-' + j}
                                 />
                             </GroupRenderer> :
-                            <WidgetEngineMemo<{ [k: string]: any }>
+                            <WidgetEngineMemo<{ [k: string]: any } & WidgetProps>
                                 showValidity={showValidity}
                                 storeKeys={storeKeys.push(j as StoreKeyType)}
                                 schemaKeys={cellSchemaKeyword ? schemaKeys?.push(cellSchemaKeyword).push(j as StoreKeyType) : undefined}

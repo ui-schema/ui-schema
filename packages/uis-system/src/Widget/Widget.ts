@@ -12,7 +12,7 @@ export interface WidgetPayload {
     // the current schema level
     schema: UISchemaMap
     // `parentSchema` will only be `undefined` in the root level of a schema
-    parentSchema: UISchemaMap | undefined
+    parentSchema?: UISchemaMap | undefined
 
     // all indices of the current widget
     storeKeys: StoreKeys

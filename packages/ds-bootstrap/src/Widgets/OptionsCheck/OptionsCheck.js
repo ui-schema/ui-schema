@@ -1,8 +1,13 @@
 import React from 'react';
-import {TransTitle, Trans, beautifyKey, extractValue, memo, sortScalarList} from '@ui-schema/ui-schema';
+import {Translate} from '@ui-schema/react/Translate';
+import {TranslateTitle} from '@ui-schema/react/TranslateTitle';
+import {memo} from '@ui-schema/react/Utils/memo';
+import {extractValue} from '@ui-schema/react/UIStore';
+import {sortScalarList} from '@ui-schema/system/Utils/sortScalarList';
+import {beautifyKey} from '@ui-schema/system/Utils/beautify';
 import {List, Map} from 'immutable';
 import {useUID} from 'react-uid';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {ValidityHelperText} from '../../Component/LocaleHelperText';
 
 const CheckInput = ({checked, onChange, label, value, classForm, classLabel, classFormControl}) => {
     const uid = useUID();
@@ -52,7 +57,7 @@ const OptionsCheckValue = extractValue(memo(({oneOfValues, storeKeys, value, onC
                     required,
                 })
             }}
-            label={<Trans
+            label={<Translate
                 schema={oneOfSchema.get('t')}
                 text={oneOfSchema.get('title') || oneOfSchema.get('const')}
                 context={Map({'relative': List(['title'])})}
@@ -78,7 +83,7 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors, required}) => {
     }
 
     return <React.Fragment>
-        <TransTitle schema={schema} storeKeys={storeKeys}/>
+        <TranslateTitle schema={schema} storeKeys={storeKeys}/>
         <OptionsCheckValue
             required={required}
             type={schema.get('type')}

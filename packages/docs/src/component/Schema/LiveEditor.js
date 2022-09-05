@@ -24,11 +24,6 @@ import SpaceBar from '@mui/icons-material/SpaceBar';
 import RestorePage from '@mui/icons-material/RestorePage';
 import HorizontalSplit from '@mui/icons-material/HorizontalSplit';
 import VerticalSplit from '@mui/icons-material/VerticalSplit';
-import {
-    isInvalid, createOrderedMap,
-    createStore, storeUpdater, useUIStore,
-    UIStoreProvider, injectPluginStack,
-} from '@ui-schema/ui-schema';
 import {GridContainer} from '@ui-schema/ds-material/GridContainer';
 import {RichCodeEditor, themes} from '../RichCodeEditor';
 import {Markdown} from '../Markdown';
@@ -36,9 +31,13 @@ import PageNotFound from '../../page/PageNotFound';
 import {schemas} from '../../schemas/_list';
 // import LuxonAdapter from '@date-io/luxon';
 // import {MuiPickersUtilsProvider} from '@material-ui/pickers';
-import {createEmptyStore} from '@ui-schema/ui-schema/UIStore';
 import {KitDndProvider, useOnIntent} from '@ui-schema/kit-dnd';
 import {useOnDirectedMove} from '@ui-schema/material-dnd/useOnDirectedMove';
+import {createOrderedMap} from '@ui-schema/system/createMap';
+import {createEmptyStore, createStore, UIStoreProvider, useUIStore} from '@ui-schema/react/UIStore';
+import {injectWidgetEngine} from '@ui-schema/react/applyWidgetEngine';
+import {storeUpdater} from '@ui-schema/react/storeUpdater';
+import {isInvalid} from '@ui-schema/react/ValidityReporter';
 
 const IconInput = ({
                        verticalSplit, title,
@@ -413,12 +412,13 @@ const EditorSchemaInfoBase = (
     },
 ) => {
     return <>
-        {verticalSplit ? <SchemaChanger
-            toggleInfoBox={toggleInfoBox} showInfo={showInfo} hasInfo={!!schema}
-            schemas={schemas} style={{marginLeft: 4}}
-            setRenderChange={setRenderChange} verticalSplit={verticalSplit}
-            activeSchema={activeSchema} changeSchema={changeSchema}
-        /> : null}
+        {verticalSplit ?
+            <SchemaChanger
+                toggleInfoBox={toggleInfoBox} showInfo={showInfo} hasInfo={!!schema}
+                schemas={schemas} style={{marginLeft: 4}}
+                setRenderChange={setRenderChange} verticalSplit={verticalSplit}
+                activeSchema={activeSchema} changeSchema={changeSchema}
+            /> : null}
 
         {schema ?
             <div style={{
@@ -465,7 +465,7 @@ const EditorSchemaInfoBase = (
 }
 const EditorSchemaInfo = React.memo(EditorSchemaInfoBase)
 
-const GridStack = injectPluginStack(GridContainer)
+const GridStack = injectWidgetEngine(GridContainer)
 const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
     const history = useHistory();
     let initialVertical = initialLocalBoolean('live-editor-vertical', 800 < window.innerWidth);// Vertical by default for desktop

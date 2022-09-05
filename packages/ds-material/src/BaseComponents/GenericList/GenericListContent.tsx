@@ -49,7 +49,7 @@ export const GenericListContent = <P extends WidgetProps<MuiWidgetsBinding<{ Inf
     const info = InfoRenderer && schema?.get('info') ?
         <InfoRenderer
             schema={schema} variant={'preview'} openAs={'embed'}
-            storeKeys={storeKeys} valid={valid} errors={errors}
+            storeKeys={storeKeys} schemaKeys={schemaKeys} valid={valid} errors={errors}
         /> : null
 
     return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>

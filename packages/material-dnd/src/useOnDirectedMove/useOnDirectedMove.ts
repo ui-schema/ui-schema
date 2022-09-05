@@ -1,8 +1,9 @@
+import React from 'react'
 import { List, Map } from 'immutable'
 import { addNestKey, DndIntents, moveDraggedValue, onIntentFactory, onMovedType, PathKey } from '@ui-schema/kit-dnd'
-import React from 'react'
-import { onChangeHandler, StoreKeys } from '@ui-schema/ui-schema'
+import { onChangeHandler } from '@ui-schema/react/UIStore'
 import { DragDropSpec } from '@ui-schema/material-dnd/DragDropSpec'
+import { StoreKeys } from '@ui-schema/system/ValueStore'
 
 export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends DragDropSpec = DragDropSpec>(
     onIntent: onIntentFactory<C, S>,
@@ -113,7 +114,8 @@ export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends
                 }
                 // - switching within one array or between different relative roots
                 onChange({
-                    storeKeys: List() as StoreKeys,
+                    // @ts-ignore
+                    storeKeys: List<string>([]) as StoreKeys,
                     scopes: ['value', 'internal'],
                     // todo: move `schema`/`required` to action like `type: update`
                     type: 'update',
@@ -160,7 +162,8 @@ export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends
 
                 const setter = (doMerge: string | undefined) => {
                     onChange({
-                        storeKeys: List() as StoreKeys,
+                        // @ts-ignore
+                        storeKeys: List<string>([]) as StoreKeys,
                         scopes: ['value', 'internal'],
                         type: 'update',
                         // todo: move `schema`/`required` to action like `type: update`

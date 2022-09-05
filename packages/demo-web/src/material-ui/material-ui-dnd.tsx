@@ -7,30 +7,46 @@ import Label from '@mui/material/FormLabel'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import Dashboard from './layout/Dashboard'
-import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, widgets } from '@ui-schema/ds-material'
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
+import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
+import { createEmptyStore, createStore, UIStoreProvider, UIStoreType, WithScalarValue } from '@ui-schema/react/UIStore'
+import { storeUpdater } from '@ui-schema/react/storeUpdater'
+import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
+import { UIMetaProvider } from '@ui-schema/react/UIMeta'
+import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes } from '@ui-schema/ds-material/WidgetsBinding'
 import { browserT } from '../t'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
-import { isInvalid } from '@ui-schema/react/ValidityReporter/isInvalid'
+import { isInvalid } from '@ui-schema/react/ValidityReporter'
 import { schemaDragDropSortableList1, schemaDragDropSortableList2, schemaDragDropSortableList3, schemaDragDropSortableList4, schemaDragDropSortableList5 } from '../schemas/demoDragDrop'
 import { DndProvider } from 'react-dnd'
 import { MultiBackend } from 'react-dnd-multi-backend'
 import { HTML5toTouch } from 'rdndmb-html5-to-touch'
-import { createEmptyStore, createStore, injectWidgetEngine, SchemaTypesType, UISchemaMap, storeUpdater, UIMetaProvider, UIStoreProvider, UIStoreType, WidgetProps, WidgetsBindingFactory, WithScalarValue } from '@ui-schema/ui-schema'
 import { List } from 'immutable'
 import { KitDndProvider, useOnIntent } from '@ui-schema/kit-dnd'
 import { useOnDirectedMove } from '@ui-schema/material-dnd/useOnDirectedMove'
 import { DragDropSpec } from '@ui-schema/material-dnd/DragDropSpec'
-import { SortableList } from '@ui-schema/material-dnd/Widgets/SortableList/SortableList'
-import { GridContainer } from '@ui-schema/ds-material/GridContainer'
+import { SortableList } from '@ui-schema/material-dnd/Widgets/SortableList'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
+import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
 
 type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
     SortableList: React.ComponentType<WidgetProps<CustomWidgetsBinding> & WithScalarValue>
 }>
-const customWidgets: CustomWidgetsBinding = {...widgets} as CustomWidgetsBinding
-customWidgets.custom = {
-    ...widgets.custom,
-    SortableList: SortableList,
-}
+const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
+const customWidgets = WidgetsDefault.define<CustomWidgetsBinding, {}>({
+    widgetPlugins: widgetPlugins,
+    schemaPlugins: schemaPlugins,
+    types: {
+        ...WidgetsDefault.widgetsTypes(),
+    },
+    custom: {
+        ...WidgetsDefault.widgetsCustom(),
+        SortableList: SortableList,
+    },
+})
 
 const schemas: [UISchemaMap, boolean][] = [
     [schemaDragDropSortableList1 as UISchemaMap, true],
@@ -100,17 +116,24 @@ const SingleEditor = () => {
     </React.Fragment>
 }
 
-const Main = () => {
-    return <React.Fragment>
-        <SingleEditor/>
-    </React.Fragment>
-}
-
 // @ts-ignore
 // eslint-disable-next-line react/display-name
 export default () => <AppTheme>
     <UIMetaProvider widgets={customWidgets} t={browserT}>
-        <Dashboard main={Main}/>
+        <Dashboard>
+            <Grid item xs={12}>
+                <Paper
+                    sx={{
+                        p: 2,
+                        display: 'flex',
+                        overflow: 'auto',
+                        flexDirection: 'column',
+                    }}
+                >
+                    <SingleEditor/>
+                </Paper>
+            </Grid>
+        </Dashboard>
     </UIMetaProvider>
 </AppTheme>
 

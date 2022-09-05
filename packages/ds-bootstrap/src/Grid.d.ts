@@ -1,10 +1,10 @@
 import React from 'react'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
-import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
-export function SchemaGridItem(props: React.PropsWithChildren<{ schema: StoreSchemaType }>): React.ReactElement
+export function SchemaGridItem(props: React.PropsWithChildren<{ schema: UISchemaMap }>): React.ReactElement
 
-export function getGridClasses(schema: StoreSchemaType): string[]
+export function getGridClasses(schema: UISchemaMap): string[]
 
 export function RootRenderer<P>(props: P): React.ReactElement<P>
 

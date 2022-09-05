@@ -1,4 +1,4 @@
-import { tt } from "@ui-schema/system/Utils/beautify"
+import { tt } from '@ui-schema/system/Utils/beautify'
 
 export interface UISchema {
     title?: string
@@ -10,6 +10,7 @@ export interface UISchema {
             [key: string]: string | number
         }
     }
+    tBy?: 'browser' | string
     widget?: string
     api?: {
         endpoint: string

@@ -17,7 +17,7 @@ export interface ValidatorErrorsInterface {
     getError: (type: string) => ValidatorErrorsSingle
 }
 
-export type onErrorHandler = (errors: ValidatorErrors | undefined) => void
+export type onErrorHandler = (errors: ValidatorErrorsType | undefined) => void
 export type onErrors = (cb: onErrorHandler) => void
 
 export type ValidatorErrorsType = Record<ValidatorErrorsInterface> & ValidatorErrorsInterface

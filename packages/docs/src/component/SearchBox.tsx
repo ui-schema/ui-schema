@@ -25,7 +25,7 @@ import { DocsIndexValueModules, DocsIndexValuePackages, DocsIndexValuePages, Doc
 import { MatchMakerType, useSearchMatching } from '@control-ui/docs'
 import { SearchResultModule } from './SearchResultModule'
 import { SearchResultPage } from './SearchResultPage'
-import { useDebounceValue } from '@ui-schema/ui-schema'
+import { useDebounceValue } from '@ui-schema/react/Utils/useDebounceValue'
 
 export type CustomDocsIndexModules = DocsIndexValuesCombiner<DocsIndexValueModules & DocsIndexValuePackages>
 export type CustomDocsIndex = {

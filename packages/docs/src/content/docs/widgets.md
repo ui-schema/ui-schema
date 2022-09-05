@@ -10,7 +10,7 @@ Through the **modular approach** and easy definition of new widgets, the widget 
 
 ```typescript jsx
 // Typings of widgets:
-import { WidgetProps } from "@ui-schema/ui-schema/Widget"
+import { WidgetProps } from "@ui-schema/react/Widgets"
 ```
 
 ## Widget Composition
@@ -86,7 +86,7 @@ Example of a really simple text widget (in typescript):
 
 ```typescript jsx
 import React from 'react';
-import { TransTitle, WidgetProps } from '@ui-schema/ui-schema';
+import { TranslateTitle, WidgetProps } from '@ui-schema/ui-schema';
 
 const Widget = ({
                     value, storeKeys, onChange,
@@ -95,7 +95,7 @@ const Widget = ({
                     ...props
                 }: WidgetProps) => {
     return <>
-        <label><TransTitle schema={schema} storeKeys={storeKeys}/></label>
+        <label><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
 
         <input
             type={'text'}

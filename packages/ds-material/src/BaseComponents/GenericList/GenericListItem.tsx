@@ -10,6 +10,7 @@ import { List } from 'immutable'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
 import { GridSpacing } from '@mui/material/Grid/Grid'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { WidgetProps } from '@ui-schema/react/Widgets'
 
 export interface GenericListItemSharedProps {
     index: number
@@ -65,7 +66,7 @@ export const GenericListItemBase = (
                         <Grid item style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
                             <Grid container spacing={2}>
                                 {(itemsSchema.get('items') as UISchemaMap)?.map((item, j) =>
-                                    <WidgetEngine<{ schemaKeys: StoreKeys | undefined }>
+                                    <WidgetEngine<{ schemaKeys: StoreKeys | undefined } & WidgetProps>
                                         key={j}
                                         showValidity={showValidity}
                                         schemaKeys={schemaKeys?.push('items').push('items').push(j)}
@@ -75,7 +76,7 @@ export const GenericListItemBase = (
                                     />).valueSeq()}
                             </Grid>
                         </Grid> :
-                        <WidgetEngine<{ schemaKeys: StoreKeys | undefined }>
+                        <WidgetEngine<{ schemaKeys: StoreKeys | undefined } & WidgetProps>
                             showValidity={showValidity}
                             schema={itemsSchema} parentSchema={schema}
                             storeKeys={ownKeys}

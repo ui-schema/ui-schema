@@ -8,7 +8,7 @@ import {
     toBeInTheDocument,
     toHaveClass,
 } from '@testing-library/jest-dom/matchers'
-import {Trans} from '../src/Translate/Trans/Trans';
+import {Translate} from '../src/Translate/Translate/Translate';
 import {createMap} from '../src/Utils/createMap';
 import {makeTranslator} from '../src/Translate/makeTranslator';
 import {Map} from 'immutable';
@@ -27,10 +27,10 @@ const dicEN = createMap({
 
 const tEN = makeTranslator(dicEN, 'en');
 
-describe('Translate\\Trans', () => {
+describe('Translate\\Translate', () => {
     it('Text', async () => {
         const {findByText, queryByText} = render(
-            <Trans text={'titles.simple-number'} t={tEN}/>,
+            <Translate text={'titles.simple-number'} t={tEN}/>,
         );
         //expect(container.firstChild).toMatchSnapshot();
         const label = await findByText('Simple Number');
@@ -40,7 +40,7 @@ describe('Translate\\Trans', () => {
 
     test('Function', async () => {
         const {findByText, queryByText} = render(
-            <Trans text={'error.' + ERROR_MIN_LENGTH} context={Map({min: 2})} t={tEN}/>,
+            <Translate text={'error.' + ERROR_MIN_LENGTH} context={Map({min: 2})} t={tEN}/>,
         );
         //expect(container.firstChild).toMatchSnapshot();
         const label = await findByText('Min. Length: 2');

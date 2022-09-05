@@ -1,5 +1,5 @@
-import { pluginOptions } from '@ui-schema/material-slate/Slate/pluginOptions'
 import React from 'react'
+import { pluginOptions } from '@ui-schema/material-slate/Slate/pluginOptions'
 import { ElementMapping } from '@ui-schema/material-slate/SlateElements/ElementMapper'
 import { mappingAlign } from '@ui-schema/material-slate/SlateElements/mappingAlign'
 

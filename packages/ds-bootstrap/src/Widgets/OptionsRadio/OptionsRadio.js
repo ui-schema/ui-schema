@@ -1,8 +1,10 @@
 import React from 'react';
-import {TransTitle, Trans, beautifyKey} from '@ui-schema/ui-schema';
+import {beautifyKey} from '@ui-schema/system/Utils/beautify';
+import {Translate} from '@ui-schema/react/Translate';
+import {TranslateTitle} from '@ui-schema/react/TranslateTitle';
 import {useUID} from 'react-uid';
 import {List, Map} from 'immutable';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {ValidityHelperText} from '../../Component/LocaleHelperText';
 
 const RadioInput = ({classForm, enumName, classLabel, required, classFormControl, value, onChange, storeKeys, label, schema}) => {
     const uid = useUID();
@@ -51,7 +53,7 @@ const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, require
     }
 
     return <React.Fragment>
-        <label><TransTitle schema={schema} storeKeys={storeKeys}/></label>
+        <label><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
         {enumVal ? enumVal.map((enum_name) => {
             return <RadioInput
                 key={enum_name}
@@ -64,7 +66,7 @@ const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, require
                 onChange={onChange}
                 storeKeys={storeKeys}
                 schema={schema}
-                label={<Trans
+                label={<Translate
                     schema={schema.get('t')}
                     text={storeKeys.insert(0, 'widget').concat(List(['enum', enum_name])).join('.')}
                     context={Map({'relative': List(['enum', enum_name])})}

@@ -13,7 +13,7 @@ export const mergeSchema = (
             aSchema = aSchema.update(
                 'properties', properties => {
                     properties = properties.merge(
-                        bSchema.get('properties').map(
+                        bSchema.get('properties')?.map(
                             (prop, key) =>
                                 properties.get(key) ? mergeSchema(properties.get(key), prop) : prop
                             ,
@@ -30,7 +30,7 @@ export const mergeSchema = (
 
     if (bSchema.get('required')) {
         if (aSchema.get('required')) {
-            aSchema = aSchema.set('required', aSchema.get('required').concat(bSchema.get('required')))
+            aSchema = aSchema.set('required', aSchema.get('required')?.concat(bSchema.get('required')))
         } else {
             aSchema = aSchema.set('required', bSchema.get('required'))
         }
@@ -43,7 +43,7 @@ export const mergeSchema = (
     if (bSchema.get('oneOf')) {
         aSchema = aSchema.set('oneOf',
             aSchema.get('oneOf') ?
-                aSchema.get('oneOf').concat(bSchema.get('oneOf')) :
+                aSchema.get('oneOf')?.concat(bSchema.get('oneOf')) :
                 bSchema.get('oneOf'),
         )
     }

@@ -3,7 +3,7 @@ import { getNextPlugin, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { useSchemaCombine } from '@ui-schema/react-json-schema/CombiningHandler'
 import { WithValue } from '@ui-schema/react/UIStore'
 
-export const CombiningHandler = <P extends WidgetPluginProps & Partial<WithValue>>(props: P): React.ReactElement => {
+export const CombiningHandler: React.FC<WidgetPluginProps & Partial<WithValue>> = (props) => {
     const {schema: baseSchema, value, currentPluginIndex} = props
     const schema = useSchemaCombine(baseSchema, value)
     const next = currentPluginIndex + 1

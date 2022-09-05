@@ -1,8 +1,8 @@
 import React from 'react'
-import makeStyles from "@mui/styles/makeStyles"
+import makeStyles from '@mui/styles/makeStyles'
 import { ClassNameMap } from '@mui/styles/withStyles'
 import { Theme } from '@mui/material/styles/createTheme'
-import { WidgetProps } from '@ui-schema/ui-schema'
+import { WidgetProps } from '@ui-schema/react/Widgets'
 import { ValidityHelperText } from '@ui-schema/ds-material'
 import { MarkdownLabel } from '@ui-schema/material-slate/EditorWrapper/MarkdownLabel'
 

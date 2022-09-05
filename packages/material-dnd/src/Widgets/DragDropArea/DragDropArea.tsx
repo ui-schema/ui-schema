@@ -1,6 +1,12 @@
 import React from 'react'
-import { memo, StoreKeys, Trans, TransTitle, UIStoreActionListItemAdd, UIStoreActionScoped, WidgetProps, WithOnChange } from '@ui-schema/ui-schema'
-import { AccessTooltipIcon, MuiWidgetsBinding } from '@ui-schema/ds-material'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { StoreKeys, WithOnChange } from '@ui-schema/react/UIStore'
+import { Translate } from '@ui-schema/react/Translate'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { UIStoreActionListItemAdd, UIStoreActionScoped } from '@ui-schema/react/UIStoreActions'
+import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import IconButton from '@mui/material/IconButton'
 import Add from '@mui/icons-material/Add'
 import Box from '@mui/material/Box'
@@ -38,7 +44,7 @@ export const DragDropAreaBase = (
             component={(schema.getIn(['view', 'titleComp']) as React.ElementType) || 'p'}
             gutterBottom
         >
-            <TransTitle schema={schema} storeKeys={storeKeys}/>
+            <TranslateTitle schema={schema} storeKeys={storeKeys}/>
         </Typography> : null}
 
         <DndBlocksRenderer
@@ -71,7 +77,7 @@ export const DragDropAreaBase = (
                     onClick={() => setShowSelector(o => !o)}
                     size={btnSize as 'small' | 'medium'}
                 >
-                    <AccessTooltipIcon title={<Trans text={'labels.add-item'}/>}>
+                    <AccessTooltipIcon title={<Translate text={'labels.add-item'}/>}>
                         <Add fontSize={'inherit'}/>
                     </AccessTooltipIcon>
                 </IconButton> : null}

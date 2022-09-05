@@ -7,7 +7,7 @@ import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
 import { Translate } from '@ui-schema/react/Translate'
 import { Map } from 'immutable'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
-import { GenericListItemSharedProps } from '@ui-schema/ds-material'
+import { GenericListItemSharedProps } from '@ui-schema/ds-material/BaseComponents/GenericList'
 
 export const GenericListItemPos = (
     {

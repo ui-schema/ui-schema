@@ -1,22 +1,30 @@
 import type { Config } from '@jest/types'
 
-const packages: string[] = ['ui-schema', 'uis-pro', 'uis-json-pointer', 'ds-bootstrap', 'ds-material', 'material-dnd', 'material-pickers', 'material-slate', 'kit-dnd']
+const packages: string[] = [
+    'uis-system', 'uis-react',
+    'uis-react-json-schema', 'uis-pro',
+    'uis-json-pointer', 'uis-json-schema',
+    'ds-bootstrap', 'ds-material',
+    'material-dnd', 'material-pickers', 'material-slate',
+    'kit-dnd',
+]
 
 const testMatchesLint: string[] = []
 
 packages.forEach(pkg => {
     testMatchesLint.push(...[
         '<rootDir>/' + pkg + '/src/**/*.(js|ts|tsx)',
-        '<rootDir>/' + pkg + '/tests/**/*.(test|spec|d).(js|ts|tsx)',
+        //'<rootDir>/' + pkg + '/tests/**/*.(test|spec|d).(js|ts|tsx)',
     ])
 })
 const base: Partial<Config.InitialOptions> = {
-    /*transformIgnorePatterns: [
+    transformIgnorePatterns: [
         'node_modules/?!(@ui-schema)',
-    ],*/
+    ],
     transform: {
         // '^.+\\.ts$': 'babel-jest',
         '^.+\\.ts$': 'ts-jest',
+        '^.+\\.tsx$': 'ts-jest',
     },
     /*extensionsToTreatAsEsm: ['.ts'],
     globals: {
@@ -26,11 +34,12 @@ const base: Partial<Config.InitialOptions> = {
     },*/
     moduleNameMapper: {
         '^(\\.{1,2}/.*)\\.js$': '$1',// todo: validate ESM testing (and JSDom/react compat.), somehow this mapper was all needed - no further ts-jest/babel adjustments
-        '^@ui-schema/ui-schema(.*)$': '<rootDir>/ui-schema/src$1',
+        '^@ui-schema/system(.*)$': '<rootDir>/uis-system/src$1',
+        '^@ui-schema/react-json-schema(.*)$': '<rootDir>/uis-react-json-schema/src$1',
+        '^@ui-schema/react(.*)$': '<rootDir>/uis-react/src$1',
         '^@ui-schema/pro(.*)$': '<rootDir>/uis-pro/src$1',
-        // '^@ui-schema/json-pointer(.*)': '<rootDir>/json-pointer/src$1',
         '^@ui-schema/json-pointer(.*)$': '<rootDir>/uis-json-pointer/src$1',
-        // '^@ui-schema/json-pointer(.*)': '<rootDir>/json-pointer/src/$1',
+        '^@ui-schema/json-schema(.*)$': '<rootDir>/uis-json-schema/src$1',
         '^@ui-schema/ds-bootstrap(.*)$': '<rootDir>/ds-bootstrap/src$1',
         '^@ui-schema/ds-material(.*)$': '<rootDir>/ds-material/src$1',
         '^@ui-schema/kit-dnd(.*)$': '<rootDir>/kit-dnd/src$1',
@@ -77,6 +86,14 @@ const config: Config.InitialOptions = {
             runner: 'jest-runner-eslint',
             ...base,
             testMatch: testMatchesLint,
+            testPathIgnorePatterns: [
+                // todo: enable linting test files again
+                '(.*.mock).(jsx?|tsx?|ts?|js?)$',
+                '(.*.test).(jsx?|tsx?|ts?|js?)$',
+                '(.*.spec).(jsx?|tsx?|ts?|js?)$',
+                // '*.mock.(jsx?|tsx?|ts?|js?)$',
+                // '*.test.(jsx?|tsx?|ts?|js?)$',
+            ],
         },
     ],
     coverageDirectory: '<rootDir>/../coverage',

@@ -24,7 +24,7 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetsBinding<
         type,
         multiline,
         minRows, maxRows,
-        storeKeys, schema, value, onChange,
+        storeKeys, schemaKeys, schema, value, onChange,
         showValidity, valid, errors, required,
         style,
         onClick, onFocus, onBlur, onKeyUp, onKeyDown,
@@ -62,7 +62,7 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetsBinding<
         InputProps['endAdornment'] = <InputAdornment position="end">
             <InfoRenderer
                 schema={schema} variant={'icon'} openAs={'modal'}
-                storeKeys={storeKeys} valid={valid} errors={errors}
+                storeKeys={storeKeys} schemaKeys={schemaKeys} valid={valid} errors={errors}
             />
         </InputAdornment>
     }
@@ -92,14 +92,14 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetsBinding<
             onKeyUp={onKeyUp}
             onKeyDown={
                 onKeyDown ? onKeyDown :
-                    e => forbidInvalidNumber(e.nativeEvent, schema.get('type') as string)
+                    e => forbidInvalidNumber(e.nativeEvent, schema.get('type') as unknown as string)
             }
             onKeyPress={onKeyPress}
             id={'uis-' + uid}
             style={style}
             onChange={(e) => {
                 const val = e.target.value
-                const schemaType = schema.get('type') as string
+                const schemaType = schema.get('type') as unknown as string
                 const newVal = convertStringToNumber(val, schemaType)
                 if (
                     schemaTypeIsNumeric(schemaType)

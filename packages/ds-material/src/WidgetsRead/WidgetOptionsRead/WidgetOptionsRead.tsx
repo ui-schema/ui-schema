@@ -11,7 +11,7 @@ import Box from '@mui/material/Box'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
 import Typography from '@mui/material/Typography'
 import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
-import { OptionValueSchema, useOptionsFromSchema } from '@ui-schema/ds-material'
+import { InfoRendererProps, OptionValueSchema, useOptionsFromSchema } from '@ui-schema/ds-material'
 
 const checkActive = (list: List<any>, name: string | undefined | number) => list && list.contains && typeof list.contains(name) !== 'undefined' ? list.contains(name) : false
 
@@ -75,9 +75,9 @@ export interface WidgetOptionsReadProps {
     style?: React.CSSProperties
 }
 
-export const WidgetOptionsRead: React.ComponentType<WidgetProps<MuiWidgetsBinding> & UIMetaReadContextType & WithScalarValue & WidgetOptionsReadProps> = (
+export const WidgetOptionsRead: React.ComponentType<WidgetProps<MuiWidgetsBinding & { InfoRenderer?: React.ComponentType<InfoRendererProps> }> & UIMetaReadContextType & WithScalarValue & WidgetOptionsReadProps> = (
     {
-        schema, storeKeys, showValidity,
+        schema, storeKeys, schemaKeys, showValidity,
         valid, errors, value,
         widgets,
         onClick, style,
@@ -100,6 +100,7 @@ export const WidgetOptionsRead: React.ComponentType<WidgetProps<MuiWidgetsBindin
             valid={valid}
             errors={errors}
             storeKeys={storeKeys}
+            schemaKeys={schemaKeys}
             schema={schema}
         />
 

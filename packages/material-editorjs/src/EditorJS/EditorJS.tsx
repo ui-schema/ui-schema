@@ -1,10 +1,12 @@
 import React from 'react'
 import ReactEditorJs from 'react-editor-js'
 import EditorJSType, { API, OutputData, EditorConfig } from '@editorjs/editorjs'
-import { StoreKeys, StoreSchemaType, WithValue } from '@ui-schema/ui-schema'
+import { WithValue } from '@ui-schema/react/UIStore'
+import { StoreKeys } from '@ui-schema/system/ValueStore'
 import { extractValue } from '@ui-schema/react/UIStore'
 import { List, Map, OrderedMap } from 'immutable'
 import { fromJSOrdered } from '@ui-schema/system/createMap'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 export interface EditorJSProps {
     uid: string
@@ -38,7 +40,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps & WithValue> = (
     const currentState = React.useRef<OrderedMap<any, any> | undefined>(undefined)
     const onChangeEditor = React.useCallback((_api: API, newData?: OutputData) => {
         const newValue = fromJSOrdered(newData) as OrderedMap<any, any>
-        if(!currentState.current?.get('blocks')?.equals(newValue?.get('blocks'))) {
+        if (!currentState.current?.get('blocks')?.equals(newValue?.get('blocks'))) {
             onChange({
                 storeKeys,
                 scopes: ['value', 'internal'],
@@ -50,7 +52,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps & WithValue> = (
                         internal: currentInternal.set('isEmpty', Boolean(!(currentState.current?.get('blocks')?.size > 0))),
                     }
                 },
-                schema: Map({type: 'object'}) as StoreSchemaType,
+                schema: Map({type: 'object'}) as UISchemaMap,
                 required,
             })
         }
@@ -59,7 +61,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps & WithValue> = (
     const isEmpty = internalValue.get('isEmpty') || !(value?.get('blocks')?.size > 0)
 
     React.useEffect(() => {
-        if(
+        if (
             // init only when ready and editor ref
             ready && editorRef.current &&
             (
@@ -71,7 +73,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps & WithValue> = (
             )
         ) {
             editorRef.current.clear()
-            if(value) {
+            if (value) {
                 currentState.current = value
                 editorRef.current.render(value.toJS() as any)
             } else {
@@ -86,7 +88,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps & WithValue> = (
                 updater: ({internal: currentInternal = Map()}) => ({
                     internal: currentInternal.set('isEmpty', Boolean(!(value?.get('blocks')?.size > 0))),
                 }),
-                schema: Map({type: 'object'}) as StoreSchemaType,
+                schema: Map({type: 'object'}) as UISchemaMap,
                 required,
             })
         }

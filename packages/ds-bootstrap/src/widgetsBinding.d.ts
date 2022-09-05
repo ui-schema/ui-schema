@@ -1,6 +1,5 @@
 import React from 'react'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
-import { WidgetsBindingFactory } from '@ui-schema/react/WidgetsBinding'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 
 export interface BtsWidgetBinding extends WidgetsBindingFactory {
     types: {

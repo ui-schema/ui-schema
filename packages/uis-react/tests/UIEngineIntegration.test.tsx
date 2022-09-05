@@ -11,20 +11,21 @@ import {
 import { List } from 'immutable'
 import { MockWidgets } from './MockSchemaProvider.mock'
 import { createStore, extractValue, UIStoreProvider, WithValue } from '@ui-schema/react/UIStore'
-import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
+import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import {
-    CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler,
-    ReferencingHandler, ExtractStorePlugin, ValidityReporter,
-    JsonSchema, TransTitle,
-    PluginSimpleStack, WidgetProps,
-} from '@ui-schema/ui-schema'
-import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta'
-import { validators } from '@ui-schema/json-schema/Validators'
-import { PluginStack, NextPluginRenderer } from '@ui-schema/ui-schema/PluginStack'
-import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter/isInvalid'
-import { relTranslator } from '@ui-schema/ui-schema/Translate/relT'
-import { injectPluginStack } from '@ui-schema/ui-schema/applyPluginStack'
+    CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ReferencingHandler,
+} from '@ui-schema/react-json-schema'
+import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
+import { SchemaPluginsAdapter } from '@ui-schema/react/SchemaPluginsAdapter'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { getValidators } from '@ui-schema/json-schema/getValidators'
+import { translateRelative } from '@ui-schema/system/TranslatorRelative'
+import { JsonSchema } from '@ui-schema/json-schema/Definitions'
+import { UIMetaProvider } from '@ui-schema/react/UIMeta'
+import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { NextPluginRenderer, WidgetEngine } from '@ui-schema/react/WidgetEngine'
 
 /**
  * This file serves as general integration test
@@ -48,21 +49,21 @@ widgets.widgetPlugins = [
     // plugin to have every widget in it's own div - to query against in tests
     (props) => <div><NextPluginRenderer {...props}/></div>,
     ReferencingHandler,
-    ExtractStorePlugin,
+    // ExtractStorePlugin,
     CombiningHandler,
     DefaultHandler,
     DependentHandler,
     ConditionalHandler,
-    PluginSimpleStack,
+    SchemaPluginsAdapter,
     ValidityReporter,
 ]
-widgets.pluginSimpleStack = validators
+widgets.schemaPlugins = getValidators()
 
 // eslint-disable-next-line react/display-name
 widgets.types.string = (props: WidgetProps): React.ReactElement => {
     return <>
         <span>string-renderer</span>
-        <span><TransTitle schema={props.schema} storeKeys={props.storeKeys}/></span>
+        <span><TranslateTitle schema={props.schema} storeKeys={props.storeKeys}/></span>
         {props.valid ? null : <span>string-with-error</span>}
         {props.errors.hasError() ? <span>{JSON.stringify(props.errors.errorsToJS())}</span> : null}
     </>
@@ -72,14 +73,14 @@ widgets.types.string = (props: WidgetProps): React.ReactElement => {
 widgets.types.array = extractValue((props: WidgetProps & WithValue): React.ReactElement => {
     return <>
         <span>array-renderer</span>
-        <span><TransTitle schema={props.schema} storeKeys={props.storeKeys}/></span>
+        <span><TranslateTitle schema={props.schema} storeKeys={props.storeKeys}/></span>
         {/* @ts-ignore */}
         {List.isList(props.value) ? props.value.map((val, i: number) =>
             <div key={i}>
                 <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
                     {null}
                     {/* @ts-ignore */}
-                    <PluginStack
+                    <WidgetEngine
                         showValidity={props.showValidity}
                         // @ts-ignore
                         schema={props.schema.get('items')} //parentSchema={schema}
@@ -93,7 +94,7 @@ widgets.types.array = extractValue((props: WidgetProps & WithValue): React.React
 
 // note: for DS which implement a grid system, this is the `GridContainer`/`GridStack` components
 const RootContainer = ({children}: PropsWithChildren<any>): React.ReactElement => <div className={'root-container'}>{children}</div>
-const RootStack = injectPluginStack(RootContainer)
+const RootStack = injectWidgetEngine(RootContainer)
 
 const TestUIRenderer = (props: {
     data?: {
@@ -208,7 +209,7 @@ const TestUIRenderer = (props: {
             demo_array2: ['demo_number'],
         },
         required: ['demo_number'],
-    } as JsonSchema))
+    } as unknown as JsonSchema))
 
     const onChange = React.useCallback((actions) => {
         setStore(storeUpdater(actions))
@@ -216,7 +217,7 @@ const TestUIRenderer = (props: {
     return <UIMetaProvider
         // @ts-ignore
         widgets={widgets}
-        t={props.notT ? relTranslator : (text: string) => text}
+        t={props.notT ? translateRelative : (text: string) => text}
     >
         <UIStoreProvider
             store={props.noStore ? undefined : store}

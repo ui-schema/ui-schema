@@ -8,7 +8,8 @@ import {SimpleList} from './Widgets/SimpleList';
 import {GroupRenderer} from './Grid';
 import {widgetPlugins} from './widgetPlugins';
 import {WidgetRenderer} from '@ui-schema/react/WidgetRenderer';
-import {validators} from '@ui-schema/json-schema/Validators/validators';
+import {getValidators} from '@ui-schema/json-schema/getValidators';
+import {ObjectRenderer} from '@ui-schema/react-json-schema/ObjectRenderer';
 
 const MyFallbackComponent = ({type, widget}) => (
     <div>
@@ -18,13 +19,15 @@ const MyFallbackComponent = ({type, widget}) => (
     </div>
 )
 
+const validators = getValidators()
 export const widgets = {
     ErrorFallback: MyFallbackComponent,
     GroupRenderer,
     WidgetRenderer,
     widgetPlugins,
-    pluginSimpleStack: validators,
+    schemaPlugins: validators,
     types: {
+        object: ObjectRenderer,
         string: StringRenderer,
         boolean: BoolRenderer,
         number: NumberRenderer,

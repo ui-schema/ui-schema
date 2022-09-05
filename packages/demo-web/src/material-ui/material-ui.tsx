@@ -13,11 +13,6 @@ import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
-// import {plugins, getCustomWidgets, getTypeWidgets, define} from '@ui-schema/ds-material/WidgetsDefault';
-// import {defineBinding} from '@ui-schema/ds-material/defineBinding';
-// import {getStandardPlugins} from '@ui-schema/ds-material/getStandardPlugins';
-// import {getCustomWidgets} from '@ui-schema/ds-material/getCustomWidgets';
-// import {getTypeWidgets} from '@ui-schema/ds-material/getTypeWidgets';
 import { createOrderedMap, createMap } from '@ui-schema/system/createMap'
 import { isInvalid } from '@ui-schema/react/ValidityReporter'
 import { createStore, createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'

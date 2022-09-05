@@ -1,5 +1,6 @@
-import React from "react";
-import {Trans, useUIMeta} from "@ui-schema/ui-schema";
+import React from 'react';
+import {Translate} from '@ui-schema/react/Translate';
+import {useUIMeta} from '@ui-schema/react/UIMeta';
 
 const Icon = ({onClick, label, iconName, btnSize}) => {
     const {t} = useUIMeta();
@@ -23,9 +24,9 @@ const Icon = ({onClick, label, iconName, btnSize}) => {
     }
 
     return <button
-        type="button" className={["btn", "btn-transparent"].join(' ')} style={{transform: "scale(" + btnScale + ", " + btnScale + ")"}}
+        type="button" className={['btn', 'btn-transparent'].join(' ')} style={{transform: 'scale(' + btnScale + ', ' + btnScale + ')'}}
         data-toggle="tooltip" data-placement="right" title={t(label)} onClick={onClick}>
-        <Trans text={iconName}/>
+        <Translate text={iconName}/>
     </button>;
 }
 

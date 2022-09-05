@@ -9,7 +9,8 @@ import {
 } from '@testing-library/jest-dom/matchers'
 import { List, Map, OrderedMap } from 'immutable'
 import { UIStore, StoreKeys, UIStoreType, UIStoreUpdaterFn } from '@ui-schema/react/UIStore'
-import { storeUpdater, UIStoreActionUpdate, UIStoreUpdaterData } from '@ui-schema/ui-schema'
+import { storeUpdater } from '@ui-schema/react/storeUpdater'
+import { UIStoreActionUpdate, UIStoreUpdaterData } from '@ui-schema/react/UIStoreActions'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 /**

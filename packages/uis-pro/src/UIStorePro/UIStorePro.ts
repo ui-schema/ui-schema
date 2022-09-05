@@ -4,7 +4,7 @@ import {
     RecordOf,
 } from 'immutable'
 import { createEmptyStore, onChangeHandler, UIStoreType } from '@ui-schema/react/UIStore'
-import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
+import { storeUpdater } from '@ui-schema/react/storeUpdater'
 
 export type redoHistory = (steps?: number) => void
 export type undoHistory = (steps?: number) => void

@@ -2,8 +2,8 @@ import React from 'react'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import { Theme } from '@mui/material/styles/createTheme'
-import makeStyles from "@mui/styles/makeStyles"
-import { Trans } from '@ui-schema/ui-schema/Translate/Trans'
+import makeStyles from '@mui/styles/makeStyles'
+import { Translate } from '@ui-schema/react/Translate'
 
 // eslint-disable-next-line react/display-name
 const MarkdownIcon: React.ComponentType<{ color: string }> = React.forwardRef(({color}, ref) => <svg
@@ -20,7 +20,7 @@ const MarkdownIcon: React.ComponentType<{ color: string }> = React.forwardRef(({
 
 // eslint-disable-next-line react/display-name
 const MarkdownLink = React.forwardRef((props, ref) => <a
-    target='_blank' rel='noopener noreferrer'
+    target="_blank" rel="noopener noreferrer"
     {...props}
     // @ts-ignore
     ref={ref}
@@ -65,7 +65,7 @@ let MarkdownLabel: React.ComponentType<{ href?: string, enableKeyboard?: boolean
             {focus ? <Typography
                 component={'span'} variant={'caption'}
                 className={classes.markdownLabel}
-            ><Trans text={'labels.rich-text-enabled-markdown'}/></Typography> : null}
+            ><Translate text={'labels.rich-text-enabled-markdown'}/></Typography> : null}
         </IconButton>
     </div>
 }

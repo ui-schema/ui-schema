@@ -776,7 +776,7 @@ const schemaStyle = createOrderedMap({
 
 // keep the `rootContext` reference integration!
 // e.g. be sure it does not force a re-render of UIRootRenderer with `React.useMemo` and maybe `useImmutable`
-const rootContext: InjectSplitSchemaRootContext = {schemaStyle: schemaStyle as StoreSchemaType}
+const rootContext: InjectSplitSchemaRootContext = {schemaStyle: schemaStyle as UISchemaMap}
 
 const Main = () => {
     const [showValidity, setShowValidity] = React.useState(false)

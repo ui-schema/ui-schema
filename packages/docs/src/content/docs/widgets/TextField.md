@@ -102,7 +102,7 @@ Regarding icons, they are resolved by the `view` keywords `icon`, `iconEnd` and 
 }
 ```
 
-The value for `icon` gets translated like: `<Trans text={'icons.AccountBox'}/>`
+The value for `icon` gets translated like: `<Translate text={'icons.AccountBox'}/>`
 
 When using the `ui-schema` immutable translator define them like:
 

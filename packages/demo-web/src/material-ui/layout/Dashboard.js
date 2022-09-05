@@ -50,14 +50,14 @@ const useStyles = makeStyles(theme => ({
     },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
-        background: theme.palette.type === 'dark' ? darken(theme.palette.primary.dark, 0.8) : theme.palette.primary.main,
+        background: theme.palette.mode === 'dark' ? darken(theme.palette.primary.dark, 0.8) : theme.palette.primary.main,
         transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
     },
     badgeIcon: {
-        color: theme.palette.type === 'dark' ? theme.palette.primary.main : 'inherit',
+        color: theme.palette.mode === 'dark' ? theme.palette.primary.main : 'inherit',
     },
     appBarShift: {
         marginLeft: drawerWidth,
@@ -75,12 +75,12 @@ const useStyles = makeStyles(theme => ({
     },
     title: {
         flexGrow: 1,
-        color: theme.palette.type === 'dark' ? theme.palette.primary.main : 'inherit',
+        color: theme.palette.mode === 'dark' ? theme.palette.primary.main : 'inherit',
     },
     drawerRoot: {
         height: '100%',
         overflow: 'auto',
-        scrollbarColor: (theme.palette.type === 'dark' ?
+        scrollbarColor: (theme.palette.mode === 'dark' ?
                 blueGrey[800] + ' ' + darken(blueGrey[900], 0.2) :
                 'default'
         ),
@@ -109,7 +109,7 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
         height: '100%',
         overflow: 'auto',
-        scrollbarColor: (theme.palette.type === 'dark' ?
+        scrollbarColor: (theme.palette.mode === 'dark' ?
                 blueGrey[800] + ' ' + darken(blueGrey[900], 0.2) :
                 'default'
         ),

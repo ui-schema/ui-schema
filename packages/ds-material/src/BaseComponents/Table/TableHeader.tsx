@@ -7,8 +7,8 @@ import { schemaTypeToDistinct } from '@ui-schema/system/schemaTypeToDistinct'
 import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import { TableHeaderProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
-import { TableCellSchemaImmutable } from '@ui-schema/ds-material/Widgets/Table/TableSchema'
+import { TableHeaderProps } from '@ui-schema/ds-material/BaseComponents/Table'
+import { TableCellSchemaImmutable } from '@ui-schema/ds-material/Widgets/Table'
 
 export const TableHeader: React.ComponentType<TableHeaderProps> = (
     {

@@ -1,16 +1,17 @@
 import * as React from 'react'
-import { Errors, StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
 import Map from 'immutable'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
 
 export interface ValidityHelperTextProps {
     showValidity: boolean
-    errors?: Errors
-    schema: StoreSchemaType
+    errors?: ValidatorErrorsType
+    schema: UISchemaMap
 }
 
 export interface LocaleHelperTextProps {
     text: string
-    schema: StoreSchemaType
+    schema: UISchemaMap
     context?: Map<any, undefined>
     className?: string
 }

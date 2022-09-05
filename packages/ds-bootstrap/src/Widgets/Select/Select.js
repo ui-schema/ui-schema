@@ -1,7 +1,9 @@
 import React from 'react';
-import {TransTitle, useUIMeta, beautifyKey} from '@ui-schema/ui-schema';
+import {beautifyKey} from '@ui-schema/system/Utils/beautify';
+import {TranslateTitle} from '@ui-schema/react/TranslateTitle';
+import {useUIMeta} from '@ui-schema/react/UIMeta';
 import {List, Map} from 'immutable';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {ValidityHelperText} from '../../Component/LocaleHelperText';
 
 export const Select = ({schema, storeKeys, showValidity, errors, value, onChange, required}) => {
     const enum_val = schema.get('enum');
@@ -20,7 +22,7 @@ export const Select = ({schema, storeKeys, showValidity, errors, value, onChange
     }
     const currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '');
     return <div className={classFormParent.join(' ')}>
-        <label><TransTitle schema={schema} storeKeys={storeKeys}/></label>
+        <label><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
         <select
             value={currentValue}
             className={classForm.join(' ')}

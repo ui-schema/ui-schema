@@ -3,25 +3,10 @@ import AppTheme from './layout/AppTheme'
 import Dashboard from './layout/Dashboard'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
-import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, widgets } from '@ui-schema/ds-material'
-import {
-    createOrderedMap,
-    WidgetProps,
-    loadSchemaUIApi,
-    UIMetaProvider,
-    UISchema,
-    UIStoreProvider,
-    createStore,
-    storeUpdater,
-    isInvalid,
-    injectWidgetEngine,
-    UIStoreType,
-    UISchemaMap,
-    DefaultHandlerProps,
-    WidgetsBindingFactory, onChangeHandler,
-} from '@ui-schema/ui-schema'
+import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
+import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes } from '@ui-schema/ds-material/WidgetsBinding'
 import { browserT } from '../t'
-import { UIApiProvider } from '@ui-schema/react/UIApi'
+import { loadSchemaUIApi, UIApiProvider } from '@ui-schema/react/UIApi'
 import { Table } from '@ui-schema/ds-material/Widgets/Table'
 import { NumberRendererCell, StringRendererCell, TextRendererCell } from '@ui-schema/ds-material/Widgets/TextFieldCell'
 import { TableAdvanced } from '@ui-schema/ds-material/Widgets/TableAdvanced'
@@ -29,17 +14,19 @@ import { InjectSplitSchemaPlugin, InjectSplitSchemaRootContext } from '@ui-schem
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { OrderedMap } from 'immutable'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material'
+import { SelectChips } from '@ui-schema/ds-material/Widgets'
+import { createOrderedMap } from '@ui-schema/system/createMap'
+import { UISchema, UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { DefaultHandlerProps } from '@ui-schema/react-json-schema/DefaultHandler'
+import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
+import { createStore, onChangeHandler, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
+import { storeUpdater } from '@ui-schema/react/storeUpdater'
+import { isInvalid } from '@ui-schema/react/ValidityReporter'
+import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 
 type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}>>
-const customWidgets: CustomWidgetsBinding = {...widgets} as CustomWidgetsBinding
-const widgetPlugins = [...customWidgets.widgetPlugins]
-// the referencing network handler should be at first position
-// must be before the `ReferencingHandler`, thus if the root schema for the level is a network schema,
-// the network handler can download it, and the normal referencing handler may handle references inside of e.g. `if`
-// maybe the network handlers adds a generic prop `resolveNetworkRef`, to request network schema inside e.g. an `if` from inside the ReferencingHandler
-// widgetPlugins.splice(0, 0, ReferencingNetworkHandler)
-widgetPlugins.splice(1, 0, InjectSplitSchemaPlugin)
-customWidgets.widgetPlugins = widgetPlugins
 
 const CustomTable: React.ComponentType<WidgetProps> = ({widgets, ...props}) => {
     const customWidgets = React.useMemo(() => ({
@@ -61,9 +48,25 @@ const CustomTable: React.ComponentType<WidgetProps> = ({widgets, ...props}) => {
         widgets={customWidgets}
     />
 }
-
-customWidgets.custom.Table = CustomTable
-customWidgets.custom.TableAdvanced = TableAdvanced
+const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
+const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
+    InfoRenderer: InfoRenderer,
+    // the referencing network handler should be at first position
+    // must be before the `ReferencingHandler`, thus if the root schema for the level is a network schema,
+    // the network handler can download it, and the normal referencing handler may handle references inside of e.g. `if`
+    // maybe the network handlers adds a generic prop `resolveNetworkRef`, to request network schema inside e.g. an `if` from inside the ReferencingHandler
+    // widgetPlugins.splice(0, 0, ReferencingNetworkHandler)
+    // widgetPlugins.splice(1, 0, InjectSplitSchemaPlugin)
+    widgetPlugins: [InjectSplitSchemaPlugin, ...widgetPlugins],
+    schemaPlugins: schemaPlugins,
+    types: WidgetsDefault.widgetsTypes(),
+    custom: {
+        ...WidgetsDefault.widgetsCustom(),
+        SelectChips: SelectChips,
+        Table: CustomTable,
+        TableAdvanced: TableAdvanced,
+    },
+}) as CustomWidgetsBinding
 
 const loadSchema: loadSchemaUIApi = (url, versions) => {
     console.log('Demo loadSchema (url, optional versions)', url, versions)
@@ -131,28 +134,26 @@ const Main = () => {
     }, [setStore])
 
     return <React.Fragment>
-        <Grid item xs={12}>
-            <UIStoreProvider<CustomConfig>
-                store={store}
-                onChange={onChange}
-                showValidity={showValidity}
-                //doNotDefault
-            >
-                <GridStack<{ rootContext?: InjectSplitSchemaRootContext }>
-                    isRoot
-                    schema={schemaData}
-                    rootContext={rootContext}
-                />
-                <MuiSchemaDebug schema={schemaData}/>
-            </UIStoreProvider>
+        <UIStoreProvider<CustomConfig>
+            store={store}
+            onChange={onChange}
+            showValidity={showValidity}
+            //doNotDefault
+        >
+            <GridStack<{ rootContext?: InjectSplitSchemaRootContext }>
+                isRoot
+                schema={schemaData}
+                rootContext={rootContext}
+            />
+            <MuiSchemaDebug schema={schemaData}/>
+        </UIStoreProvider>
 
-            <div style={{width: '100%'}}>
-                <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
-                <div>
-                    {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
-                </div>
+        <div style={{width: '100%'}}>
+            <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
+            <div>
+                {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
             </div>
-        </Grid>
+        </div>
     </React.Fragment>
 }
 
@@ -160,7 +161,11 @@ const Main = () => {
 export default () => <AppTheme>
     <UIMetaProvider widgets={customWidgets} t={browserT}>
         <UIApiProvider loadSchema={loadSchema} noCache>
-            <Dashboard main={Main}/>
+            <Dashboard>
+                <Grid item xs={12}>
+                    <Main/>
+                </Grid>
+            </Dashboard>
         </UIApiProvider>
     </UIMetaProvider>
 </AppTheme>

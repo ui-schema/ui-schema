@@ -1,20 +1,20 @@
 import React from 'react'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { WidgetProps } from '@ui-schema/react/Widgets'
 import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { UIStoreActionSet } from '@ui-schema/react/UIStoreActions'
-import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { MuiPickersAdapterContext } from '@mui/x-date-pickers/LocalizationProvider'
 import TextField from '@mui/material/TextField'
 import { BaseDatePickerProps } from '@mui/x-date-pickers/DatePicker/shared'
 import { CalendarPickerView } from '@mui/x-date-pickers/internals/models'
 import { List } from 'immutable'
 
-export interface WidgetDatePickerProps<TDate, P extends BaseDatePickerProps<TDate> = BaseDatePickerProps<TDate>> {
+export interface WidgetDatePickerProps<TInputDate, TDate, P extends BaseDatePickerProps<TInputDate, TDate> = BaseDatePickerProps<TInputDate, TDate>> {
     Picker: React.ComponentType<P>
     pickerProps?: any
 }
 
-export const WidgetDatePicker: React.FC<WidgetProps & WithScalarValue & WidgetDatePickerProps<any>> = (
+export const WidgetDatePicker: React.FC<WidgetProps & WithScalarValue & WidgetDatePickerProps<any, any>> = (
     {
         value, storeKeys, onChange, schema, required,
         Picker,
@@ -45,7 +45,7 @@ export const WidgetDatePicker: React.FC<WidgetProps & WithScalarValue & WidgetDa
     }
 
     return <Picker
-        label={<TransTitle schema={schema} storeKeys={storeKeys}/>}
+        label={<TranslateTitle schema={schema} storeKeys={storeKeys}/>}
         value={dateValue}
         inputFormat={dateFormat}
         orientation={orientation}

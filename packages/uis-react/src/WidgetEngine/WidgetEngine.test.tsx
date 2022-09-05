@@ -9,7 +9,7 @@ import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matche
 import { NextPluginRenderer, NextPluginRendererMemo, WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { List } from 'immutable'
-import { WidgetRenderer } from '@ui-schema/ui-schema'
+import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 
 expect.extend({toBeInTheDocument, toHaveClass})
 

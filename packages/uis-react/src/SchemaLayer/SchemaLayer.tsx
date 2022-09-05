@@ -8,7 +8,7 @@ export interface SchemaLayerProps {
     onSchema?: (schema: UISchemaMap) => void
 }
 
-const SchemaLayerGroupBase: React.ComponentType<AppliedWidgetEngineProps<{}, WidgetsBindingFactory, SchemaLayerProps & WidgetProps<WidgetsBindingFactory>>> = ({schema, children, onSchema}) => {
+const SchemaLayerGroupBase: React.ComponentType<React.PropsWithChildren<AppliedWidgetEngineProps<{}, WidgetsBindingFactory, SchemaLayerProps & WidgetProps<WidgetsBindingFactory>>>> = ({schema, children, onSchema}) => {
     const currentSchema = useImmutable(schema)
 
     React.useEffect(() => {
@@ -17,6 +17,7 @@ const SchemaLayerGroupBase: React.ComponentType<AppliedWidgetEngineProps<{}, Wid
         }
     }, [onSchema, currentSchema])
 
-    return children
+    return children as unknown as React.ReactElement
 }
+// @ts-ignore
 export const SchemaLayer = applyWidgetEngine(SchemaLayerGroupBase)

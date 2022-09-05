@@ -7,29 +7,15 @@ import Label from '@mui/material/FormLabel'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import Dashboard from './layout/Dashboard'
-import { MuiWidgetsBinding, MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, widgets } from '@ui-schema/ds-material'
 import { browserT } from '../t'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
-import { isInvalid } from '@ui-schema/react/ValidityReporter/isInvalid'
+import { isInvalid } from '@ui-schema/react/ValidityReporter'
 import { schemaDragDropNested, schemaDragDropScoped } from '../schemas/demoDragDrop'
 import { DndProvider } from 'react-dnd'
 import { MultiBackend } from 'react-dnd-multi-backend'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { TouchBackend } from 'react-dnd-touch-backend'
-
 import { TouchTransition, PointerTransition, MultiBackendOptions } from 'dnd-multi-backend'
-import {
-    createEmptyStore,
-    createOrderedMap,
-    createStore, injectWidgetEngine, onChangeHandler,
-    SchemaTypesType,
-    UISchemaMap,
-    storeUpdater,
-    UIMetaProvider,
-    UIStoreProvider,
-    UIStoreType, WidgetProps,
-    WidgetsBindingFactory, WithOnChange,
-} from '@ui-schema/ui-schema'
 import { OrderedMap } from 'immutable'
 import { RichContent, RichContentInline, RichContentPane } from '@ui-schema/material-slate'
 import { DndBlock, DragDropBlockProvider } from '@ui-schema/material-dnd/DragDropBlockProvider'
@@ -42,20 +28,33 @@ import { DragDropBlockSelector } from '@ui-schema/material-dnd/DragDropBlockSele
 import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd/DragDropBlock'
 import { DropArea } from '@ui-schema/material-dnd/Widgets/DropArea'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
+import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
+import { createEmptyStore, createStore, onChangeHandler, UIStoreProvider, UIStoreType, WithOnChange } from '@ui-schema/react/UIStore'
+import { storeUpdater } from '@ui-schema/react/storeUpdater'
+import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
+import { UIMetaProvider } from '@ui-schema/react/UIMeta'
+import { MuiWidgetsBinding, MuiWidgetsBindingCustom, MuiWidgetsBindingTypes } from '@ui-schema/ds-material/WidgetsBinding'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { createOrderedMap } from '@ui-schema/system/createMap'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
+import Paper from '@mui/material/Paper'
+import Grid from '@mui/material/Grid'
 
-export type CustomWidgetsBinding = WidgetsBindingFactory<DragDropBlockComponentsBinding, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
+type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
     DragDropArea: React.ComponentType<WidgetProps<MuiWidgetsBinding & DragDropBlockComponentsBinding> & WithOnChange>
 }>
-
-const customWidgets: CustomWidgetsBinding = {
-    ...widgets,
+const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
+const customWidgets = WidgetsDefault.define<CustomWidgetsBinding, {}>({
+    widgetPlugins: widgetPlugins,
+    schemaPlugins: schemaPlugins,
     DndBlockSelector: DragDropBlockSelector,
+    types: {
+        ...WidgetsDefault.widgetsTypes(),
+    },
     custom: {
-        ...widgets.custom,
+        ...WidgetsDefault.widgetsCustom(),
         // @ts-ignore
-        //DroppableRootMultiple: DroppableRootMultiple,
-        //DroppableRootSingle: DroppableRootSingle,
-        //DroppablePanel: DroppablePanel,
         DropArea: DropArea,
         DragDropArea: DragDropArea,
         SortableList: SortableList,
@@ -63,7 +62,7 @@ const customWidgets: CustomWidgetsBinding = {
         RichContent: RichContent,
         RichContentInline: RichContentInline,
     },
-}
+})
 
 const blocks: DndBlock[] = [
     {
@@ -210,17 +209,24 @@ const SingleEditor = () => {
     </React.Fragment>
 }
 
-const Main = () => {
-    return <React.Fragment>
-        <SingleEditor/>
-    </React.Fragment>
-}
-
 // @ts-ignore
 // eslint-disable-next-line react/display-name
 export default () => <AppTheme>
     <UIMetaProvider<{}, CustomWidgetsBinding> widgets={customWidgets} t={browserT}>
-        <Dashboard main={Main}/>
+        <Dashboard>
+            <Grid item xs={12}>
+                <Paper
+                    sx={{
+                        p: 2,
+                        display: 'flex',
+                        overflow: 'auto',
+                        flexDirection: 'column',
+                    }}
+                >
+                    <SingleEditor/>
+                </Paper>
+            </Grid>
+        </Dashboard>
     </UIMetaProvider>
 </AppTheme>
 

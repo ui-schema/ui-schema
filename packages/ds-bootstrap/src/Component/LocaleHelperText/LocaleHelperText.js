@@ -1,9 +1,9 @@
 import React from 'react';
-import {Trans} from '@ui-schema/ui-schema';
+import {Translate} from '@ui-schema/react/Translate';
 
 const LocaleHelperText = ({text, schema, context, className}) => {
     return <div className={className}>
-        <Trans text={text} context={
+        <Translate text={text} context={
             context ? context.set('type', schema.get('type'))
                 .set('widget', schema.get('widget')) : undefined
         }/>

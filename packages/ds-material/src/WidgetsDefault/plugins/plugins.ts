@@ -10,11 +10,11 @@ import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { getValidators } from '@ui-schema/json-schema/getValidators'
 import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
 
-export const plugins = <C extends {} = {}>(): {
-    widgetPlugins: WidgetPluginType<C>[]
+export const plugins = (): {
+    widgetPlugins: WidgetPluginType[]
     schemaPlugins: SchemaPlugin[]
 } => {
-    const widgetPlugins: WidgetPluginType<C>[] = [
+    const widgetPlugins: WidgetPluginType[] = [
         ReferencingHandler,// must be before AND maybe after combining/conditional?
         SchemaGridHandler,// todo: Grid must be after e.g. ConditionalHandler, but why was it this high? wasn't that because of e.g. conditional object grids?
         // ExtractStorePlugin,

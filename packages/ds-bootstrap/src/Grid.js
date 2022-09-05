@@ -1,6 +1,6 @@
-import React from "react";
-import {NextPluginRenderer} from "@ui-schema/ui-schema";
-import clsx from "clsx";
+import React from 'react';
+import {NextPluginRenderer} from '@ui-schema/react/WidgetEngine';
+import clsx from 'clsx';
 
 export const getGridClasses = (schema) => {
     let classNameArray = [];

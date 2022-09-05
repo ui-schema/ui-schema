@@ -5,7 +5,8 @@ import { Theme } from '@mui/material/styles/createTheme'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import { inputClasses } from '@mui/material/Input'
-import { TransTitle, WidgetProps } from '@ui-schema/ui-schema'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { WidgetProps } from '@ui-schema/react/Widgets'
 import { ValidityHelperText } from '@ui-schema/ds-material'
 import { MarkdownLabel } from '@ui-schema/material-slate/EditorWrapper/MarkdownLabel'
 
@@ -77,7 +78,7 @@ export const FormWrapper: React.ComponentType<React.PropsWithChildren<{
                 error={!valid}
                 style={{pointerEvents: 'none'}}
             >
-                <TransTitle schema={schema} storeKeys={storeKeys}/>
+                <TranslateTitle schema={schema} storeKeys={storeKeys}/>
             </InputLabel> : null}
         <div
             className={clsx(

@@ -10,7 +10,7 @@ The `t` prop of `UIMetaProvider` and `UIGenerator` supports complex translators 
 
 > In your own widgets any translation lib can be used directly, when contributing to a design system use one of:
 > - `{ t } = useUIMeta()`
-> - `Trans`/`TransTitle`
+> - `Translate`/`TranslateTitle`
 
 to support just the `t` keyword:
 
@@ -61,28 +61,28 @@ const translate = (text, context, schema) => {
     - a `function` that creates the string
     - a `function` that creates a React component
     - as example of valid translations see [immutable as dictionary](#immutable-as-dictionary)
-    - falsy value / undefined if e.g. `Trans` `fallback` should be used
+    - falsy value / undefined if e.g. `Translate` `fallback` should be used
 
-Translating widgets can be done using `const {t} = useUIMeta();` hook directly, but recommended is the `Trans` component.
+Translating widgets can be done using `const {t} = useUIMeta();` hook directly, but recommended is the `Translate` component.
 
-### Trans Component
+### Translate Component
 
-The `Trans` component, accepts `text`:`{string}`, `context`:`{Map|undefined}` and `schema`:`{Map|undefined}`, connects to the `t` function of the parent UIGenerator.
+The `Translate` component, accepts `text`:`{string}`, `context`:`{Map|undefined}` and `schema`:`{Map|undefined}`, connects to the `t` function of the parent UIGenerator.
 
 #### Example Widget Translation
 
-First example `DemoWidget` is translating a widgets title, supporting a custom translation library, schema `title`, `t` and `tt` keywords, see also [TransTitle](#example-transtitle).
+First example `DemoWidget` is translating a widgets title, supporting a custom translation library, schema `title`, `t` and `tt` keywords, see also [TranslateTitle](#example-TranslateTitle).
 
 Second example `DemoEnumWidget` is translating a widgets enum values, supporting a custom translation library.
 
 ```jsx harmony
 import React from "react";
 import {Map, List} from "immutable";
-import {Trans, beautifyKey} from '@ui-schema/ui-schema';
+import {Translate, beautifyKey} from '@ui-schema/ui-schema';
 import {getTranslatableEnum} from '@ui-schema/ui-schema/Translate';
 
 const DemoWidget = ({schema, storeKeys}) => {
-    return <Trans
+    return <Translate
         schema={schema.get('t')}
         text={schema.get('title') || storeKeys.insert(0, 'widget').push('title').join('.')}
         context={Map({'relative': List(['title'])})}
@@ -95,7 +95,7 @@ const DemoEnumWidget = ({schema, storeKeys}) => {
     return enum_val.map((enum_name, i) => {
         const relative = List(['enum', getTranslatableEnum(enum_name)]);
         return <span key={i}>
-            <Trans
+            <Translate
                 schema={schema.get('t')}
                 text={storeKeys.insert(0, 'widget').concat(relative).join('.')}
                 context={Map({'relative': relative})}
@@ -106,16 +106,16 @@ const DemoEnumWidget = ({schema, storeKeys}) => {
 };
 ```
 
-#### Example TransTitle
+#### Example TranslateTitle
 
-The above example can be used to translate anything, as titles are often used and offer a generic way, the component `TransTitle` can be used also, which works identically to the above example.
+The above example can be used to translate anything, as titles are often used and offer a generic way, the component `TranslateTitle` can be used also, which works identically to the above example.
 
 ```jsx harmony
 import React from "react";
-import {TransTitle} from '@ui-schema/ui-schema/Translate/TransTitle';
+import {TranslateTitle} from '@ui-schema/ui-schema/Translate/TranslateTitle';
 
 const DemoWidget = ({schema, storeKeys}) => {
-    return <TransTitle
+    return <TranslateTitle
         schema={schema}
         storeKeys={storeKeys}
     />
@@ -133,11 +133,11 @@ Each design-system includes helper component for error translations, this way yo
 ```jsx harmony
 import React from "react";
 import FormHelperText from "@mui/material/FormHelperText";
-import {Trans} from '@ui-schema/ui-schema/Translate/Trans';
+import {Translate} from '@ui-schema/ui-schema/Translate/Translate';
 
 const LocaleHelperText = ({text, schema, context}) => {
     return <FormHelperText>
-        <Trans
+        <Translate
             text={text}
             context={
                 /* adding some default stuff to the context which may be needed */

@@ -21,6 +21,7 @@ export const VirtualArrayRenderer = (
     return value ? value.map((_val, i) =>
         <WidgetEngine<VirtualWidgetRendererProps>
             key={i}
+            // @ts-ignore
             schema={List.isList(items) ? items.get(i) : items}
             parentSchema={schema}
             storeKeys={storeKeys.push(i)}

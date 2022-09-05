@@ -3,40 +3,37 @@ import AppTheme from './layout/AppTheme'
 import Dashboard from './layout/Dashboard'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
-import { widgets } from '@ui-schema/ds-material'
-import { createOrderedMap, createStore, injectWidgetEngine, JsonSchema, UIMetaProvider, UIStoreActions, UIStoreProvider } from '@ui-schema/ui-schema'
-import { browserT } from '../t'
-import { storeUpdater } from '@ui-schema/react/storeUpdater'
-import { OrderedMap } from 'immutable'
-import { NumberRendererDebounced, StringRendererDebounced, TextRendererDebounced } from '@ui-schema/ds-material/Widgets/TextFieldDebounced/TextFieldDebounced'
-import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
+import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
+import { createOrderedMap } from '@ui-schema/system/createMap'
+import { createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
+import { storeUpdater } from '@ui-schema/react/storeUpdater'
+import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
+import { UIMetaProvider } from '@ui-schema/react/UIMeta'
+import { browserT } from '../t'
+import { OrderedMap } from 'immutable'
+import { NumberRendererDebounced, StringRendererDebounced, TextRendererDebounced } from '@ui-schema/ds-material/Widgets/TextFieldDebounced'
+import { MuiSchemaDebug } from './component/MuiSchemaDebug'
+import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material'
+import { JsonSchema } from '@ui-schema/json-schema/Definitions'
+import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 
-const customWidgets = {...widgets}
-const widgetPlugins = [...customWidgets.widgetPlugins]
-// the referencing network handler should be at first position
-// must be before the `ReferencingHandler`, thus if the root schema for the level is a network schema,
-// the network handler can download it, and the normal referencing handler may handle references inside of e.g. `if`
-// maybe the network handlers adds a generic prop `resolveNetworkRef`, to request network schema inside e.g. an `if` from inside the ReferencingHandler
-// widgetPlugins.splice(0, 0, ReferencingNetworkHandler)
-customWidgets.widgetPlugins = widgetPlugins
-
-customWidgets.types.string = StringRendererDebounced
-customWidgets.types.number = NumberRendererDebounced
-customWidgets.types.integer = NumberRendererDebounced
-customWidgets.custom.Text = TextRendererDebounced
-
-//widgets.types.null = () => 'null'
-
-const Main = ({classes}: { classes: { paper: string } }) => {
-    return <React.Fragment>
-        <Grid item xs={12}>
-            <Paper className={classes.paper}>
-                <FormComp/>
-            </Paper>
-        </Grid>
-    </React.Fragment>
-}
+const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
+const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
+    InfoRenderer: InfoRenderer,
+    widgetPlugins: widgetPlugins,
+    schemaPlugins: schemaPlugins,
+    types: {
+        ...WidgetsDefault.widgetsTypes(),
+        string: StringRendererDebounced,
+        number: NumberRendererDebounced,
+        integer: NumberRendererDebounced,
+    },
+    custom: {
+        ...WidgetsDefault.widgetsCustom(),
+        Text: TextRendererDebounced,
+    },
+})
 
 const formSchema = createOrderedMap({
     type: 'object',
@@ -77,7 +74,20 @@ const FormComp = () => {
 export default () => <AppTheme>
     <div>
         <UIMetaProvider widgets={customWidgets} t={browserT}>
-            <Dashboard main={Main}/>
+            <Dashboard>
+                <Grid item xs={12}>
+                    <Paper
+                        sx={{
+                            p: 2,
+                            display: 'flex',
+                            overflow: 'auto',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        <FormComp/>
+                    </Paper>
+                </Grid>
+            </Dashboard>
         </UIMetaProvider>
     </div>
 </AppTheme>

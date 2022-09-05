@@ -5,8 +5,8 @@ Base components for the `GenericList` widget, to easily configure and re-wire th
 ```typescript jsx
 import React from 'react'
 import { List } from 'immutable'
-import { memo } from '@ui-schema/ui-schema/Utils/memo'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { WidgetProps } from '@ui-schema/react/Widgets'
 import { useUIStore, WithOnChange } from '@ui-schema/ui-schema/UIStore'
 import {
     GenericListContent, GenericListFooter,

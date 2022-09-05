@@ -53,7 +53,7 @@ export default function PageMain() {
     - [auto-rendering by data & schema](/quick-start) or [full-custom forms](/quick-start?render=custom) with autowired widgets
     - easily add advanced features like [read-or-write mode](/docs/core-meta#read-context)
 - flexible translation of widgets
-    - with any library ([\`t\` prop (Translator)](/docs/localization#translation), [\`Trans\` component](/docs/localization#trans-component))
+    - with any library ([\`t\` prop (Translator)](/docs/localization#translation), [\`Translate\` component](/docs/localization#trans-component))
     - in-schema translations ([\`t\` keyword](/docs/localization#translation-in-schema))
     - label text transforms ([\`tt\`/\`ttEnum\` keyword](/docs/localization#text-transform))
     - single or multi-language

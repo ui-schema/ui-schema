@@ -1,6 +1,6 @@
 import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
-import { Map } from "immutable"
-import { createMap } from "@ui-schema/ui-schema/Utils"
+import { Map } from 'immutable'
+import { createMap } from '@ui-schema/system/createMap'
 
 describe('schemaRulesToNative', () => {
     test.each([

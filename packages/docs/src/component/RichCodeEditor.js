@@ -105,7 +105,7 @@ const RichCodeEditor = ({
     return <Wrapper>
         <AceEditor
             mode={mode}
-            theme={palette.type === 'light' ? themesLight[0] : theme}
+            theme={palette.mode === 'light' ? themesLight[0] : theme}
             value={typeof value !== 'string' && value ? value.toString() : value || ''}
             onChange={onChange}
             name={'uis-' + uid}

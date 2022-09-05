@@ -94,7 +94,7 @@ export interface OptionsCheckRendererProps {
 
 export const OptionsCheck = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> & OptionsCheckRendererProps>(
     {
-        schema, storeKeys, showValidity, valid, required, errors,
+        schema, storeKeys, schemaKeys, showValidity, valid, required, errors,
         row, widgets,
     }: P,
 ): React.ReactElement => {
@@ -110,7 +110,7 @@ export const OptionsCheck = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRende
             {InfoRenderer && schema?.get('info') ?
                 <InfoRenderer
                     schema={schema} variant={'icon'} openAs={'modal'}
-                    storeKeys={storeKeys} valid={valid} errors={errors}
+                    storeKeys={storeKeys} schemaKeys={schemaKeys} valid={valid} errors={errors}
                     align={'right'} dense
                 /> :
                 undefined}

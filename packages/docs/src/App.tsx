@@ -10,9 +10,6 @@ import { DocsProvider } from '@control-ui/docs/DocsProvider'
 import { HeadlinesProvider } from '@control-ui/docs/LinkableHeadline'
 import { customWidgets } from './component/Schema/widgets'
 import { browserT } from './t'
-import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta'
-import { UIApiProvider } from '@ui-schema/ui-schema/UIApi'
-import { loadSchemaUIApi } from '@ui-schema/ui-schema'
 import { customConsentUi } from './consentUi'
 import { ConsentUiProvider } from '@bemit/consent-ui-react'
 import { pluginGoogle, prepareConsent } from '@bemit/consent-ui'
@@ -20,6 +17,8 @@ import { DocsIndexProvider } from '@control-ui/docs/DocsIndexProvider'
 import { DocsSearchProvider } from '@control-ui/docs/DocsSearchProvider'
 import { CustomLayout } from './component/Layout'
 import { LoadingCircular } from '@control-ui/kit/Loading/LoadingCircular'
+import { loadSchemaUIApi, UIApiProvider } from '@ui-schema/react/UIApi'
+import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 
 const loadSchema: loadSchemaUIApi = (url, versions) => {
     console.log('loadSchema (url, optional versions)', url, versions)

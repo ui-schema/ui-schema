@@ -23,7 +23,9 @@ export type WidgetEngineInjectProps = 'currentPluginIndex' | 'requiredList' | 'r
 // todo find a better way to define from-plugin injected values as "required" - or shouldn't?
 // 'value' | 'onChange' | 'internalValue'
 
-export type WidgetEngineProps<W extends WidgetsBindingFactory = WidgetsBindingFactory, PWidget extends WidgetProps<W> = WidgetProps<W>, C extends {} = {}, PWrapper extends {} = {}> = AppliedWidgetEngineProps<C, W, PWidget> & {
+export type WidgetEngineProps<W extends WidgetsBindingFactory = WidgetsBindingFactory, PWidget extends WidgetProps<W> = WidgetProps<W>, C extends {} = {}, PWrapper extends {} = {}> =
+    AppliedWidgetEngineProps<C, W, PWidget>
+    & {
 
     // listen from a hoisted component for `errors` changing,
     // useful for some performance optimizes like at ds-material Accordions
@@ -35,7 +37,7 @@ export type WidgetEngineProps<W extends WidgetsBindingFactory = WidgetsBindingFa
     // override any widget for just this WidgetEngine, not passed down further on
     // better use `applyWidgetEngine` instead! https://ui-schema.bemit.codes/docs/core-pluginstack#applypluginstack
     // todo: actually `WidgetOverride` is a WidgetRenderer prop - and also passed through the plugins, so should be in PluginProps also - but not in WidgetProps
-    WidgetOverride?: WidgetOverrideType<C>
+    WidgetOverride?: WidgetOverrideType<C, PWidget, W>
 
     // wraps the whole stack internally, as interfacing for the utility function `injectWidgetEngine`
     // only rendered when not "virtual"
@@ -79,6 +81,7 @@ export const WidgetEngine = <PWidget extends WidgetProps = WidgetProps, C extend
     const activeWidgets = customWidgets || widgets
 
     // todo: resolving `hidden` here is wrong, must be done after merging schema / resolving referenced
+    // @ts-ignore
     const isVirtual = Boolean(props.isVirtual || schema?.get('hidden'))
     let required: List<string> = List([])
     if (parentSchema) {
@@ -91,6 +94,7 @@ export const WidgetEngine = <PWidget extends WidgetProps = WidgetProps, C extend
     }
 
     const stack =
+        // @ts-ignore
         <NextPluginRendererMemo<C, U, WidgetsBindingFactory>
             {...meta}
             {...config}
@@ -121,6 +125,7 @@ export const WidgetEngine = <PWidget extends WidgetProps = WidgetProps, C extend
         >{stack}</StackWrapper> :
         stack
 
+    // @ts-ignore
     return props.schema ?
         activeWidgets?.ErrorFallback ?
             <WidgetEngineErrorBoundary

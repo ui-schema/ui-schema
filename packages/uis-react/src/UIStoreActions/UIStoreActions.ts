@@ -1,5 +1,6 @@
-import { StoreKeys, UIStoreType, UIStoreUpdaterFn } from '@ui-schema/react/UIStore'
+import { UIStoreType, UIStoreUpdaterFn } from '@ui-schema/react/UIStore'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { StoreKeys } from '@ui-schema/system/ValueStore'
 
 export interface UIStoreUpdaterData {
     value?: any

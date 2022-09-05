@@ -1,6 +1,6 @@
 import React from 'react'
 import { StoreKeys, useUIStore } from '@ui-schema/react/UIStore'
-import { getDisplayName } from '@ui-schema/ui-schema/Utils/memo'
+import { getDisplayName } from '@ui-schema/react/Utils/memo'
 import { DndBlock, useBlocks } from '@ui-schema/material-dnd/DragDropBlockProvider'
 import { matchBlock } from '@ui-schema/material-dnd/DndBlocksRenderer/matchBlock'
 import { Map, OrderedMap } from 'immutable'

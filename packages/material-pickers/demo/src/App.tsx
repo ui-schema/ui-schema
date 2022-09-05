@@ -1,6 +1,6 @@
 import React from 'react'
 import AppTheme from './AppTheme'
-import { widgets } from '@ui-schema/ds-material'
+import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { WidgetDatePicker } from '@ui-schema/material-pickers/WidgetDatePicker'
 import { WidgetDateTimePicker } from '@ui-schema/material-pickers/WidgetDateTimePicker'
 import { WidgetTimePicker } from '@ui-schema/material-pickers/WidgetTimePicker'
@@ -9,7 +9,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import Button from '@mui/material/Button'
 import { browserT } from './t'
-import { createEmptyStore, isInvalid, storeUpdater, UIStoreType, UIMetaProvider, UIStoreProvider, WidgetProps, WithScalarValue, StoreSchemaType, injectPluginStack } from '@ui-schema/ui-schema'
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker'
@@ -21,8 +20,17 @@ import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker'
 import { StaticTimePicker } from '@mui/x-date-pickers/StaticTimePicker'
 import { List } from 'immutable'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
+import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { createEmptyStore, UIStoreProvider, UIStoreType, WithScalarValue } from '@ui-schema/react/UIStore'
+import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
+import { storeUpdater } from '@ui-schema/react/storeUpdater'
+import { isInvalid } from '@ui-schema/react/ValidityReporter'
+import { UIMetaProvider } from '@ui-schema/react/UIMeta'
+import { Paper } from '@mui/material'
 
-const getExtraProps = (schema: StoreSchemaType, type: 'date' | 'date-time' | 'time') => {
+const getExtraProps = (schema: UISchemaMap, type: 'date' | 'date-time' | 'time') => {
     const data: { [k: string]: any } = {}
     if (
         schema.getIn(['date', 'variant']) === 'static' ||
@@ -100,17 +108,22 @@ const CustomTimePicker: React.FC<WidgetProps & WithScalarValue> = (props) => {
         pickerProps={pickerProps}
     />
 }
-
-const customWidgets = {...widgets}
-customWidgets.custom = {
-    ...widgets.custom,
-    DateTime: CustomDateTimePicker,
-    Date: CustomDatePicker,
-    Time: CustomTimePicker,
-}
+const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
+const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
+    InfoRenderer: InfoRenderer,
+    widgetPlugins: widgetPlugins,
+    schemaPlugins: schemaPlugins,
+    types: WidgetsDefault.widgetsTypes(),
+    custom: {
+        ...WidgetsDefault.widgetsCustom(),
+        DateTime: CustomDateTimePicker,
+        Date: CustomDatePicker,
+        Time: CustomTimePicker,
+    },
+})
 
 const schema = schemaDatePickers
-const GridStack = injectPluginStack(GridContainer)
+const GridStack = injectWidgetEngine(GridContainer)
 const Main = () => {
     const [showValidity, setShowValidity] = React.useState(false)
     const [store, setStore] = React.useState<UIStoreType>(() => createEmptyStore(schema.get('type') as string))
@@ -140,7 +153,11 @@ export const App = () =>
     <LocalizationProvider dateAdapter={AdapterLuxon}>
         <AppTheme>
             <UIMetaProvider widgets={customWidgets} t={browserT}>
-                <Main/>
+                <Paper
+                    sx={{p: 2, mx: 1, my: 4}}
+                >
+                    <Main/>
+                </Paper>
             </UIMetaProvider>
         </AppTheme>
     </LocalizationProvider>

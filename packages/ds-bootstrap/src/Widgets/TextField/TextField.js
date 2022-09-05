@@ -1,6 +1,6 @@
 import React from 'react';
-import {TransTitle} from '@ui-schema/ui-schema';
-import {ValidityHelperText} from '../../Component/LocaleHelperText/LocaleHelperText';
+import {TranslateTitle} from '@ui-schema/react/TranslateTitle';
+import {ValidityHelperText} from '../../Component/LocaleHelperText';
 import {useUID} from 'react-uid';
 
 export const convertStringToNumber = (value, type) => {
@@ -33,7 +33,7 @@ const StringRenderer = ({schema, value, multiline = false, onChange, storeKeys, 
     }
 
     return <div className={classFormGroup.join(' ')}>
-        <label htmlFor={'uis-' + uid}><TransTitle schema={schema} storeKeys={storeKeys}/></label>
+        <label htmlFor={'uis-' + uid}><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
         <Renderer
             className={classFormControl.join(' ')}
             type={format || type}
