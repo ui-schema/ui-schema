@@ -6,12 +6,13 @@ import { Translate } from '@ui-schema/react/Translate'
 import { onChangeHandler, StoreKeys } from '@ui-schema/react/UIStore'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
-import { TableRowProps } from '@ui-schema/ds-material'
+import { TableRowProps } from '@ui-schema/ds-material/BaseComponents/Table'
 import { Map } from 'immutable'
 
 export interface TableRowActionDeleteProps {
     onChange: onChangeHandler
     storeKeys: WidgetProps['storeKeys']
+    schemaKeys: WidgetProps['schemaKeys']
     showRows: TableRowProps['showRows']
     setPage: TableRowProps['setPage']
     index: number

@@ -346,7 +346,6 @@ Should be used for seldom-changing-values, e.g. is used for the `doNotDefault` c
     storeKeys={storeKeys.push('city') as StoreKeys}
     schema={schema.getIn(['properties', 'city']) as unknown as StoreSchemaType}
     parentSchema={schema}
-    level={1}
     // possible also to overwrite:
     doNotDefault={false}
 />

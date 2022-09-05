@@ -20,7 +20,7 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { UIStoreActionListItemDelete } from '@ui-schema/react/UIStoreActions'
 import { ButtonProps } from '@mui/material/Button'
 
-export type SimpleListItemProps = Pick<WidgetProps, 'schemaKeys' | 'showValidity' | 'schema' | 'storeKeys' | 'required' | 'level'> & {
+export type SimpleListItemProps = Pick<WidgetProps, 'schemaKeys' | 'showValidity' | 'schema' | 'storeKeys' | 'required'> & {
     notDeletable?: boolean
     readOnly?: boolean
     index?: number
@@ -30,7 +30,7 @@ export type SimpleListItemProps = Pick<WidgetProps, 'schemaKeys' | 'showValidity
 export const SimpleListItemBase: React.FC<SimpleListItemProps & Pick<WithValue, 'onChange'>> = (
     {
         showValidity, schema, schemaKeys, storeKeys, notDeletable,
-        readOnly, required, onChange, level, index, btnSize,
+        readOnly, required, onChange, index, btnSize,
     },
 ) => {
     return <Grid key={index} item xs={12} style={{display: 'flex'}}>
@@ -38,7 +38,7 @@ export const SimpleListItemBase: React.FC<SimpleListItemProps & Pick<WithValue, 
             <WidgetEngine
                 showValidity={showValidity} noGrid
                 schema={schema.get('items') as UISchemaMap} parentSchema={schema}
-                storeKeys={storeKeys.push(index)} level={level + 1}
+                storeKeys={storeKeys.push(index)}
                 schemaKeys={schemaKeys?.push('items')}
             />
         </div>
@@ -69,7 +69,7 @@ export const SimpleListItem = memo(SimpleListItemBase)
 export const SimpleListInner: React.FC<WidgetProps<MuiWidgetsBinding & { InfoRenderer?: React.ComponentType<InfoRendererProps> }> & { listSize: number, btnAddShowLabel?: boolean, btnAddStyle?: React.CSSProperties } & ListButtonOverwrites & WithOnChange> = (
     {
         schemaKeys, storeKeys, schema, listSize, onChange,
-        showValidity, valid, errors, required, level,
+        showValidity, valid, errors, required,
         widgets,
         btnAddShowLabel, btnAddStyle,
         btnSize: btnSizeProp,
@@ -108,7 +108,6 @@ export const SimpleListInner: React.FC<WidgetProps<MuiWidgetsBinding & { InfoRen
                     storeKeys={storeKeys}
                     schemaKeys={schemaKeys}
                     btnSize={btnSize}
-                    level={level}
                     notDeletable={notDeletable}
                     readOnly={readOnly}
                     required={required}

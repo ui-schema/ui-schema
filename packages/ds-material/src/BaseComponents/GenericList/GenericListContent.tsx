@@ -27,7 +27,7 @@ export interface GenericListContentProps extends ListButtonOverwrites {
 export const GenericListContent = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>>>(
     {
         storeKeys, schemaKeys, schema, listSize, onChange,
-        showValidity, valid, errors, required, level, widgets,
+        showValidity, valid, errors, required, widgets,
         ComponentItemMore, ComponentItemPos,
         ComponentItem, ComponentFooter,
         btnAddShowLabel, btnAddStyle,
@@ -74,7 +74,6 @@ export const GenericListContent = <P extends WidgetProps<MuiWidgetsBinding<{ Inf
                     storeKeys={storeKeys}
                     schemaKeys={schemaKeys}
                     schema={schema} onChange={onChange}
-                    level={level}
                     listRequired={required}
                     btnSize={deleteBtnSize}
                     notSortable={notSortable}

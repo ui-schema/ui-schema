@@ -20,10 +20,6 @@ export type WidgetType<C extends {} = {}, W = WidgetsBindingFactory, A = UIStore
  * - `C` = custom `UIMetaContext` definition
  */
 export interface WidgetProps<W = WidgetsBindingFactory> extends UIMetaContext<W>, WidgetPayload {
-    // the current level in the schema, e.g. `0` for root, `1` for the first properties
-    // todo: move to "ReactWidget of DS" / remove from standard
-    level: number
-
     // used by grid system
     // todo: move to "ReactWidgetStack of DS" / remove from standard / move from "WidgetProps" to the successor of "WidgetEngine", somehow coupled to the sucessor of "WidgetRenderer"
     noGrid?: GroupRendererProps['noGrid']

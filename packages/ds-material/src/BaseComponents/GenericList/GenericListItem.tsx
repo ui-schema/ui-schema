@@ -19,7 +19,6 @@ export interface GenericListItemSharedProps {
     onChange: onChangeHandler
     storeKeys: StoreKeys
     schemaKeys: StoreKeys | undefined
-    level: number
     notSortable: boolean | undefined
     notDeletable: boolean | undefined
     showValidity: boolean | undefined
@@ -43,7 +42,7 @@ export const GenericListItemBase = (
 ): React.ReactElement => {
     const {
         index, listSize, schema,
-        storeKeys, schemaKeys, level,
+        storeKeys, schemaKeys,
         showValidity,
     } = props
     const ownKeys = storeKeys.push(index)
@@ -73,14 +72,13 @@ export const GenericListItemBase = (
                                         storeKeys={ownKeys.push(j)}
                                         schema={item as UISchemaMap}
                                         parentSchema={schema}
-                                        level={level + 1}
                                     />).valueSeq()}
                             </Grid>
                         </Grid> :
                         <WidgetEngine<{ schemaKeys: StoreKeys | undefined }>
                             showValidity={showValidity}
                             schema={itemsSchema} parentSchema={schema}
-                            storeKeys={ownKeys} level={level + 1}
+                            storeKeys={ownKeys}
                             schemaKeys={schemaKeys?.push('items')}
                         />}
 

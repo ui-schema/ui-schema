@@ -485,14 +485,13 @@ const WidgetTextField = applyPluginStack(StringRenderer)
 // this one works for objects
 let CustomGroup: React.ComponentType<WidgetProps> = (props) => {
     const {
-        schema: schemaLevel, storeKeys, level,
+        schema: schemaLevel, storeKeys,
         // errors for the root (current) schema level
         errors, valid,
     } = props
 
     return <Grid container dir={'columns'} spacing={4}>
         <WidgetTextField
-            level={level + 1}
             storeKeys={storeKeys.push('name')}
             schema={schemaLevel.getIn(['properties', 'name'])}
             parentSchema={schemaLevel}
@@ -502,14 +501,12 @@ let CustomGroup: React.ComponentType<WidgetProps> = (props) => {
         />
 
         <PluginStack
-            level={0}
             storeKeys={storeKeys.push('comment') as StoreKeys}
             schema={schemaLevel.getIn(['properties', 'comment']) as unknown as StoreSchemaType}
             parentSchema={schemaLevel}
         />
 
         <PluginStack
-            level={0}
             storeKeys={storeKeys.push('accept_privacy') as StoreKeys}
             schema={schemaLevel.getIn(['properties', 'accept_privacy']) as unknown as StoreSchemaType}
             parentSchema={schemaLevel}

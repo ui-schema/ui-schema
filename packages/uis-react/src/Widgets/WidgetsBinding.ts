@@ -18,7 +18,6 @@ export interface NoWidgetProps {
 export interface GroupRendererProps {
     storeKeys: StoreKeys
     schemaKeys?: StoreKeys
-    level: number
     schema: UISchemaMap
     noGrid?: boolean
     style?: {}

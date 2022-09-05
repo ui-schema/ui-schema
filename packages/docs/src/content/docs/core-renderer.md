@@ -85,7 +85,6 @@ const FreeFormEditor = () => {
         >
             <Grid container dir={'columns'} spacing={4}>
                 <WidgetTextField
-                    level={1}
                     storeKeys={storeKeys.push('name') as StoreKeys}
                     schema={schema.getIn(['properties', 'name']) as unknown as StoreSchemaType}
                     parentSchema={schema}

@@ -63,7 +63,6 @@ Overwrite `props` rules for any `widgets.widgetPlugins` plugin:
     storeKeys={storeKeys.push('city') as StoreKeys}
     schema={schema.getIn(['properties', 'city']) as unknown as StoreSchemaType}
     parentSchema={schema}
-    level={1}
     readOnly={false}
     noGrid={false}
 />
@@ -74,7 +73,6 @@ Overwrite `props` rules for any `widgets.widgetPlugins` plugin:
     storeKeys={storeKeys.push(i as number)}
     schema={itemsSchema}
     parentSchema={schema}
-    level={level}
     isVirtual={isVirtual}
     noGrid
     widgets={widgets}
@@ -129,7 +127,7 @@ import { PluginStack } from '@ui-schema/ui-schema/PluginStack'
 
 const UnitCalcDummyBase: React.ComponentType<WidgetProps & WithValue> = (
     {
-        showValidity, schema, level, widgets, ...props
+        showValidity, schema, widgets, ...props
     }
 ) => {
     const {storeKeys, value} = props
@@ -147,8 +145,6 @@ const UnitCalcDummyBase: React.ComponentType<WidgetProps & WithValue> = (
             storeKeys={storeKeys.push('unit') as StoreKeys}
             schema={schema.getIn(['properties', 'unit']) as StoreSchemaType}
             parentSchema={schema}
-            // from PluginStack, optional
-            level={level + 1}
 
             // additional props we want to override/add
             showValidity={showValidity}
@@ -166,9 +162,6 @@ const UnitCalcDummyBase: React.ComponentType<WidgetProps & WithValue> = (
             storeKeys={storeKeys.push('value')}
             schema={schema.getIn(['properties', 'value'])}
             parentSchema={schema}
-
-            // from PluginStack, optional
-            level={level + 1}
 
             // additional props we want to override/add
             showValidity={showValidity}
@@ -214,14 +207,13 @@ const WidgetTextField = applyPluginStack(StringRenderer)
 // this one works for objects
 let CustomGroup: React.ComponentType<WidgetProps> = (props) => {
     const {
-        schema, storeKeys, level,
+        schema, storeKeys,
         // errors for the root/current schema level
         errors, valid,
     } = props
 
     return <Grid container dir={'columns'} spacing={4}>
         <WidgetTextField
-            level={level + 1}
             storeKeys={storeKeys.push('name')}
             schema={schema.getIn(['properties', 'name'])}
             parentSchema={schema}

@@ -4,7 +4,7 @@ import {WidgetEngine} from '@ui-schema/react/WidgetEngine';
 
 const ObjectRendererBase = (
     {
-        level, schema, storeKeys, schemaKeys,
+        schema, storeKeys, schemaKeys,
         // for performance reasons, not pushing errors deeper
         // eslint-disable-next-line no-unused-vars
         errors,
@@ -29,7 +29,6 @@ const ObjectRendererBase = (
             schema={childSchema} parentSchema={schema}
             storeKeys={storeKeys.push(childKey)}
             schemaKeys={schemaKeys?.push('properties').push(childKey)}
-            level={level + 1}
         />,
     ).valueSeq() || null
 
@@ -39,7 +38,7 @@ const ObjectRendererBase = (
         properties ?
             <GroupRenderer
                 storeKeys={storeKeys} schemaKeys={schemaKeys}
-                level={level} noGrid={props.noGrid}
+                noGrid={props.noGrid}
                 schema={schema}
             >
                 {propertyTree}

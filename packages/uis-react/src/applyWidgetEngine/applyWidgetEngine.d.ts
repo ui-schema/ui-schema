@@ -18,9 +18,9 @@ export type WidgetEngineRootOrNestedProps = {
 
 // todo: add also generic widgets here?
 export type AppliedWidgetEngineProps<CMeta extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory, PWidget extends WidgetProps<W> = WidgetProps<W>> =
-    Omit<PWidget, WidgetEngineInjectProps | keyof (UIMetaContext<W> & CMeta) | keyof WithValue | 'level'>
+    Omit<PWidget, WidgetEngineInjectProps | keyof (UIMetaContext<W> & CMeta) | keyof WithValue>
     & Partial<UIMetaContext<W> & CMeta>
-    & Partial<Pick<PWidget, 'showValidity' | 'level'>>
+    & Partial<Pick<PWidget, 'showValidity'>>
     & WidgetEngineRootOrNestedProps
 
 export function applyWidgetEngine<CMeta extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory, PWidget extends WidgetProps<W> = WidgetProps<W>>(

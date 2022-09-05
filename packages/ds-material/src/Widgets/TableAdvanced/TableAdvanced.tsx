@@ -8,18 +8,18 @@ import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 
 export const TableAdvancedBase: React.ComponentType<WidgetProps<MuiWidgetsBinding> & WithValue> = (
     {
-        showValidity, schema, level, ...props
+        showValidity, schema, ...props
     }
 ) => {
-    const {storeKeys} = props
+    const {storeKeys, schemaKeys} = props
     const readOnly = schema.get('readOnly') as boolean
     return <>
         <WidgetEngine<{ readOnly?: boolean }>
             showValidity={showValidity}
             storeKeys={storeKeys.push('data')}
+            schemaKeys={schemaKeys?.push('properties').push('data')}
             schema={schema.getIn(['properties', 'data']) as UISchemaMap}
             parentSchema={schema}
-            level={level + 1}
             readOnly={readOnly}
             noGrid
         />

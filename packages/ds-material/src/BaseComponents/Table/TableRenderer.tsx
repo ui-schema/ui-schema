@@ -20,7 +20,7 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<keyof WidgetProps, 'value' | 'errors' | 'valid'>> & Pick<WithValue, 'onChange'> & TableRendererBaseProps & ListButtonOverwrites> = (
     {
         storeKeys, schema, onChange,
-        showValidity, level,
+        showValidity,
         // widgets must come from an own wrapper component, to overwrite/enable any widgets for special `TableCell` formatting
         widgets,
         TableRowRenderer,
@@ -86,7 +86,6 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
                                 storeKeys={storeKeys.push(i as number)}
                                 schema={itemsSchema}
                                 parentSchema={schema}
-                                level={level}
                                 isVirtual={isVirtual}
                                 noGrid
 

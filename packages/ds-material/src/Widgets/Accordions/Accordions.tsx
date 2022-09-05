@@ -30,9 +30,9 @@ const AccordionStackBase: React.ComponentType<WidgetProps<MuiWidgetsBinding<{ In
 ) => {
     const uid = useUID()
     const {
-        storeKeys, schema,
+        storeKeys, schemaKeys, schema,
         parentSchema,
-        showValidity, level,
+        showValidity,
         isOpen, setOpen, valid, widgets,
     } = props
     const [errors, setErrors] = React.useState<ValidatorErrorsType | undefined>()
@@ -58,6 +58,7 @@ const AccordionStackBase: React.ComponentType<WidgetProps<MuiWidgetsBinding<{ In
                     valid={Boolean(valid)}
                     childInvalid={childInvalid > 0}
                     storeKeys={storeKeys}
+                    schemaKeys={schemaKeys}
                     parentSchema={parentSchema}
                     schema={schema}
                     isOpen={isOpen}
@@ -71,7 +72,7 @@ const AccordionStackBase: React.ComponentType<WidgetProps<MuiWidgetsBinding<{ In
                 <Box>
                     <InfoRenderer
                         schema={schema} variant={'preview'} openAs={'embed'}
-                        storeKeys={storeKeys} valid={valid} errors={errors}
+                        storeKeys={storeKeys} schemaKeys={schemaKeys} valid={valid} errors={errors}
                     />
                 </Box> : undefined}
 
@@ -79,7 +80,8 @@ const AccordionStackBase: React.ComponentType<WidgetProps<MuiWidgetsBinding<{ In
                 {...props}
                 schema={schema}
                 parentSchema={parentSchema}
-                storeKeys={storeKeys} level={level}
+                storeKeys={storeKeys}
+                schemaKeys={schemaKeys}
                 onErrors={setErrors}
                 isVirtual={props.isVirtual || (parentSchema?.get('onClosedHidden') as boolean && !isOpen)}
             />
@@ -101,12 +103,13 @@ export interface AccordionsRendererProps {
         schema: UISchemaMap
         parentSchema: UISchemaMap | undefined
         storeKeys: StoreKeys
+        schemaKeys: StoreKeys | undefined
     }>
 }
 
 export const AccordionsRendererBase = <W extends WidgetProps<MuiWidgetsBinding> = WidgetProps<MuiWidgetsBinding>>(
     {
-        schema, storeKeys, level,
+        schema, storeKeys, schemaKeys,
         errors, showValidity,
         ...props
     }: W
@@ -123,7 +126,7 @@ export const AccordionsRendererBase = <W extends WidgetProps<MuiWidgetsBinding> 
                 schema={childSchema}
                 parentSchema={schema}
                 storeKeys={storeKeys.push(childKey)}
-                level={level + 1}
+                schemaKeys={schemaKeys?.push('properties').push(childKey)}
                 isOpen={open === childKey}
                 setOpen={setOpen}
             />

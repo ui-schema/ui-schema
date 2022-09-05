@@ -24,7 +24,6 @@ export type WidgetEngineInjectProps = 'currentPluginIndex' | 'requiredList' | 'r
 // 'value' | 'onChange' | 'internalValue'
 
 export type WidgetEngineProps<W extends WidgetsBindingFactory = WidgetsBindingFactory, PWidget extends WidgetProps<W> = WidgetProps<W>, C extends {} = {}, PWrapper extends {} = {}> = AppliedWidgetEngineProps<C, W, PWidget> & {
-    // level?: number
 
     // listen from a hoisted component for `errors` changing,
     // useful for some performance optimizes like at ds-material Accordions
@@ -57,27 +56,26 @@ export type WidgetEngineProps<W extends WidgetsBindingFactory = WidgetsBindingFa
 
 // `extractValue` has moved to own plugin `ExtractStorePlugin` since `0.3.0`
 // `withUIMeta` and `mema` are not needed for performance optimizing since `0.3.0` at this position
-export const WidgetEngine = <W extends WidgetsBindingFactory = WidgetsBindingFactory, PWidget extends WidgetProps<W> = WidgetProps<W>, C extends {} = {}, P extends WidgetEngineProps<W, PWidget, C> = WidgetEngineProps<W, PWidget, C>, U extends {} = {}>(
+export const WidgetEngine = <PWidget extends WidgetProps = WidgetProps, C extends {} = {}, P extends WidgetEngineProps<WidgetsBindingFactory, PWidget, C> = WidgetEngineProps<WidgetsBindingFactory, PWidget, C>, U extends {} = {}>(
     {StackWrapper, wrapperProps, extractValues, ...props}: P// & PWidget
 ): React.ReactElement => {
-    const {widgets, ...meta} = useUIMeta<C, W>()
+    const {widgets, ...meta} = useUIMeta<C, WidgetsBindingFactory>()
     const config = useUIConfig<U>()
     const {store, showValidity} = useUIStore()
     const {onChange} = useUIStoreActions()
     const {
-        level = 0,
         parentSchema,
         storeKeys = List([]),
         schemaKeys = List([]),
         schema,
         widgets: customWidgets,
         // todo: fix typing of `WidgetEngineProps`
-    } = props as unknown as WidgetProps<W>
+    } = props as unknown as WidgetProps<WidgetsBindingFactory>
     const values = extractValues ? extractValues(store) : store?.extractValues(storeKeys)
     // central reference integrity of `storeKeys` for all plugins and the receiving widget, otherwise `useImmutable` is needed more times, e.g. 3 times in plugins + 1x time in widget
     const currentStoreKeys = useImmutable(storeKeys)
+    const errorContainer = React.useMemo(() => createValidatorErrors(), [])
     const currentSchemaKeys = useImmutable(schemaKeys)
-    const errorContainer = createValidatorErrors()
     const activeWidgets = customWidgets || widgets
 
     // todo: resolving `hidden` here is wrong, must be done after merging schema / resolving referenced
@@ -93,13 +91,12 @@ export const WidgetEngine = <W extends WidgetsBindingFactory = WidgetsBindingFac
     }
 
     const stack =
-        <NextPluginRendererMemo<C, U, W>
+        <NextPluginRendererMemo<C, U, WidgetsBindingFactory>
             {...meta}
             {...config}
             {...props}
             currentPluginIndex={-1}
             widgets={activeWidgets}
-            level={level}
             storeKeys={currentStoreKeys}
             schemaKeys={currentSchemaKeys}
             requiredList={required}

@@ -127,7 +127,6 @@ const WidgetTextField = applyPluginStack<UIMetaCustomContext>(StringRenderer)
     storeKeys={storeKeys.push('city') as StoreKeys}
     schema={schema.getIn(['properties', 'name']) as unknown as StoreSchemaType}
     parentSchema={schema}
-    level={1}
     readOnly={false}
     // noGrid={false} (as grid-item is included in `PluginStack`)
 />

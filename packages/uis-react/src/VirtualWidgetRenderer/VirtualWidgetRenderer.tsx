@@ -24,7 +24,6 @@ export const VirtualArrayRenderer = (
             schema={List.isList(items) ? items.get(i) : items}
             parentSchema={schema}
             storeKeys={storeKeys.push(i)}
-            level={0}
             virtualWidgets={virtualWidgets}
             widgets={widgets}
             isVirtual
