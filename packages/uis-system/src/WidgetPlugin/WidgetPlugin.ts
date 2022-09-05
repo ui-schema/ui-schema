@@ -1,6 +1,7 @@
-import { WidgetPayload } from '@ui-schema/system/Widget'
+import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
 
-export interface WidgetPluginPayload extends WidgetPayload {
+export interface WidgetPluginPayload {
     // current number of plugin in the stack
     currentPluginIndex: number
+    errors: ValidatorErrorsType
 }

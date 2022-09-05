@@ -23,8 +23,7 @@ export function UIMetaProvider<C extends {} = {}, W extends WidgetsBindingFactor
 }
 
 export const useUIMeta = <C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(): UIMetaContext<W> & C => {
-    // @ts-ignore
-    return React.useContext<UIMetaContext<W & C>>(UIMetaContextObj)
+    return React.useContext(UIMetaContextObj) as UIMetaContext<W> & C
 }
 
 export const withUIMeta = <P extends WidgetProps, C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(

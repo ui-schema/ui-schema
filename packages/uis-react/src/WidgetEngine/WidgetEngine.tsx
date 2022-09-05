@@ -3,13 +3,14 @@ import { List } from 'immutable'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
-import { StoreKeys, useUIConfig } from '@ui-schema/react/UIStore'
+import { StoreKeys, UIStoreType, useUIConfig, useUIStore, WithValue } from '@ui-schema/react/UIStore'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 import { WidgetEngineErrorBoundary, WidgetPluginProps, WidgetPluginType } from '@ui-schema/react/WidgetEngine'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { AppliedWidgetEngineProps } from '@ui-schema/react/applyWidgetEngine'
 import { WidgetOverrideType, WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { WidgetRendererProps } from '@ui-schema/react/WidgetRenderer'
+import { useUIStoreActions } from '@ui-schema/react/UIStoreActions'
 
 export type WidgetEngineWrapperProps = {
     children: React.ReactNode
@@ -18,9 +19,11 @@ export type WidgetEngineWrapperProps = {
     schemaKeys: StoreKeys
 }
 
-export type WidgetEngineInjectProps = 'currentPluginIndex' | 'requiredList' | 'required' | 'errors' | 'valid' | 'storeKeys' | 'parentSchema'
+export type WidgetEngineInjectProps = 'currentPluginIndex' | 'requiredList' | 'required' | 'errors' | 'valid' | 'storeKeys'/* | 'parentSchema'*/// |
+// todo find a better way to define from-plugin injected values as "required" - or shouldn't?
+// 'value' | 'onChange' | 'internalValue'
 
-export type WidgetEngineProps<PWidget extends WidgetProps = WidgetProps, C extends {} = {}, PWrapper extends {} = {}> = AppliedWidgetEngineProps<C, PWidget> & {
+export type WidgetEngineProps<W extends WidgetsBindingFactory = WidgetsBindingFactory, PWidget extends WidgetProps<W> = WidgetProps<W>, C extends {} = {}, PWrapper extends {} = {}> = AppliedWidgetEngineProps<C, W, PWidget> & {
     // level?: number
 
     // listen from a hoisted component for `errors` changing,
@@ -40,6 +43,11 @@ export type WidgetEngineProps<PWidget extends WidgetProps = WidgetProps, C exten
     StackWrapper?: React.ComponentType<WidgetEngineWrapperProps & PWrapper>
 
     wrapperProps?: PWrapper
+    // overwrite the value extraction, can return more values than required
+    extractValues?: (store: UIStoreType<any> | undefined) =>
+        WithValue &
+        { [k: string]: any } &
+        { [N in keyof PWidget]: never }
 
 
     // all other props are passed down to all rendering Plugins and the final widget
@@ -49,11 +57,13 @@ export type WidgetEngineProps<PWidget extends WidgetProps = WidgetProps, C exten
 
 // `extractValue` has moved to own plugin `ExtractStorePlugin` since `0.3.0`
 // `withUIMeta` and `mema` are not needed for performance optimizing since `0.3.0` at this position
-export const WidgetEngine = <PWidget extends WidgetProps = WidgetProps, C extends {} = {}, P extends WidgetEngineProps<PWidget, C> = WidgetEngineProps<PWidget, C>>(
-    {StackWrapper, wrapperProps, ...props}: P & PWidget
+export const WidgetEngine = <W extends WidgetsBindingFactory = WidgetsBindingFactory, PWidget extends WidgetProps<W> = WidgetProps<W>, C extends {} = {}, P extends WidgetEngineProps<W, PWidget, C> = WidgetEngineProps<W, PWidget, C>, U extends {} = {}>(
+    {StackWrapper, wrapperProps, extractValues, ...props}: P// & PWidget
 ): React.ReactElement => {
-    const {widgets, ...meta} = useUIMeta()
-    const config = useUIConfig()
+    const {widgets, ...meta} = useUIMeta<C, W>()
+    const config = useUIConfig<U>()
+    const {store, showValidity} = useUIStore()
+    const {onChange} = useUIStoreActions()
     const {
         level = 0,
         parentSchema,
@@ -62,7 +72,8 @@ export const WidgetEngine = <PWidget extends WidgetProps = WidgetProps, C extend
         schema,
         widgets: customWidgets,
         // todo: fix typing of `WidgetEngineProps`
-    } = props as unknown as WidgetProps
+    } = props as unknown as WidgetProps<W>
+    const values = extractValues ? extractValues(store) : store?.extractValues(storeKeys)
     // central reference integrity of `storeKeys` for all plugins and the receiving widget, otherwise `useImmutable` is needed more times, e.g. 3 times in plugins + 1x time in widget
     const currentStoreKeys = useImmutable(storeKeys)
     const currentSchemaKeys = useImmutable(schemaKeys)
@@ -71,7 +82,7 @@ export const WidgetEngine = <PWidget extends WidgetProps = WidgetProps, C extend
 
     // todo: resolving `hidden` here is wrong, must be done after merging schema / resolving referenced
     const isVirtual = Boolean(props.isVirtual || schema?.get('hidden'))
-    let required = List([])
+    let required: List<string> = List([])
     if (parentSchema) {
         // todo: resolving `required` here is wrong, must be done after merging schema / resolving referenced
         //      ! actual, it is correct here, as using `parentSchema`
@@ -82,7 +93,7 @@ export const WidgetEngine = <PWidget extends WidgetProps = WidgetProps, C extend
     }
 
     const stack =
-        <NextPluginRenderer
+        <NextPluginRendererMemo<C, U, W>
             {...meta}
             {...config}
             {...props}
@@ -94,6 +105,12 @@ export const WidgetEngine = <PWidget extends WidgetProps = WidgetProps, C extend
             requiredList={required}
             required={false}
             errors={errorContainer}
+            parentSchema={parentSchema}
+            schema={schema as UISchemaMap}
+            // `showValidity` is overridable by render flow, e.g. nested Stepper
+            showValidity={props.showValidity || showValidity}
+            onChange={onChange}
+            {...values || {}}
             isVirtual={isVirtual}
             valid
         />
@@ -131,10 +148,15 @@ export const getNextPlugin =
             wps[next] as WidgetPluginType<C, W> :
             WidgetRenderer as React.ComponentType<WidgetRendererProps<W>>
 
-export const NextPluginRenderer = <C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory, P extends WidgetPluginProps<W> & C = WidgetPluginProps<W> & C>({currentPluginIndex, ...props}: P): React.ReactElement => {
+export const NextPluginRenderer = <C extends {} = {}, U extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory, P extends WidgetPluginProps<W> = WidgetPluginProps<W>>(
+    {
+        currentPluginIndex,
+        ...props
+    }: P & C & U,
+): React.ReactElement => {
     const next = currentPluginIndex + 1
     const Plugin = getNextPlugin<C, W>(next, props.widgets)
     // @ts-ignore
     return <Plugin {...props} currentPluginIndex={next}/>
 }
-export const NextPluginRendererMemo = memo(NextPluginRenderer) as <P extends WidgetPluginProps>(props: P) => React.ReactElement
+export const NextPluginRendererMemo = memo(NextPluginRenderer) as <C extends {} = {}, U extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory, P extends WidgetPluginProps<W> = WidgetPluginProps<W>>(props: P & C & U) => React.ReactElement

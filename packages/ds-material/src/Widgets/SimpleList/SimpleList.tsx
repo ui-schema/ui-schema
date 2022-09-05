@@ -1,31 +1,43 @@
-import React from 'react';
-import FormControl from '@mui/material/FormControl';
-import Grid from '@mui/material/Grid';
-import FormLabel from '@mui/material/FormLabel';
-import IconButton from '@mui/material/IconButton';
-import Add from '@mui/icons-material/Add';
-import Remove from '@mui/icons-material/Remove';
-import {ValidityHelperText} from '@ui-schema/ds-material/Component/LocaleHelperText';
-import {AccessTooltipIcon} from '@ui-schema/ds-material/Component/Tooltip';
-import {ListButton} from '@ui-schema/ds-material/Component/ListButton';
-import {memo} from '@ui-schema/react/Utils/memo';
-import {extractValue} from '@ui-schema/react/UIStore';
-import {WidgetEngine} from '@ui-schema/react/WidgetEngine';
-import {Translate} from '@ui-schema/react/Translate';
-import {TranslateTitle} from '@ui-schema/react/TranslateTitle';
-import {Map} from 'immutable';
+import React from 'react'
+import FormControl from '@mui/material/FormControl'
+import Grid from '@mui/material/Grid'
+import FormLabel from '@mui/material/FormLabel'
+import IconButton, { IconButtonProps } from '@mui/material/IconButton'
+import Add from '@mui/icons-material/Add'
+import Remove from '@mui/icons-material/Remove'
+import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
+import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
+import { ListButton, ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { extractValue, WithOnChange, WithValue } from '@ui-schema/react/UIStore'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
+import { Translate } from '@ui-schema/react/Translate'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { Map } from 'immutable'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { InfoRendererProps, MuiWidgetsBinding } from '@ui-schema/ds-material'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UIStoreActionListItemDelete } from '@ui-schema/react/UIStoreActions'
+import { ButtonProps } from '@mui/material/Button'
 
-export const SimpleListItemBase = (
+export type SimpleListItemProps = Pick<WidgetProps, 'schemaKeys' | 'showValidity' | 'schema' | 'storeKeys' | 'required' | 'level'> & {
+    notDeletable?: boolean
+    readOnly?: boolean
+    index?: number
+    btnSize?: IconButtonProps['size']
+}
+
+export const SimpleListItemBase: React.FC<SimpleListItemProps & Pick<WithValue, 'onChange'>> = (
     {
         showValidity, schema, schemaKeys, storeKeys, notDeletable,
-        readOnly, required, onChange, level, index,
+        readOnly, required, onChange, level, index, btnSize,
     },
 ) => {
     return <Grid key={index} item xs={12} style={{display: 'flex'}}>
         <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
             <WidgetEngine
                 showValidity={showValidity} noGrid
-                schema={schema.get('items')} parentSchema={schema}
+                schema={schema.get('items') as UISchemaMap} parentSchema={schema}
                 storeKeys={storeKeys.push(index)} level={level + 1}
                 schemaKeys={schemaKeys?.push('items')}
             />
@@ -41,9 +53,9 @@ export const SimpleListItemBase = (
                         index: index,
                         schema,
                         required,
-                    })
+                    } as UIStoreActionListItemDelete)
                 }}
-                size={'small'}
+                size={btnSize || 'small'}
                 style={{margin: 'auto 6px', flexShrink: 0}}
             >
                 <AccessTooltipIcon title={<Translate text={'labels.remove-entry'}/>}>
@@ -54,7 +66,7 @@ export const SimpleListItemBase = (
 }
 export const SimpleListItem = memo(SimpleListItemBase)
 
-export const SimpleListInner = (
+export const SimpleListInner: React.FC<WidgetProps<MuiWidgetsBinding & { InfoRenderer?: React.ComponentType<InfoRendererProps> }> & { listSize: number, btnAddShowLabel?: boolean, btnAddStyle?: React.CSSProperties } & ListButtonOverwrites & WithOnChange> = (
     {
         schemaKeys, storeKeys, schema, listSize, onChange,
         showValidity, valid, errors, required, level,
@@ -65,7 +77,7 @@ export const SimpleListInner = (
         btnColor: btnColorProp,
     },
 ) => {
-    const btnSize = (schema.getIn(['view', 'btnSize']) || btnSizeProp || 'small')
+    const btnSize = (schema.getIn(['view', 'btnSize']) as IconButtonProps['size'] || btnSizeProp || 'small')
     const btnVariant = (schema.getIn(['view', 'btnVariant']) || btnVariantProp || undefined)
     const btnColor = (schema.getIn(['view', 'btnColor']) || btnColorProp || undefined)
     const notAddable = schema.get('notAddable')
@@ -87,7 +99,7 @@ export const SimpleListInner = (
                 </Grid> :
                 undefined}
 
-            {Array.from(Array(listSize || 0)).map((itemVal, i) =>
+            {Array.from(Array(listSize || 0)).map((_itemVal, i) =>
                 <SimpleListItem
                     key={i}
                     index={i}
@@ -116,8 +128,8 @@ export const SimpleListInner = (
                             })
                         }}
                         btnSize={btnSize}
-                        btnVariant={btnVariant}
-                        btnColor={btnColor}
+                        btnVariant={btnVariant as ButtonProps['variant']}
+                        btnColor={btnColor as ButtonProps['color']}
                         showLabel={btnAddShowLabel}
                         style={btnAddStyle}
                         Icon={Add}
@@ -141,12 +153,14 @@ export const SimpleListInner = (
 }
 export const SimpleListBase = memo(SimpleListInner)
 
-export const SimpleListWrapper = ({
-                                      value,
-                                      // eslint-disable-next-line no-unused-vars
-                                      internalValue,
-                                      ...props
-                                  }) => {
+export const SimpleListWrapper: React.FC<WidgetProps<MuiWidgetsBinding & { InfoRenderer?: React.ComponentType<InfoRendererProps> }> & { btnAddShowLabel?: boolean, btnAddStyle?: React.CSSProperties } & ListButtonOverwrites & WithValue> = (
+    {
+        value,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        internalValue,
+        ...props
+    },
+) => {
     return <SimpleListBase listSize={value?.size} {...props}/>
 }
 export const SimpleList = extractValue(SimpleListWrapper)

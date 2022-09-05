@@ -1,6 +1,6 @@
-import React  from 'react'
+import React from 'react'
 import { WidgetEngineInjectProps, WidgetEngineWrapperProps } from '@ui-schema/react/WidgetEngine'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { UIMetaContext } from '@ui-schema/react/UIMeta'
 import { StoreKeys, WithValue } from '@ui-schema/react/UIStore'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
@@ -17,17 +17,17 @@ export type WidgetEngineRootOrNestedProps = {
 }
 
 // todo: add also generic widgets here?
-export type AppliedWidgetEngineProps<CMeta extends {} = {}, PWidget extends WidgetProps = WidgetProps> =
-    Omit<PWidget, WidgetEngineInjectProps | keyof (UIMetaContext & CMeta) | keyof WithValue | 'level'>
-    & Partial<UIMetaContext & CMeta>
+export type AppliedWidgetEngineProps<CMeta extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory, PWidget extends WidgetProps<W> = WidgetProps<W>> =
+    Omit<PWidget, WidgetEngineInjectProps | keyof (UIMetaContext<W> & CMeta) | keyof WithValue | 'level'>
+    & Partial<UIMetaContext<W> & CMeta>
     & Partial<Pick<PWidget, 'showValidity' | 'level'>>
     & WidgetEngineRootOrNestedProps
 
-export function applyWidgetEngine<CMeta extends {} = {}, PWidget extends WidgetProps = WidgetProps>(
+export function applyWidgetEngine<CMeta extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory, PWidget extends WidgetProps<W> = WidgetProps<W>>(
     CustomWidget: React.ComponentType<PWidget>
-): <PPlugin extends {} = {}>(props: AppliedWidgetEngineProps<CMeta, PWidget> & PPlugin) => React.ReactElement
+): <PPlugin extends {} = {}>(props: AppliedWidgetEngineProps<CMeta, W, PWidget> & PPlugin) => React.ReactElement
 
-export function injectWidgetEngine<CMeta extends {} = {}, PWidget extends WidgetProps = WidgetProps>(
+export function injectWidgetEngine<CMeta extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory, PWidget extends WidgetProps<W> = WidgetProps<W>>(
     Wrapper: React.ComponentType<WidgetEngineWrapperProps>,
     CustomWidget?: React.ComponentType<PWidget>,
-): <PPlugin extends {} = {}>(props: AppliedWidgetEngineProps<CMeta, PWidget> & PPlugin) => React.ReactElement
+): <PPlugin extends {} = {}>(props: AppliedWidgetEngineProps<CMeta, W, PWidget> & PPlugin) => React.ReactElement

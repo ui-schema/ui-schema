@@ -39,6 +39,11 @@ List of renamed functions, components etc., most are also moved to other package
 - added `ObjectRenderer` as `type.object` / no longer as hard coded default
 - added `NoWidget` as `NoWidget` / no longer as hard coded default
 
+#### React Plugins
+
+- removed `ExtractStorePlugin`, included now in `WidgetEngine` directly (for the moment, experimenting performance/typing)
+- removed `level` property
+
 ### DS Material
 
 - adjusted root import paths, no longer exports the actual widgets directly - only with sub-folder

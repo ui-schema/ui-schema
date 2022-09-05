@@ -45,9 +45,8 @@ export const useUIStore = <D extends any = any>(): UIStoreContext<D> => {
     return React.useContext(UIStoreContextObj)
 }
 
-export function useUIConfig<C extends {} = {}>(): C {
-    // @ts-ignore
-    return React.useContext(UIConfigContextObj)
+export function useUIConfig<U extends {} = {}>(): U {
+    return React.useContext(UIConfigContextObj) as U
 }
 
 export interface WithOnChange<A = UIStoreActions> {

@@ -23,7 +23,7 @@ export interface WidgetPayload {
     required: boolean
     // todo: extract to validator typings, extend here
     // `errors` and `valid` are created inside validator plugins
-    errors: ValidatorErrorsType
+    errors?: ValidatorErrorsType
     valid?: boolean
 
     // overridable store value:

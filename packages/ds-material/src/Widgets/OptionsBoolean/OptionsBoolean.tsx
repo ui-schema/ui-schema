@@ -1,17 +1,25 @@
-import React from 'react';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import {TranslateTitle} from '@ui-schema/react/TranslateTitle';
-import {ValidityHelperText} from '@ui-schema/ds-material/Component';
+import React from 'react'
+import FormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel'
+import Switch, { SwitchProps } from '@mui/material/Switch'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { ValidityHelperText } from '@ui-schema/ds-material/Component'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WithScalarValue } from '@ui-schema/react/UIStore'
+import { TypographyProps } from '@mui/material/Typography'
 
-export const BoolRenderer = (
+export const BoolRenderer: React.FC<WidgetProps & WithScalarValue & {
+    labelledBy?: string
+    checkedIcon?: SwitchProps['checkedIcon']
+    edge?: SwitchProps['edge']
+    icon?: SwitchProps['icon']
+}> = (
     {
         value, onChange, schema, storeKeys, showValidity, valid, required, errors,
         labelledBy = undefined,
         checkedIcon, edge, icon,
     },
 ) => {
-    const currentVal = Boolean(value);
+    const currentVal = Boolean(value)
 
     const iconProps = {
         ...(checkedIcon ? {
@@ -30,7 +38,7 @@ export const BoolRenderer = (
                 backgroundColor: !valid && showValidity ? 'error.dark' : undefined,
             },
         }}
-        color={schema.getIn(['view', 'color'])}
+        color={schema.getIn(['view', 'color']) as SwitchProps['color']}
         required={required}
         checked={currentVal}
         disabled={schema.get('readOnly')}
@@ -58,11 +66,11 @@ export const BoolRenderer = (
             <FormControlLabel
                 disabled={schema.get('readOnly')}
                 control={control}
-                labelPlacement={schema.getIn(['view', 'labelPlacement'])}
+                labelPlacement={schema.getIn(['view', 'labelPlacement']) as FormControlLabelProps['labelPlacement']}
                 componentsProps={{
                     typography: {
                         variant:
-                            schema.getIn(['view', 'titleVariant']) ||
+                            schema.getIn(['view', 'titleVariant']) as TypographyProps['variant'] ||
                             (schema.getIn(['view', 'dense']) ? 'body2' : undefined),
                     },
                 }}
@@ -70,4 +78,4 @@ export const BoolRenderer = (
             />}
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </>
-};
+}

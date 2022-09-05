@@ -5,7 +5,7 @@ import { WidgetPluginPayload } from '@ui-schema/system/WidgetPlugin'
 import { onErrorHandler } from '@ui-schema/system/ValidatorErrors'
 import { WithValue } from '@ui-schema/react/UIStore'
 
-export interface WidgetPluginProps<W extends WidgetsBindingFactory = WidgetsBindingFactory> extends WidgetProps<W>, WidgetPluginPayload, WithValue {
+export type WidgetPluginProps<W extends WidgetsBindingFactory = WidgetsBindingFactory> = WidgetPluginPayload & WidgetProps<W> & WithValue & {
     // must be transformed from list to boolean `required` by a plugin
     requiredList?: List<any>
 
