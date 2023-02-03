@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useSlate } from 'slate-react'
-import ToggleButton from '@mui/lab/ToggleButton'
+import ToggleButton from '@mui/material/ToggleButton'
 import {
     getPreventDefaultHandler,
     someNode, toggleNodeType,
@@ -49,12 +49,12 @@ export const ToolbarButton: React.ComponentType<ToolbarButtonProps> = (
             selected={selected}
             onMouseDown={onClick}
             onKeyDown={(e) => {
-                if (e.key === 'Enter') {
+                if(e.key === 'Enter') {
                     onClick(e)
                 }
             }}
             aria-label={type}
-            value={type}
+            value={type as {}}
             size={'small'}
             style={{border: 0, padding: 3}}
             /*onFocus={(e) => {
