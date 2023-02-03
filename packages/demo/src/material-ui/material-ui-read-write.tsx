@@ -80,7 +80,6 @@ const formSchema = createOrderedMap({
             type: 'string',
             widget: 'Text',
         },
-
         layouts: {
             type: 'array',
             widget: 'OptionsCheck',

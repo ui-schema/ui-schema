@@ -69,10 +69,10 @@ Use typings:
 
 ```typescript jsx
 // for any scalar widgets:
-React.ComponentType < WidgetProps & WithScalarValue >
+const WidgetComp1 = React.ComponentType<WidgetProps & WithScalarValue>
 
 // or use e.g. the `extractValue` HOC:
-React.ComponentType < WidgetProps & WithValue >
+const WidgetComp2 = React.ComponentType<WidgetProps & WithValue>
 
 export const FormGroupBase: React.ComponentType<WidgetProps & WithValue> = (props) => {
 }
