@@ -15,6 +15,17 @@ This serves as overview of releases and changes - follow the [#releases channel 
 > - the code tag `uis`/`ui-schema` refers to `ui-schema` or is used as core package prefix
 > - [meaning of emojis](https://gist.github.com/elbakerino/1cd946c4269681d659eede5c828920b7)
 
+### v0.4.5
+
+> @ 2023-02-03
+
+- 🪥 `ui-schema` `Utils/useDebounceValue` adjusted internal state flow to flush in layout effects
+- ✨ `ui-schema` simple-plugin [`SortPlugin`](/docs/plugins#sortplugin)
+- ✨ `ui-schema` simple-plugin [`InheritKeywords`](/docs/plugins#inheritkeywords) [#204](https://github.com/ui-schema/ui-schema/issues/204)
+- 📚 docs links and icons fixes, [new read-widgets demos](/docs/ds-material/widgets-read/BooleanRead#demo-ui-generator)
+
+[Release notes](https://github.com/ui-schema/ui-schema/releases/tag/0.4.5)
+
 ### v0.4.4
 
 > @ 2022-09-01

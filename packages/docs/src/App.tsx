@@ -28,7 +28,7 @@ const loadSchema: loadSchemaUIApi = (url, versions) => {
 if (process.env.REACT_APP_G_TAG) {
     prepareConsent({
         localKey: '_consent',
-        version: 'a',
+        version: 'b',
         trackers: [
             pluginGoogle('measure', process.env.REACT_APP_G_TAG as string),
         ],
@@ -36,7 +36,7 @@ if (process.env.REACT_APP_G_TAG) {
 } else {
     prepareConsent({
         localKey: '_consent',
-        version: 'a',
+        version: 'b',
         trackers: [],
     })
 }
