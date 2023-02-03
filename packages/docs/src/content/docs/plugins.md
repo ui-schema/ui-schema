@@ -8,7 +8,7 @@ This page lists and explains the included plugins and validators.
 
 ## Widget / Schema Plugins
 
-Widget plugins which work with default JSON-Schema keywords:
+Widget plugins which work with **default JSON-Schema keywords**:
 
 | Plugin                                                  | Package              | Handles                                                          | Added Props | Status       |
 |:--------------------------------------------------------| :---                 |:-----------------------------------------------------------------| :---        |:-------------|
@@ -20,14 +20,7 @@ Widget plugins which work with default JSON-Schema keywords:
 | [ReferencingHandler](#referencinghandler)               | @ui-schema/ui-schema | keywords `$defs`, `$anchor`, `$id`, `$ref` ...                   | ... | ✔            |
 | [ReferencingNetworkHandler](#referencingnetworkhandler) | @ui-schema/ui-schema | keywords `$ref`                                                  | ... | ✔            |
 
-## Widget / Extra Plugins
-
-Widget plugins which implement further custom logics, mostly not included by default.
-
-| Plugin                                              | Package              | Handles              |
-| :---                                                | :---                 | :---                 |
-| [InjectSplitSchemaPlugin](#injectsplitschemaplugin) | @ui-schema/ui-schema | merging "style schema" into "data schema" |
-| [ExtractStorePlugin](#extractstoreplugin) | @ui-schema/ui-schema | extracting schema level values from `UIStore`, **included by default** |
+> see [full (non-validator) plugin list](#plugin-list)
 
 ## Validation Plugins
 
@@ -100,6 +93,8 @@ Results in the translation: `Input is invalid, must be a valid zip code`, `Einga
 - [ReferencingHandler](#referencinghandler)
 - [ReferencingNetworkHandler](#referencingnetworkhandler)
 - [InjectSplitSchemaPlugin](#injectsplitschemaplugin)
+- [ExtractStorePlugin](#extractstoreplugin)
+- [InheritKeywords](#inheritkeywords)
 
 ### DefaultHandler
 
@@ -808,3 +803,86 @@ Default plugin to extract the store values for one schema-level, using the HOC `
 > the PluginProps/extractValue typing is a bit unstable atm. [issue #91](https://github.com/ui-schema/ui-schema/issues/91)
 
 Also check the `UIStore.extractValues(storeKeys)` function for custom extractions.
+
+### InheritKeywords
+
+Inherit keywords from the `parentSchema` to all `schema`:
+
+```typescript
+import { InheritKeywords } from '@ui-schema/ui-schema/Plugins/InheritKeywords'
+
+const widgets = {
+    ...widgets,
+    pluginSimpleStack: [
+        ...widgets.pluginSimpleStack,
+        InheritKeywords(['readOnly']),
+    ],
+}
+```
+
+Control when to inherit:
+
+```typescript
+import { InheritKeywords } from '@ui-schema/ui-schema/Plugins/InheritKeywords'
+import { schemaTypeToDistinct } from '@ui-schema/ui-schema/Utils/schemaTypeToDistinct'
+
+const widgets = {
+    ...widgets,
+    pluginSimpleStack: [
+        ...widgets.pluginSimpleStack,
+        InheritKeywords(
+            [['view', 'dense']],
+            ({schema}) => schemaTypeToDistinct(schema?.get('type')) !== 'boolean',
+            // (/*{parentSchema, schema}*/) => false,
+        ),
+    ],
+}
+```
+
+### SortPlugin
+
+Sorts the `schema.properties` if `schema.sortOrder` exists, appends all non-sorted properties to the end.
+
+```typescript
+import { SortPlugin } from '@ui-schema/ui-schema/Plugins/SortPlugin'
+
+const widgets = {
+    ...widgets,
+    pluginSimpleStack: [
+        ...widgets.pluginSimpleStack,
+        SortPlugin,
+    ],
+}
+```
+
+```json
+{
+    "type": "object",
+    "properties": {
+        "prop_b": {},
+        "prop_d": {}
+        "prop_a": {},
+        "prop_c": {}
+    },
+    "sortOrder": [
+        "prop_a",
+        "prop_b",
+        "prop_x",
+        "prop_c"
+    ]
+}
+```
+
+Results in:
+
+```json
+{
+    "type": "object",
+    "properties": {
+        "prop_a": {},
+        "prop_b": {},
+        "prop_c": {},
+        "prop_d": {}
+    }
+}
+```

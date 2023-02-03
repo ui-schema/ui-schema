@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ui-schema",
-    "version": "0.4.4",
+    "version": "0.4.5",
     "description": "JSON-Schema based UI and Form Generator for React, for any Design-System",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
