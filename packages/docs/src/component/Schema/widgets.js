@@ -26,6 +26,7 @@ import {
     RgbaColorPicker,
     RgbaStringColorPicker,
 } from 'react-colorful'
+import {emailValidator} from '@ui-schema/ui-schema';
 
 const ColorfulHex = (props) => <WidgetColorful ColorfulPicker={HexColorPicker} {...props}/>
 const ColorfulHslaBase = (props) => <WidgetColorful ColorfulPicker={HslaColorPicker} {...props}/>
@@ -41,7 +42,13 @@ const ColorfulRgbaBase =
         />
 const ColorfulRgba = extractValue(memo(ColorfulRgbaBase))
 
-const customWidgets = {...widgets};
+const customWidgets = {
+    ...widgets,
+    pluginSimpleStack: [
+        ...widgets.pluginSimpleStack,
+        emailValidator,
+    ],
+};
 
 const CustomTable = ({widgets, ...props}) => {
 

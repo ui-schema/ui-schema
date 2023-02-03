@@ -112,11 +112,10 @@ export const CustomLayout = () => {
 
         <ConsentUiBoxDialog
             layout={'dense'}
-            //showSelectEssential
             open={Boolean(ready && (!hasChosen || showUi))}
             showDetails={Boolean(showDetails || (showUi && hasChosen))}
             setShowDetails={showDetails || (ready && hasChosen && showUi) ? undefined : setShowDetails}
-            showSelectEssential={showDetails}
+            showSelectEssential
             fullWidthDetails
             maxWidthDetails={'md'}
             maxWidth={'sm'}

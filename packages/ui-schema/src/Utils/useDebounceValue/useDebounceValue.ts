@@ -11,7 +11,7 @@ export const useDebounceValue = <T>(
     debounceTime: number,
     setter: (val: T | undefined) => void,
 ): {
-    // directly set/update the current comp value towards global
+    // directly set/update the current compare value towards global
     bubbleBounce: (currentVal: T | undefined) => void
     bounceVal: DebounceValue<T>
     setBounceVal: React.Dispatch<React.SetStateAction<DebounceValue<T>>>
@@ -19,9 +19,9 @@ export const useDebounceValue = <T>(
 } => {
     const timer = React.useRef<undefined | number>(undefined)
     const [bounceVal, setBounceVal] = React.useState<DebounceValue<T>>({changed: false, value: undefined})
-    React.useEffect(() => {
-        window.clearTimeout(timer.current)
+    React.useLayoutEffect(() => {
         setBounceVal({changed: false, value: value as T})
+        return () => window.clearTimeout(timer.current)
     }, [value, timer])
 
     React.useEffect(() => {

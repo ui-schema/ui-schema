@@ -52,7 +52,7 @@ export const demoAccordions = [
                     type: 'object',
                     allOf: [
                         {
-                            if: {properties: {country: {$ref: '#germany'}}},
+                            if: {properties: {country: {$ref: '#germany'}}, required: ['country']},
                             then: {properties: {privacy: {type: 'boolean'}}},
                             else: {properties: {}},
                         },
