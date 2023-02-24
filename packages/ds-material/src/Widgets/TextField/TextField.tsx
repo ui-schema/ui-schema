@@ -95,6 +95,7 @@ export const StringRenderer = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRen
             fullWidth
             variant={schema.getIn(['view', 'variant']) as any}
             margin={schema.getIn(['view', 'margin']) as InputProps['margin']}
+            // todo: switch to "`small` when dense, `undefined` otherwise" to be able to use mui-theming for defaults
             size={schema.getIn(['view', 'dense']) ? 'small' : 'medium'}
             value={typeof value === 'string' || typeof value === 'number' ? value : ''}
             onClick={onClick}

@@ -17,7 +17,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { TouchBackend } from 'react-dnd-touch-backend'
 import { TouchTransition, PointerTransition, MultiBackendOptions } from 'dnd-multi-backend'
 import { OrderedMap } from 'immutable'
-import { RichContent, RichContentInline, RichContentPane } from '@ui-schema/material-slate'
+//import { RichContent, RichContentInline, RichContentPane } from '@ui-schema/material-slate'
 import { DndBlock, DragDropBlockProvider } from '@ui-schema/material-dnd/DragDropBlockProvider'
 import { KitDndProvider, useOnIntent } from '@ui-schema/kit-dnd'
 import { useOnDirectedMove } from '@ui-schema/material-dnd/useOnDirectedMove'
@@ -58,9 +58,9 @@ const customWidgets = WidgetsDefault.define<CustomWidgetsBinding, {}>({
         DropArea: DropArea,
         DragDropArea: DragDropArea,
         SortableList: SortableList,
-        RichContentPane: RichContentPane,
-        RichContent: RichContent,
-        RichContentInline: RichContentInline,
+        // RichContentPane: RichContentPane,
+        // RichContent: RichContent,
+        // RichContentInline: RichContentInline,
     },
 })
 

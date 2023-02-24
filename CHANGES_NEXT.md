@@ -4,6 +4,9 @@
 
 > todo: add what was moved to which package/sub-path after first clean-up of a working demo-web/demo-server setup
 
+- `@ui-schema/material-editorjs` removed from core monorepo, no replacement yet
+- `@ui-schema/material-slate` removed from core monorepo, no replacement yet
+
 ## Renamed Code
 
 List of renamed functions, components etc., most are also moved to other packages / paths - and some may be renamed/moved again until final `v0.5.0` release.
@@ -60,3 +63,11 @@ List of renamed functions, components etc., most are also moved to other package
     - `widgetsTypes()` just returns `types` widgets
     - `widgetsCustom()` just returns some recommended `custom` widgets
 - `pluginStack` removed, now included directly in `widgetsBinding`
+
+## Plugin & Validator System
+
+- new widget structure, internally similar to previously
+- very strict typings possible
+- each `PluginStack` (now other namings) must be setup and configured with the plugins before adding them to the actual binding
+- a new `.use()` function is used to specify each plugin separately, this function's typing will collect all props of the actual plugin
+- validators work similar to before, but are contained in a `Validator` container with hooks for level-based or full-nested validation and e.g. conditional / ref. handling

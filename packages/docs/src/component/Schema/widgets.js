@@ -118,10 +118,10 @@ export const customWidgets = WidgetsDefault.define({
             loader: () => import('@ui-schema/material-pickers').then(r => r.TimePicker),
             loading: () => <LoadingCircular title={'Loading Time Widget'}/>,
         }),*/
-        EditorJS: Loadable({
+        /*EditorJS: Loadable({
             loader: () => import('./EditorJSComp').then(r => r.EditorJSComp),
             loading: () => <LoadingCircular title={'Loading EditorJS'}/>,
-        }),
+        }),*/
         SortableList: Loadable({
             loader: () => import('@ui-schema/material-dnd/Widgets/SortableList').then(r => r.SortableList),
             loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
