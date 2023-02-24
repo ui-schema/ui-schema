@@ -44,18 +44,6 @@
             "@ui-schema/material-pickers/*": [
                 "material-pickers/src/*"
             ],
-            "@ui-schema/material-slate": [
-                "material-slate/src"
-            ],
-            "@ui-schema/material-slate/*": [
-                "material-slate/src/*"
-            ],
-            "@ui-schema/material-editorjs": [
-                "material-editorjs/src"
-            ],
-            "@ui-schema/material-editorjs/*": [
-                "material-editorjs/src/*"
-            ],
             "@ui-schema/material-dnd": [
                 "material-dnd/src"
             ],

@@ -15,8 +15,6 @@ module.exports = {
 '@ui-schema/ds-bootstrap': path.resolve(__dirname, './ds-bootstrap/src'),
 '@ui-schema/kit-dnd': path.resolve(__dirname, './kit-dnd/src'),
 '@ui-schema/material-pickers': path.resolve(__dirname, './material-pickers/src'),
-'@ui-schema/material-slate': path.resolve(__dirname, './material-slate/src'),
-'@ui-schema/material-editorjs': path.resolve(__dirname, './material-editorjs/src'),
 '@ui-schema/material-dnd': path.resolve(__dirname, './material-dnd/src'),
 
         }

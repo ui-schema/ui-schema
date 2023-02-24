@@ -5,7 +5,7 @@ const packages: string[] = [
     'uis-react-json-schema', 'uis-pro',
     'uis-json-pointer', 'uis-json-schema',
     'ds-bootstrap', 'ds-material',
-    'material-dnd', 'material-pickers', 'material-slate',
+    'material-dnd', 'material-pickers',
     'kit-dnd',
 ]
 

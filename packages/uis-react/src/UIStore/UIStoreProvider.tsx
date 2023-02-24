@@ -45,6 +45,9 @@ export const useUIStore = <D extends any = any>(): UIStoreContext<D> => {
     return React.useContext(UIStoreContextObj)
 }
 
+/**
+ * @todo add e.g. `showValidity` to a new basic `UIConfig` interface
+ */
 export function useUIConfig<U extends {} = {}>(): U {
     return React.useContext(UIConfigContextObj) as U
 }

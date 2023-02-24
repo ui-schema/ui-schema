@@ -31,7 +31,7 @@ packer({
             template: path.resolve(__dirname, 'packages', 'demo-web/public/index.html'),
             contentBase: path.resolve(__dirname, 'packages', 'demo-web/public'),// dev-server
             port: 4200,
-            main: path.resolve(__dirname, 'packages', 'demo-web/src/index.js'),
+            main: path.resolve(__dirname, 'packages', 'demo-web/src/index.tsx'),
             dist: path.resolve(__dirname, 'dist', 'demo-web'),
             devServer: {
                 client: {
@@ -259,16 +259,16 @@ packer({
             root: path.resolve(__dirname, 'packages', 'material-pickers'),
             entry: path.resolve(__dirname, 'packages', 'material-pickers/src/'),
         },
-        materialSlate: {
-            name: '@ui-schema/material-slate',
-            root: path.resolve(__dirname, 'packages', 'material-slate'),
-            entry: path.resolve(__dirname, 'packages', 'material-slate/src/'),
-        },
-        materialEditorJs: {
-            name: '@ui-schema/material-editorjs',
-            root: path.resolve(__dirname, 'packages', 'material-editorjs'),
-            entry: path.resolve(__dirname, 'packages', 'material-editorjs/src/'),
-        },
+        // materialSlate: {
+        //     name: '@ui-schema/material-slate',
+        //     root: path.resolve(__dirname, 'packages', 'material-slate'),
+        //     entry: path.resolve(__dirname, 'packages', 'material-slate/src/'),
+        // },
+        // materialEditorJs: {
+        //     name: '@ui-schema/material-editorjs',
+        //     root: path.resolve(__dirname, 'packages', 'material-editorjs'),
+        //     entry: path.resolve(__dirname, 'packages', 'material-editorjs/src/'),
+        // },
         materialDnd: {
             name: '@ui-schema/material-dnd',
             root: path.resolve(__dirname, 'packages', 'material-dnd'),

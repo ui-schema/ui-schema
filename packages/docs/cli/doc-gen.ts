@@ -12,6 +12,7 @@ import { DocRouteModule } from '../src/content/docs'
 const base = path.resolve(path.join('public', 'docs'))
 const baseModules = path.resolve('../')
 
+// eslint-disable-next-line react/display-name
 const routing = routes(() => () => null)
 const codeFiles = flattenRoutes<DocRouteModule, TsDocModuleFileSource>(
     routing as DocRouteModule,

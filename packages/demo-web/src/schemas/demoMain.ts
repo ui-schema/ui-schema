@@ -1,6 +1,6 @@
-import {createOrderedMap} from '@ui-schema/system/createMap';
+import { JsonSchemaStrict } from '@ui-schema/json-schema/Definitions'
 
-const schemaDemoMain = {
+const schemaDemoMain: JsonSchemaStrict = {
     type: 'object',
     title: 'headline',
     /*view: {
@@ -528,18 +528,17 @@ const schemaDemoMain = {
         'slider_h',
         'ages',
     ],
-};
+}
 
 const dataDemoMain = {
     headline: 'Some Demo Headline',
     //qty2: 10000000000000000000111,
     qty2: 'e130f',
-};
+}
 
-
-const schemaUser = createOrderedMap({
+const schemaUser: JsonSchemaStrict = {
     type: 'object',
-    title: 'headline',
+    title: 'User',
     /*view: {
         sizeMd: 6,
     },*/
@@ -547,7 +546,7 @@ const schemaUser = createOrderedMap({
         name: {
             type: 'string',
             minLength: 2,
-            maxLength: 3,
+            maxLength: 6,
             view: {
                 sizeMd: 6,
             },
@@ -592,6 +591,7 @@ const schemaUser = createOrderedMap({
             format: 'date',
             view: {
                 sizeMd: 6,
+                shrink: true,
             },
         },
         quantity: {
@@ -601,6 +601,6 @@ const schemaUser = createOrderedMap({
             },
         },
     },
-})
+}
 
-export {schemaDemoMain, dataDemoMain, schemaUser}
+export { schemaDemoMain, dataDemoMain, schemaUser }

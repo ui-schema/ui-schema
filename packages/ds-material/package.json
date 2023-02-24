@@ -42,10 +42,11 @@
         "@ui-schema/react": "~0.5.0-alpha.0",
         "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",
-        "@types/react": "^17.0",
+        "@tactic-ui/react": "~0.0.2",
+        "@types/react": "^18.0",
         "immutable": "^4.0.0",
         "react": "^17.0",
-        "react-dom": "^17.0"
+        "react-dom": "^18.0"
     },
     "dependencies": {
         "react-uid": "^2.2.0"
@@ -57,6 +58,7 @@
         "@ui-schema/react": "~0.5.0-alpha.0",
         "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",
+        "@tactic-ui/react": "~0.0.2",
         "react": "^17.0 || ^18.0",
         "@types/react": "^17.0 || ^18.0",
         "immutable": "^4.0.0"

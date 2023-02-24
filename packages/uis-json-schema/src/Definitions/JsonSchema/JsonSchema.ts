@@ -14,6 +14,7 @@ export interface SchemasDraft04 {
 }
 
 export interface JsonSchemaGeneral {
+    // todo: remove this typing / restrict to actual allowed `type`; make use of correlated union types
     type: string | string[]
     readOnly?: boolean
     id?: string
@@ -169,3 +170,4 @@ export type JsonSchemaKeys =
  *       `PureAny` atm. is needed that e.g. `contains` nested schemas work with the new nested OrderedMap typing
  */
 export type JsonSchema = JsonSchemaPureAny & UISchema
+export type JsonSchemaStrict = JsonSchemaPure & UISchema

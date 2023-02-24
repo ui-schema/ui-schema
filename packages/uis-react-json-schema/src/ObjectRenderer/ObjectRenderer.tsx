@@ -1,6 +1,6 @@
 import React from 'react'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
+import { WidgetEngine } from '@ui-schema/react/UIEngine'
 import { GroupRendererProps, WidgetProps } from '@ui-schema/react/Widgets'
 
 export interface ObjectRendererProps extends WidgetProps {

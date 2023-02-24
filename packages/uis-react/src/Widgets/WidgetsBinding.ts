@@ -61,3 +61,15 @@ export interface WidgetsBindingComponents {
 export type WidgetsBindingFactory<W extends {} = {}, TW extends {} = {}, CW extends {} = {}> =
     WidgetsBindingComponents & W &
     WidgetsBindingRoot<TW, CW>
+
+// todo: refactor binding to be better overridable but very strict for components
+export interface NextWidgetsDefinition {
+    components?: WidgetsBindingComponents
+    types?: any
+    custom?: any
+    widgetPlugins?: WidgetPluginType[]
+    schemaPlugins?: SchemaPlugin[]
+    // todo: or maybe from tactic:
+    processor?: (stage?: string) => any// as generic system-hook for `SchemaPlugins`/validator
+    render?: any// as generic system-hook for `How-To-Render`
+}

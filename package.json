@@ -40,7 +40,7 @@
     "devDependencies": {
         "@babel/plugin-proposal-nullish-coalescing-operator": "^7.13.8",
         "@babel/plugin-proposal-optional-chaining": "^7.13.8",
-        "@types/react": "^17.0",
+        "@types/react": "^18.0",
         "@types/testing-library__jest-dom": "^5.14.0",
         "assert": "^2.0.0",
         "cross-env": "^6.0.3",
@@ -55,7 +55,7 @@
         "sloc": "^0.2.1",
         "symlink-dir": "^3.1.1",
         "ts-node": "^10.7.0",
-        "typescript": "^4.5.3"
+        "typescript": "^4.9.3"
     },
     "jest": {
         "globals": {

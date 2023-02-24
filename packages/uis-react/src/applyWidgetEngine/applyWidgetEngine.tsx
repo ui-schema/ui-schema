@@ -17,10 +17,10 @@ export type WidgetEngineRootOrNestedProps = {
     parentSchema: UISchemaMap | undefined
 }
 
-// todo: add also generic widgets here?
+// todo: remove/replace with a `DecoDataPluck`
 export type AppliedWidgetEngineProps<CMeta extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory, PWidget extends WidgetProps<W> = WidgetProps<W>> =
-    Omit<PWidget, WidgetEngineInjectProps | keyof (UIMetaContext<W> & CMeta) | keyof WithValue>
-    & Partial<UIMetaContext<W> & CMeta>
+    Omit<PWidget, WidgetEngineInjectProps | keyof (UIMetaContext & CMeta) | keyof WithValue>
+    & Partial<UIMetaContext & CMeta>
     & Partial<Pick<PWidget, 'showValidity'>>
     & WidgetEngineRootOrNestedProps
 
