@@ -1,6 +1,7 @@
 import React from 'react';
-import {memo} from '@ui-schema/ui-schema/Utils/memo';
-import {PluginStack} from '@ui-schema/ui-schema/PluginStack';
+import { memo } from '@ui-schema/ui-schema/Utils/memo';
+import { PluginStack } from '@ui-schema/ui-schema/PluginStack';
+import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap';
 
 const ObjectRendererBase = (
     {
@@ -11,11 +12,11 @@ const ObjectRendererBase = (
         ...props
     },
 ) => {
-    const {isVirtual, widgets} = props
+    const { isVirtual, widgets } = props
     const properties = schema.get('properties');
 
-    if(!isVirtual && !widgets.GroupRenderer) {
-        if(process.env.NODE_ENV === 'development') {
+    if (!isVirtual && !widgets.GroupRenderer) {
+        if (process.env.NODE_ENV === 'development') {
             console.error('Widget GroupRenderer not existing');
         }
         return null;
@@ -27,6 +28,7 @@ const ObjectRendererBase = (
             key={childKey}
             {...props}
             schema={childSchema} parentSchema={schema}
+            uiSchema={schema.get("uiSchema", createOrderedMap()).get(childKey, createOrderedMap()).mergeDeep(childSchema.get("uiSchema", createOrderedMap()))}
             storeKeys={storeKeys.push(childKey)}
             schemaKeys={schemaKeys?.push('properties').push(childKey)}
             level={level + 1}

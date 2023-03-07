@@ -1,4 +1,6 @@
 import { tt } from "@ui-schema/ui-schema/Utils"
+import { OrderedMap } from "immutable"
+
 
 export interface UISchema {
     title?: string
@@ -94,4 +96,86 @@ export interface UISchema {
         // to disable am/pm selection
         ampm?: boolean
     }
+}
+
+export function checkUISchema(obj: OrderedMap, uiSchemaProps?: object): boolean {
+    uiSchemaProps = uiSchemaProps || {
+        title: 'string',
+        tt: ['ol', 'upper', 'lower', 'upper-beauty', 'lower-beauty', 'beauty-text', 'beauty-igno-lead', true, false, 0],
+        t: [{}, { '': { '': '' } }],
+        widget: 'string',
+        api: { endpoint: 'string' },
+        hidden: 'boolean',
+        view: {
+            sizeXs: 'number',
+            sizeSm: 'number',
+            sizeMd: 'number',
+            sizeLg: 'number',
+            sizeXl: 'number',
+            noGrid: 'boolean',
+            spacing: 'number',
+            rows: 'number',
+            rowsMax: 'number',
+            variant: 'string',
+            margin: ['none', 'dense', 'normal', 'string'],
+            dense: 'boolean',
+            denseOptions: 'boolean',
+            bg: 'boolean',
+            shrink: 'boolean',
+            formats: ['string'],
+            justify: 'string',
+            marks: [true, false, 'number', 'string'],
+            marksLabel: 'string',
+            tooltip: 'string',
+            topControls: 'boolean',
+            alpha: 'boolean',
+            iconOn: 'boolean',
+            colors: ['string'],
+            btnSize: ['normal', 'medium', 'small'],
+            track: [true, false, 'inverted'],
+            mt: 'number',
+            mb: 'number',
+        },
+        date: {
+            format: 'string',
+            formatData: 'string',
+            keyboard: 'boolean',
+            views: [['year', 'date', 'month', 'hours', 'minutes']],
+            variant: 'string',
+            autoOk: 'boolean',
+            disableFuture: 'boolean',
+            disablePast: 'boolean',
+            toolbar: 'boolean',
+            clearable: 'boolean',
+            minDate: 'string',
+            maxDate: 'string',
+            openTo: ['year', 'date', 'month'],
+            orientation: ['landscape', 'portrait'],
+            tabs: 'boolean',
+            minutesStep: 'number',
+            ampm: 'boolean',
+        },
+    };
+
+    if (obj == undefined) {
+        return false;
+    }
+
+    for (let prop in uiSchemaProps) {
+        const expectedType = uiSchemaProps[prop];
+        const actualType = typeof obj.get(prop);
+        if (
+            typeof expectedType == "object" && obj.has(prop)
+        ) {
+            return checkUISchema(obj.get(prop), expectedType)
+        }
+        else if (
+            obj.has(prop) &&
+            ((Array.isArray(expectedType) && expectedType.indexOf(typeof obj.get(prop)) == -1) ||
+                (!Array.isArray(expectedType) && actualType !== expectedType))
+        ) {
+            return false;
+        }
+    }
+    return true;
 }
