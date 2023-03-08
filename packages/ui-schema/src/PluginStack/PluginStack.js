@@ -6,6 +6,7 @@ import { createValidatorErrors } from '@ui-schema/ui-schema/ValidatorErrors';
 import { useUIConfig } from '@ui-schema/ui-schema/UIStore';
 import { useImmutable } from '@ui-schema/ui-schema/Utils/useImmutable';
 import { PluginStackErrorBoundary } from '@ui-schema/ui-schema/PluginStack';
+import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap';
 import { checkUISchema } from '@ui-schema/ui-schema/UISchema';
 
 const errorContainer = createValidatorErrors()
@@ -19,14 +20,28 @@ export const PluginStack = ({ StackWrapper, wrapperProps, ...props }) => {
         level = 0, parentSchema,
         storeKeys = List([]),
         schemaKeys = List([]),
-        uiSchema,
         widgets: customWidgets,
     } = props;
 
-    let schema = props.schema;
-    if (checkUISchema(uiSchema)) {
-        schema = schema.mergeDeep(uiSchema);
-    };
+    //Inherite uiSchema from parent
+    let {
+        uiSchema = createOrderedMap(),
+    } = props.schema;
+
+    if (parentSchema) {
+        let _name = storeKeys.last()
+        if (typeof _name == "number") {
+            _name = "items"
+        }
+        uiSchema = parentSchema.get("uiSchema", createOrderedMap()).get(_name, createOrderedMap()).mergeDeep(uiSchema);
+    }
+    props.schema = props.schema.set("uiSchema", uiSchema);
+
+    let schemaExtract = checkUISchema(uiSchema);
+    if (schemaExtract.size > 0) {
+        props.schema = props.schema.mergeDeep(schemaExtract);
+    }
+    const schema = props.schema
 
     // central reference integrity of `storeKeys` for all plugins and the receiving widget, otherwise `useImmutable` is needed more times, e.g. 3 times in plugins + 1x time in widget
     const currentStoreKeys = useImmutable(storeKeys)

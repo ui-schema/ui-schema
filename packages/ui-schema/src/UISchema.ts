@@ -98,7 +98,7 @@ export interface UISchema {
     }
 }
 
-export function checkUISchema(obj: OrderedMap, uiSchemaProps?: object): boolean {
+export function checkUISchema(obj: OrderedMap, uiSchemaProps?: object): OrderedMap {
     uiSchemaProps = uiSchemaProps || {
         title: 'string',
         tt: ['ol', 'upper', 'lower', 'upper-beauty', 'lower-beauty', 'beauty-text', 'beauty-igno-lead', true, false, 0],
@@ -158,24 +158,19 @@ export function checkUISchema(obj: OrderedMap, uiSchemaProps?: object): boolean 
     };
 
     if (obj == undefined) {
-        return false;
+        return OrderedMap({});
     }
-
+    let props = {};
     for (let prop in uiSchemaProps) {
         const expectedType = uiSchemaProps[prop];
         const actualType = typeof obj.get(prop);
-        if (
-            typeof expectedType == "object" && obj.has(prop)
-        ) {
-            return checkUISchema(obj.get(prop), expectedType)
-        }
-        else if (
-            obj.has(prop) &&
-            ((Array.isArray(expectedType) && expectedType.indexOf(typeof obj.get(prop)) == -1) ||
-                (!Array.isArray(expectedType) && actualType !== expectedType))
-        ) {
-            return false;
+        if (typeof expectedType == "object" && obj.has(prop)) {
+            props[prop] = checkUISchema(obj.get(prop), expectedType);
+        } else if (!(obj.has(prop) && (Array.isArray(expectedType) && expectedType.indexOf(typeof obj.get(prop)) == -1 || !Array.isArray(expectedType) && actualType !== expectedType))) {
+            if (obj.has(prop)) {
+                props[prop] = obj.get(prop);
+            }
         }
     }
-    return true;
+    return OrderedMap(props);
 }

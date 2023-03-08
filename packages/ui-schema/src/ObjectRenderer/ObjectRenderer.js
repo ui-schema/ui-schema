@@ -21,19 +21,19 @@ const ObjectRendererBase = (
         }
         return null;
     }
-    const GroupRenderer = widgets.GroupRenderer;
 
-    const propertyTree = properties?.map((childSchema, childKey) =>
-        <PluginStack
+    const GroupRenderer = widgets.GroupRenderer;
+    const propertyTree = properties?.map((childSchema, childKey) => {
+        return <PluginStack
             key={childKey}
             {...props}
-            schema={childSchema} parentSchema={schema}
-            uiSchema={schema.get("uiSchema", createOrderedMap()).get(childKey, createOrderedMap()).mergeDeep(childSchema.get("uiSchema", createOrderedMap()))}
+            schema={childSchema}
+            parentSchema={schema}
             storeKeys={storeKeys.push(childKey)}
             schemaKeys={schemaKeys?.push('properties').push(childKey)}
             level={level + 1}
-        />,
-    ).valueSeq() || null
+        />
+    },).valueSeq() || null
 
     // no-properties could come from
     //   e.g. combining/conditional schemas which are currently not applied (e.g. a condition fails)
