@@ -41,8 +41,21 @@ export const PluginStack = ({ StackWrapper, wrapperProps, ...props }) => {
     if (schemaExtract.size > 0) {
         props.schema = props.schema.mergeDeep(schemaExtract);
     }
-    const schema = props.schema
 
+    //Update oneOf uiSchema 
+    if (props.schema.has("oneOf")) {
+        let oneOf = props.schema.get("oneOf");
+        for (let [i, one] of oneOf.entries()) {
+            let _uiSchema = uiSchema.get(one.get("title", null), createOrderedMap()).mergeDeep(one.get("uiSchema", createOrderedMap()));
+            let schemaExtract = checkUISchema(_uiSchema);
+            if (schemaExtract.size > 0) {
+                oneOf = oneOf.set(i, one.mergeDeep(one, schemaExtract));
+            }
+        }
+        props.schema = props.schema.set("oneOf", oneOf);
+    }
+
+    const schema = props.schema
     // central reference integrity of `storeKeys` for all plugins and the receiving widget, otherwise `useImmutable` is needed more times, e.g. 3 times in plugins + 1x time in widget
     const currentStoreKeys = useImmutable(storeKeys)
     const currentSchemaKeys = useImmutable(schemaKeys)
