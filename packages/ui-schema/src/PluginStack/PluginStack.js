@@ -23,7 +23,7 @@ export const PluginStack = ({ StackWrapper, wrapperProps, ...props }) => {
         widgets: customWidgets,
     } = props;
 
-    //Inherite uiSchema from parent
+    //Inherite uiSchema from parent schema element
     let {
         uiSchema = createOrderedMap(),
     } = props.schema;
@@ -33,7 +33,7 @@ export const PluginStack = ({ StackWrapper, wrapperProps, ...props }) => {
         if (typeof _name == "number") {
             _name = "items"
         }
-        uiSchema = parentSchema.get("uiSchema", createOrderedMap()).get(_name, createOrderedMap()).mergeDeep(uiSchema);
+        uiSchema = uiSchema.mergeDeep(parentSchema.get("uiSchema", createOrderedMap()).get(_name, createOrderedMap()));
     }
     props.schema = props.schema.set("uiSchema", uiSchema);
 
@@ -42,11 +42,11 @@ export const PluginStack = ({ StackWrapper, wrapperProps, ...props }) => {
         props.schema = props.schema.mergeDeep(schemaExtract);
     }
 
-    //Update oneOf uiSchema 
+    //Update oneOf uiSchema with parent uiSchema and apply finally
     if (props.schema.has("oneOf")) {
         let oneOf = props.schema.get("oneOf");
         for (let [i, one] of oneOf.entries()) {
-            let _uiSchema = uiSchema.get(one.get("title", null), createOrderedMap()).mergeDeep(one.get("uiSchema", createOrderedMap()));
+            let _uiSchema = one.get("uiSchema", createOrderedMap()).mergeDeep(uiSchema.get(one.get("title", null), createOrderedMap()));
             let schemaExtract = checkUISchema(_uiSchema);
             if (schemaExtract.size > 0) {
                 oneOf = oneOf.set(i, one.mergeDeep(one, schemaExtract));
