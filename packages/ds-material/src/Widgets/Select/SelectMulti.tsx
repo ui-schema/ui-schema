@@ -29,7 +29,7 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
     }
 ) => {
     const uid = useUID()
-    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as StoreSchemaType)
+    const { valueSchemas } = useOptionsFromSchema(storeKeys, schema.get('items') as StoreSchemaType)
 
     const currentValue = typeof value !== 'undefined' ? value :
         schema.get('default') ? List(schema.get('default') as string[]) : List()
@@ -40,19 +40,19 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
         size={schema.getIn(['view', 'dense']) ? 'small' : undefined}
         variant={variant}
     >
-        <InputLabel id={'uis-' + uid + '-label'}><TransTitle schema={schema} storeKeys={storeKeys}/></InputLabel>
+        <InputLabel id={'uis-' + uid + '-label'}><TransTitle schema={schema} storeKeys={storeKeys} /></InputLabel>
         <MuiSelect
             labelId={'uis-' + uid + '-label'}
             id={'uis-' + uid}
             variant={variant}
             // note: for variant `outlined` the label needs to be also here, as we don't know e.g. theme provider overrides, it is applied all the time
-            label={<TransTitle schema={schema} storeKeys={storeKeys}/>}
+            label={<TransTitle schema={schema} storeKeys={storeKeys} />}
             value={currentValue.toArray()}
             multiple
             renderValue={selected => {
                 const sel = selected as string[]
                 return sel.map(s => {
-                    s = s + ''
+                    s = s
                     const valueSchema = valueSchemas?.find(oof => oof.value === s)
                     const Translated = t(s, valueSchema?.context, valueSchema?.schema?.get('t') as StoreSchemaType)
                     return typeof Translated === 'string' || typeof Translated === 'number' ?
@@ -75,25 +75,25 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
                 })
             }
         >
-            {valueSchemas?.map(({value, text, fallback, context, schema}, i) =>
+            {valueSchemas?.map(({ value, text, fallback, context, schema }, i) =>
                 <MenuItem
                     key={value + '-' + i}
                     value={value as string}
                     dense={denseOptions}
                     disabled={schema?.get('readOnly') as boolean}
                 >
-                    <Checkbox checked={currentValue.contains(value)}/>
+                    <Checkbox checked={currentValue.contains(value)} />
                     <ListItemText primary={<Trans
                         schema={schema?.get('t') as unknown as StoreSchemaType}
                         text={text}
                         context={context}
                         fallback={fallback}
-                    />}/>
+                    />} />
                 </MenuItem>,
             ).valueSeq()}
         </MuiSelect>
 
-        <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
+        <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema} />
     </FormControl>
 }
 
