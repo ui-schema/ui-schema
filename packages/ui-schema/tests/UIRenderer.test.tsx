@@ -34,17 +34,17 @@ import { relTranslator } from '@ui-schema/ui-schema/Translate/relT'
  * npm test -- --testPathPattern=UIRenderer.test.tsx -u
  */
 
-expect.extend({toBeInTheDocument, toHaveClass})
+expect.extend({ toBeInTheDocument, toHaveClass })
 const widgets = MockWidgets
 // todo: add custom ErrorFallback, otherwise some errors may be catched there - and the test will not fail
 
 // eslint-disable-next-line react/display-name,deprecation/deprecation
 widgets.RootRenderer = (props: PropsWithChildren<any>): React.ReactElement => <div className={'root-renderer'}>{props.children}</div>
 // eslint-disable-next-line react/display-name
-widgets.GroupRenderer = ({children}): React.ReactElement => <div className={'group-renderer'}>{children}</div>
+widgets.GroupRenderer = ({ children }): React.ReactElement => <div className={'group-renderer'}>{children}</div>
 widgets.pluginStack = [
     // plugin to have every widget in it's own div - to query against in tests
-    (props) => <div><NextPluginRenderer {...props}/></div>,
+    (props) => <div><NextPluginRenderer {...props} /></div>,
     ReferencingHandler,
     ExtractStorePlugin,
     CombiningHandler,
@@ -60,7 +60,7 @@ widgets.pluginSimpleStack = validators
 widgets.types.string = (props: WidgetProps): React.ReactElement => {
     return <>
         <span>string-renderer</span>
-        <span><TransTitle schema={props.schema} storeKeys={props.storeKeys}/></span>
+        <span><TransTitle schema={props.schema} storeKeys={props.storeKeys} /></span>
         {props.valid ? null : <span>string-with-error</span>}
         {props.errors.hasError() ? <span>{JSON.stringify(props.errors.errorsToJS())}</span> : null}
     </>
@@ -70,11 +70,11 @@ widgets.types.string = (props: WidgetProps): React.ReactElement => {
 widgets.types.array = extractValue((props: WidgetProps & WithValue): React.ReactElement => {
     return <>
         <span>array-renderer</span>
-        <span><TransTitle schema={props.schema} storeKeys={props.storeKeys}/></span>
+        <span><TransTitle schema={props.schema} storeKeys={props.storeKeys} /></span>
         {/* @ts-ignore */}
         {List.isList(props.value) ? props.value.map((val, i: number) =>
             <div key={i}>
-                <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
+                <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 2 }}>
                     {null}
                     {/* @ts-ignore */}
                     <PluginStack
@@ -101,7 +101,7 @@ const TestUIRenderer = (props: {
 }) => {
 
     // needed variables and setters for the UIGenerator, create wherever you like
-    const [store, setStore] = React.useState(() => createStore(createOrderedMap(props.data || {demo_string: ''})))
+    const [store, setStore] = React.useState(() => createStore(createOrderedMap(props.data || { demo_string: '' })))
 
     const [schema/*, setSchema*/] = React.useState(() => createOrderedMap({
         type: 'object',
@@ -124,7 +124,7 @@ const TestUIRenderer = (props: {
                     } as JsonSchema,
                     children: {
                         type: 'array',
-                        items: {$ref: '#/definitions/person'},
+                        items: { $ref: '#/definitions/person' },
                         'default': [],
                     },
                 },
@@ -167,7 +167,14 @@ const TestUIRenderer = (props: {
                     type: 'string',
                 },
             },
-            person: {$ref: '#/definitions/person'},
+            person: { $ref: '#/definitions/person' },
+            uiSchema: {
+                person: {
+                    name: {
+                        title: "Person Name"
+                    }
+                }
+            }
         },
         allOf: [{
             if: {
@@ -223,9 +230,9 @@ const TestUIRenderer = (props: {
 }
 
 describe('UIGenerator Integration', () => {
-    it('TestUIRenderer', async() => {
-        const {queryByText, queryAllByText, container} = render(
-            <TestUIRenderer data={{demo_number: 10, demo_array2: ['val-test']}}/>
+    it('TestUIRenderer', async () => {
+        const { queryByText, queryAllByText, container } = render(
+            <TestUIRenderer data={{ demo_number: 10, demo_array2: ['val-test'] }} />
         )
         // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-renderer').length).toBe(1)
@@ -238,9 +245,9 @@ describe('UIGenerator Integration', () => {
         expect(queryByText('missing-type-number') !== null).toBeTruthy()
         expect(queryAllByText('array-renderer').length).toBe(3)
     })
-    it('TestUIRenderer no `store`', async() => {
-        const {queryByText, queryAllByText, container} = render(
-            <TestUIRenderer noStore/>
+    it('TestUIRenderer no `store`', async () => {
+        const { queryByText, queryAllByText, container } = render(
+            <TestUIRenderer noStore />
         )
         // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-renderer').length).toBe(1)
@@ -251,9 +258,9 @@ describe('UIGenerator Integration', () => {
         expect(queryAllByText('string-renderer').length).toBe(2)
         expect(queryByText('store-is-invalid') !== null).toBeTruthy()
     })
-    it('TestUIRenderer not `t`', async() => {
-        const {queryByText, queryAllByText, container} = render(
-            <TestUIRenderer notT/>
+    it('TestUIRenderer not `t`', async () => {
+        const { queryByText, queryAllByText, container } = render(
+            <TestUIRenderer notT />
         )
         expect(container.querySelectorAll('.root-renderer').length).toBe(1)
         expect(container.querySelectorAll('.group-renderer').length).toBe(2)
@@ -261,9 +268,9 @@ describe('UIGenerator Integration', () => {
         expect(queryByText('widget.demo_string.title')).toBe(null)
         expect(queryAllByText('string-renderer').length).toBe(3)
     })
-    it('TestUIRenderer ConditionalCombining', async() => {
-        const {queryByText, container} = render(
-            <TestUIRenderer data={{demo_string: 'test'}}/>
+    it('TestUIRenderer ConditionalCombining', async () => {
+        const { queryByText, container } = render(
+            <TestUIRenderer data={{ demo_string: 'test' }} />
         )
         // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-renderer').length === 1).toBeTruthy()
@@ -271,13 +278,13 @@ describe('UIGenerator Integration', () => {
         expect(queryByText('widget.demo_string.title') === null).toBeTruthy()
         expect(queryByText('missing-custom-Text') !== null).toBeTruthy()
     })
-    it('TestUIRendererError', async() => {
-        const {queryByText, queryAllByText, container} = render(
+    it('TestUIRendererError', async () => {
+        const { queryByText, queryAllByText, container } = render(
             <TestUIRenderer data={{
                 demo_string: 'to-long-text', demo_number: 83,
                 // @ts-ignore
                 demo_array: 'not-an-array',
-            }}/>
+            }} />
         )
         //expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-renderer').length === 1).toBeTruthy()
@@ -288,5 +295,6 @@ describe('UIGenerator Integration', () => {
         expect(queryByText('string-with-error') !== null).toBeTruthy()
         expect(queryAllByText('string-renderer').length === 2).toBeTruthy()
     })
+    //ToDO add uiSchema test
 })
 
