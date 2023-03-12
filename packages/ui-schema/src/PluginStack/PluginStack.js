@@ -24,10 +24,7 @@ export const PluginStack = ({ StackWrapper, wrapperProps, ...props }) => {
     } = props;
 
     //Inherite uiSchema from parent schema element
-    let {
-        uiSchema = createOrderedMap(),
-    } = props.schema;
-
+    let uiSchema = props.schema.get("uiSchema", createOrderedMap());
     if (parentSchema) {
         let _name = storeKeys.last()
         if (typeof _name == "number") {

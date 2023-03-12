@@ -96,6 +96,7 @@ export interface UISchema {
         // to disable am/pm selection
         ampm?: boolean
     }
+    uiSchema?: object
 }
 
 export function checkUISchema(obj: OrderedMap, uiSchemaProps?: object): OrderedMap {
