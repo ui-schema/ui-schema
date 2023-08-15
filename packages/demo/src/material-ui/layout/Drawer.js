@@ -19,8 +19,7 @@ const AppDrawer = (props) => {
     >
         <Divider/>
         <List>{mainListItems}</List>
-        <Divider/>
-        <List>{secondaryListItems}</List>
+
     </Drawer>
 };
 
