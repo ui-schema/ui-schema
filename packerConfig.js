@@ -200,12 +200,6 @@ packer({
             entry: path.resolve(__dirname, 'packages', 'ds-material/src/'),
             babelTargets: legacyBabelTargets,
         },
-        dsBootstrap: {
-            name: '@ui-schema/ds-bootstrap',
-            root: path.resolve(__dirname, 'packages', 'ds-bootstrap'),
-            entry: path.resolve(__dirname, 'packages', 'ds-bootstrap/src/'),
-            babelTargets: legacyBabelTargets,
-        },
         kitDnd: {
             name: '@ui-schema/kit-dnd',
             root: path.resolve(__dirname, 'packages', 'kit-dnd'),

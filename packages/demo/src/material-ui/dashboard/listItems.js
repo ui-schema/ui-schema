@@ -49,7 +49,7 @@ export const mainListItems = (<div>
             primary={route[1]} icon={route[0] === '/' ? <DashboardIcon/> : <WidgetsIcon/>}
         />,
     )}
-    <ListItemLink to={'https://ui-schema.bemit.codes'} primary="Documentation" icon={<LayersIcon/>} normalLink/>
+    
 </div>);
 
 export const secondaryListItems = (
