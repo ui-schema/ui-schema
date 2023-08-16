@@ -21,17 +21,6 @@ const KitDndGrid = asyncComponent(() => import('./kit-dnd/page-grid'), 'Kit DnD 
 
 const App = () => <Router>
     <Switch>
-        <Route path="/mui-slate" component={MaterialUiSlate}/>
-        <Route path="/mui-pro" component={MaterialUiPro}/>
-        <Route path="/mui-editorjs" component={MaterialUiEditorJS}/>
-        <Route path="/mui-dnd" component={MaterialUiDnd}/>
-        <Route path="/mui-read-write" component={MaterialUiReadWrite}/>
-        <Route path="/mui-dnd-grid" component={MaterialUiDndGrid}/>
-        <Route path="/mui-debounced" component={MaterialUiDebounced}/>
-        <Route path="/mui-split" component={MaterialUiSplit}/>
-        <Route path="/bootstrap" component={Bootstrap}/>
-        <Route path="/kit-dnd" component={KitDnd}/>
-        <Route path="/kit-dnd-grid" component={KitDndGrid}/>
         <Route path="/" exact component={MaterialUi}/>
     </Switch>
 </Router>;
