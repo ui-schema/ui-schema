@@ -1,64 +1,60 @@
-import { Deco, DecoDataPluck, DecoDataResult } from '@tactic-ui/engine/Deco'
-import {
-    TreeEngine,
-    ReactLeafsRenderMatcher,
-    createLeafsContext, ReactLeafsNodeSpec,
-} from '@tactic-ui/react/LeafsProvider'
-import { defineLeafNode } from '@tactic-ui/react/LeafNode'
+import { ReactDeco, DecoratorProps } from '@tactic-ui/react/Deco'
+import React from 'react'
+import { defineLeafEngine, LeafsEngine, LeafsRenderMapping, ReactLeafsNodeSpec } from '@tactic-ui/react/LeafsEngine'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 
-// todo: `Deco` must receive "props without those which Deco injects", so maybe two `PropsSpec` mappings? or data? or ...?
-//       e.g. impacts "required by component and injected by decorator" together with `LeafNode`/`DataPluck` typings: not removing the required `props` from `Deco.PG`
-//       note: using only `DecoTW` would work correctly for user etc. BUT impacts the `decorator.run` input-typing
-// const dec = new Deco<DecoTW>()
-
-// todo: `Deco` must receive "props without those which Deco injects", so maybe two `PropsSpec` mappings? or data? or ...?
-//       e.g. impacts "required by component and injected by decorator" together with `LeafNode`/`DataPluck` typings: not removing the required `props` from `Deco.PG`
-//       note: using only `DecoTW` would work correctly for user etc. BUT impacts the `decorator.run` input-typing
-// const dec = new Deco<DecoTW>()
 export type WidgetPropsMap = { [k: string]: WidgetProps }
 
-export const dec = new Deco<WidgetProps>()
-    .use(<P extends WidgetProps>(p: P): WidgetProps & { required: boolean } => ({...p, required: true}))
-    .use(<P extends WidgetProps & { required?: boolean }>(p: P): WidgetProps & { valid: boolean } => ({...p, valid: false}))
+export type CustomComponents = {}
+export type CustomLeafsRenderMapping<
+    TLeafsMapping extends {} = {},
+    TComponentsMapping extends {} = {}
+> = LeafsRenderMapping<TLeafsMapping, TComponentsMapping>
+export type CustomLeafsEngine<
+    TLeafsDataMapping extends WidgetPropsMap,
+    TComponents extends {},
+    TRender extends LeafsRenderMapping<ReactLeafsNodeSpec<TLeafsDataMapping>, TComponents>,
+    TDeco extends ReactDeco<{}, {}, {}>
+> = LeafsEngine<TLeafsDataMapping, TComponents, TRender, TDeco>
 
-export type DecoDataPl = DecoDataPluck<WidgetProps, typeof dec>
-export type DecoDataRe = DecoDataResult<WidgetPropsMap[keyof WidgetPropsMap], typeof dec>
-// export type CustomLeafsNodeSpec = Partial<ReactLeafsNodeSpec<CustomLeafPropsSpec, typeof dec>>
-export type CustomLeafsNodeSpec = ReactLeafsNodeSpec<WidgetPropsMap, typeof dec>
+const {
+    LeafsProvider, useLeafs,
+} = defineLeafEngine<
+    WidgetPropsMap, CustomComponents,
+    CustomLeafsRenderMapping<ReactLeafsNodeSpec<WidgetPropsMap>, CustomComponents>,
+    ReactDeco<{}, {}>,
+    CustomLeafsEngine<WidgetPropsMap, CustomComponents, CustomLeafsRenderMapping<ReactLeafsNodeSpec<WidgetPropsMap>, CustomComponents>, ReactDeco<{}, {}>>
+>()
 
-export type CustomLeafComponents = {}
-export type ContentMarkLeafProps = DecoDataResult<WidgetPropsMap[keyof WidgetPropsMap], typeof dec>
+type LeafNodeInjected = 'decoIndex' | 'next' | keyof CustomLeafsEngine<any, any, any, any>
 
-export const uiEngine: TreeEngine<WidgetPropsMap, typeof dec, ReactLeafsRenderMatcher<typeof dec, WidgetPropsMap, CustomLeafComponents>> = {
-    decorator: dec,
-    matcher: (leafs, ld) => {
-        // todo: use distinct schema type
-        // todo: add distinct schema type pass-down of value for better inference
-        const schemaType = ld.schema?.get('type') as string | undefined
-        const schemaWidget = ld.schema?.get('widget')
-        console.log('schemaType', schemaType, schemaWidget, leafs)
-        if (schemaWidget && leafs[schemaWidget]) {
-            return leafs[schemaWidget]
-        }
-        if (typeof schemaType === 'string') {
-            const widgetName = 'type' + schemaType.slice(0, 1).toUpperCase() + schemaType.slice(1)
-            if (leafs[widgetName]) {
-                return leafs[widgetName]
-            }
-        }
-        throw new Error('No Widget found.')
-    },
-    identifier: (ld) => ({
-        toString: () => ld.storeKeys?.join('/') || '',
-        toArray: () => ld.storeKeys?.toArray() || [],
-    }),
+export const WidgetsProvider = LeafsProvider
+
+export function WidgetEngine<
+    TLeafsDataMapping extends WidgetPropsMap,
+    TDeco extends ReactDeco<{}, {}> = ReactDeco<{}, {}>,
+    TLeafData extends TLeafsDataMapping[keyof TLeafsDataMapping] = TLeafsDataMapping[keyof TLeafsDataMapping],
+    TComponentsMapping extends {} = {},
+    TRender extends CustomLeafsRenderMapping<ReactLeafsNodeSpec<TLeafsDataMapping>, TComponentsMapping> = CustomLeafsRenderMapping<ReactLeafsNodeSpec<TLeafsDataMapping>, TComponentsMapping>,
+    // todo: TProps not only needs to support removing injected, but also allowing overriding those injected
+    TProps extends DecoratorProps<NonNullable<TLeafData>, TDeco> = DecoratorProps<NonNullable<TLeafData>, TDeco>,
+>(
+    props: Omit<TProps, LeafNodeInjected>, // remove the props injected by LeafNode
+): React.JSX.Element | null {
+    const {deco, render} = useLeafs<TLeafsDataMapping, TComponentsMapping, TRender, TDeco>()
+    if (!deco) {
+        throw new Error('This LeafNode requires decorators, maybe missed `deco` at the `LeafsProvider`?')
+    }
+
+    // `Next` can not be typed in any way I've found (by inferring),
+    // as the next decorator isn't yet known, only when wiring up the Deco,
+    // thus here no error will be shown, except the safeguard that "all LeafNode injected are somehow passed down".
+    const Next = deco.next(0)
+    return <Next
+        {...props}
+        deco={deco}
+        render={render}
+        next={deco.next}
+        decoIndex={0}
+    />
 }
-
-export const uiEngineContext = createLeafsContext<WidgetPropsMap, CustomLeafComponents, typeof dec>(
-    // @ts-ignore
-    uiEngine, {},
-)
-
-const {Leaf} = defineLeafNode(uiEngineContext)
-export const WidgetEngine = Leaf

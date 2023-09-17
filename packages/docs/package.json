@@ -14,7 +14,7 @@
         "@control-ui/kit": "0.0.26",
         "@control-ui/md": "0.0.6",
         "@control-ui/routes": "0.0.6",
-        "@tactic-ui/react": "~0.0.2",
+        "@tactic-ui/react": "~0.0.4",
         "@mui/material": "^5.1",
         "@mui/styles": "^5.1",
         "@mui/system": "^5.1",

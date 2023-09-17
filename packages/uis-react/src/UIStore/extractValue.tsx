@@ -1,7 +1,8 @@
 import React from 'react'
 import { getDisplayName } from '@ui-schema/react/Utils/memo'
-import { StoreKeys, useUIStore, WithValue, ExtractValueOverwriteProps } from '@ui-schema/react/UIStore'
+import { useUIStore, WithValue, ExtractValueOverwriteProps } from '@ui-schema/react/UIStore'
 import { UIStoreActions, useUIStoreActions } from '@ui-schema/react/UIStoreActions'
+import { StoreKeys } from '@ui-schema/system/ValueStore'
 
 export function extractValue<A = UIStoreActions, P extends Partial<WithValue<A>> & { storeKeys: StoreKeys } = Partial<WithValue<A>> & { storeKeys: StoreKeys }>(
     Component: React.ComponentType<P>

@@ -7,7 +7,7 @@
     "scripts": {
         "start": "npm run clean-dist && npm run serve -- demoWeb",
         "docs": "npm run serve -- docs",
-        "serve": "cross-env NODE_ENV=development node packerConfig.js --serve",
+        "serve": "cross-env NODE_OPTIONS='--max-old-space-size=6144' NODE_ENV=development node packerConfig.js --serve",
         "prebuild": "npm run clean-dist && npm run static-gen",
         "build_": "npm run build-all && npm run dtsgen",
         "build": "npm run build-babel && npm run dtsgen && npm run build-webpack",
@@ -38,24 +38,20 @@
     "author": "Michael Becker, https://i-am-digital.eu",
     "license": "MIT",
     "devDependencies": {
-        "@babel/plugin-proposal-nullish-coalescing-operator": "^7.13.8",
-        "@babel/plugin-proposal-optional-chaining": "^7.13.8",
         "@types/react": "^18.0",
-        "@types/testing-library__jest-dom": "^5.14.0",
-        "assert": "^2.0.0",
-        "cross-env": "^6.0.3",
-        "eslint-plugin-jsx-a11y": "^6.5.1",
-        "eslint-plugin-react-hooks": "^4.3.0",
+        "@types/testing-library__jest-dom": "^5.14.9",
+        "cross-env": "^7.0.3",
+        "eslint-plugin-jsx-a11y": "^6.7.1",
+        "eslint-plugin-react-hooks": "^4.6.0",
         "lerna": "^3.22.1",
-        "lerna-packer": "0.6.6",
+        "lerna-packer": "0.7.0",
         "merge-dirs": "^0.2.1",
         "nodemon": "^2.0.19",
-        "process": "^0.11.10",
         "react-loadable": "^5.5.0",
         "sloc": "^0.2.1",
         "symlink-dir": "^3.1.1",
-        "ts-node": "^10.7.0",
-        "typescript": "^4.9.3"
+        "ts-node": "^10.9.1",
+        "typescript": "^5.2.2"
     },
     "jest": {
         "globals": {

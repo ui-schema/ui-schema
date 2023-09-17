@@ -1,5 +1,7 @@
 # Contributing to UI-Schema
 
+> atm. (somehow) requires ~5-6GB RAM to run dev-servers and may take ~10min+ for initial startup
+
 1. Fork/Clone repository **branch `develop`**
 2. Install root dev-dependencies (like lerna, webpack): `npm i`
 3. Install & link the `packages`: `npm run bootstrap && npm run link`

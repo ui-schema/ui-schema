@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable'
-import { StoreKeys } from '@ui-schema/react/UIStore'
+import { StoreKeys } from '@ui-schema/system/ValueStore'
 
 const searchRecursive = (immutable: Map<string, any>, val: any, keys: StoreKeys, count = false) => {
     if (!immutable || immutable.size === 0) return 0

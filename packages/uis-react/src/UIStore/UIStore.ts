@@ -22,7 +22,7 @@ export interface UIStoreState<D = any> extends UIStoreStateData<D> {
     getValues: () => D
     getInternals: () => UIStoreInternalsType
     getValidity: () => UIStoreValidityType
-    extractValues: <V>(storeKeys: StoreKeys) => {
+    extractValues: <V>(storeKeys: ValueStoreKeys) => {
         value: V | undefined
         internalValue: UIStoreInternalsType | undefined
     }
@@ -48,7 +48,9 @@ export type onChangeHandler<A = UIStoreActions> = (actions: A[] | A) => void
 
 export type StoreKeyType = string | number
 
-// @todo: replace all usages of this `StoreKeys` with the one from system
+/**
+ * @deprecated replace all usages of this `StoreKeys` with the one from system
+ */
 export type StoreKeys = ValueStoreKeys
 
 // only to enable better minification, DO NOT EXPORT

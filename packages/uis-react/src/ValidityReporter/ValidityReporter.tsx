@@ -1,8 +1,9 @@
 import React from 'react'
-import { getNextPlugin, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+// import { getNextPlugin, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 
-export const ValidityReporter: React.FC<WidgetPluginProps> = (props) => {
+export const ValidityReporter: React.FC<any> = (props) => {
+// export const ValidityReporter: React.FC<WidgetPluginProps> = (props) => {
     const [customError, setCustomError] = React.useState(false)
     const {onChange, showValidity, storeKeys, valid, currentPluginIndex} = props
 
@@ -43,7 +44,8 @@ export const ValidityReporter: React.FC<WidgetPluginProps> = (props) => {
     }, [onChange, storeKeysRef])
 
     const next = currentPluginIndex + 1
-    const Plugin = getNextPlugin(next, props.widgets)
+    const Plugin: any = null
+    // const Plugin = getNextPlugin(next, props.widgets)
     // @ts-ignore
     return <Plugin {...props} currentPluginIndex={next} valid={valid} showValidity={showValidity} setCustomError={setCustomError}/>
 }

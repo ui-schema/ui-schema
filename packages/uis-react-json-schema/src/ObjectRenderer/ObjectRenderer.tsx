@@ -16,16 +16,16 @@ const ObjectRendererBase: React.FC<ObjectRendererProps> = (
         ...props
     },
 ) => {
-    const {isVirtual, widgets} = props
+    const {isVirtual, render} = props
     const properties = schema.get('properties')
 
-    if (!isVirtual && !widgets.GroupRenderer) {
+    if (!isVirtual && !render.components.GroupRenderer) {
         if (process.env.NODE_ENV === 'development') {
             console.error('Widget GroupRenderer not existing')
         }
         return null
     }
-    const GroupRenderer = widgets.GroupRenderer
+    const GroupRenderer = render.components.GroupRenderer
 
     const propertyTree = properties?.map((childSchema, childKey) =>
         <WidgetEngine
