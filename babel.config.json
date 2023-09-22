@@ -4,10 +4,6 @@
         "@babel/preset-typescript"
     ],
     "plugins": [
-        "@babel/plugin-syntax-dynamic-import",
-        "@babel/plugin-transform-react-jsx",
-        "@babel/plugin-proposal-export-namespace-from",
-        "@babel/plugin-proposal-export-default-from",
         "react-loadable/babel",
         [
             "babel-plugin-named-asset-import",
@@ -18,8 +14,7 @@
                     }
                 }
             }
-        ],
-        "@babel/plugin-proposal-class-properties"
+        ]
     ],
     "env": {
         "cjs": {
@@ -68,13 +63,7 @@
                     }
                 ],
                 [
-                    "@babel/preset-typescript",
-                    {
-                        "targets": {
-                            "node": "14"
-                        },
-                        "modules": false
-                    }
+                    "@babel/preset-typescript"
                 ]
             ]
         }
