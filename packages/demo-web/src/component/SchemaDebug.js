@@ -9,6 +9,7 @@ export const SchemaDebug = ({StyledEditor, schema, setSchema}) => {
 
     return <React.Fragment>
         <StyledEditor
+            title={<code>UIStore.values</code>}
             data={store.getValues()}
             onChange={(keys, value) => {
                 onChange({
@@ -22,6 +23,7 @@ export const SchemaDebug = ({StyledEditor, schema, setSchema}) => {
             getVal={keys => store.getValues().getIn(keys)}
         />
         <StyledEditor
+            title={<code>Schema</code>}
             data={schema}
             onChange={(a, b) => setSchema(s => s.setIn(a, b))}
             getVal={keys => schema.getIn(keys)}

@@ -12,7 +12,7 @@ import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/system/schemaTypeI
 import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { InfoRendererType } from '@ui-schema/ds-material/Component'
-import { CustomLeafsRenderMapping } from '@ui-schema/react/UIEngine'
+import { LeafsRenderMapping } from '@tactic-ui/react/LeafsEngine'
 
 export interface StringRendererBaseProps {
     type?: string
@@ -45,7 +45,7 @@ export interface NumberRendererProps extends StringRendererBaseProps {
     steps?: number | 'any'
 }
 
-export const StringRenderer = <P extends WidgetProps & { render: CustomLeafsRenderMapping<{}, { InfoRenderer?: InfoRendererType }> }>(
+export const StringRenderer = <P extends WidgetProps & { renderMap: LeafsRenderMapping<{}, { InfoRenderer?: InfoRendererType }> }>(
     {
         type,
         multiline,
@@ -57,7 +57,7 @@ export const StringRenderer = <P extends WidgetProps & { render: CustomLeafsRend
         // eslint-disable-next-line deprecation/deprecation
         onKeyPress,
         inputProps = {}, InputProps = {}, inputRef: customInputRef,
-        render,
+        renderMap,
     }: P & WithScalarValue & StringRendererProps,
 ): React.ReactElement => {
     const uid = useUID()
@@ -70,7 +70,7 @@ export const StringRenderer = <P extends WidgetProps & { render: CustomLeafsRend
     inputProps = schemaRulesToNative(inputProps, schema)
 
     const hideTitle = schema.getIn(['view', 'hideTitle'])
-    const InfoRenderer = render.components?.InfoRenderer
+    const InfoRenderer = renderMap.components?.InfoRenderer
     if (InfoRenderer && schema?.get('info')) {
         InputProps['endAdornment'] = <InputAdornment position="end">
             <InfoRenderer
@@ -140,7 +140,7 @@ export const StringRenderer = <P extends WidgetProps & { render: CustomLeafsRend
     </React.Fragment>
 }
 
-export const TextRenderer = <P extends WidgetProps & { render: CustomLeafsRenderMapping<{}, { InfoRenderer?: InfoRendererType }> }>(
+export const TextRenderer = <P extends WidgetProps & { renderMap: LeafsRenderMapping<{}, { InfoRenderer?: InfoRendererType }> }>(
     {
         schema, ...props
     }: P & WithScalarValue & TextRendererProps,
@@ -160,7 +160,7 @@ export const TextRenderer = <P extends WidgetProps & { render: CustomLeafsRender
     />
 }
 
-export const NumberRenderer = <P extends WidgetProps & { render: CustomLeafsRenderMapping<{}, { InfoRenderer?: InfoRendererType }> }>(
+export const NumberRenderer = <P extends WidgetProps & { renderMap: LeafsRenderMapping<{}, { InfoRenderer?: InfoRendererType }> }>(
     props: P & WithScalarValue & NumberRendererProps,
 ): React.ReactElement => {
     const {schema, inputProps: inputPropsProps = {}, steps = 'any'} = props

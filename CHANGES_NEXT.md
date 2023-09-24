@@ -52,26 +52,22 @@ List of renamed functions, components etc., most are also moved to other package
 
 #### React Plugins
 
-- removed `ExtractStorePlugin`, included now in `WidgetEngine` directly (for the moment, experimenting performance/typing)
+- ~~removed `ExtractStorePlugin`, included now in `WidgetEngine` directly (for the moment, experimenting performance/typing)~~ back as normal plugin
 - removed `level` property, use `schemaKeys`/`storeKeys` to calc. that when necessary
 
 ### DS Material
 
 - adjusted root import paths, no longer exports the actual widgets directly - only with sub-folder
+    - e.g. `import { StringRenderer } from '@ui-schema/ds-material'` change to: `import { StringRenderer } from '@ui-schema/ds-material/Widgets'` or even better: `import { StringRenderer } from '@ui-schema/ds-material/Widgets/TextField'`
 - `widgetsBinding` case adjusted to `*W*idgetsBinding`, no longer exports `widgets`
 - `WidgetBinding | WidgetsBinding | MuiWidgetsBinding` types, folder and file names normalized to be `WidgetsBinding`
-- previous `widgetsBinding.widgets` now exported with multiple modular functions:
-    - separate files in `WidgetsDefault`, to be able to only import the ones really used in your app
-    - import all: `import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'`
-    - import modular, e.g. `import {define} from '@ui-schema/ds-material/WidgetsDefault/define'`
-    - `define(partialBinding)` just generates the basic structure without any plugins or widgets
-        - accepts the rest of the binding as parameter
-    - `plugins()` returns `schemaPlugins` and `widgetPlugins`
-    - `widgetsTypes()` just returns `types` widgets
-    - `widgetsCustom()` just returns some recommended `custom` widgets
-- `pluginStack` removed, now included directly in `widgetsBinding`
+- previous predefined `widgetsBinding.widgets` not yet added again
+    - todo: export with multiple modular factory functions
+- `pluginStack` removed, use a custom `ReactDeco`
 
 ## Plugin & Validator System
+
+> no longer valid, needs adjustments with current tactic-ui usage
 
 - new widget structure, internally similar to previously
 - very strict typings possible

@@ -68,5 +68,5 @@ export interface ErrorFallbackProps {
 //     schemaPlugins?: SchemaPlugin[]
 //     // todo: or maybe from tactic:
 //     processor?: (stage?: string) => any// as generic system-hook for `SchemaPlugins`/validator
-//     render?: any// as generic system-hook for `How-To-Render`
+//     renderMap?: any// as generic system-hook for `How-To-Render`
 // }

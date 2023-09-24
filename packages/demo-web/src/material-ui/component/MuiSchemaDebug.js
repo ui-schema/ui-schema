@@ -1,10 +1,11 @@
 import React from 'react';
 import Paper from '@mui/material/Paper';
 import useTheme from '@mui/material/styles/useTheme';
-import {ImmutableEditor, themeMaterial} from "react-immutable-editor";
-import {SchemaDebug} from "../../component/SchemaDebug";
+import {ImmutableEditor, themeMaterial} from 'react-immutable-editor';
+import {SchemaDebug} from '../../component/SchemaDebug';
+import Typography from '@mui/material/Typography';
 
-const MuiJsonEditor = p => {
+const MuiJsonEditor = ({title, ...p}) => {
     const theme = useTheme();
     return <Paper
         square
@@ -13,7 +14,10 @@ const MuiJsonEditor = p => {
             margin: theme.spacing(2) + ' ' + theme.spacing(1),
             padding: '0 ' + theme.spacing(1),
         }}
-        elevation={0}>
+        elevation={0}
+    >
+        {title ?
+            <Typography variant={'subtitle2'} color={'primary'} sx={{my: 0.5}}>{title}</Typography> : null}
 
         <ImmutableEditor
             {...p}

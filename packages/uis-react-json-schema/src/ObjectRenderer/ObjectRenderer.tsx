@@ -1,13 +1,14 @@
 import React from 'react'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { CustomLeafsRenderMapping, WidgetEngine } from '@ui-schema/react/UIEngine'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
+import { LeafsRenderMapping } from '@tactic-ui/react/LeafsEngine'
 import { GroupRendererProps, WidgetProps } from '@ui-schema/react/Widgets'
 
 export interface ObjectRendererProps extends WidgetProps {
     noGrid?: GroupRendererProps['noGrid']
 }
 
-const ObjectRendererBase = <P extends ObjectRendererProps & { render: CustomLeafsRenderMapping<{}, { GroupRenderer?: React.ComponentType<React.PropsWithChildren<GroupRendererProps>> }> }>(
+const ObjectRendererBase = <P extends ObjectRendererProps & { renderMap: LeafsRenderMapping<{}, { GroupRenderer?: React.ComponentType<React.PropsWithChildren<GroupRendererProps>> }> }>(
     {
         schema, storeKeys, schemaKeys,
         // for performance reasons, not pushing errors deeper
@@ -16,16 +17,16 @@ const ObjectRendererBase = <P extends ObjectRendererProps & { render: CustomLeaf
         ...props
     }: P,
 ): React.ReactNode => {
-    const {isVirtual, render} = props
+    const {isVirtual, renderMap} = props
     const properties = schema.get('properties')
 
-    if (!isVirtual && !render.components.GroupRenderer) {
+    if (!isVirtual && !renderMap.components.GroupRenderer) {
         if (process.env.NODE_ENV === 'development') {
             console.error('Widget GroupRenderer not existing')
         }
         return null
     }
-    const GroupRenderer = render.components.GroupRenderer
+    const GroupRenderer = renderMap.components.GroupRenderer
 
     const propertyTree = properties?.map((childSchema, childKey) =>
         <WidgetEngine

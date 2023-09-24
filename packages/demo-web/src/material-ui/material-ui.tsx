@@ -14,9 +14,8 @@ import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { browserT } from '../t'
 import { UIApiProvider } from '@ui-schema/react/UIApi'
-import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { CustomLeafsRenderMapping, WidgetEngine, WidgetsProvider } from '@ui-schema/react/UIEngine'
+import { WidgetEngine, WidgetsProvider } from '@ui-schema/react/WidgetEngine'
 import { ErrorFallback } from '@ui-schema/ds-material/ErrorFallback'
 import { GroupRenderer, SchemaGridHandler } from '@ui-schema/ds-material/Grid'
 // import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
@@ -24,16 +23,18 @@ import { GroupRenderer, SchemaGridHandler } from '@ui-schema/ds-material/Grid'
 import { NoWidget } from '@ui-schema/react/NoWidget'
 import { BoolRenderer } from '@ui-schema/ds-material/Widgets/OptionsBoolean'
 import { NumberRenderer, StringRenderer, TextRenderer } from '@ui-schema/ds-material/Widgets/TextField'
+import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import { StoreKeys } from '@ui-schema/system/ValueStore'
 import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 import { DecoratorPropsNext, ReactDeco } from '@tactic-ui/react/Deco'
+import { LeafsRenderMapping } from '@tactic-ui/react/LeafsEngine'
 import { ExtractStorePlugin } from '@ui-schema/react/ExtractStorePlugin'
 import { MuiComponentsBinding, NextMuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 
 export type CustomComponents = {
-    InfoRenderer?: React.ComponentType<InfoRendererProps>
+    // InfoRenderer?: ReactLeafDefaultNodeType<InfoRendererProps>
 }
 
 // todo: the binding needs to be fully specified beforehand, as otherwise circular relations won't work
@@ -41,22 +42,24 @@ export const renderMapping: NextMuiWidgetsBinding<
     {},
     {
         /* this typing is the "custom meta typing", which can be used to specify anything "injected" */
-        render: CustomLeafsRenderMapping<{}, MuiComponentsBinding>
+        renderMap: LeafsRenderMapping<{}, MuiComponentsBinding>
     },
     CustomComponents
 > = {
     leafs: {
-        // if now custom widget is specified, the `DemoRenderer` below suffixes `type:` before the schema `type` to access `leafs`
+        // if no custom widget is specified, the `DemoRenderer` below suffixes `type:` before the schema `type` to access `leafs`
         'type:string': StringRenderer,
         'type:boolean': BoolRenderer as React.FC<WidgetProps>,
         'type:number': NumberRenderer,
         'type:integer': NumberRenderer,
         'type:object': ObjectRenderer,
+        // note this annoying behaviour:
+        // 'type:object': ObjectRenderer as React.FC<WidgetProps>, // works, props of widget can have less than defined
+        // 'type:object': ObjectRenderer as React.ComponentType<WidgetProps>, // fails, props of widget must contain all props, like in the next line
+        // 'type:object': ObjectRenderer as React.ComponentType<WidgetProps & { renderMap: LeafsRenderMapping<{}, MuiComponentsBinding> }>,
+
         // the `DemoRenderer` below uses `custom` widgets as is to access `leafs`
         Text: TextRenderer,
-
-        // todo: somehow `ComponentType` isn't compatible
-        // 'type:object': ObjectRenderer as React.ComponentType<WidgetProps>,
     },
     components: {
         ErrorFallback: ErrorFallback,
@@ -131,8 +134,8 @@ const loadSchema = (url: string, versions?: string[]) => {
 
 type DemoRendererProps = {
     // todo: try to make the render typing a bit stricter without circular CustomLeafProps import dependencies
-    render: typeof renderMapping
-    // render: CustomLeafsRenderMapping<ReactLeafsNodeSpec<{ [k: string]: {} }>, {}>
+    renderMap: typeof renderMapping
+    // renderMap: LeafsRenderMapping<ReactLeafsNodeSpec<{ [k: string]: {} }>, {}>
     schema?: any
 }
 
@@ -144,11 +147,11 @@ function DemoRenderer<P extends DecoratorPropsNext>(
     }: P & DemoRendererProps,
 ): React.ReactElement<P> {
     // the last decorator must end the run - decorators afterwards are skipped silently
-    const {schema, render} = p
+    const {schema, renderMap} = p
     // todo: try using the `widgetMatcher` base in uis-system/src-tmp
     const schemaType = schema?.get('type') as string | undefined
     const schemaWidget = schema?.get('widget')
-    // console.log('schemaType', schemaType, schemaWidget, render.leafs)
+    // console.log('schemaType', schemaType, schemaWidget, renderMap.leafs)
     const getWidget = (): any => {
         let matching: string | undefined
         if (schemaWidget) {
@@ -156,11 +159,11 @@ function DemoRenderer<P extends DecoratorPropsNext>(
         } else if (typeof schemaType === 'string') {
             matching = 'type:' + schemaType
         }
-        if (matching && render.leafs[matching]) {
-            return render.leafs[matching]
+        if (matching && renderMap.leafs[matching]) {
+            return renderMap.leafs[matching]
         }
-        if (render.components.NoWidget) {
-            const NoWidget = render.components.NoWidget
+        if (renderMap.components.NoWidget) {
+            const NoWidget = renderMap.components.NoWidget
             // todo: use a better way to add the extra NoWidgetProps
             return function NoWidgetWrap(p) {
                 return <NoWidget{...p} matching={matching}/>
@@ -174,11 +177,9 @@ function DemoRenderer<P extends DecoratorPropsNext>(
 
 const deco = new ReactDeco<
     DecoratorPropsNext &
-    // DemoDecoratorProps &
-    // CustomLeafDataType<string> &
     {
-        render: typeof renderMapping
-        // render: CustomLeafsRenderMapping<ReactLeafsNodeSpec<{ [k: string]: {} }>, CustomComponents>
+        renderMap: typeof renderMapping
+        // renderMap: LeafsRenderMapping<ReactLeafsNodeSpec<{ [k: string]: {} }>, CustomComponents>
     } &
     {
         storeKeys: StoreKeys
@@ -189,14 +190,13 @@ const deco = new ReactDeco<
     .use(ExtractStorePlugin)
     .use(DemoRenderer)
 
-export default function materialDemo() {
+export default function MaterialDemo() {
     return <AppTheme>
-        {/*<WidgetsProvider<{ [K in keyof typeof renderMapping.leafs]: React.ComponentProps<NonNullable<typeof renderMapping.leafs[K]>> }, typeof renderMapping.components, typeof renderMapping>*/}
-        <WidgetsProvider<{ [K in keyof typeof renderMapping.leafs]: React.ComponentProps<NonNullable<typeof renderMapping.leafs[K]>> }>
+        {/* todo make the typing stricter and easier */}
+        {/*<WidgetsProvider<NextMuiWidgetsBinding<{}, { renderMap: LeafsRenderMapping<{}, MuiComponentsBinding> }, typeof renderMapping.components>['leafs'], typeof renderMapping.components, typeof deco>*/}
+        <WidgetsProvider
             deco={deco}
-            // todo: fix in tactic-ui
-            // @ts-ignore
-            render={renderMapping}
+            renderMap={renderMapping}
         >
             <UIMetaProvider t={browserT}>
                 {/* todo: move to `UIMeta`? */}
