@@ -6,13 +6,12 @@ import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
 import { List } from 'immutable'
-// import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { createOrderedMap, createMap } from '@ui-schema/system/createMap'
 import { isInvalid } from '@ui-schema/react/ValidityReporter'
 import { createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
-// import { MuiSchemaDebug } from './component/MuiSchemaDebug'
+import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { browserT } from '../t'
 import { UIApiProvider } from '@ui-schema/react/UIApi'
 import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
@@ -74,7 +73,7 @@ export const renderMapping: NextMuiWidgetsBinding<
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false)
     const [store, setStore] = React.useState(() => createStore(createMap({address: {street_no: '5a'}})))
-    const [schema] = React.useState<UISchemaMap>(() => createOrderedMap(schemaUser) as UISchemaMap)
+    const [schema, setSchema] = React.useState<UISchemaMap>(() => createOrderedMap(schemaUser) as UISchemaMap)
 
     const onChange = React.useCallback((actions) => {
         setStore(oldStore => {
@@ -91,28 +90,37 @@ const MainStore = () => {
             showValidity={showValidity}
             //doNotDefault
         >
-            <Grid container spacing={2}>
-                <WidgetEngine
-                    storeKeys={List([]) as StoreKeys}
-                    schemaKeys={List([]) as StoreKeys}
-                    schema={schema}
-                    parentSchema={undefined}
-                    required={false}
-                    errors={createValidatorErrors()}
-                    showValidity={false}
-                    t={browserT}
-                    isVirtual={false}
-                    noGrid={false}
-                    valid
-                />
-            </Grid>
-            {/*<GridStack isRoot schema={schema}/>*/}
-            {/*<MuiSchemaDebug setSchema={setSchema} schema={schema}/>*/}
+            <Paper
+                sx={{
+                    p: 2,
+                    display: 'flex',
+                    overflow: 'auto',
+                    flexDirection: 'column',
+                }}
+            >
+                {/*<GridStack isRoot schema={schema}/>*/}
+                <Grid container spacing={2}>
+                    <WidgetEngine
+                        storeKeys={List([]) as StoreKeys}
+                        schemaKeys={List([]) as StoreKeys}
+                        schema={schema}
+                        parentSchema={undefined}
+                        required={false}
+                        errors={createValidatorErrors()}
+                        showValidity={false}
+                        t={browserT}
+                        isVirtual={false}
+                        noGrid={false}
+                        valid
+                    />
+                </Grid>
+
+                <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
+                {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
+            </Paper>
+
+            <MuiSchemaDebug setSchema={setSchema} schema={schema}/>
         </UIStoreProvider>
-
-        <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
-        {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
-
     </React.Fragment>
 }
 
@@ -195,16 +203,7 @@ export default function materialDemo() {
                 <UIApiProvider loadSchema={loadSchema} noCache>
                     <Dashboard>
                         <Grid item xs={12}>
-                            <Paper
-                                sx={{
-                                    p: 2,
-                                    display: 'flex',
-                                    overflow: 'auto',
-                                    flexDirection: 'column',
-                                }}
-                            >
-                                <MainStore/>
-                            </Paper>
+                            <MainStore/>
                         </Grid>
                     </Dashboard>
                 </UIApiProvider>
