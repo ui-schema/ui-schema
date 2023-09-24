@@ -1,6 +1,5 @@
 import { StoreKeys } from '@ui-schema/system/ValueStore'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
 
 /**
  * Base widget props which are expected to exist no matter which data "type" the widget is for
@@ -21,10 +20,11 @@ export interface WidgetPayload {
 
     // `required` is created inside validator plugin
     required: boolean
-    // todo: extract to validator typings, extend here
-    // `errors` and `valid` are created inside validator plugins
-    errors?: ValidatorErrorsType
-    valid?: boolean
+
+    // // todo: extract to validator typings, extend here - or maybe omit and consumer must use `ExtractStorePluginProps`?
+    // // `errors` and `valid` are created inside validator plugins
+    // errors?: ValidatorErrorsType
+    // valid?: boolean
 
     // overridable store value:
     showValidity?: boolean

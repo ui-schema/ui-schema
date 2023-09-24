@@ -1,10 +1,8 @@
 import React from 'react'
-import { useUIStore } from '@ui-schema/react/UIStore'
-import { DecoratorPropsNext } from '@tactic-ui/react/Deco'
+import { useUIStore, WithValue } from '@ui-schema/react/UIStore'
+import { DecoratorPropsNext, ReactBaseDecorator } from '@tactic-ui/react/Deco'
 import { StoreKeys } from '@ui-schema/system/ValueStore'
 import { useUIStoreActions } from '@ui-schema/react/UIStoreActions'
-
-// export const ExtractStorePlugin = extractValue(NextPluginRendererMemo) as <P extends WidgetPluginProps>(props: P) => React.ReactElement
 
 export interface ExtractStorePluginProps {
     storeKeys: StoreKeys
@@ -14,12 +12,15 @@ export interface ExtractStorePluginProps {
 /**
  * @todo add support for memo next component again
  */
-export function ExtractStorePlugin<P extends DecoratorPropsNext>(props: P & ExtractStorePluginProps): React.ReactElement<P> {
-    const Next = props.next(props.decoIndex + 1)
+export function ExtractStorePlugin<P extends DecoratorPropsNext>(props: P & ExtractStorePluginProps): React.ReactElement<P & WithValue> {
+    const Next = props.next(props.decoIndex + 1) as ReactBaseDecorator<P & WithValue>
     const {store, showValidity} = useUIStore()
     const {onChange} = useUIStoreActions()
+    if (!store) {
+        throw new Error('UIStore is missing, check the UIStoreProvider')
+    }
 
-    const values = store?.extractValues(props.storeKeys)
+    const values = store.extractValues(props.storeKeys)
     return <Next
         {...props}
         // `showValidity` is overridable by render flow, e.g. nested Stepper

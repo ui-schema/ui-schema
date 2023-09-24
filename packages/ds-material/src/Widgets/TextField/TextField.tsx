@@ -13,6 +13,7 @@ import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { InfoRendererType } from '@ui-schema/ds-material/Component'
 import { LeafsRenderMapping } from '@tactic-ui/react/LeafsEngine'
+import { SchemaValidatorContext } from '@ui-schema/system/SchemaPluginStack'
 
 export interface StringRendererBaseProps {
     type?: string
@@ -45,7 +46,7 @@ export interface NumberRendererProps extends StringRendererBaseProps {
     steps?: number | 'any'
 }
 
-export const StringRenderer = <P extends WidgetProps & { renderMap: LeafsRenderMapping<{}, { InfoRenderer?: InfoRendererType }> }>(
+export const StringRenderer = <P extends WidgetProps & SchemaValidatorContext & { renderMap: LeafsRenderMapping<{}, { InfoRenderer?: InfoRendererType }> }>(
     {
         type,
         multiline,
@@ -140,7 +141,7 @@ export const StringRenderer = <P extends WidgetProps & { renderMap: LeafsRenderM
     </React.Fragment>
 }
 
-export const TextRenderer = <P extends WidgetProps & { renderMap: LeafsRenderMapping<{}, { InfoRenderer?: InfoRendererType }> }>(
+export const TextRenderer = <P extends WidgetProps & SchemaValidatorContext & { renderMap: LeafsRenderMapping<{}, { InfoRenderer?: InfoRendererType }> }>(
     {
         schema, ...props
     }: P & WithScalarValue & TextRendererProps,
@@ -160,7 +161,7 @@ export const TextRenderer = <P extends WidgetProps & { renderMap: LeafsRenderMap
     />
 }
 
-export const NumberRenderer = <P extends WidgetProps & { renderMap: LeafsRenderMapping<{}, { InfoRenderer?: InfoRendererType }> }>(
+export const NumberRenderer = <P extends WidgetProps & SchemaValidatorContext & { renderMap: LeafsRenderMapping<{}, { InfoRenderer?: InfoRendererType }> }>(
     props: P & WithScalarValue & NumberRendererProps,
 ): React.ReactElement => {
     const {schema, inputProps: inputPropsProps = {}, steps = 'any'} = props

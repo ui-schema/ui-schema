@@ -4,6 +4,7 @@ import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { LeafsRenderMapping, ReactLeafsNodeSpec } from '@tactic-ui/react/LeafsEngine'
 import { InfoRendererProps } from '@ui-schema/ds-material/Component'
 import { ReactLeafDefaultNodeType } from '@tactic-ui/react/LeafsEngine'
+import { SchemaValidatorContext } from '@ui-schema/system/SchemaPluginStack'
 
 // @ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -22,11 +23,11 @@ export type NextMuiWidgetsBinding<W extends {}, M extends {}, C extends {}> =
         // widgets / leafs
         ReactLeafsNodeSpec<
             {
-                'type:string'?: WidgetProps & M & WithScalarValue
-                'type:boolean'?: WidgetProps & M & WithScalarValue
-                'type:number'?: WidgetProps & M & WithScalarValue
-                'type:integer'?: WidgetProps & M & WithScalarValue
-                // 'type:object'?: WidgetProps & M
+                'type:string'?: WidgetProps & SchemaValidatorContext & M & WithScalarValue
+                'type:boolean'?: WidgetProps & SchemaValidatorContext & M & WithScalarValue
+                'type:number'?: WidgetProps & SchemaValidatorContext & M & WithScalarValue
+                'type:integer'?: WidgetProps & SchemaValidatorContext & M & WithScalarValue
+                'type:object'?: WidgetProps & SchemaValidatorContext & M
             } &
             // note: allowing extending here won't work
             // ({
@@ -37,7 +38,7 @@ export type NextMuiWidgetsBinding<W extends {}, M extends {}, C extends {}> =
             W
         > &
         // allowing extending dynamically, todo: maybe mv as extra typing, as now consuming code can't make it fully strict
-        { [k: string]: ReactLeafDefaultNodeType<WidgetProps & M> | ReactLeafDefaultNodeType<WidgetProps & M & WithScalarValue> },
+        { [k: string]: ReactLeafDefaultNodeType<WidgetProps & SchemaValidatorContext & M> | ReactLeafDefaultNodeType<WidgetProps & SchemaValidatorContext & M & WithScalarValue> },
         // static components
         MuiComponentsBinding &
         C

@@ -1,8 +1,9 @@
-import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { WithValue } from '@ui-schema/react/UIStore'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { SchemaValidatorContext } from '@ui-schema/system/SchemaPluginStack'
 
 export interface SchemaPlugin {
-    handle: (props: WidgetPluginProps & WithValue) => Partial<WidgetPluginProps & WithValue>
-    noHandle?: (props: WidgetPluginProps & WithValue) => Partial<WidgetPluginProps & WithValue>
-    should?: (props: WidgetPluginProps & WithValue) => boolean
+    handle: (props: WidgetProps & Omit<WithValue, 'onChange'> & SchemaValidatorContext) => Partial<WidgetProps & Omit<WithValue, 'onChange'> & SchemaValidatorContext>
+    noHandle?: (props: WidgetProps & Omit<WithValue, 'onChange'> & SchemaValidatorContext) => Partial<WidgetProps & Omit<WithValue, 'onChange'> & SchemaValidatorContext>
+    should?: (props: WidgetProps & Omit<WithValue, 'onChange'> & SchemaValidatorContext) => boolean
 }

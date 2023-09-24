@@ -1,9 +1,24 @@
 import React from 'react'
-import { getNextPlugin, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
-import { SchemaPluginStack } from '@ui-schema/system/SchemaPluginStack'
+import { SchemaValidatorContext, SchemaPluginStack } from '@ui-schema/system/SchemaPluginStack'
+import { DecoratorPropsNext } from '@tactic-ui/react/Deco'
+import { WithValue } from '@ui-schema/react/UIStore'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
+import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 
-export const SchemaPluginsAdapter = <P extends WidgetPluginProps>({currentPluginIndex, ...props}: P): React.ReactElement => {
-    const next = currentPluginIndex + 1
-    const Plugin = getNextPlugin(next, props.widgets)
-    return <Plugin {...SchemaPluginStack(props, props.widgets.schemaPlugins)} currentPluginIndex={next}/>
+export interface SchemaPluginsAdapterProps {
+    schemaPlugins?: SchemaPlugin[]
+}
+
+export const SchemaPluginsAdapter = <P extends DecoratorPropsNext & WidgetProps & WithValue>(props: P & SchemaPluginsAdapterProps): React.ReactElement<P & SchemaValidatorContext> => {
+    const Next = props.next(props.decoIndex + 1)
+    const nextProps: P & SchemaValidatorContext = {
+        ...props,
+        errors: createValidatorErrors(),
+        valid: true,
+    }
+    return <Next
+        {...(props.schemaPlugins ? SchemaPluginStack(nextProps, props.schemaPlugins) : nextProps)}
+        decoIndex={props.decoIndex + 1}
+    />
 }

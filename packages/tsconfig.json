@@ -19,6 +19,7 @@
         "noUnusedLocals": true,
         "noImplicitAny": false,
         "noUnusedParameters": true,
+        "esModuleInterop": false,
         "paths": {
             "@ui-schema/ds-bootstrap": [
                 "ds-bootstrap/src"

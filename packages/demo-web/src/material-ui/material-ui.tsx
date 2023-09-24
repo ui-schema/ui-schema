@@ -27,11 +27,13 @@ import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import { StoreKeys } from '@ui-schema/system/ValueStore'
-import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 import { DecoratorPropsNext, ReactDeco } from '@tactic-ui/react/Deco'
 import { LeafsRenderMapping } from '@tactic-ui/react/LeafsEngine'
 import { ExtractStorePlugin } from '@ui-schema/react/ExtractStorePlugin'
 import { MuiComponentsBinding, NextMuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { SchemaPluginsAdapter } from '@ui-schema/react/SchemaPluginsAdapter'
+import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
+import { getValidators } from '@ui-schema/json-schema/getValidators'
 
 export type CustomComponents = {
     // InfoRenderer?: ReactLeafDefaultNodeType<InfoRendererProps>
@@ -54,7 +56,7 @@ export const renderMapping: NextMuiWidgetsBinding<
         'type:integer': NumberRenderer,
         'type:object': ObjectRenderer,
         // note this annoying behaviour:
-        // 'type:object': ObjectRenderer as React.FC<WidgetProps>, // works, props of widget can have less than defined
+        // 'type:object': ObjectRenderer as React.FC<WidgetProps>, // works, props of widget can have less than defined in data map
         // 'type:object': ObjectRenderer as React.ComponentType<WidgetProps>, // fails, props of widget must contain all props, like in the next line
         // 'type:object': ObjectRenderer as React.ComponentType<WidgetProps & { renderMap: LeafsRenderMapping<{}, MuiComponentsBinding> }>,
 
@@ -109,16 +111,13 @@ const MainStore = () => {
                         schema={schema}
                         parentSchema={undefined}
                         required={false}
-                        errors={createValidatorErrors()}
-                        showValidity={false}
                         t={browserT}
                         isVirtual={false}
                         noGrid={false}
-                        valid
                     />
                 </Grid>
 
-                <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
+                <Button onClick={() => setShowValidity(!showValidity)}>{showValidity ? 'hide ' : ''}validity</Button>
                 {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
             </Paper>
 
@@ -175,19 +174,31 @@ function DemoRenderer<P extends DecoratorPropsNext>(
     return <Widget {...p}/>
 }
 
+const schemaPlugins: SchemaPlugin[] = getValidators()
+
 const deco = new ReactDeco<
     DecoratorPropsNext &
     {
         renderMap: typeof renderMapping
         // renderMap: LeafsRenderMapping<ReactLeafsNodeSpec<{ [k: string]: {} }>, CustomComponents>
     } &
-    {
-        storeKeys: StoreKeys
-        schema: UISchemaMap
-    }
+    WidgetProps
+    // {
+    //     storeKeys: StoreKeys
+    //     schema: UISchemaMap
+    // }
 >()
+    // todo: use another way to configure the schemaPlugins, should be `props` based but not introduce another context if possible
+    .use(<P extends DecoratorPropsNext>(props: P): React.ReactElement<P & { schemaPlugins: SchemaPlugin[] }> => {
+        const Next = props.next(props.decoIndex + 1)
+        return <Next
+            {...props} decoIndex={props.decoIndex + 1}
+            schemaPlugins={schemaPlugins}
+        />
+    })
     .use(SchemaGridHandler)
     .use(ExtractStorePlugin)
+    .use(SchemaPluginsAdapter)
     .use(DemoRenderer)
 
 export default function MaterialDemo() {
