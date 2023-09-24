@@ -1,6 +1,6 @@
 import React from 'react'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { StoreKeys, WithOnChange } from '@ui-schema/react/UIStore'
+import { WithOnChange } from '@ui-schema/react/UIStore'
 import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { WidgetProps } from '@ui-schema/react/Widgets'
@@ -18,6 +18,7 @@ import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd/DragDrop
 import { DndBlocksRenderer } from '@ui-schema/material-dnd/DndBlocksRenderer'
 import { AreaRenderer } from '@ui-schema/material-dnd/WidgetsBase/AreaRenderer'
 import { injectBlock, WithDndBlock } from '@ui-schema/material-dnd/injectBlock/injectBlock'
+import { StoreKeys } from '@ui-schema/system/ValueStore'
 
 export const DragDropAreaBase = (
     {

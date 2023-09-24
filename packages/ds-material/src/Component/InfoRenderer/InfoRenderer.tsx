@@ -1,6 +1,5 @@
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { StoreKeys } from '@ui-schema/react/UIStore'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
@@ -11,6 +10,7 @@ import DialogActions from '@mui/material/DialogActions'
 import IcInfo from '@mui/icons-material/Info'
 import React from 'react'
 import { List } from 'immutable'
+import { StoreKeys } from '@ui-schema/system/ValueStore'
 
 export interface InfoRendererProps {
     variant: 'icon' | 'preview' | 'open'

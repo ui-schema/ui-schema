@@ -600,6 +600,13 @@ const schemaUser: JsonSchemaStrict = {
                 sizeMd: 6,
             },
         },
+        avatar: {
+            type: 'string',
+            widget: 'Image',
+            view: {
+                sizeMd: 6,
+            },
+        },
     },
 }
 

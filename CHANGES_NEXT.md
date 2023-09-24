@@ -43,6 +43,13 @@ List of renamed functions, components etc., most are also moved to other package
 - added `NoWidget` as `NoWidget` / no longer as hard coded default
 - browser error translation switched from `"t": "browser"` to `"tBy": "browser"`
 
+##### Tactic-UI Integration
+
+> just a stub, a lot of things are not mentioned here yet
+
+- widgets which rely on the widgets binding need to specify the required bindings for `leafs` and `components` manually
+- the `render` prop now contains the injected binding, instead of `widgets`, with a new structure which is specified by `tactic-ui`
+
 #### React Plugins
 
 - removed `ExtractStorePlugin`, included now in `WidgetEngine` directly (for the moment, experimenting performance/typing)

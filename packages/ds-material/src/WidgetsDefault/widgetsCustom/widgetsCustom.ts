@@ -10,12 +10,11 @@ import { AccordionsRenderer } from '@ui-schema/ds-material/Widgets/Accordions'
 import { CardRenderer } from '@ui-schema/ds-material/Widgets/Card'
 import { FormGroup } from '@ui-schema/ds-material/Widgets/FormGroup'
 import { LabelBox } from '@ui-schema/ds-material/Widgets/LabelBox'
-import { MuiWidgetsBindingCustom } from '@ui-schema/ds-material/WidgetsBinding'
 import { WidgetType } from '@ui-schema/react/Widgets'
 
-export const widgetsCustom = <C extends {} = {}>(): MuiWidgetsBindingCustom<C> => {
+export const widgetsCustom = <C extends {} = {}>() => {
     return {
-        Accordions: AccordionsRenderer,
+        Accordions: AccordionsRenderer as WidgetType<C>,
         Text: TextRenderer,
         StringIcon: StringIconRenderer as WidgetType<C>,
         TextIcon: TextIconRenderer as WidgetType<C>,

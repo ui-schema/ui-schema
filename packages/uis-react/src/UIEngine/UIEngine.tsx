@@ -7,6 +7,7 @@ export type WidgetPropsMap = { [k: string]: WidgetProps }
 
 export type CustomComponents = {}
 export type CustomLeafsRenderMapping<
+    // why are here data missing?
     TLeafsMapping extends {} = {},
     TComponentsMapping extends {} = {}
 > = LeafsRenderMapping<TLeafsMapping, TComponentsMapping>
@@ -17,13 +18,14 @@ export type CustomLeafsEngine<
     TDeco extends ReactDeco<{}, {}, {}>
 > = LeafsEngine<TLeafsDataMapping, TComponents, TRender, TDeco>
 
+// todo: optimize generics usage for easier, `typeof customBinding.leafs` and alike
 const {
     LeafsProvider, useLeafs,
 } = defineLeafEngine<
-    WidgetPropsMap, CustomComponents,
-    CustomLeafsRenderMapping<ReactLeafsNodeSpec<WidgetPropsMap>, CustomComponents>,
+    {}, CustomComponents,
+    CustomLeafsRenderMapping<ReactLeafsNodeSpec<{}>, CustomComponents>,
     ReactDeco<{}, {}>,
-    CustomLeafsEngine<WidgetPropsMap, CustomComponents, CustomLeafsRenderMapping<ReactLeafsNodeSpec<WidgetPropsMap>, CustomComponents>, ReactDeco<{}, {}>>
+    CustomLeafsEngine<{}, CustomComponents, CustomLeafsRenderMapping<ReactLeafsNodeSpec<{}>, CustomComponents>, ReactDeco<{}, {}>>
 >()
 
 type LeafNodeInjected = 'decoIndex' | 'next' | keyof CustomLeafsEngine<any, any, any, any>

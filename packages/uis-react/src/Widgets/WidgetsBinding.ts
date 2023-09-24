@@ -1,10 +1,13 @@
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { StoreKeys } from '@ui-schema/react/UIStore'
 import { List } from 'immutable'
+import { StoreKeys } from '@ui-schema/system/ValueStore'
 
 export interface NoWidgetProps {
     storeKeys: StoreKeys
     schemaKeys?: StoreKeys
+    /**
+     * @deprecated the new v0.5.0 matcher doesn't have defined scopes (type/custom)
+     */
     scope?: string
     matching?: string
 }

@@ -1,11 +1,12 @@
 import {
-    StoreKeys, UIStoreType,
+    UIStoreType,
     prependKey, addNestKey,
     UIStoreStateData, UIStoreUpdaterFn,
 } from '@ui-schema/react/UIStore'
 import { scopeUpdaterValues, scopeUpdaterInternals, scopeUpdaterValidity } from '@ui-schema/react/storeScopeUpdater'
 import { UIStoreAction, UIStoreActions, UIStoreUpdaterData } from '@ui-schema/react/UIStoreActions'
 import { storeActionReducers } from '@ui-schema/react/storeUpdater'
+import { StoreKeys } from '@ui-schema/system/ValueStore'
 
 // todo: unify this type and the `setter` in `ScopeUpdaterMapType`
 export type ScopeOnChangeHandler<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData, A = UIStoreActions<S, D>> = (
@@ -63,6 +64,7 @@ export const scopeUpdaterMapDefault: ScopeUpdaterMapType = {
     },
     meta: {
         // `store.meta`
+        // @ts-ignore
         setter: (store, _storeKeys, newValue) => store.set('meta', newValue),
         getter: (_storeKeys, store) => store.meta,
     },

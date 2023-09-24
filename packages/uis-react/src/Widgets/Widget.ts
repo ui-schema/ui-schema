@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { WithOnChange, WithScalarValue } from '@ui-schema/react/UIStore'
 import { UIMetaContext } from '@ui-schema/react/UIMeta'
 import { GroupRendererProps } from '@ui-schema/react/Widgets'
