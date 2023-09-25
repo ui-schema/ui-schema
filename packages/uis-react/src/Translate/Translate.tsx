@@ -10,7 +10,7 @@ export interface TranslateProps {
     schema?: ValueOrImmutableOrdered<UISchema['t']>
     fallback?: translation
     // overwrite the context `t` function
-    t?: Translator
+    t?: Translator<translation | React.ComponentType>
 }
 
 /**

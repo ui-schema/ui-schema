@@ -16,6 +16,10 @@ export type WidgetType<C extends {} = {}, A = UIStoreActions> = WidgetOverrideTy
 // todo: maybe add `value` in a way that typing `const v = invalid ? undefined : value`, the `v` will be strongly typed against the "data-mapping type"
 
 /**
+ * WIP: The fundamental contract which UIS-React expect for the WidgetEngine,
+ * all else will be moved to own typings, with the goal to reuse `ReactDeco` at the end for inference.
+ *
+ * This was previously:
  * Base widget props which are expected to exist no matter which data "type" the widget is for
  * - for only-scalar widgets add `WithScalarValue`
  * - for any-value-type widgets add `WithValue` and use the HOC `extractValue`

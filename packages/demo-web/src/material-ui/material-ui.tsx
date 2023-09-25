@@ -135,10 +135,9 @@ type DemoRendererProps = {
     // todo: try to make the render typing a bit stricter without circular CustomLeafProps import dependencies
     renderMap: typeof renderMapping
     // renderMap: LeafsRenderMapping<ReactLeafsNodeSpec<{ [k: string]: {} }>, {}>
-    schema?: any
 }
 
-function DemoRenderer<P extends DecoratorPropsNext>(
+function DemoRenderer<P extends DecoratorPropsNext & WidgetProps>(
     {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         next, decoIndex,
@@ -151,7 +150,7 @@ function DemoRenderer<P extends DecoratorPropsNext>(
     const schemaType = schema?.get('type') as string | undefined
     const schemaWidget = schema?.get('widget')
     // console.log('schemaType', schemaType, schemaWidget, renderMap.leafs)
-    const getWidget = (): any => {
+    const getWidget = (): React.ComponentType<Omit<P, keyof DecoratorPropsNext> & DemoRendererProps> => {
         let matching: string | undefined
         if (schemaWidget) {
             matching = schemaWidget
@@ -159,13 +158,13 @@ function DemoRenderer<P extends DecoratorPropsNext>(
             matching = 'type:' + schemaType
         }
         if (matching && renderMap.leafs[matching]) {
-            return renderMap.leafs[matching]
+            return renderMap.leafs[matching] as any
         }
         if (renderMap.components.NoWidget) {
             const NoWidget = renderMap.components.NoWidget
             // todo: use a better way to add the extra NoWidgetProps
             return function NoWidgetWrap(p) {
-                return <NoWidget{...p} matching={matching}/>
+                return <NoWidget {...p} matching={matching}/>
             }
         }
         throw new Error('No Widget found.')
@@ -183,10 +182,6 @@ const deco = new ReactDeco<
         // renderMap: LeafsRenderMapping<ReactLeafsNodeSpec<{ [k: string]: {} }>, CustomComponents>
     } &
     WidgetProps
-    // {
-    //     storeKeys: StoreKeys
-    //     schema: UISchemaMap
-    // }
 >()
     // todo: use another way to configure the schemaPlugins, should be `props` based but not introduce another context if possible
     .use(<P extends DecoratorPropsNext>(props: P): React.ReactElement<P & { schemaPlugins: SchemaPlugin[] }> => {

@@ -1,5 +1,6 @@
 import { List, Map, OrderedMap, Record } from 'immutable'
-import { StoreKeys, UIStoreType, addNestKey, UIStoreStateData } from '@ui-schema/react/UIStore'
+import { UIStoreType, addNestKey, UIStoreStateData } from '@ui-schema/react/UIStore'
+import { StoreKeys } from '@ui-schema/system/ValueStore'
 
 export const storeBuildScopeTree = <S extends UIStoreType>(storeKeys: StoreKeys, scope: keyof UIStoreStateData, store: S, nestKey: string | undefined = undefined, ordered: boolean = false): S => {
     const relativeList: (string | number)[] = [scope]
@@ -22,7 +23,7 @@ export const storeBuildScopeTree = <S extends UIStoreType>(storeKeys: StoreKeys,
             store = store.setIn(
                 relativeList,
                 typeof key === 'number' ? List() : ordered ? OrderedMap() : Map()
-            )
+            ) as S
         }
 
         // the current iteration must have the "parents" relative storeKeys, not it's own,

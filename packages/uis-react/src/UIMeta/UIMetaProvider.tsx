@@ -1,11 +1,11 @@
 import React from 'react'
-import { Translator } from '@ui-schema/system/Translator'
+import { translation, Translator } from '@ui-schema/system/Translator'
 
 // @ts-ignore
 const UIMetaContextObj = React.createContext<UIMetaContext>({})
 
 export interface UIMetaContext {
-    t: Translator
+    t: Translator<translation | React.ComponentType>
 }
 
 export function UIMetaProvider<C extends {} = {}>(

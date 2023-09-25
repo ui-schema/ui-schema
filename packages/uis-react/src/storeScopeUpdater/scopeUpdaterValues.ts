@@ -1,11 +1,12 @@
 import {
-    prependKey, shouldDeleteOnEmpty, StoreKeys, UIStoreType,
+    prependKey, shouldDeleteOnEmpty, UIStoreType,
 } from '@ui-schema/react/UIStore'
 import { List, Map, Record } from 'immutable'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
 import { updateStoreScope } from '@ui-schema/react/storeScopeUpdater'
 import { storeBuildScopeTree } from '@ui-schema/react/storeBuildScopeTree'
+import { StoreKeys } from '@ui-schema/system/ValueStore'
 
 export const scopeUpdaterValues = <S extends UIStoreType = UIStoreType, A extends UIStoreActions = UIStoreActions>(
     store: S, storeKeys: StoreKeys, newValue: any, action: A,
@@ -33,6 +34,7 @@ export const scopeUpdaterValues = <S extends UIStoreType = UIStoreType, A extend
                 store = store.deleteIn(prependKey(storeKeys, 'values'))
             }
         } else {
+            // @ts-ignore
             store = store.deleteIn(['values'])
         }
         return store

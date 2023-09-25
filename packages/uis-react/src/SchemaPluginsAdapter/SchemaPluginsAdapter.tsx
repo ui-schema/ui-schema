@@ -1,6 +1,6 @@
 import React from 'react'
 import { SchemaValidatorContext, SchemaPluginStack } from '@ui-schema/system/SchemaPluginStack'
-import { DecoratorPropsNext } from '@tactic-ui/react/Deco'
+import { DecoratorPropsNext, ReactBaseDecorator } from '@tactic-ui/react/Deco'
 import { WithValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
@@ -11,7 +11,7 @@ export interface SchemaPluginsAdapterProps {
 }
 
 export const SchemaPluginsAdapter = <P extends DecoratorPropsNext & WidgetProps & WithValue>(props: P & SchemaPluginsAdapterProps): React.ReactElement<P & SchemaValidatorContext> => {
-    const Next = props.next(props.decoIndex + 1)
+    const Next = props.next(props.decoIndex + 1) as ReactBaseDecorator<P & SchemaValidatorContext>
     const nextProps: P & SchemaValidatorContext = {
         ...props,
         errors: createValidatorErrors(),

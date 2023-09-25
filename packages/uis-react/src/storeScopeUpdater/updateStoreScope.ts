@@ -1,4 +1,5 @@
-import { prependKey, StoreKeys, UIStoreStateData, UIStoreType } from '@ui-schema/react/UIStore'
+import { prependKey, UIStoreStateData, UIStoreType } from '@ui-schema/react/UIStore'
+import { StoreKeys } from '@ui-schema/system/ValueStore'
 
 export type ScopeOnChangeHandlerInternal = <S extends UIStoreType>(
     store: S,
