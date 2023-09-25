@@ -1,11 +1,15 @@
 import React from 'react'
-// import { getNextPlugin, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
+import { DecoratorPropsNext, ReactBaseDecorator } from '@tactic-ui/react/Deco'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WithValue } from '@ui-schema/react/UIStore'
 
-export const ValidityReporter: React.FC<any> = (props) => {
-// export const ValidityReporter: React.FC<WidgetPluginProps> = (props) => {
+export const ValidityReporter = <P extends DecoratorPropsNext & WidgetProps & WithValue>(
+    props: P & { valid: boolean },
+): React.ReactElement<P & { valid: boolean }> => {
     const [customError, setCustomError] = React.useState(false)
-    const {onChange, showValidity, storeKeys, valid, currentPluginIndex} = props
+    const {onChange, showValidity, storeKeys, valid} = props
+    const Next = props.next(props.decoIndex + 1) as ReactBaseDecorator<P & { valid: boolean }>
 
     const storeKeysRef = useImmutable(storeKeys)
 
@@ -43,9 +47,11 @@ export const ValidityReporter: React.FC<any> = (props) => {
         })*/
     }, [onChange, storeKeysRef])
 
-    const next = currentPluginIndex + 1
-    const Plugin: any = null
-    // const Plugin = getNextPlugin(next, props.widgets)
-    // @ts-ignore
-    return <Plugin {...props} currentPluginIndex={next} valid={valid} showValidity={showValidity} setCustomError={setCustomError}/>
+    return <Next
+        {...props}
+        valid={valid}
+        showValidity={showValidity}
+        setCustomError={setCustomError}
+        decoIndex={props.decoIndex + 1}
+    />
 }

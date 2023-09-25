@@ -7,7 +7,7 @@ import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
 import { List } from 'immutable'
 import { createOrderedMap, createMap } from '@ui-schema/system/createMap'
-import { isInvalid } from '@ui-schema/react/ValidityReporter'
+import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
@@ -73,11 +73,9 @@ export const renderMapping: NextMuiWidgetsBinding<
     },
 }
 
-// todo: replace this / all `WidgetEngine` with a new plugin structure - maybe applied PER WIDGET?!
-
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false)
-    const [store, setStore] = React.useState(() => createStore(createMap({address: {street_no: '5a'}})))
+    const [store, setStore] = React.useState(() => createStore(createMap({name: 'Jane', address: {street_no: '5a'}})))
     const [schema, setSchema] = React.useState<UISchemaMap>(() => createOrderedMap(schemaUser) as UISchemaMap)
 
     const onChange = React.useCallback((actions) => {
@@ -152,7 +150,7 @@ function DemoRenderer<P extends DecoratorPropsNext & WidgetProps>(
     // console.log('schemaType', schemaType, schemaWidget, renderMap.leafs)
     const getWidget = (): React.ComponentType<Omit<P, keyof DecoratorPropsNext> & DemoRendererProps> => {
         let matching: string | undefined
-        if (schemaWidget) {
+        if (typeof schemaWidget === 'string') {
             matching = schemaWidget
         } else if (typeof schemaType === 'string') {
             matching = 'type:' + schemaType
@@ -194,6 +192,7 @@ const deco = new ReactDeco<
     .use(SchemaGridHandler)
     .use(ExtractStorePlugin)
     .use(SchemaPluginsAdapter)
+    .use(ValidityReporter)
     .use(DemoRenderer)
 
 export default function MaterialDemo() {
