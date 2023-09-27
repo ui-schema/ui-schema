@@ -3,6 +3,7 @@ import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { LeafsRenderMapping } from '@tactic-ui/react/LeafsEngine'
 import { GroupRendererProps, WidgetProps } from '@ui-schema/react/Widgets'
+import { SchemaValidatorContext } from '@ui-schema/system/SchemaPluginStack'
 
 export interface ObjectRendererProps extends WidgetProps {
     noGrid?: GroupRendererProps['noGrid']
@@ -10,7 +11,7 @@ export interface ObjectRendererProps extends WidgetProps {
 
 const WidgetEngineMemo = memo(WidgetEngine)
 
-const ObjectRendererBase = <P extends ObjectRendererProps & { renderMap: LeafsRenderMapping<{}, { GroupRenderer?: React.ComponentType<React.PropsWithChildren<GroupRendererProps>> }> }>(
+const ObjectRendererBase = <P extends ObjectRendererProps & SchemaValidatorContext & { renderMap: LeafsRenderMapping<{}, { GroupRenderer?: React.ComponentType<React.PropsWithChildren<GroupRendererProps>> }> }>(
     {
         schema, storeKeys, schemaKeys,
         // for performance reasons, not pushing errors deeper

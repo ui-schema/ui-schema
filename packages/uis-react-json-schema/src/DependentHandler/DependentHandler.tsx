@@ -1,15 +1,20 @@
 import React from 'react'
-import { getNextPlugin, NextPluginRendererMemo, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { useUIStore } from '@ui-schema/react/UIStore'
 import { mergeSchema } from '@ui-schema/system/Utils/mergeSchema'
 import { List, Map } from 'immutable'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { DecoratorPropsNext } from '@tactic-ui/react/Deco'
 
-const DependentRenderer: React.FC<WidgetPluginProps & {
+interface DependentRendererProps {
     dependencies?: List<string> | UISchemaMap
     dependentSchemas?: UISchemaMap
     dependentRequired?: List<string>
-}> = ({dependencies, dependentSchemas, dependentRequired, ...props}) => {
+}
+
+const DependentRenderer = <P extends WidgetProps & DecoratorPropsNext>(
+    {dependencies, dependentSchemas, dependentRequired, ...props}: P & DependentRendererProps
+) => {
     const {schema, storeKeys} = props
     const {store} = useUIStore()
 
@@ -54,18 +59,18 @@ const DependentRenderer: React.FC<WidgetPluginProps & {
         return parsedSchema
     }, [currentValues, schema, dependencies, dependentSchemas, dependentRequired])
 
-    return <NextPluginRendererMemo {...props} schema={parsedSchema}/>
+    const Next = props.next(props.decoIndex + 1)
+    return <Next {...props} schema={parsedSchema} decoIndex={props.decoIndex + 1}/>
 }
 
-export const DependentHandler: React.FC<WidgetPluginProps> = (props) => {
-    const {schema, currentPluginIndex} = props
-    const next = currentPluginIndex + 1
-    const Plugin = getNextPlugin(next, props.widgets)
+export const DependentHandler = <P extends WidgetProps & DecoratorPropsNext>(props: P): React.ReactElement<P> => {
+    const {schema} = props
 
     const dependencies = schema.get('dependencies')
     const dependentSchemas = schema.get('dependentSchemas')
     const dependentRequired = schema.get('dependentRequired')
 
+    const Next = props.next(props.decoIndex + 1)
     return dependencies || dependentSchemas || dependentRequired ?
         <DependentRenderer
             dependencies={dependencies}
@@ -73,5 +78,5 @@ export const DependentHandler: React.FC<WidgetPluginProps> = (props) => {
             dependentRequired={dependentRequired}
             {...props}
         /> :
-        <Plugin {...props} currentPluginIndex={next}/>
+        <Next {...props} decoIndex={props.decoIndex + 1}/>
 }

@@ -1,7 +1,7 @@
 import { OrderedMap, List } from 'immutable'
-import { PluginSimple } from '@ui-schema/ui-schema/PluginSimpleStack'
+import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
 
-export const SortPlugin: PluginSimple = {
+export const SortPlugin: SchemaPlugin = {
     handle: ({schema}: any) => {
         const sortOrder = schema?.get('sortOrder') as List<string>
         if(!sortOrder) return {}

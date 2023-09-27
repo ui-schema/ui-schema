@@ -1,12 +1,12 @@
 import React from 'react'
-import { getNextPlugin, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { useSchemaCombine } from '@ui-schema/react-json-schema/CombiningHandler'
 import { WithValue } from '@ui-schema/react/UIStore'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { DecoratorPropsNext } from '@tactic-ui/react/Deco'
 
-export const CombiningHandler: React.FC<WidgetPluginProps & Partial<WithValue>> = (props) => {
-    const {schema: baseSchema, value, currentPluginIndex} = props
+export const CombiningHandler = <P extends WidgetProps & DecoratorPropsNext & WithValue>(props: P): React.ReactElement<P> => {
+    const {schema: baseSchema, value} = props
     const schema = useSchemaCombine(baseSchema, value)
-    const next = currentPluginIndex + 1
-    const Plugin = getNextPlugin(next, props.widgets)
-    return <Plugin {...props} currentPluginIndex={next} schema={schema}/>
+    const Next = props.next(props.decoIndex + 1)
+    return <Next {...props} decoIndex={props.decoIndex + 1} schema={schema}/>
 }

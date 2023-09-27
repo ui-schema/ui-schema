@@ -1,16 +1,16 @@
 import React from 'react'
 import { Map } from 'immutable'
-import { getNextPlugin, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { DecoratorPropsNext } from '@tactic-ui/react/Deco'
+import { WithValue } from '@ui-schema/react/UIStore'
 
 export interface DefaultHandlerProps {
     doNotDefault?: boolean
     readOnly?: boolean
 }
 
-export const DefaultHandler: React.FC<DefaultHandlerProps & WidgetPluginProps> = (props) => {
-    const {schema, currentPluginIndex, doNotDefault, readOnly} = props
-    const next = currentPluginIndex + 1
-    const Plugin = getNextPlugin(next, props.widgets)
+export const DefaultHandler = <P extends WidgetProps & DecoratorPropsNext & WithValue>(props: P & DefaultHandlerProps): React.ReactElement<P> => {
+    const {schema, doNotDefault, readOnly} = props
 
     const defaultVal = schema.get('default')
 
@@ -51,6 +51,7 @@ export const DefaultHandler: React.FC<DefaultHandlerProps & WidgetPluginProps> =
         nextValue = defaultVal
     }
 
-    return <Plugin {...props} value={nextValue} currentPluginIndex={currentPluginIndex}/>
+    const Next = props.next(props.decoIndex + 1)
+    return <Next {...props} value={nextValue} decoIndex={props.decoIndex + 1}/>
 }
 

@@ -1,8 +1,10 @@
 import React from 'react'
-import { NextPluginRendererMemo, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { handleIfElseThen } from './handleIfElseThen'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { DecoratorPropsNext } from '@tactic-ui/react/Deco'
+import { WithValue } from '@ui-schema/react/UIStore'
 
-export const ConditionalHandler: React.FC<WidgetPluginProps> = (props) => {
+export const ConditionalHandler = <P extends WidgetProps & DecoratorPropsNext & WithValue>(props: P): React.ReactElement<P> => {
     const {value} = props
     let {schema} = props
 
@@ -12,5 +14,7 @@ export const ConditionalHandler: React.FC<WidgetPluginProps> = (props) => {
         schema = handleIfElseThen(schema, value, schema)
     }
 
-    return <NextPluginRendererMemo {...props} schema={schema}/>
+    const Next = props.next(props.decoIndex + 1)
+
+    return <Next {...props} schema={schema} decoIndex={props.decoIndex + 1}/>
 }

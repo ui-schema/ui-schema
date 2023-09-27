@@ -1,9 +1,11 @@
 import React from 'react'
 import { Map } from 'immutable'
-import { getNextPlugin, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { useSchemaRoot } from '@ui-schema/react-json-schema/SchemaRootProvider'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { escapePointer } from '@ui-schema/json-pointer/escapePointer'
+import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WithValue } from '@ui-schema/react/UIStore'
+import { DecoratorPropsNext } from '@tactic-ui/react/Deco'
 
 export interface InjectSplitSchemaRootContext {
     schemaStyle?: UISchemaMap
@@ -14,14 +16,11 @@ export interface InjectSplitSchemaRootContext {
  * @param props
  * @constructor
  */
-export const InjectSplitSchemaPlugin: React.ComponentType<WidgetPluginProps> = (props) => {
+export const InjectSplitSchemaPlugin = <P extends DecoratorPropsNext & WidgetProps & WithValue>(props: P): React.ReactElement<P> => {
     const {
         schema, storeKeys,
-        currentPluginIndex,
     } = props
     const {schemaStyle} = useSchemaRoot<InjectSplitSchemaRootContext>()
-    const next = currentPluginIndex + 1
-    const Plugin = getNextPlugin(next, props.widgets)
     const pointer = storeKeys.size > 0 ? '/' + storeKeys.map(k => escapePointer(String(k))).join('/') : ''
 
     const schemaStyleLevel = schemaStyle?.get(pointer) as Map<string, any> | undefined
@@ -38,10 +37,10 @@ export const InjectSplitSchemaPlugin: React.ComponentType<WidgetPluginProps> = (
             .delete('anyOf')
             .delete('required')
     }
-    // @ts-ignore
-    return <Plugin
+    const Next = props.next(props.decoIndex + 1)
+    return <Next
         {...props}
-        currentPluginIndex={next}
+        decoIndex={props.decoIndex + 1}
         schema={schemaStyleClean ? schema.mergeDeep(schemaStyleClean) : schema}
     />
 }

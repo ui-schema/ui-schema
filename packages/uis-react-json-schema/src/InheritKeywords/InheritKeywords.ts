@@ -1,9 +1,9 @@
-import { PluginSimple } from '@ui-schema/ui-schema/PluginSimpleStack'
+import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
 
 export const InheritKeywords = (
     keywords: (string | (string[]))[],
-    should?: PluginSimple['should'],
-): PluginSimple => ({
+    should?: SchemaPlugin['should'],
+): SchemaPlugin => ({
     should: should,
     handle: ({parentSchema, schema}: any) => {
         let newSchema = schema

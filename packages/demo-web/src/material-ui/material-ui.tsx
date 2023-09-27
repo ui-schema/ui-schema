@@ -37,6 +37,18 @@ import { getValidators } from '@ui-schema/json-schema/getValidators'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
 import { SchemaValidatorContext } from '@ui-schema/system/SchemaPluginStack'
+import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ReferencingHandler } from '@ui-schema/react-json-schema'
+import { DummyRenderer } from './component/MuiMainDummy'
+import { schemaDemoReferencing, schemaDemoReferencingNetwork, schemaDemoReferencingNetworkB } from '../schemas/demoReferencing'
+import { useToggle } from '../component/useToggle'
+import { FormGroup } from '@ui-schema/ds-material/Widgets'
+import { schemaNumberSlider } from '../schemas/demoNumberSlider'
+import { schemaLists } from '../schemas/demoLists'
+import { schemaWCombining } from '../schemas/demoCombining'
+import { schemaWConditional, schemaWConditional1, schemaWConditional2 } from '../schemas/demoConditional'
+import { schemaWDep1, schemaWDep2 } from '../schemas/demoDependencies'
+import { schemaGrid } from '../schemas/demoGrid'
+import { schemaNull, schemaSimBoolean, schemaSimCheck, schemaSimInteger, schemaSimNumber, schemaSimRadio, schemaSimSelect, schemaSimString } from '../schemas/demoSimples'
 
 export type CustomComponents = {
     // InfoRenderer?: ReactLeafDefaultNodeType<InfoRendererProps>
@@ -65,6 +77,7 @@ export const renderMapping: NextMuiWidgetsBinding<
 
         // the `DemoRenderer` below uses `custom` widgets as is to access `leafs`
         Text: TextRenderer,
+        FormGroup: FormGroup,
     },
     components: {
         ErrorFallback: ErrorFallback,
@@ -156,6 +169,7 @@ function DemoRenderer<P extends DecoratorPropsNext & WidgetProps & WithValue & S
     const schemaType = schema?.get('type') as SchemaTypesType | undefined
     const schemaWidget = schema?.get('widget')
     // console.log('schemaType', schemaType, schemaWidget, renderMap.leafs)
+    // todo: for usage in e.g. `FormGroup` the matcher should be in the props or renderMap
     const getWidget = (): React.ComponentType<Omit<P, keyof DecoratorPropsNext> & DemoRendererProps> => {
         let matching: string | undefined
         if (typeof schemaWidget === 'string') {
@@ -212,13 +226,20 @@ const deco = new ReactDeco<
             schemaPlugins={schemaPlugins}
         />
     })
+    .use(ReferencingHandler)
     .use(SchemaGridHandler)
     .use(ExtractStorePlugin)
-    .use(memo(SchemaPluginsAdapter) as typeof SchemaPluginsAdapter)
+    .use(memo(CombiningHandler) as typeof CombiningHandler)
+    .use(DefaultHandler)
+    .use(DependentHandler)
+    .use(ConditionalHandler)
+    .use(SchemaPluginsAdapter)
     .use(ValidityReporter)
     .use(DemoRenderer)
 
 export default function MaterialDemo() {
+    const [toggle, getToggle] = useToggle()
+
     return <AppTheme>
         {/* todo make the typing stricter and easier (check tactic-ui comments) */}
         {/*<WidgetsProvider<NextMuiWidgetsBinding<{}, { renderMap: LeafsRenderMapping<{}, MuiComponentsBinding> }, typeof renderMapping.components>['leafs'], typeof renderMapping.components, typeof deco>*/}
@@ -232,6 +253,61 @@ export default function MaterialDemo() {
                     <Dashboard>
                         <Grid item xs={12}>
                             <MainStore/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <DummyRenderer
+                                id={'schemaReferencingNetwork'} schema={schemaDemoReferencingNetwork}
+                                toggleDummy={toggle} getDummy={getToggle}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <DummyRenderer
+                                id={'schemaReferencingNetworkB'} schema={schemaDemoReferencingNetworkB}
+                                toggleDummy={toggle} getDummy={getToggle}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <DummyRenderer id={'schemaReferencing'} schema={schemaDemoReferencing} toggleDummy={toggle} getDummy={getToggle}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <DummyRenderer id={'schemaNumberSlider'} schema={schemaNumberSlider} toggleDummy={toggle} getDummy={getToggle}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <DummyRenderer id={'schemaLists'} schema={schemaLists} toggleDummy={toggle} getDummy={getToggle} open/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <DummyRenderer id={'schemaWCombining'} schema={schemaWCombining} toggleDummy={toggle} getDummy={getToggle}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <DummyRenderer id={'schemaWConditional'} schema={schemaWConditional} toggleDummy={toggle} getDummy={getToggle}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <DummyRenderer id={'schemaWConditional1'} schema={schemaWConditional1} toggleDummy={toggle} getDummy={getToggle}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <DummyRenderer id={'schemaWConditional2'} schema={schemaWConditional2} toggleDummy={toggle} getDummy={getToggle}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <DummyRenderer id={'schemaWDep1'} schema={schemaWDep1} toggleDummy={toggle} getDummy={getToggle}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <DummyRenderer id={'schemaWDep2'} schema={schemaWDep2} toggleDummy={toggle} getDummy={getToggle}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <DummyRenderer id={'schemaGrid'} schema={schemaGrid(12)} toggleDummy={toggle} getDummy={getToggle}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <DummyRenderer id={'schemaSimString'} schema={schemaSimString} toggleDummy={toggle} getDummy={getToggle}/>
+                            <DummyRenderer id={'schemaSimBoolean'} schema={schemaSimBoolean} toggleDummy={toggle} getDummy={getToggle}/>
+                            <DummyRenderer id={'schemaSimCheck'} schema={schemaSimCheck} toggleDummy={toggle} getDummy={getToggle}/>
+                            <DummyRenderer id={'schemaSimNumber'} schema={schemaSimNumber} toggleDummy={toggle} getDummy={getToggle}/>
+                            <DummyRenderer id={'schemaSimInteger'} schema={schemaSimInteger} toggleDummy={toggle} getDummy={getToggle}/>
+                            <DummyRenderer id={'schemaSimRadio'} schema={schemaSimRadio} toggleDummy={toggle} getDummy={getToggle}/>
+                            <DummyRenderer id={'schemaSimSelect'} schema={schemaSimSelect} toggleDummy={toggle} getDummy={getToggle}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <DummyRenderer id={'schemaNull'} schema={schemaNull} toggleDummy={toggle} getDummy={getToggle}/>
                         </Grid>
                     </Dashboard>
                 </UIApiProvider>

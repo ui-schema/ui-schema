@@ -5,10 +5,17 @@ import {
     isRootSchema, useSchemaRoot,
 } from '@ui-schema/react-json-schema/SchemaRootProvider'
 import { useSchemaRef } from '@ui-schema/react-json-schema/ReferencingHandler'
-import { NextPluginRendererMemo, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { getSchemaId } from '@ui-schema/system/Utils/getSchema'
+import { DecoratorPropsNext } from '@tactic-ui/react/Deco'
+import { WidgetProps } from '@ui-schema/react/Widgets'
 
-export const ReferencingHandler: React.FC<WidgetPluginProps & { rootContext?: { [k: string]: any } }> = ({rootContext, ...props}) => {
+export interface ReferencingHandlerProps {
+    rootContext?: { [k: string]: any }
+}
+
+export const ReferencingHandler = <P extends WidgetProps & DecoratorPropsNext>(
+    {rootContext, ...props}: P & ReferencingHandlerProps,
+): React.ReactElement<P> => {
     const {schema: baseSchema, isVirtual} = props
     const {schema: maybeRootSchema, definitions: maybeDefinitions, ...nestedRootProps} = useSchemaRoot()
     const isRoot = Boolean(isRootSchema(baseSchema) || rootContext || baseSchema.get('definitions') || baseSchema.get('$defs'))
@@ -17,13 +24,15 @@ export const ReferencingHandler: React.FC<WidgetPluginProps & { rootContext?: { 
         maybeRootSchema, definitions, isRoot, baseSchema,
     )
 
+    const Next = props.next(props.decoIndex + 1)
+
     return (
         refsPending && refsPending.size > 0 ?
             isVirtual ? null : <Translate text={'labels.loading'} fallback={'Loading'}/> :
             isRoot ?
                 <SchemaRootProvider {...nestedRootProps} {...(rootContext || {})} id={getSchemaId(schema)} schema={schema} definitions={definitions}>
-                    <NextPluginRendererMemo {...props} schema={schema}/>
+                    <Next {...props} schema={schema} decoIndex={props.decoIndex + 1}/>
                 </SchemaRootProvider> :
-                <NextPluginRendererMemo {...props} schema={schema}/>
+                <Next {...props} schema={schema} decoIndex={props.decoIndex + 1}/>
     ) as unknown as React.ReactElement
 }
