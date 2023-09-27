@@ -8,7 +8,7 @@ import Button from '@mui/material/Button'
 import { List } from 'immutable'
 import { createOrderedMap, createMap } from '@ui-schema/system/createMap'
 import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
-import { createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
+import { createStore, UIStoreProvider, WithValue } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
@@ -34,6 +34,9 @@ import { MuiComponentsBinding, NextMuiWidgetsBinding } from '@ui-schema/ds-mater
 import { SchemaPluginsAdapter } from '@ui-schema/react/SchemaPluginsAdapter'
 import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
 import { getValidators } from '@ui-schema/json-schema/getValidators'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
+import { SchemaValidatorContext } from '@ui-schema/system/SchemaPluginStack'
 
 export type CustomComponents = {
     // InfoRenderer?: ReactLeafDefaultNodeType<InfoRendererProps>
@@ -73,6 +76,8 @@ export const renderMapping: NextMuiWidgetsBinding<
     },
 }
 
+const WidgetEngineMemo = memo(WidgetEngine)
+
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false)
     const [store, setStore] = React.useState(() => createStore(createMap({name: 'Jane', address: {street_no: '5a'}})))
@@ -103,7 +108,7 @@ const MainStore = () => {
             >
                 {/*<GridStack isRoot schema={schema}/>*/}
                 <Grid container spacing={2}>
-                    <WidgetEngine
+                    <WidgetEngineMemo
                         storeKeys={List([]) as StoreKeys}
                         schemaKeys={List([]) as StoreKeys}
                         schema={schema}
@@ -135,8 +140,11 @@ type DemoRendererProps = {
     // renderMap: LeafsRenderMapping<ReactLeafsNodeSpec<{ [k: string]: {} }>, {}>
 }
 
-function DemoRenderer<P extends DecoratorPropsNext & WidgetProps>(
+function DemoRenderer<P extends DecoratorPropsNext & WidgetProps & WithValue & SchemaValidatorContext>(
     {
+        // we do not want `value`/`internalValue` to be passed to non-scalar widgets for performance reasons
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        value, internalValue,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         next, decoIndex,
         ...p
@@ -144,8 +152,8 @@ function DemoRenderer<P extends DecoratorPropsNext & WidgetProps>(
 ): React.ReactElement<P> {
     // the last decorator must end the run - decorators afterwards are skipped silently
     const {schema, renderMap} = p
-    // todo: try using the `widgetMatcher` base in uis-system/src-tmp
-    const schemaType = schema?.get('type') as string | undefined
+
+    const schemaType = schema?.get('type') as SchemaTypesType | undefined
     const schemaWidget = schema?.get('widget')
     // console.log('schemaType', schemaType, schemaWidget, renderMap.leafs)
     const getWidget = (): React.ComponentType<Omit<P, keyof DecoratorPropsNext> & DemoRendererProps> => {
@@ -168,7 +176,22 @@ function DemoRenderer<P extends DecoratorPropsNext & WidgetProps>(
         throw new Error('No Widget found.')
     }
     const Widget = getWidget()
-    return <Widget {...p}/>
+
+    const noExtractValue = !p.isVirtual && (
+        schemaType === 'array' || schemaType === 'object' ||
+        (
+            List.isList(schemaType) && (
+                schemaType.indexOf('array') !== -1 ||
+                schemaType.indexOf('object') !== -1
+            )
+        )
+    )
+
+    return <Widget
+        {...p as Omit<P, keyof DecoratorPropsNext> & DemoRendererProps}
+        value={noExtractValue ? undefined : value}
+        internalValue={noExtractValue ? undefined : internalValue}
+    />
 }
 
 const schemaPlugins: SchemaPlugin[] = getValidators()
@@ -181,8 +204,8 @@ const deco = new ReactDeco<
     } &
     WidgetProps
 >()
-    // todo: use another way to configure the schemaPlugins, should be `props` based but not introduce another context if possible
-    .use(<P extends DecoratorPropsNext>(props: P): React.ReactElement<P & { schemaPlugins: SchemaPlugin[] }> => {
+    // todo: use another way to configure the schemaPlugins, should be `props` based but not introduce another context if possible (waits for new, strict typed, SchemaPlugins)
+    .use(function SetSchemaPlugins<P extends DecoratorPropsNext>(props: P): React.ReactElement<P & { schemaPlugins: SchemaPlugin[] }> {
         const Next = props.next(props.decoIndex + 1)
         return <Next
             {...props} decoIndex={props.decoIndex + 1}
@@ -191,13 +214,13 @@ const deco = new ReactDeco<
     })
     .use(SchemaGridHandler)
     .use(ExtractStorePlugin)
-    .use(SchemaPluginsAdapter)
+    .use(memo(SchemaPluginsAdapter) as typeof SchemaPluginsAdapter)
     .use(ValidityReporter)
     .use(DemoRenderer)
 
 export default function MaterialDemo() {
     return <AppTheme>
-        {/* todo make the typing stricter and easier */}
+        {/* todo make the typing stricter and easier (check tactic-ui comments) */}
         {/*<WidgetsProvider<NextMuiWidgetsBinding<{}, { renderMap: LeafsRenderMapping<{}, MuiComponentsBinding> }, typeof renderMapping.components>['leafs'], typeof renderMapping.components, typeof deco>*/}
         <WidgetsProvider
             deco={deco}

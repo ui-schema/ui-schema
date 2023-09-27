@@ -17,12 +17,10 @@ export const widgetContext = createLeafContext<
     LeafsRenderMapping<ReactLeafsNodeSpec<CustomLeafsDataMapping>, CustomComponents>
 >()
 
-const {
+export const {
     LeafsProvider: WidgetsProvider,
     useLeafs: useWidgets,
 } = defineLeafEngine(widgetContext)
-
-export { WidgetsProvider, useWidgets }
 
 export type WidgetEngineInjected = 'decoIndex' | 'next' | keyof ReturnType<typeof useWidgets>
 
@@ -43,7 +41,7 @@ export function WidgetEngine<
 ): React.JSX.Element | null {
     const {deco, renderMap} = useWidgets<TLeafsDataMapping, TComponentsMapping, TDeco, TRender>()
     if (!deco) {
-        throw new Error('This LeafNode requires decorators, maybe missed `deco` at the `LeafsProvider`?')
+        throw new Error('The WidgetEngine requires decorators, maybe missed `deco` at the `WidgetsProvider`?')
     }
 
     // `Next` can not be typed in any way I've found (by inferring),

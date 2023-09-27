@@ -8,6 +8,8 @@ export interface ObjectRendererProps extends WidgetProps {
     noGrid?: GroupRendererProps['noGrid']
 }
 
+const WidgetEngineMemo = memo(WidgetEngine)
+
 const ObjectRendererBase = <P extends ObjectRendererProps & { renderMap: LeafsRenderMapping<{}, { GroupRenderer?: React.ComponentType<React.PropsWithChildren<GroupRendererProps>> }> }>(
     {
         schema, storeKeys, schemaKeys,
@@ -29,7 +31,7 @@ const ObjectRendererBase = <P extends ObjectRendererProps & { renderMap: LeafsRe
     const GroupRenderer = renderMap.components.GroupRenderer
 
     const propertyTree = properties?.map((childSchema, childKey) =>
-        <WidgetEngine
+        <WidgetEngineMemo
             key={childKey}
             {...props}
             schema={childSchema} parentSchema={schema}
