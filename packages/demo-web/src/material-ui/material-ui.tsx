@@ -49,6 +49,7 @@ import { schemaWConditional, schemaWConditional1, schemaWConditional2 } from '..
 import { schemaWDep1, schemaWDep2 } from '../schemas/demoDependencies'
 import { schemaGrid } from '../schemas/demoGrid'
 import { schemaNull, schemaSimBoolean, schemaSimCheck, schemaSimInteger, schemaSimNumber, schemaSimRadio, schemaSimSelect, schemaSimString } from '../schemas/demoSimples'
+import { NoWidgetError, widgetMatcher } from '@ui-schema/react-json-schema/WidgetMatcher'
 
 export type CustomComponents = {
     // InfoRenderer?: ReactLeafDefaultNodeType<InfoRendererProps>
@@ -59,7 +60,7 @@ export const renderMapping: NextMuiWidgetsBinding<
     {},
     {
         /* this typing is the "custom meta typing", which can be used to specify anything "injected" */
-        renderMap: LeafsRenderMapping<{}, MuiComponentsBinding>
+        renderMap: LeafsRenderMapping<{}, MuiComponentsBinding, { schema?: UISchemaMap }>
     },
     CustomComponents
 > = {
@@ -87,6 +88,7 @@ export const renderMapping: NextMuiWidgetsBinding<
         NoWidget: NoWidget,
         InfoRenderer: InfoRenderer,
     },
+    matchLeaf: widgetMatcher,
 }
 
 const WidgetEngineMemo = memo(WidgetEngine)
@@ -166,31 +168,24 @@ function DemoRenderer<P extends DecoratorPropsNext & WidgetProps & WithValue & S
     // the last decorator must end the run - decorators afterwards are skipped silently
     const {schema, renderMap} = p
 
-    const schemaType = schema?.get('type') as SchemaTypesType | undefined
-    const schemaWidget = schema?.get('widget')
     // console.log('schemaType', schemaType, schemaWidget, renderMap.leafs)
-    // todo: for usage in e.g. `FormGroup` the matcher should be in the props or renderMap
-    const getWidget = (): React.ComponentType<Omit<P, keyof DecoratorPropsNext> & DemoRendererProps> => {
-        let matching: string | undefined
-        if (typeof schemaWidget === 'string') {
-            matching = schemaWidget
-        } else if (typeof schemaType === 'string') {
-            matching = 'type:' + schemaType
-        }
-        if (matching && renderMap.leafs[matching]) {
-            return renderMap.leafs[matching] as any
-        }
-        if (renderMap.components.NoWidget) {
+    let Widget: any = undefined
+    try {
+        Widget = renderMap.matchLeaf(p, renderMap.leafs)
+    } catch (e) {
+        if (e instanceof NoWidgetError && renderMap.components.NoWidget) {
             const NoWidget = renderMap.components.NoWidget
+            const m = e.matching
             // todo: use a better way to add the extra NoWidgetProps
-            return function NoWidgetWrap(p) {
-                return <NoWidget {...p} matching={matching}/>
+            Widget = function NoWidgetWrap(p) {
+                return <NoWidget {...p} matching={m}/>
             }
+        } else {
+            throw e
         }
-        throw new Error('No Widget found.')
     }
-    const Widget = getWidget()
 
+    const schemaType = schema?.get('type') as SchemaTypesType | undefined
     const noExtractValue = !p.isVirtual && (
         schemaType === 'array' || schemaType === 'object' ||
         (

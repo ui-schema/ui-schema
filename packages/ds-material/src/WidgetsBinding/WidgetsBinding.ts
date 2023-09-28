@@ -5,6 +5,7 @@ import { LeafsRenderMapping, ReactLeafsNodeSpec } from '@tactic-ui/react/LeafsEn
 import { InfoRendererProps } from '@ui-schema/ds-material/Component'
 import { ReactLeafDefaultNodeType } from '@tactic-ui/react/LeafsEngine'
 import { SchemaValidatorContext } from '@ui-schema/system/SchemaPluginStack'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 // @ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -41,5 +42,6 @@ export type NextMuiWidgetsBinding<W extends {}, M extends {}, C extends {}> =
         { [k: string]: ReactLeafDefaultNodeType<WidgetProps & SchemaValidatorContext & M> | ReactLeafDefaultNodeType<WidgetProps & SchemaValidatorContext & M & WithScalarValue> },
         // static components
         MuiComponentsBinding &
-        C
+        C,
+        { schema?: UISchemaMap }
     >

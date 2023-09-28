@@ -37,7 +37,7 @@
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "dependencies": {
-        "@tactic-ui/react": "~0.0.8"
+        "@tactic-ui/react": "~0.0.10"
     },
     "devDependencies": {
         "@ui-schema/system": "~0.5.0-alpha.0",

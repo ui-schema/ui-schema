@@ -3,15 +3,14 @@ import FormLabel from '@mui/material/FormLabel'
 import FormControl from '@mui/material/FormControl'
 import MuiFormGroup from '@mui/material/FormGroup'
 import { useTheme } from '@mui/material/styles'
-import { extractValue } from '@ui-schema/react/UIStore'
-import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { SchemaValidatorContext } from '@ui-schema/system/SchemaPluginStack'
 import { LeafsRenderMapping } from '@tactic-ui/react/LeafsEngine'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
-export const FormGroupBase =
-    <P extends WidgetProps & SchemaValidatorContext & { renderMap: LeafsRenderMapping<{}, {}> }>(props: P): React.ReactElement<P> => {
+export const FormGroup =
+    <P extends WidgetProps & SchemaValidatorContext & { renderMap: LeafsRenderMapping<{}, {}, { schema?: UISchemaMap }> }>(props: P): React.ReactElement<P> => {
         const {storeKeys, renderMap} = props
         const {spacing} = useTheme()
         let {schema} = props
@@ -21,7 +20,8 @@ export const FormGroupBase =
         // @ts-ignore
         schema = schema.delete('widget')
 
-        const Widget = schema.get('type') ? renderMap.leafs['type:' + schema.get('type')] : undefined
+        const Widget = renderMap.matchLeaf({...props, schema}, renderMap.leafs)
+        // schema.get('type') ? renderMap.leafs['type:' + schema.get('type')] : undefined
 
         return <FormControl
             component="fieldset"
@@ -39,12 +39,10 @@ export const FormGroupBase =
                     marginBottom: spacing(1),
                 }}
             >
-                {/* todo: re-use the next widget matcher */}
+                {/* todo: re-use the NoWidget component when nothing matched */}
                 {/* @ts-ignore */}
                 {Widget ? <Widget {...props} schema={schema}/> : '-'}
             </MuiFormGroup>
             {/*<FormHelperText>Be careful</FormHelperText>*/}
         </FormControl>
     }
-
-export const FormGroup = extractValue(memo(FormGroupBase)) as typeof FormGroupBase

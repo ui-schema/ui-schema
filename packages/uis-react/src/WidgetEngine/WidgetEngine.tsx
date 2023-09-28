@@ -1,8 +1,9 @@
 import { ReactDeco, DecoratorProps, ReactBaseDecorator } from '@tactic-ui/react/Deco'
 import React from 'react'
-import { createLeafContext, defineLeafEngine } from '@tactic-ui/react/LeafsContext'
+import { createLeafsContext, defineLeafsContext } from '@tactic-ui/react/LeafsContext'
 import { LeafsRenderMapping, ReactLeafsNodeSpec } from '@tactic-ui/react/LeafsEngine'
 import { WidgetProps } from '@ui-schema/react/Widgets'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 export type WidgetPropsMap = { [k: string]: WidgetProps }
 
@@ -11,16 +12,16 @@ type CustomLeafsDataMapping = {}
 
 // todo: optimize generics usage for easier, `typeof customBinding.leafs` and alike
 
-export const widgetContext = createLeafContext<
+export const widgetContext = createLeafsContext<
     CustomLeafsDataMapping, CustomComponents,
     ReactDeco<{}, {}>,
-    LeafsRenderMapping<ReactLeafsNodeSpec<CustomLeafsDataMapping>, CustomComponents>
+    LeafsRenderMapping<ReactLeafsNodeSpec<CustomLeafsDataMapping>, CustomComponents, { schema?: UISchemaMap }>
 >()
 
 export const {
     LeafsProvider: WidgetsProvider,
     useLeafs: useWidgets,
-} = defineLeafEngine(widgetContext)
+} = defineLeafsContext(widgetContext)
 
 export type WidgetEngineInjected = 'decoIndex' | 'next' | keyof ReturnType<typeof useWidgets>
 
@@ -33,7 +34,7 @@ export function WidgetEngine<
     TDeco extends ReactDeco<{}, {}> = ReactDeco<{}, {}>,
     TLeafData extends TLeafsDataMapping[keyof TLeafsDataMapping] = TLeafsDataMapping[keyof TLeafsDataMapping],
     TComponentsMapping extends {} = {},
-    TRender extends LeafsRenderMapping<ReactLeafsNodeSpec<TLeafsDataMapping>, TComponentsMapping> = LeafsRenderMapping<ReactLeafsNodeSpec<TLeafsDataMapping>, TComponentsMapping>,
+    TRender extends LeafsRenderMapping<ReactLeafsNodeSpec<TLeafsDataMapping>, TComponentsMapping, { schema?: UISchemaMap }> = LeafsRenderMapping<ReactLeafsNodeSpec<TLeafsDataMapping>, TComponentsMapping, { schema?: UISchemaMap }>,
     // todo: TProps not only needs to support removing injected, but also allowing overriding those injected
     TProps extends DecoratorProps<NonNullable<TLeafData>, TDeco> = DecoratorProps<NonNullable<TLeafData>, TDeco>,
 >(

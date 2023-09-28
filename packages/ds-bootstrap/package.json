@@ -46,7 +46,7 @@
         "immutable": "^4.0.0"
     },
     "dependencies": {
-        "@tactic-ui/react": "~0.0.8",
+        "@tactic-ui/react": "~0.0.10",
         "react-uid": "^2.2.0"
     },
     "peerDependencies": {
