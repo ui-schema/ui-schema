@@ -410,7 +410,7 @@ export const Generator = () => {
 
             {/* add your sending button, in the onClick check for validity and do the needed action */}
             <button
-                disabled={!!isInvalid(store.getValidity())}
+                disabled={Boolean(isInvalid(store.getValidity()))}
                 onClick={() => {
                     if(!isInvalid(store.getValidity())) {
                         // when not invalid, post to an API
@@ -574,7 +574,7 @@ export const Generator = () => {
 
             {/* add your sending button, in the onClick check for validity and do the needed action */}
             <button
-                disabled={!!isInvalid(store.getValidity())}
+                disabled={Boolean(isInvalid(store.getValidity()))}
                 onClick={() => {
                     if(!isInvalid(store.getValidity())) {
                         // when not invalid, post to an API

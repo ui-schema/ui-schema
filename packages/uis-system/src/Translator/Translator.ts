@@ -11,5 +11,4 @@ export type Translator<T = translation> = (
     schema?: ValueOrImmutableOrdered<UISchema['t']>
 ) => T
 
-// @todo: somehow allow adding further specifics, e.g. `React.ComponentType` in `/react`
-export type TranslatorDictionary = Map<string | number, Map<string | number, { [key: string | number]: any }> | string | number | Function/* | React.ComponentType*/>
+export type TranslatorDictionary<T = translation> = Map<string | number, Map<string | number, { [key: string | number]: any }> | T>

@@ -15,12 +15,10 @@ const BoolRenderer = ({showValidity, required, errors, value, storeKeys, onChang
         classForm.push('was-validated');
     }
 
-    let currentChecked = !!value;
-
     return <div className={classForm.join(' ')}>
         <input
             type="checkbox" className={classFormControl.join(' ')} id={'uis-' + id}
-            checked={currentChecked}
+            checked={Boolean(value)}
             required={required}
             onChange={() =>
                 onChange({

@@ -42,8 +42,7 @@ const dicEN = createMap({
     titles: {
         'simple-number': 'Simple Number',
     },
-    // todo: fix typings
-}) as unknown as TranslatorDictionary
+}) as TranslatorDictionary<translation | React.ComponentType>
 
 const dicDE = createMap({
     error: de.errors,
@@ -67,8 +66,7 @@ const dicDE = createMap({
     titles: {
         'simple-number': 'Einfache Nummer',
     },
-    // todo: fix typings
-}) as unknown as TranslatorDictionary
+}) as TranslatorDictionary<translation | React.ComponentType>
 
 const tEN = makeTranslator<translation | React.ComponentType>(dicEN, 'en')
 const tDE = makeTranslator<translation | React.ComponentType>(dicDE, 'de')

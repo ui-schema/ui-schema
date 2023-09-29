@@ -40,6 +40,7 @@
         "@tactic-ui/react": "~0.0.10"
     },
     "devDependencies": {
+        "@tactic-ui/engine": "~0.0.5",
         "@ui-schema/system": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "immutable": "^4.0.0",

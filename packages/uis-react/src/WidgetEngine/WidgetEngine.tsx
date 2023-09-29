@@ -1,6 +1,7 @@
 import { ReactDeco, DecoratorProps, ReactBaseDecorator } from '@tactic-ui/react/Deco'
 import React from 'react'
 import { createLeafsContext, defineLeafsContext } from '@tactic-ui/react/LeafsContext'
+// todo: somehow here the re-export from `@tactic-ui/react/LeafsEngine` doesn't resolve in IntelliJ if engine isn't installed directly
 import { LeafsRenderMapping, ReactLeafsNodeSpec } from '@tactic-ui/react/LeafsEngine'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'

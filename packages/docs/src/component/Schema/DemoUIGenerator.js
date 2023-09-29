@@ -186,7 +186,7 @@ const DemoUIGenerator = (
             onClick ?
                 <Button
                     variant={'contained'}
-                    disabled={!!isInvalid(store?.getValidity())}
+                    disabled={Boolean(isInvalid(store?.getValidity()))}
                     style={{marginTop: 12}}
                     onClick={() => isInvalid(store?.getValidity()) ? undefined : onClick(store)}
                 >Send</Button> : null}

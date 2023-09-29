@@ -27,6 +27,7 @@
         "@ui-schema/pro": "~0.0.12",
         "@ui-schema/material-pickers": "~0.4.0-alpha.4",
         "@tactic-ui/react": "~0.0.10",
+        "@tactic-ui/engine": "~0.0.5",
         "bootstrap": "^4.4.1",
         "clsx": "^1.1.0",
         "immutable": "^4.0.0",

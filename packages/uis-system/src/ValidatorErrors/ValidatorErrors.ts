@@ -87,7 +87,7 @@ export class ValidatorErrors extends Record({
 
     hasError(type?: string): boolean {
         const typeErrors = this.getIn(type ? ['errors', type] : ['errors'])
-        return !!(
+        return Boolean(
             (List.isList(typeErrors) && typeErrors.size) ||
             (Map.isMap(typeErrors) && typeErrors.keySeq().size)
         )

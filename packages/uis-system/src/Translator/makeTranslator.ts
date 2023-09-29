@@ -11,7 +11,7 @@ import { translation, Translator, TranslatorDictionary } from '@ui-schema/system
  */
 export const makeTranslator =
     <T = translation>(
-        dictionary: TranslatorDictionary,
+        dictionary: TranslatorDictionary<T>,
         locale: string = ''
     ): Translator<T> =>
         (text, context = Map(), schema = undefined) => {
