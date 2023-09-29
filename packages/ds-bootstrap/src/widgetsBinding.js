@@ -8,8 +8,8 @@ import {SimpleList} from './Widgets/SimpleList';
 import {GroupRenderer} from './Grid';
 import {widgetPlugins} from './widgetPlugins';
 import {WidgetRenderer} from '@ui-schema/react/WidgetRenderer';
-import {getValidators} from '@ui-schema/json-schema/getValidators';
-import {ObjectRenderer} from '@ui-schema/react-json-schema/ObjectRenderer';
+import {getValidators} from '@ui-schema/system/getValidators';
+import {ObjectRenderer} from '@ui-schema/react/ObjectRenderer';
 
 const MyFallbackComponent = ({type, widget}) => (
     <div>

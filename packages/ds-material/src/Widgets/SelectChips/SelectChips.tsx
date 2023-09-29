@@ -1,5 +1,5 @@
 import React from 'react'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { extractValue, WithValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { memo } from '@ui-schema/react/Utils/memo'

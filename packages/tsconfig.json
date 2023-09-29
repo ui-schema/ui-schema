@@ -63,23 +63,11 @@
             "@ui-schema/react/*": [
                 "uis-react/src/*"
             ],
-            "@ui-schema/react-json-schema": [
-                "uis-react-json-schema/src"
-            ],
-            "@ui-schema/react-json-schema/*": [
-                "uis-react-json-schema/src/*"
-            ],
             "@ui-schema/json-pointer": [
                 "uis-json-pointer/src"
             ],
             "@ui-schema/json-pointer/*": [
                 "uis-json-pointer/src/*"
-            ],
-            "@ui-schema/json-schema": [
-                "uis-json-schema/src"
-            ],
-            "@ui-schema/json-schema/*": [
-                "uis-json-schema/src/*"
             ],
             "@ui-schema/pro": [
                 "uis-pro/src"

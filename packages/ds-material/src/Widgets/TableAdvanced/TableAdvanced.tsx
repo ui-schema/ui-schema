@@ -2,7 +2,7 @@ import React from 'react'
 import { extractValue, WithValue } from '@ui-schema/react/UIStore'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 

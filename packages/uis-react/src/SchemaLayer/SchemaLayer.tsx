@@ -1,7 +1,7 @@
 import React from 'react'
 import { AppliedWidgetEngineProps, applyWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 
 export interface SchemaLayerProps {

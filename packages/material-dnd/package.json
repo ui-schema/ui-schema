@@ -42,8 +42,6 @@
         "@ui-schema/kit-dnd": "~0.0.6",
         "@ui-schema/system": "~0.5.0-alpha.0",
         "@ui-schema/react": "~0.5.0-alpha.0",
-        "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
-        "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "immutable": "^4.0.0",
         "react": "^17.0",
         "react-dnd": "^14.0.0",
@@ -56,8 +54,6 @@
         "@ui-schema/kit-dnd": "~0.0.6",
         "@ui-schema/system": "~0.5.0-alpha.0",
         "@ui-schema/react": "~0.5.0-alpha.0",
-        "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
-        "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "immutable": "^4.0.0",
         "react": "^17.0 || ^18.0",
         "react-dnd": "^14.0.0"

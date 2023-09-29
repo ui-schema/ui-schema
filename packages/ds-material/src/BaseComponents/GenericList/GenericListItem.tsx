@@ -9,7 +9,7 @@ import { schemaTypeToDistinct } from '@ui-schema/system/schemaTypeToDistinct'
 import { List } from 'immutable'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
 import { GridSpacing } from '@mui/material/Grid/Grid'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 
 export interface GenericListItemSharedProps {

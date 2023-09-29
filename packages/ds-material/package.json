@@ -47,9 +47,7 @@
         "@mui/icons-material": "^5.1",
         "@mui/material": "^5.1",
         "@types/react": "^17.0 || ^18.0",
-        "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "@ui-schema/react": "~0.5.0-alpha.0",
-        "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
         "@ui-schema/system": "~0.5.0-alpha.0",
         "immutable": "^4.0.0",
         "react": "^17.0 || ^18.0"

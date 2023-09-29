@@ -27,7 +27,7 @@ import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { createStore, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 import { isInvalid } from '@ui-schema/react/ValidityReporter'
-import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
+import { ObjectRenderer } from '@ui-schema/react/ObjectRenderer'
 
 // custom `GroupRenderer` that supports `is-read and display-dense`
 const GroupRenderer: React.ComponentType<GroupRendererProps> = ({schema, children, noGrid}) => {

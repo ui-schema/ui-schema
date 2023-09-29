@@ -1,4 +1,4 @@
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { List } from 'immutable'
 import { StoreKeys } from '@ui-schema/system/ValueStore'
 

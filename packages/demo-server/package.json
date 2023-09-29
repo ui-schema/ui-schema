@@ -27,7 +27,6 @@
         "on-headers": "^1.0.2",
         "liquidjs": "^9.36.0",
         "@ui-schema/system": "~0.5.0-alpha.0",
-        "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-pointer": "~0.5.0-alpha.0",
         "@babel/runtime": "^7.14.6",
         "nodemon": "^2.0.12",

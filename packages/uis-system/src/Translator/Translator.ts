@@ -1,5 +1,5 @@
 import { Map } from 'immutable'
-import { UISchema } from '@ui-schema/json-schema/Definitions'
+import { UISchema } from '@ui-schema/system/Definitions'
 import { ValueOrImmutableOrdered } from '@ui-schema/system/createMap'
 
 export type TranslatorContext = Map<string | number, any>

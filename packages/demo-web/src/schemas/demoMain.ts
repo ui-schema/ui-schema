@@ -1,4 +1,4 @@
-import { JsonSchemaStrict } from '@ui-schema/json-schema/Definitions'
+import { JsonSchemaStrict } from '@ui-schema/system/Definitions'
 
 const schemaDemoMain: JsonSchemaStrict = {
     type: 'object',

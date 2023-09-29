@@ -5,7 +5,7 @@ import { LeafsRenderMapping, ReactLeafsNodeSpec } from '@tactic-ui/react/LeafsEn
 import { InfoRendererProps } from '@ui-schema/ds-material/Component'
 import { ReactLeafDefaultNodeType } from '@tactic-ui/react/LeafsEngine'
 import { SchemaValidatorContext } from '@ui-schema/system/SchemaPluginStack'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 
 // @ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

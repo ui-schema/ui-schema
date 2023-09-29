@@ -1,6 +1,6 @@
 import React from 'react'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 
 export function SchemaGridItem(props: React.PropsWithChildren<{ schema: UISchemaMap }>): React.ReactElement
 

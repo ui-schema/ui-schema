@@ -1,6 +1,6 @@
 import React from 'react'
 import Grid, { GridSize } from '@mui/material/Grid'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { OrderedMap } from 'immutable'
 import { GroupRendererProps } from '@ui-schema/react/Widgets'
 import { GridSpacing } from '@mui/material/Grid/Grid'

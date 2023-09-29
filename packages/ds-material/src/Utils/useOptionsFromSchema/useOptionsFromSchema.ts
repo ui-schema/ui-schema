@@ -1,4 +1,4 @@
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { List, Map } from 'immutable'
 import { getTranslatableEnum } from '@ui-schema/system/getTranslatableEnum'
 import { StoreKeys } from '@ui-schema/react/UIStore'

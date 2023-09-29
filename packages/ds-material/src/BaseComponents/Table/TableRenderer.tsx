@@ -14,7 +14,7 @@ import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import { TableRendererBaseProps, TableRendererExtractorProps, TableRowProps, TableContext } from '@ui-schema/ds-material/BaseComponents/Table'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 
 export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<keyof WidgetProps, 'value' | 'errors' | 'valid'>> & Pick<WithValue, 'onChange'> & TableRendererBaseProps & ListButtonOverwrites> = (
     {

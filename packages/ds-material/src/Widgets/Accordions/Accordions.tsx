@@ -1,7 +1,7 @@
 import React from 'react'
 import { OrderedMap } from 'immutable'
 import { useUID } from 'react-uid'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'

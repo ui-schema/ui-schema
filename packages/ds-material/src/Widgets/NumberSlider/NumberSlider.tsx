@@ -18,7 +18,7 @@ import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
 import { StoreKeys } from '@ui-schema/system/ValueStore'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
 
 const ThumbComponent = ({onDelete, canDelete, children, ...p}) => {

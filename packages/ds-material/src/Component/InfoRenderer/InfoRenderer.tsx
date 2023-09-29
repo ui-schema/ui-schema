@@ -1,4 +1,4 @@
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'

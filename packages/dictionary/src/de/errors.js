@@ -14,7 +14,7 @@ import {
     ERROR_MIN_CONTAINS,
     ERROR_MAX_CONTAINS,
     ERROR_ADDITIONAL_PROPERTIES,
-} from '@ui-schema/json-schema/Validators';
+} from '@ui-schema/system/Validators';
 import {typeToString} from '@ui-schema/dictionary/typeToString';
 
 export const errors = {

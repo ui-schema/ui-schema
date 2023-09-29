@@ -16,7 +16,7 @@ import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { Map } from 'immutable'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { InfoRendererProps, MuiWidgetsBinding } from '@ui-schema/ds-material'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { UIStoreActionListItemDelete } from '@ui-schema/react/UIStoreActions'
 import { ButtonProps } from '@mui/material/Button'
 

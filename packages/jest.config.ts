@@ -35,11 +35,9 @@ const base: Partial<Config.InitialOptions> = {
     moduleNameMapper: {
         '^(\\.{1,2}/.*)\\.js$': '$1',// todo: validate ESM testing (and JSDom/react compat.), somehow this mapper was all needed - no further ts-jest/babel adjustments
         '^@ui-schema/system(.*)$': '<rootDir>/uis-system/src$1',
-        '^@ui-schema/react-json-schema(.*)$': '<rootDir>/uis-react-json-schema/src$1',
         '^@ui-schema/react(.*)$': '<rootDir>/uis-react/src$1',
         '^@ui-schema/pro(.*)$': '<rootDir>/uis-pro/src$1',
         '^@ui-schema/json-pointer(.*)$': '<rootDir>/uis-json-pointer/src$1',
-        '^@ui-schema/json-schema(.*)$': '<rootDir>/uis-json-schema/src$1',
         '^@ui-schema/ds-bootstrap(.*)$': '<rootDir>/ds-bootstrap/src$1',
         '^@ui-schema/ds-material(.*)$': '<rootDir>/ds-material/src$1',
         '^@ui-schema/kit-dnd(.*)$': '<rootDir>/kit-dnd/src$1',

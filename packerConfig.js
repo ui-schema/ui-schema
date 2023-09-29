@@ -39,8 +39,6 @@ const esmBabelTargets = [
 ]
 
 const packages = {
-    // the keys are the commonjs names that is applied to externals
-    // this is the same as `@babel/plugin-transform-modules-commonjs` applies
     uiSchemaSystem: {
         name: '@ui-schema/system',
         doServeWatch: true,
@@ -55,22 +53,6 @@ const packages = {
         esmOnly: true,
         root: path.resolve(__dirname, 'packages', 'uis-react'),
         entry: path.resolve(__dirname, 'packages', 'uis-react/src/'),
-        babelTargets: esmBabelTargets,
-    },
-    uiSchemaReactJsonSchema: {
-        name: '@ui-schema/react-json-schema',
-        doServeWatch: true,
-        esmOnly: true,
-        root: path.resolve(__dirname, 'packages', 'uis-react-json-schema'),
-        entry: path.resolve(__dirname, 'packages', 'uis-react-json-schema/src/'),
-        babelTargets: esmBabelTargets,
-    },
-    uiSchemaJsonSchema: {
-        name: '@ui-schema/json-schema',
-        doServeWatch: true,
-        esmOnly: true,
-        root: path.resolve(__dirname, 'packages', 'uis-json-schema'),
-        entry: path.resolve(__dirname, 'packages', 'uis-json-schema/src/'),
         babelTargets: esmBabelTargets,
     },
     uiSchemaJsonPointer: {

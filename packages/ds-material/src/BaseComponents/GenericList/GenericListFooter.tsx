@@ -1,6 +1,6 @@
 import { ListButton, ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
 import Add from '@mui/icons-material/Add'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { Translate } from '@ui-schema/react/Translate'
 import { onChangeHandler, StoreKeys } from '@ui-schema/react/UIStore'

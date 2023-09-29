@@ -1,7 +1,7 @@
 import Typography from '@mui/material/Typography'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { StoreKeys } from '@ui-schema/react/UIStore'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 import Box from '@mui/material/Box'
 import React from 'react'
 import { InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'

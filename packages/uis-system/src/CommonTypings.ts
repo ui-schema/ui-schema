@@ -1,5 +1,5 @@
 import { Map, List } from 'immutable'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 
 export type showValidity = boolean
 

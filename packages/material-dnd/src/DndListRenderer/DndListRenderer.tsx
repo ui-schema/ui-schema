@@ -3,7 +3,7 @@ import { List, Map, OrderedMap } from 'immutable'
 import { DraggableRendererProps } from '@ui-schema/kit-dnd/useDraggable'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { extractValue, WithOnChange, WithValue } from '@ui-schema/react/UIStore'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { memo } from '@ui-schema/react/Utils/memo'
 
 export interface DndListItemComponentProps extends Pick<WidgetProps, 'storeKeys' | 'schema' | 'parentSchema' | 'required'> {

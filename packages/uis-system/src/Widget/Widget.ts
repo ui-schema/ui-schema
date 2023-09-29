@@ -1,5 +1,5 @@
 import { StoreKeys } from '@ui-schema/system/ValueStore'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 
 /**
  * Base widget props which are expected to exist no matter which data "type" the widget is for

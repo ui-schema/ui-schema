@@ -42,7 +42,6 @@
     "devDependencies": {
         "@tactic-ui/engine": "~0.0.5",
         "@ui-schema/system": "~0.5.0-alpha.0",
-        "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "immutable": "^4.0.0",
         "@types/react": "^18.0",
         "react": "^18.0",
@@ -50,7 +49,6 @@
     },
     "peerDependencies": {
         "@ui-schema/system": "~0.5.0-alpha.0",
-        "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "immutable": "^4.0.0",
         "react": "^16.8 || ^17.0 || ^18.0",
         "@types/react": "^16.8 || ^17.0 || ^18.0"

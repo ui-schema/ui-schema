@@ -3,7 +3,7 @@ import FormHelperText from '@mui/material/FormHelperText'
 import { Translate } from '@ui-schema/react/Translate'
 import { showValidity } from '@ui-schema/system/CommonTypings'
 import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 
 export interface ValidityHelperTextProps {
     showValidity: showValidity | undefined

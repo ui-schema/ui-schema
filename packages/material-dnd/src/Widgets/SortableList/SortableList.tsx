@@ -15,7 +15,7 @@ import { OrderedMap } from 'immutable'
 import { genId } from '@ui-schema/kit-dnd'
 import { DndListRenderer } from '@ui-schema/material-dnd/DndListRenderer'
 import { SortableListItem } from '@ui-schema/material-dnd/WidgetsBase/SortableListItem'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 
 export interface SortableListProps {
     scoped?: boolean

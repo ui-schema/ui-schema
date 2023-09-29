@@ -7,7 +7,7 @@ import { WidgetProps } from '@ui-schema/react/Widgets'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { SchemaValidatorContext } from '@ui-schema/system/SchemaPluginStack'
 import { LeafsRenderMapping } from '@tactic-ui/react/LeafsEngine'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 
 export const FormGroup =
     <P extends WidgetProps & SchemaValidatorContext & { renderMap: LeafsRenderMapping<{}, {}, { schema?: UISchemaMap }> }>(props: P): React.ReactElement<P> => {

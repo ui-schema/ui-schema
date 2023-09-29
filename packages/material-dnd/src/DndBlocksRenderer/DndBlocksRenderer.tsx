@@ -5,7 +5,7 @@ import { DndListItemComponentProps } from '@ui-schema/material-dnd/DndListRender
 import { DraggableRendererProps } from '@ui-schema/kit-dnd/useDraggable'
 import { matchBlock } from '@ui-schema/material-dnd/DndBlocksRenderer/matchBlock'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { extractValue, WithOnChange, WithValue } from '@ui-schema/react/UIStore'
 import { memo } from '@ui-schema/react/Utils/memo'
 

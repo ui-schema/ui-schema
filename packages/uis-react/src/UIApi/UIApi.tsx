@@ -1,7 +1,7 @@
 import React from 'react'
 import { Map } from 'immutable'
 import { createOrderedMap } from '@ui-schema/system/createMap'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { UISchemaMap } from '@ui-schema/system/Definitions'
 
 export const PROGRESS_NONE = false
 export const PROGRESS_START = 'start'
