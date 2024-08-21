@@ -6,7 +6,7 @@ import {
 } from '@ui-schema/react/SchemaRootProvider'
 import { useSchemaRef } from '@ui-schema/react/Decorators/ReferencingHandler'
 import { getSchemaId } from '@ui-schema/system/Utils/getSchema'
-import { DecoratorPropsNext } from '@tactic-ui/react/Deco'
+import { DecoratorPropsNext } from '@ui-schema/react/WidgetDecorator'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 
 export interface ReferencingHandlerProps {

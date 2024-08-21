@@ -1,7 +1,7 @@
 import React from 'react'
 import { Map } from 'immutable'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { DecoratorPropsNext } from '@tactic-ui/react/Deco'
+import { DecoratorPropsNext } from '@ui-schema/react/WidgetDecorator'
 import { WithValue } from '@ui-schema/react/UIStore'
 
 export interface DefaultHandlerProps {

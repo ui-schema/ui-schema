@@ -17,7 +17,7 @@ List of renamed functions, components etc., most are also moved to other package
 - `schemaToNative/mapSchema` > `schemaRulesToNative`
 - `PluginStack` > `WidgetEngine`
 - `ComponentPluginType` >`WidgetPluginType`
-- `PluginProps` >`WidgetPluginProps`
+- `PluginProps` > ~~`WidgetPluginProps`~~
 - `WidgetProps` > `WidgetPayload` AND `WidgetProps`
 - `CommonTypings/Errors` > `ValidatorErrorsType`
 - `ObjectGroup` > `SchemaLayer`
@@ -45,7 +45,9 @@ List of renamed functions, components etc., most are also moved to other package
 
 ##### Tactic-UI Integration
 
-> just a stub, a lot of things are not mentioned here yet
+> To simplify dev, reverted split-up and imported [tactic-ui@v0.0.10](https://github.com/ui-schema/tactic-ui/tree/react-0.0.10) as `WidgetDecorator`, `WidgetEngine` and `Widgets/RenderMap`. Further refinements are needed.
+>
+> ~~just a stub, a lot of things are not mentioned here yet~~
 
 - widgets which rely on the widgets binding need to specify the required bindings for `leafs` and `components` manually
 - the `render` prop now contains the injected binding, instead of `widgets`, with a new structure which is specified by `tactic-ui`

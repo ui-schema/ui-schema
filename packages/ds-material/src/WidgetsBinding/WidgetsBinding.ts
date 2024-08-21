@@ -1,9 +1,9 @@
 import React from 'react'
 import { ErrorFallbackProps, GroupRendererProps, NoWidgetProps, WidgetProps } from '@ui-schema/react/Widgets'
 import { WithScalarValue } from '@ui-schema/react/UIStore'
-import { LeafsRenderMapping, ReactLeafsNodeSpec } from '@tactic-ui/react/LeafsEngine'
+import { LeafsRenderMapping, ReactLeafsNodeSpec } from '@ui-schema/react/Widgets'
 import { InfoRendererProps } from '@ui-schema/ds-material/Component'
-import { ReactLeafDefaultNodeType } from '@tactic-ui/react/LeafsEngine'
+import { ReactLeafDefaultNodeType } from '@ui-schema/react/Widgets'
 import { SchemaValidatorContext } from '@ui-schema/system/SchemaPluginStack'
 import { UISchemaMap } from '@ui-schema/system/Definitions'
 

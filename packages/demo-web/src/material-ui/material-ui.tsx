@@ -27,9 +27,9 @@ import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { ObjectRenderer } from '@ui-schema/react/ObjectRenderer'
 import { StoreKeys } from '@ui-schema/system/ValueStore'
-import { DecoratorPropsNext, ReactDeco } from '@tactic-ui/react/Deco'
-// todo: somehow here the re-export from `@tactic-ui/react/LeafsEngine` doesn't resolve in IntelliJ if engine isn't installed directly
-import { LeafsRenderMapping } from '@tactic-ui/engine/Leaf'
+import { DecoratorPropsNext, ReactDeco } from '@ui-schema/react/WidgetDecorator'
+// todo: somehow here the re-export from `@ui-schema/react/Widgets` doesn't resolve in IntelliJ if @tactic-ui/engine isn't installed directly
+import { LeafsRenderMapping } from '@ui-schema/react/Widgets'
 import { ExtractStorePlugin } from '@ui-schema/react/Decorators/ExtractStorePlugin'
 import { MuiComponentsBinding, NextMuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { SchemaPluginsAdapter } from '@ui-schema/react/Decorators/SchemaPluginsAdapter'
@@ -206,6 +206,7 @@ function DemoRenderer<P extends DecoratorPropsNext & WidgetProps & WithValue & S
 
 const schemaPlugins: SchemaPlugin[] = getValidators()
 
+// move the whole setup of `ReactDeco` inside a component, if you need to access hooks inside the decorator configurations
 const deco = new ReactDeco<
     DecoratorPropsNext &
     {

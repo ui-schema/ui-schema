@@ -4,7 +4,7 @@ import { mergeSchema } from '@ui-schema/system/Utils/mergeSchema'
 import { List, Map } from 'immutable'
 import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { DecoratorPropsNext } from '@tactic-ui/react/Deco'
+import { DecoratorPropsNext } from '@ui-schema/react/WidgetDecorator'
 
 interface DependentRendererProps {
     dependencies?: List<string> | UISchemaMap

@@ -1,7 +1,7 @@
 import React from 'react'
 import { handleIfElseThen } from './handleIfElseThen'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { DecoratorPropsNext } from '@tactic-ui/react/Deco'
+import { DecoratorPropsNext } from '@ui-schema/react/WidgetDecorator'
 import { WithValue } from '@ui-schema/react/UIStore'
 
 export const ConditionalHandler = <P extends WidgetProps & DecoratorPropsNext & WithValue>(props: P): React.ReactElement<P> => {

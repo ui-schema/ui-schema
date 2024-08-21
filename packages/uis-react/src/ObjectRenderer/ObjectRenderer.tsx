@@ -1,7 +1,7 @@
 import React from 'react'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import { LeafsRenderMapping } from '@tactic-ui/react/LeafsEngine'
+import { LeafsRenderMapping } from '@ui-schema/react/Widgets'
 import { GroupRendererProps, WidgetProps } from '@ui-schema/react/Widgets'
 import { SchemaValidatorContext } from '@ui-schema/system/SchemaPluginStack'
 

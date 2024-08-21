@@ -5,7 +5,7 @@ import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { escapePointer } from '@ui-schema/json-pointer/escapePointer'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { WithValue } from '@ui-schema/react/UIStore'
-import { DecoratorPropsNext } from '@tactic-ui/react/Deco'
+import { DecoratorPropsNext } from '@ui-schema/react/WidgetDecorator'
 
 export interface InjectSplitSchemaRootContext {
     schemaStyle?: UISchemaMap

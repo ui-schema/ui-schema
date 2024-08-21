@@ -1,10 +1,9 @@
-import { ReactDeco, DecoratorProps, ReactBaseDecorator } from '@tactic-ui/react/Deco'
+import { ReactDeco, DecoratorProps, ReactBaseDecorator } from '@ui-schema/react/WidgetDecorator'
 import React from 'react'
-import { createLeafsContext, defineLeafsContext } from '@tactic-ui/react/LeafsContext'
-// todo: somehow here the re-export from `@tactic-ui/react/LeafsEngine` doesn't resolve in IntelliJ if engine isn't installed directly
-import { LeafsRenderMapping, ReactLeafsNodeSpec } from '@tactic-ui/react/LeafsEngine'
+import { LeafsRenderMapping, ReactLeafsNodeSpec } from '@ui-schema/react/Widgets'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { UISchemaMap } from '@ui-schema/system/Definitions'
+import { LeafsEngine } from '@ui-schema/react/Widgets'
 
 export type WidgetPropsMap = { [k: string]: WidgetProps }
 
@@ -13,16 +12,40 @@ type CustomLeafsDataMapping = {}
 
 // todo: optimize generics usage for easier, `typeof customBinding.leafs` and alike
 
-export const widgetContext = createLeafsContext<
-    CustomLeafsDataMapping, CustomComponents,
-    ReactDeco<{}, {}>,
-    LeafsRenderMapping<ReactLeafsNodeSpec<CustomLeafsDataMapping>, CustomComponents, { schema?: UISchemaMap }>
->()
+export const widgetContext: React.Context<LeafsEngine<CustomLeafsDataMapping, CustomComponents, ReactDeco<{}, {}>, LeafsRenderMapping<ReactLeafsNodeSpec<CustomLeafsDataMapping>, CustomComponents, {
+    schema?: UISchemaMap
+}>>> = React.createContext(undefined as any)
 
-export const {
-    LeafsProvider: WidgetsProvider,
-    useLeafs: useWidgets,
-} = defineLeafsContext(widgetContext)
+export const useWidgets = <
+    TLeafsDataMapping2 extends CustomLeafsDataMapping = CustomLeafsDataMapping,
+    TComponents2 extends CustomComponents = CustomComponents,
+    TDeco2 extends ReactDeco<{}, {}> = ReactDeco<{}, {}>,
+    TRender2 extends LeafsRenderMapping<ReactLeafsNodeSpec<TLeafsDataMapping2>, TComponents2> = LeafsRenderMapping<ReactLeafsNodeSpec<TLeafsDataMapping2>, TComponents2>,
+>() => {
+    return React.useContext<LeafsEngine<TLeafsDataMapping2, TComponents2, TDeco2, TRender2>>(
+        widgetContext as unknown as React.Context<LeafsEngine<TLeafsDataMapping2, TComponents2, TDeco2, TRender2>>,
+    )
+}
+
+export function WidgetsProvider<
+    TLeafsDataMapping2 extends CustomLeafsDataMapping = CustomLeafsDataMapping,
+    TComponents2 extends CustomComponents = CustomComponents,
+    TDeco2 extends ReactDeco<{}, {}> = ReactDeco<{}, {}>,
+    TRender2 extends LeafsRenderMapping<ReactLeafsNodeSpec<TLeafsDataMapping2>, TComponents2> = LeafsRenderMapping<ReactLeafsNodeSpec<TLeafsDataMapping2>, TComponents2>,
+    // todo: integrate a typing which validates that the provided deco-result-props are compatible with props of `TRender2['leafs']`
+>(
+    {
+        children,
+        deco, renderMap,
+    }: React.PropsWithChildren<LeafsEngine<TLeafsDataMapping2, TComponents2, TDeco2, TRender2>>,
+) {
+    const ctx = React.useMemo((): LeafsEngine<TLeafsDataMapping2, TComponents2, TDeco2, TRender2> => ({
+        deco: deco, renderMap: renderMap,
+    }), [deco, renderMap])
+
+    const LeafsContextProvider = (widgetContext as unknown as React.Context<LeafsEngine<TLeafsDataMapping2, TComponents2, TDeco2, TRender2>>).Provider
+    return <LeafsContextProvider value={ctx}>{children}</LeafsContextProvider>
+}
 
 export type WidgetEngineInjected = 'decoIndex' | 'next' | keyof ReturnType<typeof useWidgets>
 

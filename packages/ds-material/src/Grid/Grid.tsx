@@ -4,7 +4,7 @@ import { UISchemaMap } from '@ui-schema/system/Definitions'
 import { OrderedMap } from 'immutable'
 import { GroupRendererProps } from '@ui-schema/react/Widgets'
 import { GridSpacing } from '@mui/material/Grid/Grid'
-import { DecoratorPropsNext } from '@tactic-ui/react/Deco'
+import { DecoratorPropsNext } from '@ui-schema/react/WidgetDecorator'
 
 export const SchemaGridItem: React.ComponentType<React.PropsWithChildren<{
     schema: UISchemaMap

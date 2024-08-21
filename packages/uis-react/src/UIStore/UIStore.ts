@@ -2,7 +2,7 @@ import { Record, Map, List, OrderedMap, RecordOf } from 'immutable'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/system/schemaTypeIs'
 import { doExtractValues } from '@ui-schema/react/UIStore'
 import { UIStoreActions, UIStoreUpdaterData } from '@ui-schema/react/UIStoreActions'
-import { StoreKeys as ValueStoreKeys } from '@ui-schema/system/ValueStore'
+import { StoreKeys as ValueStoreKeys, StoreKeyType as ValueStoreKeyType } from '@ui-schema/system/ValueStore'
 import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
 
 export type Values<V> = List<V> | string | number | boolean | Map<string, V> | OrderedMap<string, V>
@@ -46,7 +46,10 @@ export type UIStoreUpdaterFn<D extends UIStoreUpdaterData = UIStoreUpdaterData> 
 
 export type onChangeHandler<A = UIStoreActions> = (actions: A[] | A) => void
 
-export type StoreKeyType = string | number
+/**
+ * @deprecated replace all usages of this `StoreKeys` with the one from system
+ */
+export type StoreKeyType = ValueStoreKeyType
 
 /**
  * @deprecated replace all usages of this `StoreKeys` with the one from system
@@ -114,7 +117,7 @@ export const createEmptyStore = (type: SchemaTypesType = 'object'): UIStoreType<
                         Map(),
     ) as UIStoreType
 
-export const prependKey = <O extends StoreKeyType = StoreKeyType, S extends ValueStoreKeys<O> = ValueStoreKeys<O>>(storeKeys: S, key: O): S =>
+export const prependKey = <O extends ValueStoreKeyType = ValueStoreKeyType, S extends ValueStoreKeys<O> = ValueStoreKeys<O>>(storeKeys: S, key: O): S =>
     Array.isArray(storeKeys) ?
         [key, ...storeKeys] as unknown as S :
         storeKeys.splice(0, 0, key) as S

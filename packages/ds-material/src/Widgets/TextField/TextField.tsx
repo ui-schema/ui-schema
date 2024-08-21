@@ -12,7 +12,7 @@ import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/system/schemaTypeI
 import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { InfoRendererType } from '@ui-schema/ds-material/Component'
-import { LeafsRenderMapping } from '@tactic-ui/react/LeafsEngine'
+import { LeafsRenderMapping } from '@ui-schema/react/Widgets'
 import { SchemaValidatorContext } from '@ui-schema/system/SchemaPluginStack'
 
 export interface StringRendererBaseProps {

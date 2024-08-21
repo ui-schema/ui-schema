@@ -1,6 +1,6 @@
 import React from 'react'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
-import { DecoratorPropsNext, ReactBaseDecorator } from '@tactic-ui/react/Deco'
+import { DecoratorPropsNext, ReactBaseDecorator } from '@ui-schema/react/WidgetDecorator'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { WithValue } from '@ui-schema/react/UIStore'
 

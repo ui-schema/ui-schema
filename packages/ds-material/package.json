@@ -40,7 +40,6 @@
         "react-dom": "^18.0"
     },
     "dependencies": {
-        "@tactic-ui/react": "~0.0.10",
         "react-uid": "^2.2.0"
     },
     "peerDependencies": {

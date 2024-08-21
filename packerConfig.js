@@ -294,8 +294,8 @@ packer({
                 '--copy-files',
             ],
             nodemonArgs: [
-                '-e', 'js,json,twig,scss',
-                '-w', path.resolve(__dirname, 'packages', 'uis-json-schema') + '/**/*.ts',
+                '-e', 'js,ts,tsx,jsx,json,scss',
+                '-w', path.resolve(__dirname, 'packages', 'uis-react') + '/**/*.ts',
                 '-w', path.resolve(__dirname, 'packages', 'uis-json-pointer') + '/**/*.ts',
                 '-w', path.resolve(__dirname, 'packages', 'uis-system') + '/**/*.ts',
             ],

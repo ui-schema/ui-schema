@@ -7,7 +7,7 @@ import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { extractValidity, StoreKeys, WithValidity, StoreKeyType } from '@ui-schema/react/UIStore'
+import { extractValidity, WithValidity } from '@ui-schema/react/UIStore'
 import { isInvalid } from '@ui-schema/react/ValidityReporter'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import Accordion, { AccordionProps } from '@mui/material/Accordion'
@@ -18,6 +18,8 @@ import Typography, { TypographyProps } from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { InfoRendererType } from '@ui-schema/ds-material/Component/InfoRenderer'
+import { StoreKeyType } from '@ui-schema/system/ValueStore'
+import { StoreKeys } from '@ui-schema/system/ValueStore'
 
 export interface AccordionStackBaseProps {
     isOpen: boolean

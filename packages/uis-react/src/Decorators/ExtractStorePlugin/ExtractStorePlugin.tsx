@@ -1,6 +1,6 @@
 import React from 'react'
 import { useUIStore, WithValue } from '@ui-schema/react/UIStore'
-import { DecoratorPropsNext, ReactBaseDecorator } from '@tactic-ui/react/Deco'
+import { DecoratorPropsNext, ReactBaseDecorator } from '@ui-schema/react/WidgetDecorator'
 import { StoreKeys } from '@ui-schema/system/ValueStore'
 import { useUIStoreActions } from '@ui-schema/react/UIStoreActions'
 

@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { SchemaValidatorContext } from '@ui-schema/system/SchemaPluginStack'
-import { LeafsRenderMapping } from '@tactic-ui/react/LeafsEngine'
+import { LeafsRenderMapping } from '@ui-schema/react/Widgets'
 import { UISchemaMap } from '@ui-schema/system/Definitions'
 
 export const FormGroup =

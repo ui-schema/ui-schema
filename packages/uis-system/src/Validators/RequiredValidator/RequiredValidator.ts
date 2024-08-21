@@ -1,8 +1,9 @@
 import { List } from 'immutable'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/system/schemaTypeIs'
 import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
-import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
+import { SchemaPluginProps } from '@ui-schema/system/SchemaPlugin'
+import { StoreKeys } from '@ui-schema/system/ValueStore'
 
 export const ERROR_NOT_SET = 'required-not-set'
 
@@ -24,7 +25,7 @@ export const checkValueExists = (type: string | List<string> | string[], value: 
 }
 
 export interface RequiredValidatorType extends SchemaPlugin {
-    should: ({requiredList, storeKeys}: WidgetPluginProps) => boolean
+    should: ({requiredList, storeKeys}: SchemaPluginProps & { requiredList?: StoreKeys }) => boolean
     handle: (props) => {
         errors: ValidatorErrorsType
         valid: boolean

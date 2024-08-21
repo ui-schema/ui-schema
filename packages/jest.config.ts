@@ -2,8 +2,8 @@ import type { Config } from '@jest/types'
 
 const packages: string[] = [
     'uis-system', 'uis-react',
-    'uis-react-json-schema', 'uis-pro',
-    'uis-json-pointer', 'uis-json-schema',
+    'uis-pro',
+    'uis-json-pointer',
     'ds-bootstrap', 'ds-material',
     'material-dnd', 'material-pickers',
     'kit-dnd',
