@@ -114,21 +114,6 @@ const config: Config.InitialOptions = {
                 '<rootDir>/' + pkg + '/tests/**/*.(test|spec).(js|ts|tsx)',
             ],
         })),
-        // todo: for performance reasons it seems to be way better to use eslint via cli and not through jest
-        // {
-        //     displayName: 'lint',
-        //     runner: 'jest-runner-eslint',
-        //     ...base,
-        //     testMatch: testMatchesLint,
-        //     testPathIgnorePatterns: [
-        //         // todo: enable linting test files again
-        //         '(.*.mock).(jsx?|tsx?|ts?|js?)$',
-        //         '(.*.test).(jsx?|tsx?|ts?|js?)$',
-        //         '(.*.spec).(jsx?|tsx?|ts?|js?)$',
-        //         // '*.mock.(jsx?|tsx?|ts?|js?)$',
-        //         // '*.test.(jsx?|tsx?|ts?|js?)$',
-        //     ],
-        // },
     ],
     coverageDirectory: '<rootDir>/../coverage',
 }

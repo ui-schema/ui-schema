@@ -47,6 +47,10 @@ jobs:
                     npm run bootstrap
                     npm run link
 
+            -   name: Run linter
+                run: |
+                    npm lint
+
             -   name: Run tests
                 run: |
                     npm test

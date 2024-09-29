@@ -24,7 +24,7 @@ const codeFiles = flattenRoutes<DocRouteModule, TsDocModuleFileSource>(
 )
 
 const codeFilesSrc: string[] = codeFiles.reduce((fileTree, file) => {
-    return [...fileTree, ...file.files?.map(f => path.join(baseModules, file.relPath, f))]
+    return [...fileTree, ...file.files?.map(f => path.join(baseModules, file.relPath, f)) || []]
 }, [] as string[])
 
 const fileInfo = parseFiles(codeFilesSrc, {

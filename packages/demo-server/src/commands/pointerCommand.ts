@@ -18,8 +18,8 @@ export const pointerCommand = async () => {
             Map({
                 c2a: 'c2a-val',
                 c2b: 'c2b-val',
-            })
-        ])
+            }),
+        ]),
     })
     const pointers = [
         '/prop_a/a1',

@@ -42,7 +42,7 @@ const DocContent: React.FC<{
     const {palette} = useTheme()
     const [loadingModuleDocs, setLoadingModuleDocs] = React.useState<boolean>(false)
     const [fullWidth, setFullWidth] = React.useState(window.localStorage.getItem('docs-details--fullWidth') === 'yes')
-    const [/*modules,*/setModules] = React.useState<any>(undefined)
+    const [/*modules*/, setModules] = React.useState<any>(undefined)
     const {breakpoints} = useTheme()
     const isLg = useMediaQuery(breakpoints.up('lg'))
     const module = doc?.docModule
