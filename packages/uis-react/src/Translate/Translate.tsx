@@ -26,6 +26,7 @@ export const Translate: React.FC<TranslateProps> = ({t: customT, text, context, 
             typeof Translated === 'string' || typeof Translated === 'number' || typeof Translated === 'object' ?
                 Translated :
                 typeof Translated === 'function' ?
+                    // @ts-ignore
                     <Translated/> :
                     text
     ) as unknown as React.ReactElement

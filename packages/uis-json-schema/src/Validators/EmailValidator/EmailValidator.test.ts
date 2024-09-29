@@ -1,4 +1,5 @@
-import { emailValidator } from '@ui-schema/json-schema/Validators/EmailValidator/EmailValidator'
+import { test, expect, describe } from '@jest/globals'
+import { emailValidator } from '@ui-schema/json-schema/Validators/EmailValidator'
 import { OrderedMap } from 'immutable'
 
 describe('emailValidator', () => {

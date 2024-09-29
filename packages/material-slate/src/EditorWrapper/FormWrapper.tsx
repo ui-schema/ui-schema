@@ -29,7 +29,7 @@ export const useFormEditorStyles = makeStyles<Theme, { dense: boolean, focused: 
             margin: 0,
             padding: '0 ' + theme.spacing(1) + ' 0 ' + theme.spacing(1),
             justifyContent: 'center',
-            position: 'absolute',
+            position: 'absolute' as const,
             top: ({dense}: { dense?: boolean }) => ((dense ? theme.spacing((2 + 0.375) * -1) : theme.spacing((2 + 0.75) * -1))),
             left: 0,
             right: 0,

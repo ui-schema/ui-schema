@@ -5,7 +5,6 @@ import { useSchemaRoot } from '@ui-schema/react-json-schema/SchemaRootProvider'
 import { resolvePointer } from '@ui-schema/json-pointer/resolvePointer'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { Map, OrderedMap } from 'immutable'
 
 const getUrls = (schemaRef: string, id) => {
     let schemaUrl = schemaRef
@@ -55,7 +54,7 @@ export const useSchemaNetworkRef = (): {
             let tmpSchema = currentSchemas?.get(cleanUrl) as UISchemaMap
             const fragment = getFragmentFromUrl(schemaUrl)
             if (fragment) {
-                tmpSchema = resolvePointer('#/' + fragment, tmpSchema as Map<string, any> | OrderedMap<string, any>)
+                tmpSchema = resolvePointer('#/' + fragment, tmpSchema as any)
                 // todo: if a version is set, it only enforces the root schema currently, how must fragment references treated
             }
 

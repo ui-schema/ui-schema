@@ -60,3 +60,11 @@ List of renamed functions, components etc., most are also moved to other package
     - `widgetsTypes()` just returns `types` widgets
     - `widgetsCustom()` just returns some recommended `custom` widgets
 - `pluginStack` removed, now included directly in `widgetsBinding`
+
+## Todos Misc
+
+- tests
+    - `ts-jest` needed `compilerOptions.jsx: "react"`
+        - https://github.com/kulshekhar/ts-jest/issues/63
+    - in package.json ts-node typechecks are disabled for ease of test other test issues
+        - remove `TS_NODE_TRANSPILE_ONLY=true` once react tests are working

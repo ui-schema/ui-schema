@@ -50,7 +50,7 @@ const useStyles = makeStyles<Theme, { hidden: boolean, hiddenDelay: number, dire
         '&:before': {
             left: '50%',
             content: '" "',
-            position: 'absolute',
+            position: 'absolute' as const,
             transform: 'translateX(-50%)',
             borderColor: theme.palette.divider + ' transparent',
             borderStyle: 'solid',
@@ -61,7 +61,7 @@ const useStyles = makeStyles<Theme, { hidden: boolean, hiddenDelay: number, dire
         '&:after': {
             left: '50%',
             content: '" "',
-            position: 'absolute',
+            position: 'absolute' as const,
             marginTop: '-1px',
             transform: 'translateX(-50%)',
             borderColor: theme.palette.divider + ' transparent',

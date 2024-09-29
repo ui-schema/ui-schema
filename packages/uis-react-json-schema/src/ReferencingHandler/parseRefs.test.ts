@@ -1,4 +1,4 @@
-import { expect, describe } from '@jest/globals'
+import { test, expect, describe } from '@jest/globals'
 import { List, OrderedMap, Map } from 'immutable'
 import { parseRefs, ParseRefsContent } from './parseRefs'
 import { createMap, createOrderedMap } from '@ui-schema/system/createMap'

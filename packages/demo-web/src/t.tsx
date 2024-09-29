@@ -1,7 +1,7 @@
 import React from 'react'
 import AccountBox from '@mui/icons-material/AccountBox'
 import { createMap } from '@ui-schema/system/createMap'
-import { makeTranslator, TranslatorDictionary } from '@ui-schema/system/Translator'
+import { makeTranslator, translation, TranslatorDictionary } from '@ui-schema/system/Translator'
 import * as en from '@ui-schema/dictionary/en'
 import * as de from '@ui-schema/dictionary/de'
 
@@ -42,8 +42,7 @@ const dicEN = createMap({
     titles: {
         'simple-number': 'Simple Number',
     },
-    // todo: fix typings
-}) as unknown as TranslatorDictionary
+}) as TranslatorDictionary<translation | React.ComponentType>
 
 const dicDE = createMap({
     error: de.errors,
@@ -67,11 +66,10 @@ const dicDE = createMap({
     titles: {
         'simple-number': 'Einfache Nummer',
     },
-    // todo: fix typings
-}) as unknown as TranslatorDictionary
+}) as TranslatorDictionary<translation | React.ComponentType>
 
-const tEN = makeTranslator(dicEN, 'en')
-const tDE = makeTranslator(dicDE, 'de')
+const tEN = makeTranslator<translation | React.ComponentType>(dicEN, 'en')
+const tDE = makeTranslator<translation | React.ComponentType>(dicDE, 'de')
 
 const browserT = (text, context, schema) => {
     const locale = window.localStorage.getItem('locale') || navigator.language

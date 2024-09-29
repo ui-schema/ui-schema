@@ -63,7 +63,7 @@ export const scopeUpdaterMapDefault: ScopeUpdaterMapType = {
     },
     meta: {
         // `store.meta`
-        setter: (store, _storeKeys, newValue) => store.set('meta', newValue),
+        setter: (store, _storeKeys, newValue) => store.set('meta', newValue) as typeof store,
         getter: (_storeKeys, store) => store.meta,
     },
 }

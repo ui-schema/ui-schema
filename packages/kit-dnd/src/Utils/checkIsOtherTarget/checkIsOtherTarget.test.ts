@@ -1,5 +1,6 @@
 import { checkIsOtherTarget } from '@ui-schema/kit-dnd/Utils/checkIsOtherTarget'
 import { DataKeys } from '@ui-schema/kit-dnd/KitDnd'
+import { test, expect, describe } from '@jest/globals'
 import { List } from 'immutable'
 
 /**

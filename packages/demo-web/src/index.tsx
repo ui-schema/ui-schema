@@ -4,7 +4,7 @@ import { App } from './App'
 
 const root = createRoot(document.querySelector('#root') as Element)
 root.render(
-    <React.Profiler id="Pickers Demo App" onRender={() => null}>
+    <React.Profiler id="Demo App" onRender={() => null}>
         <App/>
     </React.Profiler>,
 )

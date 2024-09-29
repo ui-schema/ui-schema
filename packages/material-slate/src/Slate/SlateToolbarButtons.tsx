@@ -20,7 +20,7 @@ export interface ToolbarElementProps {
     type: string
     inactiveType?: string
     unwrapTypes?: string[]
-    icon: JSX.Element
+    icon: React.ReactElement
     onFocus?: FocusEventHandler
     onBlur?: FocusEventHandler
 }
@@ -28,7 +28,7 @@ export interface ToolbarElementProps {
 export interface ToolbarButtonProps {
     selected: boolean
     type?: string
-    icon: JSX.Element
+    icon: React.ReactElement
     onClick: (event: any) => void
     onFocus?: FocusEventHandler
     onBlur?: FocusEventHandler

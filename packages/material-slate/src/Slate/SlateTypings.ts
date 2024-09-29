@@ -42,7 +42,7 @@ export declare type EditableProps = {
     readOnly?: boolean
     role?: string
     style?: React.CSSProperties
-    renderElement?: (props: RenderElementProps) => JSX.Element
-    renderLeaf?: (props: RenderLeafProps) => JSX.Element
+    renderElement?: (props: RenderElementProps) => React.ReactElement
+    renderLeaf?: (props: RenderLeafProps) => React.ReactElement
     as?: React.ElementType
 } & React.TextareaHTMLAttributes<HTMLDivElement>

@@ -5,7 +5,7 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 export class SchemaRefPending extends Error {
 }
 
-export const resolveRef = (ref: string, context: ParseRefsContent, schemaVersion?: string): UISchemaMap => {
+export const resolveRef = (ref: string, context: ParseRefsContent, schemaVersion?: string): UISchemaMap | undefined => {
     const {
         // the id of the parent schema
         id,
@@ -17,7 +17,7 @@ export const resolveRef = (ref: string, context: ParseRefsContent, schemaVersion
         getLoadedSchema,
     } = context
 
-    let schema
+    let schema: UISchemaMap | undefined = undefined
 
     if (ref.indexOf('#/definitions/') === 0 || ref.indexOf('#/$defs/') === 0) {
         // intercept JSON Pointer for definitions
@@ -27,7 +27,7 @@ export const resolveRef = (ref: string, context: ParseRefsContent, schemaVersion
                 console.error('definitions needed for $ref resolution', ref)
             }
         } else if (defs.get(refId)) {
-            schema = resolvePointer('#/' + refId, defs)
+            schema = resolvePointer('#/' + refId, defs as any)
         } else {
             if (process.env.NODE_ENV === 'development') {
                 console.error('definition not found for $ref', ref, refId)
@@ -42,7 +42,7 @@ export const resolveRef = (ref: string, context: ParseRefsContent, schemaVersion
                 console.error('rootSchema needed for $ref resolution', ref)
             }
         } else {
-            const targeted = resolvePointer(ref, rootSchema)
+            const targeted = resolvePointer(ref, rootSchema as any)
             if (targeted) {
                 schema = targeted
             } else {

@@ -13,6 +13,7 @@ tab_width = 4
 trim_trailing_whitespace = true
 ij_continuation_indent_size = 4
 
+# todo: typescript code style broke when IJ introduced `ij_typescript_`, it does not reuse `ij_javascript_`
 [{*.cjs,*.js,*.ts,*.jsx,*.tsx}]
 max_line_length = 240
 ij_continuation_indent_size = 4
@@ -119,12 +120,13 @@ ij_javascript_space_before_else_left_brace = true
 ij_javascript_space_before_finally_keyword = true
 ij_javascript_space_before_finally_left_brace = true
 ij_javascript_space_before_for_left_brace = true
-ij_javascript_space_before_for_parentheses = false
+ij_javascript_space_before_for_parentheses = true
 ij_javascript_space_before_for_semicolon = false
 ij_javascript_space_before_function_left_parenth = false
 ij_javascript_space_before_generator_mult = false
 ij_javascript_space_before_if_left_brace = true
-ij_javascript_space_before_if_parentheses = false
+ij_javascript_space_before_if_parentheses = true
+ij_typescript_space_before_if_parentheses = true
 ij_javascript_space_before_method_call_parentheses = false
 ij_javascript_space_before_method_left_brace = true
 ij_javascript_space_before_method_parentheses = false
@@ -170,7 +172,7 @@ ij_javascript_ternary_operation_wrap = off
 ij_javascript_union_types_wrap = on_every_item
 ij_javascript_use_chained_calls_group_indents = true
 ij_javascript_use_double_quotes = false
-ij_javascript_use_explicit_js_extension = global
+ij_javascript_use_explicit_js_extension = auto
 ij_javascript_use_path_mapping = always
 ij_javascript_use_public_modifier = false
 ij_javascript_use_semicolon_after_statement = true

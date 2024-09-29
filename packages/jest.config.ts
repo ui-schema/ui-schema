@@ -1,5 +1,9 @@
 import type { Config } from '@jest/types'
 
+// helpful jest commands:
+// npm run test -- --selectProjects=test-uis-react --maxWorkers=4
+// npm run test -- --selectProjects=test-uis-react --testPathPattern=WidgetEngine --maxWorkers=4
+
 const packages: string[] = [
     'uis-system', 'uis-react',
     'uis-react-json-schema', 'uis-pro',
@@ -18,20 +22,48 @@ packages.forEach(pkg => {
     ])
 })
 const base: Partial<Config.InitialOptions> = {
+    preset: 'ts-jest/presets/default-esm',
+    // preset: 'ts-jest',
+    // preset: 'jest-preset.js',
     transformIgnorePatterns: [
         'node_modules/?!(@ui-schema)',
+        // 'node_modules/(?!(.*@ui-schema.*|.*node_modules.*))',
     ],
     transform: {
         // '^.+\\.ts$': 'babel-jest',
-        '^.+\\.ts$': 'ts-jest',
-        '^.+\\.tsx$': 'ts-jest',
+
+        // todo: kit-dnd works with ts-jest, without and with esm, no babelConfig needed;
+        //       but babel-jest gives `SyntaxError: Unexpected token 'export'`
+        // '^.+\\.ts$': ['babel-jest', {rootMode: 'upward', extends: './babel.config.json'/*, 'excludeJestPreset': true*/}],
+        // '^.+\\.tsx$': ['babel-jest', {rootMode: 'upward', extends: './babel.config.json'/*, 'excludeJestPreset': true*/}],
+
+        '^.+\\.ts$': [
+            'ts-jest',
+            {
+                tsconfig: '<rootDir>/tsconfig-test.json',
+                //babelConfig: './babel.config.json',
+                diagnostics: false,
+                useESM: true,
+            },
+        ],
+        '^.+\\.tsx$': [
+            'ts-jest',
+            {
+                tsconfig: '<rootDir>/tsconfig-test.json',
+                // disable type checking until tests are typesafe
+                isolatedModules: true,
+                // diagnostics: false,
+                // babelConfig: true,
+                useESM: true,
+                //babelConfig: './babel.config.json',
+            },
+        ],
     },
-    /*extensionsToTreatAsEsm: ['.ts'],
-    globals: {
-        'ts-jest': {
-            useESM: true,
-        },
-    },*/
+
+    // workaround for "react is undefined in test files" (not yet possible to confirm it works)
+    // https://stackoverflow.com/a/69544200/2073149
+    setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
+
     moduleNameMapper: {
         '^(\\.{1,2}/.*)\\.js$': '$1',// todo: validate ESM testing (and JSDom/react compat.), somehow this mapper was all needed - no further ts-jest/babel adjustments
         '^@ui-schema/system(.*)$': '<rootDir>/uis-system/src$1',
@@ -52,15 +84,16 @@ const base: Partial<Config.InitialOptions> = {
         'json',
         'node',
     ],
-    collectCoverage: true,
     coveragePathIgnorePatterns: [
         '(tests/.*.mock).(jsx?|tsx?|ts?|js?)$',
     ],
-    verbose: true,
+    extensionsToTreatAsEsm: ['.ts', '.tsx'],
 }
 
 const config: Config.InitialOptions = {
     ...base,
+    collectCoverage: true,
+    verbose: true,
     // todo: check why `transformIgnorePatterns`, combined with multi-projects/lerna 0.5.3 upgrade, throws `Reentrant plugin detected trying to load ....babel-plugin-jest-hoist/build/index.js`
     /*transformIgnorePatterns: [
         'node_modules/?!(@ui-schema)',
@@ -81,20 +114,21 @@ const config: Config.InitialOptions = {
                 '<rootDir>/' + pkg + '/tests/**/*.(test|spec).(js|ts|tsx)',
             ],
         })),
-        {
-            displayName: 'lint',
-            runner: 'jest-runner-eslint',
-            ...base,
-            testMatch: testMatchesLint,
-            testPathIgnorePatterns: [
-                // todo: enable linting test files again
-                '(.*.mock).(jsx?|tsx?|ts?|js?)$',
-                '(.*.test).(jsx?|tsx?|ts?|js?)$',
-                '(.*.spec).(jsx?|tsx?|ts?|js?)$',
-                // '*.mock.(jsx?|tsx?|ts?|js?)$',
-                // '*.test.(jsx?|tsx?|ts?|js?)$',
-            ],
-        },
+        // todo: for performance reasons it seems to be way better to use eslint via cli and not through jest
+        // {
+        //     displayName: 'lint',
+        //     runner: 'jest-runner-eslint',
+        //     ...base,
+        //     testMatch: testMatchesLint,
+        //     testPathIgnorePatterns: [
+        //         // todo: enable linting test files again
+        //         '(.*.mock).(jsx?|tsx?|ts?|js?)$',
+        //         '(.*.test).(jsx?|tsx?|ts?|js?)$',
+        //         '(.*.spec).(jsx?|tsx?|ts?|js?)$',
+        //         // '*.mock.(jsx?|tsx?|ts?|js?)$',
+        //         // '*.test.(jsx?|tsx?|ts?|js?)$',
+        //     ],
+        // },
     ],
     coverageDirectory: '<rootDir>/../coverage',
 }

@@ -6,7 +6,7 @@ import { mappingAdvanced } from '@ui-schema/material-slate/SlateElements/mapping
 import { editorIsEnabled } from '@ui-schema/material-slate/Slate/editorIsEnabled'
 
 export interface ElementMapping {
-    [k: string]: (props: RenderElementProps) => JSX.Element
+    [k: string]: (props: RenderElementProps) => React.ReactElement
 }
 
 const elementMapping: ElementMapping = {
@@ -16,7 +16,7 @@ const elementMapping: ElementMapping = {
     ...mappingAdvanced,
 }
 
-export type ElementMapperType = ({attributes, children, element}: RenderMapperProps) => JSX.Element
+export type ElementMapperType = ({attributes, children, element}: RenderMapperProps) => React.ReactElement
 
 export const ElementMapper: ElementMapperType = (props) => {
     const {element, enableOnly} = props

@@ -22,7 +22,7 @@ export const storeBuildScopeTree = <S extends UIStoreType>(storeKeys: StoreKeys,
             store = store.setIn(
                 relativeList,
                 typeof key === 'number' ? List() : ordered ? OrderedMap() : Map()
-            )
+            ) as S
         }
 
         // the current iteration must have the "parents" relative storeKeys, not it's own,

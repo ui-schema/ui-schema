@@ -18,7 +18,7 @@ import DemoUIGenerator from '../component/Schema/DemoUIGenerator'
 import { PageContent } from '@control-ui/kit/PageContent'
 import Typography from '@mui/material/Typography'
 import { DocRouteModule } from '../content/docs'
-import { DocsDetailsModules } from '../component/DocsDetailsModules'
+// import { DocsDetailsModules } from '../component/DocsDetailsModules'
 import { DocRoute } from '@control-ui/docs'
 import { useRouter } from '@control-ui/routes/RouterProvider'
 import { useLocation } from 'react-router-dom'
@@ -42,7 +42,7 @@ const DocContent: React.FC<{
     const {palette} = useTheme()
     const [loadingModuleDocs, setLoadingModuleDocs] = React.useState<boolean>(false)
     const [fullWidth, setFullWidth] = React.useState(window.localStorage.getItem('docs-details--fullWidth') === 'yes')
-    const [modules, setModules] = React.useState<any>(undefined)
+    const [/*modules,*/setModules] = React.useState<any>(undefined)
     const {breakpoints} = useTheme()
     const isLg = useMediaQuery(breakpoints.up('lg'))
     const module = doc?.docModule
@@ -155,7 +155,8 @@ Examples of this widget, using \`ds-material\`. Type in/change the input and che
 
                     {doc?.docModule ?
                         <Paper style={{margin: '24px 0 12px 0', padding: 24, display: 'flex', flexDirection: 'column', borderRadius: 5}} variant={'outlined'}>
-                            <DocsDetailsModules modules={modules}/>
+                            {/* todo: TS5 is unsupported by docs-ts/@structured-types/api */}
+                            {/*<DocsDetailsModules modules={modules}/>*/}
                         </Paper> : null}
                 </> : null}
         </PageContent>

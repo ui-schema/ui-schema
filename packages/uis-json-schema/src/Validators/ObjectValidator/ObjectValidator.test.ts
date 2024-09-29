@@ -1,3 +1,4 @@
+import { test, expect, describe } from '@jest/globals'
 import {
     validateObject, objectValidator, ERROR_ADDITIONAL_PROPERTIES,
 } from '@ui-schema/json-schema/Validators/ObjectValidator'

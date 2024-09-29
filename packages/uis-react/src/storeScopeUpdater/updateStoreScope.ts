@@ -12,5 +12,5 @@ export const updateStoreScope: ScopeOnChangeHandlerInternal = (store, scope, sto
         // @ts-ignore
         storeKeys.size ? prependKey(storeKeys, scope) : [scope],
         newValue
-    )
+    ) as typeof store
 }

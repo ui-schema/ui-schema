@@ -33,7 +33,7 @@ export const scopeUpdaterValues = <S extends UIStoreType = UIStoreType, A extend
                 store = store.deleteIn(prependKey(storeKeys, 'values'))
             }
         } else {
-            store = store.deleteIn(['values'])
+            store = store.deleteIn(['values']) as typeof store
         }
         return store
     }

@@ -4,7 +4,7 @@ import { editorIsEnabled } from '@ui-schema/material-slate/Slate/editorIsEnabled
 import { ElementMapperType } from '@ui-schema/material-slate/SlateElements/ElementMapper'
 
 export interface ElementMapping {
-    [k: string]: (props: RenderElementProps) => JSX.Element
+    [k: string]: (props: RenderElementProps) => React.ReactElement
 }
 
 const elementMapping: ElementMapping = {

@@ -9,7 +9,7 @@ export interface ValidityHelperTextProps {
     showValidity: showValidity | undefined
     errors?: ValidatorErrorsType
     schema: UISchemaMap
-    browserError?: Node | React.ReactElement
+    browserError?: React.ReactNode | React.ReactElement
 }
 
 export interface LocaleHelperTextProps {
