@@ -8,7 +8,7 @@ import { useSearch } from '@control-ui/docs/DocsSearchProvider'
 import IcPage from '@mui/icons-material/Article'
 import Slide from '@mui/material/Slide'
 import IcTag from '@mui/icons-material/Tag'
-import useTheme from '@mui/material/styles/useTheme'
+import { useTheme } from '@mui/material/styles'
 import { useDrawer } from '@control-ui/app/DrawerProvider'
 import useMediaQuery from '@mui/material/useMediaQuery'
 

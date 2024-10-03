@@ -30,7 +30,7 @@ export const WidgetRenderer = <W extends WidgetsBindingFactory = WidgetsBindingF
         // `props` contains all props accumulated in the WidgetEngine
         ...props
     }: P,
-): React.ReactElement => {
+): React.ReactNode => {
     const {schema, widgets, isVirtual} = props
     const currentErrors = useImmutable(errors)
 
@@ -55,12 +55,15 @@ export const WidgetRenderer = <W extends WidgetsBindingFactory = WidgetsBindingF
     } catch (e) {
         if (e instanceof ErrorNoWidgetMatching) {
             const {NoWidget} = widgets
-            return <NoWidget
-                matching={e.matching}
-                scope={e.scope}
-                storeKeys={props.storeKeys}
-                schemaKeys={props.schemaKeys}
-            />
+            if (NoWidget) {
+                return <NoWidget
+                    matching={e.matching}
+                    scope={e.scope}
+                    storeKeys={props.storeKeys}
+                    schemaKeys={props.schemaKeys}
+                />
+            }
+            return null
         }
     }
 
@@ -81,5 +84,5 @@ export const WidgetRenderer = <W extends WidgetsBindingFactory = WidgetsBindingF
             value={noExtractValue ? undefined : value}
             internalValue={noExtractValue ? undefined : internalValue}
             errors={currentErrors}
-        /> : null as unknown as React.ReactElement
+        /> : null
 }

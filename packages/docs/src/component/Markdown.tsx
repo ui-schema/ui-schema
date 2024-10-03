@@ -11,7 +11,7 @@ import { MdLink } from '@control-ui/md/MdLink'
 import { LinkableHeadline } from '@control-ui/docs/LinkableHeadline'
 import { LoadingCircular } from '@control-ui/kit/Loading/LoadingCircular'
 import { OrderedListProps, UnorderedListProps } from 'react-markdown/lib/ast-to-react'
-import useTheme from '@mui/material/styles/useTheme'
+import { useTheme } from '@mui/material/styles'
 
 const Code = Loadable({
     loader: () => import('./MarkdownCode'),

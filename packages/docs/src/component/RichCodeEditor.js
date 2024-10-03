@@ -1,6 +1,6 @@
 import React from 'react';
 import {useUID} from 'react-uid';
-import useTheme from '@mui/material/styles/useTheme';
+import {useTheme} from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import AceEditor from 'react-ace';
 // todo: update react-ace to v8, using ace-builds instead of brace, creates strange `this.session = null` exceptions then and now

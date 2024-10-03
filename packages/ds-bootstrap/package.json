@@ -32,7 +32,7 @@
     "main": "index.js",
     "module": "esm/index.js",
     "scripts": {
-        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/ds-bootstrap/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*"
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && node ../../tools/merge-dirs.js build/dts/ds-bootstrap/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*"
     },
     "devDependencies": {
         "@types/react": "^18.0",
@@ -58,6 +58,7 @@
         "react": "^16.8 || ^17.0 || ^18.0"
     },
     "publishConfig": {
+        "tag": "next",
         "access": "public"
     }
 }

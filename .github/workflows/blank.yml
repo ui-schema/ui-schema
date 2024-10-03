@@ -22,18 +22,18 @@ jobs:
             matrix:
                 node-version: [ 18.x ]
         steps:
-            -   uses: actions/checkout@v2
+            -   uses: actions/checkout@v4
             -   name: Set Branch
                 id: vars
                 run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
             -   name: Use Node.js ${{ matrix.node-version }}
-                uses: actions/setup-node@v1
+                uses: actions/setup-node@v4
                 with:
                     node-version: ${{ matrix.node-version }}
                     registry-url: 'https://registry.npmjs.org'
 
             -   name: Cache CI node_modules
-                uses: actions/cache@v2
+                uses: actions/cache@v4
                 env:
                     cache-name: cache-node-modules
                 with:
@@ -49,18 +49,18 @@ jobs:
 
             -   name: Run linter
                 run: |
-                    npm lint
+                    npm run lint
 
             -   name: Run tests
                 run: |
-                    npm test
+                    npm run test
 
             -   name: Build
                 run: |
                     npm run build
 
             -   name: Send code coverage report to Codecov.io
-                uses: codecov/codecov-action@v3
+                uses: codecov/codecov-action@v4
                 with:
                     token: ${{ secrets.CODECOV_TOKEN }}
 

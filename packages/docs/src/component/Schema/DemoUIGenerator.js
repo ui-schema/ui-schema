@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import useTheme from '@mui/material/styles/useTheme';
+import {useTheme} from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {isInvalid} from '@ui-schema/react/ValidityReporter';
 import {createEmptyStore, createStore, UIStoreProvider} from '@ui-schema/react/UIStore';

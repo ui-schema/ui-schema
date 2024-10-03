@@ -1,5 +1,5 @@
 import React from 'react'
-import useTheme from '@mui/material/styles/useTheme'
+import { useTheme } from '@mui/material/styles'
 import { Drawer } from '@control-ui/app/Drawer'
 import { useDrawer } from '@control-ui/app/DrawerProvider'
 import { ListItemLink } from '@control-ui/kit/List'

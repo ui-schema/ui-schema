@@ -1,5 +1,5 @@
 import React from "react";
-import useTheme from "@mui/material/styles/useTheme";
+import {useTheme} from '@mui/material/styles';
 
 export const Logo = ({width, style}) => {
     const {palette} = useTheme();

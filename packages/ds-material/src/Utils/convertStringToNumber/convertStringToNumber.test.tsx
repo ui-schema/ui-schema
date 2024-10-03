@@ -1,9 +1,5 @@
-import { it, expect, describe } from '@jest/globals'
-// @ts-ignore
-import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
+import { jest, it, expect, describe } from '@jest/globals'
 import { convertStringToNumber } from './convertStringToNumber'
-
-expect.extend({toBeInTheDocument, toHaveClass})
 
 describe('convertStringToNumber', () => {
     it('convertStringToNumber', async () => {

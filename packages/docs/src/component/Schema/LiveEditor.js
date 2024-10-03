@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import useTheme from '@mui/material/styles/useTheme';
+import {useTheme} from '@mui/material/styles';
 import DragHandle from '@mui/icons-material/DragHandle';
 import Opacity from '@mui/icons-material/Opacity';
 import SpeakerNotes from '@mui/icons-material/SpeakerNotes';

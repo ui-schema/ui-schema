@@ -133,6 +133,7 @@
                         "functions": "only-multiline"
                     }
                 ],
+                "react/react-in-jsx-scope": "off",
                 "react/prop-types": "off",
                 "no-redundant-jsdoc": "off",
                 "@typescript-eslint/ban-types": "off",

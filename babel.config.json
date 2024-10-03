@@ -58,12 +58,12 @@
                 [
                     "@babel/preset-react",
                     {
-                        "runtime": "classic"
+                        "runtime": "automatic"
                     }
                 ]
             ],
             "plugins": [
-                "transform-es2015-modules-commonjs",
+                "./babelImportDefaultPlugin.cjs",
                 "@babel/plugin-proposal-export-default-from",
                 "@babel/plugin-proposal-export-namespace-from"
             ]

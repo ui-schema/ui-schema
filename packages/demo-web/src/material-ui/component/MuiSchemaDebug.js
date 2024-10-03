@@ -1,6 +1,6 @@
 import React from 'react';
 import Paper from '@mui/material/Paper';
-import useTheme from '@mui/material/styles/useTheme';
+import {useTheme} from '@mui/material/styles';
 import {ImmutableEditor, themeMaterial} from "react-immutable-editor";
 import {SchemaDebug} from "../../component/SchemaDebug";
 

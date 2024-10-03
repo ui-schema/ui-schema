@@ -29,6 +29,7 @@ const legacyBabelTargets = [
 
 const esmBabelTargets = [
     {
+        // todo: this is missing --copy-files, which e.g. bootstrap needs for its manual created .d.ts
         distSuffix: '', args: [
             '--no-comments',
             '--extensions', '.ts', '--extensions', '.tsx', '--extensions', '.js', '--extensions', '.jsx',
@@ -81,7 +82,7 @@ const packages = {
     },
     uiSchemaPro: {
         name: '@ui-schema/pro',
-        doServeWatch: true,
+        doServeWatch: false,
         esmOnly: true,
         root: path.resolve(__dirname, 'packages', 'uis-pro'),
         entry: path.resolve(__dirname, 'packages', 'uis-pro/src/'),
@@ -98,7 +99,7 @@ const packages = {
     dsMaterial: {
         // noClean: true,
         name: '@ui-schema/ds-material',
-        doServeWatch: true,
+        doServeWatch: false,
         esmOnly: true,
         root: path.resolve(__dirname, 'packages', 'ds-material'),
         entry: path.resolve(__dirname, 'packages', 'ds-material/src/'),
@@ -107,7 +108,7 @@ const packages = {
     },
     dsBootstrap: {
         name: '@ui-schema/ds-bootstrap',
-        doServeWatch: true,
+        doServeWatch: false,
         esmOnly: true,
         root: path.resolve(__dirname, 'packages', 'ds-bootstrap'),
         entry: path.resolve(__dirname, 'packages', 'ds-bootstrap/src/'),
@@ -116,7 +117,7 @@ const packages = {
     },
     kitDnd: {
         name: '@ui-schema/kit-dnd',
-        doServeWatch: true,
+        doServeWatch: false,
         esmOnly: true,
         root: path.resolve(__dirname, 'packages', 'kit-dnd'),
         entry: path.resolve(__dirname, 'packages', 'kit-dnd/src/'),
@@ -124,7 +125,7 @@ const packages = {
     },
     materialPickers: {
         name: '@ui-schema/material-pickers',
-        doServeWatch: true,
+        doServeWatch: false,
         esmOnly: true,
         root: path.resolve(__dirname, 'packages', 'material-pickers'),
         entry: path.resolve(__dirname, 'packages', 'material-pickers/src/'),
@@ -132,20 +133,25 @@ const packages = {
     },
     materialSlate: {
         name: '@ui-schema/material-slate',
+        esmOnly: true,
         root: path.resolve(__dirname, 'packages', 'material-slate'),
         entry: path.resolve(__dirname, 'packages', 'material-slate/src/'),
+        babelTargets: esmBabelTargets,
     },
     materialEditorJs: {
         name: '@ui-schema/material-editorjs',
+        esmOnly: true,
         root: path.resolve(__dirname, 'packages', 'material-editorjs'),
         entry: path.resolve(__dirname, 'packages', 'material-editorjs/src/'),
+        babelTargets: esmBabelTargets,
     },
     materialDnd: {
         name: '@ui-schema/material-dnd',
-        doServeWatch: true,
+        doServeWatch: false,
         esmOnly: true,
         root: path.resolve(__dirname, 'packages', 'material-dnd'),
         entry: path.resolve(__dirname, 'packages', 'material-dnd/src/'),
+        babelTargets: esmBabelTargets,
     },
 }
 
@@ -324,6 +330,8 @@ packer({
 }, __dirname, {
     afterEsModules: (packages, pathBuild, isServing) => {
         return Promise.all([
+            // todo: as all packages will be esm only, a new package.jsn generator is needed, or none at all?
+            //       as `transformForEsModule` is for `type: "module"` with esm+cjs builds, it is not used for esmOnly packages
             makeModulePackageJson(transformForEsModule)(
                 Object.keys(packages).reduce(
                     (packagesFiltered, pack) =>
@@ -338,7 +346,6 @@ packer({
             return Promise.reject(e)
         })
     },
-    onAppBuild: async () => null,
 })
     .then(([execs, elapsed]) => {
         if(execs.indexOf('doServe') !== -1) {

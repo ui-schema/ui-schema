@@ -64,7 +64,12 @@ List of renamed functions, components etc., most are also moved to other package
 ## Todos Misc
 
 - tests
-    - `ts-jest` needed `compilerOptions.jsx: "react"`
+    - `ts-jest` needed `compilerOptions.jsx: "react"`, or not? somehow works in other repos without
         - https://github.com/kulshekhar/ts-jest/issues/63
-    - in package.json ts-node typechecks are disabled for ease of test other test issues
-        - remove `TS_NODE_TRANSPILE_ONLY=true` once react tests are working
+    - typechecks are disabled for tests via `isolatedModules` in `jest.config.ts`
+- check all `@mui` import, wrong imports lead to jest failures: "can not use import outside module"
+    - never go into the third level, even for "sub bundles" like `/styles`,
+      it fails when using `import useTheme from '@mui/material/styles/useTheme'`
+      but works using `import { useTheme } from '@mui/material/styles'`
+- finalize `package.json` generation
+- convert all `.js/.d.ts` to `.ts`

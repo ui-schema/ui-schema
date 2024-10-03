@@ -1,17 +1,13 @@
 /**
  * @jest-environment jsdom
  */
-import React from 'react'
+import { NoWidget } from '@ui-schema/react/NoWidget'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
-// @ts-ignore
-import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
 import { NextPluginRenderer, NextPluginRendererMemo, WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { List } from 'immutable'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
-
-expect.extend({toBeInTheDocument, toHaveClass})
 
 describe('NextPluginRenderer', () => {
     it('Empty NextPluginRenderer', async () => {
@@ -21,6 +17,7 @@ describe('NextPluginRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    NoWidget: NoWidget,
                     WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
                     widgetPlugins: [],
@@ -39,6 +36,7 @@ describe('NextPluginRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    NoWidget: NoWidget,
                     WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
                     widgetPlugins: [(p) => <>
@@ -61,6 +59,7 @@ describe('NextPluginRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    NoWidget: NoWidget,
                     WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
                     widgetPlugins: [(p) => <>
@@ -83,6 +82,7 @@ describe('NextPluginRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    NoWidget: NoWidget,
                     WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
                     widgetPlugins: [(p) => <>
@@ -105,6 +105,7 @@ describe('NextPluginRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    NoWidget: NoWidget,
                     WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
                     // @ts-ignore
@@ -126,6 +127,7 @@ describe('NextPluginRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                    NoWidget: NoWidget,
                     WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
                     // @ts-ignore
