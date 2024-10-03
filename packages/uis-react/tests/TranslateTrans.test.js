@@ -4,17 +4,12 @@
 import React from 'react';
 import {it, expect, describe, test} from '@jest/globals';
 import {render} from '@testing-library/react';
-import {
-    toBeInTheDocument,
-    toHaveClass,
-} from '@testing-library/jest-dom/matchers'
+import '@testing-library/jest-dom/jest-globals'
 import {Translate} from '../src/Translate/Translate/Translate';
 import {createMap} from '../src/Utils/createMap';
 import {makeTranslator} from '../src/Translate/makeTranslator';
 import {Map} from 'immutable';
 import {ERROR_MIN_LENGTH} from '@ui-schema/json-schema/Validators';
-
-expect.extend({toBeInTheDocument, toHaveClass})
 
 const dicEN = createMap({
     titles: {

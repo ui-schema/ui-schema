@@ -2,18 +2,12 @@
  * @jest-environment jsdom
  */
 import { test, expect, describe } from '@jest/globals'
-import {
-    toBeInTheDocument,
-    toHaveClass,
-    // @ts-ignore
-} from '@testing-library/jest-dom/matchers'
+import '@testing-library/jest-dom/jest-globals'
 import { List, Map } from 'immutable'
 import { UIStore, createStore, StoreKeys, UIStoreType } from '@ui-schema/react/UIStore'
 import { doExtractValues } from '@ui-schema/react/UIStore'
 import { isEqualObject } from '@ui-schema/system/Utils/isEqualObject'
 import { fromJSOrdered } from '@ui-schema/system/createMap'
-
-expect.extend({toBeInTheDocument, toHaveClass})
 
 describe('UIStoreProvider', () => {
     test.each([

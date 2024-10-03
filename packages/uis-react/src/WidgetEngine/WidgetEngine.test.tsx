@@ -4,6 +4,7 @@
 import { NoWidget } from '@ui-schema/react/NoWidget'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
+import '@testing-library/jest-dom/jest-globals'
 import { NextPluginRenderer, NextPluginRendererMemo, WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { List } from 'immutable'

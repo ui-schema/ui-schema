@@ -4,10 +4,7 @@
 import React, { PropsWithChildren } from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
-import {
-    // @ts-ignore
-    toBeInTheDocument, toHaveClass,
-} from '@testing-library/jest-dom/matchers'
+import '@testing-library/jest-dom/jest-globals'
 import { List } from 'immutable'
 import { MockWidgets } from './MockSchemaProvider.mock'
 import { createStore, extractValue, UIStoreProvider, WithValue } from '@ui-schema/react/UIStore'
@@ -39,7 +36,6 @@ import { NextPluginRenderer, WidgetEngine } from '@ui-schema/react/WidgetEngine'
  * npm test -- --testPathPattern=UIRenderer.test.tsx -u
  */
 
-expect.extend({toBeInTheDocument, toHaveClass})
 const widgets = MockWidgets
 // todo: add custom ErrorFallback, otherwise some errors may be catched there - and the test will not fail
 

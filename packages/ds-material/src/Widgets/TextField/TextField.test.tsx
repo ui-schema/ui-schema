@@ -4,15 +4,12 @@
 import React from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
-// @ts-ignore
-import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
+// import '@testing-library/jest-dom/jest-globals'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { StringRenderer } from './TextField'
 import { List } from 'immutable'
 import { MockSchemaMetaProvider } from '../../../tests/MockSchemaProvider.mock'
 import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
-
-expect.extend({toBeInTheDocument, toHaveClass})
 
 describe('StringRenderer', () => {
     it('renders html', async () => {

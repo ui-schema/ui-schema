@@ -43,7 +43,7 @@ jobs:
 
             -   name: Setup packages
                 run: |
-                    npm ci
+                    npm ci --force
                     npm run bootstrap
                     npm run link
 

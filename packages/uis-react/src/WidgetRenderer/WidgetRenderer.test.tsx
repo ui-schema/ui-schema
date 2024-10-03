@@ -4,8 +4,7 @@
 import React from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
-// @ts-ignore
-import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
+import '@testing-library/jest-dom/jest-globals'
 import { WidgetRenderer } from './WidgetRenderer'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { VirtualArrayRenderer, VirtualWidgetsMapping } from '@ui-schema/react/VirtualWidgetRenderer'
@@ -16,8 +15,6 @@ import { ExtractStorePlugin } from '@ui-schema/react/ExtractStorePlugin'
 import { createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { translateRelative } from '@ui-schema/system/TranslatorRelative'
-
-expect.extend({toBeInTheDocument, toHaveClass})
 
 export const virtualWidgets: VirtualWidgetsMapping = {
     // eslint-disable-next-line react/display-name

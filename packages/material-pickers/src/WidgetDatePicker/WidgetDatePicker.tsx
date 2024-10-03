@@ -19,7 +19,7 @@ export const WidgetDatePicker: React.FC<WidgetProps & WithScalarValue & WidgetDa
         value, storeKeys, onChange, schema, required,
         Picker,
         pickerProps,
-    }
+    },
 ) => {
     const adapter = React.useContext(MuiPickersAdapterContext)
     const {utils} = adapter || {}
@@ -63,6 +63,7 @@ export const WidgetDatePicker: React.FC<WidgetProps & WithScalarValue & WidgetDa
                 data: {value: e ? utils.formatByString(e, dateFormatData) : ''},
             } as UIStoreActionSet)
         }}
+        // todo: pass down textFieldProps
         renderInput={(params) => <TextField {...params} fullWidth/>}
         {...pickerProps || {}}
     />

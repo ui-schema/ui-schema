@@ -4,15 +4,12 @@
 import React from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
-// @ts-ignore
-import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
+import '@testing-library/jest-dom/jest-globals'
 import { createMap, createOrderedMap } from '@ui-schema/system/createMap'
 import { ValidityHelperText } from './LocaleHelperText'
 import { Map } from 'immutable'
 import { MockSchemaMetaProvider } from '../../../tests/MockSchemaProvider.mock'
 import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
-
-expect.extend({toBeInTheDocument, toHaveClass})
 
 describe('LocaleHelperText', () => {
     it('ValidityHelperText', () => {

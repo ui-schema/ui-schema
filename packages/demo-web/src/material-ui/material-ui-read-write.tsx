@@ -1,3 +1,6 @@
+import { InheritKeywords } from '@ui-schema/react-json-schema/InheritKeywords'
+import { SortPlugin } from '@ui-schema/react-json-schema/SortPlugin'
+import { schemaTypeToDistinct } from '@ui-schema/system/schemaTypeToDistinct'
 import React from 'react'
 import AppTheme from './layout/AppTheme'
 import Dashboard from './layout/Dashboard'
@@ -74,7 +77,6 @@ const formSchema = createOrderedMap({
             type: 'string',
             widget: 'Text',
         },
-
         layouts: {
             type: 'array',
             widget: 'OptionsCheck',
@@ -192,6 +194,7 @@ const ReadableWritableEditor = () => {
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
     const [edit, setEdit] = React.useState(false)
     const [dense, setDense] = React.useState(false)
+    const [sort, setSort] = React.useState(false)
 
     const onChange = React.useCallback((actions: UIStoreActions[] | UIStoreActions) => {
         setStore(storeUpdater<UIStoreType>(actions))
@@ -199,14 +202,27 @@ const ReadableWritableEditor = () => {
 
     const customWidgetsRtd = React.useMemo(() => ({
         ...widgets,
+        schemaPlugins: [
+            ...widgets.schemaPlugins || [],
+            SortPlugin,
+            // non-read widgets do not support a `dense` property by default, thus forcing with inheriting from parent schema
+            InheritKeywords(
+                [['view', 'dense']],
+                ({schema}) => schemaTypeToDistinct(schema?.get('type')) !== 'boolean' && edit,
+                // (/*{parentSchema, schema}*/) => edit,
+            ),
+        ],
         types: edit ? widgets.types : readWidgets.types,
         custom: edit ? widgets.custom : readWidgets.custom,
     }), [widgets, edit])
 
+    const schema = edit && dense ? formSchema.setIn(['view', 'dense'], true) : formSchema
+    const schemaWithSort = sort ? schema.set('sortOrder', schema.get('properties').keySeq().sort((a, b) => a.localeCompare(b)).concat(['prop_x'])) : schema
     return <React.Fragment>
         <Box mb={1}>
             <Button onClick={() => setEdit(e => !e)}>{edit ? 'ready only' : 'edit'}</Button>
-            <Button disabled={edit} onClick={() => setDense(e => !e)}>{dense ? 'normal-size' : 'dense'}</Button>
+            <Button onClick={() => setDense(e => !e)}>{dense ? 'normal-size' : 'dense'}</Button>
+            <Button onClick={() => setSort(e => !e)}>{sort ? 'no-sort' : 'sort'}</Button>
         </Box>
         <UIMetaProvider<UIMetaReadContextType>
             // re-use & overwrite of the global meta-context
@@ -219,8 +235,8 @@ const ReadableWritableEditor = () => {
                 onChange={onChange}
                 showValidity={showValidity}
             >
-                <GridStack isRoot schema={formSchema}/>
-                <MuiSchemaDebug schema={formSchema}/>
+                <GridStack isRoot schema={schemaWithSort}/>
+                <MuiSchemaDebug schema={schemaWithSort}/>
             </UIStoreProvider>
         </UIMetaProvider>
         <div style={{width: '100%', marginTop: 24}}>

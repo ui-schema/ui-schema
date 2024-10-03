@@ -1,7 +1,7 @@
 # Contributing to UI-Schema
 
 1. Fork/Clone repository **branch `develop`**
-2. Install root dev-dependencies (like lerna, webpack): `npm i`
+2. Install root dev-dependencies (like lerna, webpack): `npm i --force` (**force needed for 0.4.x branch atm.**)
 3. Install & link the `packages`: `npm run bootstrap && npm run link`
 4. Start dev-server: `npm start`
     - (will clean-dist + start demo-web app)

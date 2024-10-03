@@ -4,6 +4,7 @@ import { mappingBasicInline } from '@ui-schema/material-slate/SlateElements/mapp
 import { mappingList } from '@ui-schema/material-slate/SlateElements/mappingList'
 import { mappingAdvanced } from '@ui-schema/material-slate/SlateElements/mappingAdvanced'
 import { editorIsEnabled } from '@ui-schema/material-slate/Slate/editorIsEnabled'
+import * as React from 'react'
 
 export interface ElementMapping {
     [k: string]: (props: RenderElementProps) => React.ReactElement
