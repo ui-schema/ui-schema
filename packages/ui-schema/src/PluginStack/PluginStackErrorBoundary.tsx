@@ -3,12 +3,12 @@ import { ErrorFallbackProps } from '@ui-schema/ui-schema/WidgetsBinding'
 import { StoreKeys } from '@ui-schema/ui-schema/UIStore'
 import { List } from 'immutable'
 
-export class PluginStackErrorBoundary extends React.Component<{
+export class PluginStackErrorBoundary extends React.Component<React.PropsWithChildren<{
     FallbackComponent: React.ComponentType<ErrorFallbackProps>
     type: string | List<string> | undefined
     widget: string | undefined
     storeKeys: StoreKeys
-}> {
+}>> {
     state: { error: any } = {
         error: null,
     }

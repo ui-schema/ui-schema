@@ -6,23 +6,25 @@ const testMatchesLint: string[] = []
 
 packages.forEach(pkg => {
     testMatchesLint.push(...[
-        '<rootDir>/' + pkg + '/src/**/*.(js|ts|tsx)',
-        '<rootDir>/' + pkg + '/tests/**/*.(test|spec|d).(js|ts|tsx)',
+        '<rootDir>/packages/' + pkg + '/src/**/*.(js|ts|tsx)',
+        '<rootDir>/packages/' + pkg + '/tests/**/*.(test|spec|d).(js|ts|tsx)',
     ])
 })
+
 const base: Partial<Config.InitialOptions> = {
-    /*transformIgnorePatterns: [
+    cacheDirectory: '<rootDir>/node_modules/.cache/jest-tmp',
+    transformIgnorePatterns: [
         'node_modules/?!(@ui-schema)',
-    ],*/
-    /*transform: {
-        '^.+\\.tsx?$': 'ts-jest',
-    },*/
+    ],
+    transform: {
+        '^.+.[jt]sx?$': 'babel-jest',
+    },
     moduleNameMapper: {
-        '^@ui-schema/ui-schema(.*)$': '<rootDir>/ui-schema/src$1',
-        '^@ui-schema/pro(.*)$': '<rootDir>/ui-schema-pro/src$1',
-        '^@ui-schema/ds-bootstrap(.*)$': '<rootDir>/ds-bootstrap/src$1',
-        '^@ui-schema/ds-material(.*)$': '<rootDir>/ds-material/src$1',
-        '^@ui-schema/kit-dnd(.*)$': '<rootDir>/kit-dnd/src$1',
+        '^@ui-schema/ui-schema(.*)$': '<rootDir>/packages/ui-schema/src$1',
+        '^@ui-schema/pro(.*)$': '<rootDir>/packages/ui-schema-pro/src$1',
+        '^@ui-schema/ds-bootstrap(.*)$': '<rootDir>/packages/ds-bootstrap/src$1',
+        '^@ui-schema/ds-material(.*)$': '<rootDir>/packages/ds-material/src$1',
+        '^@ui-schema/kit-dnd(.*)$': '<rootDir>/packages/kit-dnd/src$1',
     },
     moduleFileExtensions: [
         'ts',
@@ -32,15 +34,15 @@ const base: Partial<Config.InitialOptions> = {
         'json',
         'node',
     ],
-    collectCoverage: true,
     coveragePathIgnorePatterns: [
         '(tests/.*.mock).(jsx?|tsx?|ts?|js?)$',
     ],
-    verbose: true,
 }
 
 const config: Config.InitialOptions = {
     ...base,
+    collectCoverage: true,
+    verbose: true,
     // todo: check why `transformIgnorePatterns`, combined with multi-projects/lerna 0.5.3 upgrade, throws `Reentrant plugin detected trying to load ....babel-plugin-jest-hoist/build/index.js`
     /*transformIgnorePatterns: [
         'node_modules/?!(@ui-schema)',
@@ -49,16 +51,16 @@ const config: Config.InitialOptions = {
         ...packages.map(pkg => ({
             displayName: 'test-' + pkg,
             ...base,
-            moduleDirectories: ['node_modules', '<rootDir>/' + pkg + '/node_modules'],
-            //moduleDirectories: ['node_modules', '<rootDir>/ui-schema/node_modules', '<rootDir>/ds-material/node_modules'],
+            moduleDirectories: ['node_modules', '<rootDir>/packages/' + pkg + '/node_modules'],
+            //moduleDirectories: ['node_modules', '<rootDir>/packages/ui-schema/node_modules', '<rootDir>/packages/ds-material/node_modules'],
             // todo: check why `transformIgnorePatterns`, combined with multi-projects/lerna 0.5.3 upgrade, throws `TypeError: /node_modules/jest-runner-eslint/build/runner/index.js: node_modules/@ampproject/remapping/dist/remapping.umd.js: _remapping(...) is not a function`
             /*transformIgnorePatterns: [
                 'node_modules/?!(@ui-schema)',
             ],*/
             //testEnvironmentOptions: {},
             testMatch: [
-                '<rootDir>/' + pkg + '/src/**/*.(test|spec).(js|ts|tsx)',
-                '<rootDir>/' + pkg + '/tests/**/*.(test|spec).(js|ts|tsx)',
+                '<rootDir>/packages/' + pkg + '/src/**/*.(test|spec).(js|ts|tsx)',
+                '<rootDir>/packages/' + pkg + '/tests/**/*.(test|spec).(js|ts|tsx)',
             ],
         })),
         {
@@ -68,7 +70,7 @@ const config: Config.InitialOptions = {
             testMatch: testMatchesLint,
         },
     ],
-    coverageDirectory: '<rootDir>/../coverage',
+    coverageDirectory: '<rootDir>/coverage',
 }
 
 export default config

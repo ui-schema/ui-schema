@@ -96,6 +96,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps & WithValue> = (
         onEmptyChange(Boolean(typeof isEmpty === 'undefined' ? true : isEmpty))
     }, [isEmpty, onEmptyChange])
 
+    // @ts-ignore
     return <ReactEditorJs
         data={undefined}
         tools={tools}

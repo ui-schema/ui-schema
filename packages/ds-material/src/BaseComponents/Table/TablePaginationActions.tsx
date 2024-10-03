@@ -13,6 +13,7 @@ export const TablePaginationActions: React.ComponentType<TablePaginationActionsP
     const theme = useTheme()
     const {
         count, page, rowsPerPage, onPageChange,
+        // eslint-disable-next-line deprecation/deprecation
         backIconButtonProps: backIconButtonPropsTmp, nextIconButtonProps: nextIconButtonPropsTmp,
     } = props
 

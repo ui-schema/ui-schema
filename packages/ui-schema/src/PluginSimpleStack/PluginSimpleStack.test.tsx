@@ -4,13 +4,10 @@
 import React from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
-// @ts-ignore
-import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
+import '@testing-library/jest-dom/jest-globals'
 import { PluginSimpleStack, handlePluginSimpleStack } from './PluginSimpleStack'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
 import { WidgetRenderer } from '../WidgetRenderer/WidgetRenderer'
-
-expect.extend({toBeInTheDocument, toHaveClass})
 
 describe('PluginSimpleStack', () => {
     it('PluginSimpleStack', async () => {

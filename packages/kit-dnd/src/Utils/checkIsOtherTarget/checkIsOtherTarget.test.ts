@@ -1,3 +1,4 @@
+import { expect, describe, test } from '@jest/globals'
 import { checkIsOtherTarget } from '@ui-schema/kit-dnd/Utils/checkIsOtherTarget'
 import { DataKeys } from '@ui-schema/kit-dnd/KitDnd'
 import { List } from 'immutable'

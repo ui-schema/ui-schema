@@ -4,14 +4,11 @@
 import React from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
-// @ts-ignore
-import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
+import '@testing-library/jest-dom/jest-globals'
 import { NextPluginRenderer, NextPluginRendererMemo, PluginStack } from '@ui-schema/ui-schema/PluginStack/PluginStack'
 import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
 import { List } from 'immutable'
 import { WidgetRenderer } from '@ui-schema/ui-schema'
-
-expect.extend({toBeInTheDocument, toHaveClass})
 
 describe('NextPluginRenderer', () => {
     it('Empty NextPluginRenderer', async () => {

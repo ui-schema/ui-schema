@@ -4,11 +4,7 @@
 import React, { PropsWithChildren } from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
-import {
-    toBeInTheDocument,
-    toHaveClass,
-    // @ts-ignore
-} from '@testing-library/jest-dom/matchers'
+import '@testing-library/jest-dom/jest-globals'
 import { List } from 'immutable'
 import { UIGenerator } from '../src/UIGenerator/UIGenerator'
 import { MockWidgets } from './MockSchemaProvider.mock'
@@ -34,7 +30,6 @@ import { relTranslator } from '@ui-schema/ui-schema/Translate/relT'
  * npm test -- --testPathPattern=UIRenderer.test.tsx -u
  */
 
-expect.extend({toBeInTheDocument, toHaveClass})
 const widgets = MockWidgets
 // todo: add custom ErrorFallback, otherwise some errors may be catched there - and the test will not fail
 
