@@ -1,3 +1,4 @@
+import { jest, describe, test, expect } from '@jest/globals'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { validateOneOf } from '@ui-schema/json-schema/Validators/OneOfValidator'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
