@@ -1,6 +1,5 @@
 import React from 'react'
-import AppTheme from './layout/AppTheme'
-import Dashboard from './layout/Dashboard'
+import { useToggle } from '../component/useToggle'
 import { schemaWCombining } from '../schemas/demoCombining'
 import { schemaWConditional, schemaWConditional1, schemaWConditional2 } from '../schemas/demoConditional'
 import { schemaWDep1, schemaWDep2 } from '../schemas/demoDependencies'
@@ -24,7 +23,6 @@ import { browserT } from '../t'
 import { schemaLists } from '../schemas/demoLists'
 import { schemaNumberSlider } from '../schemas/demoNumberSlider'
 import { DummyRenderer } from './component/MuiMainDummy'
-import { useDummy } from '../component/MainDummy'
 import { UIApiProvider } from '@ui-schema/react/UIApi'
 import { schemaDemoTable, schemaDemoTableAdvanced, schemaDemoTableMap, schemaDemoTableMapBig } from '../schemas/demoTable'
 import { Table } from '@ui-schema/ds-material/Widgets/Table'
@@ -100,13 +98,25 @@ const MainStore = () => {
             showValidity={showValidity}
             //doNotDefault
         >
-            <GridStack isRoot schema={schema}/>
+            <Paper
+                sx={{
+                    p: 2,
+                    display: 'flex',
+                    overflow: 'auto',
+                    flexDirection: 'column',
+                }}
+            >
+                <GridStack isRoot schema={schema}/>
+                <MuiSchemaDebug setSchema={setSchema} schema={schema}/>
+
+                <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
+                {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
+
+            </Paper>
+
             <MuiSchemaDebug setSchema={setSchema} schema={schema}/>
+
         </UIStoreProvider>
-
-        <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
-        {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
-
     </React.Fragment>
 }
 
@@ -137,114 +147,95 @@ const loadSchema = (url, versions) => {
 }
 
 const Main = () => {
-    const {toggleDummy, getDummy} = useDummy()
+    const [toggle, getToggle] = useToggle()
 
-    return <React.Fragment>
+    return <Grid container spacing={3}>
         <Grid item xs={12}>
             <DummyRenderer
                 id={'schemaTableMap'} schema={schemaDemoTableMap}
-                //open
-                toggleDummy={toggleDummy} getDummy={getDummy}
-                stylePaper={{background: 'transparent'}} variant={'outlined'}
+                toggleDummy={toggle} getDummy={getToggle}
             />
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer
                 id={'schemaTable'} schema={schemaDemoTable}
-                //open
-                toggleDummy={toggleDummy} getDummy={getDummy}
-                stylePaper={{background: 'transparent'}} variant={'outlined'}
+                toggleDummy={toggle} getDummy={getToggle}
             />
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer
                 id={'schemaDemoTableMapBig'} schema={schemaDemoTableMapBig}
-                //open
-                toggleDummy={toggleDummy} getDummy={getDummy}
-                stylePaper={{background: 'transparent'}} variant={'outlined'}
+                toggleDummy={toggle} getDummy={getToggle}
             />
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer
                 id={'schemaDemoTableAdvanced'} schema={schemaDemoTableAdvanced}
-                //open
-                toggleDummy={toggleDummy} getDummy={getDummy}
-                stylePaper={{background: 'transparent'}} variant={'outlined'}
+                toggleDummy={toggle} getDummy={getToggle}
             />
         </Grid>
         <Grid item xs={12}>
-            <Paper
-                sx={{
-                    p: 2,
-                    display: 'flex',
-                    overflow: 'auto',
-                    flexDirection: 'column',
-                }}
-            >
-                <MainStore/>
-            </Paper>
+            <MainStore/>
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer
                 id={'schemaReferencingNetwork'} schema={schemaDemoReferencingNetwork}
-                toggleDummy={toggleDummy} getDummy={getDummy}
-                stylePaper={{background: 'transparent'}} variant={'outlined'}
+                toggleDummy={toggle} getDummy={getToggle}
             />
         </Grid>
         <Grid item xs={12}>
             <DummyRenderer
                 id={'schemaReferencingNetworkB'} schema={schemaDemoReferencingNetworkB}
-                toggleDummy={toggleDummy} getDummy={getDummy}
-                stylePaper={{background: 'transparent'}} variant={'outlined'}
+                toggleDummy={toggle} getDummy={getToggle}
             />
         </Grid>
         <Grid item xs={12}>
-            <DummyRenderer id={'schemaReferencing'} schema={schemaDemoReferencing} toggleDummy={toggleDummy} getDummy={getDummy} stylePaper={{background: 'transparent'}} variant={'outlined'}/>
+            <DummyRenderer id={'schemaReferencing'} schema={schemaDemoReferencing} toggleDummy={toggle} getDummy={getToggle}/>
         </Grid>
         <Grid item xs={12}>
-            <DummyRenderer id={'schemaNumberSlider'} schema={schemaNumberSlider} toggleDummy={toggleDummy} getDummy={getDummy}/>
+            <DummyRenderer id={'schemaNumberSlider'} schema={schemaNumberSlider} toggleDummy={toggle} getDummy={getToggle}/>
         </Grid>
         <Grid item xs={12}>
-            <DummyRenderer id={'schemaLists'} schema={schemaLists} toggleDummy={toggleDummy} getDummy={getDummy} open/>
+            <DummyRenderer id={'schemaLists'} schema={schemaLists} toggleDummy={toggle} getDummy={getToggle} open/>
         </Grid>
         <Grid item xs={12}>
-            <DummyRenderer id={'schemaWCombining'} schema={schemaWCombining} toggleDummy={toggleDummy} getDummy={getDummy}/>
+            <DummyRenderer id={'schemaWCombining'} schema={schemaWCombining} toggleDummy={toggle} getDummy={getToggle}/>
         </Grid>
         <Grid item xs={12}>
-            <DummyRenderer id={'schemaWConditional'} schema={schemaWConditional} toggleDummy={toggleDummy} getDummy={getDummy}/>
+            <DummyRenderer id={'schemaWConditional'} schema={schemaWConditional} toggleDummy={toggle} getDummy={getToggle}/>
         </Grid>
         <Grid item xs={12}>
-            <DummyRenderer id={'schemaWConditional1'} schema={schemaWConditional1} toggleDummy={toggleDummy} getDummy={getDummy}/>
+            <DummyRenderer id={'schemaWConditional1'} schema={schemaWConditional1} toggleDummy={toggle} getDummy={getToggle}/>
         </Grid>
         <Grid item xs={12}>
-            <DummyRenderer id={'schemaWConditional2'} schema={schemaWConditional2} toggleDummy={toggleDummy} getDummy={getDummy}/>
+            <DummyRenderer id={'schemaWConditional2'} schema={schemaWConditional2} toggleDummy={toggle} getDummy={getToggle}/>
         </Grid>
         <Grid item xs={12}>
-            <DummyRenderer id={'schemaWDep1'} schema={schemaWDep1} toggleDummy={toggleDummy} getDummy={getDummy}/>
+            <DummyRenderer id={'schemaWDep1'} schema={schemaWDep1} toggleDummy={toggle} getDummy={getToggle}/>
         </Grid>
         <Grid item xs={12}>
-            <DummyRenderer id={'schemaWDep2'} schema={schemaWDep2} toggleDummy={toggleDummy} getDummy={getDummy}/>
+            <DummyRenderer id={'schemaWDep2'} schema={schemaWDep2} toggleDummy={toggle} getDummy={getToggle}/>
         </Grid>
         <Grid item xs={12}>
-            <DummyRenderer id={'schemaGrid'} schema={schemaGrid(12)} toggleDummy={toggleDummy} getDummy={getDummy}/>
+            <DummyRenderer id={'schemaGrid'} schema={schemaGrid(12)} toggleDummy={toggle} getDummy={getToggle}/>
         </Grid>
         <Grid item xs={12}>
-            <DummyRenderer id={'schemaSimString'} schema={schemaSimString} toggleDummy={toggleDummy} getDummy={getDummy}/>
-            <DummyRenderer id={'schemaSimBoolean'} schema={schemaSimBoolean} toggleDummy={toggleDummy} getDummy={getDummy}/>
-            <DummyRenderer id={'schemaSimCheck'} schema={schemaSimCheck} toggleDummy={toggleDummy} getDummy={getDummy}/>
-            <DummyRenderer id={'schemaSimNumber'} schema={schemaSimNumber} toggleDummy={toggleDummy} getDummy={getDummy}/>
-            <DummyRenderer id={'schemaSimInteger'} schema={schemaSimInteger} toggleDummy={toggleDummy} getDummy={getDummy}/>
-            <DummyRenderer id={'schemaSimRadio'} schema={schemaSimRadio} toggleDummy={toggleDummy} getDummy={getDummy}/>
-            <DummyRenderer id={'schemaSimSelect'} schema={schemaSimSelect} toggleDummy={toggleDummy} getDummy={getDummy}/>
+            <DummyRenderer id={'schemaSimString'} schema={schemaSimString} toggleDummy={toggle} getDummy={getToggle}/>
+            <DummyRenderer id={'schemaSimBoolean'} schema={schemaSimBoolean} toggleDummy={toggle} getDummy={getToggle}/>
+            <DummyRenderer id={'schemaSimCheck'} schema={schemaSimCheck} toggleDummy={toggle} getDummy={getToggle}/>
+            <DummyRenderer id={'schemaSimNumber'} schema={schemaSimNumber} toggleDummy={toggle} getDummy={getToggle}/>
+            <DummyRenderer id={'schemaSimInteger'} schema={schemaSimInteger} toggleDummy={toggle} getDummy={getToggle}/>
+            <DummyRenderer id={'schemaSimRadio'} schema={schemaSimRadio} toggleDummy={toggle} getDummy={getToggle}/>
+            <DummyRenderer id={'schemaSimSelect'} schema={schemaSimSelect} toggleDummy={toggle} getDummy={getToggle}/>
         </Grid>
         <Grid item xs={12}>
-            <DummyRenderer id={'schemaNull'} schema={schemaNull} toggleDummy={toggleDummy} getDummy={getDummy} stylePaper={{background: 'transparent'}} variant={'outlined'}/>
+            <DummyRenderer id={'schemaNull'} schema={schemaNull} toggleDummy={toggle} getDummy={getToggle}/>
         </Grid>
         <Grid item xs={12}>
-            <Button style={{marginBottom: 12}} onClick={() => toggleDummy('demoUser')} variant={getDummy('demoUser') ? 'contained' : 'outlined'}>
+            <Button style={{marginBottom: 12}} onClick={() => toggle('demoUser')} variant={getToggle('demoUser') ? 'contained' : 'outlined'}>
                 demo User
             </Button>
-            {getDummy('demoUser') ?
+            {getToggle('demoUser') ?
                 <Paper
                     sx={{
                         p: 2,
@@ -256,17 +247,15 @@ const Main = () => {
                     <DemoUser/>
                 </Paper> : null}
         </Grid>
-    </React.Fragment>
+    </Grid>
 }
 
-export default function materialDemo() {
-    return <AppTheme>
+export default function MaterialDemo() {
+    return <>
         <UIMetaProvider widgets={customWidgets} t={browserT}>
             <UIApiProvider loadSchema={loadSchema} noCache>
-                <Dashboard>
-                    <Main/>
-                </Dashboard>
+                <Main/>
             </UIApiProvider>
         </UIMetaProvider>
-    </AppTheme>
+    </>
 }

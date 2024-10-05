@@ -1,6 +1,6 @@
-import {createOrderedMap} from '@ui-schema/system/createMap';
+import { createOrderedMap } from '@ui-schema/system/createMap'
 
-const schemaDemoMain = {
+export const schemaDemoMain = {
     type: 'object',
     title: 'headline',
     /*view: {
@@ -528,16 +528,15 @@ const schemaDemoMain = {
         'slider_h',
         'ages',
     ],
-};
+}
 
-const dataDemoMain = {
+export const dataDemoMain = {
     headline: 'Some Demo Headline',
     //qty2: 10000000000000000000111,
     qty2: 'e130f',
-};
+}
 
-
-const schemaUser = createOrderedMap({
+export const schemaUser = createOrderedMap({
     type: 'object',
     title: 'headline',
     /*view: {
@@ -602,5 +601,3 @@ const schemaUser = createOrderedMap({
         },
     },
 })
-
-export {schemaDemoMain, dataDemoMain, schemaUser}

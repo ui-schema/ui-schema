@@ -1,36 +1,36 @@
-import React from 'react';
-import clsx from 'clsx';
-import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
-import Drawer from '@mui/material/Drawer';
-import {NavLink as Link} from 'react-router-dom';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import WidgetsIcon from '@mui/icons-material/Widgets';
-import LayersIcon from '@mui/icons-material/Layers';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import ListItemButton from '@mui/material/ListItemButton';
-import IcCode from '@mui/icons-material/Code';
-import {routesThemes} from '../../routes';
+import React, { ReactNode } from 'react'
+import clsx from 'clsx'
+import Divider from '@mui/material/Divider'
+import List from '@mui/material/List'
+import Drawer from '@mui/material/Drawer'
+import { NavLink as Link } from 'react-router-dom'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import ListSubheader from '@mui/material/ListSubheader'
+import DashboardIcon from '@mui/icons-material/Dashboard'
+import WidgetsIcon from '@mui/icons-material/Widgets'
+import LayersIcon from '@mui/icons-material/Layers'
+import AssignmentIcon from '@mui/icons-material/Assignment'
+import ListItemButton from '@mui/material/ListItemButton'
+import IcCode from '@mui/icons-material/Code'
+import { routesThemes } from '../../routes'
 
-function ListItemLink(props) {
-    const {icon, primary, to, normalLink} = props;
+function ListItemLink(props: { icon: ReactNode, primary: string, to: string, normalLink?: boolean }) {
+    const {icon, primary, to, normalLink} = props
 
     const renderLink = React.useMemo(
-        () => React.forwardRef((itemProps, ref) =>
-            normalLink ?
+        () => React.forwardRef<HTMLAnchorElement>(function AnchorLink(itemProps, ref) {
+            return normalLink ?
                 <a href={to} ref={ref} {...itemProps} /> :
-                <Link to={to} ref={ref} {...itemProps} />,
-        ),
+                <Link to={to} ref={ref} {...itemProps} />
+        }),
         [to, normalLink],
-    );
+    )
 
     return <ListItemButton component={renderLink}>
         {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
         <ListItemText primary={primary}/>
-    </ListItemButton>;
+    </ListItemButton>
 }
 
 const mainListItems = (<div>
@@ -42,7 +42,7 @@ const mainListItems = (<div>
         />,
     )}
     <ListItemLink to={'https://ui-schema.bemit.codes'} primary="Documentation" icon={<LayersIcon/>} normalLink/>
-</div>);
+</div>)
 
 const secondaryListItems = (
     <div>
@@ -58,11 +58,10 @@ const secondaryListItems = (
         <ListItemLink to={'/kit-dnd'} primary="Kit DnD" icon={<IcCode/>}/>
         <ListItemLink to={'/kit-dnd-grid'} primary="Kit DnD Grid" icon={<IcCode/>}/>
     </div>
-);
+)
 
-
-export const AppDrawer = (props) => {
-    const {classes, open} = props;
+export const AppDrawer = (props: { classes: { [k: string]: string }, open?: boolean }) => {
+    const {classes, open} = props
 
     return <Drawer
         variant="permanent"
@@ -77,4 +76,4 @@ export const AppDrawer = (props) => {
         <Divider/>
         <List>{secondaryListItems}</List>
     </Drawer>
-};
+}

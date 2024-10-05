@@ -1,12 +1,10 @@
 import React from 'react'
-import AppTheme from './layout/AppTheme'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import MenuItem from '@mui/material/MenuItem'
 import Label from '@mui/material/FormLabel'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
-import Dashboard from './layout/Dashboard'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { createEmptyStore, createStore, UIStoreProvider, UIStoreType, WithScalarValue } from '@ui-schema/react/UIStore'
@@ -118,9 +116,9 @@ const SingleEditor = () => {
 
 // @ts-ignore
 // eslint-disable-next-line react/display-name
-export default () => <AppTheme>
+export default () => <>
     <UIMetaProvider widgets={customWidgets} t={browserT}>
-        <Dashboard>
+        <Grid container spacing={3}>
             <Grid item xs={12}>
                 <Paper
                     sx={{
@@ -133,8 +131,8 @@ export default () => <AppTheme>
                     <SingleEditor/>
                 </Paper>
             </Grid>
-        </Dashboard>
+        </Grid>
     </UIMetaProvider>
-</AppTheme>
+</>
 
 export { customWidgets }

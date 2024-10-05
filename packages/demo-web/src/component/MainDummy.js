@@ -40,22 +40,4 @@ const MainDummy = ({schema, Debugger, Button}) => {
     </React.Fragment>
 };
 
-const useDummy = () => {
-    const [showDummy, setShowVDummy] = React.useState({});
-
-    // todo: make real hook/using useCallback
-    const toggleDummy = id => {
-        let tmp = {...showDummy};
-        tmp[id] = !tmp[id];
-        setShowVDummy(tmp);
-    };
-    const getDummy = id => {
-        return !!showDummy[id];
-    };
-
-    return {
-        toggleDummy, getDummy,
-    }
-};
-
-export {MainDummy, useDummy}
+export {MainDummy}

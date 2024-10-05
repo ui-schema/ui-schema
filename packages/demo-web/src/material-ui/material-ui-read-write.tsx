@@ -2,8 +2,6 @@ import { InheritKeywords } from '@ui-schema/react-json-schema/InheritKeywords'
 import { SortPlugin } from '@ui-schema/react-json-schema/SortPlugin'
 import { schemaTypeToDistinct } from '@ui-schema/system/schemaTypeToDistinct'
 import React from 'react'
-import AppTheme from './layout/AppTheme'
-import Dashboard from './layout/Dashboard'
 import Grid, { GridSpacing } from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
@@ -250,9 +248,9 @@ const ReadableWritableEditor = () => {
 
 // eslint-disable-next-line react/display-name
 export default (): React.ReactElement =>
-    <AppTheme>
+    <>
         <UIMetaProvider widgets={customWidgets} t={browserT}>
-            <Dashboard>
+            <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Paper
                         sx={{
@@ -265,6 +263,6 @@ export default (): React.ReactElement =>
                         <ReadableWritableEditor/>
                     </Paper>
                 </Grid>
-            </Dashboard>
+            </Grid>
         </UIMetaProvider>
-    </AppTheme>
+    </>

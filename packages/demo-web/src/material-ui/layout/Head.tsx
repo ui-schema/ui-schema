@@ -1,11 +1,10 @@
-import React from 'react';
-import {Helmet} from "react-helmet";
-import PropTypes from 'prop-types';
+import React, { PropsWithChildren } from 'react'
+import { Helmet } from 'react-helmet'
 
-export default function Head() {
-    const title = 'title';
-    const description = 'description';
-    const userLanguage = 'en';
+export default function Head({children}: PropsWithChildren<{}>) {
+    const title = 'title'
+    const description = 'description'
+    const userLanguage = 'en'
     return (
         <Helmet>
             {/* Use minimum-scale=1 to enable GPU rasterization. */}
@@ -31,12 +30,7 @@ export default function Head() {
             {/* Algolia */}
             <meta name="docsearch:language" content={userLanguage}/>
             <meta name="docsearch:version" content="master"/>
+            {children}
         </Helmet>
-    );
+    )
 }
-
-Head.propTypes = {
-    children: PropTypes.node,
-    description: PropTypes.string,
-    title: PropTypes.string,
-};

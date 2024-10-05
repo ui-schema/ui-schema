@@ -3,7 +3,6 @@
     "devDependencies": {},
     "private": true,
     "dependencies": {
-        "path": "^0.12.7",
         "express": "^4.16.4"
     },
     "scripts": {

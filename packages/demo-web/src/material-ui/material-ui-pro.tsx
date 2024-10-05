@@ -1,11 +1,9 @@
 import React from 'react'
-import AppTheme from './layout/AppTheme'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import { ImmutableEditor, themeMaterial } from 'react-immutable-editor'
-import Dashboard from './layout/Dashboard'
 import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { browserT } from '../t'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
@@ -181,14 +179,14 @@ const Main = () => {
 }
 
 // eslint-disable-next-line react/display-name
-export default () => <AppTheme>
+export default () => <>
     <UIMetaProvider widgets={customWidgets} t={browserT}>
-        <Dashboard>
+        <Grid container spacing={3}>
             <Grid item xs={12} sx={{p: 2}}>
                 <Main/>
             </Grid>
-        </Dashboard>
+        </Grid>
     </UIMetaProvider>
-</AppTheme>
+</>
 
 export { customWidgets }

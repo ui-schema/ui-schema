@@ -3,12 +3,13 @@ import React from 'react';
 import {List} from 'immutable';
 import {useUIStoreActions} from '@ui-schema/react/UIStoreActions';
 
-export const SchemaDebug = ({StyledEditor, schema}) => {
+export const SchemaDebug = ({StyledEditor, schema, setSchema}) => {
     const {store} = useUIStore();
     const {onChange} = useUIStoreActions();
 
     return <React.Fragment>
         <StyledEditor
+            title={<code>UIStore.values</code>}
             data={store.getValues()}
             onChange={(keys, value) => {
                 onChange({
@@ -21,6 +22,11 @@ export const SchemaDebug = ({StyledEditor, schema}) => {
             }}
             getVal={keys => store.getValues().getIn(keys)}
         />
-        <StyledEditor data={schema} onChange={() => console.log('not implemented')} getVal={keys => schema.getIn(keys)}/>
+        <StyledEditor
+            title={<code>Schema</code>}
+            data={schema}
+            onChange={(a, b) => setSchema(s => s.setIn(a, b))}
+            getVal={keys => schema.getIn(keys)}
+        />
     </React.Fragment>
 };

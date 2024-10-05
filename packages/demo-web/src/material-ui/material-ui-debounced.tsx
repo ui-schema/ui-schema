@@ -1,6 +1,4 @@
 import React from 'react'
-import AppTheme from './layout/AppTheme'
-import Dashboard from './layout/Dashboard'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
@@ -15,7 +13,6 @@ import { OrderedMap } from 'immutable'
 import { NumberRendererDebounced, StringRendererDebounced, TextRendererDebounced } from '@ui-schema/ds-material/Widgets/TextFieldDebounced'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material'
-import { JsonSchema } from '@ui-schema/json-schema/Definitions'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 
 const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
@@ -49,7 +46,7 @@ const formSchema = createOrderedMap({
             widget: 'Text',
         },
     },
-} as JsonSchema)
+}/* satisfies JsonSchema*/)
 
 const GridStack = injectWidgetEngine(GridContainer)
 const FormComp = () => {
@@ -71,23 +68,21 @@ const FormComp = () => {
 }
 
 // eslint-disable-next-line react/display-name,@typescript-eslint/explicit-module-boundary-types
-export default () => <AppTheme>
-    <div>
-        <UIMetaProvider widgets={customWidgets} t={browserT}>
-            <Dashboard>
-                <Grid item xs={12}>
-                    <Paper
-                        sx={{
-                            p: 2,
-                            display: 'flex',
-                            overflow: 'auto',
-                            flexDirection: 'column',
-                        }}
-                    >
-                        <FormComp/>
-                    </Paper>
-                </Grid>
-            </Dashboard>
-        </UIMetaProvider>
-    </div>
-</AppTheme>
+export default () => <>
+    <UIMetaProvider widgets={customWidgets} t={browserT}>
+        <Grid container spacing={3}>
+            <Grid item xs={12}>
+                <Paper
+                    sx={{
+                        p: 2,
+                        display: 'flex',
+                        overflow: 'auto',
+                        flexDirection: 'column',
+                    }}
+                >
+                    <FormComp/>
+                </Paper>
+            </Grid>
+        </Grid>
+    </UIMetaProvider>
+</>

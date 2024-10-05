@@ -7,7 +7,7 @@
     "scripts": {
         "start": "npm run clean-dist && npm run serve -- demoWeb",
         "docs": "npm run serve -- docs",
-        "serve": "cross-env NODE_ENV=development node packerConfig.js --serve",
+        "serve": "cross-env NODE_OPTIONS='--max-old-space-size=8192' NODE_ENV=development node packerConfig.js --serve",
         "prebuild": "npm run clean-dist && npm run static-gen",
         "build_": "npm run build-all && npm run dtsgen",
         "build": "npm run build-babel && npm run dtsgen && npm run build-webpack",

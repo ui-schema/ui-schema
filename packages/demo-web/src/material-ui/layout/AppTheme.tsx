@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Head from './Head';
-import createTheme from '@mui/material/styles/createTheme';
-import {ThemerProvider} from '../component/Theme';
-import CssBaseline from '@mui/material/CssBaseline';
+import React from 'react'
+import PropTypes from 'prop-types'
+import Head from './Head'
+import createTheme from '@mui/material/styles/createTheme'
+import { ThemerProvider } from '../component/Theme'
+import CssBaseline from '@mui/material/CssBaseline'
 
 const themeDark = createTheme({
     palette: {
@@ -29,7 +29,7 @@ const themeDark = createTheme({
             hoverOpacity: 0.2,
         },
     },
-});
+})
 
 const themeLight = createTheme({
     palette: {
@@ -55,15 +55,15 @@ const themeLight = createTheme({
             hoverOpacity: 0.2,
         },
     },
-});
+})
 
 const themes = {
     dark: themeDark,
     light: themeLight,
-};
+}
 
 export default function AppTheme(props) {
-    const {children} = props;
+    const {children} = props
 
     return (
         <ThemerProvider themes={themes} initial={
@@ -75,9 +75,9 @@ export default function AppTheme(props) {
             <CssBaseline/>
             {children}
         </ThemerProvider>
-    );
+    )
 }
 
 AppTheme.propTypes = {
     children: PropTypes.element.isRequired,
-};
+}

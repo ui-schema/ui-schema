@@ -1,27 +1,26 @@
-import React from 'react';
-import clsx from 'clsx';
-import {darken} from '@mui/material/styles';
-import makeStyles from '@mui/styles/makeStyles';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
-import MenuIcon from '@mui/icons-material/Menu';
-import InvertColorsIcon from '@mui/icons-material/InvertColors';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import {AppDrawer} from '../layout/Drawer';
-import {useThemer} from '../component/Theme';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import {blueGrey} from '@mui/material/colors';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
+import React from 'react'
+import clsx from 'clsx'
+import { darken, Theme } from '@mui/material/styles'
+import makeStyles from '@mui/styles/makeStyles'
+import AppBar from '@mui/material/AppBar'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import IconButton from '@mui/material/IconButton'
+import Badge from '@mui/material/Badge'
+import MenuIcon from '@mui/icons-material/Menu'
+import InvertColorsIcon from '@mui/icons-material/InvertColors'
+import NotificationsIcon from '@mui/icons-material/Notifications'
+import { AppDrawer } from './Drawer'
+import { useThemer } from '../component/Theme'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import { blueGrey } from '@mui/material/colors'
+import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
+import Link from '@mui/material/Link'
 
-const drawerWidth = 240;
+const drawerWidth = 240
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles<Theme>(theme => ({
     root: {
         display: 'flex',
         flexDirection: 'column',
@@ -80,10 +79,7 @@ const useStyles = makeStyles(theme => ({
     drawerRoot: {
         height: '100%',
         overflow: 'auto',
-        scrollbarColor: (theme.palette.mode === 'dark' ?
-                blueGrey[800] + ' ' + darken(blueGrey[900], 0.2) :
-                'default'
-        ),
+        scrollbarColor: theme.palette.mode === 'dark' ? blueGrey[800] + ' ' + darken(blueGrey[900], 0.2) : 'default',
     },
     drawerPaper: {
         position: 'relative',
@@ -105,19 +101,6 @@ const useStyles = makeStyles(theme => ({
             width: theme.spacing(9),
         },
     },
-    content: {
-        flexGrow: 1,
-        height: '100%',
-        overflow: 'auto',
-        scrollbarColor: (theme.palette.mode === 'dark' ?
-                blueGrey[800] + ' ' + darken(blueGrey[900], 0.2) :
-                'default'
-        ),
-    },
-    container: {
-        paddingTop: theme.spacing(4),
-        paddingBottom: theme.spacing(4),
-    },
     paper: {
         padding: theme.spacing(2),
         display: 'flex',
@@ -127,7 +110,7 @@ const useStyles = makeStyles(theme => ({
     fixedHeight: {
         height: 240,
     },
-}));
+}))
 
 
 function Copyright() {
@@ -139,20 +122,20 @@ function Copyright() {
             </Link>{' '}
             {new Date().getFullYear()}
         </Typography>
-    );
+    )
 }
 
 export default function Dashboard({children}) {
-    const classes = useStyles();
-    const switchTheme = useThemer();
-    const [open, setOpen] = React.useState(true);
+    const classes = useStyles()
+    const switchTheme = useThemer()
+    const [open, setOpen] = React.useState(true)
 
     const handleDrawerOpen = () => {
-        setOpen(true);
-    };
+        setOpen(true)
+    }
     const handleDrawerClose = () => {
-        setOpen(false);
-    };
+        setOpen(false)
+    }
 
     return (
         <div className={classes.root}>
@@ -189,21 +172,24 @@ export default function Dashboard({children}) {
             </div>
             <div className={classes.rootContent}>
                 <AppDrawer
-                    handleDrawerClose={handleDrawerClose}
                     classes={classes}
                     open={open}
                 />
-                <main className={classes.content}>
-                    <Container maxWidth="lg" className={classes.container}z>
-                        <Grid container spacing={3}>
-                            {children}
-                        </Grid>
-                        <Box pt={4}>
-                            <Copyright/>
-                        </Box>
+                <Box sx={{
+                    flexGrow: 1,
+                    height: '100%',
+                    overflow: 'auto',
+                    // scrollbarColor: theme.palette.mode === 'dark' ? blueGrey[800] + ' ' + darken(blueGrey[900], 0.2) : 'default',
+                    display: 'flex', flexDirection: 'column',
+                }}>
+                    <Container component={'main'} maxWidth="lg" sx={{flexGrow: 1, py: 4}}>
+                        {children}
                     </Container>
-                </main>
+                    <Box pb={1}>
+                        <Copyright/>
+                    </Box>
+                </Box>
             </div>
         </div>
-    );
+    )
 }

@@ -1,6 +1,4 @@
 import React from 'react'
-import AppTheme from './layout/AppTheme'
-import Dashboard from './layout/Dashboard'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
@@ -158,14 +156,14 @@ const Main = () => {
 }
 
 // eslint-disable-next-line react/display-name,@typescript-eslint/explicit-module-boundary-types
-export default () => <AppTheme>
+export default () => <>
     <UIMetaProvider widgets={customWidgets} t={browserT}>
         <UIApiProvider loadSchema={loadSchema} noCache>
-            <Dashboard>
+            <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Main/>
                 </Grid>
-            </Dashboard>
+            </Grid>
         </UIApiProvider>
     </UIMetaProvider>
-</AppTheme>
+</>

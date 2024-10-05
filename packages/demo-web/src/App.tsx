@@ -1,39 +1,22 @@
-import React from 'react'
+import { lazy, Suspense } from 'react'
 import {
     BrowserRouter as Router,
     Switch,
     Route,
 } from 'react-router-dom'
-import { asyncComponent } from './component/AsyncComponent'
 
-const MaterialUi = asyncComponent(() => import('./material-ui/material-ui'), 'Material-UI', 'page')
-const MaterialUiPro = asyncComponent(() => import('./material-ui/material-ui-pro'), 'Material-UI Pro', 'page')
-const MaterialUiDnd = asyncComponent(() => import('./material-ui/material-ui-dnd'), 'Material-UI DnD', 'page')
-const MaterialUiDndGrid = asyncComponent(() => import('./material-ui/material-ui-dnd-grid'), 'Material-UI DnD Grid', 'page')
-const MaterialUiEditorJS = asyncComponent(() => import('./material-ui/material-ui-editorjs'), 'Material-UI EditorJS', 'page')
-const MaterialUiSlate = asyncComponent(() => import('./material-ui/material-ui-slate'), 'Material-UI Slate', 'page')
-const MaterialUiDebounced = asyncComponent(() => import('./material-ui/material-ui-debounced'), 'Material-UI Debounced', 'page')
-const MaterialUiSplit = asyncComponent(() => import('./material-ui/material-ui-split'), 'Material-UI Split Schema', 'page')
-const MaterialUiReadWrite = asyncComponent(() => import('./material-ui/material-ui-read-write'), 'Material-UI Read Write', 'page')
-const Bootstrap = asyncComponent(() => import('./bootstrap/page-main'), 'Bootstrap', 'page')
-const KitDnd = asyncComponent(() => import('./kit-dnd/page-dnd'), 'Kit DnD', 'page')
-const KitDndGrid = asyncComponent(() => import('./kit-dnd/page-grid'), 'Kit DnD Kit', 'page')
+const AppMui = lazy(() => import('./AppMui'))
+const Bootstrap = lazy(() => import('./bootstrap/page-main'))
+const KitDnd = lazy(() => import('./kit-dnd/page-dnd'))
+const KitDndGrid = lazy(() => import('./kit-dnd/page-grid'))
 
-const App = () => <Router>
-    <Switch>
-        <Route path="/mui-slate" component={MaterialUiSlate}/>
-        <Route path="/mui-pro" component={MaterialUiPro}/>
-        <Route path="/mui-editorjs" component={MaterialUiEditorJS}/>
-        <Route path="/mui-dnd" component={MaterialUiDnd}/>
-        <Route path="/mui-read-write" component={MaterialUiReadWrite}/>
-        <Route path="/mui-dnd-grid" component={MaterialUiDndGrid}/>
-        <Route path="/mui-debounced" component={MaterialUiDebounced}/>
-        <Route path="/mui-split" component={MaterialUiSplit}/>
-        <Route path="/bootstrap" component={Bootstrap}/>
-        <Route path="/kit-dnd" component={KitDnd}/>
-        <Route path="/kit-dnd-grid" component={KitDndGrid}/>
-        <Route path="/" exact component={MaterialUi}/>
-    </Switch>
+export const App = () => <Router>
+    <Suspense>
+        <Switch>
+            <Route path={['/mui-*', '/']} exact component={AppMui}/>
+            <Route path="/bootstrap" component={Bootstrap}/>
+            <Route path="/kit-dnd" component={KitDnd}/>
+            <Route path="/kit-dnd-grid" component={KitDndGrid}/>
+        </Switch>
+    </Suspense>
 </Router>
-
-export { App }
