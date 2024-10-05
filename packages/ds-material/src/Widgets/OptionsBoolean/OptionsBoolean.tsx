@@ -74,7 +74,7 @@ export const BoolRenderer: React.FC<WidgetProps & WithScalarValue & {
                             (schema.getIn(['view', 'dense']) ? 'body2' : undefined),
                     },
                 }}
-                label={<><TranslateTitle schema={schema} storeKeys={storeKeys}/>{required ? ' *' : ''}</>}
+                label={<TranslateTitle schema={schema} storeKeys={storeKeys}/>}
             />}
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </>
