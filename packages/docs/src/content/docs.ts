@@ -64,10 +64,17 @@ const defineModule = (org: string, name: string, dir: string, from: string, cust
 })
 
 const defineModuleFlat = (org: string, name: string, dir: string, rel: string, from: string, ext: string): TsDocModule => ({
-    modulePath: `${dir}/src/${rel}/${from}.`,
+    modulePath: `${dir}/src/${rel}/`,
+    // modulePath: `${dir}/src/${rel}/${from}`,
     relPath: `${dir}/src/${rel}/`,
     package: `@${org}/${name}`,
-    fromPath: rel + '/' + from,
+    // todo: fromPath should be just `rel`,
+    //       as e.g. `@ui-schema/ds-material/BaseComponents/Table/TableContext` is only correctly exported via `@ui-schema/ds-material/BaseComponents/Table`
+    //       but is used by doc-gen to generate output dir atm.
+    fromPath: rel,
+    // fromPath: rel + '/' + from,
+    // @ts-ignore
+    moduleFilePath: rel + '/' + from, // todo: maybe reuse pagePath or similar?
     files: [from + ext],
 })
 
@@ -331,14 +338,14 @@ export const routesFurtherDesignSystem = [
                         },
                         module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetChipsRead', ['WidgetChipsRead.tsx']),
                     }),
-                    createDoc('ds-material/widgets-read/EnumRead', 'EnumRead', {
-                        demos: {},
-                        module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetEnumRead', ['WidgetEnumRead.tsx']),
-                    }),
-                    createDoc('ds-material/widgets-read/OneOfRead', 'OneOfRead', {
-                        demos: {},
-                        module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetOneOfRead', ['WidgetOneOfRead.tsx']),
-                    }),
+                    // createDoc('ds-material/widgets-read/EnumRead', 'EnumRead', { // todo: add redirect
+                    //     demos: {},
+                    //     module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetEnumRead', ['WidgetEnumRead.tsx']),
+                    // }),
+                    // createDoc('ds-material/widgets-read/OneOfRead', 'OneOfRead', { // todo: add redirect
+                    //     demos: {},
+                    //     module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetOneOfRead', ['WidgetOneOfRead.tsx']),
+                    // }),
                     createDoc('ds-material/widgets-read/OptionsRead', 'OptionsRead', {
                         demos: {
                             readOnly: true,

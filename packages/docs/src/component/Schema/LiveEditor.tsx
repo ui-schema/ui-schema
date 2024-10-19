@@ -1,53 +1,55 @@
-import React from 'react';
-import {useRouteMatch, useHistory} from 'react-router-dom'
-import {Map, List} from 'immutable'
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import {useTheme} from '@mui/material/styles';
-import DragHandle from '@mui/icons-material/DragHandle';
-import Opacity from '@mui/icons-material/Opacity';
-import SpeakerNotes from '@mui/icons-material/SpeakerNotes';
-import SpeakerNotesOff from '@mui/icons-material/SpeakerNotesOff';
-import Add from '@mui/icons-material/Add';
-import Remove from '@mui/icons-material/Remove';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import FormatSize from '@mui/icons-material/FormatSize';
-import FormatShapes from '@mui/icons-material/FormatShapes';
-import Code from '@mui/icons-material/Code';
-import SpaceBar from '@mui/icons-material/SpaceBar';
-import RestorePage from '@mui/icons-material/RestorePage';
-import HorizontalSplit from '@mui/icons-material/HorizontalSplit';
-import VerticalSplit from '@mui/icons-material/VerticalSplit';
-import {GridContainer} from '@ui-schema/ds-material/GridContainer';
-import {RichCodeEditor, themes} from '../RichCodeEditor';
-import {Markdown} from '../Markdown';
-import PageNotFound from '../../page/PageNotFound';
-import {schemas} from '../../schemas/_list';
+import React, { MouseEvent } from 'react'
+import { useRouteMatch, useHistory } from 'react-router-dom'
+import { Map, List } from 'immutable'
+import FormControl from '@mui/material/FormControl'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Paper from '@mui/material/Paper'
+import Typography from '@mui/material/Typography'
+import { useTheme } from '@mui/material/styles'
+import DragHandle from '@mui/icons-material/DragHandle'
+import Opacity from '@mui/icons-material/Opacity'
+import SpeakerNotes from '@mui/icons-material/SpeakerNotes'
+import SpeakerNotesOff from '@mui/icons-material/SpeakerNotesOff'
+import Add from '@mui/icons-material/Add'
+import Remove from '@mui/icons-material/Remove'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import FormatSize from '@mui/icons-material/FormatSize'
+import FormatShapes from '@mui/icons-material/FormatShapes'
+import Code from '@mui/icons-material/Code'
+import SpaceBar from '@mui/icons-material/SpaceBar'
+import RestorePage from '@mui/icons-material/RestorePage'
+import HorizontalSplit from '@mui/icons-material/HorizontalSplit'
+import VerticalSplit from '@mui/icons-material/VerticalSplit'
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
+import { RichCodeEditor, themes } from '../RichCodeEditor'
+import { Markdown } from '../Markdown'
+import PageNotFound from '../../page/PageNotFound'
+import { schemas } from '../../schemas/_list'
 // import LuxonAdapter from '@date-io/luxon';
 // import {MuiPickersUtilsProvider} from '@material-ui/pickers';
-import {KitDndProvider, useOnIntent} from '@ui-schema/kit-dnd';
-import {useOnDirectedMove} from '@ui-schema/material-dnd/useOnDirectedMove';
-import {createOrderedMap} from '@ui-schema/system/createMap';
-import {createEmptyStore, createStore, UIStoreProvider, useUIStore} from '@ui-schema/react/UIStore';
-import {injectWidgetEngine} from '@ui-schema/react/applyWidgetEngine';
-import {storeUpdater} from '@ui-schema/react/storeUpdater';
-import {isInvalid} from '@ui-schema/react/ValidityReporter';
+import { KitDndProvider, useOnIntent } from '@ui-schema/kit-dnd'
+import { useOnDirectedMove } from '@ui-schema/material-dnd/useOnDirectedMove'
+import { createOrderedMap } from '@ui-schema/system/createMap'
+import { createEmptyStore, createStore, onChangeHandler, UIStoreProvider, useUIStore } from '@ui-schema/react/UIStore'
+import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
+import { storeUpdater } from '@ui-schema/react/storeUpdater'
+import { isInvalid } from '@ui-schema/react/ValidityReporter'
 
-const IconInput = ({
-                       verticalSplit, title,
-                       onChange, value, min, max = 15,
-                       Icon, opacity = 0.4, scale = 0.8,
-                       noButtons = false,
-                   }) => {
-    const {palette} = useTheme();
-    const [hasFocus, setFocus] = React.useState(false);
-    const [hasHover, setHover] = React.useState(false);
+const IconInput = (
+    {
+        verticalSplit, title,
+        onChange, value, min, max = 15,
+        Icon, opacity = 0.4, scale = 0.8,
+        noButtons = false,
+    },
+) => {
+    const {palette} = useTheme()
+    const [hasFocus, setFocus] = React.useState(false)
+    const [hasHover, setHover] = React.useState(false)
 
     return <div
         style={{
@@ -88,7 +90,10 @@ const IconInput = ({
                 textAlign: 'center', fontSize: '0.9rem', fontFamily: 'Consolas, "Lucida Console", Courier, monospace', fontWeight: 'bold',
                 width: '100%', height: '100%', paddingBottom: 10, color: palette.text.primary,
             }}
-            value={value} onChange={e => e.target.value <= max ? onChange(e.target.value * 1) : undefined} min={min} max={max}/>
+            value={value}
+            onChange={e => Number(e.target.value) <= max ? onChange(Number(e.target.value)) : undefined}
+            min={min} max={max}
+        />
 
         {!noButtons && (hasFocus || hasHover) ?
             <button
@@ -115,28 +120,30 @@ const IconInput = ({
             fontSize={'small'}
         />
     </div>
-};
+}
 
-const unFocus = e => {
-    let found = false;
-    let parent = e.target;
+const unFocus = (e: MouseEvent<HTMLElement>) => {
+    let found = false
+    let parent: HTMLElement | null = e.currentTarget
 
     do {
-        if(parent.nodeName === 'BUTTON') {
-            let t = parent;
-            setTimeout(() => t ? t.blur() : undefined, 400);
+        if (parent.nodeName === 'BUTTON') {
+            const t = parent
+            setTimeout(() => t ? t.blur() : undefined, 400)
             found = true
-        } else parent = parent.parentElement;
-    } while(!found && parent);
-};
+        } else {
+            parent = parent.parentElement
+        }
+    } while(!found && parent)
+}
 
 const DragHandleStyled = () => {
-    const theme = useTheme();
+    const theme = useTheme()
     return <DragHandle style={{pointerEvents: 'none', transform: 'translateY(-3px)', fill: theme.palette.text.primary}} fontSize={'small'}/>
-};
+}
 
-const NavButton = ({verticalSplit, onClick, Icon, label}) => {
-    const {palette} = useTheme();
+const NavButton = ({verticalSplit, onClick, Icon, label}: any) => {
+    const {palette} = useTheme()
 
     return <Button
         style={{
@@ -155,10 +162,10 @@ const NavButton = ({verticalSplit, onClick, Icon, label}) => {
             />
         </span>
     </Button>
-};
+}
 
-const EditorsNavWrapper = ({verticalSplit, children}) => {
-    const {palette} = useTheme();
+const EditorsNavWrapper = ({verticalSplit, children}: React.PropsWithChildren<{ verticalSplit?: boolean }>) => {
+    const {palette} = useTheme()
 
     return <div
         style={{
@@ -170,55 +177,57 @@ const EditorsNavWrapper = ({verticalSplit, children}) => {
     >
         {children}
     </div>
-};
+}
 
-const IdeThemeChange = ({editorTheme, verticalSplit, setEditorTheme}) => {
-    const {palette} = useTheme();
+const IdeThemeChange = ({editorTheme, verticalSplit, setEditorTheme}: any) => {
+    const {palette} = useTheme()
 
-    return palette.type === 'dark' ? <NavButton
+    return palette.mode === 'dark' ? <NavButton
         onClick={() => {
-            let themePos = themes.indexOf(editorTheme);
+            const themePos = themes.indexOf(editorTheme)
             setEditorTheme(themePos >= themes.length - 1 ? themes[0] : themes[themePos + 1])
         }}
         Icon={Opacity}
         verticalSplit={verticalSplit}
         label={'Toggle Theme'}
-    /> : null;
-};
+    /> : null
+}
 
-const EditorsNavBase = ({
-                            verticalSplit, changeSplit,
-                            setTabSize, tabSize,
-                            setFontSize, fontSize,
-                            activeSchema, changeSchema,
-                            toggleRichIde, richIde,
-                            schemas,
-                            showInfo, toggleInfoBox, hasInfo,
-                            setJsonEditHeight, setRenderChange,
-                            setEditorTheme, editorTheme,
-                        }) => {
-    const [upDownHandler, setUpDownHandler] = React.useState(false);
+const EditorsNavBase = (
+    {
+        verticalSplit, changeSplit,
+        setTabSize, tabSize,
+        setFontSize, fontSize,
+        activeSchema, changeSchema,
+        toggleRichIde, richIde,
+        schemas,
+        showInfo, toggleInfoBox, hasInfo,
+        setJsonEditHeight, setRenderChange,
+        setEditorTheme, editorTheme,
+    }: any,
+) => {
+    const [upDownHandler, setUpDownHandler] = React.useState(false)
 
     const handleMouseDown = React.useCallback((e) => {
-        let clientY = false;
-        if(e.touches) {
-            if(e.touches[0]) {
-                clientY = e.touches[0].clientY;
+        let clientY: number = 0
+        if (e.touches) {
+            if (e.touches[0]) {
+                clientY = e.touches[0].clientY
             }
         } else {
-            clientY = e.clientY;
+            clientY = e.clientY
         }
 
-        let nextPos = window.innerHeight - clientY - 40;
-        if(clientY !== false && nextPos % 2 === 0) {
-            if(nextPos < (window.innerHeight - 40 - 60)) {
+        const nextPos = window.innerHeight - clientY - 40
+        if (nextPos % 2 === 0) {
+            if (nextPos < (window.innerHeight - 40 - 60)) {
                 // throttle to every second pixel
-                setJsonEditHeight(window.innerHeight - clientY - 40);
+                setJsonEditHeight(window.innerHeight - clientY - 40)
             } else {
-                setJsonEditHeight(window.innerHeight - 40 - 60);
+                setJsonEditHeight(window.innerHeight - 40 - 60)
             }
         }
-    }, [setJsonEditHeight]);
+    }, [setJsonEditHeight])
 
     return <EditorsNavWrapper verticalSplit={verticalSplit}>
         {verticalSplit ? null : <button
@@ -227,35 +236,35 @@ const EditorsNavBase = ({
                 left: '50%', transform: 'translate(-50%, -14px)', display: 'flex', margin: 0, padding: '1px 4px 1px 4px',
             }}
             onMouseDown={(e) => {
-                let target = e.target;
+                const target = e.target as HTMLElement
 
-                if(!upDownHandler) {
-                    setUpDownHandler(true);
-                    document.addEventListener('mousemove', handleMouseDown);
+                if (!upDownHandler) {
+                    setUpDownHandler(true)
+                    document.addEventListener('mousemove', handleMouseDown)
                     document.addEventListener('mouseup', function mouseUpHandler() {
-                        this.removeEventListener('mouseup', mouseUpHandler, false);
-                        document.removeEventListener('mousemove', handleMouseDown);
-                        setUpDownHandler(false);
-                        target.blur();
+                        this.removeEventListener('mouseup', mouseUpHandler, false)
+                        document.removeEventListener('mousemove', handleMouseDown)
+                        setUpDownHandler(false)
+                        target.blur()
 
-                        setRenderChange(p => p + 1);
-                    });
+                        setRenderChange(p => p + 1)
+                    })
                 }
             }}
             onTouchStart={(e) => {
-                let target = e.target;
+                const target = e.target as HTMLElement
 
-                if(!upDownHandler) {
-                    setUpDownHandler(true);
-                    document.addEventListener('touchmove', handleMouseDown);
+                if (!upDownHandler) {
+                    setUpDownHandler(true)
+                    document.addEventListener('touchmove', handleMouseDown)
                     document.addEventListener('touchend', function mouseUpHandler() {
-                        this.removeEventListener('touchend', mouseUpHandler, false);
-                        document.removeEventListener('touchmove', handleMouseDown);
-                        setUpDownHandler(false);
-                        target.blur();
+                        this.removeEventListener('touchend', mouseUpHandler, false)
+                        document.removeEventListener('touchmove', handleMouseDown)
+                        setUpDownHandler(false)
+                        target.blur()
 
-                        setRenderChange(p => p + 1);
-                    });
+                        setRenderChange(p => p + 1)
+                    })
                 }
             }}
             onClick={() => undefined}
@@ -276,9 +285,9 @@ const EditorsNavBase = ({
 
             {hasInfo ? <NavButton
                 onClick={() => {
-                    toggleInfoBox(p => !p);
-                    if(setRenderChange) {
-                        setRenderChange(p => p + 1);
+                    toggleInfoBox(p => !p)
+                    if (setRenderChange) {
+                        setRenderChange(p => p + 1)
                     }
                 }}
                 Icon={({style = {}, ...p}) => showInfo ?
@@ -323,10 +332,15 @@ const EditorsNavBase = ({
             />
         </div>
     </EditorsNavWrapper>
-};
+}
 const EditorsNav = React.memo(EditorsNavBase)
 
-const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, richIde, renderChange, theme}) => {
+const SchemaJSONEditor = (
+    {
+        schema, setJsonError, setSchema,
+        tabSize, fontSize, richIde, renderChange, theme,
+    }: any,
+) => {
     return <RichCodeEditor
         tabSize={tabSize}
         fontSize={fontSize}
@@ -336,18 +350,22 @@ const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, r
         value={typeof schema === 'string' ? schema : JSON.stringify(schema.toJS(), null, tabSize)}
         onChange={(newValue) => {
             try {
-                setJsonError(false);
-                setSchema(createOrderedMap(JSON.parse(newValue)));
+                setJsonError(false)
+                setSchema(createOrderedMap(JSON.parse(newValue)))
             } catch(e) {
-                setJsonError(e.toString());
-                setSchema(newValue);
+                setJsonError(e instanceof Error ? e.toString() : 'Failed to parse JSON')
+                setSchema(newValue)
             }
         }}
     />
-};
+}
 
-const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme}) => {
-    const {store} = useUIStore();
+const SchemaDataDebug = (
+    {
+        tabSize, fontSize, richIde, renderChange, theme,
+    }: any,
+) => {
+    const {store} = useUIStore()
 
     return <RichCodeEditor
         value={Map.isMap(store?.getValues()) || List.isList(store?.getValues()) ? JSON.stringify(store?.valuesToJS(), null, tabSize) : store?.valuesToJS()}
@@ -358,10 +376,13 @@ const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme}) => {
         raw={!richIde}
         readOnly
     />
-};
+}
 
-const SchemaChanger = ({activeSchema, changeSchema, schemas, verticalSplit}) => {
-
+const SchemaChanger = (
+    {
+        activeSchema, changeSchema, schemas, verticalSplit,
+    }: any,
+) => {
     return <FormControl fullWidth style={{padding: verticalSplit ? '20px 0 20px 3px' : '0 0 0 12px'}}>
         <Select value={activeSchema} onChange={e => changeSchema(e.target.value * 1)} displayEmpty size={'small'}>
             <MenuItem value="" disabled>
@@ -371,45 +392,45 @@ const SchemaChanger = ({activeSchema, changeSchema, schemas, verticalSplit}) => 
                 <MenuItem key={i} value={i}>{schema[0]}</MenuItem>
             ))}
         </Select>
-    </FormControl>;
-};
+    </FormControl>
+}
 
-const initialLocalBoolean = (key, def) => {
-    if(
-        typeof window.localStorage.getItem(key) !== 'undefined' &&
-        window.localStorage.getItem(key) !== null &&
-        !isNaN(window.localStorage.getItem(key) * 1)
+const initialLocalBoolean = (key: string, def: boolean): boolean => {
+    const localValue = window.localStorage.getItem(key)
+    if (
+        typeof localValue === 'string' &&
+        !isNaN(Number(localValue))
     ) {
-        return !!(window.localStorage.getItem(key) * 1);
+        return !!Number(localValue)
     }
 
-    return def;
-};
+    return def
+}
 
-const toggleLocalBoolean = (setter, key) => {
+const toggleLocalBoolean = (setter: (updater: (old: boolean) => boolean) => void, key: string) => {
     setter(p => {
-        window.localStorage.setItem(key, p ? '0' : '1');
-        return !p;
+        window.localStorage.setItem(key, p ? '0' : '1')
+        return !p
     })
-};
+}
 
-const searchActiveSchema = (schemas, schema) => {
-    let found = false;
-    for(let id in schemas) {
-        if(schemas[id][0].split(' ').join('-') === schema) {
-            found = id;
-            break;
+const searchActiveSchema = (schemas: any, schema: any) => {
+    let found: boolean | string = false
+    for(const id in schemas) {
+        if (schemas[id][0].split(' ').join('-') === schema) {
+            found = id
+            break
         }
     }
 
-    return found;
-};
+    return found
+}
 
 const EditorSchemaInfoBase = (
     {
         verticalSplit, toggleInfoBox, info, infoBox, showInfo, setRenderChange, activeSchema, changeSchema, schema,
         setJsonError, onSchemaManual, tabSize, fontSize, richIde, renderChange, editorTheme,
-    },
+    }: any,
 ) => {
     return <>
         {verticalSplit ?
@@ -429,7 +450,8 @@ const EditorSchemaInfoBase = (
                 <Button
                     variant={'outlined'} size={'small'}
                     style={{display: 'flex', lineHeight: 2.66, flexShrink: 0, minWidth: 0, color: 'inherit', border: 0, padding: '0 0 0 4px', cursor: 'pointer'}}
-                    onClick={() => toggleInfoBox(o => !o)} onMouseUp={unFocus}>
+                    onClick={() => toggleInfoBox(o => !o)} onMouseUp={unFocus}
+                >
                     {showInfo || verticalSplit ? 'Info:' : 'I·'}
 
                     {showInfo ?
@@ -466,103 +488,103 @@ const EditorSchemaInfoBase = (
 const EditorSchemaInfo = React.memo(EditorSchemaInfoBase)
 
 const GridStack = injectWidgetEngine(GridContainer)
-const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
-    const history = useHistory();
-    let initialVertical = initialLocalBoolean('live-editor-vertical', 800 < window.innerWidth);// Vertical by default for desktop
-    let initialRichIde = initialLocalBoolean('live-editor-rich-ide', true);
-    const [verticalSplit, setVerticalSplit] = React.useState(initialVertical);
-    const [richIde, setRichIde] = React.useState(initialRichIde);
-    const [jsonError, setJsonError] = React.useState(false);
-    const [tabSize, setTabSize] = React.useState(2);
-    const [fontSize, setFontSize] = React.useState(13);
-    const [showInfo, setInfoBox] = React.useState(true);
-    const [showStore, setStoreBox] = React.useState(true);
-    const [jsonEditHeight, setJsonEditHeight] = React.useState(350);
-    const [renderChange, setRenderChange] = React.useState(0);// Ace Editor Re-Size Re-Calc
-    const [editorTheme, setEditorTheme] = React.useState('gruvbox');
-    const infoBox = React.useRef();// to scroll to top of info text when toggling/switching sides
+const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}: any) => {
+    const history = useHistory()
+    const initialVertical = initialLocalBoolean('live-editor-vertical', 800 < window.innerWidth)// Vertical by default for desktop
+    const initialRichIde = initialLocalBoolean('live-editor-rich-ide', true)
+    const [verticalSplit, setVerticalSplit] = React.useState(initialVertical)
+    const [richIde, setRichIde] = React.useState(initialRichIde)
+    const [jsonError, setJsonError] = React.useState<string | undefined>(undefined)
+    const [tabSize, setTabSize] = React.useState(2)
+    const [fontSize, setFontSize] = React.useState(13)
+    const [showInfo, setInfoBox] = React.useState(true)
+    const [showStore, setStoreBox] = React.useState(true)
+    const [jsonEditHeight, setJsonEditHeight] = React.useState(350)
+    const [renderChange, setRenderChange] = React.useState(0)// Ace Editor Re-Size Re-Calc
+    const [editorTheme, setEditorTheme] = React.useState('gruvbox')
+    const infoBox = React.useRef<HTMLElement>(null)// to scroll to top of info text when toggling/switching sides
 
     // default schema state - begin
-    const [showValidity, setShowValidity] = React.useState(false);
-    const [schema, setSchema] = React.useState(() => schemas[activeSchema][1]);
-    const [store, setStore] = React.useState(() => createStore(schemas[activeSchema][2]));
+    const [showValidity, setShowValidity] = React.useState(false)
+    const [schema, setSchema] = React.useState<any>(() => schemas[activeSchema][1])
+    const [store, setStore] = React.useState<any>(() => createStore(schemas[activeSchema][2]))
     // end - default schema state
 
     const toggleInfoBox = React.useCallback((setter) => {
-        setInfoBox(setter);
-        if(setRenderChange) {
-            setRenderChange(p => p + 1);
+        setInfoBox(setter)
+        if (setRenderChange) {
+            setRenderChange(p => p + 1)
         }
-    }, [setInfoBox, setRenderChange]);
+    }, [setInfoBox, setRenderChange])
 
     const toggleDataBox = React.useCallback((setter) => {
-        setStoreBox(setter);
-        if(setRenderChange) {
-            setRenderChange(p => p + 1);
+        setStoreBox(setter)
+        if (setRenderChange) {
+            setRenderChange(p => p + 1)
         }
-    }, [setStoreBox, setRenderChange]);
+    }, [setStoreBox, setRenderChange])
 
     const changeSplit = React.useCallback(() => {
         // toggle verticalSplit and change selected in localStorage
-        toggleLocalBoolean(setVerticalSplit, 'live-editor-vertical');
-        setRenderChange(p => p + 1);
-    }, [setVerticalSplit, setRenderChange]);
+        toggleLocalBoolean(setVerticalSplit, 'live-editor-vertical')
+        setRenderChange(p => p + 1)
+    }, [setVerticalSplit, setRenderChange])
 
     const toggleRichIde = React.useCallback(() => {
         // toggle richIde and change selected in localStorage
-        toggleLocalBoolean(setRichIde, 'live-editor-rich-ide');
-    }, [setRichIde]);
+        toggleLocalBoolean(setRichIde, 'live-editor-rich-ide')
+    }, [setRichIde])
 
     const changeSchema = React.useCallback(i => {
-        setShowValidity(false);
-        setActiveSchema(i);
+        setShowValidity(false)
+        setActiveSchema(i)
         setSchema(schema => {
-            if(!schemas[i][1].equals(schema)) {
-                setStore(createStore(schemas[i][2]));
+            if (!schemas[i][1].equals(schema)) {
+                setStore(createStore(schemas[i][2]))
             }
             return schemas[i][1]
-        });
-        setRenderChange(p => p + 1);
-        history.push('/examples/' + (schemas[i][0].split(' ').join('-')));
-    }, [setActiveSchema, setShowValidity, setSchema, setStore, history]);
+        })
+        setRenderChange(p => p + 1)
+        history.push('/examples/' + (schemas[i][0].split(' ').join('-')))
+    }, [setActiveSchema, setShowValidity, setSchema, setStore, history])
 
     React.useEffect(() => {
-        if(infoBox.current) {
+        if (infoBox.current) {
             infoBox.current.scrollTo(0, 0)
         }
-    }, [activeSchema, infoBox]);
+    }, [activeSchema, infoBox])
 
     React.useEffect(() => {
-        if(showInfo && infoBox.current) {
+        if (showInfo && infoBox.current) {
             infoBox.current.scrollTo(0, 0)
         }
-    }, [showInfo, infoBox]);
+    }, [showInfo, infoBox])
 
     React.useEffect(() => {
-        if(typeof matchedSchema !== 'undefined') {
-            let foundSchema = matchedSchema ? searchActiveSchema(schemas, matchedSchema) : matchedSchema;
-            if(foundSchema !== activeSchema && foundSchema !== false) {
+        if (typeof matchedSchema !== 'undefined') {
+            const foundSchema = matchedSchema ? searchActiveSchema(schemas, matchedSchema) : matchedSchema
+            if (foundSchema !== activeSchema && foundSchema !== false) {
                 changeSchema(foundSchema)
             }
         }
-    }, [matchedSchema, changeSchema, activeSchema]);
+    }, [matchedSchema, changeSchema, activeSchema])
 
     const onSchemaManual = React.useCallback((schema) => {
         setSchema((oldSchema) => {
             const oldType = Map.isMap(oldSchema) && oldSchema.get('type')
             const type = Map.isMap(schema) && schema.get('type')
-            if(oldType !== type && type) {
+            if (oldType !== type && typeof type === 'string') {
                 setStore(createEmptyStore(type))
             }
             return schema
         })
-    }, [setSchema, setStore]);
+    }, [setSchema, setStore])
 
-    const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
+    const onChange: onChangeHandler = React.useCallback((actions) => {
         setStore(prevStore => {
-            return storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
+            return storeUpdater(actions)(prevStore)
         })
-    }, [setStore]);
+    }, [setStore])
 
     const {onIntent} = useOnIntent({edgeSize: 12})
     const {onMove} = useOnDirectedMove(onIntent, onChange)
@@ -662,7 +684,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
                                 </Typography>
                             </Paper> :
                             typeof schema === 'string' ? null : <Paper style={{margin: 12, padding: 24}}>
-                                <GridStack schema={schema}/>
+                                <GridStack schema={schema} isRoot/>
 
                                 <InvalidLabel invalid={isInvalid(store?.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>
                             </Paper>}
@@ -673,38 +695,46 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
             </UIStoreProvider>
         </KitDndProvider>
         {/*</MuiPickersUtilsProvider>*/}
-    </>;
-};
+    </>
+}
 
 const Editor = () => {
-    const match = useRouteMatch();
+    const match = useRouteMatch<{ schema?: string }>()
 
     // Custom State for Live-Editor
     const [activeSchema, setActiveSchema] = React.useState(() =>
         match.params.schema ?
             searchActiveSchema(schemas, match.params.schema) : 0,
-    );
+    )
 
     React.useEffect(() => {
-        let foundSchema = searchActiveSchema(schemas, match.params.schema);
-        if(foundSchema !== activeSchema && foundSchema !== false) {
+        const foundSchema = searchActiveSchema(schemas, match.params.schema)
+        if (foundSchema !== activeSchema && foundSchema !== false) {
             setActiveSchema(foundSchema)
-        } else if(foundSchema === false && typeof match.params.schema === 'undefined') {
+        } else if (foundSchema === false && typeof match.params.schema === 'undefined') {
             setActiveSchema(0)
         }
-    }, [activeSchema, setActiveSchema, match]);
+    }, [activeSchema, setActiveSchema, match])
 
-    if(activeSchema === false) return <PageNotFound/>;
+    if (activeSchema === false) return <PageNotFound/>
 
     return <EditorHandler
         activeSchema={activeSchema}
         setActiveSchema={setActiveSchema}
         matchedSchema={match.params.schema}
     />
-};
+}
 
-const InvalidLabel = ({invalid, setShowValidity, showValidity}) => {
-    const {palette} = useTheme();
+const InvalidLabel = (
+    {
+        invalid, setShowValidity, showValidity,
+    }: {
+        invalid?: number
+        setShowValidity: (updater: (old: boolean) => boolean) => void
+        showValidity?: boolean
+    },
+) => {
+    const {palette} = useTheme()
 
     return <div>
         <Typography
@@ -717,7 +747,7 @@ const InvalidLabel = ({invalid, setShowValidity, showValidity}) => {
             onClick={() => setShowValidity(p => !p)}
             variant={'contained'}
         >{showValidity ? 'Hide' : 'Show'} Validity</Button>
-    </div>;
+    </div>
 }
 
-export default Editor;
+export default Editor

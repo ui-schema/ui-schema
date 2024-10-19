@@ -1,9 +1,9 @@
-import React from 'react';
-import Paper from '@mui/material/Paper';
-import {PageContent} from '@control-ui/kit/PageContent';
-import {HeadMeta} from '@control-ui/kit/HeadMeta';
+import React from 'react'
+import Paper from '@mui/material/Paper'
+import { PageContent } from '@control-ui/kit/PageContent'
+import { HeadMeta } from '@control-ui/kit/HeadMeta'
 
-const DocsHandler = ({children}) => {
+const DocsHandler = ({children}: React.PropsWithChildren) => {
     return <>
         <HeadMeta title={'UI-Schema'}/>
         <PageContent>
@@ -11,8 +11,8 @@ const DocsHandler = ({children}) => {
                 {children}
             </Paper>
         </PageContent>
-    </>;
-};
+    </>
+}
 
 const PageImpress = () => <DocsHandler>
     <h1>Site Notice</h1>
@@ -52,7 +52,8 @@ const PageImpress = () => <DocsHandler>
     <p>Contents and compilations published on these websites by the providers are subject to German copyright laws. Reproduction, editing, distribution as well as the use of any kind outside the scope of the copyright law require a written permission of the author or originator. Downloads and copies of these websites are permitted for private use only.<br/> The commercial use of our contents without permission of the originator is prohibited.
     </p>
     <p>Copyright laws of third parties are respected as long as the contents on these websites do not originate from the provider. Contributions of third parties on this site are indicated as such. However, if you notice any violations of copyright law, please inform us. Such contents will be removed immediately.</p>
-</DocsHandler>;
+</DocsHandler>
+
 const PagePrivacy = () => <DocsHandler>
     <h1>Privacy Policy</h1>
     <h2>1. An overview of data protection</h2>
@@ -62,8 +63,8 @@ const PagePrivacy = () => <DocsHandler>
     <p>The data on this website is processed by the operator of the website, whose contact information is available under section “Information Required by Law” on this website.</p> <p><strong>How do we record your data?</strong></p>
     <p>We collect your data as a result of your sharing of your data with us. This may, for instance be information you enter into our contact form.</p>
     <p>Our IT systems automatically record other data when you visit our website. This data comprises primarily technical information (e.g. web browser, operating system or time the site was accessed). This information is recorded automatically when you access our website.</p>
-    <p><strong>What are the purposes we use your data for?</strong></p> <p>A portion of the information is generated to guarantee the error free provision of the website. Other data may be used to analyse your user patterns.</p> <p>
-    <strong>What rights do you have as far as your information is concerned?</strong></p>
+    <p><strong>What are the purposes we use your data for?</strong></p> <p>A portion of the information is generated to guarantee the error free provision of the website. Other data may be used to analyse your user patterns.</p>
+    <p><strong>What rights do you have as far as your information is concerned?</strong></p>
     <p>You have the right to receive information about the source, recipients and purposes of your archived personal data at any time without having to pay a fee for such disclosures. You also have the right to demand that your data are rectified, blocked or eradicated. Please do not hesitate to contact us at any time under the address disclosed in section “Information Required by Law” on this website if you have questions about this or any other data protection related issues. You also have the right to log a complaint with the competent supervising agency.</p>
     <p>Moreover, under certain circumstances, you have the right to demand the restriction of the processing of your personal data. For details, please consult the Data Protection Declaration under section “Right to Restriction of Data Processing.”</p>
     <h2>2. General information and mandatory information</h2>
@@ -85,11 +86,13 @@ const PagePrivacy = () => <DocsHandler>
         E-mail: privacy@bemit.eu</p>
     <h3>Revocation of your consent to the processing of data</h3>
     <p>A wide range of data processing transactions are possible only subject to your express consent. You can also revoke at any time any consent you have already given us. To do so, all you are required to do is sent us an informal notification via e-mail. This shall be without prejudice to the lawfulness of any data collection that occurred prior to your revocation.</p>
-    <h3>Right to object to the collection of data in special cases; right to object to direct advertising (Art. 21 GDPR)</h3> <p>
-    <strong>In the event that data are processed on the basis of Art. 6 Sect. 1 lit. e or f GDPR, you have the right to at any time object to the processing of your personal data based on grounds arising from your unique situation. This also applies to any profiling based on these provisions. To determine the legal basis, on which any processing of data is based, please consult this Data Protection Declaration. If you log an objection, we will no longer process your affected personal data, unless we are in a position to present compelling protection worthy grounds for the processing of your data, that outweigh your interests, rights and freedoms or if the purpose of the processing is the claiming, exercising or defence of legal entitlements (objection pursuant to Art. 21 Sect. 1 GDPR).</strong>
-</p> <p>
-    <strong>If your personal data is being processed in order to engage in direct advertising, you have the right to at any time object to the processing of your affected personal data for the purposes of such advertising. This also applies to profiling to the extent that it is affiliated with such direct advertising. If you object, your personal data will subsequently no longer be used for direct advertising purposes (objection pursuant to Art. 21 Sect. 2 GDPR).</strong>
-</p>
+    <h3>Right to object to the collection of data in special cases; right to object to direct advertising (Art. 21 GDPR)</h3>
+    <p>
+        <strong>In the event that data are processed on the basis of Art. 6 Sect. 1 lit. e or f GDPR, you have the right to at any time object to the processing of your personal data based on grounds arising from your unique situation. This also applies to any profiling based on these provisions. To determine the legal basis, on which any processing of data is based, please consult this Data Protection Declaration. If you log an objection, we will no longer process your affected personal data, unless we are in a position to present compelling protection worthy grounds for the processing of your data, that outweigh your interests, rights and freedoms or if the purpose of the processing is the claiming, exercising or defence of legal entitlements (objection pursuant to Art. 21 Sect. 1 GDPR).</strong>
+    </p>
+    <p>
+        <strong>If your personal data is being processed in order to engage in direct advertising, you have the right to at any time object to the processing of your affected personal data for the purposes of such advertising. This also applies to profiling to the extent that it is affiliated with such direct advertising. If you object, your personal data will subsequently no longer be used for direct advertising purposes (objection pursuant to Art. 21 Sect. 2 GDPR).</strong>
+    </p>
     <h3>Right to log a complaint with the competent supervisory agency</h3>
     <p>In the event of violations of the GDPR, data subjects are entitled to log a complaint with a supervisory agency, in particular in the member state where they usually maintain their domicile, place of work or at the place where the alleged violation occurred. The right to log a complaint is in effect regardless of any other administrative or court proceedings available as legal recourses.</p>
     <h3>Right to data portability</h3>
@@ -176,6 +179,6 @@ const PagePrivacy = () => <DocsHandler>
     <p>If we should not be able to offer you a position, if you refuse a job offer, retract your application, revoke your consent to the processing of your data or ask us to delete your data, we will store your transferred data, incl. any physically submitted application documents for a maximum of 6 months after the conclusion of the application process (retention period) to enable us to track the details of the application process in the event of disparities (Art. 6 Sect. 1 lit. f GDPR).</p>
     <p>YOU HAVE THE OPTION TO OBJECT TO THIS STORAGE/RETENTION OF YOUR DATA IF YOU HAVE LEGITIMATE INTERESTS TO DO SO THAT OUTWEIGH OUR INTERESTS.</p>
     <p>Once the retention period has expired, the data will be deleted, unless we are subject to any other statutory retention obligations or if any other legal grounds exist to continue to store the data. If it should be foreseeable that the retention of your data will be necessary after the retention period has expired (e.g. due to imminent or pending litigation), the data shall not be deleted until the data have become irrelevant. This shall be without prejudice to any other statutory retention periods.</p>
-</DocsHandler>;
+</DocsHandler>
 
-export {PageImpress, PagePrivacy}
+export { PageImpress, PagePrivacy }

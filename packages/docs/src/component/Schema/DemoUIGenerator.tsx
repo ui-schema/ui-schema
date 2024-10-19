@@ -1,27 +1,27 @@
-import React from 'react';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import {useTheme} from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import {isInvalid} from '@ui-schema/react/ValidityReporter';
-import {createEmptyStore, createStore, UIStoreProvider} from '@ui-schema/react/UIStore';
-import {RichCodeEditor} from '../RichCodeEditor';
+import React from 'react'
+import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import { useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { isInvalid } from '@ui-schema/react/ValidityReporter'
+import { createEmptyStore, createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
+import { RichCodeEditor } from '../RichCodeEditor'
 // import LuxonAdapter from '@date-io/luxon';
 // import {MuiPickersUtilsProvider} from '@material-ui/pickers';
-import {KitDndProvider, useOnIntent} from '@ui-schema/kit-dnd';
-import {useOnDirectedMove} from '@ui-schema/material-dnd/useOnDirectedMove';
-import {GridContainer} from '@ui-schema/ds-material/GridContainer';
+import { KitDndProvider, useOnIntent } from '@ui-schema/kit-dnd'
+import { useOnDirectedMove } from '@ui-schema/material-dnd/useOnDirectedMove'
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import {
     NumberRendererRead, StringRendererRead, TextRendererRead,
     WidgetBooleanRead, WidgetChipsRead, WidgetOptionsRead,
-} from '@ui-schema/ds-material/WidgetsRead';
-import {createOrdered, createOrderedMap} from '@ui-schema/system/createMap';
-import {injectWidgetEngine} from '@ui-schema/react/applyWidgetEngine';
-import {UIMetaProvider, useUIMeta} from '@ui-schema/react/UIMeta';
-import {storeUpdater} from '@ui-schema/react/storeUpdater';
+} from '@ui-schema/ds-material/WidgetsRead'
+import { createOrdered, createOrderedMap } from '@ui-schema/system/createMap'
+import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
+import { UIMetaProvider, useUIMeta } from '@ui-schema/react/UIMeta'
+import { storeUpdater } from '@ui-schema/react/storeUpdater'
 
-const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, richIde, renderChange, theme, maxLines, enableShowAll}) => {
+const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, richIde, renderChange, theme, maxLines, enableShowAll}: any) => {
     return <RichCodeEditor
         tabSize={tabSize}
         fontSize={fontSize}
@@ -32,18 +32,18 @@ const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, r
         value={typeof schema === 'string' ? schema : JSON.stringify(schema?.toJS(), null, tabSize)}
         onChange={(newValue) => {
             try {
-                setJsonError(false);
-                setSchema(createOrderedMap(JSON.parse(newValue)));
+                setJsonError(false)
+                setSchema(createOrderedMap(JSON.parse(newValue)))
             } catch(e) {
-                setJsonError(e.toString());
-                setSchema(newValue);
+                setJsonError(e instanceof Error ? e.toString() : 'Failed to parse JSON')
+                setSchema(newValue)
             }
         }}
         minLines={3} maxLines={maxLines}
     />
-};
+}
 
-const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme, maxLines, store}) => {
+const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme, maxLines, store}: any) => {
     return <RichCodeEditor
         value={typeof store?.getValues() !== 'string' && typeof store?.getValues() !== 'number' && typeof store?.getValues() !== 'boolean' && store?.getValues() ? JSON.stringify(store?.valuesToJS(), null, tabSize) : store?.getValues()}
         theme={theme}
@@ -54,7 +54,7 @@ const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme, maxLi
         minLines={3} maxLines={maxLines}
         readOnly
     />
-};
+}
 
 const GridStack = injectWidgetEngine(GridContainer)
 
@@ -66,19 +66,28 @@ const DemoUIGenerator = (
         onClick = undefined,
         uiStyle = undefined,
         data = undefined,
+    }: {
+        activeSchema?: any
+        id?: string
+        showDebugger?: boolean
+        split?: boolean
+        readOnly?: boolean
+        onClick?: (store: any) => void
+        uiStyle?: React.CSSProperties
+        data?: any
     },
 ) => {
-    const [jsonError, setJsonError] = React.useState(false);
-    const [showReadOnly, setShowReadOnly] = React.useState(false);
-    const [maxLines /*setMaxLines*/] = React.useState(15);
-    const {widgets, ...mainMeta} = useUIMeta();
-    const {breakpoints} = useTheme();
+    const [jsonError, setJsonError] = React.useState<string | undefined>(undefined)
+    const [showReadOnly, setShowReadOnly] = React.useState(false)
+    const [maxLines /*setMaxLines*/] = React.useState(15)
+    const {widgets, ...mainMeta} = useUIMeta()
+    const {breakpoints} = useTheme()
     const isMd = useMediaQuery(breakpoints.up('md'))
 
     // default schema state - begin
-    const [showValidity /*setShowValidity*/] = React.useState(true);
-    const [schema, setSchema] = React.useState(undefined);
-    const [store, setStore] = React.useState(undefined);
+    const [showValidity /*setShowValidity*/] = React.useState(true)
+    const [schema, setSchema] = React.useState<any>(undefined)
+    const [store, setStore] = React.useState<any>(undefined)
     // end - default schema state
 
     React.useEffect(() => {
@@ -87,26 +96,26 @@ const DemoUIGenerator = (
     }, [readOnly, activeSchema])
 
     React.useEffect(() => {
-        let schema = createOrderedMap(activeSchema);
-        setSchema(() => schema);
+        const schema = createOrderedMap(activeSchema)
+        setSchema(() => schema)
         setStore(oldStore => {
             const newStore = data ?
                 createStore(createOrdered(data)) :
                 createEmptyStore(schema.get('type'))
-            if(newStore.values.equals && newStore.values.equals(oldStore?.values)) {
+            if (newStore.values.equals && newStore.values.equals(oldStore?.values)) {
                 // only change the store, when the values have really changed - otherwise it could overwrite the already changed validity
                 return oldStore
             }
             return newStore
-        });
-        return () => setSchema(undefined);
-    }, [activeSchema, setSchema, setStore, data]);
+        })
+        return () => setSchema(undefined)
+    }, [activeSchema, setSchema, setStore, data])
 
     const onChange = React.useCallback((actions) => {
         setStore(prevStore => {
             return storeUpdater(actions)(prevStore)
         })
-    }, [setStore]);
+    }, [setStore])
 
     const {onIntent} = useOnIntent({edgeSize: 12})
     const {onMove} = useOnDirectedMove(onIntent, onChange)
@@ -135,8 +144,8 @@ const DemoUIGenerator = (
         },
     }), [widgets, showReadOnly])
 
-    const tabSize = 2;
-    const fontSize = 13;
+    const tabSize = 2
+    const fontSize = 13
 
     return <div style={uiStyle}>
         {/*<MuiPickersUtilsProvider utils={LuxonAdapter}>*/}
@@ -212,8 +221,8 @@ const DemoUIGenerator = (
                 />
             </Box>
         </Box> : null}
-    </div>;
-};
+    </div>
+}
 
 const DebugSchemaEditor = ({split, width, ...props}) => <Box style={{width: width, paddingRight: split ? 6 : 0}}>
     <Typography component={'p'} variant={'overline'} style={{paddingLeft: 4}}>
@@ -223,6 +232,6 @@ const DebugSchemaEditor = ({split, width, ...props}) => <Box style={{width: widt
         richIde
         {...props}
     />
-</Box>;
+</Box>
 
-export default DemoUIGenerator;
+export default DemoUIGenerator

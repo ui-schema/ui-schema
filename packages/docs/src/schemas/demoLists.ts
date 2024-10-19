@@ -1,4 +1,4 @@
-import {createOrderedMap} from '@ui-schema/system/createMap';
+import { createOrderedMap } from '@ui-schema/system/createMap'
 
 const schemaLists = createOrderedMap({
     type: 'object',
@@ -144,6 +144,6 @@ const schemaLists = createOrderedMap({
             },
         },
     },
-});
+})
 
-export {schemaLists}
+export { schemaLists }

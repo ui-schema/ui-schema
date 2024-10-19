@@ -1,5 +1,5 @@
-import React from 'react';
-import Loadable from 'react-loadable';
+import React from 'react'
+import Loadable from 'react-loadable'
 /*import {
     Color, ColorDialog,
     ColorSwatches,
@@ -10,14 +10,14 @@ import Loadable from 'react-loadable';
     ColorCircleStatic, ColorTwitterStatic,
     ColorSketchStatic, ColorSketchDialog,
 } from '@ui-schema/material-color';*/
-import {LoadingCircular} from '@control-ui/kit/Loading/LoadingCircular';
-import {NumberRendererCell, StringRendererCell, TextRendererCell} from '@ui-schema/ds-material/Widgets/TextFieldCell';
-import {Table} from '@ui-schema/ds-material/Widgets/Table';
-import {DragDropBlockSelector} from '@ui-schema/material-dnd/DragDropBlockSelector';
-import {SelectChips} from '@ui-schema/ds-material/Widgets/SelectChips';
-import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault';
-import {InfoRenderer} from '@ui-schema/ds-material';
-import {TableAdvanced} from '@ui-schema/ds-material/Widgets';
+import { LoadingCircular } from '@control-ui/kit/Loading/LoadingCircular'
+import { NumberRendererCell, StringRendererCell, TextRendererCell } from '@ui-schema/ds-material/Widgets/TextFieldCell'
+import { Table } from '@ui-schema/ds-material/Widgets/Table'
+import { DragDropBlockSelector } from '@ui-schema/material-dnd/DragDropBlockSelector'
+import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
+import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
+import { InfoRenderer } from '@ui-schema/ds-material'
+import { TableAdvanced } from '@ui-schema/ds-material/Widgets'
 //import {WidgetColorful} from '@ui-schema/material-colorful'
 /*import {
     HexColorPicker,

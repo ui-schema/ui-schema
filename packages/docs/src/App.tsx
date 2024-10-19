@@ -42,7 +42,7 @@ if (process.env.REACT_APP_G_TAG) {
 }
 
 const indexRefs = {
-    modules: 'docs/index.json',
+    modules: 'docs/index-modules.json',
     pages: 'docs/index-pages.json',
 }
 
@@ -73,7 +73,6 @@ const i18n: I18nProviderContext = {
         en: '0.1',
     },
     detection: ['localStorage'],
-    defaultLanguage: 'en',
     //pathIndex: 0,
     loader: (url: string) => import ('./locales/' + url + '.json'),
     //l10n: {ns: {de: {}}},

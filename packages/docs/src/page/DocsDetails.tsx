@@ -2,13 +2,14 @@ import React from 'react'
 import Paper from '@mui/material/Paper'
 import Link from '@mui/material/Link'
 import Button from '@mui/material/Button'
-import {useTheme} from '@mui/material/styles'
+import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import IcToc from '@mui/icons-material/Toc'
 import IcShowFull from '@mui/icons-material/Expand'
 import IcShowCompact from '@mui/icons-material/Compress'
 import { HeadMeta } from '@control-ui/kit/HeadMeta'
 import { ScrollUpButton } from '@control-ui/kit/ScrollUpButton'
+import { DocsDetailsModules } from '../component/DocsDetailsModules'
 import PageNotFound from './PageNotFound'
 import { DocDetailsRenderer, DocDetailsProps } from '@control-ui/docs/DocDetails'
 import { LinkableHeadlineMenu } from '@control-ui/docs/LinkableHeadline'
@@ -25,13 +26,7 @@ import { useLocation } from 'react-router-dom'
 import { filterRoutes } from '@control-ui/routes'
 import Box from '@mui/material/Box'
 
-const moduleDocsCache: {
-    current: {
-        [k: string]: any
-    }
-} = {
-    current: {},
-}
+const cachedContent = new Map<string, any>()
 
 const DocContent: React.FC<{
     content: string | undefined
@@ -40,40 +35,53 @@ const DocContent: React.FC<{
     doc?: DocRouteModule
 }> = ({content, id, progress, doc}) => {
     const {palette} = useTheme()
-    const [loadingModuleDocs, setLoadingModuleDocs] = React.useState<boolean>(false)
-    const [fullWidth, setFullWidth] = React.useState(window.localStorage.getItem('docs-details--fullWidth') === 'yes')
-    const [/*modules*/, setModules] = React.useState<any>(undefined)
     const {breakpoints} = useTheme()
     const isLg = useMediaQuery(breakpoints.up('lg'))
+    const [fullWidth, setFullWidth] = React.useState(window.localStorage.getItem('docs-details--fullWidth') === 'yes')
+
     const module = doc?.docModule
+    // @ts-ignore
+    const codeDocsPath = module ? '/docs/' + module.package + '/' + (module.moduleFilePath || module.fromPath) + '.json' : undefined
+    const [modules, setModules] = React.useState<any>(codeDocsPath ? cachedContent.get(codeDocsPath) : undefined)
+    const [loadingModuleDocs, setLoadingModuleDocs] = React.useState<boolean>(false)
+
     React.useEffect(() => {
-        if(!module || (module && moduleDocsCache.current[module.modulePath])) {
-            setModules(module ? moduleDocsCache.current[module.modulePath] : undefined)
+        if (!codeDocsPath) {
+            setModules(undefined)
             setLoadingModuleDocs(false)
             return
         }
+        const cachedCodeDocs = cachedContent.get(codeDocsPath)
+        if (cachedCodeDocs) {
+            setModules(cachedCodeDocs)
+            setLoadingModuleDocs(false)
+            return
+        }
+        const abort = new AbortController()
         setLoadingModuleDocs(true)
-        fetch('/docs/' + module.package + '/' + module.fromPath + '.json')
+        fetch(codeDocsPath, {signal: abort.signal})
             .then((res) => res.status !== 200 ? Promise.reject(res) : res.json())
             .then((data) => {
-                moduleDocsCache.current[module.modulePath] = data
+                if (abort.signal.aborted) return
+                cachedContent.set(codeDocsPath, data)
                 setModules(data)
                 setLoadingModuleDocs(false)
             })
             .catch(e => {
-                console.error('error loading module-api docs', module, e)
+                if (abort.signal.aborted) return
+                console.error('error loading module-api docs', codeDocsPath, e)
                 setLoadingModuleDocs(false)
             })
-        return () => setModules(undefined)
-    }, [module])
+        return () => abort.abort()
+    }, [codeDocsPath])
 
     const mdData = React.useMemo(() => {
-        if(!content) return undefined
+        if (!content) return undefined
         const lines: string[] = content.split('\n')
         // todo: add correct front-matter extraction, but e.g. `front-matter` is no longer maintained/browser-optimized
-        if(lines[0] === '---') {
+        if (lines[0] === '---') {
             const i = lines.slice(1).findIndex((l: string) => l === '---')
-            if(i !== -1) {
+            if (i !== -1) {
                 lines.splice(0, i + 2)
             }
         }
@@ -155,8 +163,7 @@ Examples of this widget, using \`ds-material\`. Type in/change the input and che
 
                     {doc?.docModule ?
                         <Paper style={{margin: '24px 0 12px 0', padding: 24, display: 'flex', flexDirection: 'column', borderRadius: 5}} variant={'outlined'}>
-                            {/* todo: TS5 is unsupported by docs-ts/@structured-types/api */}
-                            {/*<DocsDetailsModules modules={modules}/>*/}
+                            <DocsDetailsModules codeDocumentation={modules}/>
                         </Paper> : null}
                 </> : null}
         </PageContent>

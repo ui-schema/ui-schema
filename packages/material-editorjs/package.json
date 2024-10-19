@@ -34,8 +34,6 @@
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "dependencies": {
-        "clsx": "^1.1.0",
-        "react-uid": "^2.2.0"
     },
     "devDependencies": {
         "@types/react": "^18.0",
@@ -43,7 +41,7 @@
         "@mui/material": "^5.1",
         "@mui/system": "^5.1",
         "@mui/icons-material": "^5.1",
-        "@ui-schema/ds-material": "~0.4.0-alpha",
+        "@ui-schema/ds-material": "~0.5.0-alpha.0",
         "@ui-schema/system": "~0.5.0-alpha.0",
         "@ui-schema/react": "~0.5.0-alpha.0",
         "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
@@ -57,7 +55,7 @@
         "@editorjs/editorjs": "^2.19.2-rc.1",
         "@mui/material": "^5.1",
         "@mui/icons-material": "^5.1",
-        "@ui-schema/ds-material": "~0.4.0-alpha",
+        "@ui-schema/ds-material": "~0.5.0-alpha.0",
         "@ui-schema/system": "~0.5.0-alpha.0",
         "@ui-schema/react": "~0.5.0-alpha.0",
         "@ui-schema/react-json-schema": "~0.5.0-alpha.0",

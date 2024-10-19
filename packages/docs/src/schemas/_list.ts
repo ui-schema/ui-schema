@@ -1,17 +1,17 @@
-import {dataMain, dataUser, schemaMain, schemaUser} from './demoMain';
-import {dataStepper, schemaStepper} from './demoStepper';
+import { dataMain, dataUser, schemaMain, schemaUser } from './demoMain'
+import { dataStepper, schemaStepper } from './demoStepper'
 import {
     schemaCombining, dataCombining,
     schemaCombiningConditional, dataCombiningConditional,
-} from './demoCombining';
-import {dataConditional, dataConditionalAllOf, schemaConditional, schemaConditionalAllOf} from './demoConditional';
-import {dataDependencies, dataDependenciesBooleans, schemaDependencies, schemaDependenciesBooleans} from './demoDependencies';
-import {schemaLists} from './demoLists';
-import {createOrderedMap} from '@ui-schema/system/createMap';
-import {demoTable} from '../content/docs/widgets/TableDemo';
-import {List} from 'immutable';
+} from './demoCombining'
+import { dataConditional, dataConditionalAllOf, schemaConditional, schemaConditionalAllOf } from './demoConditional'
+import { dataDependencies, dataDependenciesBooleans, schemaDependencies, schemaDependenciesBooleans } from './demoDependencies'
+import { schemaLists } from './demoLists'
+import { createOrderedMap } from '@ui-schema/system/createMap'
+import { demoTable } from '../content/docs/widgets/TableDemo'
+import { List } from 'immutable'
 
-const schemas = [
+const schemas: [string, any, any, string][] = [
     ['Main Demo', schemaMain, dataMain, `
 # Big Simple Example
 
@@ -149,6 +149,6 @@ When the property value changes to \`true\` the dependency is applied.
 
 **Try out** toggling the switches applies a sub-schema with a text field, number field, or makes - if it exists - the number field required
 `],
-];
+]
 
-export {schemas}
+export { schemas }

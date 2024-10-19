@@ -1,4 +1,4 @@
-import {createOrderedMap} from '@ui-schema/system/createMap';
+import { createOrderedMap } from '@ui-schema/system/createMap'
 
 const schemaMain = createOrderedMap({
     type: 'object',
@@ -242,12 +242,12 @@ const schemaMain = createOrderedMap({
         'layouts',
         'size',
     ],
-});
+})
 
 const dataMain = createOrderedMap({
     stepper: {'step-1': {name: 'Max'}},
     headline: 'Some Demo Content Headline',
-});
+})
 
 const schemaUser = createOrderedMap({
     type: 'object',
@@ -313,9 +313,9 @@ const schemaUser = createOrderedMap({
         },
     },
     required: ['seats'],
-});
+})
 
-const dataUser = createOrderedMap({});
+const dataUser = createOrderedMap({})
 
 export {
     schemaMain, dataMain,

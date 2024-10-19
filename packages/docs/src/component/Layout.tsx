@@ -6,12 +6,12 @@ import GithubLogo from '../asset/GithubLogo'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { useTheme } from '@mui/material/styles'
 import IcSearch from '@mui/icons-material/Search'
-import { AccessTooltipIcon } from '@control-ui/kit/Tooltip'
 import Typography from '@mui/material/Typography'
 import { LinkIconButton } from '@control-ui/kit/Link/LinkIconButton'
 import { Header } from '@control-ui/app/Header'
 import { useSwitchTheme } from '@control-ui/app/AppTheme'
-import { Logo } from '../asset/logo'
+import { Logo } from '../asset/Logo'
+import Tooltip from '@mui/material/Tooltip'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useConsent } from '@bemit/consent-ui-react'
 import { ConsentUiBoxDialog, dialogPositions } from '@bemit/consent-ui-mui'
@@ -39,7 +39,7 @@ export const CustomHeaderBase: React.ComponentType = () => {
             </Typography> : null}
         </RouterLink>
 
-        <AccessTooltipIcon title={'search'}>
+        <Tooltip title={'search'}>
             <Button
                 variant={'outlined'} color={'inherit'}
                 onClick={() => setOpen(o => !o)}
@@ -68,7 +68,7 @@ export const CustomHeaderBase: React.ComponentType = () => {
                     </span> :
                     <span style={{marginLeft: 'auto'}}/>}
             </Button>
-        </AccessTooltipIcon>
+        </Tooltip>
 
         <LinkIconButton size={'medium'} to={'https://github.com/ui-schema/ui-schema'} color="inherit" style={{color: 'inherit'}}>
             <GithubLogo fill="currentColor"/>
@@ -76,9 +76,9 @@ export const CustomHeaderBase: React.ComponentType = () => {
         </LinkIconButton>
 
         <IconButton color="inherit" onClick={() => switchTheme()}>
-            <AccessTooltipIcon title={'Switch Theme'}>
+            <Tooltip title={'Switch Theme'}>
                 <InvertColorsIcon/>
-            </AccessTooltipIcon>
+            </Tooltip>
         </IconButton>
     </Header>
 }
@@ -133,6 +133,13 @@ export const CustomLayout = () => {
                 servicePolicyLabel: 'Service Policy',
                 serviceStores: 'Stores:',
                 serviceReceives: 'Receives:',
+                // todo: add labels
+                serviceStoresFeature: '',
+                serviceStoresName: '',
+                serviceStoresExpires: '',
+                serviceStoresDomain: '',
+                serviceStoresIn: '',
+                serviceStoresDescription: '',
             }}
         />
     </>

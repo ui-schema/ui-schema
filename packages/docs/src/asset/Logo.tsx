@@ -1,8 +1,8 @@
-import React from "react";
-import {useTheme} from '@mui/material/styles';
+import React from 'react'
+import { useTheme } from '@mui/material/styles'
 
-export const Logo = ({width, style}) => {
-    const {palette} = useTheme();
+export const Logo = ({width, style}: { style?: React.CSSProperties, width?: string | number }) => {
+    const {palette} = useTheme()
     return <svg width={width} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 146.29 144.87" style={style}>
         <title>UI-Schema</title>
         <path
@@ -18,4 +18,4 @@ export const Logo = ({width, style}) => {
             d="M148,21V3.17c-3-.17-21.35-1.85-31.53.89a31.65,31.65,0,0,0-11.28,6.27c7.42,8,13.65,17,20.61,25.45"
             transform="translate(-1.93 -2.51)"/>
     </svg>
-};
+}

@@ -1,5 +1,4 @@
 import React from 'react'
-import { useUID } from 'react-uid'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WithOnChange } from '@ui-schema/react/UIStore'
 import { Translate } from '@ui-schema/react/Translate'
@@ -28,7 +27,7 @@ export const SortableListBase = (
         ...props
     }: WidgetProps & WithOnChange & SortableListProps
 ): React.ReactElement => {
-    const uid = useUID()
+    const uid = React.useId()
     const {schema, storeKeys, onChange} = props
     const btnSize = schema.getIn(['view', 'btnSize']) || 'medium'
     //const notSortable = schema.get('notSortable')

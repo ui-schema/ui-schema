@@ -1,17 +1,17 @@
-import React from 'react';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
-import {Markdown} from '../component/Markdown';
-import DemoUIGenerator from '../component/Schema/DemoUIGenerator';
-import {RichCodeEditor} from '../component/RichCodeEditor';
-import {useHistory} from 'react-router-dom';
-import {LinkableHeadlineMenu, useHeadlines} from '@control-ui/docs/LinkableHeadline';
-import {HeadMeta} from '@control-ui/kit/HeadMeta';
-import {PageContent} from '@control-ui/kit/PageContent';
-import {LoadingCircular} from '@control-ui/kit/Loading/LoadingCircular';
+import React from 'react'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
+import Button from '@mui/material/Button'
+import Paper from '@mui/material/Paper'
+import { Markdown } from '../component/Markdown'
+import DemoUIGenerator from '../component/Schema/DemoUIGenerator'
+import { RichCodeEditor } from '../component/RichCodeEditor'
+import { useHistory } from 'react-router-dom'
+import { LinkableHeadlineMenu, useHeadlines } from '@control-ui/docs/LinkableHeadline'
+import { HeadMeta } from '@control-ui/kit/HeadMeta'
+import { PageContent } from '@control-ui/kit/PageContent'
+import { LoadingCircular } from '@control-ui/kit/Loading/LoadingCircular'
 
 const demoSchema = {
     type: 'object',
@@ -32,15 +32,15 @@ const demoSchema = {
         },
     },
     required: ['accept_privacy'],
-};
+}
 
 const PageQuickStart = () => {
-    const history = useHistory();
-    const [, setHeadlines] = useHeadlines();
+    const history = useHistory()
+    const [, setHeadlines] = useHeadlines()
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const [render, setInternalRender] = React.useState(urlParams.get('render') === 'custom' ? 'custom' : 'automatic');
-    const [ds, setInternalDS] = React.useState(urlParams.get('ds') === 'bts' ? 'bts' : 'mui');
+    const urlParams = new URLSearchParams(window.location.search)
+    const [render, setInternalRender] = React.useState(urlParams.get('render') === 'custom' ? 'custom' : 'automatic')
+    const [ds, setInternalDS] = React.useState(urlParams.get('ds') === 'bts' ? 'bts' : 'mui')
 
     const setDS = (nextDs) => {
         history.push(history.location.pathname + '?ds=' + nextDs + '&render=' + render)
@@ -51,21 +51,22 @@ const PageQuickStart = () => {
         setInternalRender(nextRender)
     }
 
-    const hash = history.location.hash;
+    const hash = history.location.hash
     React.useEffect(() => {
-        if(hash) {
-            const target = document.querySelector(hash);
-            if(target) {
-                target.scrollIntoView();
+        if (hash) {
+            const target = document.querySelector(hash)
+            if (target) {
+                target.scrollIntoView()
             }
         }
-    }, [hash]);
+    }, [hash])
 
     React.useEffect(() => {
         // todo: add the custom sorter as option to `LinkableHeadlineMenu`
         setHeadlines(h => {
             h = [...h]
-            h = h.sort((a, b) => {
+            h = h.sort(
+                (a, b) => {
                     return a?.level === 1 ? -1 :
                         isNaN(Number(a?.children?.[0]?.[0])) ? 1 :
                             isNaN(Number(b?.children?.[0]?.[0])) ? -1 :
@@ -74,7 +75,7 @@ const PageQuickStart = () => {
             )
             return h
         })
-    }, [render, setHeadlines]);
+    }, [render, setHeadlines])
 
     return <>
         <HeadMeta
@@ -83,7 +84,7 @@ const PageQuickStart = () => {
         />
         <PageContent maxWidth={'md'}>
             <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
-                <Markdown content source={`
+                <Markdown source={`
 # Quick-Start UI-Schema
 
 Quickly build a contact form that sends data to an API - if the user entered it correctly   .
@@ -93,7 +94,7 @@ UI-Schema works with JSON-Schema and any design-system, each included design-sys
 See the [**list of widgets**](/docs/overview#widget-list) for the different design-system support.
 `}/>
 
-                <Markdown content source={`
+                <Markdown source={`
 **Automatic vs. Custom UI**, UI Schema supports either:
 
 - full automatic UI generation by JSON-Schema and data, *or:*
@@ -113,7 +114,7 @@ See the [**list of widgets**](/docs/overview#widget-list) for the different desi
             </Paper>
 
             <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
-                <Markdown content source={`
+                <Markdown source={`
 ## 1. Install
 
 First select the design-system and install ui-schema and dependencies.
@@ -127,7 +128,7 @@ First select the design-system and install ui-schema and dependencies.
                         <Button fullWidth variant={ds === 'bts' ? 'contained' : 'outlined'} color={'secondary'} onClick={() => setDS('bts')}>Bootstrap</Button>
                     </Grid>
                     <Grid item xs={12} style={{marginTop: 24}}>
-                        {ds === 'mui' ? <Markdown content source={`
+                        {ds === 'mui' ? <Markdown source={`
 \`\`\`bash
 npm i --save @ui-schema/ui-schema immutable \\
     @ui-schema/ds-material \\
@@ -146,7 +147,7 @@ npm i --save @ui-schema/ui-schema immutable \\
 > - [simple create-react-app demo](https://github.com/ui-schema/demo-cra) with a [codesandbox](https://codesandbox.io/s/github/ui-schema/demo-cra/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2FSchema%2FDemoEditor.js)
 > - [complexer examples using TypeScript and create-react-app](https://github.com/ui-schema/demo-cra-ts) with a [codesandbox](https://codesandbox.io/s/github/ui-schema/demo-cra-ts/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2Fpages%2FPageSimpleForm.tsx)
 `}/> :
-                            ds === 'bts' ? <Markdown content source={`
+                            ds === 'bts' ? <Markdown source={`
 > no priority currently for bootstrap widgets development, but happy about PRs
 \`\`\`bash
 npm i --save @ui-schema/ui-schema immutable \\
@@ -161,7 +162,7 @@ npm i --save @ui-schema/ui-schema immutable \\
 
             {render === 'custom' ?
                 <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
-                    <Markdown content source={`
+                    <Markdown source={`
 ## 2. Create Demo Generator
 
 Create a file which serves as demo: \`DemoGenerator.js\`
@@ -171,7 +172,7 @@ Create an empty generator component in the file with the needed imports, move th
 
                     <Grid container>
                         <Grid item xs={12}>
-                            <Markdown content source={`
+                            <Markdown source={`
 \`\`\`jsx
 import React from "react";
 
@@ -219,7 +220,7 @@ export const Generator = () => {
 
             {render === 'automatic' ?
                 <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
-                    <Markdown content source={`
+                    <Markdown source={`
 ## 2. Create Demo Generator
 
 Create a file which serves as demo: \`DemoGenerator.js\`
@@ -229,7 +230,7 @@ Add an empty provider in the file with the needed imports.
 
                     <Grid container>
                         <Grid item xs={12}>
-                            <Markdown content source={`
+                            <Markdown source={`
 \`\`\`jsx
 import React from "react";
 
@@ -278,7 +279,7 @@ export const Generator = () => {
                 </Paper> : null}
 
             <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
-                <Markdown content source={`
+                <Markdown source={`
 ## 3. Create Store State, Add Schema
 
 Each \`UIStoreProvider\` needs to receive a \`store\` and \`onChange\` to work with the data and have something to save validity and internal values. The store must be an \`UIStore\`, which is based on a [immutable](https://immutable-js.github.io/immutable-js/) Record.
@@ -290,7 +291,7 @@ The schema in this example is bundled with the component and not dynamic, the sc
 
                 <Grid container>
                     <Grid item xs={12}>
-                        <Markdown content source={`
+                        <Markdown source={`
 \`\`\`jsx
 // Minimal Schema, transformed from JS-Object into deep immutable
 const schema = createOrderedMap({
@@ -338,7 +339,7 @@ export const Generator = () => {
             <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                 <Grid container>
                     <Grid item xs={12}>
-                        <Markdown content source={`
+                        <Markdown source={`
 ## 4. Add First Inputs
 
 Each \`object\` can have multiple \`properties\`, each can be of a different type, we define now a single-line text, multi-line text and boolean property to our contact schema.
@@ -349,7 +350,7 @@ See [schema docs](/docs/schema) for the keywords of each type.
 `}/>
                     </Grid>
                     <Grid item xs={12}>
-                        <Markdown content source={`
+                        <Markdown source={`
 \`\`\`jsx
 const schema = createOrderedMap(${JSON.stringify(demoSchema, null, 2)});
 \`\`\`
@@ -358,7 +359,7 @@ const schema = createOrderedMap(${JSON.stringify(demoSchema, null, 2)});
                 </Grid>
                 {render === 'automatic' ? <>
                     <Grid item xs={12}>
-                        <Markdown content source={`
+                        <Markdown source={`
 ---
 
 > Your editor should look like this when using **ds-material**:
@@ -373,7 +374,7 @@ const schema = createOrderedMap(${JSON.stringify(demoSchema, null, 2)});
                 <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                     <Grid container>
                         <Grid item xs={12}>
-                            <Markdown content source={`
+                            <Markdown source={`
 ## 5. Add API Call
 
 Now we add a button that will send the store of the editor to an API if the form is valid.
@@ -382,7 +383,7 @@ We tell the editor also to display validity from start on.
 `}/>
                         </Grid>
                         <Grid item xs={12}>
-                            <Markdown content source={`
+                            <Markdown source={`
 \`\`\`jsx
 const GridStack = injectWidgetEngine(GridContainer)
 
@@ -437,7 +438,7 @@ export const Generator = () => {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <Markdown content source={`
+                            <Markdown source={`
 Test the demo form below, it will send the entered data to [httpbin.org*](https://httpbin.org) with \`POST\` and display the response after the form.
 `}/>
                         </Grid>
@@ -447,7 +448,7 @@ Test the demo form below, it will send the entered data to [httpbin.org*](https:
                         </Grid>
 
                         <Grid item xs={12} style={{marginTop: 16}}>
-                            <Markdown content source={`
+                            <Markdown source={`
 ### Next Steps
 
 - [JSON-Schema Guides](https://json-schema.org/understanding-json-schema/)
@@ -464,7 +465,7 @@ Test the demo form below, it will send the entered data to [httpbin.org*](https:
                 <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                     <Grid container>
                         <Grid item xs={12}>
-                            <Markdown content source={`
+                            <Markdown source={`
 ## 5. Add Root Level Renderer
 
 Now we add the root level renderer, the \`CustomGroup\` is responsible to validate the root schema-level.
@@ -473,7 +474,7 @@ It is recommended to nest \`type=object\` schemas for best and easiest condition
 `}/>
                         </Grid>
                         <Grid item xs={12}>
-                            <Markdown content source={`
+                            <Markdown source={`
 \`\`\`jsx
 import {StringRenderer} from '@ui-schema/${ds === 'mui' ? 'ds-material' : 'ds-bootstrap'}/Widgets/TextField'
 
@@ -556,14 +557,14 @@ export const Generator = () => {
                 <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                     <Grid container>
                         <Grid item xs={12}>
-                            <Markdown content source={`
+                            <Markdown source={`
 ## 6. Add API Call
 
 Now we add a button that will send the store of the editor to an API if the form is valid.
 `}/>
                         </Grid>
                         <Grid item xs={12}>
-                            <Markdown content source={`
+                            <Markdown source={`
 \`\`\`jsx
 export const Generator = () => {
     // ... the previous content ....
@@ -601,7 +602,7 @@ export const Generator = () => {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <Markdown content source={`
+                            <Markdown source={`
 Test the demo form below, it will send the entered data to [httpbin.org*](https://httpbin.org) with \`POST\` and display the response after the form.
 `}/>
                         </Grid>
@@ -611,7 +612,7 @@ Test the demo form below, it will send the entered data to [httpbin.org*](https:
                         </Grid>
 
                         <Grid item xs={12} style={{marginTop: 16}}>
-                            <Markdown content source={`
+                            <Markdown source={`
 ### Next Steps
 
 - [JSON-Schema Guides](https://json-schema.org/understanding-json-schema/)
@@ -625,18 +626,18 @@ Test the demo form below, it will send the entered data to [httpbin.org*](https:
                 </Paper>
             </> : null}
         </PageContent>
-    </>;
-};
+    </>
+}
 
 const QuickStartEditor = () => {
-    const [sending, setSending] = React.useState(0);
+    const [sending, setSending] = React.useState(0)
 
     return <React.Fragment>
         <DemoUIGenerator
             activeSchema={demoSchema}
             id={'qs-demo-send'}
             onClick={(store) => {
-                setSending(true);
+                setSending(true)
                 fetch('https://httpbin.org/post', {
                     method: 'POST',
                     headers: {
@@ -669,7 +670,7 @@ const QuickStartEditor = () => {
                 <RichCodeEditor minLines={3} maxLines={30} mode={'json'} value={typeof sending === 'string' ? sending : JSON.stringify({...sending}, null, 2)}/>
                 : null}
         </Box>
-    </React.Fragment>;
-};
+    </React.Fragment>
+}
 
 export default PageQuickStart

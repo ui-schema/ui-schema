@@ -1,6 +1,4 @@
 import React from 'react'
-import { useUID } from 'react-uid'
-import clsx from 'clsx'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { EditorJS } from '@ui-schema/material-editorjs/EditorJS'
@@ -58,9 +56,9 @@ export const EditorJSWidget = (
         schema, storeKeys,
         showValidity, valid, errors,
         required, tools, hideTitle,
-    }: WidgetProps & RichContentProps
+    }: WidgetProps & RichContentProps,
 ): React.ReactElement => {
-    const uid = useUID()
+    const uid = React.useId()
     const [focused, setFocused] = React.useState(false)
     const [ready, setReady] = React.useState(false)
     const [empty, setEmpty] = React.useState(true)
@@ -84,10 +82,10 @@ export const EditorJSWidget = (
 
         <Box
             sx={styles.editor}
-            className={clsx(
+            className={[
                 inputClasses.underline,
-                focused ? inputClasses.focused : null
-            )}
+                focused ? inputClasses.focused : null,
+            ].filter(Boolean).join(' ')}
         >
             <EditorJS
                 uid={uid}

@@ -22,7 +22,7 @@ export const routes = (loading: any): DocRouteModule<Comp> => ({
                         },
                     }),*/
                     component: Loadable({
-                        loader: () => import('./page/PageMain'),
+                        loader: () => import('./page/PageHome'),
                         loading: loading('Loading'),
                     }) as Comp,
                 },

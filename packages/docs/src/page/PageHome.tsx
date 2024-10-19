@@ -1,15 +1,15 @@
-import React from 'react';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import {PageTitle, PageContent} from '@control-ui/kit/PageContent';
-import NavProject from '../component/NavProject';
-import {HeadMeta} from '@control-ui/kit/HeadMeta';
-import {Logo} from '../asset/logo'
-import Nav from '../component/Nav';
-import {Link} from '@control-ui/kit';
-import {Markdown} from '../component/Markdown';
+import React from 'react'
+import Paper from '@mui/material/Paper'
+import Typography from '@mui/material/Typography'
+import { PageTitle, PageContent } from '@control-ui/kit/PageContent'
+import NavProject from '../component/NavProject'
+import { HeadMeta } from '@control-ui/kit/HeadMeta'
+import { Logo } from '../asset/Logo'
+import Nav from '../component/Nav'
+import { Link } from '@control-ui/kit'
+import { Markdown } from '../component/Markdown'
 
-export default function PageMain() {
+export default function PageHome() {
     return (
         <>
             <HeadMeta
@@ -83,5 +83,5 @@ export default function PageMain() {
                 </Paper>
             </PageContent>
         </>
-    );
+    )
 }
