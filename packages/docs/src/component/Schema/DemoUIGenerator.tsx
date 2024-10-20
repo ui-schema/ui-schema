@@ -1,3 +1,4 @@
+import { isImmutable } from 'immutable'
 import React from 'react'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
@@ -102,7 +103,7 @@ const DemoUIGenerator = (
             const newStore = data ?
                 createStore(createOrdered(data)) :
                 createEmptyStore(schema.get('type'))
-            if (newStore.values.equals && newStore.values.equals(oldStore?.values)) {
+            if (isImmutable(newStore.values) && newStore.values.equals && newStore.values.equals(oldStore?.values)) {
                 // only change the store, when the values have really changed - otherwise it could overwrite the already changed validity
                 return oldStore
             }

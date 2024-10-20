@@ -1,3 +1,4 @@
+import { expect, describe, test } from '@jest/globals'
 import { List, Map, OrderedMap } from 'immutable'
 import { ERROR_WRONG_TYPE, typeValidator, validateType } from '@ui-schema/json-schema/Validators/TypeValidator'
 import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
@@ -142,6 +143,6 @@ describe('typeValidator', () => {
             if (result.errors.hasError(error.get(0))) {
                 expect(result.errors.getError(error.get(0)).get(0)?.equals(error.get(1))).toBe(expectedError)
             }
-        }
+        },
     )
 })

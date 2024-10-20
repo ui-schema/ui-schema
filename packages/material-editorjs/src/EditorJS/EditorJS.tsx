@@ -39,7 +39,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps & WithValue> = (
     const editorRef = React.useRef<EditorJSType>()
     const currentState = React.useRef<OrderedMap<any, any> | undefined>(undefined)
     const onChangeEditor = React.useCallback((_api: API, newData?: OutputData) => {
-        const newValue = fromJSOrdered(newData) as OrderedMap<any, any>
+        const newValue = fromJSOrdered(newData)
         if (!currentState.current?.get('blocks')?.equals(newValue?.get('blocks'))) {
             onChange({
                 storeKeys,
@@ -79,7 +79,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps & WithValue> = (
             } else {
                 currentState.current = fromJSOrdered({
                     blocks: [],
-                }) as OrderedMap<any, any>
+                })
             }
             onChange({
                 storeKeys,

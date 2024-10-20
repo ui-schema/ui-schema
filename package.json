@@ -19,6 +19,8 @@
         "doc-gen": "lerna run doc-gen",
         "page-index": "lerna run page-index",
         "dtsgen": "lerna run dtsgen",
+        "tscheck": "lerna run tscheck",
+        "check": "npm run lint && npm run tscheck && npm run test",
         "profile": "cross-env NODE_OPTIONS='--max-old-space-size=4096' NODE_ENV=production node packerConfig.js --build --profile",
         "clean": "npm run clean-dist && lerna clean -y",
         "clean-dist": "node packerConfig.js --clean",

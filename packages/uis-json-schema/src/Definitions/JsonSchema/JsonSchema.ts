@@ -14,6 +14,7 @@ export interface SchemasDraft04 {
 }
 
 export interface JsonSchemaGeneral {
+    // todo: remove this typing / restrict to actual allowed `type`; make use of correlated union types
     type: string | string[]
     readOnly?: boolean
     id?: string

@@ -1,4 +1,4 @@
-import { expect, describe } from '@jest/globals'
+import { expect, describe, test } from '@jest/globals'
 import { escapePointer } from './escapePointer'
 
 describe('JSONPointer', () => {

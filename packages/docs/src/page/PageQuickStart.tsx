@@ -42,11 +42,11 @@ const PageQuickStart = () => {
     const [render, setInternalRender] = React.useState(urlParams.get('render') === 'custom' ? 'custom' : 'automatic')
     const [ds, setInternalDS] = React.useState(urlParams.get('ds') === 'bts' ? 'bts' : 'mui')
 
-    const setDS = (nextDs) => {
+    const setDS = (nextDs: string) => {
         history.push(history.location.pathname + '?ds=' + nextDs + '&render=' + render)
         setInternalDS(nextDs)
     }
-    const setRender = (nextRender) => {
+    const setRender = (nextRender: string) => {
         history.push(history.location.pathname + '?ds=' + ds + '&render=' + nextRender)
         setInternalRender(nextRender)
     }
@@ -630,7 +630,7 @@ Test the demo form below, it will send the entered data to [httpbin.org*](https:
 }
 
 const QuickStartEditor = () => {
-    const [sending, setSending] = React.useState(0)
+    const [sending, setSending] = React.useState<number | boolean | object | string>(0)
 
     return <React.Fragment>
         <DemoUIGenerator

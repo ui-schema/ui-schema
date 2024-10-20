@@ -99,6 +99,7 @@ export const createStore = <D = any>(values: D): UIStoreType<D> => {
 }
 
 // todo: support multiple types #68
+// todo: adjust UIStoreType to List|OrderedMap|Map instead of []|{}
 export const createEmptyStore = (type: SchemaTypesType = 'object'): UIStoreType<[] | '' | 0 | false | {}> =>
     createStore(
         type === 'array' ?

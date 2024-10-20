@@ -1,3 +1,4 @@
+import { expect, describe, test } from '@jest/globals'
 import { OrderedMap, List, Map } from 'immutable'
 import {
     validateConst, valueValidatorConst, ERROR_CONST_MISMATCH,
@@ -43,7 +44,7 @@ describe('valueValidatorConst', () => {
                 // @ts-ignore
                 value,
             })).toBe(expected)
-        }
+        },
     )
 
     type valueValidatorConstTest = [
@@ -96,6 +97,6 @@ describe('valueValidatorConst', () => {
             if (result.errors.hasError(error.get(0))) {
                 expect(result.errors.getError(error.get(0)).get(0)?.equals(error.get(1))).toBe(expectedError)
             }
-        }
+        },
     )
 })

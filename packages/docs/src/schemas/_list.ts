@@ -44,12 +44,12 @@ Including native-objects and native-types.
 - array of any sub-schema
 - array of array tuple schemas
 - \`array\` do only correctly validate when rendered/mounted, at \`if\`/\`else\` only one schema level is validated atm.
-`], ['Table: array tuples', createOrderedMap(demoTable[0][1]), List(), `
+`], ['Table: array tuples', createOrderedMap(demoTable[0][1] as any), List(), `
 # Table (array of arrays)
 
 - array of tuple array schemas for the rows
 - using multiple types for nullable behaviour
-`], ['Table: object', createOrderedMap(demoTable[1][1]), List(), `
+`], ['Table: object', createOrderedMap(demoTable[1][1] as any), List(), `
 # Table (array of objects)
 
 - array of object schemas for the rows

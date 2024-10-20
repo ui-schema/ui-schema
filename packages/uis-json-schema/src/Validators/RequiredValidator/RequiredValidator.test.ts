@@ -1,3 +1,4 @@
+import { expect, describe, test } from '@jest/globals'
 import { List, OrderedMap } from 'immutable'
 import { checkValueExists, ERROR_NOT_SET, requiredValidator } from '@ui-schema/json-schema/Validators/RequiredValidator'
 import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
@@ -44,7 +45,7 @@ describe('requiredValidator', () => {
                 requiredList: requiredList,
                 storeKeys,
             })).toBe(expectedValid)
-        }
+        },
     )
 
     test.each([
@@ -90,7 +91,7 @@ describe('requiredValidator', () => {
             })
             expect(result.valid).toBe(expectedValid)
             expect(result.errors.hasError(error)).toBe(expectedError)
-        }
+        },
     )
 
     test(
@@ -98,6 +99,6 @@ describe('requiredValidator', () => {
         () => {
             const result = requiredValidator.noHandle()
             expect(result.required).toBe(false)
-        }
+        },
     )
 })

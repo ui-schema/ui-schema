@@ -6,6 +6,9 @@
     "homepage": "",
     "author": "Michael Becker <michael@bemit.codes>",
     "license": "MIT",
+    "scripts": {
+        "tscheck": "tsc --noEmit"
+    },
     "dependencies": {
         "@editorjs/checklist": "^1.3.0",
         "@editorjs/editorjs": "^2.19.2-rc.1",

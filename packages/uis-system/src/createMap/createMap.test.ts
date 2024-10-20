@@ -1,5 +1,6 @@
-import { createMap, createOrderedMap } from "@ui-schema/system/createMap"
-import { List, Map, OrderedMap } from "immutable"
+import { expect, describe, test } from '@jest/globals'
+import { createMap, createOrderedMap } from '@ui-schema/system/createMap'
+import { List, Map, OrderedMap } from 'immutable'
 
 describe('createMap', () => {
     test('createMap plain', () => {

@@ -1,4 +1,4 @@
-import { expect, describe } from '@jest/globals'
+import { expect, describe, test } from '@jest/globals'
 import { pointerToKeySeq } from './pointerToKeySeq'
 import { testCases } from '../JSONPointer.mock'
 
@@ -8,6 +8,6 @@ describe('JSONPointer', () => {
         (testData) => {
             const keySeq = pointerToKeySeq(testData.pointer)
             expect(keySeq.equals(testData.keySeqPointer)).toBe(true)
-        }
+        },
     )
 })

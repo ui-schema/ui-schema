@@ -20,31 +20,64 @@ export type NestedMap<S extends {} = {}> =
         get: <K extends keyof S = keyof S>(k: K) => ValueOrImmutable<S[K]>
     } & Map<keyof S, ValueOrImmutable<S[keyof S]>>
 
-export function fromJSOrdered<P>(js: P): ValueOrImmutableOrdered<P> {
+/**
+ * Type inferring version
+ * @todo since TS5 often leads to "Type instantiation is excessively deep and possibly infinite.", try using `FromJS<JSValue>` from immutable
+ */
+export function fromJSOrderedStrict<P>(js: P): ValueOrImmutableOrdered<P> {
+    return fromJSOrdered(js) as ValueOrImmutableOrdered<P>
+}
+
+/**
+ * Type inferring version
+ * @todo since TS5 often leads to "Type instantiation is excessively deep and possibly infinite.", try using `FromJS<JSValue>` from immutable
+ * @todo: check why since `immutable@4.0.0-alpha` `new List|Map(fromJSOrdered(d))` worked,
+ *        at beginning, i think this was required, but why is with `immutable@4.1` `fromJSOrdered(d)` enough and already returns `OrderedMap|List`?
+ *        this would mean, `List(fromJSOrdered<P>(data)) | OrderedMap(fromJSOrdered<P>(data))` converts immutable to immutable and thus to wrong data,
+ *        but it seems it doesn't? also check immutable docs, as the `fromJSOrdered` was copied either from there or from github
+ */
+export const createOrderedStrict = <P extends {} | any[]>(data: P): ValueOrImmutableOrdered<P> =>
+    createOrdered(data) as ValueOrImmutableOrdered<P>
+/**
+ * Type inferring version
+ * @todo since TS5 often leads to "Type instantiation is excessively deep and possibly infinite.", try using `FromJS<JSValue>` from immutable
+ */
+export const createOrderedMapStrict = <P extends {} = {}>(data: P): NestedOrderedMap<P> =>
+    createOrderedMap(data) as unknown as NestedOrderedMap<P>
+/**
+ * Type inferring version
+ * @todo since TS5 often leads to "Type instantiation is excessively deep and possibly infinite.", try using `FromJS<JSValue>` from immutable
+ */
+export const createMapStrict = <P extends {} = {}>(data: P): NestedMap<P> =>
+    createMap(data) as unknown as NestedMap<P>
+
+// ---
+// untyped versions
+// ---
+
+export function fromJSOrdered<P>(js: P): P extends unknown[] ? List<any> : P extends {} ? OrderedMap<any, any> : P {
     if (Map.isMap(js) || OrderedMap.isOrderedMap(js) || List.isList(js) || Record.isRecord(js)) {
         if (process.env.NODE_ENV === 'development') {
             console.warn('converting immutable to immutable may lead to wrong types')
         }
     }
 
-    // @ts-ignore
-    return typeof js !== 'object' || js === null ? js :
-        Array.isArray(js) ?
-            Seq(js).map(fromJSOrdered).toList() as ValueOrImmutableOrdered<P> :
-            Seq(js as {}).map(fromJSOrdered).toOrderedMap() as ValueOrImmutableOrdered<P>
+    return (
+        typeof js !== 'object' || js === null ? js :
+            Array.isArray(js) ?
+                Seq(js).map(fromJSOrdered).toList() :
+                Seq(js as {}).map(fromJSOrdered).toOrderedMap()
+    ) as P extends unknown[] ? List<any> : P extends {} ? OrderedMap<any, any> : P
 }
 
-// todo: check why since `immutable@4.0.0-alpha` `new List|Map(fromJSOrdered(d))` worked,
-//       at beginning, i think this was required, but why is with `immutable@4.1` `fromJSOrdered(d)` enough and already returns `OrderedMap|List`?
-//       this would mean, `List(fromJSOrdered<P>(data)) | OrderedMap(fromJSOrdered<P>(data))` converts immutable to immutable and thus to wrong data,
-//       but it seems it doesn't? also check immutable docs, as the `fromJSOrdered` was copied either from there or from github
-export const createOrdered = <P extends {} | any[]>(data: P): ValueOrImmutableOrdered<P> =>
+export const createOrdered = <P extends {} | any[]>(data: P): P extends unknown[] ? List<any> : P extends {} ? OrderedMap<any, any> : never => (
     Array.isArray(data) ?
-        List(fromJSOrdered<P>(data)) as ValueOrImmutableOrdered<P> :
-        OrderedMap(fromJSOrdered<P>(data)) as ValueOrImmutableOrdered<P>
+        List(fromJSOrdered(data)) :
+        OrderedMap(fromJSOrdered(data))
+) as P extends unknown[] ? List<any> : P extends {} ? OrderedMap<any, any> : never
 
-export const createOrderedMap = <P extends {} = {}>(data: P): NestedOrderedMap<P> =>
-    OrderedMap(fromJSOrdered<P>(data)) as unknown as NestedOrderedMap<P>
+export const createOrderedMap = (data?: object): OrderedMap<any, any> =>
+    OrderedMap(fromJSOrdered(data))
 
-export const createMap = <P extends {} = {}>(data: P): NestedMap<P> =>
-    Map(fromJS(data)) as unknown as NestedMap<P>
+export const createMap = (data?: object): Map<any, any> =>
+    Map(fromJS(data))

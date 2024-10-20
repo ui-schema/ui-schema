@@ -1,3 +1,4 @@
+import { expect, describe, test } from '@jest/globals'
 import { Map } from 'immutable'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { handleIfElseThen } from '@ui-schema/react-json-schema/ConditionalHandler'
@@ -318,6 +319,6 @@ describe('handleIfElseThen', () => {
                 console.log(handleIfElseThen(schema, store, distSchema).toJS())
             }*/
             expect(handleIfElseThen(schema, store, distSchema).equals(expectedSchema)).toBe(expected)
-        }
+        },
     )
 })

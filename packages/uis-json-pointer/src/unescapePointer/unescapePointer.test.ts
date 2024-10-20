@@ -1,4 +1,4 @@
-import { expect, describe } from '@jest/globals'
+import { expect, describe, test } from '@jest/globals'
 import { unescapePointer } from './unescapePointer'
 
 describe('JSONPointer', () => {
@@ -10,6 +10,6 @@ describe('JSONPointer', () => {
         'unescapePointer(%j): %j',
         (input: string, output: string) => {
             expect(unescapePointer(input)).toBe(output)
-        }
+        },
     )
 })

@@ -1,3 +1,5 @@
+import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd'
+import { WidgetProps } from '@ui-schema/react/Widgets'
 import React from 'react'
 import Loadable from 'react-loadable'
 /*import {
@@ -16,7 +18,7 @@ import { Table } from '@ui-schema/ds-material/Widgets/Table'
 import { DragDropBlockSelector } from '@ui-schema/material-dnd/DragDropBlockSelector'
 import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
 import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
-import { InfoRenderer } from '@ui-schema/ds-material'
+import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material'
 import { TableAdvanced } from '@ui-schema/ds-material/Widgets'
 //import {WidgetColorful} from '@ui-schema/material-colorful'
 /*import {
@@ -40,7 +42,7 @@ const ColorfulRgbaBase =
         />
 const ColorfulRgba = extractValue(memo(ColorfulRgbaBase))*/
 
-const CustomTable = ({widgets, ...props}) => {
+const CustomTable = ({widgets, ...props}: WidgetProps) => {
 
     // dynamic overwrite for all widgets, which need a special TableCell formatting
     // you can also only enable specific widgets here
@@ -65,7 +67,10 @@ const CustomTable = ({widgets, ...props}) => {
 }
 
 const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
-export const customWidgets = WidgetsDefault.define({
+export const customWidgets = WidgetsDefault.define<{
+    InfoRenderer?: React.ComponentType<InfoRendererProps>
+    DndBlockSelector?: DragDropBlockComponentsBinding['DndBlockSelector']
+}, {}>({
     InfoRenderer: InfoRenderer,
     widgetPlugins: widgetPlugins,
     schemaPlugins: schemaPlugins,
@@ -98,14 +103,14 @@ export const customWidgets = WidgetsDefault.define({
         Colorful: ColorfulHex,
         ColorfulHsla: ColorfulHsla,
         ColorfulRgba: ColorfulRgba,*/
-        Code: Loadable({
-            loader: () => import('../CustomCodeWidgets').then(r => r.CustomWidgetCode),
-            loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
-        }),
-        CodeSelectable: Loadable({
-            loader: () => import('../CustomCodeWidgets').then(r => r.CustomWidgetCodeSelectable),
-            loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
-        }),
+        // Code: Loadable({
+        //     loader: () => import('../CustomCodeWidgets').then(r => r.CustomWidgetCode),
+        //     loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
+        // }),
+        // CodeSelectable: Loadable({
+        //     loader: () => import('../CustomCodeWidgets').then(r => r.CustomWidgetCodeSelectable),
+        //     loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
+        // }),
         /*DateTime: Loadable({
             loader: () => import('@ui-schema/material-pickers').then(r => r.DateTimePicker),
             loading: () => <LoadingCircular title={'Loading DateTime Widget'}/>,
@@ -122,17 +127,17 @@ export const customWidgets = WidgetsDefault.define({
             loader: () => import('./EditorJSComp').then(r => r.EditorJSComp),
             loading: () => <LoadingCircular title={'Loading EditorJS'}/>,
         }),
-        SortableList: Loadable({
-            loader: () => import('@ui-schema/material-dnd/Widgets/SortableList').then(r => r.SortableList),
-            loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
-        }),
-        DragDropArea: Loadable({
-            loader: () => import('@ui-schema/material-dnd/Widgets/DragDropArea').then(r => r.DragDropArea),
-            loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
-        }),
-        DropArea: Loadable({
-            loader: () => import('@ui-schema/material-dnd/Widgets/DropArea').then(r => r.DropArea),
-            loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
-        }),
+        // SortableList: Loadable({
+        //     loader: () => import('@ui-schema/material-dnd/Widgets/SortableList').then(r => r.SortableList),
+        //     loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
+        // }),
+        // DragDropArea: Loadable({
+        //     loader: () => import('@ui-schema/material-dnd/Widgets/DragDropArea').then(r => r.DragDropArea),
+        //     loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
+        // }),
+        // DropArea: Loadable({
+        //     loader: () => import('@ui-schema/material-dnd/Widgets/DropArea').then(r => r.DropArea),
+        //     loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
+        // }),
     },
 })

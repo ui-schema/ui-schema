@@ -1,3 +1,4 @@
+import { expect, describe, test } from '@jest/globals'
 import { isEqual } from '@ui-schema/system/Utils/isEqual'
 import { List, Map } from 'immutable'
 
@@ -23,6 +24,6 @@ describe('isEqual', () => {
         'isEqual(%j, %s)',
         (a: any, b: any, expectedValid) => {
             expect(isEqual(a, b)).toBe(expectedValid)
-        }
+        },
     )
 })

@@ -1,3 +1,4 @@
+import { expect, describe, test } from '@jest/globals'
 import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
 import { Map } from 'immutable'
 import { createMap } from '@ui-schema/system/createMap'
@@ -15,6 +16,6 @@ describe('schemaRulesToNative', () => {
         'schemaRulesToNative(%j, %j)',
         (inputProps, schema, compare, expected) => {
             expect(compare(schemaRulesToNative(inputProps, schema))).toBe(expected)
-        }
+        },
     )
 })

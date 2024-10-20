@@ -5,7 +5,8 @@
     "scripts": {
         "sitemap": "ts-node -r tsconfig-paths/register cli/sitemap.ts \"https://ui-schema.bemit.codes\" ./public/sitemap.xml",
         "doc-gen": "ts-node -r tsconfig-paths/register cli/doc-gen.ts",
-        "page-index": "ts-node -r tsconfig-paths/register cli/page-index.ts"
+        "page-index": "ts-node -r tsconfig-paths/register cli/page-index.ts",
+        "tscheck": "tsc --noEmit"
     },
     "dependencies": {
         "@control-ui/app": "0.0.27",
