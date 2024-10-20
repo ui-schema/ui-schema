@@ -10,6 +10,7 @@ import IcShowCompact from '@mui/icons-material/Compress'
 import { HeadMeta } from '@control-ui/kit/HeadMeta'
 import { ScrollUpButton } from '@control-ui/kit/ScrollUpButton'
 import { DocsDetailsModules } from '../component/DocsDetailsModules'
+import { DemoWidget } from '../schemas/_list'
 import PageNotFound from './PageNotFound'
 import { DocDetailsRenderer, DocDetailsProps } from '@control-ui/docs/DocDetails'
 import { LinkableHeadlineMenu } from '@control-ui/docs/LinkableHeadline'
@@ -145,7 +146,7 @@ const DocContent: React.FC<{
 
 Examples of this widget, using \`ds-material\`. Type in/change the input and check the data or change the schema (e.g. add specific keywords from above), the demo generators are showing invalid directly.
 `}/>
-                            {doc?.demos?.schema.map(([demoText, demoSchema, demoData], i) =>
+                            {doc?.demos?.schema.map(([demoText, demoSchema, demoData]: DemoWidget, i) =>
                                 <React.Fragment key={i}>
                                     {demoText ?
                                         <Box mb={2}>

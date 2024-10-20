@@ -1,19 +1,15 @@
 /**
  * @jest-environment jsdom
  */
-import React from 'react'
-import { it, expect, describe } from '@jest/globals'
+import { expect, describe, test } from '@jest/globals'
 import { render } from '@testing-library/react'
-// @ts-ignore
-import { toBeInTheDocument, toHaveClass } from '@testing-library/jest-dom/matchers'
-import { SchemaPluginsAdapter, handleSchemaPluginsAdapter } from './SchemaPluginsAdapter'
+import { SchemaPluginsAdapter } from '@ui-schema/react/SchemaPluginsAdapter'
 import { createOrderedMap } from '@ui-schema/system/createMap'
-import { WidgetRenderer } from '../WidgetRenderer/WidgetRenderer'
-
-expect.extend({toBeInTheDocument, toHaveClass})
+import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
+import { SchemaPluginStack } from '@ui-schema/system/SchemaPluginStack'
 
 describe('SchemaPluginsAdapter', () => {
-    it('SchemaPluginsAdapter', async () => {
+    test('SchemaPluginsAdapter', async () => {
         const {queryByText} = render(
             // ts-@ignore
             <SchemaPluginsAdapter
@@ -31,13 +27,13 @@ describe('SchemaPluginsAdapter', () => {
                     widgetPlugins: [],
                 }}
                 schema={createOrderedMap({type: 'string'})}
-            />
+            />,
         )
         expect(queryByText('is-valid') !== null).toBeTruthy()
     })
 })
 
-describe('handleSchemaPluginsAdapter', () => {
+describe('SchemaPluginStack', () => {
     test.each([
         [{
             widgets: {
@@ -83,14 +79,14 @@ describe('handleSchemaPluginsAdapter', () => {
             },
         }, 'valid', 100],
     ])(
-        'handleSchemaPluginsAdapter(%j): %j, %j',
+        'SchemaPluginStack(%j): %j, %j',
         (props, keyA: string, expectA: any) => {
             // @ts-ignore
-            const newProps = handleSchemaPluginsAdapter(props, props.widgets?.schemaPlugins)
+            const newProps = SchemaPluginStack(props, props.widgets?.schemaPlugins)
             // @ts-ignore
             expect(newProps[keyA]).toBe(expectA)
             // @ts-ignore
             // expect(newProps[keyB]).toBe(expectB)
-        }
+        },
     )
 })

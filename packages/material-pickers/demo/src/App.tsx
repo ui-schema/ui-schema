@@ -23,7 +23,7 @@ import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { createEmptyStore, UIStoreProvider, UIStoreType, WithScalarValue } from '@ui-schema/react/UIStore'
+import { createEmptyStore, onChangeHandler, UIStoreProvider, UIStoreType, WithScalarValue } from '@ui-schema/react/UIStore'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { isInvalid } from '@ui-schema/react/ValidityReporter'
@@ -128,7 +128,7 @@ const Main = () => {
     const [showValidity, setShowValidity] = React.useState(false)
     const [store, setStore] = React.useState<UIStoreType>(() => createEmptyStore(schema.get('type') as string))
 
-    const onChangeNext = React.useCallback(
+    const onChangeNext: onChangeHandler = React.useCallback(
         (actions) => setStore(storeUpdater(actions)),
         [setStore],
     )

@@ -33,6 +33,7 @@ const base: Partial<Config.InitialOptions> = {
         // 'node_modules/(?!(.*@ui-schema.*|.*node_modules.*))',
     ],
     transform: {
+        // '^.+\\.js$': 'babel-jest',
         ...createDefaultEsmPreset({
             tsconfig: '<rootDir>/packages/tsconfig-test.json',
             // diagnostics: false,
@@ -89,8 +90,8 @@ const config: Config.InitialOptions = {
     collectCoverage: true,
     verbose: true,
     projects: [
-        ...packages.map((pkg, folder) => ({
-            displayName: 'test-' + folder,
+        ...packages.map((pkg) => ({
+            displayName: 'test-' + pkg[1],
             ...base,
             moduleDirectories: ['node_modules', '<rootDir>/packages/' + toPackageFolder(pkg) + '/node_modules'/*, '<rootDir>/packages/' + pkg, '<rootDir>/packages/' + pkg + '/src'*/],
             //moduleDirectories: ['node_modules', '<rootDir>/packages/ui-schema/node_modules', '<rootDir>/packages/ds-material/node_modules'],

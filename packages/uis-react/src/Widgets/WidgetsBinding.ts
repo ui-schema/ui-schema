@@ -40,9 +40,9 @@ export interface WidgetsBindingComponents {
     // final widget matching and rendering
     WidgetRenderer: React.ComponentType<WidgetRendererProps>
     // if using `isVirtual` for no-output based rendering
-    VirtualRenderer: React.ComponentType<WidgetProps & WithValue>
+    VirtualRenderer?: React.ComponentType<WidgetProps & WithValue>
     // if no widget can be matched
-    NoWidget: React.ComponentType<NoWidgetProps>
+    NoWidget?: React.ComponentType<NoWidgetProps>
     // widget plugin system (react components)
     widgetPlugins?: WidgetPluginType[]
     // props plugin system (vanilla JS functions based)

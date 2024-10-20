@@ -11,7 +11,10 @@ import { createOrderedMap } from '@ui-schema/system/createMap'
 import { demoTable } from '../content/docs/widgets/TableDemo'
 import { List } from 'immutable'
 
-const schemas: [string, any, any, string][] = [
+export type DemoWidget = [description: string, schema: any, data?: any]
+export type DemoSchema = [title: string, schema: any, data: any, description?: string]
+
+const schemas: DemoSchema[] = [
     ['Main Demo', schemaMain, dataMain, `
 # Big Simple Example
 

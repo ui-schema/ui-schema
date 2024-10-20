@@ -42,7 +42,8 @@ export const WidgetRenderer = <W extends WidgetsBindingFactory = WidgetsBindingF
     try {
         Widget =
             isVirtual ?
-                VirtualWidgetRenderer as WT :
+                // todo: only use widgets binding?
+                widgets.VirtualRenderer as unknown as WT || VirtualWidgetRenderer as WT :
                 WidgetOverride ?
                     // todo: fix/change 0.5.0 WidgetOverride typing
                     WidgetOverride as unknown as WT :
