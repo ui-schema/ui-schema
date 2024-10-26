@@ -38,8 +38,8 @@
     },
     "peerDependencies": {
         "immutable": "^4.0.0",
-        "@types/react": "^16.8 || ^17.0 || ^18.0",
-        "react": "^16.8 || ^17.0 || ^18.0",
+        "@types/react": "^18.0",
+        "react": "^18.0",
         "react-dnd": "^14.0.0"
     },
     "peerDependenciesMeta": {

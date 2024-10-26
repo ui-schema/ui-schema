@@ -71,5 +71,7 @@ List of renamed functions, components etc., most are also moved to other package
     - never go into the third level, even for "sub bundles" like `/styles`,
       it fails when using `import useTheme from '@mui/material/styles/useTheme'`
       but works using `import { useTheme } from '@mui/material/styles'`
-- finalize `package.json` generation
-- convert all `.js/.d.ts` to `.ts`
+- finalize `package.json` generation for strict esm with ESM and CJS support
+- remove slate/editorjs or migrate to basic react18 support
+    - migrate from `@mui/styles`
+    - upgrade peer deps to react18 support

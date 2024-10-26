@@ -73,15 +73,19 @@ const base: Partial<Config.InitialOptions> = {
     ],
     testPathIgnorePatterns: [
         '<rootDir>/dist',
-        '<rootDir>/packages/.*/build',
+        '<rootDir>/packages/.+/build',
     ],
     watchPathIgnorePatterns: [
+        '<rootDir>/.idea',
+        '<rootDir>/.git',
         '<rootDir>/dist',
-        '<rootDir>/packages/.*/build',
+        '<rootDir>/node_modules',
+        '<rootDir>/packages/.+/node_modules',
+        '<rootDir>/packages/.+/build',
     ],
     modulePathIgnorePatterns: [
         '<rootDir>/dist',
-        '<rootDir>/packages/.*/build',
+        '<rootDir>/packages/.+/build',
     ],
 }
 

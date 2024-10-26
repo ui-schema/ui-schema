@@ -69,7 +69,7 @@
         "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "immutable": "^4.0.0",
-        "react": "^17.0 || ^18.0",
+        "react": "^18.0",
         "slate": "~0.60.8",
         "slate-history": "~0.60.8",
         "slate-hyperscript": "~0.60.8",
