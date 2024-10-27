@@ -4,13 +4,6 @@
         "@babel/preset-typescript"
     ],
     "plugins": [
-        "@babel/plugin-syntax-dynamic-import",
-        "@babel/plugin-transform-react-jsx",
-        "@babel/plugin-transform-template-literals",
-        "@babel/plugin-proposal-export-namespace-from",
-        "@babel/plugin-proposal-export-default-from",
-        "@babel/plugin-proposal-optional-chaining",
-        "@babel/plugin-proposal-nullish-coalescing-operator",
         "react-loadable/babel",
         [
             "babel-plugin-named-asset-import",
@@ -27,8 +20,7 @@
             {
                 "useBuiltIns": true
             }
-        ],
-        "@babel/plugin-proposal-class-properties"
+        ]
     ],
     "env": {
         "cjs": {
@@ -44,11 +36,7 @@
                 "@babel/preset-react",
                 "@babel/preset-typescript"
             ],
-            "plugins": [
-                "@babel/plugin-transform-private-methods",
-                "@babel/plugin-proposal-optional-chaining",
-                "@babel/plugin-proposal-nullish-coalescing-operator"
-            ]
+            "plugins": []
         },
         "node": {
             "presets": [
