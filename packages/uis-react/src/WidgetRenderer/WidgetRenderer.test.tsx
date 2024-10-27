@@ -1,32 +1,34 @@
 /**
  * @jest-environment jsdom
  */
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'
-import { WidgetRenderer } from './WidgetRenderer'
+import { WidgetRenderer, WidgetRendererProps } from './WidgetRenderer'
 import { createOrderedMap } from '@ui-schema/system/createMap'
-import { VirtualArrayRenderer, VirtualWidgetsMapping } from '@ui-schema/react/VirtualWidgetRenderer'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { VirtualArrayRenderer, VirtualWidgetRendererProps, VirtualWidgetsMapping } from '@ui-schema/react/VirtualWidgetRenderer'
+import { NoWidgetProps, WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import { List } from 'immutable'
 import { ExtractStorePlugin } from '@ui-schema/react/ExtractStorePlugin'
-import { createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
+import { createStore, UIStoreProvider, WithScalarValue } from '@ui-schema/react/UIStore'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { translateRelative } from '@ui-schema/system/TranslatorRelative'
 
-export const virtualWidgets: VirtualWidgetsMapping = {
+export const virtualWidgets: VirtualWidgetsMapping & { default_with_id: VirtualWidgetsMapping['default'] } = {
     // eslint-disable-next-line react/display-name
     'default': () => <span>virtual-default-renderer</span>,
     // @ts-ignore
     // eslint-disable-next-line react/display-name
-    'default_w_suffix': ({value}) => <span id={'virtual-default-renderer__' + value}/>,
+    'default_with_id': ({value}) => <span id={'virtual-default-renderer__' + value}/>,
     // eslint-disable-next-line react/display-name
     'object': ObjectRenderer,
     // eslint-disable-next-line react/display-name
     'array': () => <span>virtual-array-renderer</span>,
 }
+
+const NoWidget = ({scope, matching}: NoWidgetProps): ReactNode => <>missing-{scope}{matching ? '-' + matching : ''}</>
 
 describe('WidgetRenderer', () => {
     it('missing type widget', async () => {
@@ -35,7 +37,9 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
-                    types: {}, custom: {},
+                    NoWidget: NoWidget,
+                    types: {},
+                    custom: {},
                     widgetPlugins: [
                         ExtractStorePlugin,
                         WidgetRenderer,
@@ -56,7 +60,9 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
-                    types: {}, custom: {},
+                    NoWidget: NoWidget,
+                    types: {},
+                    custom: {},
                     widgetPlugins: [
                         ExtractStorePlugin,
                         WidgetRenderer,
@@ -77,7 +83,10 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
-                    types: {string: (props: WidgetProps) => props.value}, custom: {},
+                    types: {
+                        string: (props: WidgetProps & WithScalarValue) => props.value,
+                    },
+                    custom: {},
                     widgetPlugins: [
                         ExtractStorePlugin,
                         WidgetRenderer,
@@ -99,7 +108,10 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
-                    types: {}, custom: {Text: (props: WidgetProps) => props.value},
+                    types: {},
+                    custom: {
+                        Text: (props: WidgetProps & WithScalarValue) => props.value,
+                    },
                     widgetPlugins: [
                         ExtractStorePlugin,
                         WidgetRenderer,
@@ -121,7 +133,10 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
-                    types: {array: (props: WidgetProps) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set'}, custom: {},
+                    types: {
+                        array: (props: WidgetProps & { value?: unknown }) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set',
+                    },
+                    custom: {},
                     widgetPlugins: [
                         ExtractStorePlugin,
                         WidgetRenderer,
@@ -142,7 +157,9 @@ describe('WidgetRenderer', () => {
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
                     types: {},
-                    custom: {CustomObj: (props: WidgetProps) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set'},
+                    custom: {
+                        CustomObj: (props: WidgetProps & { value?: unknown }) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set',
+                    },
                     widgetPlugins: [
                         ExtractStorePlugin,
                         WidgetRenderer,
@@ -169,7 +186,10 @@ describe('WidgetRenderer', () => {
                     widgets={{
                         // @ts-ignore
                         RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
-                        types: {string: () => 'string-renderer', number: () => 'number-renderer'},
+                        types: {
+                            string: () => 'string-renderer',
+                            number: () => 'number-renderer',
+                        },
                         custom: {},
                         widgetPlugins: [
                             ExtractStorePlugin,
@@ -202,7 +222,7 @@ describe('WidgetRenderer', () => {
 
     it('virtual widget object w-values', async () => {
         const virtualWidgets2: VirtualWidgetsMapping = {
-            default: virtualWidgets.default_w_suffix,
+            default: virtualWidgets.default_with_id,
             array: VirtualArrayRenderer,
             object: ObjectRenderer,
         }
@@ -228,7 +248,10 @@ describe('WidgetRenderer', () => {
                     widgets={{
                         // @ts-ignore
                         RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
-                        types: {string: () => 'string-renderer', number: () => 'number-renderer'},
+                        types: {
+                            string: () => 'string-renderer',
+                            number: () => 'number-renderer',
+                        },
                         custom: {},
                         widgetPlugins: [
                             ExtractStorePlugin,
@@ -256,10 +279,13 @@ describe('WidgetRenderer', () => {
             array: VirtualArrayRenderer,
             object: ObjectRenderer,
         }
-        const widgets = {
+        const widgets: WidgetsBindingFactory = {
             // @ts-ignore
             RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
-            types: {string: () => 'string-renderer', number: () => 'number-renderer'},
+            types: {
+                string: () => 'string-renderer',
+                number: () => 'number-renderer',
+            },
             custom: {},
             widgetPlugins: [
                 ExtractStorePlugin,
@@ -296,6 +322,11 @@ describe('WidgetRenderer', () => {
                             },
                         })}
                         isVirtual
+                        internalValue={undefined}
+                        t={undefined as any}
+                        onChange={undefined as any}
+                        required={false}
+                        errors={undefined as any}
                     />
                 </UIStoreProvider>
             </UIMetaProvider>,
@@ -311,10 +342,13 @@ describe('WidgetRenderer', () => {
             array: VirtualArrayRenderer,
             object: ObjectRenderer,
         }
-        const widgets = {
+        const widgets: WidgetsBindingFactory = {
             // @ts-ignore
             RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
-            types: {string: () => 'string-renderer', number: () => 'number-renderer'},
+            types: {
+                string: () => 'string-renderer',
+                number: () => 'number-renderer',
+            },
             custom: {},
             widgetPlugins: [
                 ExtractStorePlugin,
@@ -332,7 +366,7 @@ describe('WidgetRenderer', () => {
                     // @ts-ignore
                     onChange={undefined}
                 >
-                    <WidgetRenderer
+                    <WidgetRenderer<WidgetsBindingFactory, Pick<VirtualWidgetRendererProps, 'virtualWidgets'> & WidgetRendererProps>
                         widgets={widgets}
                         value={value}
                         storeKeys={List()}
@@ -354,6 +388,11 @@ describe('WidgetRenderer', () => {
                             },
                         })}
                         isVirtual
+                        internalValue={undefined}
+                        t={undefined as any}
+                        onChange={undefined as any}
+                        required={false}
+                        errors={undefined as any}
                     />
                 </UIStoreProvider>
             </UIMetaProvider>,

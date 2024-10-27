@@ -79,6 +79,7 @@ List of renamed functions, components etc., most are also moved to other package
         - usage: `return <Plugin {...{ currentPluginIndex: next, ...props } as C & P} />`
     - using `object` or `Record<string, unkown>` or `Record<string, any>` does not work
     - find a better solution, especially for the `eslint` rule [@typescript-eslint/no-empty-object-type](https://typescript-eslint.io/rules/no-empty-object-type/)
+    - the generic in `UIStoreProvider` causes no issue in `demo-web`, yet in `WidgetRenderer.test` causes props to be inferred as `never`, causing a lot of type errors
     - cleanup workarounds in:
         - `NextPluginRenderer`
 - finalize `package.json` generation for strict esm with ESM and CJS support
