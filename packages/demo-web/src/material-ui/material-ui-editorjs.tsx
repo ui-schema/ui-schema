@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
-import { ImmutableEditor, themeMaterial } from 'react-immutable-editor'
+import { ImmutableEditor, themeMaterial, themeMaterialLight } from 'react-immutable-editor'
 import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { browserT } from '../t'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
@@ -146,14 +146,10 @@ const Main = () => {
                     >Index: {i} {store.activeIndex === i ? 'is-active' : null}</Button>
                     <ImmutableEditor
                         data={s.getValues()}
-                        onChange={() => console.log('not implemented')}
                         getVal={keys => s.getValues().getIn(keys)}
                         theme={{
-                            ...themeMaterial,
-                            type: theme.palette.mode,
+                            ...theme.palette.mode === 'light' ? themeMaterialLight : themeMaterial,
                             base00: theme.palette.background.paper,
-                            base0D: theme.palette.text.secondary,
-                            base0B: theme.palette.text.primary,
                         }}
                     />
                 </div>)}

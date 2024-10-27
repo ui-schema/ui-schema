@@ -1,10 +1,9 @@
 import React from 'react'
-import Grid, { GridSize } from '@mui/material/Grid'
+import Grid, { GridSize, GridSpacing } from '@mui/material/Grid'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { getNextPlugin, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { OrderedMap } from 'immutable'
 import { GroupRendererProps } from '@ui-schema/react/Widgets'
-import { GridSpacing } from '@mui/material/Grid/Grid'
 
 export const SchemaGridItem: React.ComponentType<React.PropsWithChildren<{
     schema: UISchemaMap
@@ -48,7 +47,7 @@ export const GroupRenderer: React.ComponentType<React.PropsWithChildren<GroupRen
         schema, noGrid,
         spacing = 2, style, className,
         children,
-    }
+    },
 ) =>
     noGrid ? children as React.ReactElement :
         <Grid

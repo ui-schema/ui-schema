@@ -1,10 +1,10 @@
 {
     "compilerOptions": {
-        "module": "esnext",
-        "target": "es2021",
+        "module": "ESNext",
+        "target": "ES2021",
         "jsx": "preserve",
         "removeComments": false,
-        "moduleResolution": "node",
+        "moduleResolution": "Node10",
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "noEmit": false,

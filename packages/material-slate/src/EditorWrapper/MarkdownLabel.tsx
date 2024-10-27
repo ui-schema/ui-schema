@@ -1,7 +1,7 @@
 import React from 'react'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import { Theme } from '@mui/material/styles/createTheme'
+import { Theme } from '@mui/material/styles'
 import makeStyles from '@mui/styles/makeStyles'
 import { Translate } from '@ui-schema/react/Translate'
 

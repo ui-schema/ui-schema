@@ -3,7 +3,7 @@ import { pluginOptions } from '@ui-schema/material-slate/Slate/pluginOptions'
 import Typography from '@mui/material/Typography'
 import makeStyles from "@mui/styles/makeStyles"
 import { ElementMapping } from '@ui-schema/material-slate/SlateElements/ElementMapper'
-import { Theme } from '@mui/material/styles/createTheme'
+import { Theme } from '@mui/material/styles'
 
 const useStyles = makeStyles<Theme>(theme => ({
     quote: {

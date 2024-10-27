@@ -1,7 +1,7 @@
 import React from 'react'
 import clsx from 'clsx'
 import makeStyles from '@mui/styles/makeStyles'
-import { Theme } from '@mui/material/styles/createTheme'
+import { Theme } from '@mui/material/styles'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import { inputClasses } from '@mui/material/Input'

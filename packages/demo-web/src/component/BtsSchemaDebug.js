@@ -24,7 +24,7 @@ const themeOneLight = {
     base0F: "#986801",
 };
 
-const BtsJsonEditor = p => <div className={clsx("shadow-sm", "px-4", "py-4", "my-4", "bg-info", "border")} /*style={{backgroundColor: "#002b36"}} */>
+const BtsJsonEditor = p => <div className={clsx("shadow-sm", "px-4", "py-4", "my-4", "bg-light", "border")} /*style={{backgroundColor: "#002b36"}} */>
     <ImmutableEditor
         {...p}
         theme={themeOneLight}/>

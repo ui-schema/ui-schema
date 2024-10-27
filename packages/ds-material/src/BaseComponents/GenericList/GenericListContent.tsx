@@ -1,6 +1,6 @@
 import React from 'react'
 import FormControl from '@mui/material/FormControl'
-import Grid from '@mui/material/Grid'
+import Grid, { GridSpacing } from '@mui/material/Grid'
 import FormLabel from '@mui/material/FormLabel'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { WidgetProps } from '@ui-schema/react/Widgets'
@@ -9,7 +9,6 @@ import { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButto
 import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 import { GenericListFooterProps, GenericListItemProps, GenericListItemSharedProps } from '@ui-schema/ds-material/BaseComponents'
 import Box from '@mui/material/Box'
-import { GridSpacing } from '@mui/material/Grid/Grid'
 import { InfoRendererType } from '@ui-schema/ds-material/Component/InfoRenderer'
 
 export interface GenericListContentProps extends ListButtonOverwrites {

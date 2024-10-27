@@ -4,6 +4,8 @@
         "src"
     ],
     "compilerOptions": {
+        "module": "ES2020",
+        "moduleResolution": "Bundler",
         "outDir": "build/dts"
     }
 }

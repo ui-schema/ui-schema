@@ -72,6 +72,13 @@ List of renamed functions, components etc., most are also moved to other package
       it fails when using `import useTheme from '@mui/material/styles/useTheme'`
       but works using `import { useTheme } from '@mui/material/styles'`
 - finalize `package.json` generation for strict esm with ESM and CJS support
+- normalize `tsconfig` `moduleResolution`
+    - `demo-web`: as `react-immutable-editor` is pure ESM and strict ESM using `exports` with files in a sub-directory,
+      the `demo-web` uses no `type: "module"` and `moduleResolution: "Bundler"` to resolve it,
+      it also works with `type: "module"` and `moduleResolution: "Bundler"` - except for the remaining `.js` files,
+      but the alternative with `type: "module"` and `moduleResolution: "Node16"` breaks other imports of packages not strict-ESM yet
+    - `docs`: uses no `type: "module"`, as that breaks older dependencies, instead TS config contains `"module": "CommonJS", "moduleResolution": "node"`
+      to support any older standards in CLI and webpack bundle, even while adjusting / testing different settings in root `tsconfig.json`
 - remove slate/editorjs or migrate to basic react18 support
     - migrate from `@mui/styles`
     - upgrade peer deps to react18 support

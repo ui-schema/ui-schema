@@ -6,12 +6,11 @@ import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
 import { schemaTypeToDistinct } from '@ui-schema/system/schemaTypeToDistinct'
 import { List, OrderedMap, Map } from 'immutable'
-import { Theme } from '@mui/material/styles/createTheme'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import { TableRowProps, TableRowActionDelete } from '@ui-schema/ds-material/BaseComponents/Table'
 import { TableCellSchemaImmutable } from '@ui-schema/ds-material/Widgets/Table'
-import { useTheme } from '@mui/material/styles'
+import { useTheme, Theme } from '@mui/material/styles'
 import { SxProps } from '@mui/system'
 
 const useStyles = (theme: Theme, {dense}: { dense: boolean }): SxProps => ({

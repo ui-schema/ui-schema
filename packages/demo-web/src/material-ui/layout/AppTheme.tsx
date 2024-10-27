@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Head from './Head'
-import createTheme from '@mui/material/styles/createTheme'
+import { createTheme } from '@mui/material/styles'
 import { ThemerProvider } from '../component/Theme'
 import CssBaseline from '@mui/material/CssBaseline'
 

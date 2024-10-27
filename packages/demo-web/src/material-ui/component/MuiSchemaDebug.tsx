@@ -1,7 +1,7 @@
 import React from 'react'
 import Paper from '@mui/material/Paper'
-import useTheme from '@mui/material/styles/useTheme'
-import { ImmutableEditor, themeMaterial } from 'react-immutable-editor'
+import { useTheme } from '@mui/material/styles'
+import { ImmutableEditor, themeMaterial, themeMaterialLight } from 'react-immutable-editor'
 import { SchemaDebug } from '../../component/SchemaDebug'
 import Typography from '@mui/material/Typography'
 
@@ -22,11 +22,8 @@ const MuiJsonEditor = ({title, ...p}: any) => {
         <ImmutableEditor
             {...p}
             theme={{
-                ...themeMaterial,
-                type: theme.palette.mode,
+                ...theme.palette.mode === 'light' ? themeMaterialLight : themeMaterial,
                 base00: theme.palette.background.paper,
-                base0D: theme.palette.text.secondary,
-                base0B: theme.palette.text.primary,
             }}
         />
     </Paper>
