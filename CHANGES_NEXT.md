@@ -90,6 +90,12 @@ List of renamed functions, components etc., most are also moved to other package
       but the alternative with `type: "module"` and `moduleResolution: "Node16"` breaks other imports of packages not strict-ESM yet
     - `docs`: uses no `type: "module"`, as that breaks older dependencies, instead TS config contains `"module": "CommonJS", "moduleResolution": "node"`
       to support any older standards in CLI and webpack bundle, even while adjusting / testing different settings in root `tsconfig.json`
+- optimize `.d.ts` generation, switch to `rootDir` to have normalized directory names for merge-dir, not depending if anything is imported or not
+    - currently intended to be defined in the package.json per package that should be generated
+    - options like `composite`/`references` didn't work, except with a defined order of script execs, so most likely no option
+    - a central tsgen command seems to be the easiest, which then merges the declaration files into each packages build
+        - reducing type generations, only once per project
+        - needs adjustments to not generate for apps like demo/docs
 - remove slate/editorjs or migrate to basic react18 support
     - migrate from `@mui/styles`
     - upgrade peer deps to react18 support

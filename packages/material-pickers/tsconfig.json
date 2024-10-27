@@ -8,6 +8,6 @@
         "src/**/*.test.*"
     ],
     "compilerOptions": {
-        "outDir": "build/dts"
+        "declarationDir": "build/dts"
     }
 }

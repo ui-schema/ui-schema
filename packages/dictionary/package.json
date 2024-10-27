@@ -26,7 +26,7 @@
         "@ui-schema/json-schema": "~0.5.0-alpha.0"
     },
     "scripts": {
-        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && node ../../tools/merge-dirs.js build/dts/dictionary/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*"
+        "dtsgen": "tsc --declaration --emitDeclarationOnly --pretty --rootDir ../ && node ../../tools/merge-dirs.js build/dts/dictionary/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*"
     },
     "publishConfig": {
         "tag": "next",

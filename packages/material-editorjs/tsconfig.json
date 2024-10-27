@@ -4,6 +4,6 @@
         "src"
     ],
     "compilerOptions": {
-        "outDir": "build/dts"
+        "declarationDir": "build/dts"
     }
 }

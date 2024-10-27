@@ -7,7 +7,6 @@
         "moduleResolution": "Node10",
         "forceConsistentCasingInFileNames": true,
         "strict": true,
-        "noEmit": false,
         "experimentalDecorators": true,
         "baseUrl": "./",
         "allowSyntheticDefaultImports": true,

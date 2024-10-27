@@ -28,7 +28,7 @@
     "main": "index.js",
     "module": "esm/index.js",
     "scripts": {
-        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && node ../../tools/merge-dirs.js build/dts/material-dnd/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*",
+        "dtsgen": "tsc --declaration --emitDeclarationOnly --pretty --rootDir ../ && node ../../tools/merge-dirs.js build/dts/material-dnd/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*",
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "dependencies": {
