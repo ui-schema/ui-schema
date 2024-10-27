@@ -47,6 +47,9 @@ export const WidgetRenderer = <W extends WidgetsBindingFactory = WidgetsBindingF
                 WidgetOverride ?
                     // todo: fix/change 0.5.0 WidgetOverride typing
                     WidgetOverride as unknown as WT :
+                    // todo: as WidgetRenderer is now in widgetPlugins directly, move the matcher to the `widgets` binding,
+                    //       to be able to use that directly where needed (e.g. FormGroup),
+                    //       but in an adjusted version, which allows using "most WidgetProps" for the matcher logic
                     // @ts-ignore
                     widgetMatcher<WT, WT, W>({
                         widgetName: widgetName,

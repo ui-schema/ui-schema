@@ -9,7 +9,6 @@ import { WidgetEngineErrorBoundary, WidgetPluginProps, WidgetPluginType } from '
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { AppliedWidgetEngineProps } from '@ui-schema/react/applyWidgetEngine'
 import { WidgetOverrideType, WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
-import { WidgetRendererProps } from '@ui-schema/react/WidgetRenderer'
 import { useUIStoreActions } from '@ui-schema/react/UIStoreActions'
 
 export type WidgetEngineWrapperProps = {
@@ -57,9 +56,9 @@ export type WidgetEngineProps<W extends WidgetsBindingFactory = WidgetsBindingFa
 }
 
 // `extractValue` has moved to own plugin `ExtractStorePlugin` since `0.3.0`
-// `withUIMeta` and `mema` are not needed for performance optimizing since `0.3.0` at this position
+// `withUIMeta` and `memo` are not needed for performance optimizing since `0.3.0` at this position
 export const WidgetEngine = <PWidget extends WidgetProps = WidgetProps, C extends {} = {}, P extends WidgetEngineProps<WidgetsBindingFactory, PWidget, C> = WidgetEngineProps<WidgetsBindingFactory, PWidget, C>, U extends {} = {}>(
-    {StackWrapper, wrapperProps, extractValues, ...props}: P// & PWidget
+    {StackWrapper, wrapperProps, extractValues, ...props}: P,
 ): React.ReactElement => {
     const {widgets, ...meta} = useUIMeta<C, WidgetsBindingFactory>()
     const config = useUIConfig<U>()
@@ -143,14 +142,16 @@ export const WidgetEngine = <PWidget extends WidgetProps = WidgetProps, C extend
 export const getNextPlugin =
     <C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(
         next: number,
-        {widgetPlugins: wps, WidgetRenderer}: W
-    ): WidgetPluginType<C, W> | React.ComponentType<WidgetRendererProps<W>> =>
-        wps && next < wps.length ?
-            // todo: throw exception here, was: || (() => 'plugin-error') :
-            wps[next] as WidgetPluginType<C, W> :
-            WidgetRenderer as React.ComponentType<WidgetRendererProps<W>>
+        {widgetPlugins: wps}: W,
+    ): WidgetPluginType<C, W> => {
+        if (wps && next in wps) {
+            return wps[next] as WidgetPluginType<C, W>
+        }
 
-export const NextPluginRenderer = <C extends {} = {}, U extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory, P extends WidgetPluginProps<W> = WidgetPluginProps<W>>(
+        throw new Error(`WidgetPlugin overflow, no plugin at ${next}.`)
+    }
+
+export const NextPluginRenderer = <C extends {} = {}, U extends object = object, W extends WidgetsBindingFactory = WidgetsBindingFactory, P extends WidgetPluginProps<W> = WidgetPluginProps<W>>(
     {
         currentPluginIndex,
         ...props
@@ -158,7 +159,7 @@ export const NextPluginRenderer = <C extends {} = {}, U extends {} = {}, W exten
 ): React.ReactElement => {
     const next = currentPluginIndex + 1
     const Plugin = getNextPlugin<C, W>(next, props.widgets)
-    // @ts-ignore
-    return <Plugin {...props} currentPluginIndex={next}/>
+    return <Plugin {...{currentPluginIndex: next, ...props} as P & C & U}/>
 }
+
 export const NextPluginRendererMemo = memo(NextPluginRenderer) as <C extends {} = {}, U extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory, P extends WidgetPluginProps<W> = WidgetPluginProps<W>>(props: P & C & U) => React.ReactElement

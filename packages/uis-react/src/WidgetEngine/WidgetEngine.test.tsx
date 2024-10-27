@@ -2,8 +2,8 @@
  * @jest-environment jsdom
  */
 import { NoWidget } from '@ui-schema/react/NoWidget'
-import { it, expect, describe } from '@jest/globals'
-import { render } from '@testing-library/react'
+import { it, expect, describe, jest } from '@jest/globals'
+import { render, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'
 import { NextPluginRenderer, NextPluginRendererMemo, WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { createOrderedMap } from '@ui-schema/system/createMap'
@@ -19,13 +19,14 @@ describe('NextPluginRenderer', () => {
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
                     NoWidget: NoWidget,
-                    WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
-                    widgetPlugins: [],
+                    widgetPlugins: [
+                        WidgetRenderer,
+                    ],
                 }}
                 currentPluginIndex={-1}
                 schema={createOrderedMap({type: 'string'})}
-            />
+            />,
         )
         // todo: adjust test for 0.5.0
         expect(queryByText('missing-type-string') !== null).toBeTruthy()
@@ -38,16 +39,18 @@ describe('NextPluginRenderer', () => {
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
                     NoWidget: NoWidget,
-                    WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
-                    widgetPlugins: [(p) => <>
-                        <span>plugin-1</span>
-                        <NextPluginRenderer {...p}/>
-                    </>],
+                    widgetPlugins: [
+                        (p) => <>
+                            <span>plugin-1</span>
+                            <NextPluginRenderer {...p}/>
+                        </>,
+                        WidgetRenderer,
+                    ],
                 }}
                 currentPluginIndex={-1}
                 schema={createOrderedMap({type: 'string'})}
-            />
+            />,
         )
         expect(queryByText('plugin-1') !== null).toBeTruthy()
         // todo: adjust test for 0.5.0
@@ -61,16 +64,18 @@ describe('NextPluginRenderer', () => {
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
                     NoWidget: NoWidget,
-                    WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
-                    widgetPlugins: [(p) => <>
-                        <span>plugin-1</span>
-                        <NextPluginRendererMemo {...p}/>
-                    </>],
+                    widgetPlugins: [
+                        (p) => <>
+                            <span>plugin-1</span>
+                            <NextPluginRendererMemo {...p}/>
+                        </>,
+                        WidgetRenderer,
+                    ],
                 }}
                 currentPluginIndex={-1}
                 schema={createOrderedMap({type: 'string'})}
-            />
+            />,
         )
         expect(queryByText('plugin-1') !== null).toBeTruthy()
         // todo: adjust test for 0.5.0
@@ -84,42 +89,54 @@ describe('NextPluginRenderer', () => {
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
                     NoWidget: NoWidget,
-                    WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
-                    widgetPlugins: [(p) => <>
-                        <span>plugin-1</span>
-                        <NextPluginRenderer {...p}/>
-                    </>],
+                    widgetPlugins: [
+                        (p) => <>
+                            <span>plugin-1</span>
+                            <NextPluginRenderer {...p}/>
+                        </>,
+                        WidgetRenderer,
+                    ],
                 }}
-                currentPluginIndex={0}
+                currentPluginIndex={0} // simulate that the first plugin was already rendered
                 schema={createOrderedMap({type: 'string'})}
-            />
+            />,
         )
         expect(queryByText('plugin-1') === null).toBeTruthy()
         // todo: adjust test for 0.5.0
         expect(queryByText('missing-type-string') !== null).toBeTruthy()
     })
     it('Single NextPluginRenderer - err', async () => {
-        const {queryByText} = render(
-            // @ts-ignore
-            <NextPluginRenderer
-                widgets={{
+        // disable default log inside react lib.
+        jest.spyOn(console, 'error').mockImplementation(() => jest.fn())
+
+        await waitFor(
+            () => expect(
+                () => render(
                     // @ts-ignore
-                    RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
-                    NoWidget: NoWidget,
-                    WidgetRenderer: WidgetRenderer,
-                    types: {}, custom: {},
-                    // @ts-ignore
-                    widgetPlugins: [undefined],
-                }}
-                currentPluginIndex={-1}
-                schema={createOrderedMap({type: 'string'})}
-            />
+                    <NextPluginRenderer
+                        widgets={{
+                            // @ts-ignore
+                            RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
+                            NoWidget: NoWidget,
+                            types: {}, custom: {},
+                            // @ts-ignore
+                            widgetPlugins: [
+                                (p) => <>
+                                    <span>plugin-1</span>
+                                    <NextPluginRenderer {...p}/>
+                                </>,
+                            ],
+                        }}
+                        currentPluginIndex={-1}
+                        schema={createOrderedMap({type: 'string'})}
+                    />,
+                ),
+            )
+                .toThrow('WidgetPlugin overflow, no plugin at 1.'),
         )
-        // todo: this must test on exception now
-        expect(queryByText('plugin-error') !== null).toBeTruthy()
-        // todo: adjust test for 0.5.0
-        expect(queryByText('missing-type-string') === null).toBeTruthy()
+
+        jest.restoreAllMocks()
     })
     it('Plugin Stack - noSchema', async () => {
         const {queryByText} = render(
@@ -129,16 +146,17 @@ describe('NextPluginRenderer', () => {
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
                     NoWidget: NoWidget,
-                    WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
                     // @ts-ignore
-                    widgetPlugins: [() => {
-                        throw new Error('dummy-error')
-                    }],
+                    widgetPlugins: [
+                        () => {
+                            throw new Error('dummy-error')
+                        },
+                    ],
                 }}
                 parentSchema={createOrderedMap({required: ['dummy']})}
                 storeKeys={List(['dummy'])}
-            />
+            />,
         )
         expect(queryByText('error-fallback') === null).toBeTruthy()
     })

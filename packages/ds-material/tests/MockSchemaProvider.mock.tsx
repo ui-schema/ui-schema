@@ -17,8 +17,7 @@ import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 export const MockWidgets: WidgetsBindingFactory = {
     ErrorFallback: () => null,
     GroupRenderer: () => null,
-    WidgetRenderer: WidgetRenderer,
-    widgetPlugins: [],
+    widgetPlugins: [WidgetRenderer],
     schemaPlugins: [],
     types: {},
     custom: {},

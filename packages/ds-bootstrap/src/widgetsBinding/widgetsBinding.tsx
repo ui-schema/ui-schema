@@ -8,7 +8,6 @@ import { OptionsRadio } from '@ui-schema/ds-bootstrap/Widgets/OptionsRadio'
 import { SimpleList } from '@ui-schema/ds-bootstrap/Widgets/SimpleList'
 import { GroupRenderer } from '@ui-schema/ds-bootstrap/Grid'
 import { widgetPlugins } from '@ui-schema/ds-bootstrap/widgetPlugins'
-import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { getValidators } from '@ui-schema/json-schema/getValidators'
 import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 
@@ -43,8 +42,7 @@ export interface BtsWidgetBinding extends WidgetsBindingFactory {
 export const widgets: BtsWidgetBinding = {
     ErrorFallback: MyFallbackComponent,
     GroupRenderer,
-    WidgetRenderer,
-    widgetPlugins,
+    widgetPlugins: widgetPlugins,
     schemaPlugins: validators,
     // todo: fix all existing bootstrap widget typings
     types: {

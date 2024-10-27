@@ -44,6 +44,7 @@ List of renamed functions, components etc., most are also moved to other package
 
 - removed `ExtractStorePlugin`, included now in `WidgetEngine` directly (for the moment, experimenting performance/typing)
 - removed `level` property, use `schemaKeys`/`storeKeys` to calc. that when necessary
+- removed `WidgetRenderer` from `getNextPlugin` internals, moved to `widgetPlugins` directly
 
 ### DS Material
 
@@ -71,6 +72,15 @@ List of renamed functions, components etc., most are also moved to other package
     - never go into the third level, even for "sub bundles" like `/styles`,
       it fails when using `import useTheme from '@mui/material/styles/useTheme'`
       but works using `import { useTheme } from '@mui/material/styles'`
+- refactor `widgetMatcher` to `widgets` binding
+- clean and fix using `{}` in generic, as it often leads to "is assignable to the constraint of type C, but C could be instantiated with a different subtype of constraint {}"
+    - easiest, yet very ugly workaround is typing all props like:
+        - generics: `<C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory, P extends WidgetPluginProps<W> = WidgetPluginProps<W>>`
+        - usage: `return <Plugin {...{ currentPluginIndex: next, ...props } as C & P} />`
+    - using `object` or `Record<string, unkown>` or `Record<string, any>` does not work
+    - find a better solution, especially for the `eslint` rule [@typescript-eslint/no-empty-object-type](https://typescript-eslint.io/rules/no-empty-object-type/)
+    - cleanup workarounds in:
+        - `NextPluginRenderer`
 - finalize `package.json` generation for strict esm with ESM and CJS support
 - normalize `tsconfig` `moduleResolution`
     - `demo-web`: as `react-immutable-editor` is pure ESM and strict ESM using `exports` with files in a sub-directory,

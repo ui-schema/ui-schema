@@ -11,22 +11,22 @@ import { SchemaPluginStack } from '@ui-schema/system/SchemaPluginStack'
 describe('SchemaPluginsAdapter', () => {
     test('SchemaPluginsAdapter', async () => {
         const {queryByText} = render(
-            // ts-@ignore
+            // @ts-ignore
             <SchemaPluginsAdapter
-                // ts-@ignore
+                // @ts-ignore
                 handled
-                // ts-@ignore
+                // @ts-ignore
                 widgets={{
-                    WidgetRenderer: WidgetRenderer,
                     types: {
                         // @ts-ignore
                         string: ({valid, handled}: { valid?: boolean, handled?: boolean }) =>
                             valid === true && handled === true ? 'is-valid' : 'is-invalid',
                     },
                     schemaPlugins: [{handle: () => ({valid: true})}],
-                    widgetPlugins: [],
+                    widgetPlugins: [WidgetRenderer],
                 }}
                 schema={createOrderedMap({type: 'string'})}
+                currentPluginIndex={-1}
             />,
         )
         expect(queryByText('is-valid') !== null).toBeTruthy()

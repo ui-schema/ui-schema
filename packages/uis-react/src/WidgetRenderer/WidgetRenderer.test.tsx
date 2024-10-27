@@ -35,14 +35,16 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
-                    WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
-                    widgetPlugins: [ExtractStorePlugin],
+                    widgetPlugins: [
+                        ExtractStorePlugin,
+                        WidgetRenderer,
+                    ],
                     schemaPlugins: [],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string'})}
-            />
+            />,
         )
         // todo: adjust test for 0.5.0
         expect(queryByText('missing-type-string') !== null).toBeTruthy()
@@ -54,14 +56,16 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
-                    WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {},
-                    widgetPlugins: [ExtractStorePlugin],
+                    widgetPlugins: [
+                        ExtractStorePlugin,
+                        WidgetRenderer,
+                    ],
                     schemaPlugins: [],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string', widget: 'Text'})}
-            />
+            />,
         )
         // todo: adjust test for 0.5.0
         expect(queryByText('missing-custom-Text') !== null).toBeTruthy()
@@ -73,14 +77,16 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
-                    WidgetRenderer: WidgetRenderer,
                     types: {string: (props: WidgetProps) => props.value}, custom: {},
-                    widgetPlugins: [ExtractStorePlugin],
+                    widgetPlugins: [
+                        ExtractStorePlugin,
+                        WidgetRenderer,
+                    ],
                     schemaPlugins: [],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string'})}
-            />
+            />,
         )
         expect(queryByText('demo-value') !== null).toBeTruthy()
         // todo: adjust test for 0.5.0
@@ -93,14 +99,16 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
-                    WidgetRenderer: WidgetRenderer,
                     types: {}, custom: {Text: (props: WidgetProps) => props.value},
-                    widgetPlugins: [ExtractStorePlugin],
+                    widgetPlugins: [
+                        ExtractStorePlugin,
+                        WidgetRenderer,
+                    ],
                     schemaPlugins: [],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string', widget: 'Text'})}
-            />
+            />,
         )
         expect(queryByText('demo-value') !== null).toBeTruthy()
         // todo: adjust test for 0.5.0
@@ -113,14 +121,16 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
-                    WidgetRenderer: WidgetRenderer,
                     types: {array: (props: WidgetProps) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set'}, custom: {},
-                    widgetPlugins: [ExtractStorePlugin],
+                    widgetPlugins: [
+                        ExtractStorePlugin,
+                        WidgetRenderer,
+                    ],
                     schemaPlugins: [],
                 }}
                 value={[]}
                 schema={createOrderedMap({type: 'array'})}
-            />
+            />,
         )
         expect(queryByText('is-undef') !== null).toBeTruthy()
     })
@@ -131,15 +141,17 @@ describe('WidgetRenderer', () => {
                 widgets={{
                     // @ts-ignore
                     RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
-                    WidgetRenderer: WidgetRenderer,
                     types: {},
                     custom: {CustomObj: (props: WidgetProps) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set'},
-                    widgetPlugins: [ExtractStorePlugin],
+                    widgetPlugins: [
+                        ExtractStorePlugin,
+                        WidgetRenderer,
+                    ],
                     schemaPlugins: [],
                 }}
                 value={{}}
                 schema={createOrderedMap({type: 'object', widget: 'CustomObj'})}
-            />
+            />,
         )
         expect(queryByText('is-undef') !== null).toBeTruthy()
     })
@@ -157,10 +169,12 @@ describe('WidgetRenderer', () => {
                     widgets={{
                         // @ts-ignore
                         RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
-                        WidgetRenderer: WidgetRenderer,
                         types: {string: () => 'string-renderer', number: () => 'number-renderer'},
                         custom: {},
-                        widgetPlugins: [ExtractStorePlugin],
+                        widgetPlugins: [
+                            ExtractStorePlugin,
+                            WidgetRenderer,
+                        ],
                         schemaPlugins: [],
                     }}
                     value={value}
@@ -179,7 +193,7 @@ describe('WidgetRenderer', () => {
                     })}
                     isVirtual
                 />
-            </UIStoreProvider>
+            </UIStoreProvider>,
         )
         expect(queryAllByText('virtual-default-renderer').length === 2).toBeTruthy()
         expect(queryByText('string-renderer') === null).toBeTruthy()
@@ -214,10 +228,12 @@ describe('WidgetRenderer', () => {
                     widgets={{
                         // @ts-ignore
                         RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
-                        WidgetRenderer: WidgetRenderer,
                         types: {string: () => 'string-renderer', number: () => 'number-renderer'},
                         custom: {},
-                        widgetPlugins: [ExtractStorePlugin],
+                        widgetPlugins: [
+                            ExtractStorePlugin,
+                            WidgetRenderer,
+                        ],
                         schemaPlugins: [],
                     }}
                     value={value}
@@ -226,7 +242,7 @@ describe('WidgetRenderer', () => {
                     schema={schema}
                     isVirtual
                 />
-            </UIStoreProvider>
+            </UIStoreProvider>,
         )
         expect(container.querySelector('#virtual-default-renderer__lorem_ipsum') !== null).toBeTruthy()
         expect(container.querySelector('#virtual-default-renderer__dolor_sit') !== null).toBeTruthy()
@@ -243,10 +259,12 @@ describe('WidgetRenderer', () => {
         const widgets = {
             // @ts-ignore
             RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
-            WidgetRenderer: WidgetRenderer,
             types: {string: () => 'string-renderer', number: () => 'number-renderer'},
             custom: {},
-            widgetPlugins: [ExtractStorePlugin],
+            widgetPlugins: [
+                ExtractStorePlugin,
+                WidgetRenderer,
+            ],
             schemaPlugins: [],
         }
         const value = createOrderedMap({dummy_array: ['lorem ipsum', 42]})
@@ -280,7 +298,7 @@ describe('WidgetRenderer', () => {
                         isVirtual
                     />
                 </UIStoreProvider>
-            </UIMetaProvider>
+            </UIMetaProvider>,
         )
         expect(queryAllByText('virtual-default-renderer').length).toBe(3)
         expect(queryByText('string-renderer') === null).toBeTruthy()
@@ -296,10 +314,12 @@ describe('WidgetRenderer', () => {
         const widgets = {
             // @ts-ignore
             RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
-            WidgetRenderer: WidgetRenderer,
             types: {string: () => 'string-renderer', number: () => 'number-renderer'},
             custom: {},
-            widgetPlugins: [ExtractStorePlugin],
+            widgetPlugins: [
+                ExtractStorePlugin,
+                WidgetRenderer,
+            ],
             schemaPlugins: [],
         }
         const value = createOrderedMap({dummy_array: [['lorem ipsum', 42], ['dolor sit', 43]]})
@@ -336,7 +356,7 @@ describe('WidgetRenderer', () => {
                         isVirtual
                     />
                 </UIStoreProvider>
-            </UIMetaProvider>
+            </UIMetaProvider>,
         )
         expect(queryAllByText('virtual-default-renderer').length).toBe(5)
         expect(queryByText('string-renderer') === null).toBeTruthy()

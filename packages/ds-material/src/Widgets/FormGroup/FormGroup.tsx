@@ -1,24 +1,29 @@
+import { widgetMatcher } from '@ui-schema/system/widgetMatcher'
 import React from 'react'
 import FormLabel from '@mui/material/FormLabel'
 import FormControl from '@mui/material/FormControl'
 import MuiFormGroup from '@mui/material/FormGroup'
 import { useTheme } from '@mui/material/styles'
-import { extractValue, WithValue } from '@ui-schema/react/UIStore'
+import { extractValue, WithScalarValue, WithValue } from '@ui-schema/react/UIStore'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
 
 export const FormGroupBase: React.ComponentType<WidgetProps<MuiWidgetsBinding> & WithValue> = (props) => {
-    const {storeKeys, widgets} = props
-    const {WidgetRenderer} = widgets
+    const {storeKeys, widgets, schema} = props
     const {spacing} = useTheme()
-    let {schema} = props
-    // deleting the `widget` to directly use `WidgetEngine` for nesting
-    // with `widget` it would lead to an endless loop
-    // using e.g. default `object` renderer then
-    // @ts-ignore
-    schema = schema.delete('widget')
+
+    // todo: refactor once widgetMatcher exists in `widgets`
+    const Widget = widgetMatcher<React.ComponentType<WidgetProps & WithScalarValue>, React.ComponentType<WidgetProps>>({
+        widgetName: undefined,
+        schemaType: schema.get('type'),
+        // @ts-ignore
+        widgets: widgets,
+    })
+
+    if (!Widget) return null
+
     return <FormControl
         component="fieldset"
         style={{
@@ -35,8 +40,7 @@ export const FormGroupBase: React.ComponentType<WidgetProps<MuiWidgetsBinding> &
                 marginBottom: spacing(1),
             }}
         >
-            {/* @ts-ignore */}
-            <WidgetRenderer {...props} schema={schema}/>
+            <Widget {...props} schema={schema}/>
         </MuiFormGroup>
         {/*<FormHelperText>Be careful</FormHelperText>*/}
     </FormControl>

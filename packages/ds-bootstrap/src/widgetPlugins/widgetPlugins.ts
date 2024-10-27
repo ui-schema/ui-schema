@@ -8,6 +8,7 @@ import { DependentHandler } from '@ui-schema/react-json-schema/DependentHandler'
 import { ConditionalHandler } from '@ui-schema/react-json-schema/ConditionalHandler'
 import { SchemaPluginsAdapter } from '@ui-schema/react/SchemaPluginsAdapter'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
+import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 
 export const widgetPlugins: WidgetPluginType[] = [
     ReferencingHandler,
@@ -19,4 +20,5 @@ export const widgetPlugins: WidgetPluginType[] = [
     ConditionalHandler,
     SchemaPluginsAdapter,
     ValidityReporter,
+    WidgetRenderer,
 ]

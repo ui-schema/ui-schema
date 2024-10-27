@@ -18,10 +18,9 @@ import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 export const MockWidgets: WidgetsBindingFactory = {
     ErrorFallback: () => null,
     GroupRenderer: () => null,
-    WidgetRenderer: WidgetRenderer,
     NoWidget: () => null,
     VirtualRenderer: VirtualWidgetRenderer,
-    widgetPlugins: [],
+    widgetPlugins: [WidgetRenderer],
     schemaPlugins: [],
     types: {},
     custom: {},

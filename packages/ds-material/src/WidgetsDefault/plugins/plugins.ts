@@ -8,6 +8,7 @@ import { ReferencingHandler } from '@ui-schema/react-json-schema/ReferencingHand
 import { SchemaPluginsAdapter } from '@ui-schema/react/SchemaPluginsAdapter'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { getValidators } from '@ui-schema/json-schema/getValidators'
+import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
 
 export const plugins = (): {
@@ -24,6 +25,7 @@ export const plugins = (): {
         ConditionalHandler,
         SchemaPluginsAdapter,
         ValidityReporter,
+        WidgetRenderer,
     ]
 
     return {
