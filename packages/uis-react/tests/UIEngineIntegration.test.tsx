@@ -1,6 +1,7 @@
 /**
  * @jest-environment jsdom
  */
+import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import React, { PropsWithChildren } from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
@@ -36,7 +37,11 @@ import { NextPluginRenderer, WidgetEngine } from '@ui-schema/react/WidgetEngine'
  * npm test -- --testPathPattern=UIRenderer.test.tsx -u
  */
 
-const widgets = MockWidgets
+const widgets = {
+    ...MockWidgets,
+    types: {...MockWidgets.types},
+    custom: {...MockWidgets.custom},
+}
 // todo: add custom ErrorFallback, otherwise some errors may be catched there - and the test will not fail
 
 // eslint-disable-next-line react/display-name
@@ -52,6 +57,7 @@ widgets.widgetPlugins = [
     ConditionalHandler,
     SchemaPluginsAdapter,
     ValidityReporter,
+    WidgetRenderer,
 ]
 widgets.schemaPlugins = getValidators()
 
@@ -61,7 +67,7 @@ widgets.types.string = (props: WidgetProps): React.ReactElement => {
         <span>string-renderer</span>
         <span><TranslateTitle schema={props.schema} storeKeys={props.storeKeys}/></span>
         {props.valid ? null : <span>string-with-error</span>}
-        {props.errors.hasError() ? <span>{JSON.stringify(props.errors.errorsToJS())}</span> : null}
+        {props.errors?.hasError() ? <span>{JSON.stringify(props.errors.errorsToJS())}</span> : null}
     </>
 }
 
@@ -85,6 +91,7 @@ widgets.types.array = extractValue((props: WidgetProps & WithValue): React.React
                     />
                 </div>
             </div>).valueSeq() : null}
+        {props.valid ? null : <span>array-with-error</span>}
     </>
 })
 
@@ -210,8 +217,8 @@ const TestUIRenderer = (props: {
     const onChange = React.useCallback((actions) => {
         setStore(storeUpdater(actions))
     }, [setStore])
+
     return <UIMetaProvider
-        // @ts-ignore
         widgets={widgets}
         t={props.notT ? translateRelative : (text: string) => text}
     >
@@ -229,7 +236,7 @@ const TestUIRenderer = (props: {
 describe('UIGenerator Integration', () => {
     it('TestUIRenderer', async () => {
         const {queryByText, queryAllByText, container} = render(
-            <TestUIRenderer data={{demo_number: 10, demo_array2: ['val-test']}}/>
+            <TestUIRenderer data={{demo_number: 10, demo_array2: ['val-test']}}/>,
         )
         expect(container.querySelectorAll('.root-container').length).toBe(1)
         expect(container.querySelectorAll('.group-renderer').length).toBe(2)
@@ -243,7 +250,7 @@ describe('UIGenerator Integration', () => {
     })
     it('TestUIRenderer no `store`', async () => {
         const {queryByText, queryAllByText, container} = render(
-            <TestUIRenderer noStore/>
+            <TestUIRenderer noStore/>,
         )
         // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-container').length).toBe(1)
@@ -256,7 +263,7 @@ describe('UIGenerator Integration', () => {
     })
     it('TestUIRenderer not `t`', async () => {
         const {queryByText, queryAllByText, container} = render(
-            <TestUIRenderer notT/>
+            <TestUIRenderer notT/>,
         )
         expect(container.querySelectorAll('.root-container').length).toBe(1)
         expect(container.querySelectorAll('.group-renderer').length).toBe(2)
@@ -266,7 +273,7 @@ describe('UIGenerator Integration', () => {
     })
     it('TestUIRenderer ConditionalCombining', async () => {
         const {queryByText, container} = render(
-            <TestUIRenderer data={{demo_string: 'test'}}/>
+            <TestUIRenderer data={{demo_string: 'test'}}/>,
         )
         // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-container').length === 1).toBeTruthy()
@@ -277,10 +284,10 @@ describe('UIGenerator Integration', () => {
     it('TestUIRendererError', async () => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer data={{
-                demo_string: '4444a', demo_number: 83,
+                demo_string: 'to-long-text', demo_number: 83,
                 // @ts-ignore
                 demo_array: 'not-an-array',
-            }}/>
+            }}/>,
         )
         //expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-container').length === 1).toBeTruthy()
@@ -290,6 +297,7 @@ describe('UIGenerator Integration', () => {
         expect(queryByText('widget.demo_string.title') !== null).toBeTruthy()
         expect(queryByText('string-with-error') !== null).toBeTruthy()
         expect(queryAllByText('string-renderer').length === 2).toBeTruthy()
+        expect(queryByText('array-with-error') !== null).toBeTruthy()
     })
 })
 
