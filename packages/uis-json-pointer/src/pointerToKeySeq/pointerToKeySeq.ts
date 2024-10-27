@@ -10,12 +10,16 @@ function isInt(value) {
 }
 
 export const pointerToKeySeq = (pointer: string): List<string | number> => {
-    // todo: take # fragment pointers into account for correct descaping (URI decode)
+    // todo: take # fragment pointers into account for correct resolving of absolute vs. relative points
+    const pointerContent =
+        pointer.startsWith('/') ? pointer.slice(1) :
+            pointer.startsWith('#/') ? pointer.slice(2) :
+                pointer.startsWith('#') ? pointer.slice(1) : pointer
+
+    if (!pointerContent) return List()
+
     const pointerPoints: (string | number)[] =
-        (
-            pointer.startsWith('/') ? pointer.slice(1) :
-                pointer.startsWith('#/') ? pointer.slice(2) : pointer
-        )
+        pointerContent
             .split('/')
             .map(point => {
                 let key: string | number = unescapePointer(point)
@@ -25,9 +29,6 @@ export const pointerToKeySeq = (pointer: string): List<string | number> => {
                 }
                 return key
             })
-    if (pointerPoints.length === 1 && pointerPoints[0] === '') {
-        pointerPoints.splice(0, 1)
-    }
-    //console.log(pointerPoints, pointer)
+
     return List(pointerPoints)
 }

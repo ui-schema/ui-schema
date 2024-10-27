@@ -36,31 +36,38 @@ describe('parseRefs', () => {
             OrderedMap({'type': 'string'}) as UISchemaMap,
             {defs: OrderedMap()},
             OrderedMap({'type': 'string'}) as UISchemaMap,
-        ], [
+        ],
+        [
             OrderedMap({'$ref': '#/$defs/country'}) as UISchemaMap,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
             mockDefinitions.get('country') as UISchemaMap,
-        ], [
+        ],
+        [
             OrderedMap({'$ref': '#/$defs/country'}) as UISchemaMap,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
             mockDefinitions.get('country') as UISchemaMap,
-        ], [
+        ],
+        [
             OrderedMap({if: OrderedMap({'$ref': '#germany_id'})}) as UISchemaMap,
             {defs: OrderedMap({country: mockDefinitions.get('germany_id')})},
             OrderedMap({if: mockDefinitions.get('germany_id')}) as UISchemaMap,
-        ], [
+        ],
+        [
             OrderedMap({then: OrderedMap({'$ref': '#/$defs/country'})}) as UISchemaMap,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
             OrderedMap({then: mockDefinitions.get('country')}) as UISchemaMap,
-        ], [
+        ],
+        [
             OrderedMap({else: OrderedMap({'$ref': '#/$defs/country'})}) as UISchemaMap,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
             OrderedMap({else: mockDefinitions.get('country')}) as UISchemaMap,
-        ], [
+        ],
+        [
             OrderedMap({not: OrderedMap({'$ref': '#/$defs/country'})}) as UISchemaMap,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
             OrderedMap({not: mockDefinitions.get('country')}) as UISchemaMap,
-        ], [
+        ],
+        [
             /*
              * if must be resolve recursively
              */
@@ -71,7 +78,8 @@ describe('parseRefs', () => {
             }) as UISchemaMap,
             {defs: OrderedMap({country: mockDefinitions.get('germany_id')})},
             OrderedMap({if: OrderedMap({not: mockDefinitions.get('germany_id')})}) as UISchemaMap,
-        ], [
+        ],
+        [
             /*
              * contains must be resolve recursively
              */
@@ -92,7 +100,8 @@ describe('parseRefs', () => {
                     }),
                 }),
             }) as UISchemaMap,
-        ], [
+        ],
+        [
             /*
              * properties must not be resolve
              */
@@ -109,7 +118,8 @@ describe('parseRefs', () => {
                     germany: OrderedMap({'$ref': '#germany_id'}),
                 }),
             }) as UISchemaMap,
-        ], [
+        ],
+        [
             /*
              * items must be resolve
              */
@@ -122,14 +132,16 @@ describe('parseRefs', () => {
                 type: 'array',
                 items: mockDefinitions.get('germany_id'),
             }) as UISchemaMap,
-        ], [
+        ],
+        [
             /*
              * property names must be resolved, as only `pattern` should be in use, recursive doesn't matter (but is enabled)
              */
             OrderedMap({propertyNames: OrderedMap({'$ref': '#/$defs/country'})}) as UISchemaMap,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
             OrderedMap({propertyNames: mockDefinitions.get('country')}) as UISchemaMap,
-        ], [
+        ],
+        [
             /*
              * empty fragment test, must resolve to root
              */
@@ -138,7 +150,8 @@ describe('parseRefs', () => {
                 root: createOrderedMap({type: 'object', properties: {user_id: {type: 'number'}, sub_user: {'$ref': '#'}}}),
             },
             createOrderedMap({type: 'object', properties: {user_id: {type: 'number'}, sub_user: {'$ref': '#'}}}) as UISchemaMap,
-        ], [
+        ],
+        [
             /*
              * dependencies must be resolved, recursively
              */
@@ -163,7 +176,8 @@ describe('parseRefs', () => {
                     }),
                 }),
             }) as UISchemaMap,
-        ], [
+        ],
+        [
             /*
              * dependentSchemas must be resolved, recursively
              */
@@ -188,7 +202,8 @@ describe('parseRefs', () => {
                     }),
                 }),
             }) as UISchemaMap,
-        ], [
+        ],
+        [
             /*
              * patternProperties names must be resolved recursively
              */
@@ -203,7 +218,8 @@ describe('parseRefs', () => {
                     '^s_': mockDefinitions.get('country'),
                 }),
             }) as UISchemaMap,
-        ], [
+        ],
+        [
             /*
              * allOf names must be resolved
              */
@@ -218,7 +234,8 @@ describe('parseRefs', () => {
                     mockDefinitions.get('country'),
                 ]),
             }) as UISchemaMap,
-        ], [
+        ],
+        [
             /*
              * oneOf names must be resolved
              */
@@ -233,7 +250,8 @@ describe('parseRefs', () => {
                     mockDefinitions.get('country'),
                 ]),
             }) as UISchemaMap,
-        ], [
+        ],
+        [
             /*
              * anyOf names must be resolved
              */
@@ -248,7 +266,8 @@ describe('parseRefs', () => {
                     mockDefinitions.get('country'),
                 ]),
             }) as UISchemaMap,
-        ], [
+        ],
+        [
             /*
              * testing general JSON pointer with `allOf`
              */
@@ -279,7 +298,8 @@ describe('parseRefs', () => {
                     OrderedMap({type: 'number'}),
                 ]),
             }) as UISchemaMap,
-        ], /* [
+        ],
+        /* [
             /*
              * testing general JSON pointer with `allOf`, re-supplying $id when existing
              *
@@ -310,7 +330,8 @@ describe('parseRefs', () => {
                     OrderedMap({type: 'number'}),
                 ]),
             }) as UISchemaMap,
-        ],*/ [
+        ],*/
+        [
             /*
              * tests for non-recursives, if they are inside `if` and must resolve recursive
              */
@@ -321,7 +342,8 @@ describe('parseRefs', () => {
             OrderedMap({
                 if: OrderedMap({items: mockDefinitions.get('country')}),
             }) as UISchemaMap,
-        ], [
+        ],
+        [
             /*
              * tests for non-recursives, if they are inside `if` and must resolve recursive
              */
@@ -332,7 +354,8 @@ describe('parseRefs', () => {
             createOrderedMap({
                 if: {items: [mockDefinitions.get('country').toJS(), mockDefinitions.get('country').toJS()]},
             }) as UISchemaMap,
-        ], [
+        ],
+        [
             /*
              * tests for non-recursives, if they are inside `if` and must resolve recursive
              */
@@ -343,7 +366,8 @@ describe('parseRefs', () => {
             createOrderedMap({
                 if: {properties: {country: mockDefinitions.get('country').toJS()}},
             }) as UISchemaMap,
-        ], [
+        ],
+        [
             /*
              * tests for nested root schema
              */
@@ -398,7 +422,7 @@ describe('parseRefs', () => {
                 console.error(res.schema.toJS(), expectedSchema.toJS())
             }
             expect(r).toBe(true)
-        }
+        },
     )
 
     test.each([
@@ -430,7 +454,8 @@ describe('parseRefs', () => {
                     'dummy-3.json': ['*'],
                 },
             }) as unknown as Map<string, Map<string, any>>,
-        ], [
+        ],
+        [
             createOrderedMap({
                 if: {
                     properties: {
@@ -473,6 +498,6 @@ describe('parseRefs', () => {
                 }
             }
             expect(r).toBe(true)
-        }
+        },
     )
 })
