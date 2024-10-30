@@ -1,4 +1,4 @@
-import {resolvePointer} from '@ui-schema/ui-schema/JSONPointer/resolvePointer';
+import {resolvePointer} from '@ui-schema/ui-schema/JSONPointer';
 
 export class SchemaRefPending extends Error {
 }

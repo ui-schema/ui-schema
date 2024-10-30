@@ -1,4 +1,4 @@
-import {pointerToKeySeq} from '@ui-schema/ui-schema/JSONPointer/pointerToKeySeq';
+import {pointerToKeySeq} from '@ui-schema/ui-schema/JSONPointer';
 
 /**
  * @param {string} pointer

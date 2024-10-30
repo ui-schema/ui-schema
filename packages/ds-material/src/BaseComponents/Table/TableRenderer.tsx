@@ -5,8 +5,7 @@ import { List, Map, OrderedMap } from 'immutable'
 import MuiTable from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
-import { TableRendererBaseProps, TableRendererExtractorProps, TableRowProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
-import { TableContext } from '@ui-schema/ds-material/BaseComponents/Table/TableContext'
+import { TableRendererBaseProps, TableRendererExtractorProps, TableRowProps, TableContext } from '@ui-schema/ds-material/BaseComponents/Table'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component'
 
 export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<keyof WidgetProps, 'value' | 'errors' | 'valid'>> & Pick<WithValue, 'onChange'> & TableRendererBaseProps & ListButtonOverwrites> = (

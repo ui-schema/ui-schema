@@ -1,5 +1,5 @@
 import React from 'react';
-import {getNextPlugin} from '@ui-schema/ui-schema/PluginStack/PluginStack';
+import {getNextPlugin} from '@ui-schema/ui-schema/PluginStack';
 
 export const handlePluginSimpleStack = (props, pluginSimpleStack) => {
     if(pluginSimpleStack && Array.isArray(pluginSimpleStack)) {

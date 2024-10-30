@@ -20,7 +20,7 @@ import { List } from 'immutable'
 import { KitDndProvider, useOnIntent } from '@ui-schema/kit-dnd'
 import { useOnDirectedMove } from '@ui-schema/material-dnd/useOnDirectedMove'
 import { DragDropSpec } from '@ui-schema/material-dnd/DragDropSpec'
-import { SortableList } from '@ui-schema/material-dnd/Widgets/SortableList/SortableList'
+import { SortableList } from '@ui-schema/material-dnd/Widgets/SortableList'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 
 type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
