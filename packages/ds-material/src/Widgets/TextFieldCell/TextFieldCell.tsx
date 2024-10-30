@@ -81,6 +81,11 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBindin
             inputProps.style['MozAppearance'] = 'textfield'
         }
     }
+
+    if (typeof inputProps.style.minWidth === 'undefined') {
+        inputProps.style.minWidth = schema.getIn(['view', 'minWidth']) as any || '40px'
+    }
+
     const InfoRenderer = widgets?.InfoRenderer
     return <>
         {!labelledBy ? <span style={visuallyHidden} id={inputProps['aria-labelledby']}>

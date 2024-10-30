@@ -110,6 +110,14 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                 count={listSize || 0}
                 rowsPerPage={rows}
                 page={page}
+                sx={{
+                    // todo: move footer out of table, like in examples of mui
+                    //       better overflow control and easier to customize
+                    '& .MuiToolbar-root': {
+                        overflow: 'auto',
+                        scrollbarWidth: 'thin',
+                    },
+                }}
                 SelectProps={{
                     inputProps: {'aria-label': t ? t('pagination.rows-per-page') as string : 'per Page'},
                     //native: true,

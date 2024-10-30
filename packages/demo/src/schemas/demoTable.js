@@ -12,6 +12,9 @@ export const schemaDemoTable = createOrderedMap({
             {
                 type: 'string',
                 title: 'Name',
+                // view: {
+                //     minWidth: 200,
+                // },
             },
             {
                 type: 'integer',
