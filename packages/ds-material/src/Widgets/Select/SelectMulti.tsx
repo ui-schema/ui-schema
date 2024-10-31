@@ -53,7 +53,6 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetsBinding>
             renderValue={selected => {
                 const sel = selected as string[]
                 return sel.map(s => {
-                    s = s + ''
                     const valueSchema = valueSchemas?.find(oof => oof.value === s)
                     const Translated = t(s, valueSchema?.context, valueSchema?.schema?.get('t') as UISchemaMap)
                     return typeof Translated === 'string' || typeof Translated === 'number' ?

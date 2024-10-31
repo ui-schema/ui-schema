@@ -512,6 +512,29 @@ export const schemaDemoMain = {
             'widget': 'Select',
             'enum': [-1, -2, 0, 1, 2],
         },
+        select_numbers5: {
+            type: 'array',
+            widget: 'SelectMulti',
+            view: {
+                sizeMd: 3,
+            },
+            items: {
+                oneOf: [
+                    {
+                        title: 'one',
+                        'const': 1,
+                    },
+                    {
+                        title: 'two',
+                        'const': 2,
+                    },
+                    {
+                        title: 'tree',
+                        'const': 3,
+                    },
+                ],
+            },
+        },
         desc: {
             type: 'object',
             widget: 'TextRich',
