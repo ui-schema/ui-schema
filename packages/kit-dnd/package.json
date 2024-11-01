@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/kit-dnd",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "Drag and Drop Tools for (not only) UI-Schema",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",

@@ -8,7 +8,6 @@ Enterprise Components and Utilities for UI Schema, an advanced JSON-Schema Form 
 
 Checkout the [monorepo home](https://github.com/ui-schema/ui-schema) for more.
 
-[![Travis (.org) branch](https://img.shields.io/travis/ui-schema/ui-schema/master?style=flat-square)](https://www.travis-ci.com/github/ui-schema/ui-schema)
 [![react compatibility](https://img.shields.io/badge/React-%3E%3D16.8-success?style=flat-square&logo=react)](https://reactjs.org/)
 [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/pro?style=flat-square)](https://www.npmjs.com/package/@ui-schema/pro)
 [![MIT license](https://img.shields.io/npm/l/@ui-schema/pro?style=flat-square)](https://github.com/ui-schema/pro/blob/master/LICENSE)
@@ -32,7 +31,7 @@ This project is free software distributed under the **MIT License**.
 
 See: [LICENSE](https://github.com/ui-schema/ui-schema/blob/master/LICENSE).
 
-© 2022 bemit UG (haftungsbeschränkt)
+© 2024 bemit UG (haftungsbeschränkt)
 
 ### License Icons
 

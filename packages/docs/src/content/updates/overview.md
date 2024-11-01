@@ -9,11 +9,52 @@ Check [this discussion](https://github.com/ui-schema/ui-schema/discussions/184) 
 
 ## Changelog
 
-This serves as overview of releases and changes - follow the [#releases channel in slack](https://ui-schema.slack.com/archives/C03DMRE88Q7) for the same content, but with the option for direct help and feedback ([slack invite link in readme](https://github.com/ui-schema/ui-schema/tree/0.4.3#ui-schema-for-react)).
-
 > - the code tag `mui` refers to `ds-material` or is used as `material-*` package prefix
-> - the code tag `uis`/`ui-schema` refers to `ui-schema` or is used as core package prefix
+> - the code tag `ui-schema` refers to `ui-schema` or is used as core package prefix
 > - [meaning of emojis](https://gist.github.com/elbakerino/1cd946c4269681d659eede5c828920b7)
+
+### v0.4.6
+
+> @ 2024-11-01
+>
+> *General fixes of invalid `import`/`export`, which led to some CJS-ESM mix-up in bundlers.* Fixed with adjusted import paths and backwards compatible new directories and index files.
+>
+> *Update dev tools and deps, e.g. React v18, less babel plugins.*
+
+*None breaking.*
+
+#### `ui-schema@0.4.6`
+
+- 🐛 fix invalid `import`/`export`
+- 🐛 fix some types for React v18
+
+#### `ds-bootstrap@0.4.2`
+
+- ✨ add `readOnly` keyword support in `TextField`
+
+#### `ds-material@0.4.2`
+
+- 🐛 fix invalid `import`/`export`
+- 🐛 fix some types for React v18
+- 🐛 fix `SelectMulti` invalid casting to `string` of selected value
+    - fixes that only `string` `oneOf.const` where possible for rendering selected value labels [#226](https://github.com/ui-schema/ui-schema/pull/226)
+- 🐛 fix `OptionsBoolean` shows two `*` when `required`
+- ✨ add `TableFooter` overflow, allowing TableFooter to overflow in `Table` to not overflow outside of it
+- ✨ add `TextFieldCell` `minWidth` with default `40px` and `view.minWidth` as keyword
+    - to prevent inputs in cells with a small column header to disappear when Table is resized
+
+#### Misc
+
+Fixes of `import`/`export` and React 18 types in:
+
+- `dictionary@0.0.12`
+- `material-pickers@0.4.0-alpha.5`
+- `pro@0.0.13`
+- only small patches, just that build succeeds
+    - `kit-dnd@0.0.7`
+    - `material-dnd@0.0.16`
+    - `material-editorjs@0.0.13`
+    - `material-slate@0.0.12`
 
 ### v0.4.5
 
