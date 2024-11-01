@@ -9,17 +9,17 @@ import { BaseDatePickerProps } from '@mui/x-date-pickers/DatePicker/shared'
 import { CalendarPickerView } from '@mui/x-date-pickers/internals/models'
 import { List } from 'immutable'
 
-export interface WidgetDatePickerProps<TDate, P extends BaseDatePickerProps<TDate> = BaseDatePickerProps<TDate>> {
+export interface WidgetDatePickerProps<TInputDate, TDate, P extends BaseDatePickerProps<TInputDate, TDate> = BaseDatePickerProps<TInputDate, TDate>> {
     Picker: React.ComponentType<P>
     pickerProps?: any
 }
 
-export const WidgetDatePicker: React.FC<WidgetProps & WithScalarValue & WidgetDatePickerProps<any>> = (
+export const WidgetDatePicker: React.FC<WidgetProps & WithScalarValue & WidgetDatePickerProps<any, any>> = (
     {
         value, storeKeys, onChange, schema, required,
         Picker,
         pickerProps,
-    }
+    },
 ) => {
     const adapter = React.useContext(MuiPickersAdapterContext)
     const {utils} = adapter || {}
@@ -63,6 +63,7 @@ export const WidgetDatePicker: React.FC<WidgetProps & WithScalarValue & WidgetDa
                 data: {value: e ? utils.formatByString(e, dateFormatData) : ''},
             } as UIStoreActionSet)
         }}
+        // todo: pass down textFieldProps
         renderInput={(params) => <TextField {...params} fullWidth/>}
         {...pickerProps || {}}
     />

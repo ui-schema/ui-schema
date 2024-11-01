@@ -9,12 +9,12 @@ import { BaseDateTimePickerProps } from '@mui/x-date-pickers/DateTimePicker/shar
 import { List } from 'immutable'
 import { CalendarOrClockPickerView } from '@mui/x-date-pickers/internals/models'
 
-export interface WidgetDateTimePickerProps<TDate, P extends BaseDateTimePickerProps<TDate> = BaseDateTimePickerProps<TDate>> {
+export interface WidgetDateTimePickerProps<TInputDate, TDate, P extends BaseDateTimePickerProps<TInputDate, TDate> = BaseDateTimePickerProps<TInputDate, TDate>> {
     Picker: React.ComponentType<P>
     pickerProps?: any
 }
 
-export const WidgetDateTimePicker: React.FC<WidgetProps & WithScalarValue & WidgetDateTimePickerProps<any>> = (
+export const WidgetDateTimePicker: React.FC<WidgetProps & WithScalarValue & WidgetDateTimePickerProps<any, any>> = (
     {
         value, storeKeys, onChange, schema, required,
         Picker,

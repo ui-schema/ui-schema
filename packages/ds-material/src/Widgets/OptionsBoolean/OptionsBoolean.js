@@ -66,7 +66,7 @@ export const BoolRenderer = (
                             (schema.getIn(['view', 'dense']) ? 'body2' : undefined),
                     },
                 }}
-                label={<><TransTitle schema={schema} storeKeys={storeKeys}/>{required ? ' *' : ''}</>}
+                label={<TransTitle schema={schema} storeKeys={storeKeys}/>}
             />}
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </>

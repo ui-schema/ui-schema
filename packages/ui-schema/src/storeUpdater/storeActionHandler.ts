@@ -1,6 +1,6 @@
 import { UIStoreType, UIStoreUpdaterFn } from '@ui-schema/ui-schema/UIStore'
 import { UIStoreActions, UIStoreUpdaterData } from '@ui-schema/ui-schema/UIStoreActions'
-import { storeActionReducers } from '@ui-schema/ui-schema/storeUpdater/storeActionReducers'
+import { storeActionReducers } from '@ui-schema/ui-schema/storeUpdater'
 
 /**
  * @deprecated use `storeActionReducers` instead

@@ -1,6 +1,6 @@
 import React from 'react'
 import { getNextPlugin, PluginProps } from '@ui-schema/ui-schema/PluginStack'
-import { useSchemaCombine } from '@ui-schema/ui-schema/Plugins/CombiningHandler/useSchemaCombine'
+import { useSchemaCombine } from '@ui-schema/ui-schema/Plugins/CombiningHandler'
 import { WithValue } from '@ui-schema/ui-schema/UIStore'
 
 export const CombiningHandler: React.ComponentType<PluginProps & Partial<WithValue>> = (props) => {

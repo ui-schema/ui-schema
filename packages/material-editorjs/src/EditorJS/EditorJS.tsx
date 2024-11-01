@@ -4,7 +4,7 @@ import EditorJSType, { API, OutputData, EditorConfig } from '@editorjs/editorjs'
 import { StoreKeys, StoreSchemaType, WithValue } from '@ui-schema/ui-schema'
 import { extractValue } from '@ui-schema/ui-schema/UIStore'
 import { List, Map, OrderedMap } from 'immutable'
-import { fromJSOrdered } from '@ui-schema/ui-schema/Utils/createMap/createMap'
+import { fromJSOrdered } from '@ui-schema/ui-schema/Utils/createMap'
 
 export interface EditorJSProps {
     uid: string
@@ -96,6 +96,7 @@ const EditorJSBase: React.ComponentType<EditorJSProps & WithValue> = (
         onEmptyChange(Boolean(typeof isEmpty === 'undefined' ? true : isEmpty))
     }, [isEmpty, onEmptyChange])
 
+    // @ts-ignore
     return <ReactEditorJs
         data={undefined}
         tools={tools}

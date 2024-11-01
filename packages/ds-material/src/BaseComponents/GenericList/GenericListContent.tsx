@@ -5,7 +5,7 @@ import FormLabel from '@mui/material/FormLabel'
 import { TransTitle, StoreKeys, WidgetProps, WithOnChange } from '@ui-schema/ui-schema'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
 import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
-import { GenericListFooterProps, GenericListItemProps, GenericListItemSharedProps } from '@ui-schema/ds-material/BaseComponents'
+import { GenericListFooterProps, GenericListItemProps, GenericListItemSharedProps } from '@ui-schema/ds-material/BaseComponents/GenericList'
 import Box from '@mui/material/Box'
 import { GridSpacing } from '@mui/material/Grid/Grid'
 

@@ -2,16 +2,10 @@
  * @jest-environment jsdom
  */
 import { test, expect, describe } from '@jest/globals'
-import {
-    toBeInTheDocument,
-    toHaveClass,
-    // @ts-ignore
-} from '@testing-library/jest-dom/matchers'
+import '@testing-library/jest-dom/jest-globals'
 import { List, Map } from 'immutable'
 import { UIStore, StoreKeys, UIStoreType } from '@ui-schema/ui-schema/UIStore/UIStore'
 import { scopeUpdaterValidity } from '@ui-schema/ui-schema/storeScopeUpdater/scopeUpdaterValidity'
-
-expect.extend({toBeInTheDocument, toHaveClass})
 
 /**
  * npm run tdd -- -u --testPathPattern=src/storeScopeUpdater/scopeUpdaterValidity.test.tsx

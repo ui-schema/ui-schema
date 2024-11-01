@@ -2,7 +2,7 @@ import React from 'react'
 import { getNextPlugin, PluginProps } from '@ui-schema/ui-schema/PluginStack'
 import { useSchemaRoot } from '@ui-schema/ui-schema/SchemaRootProvider'
 import { StoreSchemaType } from '@ui-schema/ui-schema'
-import { escapePointer } from '@ui-schema/ui-schema/JSONPointer/escapePointer'
+import { escapePointer } from '@ui-schema/ui-schema/JSONPointer'
 import { Map } from 'immutable'
 
 export interface InjectSplitSchemaRootContext {

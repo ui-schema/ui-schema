@@ -1,5 +1,5 @@
 import {List, Map} from 'immutable';
-import {resolveRef, SchemaRefPending} from '@ui-schema/ui-schema/Plugins/ReferencingHandler/resolveRef';
+import {resolveRef, SchemaRefPending} from '@ui-schema/ui-schema/Plugins/ReferencingHandler';
 import {isRootSchema} from '@ui-schema/ui-schema/SchemaRootProvider';
 import {getSchemaId} from '@ui-schema/ui-schema/Utils/getSchema';
 

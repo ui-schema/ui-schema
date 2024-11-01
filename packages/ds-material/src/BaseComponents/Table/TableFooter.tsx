@@ -6,9 +6,7 @@ import TablePagination from '@mui/material/TablePagination'
 import MuiTableFooter from '@mui/material/TableFooter'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
-import { TablePaginationActions } from '@ui-schema/ds-material/BaseComponents/Table/TablePaginationActions'
-import { TableFooterProps } from '@ui-schema/ds-material/BaseComponents/Table/TableTypes'
-import { TableContextType, withTable } from '@ui-schema/ds-material/BaseComponents/Table/TableContext'
+import { TablePaginationActions, TableFooterProps, TableContextType, withTable } from '@ui-schema/ds-material/BaseComponents/Table'
 import { Map } from 'immutable'
 import { ListButton } from '@ui-schema/ds-material/Component'
 import { IconButtonProps } from '@mui/material/IconButton'
@@ -112,6 +110,14 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                 count={listSize || 0}
                 rowsPerPage={rows}
                 page={page}
+                sx={{
+                    // todo: move footer out of table, like in examples of mui
+                    //       better overflow control and easier to customize
+                    '& .MuiToolbar-root': {
+                        overflow: 'auto',
+                        scrollbarWidth: 'thin',
+                    },
+                }}
                 SelectProps={{
                     inputProps: {'aria-label': t ? t('pagination.rows-per-page') as string : 'per Page'},
                     //native: true,

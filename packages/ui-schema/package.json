@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ui-schema",
-    "version": "0.4.5",
+    "version": "0.4.6",
     "description": "JSON-Schema based UI and Form Generator for React, for any Design-System",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -36,9 +36,9 @@
     },
     "devDependencies": {
         "immutable": "^4.0.0",
-        "@types/react": "^17.0",
-        "react": "^17.0",
-        "react-dom": "^17.0"
+        "@types/react": "^18.0",
+        "react": "^18.0",
+        "react-dom": "^18.0"
     },
     "peerDependencies": {
         "immutable": "^4.0.0",

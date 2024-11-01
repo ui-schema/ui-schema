@@ -16,6 +16,7 @@ export interface GroupRendererProps {
     style?: {}
     className?: string
     spacing?: number
+    children?: React.ReactNode
 }
 
 export interface ErrorFallbackProps {

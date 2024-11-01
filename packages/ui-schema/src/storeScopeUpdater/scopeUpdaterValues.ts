@@ -3,7 +3,7 @@ import {
 } from '@ui-schema/ui-schema/UIStore'
 import { List, Map, Record } from 'immutable'
 import { SchemaTypesType, UIStoreActions } from '@ui-schema/ui-schema'
-import { updateStoreScope } from '@ui-schema/ui-schema/storeScopeUpdater/updateStoreScope'
+import { updateStoreScope } from '@ui-schema/ui-schema/storeScopeUpdater'
 import { storeBuildScopeTree } from '@ui-schema/ui-schema/storeBuildScopeTree'
 
 export const scopeUpdaterValues = <S extends UIStoreType = UIStoreType, A extends UIStoreActions = UIStoreActions>(

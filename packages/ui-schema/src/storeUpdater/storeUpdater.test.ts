@@ -2,16 +2,11 @@
  * @jest-environment jsdom
  */
 import { test, expect, describe } from '@jest/globals'
-import {
-    toBeInTheDocument,
-    toHaveClass,
-    // @ts-ignore
-} from '@testing-library/jest-dom/matchers'
+import '@testing-library/jest-dom/jest-globals'
 import { List, Map, OrderedMap } from 'immutable'
 import { UIStore, StoreKeys, UIStoreType, UIStoreUpdaterFn } from '@ui-schema/ui-schema/UIStore'
 import { storeUpdater, UIStoreActionUpdate, UIStoreUpdaterData } from '@ui-schema/ui-schema'
 
-expect.extend({toBeInTheDocument, toHaveClass})
 /**
  * npm run tdd -- -u --testPathPattern=src/storeUpdater/storeUpdater.test.ts
  */

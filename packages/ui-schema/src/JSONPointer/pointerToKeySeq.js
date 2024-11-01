@@ -1,5 +1,5 @@
 import {List} from 'immutable'
-import {unescapePointer} from '@ui-schema/ui-schema/JSONPointer/unescapePointer';
+import {unescapePointer} from '@ui-schema/ui-schema/JSONPointer';
 
 function isInt(value) {
     let x;

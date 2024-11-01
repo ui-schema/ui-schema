@@ -2,7 +2,7 @@ import React from 'react'
 import { ObjectRenderer } from '@ui-schema/ui-schema/ObjectRenderer'
 import { WidgetOverrideType, WidgetType } from '@ui-schema/ui-schema/Widget'
 import { WidgetsBindingFactory, WidgetsBindingLooseComponents } from '@ui-schema/ui-schema/WidgetsBinding'
-import { VirtualWidgetRenderer } from '@ui-schema/ui-schema/WidgetRenderer/VirtualWidgetRenderer'
+import { VirtualWidgetRenderer } from '@ui-schema/ui-schema/WidgetRenderer'
 import { schemaTypeToDistinct } from '@ui-schema/ui-schema/Utils/schemaTypeToDistinct'
 import { SchemaTypesType } from '@ui-schema/ui-schema'
 

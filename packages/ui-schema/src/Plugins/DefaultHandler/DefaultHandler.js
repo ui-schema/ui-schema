@@ -1,6 +1,6 @@
 import React from 'react';
 import {Map} from 'immutable';
-import {getNextPlugin} from '@ui-schema/ui-schema/PluginStack/PluginStack';
+import {getNextPlugin} from '@ui-schema/ui-schema/PluginStack';
 
 const DefaultHandler = (props) => {
     const {schema, currentPluginIndex, doNotDefault, readOnly} = props;

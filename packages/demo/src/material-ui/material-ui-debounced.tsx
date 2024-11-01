@@ -8,7 +8,7 @@ import { createOrderedMap, createStore, injectPluginStack, JsonSchema, UIMetaPro
 import { browserT } from '../t'
 import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater'
 import { OrderedMap } from 'immutable'
-import { NumberRendererDebounced, StringRendererDebounced, TextRendererDebounced } from '@ui-schema/ds-material/Widgets/TextFieldDebounced/TextFieldDebounced'
+import { NumberRendererDebounced, StringRendererDebounced, TextRendererDebounced } from '@ui-schema/ds-material/Widgets/TextFieldDebounced'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 

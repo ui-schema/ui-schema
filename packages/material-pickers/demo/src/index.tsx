@@ -1,13 +1,10 @@
 import React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { App } from './App'
-import { unstable_trace as trace } from 'scheduler/tracing'
 
-trace('initial render', performance.now(), () =>
-    render(
+createRoot(document.querySelector('#root')!)
+    .render(
         <React.Profiler id="Pickers Demo App" onRender={() => null}>
             <App/>
         </React.Profiler>,
-        document.querySelector('#root'),
-    ),
-)
+    )

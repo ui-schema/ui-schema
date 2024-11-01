@@ -1,6 +1,24 @@
 const path = require('path');
 const {packer, webpack} = require('lerna-packer');
-const {makeModulePackageJson, copyRootPackageJson, transformForEsModule} = require('lerna-packer/packer/modulePackages');
+const {makeModulePackageJson, copyRootPackageJson} = require('lerna-packer/packer/modulePackages');
+
+/**
+ * based on `transformForEsModule` but with the legacy syntax, for CJS and non strict ESM
+ */
+const transformForCommon = ({level, root, dir}) => {
+    return {
+        sideEffects: false,
+        module:
+            path.join(
+                '../'.repeat(level + 1),
+                'esm',
+                dir.slice(root.length + 1).replace(/\\/g, '/').split(/\//g).join('/'),
+                'index.js',
+            ).replace(/\\/g, '/'),
+        main: './index.js',
+        types: './index.d.ts',
+    }
+}
 
 // todo: once no `.d.ts` are used, remove the `copy-files` again / use lerna-packer default again
 const legacyBabelTargets = [
@@ -187,11 +205,13 @@ packer({
             name: '@ui-schema/pro',
             root: path.resolve(__dirname, 'packages', 'ui-schema-pro'),
             entry: path.resolve(__dirname, 'packages', 'ui-schema-pro/src/'),
+            babelTargets: legacyBabelTargets,
         },
         uiSchemaDictionary: {
             name: '@ui-schema/dictionary',
             root: path.resolve(__dirname, 'packages', 'dictionary'),
             entry: path.resolve(__dirname, 'packages', 'dictionary/src/'),
+            babelTargets: legacyBabelTargets,
         },
         dsMaterial: {
             // noClean: true,
@@ -210,32 +230,37 @@ packer({
             name: '@ui-schema/kit-dnd',
             root: path.resolve(__dirname, 'packages', 'kit-dnd'),
             entry: path.resolve(__dirname, 'packages', 'kit-dnd/src/'),
+            babelTargets: legacyBabelTargets,
         },
         materialPickers: {
             name: '@ui-schema/material-pickers',
             root: path.resolve(__dirname, 'packages', 'material-pickers'),
             entry: path.resolve(__dirname, 'packages', 'material-pickers/src/'),
+            babelTargets: legacyBabelTargets,
         },
         materialSlate: {
             name: '@ui-schema/material-slate',
             root: path.resolve(__dirname, 'packages', 'material-slate'),
             entry: path.resolve(__dirname, 'packages', 'material-slate/src/'),
+            babelTargets: legacyBabelTargets,
         },
         materialEditorJs: {
             name: '@ui-schema/material-editorjs',
             root: path.resolve(__dirname, 'packages', 'material-editorjs'),
             entry: path.resolve(__dirname, 'packages', 'material-editorjs/src/'),
+            babelTargets: legacyBabelTargets,
         },
         materialDnd: {
             name: '@ui-schema/material-dnd',
             root: path.resolve(__dirname, 'packages', 'material-dnd'),
             entry: path.resolve(__dirname, 'packages', 'material-dnd/src/'),
+            babelTargets: legacyBabelTargets,
         },
     },
 }, __dirname, {
     afterEsModules: (packages, pathBuild) => {
         return Promise.all([
-            makeModulePackageJson(transformForEsModule)(packages, pathBuild),
+            makeModulePackageJson(transformForCommon)(packages, pathBuild),
             copyRootPackageJson()(packages, pathBuild),
         ])
     },

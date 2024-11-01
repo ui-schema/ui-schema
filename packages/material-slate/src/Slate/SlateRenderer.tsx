@@ -67,7 +67,7 @@ let SlateRenderer: React.ComponentType<SlateRendererProps & WidgetProps & WithVa
     const enableOnly = schema.getIn(['editor', 'enableOnly']) as editorEnableOnly
     const renderElements = React.useMemo(() => {
         return [
-            ({children, ...props}: RenderElementProps): JSX.Element =>
+            ({children, ...props}: RenderElementProps): React.JSX.Element =>
                 <ElementMapper {...props} enableOnly={enableOnly}>
                     {children}
                 </ElementMapper>,

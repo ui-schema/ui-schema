@@ -39,6 +39,7 @@ const StringRenderer = ({schema, value, multiline = false, onChange, storeKeys, 
             type={format || type}
             required={required}
             rows={rows}
+            disabled={Boolean(schema?.get('readOnly'))}
             value={typeof value !== 'undefined' ? value : ''}
             onChange={(e) => {
                 const val = e.target.value

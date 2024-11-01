@@ -1,6 +1,6 @@
 {
 	"name": "@ui-schema/material-slate",
-	"version": "0.0.11",
+	"version": "0.0.12",
 	"description": "Slate for UI-Schema with Material-UI",
 	"homepage": "https://ui-schema.bemit.codes",
 	"author": "Michael Becker <michael@bemit.codes>",
@@ -38,15 +38,15 @@
 		"react-uid": "^2.2.0"
 	},
 	"devDependencies": {
-        "@types/react": "^17.0",
+        "@types/react": "^18.0",
 		"@mui/material": "^5.1",
         "@mui/styles": "^5.1",
 		"@mui/icons-material": "^5.1",
 		"@mui/lab": "^5.0.0-alpha.45",
 		"@udecode/slate-plugins": "~0.75.2",
 		"immutable": "^4.0.0",
-		"react": "^17.0",
-		"react-dom": "^17.0",
+		"react": "^18.0",
+		"react-dom": "^18.0",
 		"slate": "~0.60.8",
 		"slate-history": "~0.60.8",
 		"slate-hyperscript": "~0.60.8",
