@@ -1,7 +1,5 @@
 # UI-Schema Documentation
 
-[![Travis (.org) branch](https://img.shields.io/travis/ui-schema/demo-cra/master?style=flat-square)](https://travis-ci.org/ui-schema/docs)
-
 Documentation for [@ui-schema/ui-schema](https://github.com/ui-schema/ui-schema) and JSON-Schema examples live-editor.
 
 Hosted at [ui-schema.bemit.codes](https://ui-schema.bemit.codes).
@@ -89,6 +87,6 @@ The Docs-App and Live-Editor is licensed as MIT.
 
 The icons in the badges of the readme's are either from [simpleicons](https://simpleicons.org) or are licensed otherwise:
 
-- [Play Icon © Chanut is Industries, CC BY 3.0](https://www.iconfinder.com/icons/928430/go_media_music_play_playing_start_icon) 
-- [Experiment Icon © Ardiansyah Ardi, CC BY 3.0](https://www.iconfinder.com/icons/4951169/chemical_experiment_glass_lab_medical_icon) 
-- [Doc Icons © PICOL, CC BY 3.0](https://www.iconfinder.com/iconsets/picol-vector) 
+- [Play Icon © Chanut is Industries, CC BY 3.0](https://www.iconfinder.com/icons/928430/go_media_music_play_playing_start_icon)
+- [Experiment Icon © Ardiansyah Ardi, CC BY 3.0](https://www.iconfinder.com/icons/4951169/chemical_experiment_glass_lab_medical_icon)
+- [Doc Icons © PICOL, CC BY 3.0](https://www.iconfinder.com/iconsets/picol-vector)
