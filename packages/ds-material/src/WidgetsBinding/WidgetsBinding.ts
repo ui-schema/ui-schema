@@ -9,7 +9,9 @@ export interface MuiWidgetsBindingTypes<C extends {} = {}, W extends MuiWidgetsB
     boolean?: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
     number?: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
     integer?: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
+    null?: React.ComponentType<WidgetProps<W> & C>
     object?: React.ComponentType<WidgetProps<W> & C>
+    array?: React.ComponentType<WidgetProps<W> & C>
 }
 
 export interface MuiWidgetsBindingCustom<C extends {} = {}, W extends MuiWidgetsBinding = MuiWidgetsBinding, A = UIStoreActions> {

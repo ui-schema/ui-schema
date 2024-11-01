@@ -23,19 +23,16 @@ const validators = getValidators()
 
 export interface BtsWidgetBinding extends WidgetsBindingFactory {
     types: {
-        object: React.ComponentType<WidgetProps>
-        string: React.ComponentType<WidgetProps>
-        boolean: React.ComponentType<WidgetProps>
-        number: React.ComponentType<WidgetProps>
-        integer: React.ComponentType<WidgetProps>
+        string?: React.ComponentType<WidgetProps>
+        boolean?: React.ComponentType<WidgetProps>
+        number?: React.ComponentType<WidgetProps>
+        integer?: React.ComponentType<WidgetProps>
+        null?: React.ComponentType<WidgetProps>
+        object?: React.ComponentType<WidgetProps>
+        array?: React.ComponentType<WidgetProps>
     }
     custom: {
-        Text: React.ComponentType<WidgetProps>
-        SimpleList: React.ComponentType<WidgetProps>
-        OptionsCheck: React.ComponentType<WidgetProps>
-        OptionsRadio: React.ComponentType<WidgetProps>
-        Select: React.ComponentType<WidgetProps>
-        SelectMulti: React.ComponentType<WidgetProps>
+        [k: string]: React.ComponentType<WidgetProps>
     }
 }
 
