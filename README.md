@@ -9,7 +9,7 @@ JSON Schema form + UI generator for any design system, first-class support for [
 Develop your next React app faster, with less code duplications - and without wasting time to implement validations.
 
 [![Github actions Build](https://github.com/ui-schema/ui-schema/actions/workflows/blank.yml/badge.svg)](https://github.com/ui-schema/ui-schema/actions)
-[![react compatibility](https://img.shields.io/badge/React-%3E%3D17-success?style=flat-square&logo=react)](https://reactjs.org/)
+[![react compatibility](https://img.shields.io/badge/React-18-success?style=flat-square&logo=react)](https://reactjs.org/)
 [![MIT license](https://img.shields.io/npm/l/@ui-schema/ui-schema?style=flat-square)](https://github.com/ui-schema/ui-schema/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Coverage Status](https://img.shields.io/codecov/c/github/ui-schema/ui-schema/master.svg?style=flat-square)](https://codecov.io/gh/ui-schema/ui-schema/branch/master)

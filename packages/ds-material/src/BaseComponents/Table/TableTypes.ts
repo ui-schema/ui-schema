@@ -4,7 +4,7 @@ import { Translator } from '@ui-schema/system/Translator'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import React from 'react'
 import { List, OrderedMap } from 'immutable'
-import { ListButtonOverwrites } from '@ui-schema/ds-material/Component'
+import { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
 
 export interface TableRowProps {
     // unique id of `Table` for labelledBy generation

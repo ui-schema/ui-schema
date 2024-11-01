@@ -3,8 +3,8 @@ import makeStyles from '@mui/styles/makeStyles'
 import { ClassNameMap } from '@mui/styles/withStyles'
 import { Theme } from '@mui/material/styles'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { ValidityHelperText } from '@ui-schema/ds-material'
-import { MarkdownLabel } from '@ui-schema/material-slate/EditorWrapper/MarkdownLabel'
+import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
+import { MarkdownLabel } from '@ui-schema/material-slate/EditorWrapper'
 
 export const usePaneEditorStyles = makeStyles<Theme, { dense: boolean, focused: boolean }>(theme => ({
     wrapper: {

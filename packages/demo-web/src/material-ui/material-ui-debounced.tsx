@@ -12,7 +12,7 @@ import { browserT } from '../t'
 import { OrderedMap } from 'immutable'
 import { NumberRendererDebounced, StringRendererDebounced, TextRendererDebounced } from '@ui-schema/ds-material/Widgets/TextFieldDebounced'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
-import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material'
+import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 
 const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()

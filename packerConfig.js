@@ -1,35 +1,13 @@
 import path, {dirname} from 'path'
 import {packer, webpack} from 'lerna-packer'
-import {makeModulePackageJson, copyRootPackageJson, transformForEsModule} from 'lerna-packer/packer/modulePackages.js'
+import {copyRootPackageJson} from 'lerna-packer/packer/modulePackages.js'
 import fs from 'fs'
 import {fileURLToPath} from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-// todo: once no `.d.ts` are used, remove the `copy-files` again / use lerna-packer default again
-const legacyBabelTargets = [
-    {
-        distSuffix: '',
-        args: [
-            '--env-name', 'cjs', '--no-comments', '--copy-files',
-            '--extensions', '.ts', '--extensions', '.tsx', '--extensions', '.js', '--extensions', '.jsx',
-            '--ignore', '**/*.d.ts',
-            '--ignore', '**/*.test.tsx', '--ignore', '**/*.test.ts', '--ignore', '**/*.test.js',
-        ],
-    },
-    {
-        distSuffix: '/esm', args: [
-            '--no-comments',
-            '--extensions', '.ts', '--extensions', '.tsx', '--extensions', '.js', '--extensions', '.jsx',
-            '--ignore', '**/*.d.ts',
-            '--ignore', '**/*.test.tsx', '--ignore', '**/*.test.ts', '--ignore', '**/*.test.js',
-        ],
-    },
-]
-
 const esmBabelTargets = [
     {
-        // todo: this is missing --copy-files, which e.g. bootstrap needs for its manual created .d.ts
         distSuffix: '', args: [
             '--no-comments',
             '--extensions', '.ts', '--extensions', '.tsx', '--extensions', '.js', '--extensions', '.jsx',
@@ -171,6 +149,7 @@ packer({
                 },
             },
             publicPath: '/',
+            aliasPackagesBuild: 'production',
         },
         pickersDemo: {
             root: path.resolve(__dirname, 'packages', 'material-pickers'),
@@ -187,6 +166,7 @@ packer({
                 },
             },
             publicPath: '/',
+            aliasPackagesBuild: 'production',
         },
         docs: {
             root: path.resolve(__dirname, 'packages', 'docs'),
@@ -304,6 +284,7 @@ packer({
                 }),
             ],
             // noParse: [require.resolve('typescript/lib/typescript.js')],
+            aliasPackagesBuild: 'production',
         },
     },
     backends: {
@@ -332,14 +313,14 @@ packer({
         return Promise.all([
             // todo: as all packages will be esm only, a new package.jsn generator is needed, or none at all?
             //       as `transformForEsModule` is for `type: "module"` with esm+cjs builds, it is not used for esmOnly packages
-            makeModulePackageJson(transformForEsModule)(
-                Object.keys(packages).reduce(
-                    (packagesFiltered, pack) =>
-                        packages[pack].esmOnly ? packagesFiltered : {...packagesFiltered, [pack]: packages[pack]},
-                    {},
-                ),
-                pathBuild,
-            ),
+            // makeModulePackageJson(transformForEsModule)(
+            //     Object.keys(packages).reduce(
+            //         (packagesFiltered, pack) =>
+            //             packages[pack].esmOnly ? packagesFiltered : {...packagesFiltered, [pack]: packages[pack]},
+            //         {},
+            //     ),
+            //     pathBuild,
+            // ),
             ...(isServing ? [] : [copyRootPackageJson()(packages, pathBuild)]),
         ]).then(() => undefined).catch((e) => {
             console.error('ERROR after-es-mod', e)
@@ -348,10 +329,10 @@ packer({
     },
 })
     .then(([execs, elapsed]) => {
-        if(execs.indexOf('doServe') !== -1) {
+        if (execs.indexOf('doServe') !== -1) {
             console.log('[packer] is now serving (after ' + elapsed + 'ms)')
         } else {
-            if(execs.indexOf('doBuildBabel') !== -1) {
+            if (execs.indexOf('doBuildBabel') !== -1) {
                 const nodePackages = [
                     // [path, esmOnly]
                     // [path.resolve(__dirname, 'packages', 'uis-system'), true],
@@ -368,7 +349,7 @@ packer({
                         const packageFile = JSON.parse(fs.readFileSync(path.join(pkg, 'package.json')).toString())
                         // todo: for backends: here check all `devPackages` etc. an replace local-packages with `file:` references,
                         //       then copy the `build` of that package to e.g. `_modules` in the backend `build`
-                        if(packageFile.exports) {
+                        if (packageFile.exports) {
                             packageFile.exports = Object.keys(packageFile.exports).reduce((exp, pkgName) => {
                                 let pkgExportsFinal
                                 const pkgExports = packageFile.exports[pkgName]
@@ -378,14 +359,14 @@ packer({
                                         maybePrefixedFolder.startsWith('./src/') ?
                                             '.' + maybePrefixedFolder.slice('./src'.length) :
                                             maybePrefixedFolder
-                                if(typeof pkgExports === 'string') {
+                                if (typeof pkgExports === 'string') {
                                     pkgExportsFinal = changeFolder(pkgExports)
-                                } else if(typeof pkgExports === 'object') {
+                                } else if (typeof pkgExports === 'object') {
                                     pkgExportsFinal = Object.keys(pkgExports).reduce((pkgExportsNext, pkgExport) => {
                                         let pkgExportNext = changeFolder(pkgExports[pkgExport])
                                         let cjs = undefined
-                                        if(pkgExport === 'import' && !esmOnly) {
-                                            if(!pkgExport['require']) {
+                                        if (pkgExport === 'import' && !esmOnly) {
+                                            if (!pkgExport['require']) {
                                                 cjs = {'require': pkgExportNext}
                                             }
                                             pkgExportNext = pkgExportNext.startsWith('./esm/') ? pkgExportNext : './esm' + pkgExportNext.slice(1)
@@ -407,32 +388,32 @@ packer({
                                 }
                             }, packageFile.exports)
                         }
-                        if(packageFile.module && packageFile.module.startsWith('build/')) {
+                        if (packageFile.module && packageFile.module.startsWith('build/')) {
                             packageFile.module = packageFile.module.slice('build/'.length)
                         }
-                        if(packageFile.module && packageFile.module.startsWith('src/')) {
+                        if (packageFile.module && packageFile.module.startsWith('src/')) {
                             packageFile.module = packageFile.module.slice('src/'.length)
                         }
-                        if(packageFile.main && packageFile.main.startsWith('build/')) {
+                        if (packageFile.main && packageFile.main.startsWith('build/')) {
                             packageFile.main = packageFile.main.slice('build/'.length)
                         }
-                        if(packageFile.main && packageFile.main.startsWith('src/')) {
+                        if (packageFile.main && packageFile.main.startsWith('src/')) {
                             packageFile.main = packageFile.main.slice('src/'.length)
                         }
-                        if(packageFile.typings && packageFile.typings.startsWith('build/')) {
+                        if (packageFile.typings && packageFile.typings.startsWith('build/')) {
                             packageFile.typings = packageFile.typings.slice('build/'.length)
                         }
-                        if(packageFile.typings && packageFile.typings.startsWith('src/')) {
+                        if (packageFile.typings && packageFile.typings.startsWith('src/')) {
                             packageFile.typings = packageFile.typings.slice('src/'.length)
                         }
-                        if(packageFile.types && packageFile.types.startsWith('build/')) {
+                        if (packageFile.types && packageFile.types.startsWith('build/')) {
                             packageFile.types = packageFile.types.slice('build/'.length)
                         }
-                        if(packageFile.types && packageFile.types.startsWith('src/')) {
+                        if (packageFile.types && packageFile.types.startsWith('src/')) {
                             packageFile.types = packageFile.types.slice('src/'.length)
                         }
                         fs.writeFile(path.join(pkg, 'build', 'package.json'), JSON.stringify(packageFile, null, 4), (err) => {
-                            if(err) {
+                            if (err) {
                                 reject(err)
                                 return
                             }

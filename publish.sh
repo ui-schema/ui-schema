@@ -4,9 +4,6 @@ echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >.npmrc
 
 echo "Token length: ${#NPM_TOKEN}"
 
-# todo: not manual resetting the file here
-git checkout -- packages/webpackPartialConfig.js
-
 cd ./packages
 
 cd ui-schema

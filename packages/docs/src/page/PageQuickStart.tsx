@@ -11,7 +11,7 @@ import { useHistory } from 'react-router-dom'
 import { LinkableHeadlineMenu, useHeadlines } from '@control-ui/docs/LinkableHeadline'
 import { HeadMeta } from '@control-ui/kit/HeadMeta'
 import { PageContent } from '@control-ui/kit/PageContent'
-import { LoadingCircular } from '@control-ui/kit/Loading/LoadingCircular'
+import { LoadingCircular } from '@control-ui/kit/Loading'
 
 const demoSchema = {
     type: 'object',

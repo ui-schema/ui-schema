@@ -4,7 +4,7 @@ import { extractValue, WithValue } from '@ui-schema/react/UIStore'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { SlateRenderer } from '@ui-schema/material-slate/Slate/SlateRenderer'
 import { ElementMapper } from '@ui-schema/material-slate/SlateElements/ElementMapper'
-import { FormWrapper, useFormEditorStyles } from '@ui-schema/material-slate/EditorWrapper/FormWrapper'
+import { FormWrapper, useFormEditorStyles } from '@ui-schema/material-slate/EditorWrapper'
 import { useSlate } from '@ui-schema/material-slate/Slate/useSlate'
 import { slatePlugins, withPlugins } from '@ui-schema/material-slate/Slate/slatePlugins'
 

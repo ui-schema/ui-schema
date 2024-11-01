@@ -7,10 +7,7 @@ Base components for the `Table` widget, to build custom table widgets, check the
 ```typescript jsx
 import React from 'react'
 import { memo, WidgetProps } from '@ui-schema/ui-schema'
-import { TableRenderer } from '@ui-schema/ds-material/BaseComponents/Table/TableRenderer'
-import { TableFooter } from '@ui-schema/ds-material/BaseComponents/Table/TableFooter'
-import { TableHeader } from '@ui-schema/ds-material/BaseComponents/Table/TableHeader'
-import { TableRowRenderer } from '@ui-schema/ds-material/BaseComponents/Table/TableRowRenderer'
+import { TableRenderer, TableFooter, TableHeader, TableRowRenderer } from '@ui-schema/ds-material/BaseComponents/Table'
 
 const TableHeaderMemo = memo(TableHeader)
 const TableRowRendererMemo = memo(TableRowRenderer)

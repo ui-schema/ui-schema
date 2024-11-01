@@ -16,7 +16,7 @@ import { pluginGoogle, prepareConsent } from '@bemit/consent-ui'
 import { DocsIndexProvider } from '@control-ui/docs/DocsIndexProvider'
 import { DocsSearchProvider } from '@control-ui/docs/DocsSearchProvider'
 import { CustomLayout } from './component/Layout'
-import { LoadingCircular } from '@control-ui/kit/Loading/LoadingCircular'
+import { LoadingCircular } from '@control-ui/kit/Loading'
 import { loadSchemaUIApi, UIApiProvider } from '@ui-schema/react/UIApi'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 

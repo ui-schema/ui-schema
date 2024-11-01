@@ -9,7 +9,7 @@ import remarkGfm from 'remark-gfm'
 import { MdInlineCode } from '@control-ui/md/MdInlineCode'
 import { MdLink } from '@control-ui/md/MdLink'
 import { LinkableHeadline } from '@control-ui/docs/LinkableHeadline'
-import { LoadingCircular } from '@control-ui/kit/Loading/LoadingCircular'
+import { LoadingCircular } from '@control-ui/kit/Loading'
 import { OrderedListProps, UnorderedListProps } from 'react-markdown/lib/ast-to-react'
 import { useTheme } from '@mui/material/styles'
 

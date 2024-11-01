@@ -7,8 +7,8 @@ import InputLabel from '@mui/material/InputLabel'
 import { inputClasses } from '@mui/material/Input'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { ValidityHelperText } from '@ui-schema/ds-material'
-import { MarkdownLabel } from '@ui-schema/material-slate/EditorWrapper/MarkdownLabel'
+import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
+import { MarkdownLabel } from '@ui-schema/material-slate/EditorWrapper'
 
 export const useFormEditorStyles = makeStyles<Theme, { dense: boolean, focused: boolean }, 'wrapper' | 'editor'>(theme => ({
     wrapper: {
