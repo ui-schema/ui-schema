@@ -1,4 +1,9 @@
-import React from 'react'
+import {
+    MuiWidgetBinding as MuiWidgetBindingNext,
+    MuiWidgetsBindingTypes as MuiWidgetsBindingTypesNext,
+    MuiWidgetsBindingCustom as MuiWidgetsBindingCustomNext,
+    MuiWidgetBindingExtra as MuiWidgetBindingExtraNext,
+} from '@ui-schema/ds-material/BindingType'
 import { NumberRenderer, StringRenderer, TextRenderer } from '@ui-schema/ds-material/Widgets/TextField'
 import { Select, SelectMulti } from '@ui-schema/ds-material/Widgets/Select'
 import { BoolRenderer } from '@ui-schema/ds-material/Widgets/OptionsBoolean'
@@ -14,28 +19,14 @@ import { pluginStack } from '@ui-schema/ds-material/pluginStack'
 import { WidgetRenderer } from '@ui-schema/ui-schema/WidgetRenderer'
 import { validators } from '@ui-schema/ui-schema/Validators/validators'
 import { CardRenderer, FormGroup, LabelBox } from '@ui-schema/ds-material/Widgets'
-import { WidgetProps, WidgetType } from '@ui-schema/ui-schema/Widget'
 import { UIStoreActions } from '@ui-schema/ui-schema/UIStoreActions'
-import { WithScalarValue } from '@ui-schema/ui-schema/UIStore'
 import { WidgetsBindingFactory } from '@ui-schema/ui-schema/WidgetsBinding'
-import { InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { ErrorFallback } from '@ui-schema/ds-material/ErrorFallback'
 
-export interface MuiWidgetsBindingTypes<C extends {} = {}, W extends MuiWidgetBinding = MuiWidgetBinding> {
-    string: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
-    boolean: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
-    number: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
-    integer: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
-}
-
-export interface MuiWidgetsBindingCustom<C extends {} = {}, W extends MuiWidgetBinding = MuiWidgetBinding, A = UIStoreActions> {
-    [key: string]: WidgetType<C, W, A> | WidgetType<C, WidgetsBindingFactory, A>
-}
-
-export interface MuiWidgetBindingExtra {
-    InfoRenderer?: React.ComponentType<InfoRendererProps>
-}
-
+// exports of types for backwards compatibility
+export type MuiWidgetsBindingTypes<C extends {} = {}, W extends MuiWidgetBindingNext = MuiWidgetBindingNext> = MuiWidgetsBindingTypesNext<C, W>
+export type MuiWidgetsBindingCustom<C extends {} = {}, W extends MuiWidgetBindingNext = MuiWidgetBindingNext, A = UIStoreActions> = MuiWidgetsBindingCustomNext<C, W, A>
+export type MuiWidgetBindingExtra = MuiWidgetBindingExtraNext
 export type MuiWidgetBinding<C extends {} = {}> = WidgetsBindingFactory<MuiWidgetBindingExtra, MuiWidgetsBindingTypes<C>, MuiWidgetsBindingCustom<C>>
 
 export const widgets: MuiWidgetBinding = {
