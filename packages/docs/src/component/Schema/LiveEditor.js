@@ -191,7 +191,7 @@ const EditorsNavBase = ({
                             verticalSplit, changeSplit,
                             setTabSize, tabSize,
                             setFontSize, fontSize,
-                            activeSchema, changeSchema,
+                            activeSchema, changeSchema, resetState,
                             toggleRichIde, richIde,
                             schemas,
                             showInfo, toggleInfoBox, hasInfo,
@@ -305,7 +305,7 @@ const EditorsNavBase = ({
             <NavButton
                 label={'reset data and schema'}
                 Icon={RestorePage}
-                onClick={() => changeSchema(activeSchema)}
+                onClick={() => resetState()}
                 verticalSplit={verticalSplit}
             />
 
@@ -327,22 +327,16 @@ const EditorsNavBase = ({
 };
 const EditorsNav = React.memo(EditorsNavBase)
 
-const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, richIde, renderChange, theme}) => {
+const SchemaJSONEditor = ({schema, setSchema, tabSize, fontSize, richIde, renderChange, theme}) => {
     return <RichCodeEditor
         tabSize={tabSize}
         fontSize={fontSize}
         raw={!richIde}
         theme={theme}
         renderChange={renderChange}
-        value={typeof schema === 'string' ? schema : JSON.stringify(schema.toJS(), null, tabSize)}
+        value={schema}
         onChange={(newValue) => {
-            try {
-                setJsonError(false);
-                setSchema(createOrderedMap(JSON.parse(newValue)));
-            } catch(e) {
-                setJsonError(e.toString());
-                setSchema(newValue);
-            }
+            setSchema(newValue);
         }}
     />
 };
@@ -394,11 +388,17 @@ const toggleLocalBoolean = (setter, key) => {
     })
 };
 
+/**
+ * @return {number|undefined}
+ */
 const searchActiveSchema = (schemas, schema) => {
-    let found = false;
+    /**
+     * @type {number|undefined}
+     */
+    let found = undefined;
     for(let id in schemas) {
         if(schemas[id][0].split(' ').join('-') === schema) {
-            found = id;
+            found = Number(id);
             break;
         }
     }
@@ -409,7 +409,7 @@ const searchActiveSchema = (schemas, schema) => {
 const EditorSchemaInfoBase = (
     {
         verticalSplit, toggleInfoBox, info, infoBox, showInfo, setRenderChange, activeSchema, changeSchema, schema,
-        setJsonError, onSchemaManual, tabSize, fontSize, richIde, renderChange, editorTheme,
+        onSchemaManual, tabSize, fontSize, richIde, renderChange, editorTheme,
     },
 ) => {
     return <>
@@ -452,7 +452,6 @@ const EditorSchemaInfoBase = (
             </Typography>
             <SchemaJSONEditor
                 schema={schema}
-                setJsonError={setJsonError}
                 setSchema={onSchemaManual}
                 tabSize={tabSize}
                 fontSize={fontSize}
@@ -466,13 +465,12 @@ const EditorSchemaInfoBase = (
 const EditorSchemaInfo = React.memo(EditorSchemaInfoBase)
 
 const GridStack = injectPluginStack(GridContainer)
-const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
+const EditorHandler = ({activeSchema}) => {
     const history = useHistory();
     let initialVertical = initialLocalBoolean('live-editor-vertical', 800 < window.innerWidth);// Vertical by default for desktop
     let initialRichIde = initialLocalBoolean('live-editor-rich-ide', true);
     const [verticalSplit, setVerticalSplit] = React.useState(initialVertical);
     const [richIde, setRichIde] = React.useState(initialRichIde);
-    const [jsonError, setJsonError] = React.useState(false);
     const [tabSize, setTabSize] = React.useState(2);
     const [fontSize, setFontSize] = React.useState(13);
     const [showInfo, setInfoBox] = React.useState(true);
@@ -480,12 +478,17 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
     const [jsonEditHeight, setJsonEditHeight] = React.useState(350);
     const [renderChange, setRenderChange] = React.useState(0);// Ace Editor Re-Size Re-Calc
     const [editorTheme, setEditorTheme] = React.useState('gruvbox');
+    const [resetId, setResetId] = React.useState(activeSchema);
     const infoBox = React.useRef();// to scroll to top of info text when toggling/switching sides
 
     // default schema state - begin
     const [showValidity, setShowValidity] = React.useState(false);
-    const [schema, setSchema] = React.useState(() => schemas[activeSchema][1]);
-    const [store, setStore] = React.useState(() => createStore(schemas[activeSchema][2]));
+    const [activeState, setActiveState] = React.useState(() => ({
+        id: activeSchema,
+        schema: schemas[activeSchema][1],
+        input: JSON.stringify(schemas[activeSchema][1].toJS(), undefined, tabSize),
+        store: createStore(schemas[activeSchema][2]),
+    }));
     // end - default schema state
 
     const toggleInfoBox = React.useCallback((setter) => {
@@ -515,16 +518,8 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
 
     const changeSchema = React.useCallback(i => {
         setShowValidity(false);
-        setActiveSchema(i);
-        setSchema(schema => {
-            if(!schemas[i][1].equals(schema)) {
-                setStore(createStore(schemas[i][2]));
-            }
-            return schemas[i][1]
-        });
-        setRenderChange(p => p + 1);
         history.push('/examples/' + (schemas[i][0].split(' ').join('-')));
-    }, [setActiveSchema, setShowValidity, setSchema, setStore, history]);
+    }, [setShowValidity, history]);
 
     React.useEffect(() => {
         if(infoBox.current) {
@@ -539,30 +534,67 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
     }, [showInfo, infoBox]);
 
     React.useEffect(() => {
-        if(typeof matchedSchema !== 'undefined') {
-            let foundSchema = matchedSchema ? searchActiveSchema(schemas, matchedSchema) : matchedSchema;
-            if(foundSchema !== activeSchema && foundSchema !== false) {
-                changeSchema(foundSchema)
-            }
+        if(typeof activeSchema === 'number') {
+            setActiveState((activeState) => activeState.id === activeSchema ? activeState : ({
+                id: activeSchema,
+                schema: schemas[activeSchema][1],
+                input: JSON.stringify(schemas[activeSchema][1], undefined, tabSize),
+                store: createStore(schemas[activeSchema][2]),
+            }))
+            setRenderChange(p => p + 1);
         }
-    }, [matchedSchema, changeSchema, activeSchema]);
+    }, [activeSchema, tabSize]);
+
+    const resetState = React.useCallback(() => {
+        if(typeof activeSchema === 'number') {
+            setActiveState(() => ({
+                id: activeSchema,
+                schema: schemas[activeSchema][1],
+                input: JSON.stringify(schemas[activeSchema][1], undefined, tabSize),
+                store: createStore(schemas[activeSchema][2]),
+            }))
+            setRenderChange(p => p + 1);
+            setResetId(Date.now().toString())
+        }
+    }, [activeSchema, tabSize]);
+
+    React.useEffect(() => {
+        setActiveState((activeState) => ({
+            ...activeState,
+            input: JSON.stringify(activeState.schema?.toJS(), undefined, tabSize),
+        }))
+    }, [tabSize]);
 
     const onSchemaManual = React.useCallback((schema) => {
-        setSchema((oldSchema) => {
+        setActiveState((activeState) => {
+            const oldSchema = activeState.schema
             const oldType = Map.isMap(oldSchema) && oldSchema.get('type')
-            const type = Map.isMap(schema) && schema.get('type')
-            if(oldType !== type && type) {
-                setStore(createEmptyStore(type))
+            let nextSchema = oldSchema
+            let jsonError = undefined
+            try {
+                nextSchema = createOrderedMap(JSON.parse(schema))
+            } catch(e) {
+                jsonError = e.toString()
             }
-            return schema
+            const type = nextSchema && Map.isMap(nextSchema) && nextSchema.get('type')
+            return {
+                ...activeState,
+                input: schema,
+                schema: nextSchema,
+                store: type && oldType !== type ? createEmptyStore(type) : activeState.store,
+                jsonError: jsonError,
+            }
         })
-    }, [setSchema, setStore]);
+    }, []);
 
     const onChange = React.useCallback((storeKeys, scopes, updater, deleteOnEmpty, type) => {
-        setStore(prevStore => {
-            return storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(prevStore)
+        setActiveState(activeState => {
+            return {
+                ...activeState,
+                store: storeUpdater(storeKeys, scopes, updater, deleteOnEmpty, type)(activeState.store),
+            }
         })
-    }, [setStore]);
+    }, []);
 
     const {onIntent} = useOnIntent({edgeSize: 12})
     const {onMove} = useOnDirectedMove(onIntent, onChange)
@@ -570,7 +602,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
     return <>
         {/*<MuiPickersUtilsProvider utils={LuxonAdapter}>*/}
         <KitDndProvider onMove={onMove}>
-            <UIStoreProvider store={store} onChange={onChange} showValidity={showValidity}>
+            <UIStoreProvider store={activeState.store} onChange={onChange} showValidity={showValidity}>
                 <div style={{display: 'flex', flexGrow: 2, overflow: 'auto', flexDirection: verticalSplit ? 'row' : 'column'}}>
                     <div style={{
                         width: verticalSplit ? '45%' : '100%',
@@ -590,13 +622,12 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
                                 verticalSplit={verticalSplit}
                                 toggleInfoBox={toggleInfoBox}
                                 info={schemas[activeSchema][3]}
-                                schema={schema}
+                                schema={activeState.input}
                                 infoBox={infoBox}
                                 showInfo={showInfo}
                                 setRenderChange={setRenderChange}
                                 activeSchema={activeSchema}
                                 changeSchema={changeSchema}
-                                setJsonError={setJsonError}
                                 onSchemaManual={onSchemaManual}
                                 tabSize={tabSize}
                                 fontSize={fontSize}
@@ -628,11 +659,11 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
                     </div>
 
                     <EditorsNav
-                        setJsonError={setJsonError}
                         changeSplit={changeSplit}
                         verticalSplit={verticalSplit}
                         activeSchema={activeSchema}
                         changeSchema={changeSchema}
+                        resetState={resetState}
                         setTabSize={setTabSize}
                         tabSize={tabSize}
                         setFontSize={setFontSize}
@@ -651,21 +682,28 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}) => {
                     />
 
                     <main className="App-main" style={{height: '100%', overflow: 'auto', maxWidth: 'none', margin: verticalSplit ? '0 auto' : 0, order: verticalSplit ? 3 : 1}}>
-                        {jsonError ?
+                        {activeState.jsonError ?
                             <Paper style={{margin: 12, padding: 24}}>
                                 <Typography component={'h2'} variant={'h5'} color={'error'}>
                                     JSON-Error:
                                 </Typography>
 
                                 <Typography component={'p'} variant={'subtitle1'} style={{marginTop: 12}}>
-                                    {jsonError.replace('SyntaxError: JSON.parse: ', '')}
+                                    {activeState.jsonError.replace('SyntaxError: JSON.parse: ', '')}
                                 </Typography>
                             </Paper> :
-                            typeof schema === 'string' ? null : <Paper style={{margin: 12, padding: 24}}>
-                                <GridStack schema={schema}/>
+                            activeState.schema ? <Paper style={{margin: 12, padding: 24}}>
+                                <GridStack key={resetId} schema={activeState.schema}/>
 
-                                <InvalidLabel invalid={isInvalid(store?.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>
-                            </Paper>}
+                                <InvalidLabel invalid={isInvalid(activeState.store?.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>
+                            </Paper> : null}
+
+                        <Button
+                            onClick={() => setResetId(Date.now().toString())}
+                            sx={{mx: 2, my: 1}}
+                            size={'small'}
+                            color={'secondary'}
+                        >{'remount'}</Button>
 
                         <div style={{height: 24, width: 1, flexShrink: 0}}/>
                     </main>
@@ -687,19 +725,18 @@ const Editor = () => {
 
     React.useEffect(() => {
         let foundSchema = searchActiveSchema(schemas, match.params.schema);
-        if(foundSchema !== activeSchema && foundSchema !== false) {
+        if(typeof foundSchema === 'number') {
             setActiveSchema(foundSchema)
-        } else if(foundSchema === false && typeof match.params.schema === 'undefined') {
+        } else if(typeof match.params.schema === 'undefined') {
             setActiveSchema(0)
         }
-    }, [activeSchema, setActiveSchema, match]);
+    }, [setActiveSchema, match.params.schema]);
 
     if(activeSchema === false) return <PageNotFound/>;
 
     return <EditorHandler
         activeSchema={activeSchema}
         setActiveSchema={setActiveSchema}
-        matchedSchema={match.params.schema}
     />
 };
 
