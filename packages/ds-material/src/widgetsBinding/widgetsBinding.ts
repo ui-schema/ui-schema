@@ -14,14 +14,12 @@ import { SimpleList } from '@ui-schema/ds-material/Widgets/SimpleList'
 import { GenericList } from '@ui-schema/ds-material/Widgets/GenericList'
 import { NumberSlider } from '@ui-schema/ds-material/Widgets/NumberSlider'
 import { AccordionsRenderer } from '@ui-schema/ds-material/Widgets/Accordions'
-import { RootRenderer, GroupRenderer } from '@ui-schema/ds-material/Grid'
 import { pluginStack } from '@ui-schema/ds-material/pluginStack'
-import { WidgetRenderer } from '@ui-schema/ui-schema/WidgetRenderer'
 import { validators } from '@ui-schema/ui-schema/Validators/validators'
 import { CardRenderer, FormGroup, LabelBox } from '@ui-schema/ds-material/Widgets'
+import { widgets as widgetsBasic } from '@ui-schema/ds-material/widgetsBindingBasic'
 import { UIStoreActions } from '@ui-schema/ui-schema/UIStoreActions'
 import { WidgetsBindingFactory } from '@ui-schema/ui-schema/WidgetsBinding'
-import { ErrorFallback } from '@ui-schema/ds-material/ErrorFallback'
 
 // exports of types for backwards compatibility
 export type MuiWidgetsBindingTypes<C extends {} = {}, W extends MuiWidgetBindingNext = MuiWidgetBindingNext> = MuiWidgetsBindingTypesNext<C, W>
@@ -30,11 +28,8 @@ export type MuiWidgetBindingExtra = MuiWidgetBindingExtraNext
 export type MuiWidgetBinding<C extends {} = {}> = WidgetsBindingFactory<MuiWidgetBindingExtra, MuiWidgetsBindingTypes<C>, MuiWidgetsBindingCustom<C>>
 
 export const widgets: MuiWidgetBinding = {
-    ErrorFallback: ErrorFallback,
-    RootRenderer,
-    GroupRenderer,
-    WidgetRenderer,
-    pluginStack,
+    ...widgetsBasic,
+    pluginStack: pluginStack,
     pluginSimpleStack: validators,
     types: {
         string: StringRenderer,
