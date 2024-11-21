@@ -150,7 +150,7 @@ import {
     WidgetsBindingFactory,
     WidgetProps, WithScalarValue, memo, WithValue, StoreKeyType,
 } from '@ui-schema/ui-schema'
-import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, widgets } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes, widgets } from '@ui-schema/ds-material/BindingType'
 import Button from '@mui/material/Button'
 import { json } from '@codemirror/lang-json'
 import { javascript } from '@codemirror/lang-javascript'

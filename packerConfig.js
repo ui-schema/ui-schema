@@ -226,7 +226,7 @@ packer({
                     enforce: true,
                 },
                 common1: {
-                    test: /[\\/]node_modules[\\/](@mui|@emotion|@control-ui[\\/]app|@control-ui[\\/]kit|react-loadable)[\\/]/,
+                    test: /[\\/]node_modules[\\/](@mui|@emotion|@control-ui[\\/]app|@control-ui[\\/]kit)[\\/]/,
                     // reuseExistingChunk: true,
                     usedExports: true,
                     name: 'c1',

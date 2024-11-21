@@ -1,7 +1,6 @@
 import React from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import Loadable from 'react-loadable'
 import CuiMarkdown from 'react-markdown'
 import { renderers as baseRenderers } from '@control-ui/md/MarkdownRenderers'
 import rehypeRaw from 'rehype-raw'
@@ -9,14 +8,9 @@ import remarkGfm from 'remark-gfm'
 import { MdInlineCode } from '@control-ui/md/MdInlineCode'
 import { MdLink } from '@control-ui/md/MdLink'
 import { LinkableHeadline } from '@control-ui/docs/LinkableHeadline'
-import { LoadingCircular } from '@control-ui/kit/Loading'
 import { OrderedListProps, UnorderedListProps } from 'react-markdown/lib/ast-to-react'
 import { useTheme } from '@mui/material/styles'
-
-const Code = Loadable({
-    loader: () => import('./MarkdownCode'),
-    loading: () => <LoadingCircular title={'Loading Web-IDE'}/>,
-})
+import Code from './MarkdownCode'
 
 //const Code = () => <LoadingCircular title={'Loading Web-IDE'}/>
 //const Code = () => <CircularProgress component={'span'}/>
@@ -50,17 +44,27 @@ const MdList: React.ComponentType<(UnorderedListProps | OrderedListProps) & {
 const renderers = baseRenderers(true)
 renderers.ul = p => <MdList {...p} dense/>
 renderers.ol = p => <MdList {...p} dense/>
-// @ts-ignore
-renderers.code = ({inline, ...p}) => inline ? <MdInlineCode variant={'body1'} {...p} p={0.75}/> : <Code variant={'body2'} {...p}/>
-// @ts-ignore
-const MarkdownH = ({level, ...p}) => <Typography {...p} component={'h' + (level + 1)} variant={'subtitle' + (level)} style={{textDecoration: 'underline', marginTop: 48 / level}} gutterBottom/>
+renderers.code = ({inline, children, ...p}) =>
+    inline
+        ? <MdInlineCode variant={'body1'} {...p} p={0.75}>{children}</MdInlineCode>
+        : <Code variant={'body2'} {...p}>{children as string}</Code>
+const MarkdownH = ({level, children, ...p}) =>
+    <Typography
+        {...p}
+        component={`h${level + 1}` as 'h2'}
+        variant={`subtitle${level <= 2 ? level as 1 | 2 : 2}`}
+        style={{textDecoration: 'underline', marginTop: 48 / level}}
+        gutterBottom
+    >{children}</Typography>
 renderers.h1 = renderers.h2 = renderers.h3 = renderers.h4 = renderers.h5 = renderers.h6 = MarkdownH
 renderers.a = LinkInternalLocale
 renderers.pre = ({children}) => <pre style={{margin: 0}}>{children}</pre>
 
 const renderersContent = baseRenderers(false)
-// @ts-ignore
-renderersContent.code = ({inline, ...p}) => inline ? <MdInlineCode variant={'body1'} {...p} p={0.75}/> : <Code variant={'body1'} {...p}/>
+renderersContent.code = ({inline, children, ...p}) =>
+    inline
+        ? <MdInlineCode variant={'body1'} {...p} p={0.75}>{children}</MdInlineCode>
+        : <Code variant={'body2'} {...p}>{children as string}</Code>
 // @ts-ignore
 renderersContent.h1 = renderersContent.h3 = renderersContent.h4 = renderersContent.h5 = renderersContent.h6 = LinkableHeadline
 renderersContent.a = LinkInternalLocale

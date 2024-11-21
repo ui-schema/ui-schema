@@ -2,6 +2,7 @@ import React from 'react'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import InvertColorsIcon from '@mui/icons-material/InvertColors'
+import { RouteComponentProps } from 'react-router'
 import GithubLogo from '../asset/GithubLogo'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { useTheme } from '@mui/material/styles'
@@ -16,11 +17,10 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import { useConsent } from '@bemit/consent-ui-react'
 import { ConsentUiBoxDialog, dialogPositions } from '@bemit/consent-ui-mui'
 import { Layout, LayoutProps } from '@control-ui/app/Layout'
-import Loadable from 'react-loadable'
-import { LoadingCircular } from '@control-ui/kit/Loading'
 import { RouteCascade } from '@control-ui/routes/RouteCascade'
 import { useSearch } from '@control-ui/docs/DocsSearchProvider'
 import { getUserCtrlKey, getUserPlatform } from '@control-ui/kit/Helper'
+import PageNotFound from '../page/PageNotFound'
 import { SearchBox } from './SearchBox'
 import { LayoutDrawer } from './LayoutDrawer'
 
@@ -84,15 +84,12 @@ export const CustomHeaderBase: React.ComponentType = () => {
 }
 const CustomHeader = React.memo(CustomHeaderBase)
 
-const PageNotFound: React.ComponentType = Loadable({
-    loader: () => import('../page/PageNotFound'),
-    // eslint-disable-next-line react/display-name
-    loading: () => <LoadingCircular title={'Not Found'}/>,
-})
-
 const RoutingBase: LayoutProps['Content'] = (p) =>
-// @ts-ignore
-    <RouteCascade routeId={'content'} childProps={p} Fallback={PageNotFound}/>
+    <RouteCascade
+        routeId={'content'}
+        childProps={p}
+        Fallback={PageNotFound as React.ComponentType<RouteComponentProps & { scrollContainer?: any }>}
+    />
 export const Routing: LayoutProps['Content'] = React.memo(RoutingBase)
 
 export const CustomLayout = () => {
@@ -100,7 +97,6 @@ export const CustomLayout = () => {
     const {ready, hasChosen, showUi} = useConsent()
     const [showDetails, setShowDetails] = React.useState(Boolean(hasChosen))
     return <>
-        {/* @ts-ignore */}
         <Layout
             Header={CustomHeader}
             Drawer={LayoutDrawer}

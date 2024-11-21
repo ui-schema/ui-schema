@@ -217,7 +217,7 @@ Use the existing exported binding of your design-system and add or overwrite wid
 Simple example of adding a new widget to the binding:
 
 ```js
-import {widgets} from "@ui-schema/ds-material/WidgetsBinding";
+import {widgets} from "@ui-schema/ds-material/BindingType";
 
 const CustomNumberRenderer = () => /* todo: implement */ null;
 const CustomSelect = () => /* todo: implement */ null;
@@ -240,7 +240,7 @@ Example widget binding **with typings**:
 
 ```typescript
 import React from "react";
-import { widgets, MuiWidgetsBinding, MuiWidgetsBindingTypes, MuiWidgetsBindingCustom } from "@ui-schema/ds-material/WidgetsBinding";
+import { widgets, MuiWidgetsBinding, MuiWidgetsBindingTypes, MuiWidgetsBindingCustom } from "@ui-schema/ds-material/BindingType";
 import { WidgetProps, WidgetsBindingFactory, WithScalarValue } from "@ui-schema/ui-schema";
 
 const CustomNumberRenderer = (props: React.ComponentType<WidgetProps<CustomWidgetsBinding> & WithScalarValue>) => /* todo: implement */ null;

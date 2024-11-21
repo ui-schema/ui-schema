@@ -1,4 +1,4 @@
-import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
 import { GroupRenderer } from '@ui-schema/ds-material/Grid'
 import { ErrorFallback } from '@ui-schema/ds-material/ErrorFallback'
 import { VirtualWidgetRenderer } from '@ui-schema/react/VirtualWidgetRenderer'

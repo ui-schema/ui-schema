@@ -1,6 +1,6 @@
 import { NumberRenderer, StringRenderer } from '@ui-schema/ds-material/Widgets/TextField'
 import { BoolRenderer } from '@ui-schema/ds-material/Widgets/OptionsBoolean'
-import { MuiWidgetsBindingTypes } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBindingTypes } from '@ui-schema/ds-material/BindingType'
 import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import React from 'react'
 import { WidgetProps } from '@ui-schema/react/Widgets'

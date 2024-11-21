@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { App } from '@control-ui/app/App'
 import { BrowserRouter } from 'react-router-dom'
 import { I18nProviderContext } from '@control-ui/app/I18nProvider'
@@ -80,7 +80,17 @@ const i18n: I18nProviderContext = {
 }
 
 // eslint-disable-next-line react/display-name
-export const loading = (title) => (props) => <LoadingCircular {...props} title={title}/>
+// export const loading = (title) => (props) => <LoadingCircular {...props} title={title}/>
+
+const loading = (title: string, LoadableContent) => {
+    return function LoadingWrapper(props) {
+        return <Suspense
+            fallback={<LoadingCircular title={title}/>}
+        >
+            <LoadableContent {...props}/>
+        </Suspense>
+    }
+}
 const readyRoutes = routes(loading)
 const CustomApp: React.ComponentType<{}> = () =>
     <BrowserRouter basename={'/'}>

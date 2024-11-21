@@ -1,4 +1,4 @@
-import { TsDocModuleFileSource } from '@control-ui/docs-ts/TsDocModule'
+import { TsDocModuleDefinition, TsDocModuleDefinitionSymbol, TsDocModuleDefinitionSymbolInfo, TsDocModuleFileSource, TsDocTagContent } from '@control-ui/docs-ts/TsDocModule'
 import { flattenRoutes } from '@control-ui/routes/flattenRoutes'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
@@ -209,7 +209,7 @@ function isNodeExported(node: ts.Node): boolean {
  */
 function extractModuleInfo(entrypointFile: ts.SourceFile, program: ts.Program) {
     const checker = program.getTypeChecker()
-    const definitions: any[] = []
+    const definitions: TsDocModuleDefinition[] = []
 
     const visitedFiles = new Set<string>()
 
@@ -256,7 +256,7 @@ function extractModuleInfo(entrypointFile: ts.SourceFile, program: ts.Program) {
                 implementsString = ` implements ${implementedInterfaces.map(iface => checker.typeToString(iface, undefined, formatFlags)).join(', ')}`
             }
 
-            typeString = `class ${symbol.name}${superclassString}${implementsString} { /* ... */}`
+            typeString = `class ${symbol.name}${superclassString}${implementsString} {\n    /* ... */\n}`
         } else if (symbol.valueDeclaration) {
             typeString = checker.typeToString(
                 checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration),
@@ -277,7 +277,7 @@ function extractModuleInfo(entrypointFile: ts.SourceFile, program: ts.Program) {
             // todo: even with `MultilineObjectLiterals` it doesn't generate line breaks,
             //       contains four spaces at various positions etc.,
             //       improve by using a custom printer or format with prettier?
-            typeString = formatTypeString(typeString)
+            typeString = `const ${symbol.name}: ` + formatTypeString(typeString)
         } else {
             // interface, type
             const declarations = symbol.getDeclarations()
@@ -287,7 +287,8 @@ function extractModuleInfo(entrypointFile: ts.SourceFile, program: ts.Program) {
                     if (type.isClassOrInterface()) {
                         const properties = checker.getPropertiesOfType(type)
                         // todo: generics
-                        typeString = '{\n' + properties.map(prop => {
+                        typeString = `interface ${symbol.name} {
+` + properties.map(prop => {
                             const propType = checker.getTypeOfSymbolAtLocation(prop, prop.valueDeclaration!)
                             const isOptional = prop.flags & ts.SymbolFlags.Optional
                             const propTypeString: string = checker.typeToString(
@@ -302,17 +303,17 @@ function extractModuleInfo(entrypointFile: ts.SourceFile, program: ts.Program) {
                                 | ts.TypeFormatFlags.WriteTypeArgumentsOfSignature
                                 | ts.TypeFormatFlags.AllowUniqueESSymbolType,
                             )
-                            return `    ${prop.name}${isOptional ? '?' : ''}: ${propTypeString}`
+                            return `    ${prop.name}${isOptional ? '?' : ''}: ${formatTypeString(propTypeString, 4)}`
                         }).join('\n') + '\n}'
                     } else {
                         typeString = decl.getText(node?.getSourceFile())
                         if (typeString.startsWith('export ')) {
                             typeString = typeString.slice('export '.length)
                         }
-                        const typeName = symbol.getName()
-                        if (typeString.startsWith(`type ${typeName} =`)) {
-                            typeString = typeString.slice(`type ${typeName} =`.length).trim()
-                        }
+                        // const typeName = symbol.getName()
+                        // if(typeString.startsWith(`type ${typeName} =`)) {
+                        //     typeString = typeString.slice(`type ${typeName} =`.length).trim()
+                        // }
                         // } else if(typeString.startsWith(`type ${typeName}<`)) {
                         //     typeString = typeString.slice(`type ${typeName}`.length).trim()
                         // }
@@ -325,7 +326,7 @@ function extractModuleInfo(entrypointFile: ts.SourceFile, program: ts.Program) {
         return typeString
     }
 
-    function serializeSymbol(symbol: ts.Symbol, node: ts.Node) {
+    function serializeSymbol(symbol: ts.Symbol, node: ts.Node): TsDocModuleDefinitionSymbol {
         if (symbol.flags & ts.SymbolFlags.Alias) {
             const aliasedSymbol = checker.getAliasedSymbol(symbol)
             console.log('aliased', checker.typeToString(checker.getTypeOfSymbolAtLocation(aliasedSymbol, node)))
@@ -341,25 +342,28 @@ function extractModuleInfo(entrypointFile: ts.SourceFile, program: ts.Program) {
         }
     }
 
-    function formatTypeString(typeStr: string): string {
+    function formatTypeString(typeStr: string, depth = 0): string {
         return typeStr
             .replace(/\s+/g, ' ')
-            .replace(/{/g, '{\n  ')
-            .replace(/}/g, '\n}')
-            .replace(/;/g, ';\n  ')
+            .replace(/\{(.+)}/g, (match, group) => {
+                const lines = group.split(';')
+                return lines.length > 2 ? '{\n' + lines.map(l => l.trim() ? ' '.repeat(depth + 4) + l.trim() + ';\n' : '').join('') + ' '.repeat(depth) + '}' : match
+            })
             .replace(/\n\s*\n/g, '\n')
+            .replace(/\{ +/g, '{ ')
+            .replace(/;}/g, '; }')
     }
 
-    function getJSDocComments(comment: ts.JSDoc['comment']) {
+    function getJSDocComments(comment: ts.JSDoc['comment']): TsDocTagContent[] | undefined {
         // todo: maybe transform directly to Markdown instead of exposing as array?
         return typeof comment === 'string'
-            ? [{kind: SyntaxKind[SyntaxKind.JSDocText], text: comment}]
+            ? [{kind: 'JSDocText', text: comment}]
             : Array.isArray(comment)
                 ? comment
-                    .map(c =>
+                    .map((c): TsDocTagContent =>
                         isJSDocLink(c)
                             ? {
-                                kind: SyntaxKind[c.kind],
+                                kind: 'JSDocLink',
                                 text:
                                     (
                                         c.name
@@ -375,7 +379,8 @@ function extractModuleInfo(entrypointFile: ts.SourceFile, program: ts.Program) {
                                     ) + c.text,
                             } :
                             ({
-                                kind: SyntaxKind[c.kind],
+                                kind: 'JSDocText',
+                                // kind: SyntaxKind[c.kind],
                                 text: c.text,
                             }),
                     )
@@ -383,13 +388,14 @@ function extractModuleInfo(entrypointFile: ts.SourceFile, program: ts.Program) {
                 : undefined
     }
 
-    function extractJsDoc(node: ts.Node): any {
+    function extractJsDoc(node: ts.Node): TsDocModuleDefinitionSymbolInfo | undefined {
         const symbol =
             (node as ts.NamedDeclaration).name ?
                 checker.getSymbolAtLocation((node as ts.NamedDeclaration).name as ts.Node) : undefined
 
         if (!symbol) {
             console.log(`Missing Symbol ${SyntaxKind[node.kind]} ${(node as ts.NamedDeclaration).name?.getText(node.getSourceFile())} in ${node.getSourceFile().fileName}`)
+            return undefined
         }
 
         const jsDocs = ts.getJSDocCommentsAndTags(node)
@@ -404,8 +410,8 @@ function extractModuleInfo(entrypointFile: ts.SourceFile, program: ts.Program) {
             //       thus if a symbol exists, plain JSDoc comments shouldn't be needed
             const comment = typeof jsDoc.comment === 'string' && symbol ? undefined : getJSDocComments(jsDoc.comment)
             const {flags, tags} = jsDoc.tags?.reduce<{
-                flags: { internal?: boolean, deprecated?: boolean }
-                tags: { [k: string]: any[] }
+                flags: Pick<TsDocModuleDefinitionSymbolInfo, 'deprecated' | 'internal'>
+                tags: NonNullable<TsDocModuleDefinitionSymbolInfo['tags']>
             }>((parsed, t) => {
                 if (t.tagName.text === 'internal') {
                     parsed.flags.internal = true
@@ -419,6 +425,8 @@ function extractModuleInfo(entrypointFile: ts.SourceFile, program: ts.Program) {
                     || t.kind === SyntaxKind.JSDocDeprecatedTag
                     || t.tagName.text === 'internal'
                     || t.tagName.text === 'todo'
+                    || t.tagName.text === 'remarks'
+                    || t.tagName.text === 'example'
                 ) {
                     const tagName = t.tagName.text
                     if (!(tagName in parsed.tags)) {
@@ -430,28 +438,24 @@ function extractModuleInfo(entrypointFile: ts.SourceFile, program: ts.Program) {
             }, {flags: {}, tags: {}}) || {}
 
             return {
-                ...symbol ? serializeSymbol(symbol, node) : {},
+                ...serializeSymbol(symbol, node),
                 ...comment?.length ? {comment: comment} : {},
                 ...flags || {},
                 tags: tags,
             }
         }
 
-        if (symbol) {
-            return serializeSymbol(symbol, node)
-        }
-
-        return {}
+        return serializeSymbol(symbol, node)
     }
 
     function extractCommon(
         node: ts.Node,
         sourceFile: ts.SourceFile,
         {includeParent}: { includeParent?: boolean } = {},
-    ) {
+    ): Omit<TsDocModuleDefinition, 'exported'> {
         const name = (node as ts.NamedDeclaration).name?.getText(sourceFile)
         return {
-            ...(name ? {name} : {}),
+            name: name || 'anonymous',
             kind: ts.SyntaxKind[node.kind],
             ...includeParent ? {parent: node.parent ? ts.SyntaxKind[node.parent.kind] : null} : {},
             loc: {

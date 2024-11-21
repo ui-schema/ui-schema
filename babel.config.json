@@ -9,7 +9,6 @@
         "@babel/preset-typescript"
     ],
     "plugins": [
-        "react-loadable/babel",
         [
             "babel-plugin-named-asset-import",
             {

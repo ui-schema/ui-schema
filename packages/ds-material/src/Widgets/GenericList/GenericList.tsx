@@ -8,7 +8,7 @@ import {
     GenericListItem,
     GenericListItemMore, GenericListItemPos,
 } from '@ui-schema/ds-material/BaseComponents/GenericList'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
 
 export const GenericListContentMemo = memo(GenericListContent)
 

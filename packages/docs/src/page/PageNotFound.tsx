@@ -8,11 +8,11 @@ import { Link } from '@control-ui/kit/Link'
 import Nav from '../component/Nav'
 import { useTranslation } from 'react-i18next'
 
-export const PageNotFound: React.FC<{
-    title?: string
-    error?: string
-}> = (
-    {title = '404 Page Not Found', error},
+export const PageNotFound = (
+    {title = '404 Page Not Found', error}: {
+        title?: string
+        error?: string
+    },
 ) => {
     const {i18n} = useTranslation()
     return (

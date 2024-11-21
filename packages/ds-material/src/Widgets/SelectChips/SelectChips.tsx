@@ -10,7 +10,7 @@ import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelpe
 import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
 import { List } from 'immutable'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 

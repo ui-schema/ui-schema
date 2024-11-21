@@ -10,7 +10,7 @@ import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelpe
 import InputBase, { InputBaseProps, InputBaseComponentProps } from '@mui/material/InputBase'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
 import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
 import { visuallyHidden } from '@mui/utils'
 import { InfoRendererType } from '@ui-schema/ds-material/Component'
 

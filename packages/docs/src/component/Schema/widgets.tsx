@@ -1,7 +1,6 @@
 import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import React from 'react'
-import Loadable from 'react-loadable'
+import React, { lazy, Suspense } from 'react'
 /*import {
     Color, ColorDialog,
     ColorSwatches,
@@ -12,7 +11,6 @@ import Loadable from 'react-loadable'
     ColorCircleStatic, ColorTwitterStatic,
     ColorSketchStatic, ColorSketchDialog,
 } from '@ui-schema/material-color';*/
-import { LoadingCircular } from '@control-ui/kit/Loading'
 import { NumberRendererCell, StringRendererCell, TextRendererCell } from '@ui-schema/ds-material/Widgets/TextFieldCell'
 import { Table } from '@ui-schema/ds-material/Widgets/Table'
 import { DragDropBlockSelector } from '@ui-schema/material-dnd/DragDropBlockSelector'
@@ -123,10 +121,13 @@ export const customWidgets = WidgetsDefault.define<{
             loader: () => import('@ui-schema/material-pickers').then(r => r.TimePicker),
             loading: () => <LoadingCircular title={'Loading Time Widget'}/>,
         }),*/
-        EditorJS: Loadable({
-            loader: () => import('./EditorJSComp').then(r => r.EditorJSComp),
-            loading: () => <LoadingCircular title={'Loading EditorJS'}/>,
-        }),
+        EditorJS: (props) => <Suspense>
+            <LazyEditorJs {...props}/>
+        </Suspense>,
+        //     Loadable({
+        //     loader: () => import('./EditorJSComp').then(r => r.EditorJSComp),
+        //     loading: () => <LoadingCircular title={'Loading EditorJS'}/>,
+        // }),
         // SortableList: Loadable({
         //     loader: () => import('@ui-schema/material-dnd/Widgets/SortableList').then(r => r.SortableList),
         //     loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
@@ -141,3 +142,5 @@ export const customWidgets = WidgetsDefault.define<{
         // }),
     },
 })
+
+const LazyEditorJs = lazy(() => import('./EditorJSComp').then(r => ({default: r.EditorJSComp})))

@@ -31,7 +31,7 @@ import { createEmptyStore, createStore, onChangeHandler, UIStoreProvider, UIStor
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
-import { MuiWidgetsBinding, MuiWidgetsBindingCustom, MuiWidgetsBindingTypes } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding, MuiWidgetsBindingCustom, MuiWidgetsBindingTypes } from '@ui-schema/ds-material/BindingType'
 import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'

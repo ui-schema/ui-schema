@@ -57,8 +57,12 @@ import "ace-builds/src-noconflict/theme-monokai";
 ace.config.set("basePath", "https://cdn.jsdelivr.net/npm/ace-builds@1.4.8/src-noconflict/");
 ace.config.setModuleUrl('ace/mode/javascript_worker', "https://cdn.jsdelivr.net/npm/ace-builds@1.4.8/src-noconflict/worker-javascript.js");*/
 
-const supportedModes = ['json', 'css', 'dockerfile', 'html', 'javascript', 'jsx', 'typescript', 'typescript jsx', 'mysql', 'php', 'powershell', 'scss', 'yaml']
+const supportedModes = ['json', 'css', 'dockerfile', 'html', 'javascript', 'jsx', 'ts', 'typescript', 'typescript jsx', 'mysql', 'php', 'powershell', 'scss', 'yaml']
 const themes = ['clouds_midnight', 'cobalt', 'gruvbox', 'monokai']
+
+const modeAlias = {
+    ts: 'typescript',
+}
 
 const themesLight = ['chrome', 'github']
 
@@ -69,7 +73,7 @@ const RelativeDiv = ({children}) => <div style={{position: 'relative'}}>
 const RichCodeEditor = (
     {
         value, onChange = undefined, readOnly = false, style = {},
-        tabSize = 2, fontSize = 13, theme = 'gruvbox', mode = 'json', raw = false, renderChange = 0,
+        tabSize = 2, fontSize = 13, theme = 'gruvbox', mode: modeProp = 'json', raw = false, renderChange = 0,
         minLines = 10, maxLines = undefined, getEditor = undefined, enableShowAll = false,
     }: {
         value: any
@@ -116,6 +120,8 @@ const RichCodeEditor = (
         />
     }
 
+    const mode = modeProp in modeAlias ? modeAlias[modeProp] : modeProp
+
     const Wrapper = enableShowAll ? RelativeDiv : React.Fragment
 
     return <Wrapper>
@@ -155,6 +161,8 @@ const RichCodeEditor = (
                 showLineNumbers: true,
                 scrollPastEnd: true,
                 fontSize: fontSize,
+                highlightActiveLine: !readOnly,
+                highlightGutterLine: !readOnly,
             }}
         />
         {enableShowAll && (typeof showAll === 'boolean' || (editor && editor.container && scrollBar && scrollBar.clientHeight && scrollBar.clientWidth)) ?

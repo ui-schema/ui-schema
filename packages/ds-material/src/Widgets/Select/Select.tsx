@@ -10,7 +10,7 @@ import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material/WidgetsBinding'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 
 export type SelectProps = {
