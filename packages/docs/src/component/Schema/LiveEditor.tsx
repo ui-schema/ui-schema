@@ -313,7 +313,7 @@ const EditorsNavBase = (
             <NavButton
                 label={'reset data and schema'}
                 Icon={RestorePage}
-                onClick={() => changeSchema(activeSchema)}
+                onClick={() => resetState()}
                 verticalSplit={verticalSplit}
             />
 
@@ -347,7 +347,7 @@ const SchemaJSONEditor = (
         raw={!richIde}
         theme={theme}
         renderChange={renderChange}
-        value={typeof schema === 'string' ? schema : JSON.stringify(schema.toJS(), null, tabSize)}
+        value={schema}
         onChange={(newValue) => {
             try {
                 setJsonError(false)
@@ -474,7 +474,6 @@ const EditorSchemaInfoBase = (
             </Typography>
             <SchemaJSONEditor
                 schema={schema}
-                setJsonError={setJsonError}
                 setSchema={onSchemaManual}
                 tabSize={tabSize}
                 fontSize={fontSize}
@@ -569,14 +568,42 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}: any) => {
         }
     }, [matchedSchema, changeSchema, activeSchema])
 
+    const resetState = React.useCallback(() => {
+        if(typeof activeSchema === 'number') {
+            setActiveState(() => ({
+                id: activeSchema,
+                schema: schemas[activeSchema][1],
+                input: JSON.stringify(schemas[activeSchema][1], undefined, tabSize),
+                store: createStore(schemas[activeSchema][2]),
+            }))
+            setRenderChange(p => p + 1);
+            setResetId(Date.now().toString())
+        }
+    }, [activeSchema, tabSize]);
+
+    React.useEffect(() => {
+        setActiveState((activeState) => ({
+            ...activeState,
+            input: JSON.stringify(activeState.schema?.toJS(), undefined, tabSize),
+        }))
+    }, [tabSize]);
+
     const onSchemaManual = React.useCallback((schema) => {
-        setSchema((oldSchema) => {
+        setActiveState((activeState) => {
+            const oldSchema = activeState.schema
             const oldType = Map.isMap(oldSchema) && oldSchema.get('type')
             const type = Map.isMap(schema) && schema.get('type')
             if (oldType !== type && typeof type === 'string') {
                 setStore(createEmptyStore(type))
             }
-            return schema
+            const type = nextSchema && Map.isMap(nextSchema) && nextSchema.get('type')
+            return {
+                ...activeState,
+                input: schema,
+                schema: nextSchema,
+                store: type && oldType !== type ? createEmptyStore(type) : activeState.store,
+                jsonError: jsonError,
+            }
         })
     }, [setSchema, setStore])
 
@@ -592,7 +619,7 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}: any) => {
     return <>
         {/*<MuiPickersUtilsProvider utils={LuxonAdapter}>*/}
         <KitDndProvider onMove={onMove}>
-            <UIStoreProvider store={store} onChange={onChange} showValidity={showValidity}>
+            <UIStoreProvider store={activeState.store} onChange={onChange} showValidity={showValidity}>
                 <div style={{display: 'flex', flexGrow: 2, overflow: 'auto', flexDirection: verticalSplit ? 'row' : 'column'}}>
                     <div style={{
                         width: verticalSplit ? '45%' : '100%',
@@ -612,13 +639,12 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}: any) => {
                                 verticalSplit={verticalSplit}
                                 toggleInfoBox={toggleInfoBox}
                                 info={schemas[activeSchema][3]}
-                                schema={schema}
+                                schema={activeState.input}
                                 infoBox={infoBox}
                                 showInfo={showInfo}
                                 setRenderChange={setRenderChange}
                                 activeSchema={activeSchema}
                                 changeSchema={changeSchema}
-                                setJsonError={setJsonError}
                                 onSchemaManual={onSchemaManual}
                                 tabSize={tabSize}
                                 fontSize={fontSize}
@@ -650,11 +676,11 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}: any) => {
                     </div>
 
                     <EditorsNav
-                        setJsonError={setJsonError}
                         changeSplit={changeSplit}
                         verticalSplit={verticalSplit}
                         activeSchema={activeSchema}
                         changeSchema={changeSchema}
+                        resetState={resetState}
                         setTabSize={setTabSize}
                         tabSize={tabSize}
                         setFontSize={setFontSize}
@@ -673,21 +699,28 @@ const EditorHandler = ({matchedSchema, activeSchema, setActiveSchema}: any) => {
                     />
 
                     <main className="App-main" style={{height: '100%', overflow: 'auto', maxWidth: 'none', margin: verticalSplit ? '0 auto' : 0, order: verticalSplit ? 3 : 1}}>
-                        {jsonError ?
+                        {activeState.jsonError ?
                             <Paper style={{margin: 12, padding: 24}}>
                                 <Typography component={'h2'} variant={'h5'} color={'error'}>
                                     JSON-Error:
                                 </Typography>
 
                                 <Typography component={'p'} variant={'subtitle1'} style={{marginTop: 12}}>
-                                    {jsonError.replace('SyntaxError: JSON.parse: ', '')}
+                                    {activeState.jsonError.replace('SyntaxError: JSON.parse: ', '')}
                                 </Typography>
                             </Paper> :
                             typeof schema === 'string' ? null : <Paper style={{margin: 12, padding: 24}}>
                                 <GridStack schema={schema} isRoot/>
 
-                                <InvalidLabel invalid={isInvalid(store?.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>
-                            </Paper>}
+                                <InvalidLabel invalid={isInvalid(activeState.store?.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>
+                            </Paper> : null}
+
+                        <Button
+                            onClick={() => setResetId(Date.now().toString())}
+                            sx={{mx: 2, my: 1}}
+                            size={'small'}
+                            color={'secondary'}
+                        >{'remount'}</Button>
 
                         <div style={{height: 24, width: 1, flexShrink: 0}}/>
                     </main>
@@ -721,7 +754,6 @@ const Editor = () => {
     return <EditorHandler
         activeSchema={activeSchema}
         setActiveSchema={setActiveSchema}
-        matchedSchema={match.params.schema}
     />
 }
 
