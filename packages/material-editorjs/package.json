@@ -33,6 +33,7 @@
         "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/material-editorjs/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*",
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
+    "sideEffects": false,
     "dependencies": {
         "clsx": "^1.1.0",
         "react-uid": "^2.2.0"

@@ -34,6 +34,7 @@
         "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*",
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
+    "sideEffects": false,
     "devDependencies": {
         "immutable": "^5.0.0",
         "@types/react": "^18.0",

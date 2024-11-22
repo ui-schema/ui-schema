@@ -34,6 +34,7 @@
     "scripts": {
         "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/ds-bootstrap/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*"
     },
+    "sideEffects": false,
     "devDependencies": {
         "@types/react": "^18.0",
         "react": "^18.0",

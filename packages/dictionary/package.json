@@ -19,6 +19,7 @@
     },
     "main": "index.js",
     "module": "esm/index.js",
+    "sideEffects": false,
     "devDependencies": {
         "immutable": "^5.0.0"
     },
