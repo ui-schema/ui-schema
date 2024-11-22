@@ -6,27 +6,27 @@ import { createDefaultEsmPreset } from 'ts-jest'
 // npm run test -- --no-cache --selectProjects=test-uis-react --testPathPattern=WidgetEngine --maxWorkers=4
 // npm run test -- --no-cache --selectProjects=test-kit-dnd --maxWorkers=4
 
-const packages: [name: string, folder: string][] = [
-    ['@ui-schema/system', 'uis-system'],
-    ['@ui-schema/react-json-schema', 'uis-react-json-schema'],
-    ['@ui-schema/react', 'uis-react'],
-    ['@ui-schema/pro', 'uis-pro'],
-    ['@ui-schema/json-pointer', 'uis-json-pointer'],
-    ['@ui-schema/json-schema', 'uis-json-schema'],
-    ['@ui-schema/ds-bootstrap', 'ds-bootstrap'],
-    ['@ui-schema/ds-material', 'ds-material'],
-    ['@ui-schema/kit-dnd', 'kit-dnd'],
-    ['@ui-schema/dictionary', 'dictionary'],
-    ['@ui-schema/material-dnd', 'material-dnd'],
-    ['@ui-schema/material-pickers', 'material-pickers'],
-    ['@ui-schema/material-slate', 'material-slate'],
+const packages: [name: string, folder: string, noTypeCheck?: boolean][] = [
+    ['@ui-schema/system', 'uis-system', true],
+    ['@ui-schema/react-json-schema', 'uis-react-json-schema', true],
+    ['@ui-schema/react', 'uis-react', true],
+    ['@ui-schema/pro', 'uis-pro', true],
+    ['@ui-schema/json-pointer', 'uis-json-pointer', false],
+    ['@ui-schema/json-schema', 'uis-json-schema', false],
+    ['@ui-schema/ds-bootstrap', 'ds-bootstrap', true],
+    ['@ui-schema/ds-material', 'ds-material', true],
+    ['@ui-schema/kit-dnd', 'kit-dnd', true],
+    ['@ui-schema/dictionary', 'dictionary', true],
+    ['@ui-schema/material-dnd', 'material-dnd', true],
+    ['@ui-schema/material-pickers', 'material-pickers', true],
+    ['@ui-schema/material-slate', 'material-slate', true],
 ]
 
-const toPackageFolder = (pkg: [name: string, folder?: string]) => {
+const toPackageFolder = (pkg: [name: string, folder?: string, noTypeCheck?: boolean]) => {
     return pkg[1] || pkg[0]
 }
 
-const base: Partial<Config.InitialOptions> = {
+const base: (noTypeCheck?: boolean) => Partial<Config.InitialOptions> = (noTypeCheck) => ({
     cacheDirectory: '<rootDir>/node_modules/.cache/jest-tmp',
     transformIgnorePatterns: [
         'node_modules/?!(@ui-schema)',
@@ -38,7 +38,7 @@ const base: Partial<Config.InitialOptions> = {
             tsconfig: '<rootDir>/packages/tsconfig-test.json',
             // diagnostics: false,
             // disable type checking until tests are typesafe
-            isolatedModules: true,
+            isolatedModules: Boolean(noTypeCheck),
             // todo: it seems the babel test env is not used, not found logs from the plugin when disabled here
             babelConfig: {
                 plugins: [
@@ -87,16 +87,16 @@ const base: Partial<Config.InitialOptions> = {
         '<rootDir>/dist',
         '<rootDir>/packages/.+/build',
     ],
-}
+})
 
 const config: Config.InitialOptions = {
-    ...base,
+    ...base(true),
     collectCoverage: true,
     verbose: true,
     projects: [
         ...packages.map((pkg) => ({
             displayName: 'test-' + pkg[1],
-            ...base,
+            ...base(pkg[2]),
             moduleDirectories: ['node_modules', '<rootDir>/packages/' + toPackageFolder(pkg) + '/node_modules'/*, '<rootDir>/packages/' + pkg, '<rootDir>/packages/' + pkg + '/src'*/],
             //moduleDirectories: ['node_modules', '<rootDir>/packages/ui-schema/node_modules', '<rootDir>/packages/ds-material/node_modules'],
             testMatch: [

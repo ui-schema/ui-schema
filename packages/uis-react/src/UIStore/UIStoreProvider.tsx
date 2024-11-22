@@ -54,7 +54,13 @@ export interface WithOnChange<A = UIStoreActions> {
 }
 
 export interface WithValue<A = UIStoreActions> {
+    /**
+     * @todo switch to `unknown`
+     */
     value: any | undefined
+    /**
+     * @todo switch to `unknown`
+     */
     internalValue: any | undefined
     showValidity?: UIStoreContext['showValidity']
     onChange: onChangeHandler<A>

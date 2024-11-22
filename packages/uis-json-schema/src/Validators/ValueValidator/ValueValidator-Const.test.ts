@@ -1,5 +1,5 @@
 import { expect, describe, test } from '@jest/globals'
-import { OrderedMap, List, Map } from 'immutable'
+import { OrderedMap, Map } from 'immutable'
 import {
     validateConst, valueValidatorConst, ERROR_CONST_MISMATCH,
 } from '@ui-schema/json-schema/Validators/ValueValidator'
@@ -39,10 +39,10 @@ describe('valueValidatorConst', () => {
     ])(
         '.should(%j, %s)',
         (schema, value, expected) => {
-            expect(valueValidatorConst.should({
+            expect(valueValidatorConst.should?.({
                 schema: OrderedMap(schema),
-                // @ts-ignore
                 value,
+                errors: createValidatorErrors(),
             })).toBe(expected)
         },
     )
@@ -53,7 +53,7 @@ describe('valueValidatorConst', () => {
         // value:
         any,
         // error:
-        List<any>,
+        [string, Map<string, unknown>],
         // expectedValid:
         boolean,
         // expectedError:
@@ -64,19 +64,19 @@ describe('valueValidatorConst', () => {
         [
             {const: 'text1'},
             'text1',
-            List([ERROR_CONST_MISMATCH, Map({const: 'text1'})]),
+            [ERROR_CONST_MISMATCH, Map({const: 'text1'})] as const,
             true,
             false,
         ], [
             {const: 'text1'},
             'text3',
-            List([ERROR_CONST_MISMATCH, Map({const: 'text1'})]),
+            [ERROR_CONST_MISMATCH, Map({const: 'text1'})] as const,
             false,
             true,
         ], [
             {},
             'text3',
-            List([ERROR_CONST_MISMATCH, Map({const: 'text1'})]),
+            [ERROR_CONST_MISMATCH, Map({const: 'text1'})] as const,
             true,
             false,
         ],
@@ -87,15 +87,14 @@ describe('valueValidatorConst', () => {
         (schema, value, error, expectedValid, expectedError) => {
             const result = valueValidatorConst.handle({
                 schema: OrderedMap(schema),
-                // @ts-ignore
                 value,
                 errors: createValidatorErrors(),
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            expect(result.errors.hasError(error.get(0))).toBe(expectedError)
-            if (result.errors.hasError(error.get(0))) {
-                expect(result.errors.getError(error.get(0)).get(0)?.equals(error.get(1))).toBe(expectedError)
+            expect(result.errors?.hasError(error[0])).toBe(expectedError)
+            if (result.errors?.hasError(error[0])) {
+                expect(result.errors?.getError(error[0]).get(0)?.equals(error[1])).toBe(expectedError)
             }
         },
     )

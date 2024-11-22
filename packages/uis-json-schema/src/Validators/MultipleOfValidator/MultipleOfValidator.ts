@@ -38,6 +38,7 @@ export const validateMultipleOf = (schema: UISchemaMap, value: any): boolean => 
 
 export const multipleOfValidator: SchemaPlugin = {
     handle: ({schema, value, errors, valid}) => {
+        if (!schema) return {}
         if (!validateMultipleOf(schema, value)) {
             valid = false
             errors = errors.addError(ERROR_MULTIPLE_OF, Map({multipleOf: schema.get('multipleOf')}))

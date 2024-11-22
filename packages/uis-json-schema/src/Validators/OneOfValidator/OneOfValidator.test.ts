@@ -1,7 +1,6 @@
 import { jest, describe, test, expect } from '@jest/globals'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { validateOneOf } from '@ui-schema/json-schema/Validators/OneOfValidator'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 /**
  * npm run tdd -- -u --testPathPattern=src/Validators/OneOfValidator/OneOfValidator.test.ts
@@ -76,7 +75,7 @@ describe('validateOneOf', () => {
             ],
         }, 'invalid', 1, {'const-mismatch': [{}, {}]}],
     ])('oneOfValidator(%j, %j)', (schema, value, expectedErrorCount, expectedErrors) => {
-        const r = validateOneOf(createOrderedMap(schema).get('oneOf') as unknown as UISchemaMap, value)
+        const r = validateOneOf(createOrderedMap(schema).get('oneOf'), value)
         expect(r.errorCount).toBe(expectedErrorCount)
         if (expectedErrors) {
             expect(r.errors.getErrors().toJS()).toStrictEqual(expectedErrors)

@@ -38,7 +38,12 @@ export interface JsonSchemaGeneral {
     'enum'?: any[]
     $comment?: string
 
+    /**
+     * @todo switch to unknown
+     */
     [key: string]: any
+
+    // [key: string]: unknown
 }
 
 export interface JsonSchemaConditionals {
@@ -116,6 +121,10 @@ export interface JsonSchemaNull extends JsonSchemaGeneral {
     type: 'null'
 }
 
+export interface JsonSchemaMultiple extends JsonSchemaGeneral {
+    type: ['string' | 'number' | 'integer' | 'boolean' | 'null' | 'object' | 'array']
+}
+
 export type JsonSchemaPure =
     JsonSchemaString |
     JsonSchemaArray |
@@ -123,16 +132,20 @@ export type JsonSchemaPure =
     JsonSchemaNumber |
     JsonSchemaBoolean |
     JsonSchemaNull |
+    JsonSchemaMultiple |
     JsonSchemaConditionals |
+    JsonSchemaGeneral |
     JsonSchemaRoot
 
 export type JsonSchemaPureAny =
+    // Partial<{ type: string | string[] }> &
     Partial<JsonSchemaString> &
     Partial<JsonSchemaArray> &
     Partial<JsonSchemaObject> &
     Partial<JsonSchemaNumber> &
     Partial<JsonSchemaBoolean> &
     Partial<JsonSchemaNull> &
+    Partial<JsonSchemaMultiple> &
     Partial<JsonSchemaConditionals> &
     Partial<JsonSchemaRoot>
 

@@ -30,7 +30,7 @@ test('patternValidator', () => {
         valid: true,
     })
     expect(trueResult.valid).toBe(true)
-    expect(trueResult.errors.hasError(ERROR_PATTERN)).toBe(false)
+    expect(trueResult.errors?.hasError(ERROR_PATTERN)).toBe(false)
 
     const falseResult = patternValidator.handle({
         schema: OrderedMap({
@@ -42,5 +42,5 @@ test('patternValidator', () => {
         valid: true,
     })
     expect(falseResult.valid).toBe(false)
-    expect(falseResult.errors.hasError(ERROR_PATTERN)).toBe(true)
+    expect(falseResult.errors?.hasError(ERROR_PATTERN)).toBe(true)
 })

@@ -4,13 +4,13 @@ import {
     validateMinMax, minMaxValidator, ERROR_MAX_LENGTH, ERROR_MIN_LENGTH,
 } from '@ui-schema/json-schema/Validators/MinMaxValidator'
 import { createMap, createOrderedMap } from '@ui-schema/system/createMap'
-import { UISchema, JsonSchema } from '@ui-schema/json-schema/Definitions'
+import { UISchema, JsonSchemaPure } from '@ui-schema/json-schema/Definitions'
 import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 
 describe('validateMinMax', () => {
     type validateMinMaxTest = [
         // schema:
-        JsonSchema,
+            JsonSchemaPure & UISchema,
         // value:
         any,
         // expected qty of errors:
@@ -268,18 +268,18 @@ describe('validateMinMax', () => {
         (schema, value, expected) => {
             const orderedSchema = createOrderedMap(schema)
             expect(validateMinMax(orderedSchema, value).errCount).toBe(expected)
-        }
+        },
     )
 })
 
 describe('minMaxValidator', () => {
     type minMaxValidatorTest = [
         // schema:
-            JsonSchema & UISchema,
+            JsonSchemaPure & UISchema,
         // value:
         any,
         // error:
-        List<any>,
+        [string, Map<string, unknown>],
         // expectedValid:
         boolean,
         // expectedError:
@@ -290,25 +290,25 @@ describe('minMaxValidator', () => {
         [
             {type: 'string', maxLength: 2},
             'tt',
-            List([ERROR_MAX_LENGTH, Map({max: 2})]),
+            [ERROR_MAX_LENGTH, Map({max: 2})] as const,
             true,
             false,
         ], [
             {type: 'string', maxLength: 2},
             'ttt',
-            List([ERROR_MAX_LENGTH, Map({max: 2})]),
+            [ERROR_MAX_LENGTH, Map({max: 2})] as const,
             false,
             true,
         ], [
             {type: 'string', minLength: 2},
             'tt',
-            List([ERROR_MIN_LENGTH, Map({min: 2})]),
+            [ERROR_MIN_LENGTH, Map({min: 2})] as const,
             true,
             false,
         ], [
             {type: 'string', minLength: 2},
             't',
-            List([ERROR_MIN_LENGTH, Map({min: 2})]),
+            [ERROR_MIN_LENGTH, Map({min: 2})] as const,
             false,
             true,
         ],
@@ -325,10 +325,10 @@ describe('minMaxValidator', () => {
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            expect(result.errors.hasError(error.get(0))).toBe(expectedError)
-            if (result.errors.hasError(error.get(0))) {
-                expect(result.errors.getError(error.get(0)).get(0)?.equals(error.get(1))).toBe(expectedError)
+            expect(result.errors?.hasError(error[0])).toBe(expectedError)
+            if (result.errors?.hasError(error[0])) {
+                expect(result.errors?.getError(error[0]).get(0)?.equals(error[1])).toBe(expectedError)
             }
-        }
+        },
     )
 })

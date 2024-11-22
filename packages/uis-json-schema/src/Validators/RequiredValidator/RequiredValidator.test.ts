@@ -36,12 +36,14 @@ describe('requiredValidator', () => {
     test.each(([
         [List(['name']), List(['name']), true],
         [List(['name']), List(['street']), false],
-        [undefined, 'name', false],
-        [undefined, 'name', false],
-    ]) as [List<string> | undefined, string, boolean][])(
+        [undefined, List(['name']), false],
+        [undefined, List(['name']), false],
+    ]) as [List<string> | undefined, List<string>, boolean][])(
         '.should(%j, %s)',
         (requiredList, storeKeys, expectedValid) => {
-            expect(requiredValidator.should({
+            expect(requiredValidator.should?.({
+                errors: createValidatorErrors(),
+                value: undefined,
                 requiredList: requiredList,
                 storeKeys,
             })).toBe(expectedValid)
@@ -90,15 +92,18 @@ describe('requiredValidator', () => {
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            expect(result.errors.hasError(error)).toBe(expectedError)
+            expect(result.errors?.hasError(error)).toBe(expectedError)
         },
     )
 
     test(
         '.noHandle(%j, %s)',
         () => {
-            const result = requiredValidator.noHandle()
-            expect(result.required).toBe(false)
+            const result = requiredValidator.noHandle?.({
+                value: undefined,
+                errors: createValidatorErrors(),
+            })
+            expect(result?.required).toBe(false)
         },
     )
 })

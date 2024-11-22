@@ -171,7 +171,7 @@ describe('objectValidator', () => {
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            expect(result.errors.hasError(error)).toBe(expectedError)
+            expect(result.errors?.hasError(error)).toBe(expectedError)
         }
     )
 })

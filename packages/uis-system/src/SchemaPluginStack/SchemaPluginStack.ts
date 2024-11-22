@@ -1,4 +1,10 @@
-export const SchemaPluginStack = (props, schemaPlugins) => {
+import { SchemaPlugin, WithValidatorErrors, WithValuePlain } from '@ui-schema/system/SchemaPlugin'
+import { WidgetPayload } from '@ui-schema/system/Widget'
+
+export const SchemaPluginStack = <TProps extends WidgetPayload>(
+    props: TProps & WithValuePlain & WithValidatorErrors,
+    schemaPlugins: SchemaPlugin<TProps>[],
+) => {
     if (schemaPlugins && Array.isArray(schemaPlugins)) {
         schemaPlugins.forEach(propsPlugin => {
             if (typeof propsPlugin.handle !== 'function') {

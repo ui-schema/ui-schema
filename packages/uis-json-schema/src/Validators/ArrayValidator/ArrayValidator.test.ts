@@ -665,20 +665,20 @@ describe('arrayValidator', () => {
         (value, expectedValid) => {
             // @ts-ignore
             expect(arrayValidator.should({value})).toBe(expectedValid)
-        }
+        },
     )
 
     test.each([
         [
             {type: 'array', uniqueItems: true},
             ['text1'],
-            List([ERROR_DUPLICATE_ITEMS, Map()]),
+            [ERROR_DUPLICATE_ITEMS, Map()] as const,
             true,
             false,
         ], [
             {type: 'array', uniqueItems: true},
             ['text1', 'text1'],
-            List([ERROR_DUPLICATE_ITEMS, Map()]),
+            [ERROR_DUPLICATE_ITEMS, Map()] as const,
             false,
             true,
         ], [
@@ -689,7 +689,7 @@ describe('arrayValidator', () => {
                 },
             },
             [1, 2],
-            List([ERROR_WRONG_TYPE, Map()]),
+            [ERROR_WRONG_TYPE, Map()] as const,
             true,
             false,
         ], [
@@ -701,7 +701,7 @@ describe('arrayValidator', () => {
             },
             ['1', 2],
             // has error, but childError, thus empty errors
-            List(),
+            [] as const,
             false,
             true,
         ], [
@@ -712,7 +712,7 @@ describe('arrayValidator', () => {
                 },
             },
             ['1', 2],
-            List([ERROR_WRONG_TYPE, Map()]),
+            [ERROR_WRONG_TYPE, Map()] as const,
             true,
             false,
         ], [
@@ -723,7 +723,7 @@ describe('arrayValidator', () => {
                 },
             },
             ['1'],
-            List([ERROR_WRONG_TYPE, Map()]),
+            [ERROR_WRONG_TYPE, Map()] as const,
             false,
             true,
         ],
@@ -732,20 +732,19 @@ describe('arrayValidator', () => {
         (schema, value, error, expectedValid, expectedError) => {
             const result = arrayValidator.handle({
                 schema: createOrderedMap(schema),
-                // @ts-ignore
-                value,
+                value: value,
                 errors: createValidatorErrors(),
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            if (error.size) {
-                expect(result.errors.hasError(error.get(0))).toBe(expectedError)
-                if (result.errors.hasError(error.get(0))) {
-                    expect(result.errors.getError(error.get(0)).get(0)?.equals(error.get(1))).toBe(expectedError)
+            if (error.length) {
+                expect(result.errors?.hasError(error[0])).toBe(expectedError)
+                if (result.errors?.hasError(error[0])) {
+                    expect(result.errors?.getError(error[0]).get(0)?.equals(error[1])).toBe(expectedError)
                 }
             } else {
                 // todo: test childErrors for array items
             }
-        }
+        },
     )
 })

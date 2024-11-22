@@ -1,5 +1,5 @@
 import { test, expect, describe } from '@jest/globals'
-import { OrderedMap, List, Map } from 'immutable'
+import { OrderedMap, Map } from 'immutable'
 import {
     validateMultipleOf, multipleOfValidator, ERROR_MULTIPLE_OF,
 } from '@ui-schema/json-schema/Validators/MultipleOfValidator'
@@ -218,7 +218,7 @@ describe('validateMultipleOf', () => {
         (schema, value, expected) => {
             const orderedSchema = createOrderedMap(schema)
             expect(validateMultipleOf(orderedSchema, value)).toBe(expected)
-        }
+        },
     )
 })
 
@@ -229,7 +229,7 @@ describe('multipleOfValidator', () => {
         // value:
         any,
         // error:
-        List<any>,
+        [string, Map<string, unknown>],
         // expectedValid:
         boolean,
         // expectedError:
@@ -240,13 +240,13 @@ describe('multipleOfValidator', () => {
         [
             {type: 'number', multipleOf: 2},
             2,
-            List([ERROR_MULTIPLE_OF, Map({multipleOf: 2})]),
+            [ERROR_MULTIPLE_OF, Map({multipleOf: 2})],
             true,
             false,
         ], [
             {type: 'number', multipleOf: 2},
             3,
-            List([ERROR_MULTIPLE_OF, Map({multipleOf: 2})]),
+            [ERROR_MULTIPLE_OF, Map({multipleOf: 2})],
             false,
             true,
         ],
@@ -262,10 +262,10 @@ describe('multipleOfValidator', () => {
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            expect(result.errors.hasError(error.get(0))).toBe(expectedError)
-            if (result.errors.hasError(error.get(0))) {
-                expect(result.errors.getError(error.get(0)).get(0)?.equals(error.get(1))).toBe(expectedError)
+            expect(result.errors?.hasError(error[0])).toBe(expectedError)
+            if (result.errors?.hasError(error[0])) {
+                expect(result.errors?.getError(error[0]).get(0)?.equals(error[1])).toBe(expectedError)
             }
-        }
+        },
     )
 })

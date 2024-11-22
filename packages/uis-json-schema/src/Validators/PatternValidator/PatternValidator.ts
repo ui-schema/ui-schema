@@ -13,6 +13,7 @@ export const validatePattern = (value?: any, pattern?: string): boolean => {
 
 export const patternValidator: SchemaPlugin = {
     handle: ({schema, value, errors, valid}) => {
+        if (!schema) return {}
         const pattern = schema.get('pattern')
 
         if (!validatePattern(value, pattern)) {

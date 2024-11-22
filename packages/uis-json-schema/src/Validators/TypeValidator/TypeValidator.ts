@@ -52,6 +52,7 @@ const validateTypes = (value: any, type: string | string[] | List<string>) => {
 
 export const typeValidator: SchemaPlugin = {
     handle: ({schema, value, errors, valid}) => {
+        if (!schema) return {}
         const type = schema.get('type')
 
         if (typeof type !== 'undefined' && !validateTypes(value, type)) {

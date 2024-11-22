@@ -121,6 +121,7 @@ export const validateMinMax = (schema: UISchemaMap, value: any): ValidatorErrors
 
 export const minMaxValidator: SchemaPlugin = {
     handle: ({schema, value, errors, valid}) => {
+        if (!schema) return {}
         const err = validateMinMax(schema, value)
 
         if (err.hasError()) {

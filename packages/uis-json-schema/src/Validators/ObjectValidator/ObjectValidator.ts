@@ -67,6 +67,7 @@ export const validateObject = (schema: UISchemaMap, value: any, recursively: boo
 
 export const objectValidator: SchemaPlugin = {
     handle: ({schema, value, errors, valid}) => {
+        if (!schema) return {}
         const objectErrors = validateObject(schema, value)
         if (objectErrors?.hasError()) {
             valid = false

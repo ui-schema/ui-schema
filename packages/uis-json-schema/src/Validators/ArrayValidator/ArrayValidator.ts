@@ -72,7 +72,7 @@ export const validateArrayContent = (
         // }*/ else if(!schemaTypeIs(itemsSchema.get('type'), 'array')) {
         // no nested array, one-schema for all items
         // not validating array content of array here, must be validated with next schema level
-        for (const val of value) {
+        for(const val of value) {
             let tmpErr = createValidatorErrors()
             // single-validation
             // Cite from json-schema.org: When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
@@ -152,7 +152,7 @@ export const validateContains = (schema: UISchemaMap, value: List<any> | any[] |
     return errors
 }
 
-export const validateUniqueItems = (schema: UISchemaMap, value: List<any> | any[]): boolean => {
+export const validateUniqueItems = (schema: UISchemaMap, value: List<any> | any[] | unknown): boolean => {
     const uniqueItems = schema.get('uniqueItems')
     if (uniqueItems && (List.isList(value) || Array.isArray(value))) {
         const duplicates = findDuplicates(value)
@@ -170,6 +170,7 @@ export const arrayValidator: SchemaPlugin = {
         return List.isList(value) || Array.isArray(value)
     },
     handle: ({schema, value, errors, valid}) => {
+        if (!schema) return {}
         // unique-items sub-schema is intended for dynamics and for statics, e.g. Selects could have duplicates but also a SimpleList of strings
         const uniqueItems = schema?.get('uniqueItems')
         if (uniqueItems && value) {

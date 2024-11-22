@@ -9,9 +9,9 @@ export const TranslatorRelative = (
 ): translation | undefined => {
     if (Map.isMap(schema) && context && context.get('relative')) {
         const relSchema = locale ? schema.get(locale) : schema
-        if (relSchema) {
+        if (Map.isMap(relSchema)) {
             const schemaT = relSchema.getIn(context.get('relative'))
-            if (schemaT) return schemaT
+            if (schemaT) return schemaT as translation
         }
     }
 

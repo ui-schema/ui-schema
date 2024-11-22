@@ -52,79 +52,91 @@ describe('typeValidator', () => {
         [
             'string',
             'text1',
-            List([ERROR_WRONG_TYPE, Map({actual: typeof 'text1'})]),
+            [ERROR_WRONG_TYPE, Map({actual: typeof 'text1'})] as const,
             true,
             false,
-        ], [
+        ],
+        [
             'string',
             2,
-            List([ERROR_WRONG_TYPE, Map({actual: typeof 2})]),
+            [ERROR_WRONG_TYPE, Map({actual: typeof 2})] as const,
             false,
             true,
-        ], [
+        ],
+        [
             'string',
             undefined,
-            List([ERROR_WRONG_TYPE, Map({actual: typeof undefined})]),
+            [ERROR_WRONG_TYPE, Map({actual: typeof undefined})] as const,
             true,
             false,
-        ], [
+        ],
+        [
             'string',
             false,
-            List([ERROR_WRONG_TYPE, Map({actual: typeof false})]),
+            [ERROR_WRONG_TYPE, Map({actual: typeof false})] as const,
             false,
             true,
-        ], [
+        ],
+        [
             'string',
             '2',
-            List([ERROR_WRONG_TYPE, Map({actual: typeof '2'})]),
+            [ERROR_WRONG_TYPE, Map({actual: typeof '2'})] as const,
             true,
             false,
-        ], [
+        ],
+        [
             List(['string']),
             false,
-            List([ERROR_WRONG_TYPE, Map({actual: typeof false})]),
+            [ERROR_WRONG_TYPE, Map({actual: typeof false})] as const,
             false,
             true,
-        ], [
+        ],
+        [
             List(['string']),
             '2',
-            List([ERROR_WRONG_TYPE, Map({actual: typeof '2'})]),
+            [ERROR_WRONG_TYPE, Map({actual: typeof '2'})] as const,
             true,
             false,
-        ], [
+        ],
+        [
             List(['string', 'null']),
             false,
-            List([ERROR_WRONG_TYPE, Map({actual: typeof false})]),
+            [ERROR_WRONG_TYPE, Map({actual: typeof false})] as const,
             false,
             true,
-        ], [
+        ],
+        [
             List(['null', 'string']),
             false,
-            List([ERROR_WRONG_TYPE, Map({actual: typeof false})]),
+            [ERROR_WRONG_TYPE, Map({actual: typeof false})] as const,
             false,
             true,
-        ], [
+        ],
+        [
             List(['string', 'null']),
             '2',
-            List([ERROR_WRONG_TYPE, Map({actual: typeof '2'})]),
+            [ERROR_WRONG_TYPE, Map({actual: typeof '2'})] as const,
             true,
             false,
-        ], [
+        ],
+        [
             List(['null', 'string']),
             '2',
-            List([ERROR_WRONG_TYPE, Map({actual: typeof '2'})]),
+            [ERROR_WRONG_TYPE, Map({actual: typeof '2'})] as const,
             true,
             false,
-        ], [
+        ],
+        [
             List(['string', 'null']),
             null,
-            List([ERROR_WRONG_TYPE, Map({actual: typeof null})]),
+            [ERROR_WRONG_TYPE, Map({actual: typeof null})] as const,
             true,
             false,
-        ], [
+        ],
+        [
             List(['null', 'string']),
             null,
-            List([ERROR_WRONG_TYPE, Map({actual: typeof null})]),
+            [ERROR_WRONG_TYPE, Map({actual: typeof null})] as const,
             true,
             false,
         ],
@@ -139,9 +151,9 @@ describe('typeValidator', () => {
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            expect(result.errors.hasError(error.get(0))).toBe(expectedError)
-            if (result.errors.hasError(error.get(0))) {
-                expect(result.errors.getError(error.get(0)).get(0)?.equals(error.get(1))).toBe(expectedError)
+            expect(result.errors?.hasError(error[0])).toBe(expectedError)
+            if (result.errors?.hasError(error[0])) {
+                expect(result.errors?.getError(error[0]).get(0)?.equals(error[1])).toBe(expectedError)
             }
         },
     )

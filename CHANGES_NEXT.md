@@ -30,6 +30,13 @@ List of renamed functions, components etc., most are also moved to other package
 - removed function `checkNativeValidity` in `schemaToNative`
 - moved react-specific widget matching logic from `widgetMatcher` to `WidgetRenderer`
 
+Todo:
+
+- [ ] optimize errors typing
+    - [ ] reduce immutable usage
+- [ ] validators: improve value typing and functions
+    - atm. validators are often strictly typed, while they also must handle any unknown value to only validate the types they are compatible with
+
 ### React
 
 #### WidgetsBinding
@@ -129,12 +136,13 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
     - the generic in `UIStoreProvider` causes no issue in `demo-web`, yet in `WidgetRenderer.test` causes props to be inferred as `never`, causing a lot of type errors
     - cleanup workarounds in:
         - `NextPluginRenderer`
+- [ ] fix/finalize strict UISchemaMap typing and json-schema types
 - [x] finalize `package.json` generation for strict esm with ESM and CJS support
 - [ ] finalize strict-ESM compatible imports/exports, especially in packages
     - [x] switch to strict-ESM for all core packages, with `Node16`
     - [ ] switch to strict-ESM for ds-bootstrap
         - [ ] remove `clsx`, as not `Node16` compatible
-    - [ ] switch to cjs/esm in new
+    - [x] switch to cjs/esm build with `.cjs` file extension instead of separate folders
 - [ ] control and optimize circular package dependencies, remove all added as workarounds
 - [ ] improve depth for easier usage of `no-restricted-imports` - or isn't that needed once `exports` are used?
     - the eslint plugin shouldn't be needed, yet a consistent depth makes the `tsconfig` for local dev easier,

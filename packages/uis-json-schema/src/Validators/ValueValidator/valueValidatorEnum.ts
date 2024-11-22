@@ -17,7 +17,7 @@ export const validateEnum = <T>(_enum?: List<T> | T[], value?: any): boolean => 
             value = Map(fromJS(value))
         }
         if (List.isList(value) || Map.isMap(value)) {
-            for (const enm of _enum) {
+            for(const enm of _enum) {
                 if (value.equals(enm)) {
                     return true
                 }
@@ -40,11 +40,12 @@ export const valueValidatorEnum: SchemaPlugin = {
         /**
          * @var {[]|List} _enum
          */
-        const _enum = schema.get('enum')
+        const _enum = schema?.get('enum')
 
         return typeof _enum !== 'undefined' && typeof value !== 'undefined'
     },
     handle: ({schema, value, errors, valid}) => {
+        if (!schema) return {}
         if (!validateEnum(schema.get('enum'), value)) {
             valid = false
             errors = errors.addError(ERROR_ENUM_MISMATCH, Map({enum: schema.get('enum')}))

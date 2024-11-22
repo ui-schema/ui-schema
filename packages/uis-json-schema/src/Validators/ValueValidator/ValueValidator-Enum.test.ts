@@ -205,10 +205,10 @@ describe('valueValidatorEnum', () => {
     ])(
         '.should(%j, %s)',
         (schema, value, expected) => {
-            expect(valueValidatorEnum.should({
+            expect(valueValidatorEnum.should?.({
                 schema: OrderedMap(schema),
-                // @ts-ignore
                 value,
+                errors: createValidatorErrors(),
             })).toBe(expected)
         }
     )
@@ -238,13 +238,12 @@ describe('valueValidatorEnum', () => {
         (schema, value, error, expectedValid, expectedError) => {
             const result = valueValidatorEnum.handle({
                 schema: OrderedMap(schema),
-                // @ts-ignore
                 value,
                 errors: createValidatorErrors(),
                 valid: true,
             })
             expect(result.valid).toBe(expectedValid)
-            expect(result.errors.hasError(error)).toBe(expectedError)
+            expect(result.errors?.hasError(error)).toBe(expectedError)
         }
     )
 })
