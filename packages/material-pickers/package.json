@@ -48,7 +48,7 @@
         "@mui/x-date-pickers": "^5.0.0-alpha.0",
         "@ui-schema/ds-material": "~0.4.0-alpha",
         "@ui-schema/ui-schema": "~0.4.0-alpha",
-        "immutable": "^4.0.0",
+        "immutable": "^5.0.0",
         "react": "^18.0",
         "scheduler": "^0.18.0",
         "react-dom": "^18.0"
@@ -57,7 +57,7 @@
         "@mui/material": "^5.1",
         "@mui/x-date-pickers": "^5.0.0-alpha.0",
         "@ui-schema/ui-schema": "~0.4.0-alpha",
-        "immutable": "^4.0.0",
+        "immutable": "^4.0.0 || ^5.0.0",
         "react": "^17.0.2 || ^18.0.0"
     },
     "publishConfig": {

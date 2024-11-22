@@ -39,7 +39,7 @@
         "@mui/material": "^5.1",
         "@mui/icons-material": "^5.1",
         "@ui-schema/kit-dnd": "~0.0.6",
-        "immutable": "^4.0.0",
+        "immutable": "^5.0.0",
         "react": "^18.0",
         "react-dnd": "^14.0.0",
         "react-dom": "^18.0"
@@ -50,7 +50,7 @@
         "@ui-schema/ds-material": "~0.4.0-alpha",
         "@ui-schema/ui-schema": "~0.4.0-alpha",
         "@ui-schema/kit-dnd": "~0.0.6",
-        "immutable": "^4.0.0",
+        "immutable": "^4.0.0 || ^5.0.0",
         "react": "^17.0 || ^18.0",
         "react-dnd": "^14.0.0"
     },
