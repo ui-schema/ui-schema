@@ -1,1 +1,1 @@
-export * from './DependentHandler'
+export * from './DependentHandler.js'

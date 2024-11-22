@@ -1,1 +1,1 @@
-export * from './getTranslatableEnum'
+export * from './getTranslatableEnum.js'

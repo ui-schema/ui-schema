@@ -1,2 +1,2 @@
-export * from './storeActionReducers'
-export * from './storeUpdater'
+export * from './storeActionReducers.js'
+export * from './storeUpdater.js'

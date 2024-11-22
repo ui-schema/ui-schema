@@ -1,2 +1,2 @@
-export * from './CombiningHandler'
-export * from './useSchemaCombine'
+export * from './CombiningHandler.js'
+export * from './useSchemaCombine.js'

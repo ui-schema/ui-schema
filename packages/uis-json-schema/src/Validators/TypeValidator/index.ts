@@ -1,1 +1,1 @@
-export * from './TypeValidator'
+export * from './TypeValidator.js'

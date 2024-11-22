@@ -1,1 +1,1 @@
-export * from './schemaRulesToNative'
+export * from './schemaRulesToNative.js'

@@ -1,1 +1,1 @@
-export * from './isImmutableDeep'
+export * from './isImmutableDeep.js'

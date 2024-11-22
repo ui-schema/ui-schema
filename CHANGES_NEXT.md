@@ -62,6 +62,12 @@ List of renamed functions, components etc., most are also moved to other package
     - `widgetsCustom()` just returns some recommended `custom` widgets
 - `pluginStack` removed, now included directly in `widgetsBinding`
 
+### DS Bootstrap
+
+- switched to strict esm
+- update `clsx` to v2 (peer-dep)
+    - as v1 is not compatible with `moduleResolution: Node16`
+
 ## Todo Bindings
 
 To make bindings more portable, some things should be refactored, removed and newly added.
@@ -106,15 +112,15 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
 
 ## Todos Misc
 
-- tests
+- [ ] tests
     - `ts-jest` needed `compilerOptions.jsx: "react"`, or not? somehow works in other repos without
         - https://github.com/kulshekhar/ts-jest/issues/63
     - typechecks are disabled for tests via `isolatedModules` in `jest.config.ts`
-- check all `@mui` import, wrong imports lead to jest failures: "can not use import outside module"
+- [ ] check all `@mui` import, wrong imports lead to jest failures: "can not use import outside module"
     - never go into the third level, even for "sub bundles" like `/styles`,
       it fails when using `import useTheme from '@mui/material/styles/useTheme'`
       but works using `import { useTheme } from '@mui/material/styles'`
-- clean and fix using `{}` in generics, as it often leads to "is assignable to the constraint of type C, but C could be instantiated with a different subtype of constraint {}"
+- [ ] clean and fix using `{}` in generics, as it often leads to "is assignable to the constraint of type C, but C could be instantiated with a different subtype of constraint {}"
     - easiest, yet very ugly workaround is typing all props like:
         - generics: `<C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory, P extends WidgetPluginProps<W> = WidgetPluginProps<W>>`
         - usage: `return <Plugin {...{ currentPluginIndex: next, ...props } as C & P} />`
@@ -123,28 +129,32 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
     - the generic in `UIStoreProvider` causes no issue in `demo-web`, yet in `WidgetRenderer.test` causes props to be inferred as `never`, causing a lot of type errors
     - cleanup workarounds in:
         - `NextPluginRenderer`
-- finalize `package.json` generation for strict esm with ESM and CJS support
-- finalize strict-ESM compatible imports/exports, especially in packages
-- control and optimize circular package dependencies, remove all added as workarounds
-- improve depth for easier usage of `no-restricted-imports` - or isn't that needed once `exports` are used?
+- [x] finalize `package.json` generation for strict esm with ESM and CJS support
+- [ ] finalize strict-ESM compatible imports/exports, especially in packages
+    - [x] switch to strict-ESM for all core packages, with `Node16`
+    - [ ] switch to strict-ESM for ds-bootstrap
+        - [ ] remove `clsx`, as not `Node16` compatible
+    - [ ] switch to cjs/esm in new
+- [ ] control and optimize circular package dependencies, remove all added as workarounds
+- [ ] improve depth for easier usage of `no-restricted-imports` - or isn't that needed once `exports` are used?
     - the eslint plugin shouldn't be needed, yet a consistent depth makes the `tsconfig` for local dev easier,
       see the `ui-schema/react-codemirror` repo for a working example;
     - the `exports` with sub-path patterns may expose too much, where the eslint plugin makes sense again,
       depending on if the `*` maps directly to `*/index.js` or more generically to anything
-- normalize `tsconfig` `moduleResolution`
+- [ ] normalize `tsconfig` `moduleResolution`
     - `demo-web`: as `react-immutable-editor` is pure ESM and strict ESM using `exports` with files in a sub-directory,
       the `demo-web` uses no `type: "module"` and `moduleResolution: "Bundler"` to resolve it,
       it also works with `type: "module"` and `moduleResolution: "Bundler"` - except for the remaining `.js` files,
       but the alternative with `type: "module"` and `moduleResolution: "Node16"` breaks other imports of packages not strict-ESM yet
     - `docs`: uses no `type: "module"`, as that breaks older dependencies, instead TS config contains `"module": "CommonJS", "moduleResolution": "node"`
       to support any older standards in CLI and webpack bundle, even while adjusting / testing different settings in root `tsconfig.json`
-- optimize `.d.ts` generation, switch to `rootDir` to have normalized directory names for merge-dir, not depending if anything is imported or not
+- [ ] optimize `.d.ts` generation, switch to `rootDir` to have normalized directory names for merge-dir, not depending if anything is imported or not
     - currently intended to be defined in the package.json per package that should be generated
     - options like `composite`/`references` didn't work, except with a defined order of script execs, so most likely no option
     - a central tsgen command seems to be the easiest, which then merges the declaration files into each packages build
         - reducing type generations, only once per project
         - needs adjustments to not generate for apps like demo/docs
-- try out the `publishConfig.directory` option in `package.json`
-- remove slate/editorjs or migrate to basic react18 support
+- [ ] try out the `publishConfig.directory` option in `package.json`
+- [ ] remove slate/editorjs or migrate to basic react18 support
     - migrate from `@mui/styles`
     - upgrade peer deps to react18 support

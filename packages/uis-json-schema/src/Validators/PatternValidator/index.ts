@@ -1,1 +1,1 @@
-export * from './PatternValidator'
+export * from './PatternValidator.js'

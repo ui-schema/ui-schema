@@ -1,1 +1,1 @@
-export * from './VirtualWidgetRenderer'
+export * from './VirtualWidgetRenderer.js'

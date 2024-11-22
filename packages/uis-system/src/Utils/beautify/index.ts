@@ -1,1 +1,1 @@
-export * from './beautify'
+export * from './beautify.js'

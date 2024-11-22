@@ -1,1 +1,1 @@
-export * from './DragDropBlockProvider'
+export * from './DragDropBlockProvider.js'

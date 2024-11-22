@@ -1,1 +1,1 @@
-export * from './WidgetPlugin'
+export * from './WidgetPlugin.js'

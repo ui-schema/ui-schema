@@ -1,5 +1,5 @@
 import React from 'react'
-import { getDisplayName } from './getDisplayName'
+import { getDisplayName } from './getDisplayName.js'
 import { isEqualObject } from '@ui-schema/system/Utils/isEqualObject'
 
 /**

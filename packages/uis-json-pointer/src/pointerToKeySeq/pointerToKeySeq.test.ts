@@ -1,6 +1,6 @@
 import { expect, describe, test } from '@jest/globals'
-import { pointerToKeySeq } from './pointerToKeySeq'
-import { testCases } from '../JSONPointer.mock'
+import { pointerToKeySeq } from './pointerToKeySeq.js'
+import { testCases } from '../JSONPointer.mock.js'
 
 describe('JSONPointer', () => {
     test.each(testCases)(

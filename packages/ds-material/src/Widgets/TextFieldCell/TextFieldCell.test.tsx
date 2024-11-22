@@ -7,7 +7,7 @@ import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { List } from 'immutable'
-import { StringRendererCell } from './TextFieldCell'
+import { StringRendererCell } from './TextFieldCell.js'
 import { MockSchemaMetaProvider } from '../../../tests/MockSchemaProvider.mock'
 import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 

@@ -1,1 +1,1 @@
-export * from './NoWidget'
+export * from './NoWidget.js'

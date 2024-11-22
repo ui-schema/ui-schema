@@ -1,1 +1,1 @@
-export * from './InfoRenderer'
+export * from './InfoRenderer.js'

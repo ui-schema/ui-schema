@@ -1,1 +1,1 @@
-export * from './InheritKeywords'
+export * from './InheritKeywords.js'

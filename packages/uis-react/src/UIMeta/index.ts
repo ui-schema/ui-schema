@@ -1,1 +1,1 @@
-export * from './UIMetaProvider'
+export * from './UIMetaProvider.js'

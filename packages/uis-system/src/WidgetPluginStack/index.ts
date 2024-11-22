@@ -1,1 +1,1 @@
-export * from './WidgetPluginStack'
+export * from './WidgetPluginStack.js'

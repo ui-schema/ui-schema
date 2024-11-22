@@ -1,1 +1,1 @@
-export * from './mergeSchema'
+export * from './mergeSchema.js'

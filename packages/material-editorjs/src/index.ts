@@ -1,2 +1,2 @@
-export * from './EditorJS'
-export * from './Widgets'
+export * from './EditorJS/index.js'
+export * from './Widgets/index.js'

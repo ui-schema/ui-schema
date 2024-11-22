@@ -1,1 +1,1 @@
-export * from './forbidInvalidNumber'
+export * from './forbidInvalidNumber.js'

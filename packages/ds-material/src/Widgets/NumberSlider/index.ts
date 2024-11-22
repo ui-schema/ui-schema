@@ -1,1 +1,1 @@
-export * from './NumberSlider'
+export * from './NumberSlider.js'

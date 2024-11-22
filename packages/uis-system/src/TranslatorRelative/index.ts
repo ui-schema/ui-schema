@@ -1,1 +1,1 @@
-export * from './TranslatorRelative'
+export * from './TranslatorRelative.js'

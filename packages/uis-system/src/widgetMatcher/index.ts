@@ -1,2 +1,2 @@
-export * from './widgetMatcher'
-export * from './ErrorNoWidgetMatching'
+export * from './widgetMatcher.js'
+export * from './ErrorNoWidgetMatching.js'

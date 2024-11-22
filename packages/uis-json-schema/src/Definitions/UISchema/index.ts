@@ -1,1 +1,1 @@
-export * from './UISchema'
+export * from './UISchema.js'

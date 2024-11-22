@@ -1,1 +1,1 @@
-export * from './UIApi'
+export * from './UIApi.js'

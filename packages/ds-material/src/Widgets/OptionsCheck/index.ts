@@ -1,1 +1,1 @@
-export * from './OptionsCheck'
+export * from './OptionsCheck.js'

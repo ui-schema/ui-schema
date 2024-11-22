@@ -1,1 +1,1 @@
-export * from './typeToString'
+export * from './typeToString.js'

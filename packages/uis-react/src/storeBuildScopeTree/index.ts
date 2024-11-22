@@ -1,1 +1,1 @@
-export * from './storeBuildScopeTree'
+export * from './storeBuildScopeTree.js'

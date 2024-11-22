@@ -1,1 +1,1 @@
-export * from './SortPlugin'
+export * from './SortPlugin.js'

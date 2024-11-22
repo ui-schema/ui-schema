@@ -1,1 +1,1 @@
-export * from './GenericList'
+export * from './GenericList.js'

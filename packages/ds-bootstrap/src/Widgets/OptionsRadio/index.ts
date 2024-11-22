@@ -1,1 +1,1 @@
-export * from './OptionsRadio'
+export * from './OptionsRadio.js'

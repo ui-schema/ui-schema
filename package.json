@@ -40,12 +40,13 @@
     "author": "Michael Becker, https://i-am-digital.eu",
     "license": "MIT",
     "devDependencies": {
+        "@jest/types": "^29.6.3",
         "@types/react": "^18.0",
         "babel-plugin-named-asset-import": "^0.3.8",
+        "babel-plugin-replace-import-extension": "^1.1.4",
         "cross-env": "^7.0.3",
         "eslint-plugin-jsx-a11y": "^6.7.1",
         "eslint-plugin-react-hooks": "^4.6.0",
-        "@jest/types": "^29.6.3",
         "jest-environment-jsdom": "^29.0.2",
         "lerna": "^3.22.1",
         "lerna-packer": "0.10.2",
@@ -53,7 +54,5 @@
         "sloc": "^0.3.2",
         "ts-node": "^10.9.1",
         "typescript": "~5.3.3"
-    },
-    "dependencies": {
     }
 }

@@ -1,1 +1,1 @@
-export * from './MinMaxValidator'
+export * from './MinMaxValidator.js'

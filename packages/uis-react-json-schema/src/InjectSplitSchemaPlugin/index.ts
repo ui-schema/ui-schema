@@ -1,1 +1,1 @@
-export * from './InjectSplitSchemaPlugin'
+export * from './InjectSplitSchemaPlugin.js'

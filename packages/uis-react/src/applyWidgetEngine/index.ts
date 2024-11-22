@@ -1,1 +1,1 @@
-export * from './applyWidgetEngine'
+export * from './applyWidgetEngine.js'

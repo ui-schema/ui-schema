@@ -17,8 +17,22 @@
     "bugs": {
         "url": "https://github.com/ui-schema/ui-schema/issues"
     },
-    "main": "index.js",
-    "module": "esm/index.js",
+    "type": "module",
+    "main": "./index.cjs",
+    "module": "./index.js",
+    "types": "./index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./index.d.ts",
+            "import": "./index.js",
+            "require": "./index.cjs"
+        },
+        "./*": {
+            "types": "./*/index.d.ts",
+            "import": "./*/index.js",
+            "require": "./*/index.cjs"
+        }
+    },
     "sideEffects": false,
     "devDependencies": {
         "immutable": "^5.0.0",
@@ -28,8 +42,10 @@
         "immutable": "^4.0.0 || ^5.0.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0"
     },
-    "scripts": {
-        "dtsgen": "tsc --declaration --emitDeclarationOnly --pretty --rootDir ../ && node ../../tools/merge-dirs.js build/dts/dictionary/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*"
+    "peerDependenciesMeta": {
+        "immutable": {
+            "optional": true
+        }
     },
     "publishConfig": {
         "tag": "next",

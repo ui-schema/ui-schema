@@ -1,1 +1,1 @@
-export * from './DefaultHandler'
+export * from './DefaultHandler.js'

@@ -1,1 +1,1 @@
-export * from './ValueStore'
+export * from './ValueStore.js'

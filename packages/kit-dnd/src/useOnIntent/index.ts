@@ -1,1 +1,1 @@
-export * from './useOnIntent'
+export * from './useOnIntent.js'

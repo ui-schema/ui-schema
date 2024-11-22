@@ -1,2 +1,2 @@
-export * from './Widget'
-export * from './WidgetsBinding'
+export * from './Widget.js'
+export * from './WidgetsBinding.js'

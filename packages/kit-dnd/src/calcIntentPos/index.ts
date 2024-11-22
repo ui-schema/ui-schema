@@ -1,1 +1,1 @@
-export * from './calcIntentPos'
+export * from './calcIntentPos.js'

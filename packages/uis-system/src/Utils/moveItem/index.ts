@@ -1,1 +1,1 @@
-export * from './moveItem'
+export * from './moveItem.js'

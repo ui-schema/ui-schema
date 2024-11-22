@@ -1,1 +1,1 @@
-export * from './SchemaPluginStack'
+export * from './SchemaPluginStack.js'

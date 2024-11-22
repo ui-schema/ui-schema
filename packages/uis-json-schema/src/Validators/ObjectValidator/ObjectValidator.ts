@@ -1,6 +1,6 @@
 import { List, Map, Record } from 'immutable'
 import { createValidatorErrors, ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
-import { checkValueExists, ERROR_NOT_SET } from '../RequiredValidator'
+import { checkValueExists, ERROR_NOT_SET } from '@ui-schema/json-schema/Validators/RequiredValidator'
 import { validateSchema } from '@ui-schema/json-schema/validateSchema'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'

@@ -1,1 +1,1 @@
-export * from './useOptionsFromSchema'
+export * from './useOptionsFromSchema.js'

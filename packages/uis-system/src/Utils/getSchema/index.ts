@@ -1,1 +1,1 @@
-export * from './getSchema'
+export * from './getSchema.js'

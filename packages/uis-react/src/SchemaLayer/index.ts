@@ -1,1 +1,1 @@
-export * from './SchemaLayer'
+export * from './SchemaLayer.js'

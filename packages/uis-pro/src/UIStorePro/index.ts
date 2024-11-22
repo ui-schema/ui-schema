@@ -1,1 +1,1 @@
-export * from './UIStorePro'
+export * from './UIStorePro.js'

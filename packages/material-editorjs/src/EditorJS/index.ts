@@ -1,1 +1,1 @@
-export * from './EditorJS'
+export * from './EditorJS.js'

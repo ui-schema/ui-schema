@@ -1,1 +1,1 @@
-export * from './WidgetChipsRead'
+export * from './WidgetChipsRead.js'

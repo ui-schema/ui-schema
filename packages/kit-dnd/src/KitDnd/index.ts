@@ -1,2 +1,2 @@
-export * from './KitDnd'
-export * from './DndValueList'
+export * from './KitDnd.js'
+export * from './DndValueList.js'

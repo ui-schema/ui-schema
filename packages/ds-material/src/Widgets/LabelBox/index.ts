@@ -1,1 +1,1 @@
-export * from './LabelBox'
+export * from './LabelBox.js'

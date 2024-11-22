@@ -31,6 +31,16 @@
                     }
                 ],
                 "@babel/preset-typescript"
+            ],
+            "plugins": [
+                [
+                    "babel-plugin-replace-import-extension",
+                    {
+                        "extMapping": {
+                            ".js": ".cjs"
+                        }
+                    }
+                ]
             ]
         },
         "test": {

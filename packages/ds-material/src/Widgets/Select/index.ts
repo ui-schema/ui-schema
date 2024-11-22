@@ -1,2 +1,2 @@
-export * from './Select'
-export * from './SelectMulti'
+export * from './Select.js'
+export * from './SelectMulti.js'

@@ -1,1 +1,1 @@
-export * from './createMap'
+export * from './createMap.js'

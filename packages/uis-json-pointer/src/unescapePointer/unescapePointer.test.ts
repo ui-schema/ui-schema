@@ -1,5 +1,5 @@
 import { expect, describe, test } from '@jest/globals'
-import { unescapePointer } from './unescapePointer'
+import { unescapePointer } from './unescapePointer.js'
 
 describe('JSONPointer', () => {
     test.each([

@@ -1,1 +1,1 @@
-export * from './TextFieldIcon'
+export * from './TextFieldIcon.js'

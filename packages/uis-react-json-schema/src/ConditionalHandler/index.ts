@@ -1,2 +1,2 @@
-export * from './ConditionalHandler'
-export * from './handleIfElseThen'
+export * from './ConditionalHandler.js'
+export * from './handleIfElseThen.js'

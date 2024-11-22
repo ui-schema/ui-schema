@@ -1,1 +1,1 @@
-export * from './SimpleList'
+export * from './SimpleList.js'

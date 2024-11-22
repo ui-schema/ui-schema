@@ -1,135 +1,163 @@
 import path, {dirname} from 'path'
 import {packer, webpack} from 'lerna-packer'
-import {copyRootPackageJson} from 'lerna-packer/packer/modulePackages.js'
+import {copyRootPackageJson, makeModulePackageJson} from 'lerna-packer/packer/modulePackages.js'
 import fs from 'fs'
 import {fileURLToPath} from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-const esmBabelTargets = [
+const babelTargetsEsmCjs = [
     {
-        distSuffix: '', args: [
+        distSuffix: '',
+        args: [
+            '--env-name', 'cjs', '--no-comments', // '--copy-files', '--no-copy-ignored',
+            // note: even with defined extension, the extensions of `import` are still `.js`
+            //       which would break relative imports, as they then import ESM instead of the CJS file;
+            //       thus added `babel-plugin-replace-import-extension` for the CJS environment
+            //       it's not validated how it behaves for external imports for third-party modules,
+            //       which can be problematic in other projects,
+            //       here `import` to 3rd party modules are done purely by package name
+            '--out-file-extension', '.cjs',
+            '--extensions', '.ts', '--extensions', '.tsx', '--extensions', '.js', '--extensions', '.jsx',
+            '--ignore', '**/*.d.ts',
+            '--ignore', '**/*.test.tsx', '--ignore', '**/*.test.ts', '--ignore', '**/*.test.js',
+            '--ignore', '**/*.mock.ts', '--ignore', '**/*.mock.js',
+        ],
+    },
+    {
+        distSuffix: '',
+        args: [
             '--no-comments',
             '--extensions', '.ts', '--extensions', '.tsx', '--extensions', '.js', '--extensions', '.jsx',
             '--ignore', '**/*.d.ts',
             '--ignore', '**/*.test.tsx', '--ignore', '**/*.test.ts', '--ignore', '**/*.test.js',
+            '--ignore', '**/*.mock.ts', '--ignore', '**/*.mock.js',
         ],
     },
 ]
 
+const transformerForEsmCjs = () => {
+    return {
+        sideEffects: false,
+        main: './index.cjs',
+        module: './index.js',
+        types: './index.d.ts',
+    }
+}
+
 const packages = {
     uiSchemaSystem: {
         name: '@ui-schema/system',
-        doServeWatch: true,
-        esmOnly: true,
+        doServeWatch: false,
+        esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'uis-system'),
         entry: path.resolve(__dirname, 'packages', 'uis-system/src/'),
-        babelTargets: esmBabelTargets,
+        babelTargets: babelTargetsEsmCjs,
     },
     uiSchemaReact: {
         name: '@ui-schema/react',
-        doServeWatch: true,
-        esmOnly: true,
+        doServeWatch: false,
+        esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'uis-react'),
         entry: path.resolve(__dirname, 'packages', 'uis-react/src/'),
-        babelTargets: esmBabelTargets,
+        babelTargets: babelTargetsEsmCjs,
     },
     uiSchemaReactJsonSchema: {
         name: '@ui-schema/react-json-schema',
-        doServeWatch: true,
-        esmOnly: true,
+        doServeWatch: false,
+        esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'uis-react-json-schema'),
         entry: path.resolve(__dirname, 'packages', 'uis-react-json-schema/src/'),
-        babelTargets: esmBabelTargets,
+        babelTargets: babelTargetsEsmCjs,
     },
     uiSchemaJsonSchema: {
         name: '@ui-schema/json-schema',
-        doServeWatch: true,
-        esmOnly: true,
+        doServeWatch: false,
+        esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'uis-json-schema'),
         entry: path.resolve(__dirname, 'packages', 'uis-json-schema/src/'),
-        babelTargets: esmBabelTargets,
+        babelTargets: babelTargetsEsmCjs,
     },
     uiSchemaJsonPointer: {
         name: '@ui-schema/json-pointer',
-        doServeWatch: true,
-        esmOnly: true,
+        doServeWatch: false,
+        esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'uis-json-pointer'),
         entry: path.resolve(__dirname, 'packages', 'uis-json-pointer/src/'),
-        babelTargets: esmBabelTargets,
+        babelTargets: babelTargetsEsmCjs,
     },
     uiSchemaPro: {
         name: '@ui-schema/pro',
         doServeWatch: false,
-        esmOnly: true,
+        esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'uis-pro'),
         entry: path.resolve(__dirname, 'packages', 'uis-pro/src/'),
-        babelTargets: esmBabelTargets,
+        babelTargets: babelTargetsEsmCjs,
     },
     uiSchemaDictionary: {
         name: '@ui-schema/dictionary',
-        doServeWatch: true,
-        esmOnly: true,
+        doServeWatch: false,
+        esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'dictionary'),
         entry: path.resolve(__dirname, 'packages', 'dictionary/src/'),
-        babelTargets: esmBabelTargets,
+        babelTargets: babelTargetsEsmCjs,
     },
     dsMaterial: {
         // noClean: true,
         name: '@ui-schema/ds-material',
         doServeWatch: false,
-        esmOnly: true,
+        esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'ds-material'),
         entry: path.resolve(__dirname, 'packages', 'ds-material/src/'),
         // babelTargets: legacyBabelTargets,
-        babelTargets: esmBabelTargets,
+        babelTargets: babelTargetsEsmCjs,
     },
     dsBootstrap: {
         name: '@ui-schema/ds-bootstrap',
         doServeWatch: false,
-        esmOnly: true,
+        esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'ds-bootstrap'),
         entry: path.resolve(__dirname, 'packages', 'ds-bootstrap/src/'),
         // babelTargets: legacyBabelTargets,
-        babelTargets: esmBabelTargets,
+        babelTargets: babelTargetsEsmCjs,
     },
     kitDnd: {
         name: '@ui-schema/kit-dnd',
         doServeWatch: false,
-        esmOnly: true,
+        esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'kit-dnd'),
         entry: path.resolve(__dirname, 'packages', 'kit-dnd/src/'),
-        babelTargets: esmBabelTargets,
+        babelTargets: babelTargetsEsmCjs,
     },
     materialPickers: {
         name: '@ui-schema/material-pickers',
         doServeWatch: false,
-        esmOnly: true,
+        esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'material-pickers'),
         entry: path.resolve(__dirname, 'packages', 'material-pickers/src/'),
-        babelTargets: esmBabelTargets,
+        babelTargets: babelTargetsEsmCjs,
     },
     materialSlate: {
         name: '@ui-schema/material-slate',
-        esmOnly: true,
+        esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'material-slate'),
         entry: path.resolve(__dirname, 'packages', 'material-slate/src/'),
-        babelTargets: esmBabelTargets,
+        babelTargets: babelTargetsEsmCjs,
     },
     materialEditorJs: {
         name: '@ui-schema/material-editorjs',
-        esmOnly: true,
+        esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'material-editorjs'),
         entry: path.resolve(__dirname, 'packages', 'material-editorjs/src/'),
-        babelTargets: esmBabelTargets,
+        babelTargets: babelTargetsEsmCjs,
     },
     materialDnd: {
         name: '@ui-schema/material-dnd',
         doServeWatch: false,
-        esmOnly: true,
+        esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'material-dnd'),
         entry: path.resolve(__dirname, 'packages', 'material-dnd/src/'),
-        babelTargets: esmBabelTargets,
+        babelTargets: babelTargetsEsmCjs,
     },
 }
 
@@ -310,17 +338,22 @@ packer({
     packages: packages,
 }, __dirname, {
     afterEsModules: (packages, pathBuild, isServing) => {
+        const nonStrictPackages = [
+            'dsMaterial',
+            'materialDnd',
+            'materialEditorjs',
+            'materialPickers',
+            'materialSlate',
+        ]
         return Promise.all([
-            // todo: as all packages will be esm only, a new package.jsn generator is needed, or none at all?
-            //       as `transformForEsModule` is for `type: "module"` with esm+cjs builds, it is not used for esmOnly packages
-            // makeModulePackageJson(transformForEsModule)(
-            //     Object.keys(packages).reduce(
-            //         (packagesFiltered, pack) =>
-            //             packages[pack].esmOnly ? packagesFiltered : {...packagesFiltered, [pack]: packages[pack]},
-            //         {},
-            //     ),
-            //     pathBuild,
-            // ),
+            makeModulePackageJson(transformerForEsmCjs)(
+                Object.keys(packages).reduce(
+                    (packagesFiltered, pack) =>
+                        nonStrictPackages.includes(pack) ? {...packagesFiltered, [pack]: packages[pack]} : packagesFiltered,
+                    {},
+                ),
+                pathBuild,
+            ),
             ...(isServing ? [] : [copyRootPackageJson()(packages, pathBuild)]),
         ]).then(() => undefined).catch((e) => {
             console.error('ERROR after-es-mod', e)
@@ -343,7 +376,7 @@ packer({
                     }),
                 ]
 
-                const saver = nodePackages.map(([pkg, esmOnly]) => {
+                const saver = nodePackages.map(([pkg/*, esmOnly*/]) => {
                     return new Promise(((resolve, reject) => {
                         console.log(' rewrite package.json of ' + pkg)
                         const packageFile = JSON.parse(fs.readFileSync(path.join(pkg, 'package.json')).toString())
@@ -365,12 +398,12 @@ packer({
                                     pkgExportsFinal = Object.keys(pkgExports).reduce((pkgExportsNext, pkgExport) => {
                                         let pkgExportNext = changeFolder(pkgExports[pkgExport])
                                         let cjs = undefined
-                                        if (pkgExport === 'import' && !esmOnly) {
-                                            if (!pkgExport['require']) {
-                                                cjs = {'require': pkgExportNext}
-                                            }
-                                            pkgExportNext = pkgExportNext.startsWith('./esm/') ? pkgExportNext : './esm' + pkgExportNext.slice(1)
-                                        }
+                                        // if (pkgExport === 'import' && !esmOnly) {
+                                        //     if (!pkgExport['require']) {
+                                        //         cjs = {'require': pkgExportNext}
+                                        //     }
+                                        //     pkgExportNext = pkgExportNext.startsWith('./esm/') ? pkgExportNext : './esm' + pkgExportNext.slice(1)
+                                        // }
                                         return {
                                             ...pkgExportsNext,
                                             [pkgExport]:

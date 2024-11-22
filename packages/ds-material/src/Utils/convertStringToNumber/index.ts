@@ -1,1 +1,1 @@
-export * from './convertStringToNumber'
+export * from './convertStringToNumber.js'

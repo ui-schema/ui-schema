@@ -17,7 +17,7 @@ import { genId } from '@ui-schema/kit-dnd'
 import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd/DragDropBlock'
 import { DndBlocksRenderer } from '@ui-schema/material-dnd/DndBlocksRenderer'
 import { AreaRenderer } from '@ui-schema/material-dnd/WidgetsBase/AreaRenderer'
-import { injectBlock, WithDndBlock } from '@ui-schema/material-dnd/injectBlock/injectBlock'
+import { injectBlock, WithDndBlock } from '@ui-schema/material-dnd/injectBlock'
 
 export const DragDropAreaBase = (
     {

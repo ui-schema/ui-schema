@@ -1,2 +1,2 @@
-export * from './UIStoreActions'
-export * from './UIStoreActionsProvider'
+export * from './UIStoreActions.js'
+export * from './UIStoreActionsProvider.js'

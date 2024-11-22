@@ -29,10 +29,24 @@
     "bugs": {
         "url": "https://github.com/ui-schema/ui-schema/issues"
     },
-    "main": "index.js",
-    "module": "esm/index.js",
     "scripts": {
-        "dtsgen": "tsc --declaration --emitDeclarationOnly --pretty --rootDir ../ && node ../../tools/merge-dirs.js build/dts/ds-bootstrap/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*"
+        "dtsgen": "tsc --declaration --emitDeclarationOnly --pretty --rootDir ../ && node ../../tools/merge-dirs.js build/dts/ds-bootstrap/src build && rimraf build/dts && rimraf --glob build/**/*.test.* build/**/*.mock.*"
+    },
+    "type": "module",
+    "main": "./index.cjs",
+    "module": "./index.js",
+    "types": "./index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./index.d.ts",
+            "import": "./index.js",
+            "require": "./index.cjs"
+        },
+        "./*": {
+            "types": "./*/index.d.ts",
+            "import": "./*/index.js",
+            "require": "./*/index.cjs"
+        }
     },
     "sideEffects": false,
     "devDependencies": {
@@ -43,7 +57,7 @@
         "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "react": "^18.0",
         "react-dom": "^18.0",
-        "clsx": "^1.1.0",
+        "clsx": "^2.0.0",
         "immutable": "^5.0.0"
     },
     "dependencies": {
@@ -55,7 +69,7 @@
         "@ui-schema/react": "~0.5.0-alpha.0",
         "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",
-        "clsx": "^1.1.0",
+        "clsx": "^2.0.0",
         "react": "^18.0"
     },
     "publishConfig": {

@@ -1,1 +1,1 @@
-export * from './schemaTypeToDistinct'
+export * from './schemaTypeToDistinct.js'

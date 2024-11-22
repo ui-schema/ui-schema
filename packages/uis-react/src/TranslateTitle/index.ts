@@ -1,1 +1,1 @@
-export * from './TranslateTitle'
+export * from './TranslateTitle.js'

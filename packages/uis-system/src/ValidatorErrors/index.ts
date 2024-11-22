@@ -1,1 +1,1 @@
-export * from './ValidatorErrors'
+export * from './ValidatorErrors.js'

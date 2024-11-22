@@ -20,88 +20,88 @@
         "noUnusedParameters": true,
         "paths": {
             "@ui-schema/ds-bootstrap": [
-                "ds-bootstrap/src"
+                "ds-bootstrap/src/index.ts"
             ],
             "@ui-schema/ds-bootstrap/*": [
-                "ds-bootstrap/src/*"
+                "ds-bootstrap/src/*/index.ts"
             ],
             "@ui-schema/ds-material": [
-                "ds-material/src"
+                "ds-material/src/index.ts"
             ],
             "@ui-schema/ds-material/*": [
-                "ds-material/src/*"
+                "ds-material/src/*/index.ts"
             ],
             "@ui-schema/kit-dnd": [
-                "kit-dnd/src"
+                "kit-dnd/src/index.ts"
             ],
             "@ui-schema/kit-dnd/*": [
-                "kit-dnd/src/*"
+                "kit-dnd/src/*/index.ts"
             ],
             "@ui-schema/material-pickers": [
-                "material-pickers/src"
+                "material-pickers/src/index.ts"
             ],
             "@ui-schema/material-pickers/*": [
-                "material-pickers/src/*"
+                "material-pickers/src/*/index.ts"
             ],
             "@ui-schema/material-slate": [
-                "material-slate/src"
+                "material-slate/src/index.ts"
             ],
             "@ui-schema/material-slate/*": [
-                "material-slate/src/*"
+                "material-slate/src/*/index.ts"
             ],
             "@ui-schema/material-editorjs": [
-                "material-editorjs/src"
+                "material-editorjs/src/index.ts"
             ],
             "@ui-schema/material-editorjs/*": [
-                "material-editorjs/src/*"
+                "material-editorjs/src/*/index.ts"
             ],
             "@ui-schema/material-dnd": [
-                "material-dnd/src"
+                "material-dnd/src/index.ts"
             ],
             "@ui-schema/material-dnd/*": [
-                "material-dnd/src/*"
+                "material-dnd/src/*/index.ts"
             ],
             "@ui-schema/system": [
-                "uis-system/src"
+                "uis-system/src/index.ts"
             ],
             "@ui-schema/system/*": [
-                "uis-system/src/*"
+                "uis-system/src/*/index.ts"
             ],
             "@ui-schema/react": [
-                "uis-react/src"
+                "uis-react/src/index.ts"
             ],
             "@ui-schema/react/*": [
-                "uis-react/src/*"
+                "uis-react/src/*/index.ts"
             ],
             "@ui-schema/react-json-schema": [
-                "uis-react-json-schema/src"
+                "uis-react-json-schema/src/index.ts"
             ],
             "@ui-schema/react-json-schema/*": [
-                "uis-react-json-schema/src/*"
+                "uis-react-json-schema/src/*/index.ts"
             ],
             "@ui-schema/json-pointer": [
-                "uis-json-pointer/src"
+                "uis-json-pointer/src/index.ts"
             ],
             "@ui-schema/json-pointer/*": [
-                "uis-json-pointer/src/*"
+                "uis-json-pointer/src/*/index.ts"
             ],
             "@ui-schema/json-schema": [
-                "uis-json-schema/src"
+                "uis-json-schema/src/index.ts"
             ],
             "@ui-schema/json-schema/*": [
-                "uis-json-schema/src/*"
+                "uis-json-schema/src/*/index.ts"
             ],
             "@ui-schema/pro": [
-                "uis-pro/src"
+                "uis-pro/src/index.ts"
             ],
             "@ui-schema/pro/*": [
-                "uis-pro/src/*"
+                "uis-pro/src/*/index.ts"
             ],
             "@ui-schema/dictionary": [
-                "dictionary/src"
+                "dictionary/src/index.ts"
             ],
             "@ui-schema/dictionary/*": [
-                "dictionary/src/*"
+                "dictionary/src/*/index.ts"
             ]
         }
     },

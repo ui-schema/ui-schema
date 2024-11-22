@@ -1,1 +1,1 @@
-export * from './ExtractStorePlugin'
+export * from './ExtractStorePlugin.js'

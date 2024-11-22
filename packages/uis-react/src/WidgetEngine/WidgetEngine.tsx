@@ -1,3 +1,4 @@
+import { StoreKeyType } from '@ui-schema/system/ValueStore'
 import React from 'react'
 import { List } from 'immutable'
 import { memo } from '@ui-schema/react/Utils/memo'
@@ -66,8 +67,8 @@ export const WidgetEngine = <PWidget extends WidgetProps = WidgetProps, C extend
     const {onChange} = useUIStoreActions()
     const {
         parentSchema,
-        storeKeys = List([]),
-        schemaKeys = List([]),
+        storeKeys = List<StoreKeyType>([]),
+        schemaKeys = List<StoreKeyType>([]),
         schema,
         widgets: customWidgets,
         // todo: fix typing of `WidgetEngineProps`
@@ -82,7 +83,7 @@ export const WidgetEngine = <PWidget extends WidgetProps = WidgetProps, C extend
     // todo: resolving `hidden` here is wrong, must be done after merging schema / resolving referenced
     // @ts-ignore
     const isVirtual = Boolean(props.isVirtual || schema?.get('hidden'))
-    let required: List<string> = List([])
+    let required: List<string> = List<string>([])
     if (parentSchema) {
         // todo: resolving `required` here is wrong, must be done after merging schema / resolving referenced
         //      ! actual, it is correct here, as using `parentSchema`

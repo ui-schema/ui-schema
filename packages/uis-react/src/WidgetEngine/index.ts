@@ -1,3 +1,3 @@
-export * from './Plugin'
-export * from './WidgetEngineErrorBoundary'
-export * from './WidgetEngine'
+export * from './Plugin.js'
+export * from './WidgetEngineErrorBoundary.js'
+export * from './WidgetEngine.js'

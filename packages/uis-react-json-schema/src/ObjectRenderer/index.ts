@@ -1,1 +1,1 @@
-export * from './ObjectRenderer'
+export * from './ObjectRenderer.js'

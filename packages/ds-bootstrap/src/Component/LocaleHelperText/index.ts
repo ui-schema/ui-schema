@@ -1,1 +1,1 @@
-export * from './LocaleHelperText'
+export * from './LocaleHelperText.js'

@@ -1,1 +1,1 @@
-export * from './BindingType'
+export * from './BindingType.js'

@@ -1,3 +1,3 @@
-export * from './MarkdownLabel'
-export * from './FormWrapper'
-export * from './PaneWrapper'
+export * from './MarkdownLabel.js'
+export * from './FormWrapper.js'
+export * from './PaneWrapper.js'

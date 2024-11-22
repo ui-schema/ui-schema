@@ -1,1 +1,1 @@
-export * from './DragDropSpec'
+export * from './DragDropSpec.js'

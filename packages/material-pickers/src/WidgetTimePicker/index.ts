@@ -1,1 +1,1 @@
-export * from './WidgetTimePicker'
+export * from './WidgetTimePicker.js'

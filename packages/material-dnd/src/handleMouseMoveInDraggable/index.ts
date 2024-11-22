@@ -1,1 +1,1 @@
-export * from './handleMouseMoveInDraggable'
+export * from './handleMouseMoveInDraggable.js'

@@ -1,1 +1,1 @@
-export * from './validateSchema'
+export * from './validateSchema.js'

@@ -1,5 +1,5 @@
 import { resolvePointer } from '@ui-schema/json-pointer/resolvePointer'
-import { ParseRefsContent } from '@ui-schema/react-json-schema/ReferencingHandler/parseRefs'
+import { ParseRefsContent } from './parseRefs.js'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 export class SchemaRefPending extends Error {

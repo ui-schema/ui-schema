@@ -1,1 +1,1 @@
-export * from './sortScalarList'
+export * from './sortScalarList.js'

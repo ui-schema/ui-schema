@@ -7,7 +7,7 @@ import { extractValue, WithValue } from '@ui-schema/react/UIStore'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { List } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
-import { IconPlus, IconMinus } from '@ui-schema/ds-bootstrap/Component/Icons/Icons'
+import { IconPlus, IconMinus } from '@ui-schema/ds-bootstrap/Component/Icons'
 
 const SimpleList = extractValue(memo((
     {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { EditorJSWidget } from '@ui-schema/material-editorjs/Widgets/EditorJSWidget'
+import { EditorJSWidget } from '@ui-schema/material-editorjs/Widgets'
 import Paragraph from '@editorjs/paragraph'
 import CheckList from '@editorjs/checklist'
 import List from '@editorjs/list'

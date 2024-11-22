@@ -1,1 +1,1 @@
-export * from './ArrayValidator'
+export * from './ArrayValidator.js'

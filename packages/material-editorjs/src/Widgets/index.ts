@@ -1,1 +1,1 @@
-export * from './EditorJSWidget'
+export * from './EditorJSWidget.js'

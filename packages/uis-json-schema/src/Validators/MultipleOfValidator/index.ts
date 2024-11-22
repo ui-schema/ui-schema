@@ -1,1 +1,1 @@
-export * from './MultipleOfValidator'
+export * from './MultipleOfValidator.js'

@@ -1,1 +1,1 @@
-export * from './SchemaRootProvider'
+export * from './SchemaRootProvider.js'

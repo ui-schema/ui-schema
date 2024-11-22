@@ -1,1 +1,1 @@
-export * from './UISchemaMap'
+export * from './UISchemaMap.js'

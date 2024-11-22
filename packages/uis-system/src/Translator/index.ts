@@ -1,2 +1,2 @@
-export * from './makeTranslator'
-export * from './Translator'
+export * from './makeTranslator.js'
+export * from './Translator.js'

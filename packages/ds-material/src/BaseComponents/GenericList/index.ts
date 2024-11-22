@@ -1,5 +1,5 @@
-export * from './GenericListContent'
-export * from './GenericListFooter'
+export * from './GenericListContent.js'
+export * from './GenericListFooter.js'
 export * from './GenericListItem'
 export * from './GenericListItemMore'
 export * from './GenericListItemPos'

@@ -1,2 +1,2 @@
-export * from './LocaleHelperText'
-export * from './Icons'
+export * from './LocaleHelperText/index.js'
+export * from './Icons/index.js'

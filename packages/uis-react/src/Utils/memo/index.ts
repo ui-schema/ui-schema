@@ -1,2 +1,2 @@
-export * from './memo'
-export * from './getDisplayName'
+export * from './memo.js'
+export * from './getDisplayName.js'

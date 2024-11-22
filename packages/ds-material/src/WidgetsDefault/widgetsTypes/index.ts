@@ -1,1 +1,1 @@
-export * from './widgetsTypes'
+export * from './widgetsTypes.js'

@@ -1,1 +1,1 @@
-export * from './DropArea'
+export * from './DropArea.js'

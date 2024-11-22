@@ -1,1 +1,1 @@
-export * from './useOnDirectedMove'
+export * from './useOnDirectedMove.js'

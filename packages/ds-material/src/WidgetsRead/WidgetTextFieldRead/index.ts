@@ -1,1 +1,1 @@
-export * from './WidgetTextFieldRead'
+export * from './WidgetTextFieldRead.js'

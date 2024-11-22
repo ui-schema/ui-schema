@@ -1,1 +1,1 @@
-export * from './schemaTypeIs'
+export * from './schemaTypeIs.js'

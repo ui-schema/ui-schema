@@ -25,7 +25,7 @@ export const InjectSplitSchemaPlugin: React.ComponentType<WidgetPluginProps> = (
     const pointer = storeKeys.size > 0 ? '/' + storeKeys.map(k => escapePointer(String(k))).join('/') : ''
 
     const schemaStyleLevel = schemaStyle?.get(pointer) as Map<string, any> | undefined
-    let schemaStyleClean
+    let schemaStyleClean: UISchemaMap | undefined
     if (schemaStyleLevel && Map.isMap(schemaStyleLevel)) {
         schemaStyleClean = schemaStyleLevel
             .delete('properties')

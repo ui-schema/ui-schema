@@ -1,1 +1,1 @@
-export * from './widgetsCustom'
+export * from './widgetsCustom.js'

@@ -1,1 +1,1 @@
-export * from './widgetsBinding'
+export * from './widgetsBinding.js'

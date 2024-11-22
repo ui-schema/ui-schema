@@ -1,1 +1,1 @@
-export * from './OneOfValidator'
+export * from './OneOfValidator.js'

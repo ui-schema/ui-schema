@@ -1,2 +1,2 @@
-export * from './isInvalid'
-export * from './ValidityReporter'
+export * from './isInvalid.js'
+export * from './ValidityReporter.js'
