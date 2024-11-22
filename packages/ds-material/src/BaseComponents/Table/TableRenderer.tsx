@@ -36,7 +36,7 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
 ) => {
     const uid = useUID()
     const [page, setPage] = React.useState(0)
-    const [rows, setRows] = React.useState(rowsPerPage.first())
+    const [rows, setRows] = React.useState(rowsPerPage.first() || 5)
     const btnSize = (schema.getIn(['view', 'btnSize']) || btnSizeProp || 'small') as ListButtonOverwrites['btnSize']
     const btnVariant = (schema.getIn(['view', 'btnVariant']) || btnVariantProp || undefined) as ListButtonOverwrites['btnVariant']
     const btnColor = (schema.getIn(['view', 'btnColor']) || btnColorProp || undefined) as ListButtonOverwrites['btnColor']

@@ -35,7 +35,7 @@
         "@ui-schema/material-slate": "~0.0.11",
         "bootstrap": "^5.3.3",
         "clsx": "^1.1.0",
-        "immutable": "^4.0.0",
+        "immutable": "^5.0.0",
         "jquery": "^3.5.0",
         "@date-io/luxon": "^2.10.11",
         "luxon": "^2.3.0",
