@@ -145,7 +145,6 @@ describe('typeValidator', () => {
         (type, value, error, expectedValid, expectedError) => {
             const result = typeValidator.handle({
                 schema: OrderedMap({type}),
-                // @ts-ignore
                 value,
                 errors: createValidatorErrors(),
                 valid: true,

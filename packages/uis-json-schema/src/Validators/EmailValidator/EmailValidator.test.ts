@@ -1,5 +1,6 @@
 import { test, expect, describe } from '@jest/globals'
 import { emailValidator } from '@ui-schema/json-schema/Validators/EmailValidator'
+import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 import { OrderedMap } from 'immutable'
 
 describe('emailValidator', () => {
@@ -40,8 +41,11 @@ describe('emailValidator', () => {
             'demo)dee@example.org', false,
         ],
     ])('emailValidator.handle(%s): %j', (email, isValid) => {
-        // @ts-ignore
-        const r = emailValidator.handle({value: email, valid: true})
+        const r = emailValidator.handle({
+            value: email,
+            valid: true,
+            errors: createValidatorErrors(),
+        })
         expect(r.valid).toBe(isValid)
     })
     test.each([
@@ -110,7 +114,10 @@ describe('emailValidator', () => {
             false,
         ],
     ])('emailValidator.should(%s): %j', (schema, email, expected: boolean) => {
-        // @ts-ignore
-        expect(emailValidator.should({schema, value: email})).toBe(expected)
+        expect(emailValidator.should?.({
+            schema,
+            value: email,
+            errors: createValidatorErrors(),
+        })).toBe(expected)
     })
 })

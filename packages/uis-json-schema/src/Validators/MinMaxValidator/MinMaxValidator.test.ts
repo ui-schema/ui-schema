@@ -230,22 +230,22 @@ describe('validateMinMax', () => {
             2,
             1,
         ], [
-            // @ts-ignore draft-04 check
+            // draft-04 check
             {type: 'integer', exclusiveMinimum: true, minimum: 2},
             2,
             1,
         ], [
-            // @ts-ignore draft-04 check
+            // draft-04 check
             {type: 'integer', exclusiveMinimum: true, minimum: 2},
             3,
             0,
         ], [
-            // @ts-ignore draft-04 check
+            // draft-04 check
             {type: 'integer', exclusiveMaximum: true, maximum: 2},
             1,
             0,
         ], [
-            // @ts-ignore draft-04 check
+            // draft-04 check
             {type: 'integer', exclusiveMaximum: true, maximum: 2},
             2,
             1,
@@ -319,7 +319,6 @@ describe('minMaxValidator', () => {
         (schema, value, error, expectedValid, expectedError) => {
             const result = minMaxValidator.handle({
                 schema: OrderedMap(schema),
-                // @ts-ignore
                 value,
                 errors: createValidatorErrors(),
                 valid: true,

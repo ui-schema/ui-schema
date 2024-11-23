@@ -1,5 +1,5 @@
 import { test, expect, describe } from '@jest/globals'
-import { List, Map } from 'immutable'
+import { isImmutable, List, Map } from 'immutable'
 import {
     validateItems,
     validateContains,
@@ -217,8 +217,12 @@ describe('validateArrayContent', () => {
     ])('validateArrayContent(%j, %j, %s): %s', (schema, value, additionalItems, expected) => {
         const r = validateArrayContent(schema, value, additionalItems)
         if (r.err.errCount !== expected) {
-            // @ts-ignore
-            console.log('failed validateArrayContent', schema.toJS(), value && value.toJS ? value.toJS() : value, r.err.toJS())
+            console.log(
+                'failed validateArrayContent',
+                schema.toJS(),
+                isImmutable(value) ? value.toJS() : value,
+                r.err.toJS(),
+            )
         }
         expect(r.err.errCount).toBe(expected)
     })
@@ -364,8 +368,12 @@ describe('validateItems', () => {
     ])('validateItems(%j, %j)', (schema, value, expected) => {
         const r = validateItems(createOrderedMap(schema), value)
         if (r.errCount !== expected) {
-            // @ts-ignore
-            console.log('failed validateItems', schema.toJS(), value && value.toJS ? value.toJS() : value, r.toJS())
+            console.log(
+                'failed validateItems',
+                isImmutable(schema) ? schema.toJS() : schema,
+                isImmutable(value) ? value.toJS() : value,
+                r.toJS(),
+            )
         }
         expect(r.errCount).toBe(expected)
     })
@@ -663,8 +671,10 @@ describe('arrayValidator', () => {
     ])(
         '.should(%j, %s)',
         (value, expectedValid) => {
-            // @ts-ignore
-            expect(arrayValidator.should({value})).toBe(expectedValid)
+            expect(arrayValidator.should?.({
+                value,
+                errors: createValidatorErrors(),
+            })).toBe(expectedValid)
         },
     )
 

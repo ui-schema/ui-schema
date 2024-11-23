@@ -35,8 +35,7 @@ const textTransform = (name: string | number, tt: tt) => {
             if (typeof name === 'string') return beauty(name).toLowerCase()
             break
         case 'beauty-text':
-            // @ts-ignore
-            if (typeof name === 'string' && isNaN(name * 1)) return beauty(name)
+            if (typeof name === 'string' && isNaN(Number(name))) return beauty(name)
             break
         case 'beauty-igno-lead':
             if (typeof name === 'string') {

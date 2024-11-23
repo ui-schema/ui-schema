@@ -9,9 +9,19 @@ import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
  * - `C` = custom `UIMetaContext` definition
  */
 export interface WidgetPayload {
-    // the current schema level
+    /**
+     * the current schema level
+     *
+     * @todo wrong reliance, `/system` should not depend on `/json-schema`
+     *       either move WidgetPayload out or make generic?
+     */
     schema: UISchemaMap
-    // `parentSchema` will only be `undefined` in the root level of a schema
+    /**
+     * `parentSchema` will only be `undefined` in the root level of a schema
+     *
+     * @todo wrong reliance, `/system` should not depend on `/json-schema`
+     *       either move WidgetPayload out or make generic?
+     */
     parentSchema?: UISchemaMap | undefined
 
     // all indices of the current widget

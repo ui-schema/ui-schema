@@ -114,6 +114,7 @@ Todos:
 - include type guards for usage in widgets
     - maybe rely on `value` and `errors` to know if valid, needs `errors` and not `valid` to check if `TYPE_ERROR` of any other error
     - **TBD:** include for `typeof v === 'string'` or only for complex types?
+- make `WidgetProps` independent of schema typing or move out of `/system`, as that package should not depend on package `/json-schema`
 
 Reason: it can't be typed what "value type" a widget allows, as it could receive any (invalid) value (from e.g. remote states).
 

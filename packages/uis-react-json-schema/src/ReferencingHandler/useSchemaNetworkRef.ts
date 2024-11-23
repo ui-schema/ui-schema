@@ -46,17 +46,18 @@ export const useSchemaNetworkRef = (): {
 
     const getSchema: getSchemaRefPlugin = React.useCallback((ref, rootId = '#', version = undefined) => {
         const {cleanUrl, schemaUrl} = getUrls(ref, rootId === '#' ? id : rootId)
-        let schema
+        let schema: UISchemaMap | null = null
         if (
             typeof cleanUrl === 'string' && schemaUrl &&
             currentSchemas?.has(cleanUrl)
         ) {
-            let tmpSchema = currentSchemas?.get(cleanUrl) as UISchemaMap
+            let tmpSchema: UISchemaMap | undefined = currentSchemas?.get(cleanUrl)
             const fragment = getFragmentFromUrl(schemaUrl)
-            if (fragment) {
-                tmpSchema = resolvePointer('#/' + fragment, tmpSchema as any)
+            if (tmpSchema && fragment) {
+                tmpSchema = resolvePointer('#/' + fragment, tmpSchema)
                 // todo: if a version is set, it only enforces the root schema currently, how must fragment references treated
             }
+            if (!tmpSchema) return null
 
             if (
                 typeof version === 'undefined' ||

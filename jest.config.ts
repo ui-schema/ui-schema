@@ -2,20 +2,20 @@ import type { Config } from '@jest/types'
 import { createDefaultEsmPreset } from 'ts-jest'
 
 // helpful jest commands:
-// npm run test -- --selectProjects=test-uis-react --maxWorkers=4
-// npm run test -- --no-cache --selectProjects=test-uis-react --testPathPattern=WidgetEngine --maxWorkers=4
-// npm run test -- --no-cache --selectProjects=test-kit-dnd --maxWorkers=4
+// npm run test -- --selectProjects=test-@ui-schema/react --maxWorkers=4
+// npm run test -- --no-cache --selectProjects=test-@ui-schema/react --testPathPattern=WidgetEngine --maxWorkers=4
+// npm run test -- --no-cache --selectProjects=test-@ui-schema/kit-dnd --maxWorkers=4
 
 const packages: [name: string, folder: string, noTypeCheck?: boolean][] = [
-    ['@ui-schema/system', 'uis-system', true],
-    ['@ui-schema/react-json-schema', 'uis-react-json-schema', true],
+    ['@ui-schema/system', 'uis-system', false],
+    ['@ui-schema/react-json-schema', 'uis-react-json-schema', false],
     ['@ui-schema/react', 'uis-react', true],
-    ['@ui-schema/pro', 'uis-pro', true],
+    ['@ui-schema/pro', 'uis-pro', false],
     ['@ui-schema/json-pointer', 'uis-json-pointer', false],
     ['@ui-schema/json-schema', 'uis-json-schema', false],
     ['@ui-schema/ds-bootstrap', 'ds-bootstrap', true],
     ['@ui-schema/ds-material', 'ds-material', true],
-    ['@ui-schema/kit-dnd', 'kit-dnd', true],
+    ['@ui-schema/kit-dnd', 'kit-dnd', false],
     ['@ui-schema/dictionary', 'dictionary', true],
     ['@ui-schema/material-dnd', 'material-dnd', true],
     ['@ui-schema/material-pickers', 'material-pickers', true],
@@ -95,7 +95,7 @@ const config: Config.InitialOptions = {
     verbose: true,
     projects: [
         ...packages.map((pkg) => ({
-            displayName: 'test-' + pkg[1],
+            displayName: 'test-' + pkg[0],
             ...base(pkg[2]),
             moduleDirectories: ['node_modules', '<rootDir>/packages/' + toPackageFolder(pkg) + '/node_modules'/*, '<rootDir>/packages/' + pkg, '<rootDir>/packages/' + pkg + '/src'*/],
             //moduleDirectories: ['node_modules', '<rootDir>/packages/ui-schema/node_modules', '<rootDir>/packages/ds-material/node_modules'],

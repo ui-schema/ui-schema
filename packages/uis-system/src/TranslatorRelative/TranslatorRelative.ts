@@ -1,9 +1,8 @@
 import { Map } from 'immutable'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { translation, Translator, TranslatorContext } from '@ui-schema/system/Translator'
 
 export const TranslatorRelative = (
-    schema?: UISchemaMap,
+    schema?: Map<unknown, unknown>,
     context?: TranslatorContext,
     locale?: string,
 ): translation | undefined => {

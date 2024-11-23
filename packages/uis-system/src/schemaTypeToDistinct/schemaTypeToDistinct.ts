@@ -7,11 +7,13 @@ export const schemaTypeToDistinct = (schemaType: SchemaTypesType, noInputTypes: 
 
     if (typeof schemaType === 'string') {
         distinctInputType = schemaType
-    } else if ((Array.isArray(schemaType) && schemaType.length === 1) || ('size' in schemaType && schemaType.size === 1)) {
+    } else if ((Array.isArray(schemaType) && schemaType.length === 1) || (List.isList(schemaType) && schemaType.size === 1)) {
         distinctInputType = schemaType.join()
-    } else {
-        // @ts-ignore
-        const reducedTypes = schemaType.reduce((c, v) => (noInputTypes.includes(v) ? c : c.push(v)) as List<string>, List())
+    } else if (Array.isArray(schemaType) || List.isList(schemaType)) {
+        const reducedTypes = (schemaType as string[]).reduce(
+            (c, v) => (noInputTypes.includes(v) ? c : c.push(v)) as List<string>,
+            List(),
+        )
         if (reducedTypes.size === 1) {
             distinctInputType = reducedTypes.join()
         }

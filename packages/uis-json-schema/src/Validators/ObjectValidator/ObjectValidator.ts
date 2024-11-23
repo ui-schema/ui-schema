@@ -45,7 +45,7 @@ export const validateObject = (schema: UISchemaMap, value: any, recursively: boo
             const subTypeType = subSchema.get('type') as unknown as string | List<string> | string[]
             const val = isRealObject ?
                 Map.isMap(value) || Record.isRecord(value) ?
-                    // @ts-ignore
+                    // @ts-expect-error Record typing is not compatible with generic keys
                     value.get(key) :
                     value[key] :
                 undefined

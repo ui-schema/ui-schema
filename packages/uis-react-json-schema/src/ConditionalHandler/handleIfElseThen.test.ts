@@ -7,11 +7,11 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 /**
  * npm test -- --testPathPattern=ConditionalHandler --watch --watchman --coverage=false
  * npm run tdd -- --testPathPattern=ConditionalHandler
- * npm run tdd -- --runTestsByPath=packages/ui-schema/src/Plugins/ConditionalHandler
- * npm run tdd -- --runTestsByPath "./packages/ui-schema/src/Plugins/ConditionalHandler"
- * npm run tdd -- --runTestsByPath "./packages/ui-schema/src/Plugins/ConditionalHandler/handleIfElseThen.test.ts" --selectProjects test-ui-schema
- * npm run test -- --runTestsByPath "./packages/ui-schema/src/Plugins/ConditionalHandler/handleIfElseThen.test.ts"
- * npm run test -- --runTestsByPath "./packages/ui-schema/src/Plugins/ConditionalHandler/handleIfElseThen.test.ts" --selectProjects test-ui-schema
+ * npm run tdd -- --runTestsByPath=packages/uis-react-json-schema/src/ConditionalHandler
+ * npm run tdd -- --runTestsByPath "./packages/uis-react-json-schema/src/ConditionalHandler"
+ * npm run tdd -- --runTestsByPath "./packages/uis-react-json-schema/src/ConditionalHandler/handleIfElseThen.test.ts" --selectProjects test-@ui-schema/react-json-schema
+ * npm run test -- --runTestsByPath "./packages/uis-react-json-schema/src/ConditionalHandler/handleIfElseThen.test.ts"
+ * npm run test -- --runTestsByPath "./packages/uis-react-json-schema/src/ConditionalHandler/handleIfElseThen.test.ts" --selectProjects test-@ui-schema/react-json-schema
  */
 describe('handleIfElseThen', () => {
     test.each([

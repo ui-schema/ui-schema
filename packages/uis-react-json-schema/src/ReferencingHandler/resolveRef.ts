@@ -27,7 +27,7 @@ export const resolveRef = (ref: string, context: ParseRefsContent, schemaVersion
                 console.error('definitions needed for $ref resolution', ref)
             }
         } else if (defs.get(refId)) {
-            schema = resolvePointer('#/' + refId, defs as any)
+            schema = resolvePointer('#/' + refId, defs)
         } else {
             if (process.env.NODE_ENV === 'development') {
                 console.error('definition not found for $ref', ref, refId)
@@ -42,7 +42,7 @@ export const resolveRef = (ref: string, context: ParseRefsContent, schemaVersion
                 console.error('rootSchema needed for $ref resolution', ref)
             }
         } else {
-            const targeted = resolvePointer(ref, rootSchema as any)
+            const targeted = resolvePointer(ref, rootSchema)
             if (targeted) {
                 schema = targeted
             } else {

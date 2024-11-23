@@ -33,7 +33,6 @@ const DependentRenderer: React.FC<WidgetPluginProps & {
                     // schema-dependencies
                     // value for dependency exist, so it should be used
                     if (Map.isMap(key_dependencies)) {
-                        // @ts-ignore
                         parsedSchema = mergeSchema(parsedSchema, key_dependencies)
                     } else {
                         parsedSchema = mergeSchema(parsedSchema, key_dependentSchemas)

@@ -165,7 +165,6 @@ describe('objectValidator', () => {
         (schema, value, error, expectedValid, expectedError) => {
             const result = objectValidator.handle({
                 schema: createOrderedMap(schema),
-                // @ts-ignore
                 value,
                 errors: createValidatorErrors(),
                 valid: true,

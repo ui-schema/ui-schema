@@ -1,6 +1,7 @@
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { Map } from 'immutable'
 
-export const getSchemaId = (schema: UISchemaMap): string | undefined => {
+export const getSchemaId = (schema: Map<unknown, unknown>): string | undefined => {
     // till draft-06, no `$`, hashtag in id
-    return schema?.get('$id') || schema?.get('id')
+    const id = schema?.get('$id') || schema?.get('id')
+    return typeof id === 'string' ? id : undefined
 }

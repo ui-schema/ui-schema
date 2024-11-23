@@ -11,8 +11,6 @@ export interface InjectSplitSchemaRootContext {
 
 /**
  * @experimental
- * @param props
- * @constructor
  */
 export const InjectSplitSchemaPlugin: React.ComponentType<WidgetPluginProps> = (props) => {
     const {
@@ -38,7 +36,7 @@ export const InjectSplitSchemaPlugin: React.ComponentType<WidgetPluginProps> = (
             .delete('anyOf')
             .delete('required')
     }
-    // @ts-ignore
+
     return <Plugin
         {...props}
         currentPluginIndex={next}

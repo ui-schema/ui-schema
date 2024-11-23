@@ -17,7 +17,7 @@ export const isRootSchema = (schema: UISchemaMap): boolean => {
     return Boolean(id && id.indexOf('#') !== 0)
 }
 
-const SchemaRootContext = React.createContext({
+const SchemaRootContext = React.createContext<SchemaRootContext>({
     id: undefined,
     schema: undefined,
 })
@@ -29,7 +29,6 @@ export const SchemaRootProviderBase = <C extends {} = { [k: string]: any }>(prop
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }), [id, schema, ...Object.values(further)])
 
-    // @ts-ignore
     return <SchemaRootContext.Provider value={context}>
         {children}
     </SchemaRootContext.Provider>

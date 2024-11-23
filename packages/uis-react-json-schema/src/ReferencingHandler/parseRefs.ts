@@ -114,8 +114,13 @@ const parseRefsInConditionalKeywords = (schema: UISchemaMap, context: ParseRefsC
     Object.keys(checkSchema).forEach(keyword => {
         const schemaCond = res.schema.get(keyword)
         if (schemaCond && Map.isMap(schemaCond)) {
-            // @ts-ignore
-            const resCheckSchema = parseRefs(schemaCond, context, checkSchema[keyword] || recursive, res.pending)
+            const resCheckSchema = parseRefs(
+                // @ts-expect-error too strict typings, make it more defensive?
+                schemaCond,
+                context,
+                checkSchema[keyword] || recursive,
+                res.pending,
+            )
             res.schema = res.schema.set(keyword, resCheckSchema.schema)
             res.pending = resCheckSchema.pending
         }
@@ -185,7 +190,7 @@ export const parseRefs = (
         context = {...context}
         context.id = getSchemaId(schema)
         context.root = schema
-        // @ts-ignore
+        // @ts-expect-error missing type inference
         context.defs = schema.get('definitions') || schema.get('$defs')
     }
 
