@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'
@@ -19,7 +19,6 @@ import { translateRelative } from '@ui-schema/system/TranslatorRelative'
 export const virtualWidgets: VirtualWidgetsMapping & { default_with_id: VirtualWidgetsMapping['default'] } = {
     // eslint-disable-next-line react/display-name
     'default': () => <span>virtual-default-renderer</span>,
-    // @ts-ignore
     // eslint-disable-next-line react/display-name
     'default_with_id': ({value}) => <span id={'virtual-default-renderer__' + value}/>,
     // eslint-disable-next-line react/display-name
@@ -147,7 +146,9 @@ describe('WidgetRenderer', () => {
                 schema={createOrderedMap({type: 'array'})}
             />,
         )
-        expect(queryByText('is-undef') !== null).toBeTruthy()
+        // todo: remove experimental 0.5.x
+        // expect(queryByText('is-undef') !== null).toBeTruthy()
+        expect(queryByText('is-set') !== null).toBeTruthy()
     })
 
     it('object widget', async () => {
@@ -170,14 +171,18 @@ describe('WidgetRenderer', () => {
                 schema={createOrderedMap({type: 'object', widget: 'CustomObj'})}
             />,
         )
-        expect(queryByText('is-undef') !== null).toBeTruthy()
+        // todo: remove experimental 0.5.x
+        // expect(queryByText('is-undef') !== null).toBeTruthy()
+        expect(queryByText('is-set') !== null).toBeTruthy()
     })
 
     it('virtual widget object', async () => {
         const value = createOrderedMap({dummy: ['lorem ipsum', 42]})
         const store = createStore(value)
         const {queryByText, queryAllByText} = render(
+            // @ts-expect-error
             <UIStoreProvider
+                // @ts-expect-error
                 store={store}
                 // @ts-ignore
                 onChange={undefined}
@@ -239,7 +244,9 @@ describe('WidgetRenderer', () => {
         })
         const store = createStore(value)
         const {queryByText, container} = render(
+            // @ts-expect-error
             <UIStoreProvider
+                // @ts-expect-error
                 store={store}
                 // @ts-ignore
                 onChange={undefined}
@@ -298,7 +305,9 @@ describe('WidgetRenderer', () => {
         const {queryByText, queryAllByText} = render(
             // @ts-ignore
             <UIMetaProvider widgets={widgets} t={translateRelative}>
+                {/* @ts-expect-error */}
                 <UIStoreProvider
+                    // @ts-expect-error
                     store={store}
                     // @ts-ignore
                     onChange={undefined}
@@ -361,7 +370,9 @@ describe('WidgetRenderer', () => {
         const {queryByText, queryAllByText} = render(
             // @ts-ignore
             <UIMetaProvider widgets={widgets} t={translateRelative}>
+                {/* @ts-expect-error */}
                 <UIStoreProvider
+                    // @ts-expect-error
                     store={store}
                     // @ts-ignore
                     onChange={undefined}

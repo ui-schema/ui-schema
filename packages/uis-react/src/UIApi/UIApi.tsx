@@ -15,8 +15,8 @@ export function useProgress(): [PROGRESS, React.Dispatch<React.SetStateAction<PR
 }
 
 export interface UIApiContextType {
-    schemas: Map<string, UISchemaMap>
-    loadSchema: (url: string, versions?: string[]) => Promise<PROGRESS>
+    schemas?: Map<string, UISchemaMap>
+    loadSchema?: (url: string, versions?: string[]) => Promise<PROGRESS>
 }
 
 // todo: rename `loadSchemaUIApi`, currently the ReferencingNetworkHandler also publishes a type `loadSchema`
@@ -24,7 +24,6 @@ export type loadSchemaUIApi = (refUrl: string, version?: string[]) => Promise<an
 
 export type schemaLocalCachePath = string
 
-// @ts-ignore
 export const UIApiContext = React.createContext<UIApiContextType>({})
 
 export const useUIApi = (): UIApiContextType => React.useContext(UIApiContext)
@@ -46,7 +45,6 @@ const initialState = ({noCache = false}): Map<'schemas', Map<string, UISchemaMap
         }
     }
 
-    // @ts-ignore
     return Map({schemas: (cached ? createOrderedMap(cached) : Map())})
 }
 
@@ -62,8 +60,10 @@ function reducer(state: Map<'schemas', Map<string, UISchemaMap>>, action: UIApiA
         return (() => {
             const tmpState = state.setIn(['schemas', action.id], createOrderedMap(action.value))
             if (!action.noCache) {
-                // @ts-ignore
-                window?.localStorage?.setItem(schemaLocalCachePath, JSON.stringify(tmpState.get('schemas').toJS()))
+                const schemas = tmpState.get('schemas')
+                if (schemas) {
+                    window?.localStorage?.setItem(schemaLocalCachePath, JSON.stringify(schemas.toJS()))
+                }
             }
             return tmpState
         })()
@@ -83,7 +83,7 @@ export const isLoaded = (schemas: UIApiContextType['schemas'], ref: string, vers
                 schemas?.getIn([ref, 'version']) === '*' ||
                 !schemas?.getIn([ref, 'version'])
             )
-        )
+        ),
     )
 }
 

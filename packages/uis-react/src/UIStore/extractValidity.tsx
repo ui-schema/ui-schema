@@ -7,7 +7,7 @@ export const extractValidity = <P extends WithValidity & { storeKeys: StoreKeys 
     const ExtractValidity = (p: Omit<P, keyof WithValidity> & ExtractValueOverwriteProps) => {
         const {store, showValidity} = useUIStore()
         const {onChange} = useUIStoreActions()
-        // @ts-ignore
+        // @ts-expect-error typing not resolvable
         return <Component
             {...p}
             validity={p.storeKeys.size ? store?.getValidity().getIn(p.storeKeys) : store?.getValidity()}

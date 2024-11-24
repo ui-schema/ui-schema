@@ -19,5 +19,5 @@ const SchemaLayerGroupBase: React.ComponentType<React.PropsWithChildren<AppliedW
 
     return children as unknown as React.ReactElement
 }
-// @ts-ignore
+// @ts-expect-error incompatible with widgets factory
 export const SchemaLayer = applyWidgetEngine(SchemaLayerGroupBase)

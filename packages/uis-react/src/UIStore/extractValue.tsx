@@ -10,7 +10,7 @@ export function extractValue<A = UIStoreActions, P extends Partial<WithValue<A>>
         const {store, showValidity} = useUIStore()
         const {onChange} = useUIStoreActions()
         const values = store?.extractValues(p.storeKeys)
-        // @ts-ignore
+        // @ts-expect-error typing not resolvable
         return <Component
             {...p}
             // `showValidity` is overridable by render flow, e.g. nested Stepper

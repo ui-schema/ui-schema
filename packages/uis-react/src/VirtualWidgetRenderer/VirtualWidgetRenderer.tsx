@@ -15,7 +15,7 @@ export interface VirtualArrayRendererProps {
 }
 
 export const VirtualArrayRenderer = (
-    {storeKeys, value, schema, virtualWidgets, widgets}: VirtualArrayRendererProps
+    {storeKeys, value, schema, virtualWidgets, widgets}: VirtualArrayRendererProps,
 ): React.ReactElement => {
     const items = schema?.get('items')
     return value ? value.map((_val, i) =>
@@ -33,8 +33,8 @@ export const VirtualArrayRenderer = (
 }
 
 export interface VirtualWidgetsMapping {
-    default: null | React.ComponentType<WidgetProps>
-    object: React.ComponentType<WidgetProps>
+    default: null | React.ComponentType<WidgetProps & Partial<WithValue>>
+    object: React.ComponentType<WidgetProps & Partial<WithValue>>
     array: React.ComponentType<VirtualArrayRendererProps>
 }
 

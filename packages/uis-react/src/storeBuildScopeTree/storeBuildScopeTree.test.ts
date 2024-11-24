@@ -4,7 +4,7 @@
 import { test, expect, describe } from '@jest/globals'
 import { List, Map, OrderedMap } from 'immutable'
 import { UIStore, createStore, StoreKeys, UIStoreType, UIStoreStateData } from '@ui-schema/react/UIStore'
-import { storeBuildScopeTree } from '@ui-schema/react/storeBuildScopeTree/storeBuildScopeTree'
+import { storeBuildScopeTree } from './storeBuildScopeTree.js'
 
 /**
  * npm run tdd -- -u --testPathPattern=src/storeBuildScopeTree/storeBuildScopeTree.test.ts
@@ -14,7 +14,7 @@ describe('storeBuildScopeTree', () => {
     test.each([
         [
             List([]),
-            'internals',
+            'internals' as const,
             createStore(Map({})),
             'internals',
             false,
@@ -26,9 +26,10 @@ describe('storeBuildScopeTree', () => {
                 validity: Map({}),
             }),
             true,
-        ], [
+        ],
+        [
             List([]),
-            'internals',
+            'internals' as const,
             new UIStore({
                 values: Map({}),
                 internals: Map({
@@ -46,9 +47,10 @@ describe('storeBuildScopeTree', () => {
                 validity: Map({}),
             }),
             true,
-        ], [
+        ],
+        [
             List([]),
-            'values',
+            'values' as const,
             new UIStore({
                 values: Map({}),
                 internals: undefined,
@@ -62,9 +64,10 @@ describe('storeBuildScopeTree', () => {
                 validity: Map({}),
             }),
             true,
-        ], [
+        ],
+        [
             List([]),
-            'internals',
+            'internals' as const,
             new UIStore({
                 values: Map({}),
                 internals: undefined,
@@ -78,9 +81,10 @@ describe('storeBuildScopeTree', () => {
                 validity: Map({}),
             }),
             true,
-        ], [
+        ],
+        [
             List(['prop_a', 'prop_a0']),
-            'internals',
+            'internals' as const,
             new UIStore({
                 values: Map({}),
                 internals: undefined,
@@ -100,9 +104,10 @@ describe('storeBuildScopeTree', () => {
                 validity: Map({}),
             }),
             true,
-        ], [
+        ],
+        [
             List(['prop_a', 0, 'sub_a']),
-            'internals',
+            'internals' as const,
             new UIStore({
                 values: Map({}),
                 internals: undefined,
@@ -124,9 +129,10 @@ describe('storeBuildScopeTree', () => {
                 validity: Map({}),
             }),
             true,
-        ], [
+        ],
+        [
             List(['prop_a', 0, 'sub_a']),
-            'internals',
+            'internals' as const,
             new UIStore({
                 values: Map({}),
                 internals: Map({
@@ -157,9 +163,10 @@ describe('storeBuildScopeTree', () => {
                 validity: Map({}),
             }),
             true,
-        ], [
+        ],
+        [
             List(['prop_a']),
-            'values',
+            'values' as const,
             new UIStore({
                 values: Map({}),
                 internals: undefined,
@@ -173,9 +180,10 @@ describe('storeBuildScopeTree', () => {
                 validity: Map({}),
             }),
             true,
-        ], [
+        ],
+        [
             List(['prop_a', 0]),
-            'values',
+            'values' as const,
             new UIStore({
                 values: Map({}),
                 internals: undefined,
@@ -189,9 +197,10 @@ describe('storeBuildScopeTree', () => {
                 validity: Map({}),
             }),
             true,
-        ], [
+        ],
+        [
             List(['prop_a', 0, 'sub_a']),
-            'values',
+            'values' as const,
             new UIStore({
                 values: Map({}),
                 internals: undefined,
@@ -210,7 +219,15 @@ describe('storeBuildScopeTree', () => {
             }),
             true,
         ],
-    ])('storeBuildScopeTree(%j, %s, %j): %j', (storeKeys: StoreKeys, scope: keyof UIStoreStateData, store: UIStoreType, nestKey: string | undefined, ordered: boolean, expected: UIStoreType, expectedSameness: boolean) => {
+    ])('storeBuildScopeTree(%j, %s, %j): %j', (
+        storeKeys: StoreKeys,
+        scope: keyof UIStoreStateData,
+        store: UIStoreType,
+        nestKey: string | undefined,
+        ordered: boolean,
+        expected: UIStoreType,
+        expectedSameness: boolean,
+    ) => {
         const r = storeBuildScopeTree(storeKeys, scope, store, nestKey, ordered)
         const isExpected = r.equals(expected)
         if (isExpected !== expectedSameness) {

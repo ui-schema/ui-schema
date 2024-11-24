@@ -4,8 +4,8 @@
 import { test, expect, describe } from '@jest/globals'
 import '@testing-library/jest-dom/jest-globals'
 import { List, Map } from 'immutable'
-import { UIStore, StoreKeys, UIStoreType } from '@ui-schema/react/UIStore/UIStore'
-import { scopeUpdaterValidity } from '@ui-schema/react/storeScopeUpdater/scopeUpdaterValidity'
+import { UIStore, StoreKeys, UIStoreType } from '@ui-schema/react/UIStore'
+import { scopeUpdaterValidity } from './scopeUpdaterValidity.js'
 
 /**
  * npm run tdd -- -u --testPathPattern=src/storeScopeUpdater/scopeUpdaterValidity.test.tsx
@@ -198,7 +198,7 @@ describe('scopeUpdaterInternals', () => {
     ])('scopeUpdaterValidity(%j, %s): %j', <S extends UIStoreType>(
         store: S, storeKeys: StoreKeys,
         newValue: any,
-        expected: any
+        expected: any,
     ) => {
         const r = scopeUpdaterValidity(store, storeKeys, newValue)
         const isExpected = r.equals(expected)
@@ -208,7 +208,7 @@ describe('scopeUpdaterInternals', () => {
                 'failed scopeUpdaterValidity', storeKeys.toJS(),
                 JSON.stringify(store.toJS(), undefined, 2),
                 JSON.stringify(r?.toJS(), undefined, 2),
-                JSON.stringify(expected?.toJS(), undefined, 2)
+                JSON.stringify(expected?.toJS(), undefined, 2),
             )
         }
         expect(isExpected).toBe(true)
@@ -225,7 +225,7 @@ describe('scopeUpdaterInternals', () => {
         ],
     ])('failure scopeUpdaterValidity(%j, %s): %j', <S extends UIStoreType>(
         store: S, storeKeys: StoreKeys,
-        newValue: any
+        newValue: any,
     ) => {
         try {
             scopeUpdaterValidity(store, storeKeys, newValue)
@@ -233,7 +233,9 @@ describe('scopeUpdaterInternals', () => {
             expect('no error').toBe('error')
         } catch (e) {
             expect(e instanceof Error).toBe(true)
-            expect(e.message).toBe('forbidden property name `__valid` is used, not compatible with UIStore')
+            if (e instanceof Error) {
+                expect(e.message).toBe('forbidden property name `__valid` is used, not compatible with UIStore')
+            }
         }
     })
 })

@@ -25,6 +25,28 @@ List of renamed functions, components etc., most are also moved to other package
 
 ## General Changes
 
+### DS Material
+
+- adjusted root import paths, no longer exports the actual widgets directly - only with sub-folder
+- `widgetsBinding` case adjusted to `*W*idgetsBinding`, no longer exports `widgets`
+- `WidgetBinding | WidgetsBinding | MuiWidgetsBinding` types, folder and file names normalized to be `WidgetsBinding`
+- previous `widgetsBinding.widgets` now exported with multiple modular functions:
+    - separate files in `WidgetsDefault`, to be able to only import the ones really used in your app
+    - import all: `import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'`
+    - import modular, e.g. `import {define} from '@ui-schema/ds-material/WidgetsDefault/define'`
+    - `define(partialBinding)` just generates the basic structure without any plugins or widgets
+        - accepts the rest of the binding as parameter
+    - `plugins()` returns `schemaPlugins` and `widgetPlugins`
+    - `widgetsTypes()` just returns `types` widgets
+    - `widgetsCustom()` just returns some recommended `custom` widgets
+- `pluginStack` removed, now included directly in `widgetsBinding`
+
+### DS Bootstrap
+
+- switched to strict esm
+- update `clsx` to v2 (peer-dep)
+    - as v1 is not compatible with `moduleResolution: Node16`
+
 ### System
 
 - removed function `checkNativeValidity` in `schemaToNative`
@@ -52,28 +74,6 @@ Todo:
 - removed `ExtractStorePlugin`, included now in `WidgetEngine` directly (for the moment, experimenting performance/typing)
 - removed `level` property, use `schemaKeys`/`storeKeys` to calc. that when necessary
 - removed `WidgetRenderer` from `getNextPlugin` internals, moved to `widgetPlugins` directly
-
-### DS Material
-
-- adjusted root import paths, no longer exports the actual widgets directly - only with sub-folder
-- `widgetsBinding` case adjusted to `*W*idgetsBinding`, no longer exports `widgets`
-- `WidgetBinding | WidgetsBinding | MuiWidgetsBinding` types, folder and file names normalized to be `WidgetsBinding`
-- previous `widgetsBinding.widgets` now exported with multiple modular functions:
-    - separate files in `WidgetsDefault`, to be able to only import the ones really used in your app
-    - import all: `import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'`
-    - import modular, e.g. `import {define} from '@ui-schema/ds-material/WidgetsDefault/define'`
-    - `define(partialBinding)` just generates the basic structure without any plugins or widgets
-        - accepts the rest of the binding as parameter
-    - `plugins()` returns `schemaPlugins` and `widgetPlugins`
-    - `widgetsTypes()` just returns `types` widgets
-    - `widgetsCustom()` just returns some recommended `custom` widgets
-- `pluginStack` removed, now included directly in `widgetsBinding`
-
-### DS Bootstrap
-
-- switched to strict esm
-- update `clsx` to v2 (peer-dep)
-    - as v1 is not compatible with `moduleResolution: Node16`
 
 ## Todo Bindings
 
@@ -123,7 +123,8 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
 - [ ] tests
     - `ts-jest` needed `compilerOptions.jsx: "react"`, or not? somehow works in other repos without
         - https://github.com/kulshekhar/ts-jest/issues/63
-    - typechecks are disabled for tests via `isolatedModules` in `jest.config.ts`
+    - [x] typechecks are ~~disabled~~ enabled for tests via `isolatedModules` in `jest.config.ts`
+    - [ ] optimize all `ts-ignore` with better function signatures or mock data
 - [ ] check all `@mui` import, wrong imports lead to jest failures: "can not use import outside module"
     - never go into the third level, even for "sub bundles" like `/styles`,
       it fails when using `import useTheme from '@mui/material/styles/useTheme'`
@@ -144,10 +145,11 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
     - [ ] switch to strict-ESM for ds-bootstrap
         - [ ] remove `clsx`, as not `Node16` compatible
     - [x] switch to cjs/esm build with `.cjs` file extension instead of separate folders
-- [ ] control and optimize circular package dependencies, remove all added as workarounds
-- [ ] improve depth for easier usage of `no-restricted-imports` - or isn't that needed once `exports` are used?
+- [ ] control and optimize circular package dependencies, remove all which where added as workarounds
+- [ ] improve file/folder depth for easier usage of `no-restricted-imports` - or isn't that needed once `exports` are used?
     - the eslint plugin shouldn't be needed, yet a consistent depth makes the `tsconfig` for local dev easier,
       see the `ui-schema/react-codemirror` repo for a working example;
+        - validated: it isn't necessary, as instead the consistent `/index.ts` export is used, as this is consistent for `.tsx`/`.ts` components
     - the `exports` with sub-path patterns may expose too much, where the eslint plugin makes sense again,
       depending on if the `*` maps directly to `*/index.js` or more generically to anything
 - [ ] normalize `tsconfig` `moduleResolution`
@@ -157,6 +159,7 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
       but the alternative with `type: "module"` and `moduleResolution: "Node16"` breaks other imports of packages not strict-ESM yet
     - `docs`: uses no `type: "module"`, as that breaks older dependencies, instead TS config contains `"module": "CommonJS", "moduleResolution": "node"`
       to support any older standards in CLI and webpack bundle, even while adjusting / testing different settings in root `tsconfig.json`
+    - core packages now use `type: "module"` with `"module": "Node16", "moduleResolution": "Node16"`
 - [ ] optimize `.d.ts` generation, switch to `rootDir` to have normalized directory names for merge-dir, not depending if anything is imported or not
     - currently intended to be defined in the package.json per package that should be generated
     - options like `composite`/`references` didn't work, except with a defined order of script execs, so most likely no option

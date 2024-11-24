@@ -43,7 +43,13 @@ export const ValidityReporter: React.FC<WidgetPluginProps> = (props) => {
     }, [onChange, storeKeysRef])
 
     const next = currentPluginIndex + 1
-    const Plugin = getNextPlugin(next, props.widgets)
-    // @ts-ignore
-    return <Plugin {...props} currentPluginIndex={next} valid={valid} showValidity={showValidity} setCustomError={setCustomError}/>
+    const Plugin = getNextPlugin<{ setCustomError: typeof setCustomError }>(next, props.widgets)
+
+    return <Plugin
+        {...props}
+        currentPluginIndex={next}
+        valid={valid}
+        showValidity={showValidity}
+        setCustomError={setCustomError}
+    />
 }

@@ -45,19 +45,19 @@ export const getScopedValueFactory = <D extends UIStoreStateData = UIStoreStateD
 export const scopeUpdaterMapDefault: ScopeUpdaterMapType = {
     value: {
         // `store.values`
-        // @ts-ignore
+        // @ts-expect-error incompatible with generics typing
         setter: scopeUpdaterValues,
         getter: getScopedValueFactory('values'),
     },
     internal: {
         // `store.internals`
-        // @ts-ignore
+        // @ts-expect-error incompatible with generics typing
         setter: scopeUpdaterInternals,
         getter: getScopedValueFactory('internals', 'internals'),
     },
     valid: {
         // `store.validity`
-        // @ts-ignore
+        // @ts-expect-error incompatible with generics typing
         setter: scopeUpdaterValidity,
         getter: getScopedValueFactory('validity'),
     },

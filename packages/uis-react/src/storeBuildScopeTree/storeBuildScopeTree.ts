@@ -14,7 +14,6 @@ export const storeBuildScopeTree = <S extends UIStoreType>(storeKeys: StoreKeys,
             (
                 !List.isList(value) &&
                 !Map.isMap(value) &&
-                // @ts-ignore
                 !Record.isRecord(value)
             ) ||
             (typeof key === 'number' && !List.isList(value))

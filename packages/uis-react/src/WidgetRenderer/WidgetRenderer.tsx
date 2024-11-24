@@ -1,7 +1,7 @@
+import { List } from 'immutable'
 import React from 'react'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 import { ErrorNoWidgetMatching, widgetMatcher } from '@ui-schema/system/widgetMatcher'
-import { List } from 'immutable'
 import { WidgetEngineProps, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { WithValue } from '@ui-schema/react/UIStore'
 import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
@@ -14,6 +14,13 @@ export interface WidgetRendererProps<W extends WidgetsBindingFactory = WidgetsBi
     // but not when used on its own
     currentPluginIndex?: number
 }
+
+/**
+ * @todo remove once performance checks are finalized
+ *       check tests and remove experimental in WidgetRenderer.test.tsx and UIEngineIntegration.test.tsx
+ *       `remove experimental 0.5.x`
+ */
+const noExtractValueEnabled = true
 
 export const WidgetRenderer = <W extends WidgetsBindingFactory = WidgetsBindingFactory, P extends WidgetRendererProps = WidgetRendererProps, WT extends WidgetType<{}, W> = WidgetType<{}, W>>(
     {
@@ -85,8 +92,8 @@ export const WidgetRenderer = <W extends WidgetsBindingFactory = WidgetsBindingF
         /* @ts-ignore */
         <Widget
             {...props}
-            value={noExtractValue ? undefined : value}
-            internalValue={noExtractValue ? undefined : internalValue}
+            value={noExtractValue && !noExtractValueEnabled ? undefined : value}
+            internalValue={noExtractValue && !noExtractValueEnabled ? undefined : internalValue}
             errors={currentErrors}
         /> : null
 }

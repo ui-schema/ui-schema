@@ -34,13 +34,12 @@ const SimpleList = extractValue(memo((
                     key={i}
                     className={classFormGroup.join(' ')}
                 >
-                    <WidgetEngine
+                    <WidgetEngine<WidgetProps & { className?: string }>
                         className={classFormControl.join(' ')}
                         showValidity={showValidity}
                         storeKeys={storeKeys.push(i)}
                         parentSchema={schema}
                         schema={schema.get('items') as UISchemaMap}
-                        required={required}
                         noGrid
                     />
                     <div>

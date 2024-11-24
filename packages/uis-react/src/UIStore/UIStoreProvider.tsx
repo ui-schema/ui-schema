@@ -7,14 +7,13 @@ export interface UIStoreContext<D = any> {
     showValidity?: boolean
 }
 
-// @ts-ignore
+// @ts-expect-error initialized in provider
 const UIStoreContextObj = React.createContext<UIStoreContext>({})
 
-// @ts-ignore
 const UIConfigContextObj = React.createContext<{}>({})
 
 export const UIConfigProvider: React.ComponentType<React.PropsWithChildren<{}>> = (
-    {children, ...props}
+    {children, ...props},
 ) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const value = React.useMemo(() => ({...props}), [...Object.values(props)])
@@ -28,7 +27,7 @@ export function UIStoreProvider<C extends {} = {}, D = any, A = UIStoreActions>(
         children,
         showValidity, onChange, store,
         ...props
-    }: React.PropsWithChildren<UIStoreContext<D> & UIStoreActionsContext<A> & C>
+    }: React.PropsWithChildren<UIStoreContext<D> & UIStoreActionsContext<A> & C>,
 ): React.ReactElement {
     const ctx = React.useMemo(() => ({showValidity, store}), [showValidity, store])
     return <UIStoreContextObj.Provider value={ctx}>

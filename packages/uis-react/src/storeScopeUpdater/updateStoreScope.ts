@@ -9,7 +9,6 @@ export type ScopeOnChangeHandlerInternal = <S extends UIStoreType>(
 
 export const updateStoreScope: ScopeOnChangeHandlerInternal = (store, scope, storeKeys, newValue) => {
     return store.setIn(
-        // @ts-ignore
         storeKeys.size ? prependKey(storeKeys, scope) : [scope],
         newValue
     ) as typeof store

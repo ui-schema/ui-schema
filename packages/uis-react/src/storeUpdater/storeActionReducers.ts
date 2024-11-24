@@ -5,7 +5,7 @@ import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
 import { UIStoreActions, UIStoreUpdaterData } from '@ui-schema/react/UIStoreActions'
 
 export const storeActionReducers = <S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData, A extends UIStoreActions<S, D> = UIStoreActions<S, D>>(
-    action: A
+    action: A,
 ): UIStoreUpdaterFn<D> | D => {
     switch (action.type) {
         case 'list-item-add':
@@ -24,7 +24,7 @@ export const storeActionReducers = <S extends UIStoreType = UIStoreType, D exten
                             List.isList(items) || type === 'array' ? List() :
                                 type === 'string' ? '' :
                                     type === 'null' ? null :
-                                        undefined
+                                        undefined,
                     )
                 }
                 return ({
@@ -32,7 +32,7 @@ export const storeActionReducers = <S extends UIStoreType = UIStoreType, D exten
                     //       https://github.com/ui-schema/ui-schema/issues/143
                     value: value,
                     internal: internal.update('internals', (internalInternals = List()) =>
-                        internalInternals.push(Map())
+                        internalInternals.push(Map()),
                     ),
                     ...r,
                 }) as D
@@ -41,7 +41,7 @@ export const storeActionReducers = <S extends UIStoreType = UIStoreType, D exten
             return ({value = List(), internal = Map(), ...r}) => ({
                 value: value.splice(action.index, 1),
                 internal: internal.update('internals', (internalInternals = List()) =>
-                    internalInternals.splice(action.index, 1)
+                    internalInternals.splice(action.index, 1),
                 ),
                 ...r,
             }) as D
@@ -61,8 +61,8 @@ export const storeActionReducers = <S extends UIStoreType = UIStoreType, D exten
                                 // - to fix similar issue, but now when "switching" between two, where the from ist after already existing internals
                                 internalInternals.set(action.fromIndex, undefined) :
                                 internalInternals,
-                        action.fromIndex, action.toIndex
-                    )
+                        action.fromIndex, action.toIndex,
+                    ),
                 ),
                 ...r,
             }) as D
@@ -71,7 +71,7 @@ export const storeActionReducers = <S extends UIStoreType = UIStoreType, D exten
         case 'update':
             return action.updater as UIStoreUpdaterFn<D>
         default:
-            // @ts-ignore
-            throw new Error('store updater for type not found: ' + action.type)
+            // @ts-expect-error type can't exist by known types
+            throw new Error('store updater for type not found: ' + ('type' in action ? action.type : 'missing type'))
     }
 }

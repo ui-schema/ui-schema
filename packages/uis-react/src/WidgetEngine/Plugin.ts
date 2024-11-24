@@ -15,4 +15,4 @@ export type WidgetPluginProps<W extends WidgetsBindingFactory = WidgetsBindingFa
     onErrors?: onErrorHandler
 }
 
-export type WidgetPluginType<C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory> = React.ComponentType<WidgetPluginProps<W> & C>
+export type WidgetPluginType<C = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory> = React.ComponentType<WidgetPluginProps<W> & C>

@@ -20,17 +20,14 @@ export const scopeUpdaterValues = <S extends UIStoreType = UIStoreType, A extend
     // todo: also, actually, it must be checked & deleted recursively
     if (shouldDeleteOnEmpty(newValue, action?.schema?.get('deleteOnEmpty') as boolean || action?.required, action?.schema?.get('type') as SchemaTypesType)) {
         if (storeKeys.size) {
-            // @ts-ignore
             const parentStore = store.getIn(prependKey(storeKeys.splice(storeKeys.size - 1, 1) as StoreKeys, 'values'))
             // e.g. numbers in tuples must only be deleted, when it is inside an object, when inside an `list` undefined must be used for a "reset"
             // todo: support valueOnDelete and fix behaviour in Array tuples https://github.com/ui-schema/ui-schema/issues/106
             //       also tests are missing atm.
             if (List.isList(parentStore)) {
-                // @ts-ignore
-                store = store.setIn(prependKey(storeKeys, 'values'), null)
+                store = store.setIn(prependKey(storeKeys, 'values'), null) as typeof store
             } else if (Map.isMap(parentStore) || Record.isRecord(parentStore)) {
-                // @ts-ignore
-                store = store.deleteIn(prependKey(storeKeys, 'values'))
+                store = store.deleteIn(prependKey(storeKeys, 'values')) as typeof store
             }
         } else {
             store = store.deleteIn(['values']) as typeof store
@@ -42,6 +39,6 @@ export const scopeUpdaterValues = <S extends UIStoreType = UIStoreType, A extend
 
     return updateStoreScope(
         store, 'values', storeKeys,
-        newValue
+        newValue,
     )
 }

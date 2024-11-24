@@ -112,7 +112,7 @@ export const AccordionsRendererBase = <W extends WidgetProps<MuiWidgetsBinding> 
         schema, storeKeys, schemaKeys,
         errors, showValidity,
         ...props
-    }: W
+    }: W,
 ): React.ReactElement => {
     const [open, setOpen] = React.useState<string>(schema.get('defaultExpanded') as string || '')
 
@@ -129,7 +129,7 @@ export const AccordionsRendererBase = <W extends WidgetProps<MuiWidgetsBinding> 
                 schemaKeys={schemaKeys?.push('properties').push(childKey)}
                 isOpen={open === childKey}
                 setOpen={setOpen}
-            />
+            />,
         )
             .valueSeq()
             .toArray()}

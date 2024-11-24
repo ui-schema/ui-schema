@@ -24,9 +24,15 @@ export interface WidgetPayload {
      */
     parentSchema?: UISchemaMap | undefined
 
-    // all indices of the current widget
+    /**
+     * all indices of the current widget
+     */
     storeKeys: StoreKeys
-    // **experimental**, all indices of the currently *resolved* position in the schema
+    /**
+     * all indices of the currently *resolved* position in the schema
+     *
+     * @experimental
+     */
     schemaKeys?: StoreKeys
 
     // `required` is created inside validator plugin

@@ -34,7 +34,7 @@ import { NextPluginRenderer, WidgetEngine } from '@ui-schema/react/WidgetEngine'
  *
  * todo: test on details and behaviour instead of only does-render-stuff
  *
- * npm test -- --testPathPattern=UIRenderer.test.tsx -u
+ * npm test -- --testPathPattern=UIEngineIntegration.test.tsx -u
  */
 
 const widgets = {
@@ -44,8 +44,13 @@ const widgets = {
 }
 // todo: add custom ErrorFallback, otherwise some errors may be catched there - and the test will not fail
 
-// eslint-disable-next-line react/display-name
-widgets.GroupRenderer = ({children}): React.ReactElement => <div className={'group-renderer'}>{children}</div>
+widgets.GroupRenderer =
+    function GroupRenderer({children, storeKeys}) {
+        return <div
+            data-path={storeKeys.join('.')}
+            className={'group-renderer'}
+        >{children}</div>
+    }
 widgets.widgetPlugins = [
     // plugin to have every widget in it's own div - to query against in tests
     (props) => <div><NextPluginRenderer {...props}/></div>,
@@ -61,32 +66,30 @@ widgets.widgetPlugins = [
 ]
 widgets.schemaPlugins = getValidators()
 
-// eslint-disable-next-line react/display-name
-widgets.types.string = (props: WidgetProps): React.ReactElement => {
+widgets.types.string = function WidgetString(props: WidgetProps) {
     return <>
-        <span>string-renderer</span>
+        <span data-path={props.storeKeys.join('.')}>string-renderer</span>
         <span><TranslateTitle schema={props.schema} storeKeys={props.storeKeys}/></span>
         {props.valid ? null : <span>string-with-error</span>}
         {props.errors?.hasError() ? <span>{JSON.stringify(props.errors.errorsToJS())}</span> : null}
     </>
 }
 
-// eslint-disable-next-line react/display-name
-widgets.types.array = extractValue((props: WidgetProps & WithValue): React.ReactElement => {
+widgets.types.array = extractValue(function WidgetArray(props: WidgetProps & WithValue) {
+    const itemsSchema = props.schema.get('items')
     return <>
-        <span>array-renderer</span>
+        <span data-path={props.storeKeys.join('.')}>array-renderer</span>
         <span><TranslateTitle schema={props.schema} storeKeys={props.storeKeys}/></span>
-        {/* @ts-ignore */}
-        {List.isList(props.value) ? props.value.map((val, i: number) =>
+        {itemsSchema && !List.isList(itemsSchema) && List.isList(props.value) ? props.value.map((_val, i: number) =>
             <div key={i}>
                 <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
                     {null}
-                    {/* @ts-ignore */}
                     <WidgetEngine
                         showValidity={props.showValidity}
-                        // @ts-ignore
-                        schema={props.schema.get('items')} //parentSchema={schema}
-                        storeKeys={props.storeKeys.push(i)} //level={level + 1}
+                        storeKeys={props.storeKeys.push(i)}
+                        schema={itemsSchema}
+                        parentSchema={props.schema}
+                        //level={level + 1}
                         noGrid
                     />
                 </div>
@@ -238,6 +241,7 @@ describe('UIGenerator Integration', () => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer data={{demo_number: 10, demo_array2: ['val-test']}}/>,
         )
+        // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-container').length).toBe(1)
         expect(container.querySelectorAll('.group-renderer').length).toBe(2)
         expect(queryByText('store-is-correct') !== null).toBeTruthy()
@@ -258,13 +262,18 @@ describe('UIGenerator Integration', () => {
 
         expect(queryByText('Demo String')).toBe(null)
         expect(queryByText('widget.demo_string.title') !== null).toBeTruthy()
-        expect(queryAllByText('string-renderer').length).toBe(2)
+        // todo: remove experimental 0.5.x
+        //       as values are passed down directly, defaulted array/object values are passed down directly,
+        //       thus not relying on `store` to get accessed in their direct layer
+        // expect(queryAllByText('string-renderer').length).toBe(2)
+        expect(queryAllByText('string-renderer').length).toBe(3)
         expect(queryByText('store-is-invalid') !== null).toBeTruthy()
     })
     it('TestUIRenderer not `t`', async () => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer notT/>,
         )
+        // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-container').length).toBe(1)
         expect(container.querySelectorAll('.group-renderer').length).toBe(2)
         expect(queryByText('Demo String') !== null).toBeTruthy()
@@ -285,11 +294,11 @@ describe('UIGenerator Integration', () => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer data={{
                 demo_string: 'to-long-text', demo_number: 83,
-                // @ts-ignore
+                // @ts-expect-error
                 demo_array: 'not-an-array',
             }}/>,
         )
-        //expect(container).toMatchSnapshot()
+        // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-container').length === 1).toBeTruthy()
         expect(container.querySelectorAll('.group-renderer').length > 0).toBeTruthy()
         //expect(queryByText('store-is-correct') === null).toBeTruthy()

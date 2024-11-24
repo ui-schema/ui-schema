@@ -63,26 +63,26 @@ export const UIStore: UIStoreTypeFactory = Record({
     validity: Map(),
     meta: Map(),
     valuesToJS: function() {
-        // @ts-ignore
+        // @ts-expect-error missing immutable types on `this`
         const values = this.get(STR_VALUES)
         if (Map.isMap(values) || List.isList(values) || Record.isRecord(values)) return values.toJS()
 
         return values
     },
     getValues: function() {
-        // @ts-ignore
+        // @ts-expect-error missing immutable types on `this`
         return this.get(STR_VALUES)
     },
     getInternals: function() {
-        // @ts-ignore
+        // @ts-expect-error missing immutable types on `this`
         return this.get(STR_INTERNALS)
     },
     getValidity: function() {
-        // @ts-ignore
+        // @ts-expect-error missing immutable types on `this`
         return this.get(STR_VALIDITY)
     },
     extractValues: function(storeKeys) {
-        // @ts-ignore
+        // @ts-expect-error missing immutable types on `this`
         return doExtractValues(storeKeys, this)
     },
 }) as UIStoreTypeFactory
@@ -113,9 +113,13 @@ export const createEmptyStore = (type: SchemaTypesType = 'object'): UIStoreType<
                         Map(),
     ) as UIStoreType
 
-export const prependKey = <O extends StoreKeyType = StoreKeyType, S extends ValueStoreKeys<O> = ValueStoreKeys<O>>(storeKeys: S, key: O): S =>
+export const prependKey = <
+    O extends StoreKeyType = StoreKeyType,
+    S extends ValueStoreKeys<StoreKeyType> | StoreKeyType[] = ValueStoreKeys<StoreKeyType> | StoreKeyType[]
+>(storeKeys: S, key: O): S =>
+    // eslint-disable-next-line indent
     Array.isArray(storeKeys) ?
-        [key, ...storeKeys] as unknown as S :
+        [key, ...storeKeys] as S :
         storeKeys.splice(0, 0, key) as S
 
 export const shouldDeleteOnEmpty = (value, force, type) => {

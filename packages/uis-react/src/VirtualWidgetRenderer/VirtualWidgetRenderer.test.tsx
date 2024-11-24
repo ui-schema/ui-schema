@@ -1,7 +1,6 @@
 /**
  * @jest-environment jsdom
  */
-import React from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'
@@ -21,6 +20,7 @@ const virtualWidgets: VirtualWidgetsMapping = {
 describe('VirtualWidgetRenderer', () => {
     it('default type widget', async () => {
         const {queryByText} = render(
+            // @ts-expect-error
             <VirtualWidgetRenderer
                 value={'demo-value'}
                 storeKeys={List()}
@@ -33,6 +33,7 @@ describe('VirtualWidgetRenderer', () => {
 
     it('object type widget', async () => {
         const {queryByText} = render(
+            // @ts-expect-error
             <VirtualWidgetRenderer
                 value={OrderedMap()}
                 storeKeys={List()}
@@ -45,6 +46,7 @@ describe('VirtualWidgetRenderer', () => {
 
     it('array type widget', async () => {
         const {queryByText} = render(
+            // @ts-expect-error
             <VirtualWidgetRenderer
                 value={List()}
                 storeKeys={List()}
@@ -58,6 +60,7 @@ describe('VirtualWidgetRenderer', () => {
     it('array type widget items tuple schema', async () => {
         // todo: with array content
         const {queryByText} = render(
+            // @ts-expect-error
             <VirtualWidgetRenderer
                 value={List()}
                 storeKeys={List()}
@@ -71,6 +74,7 @@ describe('VirtualWidgetRenderer', () => {
     it('array type widget items one-schema', async () => {
         // todo: with array content
         const {queryByText} = render(
+            // @ts-expect-error
             <VirtualWidgetRenderer
                 value={List()}
                 storeKeys={List()}

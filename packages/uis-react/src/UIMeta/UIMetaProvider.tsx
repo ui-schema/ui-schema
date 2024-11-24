@@ -4,7 +4,7 @@ import { WidgetProps } from '@ui-schema/react/Widgets'
 import { getDisplayName } from '@ui-schema/react/Utils/memo'
 import { WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 
-// @ts-ignore
+// @ts-expect-error initialized in provider
 const UIMetaContextObj = React.createContext<UIMetaContext>({})
 
 export interface UIMetaContext<W = WidgetsBindingFactory> {
@@ -12,7 +12,7 @@ export interface UIMetaContext<W = WidgetsBindingFactory> {
     t: Translator
 }
 
-export function UIMetaProvider<C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(
+export function UIMetaProvider<C = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(
     {children, ...props}: React.PropsWithChildren<UIMetaContext<W> & C>,
 ): React.ReactElement {
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -22,12 +22,12 @@ export function UIMetaProvider<C extends {} = {}, W extends WidgetsBindingFactor
     </UIMetaContextObj.Provider>
 }
 
-export const useUIMeta = <C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(): UIMetaContext<W> & C => {
+export const useUIMeta = <C = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(): UIMetaContext<W> & C => {
     return React.useContext(UIMetaContextObj) as UIMetaContext<W> & C
 }
 
-export const withUIMeta = <P extends WidgetProps, C extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(
-    Component: React.ComponentType<P & UIMetaContext<W> & C>
+export const withUIMeta = <P extends WidgetProps, C = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(
+    Component: React.ComponentType<P & UIMetaContext<W> & C>,
 ): React.ComponentType<P> => {
     const WithUIMeta = (p: P) => {
         const meta = useUIMeta<C, W>()

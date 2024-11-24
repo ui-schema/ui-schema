@@ -13,7 +13,7 @@ export const forbidInvalidNumber = (e: KeyboardEvent, type: SchemaTypesType): bo
     if (
         schemaTypeIsNumeric(type) &&
         !e.altKey && !e.ctrlKey && !e.metaKey &&
-        !numberKeys.includes(e.key)
+        (e.key !== 'ArrowUp' && e.key !== 'ArrowDown' && !numberKeys.includes(e.key))
     ) {
         e.preventDefault()
         e.stopPropagation()
