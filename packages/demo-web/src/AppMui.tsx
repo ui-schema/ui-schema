@@ -7,15 +7,16 @@ import {
 import AppTheme from './material-ui/layout/AppTheme'
 import Dashboard from './material-ui/layout/Dashboard'
 
-const MaterialUi = lazy(() => import('./material-ui/material-ui'))
-const MaterialUiPro = lazy(() => import('./material-ui/material-ui-pro'))
-const MaterialUiDnd = lazy(() => import('./material-ui/material-ui-dnd'))
-const MaterialUiDndGrid = lazy(() => import('./material-ui/material-ui-dnd-grid'))
-const MaterialUiEditorJS = lazy(() => import('./material-ui/material-ui-editorjs'))
-const MaterialUiSlate = lazy(() => import('./material-ui/material-ui-slate'))
-const MaterialUiDebounced = lazy(() => import('./material-ui/material-ui-debounced'))
-const MaterialUiSplit = lazy(() => import('./material-ui/material-ui-split'))
-const MaterialUiReadWrite = lazy(() => import('./material-ui/material-ui-read-write'))
+const MaterialUi = lazy(() => import('./material-ui/material-ui.js'))
+const MaterialUiExamples = lazy(() => import('./material-ui/material-ui-examples.js'))
+const MaterialUiPro = lazy(() => import('./material-ui/material-ui-pro.js'))
+const MaterialUiDnd = lazy(() => import('./material-ui/material-ui-dnd.js'))
+const MaterialUiDndGrid = lazy(() => import('./material-ui/material-ui-dnd-grid.js'))
+const MaterialUiEditorJS = lazy(() => import('./material-ui/material-ui-editorjs.js'))
+const MaterialUiSlate = lazy(() => import('./material-ui/material-ui-slate.js'))
+const MaterialUiDebounced = lazy(() => import('./material-ui/material-ui-debounced.js'))
+const MaterialUiSplit = lazy(() => import('./material-ui/material-ui-split.js'))
+const MaterialUiReadWrite = lazy(() => import('./material-ui/material-ui-read-write.js'))
 
 const AppMui = () => {
     return <AppTheme>
@@ -30,6 +31,7 @@ const AppMui = () => {
                     <Route path="/mui-dnd-grid" component={MaterialUiDndGrid}/>
                     <Route path="/mui-debounced" component={MaterialUiDebounced}/>
                     <Route path="/mui-split" component={MaterialUiSplit}/>
+                    <Route path="/mui-examples" exact component={MaterialUiExamples}/>
                     <Route path="/" exact component={MaterialUi}/>
                 </Switch>
             </Suspense>

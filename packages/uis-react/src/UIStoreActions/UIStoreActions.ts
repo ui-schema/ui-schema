@@ -9,16 +9,22 @@ export interface UIStoreUpdaterData {
     meta?: any
 }
 
-export type UIStoreActionScoped<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> = {
-    storeKeys: StoreKeys
+export type UIStoreActionScoped<D extends UIStoreUpdaterData = UIStoreUpdaterData> = {
+    /**
+     * @todo move into the actions which support this, e.g. all `list-*` reducers rely on `internals`
+     */
     scopes: (keyof D)[]
-    effect?: (newData: D, newStore: S) => void
 }
 
-export interface UIStoreAction<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreActionScoped<S, D> {
+export interface UIStoreAction<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> {
+    storeKeys: StoreKeys
     type: string
     schema?: UISchemaMap
     required?: boolean
+    /**
+     * @deprecated use normal react flow and effects instead
+     */
+    effect?: (newData: D, newStore: S) => void
 }
 
 export interface UIStoreActionListItemAddWithValue<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreAction<S, D> {
@@ -46,12 +52,12 @@ export interface UIStoreActionListItemMove<S extends UIStoreType = UIStoreType, 
     toIndex: number
 }
 
-export interface UIStoreActionUpdate<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreAction<S, D> {
+export interface UIStoreActionUpdate<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreActionScoped<D>, UIStoreAction<S, D> {
     type: 'update'
     updater: UIStoreUpdaterFn<D>
 }
 
-export interface UIStoreActionSet<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreAction<S, D> {
+export interface UIStoreActionSet<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreActionScoped<D>, UIStoreAction<S, D> {
     type: 'set'
     data: D
 }

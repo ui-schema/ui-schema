@@ -267,14 +267,12 @@ onChange([{
 ```javascript
 onChange({
     storeKeys,
-    scopes: ['value', 'internal'],
     type: 'list-item-add',
     schema: schema,
 })
 // OR with value:
 onChange({
     storeKeys,
-    scopes: ['value', 'internal'],
     type: 'list-item-add',
     itemValue: any
 })
@@ -286,7 +284,6 @@ onChange({
 onChange({
     // use the `storeKeys` of the list - NOT of the `item`!
     storeKeys: storeKeys.splice(-1, 1) as StoreKeys,
-    scopes: ['value', 'internal'],
     type: 'list-item-delete',
     index: index as number,
 })
@@ -299,7 +296,6 @@ onChange({
 onChange({
     // use the `storeKeys` of the list - NOT of the `item`!
     storeKeys: storeKeys.splice(-1, 1) as StoreKeys,
-    scopes: ['value', 'internal'],
     type: 'list-item-move',
     fromIndex: index,
     toIndex: index - 1,
@@ -309,7 +305,6 @@ onChange({
 onChange({
     // use the `storeKeys` of the list - NOT of the `item`!
     storeKeys: storeKeys.splice(-1, 1) as StoreKeys,
-    scopes: ['value', 'internal'],
     type: 'list-item-move',
     fromIndex: index,
     toIndex: index + 1,

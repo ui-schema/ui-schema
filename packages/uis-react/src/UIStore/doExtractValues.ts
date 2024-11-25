@@ -4,7 +4,7 @@ import { StoreKeys } from '@ui-schema/system/ValueStore'
 
 export type ExtractValueOverwriteProps = { showValidity?: boolean }
 
-export function doExtractValues<S extends UIStoreType>(storeKeys: StoreKeys, store: S): { value: any, internalValue: UIStoreInternalsType } {
+export function doExtractValues<S extends UIStoreType>(storeKeys: StoreKeys, store: S): { value: any, internalValue: UIStoreInternalsType | undefined } {
     return {
         value:
             storeKeys.size ?
@@ -12,7 +12,7 @@ export function doExtractValues<S extends UIStoreType>(storeKeys: StoreKeys, sto
                 store.getValues(),
         internalValue:
             storeKeys.size ?
-                store.getInternals().getIn(addNestKey('internals', storeKeys)) as UIStoreInternalsType || Map() :
+                store.getInternals()?.getIn(addNestKey('internals', storeKeys)) as UIStoreInternalsType || Map() :
                 store.getInternals(),
     }
 }

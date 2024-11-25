@@ -8,13 +8,15 @@ import { UIStore, StoreKeys, UIStoreType } from '@ui-schema/react/UIStore'
 import { scopeUpdaterValidity } from './scopeUpdaterValidity.js'
 
 /**
- * npm run tdd -- -u --testPathPattern=src/storeScopeUpdater/scopeUpdaterValidity.test.tsx
+ * npm run tdd -- --testPathPattern=src/storeScopeUpdater/scopeUpdaterValidity.test.tsx
  */
 
 describe('scopeUpdaterInternals', () => {
     test.each([
         [
-            new UIStore({}),
+            new UIStore({
+                validity: Map({}),
+            }),
             List([]),
             false,
             new UIStore({

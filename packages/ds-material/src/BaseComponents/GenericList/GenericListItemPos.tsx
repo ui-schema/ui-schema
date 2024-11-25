@@ -24,7 +24,6 @@ export const GenericListItemPos = (
                 onClick={() =>
                     onChange({
                         storeKeys,
-                        scopes: ['value', 'internal'],
                         type: 'list-item-move',
                         fromIndex: index,
                         toIndex: index - 1,
@@ -52,7 +51,6 @@ export const GenericListItemPos = (
                 onClick={() =>
                     onChange({
                         storeKeys,
-                        scopes: ['value', 'internal'],
                         type: 'list-item-move',
                         fromIndex: index,
                         toIndex: index + 1,

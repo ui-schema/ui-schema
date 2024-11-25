@@ -75,6 +75,28 @@ Todo:
 - removed `level` property, use `schemaKeys`/`storeKeys` to calc. that when necessary
 - removed `WidgetRenderer` from `getNextPlugin` internals, moved to `widgetPlugins` directly
 
+#### UIStore
+
+- remodelled `UIStoreAction`
+    - removed `scope` from base, now only available for `set` and `update` action
+        - **TODO** add helper for "is value effected change"? as now `action.scopes.includes('value')` is not enough
+    - deprecated `effect`
+        - **TODO** make async? (remove into next tick)
+
+Todo:
+
+- rewrite `storeUpdater` to be simpler and easier to extend
+- rewrite store tree building and related nesting keys to be more robust and consistent
+    - all use `children` as nestKey
+        - with `self` holding its own values for `internals`
+        - with `valid` holding the number of errors for `validity`
+            - allowing to add e.g. `errors` for full error details
+    - all use fully nested structures for no key conflicts and safer nesting
+- rewrite related utils, onChange actions and more
+    - `isInvalid`
+    - `onChange` in ValidityReporter
+    - `extractValues` and `extractValidity` - hooks, store methods and all related
+
 ## Todo Bindings
 
 To make bindings more portable, some things should be refactored, removed and newly added.
@@ -124,6 +146,7 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
     - `ts-jest` needed `compilerOptions.jsx: "react"`, or not? somehow works in other repos without
         - https://github.com/kulshekhar/ts-jest/issues/63
     - [x] typechecks are ~~disabled~~ enabled for tests via `isolatedModules` in `jest.config.ts`
+        - [ ] but causing a lot of performance strain, from ~60s to over 20min depending on cache; thus disabled for `tdd`
     - [ ] optimize all `ts-ignore` with better function signatures or mock data
 - [ ] check all `@mui` import, wrong imports lead to jest failures: "can not use import outside module"
     - never go into the third level, even for "sub bundles" like `/styles`,

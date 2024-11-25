@@ -2,10 +2,10 @@ import { List, Map, OrderedMap, Record } from 'immutable'
 import { StoreKeys, UIStoreType, addNestKey, UIStoreStateData } from '@ui-schema/react/UIStore'
 
 export const storeBuildScopeTree = <S extends UIStoreType>(storeKeys: StoreKeys, scope: keyof UIStoreStateData, store: S, nestKey: string | undefined = undefined, ordered: boolean = false): S => {
-    const relativeList: (string | number)[] = [scope]
     if (nestKey) {
         storeKeys = addNestKey(nestKey, storeKeys)
     }
+    const relativeList: (string | number)[] = [scope]
     storeKeys.forEach(key => {
         if (typeof key === 'undefined') return
 

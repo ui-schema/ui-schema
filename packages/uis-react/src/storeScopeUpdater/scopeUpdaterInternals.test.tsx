@@ -8,7 +8,7 @@ import { UIStore, StoreKeys, UIStoreType } from '@ui-schema/react/UIStore'
 import { scopeUpdaterInternals } from './scopeUpdaterInternals.js'
 
 /**
- * npm run tdd -- -u --testPathPattern=src/storeScopeUpdater/scopeUpdaterInternals.test.tsx
+ * npm run tdd -- --testPathPattern=src/storeScopeUpdater/scopeUpdaterInternals.test.tsx
  */
 
 describe('scopeUpdaterInternals', () => {
@@ -21,7 +21,7 @@ describe('scopeUpdaterInternals', () => {
             undefined,
             //Map({}),
             new UIStore({
-                internals: Map({}),
+                internals: undefined,
             }),
         ], [
             new UIStore({

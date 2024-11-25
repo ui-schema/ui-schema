@@ -3,10 +3,16 @@ import React from 'react';
 import {List} from 'immutable';
 import {useUIStoreActions} from '@ui-schema/react/UIStoreActions';
 
-export const SchemaDebug = ({StyledEditor, schema, setSchema}) => {
+export const SchemaDebug = (
+    {
+        StyledEditor, schema, setSchema,
+        showInternals = false,
+        showValidity = false,
+    },
+) => {
     const {store} = useUIStore();
     const {onChange} = useUIStoreActions();
-
+    console.log(store?.toJS())
     return <React.Fragment>
         <StyledEditor
             title={<code>UIStore.values</code>}
@@ -22,6 +28,18 @@ export const SchemaDebug = ({StyledEditor, schema, setSchema}) => {
             }}
             getVal={keys => store.getValues().getIn(keys)}
         />
+        {showInternals ?
+            <StyledEditor
+                title={<code>UIStore.internals</code>}
+                data={store.getInternals()}
+                getVal={keys => store.getInternals().getIn(keys)}
+            /> : null}
+        {showValidity ?
+            <StyledEditor
+                title={<code>UIStore.validity</code>}
+                data={store.getValidity()}
+                getVal={keys => store.getValidity().getIn(keys)}
+            /> : null}
         <StyledEditor
             title={<code>Schema</code>}
             data={schema}

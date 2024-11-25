@@ -7,7 +7,7 @@ import { UIStore, createStore, StoreKeys, UIStoreType, UIStoreStateData } from '
 import { storeBuildScopeTree } from './storeBuildScopeTree.js'
 
 /**
- * npm run tdd -- -u --testPathPattern=src/storeBuildScopeTree/storeBuildScopeTree.test.ts
+ * npm run tdd -- --testPathPattern=src/storeBuildScopeTree/storeBuildScopeTree.test.ts
  */
 
 describe('storeBuildScopeTree', () => {
@@ -77,7 +77,8 @@ describe('storeBuildScopeTree', () => {
             false,
             new UIStore({
                 values: Map({}),
-                internals: Map({}),
+                internals: undefined,
+                // internals: Map({}),
                 validity: Map({}),
             }),
             true,

@@ -61,7 +61,6 @@ export const SortableListBase = (
                     onClick={() => {
                         onChange({
                             storeKeys,
-                            scopes: ['value', 'internal'],
                             type: 'list-item-add',
                             itemValue: OrderedMap({
                                 [idKey]: genId(),

@@ -47,6 +47,7 @@ const mainListItems = (<div>
 const secondaryListItems = (
     <div>
         <ListSubheader inset>Additional</ListSubheader>
+        <ListItemLink to={'/mui-examples'} primary="MUI Examples" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-slate'} primary="MUI Slate" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-pro'} primary="MUI UI Pro" icon={<AssignmentIcon/>}/>
         <ListItemLink to={'/mui-editorjs'} primary="MUI EditorJS" icon={<AssignmentIcon/>}/>

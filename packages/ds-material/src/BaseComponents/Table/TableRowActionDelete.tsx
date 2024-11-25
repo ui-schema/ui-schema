@@ -33,7 +33,6 @@ export const TableRowActionDelete: React.ComponentType<TableRowActionDeleteProps
             onChange({
                 type: 'list-item-delete',
                 storeKeys: storeKeys.splice(-1, 1) as StoreKeys,
-                scopes: ['value', 'internal'],
                 index: index,
                 effect: ({value}) => {
                     if (showRows !== -1) {

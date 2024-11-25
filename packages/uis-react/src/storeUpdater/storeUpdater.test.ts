@@ -9,7 +9,7 @@ import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { UIStoreActionUpdate, UIStoreUpdaterData } from '@ui-schema/react/UIStoreActions'
 
 /**
- * npm run tdd -- -u --testPathPattern=src/storeUpdater/storeUpdater.test.ts
+ * npm run tdd -- --testPathPattern=src/storeUpdater/storeUpdater.test.ts
  */
 
 describe('storeUpdater', () => {
@@ -62,6 +62,7 @@ describe('storeUpdater', () => {
                     prop_a: 'some-string',
                 }),
                 internals: Map({}),
+                validity: Map({}),
             }),
             List(['prop_a']),// storeKeys
             ['value', 'internal', 'valid'],// scopes

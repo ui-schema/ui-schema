@@ -85,7 +85,7 @@ const doingValueSelector = ['opts', 'doingValue']
 
 export const useStorePro = (
     {debounceTime = defaultDebounceTime, updateRate = defaultUpdateRate, type = defaultStoreOptions.type, initialStore = undefined}:
-        UIStoreProOptions = defaultStoreOptions
+    UIStoreProOptions = defaultStoreOptions,
 ): {
     reset: (type: string, initialStore?: UIStoreType) => void
     onChange: onChangeHandler
@@ -103,12 +103,12 @@ export const useStorePro = (
         if (!Array.isArray(actions)) {
             actions = [actions]
         }
-        const doValue = actions.reduce((doV, action) => doV || action.scopes.indexOf('value') !== -1, false)
+        const doValue = actions.reduce((doV, action) => doV || (!('scopes' in action) || action.scopes.indexOf('value') !== -1), false)
 
         setStore((prevStore: UIStoreProType) => {
             let newStore = prevStore.set(
                 'current',
-                storeUpdater(actions)(prevStore.current)
+                storeUpdater(actions)(prevStore.current),
             )
 
             if (!doValue) {

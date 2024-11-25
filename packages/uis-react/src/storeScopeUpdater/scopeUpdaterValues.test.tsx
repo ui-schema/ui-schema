@@ -9,7 +9,7 @@ import { UIStore, StoreKeys, UIStoreType, createEmptyStore } from '@ui-schema/re
 import { scopeUpdaterValues } from './scopeUpdaterValues.js'
 
 /**
- * npm run tdd -- -u --testPathPattern=src/storeScopeUpdater/scopeUpdaterValues.test.tsx
+ * npm run tdd -- --testPathPattern=src/storeScopeUpdater/scopeUpdaterValues.test.tsx
  */
 
 describe('scopeUpdaterValues', () => {
@@ -24,6 +24,7 @@ describe('scopeUpdaterValues', () => {
                 internals: Map({
                     internals: Map(),
                 }),
+                validity: Map(),
             }),
         ],
         [
@@ -36,6 +37,7 @@ describe('scopeUpdaterValues', () => {
                 internals: Map({
                     internals: List(),
                 }),
+                validity: Map(),
             }),
         ],
         [
@@ -289,7 +291,6 @@ describe('scopeUpdaterValues', () => {
     ) => {
         const r = scopeUpdaterValues(
             store, storeKeys, newValue,
-            // @ts-expect-error does not really need an action, just parts of it
             action,
         )
         const isExpected = r.equals(expected)

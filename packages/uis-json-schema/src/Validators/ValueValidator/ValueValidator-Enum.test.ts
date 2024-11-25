@@ -6,7 +6,7 @@ import {
 import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 
 /**
- * npm run tdd -- -u --testPathPattern=src/Validators/ValueValidator/ValueValidator-Enum.test.ts
+ * npm run tdd -- --testPathPattern=src/Validators/ValueValidator/ValueValidator-Enum.test.ts
  */
 
 describe('validateEnum', () => {

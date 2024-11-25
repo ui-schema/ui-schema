@@ -125,6 +125,7 @@ ij_javascript_space_before_finally_keyword = true
 ij_javascript_space_before_finally_left_brace = true
 ij_javascript_space_before_for_left_brace = true
 ij_javascript_space_before_for_parentheses = true
+ij_typescript_space_before_for_parentheses = true
 ij_javascript_space_before_for_semicolon = false
 ij_javascript_space_before_function_left_parenth = false
 ij_javascript_space_before_generator_mult = false

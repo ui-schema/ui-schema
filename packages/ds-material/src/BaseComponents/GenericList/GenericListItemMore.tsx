@@ -19,7 +19,6 @@ export const GenericListItemMore = (
                 onClick={() =>
                     onChange({
                         storeKeys,
-                        scopes: ['value', 'internal'],
                         type: 'list-item-delete',
                         index: index,
                         schema,

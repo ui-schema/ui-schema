@@ -48,7 +48,6 @@ export const SimpleListItemBase: React.FC<SimpleListItemProps & Pick<WithValue, 
                 onClick={() => {
                     onChange({
                         storeKeys,
-                        scopes: ['value', 'internal'],
                         type: 'list-item-delete',
                         index: index,
                         schema,
@@ -120,7 +119,6 @@ export const SimpleListInner: React.FC<WidgetProps<MuiWidgetsBinding & { InfoRen
                         onClick={() => {
                             onChange({
                                 storeKeys,
-                                scopes: ['value', 'internal'],
                                 type: 'list-item-add',
                                 schema,
                                 required,

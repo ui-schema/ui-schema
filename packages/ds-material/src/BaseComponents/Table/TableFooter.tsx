@@ -81,7 +81,6 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                             }
                             onChange({
                                 storeKeys,
-                                scopes: ['value', 'internal'],
                                 type: 'list-item-add',
                                 schema,
                             })

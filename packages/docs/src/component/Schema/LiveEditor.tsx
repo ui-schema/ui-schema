@@ -134,7 +134,7 @@ const unFocus = (e: MouseEvent<HTMLElement>) => {
         } else {
             parent = parent.parentElement
         }
-    } while(!found && parent)
+    } while (!found && parent)
 }
 
 const DragHandleStyled = () => {
@@ -411,7 +411,7 @@ const toggleLocalBoolean = (setter: (updater: (old: boolean) => boolean) => void
 
 const searchActiveSchema = (schemas: any, schema: any) => {
     let found: undefined | number = undefined
-    for(const id in schemas) {
+    for (const id in schemas) {
         if (schemas[id][0].split(' ').join('-') === schema) {
             found = Number(id)
             break

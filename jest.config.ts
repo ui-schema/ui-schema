@@ -40,6 +40,7 @@ const base: Partial<Config.InitialOptions> = {
             // diagnostics: false,
             // disable type checking
             // isolatedModules: Boolean(noTypeCheck),
+            isolatedModules: process.env.NO_TYPE_CHECK === 'yes',
             // todo: it seems the babel test env is not used, not found logs from the plugin when disabled here
             babelConfig: {
                 plugins: [
@@ -73,20 +74,20 @@ const base: Partial<Config.InitialOptions> = {
         '<rootDir>/packages/docs',
     ],
     testPathIgnorePatterns: [
-        '<rootDir>/dist',
-        '<rootDir>/packages/.+/build',
+        '<rootDir>/dist/',
+        '<rootDir>/packages/.+/build/',
     ],
     watchPathIgnorePatterns: [
         '<rootDir>/.idea',
         '<rootDir>/.git',
-        '<rootDir>/dist',
-        '<rootDir>/node_modules',
-        '<rootDir>/packages/.+/node_modules',
-        '<rootDir>/packages/.+/build',
+        '<rootDir>/dist/',
+        '<rootDir>/node_modules/',
+        '<rootDir>/packages/.+/node_modules/',
+        '<rootDir>/packages/.+/build/',
     ],
     modulePathIgnorePatterns: [
-        '<rootDir>/dist',
-        '<rootDir>/packages/.+/build',
+        '<rootDir>/dist/',
+        '<rootDir>/packages/.+/build/',
     ],
 }
 

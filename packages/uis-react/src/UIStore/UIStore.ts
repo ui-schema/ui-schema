@@ -10,8 +10,8 @@ export type ValuesJS = any[] | string | number | boolean | Object
 
 export interface UIStoreStateData<D = any> {
     values: D
-    internals: UIStoreInternalsType
-    validity: UIStoreValidityType
+    internals: UIStoreInternalsType | undefined
+    validity: UIStoreValidityType | undefined
     meta: Map<string, any>
 }
 
@@ -20,8 +20,8 @@ export interface UIStoreState<D = any> extends UIStoreStateData<D> {
     valuesToJS: () => ValuesJS
     // todo: correct typing `getValues` return value
     getValues: () => D
-    getInternals: () => UIStoreInternalsType
-    getValidity: () => UIStoreValidityType
+    getInternals: () => UIStoreInternalsType | undefined
+    getValidity: () => UIStoreValidityType | undefined
     extractValues: <V>(storeKeys: StoreKeys) => {
         value: V | undefined
         internalValue: UIStoreInternalsType | undefined
@@ -42,6 +42,10 @@ export type UIStoreInternalsType = Map<string, any>
 
 export type UIStoreValidityType = Map<string | number, any>
 
+// todo: based on immutable v5 this should be possible, yet leads to:
+//       TS2314: Generic type Map<K, V> requires 2 type argument(s).
+// export type UIStoreHierarchyType = Map<{ self: any, children: UIStoreHierarchyType | List<UIStoreHierarchyType> }>
+
 export type UIStoreUpdaterFn<D extends UIStoreUpdaterData = UIStoreUpdaterData> = (data: D) => D
 
 export type onChangeHandler<A = UIStoreActions> = (actions: A[] | A) => void
@@ -51,48 +55,44 @@ export type StoreKeyType = string | number
 // @todo: replace all usages of this `StoreKeys` with the one from system
 export type StoreKeys = ValueStoreKeys
 
-// only to enable better minification, DO NOT EXPORT
-const STR_INTERNALS = 'internals'
-const STR_VALUES = 'values'
-const STR_VALIDITY = 'validity'
-
 export const UIStore: UIStoreTypeFactory = Record({
     values: undefined,
-    // internals must be an map when it is an object in the root, for array a List and for other "any type"
-    internals: Map(),
-    validity: Map(),
+    // internals must be a map when it is an object in the root, for array a List and for other "any type"
+    internals: undefined,
+    // internals: Map(),
+    // internals: Map({self: null}),
+    validity: undefined,
+    // validity: Map(),
+    // validity: Map({self: null}),
     meta: Map(),
     valuesToJS: function() {
-        // @ts-expect-error missing immutable types on `this`
-        const values = this.get(STR_VALUES)
+        const values = this.values
         if (Map.isMap(values) || List.isList(values) || Record.isRecord(values)) return values.toJS()
 
         return values
     },
     getValues: function() {
-        // @ts-expect-error missing immutable types on `this`
-        return this.get(STR_VALUES)
+        return this.values
     },
     getInternals: function() {
-        // @ts-expect-error missing immutable types on `this`
-        return this.get(STR_INTERNALS)
+        return this.internals
     },
     getValidity: function() {
-        // @ts-expect-error missing immutable types on `this`
-        return this.get(STR_VALIDITY)
+        return this.validity
     },
     extractValues: function(storeKeys) {
-        // @ts-expect-error missing immutable types on `this`
-        return doExtractValues(storeKeys, this)
+        return doExtractValues(storeKeys, this as UIStoreType)
     },
 }) as UIStoreTypeFactory
 
 export const createStore = <D = any>(values: D): UIStoreType<D> => {
     return new UIStore({
         values: values,
+        // todo: adj. init based on final 0.5.x structure
         internals: Map({
             internals: List.isList(values) ? List() : Map(),
         }),
+        // todo: adj. init based on final 0.5.x structure
         validity: Map(),
         meta: Map(),
     }) as UIStoreType<D>
@@ -146,5 +146,12 @@ export const shouldDeleteOnEmpty = (value, force, type) => {
     return false
 }
 
-export const addNestKey = (storeKeysNestedKey, storeKeys) =>
-    storeKeysNestedKey ? storeKeys.reduce((nk, sk) => nk?.concat(sk, List([storeKeysNestedKey])), List([storeKeysNestedKey])).splice(-1, 1) : storeKeys
+export const addNestKey = (
+    storeKeysNestedKey: string,
+    storeKeys: (string | number)[] | List<string | number>,
+) =>
+    (storeKeys as (string | number)[])
+        .reduce<List<string | number>>((nk, sk) => {
+            return nk.concat<string | number>(sk, List([storeKeysNestedKey]))
+        }, List([storeKeysNestedKey]))
+        .splice(-1, 1)

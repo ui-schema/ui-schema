@@ -10,7 +10,7 @@ export const extractValidity = <P extends WithValidity & { storeKeys: StoreKeys 
         // @ts-expect-error typing not resolvable
         return <Component
             {...p}
-            validity={p.storeKeys.size ? store?.getValidity().getIn(p.storeKeys) : store?.getValidity()}
+            validity={p.storeKeys.size ? store?.getValidity()?.getIn(p.storeKeys) : store?.getValidity()}
             onChange={onChange}
             showValidity={p.showValidity || showValidity}
         />

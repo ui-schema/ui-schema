@@ -61,7 +61,6 @@ export const DragDropAreaBase = (
             <Selector
                 onSelect={(block) => onChange({
                     storeKeys: storeKeysList,
-                    scopes: ['value', 'internal'],
                     type: 'list-item-add',
                     itemValue: OrderedMap({
                         [block.idKey]: genId(),

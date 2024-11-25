@@ -3,7 +3,7 @@ import { createOrderedMap } from '@ui-schema/system/createMap'
 import { validateOneOf } from '@ui-schema/json-schema/Validators/OneOfValidator'
 
 /**
- * npm run tdd -- -u --testPathPattern=src/Validators/OneOfValidator/OneOfValidator.test.ts
+ * npm run tdd -- --testPathPattern=src/Validators/OneOfValidator/OneOfValidator.test.ts
  */
 jest.setTimeout(3000)
 

@@ -39,7 +39,6 @@ export const GenericListFooter: React.ComponentType<GenericListFooterProps> = (
                 onClick={() => {
                     onChange({
                         storeKeys,
-                        scopes: ['value', 'internal'],
                         type: 'list-item-add',
                         schema,
                         required,

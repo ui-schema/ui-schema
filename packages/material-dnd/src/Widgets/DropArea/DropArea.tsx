@@ -56,7 +56,6 @@ export const DropAreaBase = (
             <Selector
                 onSelect={(block: DndBlock) => onChange({
                     storeKeys,
-                    scopes: ['value', 'internal'],
                     type: 'list-item-add',
                     itemValue: OrderedMap({
                         [block.idKey]: genId(),

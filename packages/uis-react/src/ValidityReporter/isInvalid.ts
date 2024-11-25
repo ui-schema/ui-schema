@@ -53,7 +53,7 @@ const searchRecursive = (immutable: Map<string, any>, val: any, keys: StoreKeys,
  * - `1+` when error was found and `count` = true
  */
 export const isInvalid = (
-    validity?: Map<any, undefined>,
+    validity: Map<any, undefined> | undefined,
     scope: StoreKeys = List([]),
     count: boolean = false,
 ) => {

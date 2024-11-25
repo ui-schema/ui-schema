@@ -12,7 +12,7 @@ export type ScopeOnChangeHandler<S extends UIStoreType = UIStoreType, D extends 
     store: S,
     storeKeys: StoreKeys,
     newValue: any,
-    action?: A | undefined
+    action?: A | undefined,
 ) => S
 
 export type ScopeUpdaterMapType<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData, A = UIStoreActions<S, D>> = {
@@ -21,14 +21,9 @@ export type ScopeUpdaterMapType<S extends UIStoreType = UIStoreType, D extends U
             store: S,
             storeKeys: StoreKeys,
             newValue: any,
-            action?: A | undefined
+            action?: A | undefined,
         ) => S
         getter: <S extends UIStoreType>(storeKeys: StoreKeys, store: S) => any
-    } | {
-        /**
-         * experimental, skips the store setter/getter for a specific scope
-         */
-        noStore: true
     })
 }
 
@@ -36,28 +31,26 @@ export const getScopedValueFactory = <D extends UIStoreStateData = UIStoreStateD
     <S extends UIStoreType>(storeKeys: StoreKeys, store: S) =>
         store.getIn(
             storeKeys.size ?
-                prependKey(nestKey ?
-                    addNestKey(nestKey, storeKeys) :
-                    storeKeys, scope as string) :
-                [scope]
+                prependKey(
+                    nestKey ? addNestKey(nestKey, storeKeys) : storeKeys,
+                    scope as string,
+                ) :
+                [scope],
         )
 
 export const scopeUpdaterMapDefault: ScopeUpdaterMapType = {
     value: {
         // `store.values`
-        // @ts-expect-error incompatible with generics typing
         setter: scopeUpdaterValues,
         getter: getScopedValueFactory('values'),
     },
     internal: {
         // `store.internals`
-        // @ts-expect-error incompatible with generics typing
         setter: scopeUpdaterInternals,
         getter: getScopedValueFactory('internals', 'internals'),
     },
     valid: {
         // `store.validity`
-        // @ts-expect-error incompatible with generics typing
         setter: scopeUpdaterValidity,
         getter: getScopedValueFactory('validity'),
     },
@@ -78,6 +71,8 @@ export const createStoreUpdater = <S extends UIStoreType = UIStoreType, D extend
         }
         return (oldStore: S): S =>
             (actions as A[]).reduce((store, action) => {
+                // @ts-ignore
+                // eslint-disable-next-line deprecation/deprecation
                 const {scopes, effect, storeKeys} = action
 
                 const scopeUpdater: SM = scopes.reduce((su, scope) => {
@@ -93,8 +88,7 @@ export const createStoreUpdater = <S extends UIStoreType = UIStoreType, D extend
                 if (typeof handler === 'function') {
                     const values: D = scopes.reduce((vs, scope) => {
                         const su = scopeUpdater[scope]
-                        if (!su || ('noStore' in su && su.noStore)) return vs
-                        if ('getter' in su) {
+                        if (su && 'getter' in su) {
                             vs[scope] = su.getter(storeKeys, store)
                         }
                         return vs
@@ -107,8 +101,7 @@ export const createStoreUpdater = <S extends UIStoreType = UIStoreType, D extend
 
                 store = scopes.reduce((s, scope) => {
                     const su = scopeUpdater[scope]
-                    if (!su || ('noStore' in su && su.noStore)) return s
-                    if ('setter' in su) {
+                    if (su && 'setter' in su) {
                         s = su.setter(
                             s, storeKeys,
                             res[scope],
@@ -130,7 +123,7 @@ export const createStoreUpdater = <S extends UIStoreType = UIStoreType, D extend
 
 export const storeUpdater =
     <S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData, A extends UIStoreActions<S, D> = UIStoreActions<S, D>>(
-        actions: A[] | A
+        actions: A[] | A,
     ) => {
         return createStoreUpdater<S, D, A>(
             storeActionReducers as (action: A) => UIStoreUpdaterFn<D> | D,
