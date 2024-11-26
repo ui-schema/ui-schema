@@ -85,17 +85,35 @@ Todo:
 
 Todo:
 
-- rewrite `storeUpdater` to be simpler and easier to extend
-- rewrite store tree building and related nesting keys to be more robust and consistent
-    - all use `children` as nestKey
-        - with `self` holding its own values for `internals`
-        - with `valid` holding the number of errors for `validity`
-            - allowing to add e.g. `errors` for full error details
-    - all use fully nested structures for no key conflicts and safer nesting
-- rewrite related utils, onChange actions and more
-    - `isInvalid`
-    - `onChange` in ValidityReporter
-    - `extractValues` and `extractValidity` - hooks, store methods and all related
+- [ ] rewrite `storeUpdater` to be simpler and easier to extend
+    - [x] working basics, roughly rewritten
+    - [ ] normalized and optimized with other store/tree changes
+- [ ] rewrite store tree building and related nesting keys to be more robust and consistent
+    - what/why:
+        - all use `children` as nestKey
+            - with `self` holding its own values for `internals`
+            - with `valid` holding the number of errors for `validity`
+                - allowing to add e.g. `errors` for full error details
+        - all use `List|Map` nesting, previously `validity` didn't use `List` and stringified storeKeys
+        - all use fully nested structures for no key conflicts and safer nesting
+    - [x] working basics, roughly rewritten
+    - [ ] finalized typings / initialization
+- [ ] rewrite related utils, onChange actions and more
+    - [x] `isInvalid`
+    - [ ] `onChange` in ValidityReporter
+        - [x] working basics, roughly rewritten
+        - [ ] optimized and normalized action handler/payload
+            - [ ] validity support more than `valid`
+            - [x] internals is bound to `self`
+            - [ ] normalized and optimized utils for onChange handling: `addNestKey` etc.
+    - [ ] `extractValues` and `extractValidity` and all related:
+        - [x] hooks
+        - [x] existing store method `extractValues`
+        - [x] `getScopedData`
+        - [ ] new store methods
+            - [ ] read of `validity`, separate `value`/`internals`
+            - [ ] write of `validity`, separate `value`/`internals`
+    - [x] `scopeUpdaterValues`/`scopeUpdaterInternals`/`scopeUpdaterValidity`
 
 ## Todo Bindings
 
@@ -145,8 +163,9 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
 - [ ] tests
     - `ts-jest` needed `compilerOptions.jsx: "react"`, or not? somehow works in other repos without
         - https://github.com/kulshekhar/ts-jest/issues/63
-    - [x] typechecks are ~~disabled~~ enabled for tests via `isolatedModules` in `jest.config.ts`
-        - [ ] but causing a lot of performance strain, from ~60s to over 20min depending on cache; thus disabled for `tdd`
+    - [ ] typechecks are disabled for tests via `isolatedModules` in `jest.config.ts`
+        - but causing a lot of performance strain, from ~20-60s to over 5-20min depending on cache; thus should be always disabled for `tdd`;
+          and causing CI to fail then and now; thus disabled again via env flag, but removed exclusions in `tsconfig` and with that included in normal tscheck/dtsgen
     - [ ] optimize all `ts-ignore` with better function signatures or mock data
 - [ ] check all `@mui` import, wrong imports lead to jest failures: "can not use import outside module"
     - never go into the third level, even for "sub bundles" like `/styles`,

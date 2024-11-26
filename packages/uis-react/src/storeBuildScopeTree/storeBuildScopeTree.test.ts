@@ -3,238 +3,131 @@
  */
 import { test, expect, describe } from '@jest/globals'
 import { List, Map, OrderedMap } from 'immutable'
-import { UIStore, createStore, StoreKeys, UIStoreType, UIStoreStateData } from '@ui-schema/react/UIStore'
+import { UIStore, StoreKeys, UIStoreType, UIStoreStateData } from '@ui-schema/react/UIStore'
 import { storeBuildScopeTree } from './storeBuildScopeTree.js'
 
 /**
- * npm run tdd -- --testPathPattern=src/storeBuildScopeTree/storeBuildScopeTree.test.ts
+ * npm run tdd -- --testPathPattern=src/storeBuildScopeTree/storeBuildScopeTree.test.ts --selectProjects=test-@ui-schema/react
  */
+
+// const initialStore = UIStore({
+//     values: OrderedMap({}),
+//     internals: Map({
+//         self: undefined,
+//         internals: Map({}),
+//     }),
+//     validity: Map({
+//         valid: null,
+//         self: Map({}),
+//         validity: Map({}),
+//     }),
+// })
+//
+// const partialStore = UIStore({
+//     values: undefined,
+//     internals: Map({
+//         self: undefined,
+//         // internals: Map({}),
+//     }),
+//     validity: undefined,
+// })
+
+const emptyStore = UIStore({
+    values: undefined,
+    internals: undefined,
+    validity: undefined,
+})
 
 describe('storeBuildScopeTree', () => {
     test.each([
-        [
-            List([]),
-            'internals' as const,
-            createStore(Map({})),
-            'internals',
-            false,
-            new UIStore({
-                values: Map({}),
+        {
+            storeKeys: List(['a']),
+            scope: 'values' as const,
+            store: emptyStore,
+            onMiss: (key) => typeof key === 'number' ? List() : OrderedMap(),
+            expected: UIStore({
+                values: OrderedMap({}),
+                internals: undefined,
+                validity: undefined,
+            }),
+            expectedSameness: true,
+        },
+        {
+            storeKeys: List([]),
+            scope: 'internals' as const,
+            store: emptyStore,
+            onMiss: (key) => typeof key === 'number' ? List() : Map(),
+            onMissWrapper: () => Map({self: Map()}),
+            expected: new UIStore({
+                values: undefined,
+                internals: Map({self: Map()}),
+                validity: undefined,
+            }),
+            expectedSameness: true,
+        },
+        {
+            storeKeys: List(['a']),
+            scope: 'internals' as const,
+            store: emptyStore,
+            onMissWrapper: () => Map({self: Map()}),
+            onMiss: (key) => typeof key === 'number' ? List() : Map(),
+            expected: new UIStore({
+                values: undefined,
                 internals: Map({
-                    internals: Map({}),
+                    self: Map(),
+                    children: Map({}),
                 }),
-                validity: Map({}),
+                validity: undefined,
             }),
-            true,
-        ],
-        [
-            List([]),
-            'internals' as const,
-            new UIStore({
-                values: Map({}),
+            expectedSameness: true,
+        },
+        {
+            storeKeys: List(['a', 'b']),
+            scope: 'internals' as const,
+            store: emptyStore,
+            onMiss: (key) => typeof key === 'number' ? List() : Map(),
+            onMissWrapper: () => Map({self: Map()}),
+            expected: new UIStore({
+                values: undefined,
                 internals: Map({
-                    internals: Map({}),
-                }),
-                validity: Map({}),
-            }),
-            'internals',
-            false,
-            new UIStore({
-                values: Map({}),
-                internals: Map({
-                    internals: Map({}),
-                }),
-                validity: Map({}),
-            }),
-            true,
-        ],
-        [
-            List([]),
-            'values' as const,
-            new UIStore({
-                values: Map({}),
-                internals: undefined,
-                validity: Map({}),
-            }),
-            undefined,
-            false,
-            new UIStore({
-                values: Map({}),
-                internals: undefined,
-                validity: Map({}),
-            }),
-            true,
-        ],
-        [
-            List([]),
-            'internals' as const,
-            new UIStore({
-                values: Map({}),
-                internals: undefined,
-                validity: Map({}),
-            }),
-            'internals',
-            false,
-            new UIStore({
-                values: Map({}),
-                internals: undefined,
-                // internals: Map({}),
-                validity: Map({}),
-            }),
-            true,
-        ],
-        [
-            List(['prop_a', 'prop_a0']),
-            'internals' as const,
-            new UIStore({
-                values: Map({}),
-                internals: undefined,
-                validity: Map({}),
-            }),
-            'internals',
-            false,
-            new UIStore({
-                values: Map({}),
-                internals: Map({
-                    internals: Map({
-                        prop_a: Map({
-                            internals: Map({}),
+                    self: Map(),
+                    children: Map({
+                        a: Map({
+                            self: Map(),
+                            children: Map({}),
                         }),
                     }),
                 }),
-                validity: Map({}),
+                validity: undefined,
             }),
-            true,
-        ],
-        [
-            List(['prop_a', 0, 'sub_a']),
-            'internals' as const,
-            new UIStore({
-                values: Map({}),
-                internals: undefined,
-                validity: Map({}),
-            }),
-            'internals',
-            false,
-            new UIStore({
-                values: Map({}),
-                internals: Map({
-                    internals: Map({
-                        prop_a: Map({
-                            internals: List([
-                                Map({internals: Map({})}),
-                            ]),
-                        }),
-                    }),
-                }),
-                validity: Map({}),
-            }),
-            true,
-        ],
-        [
-            List(['prop_a', 0, 'sub_a']),
-            'internals' as const,
-            new UIStore({
-                values: Map({}),
-                internals: Map({
-                    internals: Map({
-                        prop_a: Map({
-                            // invalid `Map`, where a `List` is expected - according to storeKeys
-                            internals: Map({
-                                '0': Map({internals: Map({})}),
-                            }),
-                        }),
-                    }),
-                }),
-                validity: Map({}),
-            }),
-            'internals',
-            false,
-            new UIStore({
-                values: Map({}),
-                internals: Map({
-                    internals: Map({
-                        prop_a: Map({
-                            internals: List([
-                                Map({internals: Map({})}),
-                            ]),
-                        }),
-                    }),
-                }),
-                validity: Map({}),
-            }),
-            true,
-        ],
-        [
-            List(['prop_a']),
-            'values' as const,
-            new UIStore({
-                values: Map({}),
-                internals: undefined,
-                validity: Map({}),
-            }),
-            undefined,
-            true,
-            new UIStore({
-                values: Map({}),
-                internals: undefined,
-                validity: Map({}),
-            }),
-            true,
-        ],
-        [
-            List(['prop_a', 0]),
-            'values' as const,
-            new UIStore({
-                values: Map({}),
-                internals: undefined,
-                validity: Map({}),
-            }),
-            undefined,
-            true,
-            new UIStore({
-                values: Map({prop_a: List()}),
-                internals: undefined,
-                validity: Map({}),
-            }),
-            true,
-        ],
-        [
-            List(['prop_a', 0, 'sub_a']),
-            'values' as const,
-            new UIStore({
-                values: Map({}),
-                internals: undefined,
-                validity: Map({}),
-            }),
-            undefined,
-            true,
-            new UIStore({
-                values: Map({
-                    prop_a: List([
-                        OrderedMap({}),
-                    ]),
-                }),
-                internals: undefined,
-                validity: Map({}),
-            }),
-            true,
-        ],
-    ])('storeBuildScopeTree(%j, %s, %j): %j', (
-        storeKeys: StoreKeys,
-        scope: keyof UIStoreStateData,
-        store: UIStoreType,
-        nestKey: string | undefined,
-        ordered: boolean,
-        expected: UIStoreType,
-        expectedSameness: boolean,
+            expectedSameness: true,
+        },
+    ])('$# storeBuildScopeTree($storeKeys, $scope, ..., ..., ...)', (
+        args: {
+            storeKeys: StoreKeys
+            scope: keyof UIStoreStateData
+            store: UIStoreType
+            onMiss: (key: string | number) => any
+            onMissWrapper?: () => Map<unknown, unknown> | OrderedMap<unknown, unknown>
+            expected: UIStoreType
+            expectedSameness: boolean
+        },
     ) => {
-        const r = storeBuildScopeTree(storeKeys, scope, store, nestKey, ordered)
-        const isExpected = r.equals(expected)
-        if (isExpected !== expectedSameness) {
-            // @ts-ignore
-            console.log('failed storeBuildScopeTree', storeKeys.toJS(), store.toJS(), r?.getIn(['internals'])?.toJS(), expected?.toJS())
+        const store = storeBuildScopeTree(
+            args.storeKeys, args.scope,
+            args.store,
+            args.onMiss,
+            args.onMissWrapper,
+        )
+        const isExpected = store.equals(args.expected)
+        if (isExpected !== args.expectedSameness) {
+            console.log(
+                'failed storeBuildScopeTree',
+                args.storeKeys.toJS(), args.scope,
+                // JSON.stringify(args.store, undefined, 2),
+                JSON.stringify(store, undefined, 2),
+            )
         }
-        expect(isExpected).toBe(expectedSameness)
+        expect(isExpected).toBe(args.expectedSameness)
     })
 })

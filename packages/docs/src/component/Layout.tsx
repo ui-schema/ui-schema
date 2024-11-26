@@ -31,7 +31,9 @@ export const CustomHeaderBase: React.ComponentType = () => {
     const {breakpoints} = useTheme()
     const isSm = useMediaQuery(breakpoints.up('sm'))
     const platform = getUserPlatform()
-    return <Header>
+    return <Header
+        appBarSquare
+    >
         <RouterLink to={'/'} style={{display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit', marginRight: 8}}>
             <Logo width={26} style={{marginLeft: 6, display: 'block', flexShrink: 0}}/>
             {title ? <Typography component="p" variant="h6" style={{flexShrink: 0, margin: '0 auto 0 8px'}}>

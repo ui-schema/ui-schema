@@ -20,77 +20,93 @@ describe('scopeUpdaterInternals', () => {
             List([]),
             false,
             new UIStore({
-                validity: Map({__valid: false}),
+                validity: Map({valid: false}),
             }),
-        ], [
+        ],
+        [
             new UIStore({
-                validity: Map({__valid: false}),
+                validity: Map({valid: false}),
             }),
             List([]),
             undefined,
             new UIStore({
                 validity: Map({}),
             }),
-        ], [
+        ],
+        [
             new UIStore({
-                validity: Map({__valid: false}),
+                validity: Map({valid: false}),
             }),
             List([]),
             true,
             new UIStore({
-                validity: Map({__valid: true}),
+                validity: Map({valid: true}),
             }),
-        ], [
+        ],
+        [
             new UIStore({
-                validity: Map({__valid: false}),
+                validity: undefined,
             }),
             List([]),
             true,
             new UIStore({
-                validity: Map({__valid: true}),
+                validity: Map({valid: true}),
             }),
-        ], [
+        ],
+        [
             new UIStore({
                 validity: Map({
-                    __valid: false,
+                    valid: false,
                 }),
             }),
             List(['prop_a']),
             true,
             new UIStore({
                 validity: Map({
-                    __valid: false,
-                    prop_a: Map({
-                        __valid: true,
+                    valid: false,
+                    children: Map({
+                        prop_a: Map({
+                            valid: true,
+                        }),
                     }),
                 }),
             }),
-        ], [
+        ],
+        [
             new UIStore({
                 validity: Map({
-                    __valid: false,
+                    valid: false,
                 }),
             }),
             List(['prop_a', 0]),
             true,
             new UIStore({
                 validity: Map({
-                    __valid: false,
-                    prop_a: Map({
-                        '0': Map({
-                            __valid: true,
+                    valid: false,
+                    children: Map({
+                        prop_a: Map({
+                            children: List([
+                                Map({
+                                    valid: true,
+                                }),
+                            ]),
                         }),
                     }),
                 }),
             }),
-        ], [
+        ],
+        [
             new UIStore({
                 validity: Map({
-                    __valid: false,
-                    prop_a: Map({
-                        __valid: true,
-                        '0': Map({
-                            __valid: true,
+                    valid: false,
+                    children: Map({
+                        prop_a: Map({
+                            valid: true,
+                            children: List([
+                                Map({
+                                    valid: true,
+                                }),
+                            ]),
                         }),
                     }),
                 }),
@@ -99,39 +115,53 @@ describe('scopeUpdaterInternals', () => {
             undefined,
             new UIStore({
                 validity: Map({
-                    __valid: false,
-                    prop_a: Map({
-                        __valid: true,
-                        '0': Map({}),
+                    valid: false,
+                    children: Map({
+                        prop_a: Map({
+                            valid: true,
+                            children: List([
+                                Map({}),
+                            ]),
+                        }),
                     }),
                 }),
             }),
-        ], [
+        ],
+        [
             new UIStore({
                 validity: Map({
-                    __valid: false,
+                    valid: false,
                 }),
             }),
             List(['prop_a', 0]),
             true,
             new UIStore({
                 validity: Map({
-                    __valid: false,
-                    prop_a: Map({
-                        0: Map({
-                            __valid: true,
+                    valid: false,
+                    children: Map({
+                        prop_a: Map({
+                            children: List([
+                                Map({
+                                    valid: true,
+                                }),
+                            ]),
                         }),
                     }),
                 }),
             }),
-        ], [
+        ],
+        [
             new UIStore({
                 validity: Map({
-                    __valid: false,
-                    prop_a: Map({
-                        __valid: true,
-                        0: Map({
-                            __valid: true,
+                    valid: false,
+                    children: Map({
+                        prop_a: Map({
+                            valid: true,
+                            children: List([
+                                Map({
+                                    valid: true,
+                                }),
+                            ]),
                         }),
                     }),
                 }),
@@ -140,44 +170,62 @@ describe('scopeUpdaterInternals', () => {
             undefined,
             new UIStore({
                 validity: Map({
-                    __valid: false,
-                    prop_a: Map({
-                        __valid: true,
-                        0: Map({}),
+                    valid: false,
+                    children: Map({
+                        prop_a: Map({
+                            valid: true,
+                            children: List([
+                                Map({}),
+                            ]),
+                        }),
                     }),
                 }),
             }),
-        ], [
+        ],
+        [
             new UIStore({
                 validity: Map({
-                    __valid: false,
+                    valid: false,
                 }),
             }),
             List(['prop_a', 0, 'sub_a']),
             true,
             new UIStore({
                 validity: Map({
-                    __valid: false,
-                    prop_a: Map({
-                        '0': Map({
-                            sub_a: Map({
-                                __valid: true,
-                            }),
+                    valid: false,
+                    children: Map({
+                        prop_a: Map({
+                            children: List([
+                                Map({
+                                    children: Map({
+                                        sub_a: Map({
+                                            valid: true,
+                                        }),
+                                    }),
+                                }),
+                            ]),
                         }),
                     }),
                 }),
             }),
-        ], [
+        ],
+        [
             new UIStore({
                 validity: Map({
-                    __valid: false,
-                    prop_a: Map({
-                        __valid: true,
-                        '0': Map({
-                            __valid: true,
-                            sub_a: Map({
-                                __valid: true,
-                            }),
+                    valid: false,
+                    children: Map({
+                        prop_a: Map({
+                            valid: true,
+                            children: List([
+                                Map({
+                                    valid: true,
+                                    children: Map({
+                                        sub_a: Map({
+                                            valid: true,
+                                        }),
+                                    }),
+                                }),
+                            ]),
                         }),
                     }),
                 }),
@@ -186,12 +234,18 @@ describe('scopeUpdaterInternals', () => {
             undefined,
             new UIStore({
                 validity: Map({
-                    __valid: false,
-                    prop_a: Map({
-                        __valid: true,
-                        '0': Map({
-                            __valid: true,
-                            sub_a: Map({}),
+                    valid: false,
+                    children: Map({
+                        prop_a: Map({
+                            valid: true,
+                            children: List([
+                                Map({
+                                    valid: true,
+                                    children: Map({
+                                        sub_a: Map({}),
+                                    }),
+                                }),
+                            ]),
                         }),
                     }),
                 }),
@@ -205,39 +259,14 @@ describe('scopeUpdaterInternals', () => {
         const r = scopeUpdaterValidity(store, storeKeys, newValue)
         const isExpected = r.equals(expected)
         if (!isExpected) {
-            // @ts-ignore
             console.log(
-                'failed scopeUpdaterValidity', storeKeys.toJS(),
-                JSON.stringify(store.toJS(), undefined, 2),
+                'failed scopeUpdaterValidity',
+                storeKeys.toJS(),
+                // JSON.stringify(store.toJS(), undefined, 2),
                 JSON.stringify(r?.toJS(), undefined, 2),
-                JSON.stringify(expected?.toJS(), undefined, 2),
+                // JSON.stringify(expected?.toJS(), undefined, 2),
             )
         }
         expect(isExpected).toBe(true)
-    })
-    test.each([
-        [
-            new UIStore({
-                validity: Map({
-                    __valid: false,
-                }),
-            }),
-            List(['__valid', 'prop_a']),
-            true,
-        ],
-    ])('failure scopeUpdaterValidity(%j, %s): %j', <S extends UIStoreType>(
-        store: S, storeKeys: StoreKeys,
-        newValue: any,
-    ) => {
-        try {
-            scopeUpdaterValidity(store, storeKeys, newValue)
-            // no error, but must be error
-            expect('no error').toBe('error')
-        } catch (e) {
-            expect(e instanceof Error).toBe(true)
-            if (e instanceof Error) {
-                expect(e.message).toBe('forbidden property name `__valid` is used, not compatible with UIStore')
-            }
-        }
     })
 })

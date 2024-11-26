@@ -4,7 +4,6 @@
         "src"
     ],
     "exclude": [
-        "src/**/*.test.*"
     ],
     "compilerOptions": {
         "module": "Node16",

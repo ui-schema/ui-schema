@@ -12,7 +12,8 @@ export function doExtractValues<S extends UIStoreType>(storeKeys: StoreKeys, sto
                 store.getValues(),
         internalValue:
             storeKeys.size ?
-                store.getInternals()?.getIn(addNestKey('internals', storeKeys)) as UIStoreInternalsType || Map() :
-                store.getInternals(),
+                // @ts-expect-error store type not finished
+                store.getInternals()?.getIn(addNestKey('children', storeKeys))?.get('self') as UIStoreInternalsType/* || Map()*/ :
+                store.getInternals()?.get('self'),
     }
 }

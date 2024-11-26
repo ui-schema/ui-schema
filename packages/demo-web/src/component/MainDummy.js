@@ -2,7 +2,7 @@ import React from 'react';
 import {isInvalid} from '@ui-schema/react/ValidityReporter';
 import {injectWidgetEngine} from '@ui-schema/react/applyWidgetEngine';
 import {createEmptyStore, UIStoreProvider} from '@ui-schema/react/UIStore';
-import {storeUpdater2} from '@ui-schema/react/storeUpdater2';
+import {storeUpdater} from '@ui-schema/react/storeUpdater';
 import {GridContainer} from '@ui-schema/ds-material/GridContainer';
 
 const GridStack = injectWidgetEngine(GridContainer)
@@ -12,7 +12,7 @@ const MainDummy = ({schema, Debugger, Button}) => {
 
     const onChangeNext = React.useCallback((actions) => {
         setStore(prevStore => {
-            const newStore = storeUpdater2(actions)(prevStore)
+            const newStore = storeUpdater(actions)(prevStore)
             /*const newValue = newStore.getIn(prependKey(storeKeys, 'values'))
             const prevValue = prevStore.getIn(prependKey(storeKeys, 'values'))
             console.log(

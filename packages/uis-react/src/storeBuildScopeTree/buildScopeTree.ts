@@ -1,14 +1,14 @@
 import { StoreKeys } from '@ui-schema/react/UIStore'
 import { List, Map, OrderedMap } from 'immutable'
 
-export const buildScopeTree = <TRoot extends List<unknown> | Map<unknown, unknown> | OrderedMap<unknown, unknown> | undefined>(
+export const buildScopeTree = <TRoot extends List<unknown> | Map<unknown, unknown> | OrderedMap<unknown, unknown>>(
     storeKeys: StoreKeys,
-    root: TRoot,
+    root: TRoot | undefined,
     // is called if the parent of the next key does not exist
     onMiss: (key: string | number) => any,
     // is called if the level which holds the value and the further nesting
     onMissWrapper: () => Map<unknown, unknown> | OrderedMap<unknown, unknown>,
-): TRoot => {
+): TRoot | undefined => {
     let current: any = root
     const path: (string | number)[] = []
 
@@ -25,14 +25,14 @@ export const buildScopeTree = <TRoot extends List<unknown> | Map<unknown, unknow
                 || !List.isList(current)
             ) {
                 current = onMiss(key)
-                root = root ? root.setIn(path, current) : current
+                root = (root as TRoot).setIn(path, current) as TRoot
             }
         } else if (
             !current
             || !Map.isMap(current)
         ) {
             current = onMiss(key)
-            root = root ? root.setIn(path, current) : current
+            root = (root as TRoot).setIn(path, current) as TRoot
         }
 
         path.push(key)

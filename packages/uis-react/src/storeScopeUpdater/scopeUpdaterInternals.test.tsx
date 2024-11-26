@@ -14,48 +14,44 @@ import { scopeUpdaterInternals } from './scopeUpdaterInternals.js'
 describe('scopeUpdaterInternals', () => {
     test.each([
         [
-            new UIStore({
-                internals: Map({}),
-            }),
+            new UIStore({}),
             List([]),
             undefined,
-            //Map({}),
             new UIStore({
-                internals: undefined,
+                internals: Map({self: undefined}),
             }),
-        ], [
-            new UIStore({
-                internals: Map({}),
-            }),
-            List([]),
-            Map({
-                value: 'some-state',
-                internals: Map({}),
-            }),
-            //Map({}),
-            new UIStore({
-                internals: Map({
-                    value: 'some-state',
-                    internals: Map({}),
-                }),
-            }),
-        ], [
+        ],
+        [
             new UIStore({
                 internals: Map({}),
             }),
             List([]),
             Map({
                 value: 'some-state',
-                internals: Map({}),
             }),
-            //Map({}),
             new UIStore({
                 internals: Map({
-                    value: 'some-state',
-                    internals: Map({}),
+                    self: Map({value: 'some-state'}),
                 }),
             }),
-        ], [
+        ],
+        [
+            new UIStore({
+                internals: Map({}),
+            }),
+            List([]),
+            Map({
+                value: 'some-state',
+            }),
+            new UIStore({
+                internals: Map({
+                    self: Map({
+                        value: 'some-state',
+                    }),
+                }),
+            }),
+        ],
+        [
             new UIStore({
                 internals: Map({}),
             }),
@@ -65,14 +61,17 @@ describe('scopeUpdaterInternals', () => {
             }),
             new UIStore({
                 internals: Map({
-                    internals: Map({
+                    children: Map({
                         prop_a: Map({
-                            value: 'some-state',
+                            self: Map({
+                                value: 'some-state',
+                            }),
                         }),
                     }),
                 }),
             }),
-        ], [
+        ],
+        [
             new UIStore({
                 internals: Map({}),
             }),
@@ -82,14 +81,17 @@ describe('scopeUpdaterInternals', () => {
             }),
             new UIStore({
                 internals: Map({
-                    internals: Map({
+                    children: Map({
                         prop_a: Map({
-                            value: 'some-state',
+                            self: Map({
+                                value: 'some-state',
+                            }),
                         }),
                     }),
                 }),
             }),
-        ], [
+        ],
+        [
             new UIStore({
                 internals: Map({}),
             }),
@@ -99,18 +101,20 @@ describe('scopeUpdaterInternals', () => {
             }),
             new UIStore({
                 internals: Map({
-                    internals: Map({
+                    children: Map({
                         prop_a: Map({
-                            internals: List([
+                            self: Map({}),
+                            children: List([
                                 Map({
-                                    value: 'some-state',
+                                    self: Map({value: 'some-state'}),
                                 }),
                             ]),
                         }),
                     }),
                 }),
             }),
-        ], [
+        ],
+        [
             new UIStore({
                 internals: Map({}),
             }),
@@ -120,48 +124,17 @@ describe('scopeUpdaterInternals', () => {
             }),
             new UIStore({
                 internals: Map({
-                    internals: Map({
+                    children: Map({
                         prop_a: Map({
-                            internals: List([
+                            self: Map({}),
+                            children: List([
                                 Map({
-                                    internals: Map({
+                                    self: Map({}),
+                                    children: Map({
                                         sub_a: Map({
-                                            value: 'some-state',
-                                        }),
-                                    }),
-                                }),
-                            ]),
-                        }),
-                    }),
-                }),
-            }),
-        ], [
-            new UIStore({
-                internals: Map({
-                    internals: Map({
-                        prop_a: Map({
-                            internals: List([
-                                Map({
-                                    internals: Map({}),
-                                }),
-                            ]),
-                        }),
-                    }),
-                }),
-            }),
-            List(['prop_a', 0, 'sub_a']),
-            Map({
-                value: 'some-state',
-            }),
-            new UIStore({
-                internals: Map({
-                    internals: Map({
-                        prop_a: Map({
-                            internals: List([
-                                Map({
-                                    internals: Map({
-                                        sub_a: Map({
-                                            value: 'some-state',
+                                            self: Map({
+                                                value: 'some-state',
+                                            }),
                                         }),
                                     }),
                                 }),
@@ -174,11 +147,49 @@ describe('scopeUpdaterInternals', () => {
         [
             new UIStore({
                 internals: Map({
-                    internals: Map({
+                    children: Map({
                         prop_a: Map({
-                            internals: List([
+                            children: List([
                                 Map({
-                                    internals: Map({
+                                    children: Map({}),
+                                }),
+                            ]),
+                        }),
+                    }),
+                }),
+            }),
+            List(['prop_a', 0, 'sub_a']),
+            Map({
+                value: 'some-state',
+            }),
+            new UIStore({
+                internals: Map({
+                    children: Map({
+                        prop_a: Map({
+                            children: List([
+                                Map({
+                                    children: Map({
+                                        sub_a: Map({
+                                            self: Map({
+                                                value: 'some-state',
+                                            }),
+                                        }),
+                                    }),
+                                }),
+                            ]),
+                        }),
+                    }),
+                }),
+            }),
+        ],
+        [
+            new UIStore({
+                internals: Map({
+                    children: Map({
+                        prop_a: Map({
+                            children: List([
+                                Map({
+                                    children: Map({
                                         sub_a: Map({}),
                                     }),
                                 }),
@@ -193,13 +204,15 @@ describe('scopeUpdaterInternals', () => {
             }),
             new UIStore({
                 internals: Map({
-                    internals: Map({
+                    children: Map({
                         prop_a: Map({
-                            internals: List([
+                            children: List([
                                 Map({
-                                    internals: Map({
+                                    children: Map({
                                         sub_a: Map({
-                                            value: 'some-state',
+                                            self: Map({
+                                                value: 'some-state',
+                                            }),
                                         }),
                                     }),
                                 }),
@@ -212,13 +225,18 @@ describe('scopeUpdaterInternals', () => {
     ])('scopeUpdaterInternals(%j, %s, %j): %j', <S extends UIStoreType>(
         store: S, storeKeys: StoreKeys,
         newValue: any,
-        expected: any
+        expected: any,
     ) => {
         const r = scopeUpdaterInternals(store, storeKeys, newValue)
         const isExpected = r.equals(expected)
         if (!isExpected) {
-            // @ts-ignore
-            console.log('failed storeBuildScopeTree', storeKeys.toJS(), store.toJS(), r?.toJS(), expected?.toJS())
+            console.log(
+                'failed scopeUpdaterInternals',
+                storeKeys.toJS(),
+                // JSON.stringify(store, undefined, 2),
+                JSON.stringify(r, undefined, 2),
+                // JSON.stringify(expected, undefined, 2),
+            )
         }
         expect(isExpected).toBe(true)
     })

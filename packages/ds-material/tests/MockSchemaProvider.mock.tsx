@@ -23,7 +23,7 @@ export const MockWidgets: WidgetsBindingFactory = {
     custom: {},
 }
 
-export const MockSchema = createOrderedMap({type: 'object'})
+export const MockSchema: any = createOrderedMap({type: 'object'})
 
 export const MockSchemaProvider: React.ComponentType<{
     t?: Translator

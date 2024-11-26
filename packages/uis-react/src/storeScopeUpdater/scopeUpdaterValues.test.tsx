@@ -21,10 +21,8 @@ describe('scopeUpdaterValues', () => {
             {schema: Map({type: 'object'})},
             new UIStore({
                 values: OrderedMap({}),
-                internals: Map({
-                    internals: Map(),
-                }),
-                validity: Map(),
+                internals: undefined,
+                validity: undefined,
             }),
         ],
         [
@@ -34,10 +32,8 @@ describe('scopeUpdaterValues', () => {
             {schema: Map({type: 'array'})},
             new UIStore({
                 values: List([]),
-                internals: Map({
-                    internals: List(),
-                }),
-                validity: Map(),
+                internals: undefined,
+                validity: undefined,
             }),
         ],
         [
@@ -296,10 +292,11 @@ describe('scopeUpdaterValues', () => {
         const isExpected = r.equals(expected)
         if (!isExpected) {
             console.log(
-                'failed scopeUpdaterValues', storeKeys.toJS(),
-                JSON.stringify(store.toJS(), undefined, 2),
+                'failed scopeUpdaterValues',
+                storeKeys.toJS(),
+                // JSON.stringify(store.toJS(), undefined, 2),
                 JSON.stringify(r?.toJS(), undefined, 2),
-                JSON.stringify(expected?.toJS(), undefined, 2),
+                // JSON.stringify(expected?.toJS(), undefined, 2),
             )
         }
         expect(isExpected).toBe(true)

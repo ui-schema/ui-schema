@@ -1,32 +1,28 @@
-import { List, Map, OrderedMap, Record } from 'immutable'
-import { StoreKeys, UIStoreType, addNestKey, UIStoreStateData } from '@ui-schema/react/UIStore'
+import { StoreKeys, UIStoreType, UIStoreStateData } from '@ui-schema/react/UIStore'
+import { Map, OrderedMap } from 'immutable'
+import { buildScopeTree } from './buildScopeTree.js'
+import { buildTree } from './buildTree.js'
 
-export const storeBuildScopeTree = <S extends UIStoreType>(storeKeys: StoreKeys, scope: keyof UIStoreStateData, store: S, nestKey: string | undefined = undefined, ordered: boolean = false): S => {
-    if (nestKey) {
-        storeKeys = addNestKey(nestKey, storeKeys)
+export const storeBuildScopeTree = <S extends UIStoreType>(
+    storeKeys: StoreKeys,
+    scope: keyof UIStoreStateData,
+    store: S,
+    onMiss: (key: string | number) => any,
+    onMissWrapper?: () => Map<unknown, unknown> | OrderedMap<unknown, unknown>,
+): S => {
+    let root = store.get(scope)
+
+    if (!root && onMissWrapper) {
+        // init root here, as `buildScopeTree` only builds the next level and not the "last one"
+        root = onMissWrapper()
     }
-    const relativeList: (string | number)[] = [scope]
-    storeKeys.forEach(key => {
-        if (typeof key === 'undefined') return
 
-        const value = store.getIn(relativeList)
-        if (
-            (
-                !List.isList(value) &&
-                !Map.isMap(value) &&
-                !Record.isRecord(value)
-            ) ||
-            (typeof key === 'number' && !List.isList(value))
-        ) {
-            store = store.setIn(
-                relativeList,
-                typeof key === 'number' ? List() : ordered ? OrderedMap() : Map()
-            ) as S
-        }
+    store = store.set(
+        scope,
+        onMissWrapper
+            ? buildScopeTree(storeKeys, root, onMiss, onMissWrapper)
+            : buildTree(storeKeys, root, onMiss),
+    ) as S
 
-        // the current iteration must have the "parents" relative storeKeys, not it's own,
-        // thus doesn't do the last entry inside the tree, that one must be handled by the widget/onChange handler
-        relativeList.push(key)
-    })
     return store
 }

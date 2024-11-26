@@ -9,7 +9,7 @@ import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { createOrderedMap, createMap } from '@ui-schema/system/createMap'
 import { isInvalid } from '@ui-schema/react/ValidityReporter'
 import { createStore, createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
-import { storeUpdater2 } from '@ui-schema/react/storeUpdater2'
+import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
@@ -42,7 +42,7 @@ const MainStore = () => {
 
     const onChange = React.useCallback((actions) => {
         setStore(prevStore => {
-            const newStore = storeUpdater2(actions)(prevStore)
+            const newStore = storeUpdater(actions)(prevStore)
             /*const newValue = newStore.getIn(prependKey(storeKeys, 'values'))
             const prevValue = prevStore.getIn(prependKey(storeKeys, 'values'))
             console.log(
@@ -88,7 +88,7 @@ const DemoUser: React.FC<{}> = () => {
     const [store, setStore] = React.useState(() => createEmptyStore())
 
     const onChange = React.useCallback((actions) => {
-        setStore(storeUpdater2(actions))
+        setStore(storeUpdater(actions))
     }, [setStore])
 
     return <Grid container spacing={3} sx={{justifyContent: 'center'}}>

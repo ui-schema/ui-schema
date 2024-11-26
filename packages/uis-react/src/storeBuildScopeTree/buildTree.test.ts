@@ -7,7 +7,7 @@ import { StoreKeys } from '@ui-schema/react/UIStore'
 import { buildTree } from './buildTree.js'
 
 /**
- * npm run tdd -- --testPathPattern=src/storeBuildScopeTree2/buildTree.test.ts --selectProjects=test-@ui-schema/react
+ * npm run tdd -- --testPathPattern=src/storeBuildScopeTree/buildTree.test.ts --selectProjects=test-@ui-schema/react
  */
 
 describe('buildTree', () => {
@@ -56,7 +56,7 @@ describe('buildTree', () => {
             console.log(
                 'failed buildTree',
                 args.storeKeys.toJS(),
-                JSON.stringify(r, undefined, 4),
+                JSON.stringify(r, undefined, 2),
             )
         }
         expect(isExpected).toBe(true)

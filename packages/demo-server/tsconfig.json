@@ -25,7 +25,5 @@
         "src"
     ],
     "exclude": [
-        "src/**/*.test.*",
-        "src/**/*.spec.*"
     ]
 }

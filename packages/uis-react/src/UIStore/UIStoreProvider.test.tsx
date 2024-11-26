@@ -16,76 +16,80 @@ describe('UIStoreProvider', () => {
             createStore(Map({})),
             {
                 value: Map(),
-                internalValue: Map({
-                    internals: Map(),
-                }),
+                internalValue: undefined,
             },
             true,
-        ], [
+        ],
+        [
             List([]),
             createStore(List([])),
             {
                 value: List(),
-                internalValue: Map({
-                    internals: List(),
-                }),
+                internalValue: undefined,
             },
             true,
-        ], [
+        ],
+        [
             List(['prop_a']),
             // todo: should there not be `OrderedMap` around `fromJSOrdered`?
             createStore(fromJSOrdered({prop_a: 20})),
             {
                 value: 20,
-                internalValue: Map(),
+                internalValue: undefined,
             },
             true,
-        ], [
+        ],
+        [
             List([0]),
             // todo: should there not be `OrderedMap` around `fromJSOrdered`?
             createStore(fromJSOrdered([20])),
             {
                 value: 20,
-                internalValue: Map(),
+                internalValue: undefined,
             },
             true,
-        ], [
+        ],
+        [
             List(['prop_a', 'prop_0']),
             // todo: should there not be `OrderedMap` around `fromJSOrdered`?
             createStore(fromJSOrdered({prop_a: {prop_0: 20}})),
             {
                 value: 20,
-                internalValue: Map(),
+                internalValue: undefined,
             },
             true,
-        ], [
+        ],
+        [
             List(['prop_a', 'prop_1']),
             // todo: should there not be `OrderedMap` around `fromJSOrdered`?
             createStore(fromJSOrdered({prop_a: {prop_0: 20}})),
             {
                 value: undefined,
-                internalValue: Map(),
+                internalValue: undefined,
             },
             true,
-        ], [
+        ],
+        [
             List(['prop_a', 0]),
             // todo: should there not be `OrderedMap` around `fromJSOrdered`?
             createStore(fromJSOrdered({prop_a: [20]})),
             {
                 value: 20,
-                internalValue: Map(),
+                internalValue: undefined,
             },
             true,
-        ], [
+        ],
+        [
             List(['prop_a', 0]),
             new UIStore({
                 values: fromJSOrdered({prop_a: [20]}),
                 internals: Map({
-                    internals: Map({
+                    children: Map({
                         prop_a: Map({
-                            internals: List([
+                            children: List([
                                 Map({
-                                    internals: Map(),
+                                    self: Map({internalVal: 12}),
+                                    children: Map(),
                                 }),
                             ]),
                         }),
@@ -95,20 +99,19 @@ describe('UIStoreProvider', () => {
             }),
             {
                 value: 20,
-                internalValue: Map({
-                    internals: Map(),
-                }),
+                internalValue: Map({internalVal: 12}),
             },
             true,
-        ], [
+        ],
+        [
             List(['prop_a']),
             new UIStore({
                 values: fromJSOrdered({prop_a: 20}),
                 internals: Map({
-                    internals: Map({
+                    children: Map({
                         prop_a: Map({
-                            someValue: true,
-                            internals: Map(),
+                            self: Map({someValue: true}),
+                            children: Map(),
                         }),
                     }),
                 }),
@@ -116,10 +119,7 @@ describe('UIStoreProvider', () => {
             }),
             {
                 value: 20,
-                internalValue: Map({
-                    someValue: true,
-                    internals: Map(),
-                }),
+                internalValue: Map({someValue: true}),
             },
             true,
         ],

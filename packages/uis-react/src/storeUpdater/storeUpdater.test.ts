@@ -78,15 +78,17 @@ describe('storeUpdater', () => {
                     prop_a: 'some-string--modified',
                 }),
                 internals: Map({
-                    internals: Map({
+                    children: Map({
                         prop_a: Map({
-                            value: 'some-state',
+                            self: Map({value: 'some-state'}),
                         }),
                     }),
                 }),
                 validity: Map({
-                    prop_a: Map({
-                        __valid: true,
+                    children: Map({
+                        prop_a: Map({
+                            valid: true,
+                        }),
                     }),
                 }),
             }),
@@ -106,7 +108,7 @@ describe('storeUpdater', () => {
         updater: UIStoreUpdaterFn,
         deleteOnEmpty: boolean | undefined,
         type: string | undefined,
-        expected: UIStoreType
+        expected: UIStoreType,
     ) => {
         const action: UIStoreActionUpdate = {
             type: 'update',
@@ -120,10 +122,11 @@ describe('storeUpdater', () => {
         const isExpected = r.equals(expected)
         if (!isExpected) {
             console.log(
-                'failed storeUpdater', storeKeys.toJS(), scopes,
-                JSON.stringify(store.toJS(), undefined, 2),
+                'failed storeUpdater',
+                storeKeys.toJS(), scopes,
+                // JSON.stringify(store.toJS(), undefined, 2),
                 JSON.stringify(r?.toJS(), undefined, 2),
-                JSON.stringify(expected?.toJS(), undefined, 2)
+                // JSON.stringify(expected?.toJS(), undefined, 2),
             )
         }
         expect(isExpected).toBe(true)

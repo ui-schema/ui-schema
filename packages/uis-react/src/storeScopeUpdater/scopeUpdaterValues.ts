@@ -1,7 +1,7 @@
 import {
     prependKey, shouldDeleteOnEmpty, StoreKeys, UIStoreType,
 } from '@ui-schema/react/UIStore'
-import { List, Map, Record } from 'immutable'
+import { List, Map, OrderedMap, Record } from 'immutable'
 import { UIStoreAction } from '@ui-schema/react/UIStoreActions'
 import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
 import { updateStoreScope } from '@ui-schema/react/storeScopeUpdater'
@@ -10,11 +10,12 @@ import { storeBuildScopeTree } from '@ui-schema/react/storeBuildScopeTree'
 export const scopeUpdaterValues = <S extends UIStoreType = UIStoreType>(
     store: S, storeKeys: StoreKeys, newValue: any, action: Pick<UIStoreAction, 'schema' | 'required'> | undefined,
 ): S => {
-    //if (typeof oldValue === 'undefined') {
     // initializing the tree for correct data types
     // https://github.com/ui-schema/ui-schema/issues/119
-    store = storeBuildScopeTree(storeKeys, 'values', store, undefined, true)
-    //}
+    store = storeBuildScopeTree(
+        storeKeys, 'values', store,
+        (key) => typeof key === 'number' ? List() : OrderedMap(),
+    )
     // todo: the decision for `should delete` should only come from "value", and then used by e.g. internalValue/validity updates,
     //       but also some internal values must be preserved, like `is default handled`, `richtext editor state`
     // todo: also, actually, it must be checked & deleted recursively

@@ -28,7 +28,7 @@
         "bootstrap": "lerna bootstrap --force-local -- --legacy-peer-deps",
         "link": "lerna link --force-local",
         "lint": "cross-env NODE_ENV=test NODE_OPTIONS=\"--max-old-space-size=8192 --no-deprecation --experimental-vm-modules --unhandled-rejections=strict\" eslint -c=.eslintrc --ext=.tsx,.ts,.js,.jsx --max-warnings=0 'packages'",
-        "test": "cross-env NODE_ENV=test NODE_OPTIONS=\"--max-old-space-size=8192 --experimental-vm-modules\" jest -c=\"jest.config.ts\"",
+        "test": "cross-env NO_TYPE_CHECK=yes NODE_ENV=test NODE_OPTIONS=\"--max-old-space-size=8192 --experimental-vm-modules\" jest -c=\"jest.config.ts\"",
         "jest-clear": "jest -c=\"jest.config.ts\" --detectOpenHandles --forceExit --clearCache",
         "tdd": "cross-env NO_TYPE_CHECK=yes npm test -- --watch --coverage=false",
         "__release": "lerna run release --stream",

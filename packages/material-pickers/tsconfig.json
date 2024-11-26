@@ -5,7 +5,6 @@
         "src"
     ],
     "exclude": [
-        "src/**/*.test.*"
     ],
     "compilerOptions": {
         "declarationDir": "build/dts"

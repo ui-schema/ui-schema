@@ -59,11 +59,7 @@ export const UIStore: UIStoreTypeFactory = Record({
     values: undefined,
     // internals must be a map when it is an object in the root, for array a List and for other "any type"
     internals: undefined,
-    // internals: Map(),
-    // internals: Map({self: null}),
     validity: undefined,
-    // validity: Map(),
-    // validity: Map({self: null}),
     meta: Map(),
     valuesToJS: function() {
         const values = this.values
@@ -89,11 +85,9 @@ export const createStore = <D = any>(values: D): UIStoreType<D> => {
     return new UIStore({
         values: values,
         // todo: adj. init based on final 0.5.x structure
-        internals: Map({
-            internals: List.isList(values) ? List() : Map(),
-        }),
+        internals: undefined,
         // todo: adj. init based on final 0.5.x structure
-        validity: Map(),
+        validity: undefined,
         meta: Map(),
     }) as UIStoreType<D>
 }
@@ -149,7 +143,7 @@ export const shouldDeleteOnEmpty = (value, force, type) => {
 export const addNestKey = (
     storeKeysNestedKey: string,
     storeKeys: (string | number)[] | List<string | number>,
-) =>
+): List<string | number> =>
     (storeKeys as (string | number)[])
         .reduce<List<string | number>>((nk, sk) => {
             return nk.concat<string | number>(sk, List([storeKeysNestedKey]))
