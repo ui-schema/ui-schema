@@ -15,7 +15,7 @@ export interface SchemasDraft04 {
 
 export interface JsonSchemaGeneral {
     // todo: remove this typing / restrict to actual allowed `type`; make use of correlated union types
-    type: string | string[]
+    type?: JsonSchemaKeywordType | JsonSchemaKeywordType[]
     readOnly?: boolean
     id?: string
     $id?: string
@@ -121,8 +121,14 @@ export interface JsonSchemaNull extends JsonSchemaGeneral {
     type: 'null'
 }
 
+export type JsonSchemaKeywordType = 'string' | 'number' | 'integer' | 'boolean' | 'null' | 'object' | 'array'
+
 export interface JsonSchemaMultiple extends JsonSchemaGeneral {
-    type: ['string' | 'number' | 'integer' | 'boolean' | 'null' | 'object' | 'array']
+    type: JsonSchemaKeywordType[]
+}
+
+export interface JsonSchemaPartial extends JsonSchemaGeneral {
+    type?: undefined
 }
 
 export type JsonSchemaPure =
@@ -134,11 +140,11 @@ export type JsonSchemaPure =
     JsonSchemaNull |
     JsonSchemaMultiple |
     JsonSchemaConditionals |
-    JsonSchemaGeneral |
+    JsonSchemaPartial |
     JsonSchemaRoot
 
 export type JsonSchemaPureAny =
-    // Partial<{ type: string | string[] }> &
+// Partial<{ type: string | string[] }> &
     Partial<JsonSchemaString> &
     Partial<JsonSchemaArray> &
     Partial<JsonSchemaObject> &
@@ -147,6 +153,7 @@ export type JsonSchemaPureAny =
     Partial<JsonSchemaNull> &
     Partial<JsonSchemaMultiple> &
     Partial<JsonSchemaConditionals> &
+    Partial<JsonSchemaPartial> &
     Partial<JsonSchemaRoot>
 
 // todo: this export breaks the build in external pure tsc (not babel/webpack) builds

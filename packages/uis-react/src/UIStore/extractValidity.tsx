@@ -10,8 +10,8 @@ export const extractValidity = <P extends WithValidity & { storeKeys: StoreKeys 
         // @ts-expect-error typing not resolvable
         return <Component
             {...p}
-            // @ts-expect-error store type not finished
-            validity={p.storeKeys.size ? store?.getValidity()?.getIn(addNestKey('children', p.storeKeys))?.get('valid') : store?.getValidity()?.get('valid')}
+            // passing down all of validity, to be able to know if childs are invalid
+            validity={p.storeKeys.size ? store?.getValidity()?.getIn(addNestKey('children', p.storeKeys)) : store?.getValidity()}
             onChange={onChange}
             showValidity={p.showValidity || showValidity}
         />

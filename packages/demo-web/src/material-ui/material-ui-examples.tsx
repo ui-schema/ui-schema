@@ -1,3 +1,13 @@
+import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
+import { define, widgetsCustom, widgetsTypes } from '@ui-schema/ds-material/WidgetsDefault'
+import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
+import { Validator } from '@ui-schema/json-schema/Validator'
+import { requiredValidator } from '@ui-schema/json-schema/Validators'
+import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ReferencingHandler } from '@ui-schema/react-json-schema'
+import { validatorPlugin } from '@ui-schema/react-json-schema/ValidatorPlugin'
+import { SchemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
+import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
+import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import React from 'react'
 import { useToggle } from '../component/useToggle'
 import { schemaWCombining } from '../schemas/demoCombining'
@@ -7,7 +17,6 @@ import { schemaDemoReferencing, schemaDemoReferencingNetwork, schemaDemoReferenc
 import { schemaSimString, schemaSimBoolean, schemaSimCheck, schemaSimNumber, schemaSimRadio, schemaSimSelect, schemaNull, schemaSimInteger } from '../schemas/demoSimples'
 import { schemaGrid } from '../schemas/demoGrid'
 import Grid from '@mui/material/Grid'
-import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { browserT } from '../t'
 import { schemaLists } from '../schemas/demoLists'
@@ -44,14 +53,27 @@ const CustomTableBase: React.ComponentType<WidgetProps> = ({widgets, ...props}) 
 }
 const CustomTable = React.memo(CustomTableBase)
 
-const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
-const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
+const customWidgets = define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
     InfoRenderer: InfoRenderer,
-    widgetPlugins: widgetPlugins,
-    schemaPlugins: schemaPlugins,
-    types: WidgetsDefault.widgetsTypes(),
+
+    widgetPlugins: [
+        ReferencingHandler,// must be before AND maybe after combining/conditional?
+        SchemaGridHandler,// todo: Grid must be after e.g. ConditionalHandler, but why was it this high? wasn't that because of e.g. conditional object grids?
+        // ExtractStorePlugin,
+        CombiningHandler,
+        DefaultHandler,
+        DependentHandler,
+        ConditionalHandler,
+        SchemaPluginsAdapterBuilder([
+            validatorPlugin,
+            requiredValidator,// must be after validator; todo: remove the compat. plugin
+        ]),
+        ValidityReporter,
+        WidgetRenderer,
+    ],
+    types: widgetsTypes(),
     custom: {
-        ...WidgetsDefault.widgetsCustom(),
+        ...widgetsCustom(),
         SelectChips: SelectChips,
         Table: CustomTable,
         TableAdvanced: TableAdvanced,
@@ -151,7 +173,11 @@ const Main = () => {
 
 export default function MaterialDemo() {
     return <>
-        <UIMetaProvider widgets={customWidgets} t={browserT}>
+        <UIMetaProvider
+            widgets={customWidgets}
+            t={browserT}
+            validate={Validator(standardValidators).validate}
+        >
             <UIApiProvider loadSchema={loadSchema} noCache>
                 <Main/>
             </UIApiProvider>

@@ -1,9 +1,9 @@
 import { StoreKeyType } from '@ui-schema/system/ValueStore'
-import { ComponentType, ReactElement, ReactNode, useMemo } from 'react'
+import { ComponentType, ReactElement, ReactNode } from 'react'
 import { List } from 'immutable'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { useUIMeta } from '@ui-schema/react/UIMeta'
-import { createValidatorErrors, onErrorHandler } from '@ui-schema/system/ValidatorErrors'
+import { UIMetaContext, useUIMeta } from '@ui-schema/react/UIMeta'
+import { onErrorHandler } from '@ui-schema/system/ValidatorOutput'
 import { StoreKeys, useUIConfig, useUIStore } from '@ui-schema/react/UIStore'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 import { WidgetEngineErrorBoundary, WidgetPluginProps, WidgetPluginType } from '@ui-schema/react/WidgetEngine'
@@ -26,10 +26,10 @@ export type WidgetEngineInjectProps = 'currentPluginIndex' | 'requiredList' | 'r
 export type WidgetEngineProps<
     W extends WidgetsBindingFactory = WidgetsBindingFactory,
     PWidget extends WidgetProps<W> = WidgetProps<W>,
-    C = {},
+    CMeta = {},
     PWrapper extends {} = {}
 > =
-    AppliedWidgetEngineProps<C, W, PWidget>
+    AppliedWidgetEngineProps<CMeta, W, PWidget>
     & {
 
     // listen from a hoisted component for `errors` changing,
@@ -42,7 +42,7 @@ export type WidgetEngineProps<
     // override any widget for just this WidgetEngine, not passed down further on
     // better use `applyWidgetEngine` instead! https://ui-schema.bemit.codes/docs/core-pluginstack#applypluginstack
     // todo: actually `WidgetOverride` is a WidgetRenderer prop - and also passed through the plugins, so should be in PluginProps also - but not in WidgetProps
-    WidgetOverride?: WidgetOverrideType<C, PWidget, W>
+    WidgetOverride?: WidgetOverrideType<CMeta, PWidget, W>
 
     // wraps the whole stack internally, as interfacing for the utility function `injectWidgetEngine`
     // only rendered when not "virtual"
@@ -58,9 +58,11 @@ function isRootProps(props: WidgetEngineRootOrNestedProps): props is WidgetEngin
 export const WidgetEngine = <
     PWidget extends WidgetProps<WidgetsBindingFactory> = WidgetProps<WidgetsBindingFactory>,
     PWrapper extends {} = {},
->(props: WidgetEngineProps<WidgetsBindingFactory, PWidget, {}, PWrapper>): ReactNode => {
+    // TMeta extends UIMetaContext = UIMetaContext,
+>(props: WidgetEngineProps<WidgetsBindingFactory, PWidget, UIMetaContext, PWrapper>): ReactNode => {
     type U = {}
-    const {widgets, ...meta} = useUIMeta<{}, WidgetsBindingFactory>()
+    // todo: move UIMetaContext in generics, if possible, when moved there the `Omit` from applied removes too many somehow
+    const {widgets, ...meta} = useUIMeta<UIMetaContext, WidgetsBindingFactory>()
     const config = useUIConfig<U>()
     const {store, showValidity} = useUIStore()
     const {onChange} = useUIStoreActions()
@@ -89,7 +91,6 @@ export const WidgetEngine = <
     // central reference integrity of `storeKeys` for all plugins and the receiving widget, otherwise `useImmutable` is needed more times, e.g. 3 times in plugins + 1x time in widget
     const currentStoreKeys = useImmutable(storeKeys)
     const currentSchemaKeys = useImmutable(schemaKeys)
-    const errorContainer = useMemo(() => createValidatorErrors(), [])
     const activeWidgets: WidgetsBindingFactory = customWidgets || widgets
 
     // todo: resolving `hidden` here is wrong, must be done after merging schema / resolving referenced
@@ -115,7 +116,6 @@ export const WidgetEngine = <
             schemaKeys={currentSchemaKeys}
             requiredList={required}
             required={false}
-            errors={errorContainer}
             parentSchema={parentSchema}
             schema={schema as UISchemaMap}
             // `showValidity` is overridable by render flow, e.g. nested Stepper

@@ -1,6 +1,7 @@
+import { ValidateFn } from '@ui-schema/system/Validate'
+import { ValidationErrorsImmutable } from '@ui-schema/system/ValidatorOutput'
 import { StoreKeys } from '@ui-schema/system/ValueStore'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
 
 /**
  * Base widget props which are expected to exist no matter which data "type" the widget is for
@@ -37,13 +38,19 @@ export interface WidgetPayload {
 
     // `required` is created inside validator plugin
     required: boolean
+
     // todo: extract to validator typings, extend here
     // `errors` and `valid` are created inside validator plugins
-    errors?: ValidatorErrorsType
+    errors?: ValidationErrorsImmutable
     valid?: boolean
 
     // overridable store value:
     showValidity?: boolean
+
+    /**
+     * @todo move into UIMeta context (and typing)?
+     */
+    validate?: ValidateFn
 
     // contains the value for non-scalar items, for objects/array it is undefined
     // use typing `WithScalarValue` for those, otherwise for `array`/`object` checkout the HOC: `extractValue` and typing `WithValue`

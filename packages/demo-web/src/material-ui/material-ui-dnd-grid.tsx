@@ -30,7 +30,7 @@ import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { createEmptyStore, createStore, onChangeHandler, UIStoreProvider, UIStoreType, WithOnChange } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
-import { UIMetaProvider } from '@ui-schema/react/UIMeta'
+import { UIMetaContext, UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { MuiWidgetsBinding, MuiWidgetsBindingCustom, MuiWidgetsBindingTypes } from '@ui-schema/ds-material/BindingType'
 import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { createOrderedMap } from '@ui-schema/system/createMap'
@@ -42,10 +42,9 @@ import Grid from '@mui/material/Grid'
 type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
     DragDropArea: React.ComponentType<WidgetProps<MuiWidgetsBinding & DragDropBlockComponentsBinding> & WithOnChange>
 }>
-const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
+const {widgetPlugins} = WidgetsDefault.plugins()
 const customWidgets = WidgetsDefault.define<CustomWidgetsBinding, {}>({
     widgetPlugins: widgetPlugins,
-    schemaPlugins: schemaPlugins,
     DndBlockSelector: DragDropBlockSelector,
     types: {
         ...WidgetsDefault.widgetsTypes(),
@@ -210,7 +209,10 @@ const SingleEditor = () => {
 // @ts-ignore
 // eslint-disable-next-line react/display-name
 export default () => <>
-    <UIMetaProvider<{}, CustomWidgetsBinding> widgets={customWidgets} t={browserT}>
+    <UIMetaProvider<UIMetaContext<CustomWidgetsBinding>, CustomWidgetsBinding>
+        widgets={customWidgets}
+        t={browserT}
+    >
         <Grid container spacing={3}>
             <Grid item xs={12}>
                 <Paper

@@ -15,11 +15,10 @@ import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 
-const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
+const {widgetPlugins} = WidgetsDefault.plugins()
 const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
     InfoRenderer: InfoRenderer,
     widgetPlugins: widgetPlugins,
-    schemaPlugins: schemaPlugins,
     types: {
         ...WidgetsDefault.widgetsTypes(),
         string: StringRendererDebounced,

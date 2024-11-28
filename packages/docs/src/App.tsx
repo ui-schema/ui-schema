@@ -8,8 +8,7 @@ import { MultiBackend } from 'react-dnd-multi-backend'
 import { HTML5toTouch } from 'rdndmb-html5-to-touch'
 import { DocsProvider } from '@control-ui/docs/DocsProvider'
 import { HeadlinesProvider } from '@control-ui/docs/LinkableHeadline'
-import { customWidgets } from './component/Schema/widgets'
-import { browserT } from './t'
+import { uiMeta } from './component/Schema/widgets'
 import { customConsentUi } from './consentUi'
 import { ConsentUiProvider } from '@bemit/consent-ui-react'
 import { pluginGoogle, prepareConsent } from '@bemit/consent-ui'
@@ -55,7 +54,7 @@ const Provider: React.ComponentType<React.PropsWithChildren<{}>> = ({children}) 
                 <DocsSearchProvider localKey={'uis-search-history'} bindKey={'k'}>
                     <HeadlinesProvider>
                         <UIApiProvider loadSchema={loadSchema} noCache>
-                            <UIMetaProvider widgets={customWidgets} t={browserT}>
+                            <UIMetaProvider {...uiMeta}>
                                 <DndProvider backend={MultiBackend} options={HTML5toTouch}>
                                     {children}
                                 </DndProvider>

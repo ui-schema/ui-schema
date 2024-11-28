@@ -82,7 +82,7 @@ const ReadableWritableEditor: React.ComponentType<{
             <button onClick={() => setEdit(e => !e)}>{edit ? 'ready only' : 'edit'}</button>
             <button disabled={edit} onClick={() => setDense(e => !e)}>{dense ? 'normal-size' : 'dense'}</button>
         </div>
-        <UIMetaProvider<UIMetaReadContextType>
+        <UIMetaProvider<UIMetaContext<typeof customWidgetsRtd> & UIMetaReadContextType>
             // re-use & overwrite of the global meta-context
             widgets={customWidgetsRtd} {...metaCtx}
             // custom meta-ctx only available within this UIMetaProvider context
@@ -109,7 +109,7 @@ export interface UIMetaCustomContext {
     handleStuff: () => 'stuff'
 }
 
-<UIMetaProvider<UIMetaCustomContext>
+<UIMetaProvider<UIMetaContext<typeof customWidgetsRtd> & UIMetaCustomContext>
     widgets={customWidgets}
     t={browserT}
     handleStuff={() => 'stuff'}

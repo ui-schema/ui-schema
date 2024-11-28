@@ -47,18 +47,18 @@ export const SchemaDebug = (
             onChange={(a, b) => setSchema(s => s.setIn(a, b))}
             getVal={keys => schema.getIn(keys)}
         />
-        <div style={{display: 'flex', columnGap: 8}}>
+        <div style={{display: 'flex', gap: 8, flexWrap: 'wrap'}}>
             <button
                 onClick={() => setShowInternals(s => !s)}
                 style={{cursor: 'pointer', background: 'none', color: 'inherit', padding: '4px 6px', marginBottom: 6, border: '1px solid currentColor'}}
             >
-                {showInternals ? 'hide' : 'show'}{' internals'}
+                {showInternals ? 'hide' : 'show'}{' UIStore.internals'}
             </button>
             <button
                 onClick={() => setShowValidity(s => !s)}
                 style={{cursor: 'pointer', background: 'none', color: 'inherit', padding: '4px 6px', marginBottom: 6, border: '1px solid currentColor'}}
             >
-                {showValidity ? 'hide' : 'show'}{' validity'}
+                {showValidity ? 'hide' : 'show'}{' UIStore.validity'}
             </button>
         </div>
     </React.Fragment>

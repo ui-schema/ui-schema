@@ -1,7 +1,6 @@
 import { expect, describe, test } from '@jest/globals'
 import { List, Map, OrderedMap } from 'immutable'
-import { ERROR_WRONG_TYPE, typeValidator, validateType } from '@ui-schema/json-schema/Validators/TypeValidator'
-import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
+import { validateType, validateTypes } from '@ui-schema/json-schema/Validators/TypeValidator'
 
 describe('validateType', () => {
     test.each([
@@ -11,6 +10,7 @@ describe('validateType', () => {
 
         ['text1', 'string', true],
         [undefined, 'string', true],
+        ['1', 'string', true],
         [1, 'string', false],
         [null, 'string', false],
 
@@ -47,113 +47,90 @@ describe('validateType', () => {
     })
 })
 
-describe('typeValidator', () => {
+describe('validateTypes', () => {
     test.each([
         [
-            'string',
             'text1',
-            [ERROR_WRONG_TYPE, Map({actual: typeof 'text1'})] as const,
+            'string',
+            // [ERROR_WRONG_TYPE, Map({actual: typeof 'text1'})] as const,
             true,
-            false,
         ],
         [
-            'string',
             2,
-            [ERROR_WRONG_TYPE, Map({actual: typeof 2})] as const,
+            'string',
+            // [ERROR_WRONG_TYPE, Map({actual: typeof 2})] as const,
             false,
-            true,
         ],
         [
-            'string',
             undefined,
-            [ERROR_WRONG_TYPE, Map({actual: typeof undefined})] as const,
-            true,
-            false,
-        ],
-        [
             'string',
-            false,
-            [ERROR_WRONG_TYPE, Map({actual: typeof false})] as const,
-            false,
+            // [ERROR_WRONG_TYPE, Map({actual: typeof undefined})] as const,
             true,
         ],
         [
+            false,
             'string',
-            '2',
-            [ERROR_WRONG_TYPE, Map({actual: typeof '2'})] as const,
-            true,
+            // [ERROR_WRONG_TYPE, Map({actual: typeof false})] as const,
             false,
         ],
         [
+            '2',
+            'string',
+            // [ERROR_WRONG_TYPE, Map({actual: typeof '2'})] as const,
+            true,
+        ],
+        [
+            false,
             List(['string']),
+            // [ERROR_WRONG_TYPE, Map({actual: typeof false})] as const,
             false,
-            [ERROR_WRONG_TYPE, Map({actual: typeof false})] as const,
-            false,
-            true,
         ],
         [
+            '2',
             List(['string']),
-            '2',
-            [ERROR_WRONG_TYPE, Map({actual: typeof '2'})] as const,
+            // [ERROR_WRONG_TYPE, Map({actual: typeof '2'})] as const,
             true,
-            false,
         ],
         [
+            false,
             List(['string', 'null']),
+            // [ERROR_WRONG_TYPE, Map({actual: typeof false})] as const,
             false,
-            [ERROR_WRONG_TYPE, Map({actual: typeof false})] as const,
-            false,
-            true,
         ],
         [
+            false,
             List(['null', 'string']),
+            // [ERROR_WRONG_TYPE, Map({actual: typeof false})] as const,
             false,
-            [ERROR_WRONG_TYPE, Map({actual: typeof false})] as const,
-            false,
-            true,
         ],
         [
-            List(['string', 'null']),
             '2',
-            [ERROR_WRONG_TYPE, Map({actual: typeof '2'})] as const,
+            List(['string', 'null']),
+            // [ERROR_WRONG_TYPE, Map({actual: typeof '2'})] as const,
             true,
-            false,
         ],
         [
+            '2',
             List(['null', 'string']),
-            '2',
-            [ERROR_WRONG_TYPE, Map({actual: typeof '2'})] as const,
+            // [ERROR_WRONG_TYPE, Map({actual: typeof '2'})] as const,
             true,
-            false,
         ],
         [
-            List(['string', 'null']),
             null,
-            [ERROR_WRONG_TYPE, Map({actual: typeof null})] as const,
+            List(['string', 'null']),
+            // [ERROR_WRONG_TYPE, Map({actual: typeof null})] as const,
             true,
-            false,
         ],
         [
-            List(['null', 'string']),
             null,
-            [ERROR_WRONG_TYPE, Map({actual: typeof null})] as const,
+            List(['null', 'string']),
+            // [ERROR_WRONG_TYPE, Map({actual: typeof null})] as const,
             true,
-            false,
         ],
     ])(
-        '.should(%j, %s)',
-        (type, value, error, expectedValid, expectedError) => {
-            const result = typeValidator.handle({
-                schema: OrderedMap({type}),
-                value,
-                errors: createValidatorErrors(),
-                valid: true,
-            })
-            expect(result.valid).toBe(expectedValid)
-            expect(result.errors?.hasError(error[0])).toBe(expectedError)
-            if (result.errors?.hasError(error[0])) {
-                expect(result.errors?.getError(error[0]).get(0)?.equals(error[1])).toBe(expectedError)
-            }
+        'validateTypes(%j, %s)',
+        (value, type, expectedValid) => {
+            expect(validateTypes(value, type)).toBe(expectedValid)
         },
     )
 })

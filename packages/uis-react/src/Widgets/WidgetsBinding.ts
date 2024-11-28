@@ -2,7 +2,6 @@ import React from 'react'
 import { WidgetPluginType } from '@ui-schema/react/WidgetEngine'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
 import { StoreKeys, WithValue } from '@ui-schema/react/UIStore'
 import { List } from 'immutable'
 import { WidgetsBindingRoot } from '@ui-schema/system/WidgetsBinding'
@@ -42,8 +41,6 @@ export interface WidgetsBindingComponents {
     NoWidget?: React.ComponentType<NoWidgetProps>
     // widget plugin system (react components)
     widgetPlugins?: WidgetPluginType[]
-    // props plugin system (vanilla JS functions based)
-    schemaPlugins?: SchemaPlugin[]
 
     // actual validator function to use outside of render flow (in functions)
     // > added in `0.3.0`

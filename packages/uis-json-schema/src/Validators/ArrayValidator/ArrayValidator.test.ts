@@ -1,32 +1,31 @@
 import { test, expect, describe } from '@jest/globals'
+import { makeParams, ValidatorParams } from '@ui-schema/json-schema/Validator'
+import { arrayValidator, ERROR_WRONG_TYPE } from '@ui-schema/json-schema/Validators'
 import { isImmutable, List, Map } from 'immutable'
+import { newMockState, newMockStateNested } from '../../../tests/mocks/ValidatorState.mock.js'
 import {
     validateItems,
     validateContains,
     validateUniqueItems,
     validateArrayContent,
-    ERROR_DUPLICATE_ITEMS,
-    arrayValidator,
-} from '@ui-schema/json-schema/Validators/ArrayValidator'
+    validateAdditionalItems, ERROR_DUPLICATE_ITEMS,
+} from './ArrayValidator.js'
 import { createOrderedMap } from '@ui-schema/system/createMap'
-import { validateAdditionalItems } from '@ui-schema/json-schema/Validators/ArrayValidator'
-import { ERROR_WRONG_TYPE } from '@ui-schema/json-schema/Validators/TypeValidator'
-import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 
 describe('validateArrayContent', () => {
-    test.each([
+    test.each<[any, unknown, boolean | undefined, number, ValidatorParams | undefined]>([
         [createOrderedMap({
             type: 'number',
-        }), [1, 2, 3], undefined, 0],
+        }), [1, 2, 3], undefined, 0, undefined],
         [createOrderedMap({
             type: 'number',
-        }), ['1'], undefined, 1],
+        }), ['1'], undefined, 1, undefined],
         [createOrderedMap({
             type: 'number',
-        }), [1, 2, 3], undefined, 0],
+        }), [1, 2, 3], undefined, 0, undefined],
         [createOrderedMap({
             type: 'number',
-        }), ['1'], undefined, 1],
+        }), ['1'], undefined, 1, undefined],
         [List([
             createOrderedMap({
                 type: 'number',
@@ -37,14 +36,7 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'number',
             }),
-            // at <= 0.2.0-rc.3 this was correct (errCount: 0),
-            // assuming this was correct, but resulted from incorrect array tuple implementation,
-            // `items` array tuple validation is now implemented with:
-            // - correct nesting in `GenericList`/`Table`/`VirtualWidgetRenderer`
-            // - validation of arrays in `validateItems()`
-            // - todo: currently only supporting one level of arrays in conditionals like `if`/`else`
-            //         no problem for rendering, as validated by next schema level
-        ]), [[1, 2, 3], [1, 2, 3], [1, 2, 3]], true, 0],
+        ]), [1, 2, 3], true, 0, {...makeParams(), recursive: false}],
         [List([
             createOrderedMap({
                 type: 'number',
@@ -55,7 +47,7 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'number',
             }),
-        ]), [1, 2, 3], true, 0],
+        ]), ['abc', 2, null], true, 2, {...makeParams(), recursive: true}],
         [List([
             createOrderedMap({
                 type: 'number',
@@ -66,7 +58,7 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'number',
             }),
-        ]), [1, 2, 3], false, 0],
+        ]), [1, 2, 3], true, 0, undefined],
         [List([
             createOrderedMap({
                 type: 'number',
@@ -77,7 +69,7 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'number',
             }),
-        ]), 'no-tuple', false, 1],
+        ]), [1, 2, 3], false, 0, undefined],
         [List([
             createOrderedMap({
                 type: 'number',
@@ -88,7 +80,18 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'number',
             }),
-        ]), [1, 2, 3, 4], false, 1],
+        ]), 'no-tuple', false, 1, undefined],
+        [List([
+            createOrderedMap({
+                type: 'number',
+            }),
+            createOrderedMap({
+                type: 'number',
+            }),
+            createOrderedMap({
+                type: 'number',
+            }),
+        ]), [1, 2, 3, 4], false, 1, undefined],
         [List([
             createOrderedMap({
                 type: 'array',
@@ -99,7 +102,7 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'array',
             }),
-        ]), [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], false, 0],
+        ]), [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], false, 0, undefined],
         [List([
             createOrderedMap({
                 type: 'array',
@@ -110,7 +113,7 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'array',
             }),
-        ]), [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], true, 0],
+        ]), [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], true, 0, undefined],
         [List([
             createOrderedMap({
                 type: 'array',
@@ -121,7 +124,7 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'array',
             }),
-        ]), [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3], [1, 2, 3, 4, 5, 6]], false, 1],
+        ]), [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3], [1, 2, 3, 4, 5, 6]], false, 1, undefined],
         [List([
             createOrderedMap({
                 type: 'array',
@@ -132,7 +135,7 @@ describe('validateArrayContent', () => {
             createOrderedMap({
                 type: 'array',
             }),
-        ]), [[1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3]], false, 1],
+        ]), [[1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3]], false, 1, undefined],
         /*
         `validateArrayContent` is only responsible for tuple validation `additionalItems` and checking if a tuple is really a tuple
         deep-schema validation is not it's responsible
@@ -214,73 +217,73 @@ describe('validateArrayContent', () => {
                 type: 'boolean'
             })
         ]), [1, 'text', true], true, false, 0],*/
-    ])('validateArrayContent(%j, %j, %s): %s', (schema, value, additionalItems, expected) => {
-        const r = validateArrayContent(schema, value, additionalItems)
-        if (r.err.errCount !== expected) {
+    ])('validateArrayContent(%j, %j, %s): %s', (schema, value, additionalItems, expected, params) => {
+        const r = validateArrayContent(schema, value, additionalItems, params || makeParams(), newMockStateNested())
+        if (r.output.errCount !== expected) {
             console.log(
                 'failed validateArrayContent',
                 schema.toJS(),
                 isImmutable(value) ? value.toJS() : value,
-                r.err.toJS(),
+                r.output.errors,
             )
         }
-        expect(r.err.errCount).toBe(expected)
+        expect(r.output.errCount).toBe(expected)
     })
 })
 
 describe('validateItems', () => {
-    test.each([
+    test.each<[any, unknown, number, ValidatorParams | undefined]>([
         [{
             type: 'array',
             items: {
                 type: 'number',
             },
-        }, [1, 2, 3], 0],
+        }, [1, 2, 3], 0, undefined],
         [{
             type: 'array',
             items: {
                 type: 'number',
             },
-        }, ['1', 2, 3], 1],
+        }, ['1', 2, 3], 1, undefined],
         [{
             type: 'array',
             items: {
                 type: 'null',
             },
-        }, [null, null, null], 0],
+        }, [null, null, null], 0, undefined],
         [{
             type: 'array',
             items: {
                 type: 'null',
             },
-        }, [null, 0, null], 1],
+        }, [null, 0, null], 1, undefined],
         [{
             type: 'array',
             items: {
                 type: 'number',
             },
-        }, ['1', '2', 3], 2],
+        }, ['1', '2', 3], 2, undefined],
         [{
             type: 'array',
             items: {
                 type: 'number',
             },
-        }, List([1, 2, 3]), 0],
+        }, List([1, 2, 3]), 0, undefined],
         [{
             type: 'array',
             items: {
                 type: 'number',
             },
-        }, List(['1', 2, 3]), 1],
+        }, List(['1', 2, 3]), 1, undefined],
         [{
             type: 'array',
             items: {
                 type: 'number',
             },
-        }, List(['1', '2', 3]), 2],
+        }, List(['1', '2', 3]), 2, undefined],
         [{
             type: 'array',
-        }, List(['1', '2', 3]), 0],
+        }, List(['1', '2', 3]), 0, undefined],
         [{
             type: 'array',
             additionalItems: true,
@@ -291,7 +294,7 @@ describe('validateItems', () => {
             }, {
                 type: 'number',
             }],
-        }, [1, 2, 3], 0],
+        }, [1, 2, 3], 0, undefined],
         [{
             type: 'array',
             additionalItems: false,
@@ -302,7 +305,7 @@ describe('validateItems', () => {
             }, {
                 type: 'number',
             }],
-        }, [1, 2, 3], 0],
+        }, [1, 2, 3], 0, undefined],
         [{
             type: 'array',
             additionalItems: false,
@@ -313,7 +316,7 @@ describe('validateItems', () => {
             }, {
                 type: 'number',
             }],
-        }, 'no-tuple', 1],
+        }, 'no-tuple', 1, undefined],
         [{
             type: 'array',
             additionalItems: false,
@@ -324,9 +327,7 @@ describe('validateItems', () => {
             }, {
                 type: 'number',
             }],
-            // todo: currently `0` error, but for full `if` support needed
-            //       only validating nested tuple schemas in render-flow
-        }, ['no-tuple', 3, 'no-tuple'], 0],
+        }, ['no-tuple', 3, 'no-tuple'], 0, {...makeParams(), recursive: false}],
         [{
             type: 'array',
             additionalItems: false,
@@ -337,7 +338,18 @@ describe('validateItems', () => {
             }, {
                 type: 'number',
             }],
-        }, [1, 2, 3, 4], 1],
+        }, ['no-tuple', 3, 'no-tuple'], 2, {...makeParams(), recursive: true}],
+        [{
+            type: 'array',
+            additionalItems: false,
+            items: [{
+                type: 'number',
+            }, {
+                type: 'number',
+            }, {
+                type: 'number',
+            }],
+        }, [1, 2, 3, 4], 1, undefined],
         [{
             type: 'array',
             additionalItems: true,
@@ -348,114 +360,123 @@ describe('validateItems', () => {
             }, {
                 type: 'number',
             }],
-        }, [1, 2, 3, 4], 0],
+        }, [1, 2, 3, 4], 0, undefined],
         [{
             type: 'array',
             items: {
                 type: 'array',
                 additionalItems: false,
-                items: [{
-                    type: 'number',
-                }, {
-                    type: 'number',
-                }, {
-                    type: 'number',
-                }],
+                items: [
+                    {type: 'number'},
+                    {type: 'number'},
+                    {type: 'number'},
+                ],
             },
-            // todo: currently `0` error, but for full `if` support needed
-            //       only validating nested tuple schemas in render-flow
-        }, [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], 0],
-    ])('validateItems(%j, %j)', (schema, value, expected) => {
-        const r = validateItems(createOrderedMap(schema), value)
-        if (r.errCount !== expected) {
+        }, [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], 0, {...makeParams(), recursive: false}],
+        [{
+            type: 'array',
+            items: {
+                type: 'array',
+                additionalItems: false,
+                items: [
+                    {type: 'number'},
+                    {type: 'number'},
+                    {type: 'number'},
+                ],
+            },
+        }, [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], 1, {...makeParams(), recursive: true}],
+    ])('validateItems(%j, %j)', (schema, value, expected, params) => {
+        const state = newMockState()
+        validateItems(createOrderedMap(schema), value, params || makeParams(), state)
+        if (state.output.errCount !== expected) {
             console.log(
                 'failed validateItems',
                 isImmutable(schema) ? schema.toJS() : schema,
                 isImmutable(value) ? value.toJS() : value,
-                r.toJS(),
+                state.output.errors,
             )
         }
-        expect(r.errCount).toBe(expected)
+        expect(state.output.errCount).toBe(expected)
     })
 })
 
 describe('validateContains', () => {
-    test.each([
+    test.each<[any, unknown, number, ValidatorParams | undefined]>([
         [{
             type: 'array',
             contains: {
                 type: 'number',
             },
-        }, [1, 2, 3], 0],
+        }, [1, 2, 3], 0, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'number',
             },
-        }, ['1', '2', '3'], 3],
+        }, ['1', '2', '3'], 3, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'null',
             },
-        }, [1, 2, 3], 3],
+        }, [1, 2, 3], 3, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'null',
             },
-        }, [null, null, null], 0],
+        }, [null, null, null], 0, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'number',
             },
-        }, List([1, 2, 3]), 0],
+        }, List([1, 2, 3]), 0, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'number',
             },
-        }, List(['1', '2', '3']), 3],
+        }, List(['1', '2', '3']), 3, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'number',
             },
-        }, ['1', '2', 3], 0],
+        }, ['1', '2', 3], 0, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'number',
             },
-        }, [1, '2', '3'], 0],
+        }, [1, '2', '3'], 0, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'number',
             },
-        }, [1], 0],
+        }, [1], 0, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'number',
             },
             minContains: 2,
-        }, [1], 1],
+        }, [1], 1, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'number',
             },
             minContains: 2,
-        }, [1, 2], 0],
+        }, [1, 2], 0, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'number',
             },
             minContains: 0,
-        }, [], 0],
+        }, [], 0, undefined],
         [{
             type: 'array',
             contains: {
@@ -463,7 +484,7 @@ describe('validateContains', () => {
             },
             minContains: 2,
             maxContains: 4,
-        }, [1], 1],
+        }, [1], 1, undefined],
         [{
             type: 'array',
             contains: {
@@ -471,7 +492,7 @@ describe('validateContains', () => {
             },
             minContains: 2,
             maxContains: 4,
-        }, [1, 2], 0],
+        }, [1, 2], 0, undefined],
         [{
             type: 'array',
             contains: {
@@ -479,7 +500,7 @@ describe('validateContains', () => {
             },
             minContains: 2,
             maxContains: 4,
-        }, [1, 2, 3], 0],
+        }, [1, 2, 3], 0, undefined],
         [{
             type: 'array',
             contains: {
@@ -487,7 +508,7 @@ describe('validateContains', () => {
             },
             minContains: 2,
             maxContains: 4,
-        }, [1, 2, 3, 4], 0],
+        }, [1, 2, 3, 4], 0, undefined],
         [{
             type: 'array',
             contains: {
@@ -495,7 +516,7 @@ describe('validateContains', () => {
             },
             minContains: 2,
             maxContains: 4,
-        }, [1, 2, 3, 4, 5], 1],
+        }, [1, 2, 3, 4, 5], 1, undefined],
         [{
             type: 'array',
             contains: {
@@ -503,56 +524,58 @@ describe('validateContains', () => {
             },
             minContains: 0,
             maxContains: 1,
-        }, [], 0],
+        }, [], 0, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'number',
             },
             maxContains: 2,
-        }, [1, 2, 3], 1],
+        }, [1, 2, 3], 1, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'number',
             },
             maxContains: 2,
-        }, [1, 2, 3, '3'], 2],
+        }, [1, 2, 3, '3'], 2, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'number',
             },
             maxContains: 2,
-        }, [1, 2], 0],
+        }, [1, 2], 0, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'number',
             },
             maxContains: 2,
-        }, [], 1],
+        }, [], 1, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'number',
             },
-        }, [], 1],
+        }, [], 1, undefined],
         [{
             type: 'array',
             contains: {
                 type: 'number',
             },
-        }, List([]), 1],
+        }, List([]), 1, undefined],
         [{
             type: 'array',
-        }, List([]), 0],
+        }, List([]), 0, undefined],
         [{
             type: 'array',
             contains: {},
-        }, List([]), 0],
-    ])('validateContains(%j, %j)', (schema, value, expected) => {
-        expect(validateContains(createOrderedMap(schema), value).errCount).toBe(expected)
+        }, List([]), 0, undefined],
+    ])('validateContains(%j, %j)', (schema, value, expected, params) => {
+        const state = newMockState()
+        validateContains(createOrderedMap(schema), value, params || makeParams(), state)
+        expect(state.output.errCount).toBe(expected)
     })
 })
 
@@ -565,35 +588,40 @@ describe('validateAdditionalItems', () => {
                 type: 'number',
             })],
             true,
-        ], [
+        ],
+        [
             true,
             [1, 2],
             [createOrderedMap({
                 type: 'number',
             })],
             true,
-        ], [
+        ],
+        [
             false,
             [1, 2],
             [createOrderedMap({
                 type: 'number',
             })],
             false,
-        ], [
+        ],
+        [
             false,
             [1],
             [createOrderedMap({
                 type: 'number',
             })],
             true,
-        ], [
+        ],
+        [
             false,
             List([1, 2]),
             [createOrderedMap({
                 type: 'number',
             })],
             false,
-        ], [
+        ],
+        [
             false,
             List([1]),
             [createOrderedMap({
@@ -615,41 +643,47 @@ describe('validateUniqueItems', () => {
             },
             [1, 2, 3],
             true,
-        ], [
+        ],
+        [
             {
                 type: 'array',
                 uniqueItems: true,
             },
             [1, 2, 2],
             false,
-        ], [
+        ],
+        [
             {
                 type: 'array',
                 uniqueItems: false,
             },
             [2, 2],
             true,
-        ], [
+        ],
+        [
             {
                 type: 'array',
             },
             [2, 2],
             true,
-        ], [
+        ],
+        [
             {
                 type: 'array',
                 uniqueItems: true,
             },
             List([1, 2, 3]),
             true,
-        ], [
+        ],
+        [
             {
                 type: 'array',
                 uniqueItems: true,
             },
             List([1, 2, 2]),
             false,
-        ], [
+        ],
+        [
             {
                 type: 'array',
                 uniqueItems: true,
@@ -664,34 +698,19 @@ describe('validateUniqueItems', () => {
 
 describe('arrayValidator', () => {
     test.each([
-        [List(), true],
-        [[], true],
-        [Map(), false],
-        ['some-text', false],
-    ])(
-        '.should(%j, %s)',
-        (value, expectedValid) => {
-            expect(arrayValidator.should?.({
-                value,
-                errors: createValidatorErrors(),
-            })).toBe(expectedValid)
-        },
-    )
-
-    test.each([
         [
             {type: 'array', uniqueItems: true},
             ['text1'],
-            [ERROR_DUPLICATE_ITEMS, Map()] as const,
+            undefined,
             true,
-            false,
-        ], [
+        ],
+        [
             {type: 'array', uniqueItems: true},
             ['text1', 'text1'],
-            [ERROR_DUPLICATE_ITEMS, Map()] as const,
+            [{error: ERROR_DUPLICATE_ITEMS}],
             false,
-            true,
-        ], [
+        ],
+        [
             {
                 type: 'array',
                 items: {
@@ -699,10 +718,10 @@ describe('arrayValidator', () => {
                 },
             },
             [1, 2],
-            [ERROR_WRONG_TYPE, Map()] as const,
+            undefined,
             true,
-            false,
-        ], [
+        ],
+        [
             {
                 type: 'array',
                 items: {
@@ -710,11 +729,11 @@ describe('arrayValidator', () => {
                 },
             },
             ['1', 2],
-            // has error, but childError, thus empty errors
-            [] as const,
-            false,
+            undefined,
+            // has error, but childError, thus valid - as this test only tests not recursive
             true,
-        ], [
+        ],
+        [
             {
                 type: 'array',
                 contains: {
@@ -722,10 +741,10 @@ describe('arrayValidator', () => {
                 },
             },
             ['1', 2],
-            [ERROR_WRONG_TYPE, Map()] as const,
+            undefined,
             true,
-            false,
-        ], [
+        ],
+        [
             {
                 type: 'array',
                 contains: {
@@ -733,25 +752,23 @@ describe('arrayValidator', () => {
                 },
             },
             ['1'],
-            [ERROR_WRONG_TYPE, Map()] as const,
+            [{error: ERROR_WRONG_TYPE, context: {actual: 'string'}}],
             false,
-            true,
         ],
     ])(
-        '.handle(%j, %s)',
-        (schema, value, error, expectedValid, expectedError) => {
-            const result = arrayValidator.handle({
-                schema: createOrderedMap(schema),
-                value: value,
-                errors: createValidatorErrors(),
-                valid: true,
-            })
-            expect(result.valid).toBe(expectedValid)
-            if (error.length) {
-                expect(result.errors?.hasError(error[0])).toBe(expectedError)
-                if (result.errors?.hasError(error[0])) {
-                    expect(result.errors?.getError(error[0]).get(0)?.equals(error[1])).toBe(expectedError)
-                }
+        'arrayValidator.validate(%j, %s)',
+        (schema, value, errors, expectedValid) => {
+            const state = newMockState()
+            arrayValidator.validate(
+                createOrderedMap(schema),
+                value,
+                makeParams(),
+                state,
+            )
+            // expect(result.valid).toBe(expectedValid)
+            expect(state.output.errCount === 0).toBe(expectedValid)
+            if (errors) {
+                expect(state.output.errors).toStrictEqual(errors)
             } else {
                 // todo: test childErrors for array items
             }

@@ -1,6 +1,8 @@
 import { jest, describe, test, expect } from '@jest/globals'
+import { makeParams } from '@ui-schema/json-schema/Validator'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { validateOneOf } from '@ui-schema/json-schema/Validators/OneOfValidator'
+import { newMockState } from '../../../tests/mocks/ValidatorState.mock.js'
 
 /**
  * npm run tdd -- --testPathPattern=src/Validators/OneOfValidator/OneOfValidator.test.ts
@@ -18,7 +20,7 @@ describe('validateOneOf', () => {
             oneOf: [
                 {type: 'number'},
             ],
-        }, '1', 1, {'wrong-type': [{}]}],
+        }, '1', 1, [{'context': {'actual': 'string'}, 'error': 'wrong-type'}]],
         [{
             oneOf: [
                 {type: 'number'},
@@ -28,7 +30,7 @@ describe('validateOneOf', () => {
             oneOf: [
                 {type: 'string'},
             ],
-        }, 1, 1, {'wrong-type': [{}]}],
+        }, 1, 1, [{'context': {'actual': 'number'}, 'error': 'wrong-type'}]],
         [{
             oneOf: [
                 {type: 'number'},
@@ -73,14 +75,23 @@ describe('validateOneOf', () => {
                     ],
                 },
             ],
-        }, 'invalid', 1, {'const-mismatch': [{}, {}]}],
+        }, 'invalid', 1, [{'error': 'const-mismatch', context: {const: 'valid-a'}}, {'error': 'const-mismatch', context: {const: 'valid-b'}}]],
     ])('oneOfValidator(%j, %j)', (schema, value, expectedErrorCount, expectedErrors) => {
-        const r = validateOneOf(createOrderedMap(schema).get('oneOf'), value)
+        const state = newMockState()
+        const r = validateOneOf(createOrderedMap(schema).get('oneOf'), value, makeParams(), state)
+        if (r.errorCount !== expectedErrorCount) {
+            console.log(
+                'failed oneOfValidator',
+                schema, value,
+                r,
+                JSON.stringify(state.output.errors, undefined, 2),
+            )
+        }
         expect(r.errorCount).toBe(expectedErrorCount)
         if (expectedErrors) {
-            expect(r.errors.getErrors().toJS()).toStrictEqual(expectedErrors)
+            expect(state.output.errors).toStrictEqual(expectedErrors)
         } else {
-            expect(r.errors.getErrors().toJS()).toStrictEqual({})
+            expect(state.output.errors).toStrictEqual([])
         }
     })
 })

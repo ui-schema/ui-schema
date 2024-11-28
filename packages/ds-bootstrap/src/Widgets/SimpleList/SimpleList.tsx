@@ -19,10 +19,10 @@ const SimpleList = extractValue(memo((
 
     const classFormGroup = ['form-group', 'd-flex', 'align-items-center']
     const classFormControl = ['form-control']
-    if (showValidity && errors?.hasError()) {
+    if (showValidity && errors?.size) {
         classFormControl.push('is-invalid')
     }
-    if (showValidity && !errors?.hasError()) {
+    if (showValidity && !errors?.size) {
         classFormGroup.push('was-validated')
     }
 

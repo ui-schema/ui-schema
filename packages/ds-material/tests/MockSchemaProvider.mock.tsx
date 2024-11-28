@@ -1,6 +1,8 @@
 /**
  * @jest-environment jsdom
  */
+import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
+import { Validator } from '@ui-schema/json-schema/Validator'
 import React from 'react'
 import { Translator } from '@ui-schema/system/Translator'
 import { createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
@@ -18,10 +20,11 @@ export const MockWidgets: WidgetsBindingFactory = {
     ErrorFallback: () => null,
     GroupRenderer: () => null,
     widgetPlugins: [WidgetRenderer],
-    schemaPlugins: [],
     types: {},
     custom: {},
 }
+
+const validate = Validator(standardValidators).validate
 
 export const MockSchema: any = createOrderedMap({type: 'object'})
 
@@ -30,7 +33,7 @@ export const MockSchemaProvider: React.ComponentType<{
     widgets: WidgetsBindingFactory
     schema: UISchemaMap
 }> = (
-    {t, widgets, schema}
+    {t, widgets, schema},
 ) => {
     // @ts-ignore
     const [store, setStore] = React.useState(() => createEmptyStore(schema && schema.get('type')))
@@ -43,6 +46,7 @@ export const MockSchemaProvider: React.ComponentType<{
         // @ts-ignore
         widgets={widgets}
         t={t || translateRelative}
+        validate={validate}
     >
         <UIStoreProvider
             store={store}
@@ -57,13 +61,14 @@ export const MockSchemaMetaProvider: React.ComponentType<React.PropsWithChildren
     t?: Translator
     widgets?: WidgetsBindingFactory
 }>> = (
-    {t, widgets, children}
+    {t, widgets, children},
 ) => {
 
     return <UIMetaProvider
         // @ts-ignore
         widgets={widgets}
         t={t || translateRelative}
+        validate={validate}
     >
         {children}
     </UIMetaProvider>

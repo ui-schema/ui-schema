@@ -1,11 +1,6 @@
-import { Map } from 'immutable'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
-
 export const ERROR_MULTIPLE_OF = 'multiple-of'
 
-export const validateMultipleOf = (schema: UISchemaMap, value: any): boolean => {
-    const multipleOf = schema.get('multipleOf')
+export const validateMultipleOf = (multipleOf: number | undefined, value: any): boolean => {
     if (typeof value === 'number' && typeof multipleOf === 'number') {
         // dealing with JS floating point issues,
         // custom floating point to int/ceil logic
@@ -34,16 +29,4 @@ export const validateMultipleOf = (schema: UISchemaMap, value: any): boolean => 
     }
 
     return true
-}
-
-export const multipleOfValidator: SchemaPlugin = {
-    handle: ({schema, value, errors, valid}) => {
-        if (!schema) return {}
-        if (!validateMultipleOf(schema, value)) {
-            valid = false
-            errors = errors.addError(ERROR_MULTIPLE_OF, Map({multipleOf: schema.get('multipleOf')}))
-        }
-
-        return {errors, valid}
-    },
 }

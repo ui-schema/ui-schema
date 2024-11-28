@@ -36,7 +36,7 @@ List of renamed functions, components etc., most are also moved to other package
     - import modular, e.g. `import {define} from '@ui-schema/ds-material/WidgetsDefault/define'`
     - `define(partialBinding)` just generates the basic structure without any plugins or widgets
         - accepts the rest of the binding as parameter
-    - `plugins()` returns `schemaPlugins` and `widgetPlugins`
+    - `plugins()` returns ~~`schemaPlugins`~~ and `widgetPlugins`
     - `widgetsTypes()` just returns `types` widgets
     - `widgetsCustom()` just returns some recommended `custom` widgets
 - `pluginStack` removed, now included directly in `widgetsBinding`
@@ -49,31 +49,49 @@ List of renamed functions, components etc., most are also moved to other package
 
 ### System
 
+- new universal JS utils, system, SchemaPlugins, not coupled to react dependencies
 - removed function `checkNativeValidity` in `schemaToNative`
 - moved react-specific widget matching logic from `widgetMatcher` to `WidgetRenderer`
 
 Todo:
 
 - [ ] optimize errors typing
-    - [ ] reduce immutable usage
+    - [x] reduce immutable usage
+        - internal of Validator plugin system
+        - simplified in props, yet still based on immutable for performance/no-render for same errors
+    - [ ] improved with more information
+        - [x] interoperable to spec - but not fully spec compliant
+            - e.g. use object-tree for faster atomic value extraction, instead of arrays
+            - e.g. include `context` for easier translation, instead of schema reference lookups while rendering errors
+        - [ ] in typing
+            - [x] base information
+            - [ ] tree/nested information
+        - [ ] in validators
+- [x] simplified `ValidatorErrors`, less hierarchy, easier interface for adding own-errors, child-errors and retrieving them
+
+### JSON-Schema
+
+- new universal JS validation system, not coupled to react dependencies
+- rewrite `ValidatorErrors` Record to a simpler `ValidatorOutput` class with simpler errors structure
+    - switched `type` property to `error`
+    - removed `getType` and other utils to get only specific types of error
+    - only passing down the list of errors as props, not the whole `ValidatiorError`
+    - for React: prop `errors` is created inside validator, now only exists when there is an error and is `undefined` otherwise
+
+Todo:
+
+- [x] new validator system
+    - [x] to support version changing
+    - [x] to support extending `validateSchema` (replaced with new `validate` function)
+    - [x] to support the same validators everywhere, in every level
+    - [ ] finalize, optimized and cleaned up
+- [ ] access errors of fields which where evaluated on their parent
 - [ ] validators: improve value typing and functions
     - atm. validators are often strictly typed, while they also must handle any unknown value to only validate the types they are compatible with
 
+> See also [CHANGES_NEXT_VALIDATE_TODOS.md](./CHANGES_NEXT_VALIDATE_TODOS.md) for more specific validator todos.
+
 ### React
-
-#### WidgetsBinding
-
-- `pluginStack` to `widgetPlugins`
-- `pluginSimpleStack` to `schemaPlugins`
-- added `ObjectRenderer` as `type.object` / no longer as hard coded default
-- added `NoWidget` as `NoWidget` / no longer as hard coded default
-- browser error translation switched from `"t": "browser"` to `"tBy": "browser"`
-
-#### React Plugins
-
-- removed `ExtractStorePlugin`, included now in `WidgetEngine` directly (for the moment, experimenting performance/typing)
-- removed `level` property, use `schemaKeys`/`storeKeys` to calc. that when necessary
-- removed `WidgetRenderer` from `getNextPlugin` internals, moved to `widgetPlugins` directly
 
 #### UIStore
 
@@ -115,6 +133,28 @@ Todo:
             - [ ] write of `validity`, separate `value`/`internals`
     - [x] `scopeUpdaterValues`/`scopeUpdaterInternals`/`scopeUpdaterValidity`
 
+#### UIMeta
+
+- stricter types, requires that generics extends `UIMetaContext`
+- added `validate` to context
+- improved context memoization
+
+#### React Plugins / WidgetEngine
+
+- removed `ExtractStorePlugin`, included now in `WidgetEngine` directly (for the moment, experimenting performance/typing)
+- removed `level` property, use `schemaKeys`/`storeKeys` to calc. that when necessary
+- removed `WidgetRenderer` from `getNextPlugin` internals, moved to `widgetPlugins` directly
+
+#### WidgetsBinding
+
+- `pluginStack` to `widgetPlugins`
+- ~~`pluginSimpleStack` to `schemaPlugins`~~
+- added `ObjectRenderer` as `type.object` / no longer as hard coded default
+- added `NoWidget` as `NoWidget` / no longer as hard coded default
+- browser error translation switched from `"t": "browser"` to `"tBy": "browser"`
+- removed `schemaPlugins` and new `SchemaPluginsAdapterBuilder` which receives the plugins as initializer
+- rewrite of validator-schemaPlugins into `ValidatorHandler` for new validator system
+
 ## Todo Bindings
 
 To make bindings more portable, some things should be refactored, removed and newly added.
@@ -136,10 +176,9 @@ New philosophy ideas:
 
 Todos:
 
-- `schemaPlugins`: use as initializer for the `SchemaPluginsAdapter`
-- `schemaPlugins`: split generic "render style" plugins from validator affecting `schemaPlugins` into a `validator`
-- add a new `SchemaValidatorPlugin` to handle validation
+- [x] add a `.validate` to bindings, for universal reuse of any WidgetPlugin and the ValidatorPlugin, handle validation and allow custom validation rules which are used everywhere
     - **todo:** check all current `widgetPlugins` which rely on validation, to normalize and interop with the new validator plugin and callback
+    - **TBD:** added to `UIMetaContext` instead of `widgets` binding, rethink `widgetsBinding` more as a part of `uiMetaBinding`
 - refactor `widgetMatcher` to `widgets` binding, currently internal of `WidgetRenderer`
     - must be usable outside of plugins to match and render widgets in e.g. mui `FormGroup` and other "wrapper widgets", these don't add another layer but should reuse existing bindings, e.g. only relying on `ObjectRenderer`
     - to be able to add complex default for `object` and `array`, there should be a hint which tells if "inside an wrapper-widget" and thus the "native" widget should be returned
@@ -163,7 +202,7 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
 - [ ] tests
     - `ts-jest` needed `compilerOptions.jsx: "react"`, or not? somehow works in other repos without
         - https://github.com/kulshekhar/ts-jest/issues/63
-    - [ ] typechecks are disabled for tests via `isolatedModules` in `jest.config.ts`
+    - [ ] type checks are disabled for tests via `isolatedModules` in `jest.config.ts`
         - but causing a lot of performance strain, from ~20-60s to over 5-20min depending on cache; thus should be always disabled for `tdd`;
           and causing CI to fail then and now; thus disabled again via env flag, but removed exclusions in `tsconfig` and with that included in normal tscheck/dtsgen
     - [ ] optimize all `ts-ignore` with better function signatures or mock data
@@ -181,6 +220,7 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
     - cleanup workarounds in:
         - `NextPluginRenderer`
 - [ ] fix/finalize strict UISchemaMap typing and json-schema types
+- [ ] stricter typings, with many `any` switched to `unknown`
 - [x] finalize `package.json` generation for strict esm with ESM and CJS support
 - [ ] finalize strict-ESM compatible imports/exports, especially in packages
     - [x] switch to strict-ESM for all core packages, with `Node16`
@@ -208,6 +248,8 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
     - a central tsgen command seems to be the easiest, which then merges the declaration files into each packages build
         - reducing type generations, only once per project
         - needs adjustments to not generate for apps like demo/docs
+    - see issues:
+        - https://github.com/ui-schema/ui-schema/issues/94
 - [ ] try out the `publishConfig.directory` option in `package.json`
 - [ ] remove slate/editorjs or migrate to basic react18 support
     - migrate from `@mui/styles`

@@ -9,11 +9,10 @@ import { DummyRenderer } from './component/MuiMainDummy'
 import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 
-const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
+const {widgetPlugins} = WidgetsDefault.plugins()
 const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
     InfoRenderer: InfoRenderer,
     widgetPlugins: widgetPlugins,
-    schemaPlugins: schemaPlugins,
     types: WidgetsDefault.widgetsTypes(),
     custom: {
         ...WidgetsDefault.widgetsCustom(),

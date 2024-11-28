@@ -11,7 +11,7 @@ const MuiJsonEditor = ({title, ...p}: any) => {
         square
         variant={'outlined'}
         style={{
-            margin: theme.spacing(2) + ' ' + theme.spacing(1),
+            margin: theme.spacing(1.5) + ' ' + theme.spacing(1),
             padding: '0 ' + theme.spacing(1),
         }}
         elevation={0}

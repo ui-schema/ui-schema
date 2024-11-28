@@ -1,10 +1,13 @@
 import { test, expect, describe } from '@jest/globals'
+import { makeParams } from '@ui-schema/json-schema/Validator'
+import { ERROR_PATTERN } from '@ui-schema/json-schema/Validators'
 import {
-    validateObject, objectValidator, ERROR_ADDITIONAL_PROPERTIES,
+    validateObject,
+    ERROR_ADDITIONAL_PROPERTIES, objectValidator,
 } from '@ui-schema/json-schema/Validators/ObjectValidator'
 import { createMap, createOrderedMap } from '@ui-schema/system/createMap'
-import { ERROR_PATTERN } from '@ui-schema/json-schema/Validators/PatternValidator'
-import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
+import { newMockState } from '../../../tests/mocks/ValidatorState.mock.js'
+
 
 describe('validateObject', () => {
     test.each([
@@ -12,7 +15,8 @@ describe('validateObject', () => {
             {type: 'object'},
             {},
             0,
-        ], [
+        ],
+        [
             {
                 type: 'object', additionalProperties: false,
                 properties: {
@@ -23,7 +27,8 @@ describe('validateObject', () => {
             },
             {name: 'demo'},
             0,
-        ], [
+        ],
+        [
             {
                 type: 'object', additionalProperties: false,
                 properties: {
@@ -34,7 +39,8 @@ describe('validateObject', () => {
             },
             {name: 'demo'},
             0,
-        ], [
+        ],
+        [
             {
                 type: 'object', additionalProperties: false,
                 properties: {
@@ -45,7 +51,8 @@ describe('validateObject', () => {
             },
             {name: 'demo', street: 'long-street'},
             1,
-        ], [
+        ],
+        [
             {
                 type: 'object', additionalProperties: false,
                 properties: {
@@ -56,7 +63,8 @@ describe('validateObject', () => {
             },
             createMap({name: 'demo'}),
             0,
-        ], [
+        ],
+        [
             {
                 type: 'object', additionalProperties: false,
                 properties: {
@@ -67,7 +75,8 @@ describe('validateObject', () => {
             },
             createMap({name: 'demo', street: 'long-street'}),
             1,
-        ], [
+        ],
+        [
             {
                 type: 'object',
                 propertyNames: {
@@ -76,7 +85,8 @@ describe('validateObject', () => {
             },
             createMap({name: 'abc'}),
             0,
-        ], [
+        ],
+        [
             {
                 type: 'object',
                 propertyNames: {
@@ -85,7 +95,8 @@ describe('validateObject', () => {
             },
             {name: 'abc'},
             0,
-        ], [
+        ],
+        [
             {
                 type: 'object',
                 propertyNames: {
@@ -96,20 +107,21 @@ describe('validateObject', () => {
             1,
         ],
     ])('validateObject(%j, %j)', (schema, value, expected) => {
-        const r = validateObject(createOrderedMap(schema), value)
-        expect(r.errCount).toBe(expected)
+        const state = newMockState()
+        validateObject(createOrderedMap(schema), value, makeParams(), state)
+        expect(state.output.errCount).toBe(expected)
     })
 })
 
 describe('objectValidator', () => {
-    test.each([
+    const testCases: [any, any, any, boolean][] = [
         [
             {type: 'object'},
             {},
-            ERROR_ADDITIONAL_PROPERTIES,
+            [],
             true,
-            false,
-        ], [
+        ],
+        [
             {
                 type: 'object',
                 additionalProperties: false,
@@ -120,10 +132,10 @@ describe('objectValidator', () => {
                 },
             },
             {name: 'demo'},
-            ERROR_ADDITIONAL_PROPERTIES,
+            [],
             true,
-            false,
-        ], [
+        ],
+        [
             {
                 type: 'object',
                 additionalProperties: false,
@@ -134,10 +146,10 @@ describe('objectValidator', () => {
                 },
             },
             {name: 'demo', street: 'long-street'},
-            ERROR_ADDITIONAL_PROPERTIES,
+            [{error: ERROR_ADDITIONAL_PROPERTIES}],
             false,
-            true,
-        ], [
+        ],
+        [
             {
                 type: 'object',
                 propertyNames: {
@@ -145,10 +157,10 @@ describe('objectValidator', () => {
                 },
             },
             {name: 'demo'},
-            ERROR_PATTERN,
+            [],
             true,
-            false,
-        ], [
+        ],
+        [
             {
                 type: 'object',
                 propertyNames: {
@@ -156,21 +168,38 @@ describe('objectValidator', () => {
                 },
             },
             {name_user: 'demo'},
-            ERROR_PATTERN,
+            [{error: ERROR_PATTERN, context: {'pattern': '^((?!user).)*$', 'patternError': undefined}}],
             false,
-            true,
         ],
-    ])(
-        '.handle(%j, %s)',
-        (schema, value, error, expectedValid, expectedError) => {
-            const result = objectValidator.handle({
-                schema: createOrderedMap(schema),
+    ]
+
+    test.each(testCases)(
+        'objectValidator.validate(%j, %s)',
+        (schema, value, errors, expectedValid) => {
+            const state = newMockState()
+            objectValidator.validate(
+                createOrderedMap(schema),
                 value,
-                errors: createValidatorErrors(),
-                valid: true,
-            })
-            expect(result.valid).toBe(expectedValid)
-            expect(result.errors?.hasError(error)).toBe(expectedError)
-        }
+                makeParams(),
+                state,
+            )
+            expect(state.output.errCount === 0).toBe(expectedValid)
+            expect(state.output.errors).toStrictEqual(errors)
+        },
+    )
+
+    test.each(testCases)(
+        'objectValidator.validate(%j, %s) - as immutable',
+        (schema, value, errors, expectedValid) => {
+            const state = newMockState()
+            objectValidator.validate(
+                createOrderedMap(schema),
+                createOrderedMap(value),
+                makeParams(),
+                state,
+            )
+            expect(state.output.errCount === 0).toBe(expectedValid)
+            expect(state.output.errors).toStrictEqual(errors)
+        },
     )
 })

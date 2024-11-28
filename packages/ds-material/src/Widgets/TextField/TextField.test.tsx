@@ -7,8 +7,7 @@ import { render } from '@testing-library/react'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { StringRenderer } from './TextField.js'
 import { List } from 'immutable'
-import { MockSchemaMetaProvider } from '../../../tests/MockSchemaProvider.mock'
-import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
+import { MockSchemaMetaProvider } from '../../../tests/MockSchemaProvider.mock.js'
 
 describe('StringRenderer', () => {
     it('renders html', async () => {
@@ -20,7 +19,6 @@ describe('StringRenderer', () => {
                     storeKeys={List()}
                     valid={false}
                     showValidity={false}
-                    errors={createValidatorErrors()}
                 />
             </MockSchemaMetaProvider>
         )
@@ -40,7 +38,6 @@ describe('StringRenderer', () => {
                     storeKeys={List()}
                     valid={false}
                     showValidity
-                    errors={createValidatorErrors()}
                 />
             </MockSchemaMetaProvider>
         )

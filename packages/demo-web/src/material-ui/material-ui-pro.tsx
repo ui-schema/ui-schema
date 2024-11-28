@@ -24,11 +24,10 @@ import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import Grid from '@mui/material/Grid'
 
-const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
+const {widgetPlugins} = WidgetsDefault.plugins()
 const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
     InfoRenderer: InfoRenderer,
     widgetPlugins: widgetPlugins,
-    schemaPlugins: schemaPlugins,
     types: WidgetsDefault.widgetsTypes(),
     custom: {
         ...WidgetsDefault.widgetsCustom(),

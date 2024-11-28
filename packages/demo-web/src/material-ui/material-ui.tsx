@@ -1,3 +1,11 @@
+import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
+import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
+import { Validator } from '@ui-schema/json-schema/Validator'
+import { requiredValidator } from '@ui-schema/json-schema/Validators'
+import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ReferencingHandler } from '@ui-schema/react-json-schema'
+import { validatorPlugin } from '@ui-schema/react-json-schema/ValidatorPlugin'
+import { SchemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
+import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import React from 'react'
 import { useToggle } from '../component/useToggle'
 import { dataDemoMain, schemaDemoMain, schemaUser } from '../schemas/demoMain'
@@ -5,9 +13,11 @@ import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
-import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
+import { define } from '@ui-schema/ds-material/WidgetsDefault/define'
+import { widgetsCustom } from '@ui-schema/ds-material/WidgetsDefault/widgetsCustom'
+import { widgetsTypes } from '@ui-schema/ds-material/WidgetsDefault/widgetsTypes'
 import { createOrderedMap, createMap } from '@ui-schema/system/createMap'
-import { isInvalid } from '@ui-schema/react/ValidityReporter'
+import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { createStore, createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
@@ -19,14 +29,26 @@ import { TableAdvanced } from '@ui-schema/ds-material/Widgets/TableAdvanced'
 import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
 
-const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
-const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
+const customWidgets = define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
     InfoRenderer: InfoRenderer,
-    widgetPlugins: widgetPlugins,
-    schemaPlugins: schemaPlugins,
-    types: WidgetsDefault.widgetsTypes(),
+    widgetPlugins: [
+        ReferencingHandler,// must be before AND maybe after combining/conditional?
+        SchemaGridHandler,// todo: Grid must be after e.g. ConditionalHandler, but why was it this high? wasn't that because of e.g. conditional object grids?
+        // ExtractStorePlugin,
+        CombiningHandler,
+        DefaultHandler,
+        DependentHandler,
+        ConditionalHandler,
+        SchemaPluginsAdapterBuilder([
+            validatorPlugin,
+            requiredValidator,// must be after validator; todo: remove the compat. plugin
+        ]),
+        ValidityReporter,
+        WidgetRenderer,
+    ],
+    types: widgetsTypes(),
     custom: {
-        ...WidgetsDefault.widgetsCustom(),
+        ...widgetsCustom(),
         SelectChips: SelectChips,
         TableAdvanced: TableAdvanced,
     },
@@ -138,7 +160,11 @@ const Main = () => {
 
 export default function MaterialDemo() {
     return <>
-        <UIMetaProvider widgets={customWidgets} t={browserT}>
+        <UIMetaProvider
+            widgets={customWidgets}
+            t={browserT}
+            validate={Validator(standardValidators).validate}
+        >
             <UIApiProvider loadSchema={loadSchema} noCache>
                 <Main/>
             </UIApiProvider>

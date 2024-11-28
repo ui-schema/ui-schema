@@ -1,9 +1,8 @@
-import { List, Map } from 'immutable'
-import { validateSchema } from '@ui-schema/json-schema/validateSchema'
-import { createValidatorErrors, ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
+import { ValidatorParams, ValidatorState, ValidatorStateNested, ValidatorHandler } from '@ui-schema/json-schema/Validator'
+import { ValidatorOutput } from '@ui-schema/system/ValidatorOutput'
+import { List } from 'immutable'
 import { ERROR_WRONG_TYPE } from '@ui-schema/json-schema/Validators/TypeValidator'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
 
 export const ERROR_DUPLICATE_ITEMS = 'duplicate-items'
 export const ERROR_NOT_FOUND_CONTAINS = 'not-found-contains'
@@ -15,13 +14,17 @@ const findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== 
 
 export const validateArrayContent = (
     itemsSchema: UISchemaMap | List<UISchemaMap>,
-    value: any,
+    value: unknown,
     additionalItems: boolean = true,
+    params: ValidatorParams,
+    // if `output` is in this `state`, the output is added directly to it.
+    // with this the calling function can control if adding errors to global or using the result.
+    state: ValidatorStateNested | ValidatorState,
 ): {
-    err: ValidatorErrorsType
+    output: ValidatorOutput
     found: number
 } => {
-    let err = createValidatorErrors()
+    const output = 'output' in state ? state.output : new ValidatorOutput()
     let found = 0
     if (
         (List.isList(itemsSchema)/* || Array.isArray(itemsSchema)*/)
@@ -36,24 +39,28 @@ export const validateArrayContent = (
             //   but they must be usable for within conditional schemas
             if (!validateAdditionalItems(additionalItems, value, itemsSchema)) {
                 // todo: add index of erroneous item; or at all as one context list, only one error instead of multiple?
-                err = err.addError(ERROR_ADDITIONAL_ITEMS, Map({}))
+                output.addError({error: ERROR_ADDITIONAL_ITEMS})
                 found++
             }
-            /* example: further nested validation
-            const listSize = itemsSchema.size || 0
-            value.forEach((val, i) => {
-                if(i < listSize) {
-                    let tmpErr = validateSchema(itemsSchema.get(i), val);
-                    if(tmpErr.hasError()) {
-                        err = err.addErrors(tmpErr)
+
+            if (params.recursive) {
+                const listSize = itemsSchema.size || 0
+                let i = 0
+                for (const val of value) {
+                    if (i >= listSize) break
+                    const result = state.validate(itemsSchema.get(i), val, params, state)
+                    if (result.valid) {
                         found++
+                    } else if (!('output' in state)) {
+                        result.errors.forEach(err2 => output.addError(err2))
                     }
+                    i++
                 }
-            })*/
+            }
         } else {
             //console.log('val?.toJS()', /*val,*/ schema?.toJS(), value?.toJS())
             // when tuple schema but no-tuple value
-            err = err.addError(ERROR_WRONG_TYPE, Map({actual: typeof value, arrayTupleValidation: true}))
+            output.addError({error: ERROR_WRONG_TYPE, context: {actual: typeof value, arrayTupleValidation: true}})
             found++
         }
     }/* else if(
@@ -68,28 +75,25 @@ export const validateArrayContent = (
     ) {
         // a nested "one-schema-for-all" array, nested in the current array
         console.log('nested one-schema-for-all', itemsSchema?.toJS())
-    }*/ else if (Array.isArray(value) || List.isList(value)) {
+    }*/
+    else if (Array.isArray(value) || List.isList(value)) {
         // }*/ else if(!schemaTypeIs(itemsSchema.get('type'), 'array')) {
         // no nested array, one-schema for all items
         // not validating array content of array here, must be validated with next schema level
-        for(const val of value) {
-            let tmpErr = createValidatorErrors()
+        for (const val of value) {
             // single-validation
             // Cite from json-schema.org: When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
-            const tmpErr2 = validateSchema(itemsSchema, val)
-            if (tmpErr2.hasError()) {
-                tmpErr = tmpErr.addErrors(tmpErr2)
-            }
-            if (tmpErr.errCount === 0) {
+            const result = state.validate(itemsSchema, val, params, state)
+            if (result.valid) {
                 found++
-            } else {
-                err = err.addErrors(tmpErr)
+            } else if (!('output' in state)) {
+                result.errors.forEach(err2 => output.addError(err2))
             }
         }
     }
 
     return {
-        err,
+        output,
         found,
     }
 }
@@ -101,55 +105,59 @@ export const validateAdditionalItems = (additionalItems: boolean, value: List<an
     ))
 }
 
-export const validateItems = (schema: UISchemaMap, value: any): ValidatorErrorsType => {
+export const validateItems = (
+    schema: UISchemaMap,
+    value: any,
+    params: ValidatorParams,
+    state: ValidatorState,
+) => {
     const items = schema.get('items')
     if (items && value) {
-        const item_err = validateArrayContent(items, value, schema.get('additionalItems'))
-        return item_err.err
+        validateArrayContent(items, value, schema.get('additionalItems'), params, state)
     }
-
-    return createValidatorErrors()
 }
 
-export const validateContains = (schema: UISchemaMap, value: List<any> | any[] | any): ValidatorErrorsType => {
-    let errors = createValidatorErrors()
-    if (!(Array.isArray(value) || List.isList(value))) return errors
+export const validateContains = (
+    schema: UISchemaMap,
+    value: List<any> | any[] | any,
+    params: ValidatorParams,
+    state: ValidatorState,
+) => {
+    if (!(Array.isArray(value) || List.isList(value))) return
 
     const contains = schema.get('contains')
-    if (!contains) return errors
+    if (!contains) return
     const contains_type = contains.get('type')
-    if (!contains_type) return errors
+    if (!contains_type) return
 
     const minContains = schema.get('minContains')
     const maxContains = schema.get('maxContains')
 
-    const item_err = validateArrayContent(contains, value, undefined)
+    const item_err = validateArrayContent(contains, value, undefined, {...params, recursive: true}, {validate: state.validate})
 
     if (
         (item_err.found < 1 && typeof minContains === 'undefined' && typeof maxContains === 'undefined') ||
         (typeof minContains === 'number' && minContains > item_err.found) ||
         (typeof maxContains === 'number' && maxContains < item_err.found)
     ) {
-        if (item_err.err.errCount !== 0) {
-            errors = errors.addErrors(item_err.err)
+        if (item_err.output.errCount !== 0) {
+            item_err.output.errors.forEach(err => state.output.addError(err))
         }
     }
 
     if (typeof minContains === 'number' && minContains > item_err.found) {
-        errors = errors.addError(ERROR_MIN_CONTAINS, Map({minContains}))
+        state.output.addError({error: ERROR_MIN_CONTAINS, context: {minContains}})
     }
     if (typeof maxContains === 'number' && maxContains < item_err.found) {
-        errors = errors.addError(ERROR_MAX_CONTAINS, Map({maxContains}))
+        state.output.addError({error: ERROR_MAX_CONTAINS, context: {maxContains}})
     }
 
     if (
         minContains !== 0 &&
         ((Array.isArray(value) && value.length === 0) || (List.isList(value) && value.size === 0))
     ) {
-        errors = errors.addError(ERROR_NOT_FOUND_CONTAINS)
+        state.output.addError({error: ERROR_NOT_FOUND_CONTAINS})
     }
-
-    return errors
 }
 
 export const validateUniqueItems = (schema: UISchemaMap, value: List<any> | any[] | unknown): boolean => {
@@ -165,18 +173,15 @@ export const validateUniqueItems = (schema: UISchemaMap, value: List<any> | any[
     return true
 }
 
-export const arrayValidator: SchemaPlugin = {
-    should: ({value}) => {
-        return List.isList(value) || Array.isArray(value)
-    },
-    handle: ({schema, value, errors, valid}) => {
-        if (!schema) return {}
+export const arrayValidator: ValidatorHandler = {
+    types: ['array'],
+    validate: (schema, value, params, state) => {
+        if (!schema || !value) return
         // unique-items sub-schema is intended for dynamics and for statics, e.g. Selects could have duplicates but also a SimpleList of strings
         const uniqueItems = schema?.get('uniqueItems')
-        if (uniqueItems && value) {
+        if (uniqueItems) {
             if (!validateUniqueItems(schema, value)) {
-                valid = false
-                errors = errors.addError(ERROR_DUPLICATE_ITEMS)
+                state.output.addError({error: ERROR_DUPLICATE_ITEMS})
             }
         }
 
@@ -190,26 +195,16 @@ export const arrayValidator: SchemaPlugin = {
          * - full sub-schema validation is done (and possible) if the sub-schema is rendered through e.g. PluginStack isVirtual
          */
         const items = schema?.get('items')
-        if (items && value) {
-            const items_err = validateItems(schema, value)
-            if (items_err.hasError()) {
-                valid = false
-                //errors = errors.addChildErrors(items_err);
-                errors = errors.addErrorsToChild(items_err)
-            }
+        if (items && params.recursive) {
+            validateItems(schema, value, params, state)
         }
 
         // `contains` sub-schema is intended for components which may be dynamic, but the error is intended to be shown on the root-component and not the sub-schema, as not clear which-sub-schema it is, "1 out of n sub-schemas must be valid" can not logically translated to "specific sub-schema X is invalid"
         // todo: the error displayed on the the array component may be confusing, it should be possible to distinct between "own-errors" and child-errors
         //    maybe adding a possibility to update the validity for sub-schemas from the parent-component?
         const contains = schema?.get('contains')
-        if (contains && value) {
-            const containsError = validateContains(schema, value)
-            if (containsError.hasError()) {
-                valid = false
-                errors = errors.addErrors(containsError)
-            }
+        if (contains) {
+            validateContains(schema, value, params, state)
         }
-        return {errors, valid}
     },
 }

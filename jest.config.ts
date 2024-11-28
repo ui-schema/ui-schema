@@ -67,7 +67,8 @@ const base: Partial<Config.InitialOptions> = {
     ],
     extensionsToTreatAsEsm: ['.ts', '.tsx'],
     coveragePathIgnorePatterns: [
-        '(tests/.*.mock).(jsx?|tsx?|ts?|js?)$',
+        '.*.mock.(jsx?|tsx?|ts?|js?|json?)$',
+        '/mocks/.*',
         '.*.(test|spec).(js|ts|tsx)$',
         '<rootDir>/packages/demo-server',
         '<rootDir>/packages/demo-web',
@@ -93,20 +94,24 @@ const base: Partial<Config.InitialOptions> = {
 
 const config: Config.InitialOptions = {
     ...base,
-    collectCoverage: true,
     verbose: true,
     projects: [
         ...packages.map((pkg) => ({
             displayName: 'test-' + pkg[0],
             ...base,
-            moduleDirectories: ['node_modules', '<rootDir>/packages/' + toPackageFolder(pkg) + '/node_modules'/*, '<rootDir>/packages/' + pkg, '<rootDir>/packages/' + pkg + '/src'*/],
-            //moduleDirectories: ['node_modules', '<rootDir>/packages/ui-schema/node_modules', '<rootDir>/packages/ds-material/node_modules'],
+            moduleDirectories: [
+                'node_modules',
+                '<rootDir>/packages/' + toPackageFolder(pkg) + '/node_modules',
+                /*'<rootDir>/packages/' + pkg, '<rootDir>/packages/' + pkg + '/src'*/
+            ],
             testMatch: [
                 '<rootDir>/packages/' + toPackageFolder(pkg) + '/src/**/*.(test|spec).(js|ts|tsx)',
                 '<rootDir>/packages/' + toPackageFolder(pkg) + '/tests/**/*.(test|spec).(js|ts|tsx)',
             ],
         })),
     ],
+    collectCoverage: true,
+    coverageReporters: ['clover', 'json', 'lcov', 'text', 'html-spa'],
     coverageDirectory: '<rootDir>/coverage',
 }
 

@@ -75,10 +75,10 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors, required}: Widge
     const classForm = ['custom-control', 'custom-checkbox']
     const classLabel = ['custom-control-label', 'text-light']
     const classFormControl = ['custom-control-input', 'checkbox-inline']
-    if (showValidity && errors?.hasError()) {
+    if (showValidity && errors?.size) {
         classFormControl.push('is-invalid')
     }
-    if (showValidity && !errors?.hasError()) {
+    if (showValidity && !errors?.size) {
         classForm.push('was-validated')
     }
 

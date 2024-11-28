@@ -1,4 +1,4 @@
-import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
+import { ValidationErrorsImmutable } from '@ui-schema/system/ValidatorOutput'
 import { WidgetPayload } from '@ui-schema/system/Widget'
 
 /**
@@ -8,8 +8,11 @@ export interface WithValuePlain {
     value: unknown
 }
 
+/**
+ * @todo should it be the actual state class? now only added from within the validator schema plugin
+ */
 export interface WithValidatorErrors {
-    errors: ValidatorErrorsType
+    errors?: ValidationErrorsImmutable
 }
 
 /**

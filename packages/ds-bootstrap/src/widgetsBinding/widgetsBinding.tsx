@@ -8,7 +8,6 @@ import { OptionsRadio } from '@ui-schema/ds-bootstrap/Widgets/OptionsRadio'
 import { SimpleList } from '@ui-schema/ds-bootstrap/Widgets/SimpleList'
 import { GroupRenderer } from '@ui-schema/ds-bootstrap/Grid'
 import { widgetPlugins } from '@ui-schema/ds-bootstrap/widgetPlugins'
-import { getValidators } from '@ui-schema/json-schema/getValidators'
 import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 
 const MyFallbackComponent = ({type, widget}: ErrorFallbackProps) => (
@@ -18,8 +17,6 @@ const MyFallbackComponent = ({type, widget}: ErrorFallbackProps) => (
         <p><strong>Widget:</strong> {widget}</p>
     </div>
 )
-
-const validators = getValidators()
 
 export interface BtsWidgetBinding extends WidgetsBindingFactory {
     types: {
@@ -40,7 +37,6 @@ export const widgets: BtsWidgetBinding = {
     ErrorFallback: MyFallbackComponent,
     GroupRenderer,
     widgetPlugins: widgetPlugins,
-    schemaPlugins: validators,
     // todo: fix all existing bootstrap widget typings
     types: {
         object: ObjectRenderer,

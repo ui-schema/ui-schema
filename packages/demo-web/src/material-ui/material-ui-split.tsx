@@ -46,7 +46,7 @@ const CustomTable: React.ComponentType<WidgetProps> = ({widgets, ...props}) => {
         widgets={customWidgets}
     />
 }
-const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
+const {widgetPlugins} = WidgetsDefault.plugins()
 const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
     InfoRenderer: InfoRenderer,
     // the referencing network handler should be at first position
@@ -56,7 +56,6 @@ const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType
     // widgetPlugins.splice(0, 0, ReferencingNetworkHandler)
     // widgetPlugins.splice(1, 0, InjectSplitSchemaPlugin)
     widgetPlugins: [InjectSplitSchemaPlugin, ...widgetPlugins],
-    schemaPlugins: schemaPlugins,
     types: WidgetsDefault.widgetsTypes(),
     custom: {
         ...WidgetsDefault.widgetsCustom(),

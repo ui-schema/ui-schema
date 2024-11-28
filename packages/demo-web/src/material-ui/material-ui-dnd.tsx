@@ -33,10 +33,9 @@ import Paper from '@mui/material/Paper'
 type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
     SortableList: React.ComponentType<WidgetProps<CustomWidgetsBinding> & WithScalarValue>
 }>
-const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
+const {widgetPlugins} = WidgetsDefault.plugins()
 const customWidgets = WidgetsDefault.define<CustomWidgetsBinding, {}>({
     widgetPlugins: widgetPlugins,
-    schemaPlugins: schemaPlugins,
     types: {
         ...WidgetsDefault.widgetsTypes(),
     },

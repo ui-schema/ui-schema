@@ -21,7 +21,7 @@ import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { WidgetOptionsRead } from '@ui-schema/ds-material/WidgetsRead/WidgetOptionsRead'
 import { GroupRendererProps, WidgetType } from '@ui-schema/react/Widgets'
-import { UIMetaProvider, useUIMeta } from '@ui-schema/react/UIMeta'
+import { UIMetaContext, UIMetaProvider, useUIMeta } from '@ui-schema/react/UIMeta'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
@@ -32,7 +32,7 @@ import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 
 // custom `GroupRenderer` that supports `is-read and display-dense`
 const GroupRenderer: React.ComponentType<GroupRendererProps> = ({schema, children, noGrid}) => {
-    const {readDense, readActive} = useUIMeta<UIMetaReadContextType>()
+    const {readDense, readActive} = useUIMeta<UIMetaContext & UIMetaReadContextType>()
     return noGrid ? children as unknown as React.ReactElement :
         <Grid
             container
@@ -152,12 +152,11 @@ export interface ReadWidgetsBinding {
 
 // Notice: `customWidgets` are supplied by the global `UIMetaProvider` at the end of this file,
 //         while `readWidgets` are supplied in the nested `UIMetaProvider` - which re-uses everything else from the global provider
-const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
+const {widgetPlugins} = WidgetsDefault.plugins()
 const customWidgets = {
     ...WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
         InfoRenderer: InfoRenderer,
         widgetPlugins: widgetPlugins,
-        schemaPlugins: schemaPlugins,
         types: WidgetsDefault.widgetsTypes(),
         custom: {
             ...WidgetsDefault.widgetsCustom(),
@@ -201,6 +200,7 @@ const ReadableWritableEditor = () => {
     const customWidgetsRtd = React.useMemo(() => ({
         ...widgets,
         schemaPlugins: [
+            // @ts-expect-error not yet migrated to new SchemaPluginsAdapter
             ...widgets.schemaPlugins || [],
             SortPlugin,
             // non-read widgets do not support a `dense` property by default, thus forcing with inheriting from parent schema
@@ -222,7 +222,7 @@ const ReadableWritableEditor = () => {
             <Button onClick={() => setDense(e => !e)}>{dense ? 'normal-size' : 'dense'}</Button>
             <Button onClick={() => setSort(e => !e)}>{sort ? 'no-sort' : 'sort'}</Button>
         </Box>
-        <UIMetaProvider<UIMetaReadContextType>
+        <UIMetaProvider<UIMetaContext<typeof customWidgetsRtd> & UIMetaReadContextType>
             // re-use & overwrite of the global meta-context
             widgets={customWidgetsRtd} {...metaCtx}
             // custom meta-ctx only available within this UIMetaProvider context

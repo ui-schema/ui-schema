@@ -201,17 +201,19 @@ export const DemoForm = () => {
     </>
 };
 
-const {widgetPlugins, schemaPlugins} = getStandardPlugins()
+const {widgetPlugins} = getStandardPlugins()
 const customWidgets = defineBinding({
     widgetPlugins: widgetPlugins,
-    schemaPlugins: schemaPlugins,
     types: getTypeWidgets(),
     custom: getCustomWidgets(),
 })
 
+const validate = Validator(standardValidators).validate
+
 export default function App() {
     return <UIMetaProvider
         widgets={customWidgets}
+        validate={validate}
         t={translateRelative}
         // never pass down functions like this - always use e.g. `React.useCallback`, check performance docs for more
         //t={(text, context, schema) => {/* add translations */}}

@@ -1,12 +1,12 @@
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
+import { ValidationErrorsImmutable } from '@ui-schema/system/ValidatorOutput'
 import { Map } from 'immutable'
 import React from 'react'
 import { Translate } from '@ui-schema/react/Translate'
 
 export interface ValidityHelperTextProps {
     showValidity: boolean | undefined
-    errors?: ValidatorErrorsType
+    errors: ValidationErrorsImmutable | undefined
     schema: UISchemaMap
 }
 
@@ -27,17 +27,14 @@ const LocaleHelperText = ({text, schema, context, className}: LocaleHelperTextPr
 }
 
 const ValidityHelperText = ({showValidity, errors, schema}: ValidityHelperTextProps) =>
-    showValidity && errors?.hasError() ?
-        errors.getErrors().keySeq().map((type) =>
-            errors.getError(type).map((err, i) =>
-                <LocaleHelperText
-                    key={type + '.' + i}
-                    schema={schema}
-                    className={'invalid-feedback'}
-                    text={'error.' + type}
-                    context={err}
-                />,
-            ),
+    showValidity && errors?.size ?
+        errors.map((err, i) =>
+            <LocaleHelperText
+                key={err.get('error') + '.' + i} schema={schema}
+                text={'error.' + err.get('error')}
+                context={err.get('context')}
+                className={'invalid-feedback'}
+            />,
         ).valueSeq()
         : null
 

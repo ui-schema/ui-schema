@@ -3,26 +3,25 @@
  */
 import { expect, describe, test } from '@jest/globals'
 import { render } from '@testing-library/react'
-import { SchemaPluginsAdapter } from '@ui-schema/react/SchemaPluginsAdapter'
+import { SchemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { SchemaPluginStack } from '@ui-schema/system/SchemaPluginStack'
 
 describe('SchemaPluginsAdapter', () => {
     test('SchemaPluginsAdapter', async () => {
+        const SchemaPluginsAdapter = SchemaPluginsAdapterBuilder([
+            {handle: () => ({valid: true})},
+        ])
         const {queryByText} = render(
             // @ts-ignore
             <SchemaPluginsAdapter
                 // @ts-ignore
-                handled
-                // @ts-ignore
                 widgets={{
                     types: {
-                        // @ts-ignore
-                        string: ({valid, handled}: { valid?: boolean, handled?: boolean }) =>
-                            valid === true && handled === true ? 'is-valid' : 'is-invalid',
+                        string: ({valid}: { valid?: boolean, handled?: boolean }) =>
+                            valid ? 'is-valid' : 'is-invalid',
                     },
-                    schemaPlugins: [{handle: () => ({valid: true})}],
                     widgetPlugins: [WidgetRenderer],
                 }}
                 schema={createOrderedMap({type: 'string'})}

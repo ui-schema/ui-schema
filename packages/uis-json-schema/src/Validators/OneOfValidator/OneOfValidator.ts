@@ -1,51 +1,47 @@
-import { List, Map } from 'immutable'
-import { validateSchema } from '@ui-schema/json-schema/validateSchema'
-import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
+import { ValidatorParams, ValidatorState, ValidatorHandler } from '@ui-schema/json-schema/Validator'
+import { ValidatorOutput } from '@ui-schema/system/ValidatorOutput'
+import { List } from 'immutable'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
 
 export const ERROR_ONE_OF_INVALID = 'one-of-is-invalid'
 
-export const validateOneOf = (oneOfSchemas: List<UISchemaMap>, value: any, recursively: boolean = false) => {
-    let errors = createValidatorErrors()
+export const validateOneOf = (
+    oneOfSchemas: List<UISchemaMap>,
+    value: any,
+    params: ValidatorParams,
+    state: ValidatorState,
+) => {
     let errorCount = 0
-    if (
-        (List.isList(oneOfSchemas) || Array.isArray(oneOfSchemas))
-    ) {
-        const schemas = List.isList(oneOfSchemas) ? oneOfSchemas.toArray() : oneOfSchemas
-        for (const schema of schemas) {
-            const tmpErr = validateSchema(schema as unknown as UISchemaMap, value, recursively)
-            if (tmpErr.hasError()) {
-                errors = errors.addErrors(tmpErr)
-                errorCount++
-            } else {
-                errors = createValidatorErrors()
+    const output = new ValidatorOutput()
+    if (List.isList(oneOfSchemas)) {
+        // todo: oneOf should only validate to exactly one; yet that increases performance profile unnecessarily(?)
+        for (const schema of oneOfSchemas) {
+            const result = state.validate(schema, value, params, {root: state.root})
+            if (result.valid) {
                 errorCount = 0
                 break
+            } else {
+                errorCount++
+                result.errors.forEach(err => output.addError(err))
             }
         }
     }
 
+    if (errorCount) {
+        // todo: instead of adding `errors` directly, it should be a new error for `oneOf`,
+        //       which contains the errors itself? (check last part against spec)
+        output.errors.forEach(err => state.output.addError(err))
+    }
+
     return {
-        errors,
         errorCount,
     }
 }
 
-export const oneOfValidator: SchemaPlugin = {
-    should: ({schema}) => {
-        return List.isList(schema?.get('oneOf'))
-    },
-    handle: ({schema, value, errors, valid}) => {
+export const oneOfValidator: ValidatorHandler = {
+    validate: (schema, value, params, state) => {
         const oneOfSchemas = schema?.get('oneOf')
-        if (oneOfSchemas) {
-            const tmpErrors = validateOneOf(oneOfSchemas, value)
-            if (tmpErrors.errorCount > 0) {
-                valid = false
-                errors = errors?.addChildErrors(tmpErrors.errors)
-                errors = errors?.addError(ERROR_ONE_OF_INVALID, schema as Map<string, any>)
-            }
-        }
-        return {errors, valid}
+        if (!oneOfSchemas) return
+        validateOneOf(oneOfSchemas, value, {...params, recursive: true}, state)
     },
 }

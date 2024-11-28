@@ -18,10 +18,10 @@ export const SelectMulti = extractValue(memo(({schema, storeKeys, showValidity, 
 
     const classForm = ['selectpicker', 'custom-select']
     const classFormParent = ['form-group']
-    if (showValidity && errors?.hasError()) {
+    if (showValidity && errors?.size) {
         classForm.push('is-invalid')
     }
-    if (showValidity && !errors?.hasError()) {
+    if (showValidity && !errors?.size) {
         classForm.push('was-validated')
     }
     const currentValue = typeof value !== 'undefined' ? value :

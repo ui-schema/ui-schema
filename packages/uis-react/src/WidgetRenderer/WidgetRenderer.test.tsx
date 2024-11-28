@@ -43,7 +43,6 @@ describe('WidgetRenderer', () => {
                         ExtractStorePlugin,
                         WidgetRenderer,
                     ],
-                    schemaPlugins: [],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string'})}
@@ -66,7 +65,6 @@ describe('WidgetRenderer', () => {
                         ExtractStorePlugin,
                         WidgetRenderer,
                     ],
-                    schemaPlugins: [],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string', widget: 'Text'})}
@@ -90,7 +88,6 @@ describe('WidgetRenderer', () => {
                         ExtractStorePlugin,
                         WidgetRenderer,
                     ],
-                    schemaPlugins: [],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string'})}
@@ -115,7 +112,6 @@ describe('WidgetRenderer', () => {
                         ExtractStorePlugin,
                         WidgetRenderer,
                     ],
-                    schemaPlugins: [],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string', widget: 'Text'})}
@@ -140,7 +136,6 @@ describe('WidgetRenderer', () => {
                         ExtractStorePlugin,
                         WidgetRenderer,
                     ],
-                    schemaPlugins: [],
                 }}
                 value={[]}
                 schema={createOrderedMap({type: 'array'})}
@@ -165,7 +160,6 @@ describe('WidgetRenderer', () => {
                         ExtractStorePlugin,
                         WidgetRenderer,
                     ],
-                    schemaPlugins: [],
                 }}
                 value={{}}
                 schema={createOrderedMap({type: 'object', widget: 'CustomObj'})}
@@ -200,7 +194,6 @@ describe('WidgetRenderer', () => {
                             ExtractStorePlugin,
                             WidgetRenderer,
                         ],
-                        schemaPlugins: [],
                     }}
                     value={value}
                     virtualWidgets={virtualWidgets}
@@ -264,7 +257,6 @@ describe('WidgetRenderer', () => {
                             ExtractStorePlugin,
                             WidgetRenderer,
                         ],
-                        schemaPlugins: [],
                     }}
                     value={value}
                     virtualWidgets={virtualWidgets2}
@@ -298,7 +290,6 @@ describe('WidgetRenderer', () => {
                 ExtractStorePlugin,
                 WidgetRenderer,
             ],
-            schemaPlugins: [],
         }
         const value = createOrderedMap({dummy_array: ['lorem ipsum', 42]})
         const store = createStore(value)
@@ -363,7 +354,6 @@ describe('WidgetRenderer', () => {
                 ExtractStorePlugin,
                 WidgetRenderer,
             ],
-            schemaPlugins: [],
         }
         const value = createOrderedMap({dummy_array: [['lorem ipsum', 42], ['dolor sit', 43]]})
         const store = createStore(value)

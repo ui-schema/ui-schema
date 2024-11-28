@@ -7,8 +7,7 @@ import '@testing-library/jest-dom/jest-globals'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { StringRendererDebounced } from './TextFieldDebounced.js'
 import { List } from 'immutable'
-import { MockSchemaMetaProvider } from '../../../tests/MockSchemaProvider.mock'
-import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
+import { MockSchemaMetaProvider } from '../../../tests/MockSchemaProvider.mock.js'
 
 describe('StringRendererDebounced', () => {
     it('renders html', async () => {
@@ -20,7 +19,6 @@ describe('StringRendererDebounced', () => {
                     storeKeys={List()}
                     valid={false}
                     showValidity={false}
-                    errors={createValidatorErrors()}
                 />
             </MockSchemaMetaProvider>
         )
@@ -40,7 +38,6 @@ describe('StringRendererDebounced', () => {
                     storeKeys={List()}
                     valid={false}
                     showValidity
-                    errors={createValidatorErrors()}
                 />
             </MockSchemaMetaProvider>
         )

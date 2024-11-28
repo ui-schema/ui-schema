@@ -1,9 +1,9 @@
+import { ValidationErrorsImmutable } from '@ui-schema/system/ValidatorOutput'
 import React from 'react'
 import { OrderedMap } from 'immutable'
 import { useUID } from 'react-uid'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { memo } from '@ui-schema/react/Utils/memo'
@@ -35,7 +35,7 @@ const AccordionStackBase: React.ComponentType<WidgetProps<MuiWidgetsBinding<{ In
         showValidity,
         isOpen, setOpen, valid, widgets,
     } = props
-    const [errors, setErrors] = React.useState<ValidatorErrorsType | undefined>()
+    const [errors, setErrors] = React.useState<ValidationErrorsImmutable | undefined>()
     const elevation = parentSchema?.getIn(['view', 'ev']) as AccordionProps['elevation']
     const variant = parentSchema?.getIn(['view', 'variant']) as AccordionProps['variant']
     const titleVariant = parentSchema?.getIn(['view', 'titleVariant']) as TypographyProps['variant']

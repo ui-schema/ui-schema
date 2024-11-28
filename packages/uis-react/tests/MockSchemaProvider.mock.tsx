@@ -1,6 +1,8 @@
 /**
  * @jest-environment jsdom
  */
+import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
+import { Validator } from '@ui-schema/json-schema/Validator'
 import { ObjectRenderer } from '@ui-schema/react-json-schema'
 import { NoWidget } from '@ui-schema/react/NoWidget'
 import { OrderedMap } from 'immutable'
@@ -31,12 +33,13 @@ export const MockWidgets: WidgetsBindingFactory<{}, {
     NoWidget: NoWidget,
     VirtualRenderer: VirtualWidgetRenderer,
     widgetPlugins: [WidgetRenderer],
-    schemaPlugins: [],
     types: {
         object: ObjectRenderer,
     },
     custom: {},
 }
+
+const validate = Validator(standardValidators).validate
 
 export const MockSchema: OrderedMap<any, any> = createOrderedMap({type: 'object'})
 
@@ -58,6 +61,7 @@ export const MockSchemaProvider: React.ComponentType<{
         // @ts-ignore
         widgets={widgets}
         t={t || translateRelative}
+        validate={validate}
     >
         <UIStoreProvider
             store={store}
@@ -79,6 +83,7 @@ export const MockSchemaMetaProvider: React.ComponentType<React.PropsWithChildren
         // @ts-ignore
         widgets={widgets}
         t={t || translateRelative}
+        validate={validate}
     >
         {children}
     </UIMetaProvider>

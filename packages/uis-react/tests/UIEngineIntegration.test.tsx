@@ -1,6 +1,9 @@
 /**
  * @jest-environment jsdom
  */
+import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
+import { Validator } from '@ui-schema/json-schema/Validator'
+import { validatorPlugin } from '@ui-schema/react-json-schema/ValidatorPlugin'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import React, { PropsWithChildren } from 'react'
 import { it, expect, describe } from '@jest/globals'
@@ -15,9 +18,8 @@ import {
     CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ReferencingHandler,
 } from '@ui-schema/react-json-schema'
 import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
-import { SchemaPluginsAdapter } from '@ui-schema/react/SchemaPluginsAdapter'
+import { SchemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import { getValidators } from '@ui-schema/json-schema/getValidators'
 import { translateRelative } from '@ui-schema/system/TranslatorRelative'
 import { JsonSchema } from '@ui-schema/json-schema/Definitions'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
@@ -60,18 +62,19 @@ widgets.widgetPlugins = [
     DefaultHandler,
     DependentHandler,
     ConditionalHandler,
-    SchemaPluginsAdapter,
+    SchemaPluginsAdapterBuilder([
+        validatorPlugin,
+    ]),
     ValidityReporter,
     WidgetRenderer,
 ]
-widgets.schemaPlugins = getValidators()
 
 widgets.types.string = function WidgetString(props: WidgetProps) {
     return <>
         <span data-path={props.storeKeys.join('.')}>string-renderer</span>
         <span><TranslateTitle schema={props.schema} storeKeys={props.storeKeys}/></span>
         {props.valid ? null : <span>string-with-error</span>}
-        {props.errors?.hasError() ? <span>{JSON.stringify(props.errors.errorsToJS())}</span> : null}
+        {props.errors?.size ? <span>{JSON.stringify(props.errors)}</span> : null}
     </>
 }
 
@@ -112,7 +115,6 @@ const TestUIRenderer = (props: {
     notT?: boolean
     noStore?: boolean
 }) => {
-
     // needed variables and setters for the UIGenerator, create wherever you like
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(props.data || {demo_string: ''})))
 
@@ -184,6 +186,8 @@ const TestUIRenderer = (props: {
         },
         allOf: [{
             if: {
+                // todo: for v0.5.x validator rewrite, if `undefined`, this now needs `type` to be `invalid`
+                type: 'object',
                 properties: {
                     demo_string: {
                         type: 'string',
@@ -224,6 +228,7 @@ const TestUIRenderer = (props: {
     return <UIMetaProvider
         widgets={widgets}
         t={props.notT ? translateRelative : (text: string) => text}
+        validate={Validator(standardValidators).validate}
     >
         <UIStoreProvider
             store={props.noStore ? undefined : store}
@@ -256,7 +261,7 @@ describe('UIGenerator Integration', () => {
         const {queryByText, queryAllByText, container} = render(
             <TestUIRenderer noStore/>,
         )
-        // expect(container).toMatchSnapshot()
+        //expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-container').length).toBe(1)
         expect(container.querySelectorAll('.group-renderer').length).toBe(2)
 
@@ -287,7 +292,7 @@ describe('UIGenerator Integration', () => {
         // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-container').length === 1).toBeTruthy()
         expect(container.querySelectorAll('.group-renderer').length > 0).toBeTruthy()
-        expect(queryByText('widget.demo_string.title') == null).toBeTruthy()
+        expect(queryByText('widget.demo_string.title') === null).toBeTruthy()
         expect(queryByText('missing-custom-Text') !== null).toBeTruthy()
     })
     it('TestUIRendererError', async () => {

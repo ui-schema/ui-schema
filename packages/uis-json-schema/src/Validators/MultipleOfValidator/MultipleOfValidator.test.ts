@@ -1,11 +1,9 @@
 import { test, expect, describe } from '@jest/globals'
-import { OrderedMap, Map } from 'immutable'
 import {
-    validateMultipleOf, multipleOfValidator, ERROR_MULTIPLE_OF,
+    validateMultipleOf,
 } from '@ui-schema/json-schema/Validators/MultipleOfValidator'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { UISchema, JsonSchemaNumber } from '@ui-schema/json-schema/Definitions'
-import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
 
 describe('validateMultipleOf', () => {
     type validateMultipleOfTest = [
@@ -217,55 +215,8 @@ describe('validateMultipleOf', () => {
         'validateMultipleOf(%j, %j) : %s',
         (schema, value, expected) => {
             const orderedSchema = createOrderedMap(schema)
-            expect(validateMultipleOf(orderedSchema, value)).toBe(expected)
+            expect(validateMultipleOf(orderedSchema.get('multipleOf'), value)).toBe(expected)
         },
     )
 })
 
-describe('multipleOfValidator', () => {
-    type multipleOfValidatorTest = [
-        // schema:
-        JsonSchemaNumber,
-        // value:
-        any,
-        // error:
-        [string, Map<string, unknown>],
-        // expectedValid:
-        boolean,
-        // expectedError:
-        boolean
-    ]
-
-    const multipleOfValidatorTestValues: multipleOfValidatorTest[] = [
-        [
-            {type: 'number', multipleOf: 2},
-            2,
-            [ERROR_MULTIPLE_OF, Map({multipleOf: 2})],
-            true,
-            false,
-        ], [
-            {type: 'number', multipleOf: 2},
-            3,
-            [ERROR_MULTIPLE_OF, Map({multipleOf: 2})],
-            false,
-            true,
-        ],
-    ]
-
-    test.each(multipleOfValidatorTestValues)(
-        '.handle(%j, %s)',
-        (schema, value, error, expectedValid, expectedError) => {
-            const result = multipleOfValidator.handle({
-                schema: OrderedMap(schema),
-                value,
-                errors: createValidatorErrors(),
-                valid: true,
-            })
-            expect(result.valid).toBe(expectedValid)
-            expect(result.errors?.hasError(error[0])).toBe(expectedError)
-            if (result.errors?.hasError(error[0])) {
-                expect(result.errors?.getError(error[0]).get(0)?.equals(error[1])).toBe(expectedError)
-            }
-        },
-    )
-})

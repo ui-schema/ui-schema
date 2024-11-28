@@ -3,6 +3,7 @@ import { Map } from 'immutable'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { handleIfElseThen } from '@ui-schema/react-json-schema/ConditionalHandler'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { newMockStateNested } from '../../../uis-json-schema/tests/mocks/ValidatorState.mock.js'
 
 /**
  * npm test -- --testPathPattern=ConditionalHandler --watch --watchman --coverage=false
@@ -13,6 +14,8 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
  * npm run test -- --runTestsByPath "./packages/uis-react-json-schema/src/ConditionalHandler/handleIfElseThen.test.ts"
  * npm run test -- --runTestsByPath "./packages/uis-react-json-schema/src/ConditionalHandler/handleIfElseThen.test.ts" --selectProjects test-@ui-schema/react-json-schema
  */
+
+
 describe('handleIfElseThen', () => {
     test.each([
         [
@@ -315,10 +318,16 @@ describe('handleIfElseThen', () => {
     ] as [UISchemaMap, Map<string, string | number>, UISchemaMap, UISchemaMap, boolean][])(
         'handleIfElseThen(%j, store, distSchema)',
         (schema, store, distSchema, expectedSchema, expected) => {
-            /*if(handleIfElseThen(schema, store, distSchema).equals(expectedSchema) !== expected) {
-                console.log(handleIfElseThen(schema, store, distSchema).toJS())
-            }*/
-            expect(handleIfElseThen(schema, store, distSchema).equals(expectedSchema)).toBe(expected)
+            const state = newMockStateNested()
+            const result = handleIfElseThen(schema, store, distSchema, state)
+            const equals = result.equals(expectedSchema)
+            if (equals !== expected) {
+                console.log(
+                    'failed handleIfElseThen',
+                    JSON.stringify(result, undefined, 2),
+                )
+            }
+            expect(equals).toBe(expected)
         },
     )
 })

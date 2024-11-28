@@ -1,4 +1,5 @@
 import React from 'react'
+import { MapOf } from 'immutable'
 import { onChangeHandler, UIStoreType } from '@ui-schema/react/UIStore'
 import { UIStoreActionsContext, UIStoreActionsProvider, UIStoreActions } from '@ui-schema/react/UIStoreActions'
 
@@ -65,6 +66,9 @@ export interface WithValue<A = UIStoreActions> {
     onChange: onChangeHandler<A>
 }
 
+/**
+ * @todo remove this typing, `WithValue` should be used with type guards
+ */
 export interface WithScalarValue<A = UIStoreActions> {
     value: string | number | boolean | undefined | null
     internalValue: any
@@ -72,8 +76,24 @@ export interface WithScalarValue<A = UIStoreActions> {
     onChange: onChangeHandler<A>
 }
 
+// todo: this type leads to circular references
+// type Validity = MapOf<{
+//     valid?: boolean
+//     children: List<Validity> | Map<string, Validity>
+// }>
+//
+// --- while this leads to "type definition is excessively deep" ---
+// type Validity2 = FromJS<{
+//     valid?: boolean
+//     children: Validity2[] | Record<string, Validity2>
+// }>
+type Validity = MapOf<{
+    valid?: boolean
+    children: any
+}>
+
 export interface WithValidity<A = UIStoreActions> {
-    validity: any
+    validity: Validity | undefined
     onChange: onChangeHandler<A>
     showValidity?: UIStoreContext['showValidity']
 }

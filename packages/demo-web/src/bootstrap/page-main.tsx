@@ -1,3 +1,5 @@
+import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
+import { Validator } from '@ui-schema/json-schema/Validator'
 import React from 'react'
 import { Dashboard } from './Dashboard'
 import { schemaTestBts, dataDemoMain } from '../schemas/demoBts'
@@ -21,7 +23,11 @@ const DemoGrid = () => {
         setStore(storeUpdater(actions))
     }, [setStore])
 
-    return <UIMetaProvider widgets={widgets} t={browserT}>
+    return <UIMetaProvider
+        widgets={widgets}
+        t={browserT}
+        validate={Validator(standardValidators).validate}
+    >
         <UIStoreProvider
             store={store}
             onChange={onChange}
@@ -43,7 +49,11 @@ const MainStore = () => {
     }, [setStore])
 
     return <React.Fragment>
-        <UIMetaProvider widgets={widgets} t={browserT}>
+        <UIMetaProvider
+            widgets={widgets}
+            t={browserT}
+            validate={Validator(standardValidators).validate}
+        >
             <UIStoreProvider
                 store={store}
                 onChange={onChange}

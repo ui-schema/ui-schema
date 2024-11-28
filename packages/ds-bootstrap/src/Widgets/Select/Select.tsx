@@ -16,10 +16,10 @@ export const Select = ({schema, storeKeys, showValidity, errors, value, onChange
 
     const classForm = ['selectpicker', 'custom-select']
     const classFormParent = ['form-group']
-    if (showValidity && errors?.hasError()) {
+    if (showValidity && errors?.size) {
         classForm.push('is-invalid')
     }
-    if (showValidity && !errors?.hasError()) {
+    if (showValidity && !errors?.size) {
         classForm.push('was-validated')
     }
     const currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '')

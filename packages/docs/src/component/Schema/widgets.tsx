@@ -1,4 +1,14 @@
+import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
+import { define, widgetsCustom, widgetsTypes } from '@ui-schema/ds-material/WidgetsDefault'
+import { requiredValidator } from '@ui-schema/json-schema/Validators'
+import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
+import { Validator } from '@ui-schema/json-schema/Validator'
 import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd'
+import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ReferencingHandler } from '@ui-schema/react-json-schema'
+import { validatorPlugin } from '@ui-schema/react-json-schema/ValidatorPlugin'
+import { SchemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
+import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
+import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import React, { lazy, Suspense } from 'react'
 /*import {
@@ -15,9 +25,9 @@ import { NumberRendererCell, StringRendererCell, TextRendererCell } from '@ui-sc
 import { Table } from '@ui-schema/ds-material/Widgets/Table'
 import { DragDropBlockSelector } from '@ui-schema/material-dnd/DragDropBlockSelector'
 import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
-import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { TableAdvanced } from '@ui-schema/ds-material/Widgets'
+import { browserT } from '../../t'
 //import {WidgetColorful} from '@ui-schema/material-colorful'
 /*import {
     HexColorPicker,
@@ -64,18 +74,30 @@ const CustomTable = ({widgets, ...props}: WidgetProps) => {
     />
 }
 
-const {widgetPlugins, schemaPlugins} = WidgetsDefault.plugins()
-export const customWidgets = WidgetsDefault.define<{
+export const customWidgets = define<{
     InfoRenderer?: React.ComponentType<InfoRendererProps>
     DndBlockSelector?: DragDropBlockComponentsBinding['DndBlockSelector']
 }, {}>({
     InfoRenderer: InfoRenderer,
-    widgetPlugins: widgetPlugins,
-    schemaPlugins: schemaPlugins,
+    widgetPlugins: [
+        ReferencingHandler,// must be before AND maybe after combining/conditional?
+        SchemaGridHandler,// todo: Grid must be after e.g. ConditionalHandler, but why was it this high? wasn't that because of e.g. conditional object grids?
+        // ExtractStorePlugin,
+        CombiningHandler,
+        DefaultHandler,
+        DependentHandler,
+        ConditionalHandler,
+        SchemaPluginsAdapterBuilder([
+            validatorPlugin,
+            requiredValidator,// must be after validator; todo: remove the compat. plugin
+        ]),
+        ValidityReporter,
+        WidgetRenderer,
+    ],
     DndBlockSelector: DragDropBlockSelector,
-    types: WidgetsDefault.widgetsTypes(),
+    types: widgetsTypes(),
     custom: {
-        ...WidgetsDefault.widgetsCustom(),
+        ...widgetsCustom(),
         SelectChips: SelectChips,
         Table: CustomTable,
         TableAdvanced: TableAdvanced,
@@ -144,3 +166,9 @@ export const customWidgets = WidgetsDefault.define<{
 })
 
 const LazyEditorJs = lazy(() => import('./EditorJSComp').then(r => ({default: r.EditorJSComp})))
+
+export const uiMeta = {
+    validate: Validator(standardValidators).validate,
+    widgets: customWidgets,
+    t: browserT,
+}

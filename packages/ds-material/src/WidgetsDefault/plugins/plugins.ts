@@ -5,15 +5,11 @@ import { CombiningHandler } from '@ui-schema/react-json-schema/CombiningHandler'
 import { ConditionalHandler } from '@ui-schema/react-json-schema/ConditionalHandler'
 import { DependentHandler } from '@ui-schema/react-json-schema/DependentHandler'
 import { ReferencingHandler } from '@ui-schema/react-json-schema/ReferencingHandler'
-import { SchemaPluginsAdapter } from '@ui-schema/react/SchemaPluginsAdapter'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
-import { getValidators } from '@ui-schema/json-schema/getValidators'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
-import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
 
 export const plugins = (): {
     widgetPlugins: WidgetPluginType[]
-    schemaPlugins: SchemaPlugin[]
 } => {
     const widgetPlugins: WidgetPluginType[] = [
         ReferencingHandler,// must be before AND maybe after combining/conditional?
@@ -23,13 +19,12 @@ export const plugins = (): {
         DefaultHandler,
         DependentHandler,
         ConditionalHandler,
-        SchemaPluginsAdapter,
+        // SchemaPluginsAdapter,
         ValidityReporter,
         WidgetRenderer,
     ]
 
     return {
         widgetPlugins,
-        schemaPlugins: getValidators(),
     }
 }

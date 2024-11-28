@@ -1,7 +1,5 @@
 import { expect, describe, test } from '@jest/globals'
-import { List, OrderedMap } from 'immutable'
-import { checkValueExists, ERROR_NOT_SET, requiredValidator } from '@ui-schema/json-schema/Validators/RequiredValidator'
-import { createValidatorErrors } from '@ui-schema/system/ValidatorErrors'
+import { checkValueExists } from '@ui-schema/json-schema/Validators/RequiredValidator'
 
 describe('checkValueExists', () => {
     test.each([
@@ -30,80 +28,4 @@ describe('checkValueExists', () => {
     ] as [any, string, boolean][])('checkValueExists(%j, %s)', (value, type, expected) => {
         expect(checkValueExists(type, value)).toBe(expected)
     })
-})
-
-describe('requiredValidator', () => {
-    test.each(([
-        [List(['name']), List(['name']), true],
-        [List(['name']), List(['street']), false],
-        [undefined, List(['name']), false],
-        [undefined, List(['name']), false],
-    ]) as [List<string> | undefined, List<string>, boolean][])(
-        '.should(%j, %s)',
-        (requiredList, storeKeys, expectedValid) => {
-            expect(requiredValidator.should?.({
-                errors: createValidatorErrors(),
-                value: undefined,
-                requiredList: requiredList,
-                storeKeys,
-            })).toBe(expectedValid)
-        },
-    )
-
-    test.each([
-        [
-            'string',
-            'text1',
-            ERROR_NOT_SET,
-            true,
-            false,
-        ], [
-            'string',
-            2,
-            ERROR_NOT_SET,
-            true,
-            false,
-        ], [
-            'string',
-            '2',
-            ERROR_NOT_SET,
-            true,
-            false,
-        ], [
-            'string',
-            '',
-            ERROR_NOT_SET,
-            false,
-            true,
-        ], [
-            'string',
-            undefined,
-            ERROR_NOT_SET,
-            false,
-            true,
-        ],
-    ])(
-        '.handle(%j, %s)',
-        (type, value, error, expectedValid, expectedError) => {
-            const result = requiredValidator.handle({
-                schema: OrderedMap({type}),
-                value,
-                errors: createValidatorErrors(),
-                valid: true,
-            })
-            expect(result.valid).toBe(expectedValid)
-            expect(result.errors?.hasError(error)).toBe(expectedError)
-        },
-    )
-
-    test(
-        '.noHandle(%j, %s)',
-        () => {
-            const result = requiredValidator.noHandle?.({
-                value: undefined,
-                errors: createValidatorErrors(),
-            })
-            expect(result?.required).toBe(false)
-        },
-    )
 })

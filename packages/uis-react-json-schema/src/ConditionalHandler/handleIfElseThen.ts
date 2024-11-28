@@ -1,4 +1,4 @@
-import { validateSchema } from '@ui-schema/json-schema/validateSchema'
+import { makeParams, ValidatorStateNested } from '@ui-schema/json-schema/Validator'
 import { mergeSchema } from '@ui-schema/system/Utils/mergeSchema'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
@@ -9,15 +9,25 @@ export const handleIfElseThen = (
     // the schema which contains the if / else / then part
     schema: UISchemaMap,
     // the value against which the `distSchema` is validated
-    value: any,
+    value: unknown,
     // the schema which must be valid for having `then` applied
     distSchema: UISchemaMap,
+    state: ValidatorStateNested,
 ): UISchemaMap => {
     const keyIf = schema.get('if')
     const keyThen = schema.get('then')
     const keyElse = schema.get('else')
     if (keyIf) {
-        if (0 === validateSchema(keyIf, value, true).errCount) {
+        const result = state.validate(
+            keyIf,
+            value,
+            {
+                ...makeParams(),
+                recursive: true,
+            },
+            {root: state.root},
+        )
+        if (result.valid) {
             // no errors in schema found, `then` should be rendered
             if (keyThen) {
                 distSchema = mergeSchema(distSchema, keyThen)

@@ -19,7 +19,6 @@ import { WidgetProps } from '@ui-schema/react/Widgets'
 import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
 import { StoreKeys } from '@ui-schema/system/ValueStore'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { ValidatorErrorsType } from '@ui-schema/system/ValidatorErrors'
 
 const ThumbComponent = ({onDelete, canDelete, children, ...p}) => {
     const [hover, setHover] = React.useState(false)
@@ -55,7 +54,7 @@ const NumberSliderRenderer: React.FC<{
     schema: UISchemaMap
     showValidity?: boolean
     valid?: boolean
-    errors?: ValidatorErrorsType
+    errors?: WidgetProps['errors']
     required?: boolean
 } & WithValue> = (
     {
