@@ -1,8 +1,9 @@
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
+import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
-import { requiredValidator } from '@ui-schema/json-schema/Validators'
 import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ReferencingHandler } from '@ui-schema/react-json-schema'
+import { requiredPlugin } from '@ui-schema/react-json-schema/RequiredPlugin'
 import { validatorPlugin } from '@ui-schema/react-json-schema/ValidatorPlugin'
 import { SchemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
@@ -41,7 +42,8 @@ const customWidgets = define<{ InfoRenderer?: React.ComponentType<InfoRendererPr
         ConditionalHandler,
         SchemaPluginsAdapterBuilder([
             validatorPlugin,
-            requiredValidator,// must be after validator; todo: remove the compat. plugin
+            // requiredValidator,// must be after validator; todo: remove the compat. plugin
+            requiredPlugin,
         ]),
         ValidityReporter,
         WidgetRenderer,
@@ -158,12 +160,17 @@ const Main = () => {
     </Grid>
 }
 
+const validate = Validator([
+    ...standardValidators,
+    requiredValidatorLegacy,
+]).validate
+
 export default function MaterialDemo() {
     return <>
         <UIMetaProvider
             widgets={customWidgets}
             t={browserT}
-            validate={Validator(standardValidators).validate}
+            validate={validate}
         >
             <UIApiProvider loadSchema={loadSchema} noCache>
                 <Main/>

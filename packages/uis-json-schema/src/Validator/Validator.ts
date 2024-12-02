@@ -28,6 +28,10 @@ export type MappedType<TTypes extends JsonSchemaKeywordType[]> =
         : never
 
 export type ValidatorHandler<TTypes extends JsonSchemaKeywordType[] | undefined = JsonSchemaKeywordType[] | undefined> = {
+    /**
+     * unique ID of a validator, only the last one will be kept
+     */
+    id?: string
     types?: TTypes
     validate: (
         schema: any,
@@ -56,10 +60,20 @@ type ValidatorsRegister = {
     handlers: ValidatorHandler['validate'][]
 }
 
+function deduplicateByLast<T extends { id?: string }>(array: T[]): T[] {
+    const map = new Map<string | Symbol, T>()
+
+    for (const item of array) {
+        map.set(item.id || Symbol(), item)
+    }
+
+    return Array.from(map.values())
+}
+
 export function createRegister(
     validators: ValidatorHandler[],
 ) {
-    const register = validators.reduce<ValidatorsRegister>((register, validator) => {
+    const register = deduplicateByLast(validators).reduce<ValidatorsRegister>((register, validator) => {
         if (validator.types) {
             validator.types?.forEach((type) => {
                 if (!register.valueHandlers.has(type)) {

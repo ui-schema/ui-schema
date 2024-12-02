@@ -12,6 +12,7 @@ export const validatorPlugin: SchemaPlugin = {
             {
                 instanceLocation: props.storeKeys?.toArray() || [],
                 instanceKey: ownKey,
+                parentSchema: props.parentSchema,
             },
         )
         if (result.valid) {

@@ -64,6 +64,25 @@ describe('Validator', () => {
         expect(register.handlers.length).toBe(1)
     })
 
+    test('createRegister overwrite handler', () => {
+        const register = createRegister([
+            {
+                id: 'string',
+                validate: () => {
+                    // noop
+                },
+            },
+            {
+                id: 'string',
+                validate: () => {
+                    // noop
+                },
+            },
+        ])
+
+        expect(register.handlers.length).toBe(1)
+    })
+
     test('createRegister debug', () => {
         const register = createRegister([
             {

@@ -21,6 +21,10 @@ export type ValidateState =
 export type ValidateLocationParams = {
     instanceLocation: (number | string)[]
     instanceKey?: number | string
+    /**
+     * Especially for compatibility with `<=0.4.x` `required` validation.
+     */
+    parentSchema?: any
 }
 
 export type ValidateControlParams = {

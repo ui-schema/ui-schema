@@ -18,6 +18,7 @@ import { List, Map, Record } from 'immutable'
 
 export const standardValidators: ValidatorHandler[] = [
     {
+        id: 'type',
         // `type` validator
         validate: (schema, value, params, state) => {
             const type = schema.get('type')
@@ -154,6 +155,7 @@ export const standardValidators: ValidatorHandler[] = [
         },
     },
     {
+        id: 'required',
         // `required` validator - modern
         // todo: this is breaking the per-field validation used before,
         //       thus required-error won't reach the actual field
@@ -161,6 +163,7 @@ export const standardValidators: ValidatorHandler[] = [
         validate: (schema, value, _params, state) => {
             const requiredList = schema?.get('required') as List<string> | undefined
             if (!requiredList || !value) return
+            // todo: the new validator only checks existence, not the "HTML-like required" like before
             if (Map.isMap(value) || Record.isRecord(value)) {
                 requiredList.forEach(requiredKey => {
                     if (!value.has(requiredKey)) {
@@ -174,36 +177,13 @@ export const standardValidators: ValidatorHandler[] = [
                     }
                 })
             }
-            // todo: the new validator only checks existence, not the "HTML-like required" like before
-            // const type = schema.get('type') as string | List<string>
-            // if (!checkValueExists(type, value)) {
-            //     state.output.addError(ERROR_NOT_SET)
-            // }
         },
     },
-    // {
-    //     // `required` validator - legacy
-    //     types: ['object'],
-    //     validate: (schema, value, params, state) => {
-    //         const instanceKey = params.instanceKey
-    //         if (typeof instanceKey === 'undefined') return
-    //         const requiredList = parentSchema?.get('required') as List<string | number> | undefined
-    //         if (!requiredList) return
-    //         if (!requiredList.includes(instanceKey)) return
-    //         if (
-    //             typeof value === 'undefined'
-    //             // todo: make HTML-like-required configurable; add `id` to validators to allow easy overwriting of existing?
-    //             || value === ''
-    //             || value === false
-    //         ) {
-    //             state.output.addError(ERROR_NOT_SET)
-    //         }
-    //     },
-    // },
     arrayValidator,
     objectValidator,
     oneOfValidator,
     {
+        id: 'format:email',
         // `format: "email"` validator
         types: ['string' as const],
         validate: (schema, value, _params, state) => {
