@@ -1,12 +1,6 @@
-import { List } from 'immutable'
-
-//
-// npm run test -- --testPathPattern=uis-json-pointer/src
-//
-
 export const testCases: {
     pointer: string
-    keySeqPointer?: List<string | number>
+    keys: (string | number)[]
     data: Object
     value: string
 }[] = [
@@ -15,7 +9,7 @@ export const testCases: {
     {
         // a valid JSON-pointer
         pointer: '/foo/bar~0/baz~1/%a',
-        keySeqPointer: List(['foo', 'bar~', 'baz/', '%a']),
+        keys: ['foo', 'bar~', 'baz/', '%a'],
         data: {
             foo: {'bar~': {'baz/': {'%a': 'value'}}},
         },
@@ -32,14 +26,14 @@ export const testCases: {
     {
         // valid JSON-pointer as stated in RFC 6901 #1
         pointer: '',
-        keySeqPointer: List([]),
+        keys: [],
         data: 'value',
         value: 'value',
     },
     {
         // valid JSON-pointer as stated in RFC 6901 #2
         pointer: '/foo',
-        keySeqPointer: List(['foo']),
+        keys: ['foo'],
         data: {
             foo: 'value',
         },
@@ -48,7 +42,7 @@ export const testCases: {
     {
         // valid JSON-pointer as stated in RFC 6901 #3
         pointer: '/foo/0',
-        keySeqPointer: List(['foo', 0]),
+        keys: ['foo', '0'],
         data: {
             foo: ['bar', 'baz'],
         },
@@ -57,14 +51,14 @@ export const testCases: {
     {
         // valid JSON-pointer as stated in RFC 6901 #4
         pointer: '/',
-        keySeqPointer: List([]),
+        keys: [],
         data: 'bar',
         value: 'bar',
     },
     {
         // valid JSON-pointer as stated in RFC 6901 #9
         pointer: '/i\\j',
-        keySeqPointer: List(['i\\j']),
+        keys: ['i\\j'],
         data: {
             'i\\j': 'value',
         },
@@ -73,7 +67,7 @@ export const testCases: {
     {
         // valid JSON-pointer as stated in RFC 6901 #11
         pointer: '/ ',
-        keySeqPointer: List([' ']),
+        keys: [' '],
         data: {
             ' ': 'value',
         },
@@ -90,7 +84,7 @@ export const testCases: {
     {
         // valid JSON-pointer (- used as object member name)
         pointer: '/foo/-/bar',
-        keySeqPointer: List(['foo', '-', 'bar']),
+        keys: ['foo', '-', 'bar'],
         data: {
             'foo': {
                 '-': {'bar': 'a', 'baz': 'b'},
@@ -101,7 +95,7 @@ export const testCases: {
     {
         // valid JSON-pointer (float used as object member name)
         pointer: '/foo/1.0',
-        keySeqPointer: List(['foo', '1.0']),
+        keys: ['foo', '1.0'],
         data: {
             'foo': {
                 '1.0': 'var',

@@ -91,6 +91,13 @@ Todo:
 
 > See also [CHANGES_NEXT_VALIDATE_TODOS.md](./CHANGES_NEXT_VALIDATE_TODOS.md) for more specific validator todos.
 
+### JSON-Pointer
+
+- added `toPointer` to create a json-pointer from `array | List`
+- `pointerToKeySeq` no longer casts keys to `number`
+- rewrite `resolvePointer` to work with native-JS and immutable, manually iterating all keys
+    - casts the key to `number` if the current value is `array | List`, only proceeds if is not-NaN (e.g. to prevent access to `arr['length']`)
+
 ### React
 
 #### UIStore
