@@ -131,13 +131,12 @@ export const CustomLayout = () => {
                 servicePolicyLabel: 'Service Policy',
                 serviceStores: 'Stores:',
                 serviceReceives: 'Receives:',
-                // todo: add labels
-                serviceStoresFeature: '',
-                serviceStoresName: '',
-                serviceStoresExpires: '',
-                serviceStoresDomain: '',
-                serviceStoresIn: '',
-                serviceStoresDescription: '',
+                serviceStoresFeature: 'Feature',
+                serviceStoresName: 'Name',
+                serviceStoresExpires: 'Expires',
+                serviceStoresDomain: 'Domain',
+                serviceStoresIn: 'In',
+                serviceStoresDescription: 'Description',
             }}
         />
     </>

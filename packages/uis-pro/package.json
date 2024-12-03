@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/pro",
-    "version": "0.0.13",
+    "version": "0.0.14",
     "description": "Components and Utilities for more advanced usages of UI-Schema",
     "homepage": "https://ui-schema.bemit.codes/docs/pro",
     "author": "Michael Becker <michael@bemit.codes>",

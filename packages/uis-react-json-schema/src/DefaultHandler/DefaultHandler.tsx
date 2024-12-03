@@ -51,6 +51,6 @@ export const DefaultHandler: React.FC<DefaultHandlerProps & WidgetPluginProps> =
         nextValue = defaultVal
     }
 
-    return <Plugin {...props} value={nextValue} currentPluginIndex={currentPluginIndex}/>
+    return <Plugin {...props} value={nextValue} currentPluginIndex={next}/>
 }
 

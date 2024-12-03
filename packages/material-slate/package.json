@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-slate",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "description": "Slate for UI-Schema with Material-UI",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
