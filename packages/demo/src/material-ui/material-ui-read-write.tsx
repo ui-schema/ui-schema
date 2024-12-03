@@ -3,13 +3,16 @@ import AppTheme from './layout/AppTheme'
 import Dashboard from './dashboard/Dashboard'
 import Grid, { GridSpacing } from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
-import { MuiWidgetBinding, SchemaGridHandler, SelectChips, widgets } from '@ui-schema/ds-material'
+import { MuiWidgetBinding } from '@ui-schema/ds-material/BindingType'
+import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
+import { BoolRenderer, NumberRenderer, OptionsCheck, OptionsRadio, Select, SelectChips, SelectMulti, StringRenderer, TextRenderer } from '@ui-schema/ds-material/Widgets'
+import { widgets } from '@ui-schema/ds-material/widgetsBindingBasic'
 import {
     createOrderedMap, createStore,
     GroupRendererProps,
     UIMetaProvider, UIStoreProvider,
     useUIMeta, WidgetType,
-    UIStoreActions, UIStoreType, injectPluginStack, isInvalid, StoreSchemaType, ReferencingHandler, ExtractStorePlugin, CombiningHandler, DefaultHandler, DependentHandler, ConditionalHandler, PluginSimpleStack, ValidityReporter,
+    UIStoreActions, UIStoreType, injectPluginStack, isInvalid, StoreSchemaType, ReferencingHandler, ExtractStorePlugin, CombiningHandler, DefaultHandler, DependentHandler, ConditionalHandler, PluginSimpleStack, ValidityReporter, validators,
 } from '@ui-schema/ui-schema'
 import { schemaTypeToDistinct } from '@ui-schema/ui-schema/Utils/schemaTypeToDistinct'
 import { browserT } from '../t'
@@ -162,7 +165,9 @@ export interface ReadWidgetsBinding {
 //         while `readWidgets` are supplied in the nested `UIMetaProvider` - which re-uses everything else from the global provider
 const customWidgets = {
     ...widgets,
-    pluginsStack: [
+    GroupRenderer: GroupRenderer,
+    pluginSimpleStack: validators,
+    pluginStack: [
         ReferencingHandler,
         SchemaGridHandler,
         ExtractStorePlugin,
@@ -173,11 +178,20 @@ const customWidgets = {
         PluginSimpleStack,
         ValidityReporter,
     ],
-}
-customWidgets.GroupRenderer = GroupRenderer
-customWidgets.custom = {
-    ...customWidgets.custom,
-    SelectChips: SelectChips,
+    types: {
+        string: StringRenderer,
+        boolean: BoolRenderer,
+        number: NumberRenderer,
+        integer: NumberRenderer,
+    },
+    custom: {
+        Text: TextRenderer,
+        Select,
+        SelectMulti,
+        OptionsCheck,
+        OptionsRadio,
+        SelectChips: SelectChips,
+    },
 }
 
 const readWidgets: ReadWidgetsBinding = {
