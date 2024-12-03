@@ -47,8 +47,8 @@
         "react-router-dom": "^5.1.2",
         "react-uid": "^2.2.0",
         "scheduler": "^0.18.0",
-        "slate": "~0.60.8",
-        "slate-history": "~0.60.8",
+        "slate": "~0.110.2",
+        "slate-history": "~0.110.3",
         "slate-hyperscript": "~0.60.8",
         "slate-react": "~0.60.8",
         "styled-components": "^5.0.0"
