@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ds-bootstrap",
-    "version": "0.4.2",
+    "version": "0.4.3",
     "description": "Bootstrap Binding for UI-Schema",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -34,19 +34,20 @@
     "scripts": {
         "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/ds-bootstrap/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*"
     },
+    "sideEffects": false,
     "devDependencies": {
         "@types/react": "^18.0",
         "react": "^18.0",
         "react-dom": "^18.0",
         "clsx": "^1.1.0",
-        "immutable": "^4.0.0"
+        "immutable": "^5.0.0"
     },
     "dependencies": {
         "react-uid": "^2.2.0"
     },
     "peerDependencies": {
         "@ui-schema/ui-schema": "~0.3.0 || ~0.4.0-alpha",
-        "immutable": "^4.0.0",
+        "immutable": "^4.0.0 || ^5.0.0",
         "clsx": "^1.1.0",
         "react": "^16.8 || ^17.0 || ^18.0"
     },

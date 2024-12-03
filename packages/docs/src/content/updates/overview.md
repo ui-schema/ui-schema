@@ -13,6 +13,79 @@ Check [this discussion](https://github.com/ui-schema/ui-schema/discussions/184) 
 > - the code tag `ui-schema` refers to `ui-schema` or is used as core package prefix
 > - [meaning of emojis](https://gist.github.com/elbakerino/1cd946c4269681d659eede5c828920b7)
 
+### v0.4.7
+
+> @ 2024-12-03
+
+*None breaking.*
+
+#### `ui-schema@0.4.7`
+
+- ✨ support `type: "object"` widget binding
+    - only intended for supplying a custom `ObjectRenderer`, adding a default widget for `object` is safer via a [SimplePlugin](/docs/core-pluginstack#simple-plugins)
+      as the `object` binding is used in e.g. ds-material for rendering the object content inside container widgets like `FormGroup`
+- 🔧 include immutable v5 in peer dependency range
+- 🔧 add `sideEffects: false` to root `package.json`
+- 🐛 fix `DefaultHandler` plugin, which caused the following plugin to run twice
+    - using default plugins, this did not affect behaviour, as the subsequent plugins behave idempotent
+
+#### `ds-material@0.4.3`
+
+- ✨ add `widgetsBindingBasic`, for easier setup of custom bindings without increased bundle size
+    - does not include any default widgets
+    - does not include any default plugins and validators
+- ✨ move widget binding type exports to `BindingType`, while keeping existing exports in `widgetsBinding` for backwards compatibility
+- ✨ add missing types for all supported `type` bindings: `array`, `object`, `null`; make all `type` widget bindings optional
+- 🔧 include immutable v5 in peer dependency range
+    - fix stricter typing in v5: in `TableRenderer`, added `5` as default for rows-per-page
+- 🔧 add `sideEffects: false` to root `package.json`
+
+Example of `widgetsBindingBasic`:
+
+```tsx
+import { MuiWidgetBinding } from '@ui-schema/ds-material/BindingType'
+import { pluginStack } from '@ui-schema/ds-material/pluginStack'
+import { validators } from '@ui-schema/ui-schema/Validators/validators'
+import { BoolRenderer, NumberRenderer, Select, SelectMulti, StringRenderer, TextRenderer } from '@ui-schema/ds-material/Widgets'
+import { widgets } from '@ui-schema/ds-material/widgetsBindingBasic'
+
+const customWidgets: MuiWidgetBinding = {
+    ...widgets,
+
+    // add the default plugins or provide your own:
+    pluginSimpleStack: validators,
+    pluginStack: pluginStack,
+
+    // add support for `type` keyword widgets
+    types: {
+        string: StringRenderer,
+        boolean: BoolRenderer,
+        number: NumberRenderer,
+        integer: NumberRenderer,
+    },
+
+    // add some widgets for the `widget` keyword
+    custom: {
+        Text: TextRenderer,
+        Select: Select,
+        SelectMulti: SelectMulti,
+    },
+}
+```
+
+#### Misc
+
+Include immutable v5 in peer dependency range and add `sideEffects: false` to all root `package.json`:
+
+- `ds-bootstrap@0.4.3`
+- `dictionary@0.0.13`
+- `material-pickers@0.4.0-alpha.6`
+- `pro@0.0.14`
+- `kit-dnd@0.0.8`
+- `material-dnd@0.0.17`
+- `material-editorjs@0.0.14`
+- `material-slate@0.0.13`
+
 ### v0.4.6
 
 > @ 2024-11-01

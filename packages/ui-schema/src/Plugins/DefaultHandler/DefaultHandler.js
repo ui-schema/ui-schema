@@ -46,7 +46,7 @@ const DefaultHandler = (props) => {
         nextValue = defaultVal;
     }
 
-    return <Plugin {...props} value={nextValue} currentPluginIndex={currentPluginIndex}/>;
+    return <Plugin {...props} value={nextValue} currentPluginIndex={next}/>;
 };
 
 export {DefaultHandler}

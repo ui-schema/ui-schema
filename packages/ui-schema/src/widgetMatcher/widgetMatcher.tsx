@@ -51,10 +51,10 @@ export function widgetMatcher<W extends WidgetsBindingFactory<{}, WidgetsBinding
         const distinctInputType = schemaTypeToDistinct(schemaType)
 
         if (distinctInputType) {
-            if (distinctInputType === 'object') {
-                Widget = ObjectRenderer
-            } else if (widgets.types[distinctInputType]) {
+            if (widgets.types[distinctInputType]) {
                 Widget = widgets.types[distinctInputType] as WidgetType<{}, W>
+            }else if (distinctInputType === 'object') {
+                Widget = ObjectRenderer
             } else if (distinctInputType === 'null') {
                 Widget = null
             } else {

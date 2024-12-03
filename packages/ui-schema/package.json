@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ui-schema",
-    "version": "0.4.6",
+    "version": "0.4.7",
     "description": "JSON-Schema based UI and Form Generator for React, for any Design-System",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -34,14 +34,15 @@
         "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*",
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
+    "sideEffects": false,
     "devDependencies": {
-        "immutable": "^4.0.0",
+        "immutable": "^5.0.0",
         "@types/react": "^18.0",
         "react": "^18.0",
         "react-dom": "^18.0"
     },
     "peerDependencies": {
-        "immutable": "^4.0.0",
+        "immutable": "^4.0.0 || ^5.0.0",
         "react": "^16.8 || ^17.0 || ^18.0",
         "@types/react": "^16.8 || ^17.0 || ^18.0"
     },
