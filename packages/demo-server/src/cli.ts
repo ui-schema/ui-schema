@@ -1,4 +1,4 @@
-import process from 'process'
+import process from 'node:process'
 import boot from './boot.js'
 import { validateCommand } from './commands/validateCommand.js'
 import { pointerCommand } from './commands/pointerCommand.js'

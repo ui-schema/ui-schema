@@ -1,8 +1,8 @@
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
+import path from 'node:path'
+import url from 'node:url'
 import dotenv from 'dotenv'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
 
 let dotenvRes = dotenv.config({
     path: __dirname + '/.env',
@@ -11,7 +11,7 @@ let dotenvRes = dotenv.config({
 if (dotenvRes.error) {
     if (dotenvRes.error.message.indexOf('ENOENT:') === 0) {
         dotenvRes = dotenv.config({
-            path: dirname(__dirname) + '/.env',
+            path: path.dirname(__dirname) + '/.env',
         })
     }
 }

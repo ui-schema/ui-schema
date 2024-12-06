@@ -1,5 +1,5 @@
 import app from './function.js'
-import process from 'process'
+import process from 'node:process'
 
 const server = app.listen(process.env.PORT || 4199, () => {
     console.log('server: listening on port ' + (process.env.PORT || 4199))
