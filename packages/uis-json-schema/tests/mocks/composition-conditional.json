@@ -1,0 +1,52 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+        "type": {
+            "type": "string",
+            "not": {
+                "const": "media"
+            }
+        }
+    },
+    "if": {
+        "properties": {
+            "teaser": {
+                "const": true
+            }
+        },
+        "required": [
+            "teaser"
+        ]
+    },
+    "then": {
+        "properties": {
+            "content": {
+                "type": "string",
+                "maxLength": 300
+            }
+        }
+    },
+    "else": {
+        "properties": {
+            "content": {
+                "type": "string"
+            }
+        }
+    },
+    "allOf": [
+        {
+            "properties": {
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "properties": {
+                "meta": {
+                    "type": "object"
+                }
+            }
+        }
+    ]
+}

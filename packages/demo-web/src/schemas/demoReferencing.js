@@ -57,7 +57,7 @@ export const schemaDemoReferencing = createOrderedMap({
             type: 'object',
             allOf: [
                 {
-                    if: {properties: {country: {$ref: '#germany'}}},
+                    if: {type: 'object', properties: {country: {$ref: '#germany'}}, required: ['country']},
                     then: {properties: {privacy: {type: 'boolean'}}},
                     else: {properties: {}},
                 },
@@ -97,7 +97,7 @@ export const schemaDemoReferencing = createOrderedMap({
                 },
             ],
         },
-        support_request: {'$ref': 'definitions.json#/support_request'},
+        support_request: {'$ref': '/api/definitions.json#/support_request'},
         person: {
             $ref: '#/definitions/person',
             info: ['List of persons and their related children, begin with the oldest known person.'],
@@ -143,11 +143,11 @@ export const schemaDemoReferencingNetwork = createOrderedMap({
     properties: {
         address: {$ref: 'http://localhost:4200/api/address-schema.json'},
         shipping_address: {
-            $ref: 'address-schema.json',
+            $ref: '/api/address-schema.json',
             version: '0.0.6',
         },
         business_country: {
-            $ref: 'address-schema.json/#properties/country',
+            $ref: '/api/address-schema.json#/properties/country',
             //version: '0.0.1',
         },
     },
@@ -184,7 +184,7 @@ export const schemaDemoReferencingNetworkB = createOrderedMap({
                                 },
                             },
                             properties: {
-                                person: {$ref: 'user-schema.json'},
+                                person: {$ref: 'api/user-schema.json'},
                                 country: {$ref: '#country'},
                             },
                         },
@@ -192,7 +192,7 @@ export const schemaDemoReferencingNetworkB = createOrderedMap({
                 },
                 {
                     //$ref: 'api/address-schema.json',
-                    $ref: 'address-schema.json',
+                    $ref: '/api/address-schema.json',
                 },
                 {
                     properties: {

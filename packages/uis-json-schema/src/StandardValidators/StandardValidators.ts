@@ -1,4 +1,4 @@
-import { ValidatorHandler } from '@ui-schema/json-schema/Validator'
+import { ValidatorHandler, getValueType } from '@ui-schema/json-schema/Validator'
 import {
     ERROR_CONST_MISMATCH,
     ERROR_ENUM_MISMATCH,
@@ -17,6 +17,17 @@ import {
 import { List, Map, Record } from 'immutable'
 
 export const standardValidators: ValidatorHandler[] = [
+    {
+        id: 'ref',
+        validate: (schema, value, params, state) => {
+            if (!schema.has('$ref')) return
+            // naive and simple validation for basic $ref support
+            const refSchema = state.resource?.findRef(schema.get('$ref'))
+            if (refSchema) {
+                state.validate(refSchema.value(), value, params, state)
+            }
+        },
+    },
     {
         id: 'type',
         // `type` validator
@@ -38,11 +49,7 @@ export const standardValidators: ValidatorHandler[] = [
                 state.output.addError({
                     error: ERROR_WRONG_TYPE,
                     context: {
-                        actual:
-                            value === null ? 'null' :
-                                List.isList(value) ? 'array' :
-                                    Map.isMap(value) || Record.isRecord(value) ? 'object' :
-                                        typeof value,
+                        actual: getValueType(value),
                     },
                 })
             }

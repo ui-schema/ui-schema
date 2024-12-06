@@ -88,6 +88,59 @@ Todo:
 - [ ] access errors of fields which where evaluated on their parent
 - [ ] validators: improve value typing and functions
     - atm. validators are often strictly typed, while they also must handle any unknown value to only validate the types they are compatible with
+- [ ] new schema resource system
+    - [x] finds all $ref and connects them
+    - [x] allows resolving json-pointer against root branch
+    - [x] provides support for $ref chains
+    - [x] canonicalization of embedded $ref for better resolving in widgets
+        - widgets can't resolve the actual branches, as they don't have a stable knowledge about their real position in complex schemas,
+          caused by that, they must resolve the $ref themself when needed, to facilitate it the $ref must be canonicalized while building the schema resource
+    - [x] interops with Validator for resolving `$ref` in validator and uses validate for traversing conditionals
+- [ ] validator support of defaulting values, initially and after applying conditional schema
+    - **tbd:** `default` handling and conditionals/selecting branches in ref/allOf/oneOf chains
+- [ ] validator support of compositional and conditional schemas
+    - `if/then/else`, `allOf`, `oneOf`, `anyOf` with nested conditionals etc.
+    - `dependencies` are missing in validators/mergeSchema
+- **TBD:** defaulting values may be needed during validation, to not flash invalid states, which requires some store-effects and bindings to `internals`
+    - yet that should also be possible initially/on list actions - but how to handle conditions/composition/ref there?
+- **TBD:** something that collects for each valueLocation/schemaLocation it's applicable schema, for then having a list of schemas which should be merged, for each field/schema location
+    - validators should return applicable schemas + evaluation context with evaluated-fields
+        - if > adds then or else
+        - allOf > return all
+        - oneOf > return the first valid
+        - anyOf > return the first valid
+- [ ] validator refactor signature to object for easier complex changes/other state-params mix
+- [ ] validator support of evaluation context for more advanced use cases
+    - resolve and validate $ref with "all apply" strategy w/ configurable recursive support
+        - collect evaluated fields, but only in e.g. `then/else`, not `if`
+        - recursively resolve ref while going deeper
+        - recursively validate while going back up
+    - add some 'stack' for handling where some node is and how many are still open, before running e.g. after-all keywords like "unevaluated"?
+        - they are "evaluate after current layer is evaluated"
+    - `unevaluatedProperties`
+        - is applied only inside one schema location
+        - in this example, the lower `"unevaluatedProperties": false` make `price` impossible, `{ "name": "A", "price": 123 }` is invalid for this schema:
+        - ```json
+          {
+            "allOf": [
+              {"properties": {"name": {"type": "string"}}, "unevaluatedProperties": false},
+              {"properties": {"price": {"type": "string"}}}
+            ],
+            "unevaluatedProperties": false
+          }
+          ```
+- **TBD:** add utils/hooks for easier usage of resolved nested schemas
+    - `getItemsSchema` - resolve and get the `items` schema
+        - needed in e.g. `TableRenderer` to know the items fields before rendering them
+    - `getItemSchema(schema, index, itemValue)` - resolve and get the schema for one specific value
+        - OR: `getItems(schema, index, arrValue)` - resolve and get the schema for an array, returns the values with their respective schema
+    - `getPropertySchema(schema, property, propValue)` - resolve and get the schema for one specific value
+        - OR: `getProperties(schema, objValue)` - resolve and get the schema for an object, returns the values with their respective schema
+    - **TBD:** value-first vs schema-first strategy
+        - schema-first uses what is in schema, for widgets which work on specific data
+        - value-first uses what is in schema depending on the actual value, for widgets which are more universal and could switch between `items` and `properties` depending if the value is `array` or `object`
+            - which is against the predictable schema rendering, as if no value exists, it can't be decided
+            - which still works reliable in e.g. list widgets, e.g. in `Table` for row-level, as a row only will be rendered if it exists in value
 
 > See also [CHANGES_NEXT_VALIDATE_TODOS.md](./CHANGES_NEXT_VALIDATE_TODOS.md) for more specific validator todos.
 
@@ -155,6 +208,16 @@ Todo:
 - removed `required`/`requiredList` in `WidgetEngine`
     - **todo:** for required info/validators are not finalized and there exist two different versions
       e.g. `RequiredPlugin` uses `parentSchema` directly for props injection, yet it should better support allOf etc.
+
+Todos:
+
+- finalize better handling of $ref #135
+    - relies on new resource system
+    - loads all needed schemas initially in root, no longer when/where a ref is actually used
+    - makes `UIApi` unnecessary
+    - `ResourceBranchHandler` vs legacy `ReferencingHandler`
+        - only resolves the current schemas $ref, no longer materialized all nested $ref
+        - combines conditional and composition with $ref resolving
 
 #### WidgetsBinding
 
@@ -265,3 +328,19 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
 - [ ] remove slate/editorjs or migrate to basic react18 support
     - migrate from `@mui/styles`
     - upgrade peer deps to react18 support
+- [ ] remove schemaKeys, as they won't work in recursive references due to ever increasing keys list, also when merged in conditionals, no information if end of schemaKeys etc. exist
+    - [ ] remove schemaKeys
+    - [ ] provide a util which can resolve storeKeys to applicable schemas, for splitSchema
+
+## Todo 0.6.x
+
+> write up learnings and the architecture change to parse schema and validate in global state
+
+- move validation into global state
+- only keep schema plugins/widget plugins for interop and widget rendering
+- the graph for which schema applies to a field, can only be built after validation,
+  as that would handle `if`/`oneOf` to know which currently applies
+- `default` handling is particular important to do before and maybe after validation, without flashing incorrect errors if e.g. `default` is just not applied
+- store and schema positions to use for subscriptions, mutations and applicable schemas
+    - `schemaKeys` won't capture complex compositional schemas (incl. $ref), thus relying on it to get the current branch/schema is impossible
+    - `storeKeys` must be matched against applicable schemas, to know which are all applying

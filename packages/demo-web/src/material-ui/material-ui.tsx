@@ -1,3 +1,5 @@
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
 import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
@@ -34,12 +36,14 @@ const customWidgets = define<{ InfoRenderer?: React.ComponentType<InfoRendererPr
     InfoRenderer: InfoRenderer,
     widgetPlugins: [
         ReferencingHandler,// must be before AND maybe after combining/conditional?
-        SchemaGridHandler,// todo: Grid must be after e.g. ConditionalHandler, but why was it this high? wasn't that because of e.g. conditional object grids?
         // ExtractStorePlugin,
+        DefaultHandler, // default must be before anything that handles conditionals
         CombiningHandler,
-        DefaultHandler,
         DependentHandler,
         ConditionalHandler,
+        // todo: Grid must be after e.g. ConditionalHandler, yet if referencing/combining results in loading, yet should also be used there
+        //       (old) but why was it this high? wasn't that because of e.g. conditional object grids
+        SchemaGridHandler,
         SchemaPluginsAdapterBuilder([
             validatorPlugin,
             // requiredValidator,// must be after validator; todo: remove the compat. plugin
@@ -79,6 +83,7 @@ const MainStore = () => {
         })
     }, [setStore])
 
+    const invalid = isInvalid(store.getValidity())
     return <React.Fragment>
         <UIStoreProvider
             store={store}
@@ -97,8 +102,27 @@ const MainStore = () => {
                 <GridStack isRoot schema={schema}/>
                 <MuiSchemaDebug setSchema={setSchema} schema={schema}/>
 
-                <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>
-                {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
+                <Box sx={{display: 'flex', alignItems: 'center'}}>
+                    <Button
+                        onClick={() => setShowValidity(!showValidity)} sx={{flexGrow: 1}}
+                    >
+                        {`${showValidity ? 'hide' : 'show'} validity`}
+                    </Button>
+                    <Typography
+                        fontWeight={'bold'}
+                        variant={'caption'}
+                        sx={{
+                            backgroundColor: `${invalid ? 'error' : 'success'}.main`,
+                            color: `${invalid ? 'error' : 'success'}.contrastText`,
+                            borderRadius: 3,
+                            px: 1,
+                            py: 0.5,
+                            mr: 'auto',
+                        }}
+                    >
+                        {invalid ? 'invalid' : 'valid'}
+                    </Typography>
+                </Box>
 
             </Paper>
 

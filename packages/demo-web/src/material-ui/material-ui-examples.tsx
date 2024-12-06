@@ -3,8 +3,10 @@ import { define, widgetsCustom, widgetsTypes } from '@ui-schema/ds-material/Widg
 import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
+import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
+import { /*CombiningHandler, ConditionalHandler,*/ DependentHandler } from '@ui-schema/react-json-schema'
 import { requiredPlugin } from '@ui-schema/react-json-schema/RequiredPlugin'
-import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ReferencingHandler } from '@ui-schema/react-json-schema'
+import { ResourceBranchHandler } from '@ui-schema/react-json-schema/ResourceBranchHandler'
 import { validatorPlugin } from '@ui-schema/react-json-schema/ValidatorPlugin'
 import { SchemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
@@ -54,17 +56,26 @@ const CustomTableBase: React.ComponentType<WidgetProps> = ({widgets, ...props}) 
 }
 const CustomTable = React.memo(CustomTableBase)
 
+// use current data to build applicable schemas
+// make default
+// run validations on defaulted dats
+// build/merge into happy path
+
 const customWidgets = define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
     InfoRenderer: InfoRenderer,
 
     widgetPlugins: [
-        ReferencingHandler,// must be before AND maybe after combining/conditional?
-        SchemaGridHandler,// todo: Grid must be after e.g. ConditionalHandler, but why was it this high? wasn't that because of e.g. conditional object grids?
+        //ReferencingHandler,// must be before AND maybe after combining/conditional?
+        ResourceBranchHandler, // << move into plugins adapter? only dynamicRef wouldn't work that way
         // ExtractStorePlugin,
-        CombiningHandler,
-        DefaultHandler,
-        DependentHandler,
-        ConditionalHandler,
+        DefaultHandler, // default must be before anything that handles conditionals; but also after conditionals if default depends on it
+        //CombiningHandler, // < pure schema, but changing applicable schema
+        DependentHandler, // < pure schema, but changing applicable schema
+        //ConditionalHandler, // < pure schema, but changing applicable schema
+        // todo: Grid must be after e.g. ConditionalHandler, yet if referencing/combining results in loading, yet should also be used there
+        //       - hidden/isVirtual before $ref atm., needs to be before grid handler but after combining etc
+        //       (old) but why was it this high? wasn't that because of e.g. conditional object grids
+        SchemaGridHandler,
         SchemaPluginsAdapterBuilder([
             validatorPlugin,
             // requiredValidator,// must be after validator; todo: remove the compat. plugin

@@ -1,0 +1,75 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://example.org/schemas/example-defs-nested-anchors.json",
+    "$comment": "this schema is invalid, as it contains conflicting embedded resources",
+    "$defs": {
+        "address": {
+            "$anchor": "address",
+            "type": "object",
+            "properties": {
+                "street": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                }
+            }
+        },
+        "customer": {
+            "$id": "https://example.org/schemas/example-defs-nested-anchors.json#customer",
+            "type": "object",
+            "$defs": {
+                "email": {
+                    "$anchor": "email",
+                    "type": "string",
+                    "format": "email"
+                }
+            },
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "address": {
+                    "$ref": "#address"
+                },
+                "email": {
+                    "$ref": "#email"
+                }
+            }
+        }
+    },
+    "type": "object",
+    "properties": {
+        "customer": {
+            "$ref": "#customer"
+        },
+        "order": {
+            "type": "object",
+            "$defs": {
+                "address": {
+                    "$id": "#address",
+                    "type": "object",
+                    "properties": {
+                        "street": {
+                            "type": "string"
+                        },
+                        "city": {
+                            "type": "string"
+                        },
+                        "warehouse_region": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "properties": {
+                "billing_address": {
+                    "$ref": "#/$defs/address"
+                },
+                "shipping_address": {
+                    "$ref": "#address"
+                }
+            }
+        }
+    }
+}

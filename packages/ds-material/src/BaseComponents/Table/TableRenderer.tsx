@@ -1,3 +1,5 @@
+import { handleSchema } from '@ui-schema/react-json-schema/ResourceBranchHandler'
+import { useSchemaResource } from '@ui-schema/react-json-schema/SchemaResourceProvider'
 import React from 'react'
 import { useUID } from 'react-uid'
 import { extractValue, WithValue } from '@ui-schema/react/UIStore'
@@ -32,9 +34,11 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
         btnSize: btnSizeProp,
         btnVariant: btnVariantProp,
         btnColor: btnColorProp,
-    }
+        validate,
+    },
 ) => {
     const uid = useUID()
+    const {resource} = useSchemaResource()
     const [page, setPage] = React.useState(0)
     const [rows, setRows] = React.useState(rowsPerPage.first() || 5)
     const btnSize = (schema.getIn(['view', 'btnSize']) || btnSizeProp || 'small') as ListButtonOverwrites['btnSize']
@@ -42,7 +46,17 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
     const btnColor = (schema.getIn(['view', 'btnColor']) || btnColorProp || undefined) as ListButtonOverwrites['btnColor']
 
     const dense = (schema.getIn(['view', 'dense']) as boolean) || false
-    const itemsSchema = schema.get('items') as UISchemaMap
+    // todo: move to a util that gets the resolved items when needed,
+    //       resolve any $ref in `items`, yet don't handle any conditionals - as that only works with the items value
+    const itemsSchema =
+        validate && resource ?
+            handleSchema(
+                validate,
+                resource,
+                schema.get('items') as UISchemaMap,
+                undefined,
+            ) as UISchemaMap :
+            schema.get('items') as UISchemaMap
     const readOnly = schema.get('readOnly') as boolean
 
     const currentRows = rows === -1 ? listSize || 0 : rows
@@ -143,7 +157,7 @@ export const TableRendererExtractor: React.ComponentType<WidgetProps & WithValue
         // remove `valid` from the table widget, performance optimize
         valid,
         ...props
-    }
+    },
 ) => {
     const {t} = useUIMeta()
     // extracting and calculating the list size here, not passing down the actual list for performance reasons

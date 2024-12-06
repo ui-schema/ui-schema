@@ -8,6 +8,9 @@ export type ValidateStateNested = {
      * @todo for full support of resolving embedded templates, it must not be a simple schema, but more like a registry
      */
     root?: any
+    resource?: {
+        findRef: (canonicalRef: string) => { value: () => any } | undefined
+    }
 }
 
 export type ValidateStateOutput = {

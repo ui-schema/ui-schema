@@ -1,4 +1,4 @@
-import { ValidatorParams, ValidatorState, ValidatorStateNested, ValidatorHandler } from '@ui-schema/json-schema/Validator'
+import { ValidatorParams, ValidatorState, ValidatorStateNested, ValidatorHandler, getValueType } from '@ui-schema/json-schema/Validator'
 import { ValidatorOutput } from '@ui-schema/system/ValidatorOutput'
 import { List } from 'immutable'
 import { ERROR_WRONG_TYPE } from '@ui-schema/json-schema/Validators/TypeValidator'
@@ -60,7 +60,7 @@ export const validateArrayContent = (
         } else {
             //console.log('val?.toJS()', /*val,*/ schema?.toJS(), value?.toJS())
             // when tuple schema but no-tuple value
-            output.addError({error: ERROR_WRONG_TYPE, context: {actual: typeof value, arrayTupleValidation: true}})
+            output.addError({error: ERROR_WRONG_TYPE, context: {actual: getValueType(value), arrayTupleValidation: true}})
             found++
         }
     }/* else if(

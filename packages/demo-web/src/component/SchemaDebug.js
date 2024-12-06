@@ -27,7 +27,7 @@ export const SchemaDebug = (
                     required: false,
                 })
             }}
-            getVal={keys => store.getValues().getIn(keys)}
+            getVal={keys => keys.length ? store.getValues().getIn(keys) : store.getValues()}
         />
         {showInternals ?
             <StyledEditor

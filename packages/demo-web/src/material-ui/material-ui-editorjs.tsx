@@ -145,7 +145,7 @@ const Main = () => {
                     >Index: {i} {store.activeIndex === i ? 'is-active' : null}</Button>
                     <ImmutableEditor
                         data={s.getValues()}
-                        getVal={keys => s.getValues().getIn(keys)}
+                        getVal={keys => keys.length ? s.getValues().getIn(keys) : s.getValues()}
                         theme={{
                             ...theme.palette.mode === 'light' ? themeMaterialLight : themeMaterial,
                             base00: theme.palette.background.paper,
