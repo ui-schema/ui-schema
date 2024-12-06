@@ -4,7 +4,7 @@
     "private": true,
     "dependencies": {
         "path": "^0.12.7",
-        "express": "^4.16.4"
+        "express": "^4.21.2"
     },
     "scripts": {
         "start": "node server.js"
