@@ -29,9 +29,6 @@ export const WidgetRenderer = <W extends WidgetsBindingFactory = WidgetsBindingF
         WidgetOverride,
         errors,
         onErrors,
-        // we do not want `requiredList` to be passed to the final widget for performance reasons
-        // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
-        requiredList,
         // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
         currentPluginIndex,
         // `props` contains all props accumulated in the WidgetEngine

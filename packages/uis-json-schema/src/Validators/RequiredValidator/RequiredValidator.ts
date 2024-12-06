@@ -23,8 +23,9 @@ export const checkValueExists = (type: string | List<string> | string[], value: 
 }
 
 // todo: remove this once the new required validator works like previously
-export const requiredValidator: SchemaPlugin<WidgetPayload & { requiredList?: List<string> }> = {
-    should: ({requiredList, storeKeys}) => {
+export const requiredValidator: SchemaPlugin<WidgetPayload> = {
+    should: ({parentSchema, storeKeys}) => {
+        const requiredList = parentSchema?.get('required') as List<string> | undefined
         if (requiredList && List.isList(requiredList) && storeKeys) {
             const ownKey = storeKeys.last()
             return typeof ownKey === 'string' && requiredList.contains(ownKey)

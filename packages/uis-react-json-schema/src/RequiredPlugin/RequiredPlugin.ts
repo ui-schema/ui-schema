@@ -8,8 +8,9 @@ import { List } from 'immutable'
  * @todo add support for prop injection from validator plugins? to be able to remove these?
  *       still would need better support for applied-to-child vs. applied-to-self
  */
-export const requiredPlugin: SchemaPlugin<WidgetPayload & { requiredList?: List<string> }> = {
-    should: ({requiredList, storeKeys}) => {
+export const requiredPlugin: SchemaPlugin<WidgetPayload> = {
+    should: ({parentSchema, storeKeys}) => {
+        const requiredList = parentSchema?.get('required')
         if (requiredList && List.isList(requiredList) && storeKeys) {
             const ownKey = storeKeys.last()
             return typeof ownKey === 'string' && requiredList.contains(ownKey)

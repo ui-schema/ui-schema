@@ -19,7 +19,7 @@ export type WidgetEngineWrapperProps = {
     schemaKeys: StoreKeys
 }
 
-export type WidgetEngineInjectProps = 'currentPluginIndex' | 'requiredList' | 'required' | 'errors' | 'valid' | 'schemaKeys' | 'storeKeys'/* | 'parentSchema'*/// |
+export type WidgetEngineInjectProps = 'currentPluginIndex' | 'errors' | 'valid' | 'schemaKeys' | 'storeKeys'/* | 'parentSchema'*/// |
 // todo find a better way to define from-plugin injected values as "required" - or shouldn't?
 // 'value' | 'onChange' | 'internalValue'
 
@@ -95,15 +95,6 @@ export const WidgetEngine = <
 
     // todo: resolving `hidden` here is wrong, must be done after merging schema / resolving referenced
     const isVirtual = Boolean(props.isVirtual || schema?.get('hidden'))
-    let required: List<string> = List<string>([])
-    if (parentSchema) {
-        // todo: resolving `required` here is wrong, must be done after merging schema / resolving referenced
-        //      ! actual, it is correct here, as using `parentSchema`
-        const tmp_required = parentSchema.get('required')
-        if (tmp_required) {
-            required = tmp_required
-        }
-    }
 
     const stack =
         <NextPluginRendererMemo<{}, U, WidgetsBindingFactory>
@@ -114,8 +105,6 @@ export const WidgetEngine = <
             widgets={activeWidgets}
             storeKeys={currentStoreKeys}
             schemaKeys={currentSchemaKeys}
-            requiredList={required}
-            required={false}
             parentSchema={parentSchema}
             schema={schema as UISchemaMap}
             // `showValidity` is overridable by render flow, e.g. nested Stepper

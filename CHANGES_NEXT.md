@@ -152,6 +152,9 @@ Todo:
 - removed `ExtractStorePlugin`, included now in `WidgetEngine` directly (for the moment, experimenting performance/typing)
 - removed `level` property, use `schemaKeys`/`storeKeys` to calc. that when necessary
 - removed `WidgetRenderer` from `getNextPlugin` internals, moved to `widgetPlugins` directly
+- removed `required`/`requiredList` in `WidgetEngine`
+    - **todo:** for required info/validators are not finalized and there exist two different versions
+      e.g. `RequiredPlugin` uses `parentSchema` directly for props injection, yet it should better support allOf etc.
 
 #### WidgetsBinding
 

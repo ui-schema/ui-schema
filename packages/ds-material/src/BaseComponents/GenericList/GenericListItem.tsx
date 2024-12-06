@@ -14,7 +14,7 @@ import { WidgetProps } from '@ui-schema/react/Widgets'
 export interface GenericListItemSharedProps {
     index: number
     listSize: number
-    listRequired: boolean
+    listRequired: boolean | undefined
     schema: UISchemaMap
     onChange: onChangeHandler
     storeKeys: StoreKeys

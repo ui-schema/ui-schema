@@ -37,7 +37,7 @@ export interface WidgetPayload {
     schemaKeys?: StoreKeys
 
     // `required` is created inside validator plugin
-    required: boolean
+    required?: boolean
 
     // todo: extract to validator typings, extend here
     // `errors` and `valid` are created inside validator plugins
