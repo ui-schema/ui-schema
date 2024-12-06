@@ -33,7 +33,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
         dense,
         setPage,
         showRows,
-    }
+    },
 ) => {
     const theme = useTheme()
     const styles = useStyles(theme, {dense})
@@ -66,7 +66,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                     storeKeys={storeKeys.push(j as StoreKeyType)}
                     schemaKeys={cellSchemaKeyword ? schemaKeys?.push(cellSchemaKeyword).push(j as StoreKeyType) : undefined}
                     schema={item}
-                    parentSchema={parentSchema}
+                    parentSchema={schema}
                     isVirtual
                 /> :
                 <TableCell
@@ -74,43 +74,42 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                     sx={styles}
                     align={schemaTypeToDistinct(item.get('type')) === 'boolean' ? 'center' : undefined}
                 >
-                    {
-                        schemaTypeToDistinct(item.get('type')) === 'object' ?
-                            <GroupRenderer schema={item} storeKeys={storeKeys} schemaKeys={schemaKeys}>
-                                <WidgetEngineMemo<{ [k: string]: any } & WidgetProps>
-                                    showValidity={showValidity}
-                                    storeKeys={storeKeys.push(j as StoreKeyType)}
-                                    schemaKeys={cellSchemaKeyword ? schemaKeys?.push(cellSchemaKeyword).push(j as StoreKeyType) : undefined}
-                                    schema={item.setIn(['view', 'hideTitle'], true)}
-                                    parentSchema={parentSchema}
-                                    readOnly={readOnly}
-
-                                    // overwriting `widgets`, needs to be passed down further on depending on use cases:
-                                    widgets={widgets}
-
-                                    // table field a11y labelling not supported for object,
-                                    // must be done by in-cell translation
-                                    // labelledBy={'uis-' + uid + '-tbl-' + j}
-                                />
-                            </GroupRenderer> :
+                    {schemaTypeToDistinct(item.get('type')) === 'object' ?
+                        <GroupRenderer schema={item} storeKeys={storeKeys} schemaKeys={schemaKeys}>
                             <WidgetEngineMemo<{ [k: string]: any } & WidgetProps>
                                 showValidity={showValidity}
                                 storeKeys={storeKeys.push(j as StoreKeyType)}
                                 schemaKeys={cellSchemaKeyword ? schemaKeys?.push(cellSchemaKeyword).push(j as StoreKeyType) : undefined}
                                 schema={item.setIn(['view', 'hideTitle'], true)}
-                                parentSchema={parentSchema}
+                                parentSchema={schema}
                                 readOnly={readOnly}
-                                noGrid
 
                                 // overwriting `widgets`, needs to be passed down further on depending on use cases:
                                 widgets={widgets}
 
-                                // custom table field prop for a11y labelling
-                                // todo: `j` is correct for lists, as it mimics the tuple part
-                                //       for Maps, this must be the property name
-                                labelledBy={'uis-' + uid + '-tbl-' + j}
-                            />}
-                </TableCell>
+                                // table field a11y labelling not supported for object,
+                                // must be done by in-cell translation
+                                // labelledBy={'uis-' + uid + '-tbl-' + j}
+                            />
+                        </GroupRenderer> :
+                        <WidgetEngineMemo<{ [k: string]: any } & WidgetProps>
+                            showValidity={showValidity}
+                            storeKeys={storeKeys.push(j as StoreKeyType)}
+                            schemaKeys={cellSchemaKeyword ? schemaKeys?.push(cellSchemaKeyword).push(j as StoreKeyType) : undefined}
+                            schema={item.setIn(['view', 'hideTitle'], true)}
+                            parentSchema={schema}
+                            readOnly={readOnly}
+                            noGrid
+
+                            // overwriting `widgets`, needs to be passed down further on depending on use cases:
+                            widgets={widgets}
+
+                            // custom table field prop for a11y labelling
+                            // todo: `j` is correct for lists, as it mimics the tuple part
+                            //       for Maps, this must be the property name
+                            labelledBy={'uis-' + uid + '-tbl-' + j}
+                        />}
+                </TableCell>,
         ).valueSeq()}
 
         {!readOnly ?
