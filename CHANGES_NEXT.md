@@ -97,6 +97,7 @@ Todo:
 - `pointerToKeySeq` no longer casts keys to `number`
 - rewrite `resolvePointer` to work with native-JS and immutable, manually iterating all keys
     - casts the key to `number` if the current value is `array | List`, only proceeds if is not-NaN (e.g. to prevent access to `arr['length']`)
+- added `walkPointer` for easier resolving of json-pointer against any data structures, incl. trees
 
 ### React
 

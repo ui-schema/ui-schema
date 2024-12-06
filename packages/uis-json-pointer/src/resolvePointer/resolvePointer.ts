@@ -1,28 +1,26 @@
-import { pointerToKeySeq } from '@ui-schema/json-pointer/pointerToKeySeq'
+import { walkPointer } from '@ui-schema/json-pointer/walkPointer'
 import { List, Map, Record } from 'immutable'
 
 export const resolvePointer = (
     pointer: string,
     data: unknown,
 ): any => {
-    const keySeq = pointerToKeySeq(pointer)
-    if (!keySeq.size) return data
-    let current = data
-    for (const key of keySeq) {
-        if (List.isList(current) || Array.isArray(current)) {
-            const index = Number(key)
-            if (Number.isNaN(index)) {
-                return undefined
+    return walkPointer(
+        pointer, data,
+        (current, key) => {
+            if (List.isList(current) || Array.isArray(current)) {
+                const index = Number(key)
+                if (Number.isNaN(index)) {
+                    return undefined
+                }
+                return Array.isArray(current) ? current[index] : current.get(index)
+            } else if (Map.isMap(current) || Record.isRecord(current)) {
+                // @ts-expect-error Record typing is incompatible
+                return current.get(key)
+            } else if (typeof current === 'object' && current) {
+                return current[key]
             }
-            current = Array.isArray(current) ? current[index] : current.get(index)
-        } else if (Map.isMap(current) || Record.isRecord(current)) {
-            // @ts-expect-error Record typing is incompatible
-            current = current.get(key)
-        } else if (typeof current === 'object' && current) {
-            current = current[key]
-        } else {
             return undefined
-        }
-    }
-    return current
+        },
+    )
 }
