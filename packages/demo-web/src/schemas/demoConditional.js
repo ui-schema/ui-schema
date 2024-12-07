@@ -164,6 +164,7 @@ const schemaWConditional2 = createOrderedMap({
                         },
                     },
                 },
+                required: ['product_groups'],
             },
             'then': {
                 'properties': {
@@ -185,6 +186,7 @@ const schemaWConditional2 = createOrderedMap({
                         },
                     },
                 },
+                required: ['product_groups'],
             },
             'then': {
                 'properties': {
@@ -214,6 +216,7 @@ const schemaWConditional2 = createOrderedMap({
                         'const': 'Landing-Page',
                     },
                 },
+                required: ['product_groups', 'group_homepages'],
             },
             'then': {
                 'properties': {
@@ -241,6 +244,7 @@ const schemaWConditional2 = createOrderedMap({
                         },
                     },
                 },
+                required: ['product_groups'],
             },
             'then': {
                 'properties': {

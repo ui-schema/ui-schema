@@ -707,7 +707,7 @@ describe('arrayValidator', () => {
         [
             {type: 'array', uniqueItems: true},
             ['text1', 'text1'],
-            [{error: ERROR_DUPLICATE_ITEMS}],
+            [{error: ERROR_DUPLICATE_ITEMS, instanceLocation: '', keywordLocation: '/uniqueItems'}],
             false,
         ],
         [
@@ -752,7 +752,7 @@ describe('arrayValidator', () => {
                 },
             },
             ['1'],
-            [{error: ERROR_WRONG_TYPE, context: {actual: 'string'}}],
+            [{error: ERROR_WRONG_TYPE, context: {actual: 'string'}, instanceLocation: '/0', keywordLocation: '/contains/items/type'}],
             false,
         ],
     ])(

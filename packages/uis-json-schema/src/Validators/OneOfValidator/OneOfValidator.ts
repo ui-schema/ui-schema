@@ -16,7 +16,15 @@ export const validateOneOf = (
     if (List.isList(oneOfSchemas)) {
         // todo: oneOf should only validate to exactly one; yet that increases performance profile unnecessarily(?)
         for (const schema of oneOfSchemas) {
-            const result = state.validate(schema, value, params, {root: state.root})
+            const result = state.validate(
+                schema,
+                value,
+                {
+                    ...params,
+                    keywordLocation: [...params.keywordLocation, 'oneOf'],
+                },
+                {root: state.root, resource: state.resource},
+            )
             if (result.valid) {
                 errorCount = 0
                 break

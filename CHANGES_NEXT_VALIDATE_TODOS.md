@@ -6,19 +6,26 @@
 > - misc in `/react`, `/ds-*`
 
 - `/Validators`
-    - [x] ArrayValidator
+    - [ ] ArrayValidator
         - [x] migrated to `.output`
         - [x] support `recursive`
+        - [ ] add params for adding keywordLocation/instanceLocation at all `addError` / verify usage for nested errors
+        - [ ] support handling of `prefixItems`
+        - [ ] support handling of `prefixItems` with additional `items`
+        - [ ] remove type validate inside tuple validation, once clarified why that was added there
     - [x] EmailValidator
         - type: `validate:boolean`
     - [x] MinMaxValidator
         - type: `validate:void`
-        - split up by value-type
+        - [x] split up by value-type
+        - [ ] add params for adding keywordLocation/instanceLocation at all `addError`
     - [x] MultipleOfValidator
         - type: `validate:boolean`
-    - [x] ObjectValidator
+    - [ ] ObjectValidator
         - [x] migrated to `.output`
         - [x] support `recursive`
+        - [x] remove included `required` validator, as now separate plugin
+        - [x] do recursive `validate` for properties (if enabled)
     - [ ] OneOfValidator
         - [x] migrated to `.output`
         - [x] forced `recursive`
@@ -62,6 +69,8 @@
     - `type` now no longer used for some validators, only internal `valueType`
     - validators now are directly tied to `valueType` instead of needing to do such checks internally
     - strict-type validation based on path depth
+- [ ] verify all pass downs of `params` to not pass down e.g. `instanceKey` when switching instances
+- [ ] verify all pass downs of `params` to pass down `parentSchema`, for legacy/HTML-like required checks AND not pass it down where it no longer is applicable
 - **todo:** rethink/redo validation based on "rendered by schema/value"
     - as rendering happens by schema, `undefined` is often validated, atm. `undefined` skips different validators due to not knowing if really exists
       or if the field just is empty

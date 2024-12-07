@@ -1,5 +1,5 @@
 import { JsonSchemaKeywordType } from '@ui-schema/json-schema/Definitions'
-import { ValidateFn, ValidateParams, ValidateStateNested, ValidateStateOutput } from '@ui-schema/system/Validate'
+import { ValidateFn, ValidateParams, ValidateStateNested, ValidateStateOutput, ValidationDetails } from '@ui-schema/system/Validate'
 import { ValidatorOutput } from '@ui-schema/system/ValidatorOutput'
 import { getValueType } from './getValueType.js'
 
@@ -39,14 +39,14 @@ export type ValidatorHandler<TTypes extends JsonSchemaKeywordType[] | undefined 
         // value: TTypes extends undefined ? any : MappedType<Exclude<TTypes, undefined>>,
         params: ValidatorParams,
         state: ValidatorState,
-    ) => void | {
+    ) => void | ({
         // not yet evaluated nested
         // todo: implement
         open?: any[]
         // depending on resolving of another schema
         // todo: implement
         deferred?: any
-    }
+    } & ValidationDetails)
 }
 
 type ValidatorsRegister = {
@@ -101,6 +101,7 @@ export function createRegister(
 export function makeParams(): ValidatorParams {
     return {
         instanceLocation: [],
+        keywordLocation: [],
     }
 }
 
@@ -170,6 +171,7 @@ export function Validator(
         schema: any,
         value: unknown,
         params?: ValidatorParams,
+        // todo: support `resource` with and without schema
     ): value is TData {
         const output = new ValidatorOutput()
         // reset state on each call, as sync it is safe against leaking/corruption this way

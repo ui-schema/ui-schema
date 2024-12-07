@@ -23,7 +23,31 @@ export type ValidateState =
 
 export type ValidateLocationParams = {
     instanceLocation: (number | string)[]
+    /**
+     * The keyword location, including by-reference applicators.
+     * Used for building the `keywordLocation`.
+     * @see {@link https://json-schema.org/draft/2020-12/json-schema-core#section-12.3.1}
+     */
+    keywordLocation: (number | string)[]
+    /**
+     * The current instance own key, or undefined for the root.
+     */
     instanceKey?: number | string
+
+    /**
+     * The keyword location, dereferenced.
+     * Used for building the `absoluteKeywordLocation`.
+     * @todo implement
+     * @see {@link https://json-schema.org/draft/2020-12/json-schema-core#section-12.3.2}
+     */
+    absoluteKeywordLocation?: (number | string)[]
+    /**
+     * The current canonical uri of the schema resource, it's base uri.
+     * Used for building the `absoluteKeywordLocation`.
+     * @todo implement
+     */
+    canonicalUri?: string
+
     /**
      * Especially for compatibility with `<=0.4.x` `required` validation.
      */
@@ -55,5 +79,12 @@ export type ValidateFn = <TData = unknown>(
     params?: ValidateParams,
     state?: Partial<ValidateState>,
 ) =>
-    { valid: true, value: TData, errors?: never } |
-    { valid: false, errors: ValidatorOutput['errors'] }
+    ({ valid: true, value: TData, errors?: never } & ValidationDetails) |
+    ({ valid: false, errors: ValidatorOutput['errors'] } & ValidationDetails)
+
+export interface ValidationDetails {
+    applied?: any[]
+    context?: {
+        evaluatedProperties?: string[]
+    }
+}

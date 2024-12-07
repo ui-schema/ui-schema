@@ -1,3 +1,4 @@
+import { toPointer } from '@ui-schema/json-pointer'
 import { ValidatorParams, ValidatorState, ValidatorStateNested, ValidatorHandler, getValueType } from '@ui-schema/json-schema/Validator'
 import { ValidatorOutput } from '@ui-schema/system/ValidatorOutput'
 import { List } from 'immutable'
@@ -39,7 +40,11 @@ export const validateArrayContent = (
             //   but they must be usable for within conditional schemas
             if (!validateAdditionalItems(additionalItems, value, itemsSchema)) {
                 // todo: add index of erroneous item; or at all as one context list, only one error instead of multiple?
-                output.addError({error: ERROR_ADDITIONAL_ITEMS})
+                output.addError({
+                    error: ERROR_ADDITIONAL_ITEMS,
+                    keywordLocation: toPointer([...params.keywordLocation, 'additionalItems']),
+                    instanceLocation: toPointer(params.instanceLocation),
+                })
                 found++
             }
 
@@ -48,7 +53,18 @@ export const validateArrayContent = (
                 let i = 0
                 for (const val of value) {
                     if (i >= listSize) break
-                    const result = state.validate(itemsSchema.get(i), val, params, state)
+                    const result = state.validate(
+                        itemsSchema.get(i),
+                        val,
+                        {
+                            ...params,
+                            // todo: this won't always be `items`!
+                            keywordLocation: [...params.keywordLocation, 'items'],
+                            instanceLocation: [...params.instanceLocation, i],
+                            instanceKey: i,
+                        },
+                        state,
+                    )
                     if (result.valid) {
                         found++
                     } else if (!('output' in state)) {
@@ -60,7 +76,10 @@ export const validateArrayContent = (
         } else {
             //console.log('val?.toJS()', /*val,*/ schema?.toJS(), value?.toJS())
             // when tuple schema but no-tuple value
-            output.addError({error: ERROR_WRONG_TYPE, context: {actual: getValueType(value), arrayTupleValidation: true}})
+            output.addError({
+                error: ERROR_WRONG_TYPE,
+                context: {actual: getValueType(value), arrayTupleValidation: true},
+            })
             found++
         }
     }/* else if(
@@ -80,15 +99,27 @@ export const validateArrayContent = (
         // }*/ else if(!schemaTypeIs(itemsSchema.get('type'), 'array')) {
         // no nested array, one-schema for all items
         // not validating array content of array here, must be validated with next schema level
+        let i = 0
         for (const val of value) {
             // single-validation
             // Cite from json-schema.org: When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
-            const result = state.validate(itemsSchema, val, params, state)
+            const result = state.validate(
+                itemsSchema, val,
+                {
+                    ...params,
+                    // todo: this won't always be `items`!
+                    keywordLocation: [...params.keywordLocation, 'items'],
+                    instanceLocation: [...params.instanceLocation, i],
+                    instanceKey: i,
+                },
+                state,
+            )
             if (result.valid) {
                 found++
             } else if (!('output' in state)) {
                 result.errors.forEach(err2 => output.addError(err2))
             }
+            i++
         }
     }
 
@@ -133,7 +164,17 @@ export const validateContains = (
     const minContains = schema.get('minContains')
     const maxContains = schema.get('maxContains')
 
-    const item_err = validateArrayContent(contains, value, undefined, {...params, recursive: true}, {validate: state.validate})
+    const item_err = validateArrayContent(
+        contains,
+        value,
+        undefined,
+        {
+            ...params,
+            keywordLocation: [...params.keywordLocation, 'contains'],
+            recursive: true,
+        },
+        {validate: state.validate},
+    )
 
     if (
         (item_err.found < 1 && typeof minContains === 'undefined' && typeof maxContains === 'undefined') ||
@@ -146,17 +187,31 @@ export const validateContains = (
     }
 
     if (typeof minContains === 'number' && minContains > item_err.found) {
-        state.output.addError({error: ERROR_MIN_CONTAINS, context: {minContains}})
+        state.output.addError({
+            error: ERROR_MIN_CONTAINS,
+            keywordLocation: toPointer([...params.keywordLocation, 'minContains']),
+            instanceLocation: toPointer(params.instanceLocation),
+            context: {minContains},
+        })
     }
     if (typeof maxContains === 'number' && maxContains < item_err.found) {
-        state.output.addError({error: ERROR_MAX_CONTAINS, context: {maxContains}})
+        state.output.addError({
+            error: ERROR_MAX_CONTAINS,
+            keywordLocation: toPointer([...params.keywordLocation, 'maxContains']),
+            instanceLocation: toPointer(params.instanceLocation),
+            context: {maxContains},
+        })
     }
 
     if (
         minContains !== 0 &&
         ((Array.isArray(value) && value.length === 0) || (List.isList(value) && value.size === 0))
     ) {
-        state.output.addError({error: ERROR_NOT_FOUND_CONTAINS})
+        state.output.addError({
+            error: ERROR_NOT_FOUND_CONTAINS,
+            keywordLocation: toPointer([...params.keywordLocation, 'contains']),
+            instanceLocation: toPointer(params.instanceLocation),
+        })
     }
 }
 
@@ -181,7 +236,11 @@ export const arrayValidator: ValidatorHandler = {
         const uniqueItems = schema?.get('uniqueItems')
         if (uniqueItems) {
             if (!validateUniqueItems(schema, value)) {
-                state.output.addError({error: ERROR_DUPLICATE_ITEMS})
+                state.output.addError({
+                    error: ERROR_DUPLICATE_ITEMS,
+                    keywordLocation: toPointer([...params.keywordLocation, 'uniqueItems']),
+                    instanceLocation: toPointer(params.instanceLocation),
+                })
             }
         }
 

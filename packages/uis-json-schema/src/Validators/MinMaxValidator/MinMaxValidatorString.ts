@@ -14,12 +14,18 @@ export const validateMinMaxString = (
         const maxLength = schema.get('maxLength')
         if (minLength) {
             if (value.length < minLength) {
-                output.addError({error: ERROR_MIN_LENGTH, context: {min: minLength}})
+                output.addError({
+                    error: ERROR_MIN_LENGTH,
+                    context: {min: minLength},
+                })
             }
         }
         if (maxLength) {
             if (value.length > maxLength) {
-                output.addError({error: ERROR_MAX_LENGTH, context: {max: maxLength}})
+                output.addError({
+                    error: ERROR_MAX_LENGTH,
+                    context: {max: maxLength},
+                })
             }
         }
     }

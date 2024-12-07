@@ -146,7 +146,7 @@ describe('objectValidator', () => {
                 },
             },
             {name: 'demo', street: 'long-street'},
-            [{error: ERROR_ADDITIONAL_PROPERTIES}],
+            [{error: ERROR_ADDITIONAL_PROPERTIES, instanceLocation: '', keywordLocation: '/additionalProperties'}],
             false,
         ],
         [
@@ -168,7 +168,7 @@ describe('objectValidator', () => {
                 },
             },
             {name_user: 'demo'},
-            [{error: ERROR_PATTERN, context: {'pattern': '^((?!user).)*$', 'patternError': undefined}}],
+            [{error: ERROR_PATTERN, context: {'pattern': '^((?!user).)*$', 'patternError': undefined}, instanceLocation: '', keywordLocation: '/propertyNames/pattern'}],
             false,
         ],
     ]

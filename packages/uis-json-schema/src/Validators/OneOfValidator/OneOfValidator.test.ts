@@ -20,7 +20,7 @@ describe('validateOneOf', () => {
             oneOf: [
                 {type: 'number'},
             ],
-        }, '1', 1, [{'context': {'actual': 'string'}, 'error': 'wrong-type'}]],
+        }, '1', 1, [{'context': {'actual': 'string'}, 'error': 'wrong-type', instanceLocation: '', keywordLocation: '/oneOf/type'}]],
         [{
             oneOf: [
                 {type: 'number'},
@@ -30,7 +30,7 @@ describe('validateOneOf', () => {
             oneOf: [
                 {type: 'string'},
             ],
-        }, 1, 1, [{'context': {'actual': 'number'}, 'error': 'wrong-type'}]],
+        }, 1, 1, [{'context': {'actual': 'number'}, 'error': 'wrong-type', instanceLocation: '', keywordLocation: '/oneOf/type'}]],
         [{
             oneOf: [
                 {type: 'number'},
@@ -75,7 +75,10 @@ describe('validateOneOf', () => {
                     ],
                 },
             ],
-        }, 'invalid', 1, [{'error': 'const-mismatch', context: {const: 'valid-a'}}, {'error': 'const-mismatch', context: {const: 'valid-b'}}]],
+        }, 'invalid', 1, [
+            {'error': 'const-mismatch', context: {const: 'valid-a'}, instanceLocation: '', keywordLocation: '/oneOf/oneOf/const'},
+            {'error': 'const-mismatch', context: {const: 'valid-b'}, instanceLocation: '', keywordLocation: '/oneOf/oneOf/const'},
+        ]],
     ])('oneOfValidator(%j, %j)', (schema, value, expectedErrorCount, expectedErrors) => {
         const state = newMockState()
         const r = validateOneOf(createOrderedMap(schema).get('oneOf'), value, makeParams(), state)

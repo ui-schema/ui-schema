@@ -1,7 +1,9 @@
+import { SchemaResource } from '@ui-schema/json-schema/SchemaResource'
 import { createOrdered } from '@ui-schema/system/createMap'
 import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
+import { WidgetPayload } from '@ui-schema/system/Widget'
 
-export const validatorPlugin: SchemaPlugin = {
+export const validatorPlugin: SchemaPlugin<WidgetPayload & { resource?: SchemaResource }> = {
     handle: (props) => {
         if (!props.validate) return {}
         const ownKey = props.storeKeys?.last()
@@ -11,8 +13,13 @@ export const validatorPlugin: SchemaPlugin = {
             props.value,
             {
                 instanceLocation: props.storeKeys?.toArray() || [],
+                // note: the keywordLocation can't be reliable known at this position due to schema reduction for rendering
+                keywordLocation: [],
                 instanceKey: ownKey,
                 parentSchema: props.parentSchema,
+            },
+            {
+                resource: props.resource,
             },
         )
         if (result.valid) {

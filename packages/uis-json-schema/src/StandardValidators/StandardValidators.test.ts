@@ -2,16 +2,26 @@ import { expect, describe, test } from '@jest/globals'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { createOrdered } from '@ui-schema/system/createMap'
 import { Validator } from '@ui-schema/json-schema/Validator'
+import fs from 'node:fs/promises'
+import path from 'node:path'
+import url from 'node:url'
 
 /**
  * npm run tdd -- --testPathPattern=StandardValidators/StandardValidators.test.ts --selectProjects=test-@ui-schema/json-schema
  */
 
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
+const mocksFolder = path.join(__dirname, '../../', 'tests/mocks')
+
+const readSchema = (filename: string) => {
+    return fs.readFile(path.join(mocksFolder, filename)).then(b => JSON.parse(b.toString()))
+}
+
 describe('StandardValidators', () => {
     // basic integration test for standardValidators
     // todo: expand with a bigger test suite
     const validator = Validator(standardValidators)
-    test.each<{ schema: any, value: unknown, expected: { valid: boolean } }>([
+    test.each<({ schema: any } | { file: string }) & { value: unknown, expected: { valid: boolean } }>([
         {
             schema: {
                 type: 'string',
@@ -86,12 +96,86 @@ describe('StandardValidators', () => {
             value: 1,
             expected: {valid: true},
         },
+        {
+            file: 'dependencies-dependent-required.json',
+            value: {
+                'name': 'John Doe',
+                'credit_card': 5555555555555555,
+                'billing_address': '555 Debtor\'s Lane',
+            },
+            expected: {valid: true},
+        },
+        {
+            file: 'dependencies-dependent-required.json',
+            value: {
+                'name': 'John Doe',
+                'credit_card': 5555555555555555,
+            },
+            expected: {valid: false},
+        },
+        {
+            file: 'dependencies-dependent-schemas.json',
+            value: {
+                'name': 'John Doe',
+                'credit_card': 5555555555555555,
+                'billing_address': '555 Debtor\'s Lane',
+            },
+            expected: {valid: true},
+        },
+        {
+            file: 'dependencies-dependent-schemas.json',
+            value: {
+                'name': 'John Doe',
+                'credit_card': 5555555555555555,
+            },
+            expected: {valid: false},
+        },
+        {
+            file: 'dependencies-required.json',
+            value: {
+                'name': 'John Doe',
+                'credit_card': 5555555555555555,
+                'billing_address': '555 Debtor\'s Lane',
+            },
+            expected: {valid: true},
+        },
+        {
+            file: 'dependencies-required.json',
+            value: {
+                'name': 'John Doe',
+                'credit_card': 5555555555555555,
+            },
+            expected: {valid: false},
+        },
+        {
+            file: 'dependencies-schemas.json',
+            value: {
+                'name': 'John Doe',
+                'credit_card': 5555555555555555,
+                'billing_address': '555 Debtor\'s Lane',
+            },
+            expected: {valid: true},
+        },
+        {
+            file: 'dependencies-schemas.json',
+            value: {
+                'name': 'John Doe',
+                'credit_card': 5555555555555555,
+            },
+            expected: {valid: false},
+        },
     ])(
         '$# validator($schema, $value): $expected',
-        ({schema, value, expected}) => {
+        async ({value, expected, ...params}) => {
+            let schema
+            if ('schema' in params) {
+                schema = createOrdered(params.schema)
+            } else {
+                schema = createOrdered(await readSchema(params.file))
+            }
             const res = validator.validate(
-                createOrdered(schema),
-                value,
+                schema,
+                typeof value === 'object' && value ? createOrdered(value) : value,
             )
             expect(res.valid).toStrictEqual(expected.valid)
         },
