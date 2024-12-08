@@ -25,7 +25,131 @@ describe('StandardValidators-applied', () => {
                 type: 'string',
             },
             value: 'lorem',
-            applied: undefined,
+            applied: [],
+        },
+        {
+            schema: {
+                type: 'string',
+                if: {
+                    maxLength: 5,
+                },
+                then: {
+                    pattern: '^[A-Z]+$',
+                },
+                else: {
+                    pattern: '^[A-Z0-9]+$',
+                },
+            },
+            value: 'LOREM',
+            applied: [
+                {
+                    pattern: '^[A-Z]+$',
+                },
+            ],
+        },
+        {
+            schema: {
+                type: 'string',
+                allOf: [
+                    {
+                        maxLength: 5,
+                    },
+                    {
+                        pattern: '^[A-Z]+$',
+                    },
+                ],
+            },
+            value: 'LOREM',
+            applied: [
+                {
+                    maxLength: 5,
+                },
+                {
+                    pattern: '^[A-Z]+$',
+                },
+            ],
+        },
+        {
+            schema: {
+                type: 'string',
+                allOf: [
+                    {
+                        if: {
+                            maxLength: 5,
+                        },
+                        then: {
+                            pattern: '^[A-Z]+$',
+                        },
+                        else: {
+                            pattern: '^[A-Z0-9]+$',
+                        },
+                    },
+                    {
+                        maxLength: 10,
+                    },
+                ],
+            },
+            value: 'LOREM',
+            applied: [
+                {
+                    if: {
+                        maxLength: 5,
+                    },
+                    then: {
+                        pattern: '^[A-Z]+$',
+                    },
+                    else: {
+                        pattern: '^[A-Z0-9]+$',
+                    },
+                },
+                {
+                    maxLength: 10,
+                },
+                {
+                    pattern: '^[A-Z]+$',
+                },
+            ],
+        },
+        {
+            schema: {
+                type: 'string',
+                allOf: [
+                    {
+                        if: {
+                            maxLength: 5,
+                        },
+                        then: {
+                            pattern: '^[A-Z]+$',
+                        },
+                        else: {
+                            pattern: '^[A-Z0-9]+$',
+                        },
+                    },
+                    {
+                        maxLength: 10,
+                    },
+                ],
+            },
+            value: 'LOREM012X',
+            applied: [
+                {
+                    if: {
+                        maxLength: 5,
+                    },
+                    then: {
+                        pattern: '^[A-Z]+$',
+                    },
+                    else: {
+                        pattern: '^[A-Z0-9]+$',
+                    },
+                },
+                {
+                    maxLength: 10,
+                },
+                {
+                    pattern: '^[A-Z0-9]+$',
+                },
+            ],
         },
     ])(
         '$# validator($schema, $value): $applied',
@@ -40,7 +164,9 @@ describe('StandardValidators-applied', () => {
                 schema,
                 typeof value === 'object' && value ? createOrdered(value) : value,
             )
-            expect(res.applied).toStrictEqual(applied)
+            // console.log('res.applied', res.applied?.map(s => s.toJS()))
+            expect(res.valid).toBe(true)
+            expect(res.applied?.map(s => s.toJS())).toStrictEqual(applied)
         },
     )
 })

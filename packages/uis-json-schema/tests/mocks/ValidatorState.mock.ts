@@ -12,4 +12,5 @@ export const newMockStateNested = () => ({
 export const newMockState = () => ({
     output: new ValidatorOutput(),
     validate: validate,
+    context: {},
 })

@@ -8,25 +8,26 @@ export const ERROR_ONE_OF_INVALID = 'one-of-is-invalid'
 export const validateOneOf = (
     oneOfSchemas: List<UISchemaMap>,
     value: any,
-    params: ValidatorParams,
-    state: ValidatorState,
+    params: ValidatorParams & ValidatorState,
 ) => {
     let errorCount = 0
     const output = new ValidatorOutput()
     if (List.isList(oneOfSchemas)) {
         // todo: oneOf should only validate to exactly one; yet that increases performance profile unnecessarily(?)
         for (const schema of oneOfSchemas) {
-            const result = state.validate(
+            const result = params.validate(
                 schema,
                 value,
                 {
                     ...params,
                     keywordLocation: [...params.keywordLocation, 'oneOf'],
+                    output: new ValidatorOutput(),
+                    context: {},
                 },
-                {root: state.root, resource: state.resource},
             )
             if (result.valid) {
                 errorCount = 0
+                // todo: merge contexts
                 break
             } else {
                 errorCount++
@@ -38,7 +39,7 @@ export const validateOneOf = (
     if (errorCount) {
         // todo: instead of adding `errors` directly, it should be a new error for `oneOf`,
         //       which contains the errors itself? (check last part against spec)
-        output.errors.forEach(err => state.output.addError(err))
+        output.errors.forEach(err => params.output.addError(err))
     }
 
     return {
@@ -47,9 +48,9 @@ export const validateOneOf = (
 }
 
 export const oneOfValidator: ValidatorHandler = {
-    validate: (schema, value, params, state) => {
+    validate: (schema, value, params) => {
         const oneOfSchemas = schema?.get('oneOf')
         if (!oneOfSchemas) return
-        validateOneOf(oneOfSchemas, value, {...params, recursive: true}, state)
+        validateOneOf(oneOfSchemas, value, {...params, recursive: true})
     },
 }

@@ -98,33 +98,36 @@ Todo:
     - [x] interops with Validator for resolving `$ref` in validator and uses validate for traversing conditionals
 - [ ] validator support of defaulting values, initially and after applying conditional schema
     - **tbd:** `default` handling and conditionals/selecting branches in ref/allOf/oneOf chains
-- [ ] validator support of compositional and conditional schemas
-    - `if/then/else`, `allOf`, `oneOf`, `anyOf` with nested conditionals etc.
-    - `dependencies` are missing in validators/mergeSchema
+- [x] validator support of composition and conditional schemas
+    - `if/then/else`, `allOf`, `oneOf`, `anyOf`
+    - `dependencies`
+    - support of nested conditionals / chains of `if` / including `$ref`
 - **TBD:** defaulting values may be needed during validation, to not flash invalid states, which requires some store-effects and bindings to `internals`
     - yet that should also be possible initially/on list actions - but how to handle conditions/composition/ref there?
-- **TBD:** something that collects for each valueLocation/schemaLocation it's applicable schema, for then having a list of schemas which should be merged, for each field/schema location
+- [ ] something that collects for each valueLocation/schemaLocation it's applicable schema, for then having a list of schemas which should be merged, for each field/schema location
+    - [x] basic PoC with emitting applied schemas for per-layer/non-recursive validation, with an integration in ValidatorPlugin which reduces applied schemas, not just merging them
     - validators should return applicable schemas + evaluation context with evaluated-fields
         - if > adds then or else
         - allOf > return all
         - oneOf > return the first valid
         - anyOf > return the first valid
-- [ ] validator refactor signature to object for easier complex changes/other state-params mix
+- [x] ValidatorHandler refactor signature to object for easier complex changes/other state-params mix
 - [ ] validator support of evaluation context for more advanced use cases
-    - resolve and validate $ref with "all apply" strategy w/ configurable recursive support
+    - [x] basic support of validation context with `evaluatedProperties`
+    - [x] resolve and validate $ref with "all apply" strategy w/ configurable recursive support
         - collect evaluated fields, but only in e.g. `then/else`, not `if`
         - recursively resolve ref while going deeper
         - recursively validate while going back up
     - add some 'stack' for handling where some node is and how many are still open, before running e.g. after-all keywords like "unevaluated"?
         - they are "evaluate after current layer is evaluated"
-    - `unevaluatedProperties`
+    - [x] `unevaluatedProperties`
         - is applied only inside one schema location
         - in this example, the lower `"unevaluatedProperties": false` make `price` impossible, `{ "name": "A", "price": 123 }` is invalid for this schema:
         - ```json
           {
             "allOf": [
               {"properties": {"name": {"type": "string"}}, "unevaluatedProperties": false},
-              {"properties": {"price": {"type": "string"}}}
+              {"properties": {"price": {"type": "number"}}}
             ],
             "unevaluatedProperties": false
           }
@@ -215,9 +218,10 @@ Todos:
     - relies on new resource system
     - loads all needed schemas initially in root, no longer when/where a ref is actually used
     - makes `UIApi` unnecessary
-    - `ResourceBranchHandler` vs legacy `ReferencingHandler`
+    - ~~`ResourceBranchHandler` vs legacy `ReferencingHandler`~~
         - only resolves the current schemas $ref, no longer materialized all nested $ref
         - combines conditional and composition with $ref resolving
+        - *integrated into `ValidatorPlugin`, using the `applied` schemas that are emitted by `validate`*
 
 #### WidgetsBinding
 

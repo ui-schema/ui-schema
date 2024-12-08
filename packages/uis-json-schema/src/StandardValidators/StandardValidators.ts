@@ -21,32 +21,37 @@ import { List, Map, Record } from 'immutable'
 export const standardValidators: ValidatorHandler[] = [
     {
         id: 'ref',
-        validate: (schema, value, params, state) => {
+        validate: (schema, value, params) => {
             if (!schema.has('$ref')) return
-            // naive and simple validation for basic $ref support
-            const refSchema = state.resource?.findRef(schema.get('$ref'))
+            const refSchema = params.resource?.findRef(schema.get('$ref'))
+            const applied: any[] = []
             if (refSchema) {
-                state.validate(
+                const result = params.validate(
                     refSchema.value(),
                     value,
                     {
                         ...params,
                         keywordLocation: [...params.keywordLocation, '$ref'],
+                        parentSchema: undefined,
                     },
-                    state,
                 )
+                applied.push(refSchema.value())
+                applied.push(...result.applied || [])
+            }
+            return {
+                applied: applied,
             }
         },
     },
     {
         id: 'type',
         // `type` validator
-        validate: (schema, value, params, state) => {
+        validate: (schema, value, params) => {
             const type = schema.get('type')
             if (!type) return
 
             if (typeof value === 'undefined' && type && params.instanceLocation.length === 0) {
-                state.output.addError({
+                params.output.addError({
                     error: ERROR_WRONG_TYPE,
                     keywordLocation: toPointer([...params.keywordLocation, 'type']),
                     instanceLocation: toPointer(params.instanceLocation),
@@ -58,7 +63,7 @@ export const standardValidators: ValidatorHandler[] = [
             }
 
             if (typeof type !== 'undefined' && !validateTypes(value, type)) {
-                state.output.addError({
+                params.output.addError({
                     error: ERROR_WRONG_TYPE,
                     keywordLocation: toPointer([...params.keywordLocation, 'type']),
                     instanceLocation: toPointer(params.instanceLocation),
@@ -71,22 +76,24 @@ export const standardValidators: ValidatorHandler[] = [
     },
     {
         // `not` validator
-        validate: (schema, value, params, state) => {
+        validate: (schema, value, params) => {
             if (!schema.has('not')) return
             const not = schema.get('not')
             // supporting `not` for any validations
             // https://json-schema.org/understanding-json-schema/reference/combining.html#not
-            const tmpNot = state.validate(
+            const tmpNot = params.validate(
                 not,
                 value,
                 {
                     ...params,
                     keywordLocation: [...params.keywordLocation, 'not'],
+                    parentSchema: undefined,
+                    output: new ValidatorOutput(),
+                    context: {},
                 },
-                {root: state.root, resource: state.resource},
             )
             if (tmpNot.valid) {
-                state.output.addError({
+                params.output.addError({
                     error: 'not-is-valid',
                     keywordLocation: toPointer([...params.keywordLocation, 'not']),
                     instanceLocation: toPointer(params.instanceLocation),
@@ -97,10 +104,10 @@ export const standardValidators: ValidatorHandler[] = [
     },
     {
         types: ['string'],
-        validate: (schema, value, params, state) => {
+        validate: (schema, value, params) => {
             if (!schema.has('pattern')) return
             if (!validatePattern(value, schema.get('pattern'))) {
-                state.output.addError({
+                params.output.addError({
                     error: ERROR_PATTERN,
                     keywordLocation: toPointer([...params.keywordLocation, 'pattern']),
                     instanceLocation: toPointer(params.instanceLocation),
@@ -113,10 +120,10 @@ export const standardValidators: ValidatorHandler[] = [
         },
     },
     {
-        validate: (schema, value, params, state) => {
+        validate: (schema, value, params) => {
             if (!schema.has('const')) return
             if (!validateConst(schema.get('const'), value)) {
-                state.output.addError({
+                params.output.addError({
                     error: ERROR_CONST_MISMATCH,
                     keywordLocation: toPointer([...params.keywordLocation, 'const']),
                     instanceLocation: toPointer(params.instanceLocation),
@@ -126,10 +133,10 @@ export const standardValidators: ValidatorHandler[] = [
         },
     },
     {
-        validate: (schema, value, params, state) => {
+        validate: (schema, value, params) => {
             if (!schema.has('enum')) return
             if (!validateEnum(schema.get('enum'), value)) {
-                state.output.addError({
+                params.output.addError({
                     error: ERROR_ENUM_MISMATCH,
                     keywordLocation: toPointer([...params.keywordLocation, 'enum']),
                     instanceLocation: toPointer(params.instanceLocation),
@@ -140,10 +147,10 @@ export const standardValidators: ValidatorHandler[] = [
     },
     {
         types: ['number'],
-        validate: (schema, value, params, state) => {
+        validate: (schema, value, params) => {
             if (!schema.has('multipleOf')) return
             if (!validateMultipleOf(schema.get('multipleOf'), value)) {
-                state.output.addError({
+                params.output.addError({
                     error: ERROR_MULTIPLE_OF,
                     keywordLocation: toPointer([...params.keywordLocation, 'multipleOf']),
                     instanceLocation: toPointer(params.instanceLocation),
@@ -154,52 +161,52 @@ export const standardValidators: ValidatorHandler[] = [
     },
     {
         types: ['string'],
-        validate: (schema, value, _params, state) => {
+        validate: (schema, value, params) => {
             if (
                 !['minLength', 'maxLength']
                     .some(keyword => schema.has(keyword))
             ) return
-            validateMinMaxString(schema, value, state.output)
+            validateMinMaxString(schema, value, params.output)
         },
     },
     {
         types: ['number'],
-        validate: (schema, value, _params, state) => {
+        validate: (schema, value, params) => {
             if (
                 !['minimum', 'exclusiveMinimum', 'maximum', 'exclusiveMaximum']
                     .some(keyword => schema.has(keyword))
             ) return
-            validateMinMaxNumber(schema, value, state.output)
+            validateMinMaxNumber(schema, value, params.output)
         },
     },
     {
         types: ['array'],
-        validate: (schema, value, _params, state) => {
+        validate: (schema, value, params) => {
             if (
                 !['minItems', 'maxItems']
                     .some(keyword => schema.has(keyword))
             ) return
-            validateMinMaxArray(schema, value, state.output)
+            validateMinMaxArray(schema, value, params.output)
         },
     },
     {
         types: ['object'],
-        validate: (schema, value, _params, state) => {
+        validate: (schema, value, params) => {
             if (
                 !['minProperties', 'maxProperties']
                     .some(keyword => schema.has(keyword))
             ) return
-            validateMinMaxObject(schema, value, state.output)
+            validateMinMaxObject(schema, value, params.output)
         },
     },
     {
         types: ['array'],
-        validate: (schema, value, params, state) => {
+        validate: (schema, value, params) => {
             if (
                 !['contains', 'minContains', 'maxContains']
                     .some(keyword => schema.has(keyword))
             ) return
-            validateContains(schema, value, params, state)
+            validateContains(schema, value, params)
         },
     },
     {
@@ -208,14 +215,14 @@ export const standardValidators: ValidatorHandler[] = [
         // todo: this is breaking the per-field validation used before,
         //       thus required-error won't reach the actual field
         types: ['object'],
-        validate: (schema, value, params, state) => {
+        validate: (schema, value, params) => {
             const requiredList = schema?.get('required') as List<string> | undefined
             if (!requiredList || !value) return
             // todo: the new validator only checks existence, not the "HTML-like required" like before
             if (Map.isMap(value) || Record.isRecord(value)) {
                 requiredList.forEach(requiredKey => {
                     if (!value.has(requiredKey)) {
-                        state.output.addError({
+                        params.output.addError({
                             error: ERROR_NOT_SET,
                             keywordLocation: toPointer([...params.keywordLocation, 'required']),
                             instanceLocation: toPointer(params.instanceLocation),
@@ -225,7 +232,7 @@ export const standardValidators: ValidatorHandler[] = [
             } else if (typeof value === 'object' && !Array.isArray(value)) {
                 requiredList.forEach(requiredKey => {
                     if (!Object.hasOwnProperty.call(value, requiredKey)) {
-                        state.output.addError({
+                        params.output.addError({
                             error: ERROR_NOT_SET,
                             keywordLocation: toPointer([...params.keywordLocation, 'required']),
                             instanceLocation: toPointer(params.instanceLocation),
@@ -237,24 +244,46 @@ export const standardValidators: ValidatorHandler[] = [
     },
     arrayValidator,
     objectValidator,
-    // {
-    //     id: 'unevaluatedProperties',
-    //     types: ['object' as const],
-    //     validate: (schema, value, _params, state) => {
-    //         if (schema.get('unevaluatedProperties') === false) {
-    //             // this validator must run after all others, including composition/conditionals
-    //             // maybe allow a validator to attach itself to "on branch/layer done"?
-    //         }
-    //     },
-    // },
+    {
+        id: 'unevaluatedProperties',
+        types: ['object' as const],
+        validate: (schema, value, params) => {
+            if (schema.get('unevaluatedProperties') === false && Map.isMap(value) && value.size) {
+                // this validator must run after all others, including composition/conditionals
+                return {
+                    afterAll: (result) => {
+                        const keys = value.keys()
+                        const evaluatedProperties = result.context?.evaluatedProperties
+                        if (!evaluatedProperties) {
+                            params.output.addError({
+                                error: 'unevaluated-property',
+                                context: {keys: Array.from(keys)},
+                            })
+                            return
+                        }
+                        for (const key of keys) {
+                            if (!evaluatedProperties.has(key as string)) {
+                                // todo: should this use the main `output` or some of the afterAll stage?
+                                params.output.addError({
+                                    error: 'unevaluated-property',
+                                    context: {key: key},
+                                })
+                                break
+                            }
+                        }
+                    },
+                }
+            }
+        },
+    },
     {
         id: 'format:email',
         // `format: "email"` validator
         types: ['string' as const],
-        validate: (schema, value, params, state) => {
+        validate: (schema, value, params) => {
             if (schema.get('format') !== 'email') return
             if (!validateEmail(value)) {
-                state.output.addError({
+                params.output.addError({
                     error: ERROR_EMAIL_INVALID,
                     keywordLocation: toPointer([...params.keywordLocation, 'format']),
                     instanceLocation: toPointer(params.instanceLocation),
@@ -264,13 +293,13 @@ export const standardValidators: ValidatorHandler[] = [
     },
     {
         id: 'if',
-        validate: (schema, value, params, state) => {
+        validate: (schema, value, params) => {
             const keyIf = schema.get('if')
             if (!keyIf) return undefined
             const keyThen = schema.get('then')
             const keyElse = schema.get('else')
 
-            const tmpIf = state.validate(
+            const tmpIf = params.validate(
                 keyIf,
                 value,
                 {
@@ -278,38 +307,40 @@ export const standardValidators: ValidatorHandler[] = [
                     keywordLocation: [...params.keywordLocation, 'if'],
                     instanceLocation: [],// reset to empty instanceLocation, to force strict undefined checks against `type`
                     instanceKey: undefined,
+                    parentSchema: undefined,
                     recursive: true,
+                    output: new ValidatorOutput(),
+                    context: {},
                 },
-                {root: state.root, resource: state.resource},
             )
             if (tmpIf.valid) {
                 if (keyThen) {
-                    state.validate(
+                    const result = params.validate(
                         keyThen,
                         value,
                         {
                             ...params,
                             keywordLocation: [...params.keywordLocation, 'then'],
+                            parentSchema: undefined,
                         },
-                        state,
                     )
                     return {
-                        applied: [keyThen],
+                        applied: [keyThen, ...result.applied || []],
                     }
                 }
             } else {
                 if (keyElse) {
-                    state.validate(
+                    const result = params.validate(
                         keyElse,
                         value,
                         {
                             ...params,
                             keywordLocation: [...params.keywordLocation, 'else'],
+                            parentSchema: undefined,
                         },
-                        state,
                     )
                     return {
-                        applied: [keyElse],
+                        applied: [keyElse, ...result.applied || []],
                     }
                 }
             }
@@ -318,35 +349,35 @@ export const standardValidators: ValidatorHandler[] = [
     oneOfValidator,
     {
         id: 'allOf',
-        validate: (schema, value, params, state) => {
+        validate: (schema, value, params) => {
             const schemas = schema.get('allOf')
             if (!schemas) return undefined
+            const applied = [...schemas.toArray()]
             if (List.isList(schemas)) {
                 // todo: note for finding applied schemas, while others (if/anyOf/oneOf) only need to return it's valid and applied schema,
                 //       the `allOf` needs to tell all schemas as "applied", which will be different than what needs to be in the evaluated context
                 for (const schema of schemas) {
-                    const result = state.validate(
+                    const result = params.validate(
                         schema,
                         value,
                         {
                             ...params,
                             keywordLocation: [...params.keywordLocation, 'allOf'],
+                            parentSchema: undefined,
                         },
-                        {root: state.root, resource: state.resource},
                     )
-                    if (!result.valid) {
-                        result.errors.forEach(err => state.output.addError(err))
-                    }
+                    // todo: validate applied behaviour
+                    applied.push(...result.applied || [])
                 }
             }
             return {
-                applied: schemas,
+                applied: applied,
             }
         },
     },
     {
         id: 'anyOf',
-        validate: (schema, value, params, state) => {
+        validate: (schema, value, params) => {
             const schemas = schema.get('anyOf')
             if (!schemas) return undefined
             let errorCount = 0
@@ -354,20 +385,26 @@ export const standardValidators: ValidatorHandler[] = [
             const output = new ValidatorOutput()
             if (List.isList(schemas)) {
                 for (const schema of schemas) {
-                    const result = state.validate(
+                    const context = {}
+                    const result = params.validate(
                         schema,
                         value,
                         {
                             ...params,
                             keywordLocation: [...params.keywordLocation, 'anyOf'],
+                            parentSchema: undefined,
                             // todo: this only works for recursive, yet will mess up errors without being able to access them from children
                             recursive: true,
+                            output: new ValidatorOutput(),
+                            context: context,
                         },
-                        {root: state.root, resource: state.resource},
                     )
                     if (result.valid) {
                         errorCount = 0
+                        // todo: use `result.applied`
                         appliedSchema = schema
+                        // todo: merge context
+                        // params.context ||= context
                         break
                     } else {
                         errorCount++
@@ -377,7 +414,7 @@ export const standardValidators: ValidatorHandler[] = [
             }
 
             if (errorCount) {
-                output.errors.forEach(err => state.output.addError(err))
+                output.errors.forEach(err => params.output.addError(err))
             }
 
             return {
@@ -387,7 +424,7 @@ export const standardValidators: ValidatorHandler[] = [
     },
     {
         id: 'dependent',
-        validate: (schema, value, params, state) => {
+        validate: (schema, value, params) => {
             // `dependencies` is pre-2019-09, if the replacements`dependentSchemas`/`dependentRequired` are set they are preferred
             const dependencies = schema.get('dependencies')
             const dependentSchemas = schema.get('dependentSchemas')
@@ -409,8 +446,11 @@ export const standardValidators: ValidatorHandler[] = [
                     if (key_dependentSchemas) {
                         // todo: as soon as a key exist, return that schema "all-applied"
                         //       or only what `validate` returns as "applied"?!
+                        //       the current strategy is "applied are merged into the base schema",
+                        //       thus the `key_dependentSchemas` and `result.applied` are both needed,
+                        //       where mergeSchemas in the end can ignore all composition and condition keyword
                         applied.push(key_dependentSchemas)
-                        state.validate(
+                        const result = params.validate(
                             key_dependentSchemas,
                             value,
                             {
@@ -418,18 +458,18 @@ export const standardValidators: ValidatorHandler[] = [
                                 keywordLocation: [...params.keywordLocation, 'dependentRequired'],
                                 instanceLocation: [],// reset to empty instanceLocation, to force strict undefined checks against `type`
                                 instanceKey: undefined,
+                                parentSchema: undefined,
                                 // recursive: true,
                             },
-                            state,
-                            // {root: state.root, resource: state.resource},
                         )
+                        applied.push(...result.applied || [])
                     }
                     if (key_dependentRequired) {
                         // todo: add all to "applied required"
                         applied.push(Map({required: key_dependentRequired}))
                         key_dependentRequired.forEach(req => {
                             if (typeof value.get(req) === 'undefined') {
-                                state.output.addError({
+                                params.output.addError({
                                     error: ERROR_NOT_SET,
                                     keywordLocation: toPointer([...params.keywordLocation, 'dependentRequired', key as string]),
                                     instanceLocation: toPointer(params.instanceLocation),

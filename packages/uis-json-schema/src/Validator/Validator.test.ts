@@ -124,12 +124,12 @@ describe('Validator', () => {
     test('Validator validate simple', () => {
         const validator = Validator([
             {
-                validate: (schema, value, _params, state) => {
+                validate: (schema, value, params) => {
                     const type = schema.get('type')
                     if (!type) return
                     // naive validator, not really json-schema
                     if (typeof value !== type) {
-                        state.output.addError('invalid-type')
+                        params.output.addError('invalid-type')
                     }
                 },
             },

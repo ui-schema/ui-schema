@@ -1,7 +1,7 @@
 import { expect, describe, test } from '@jest/globals'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { createOrdered } from '@ui-schema/system/createMap'
-import { Validator } from '@ui-schema/json-schema/Validator'
+import { makeParams, Validator } from '@ui-schema/json-schema/Validator'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import url from 'node:url'
@@ -25,7 +25,7 @@ describe('StandardValidators-context', () => {
                 type: 'string',
             },
             value: 'lorem',
-            context: undefined,
+            context: {},
         },
     ])(
         '$# validator($schema, $value): $context',
@@ -36,11 +36,16 @@ describe('StandardValidators-context', () => {
             } else {
                 schema = createOrdered(await readSchema(params.file))
             }
-            const res = validator.validate(
+            const validateContext = {}
+            validator.validate(
                 schema,
                 typeof value === 'object' && value ? createOrdered(value) : value,
+                {
+                    ...makeParams(),
+                    context: validateContext,
+                },
             )
-            expect(res.context).toStrictEqual(context)
+            expect(validateContext).toStrictEqual(context)
         },
     )
 })

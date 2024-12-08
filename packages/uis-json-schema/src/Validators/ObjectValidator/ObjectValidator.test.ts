@@ -108,7 +108,7 @@ describe('validateObject', () => {
         ],
     ])('validateObject(%j, %j)', (schema, value, expected) => {
         const state = newMockState()
-        validateObject(createOrderedMap(schema), value, makeParams(), state)
+        validateObject(createOrderedMap(schema), value, {...makeParams(), ...state})
         expect(state.output.errCount).toBe(expected)
     })
 })
@@ -180,8 +180,7 @@ describe('objectValidator', () => {
             objectValidator.validate(
                 createOrderedMap(schema),
                 value,
-                makeParams(),
-                state,
+                {...makeParams(), ...state},
             )
             expect(state.output.errCount === 0).toBe(expectedValid)
             expect(state.output.errors).toStrictEqual(errors)
@@ -195,8 +194,7 @@ describe('objectValidator', () => {
             objectValidator.validate(
                 createOrderedMap(schema),
                 createOrderedMap(value),
-                makeParams(),
-                state,
+                {...makeParams(), ...state},
             )
             expect(state.output.errCount === 0).toBe(expectedValid)
             expect(state.output.errors).toStrictEqual(errors)

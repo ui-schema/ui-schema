@@ -4,9 +4,7 @@ import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/Requi
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
 import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
-import { /*CombiningHandler, ConditionalHandler,*/ DependentHandler } from '@ui-schema/react-json-schema'
 import { requiredPlugin } from '@ui-schema/react-json-schema/RequiredPlugin'
-import { ResourceBranchHandler } from '@ui-schema/react-json-schema/ResourceBranchHandler'
 import { validatorPlugin } from '@ui-schema/react-json-schema/ValidatorPlugin'
 import { SchemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
@@ -66,21 +64,21 @@ const customWidgets = define<{ InfoRenderer?: React.ComponentType<InfoRendererPr
 
     widgetPlugins: [
         //ReferencingHandler,// must be before AND maybe after combining/conditional?
-        ResourceBranchHandler, // << move into plugins adapter? only dynamicRef wouldn't work that way
+        // ResourceBranchHandler, // << move into plugins adapter? only dynamicRef wouldn't work that way
         // ExtractStorePlugin,
         DefaultHandler, // default must be before anything that handles conditionals; but also after conditionals if default depends on it
         //CombiningHandler, // < pure schema, but changing applicable schema
-        DependentHandler, // < pure schema, but changing applicable schema
+        //DependentHandler, // < pure schema, but changing applicable schema
         //ConditionalHandler, // < pure schema, but changing applicable schema
-        // todo: Grid must be after e.g. ConditionalHandler, yet if referencing/combining results in loading, yet should also be used there
-        //       - hidden/isVirtual before $ref atm., needs to be before grid handler but after combining etc
-        //       (old) but why was it this high? wasn't that because of e.g. conditional object grids
-        SchemaGridHandler,
         SchemaPluginsAdapterBuilder([
             validatorPlugin,
             // requiredValidator,// must be after validator; todo: remove the compat. plugin
             requiredPlugin,
         ]),
+        // todo: Grid must be after e.g. ConditionalHandler, yet if referencing/combining results in loading, yet should also be used there
+        //       - hidden/isVirtual before $ref atm., needs to be before grid handler but after combining etc
+        //       (old) but why was it this high? wasn't that because of e.g. conditional object grids
+        SchemaGridHandler,
         ValidityReporter,
         WidgetRenderer,
     ],

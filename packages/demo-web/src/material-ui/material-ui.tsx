@@ -4,7 +4,7 @@ import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
 import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
-import { CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ReferencingHandler } from '@ui-schema/react-json-schema'
+import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
 import { requiredPlugin } from '@ui-schema/react-json-schema/RequiredPlugin'
 import { validatorPlugin } from '@ui-schema/react-json-schema/ValidatorPlugin'
 import { SchemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
@@ -35,20 +35,20 @@ import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
 const customWidgets = define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
     InfoRenderer: InfoRenderer,
     widgetPlugins: [
-        ReferencingHandler,// must be before AND maybe after combining/conditional?
+        // ReferencingHandler,// must be before AND maybe after combining/conditional?
         // ExtractStorePlugin,
         DefaultHandler, // default must be before anything that handles conditionals
-        CombiningHandler,
-        DependentHandler,
-        ConditionalHandler,
-        // todo: Grid must be after e.g. ConditionalHandler, yet if referencing/combining results in loading, yet should also be used there
-        //       (old) but why was it this high? wasn't that because of e.g. conditional object grids
-        SchemaGridHandler,
+        // CombiningHandler,
+        // DependentHandler,
+        // ConditionalHandler,
         SchemaPluginsAdapterBuilder([
             validatorPlugin,
             // requiredValidator,// must be after validator; todo: remove the compat. plugin
             requiredPlugin,
         ]),
+        // todo: Grid must be after e.g. ConditionalHandler, yet if referencing/combining results in loading, yet should also be used there
+        //       (old) but why was it this high? wasn't that because of e.g. conditional object grids
+        SchemaGridHandler,
         ValidityReporter,
         WidgetRenderer,
     ],

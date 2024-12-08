@@ -164,6 +164,50 @@ describe('StandardValidators', () => {
             },
             expected: {valid: false},
         },
+        {
+            schema: {
+                'allOf': [
+                    {'properties': {'name': {'type': 'string'}}, 'unevaluatedProperties': false},
+                    {'properties': {'price': {'type': 'number'}}},
+                ],
+                'unevaluatedProperties': false,
+            },
+            value: {'name': 'A'},
+            expected: {valid: true},
+        },
+        {
+            schema: {
+                'allOf': [
+                    {'properties': {'name': {'type': 'string'}}, 'unevaluatedProperties': false},
+                    {'properties': {'price': {'type': 'number'}}},
+                ],
+                'unevaluatedProperties': false,
+            },
+            value: {'name': 'A', 'price': 123},
+            expected: {valid: false},
+        },
+        {
+            schema: {
+                'properties': {
+                    'name': {'type': 'string'},
+                    'price': {'type': 'number'},
+                },
+                'unevaluatedProperties': false,
+            },
+            value: {'name': 'A', 'price': 123},
+            expected: {valid: true},
+        },
+        {
+            schema: {
+                'properties': {
+                    'name': {'type': 'string'},
+                    'price': {'type': 'number'},
+                },
+                'unevaluatedProperties': false,
+            },
+            value: {'name': 'A', 'price': 123, 'x': true},
+            expected: {valid: false},
+        },
     ])(
         '$# validator($schema, $value): $expected',
         async ({value, expected, ...params}) => {

@@ -1,5 +1,5 @@
 import { JsonSchemaKeywordType } from '@ui-schema/json-schema/Definitions'
-import { ValidateFn, ValidateParams, ValidateStateNested, ValidateStateOutput, ValidationDetails } from '@ui-schema/system/Validate'
+import { ValidateFn, ValidateParams, ValidateStateNested, ValidateStateOutput, ValidationDetails, ValidationResult } from '@ui-schema/system/Validate'
 import { ValidatorOutput } from '@ui-schema/system/ValidatorOutput'
 import { getValueType } from './getValueType.js'
 
@@ -27,6 +27,8 @@ export type MappedType<TTypes extends JsonSchemaKeywordType[]> =
         U extends keyof TypeMap ? TypeMap[U] : never
         : never
 
+type AfterAllValidator = ((partialResult: { context: ValidatorState['context'], output: ValidatorState['output'] }) => void)
+
 export type ValidatorHandler<TTypes extends JsonSchemaKeywordType[] | undefined = JsonSchemaKeywordType[] | undefined> = {
     /**
      * unique ID of a validator, only the last one will be kept
@@ -37,8 +39,7 @@ export type ValidatorHandler<TTypes extends JsonSchemaKeywordType[] | undefined 
         schema: any,
         value: any,
         // value: TTypes extends undefined ? any : MappedType<Exclude<TTypes, undefined>>,
-        params: ValidatorParams,
-        state: ValidatorState,
+        params: ValidatorParams & ValidatorState,
     ) => void | ({
         // not yet evaluated nested
         // todo: implement
@@ -46,6 +47,7 @@ export type ValidatorHandler<TTypes extends JsonSchemaKeywordType[] | undefined 
         // depending on resolving of another schema
         // todo: implement
         deferred?: any
+        afterAll?: AfterAllValidator
     } & ValidationDetails)
 }
 
@@ -130,17 +132,23 @@ export function Validator(
     function validate<TData = unknown>(
         schema: any,
         value: unknown,
-        params: ValidatorParams = makeParams(),
-        outerState?: Partial<ValidatorState>,
-    ): { valid: true, value: TData, errors?: never } | { valid: false, errors: ValidatorOutput['errors'] } {
-        const state: ValidatorState = {
-            ...outerState || {},
-            output: outerState?.output || new ValidatorOutput(),
-            validate: outerState?.validate || validate,
+        params: ValidatorParams & Partial<ValidatorState> = makeParams(),
+    ): ValidationResult<TData> {
+        const scopedParams: ValidatorParams & ValidatorState = {
+            ...params,
+            context: params.context || {},
+            output: params.output || new ValidatorOutput(),
+            validate: params.validate || validate,
         }
+        const applied: any[] = []
+        const afterAll: AfterAllValidator[] = []
 
         for (const validator of register.handlers) {
-            validator(schema, value, params, state)
+            const result = validator(schema, value, scopedParams)
+            applied.push(...result?.applied || [])
+            if (result?.afterAll) {
+                afterAll.push(result.afterAll)
+            }
         }
 
         const valueType = getValueType(value)
@@ -149,21 +157,34 @@ export function Validator(
             const validators = register.valueHandlers.get(valueType)
             if (validators) {
                 for (const validator of validators) {
-                    validator(schema, value, params, state)
+                    const result = validator(schema, value, scopedParams)
+                    applied.push(...result?.applied || [])
+                    if (result?.afterAll) {
+                        afterAll.push(result.afterAll)
+                    }
                 }
             }
         }
 
-        if (state.output.errCount) {
+        afterAll.forEach((afterAllValidator) => {
+            afterAllValidator({
+                context: scopedParams.context,
+                output: scopedParams.output,
+            })
+        })
+
+        if (scopedParams.output.errCount) {
             return {
                 valid: false,
-                errors: state.output.errors,
+                errors: scopedParams.output.errors,
+                applied: applied,
             }
         }
 
         return {
             valid: true,
             value: value as TData,
+            applied: applied,
         }
     }
 
@@ -177,7 +198,16 @@ export function Validator(
         // reset state on each call, as sync it is safe against leaking/corruption this way
         validateValue.errors = output.errors
         validateValue.annotations = output.annotations
-        return validate(schema, value, params, {output: output}).valid
+        return validate(
+            schema,
+            value,
+            {
+                instanceLocation: [],
+                keywordLocation: [],
+                ...params || {},
+                output: output,
+            },
+        ).valid
     }
     validateValue.errors = []
     validateValue.annotations = []

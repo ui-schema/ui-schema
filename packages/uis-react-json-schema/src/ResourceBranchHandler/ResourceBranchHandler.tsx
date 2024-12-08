@@ -55,8 +55,8 @@ export const handleSchema = (
             {
                 ...makeParams(),
                 recursive: true,
+                resource: resource,
             },
-            {resource: resource},
         )
         if (result.valid) {
             // no errors in schema found, `then` should be rendered
@@ -75,6 +75,9 @@ export const handleSchema = (
     return schema
 }
 
+/**
+ * @todo remove this scribble once validator-applied is finalized, kept for having PoC alternative
+ */
 export const ResourceBranchHandler: FC<WidgetPluginProps> = (props) => {
     const {validate, value} = props
     const {resource} = useSchemaResource()

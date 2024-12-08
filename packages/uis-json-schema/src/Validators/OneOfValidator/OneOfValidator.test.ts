@@ -81,7 +81,7 @@ describe('validateOneOf', () => {
         ]],
     ])('oneOfValidator(%j, %j)', (schema, value, expectedErrorCount, expectedErrors) => {
         const state = newMockState()
-        const r = validateOneOf(createOrderedMap(schema).get('oneOf'), value, makeParams(), state)
+        const r = validateOneOf(createOrderedMap(schema).get('oneOf'), value, {...makeParams(), ...state})
         if (r.errorCount !== expectedErrorCount) {
             console.log(
                 'failed oneOfValidator',

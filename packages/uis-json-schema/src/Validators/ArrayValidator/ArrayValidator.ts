@@ -17,15 +17,14 @@ export const validateArrayContent = (
     itemsSchema: UISchemaMap | List<UISchemaMap>,
     value: unknown,
     additionalItems: boolean = true,
-    params: ValidatorParams,
-    // if `output` is in this `state`, the output is added directly to it.
+    // if `output` is in `params`, the output is added directly to it.
     // with this the calling function can control if adding errors to global or using the result.
-    state: ValidatorStateNested | ValidatorState,
+    params: ValidatorParams & (ValidatorStateNested | ValidatorState),
 ): {
     output: ValidatorOutput
     found: number
 } => {
-    const output = 'output' in state ? state.output : new ValidatorOutput()
+    const output = 'output' in params && params.output ? params.output : new ValidatorOutput()
     let found = 0
     if (
         (List.isList(itemsSchema)/* || Array.isArray(itemsSchema)*/)
@@ -53,7 +52,7 @@ export const validateArrayContent = (
                 let i = 0
                 for (const val of value) {
                     if (i >= listSize) break
-                    const result = state.validate(
+                    const result = params.validate(
                         itemsSchema.get(i),
                         val,
                         {
@@ -62,12 +61,13 @@ export const validateArrayContent = (
                             keywordLocation: [...params.keywordLocation, 'items'],
                             instanceLocation: [...params.instanceLocation, i],
                             instanceKey: i,
+                            output: 'output' in params && params.output ? params.output : new ValidatorOutput(),
+                            context: {},
                         },
-                        state,
                     )
                     if (result.valid) {
                         found++
-                    } else if (!('output' in state)) {
+                    } else if (!('output' in params && params.output)) {
                         result.errors.forEach(err2 => output.addError(err2))
                     }
                     i++
@@ -103,7 +103,7 @@ export const validateArrayContent = (
         for (const val of value) {
             // single-validation
             // Cite from json-schema.org: When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
-            const result = state.validate(
+            const result = params.validate(
                 itemsSchema, val,
                 {
                     ...params,
@@ -111,12 +111,13 @@ export const validateArrayContent = (
                     keywordLocation: [...params.keywordLocation, 'items'],
                     instanceLocation: [...params.instanceLocation, i],
                     instanceKey: i,
+                    output: 'output' in params && params.output ? params.output : new ValidatorOutput(),
+                    context: {},
                 },
-                state,
             )
             if (result.valid) {
                 found++
-            } else if (!('output' in state)) {
+            } else if (!('output' in params && params.output)) {
                 result.errors.forEach(err2 => output.addError(err2))
             }
             i++
@@ -139,20 +140,21 @@ export const validateAdditionalItems = (additionalItems: boolean, value: List<an
 export const validateItems = (
     schema: UISchemaMap,
     value: any,
-    params: ValidatorParams,
-    state: ValidatorState,
+    params: ValidatorParams & ValidatorState,
 ) => {
     const items = schema.get('items')
     if (items && value) {
-        validateArrayContent(items, value, schema.get('additionalItems'), params, state)
+        validateArrayContent(items, value, schema.get('additionalItems'), {
+            ...params,
+            parentSchema: schema,
+        })
     }
 }
 
 export const validateContains = (
     schema: UISchemaMap,
     value: List<any> | any[] | any,
-    params: ValidatorParams,
-    state: ValidatorState,
+    params: ValidatorParams & ValidatorState,
 ) => {
     if (!(Array.isArray(value) || List.isList(value))) return
 
@@ -170,10 +172,12 @@ export const validateContains = (
         undefined,
         {
             ...params,
+            parentSchema: schema,
             keywordLocation: [...params.keywordLocation, 'contains'],
             recursive: true,
+            output: undefined,
+            context: {},
         },
-        {validate: state.validate},
     )
 
     if (
@@ -182,12 +186,12 @@ export const validateContains = (
         (typeof maxContains === 'number' && maxContains < item_err.found)
     ) {
         if (item_err.output.errCount !== 0) {
-            item_err.output.errors.forEach(err => state.output.addError(err))
+            item_err.output.errors.forEach(err => params.output.addError(err))
         }
     }
 
     if (typeof minContains === 'number' && minContains > item_err.found) {
-        state.output.addError({
+        params.output.addError({
             error: ERROR_MIN_CONTAINS,
             keywordLocation: toPointer([...params.keywordLocation, 'minContains']),
             instanceLocation: toPointer(params.instanceLocation),
@@ -195,7 +199,7 @@ export const validateContains = (
         })
     }
     if (typeof maxContains === 'number' && maxContains < item_err.found) {
-        state.output.addError({
+        params.output.addError({
             error: ERROR_MAX_CONTAINS,
             keywordLocation: toPointer([...params.keywordLocation, 'maxContains']),
             instanceLocation: toPointer(params.instanceLocation),
@@ -207,7 +211,7 @@ export const validateContains = (
         minContains !== 0 &&
         ((Array.isArray(value) && value.length === 0) || (List.isList(value) && value.size === 0))
     ) {
-        state.output.addError({
+        params.output.addError({
             error: ERROR_NOT_FOUND_CONTAINS,
             keywordLocation: toPointer([...params.keywordLocation, 'contains']),
             instanceLocation: toPointer(params.instanceLocation),
@@ -230,13 +234,13 @@ export const validateUniqueItems = (schema: UISchemaMap, value: List<any> | any[
 
 export const arrayValidator: ValidatorHandler = {
     types: ['array'],
-    validate: (schema, value, params, state) => {
+    validate: (schema, value, params) => {
         if (!schema || !value) return
         // unique-items sub-schema is intended for dynamics and for statics, e.g. Selects could have duplicates but also a SimpleList of strings
         const uniqueItems = schema?.get('uniqueItems')
         if (uniqueItems) {
             if (!validateUniqueItems(schema, value)) {
-                state.output.addError({
+                params.output.addError({
                     error: ERROR_DUPLICATE_ITEMS,
                     keywordLocation: toPointer([...params.keywordLocation, 'uniqueItems']),
                     instanceLocation: toPointer(params.instanceLocation),
@@ -255,7 +259,7 @@ export const arrayValidator: ValidatorHandler = {
          */
         const items = schema?.get('items')
         if (items && params.recursive) {
-            validateItems(schema, value, params, state)
+            validateItems(schema, value, params)
         }
 
         // `contains` sub-schema is intended for components which may be dynamic, but the error is intended to be shown on the root-component and not the sub-schema, as not clear which-sub-schema it is, "1 out of n sub-schemas must be valid" can not logically translated to "specific sub-schema X is invalid"
@@ -263,7 +267,7 @@ export const arrayValidator: ValidatorHandler = {
         //    maybe adding a possibility to update the validity for sub-schemas from the parent-component?
         const contains = schema?.get('contains')
         if (contains) {
-            validateContains(schema, value, params, state)
+            validateContains(schema, value, params)
         }
     },
 }

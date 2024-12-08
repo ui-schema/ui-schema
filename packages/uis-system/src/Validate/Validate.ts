@@ -15,6 +15,19 @@ export type ValidateStateNested = {
 
 export type ValidateStateOutput = {
     output: ValidatorOutput
+    /**
+     * @todo refactor to a class with methods to easier add things?
+     */
+    context: {
+        /**
+         * @todo use a map with properties and their schemas or more information instead of just the schema?
+         */
+        evaluatedProperties?: Map<string, any[]>
+        /**
+         * @todo implement
+         */
+        evaluatedItems?: unknown
+    }
 }
 
 export type ValidateState =
@@ -76,15 +89,13 @@ export type ValidateParams =
 export type ValidateFn = <TData = unknown>(
     schema: any,
     value: unknown,
-    params?: ValidateParams,
-    state?: Partial<ValidateState>,
-) =>
+    params?: ValidateParams & Partial<ValidateState>,
+) => ValidationResult<TData>
+
+export type ValidationResult<TData = unknown> =
     ({ valid: true, value: TData, errors?: never } & ValidationDetails) |
     ({ valid: false, errors: ValidatorOutput['errors'] } & ValidationDetails)
 
 export interface ValidationDetails {
     applied?: any[]
-    context?: {
-        evaluatedProperties?: string[]
-    }
 }

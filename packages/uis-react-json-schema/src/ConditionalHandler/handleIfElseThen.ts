@@ -24,8 +24,8 @@ export const handleIfElseThen = (
             {
                 ...makeParams(),
                 recursive: true,
+                resource: state.resource,
             },
-            {root: state.root},
         )
         if (result.valid) {
             // no errors in schema found, `then` should be rendered

@@ -2,6 +2,48 @@ import { SchemaResource } from '@ui-schema/json-schema/SchemaResource'
 import { createOrdered } from '@ui-schema/system/createMap'
 import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
 import { WidgetPayload } from '@ui-schema/system/Widget'
+import { Map, List } from 'immutable'
+
+/**
+ * @todo rewrite as a more reliable schema-reduction, only a first PoC scribble
+ *       - `properties` should only be needed to be merged in first level, but if a property exists in multiple
+ *         applied schemas, their schema could be added as `allOf`, to not merge lower levels directly but once that property is rendered
+ *       - similar for `items`/`prefixItems`
+ *          - especially tuple type items must not be concatenated, maybe build an intersection
+ *       - merge all `required` into a single list
+ *       - `enum` must be reduced to their intersection
+ *          - same for minLength/maxLength and all other validation keywords where this is possible
+ *       - conflicting `const` must be kept, to apply as `allOf.const`
+ *          - same for `pattern` and all other validation keywords here no intersection can be produced
+ */
+export function mergeSchemas(baseSchema: any, ...appliedSchemas: any[]) {
+    let schema = baseSchema as Map<string, any>
+    appliedSchemas.forEach(appliedSchema => {
+        // if (schema.has('required') && appliedSchema.has('required')) {
+        //     schema = schema.set('required', schema.get('required').push(...appliedSchema.get('required')))
+        // }
+
+        if (schema.has('properties') && appliedSchema.has('properties')) {
+            appliedSchema.get('properties').forEach((subSchema, key) => {
+                if (schema.hasIn(['properties', key])) {
+                    schema = schema.updateIn(
+                        ['properties', key, 'allOf'],
+                        (allOf = List()) => {
+                            // @ts-expect-error
+                            return allOf.push(subSchema)
+                        },
+                    )
+                } else {
+                    schema = schema.setIn(['properties', key], subSchema)
+                }
+            })
+            appliedSchema = appliedSchema.delete('properties')
+        }
+
+        schema = schema.mergeDeep(appliedSchema)
+    })
+    return schema
+}
 
 export const validatorPlugin: SchemaPlugin<WidgetPayload & { resource?: SchemaResource }> = {
     handle: (props) => {
@@ -17,20 +59,21 @@ export const validatorPlugin: SchemaPlugin<WidgetPayload & { resource?: SchemaRe
                 keywordLocation: [],
                 instanceKey: ownKey,
                 parentSchema: props.parentSchema,
-            },
-            {
                 resource: props.resource,
             },
         )
+        const applicableSchema = mergeSchemas(props.schema, ...result.applied || [])
         if (result.valid) {
             return {
                 valid: true,
+                schema: applicableSchema,
             }
         }
         const errors = createOrdered(result.errors)
         return {
             valid: false,
             errors: errors,
+            schema: applicableSchema,
         }
     },
 }

@@ -218,7 +218,7 @@ describe('validateArrayContent', () => {
             })
         ]), [1, 'text', true], true, false, 0],*/
     ])('validateArrayContent(%j, %j, %s): %s', (schema, value, additionalItems, expected, params) => {
-        const r = validateArrayContent(schema, value, additionalItems, params || makeParams(), newMockStateNested())
+        const r = validateArrayContent(schema, value, additionalItems, {...params || makeParams(), ...newMockStateNested()})
         if (r.output.errCount !== expected) {
             console.log(
                 'failed validateArrayContent',
@@ -387,7 +387,7 @@ describe('validateItems', () => {
         }, [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], 1, {...makeParams(), recursive: true}],
     ])('validateItems(%j, %j)', (schema, value, expected, params) => {
         const state = newMockState()
-        validateItems(createOrderedMap(schema), value, params || makeParams(), state)
+        validateItems(createOrderedMap(schema), value, {...params || makeParams(), ...state})
         if (state.output.errCount !== expected) {
             console.log(
                 'failed validateItems',
@@ -574,7 +574,7 @@ describe('validateContains', () => {
         }, List([]), 0, undefined],
     ])('validateContains(%j, %j)', (schema, value, expected, params) => {
         const state = newMockState()
-        validateContains(createOrderedMap(schema), value, params || makeParams(), state)
+        validateContains(createOrderedMap(schema), value, {...params || makeParams(), ...state})
         expect(state.output.errCount).toBe(expected)
     })
 })
@@ -762,8 +762,7 @@ describe('arrayValidator', () => {
             arrayValidator.validate(
                 createOrderedMap(schema),
                 value,
-                makeParams(),
-                state,
+                {...makeParams(), ...state},
             )
             // expect(result.valid).toBe(expectedValid)
             expect(state.output.errCount === 0).toBe(expectedValid)

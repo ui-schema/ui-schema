@@ -7,7 +7,7 @@ import { List } from 'immutable'
  */
 export const requiredValidatorLegacy: ValidatorHandler = {
     id: 'required',
-    validate: (_schema, value, params, state) => {
+    validate: (_schema, value, params) => {
         const requiredList = params.parentSchema?.get('required') as List<string> | undefined
         if (!requiredList || typeof params.instanceKey !== 'string') return
         const ownKey = params.instanceKey
@@ -18,7 +18,7 @@ export const requiredValidatorLegacy: ValidatorHandler = {
             || value === ''
             || value === false
         ) {
-            state.output.addError(ERROR_NOT_SET)
+            params.output.addError(ERROR_NOT_SET)
         }
     },
 }
