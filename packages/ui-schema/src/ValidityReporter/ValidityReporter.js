@@ -18,10 +18,10 @@ export const ValidityReporter = (props) => {
             storeKeys: storeKeysRef,
             scopes: ['valid'],
             data: {
-                valid: realValid,
+                valid: props.errors.get('errors'),
             },
         })
-    }, [realValid, onChange, storeKeysRef]);
+    }, [realValid, onChange, storeKeysRef, customError]);
 
     React.useEffect(() => {
         // delete own validity state on component unmount
