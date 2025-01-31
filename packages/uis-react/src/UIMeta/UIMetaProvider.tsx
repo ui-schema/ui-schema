@@ -1,5 +1,6 @@
+import { useMemoObject } from '@ui-schema/react/Utils/useMemoObject'
 import { ValidateFn } from '@ui-schema/system/Validate'
-import { ComponentType, createContext, PropsWithChildren, useContext, useRef } from 'react'
+import { ComponentType, createContext, PropsWithChildren, useContext } from 'react'
 import { Translator } from '@ui-schema/system/Translator'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { getDisplayName } from '@ui-schema/react/Utils/memo'
@@ -12,16 +13,6 @@ export interface UIMetaContext<W = WidgetsBindingFactory> {
     widgets: W
     t: Translator
     validate?: ValidateFn
-}
-
-const useMemoObject = <O extends object>(currentObject: O) => {
-    const obj = useRef(currentObject)
-
-    if (Object.keys(currentObject).some(k => currentObject[k] !== obj[k])) {
-        obj.current = currentObject
-    }
-
-    return obj.current
 }
 
 export function UIMetaProvider<C extends UIMetaContext = UIMetaContext, W extends WidgetsBindingFactory = WidgetsBindingFactory>(
