@@ -20,7 +20,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                node-version: [ 18.x ]
+                node-version: [ 24 ]
         steps:
             -   uses: actions/checkout@v4
             -   name: Set Branch
