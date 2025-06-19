@@ -12,7 +12,6 @@ import { Map } from 'immutable'
 export interface TableRowActionDeleteProps {
     onChange: onChangeHandler
     storeKeys: WidgetProps['storeKeys']
-    schemaKeys: WidgetProps['schemaKeys']
     showRows: TableRowProps['showRows']
     setPage: TableRowProps['setPage']
     index: number

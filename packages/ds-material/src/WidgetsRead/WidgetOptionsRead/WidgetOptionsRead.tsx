@@ -77,7 +77,7 @@ export interface WidgetOptionsReadProps {
 
 export const WidgetOptionsRead: React.ComponentType<WidgetProps<MuiWidgetsBinding & { InfoRenderer?: React.ComponentType<InfoRendererProps> }> & UIMetaReadContextType & WithScalarValue & WidgetOptionsReadProps> = (
     {
-        schema, storeKeys, schemaKeys, showValidity,
+        schema, storeKeys, showValidity,
         valid, errors, value,
         widgets,
         onClick, style,
@@ -100,7 +100,6 @@ export const WidgetOptionsRead: React.ComponentType<WidgetProps<MuiWidgetsBindin
             valid={valid}
             errors={errors}
             storeKeys={storeKeys}
-            schemaKeys={schemaKeys}
             schema={schema}
         />
 

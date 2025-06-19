@@ -8,14 +8,12 @@ import { WidgetsBindingRoot } from '@ui-schema/system/WidgetsBinding'
 
 export interface NoWidgetProps {
     storeKeys: StoreKeys
-    schemaKeys?: StoreKeys
     scope?: string
     matching?: string
 }
 
 export interface GroupRendererProps {
     storeKeys: StoreKeys
-    schemaKeys?: StoreKeys
     schema: UISchemaMap
     noGrid?: boolean
     style?: {}

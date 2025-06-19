@@ -17,7 +17,7 @@ import { InfoRendererType } from '@ui-schema/ds-material/Component'
 
 export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetsBinding & { InfoRenderer?: InfoRendererType }> & UIMetaReadContextType & WithValue> = (
     {
-        storeKeys, schemaKeys, schema, value,
+        storeKeys, schema, value,
         showValidity, errors,
         valid, widgets,
         readDense,
@@ -42,7 +42,6 @@ export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetsBind
             valid={valid}
             errors={errors}
             storeKeys={storeKeys}
-            schemaKeys={schemaKeys}
             schema={schema}
         />
 

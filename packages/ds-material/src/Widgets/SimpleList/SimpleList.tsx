@@ -20,7 +20,7 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { UIStoreActionListItemDelete } from '@ui-schema/react/UIStoreActions'
 import { ButtonProps } from '@mui/material/Button'
 
-export type SimpleListItemProps = Pick<WidgetProps, 'schemaKeys' | 'showValidity' | 'schema' | 'storeKeys' | 'required'> & {
+export type SimpleListItemProps = Pick<WidgetProps, 'showValidity' | 'schema' | 'storeKeys' | 'required'> & {
     notDeletable?: boolean
     readOnly?: boolean
     index: number
@@ -29,7 +29,7 @@ export type SimpleListItemProps = Pick<WidgetProps, 'schemaKeys' | 'showValidity
 
 export const SimpleListItemBase: React.FC<SimpleListItemProps & Pick<WithValue, 'onChange'>> = (
     {
-        showValidity, schema, schemaKeys, storeKeys, notDeletable,
+        showValidity, schema, storeKeys, notDeletable,
         readOnly, required, onChange, index, btnSize,
     },
 ) => {
@@ -39,7 +39,6 @@ export const SimpleListItemBase: React.FC<SimpleListItemProps & Pick<WithValue, 
                 showValidity={showValidity} noGrid
                 schema={schema.get('items') as UISchemaMap} parentSchema={schema}
                 storeKeys={storeKeys.push(index)}
-                schemaKeys={schemaKeys?.push('items')}
             />
         </div>
 
@@ -67,7 +66,7 @@ export const SimpleListItem = memo(SimpleListItemBase)
 
 export const SimpleListInner: React.FC<WidgetProps<MuiWidgetsBinding & { InfoRenderer?: React.ComponentType<InfoRendererProps> }> & { listSize: number, btnAddShowLabel?: boolean, btnAddStyle?: React.CSSProperties } & ListButtonOverwrites & WithOnChange> = (
     {
-        schemaKeys, storeKeys, schema, listSize, onChange,
+        storeKeys, schema, listSize, onChange,
         showValidity, valid, errors, required,
         widgets,
         btnAddShowLabel, btnAddStyle,
@@ -93,7 +92,7 @@ export const SimpleListInner: React.FC<WidgetProps<MuiWidgetsBinding & { InfoRen
                 <Grid item xs={12}>
                     <InfoRenderer
                         schema={schema} variant={'preview'} openAs={'embed'}
-                        storeKeys={storeKeys} schemaKeys={schemaKeys} valid={valid} errors={errors}
+                        storeKeys={storeKeys} valid={valid} errors={errors}
                     />
                 </Grid> :
                 undefined}
@@ -105,7 +104,6 @@ export const SimpleListInner: React.FC<WidgetProps<MuiWidgetsBinding & { InfoRen
                     showValidity={showValidity}
                     schema={schema}
                     storeKeys={storeKeys}
-                    schemaKeys={schemaKeys}
                     btnSize={btnSize}
                     notDeletable={notDeletable}
                     readOnly={readOnly}

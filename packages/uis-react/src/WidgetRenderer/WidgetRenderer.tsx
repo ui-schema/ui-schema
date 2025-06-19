@@ -68,7 +68,6 @@ export const WidgetRenderer = <W extends WidgetsBindingFactory = WidgetsBindingF
                     matching={e.matching}
                     scope={e.scope}
                     storeKeys={props.storeKeys}
-                    schemaKeys={props.schemaKeys}
                 />
             }
             return null

@@ -29,12 +29,6 @@ export interface WidgetPayload {
      * all indices of the current widget
      */
     storeKeys: StoreKeys
-    /**
-     * all indices of the currently *resolved* position in the schema
-     *
-     * @experimental
-     */
-    schemaKeys?: StoreKeys
 
     // `required` is created inside validator plugin
     required?: boolean

@@ -17,11 +17,11 @@ export const validateObject = (
     const properties = schema.get('properties')
     if (schema.get('additionalProperties') === false && properties && isRealObject) {
         let hasAdditional = false
-        const keys = ImmutableMap.isMap(value) || Record.isRecord(value) ? value.toSeq().keySeq() : Object.keys(value)
-        const schemaKeys = properties.keySeq()
-        keys.forEach(key => {
+        const valueProperties = ImmutableMap.isMap(value) || Record.isRecord(value) ? value.toSeq().keySeq() : Object.keys(value)
+        const schemaProperties = properties.keySeq()
+        valueProperties.forEach(key => {
             // todo: add all invalid additional or change to `for key of value` to break after first invalid
-            if (schemaKeys?.indexOf(key) === -1) hasAdditional = true
+            if (schemaProperties?.indexOf(key) === -1) hasAdditional = true
         })
         if (hasAdditional) {
             params.output.addError({

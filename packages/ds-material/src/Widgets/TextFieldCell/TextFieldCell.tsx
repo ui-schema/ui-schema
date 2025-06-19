@@ -38,7 +38,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetsBindi
     {
         type,
         multiline, minRows, maxRows,
-        storeKeys, schemaKeys, schema, value, onChange,
+        storeKeys, schema, value, onChange,
         showValidity, valid, errors, required,
         style = {},
         onClick, onFocus, onBlur, onKeyUp, onKeyDown,
@@ -145,7 +145,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetsBindi
                 InfoRenderer && schema?.get('info') ?
                     <InfoRenderer
                         schema={schema} variant={'icon'} openAs={'modal'}
-                        storeKeys={storeKeys} schemaKeys={schemaKeys} valid={valid} errors={errors}
+                        storeKeys={storeKeys} valid={valid} errors={errors}
                     /> :
                     undefined
             }

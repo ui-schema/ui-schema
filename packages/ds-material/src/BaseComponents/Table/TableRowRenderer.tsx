@@ -27,7 +27,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
     {
         parentSchema, schema,
         showValidity, widgets,
-        storeKeys, schemaKeys,
+        storeKeys,
         uid,
         onChange, required,
         dense,
@@ -37,7 +37,6 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
 ) => {
     const theme = useTheme()
     const styles = useStyles(theme, {dense})
-    const cellSchemaKeyword = schema.get('items') ? 'items' : schema.get('properties') ? 'properties' : undefined
     // only supporting array tuple schemas or objects for table rows / items
     let cellSchema = (schema.get('items') as List<any>) || (schema.get('properties') as Map<string, any>)
     const readOnly = Boolean(parentSchema?.get('readOnly'))
@@ -64,7 +63,6 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                 <WidgetEngineMemo
                     key={j}
                     storeKeys={storeKeys.push(j as StoreKeyType)}
-                    schemaKeys={cellSchemaKeyword ? schemaKeys?.push(cellSchemaKeyword).push(j as StoreKeyType) : undefined}
                     schema={item}
                     parentSchema={schema}
                     isVirtual
@@ -75,11 +73,10 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                     align={schemaTypeToDistinct(item.get('type')) === 'boolean' ? 'center' : undefined}
                 >
                     {schemaTypeToDistinct(item.get('type')) === 'object' ?
-                        <GroupRenderer schema={item} storeKeys={storeKeys} schemaKeys={schemaKeys}>
+                        <GroupRenderer schema={item} storeKeys={storeKeys}>
                             <WidgetEngineMemo<{ [k: string]: any } & WidgetProps>
                                 showValidity={showValidity}
                                 storeKeys={storeKeys.push(j as StoreKeyType)}
-                                schemaKeys={cellSchemaKeyword ? schemaKeys?.push(cellSchemaKeyword).push(j as StoreKeyType) : undefined}
                                 schema={item.setIn(['view', 'hideTitle'], true)}
                                 parentSchema={schema}
                                 readOnly={readOnly}
@@ -95,7 +92,6 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                         <WidgetEngineMemo<{ [k: string]: any } & WidgetProps>
                             showValidity={showValidity}
                             storeKeys={storeKeys.push(j as StoreKeyType)}
-                            schemaKeys={cellSchemaKeyword ? schemaKeys?.push(cellSchemaKeyword).push(j as StoreKeyType) : undefined}
                             schema={item.setIn(['view', 'hideTitle'], true)}
                             parentSchema={schema}
                             readOnly={readOnly}
@@ -116,7 +112,6 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
             <TableCell sx={styles}>
                 <TableRowActionDelete
                     storeKeys={storeKeys}
-                    schemaKeys={schemaKeys}
                     onChange={onChange}
                     setPage={setPage}
                     index={storeKeys.last() as number}

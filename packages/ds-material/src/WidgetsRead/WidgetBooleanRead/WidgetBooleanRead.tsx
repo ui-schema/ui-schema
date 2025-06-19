@@ -19,7 +19,7 @@ export interface WidgetBooleanReadProps {
 
 export const WidgetBooleanRead = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> & UIMetaReadContextType = WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> & UIMetaReadContextType>(
     {
-        storeKeys, schemaKeys, schema, value,
+        storeKeys, schema, value,
         showValidity, valid, errors,
         style,
         widgets,
@@ -39,7 +39,6 @@ export const WidgetBooleanRead = <P extends WidgetProps<MuiWidgetsBinding<{ Info
                 valid={valid}
                 errors={errors}
                 storeKeys={storeKeys}
-                schemaKeys={schemaKeys}
                 schema={schema}
             />
 

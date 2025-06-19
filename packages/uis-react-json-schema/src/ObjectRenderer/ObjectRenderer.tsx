@@ -9,7 +9,7 @@ export interface ObjectRendererProps extends WidgetProps {
 
 const ObjectRendererBase: React.FC<ObjectRendererProps> = (
     {
-        schema, storeKeys, schemaKeys,
+        schema, storeKeys,
         // for performance reasons, not pushing errors deeper
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         errors,
@@ -33,7 +33,6 @@ const ObjectRendererBase: React.FC<ObjectRendererProps> = (
             {...props}
             schema={childSchema} parentSchema={schema}
             storeKeys={storeKeys.push(childKey)}
-            schemaKeys={schemaKeys?.push('properties').push(childKey)}
         />,
     ).valueSeq() || null
 
@@ -43,7 +42,7 @@ const ObjectRendererBase: React.FC<ObjectRendererProps> = (
         isVirtual ? propertyTree :
             properties ?
                 <GroupRenderer
-                    storeKeys={storeKeys} schemaKeys={schemaKeys}
+                    storeKeys={storeKeys}
                     noGrid={props.noGrid}
                     schema={schema}
                 >

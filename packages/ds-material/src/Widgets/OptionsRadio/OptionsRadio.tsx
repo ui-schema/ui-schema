@@ -18,7 +18,7 @@ export interface OptionsRadioProps extends WidgetProps<MuiWidgetsBinding & { Inf
 
 export const OptionsRadio: React.FC<OptionsRadioProps & WithScalarValue> = (
     {
-        schema, value, onChange, storeKeys, schemaKeys, showValidity, valid, required, errors,
+        schema, value, onChange, storeKeys, showValidity, valid, required, errors,
         row, widgets,
     },
 ) => {
@@ -37,7 +37,7 @@ export const OptionsRadio: React.FC<OptionsRadioProps & WithScalarValue> = (
             {InfoRenderer && schema?.get('info') ?
                 <InfoRenderer
                     schema={schema} variant={'icon'} openAs={'modal'}
-                    storeKeys={storeKeys} schemaKeys={schemaKeys} valid={valid} errors={errors}
+                    storeKeys={storeKeys} valid={valid} errors={errors}
                     align={'right'} dense
                 /> :
                 undefined}

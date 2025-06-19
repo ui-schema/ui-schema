@@ -4,7 +4,7 @@ import Grid, { GridSpacing } from '@mui/material/Grid'
 import FormLabel from '@mui/material/FormLabel'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { StoreKeys, WithOnChange } from '@ui-schema/react/UIStore'
+import { WithOnChange } from '@ui-schema/react/UIStore'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
 import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
 import { GenericListFooterProps, GenericListItemProps, GenericListItemSharedProps } from '@ui-schema/ds-material/BaseComponents/GenericList'
@@ -19,13 +19,12 @@ export interface GenericListContentProps extends ListButtonOverwrites {
     ComponentItem: React.ComponentType<GenericListItemProps>
     ComponentFooter?: React.ComponentType<GenericListFooterProps>
     listSize: number
-    schemaKeys?: StoreKeys
     listSpacing?: GridSpacing
 }
 
 export const GenericListContent = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>>>(
     {
-        storeKeys, schemaKeys, schema, listSize, onChange,
+        storeKeys, schema, listSize, onChange,
         showValidity, valid, errors, required, widgets,
         ComponentItemMore, ComponentItemPos,
         ComponentItem, ComponentFooter,
@@ -48,7 +47,7 @@ export const GenericListContent = <P extends WidgetProps<MuiWidgetsBinding<{ Inf
     const info = InfoRenderer && schema?.get('info') ?
         <InfoRenderer
             schema={schema} variant={'preview'} openAs={'embed'}
-            storeKeys={storeKeys} schemaKeys={schemaKeys} valid={valid} errors={errors}
+            storeKeys={storeKeys} valid={valid} errors={errors}
         /> : null
 
     return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
@@ -71,7 +70,6 @@ export const GenericListContent = <P extends WidgetProps<MuiWidgetsBinding<{ Inf
                 <ComponentItem
                     key={i} index={i} listSize={listSize}
                     storeKeys={storeKeys}
-                    schemaKeys={schemaKeys}
                     schema={schema} onChange={onChange}
                     listRequired={required}
                     btnSize={deleteBtnSize}

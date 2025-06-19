@@ -9,7 +9,6 @@ import { schemaTypeToDistinct } from '@ui-schema/system/schemaTypeToDistinct'
 import { List } from 'immutable'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { WidgetProps } from '@ui-schema/react/Widgets'
 
 export interface GenericListItemSharedProps {
     index: number
@@ -18,7 +17,6 @@ export interface GenericListItemSharedProps {
     schema: UISchemaMap
     onChange: onChangeHandler
     storeKeys: StoreKeys
-    schemaKeys: StoreKeys | undefined
     notSortable: boolean | undefined
     notDeletable: boolean | undefined
     showValidity: boolean | undefined
@@ -42,7 +40,7 @@ export const GenericListItemBase = (
 ): React.ReactElement => {
     const {
         index, listSize, schema,
-        storeKeys, schemaKeys,
+        storeKeys,
         showValidity,
     } = props
     const ownKeys = storeKeys.push(index)
@@ -65,21 +63,19 @@ export const GenericListItemBase = (
                         <Grid item style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
                             <Grid container spacing={2}>
                                 {(itemsSchema.get('items') as UISchemaMap)?.map((item, j) =>
-                                    <WidgetEngine<{ schemaKeys: StoreKeys | undefined } & WidgetProps>
+                                    <WidgetEngine
                                         key={j}
                                         showValidity={showValidity}
-                                        schemaKeys={schemaKeys?.push('items').push('items').push(j)}
                                         storeKeys={ownKeys.push(j)}
                                         schema={item as UISchemaMap}
                                         parentSchema={schema}
                                     />).valueSeq()}
                             </Grid>
                         </Grid> :
-                        <WidgetEngine<{ schemaKeys: StoreKeys | undefined } & WidgetProps>
+                        <WidgetEngine
                             showValidity={showValidity}
                             schema={itemsSchema} parentSchema={schema}
                             storeKeys={ownKeys}
-                            schemaKeys={schemaKeys?.push('items')}
                         />}
 
                 {ComponentMore ?

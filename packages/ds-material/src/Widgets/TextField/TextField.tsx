@@ -50,7 +50,7 @@ export const StringRenderer = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRen
         type,
         multiline,
         minRows, maxRows,
-        storeKeys, schemaKeys, schema, value, onChange,
+        storeKeys, schema, value, onChange,
         showValidity, valid, errors, required,
         style,
         onClick, onFocus, onBlur, onKeyUp, onKeyDown,
@@ -75,7 +75,7 @@ export const StringRenderer = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRen
         InputProps['endAdornment'] = <InputAdornment position="end">
             <InfoRenderer
                 schema={schema} variant={'icon'} openAs={'modal'}
-                storeKeys={storeKeys} schemaKeys={schemaKeys} valid={valid} errors={errors}
+                storeKeys={storeKeys} valid={valid} errors={errors}
             />
         </InputAdornment>
     }

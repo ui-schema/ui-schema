@@ -21,7 +21,7 @@ export interface StringRendererReadProps extends StringRendererReadBaseProps {
 export const StringRendererRead = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> & UIMetaReadContextType>(
     {
         multiline,
-        storeKeys, schemaKeys, schema, value,
+        storeKeys, schema, value,
         showValidity, valid, errors,
         style,
         onClick,
@@ -41,7 +41,6 @@ export const StringRendererRead = <P extends WidgetProps<MuiWidgetsBinding<{ Inf
                 valid={valid}
                 errors={errors}
                 storeKeys={storeKeys}
-                schemaKeys={schemaKeys}
                 schema={schema}
             />
             {multiline ?

@@ -20,7 +20,6 @@ export interface InfoRendererProps {
 
     schema: UISchemaMap
     storeKeys: StoreKeys
-    schemaKeys: StoreKeys | undefined
 
     valid?: boolean
     errors?: WidgetProps['errors']

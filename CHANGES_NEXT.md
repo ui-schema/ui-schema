@@ -111,6 +111,7 @@ Todo:
         - allOf > return all
         - oneOf > return the first valid
         - anyOf > return the first valid
+    - [ ] collect all applied canonical / pointer to know which are used after reduction
 - [x] ValidatorHandler refactor signature to object for easier complex changes/other state-params mix
 - [ ] validator support of evaluation context for more advanced use cases
     - [x] basic support of validation context with `evaluatedProperties`
@@ -206,7 +207,7 @@ Todo:
 #### React Plugins / WidgetEngine
 
 - removed `ExtractStorePlugin`, included now in `WidgetEngine` directly (for the moment, experimenting performance/typing)
-- removed `level` property, use `schemaKeys`/`storeKeys` to calc. that when necessary
+- removed `level` property, use ~~`schemaKeys`~~/`storeKeys` to calc. that when necessary
 - removed `WidgetRenderer` from `getNextPlugin` internals, moved to `widgetPlugins` directly
 - removed `required`/`requiredList` in `WidgetEngine`
     - **todo:** for required info/validators are not finalized and there exist two different versions
@@ -332,9 +333,17 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
 - [ ] remove slate/editorjs or migrate to basic react18 support
     - migrate from `@mui/styles`
     - upgrade peer deps to react18 support
-- [ ] remove schemaKeys, as they won't work in recursive references due to ever increasing keys list, also when merged in conditionals, no information if end of schemaKeys etc. exist
-    - [ ] remove schemaKeys
-    - [ ] provide a util which can resolve storeKeys to applicable schemas, for splitSchema
+- [x] remove schemaKeys, as they won't work in recursive references due to ever increasing keys list, also when merged in conditionals, no information if end of schemaKeys etc. exist
+    - [x] remove schemaKeys
+    - [x] ~~provide a util which can resolve storeKeys to applicable schemas, for splitSchema~~
+        - splitSchema never used `schemaKeys`, but that use case was explained somewhere,
+          the existing `InjectSplitSchemaPlugin` uses `storeKeys` and stays compatible as-is,
+          while a `schemaKeys` based inject plugin was never stable, instead it should use a value-location to schema-location matcher,
+          and can now use the new `SchemaResource` system to resolve canonical ids and pointers, which wasn't possible beforehand,
+          with a further refined resource handling and resolving, more information about all applied `$id` for a valueLocation can be used to influence style schema injection
+- [ ] deprecate `InjectSplitSchemaPlugin`, `RootProvider`, `ReferencingHandler`, ...
+- [ ] add new schema plugin: injectSplitSchema, deprecate widget plugin: InjectSplitSchema
+- [ ] deprecate `SchemaPlugin` methods `.should` and `.noHandle`; always use `.handle`
 
 ## Todo 0.6.x
 
@@ -348,3 +357,9 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
 - store and schema positions to use for subscriptions, mutations and applicable schemas
     - `schemaKeys` won't capture complex compositional schemas (incl. $ref), thus relying on it to get the current branch/schema is impossible
     - `storeKeys` must be matched against applicable schemas, to know which are all applying
+- this allows to use a valueLocation in rendering and getting the applicable schema, without the need to pass down the schema at all,
+  without schema reduction done per rendered field, but based on the original tree and not an already reduced tree
+    - which of course would break any existing widget-plugin based schema-manipulation - there should exist some migration path
+        - this is applies especially to widget plugins which where before the validator and relied on schema and modified the value, which then the validator would already use,
+          to validate but also use to evaluate conditional branches; one solution i see is to allow the validator to modify value while traversing and emitting effects for store changes, which are fired after it is done
+    - the performance must be checked and compared against the render-reduction + validation approach

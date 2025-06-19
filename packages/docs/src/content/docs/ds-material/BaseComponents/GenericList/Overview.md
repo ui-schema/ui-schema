@@ -109,7 +109,7 @@ The list renderer component, uses the components passed down per `props` to buil
 - `ComponentItem`: `React.ComponentType<GenericListItemProps>`, is rendered per item in the list, responsible to further render nested schema, also uses component props
 - `ComponentFooter`: `React.ComponentType<GenericListFooterProps>`, will be rendered in `GenericListContent`, contains the add-button
 - `listSize`: `number`, the size of the list
-- `schemaKeys`: `StoreKeys`, experimental [#104](https://github.com/ui-schema/ui-schema/issues/104)
+- ~~`schemaKeys`: `StoreKeys`, experimental [#104](https://github.com/ui-schema/ui-schema/issues/104)~~
 - `listSpacing`: `GridSpacing`, used as the spacing for the item-list
 
 ### GenericListItem

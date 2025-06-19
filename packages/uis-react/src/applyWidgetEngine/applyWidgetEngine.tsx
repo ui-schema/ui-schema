@@ -15,7 +15,6 @@ export type WidgetEngineNestedProps = {
     isRoot?: false
     // all indices of the current widget, must be set for nested plugins
     storeKeys: StoreKeys
-    schemaKeys?: StoreKeys
     // `parentSchema` will only be `undefined` in the root level of a schema
     // todo: should this be typed differently between "props/passing-down" and "consuming/usages"?
     parentSchema: UISchemaMap | undefined

@@ -16,10 +16,9 @@ export type WidgetEngineWrapperProps = {
     children: ReactNode
     schema: UISchemaMap
     storeKeys: StoreKeys
-    schemaKeys: StoreKeys
 }
 
-export type WidgetEngineInjectProps = 'currentPluginIndex' | 'errors' | 'valid' | 'schemaKeys' | 'storeKeys'/* | 'parentSchema'*/// |
+export type WidgetEngineInjectProps = 'currentPluginIndex' | 'errors' | 'valid' | 'storeKeys'/* | 'parentSchema'*/// |
 // todo find a better way to define from-plugin injected values as "required" - or shouldn't?
 // 'value' | 'onChange' | 'internalValue'
 
@@ -77,20 +76,16 @@ export const WidgetEngine = <
     } = props
 
     let storeKeys: StoreKeys
-    let schemaKeys: StoreKeys
     if (isRootProps(props)) {
         storeKeys = List<StoreKeyType>([])
-        schemaKeys = List<StoreKeyType>([])
     } else {
         // todo: remove fallbacks and add hard errors?
         storeKeys = props.storeKeys || List<StoreKeyType>([])
-        schemaKeys = props.schemaKeys || List<StoreKeyType>([])
     }
 
     const values = store?.extractValues(storeKeys)
     // central reference integrity of `storeKeys` for all plugins and the receiving widget, otherwise `useImmutable` is needed more times, e.g. 3 times in plugins + 1x time in widget
     const currentStoreKeys = useImmutable(storeKeys)
-    const currentSchemaKeys = useImmutable(schemaKeys)
     const activeWidgets: WidgetsBindingFactory = customWidgets || widgets
 
     // todo: resolving `hidden` here is wrong, must be done after merging schema / resolving referenced
@@ -104,7 +99,6 @@ export const WidgetEngine = <
             currentPluginIndex={-1}
             widgets={activeWidgets}
             storeKeys={currentStoreKeys}
-            schemaKeys={currentSchemaKeys}
             parentSchema={parentSchema}
             schema={schema as UISchemaMap}
             // `showValidity` is overridable by render flow, e.g. nested Stepper
@@ -121,7 +115,6 @@ export const WidgetEngine = <
         <StackWrapper
             schema={schema}
             storeKeys={currentStoreKeys}
-            schemaKeys={currentSchemaKeys}
             {...(wrapperProps || {}) as PWrapper}
         >{stack}</StackWrapper> :
         stack
