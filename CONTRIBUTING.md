@@ -1,5 +1,22 @@
 # Contributing to UI-Schema
 
+## v0.5.0 dev branch
+
+*(stub)*
+
+Switched to npm workspaces for monorepo deps management.
+
+```shell
+npm i --legacy-peer-deps
+npm start
+# npm start -- --serve docs
+
+# npm run check
+# npm run build
+```
+
+## develop branch (0.4.0)
+
 1. Fork/Clone repository **branch `develop`**
 2. Install root dev-dependencies (like lerna, webpack): `npm i --force` (**force needed for 0.4.x branch atm.**)
 3. Install & link the `packages`: `npm run bootstrap && npm run link`

@@ -43,9 +43,10 @@ jobs:
 
             -   name: Setup packages
                 run: |
-                    npm ci --force
-                    npm run bootstrap
-                    npm run link
+                    npm ci --legacy-peer-deps
+                    #npm ci --force
+                    #npm run bootstrap
+                    #npm run link
 
             -   name: Run linter
                 run: |
