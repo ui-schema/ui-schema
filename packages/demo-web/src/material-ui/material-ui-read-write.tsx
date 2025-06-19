@@ -1,5 +1,12 @@
+import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
+import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
+import { Validator } from '@ui-schema/json-schema/Validator'
+import { DefaultHandler } from '@ui-schema/react-json-schema'
 import { InheritKeywords } from '@ui-schema/react-json-schema/InheritKeywords'
 import { SortPlugin } from '@ui-schema/react-json-schema/SortPlugin'
+import { validatorPlugin } from '@ui-schema/react-json-schema/ValidatorPlugin'
+import { SchemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
+import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { schemaTypeToDistinct } from '@ui-schema/system/schemaTypeToDistinct'
 import React from 'react'
 import Grid, { GridSpacing } from '@mui/material/Grid'
@@ -27,7 +34,7 @@ import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Componen
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { createStore, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
-import { isInvalid } from '@ui-schema/react/ValidityReporter'
+import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 
 // custom `GroupRenderer` that supports `is-read and display-dense`
@@ -152,11 +159,10 @@ export interface ReadWidgetsBinding {
 
 // Notice: `customWidgets` are supplied by the global `UIMetaProvider` at the end of this file,
 //         while `readWidgets` are supplied in the nested `UIMetaProvider` - which re-uses everything else from the global provider
-const {widgetPlugins} = WidgetsDefault.plugins()
 const customWidgets = {
     ...WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
         InfoRenderer: InfoRenderer,
-        widgetPlugins: widgetPlugins,
+        widgetPlugins: [],
         types: WidgetsDefault.widgetsTypes(),
         custom: {
             ...WidgetsDefault.widgetsCustom(),
@@ -199,16 +205,21 @@ const ReadableWritableEditor = () => {
 
     const customWidgetsRtd = React.useMemo(() => ({
         ...widgets,
-        schemaPlugins: [
-            // @ts-expect-error not yet migrated to new SchemaPluginsAdapter
-            ...widgets.schemaPlugins || [],
-            SortPlugin,
-            // non-read widgets do not support a `dense` property by default, thus forcing with inheriting from parent schema
-            InheritKeywords(
-                [['view', 'dense']],
-                ({schema}) => schemaTypeToDistinct(schema?.get('type')) !== 'boolean' && edit,
-                // (/*{parentSchema, schema}*/) => edit,
-            ),
+        widgetPlugins: [
+            DefaultHandler,
+            SchemaPluginsAdapterBuilder([
+                validatorPlugin,
+                SortPlugin,
+                // non-read widgets do not support a `dense` property by default, thus forcing with inheriting from parent schema
+                InheritKeywords(
+                    [['view', 'dense']],
+                    ({schema}) => schemaTypeToDistinct(schema?.get('type')) !== 'boolean' && edit,
+                    // (/*{parentSchema, schema}*/) => edit,
+                ),
+            ]),
+            SchemaGridHandler,
+            ValidityReporter,
+            WidgetRenderer,
         ],
         types: edit ? widgets.types : readWidgets.types,
         custom: edit ? widgets.custom : readWidgets.custom,
@@ -246,10 +257,18 @@ const ReadableWritableEditor = () => {
     </React.Fragment>
 }
 
+const validate = Validator([
+    ...standardValidators,
+]).validate
+
 // eslint-disable-next-line react/display-name
 export default (): React.ReactElement =>
     <>
-        <UIMetaProvider widgets={customWidgets} t={browserT}>
+        <UIMetaProvider
+            widgets={customWidgets}
+            t={browserT}
+            validate={validate}
+        >
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Paper

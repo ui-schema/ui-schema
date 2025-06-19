@@ -5,7 +5,7 @@ import { ImmutableEditor, themeMaterial, themeMaterialLight } from 'react-immuta
 import { SchemaDebug } from '../../component/SchemaDebug'
 import Typography from '@mui/material/Typography'
 
-const MuiJsonEditor = ({title, ...p}: any) => {
+export const MuiJsonEditor = ({title, ...p}: any) => {
     const theme = useTheme()
     return <Paper
         square

@@ -2,7 +2,8 @@ import React from 'react'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import Button from '@mui/material/Button'
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
+import ToggleButton from '@mui/material/ToggleButton'
 import Paper from '@mui/material/Paper'
 import { Markdown } from '../component/Markdown'
 import DemoUIGenerator from '../component/Schema/DemoUIGenerator'
@@ -101,14 +102,24 @@ See the [**list of widgets**](/docs/overview#widget-list) for the different desi
 - custom UI with autowired and always validated widgets / partial-automatic rendering
 
 `}/>
-                <Grid container>
-                    <Grid item xs={6} style={{paddingRight: 6}}>
-                        <Button fullWidth variant={render === 'automatic' ? 'contained' : 'outlined'} color={'secondary'} onClick={() => setRender('automatic')}>Automatic</Button>
-                    </Grid>
-                    <Grid item xs={6} style={{paddingLeft: 6}}>
-                        <Button fullWidth variant={render === 'custom' ? 'contained' : 'outlined'} color={'secondary'} onClick={() => setRender('custom')}>Custom</Button>
-                    </Grid>
-                </Grid>
+                <Box>
+                    <ToggleButtonGroup
+                        value={render}
+                        exclusive
+                        onChange={(_, value) => setRender(value)}
+                        aria-label="rendering mode"
+                        size={'large'}
+                        color={'secondary'}
+                        fullWidth
+                    >
+                        <ToggleButton value="automatic" aria-label="automatic rendering">
+                            {'Automatic'}
+                        </ToggleButton>
+                        <ToggleButton value="custom" aria-label="custom rendering">
+                            {'Custom'}
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                </Box>
 
                 <LinkableHeadlineMenu initial disableNavLink onClickKeepOpen/>
             </Paper>
@@ -120,15 +131,29 @@ See the [**list of widgets**](/docs/overview#widget-list) for the different desi
 First select the design-system and install ui-schema and dependencies.
 `}/>
 
-                <Grid container>
-                    <Grid item xs={6} style={{paddingRight: 6}}>
-                        <Button fullWidth variant={ds === 'mui' ? 'contained' : 'outlined'} color={'secondary'} onClick={() => setDS('mui')}>Material-UI</Button>
-                    </Grid>
-                    <Grid item xs={6} style={{paddingLeft: 6}}>
-                        <Button fullWidth variant={ds === 'bts' ? 'contained' : 'outlined'} color={'secondary'} onClick={() => setDS('bts')}>Bootstrap</Button>
-                    </Grid>
-                    <Grid item xs={12} style={{marginTop: 24}}>
-                        {ds === 'mui' ? <Markdown source={`
+                <Box mb={4}>
+                    <ToggleButtonGroup
+                        value={ds}
+                        exclusive
+                        onChange={(_, value) => setDS(value)}
+                        aria-label="rendering mode"
+                        size={'large'}
+                        color={'secondary'}
+                        fullWidth
+                    >
+                        <ToggleButton value="mui">
+                            {'MUI'}
+                        </ToggleButton>
+                        <ToggleButton value="bts">
+                            {'Bootstrap'}
+                        </ToggleButton>
+                        <ToggleButton value="custom" aria-label="custom design system">
+                            {'Custom'}
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                </Box>
+
+                {ds === 'mui' ? <Markdown source={`
 \`\`\`bash
 npm i --save @ui-schema/ui-schema immutable \\
     @ui-schema/ds-material \\
@@ -146,18 +171,21 @@ npm i --save @ui-schema/ui-schema immutable \\
 >
 > - [simple create-react-app demo](https://github.com/ui-schema/demo-cra) with a [codesandbox](https://codesandbox.io/s/github/ui-schema/demo-cra/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2FSchema%2FDemoEditor.js)
 > - [complexer examples using TypeScript and create-react-app](https://github.com/ui-schema/demo-cra-ts) with a [codesandbox](https://codesandbox.io/s/github/ui-schema/demo-cra-ts/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2Fpages%2FPageSimpleForm.tsx)
-`}/> :
-                            ds === 'bts' ? <Markdown source={`
+`}/> : null}
+                {ds === 'bts' ? <Markdown source={`
 > no priority currently for bootstrap widgets development, but happy about PRs
 \`\`\`bash
 npm i --save @ui-schema/ui-schema immutable \\
     @ui-schema/ds-bootstrap bootstrap
 \`\`\`
-`}/> :
-                                'unsupported'
-                        }
-                    </Grid>
-                </Grid>
+`}/> : null}
+                {ds === 'custom' ? <Markdown source={`
+Install dependencies then head to the [widgets binding documentation](/docs/widgets#create-design-system-binding) for more about creating design systems bindings.
+
+\`\`\`bash
+npm i --save @ui-schema/ui-schema immutable
+\`\`\`
+`}/> : null}
             </Paper>
 
             {render === 'custom' ?
