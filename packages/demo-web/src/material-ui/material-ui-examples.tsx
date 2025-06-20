@@ -1,5 +1,7 @@
+import { MuiWidgetsBinding } from '@ui-schema/ds-material'
+import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
-import { define, widgetsCustom, widgetsTypes } from '@ui-schema/ds-material/WidgetsDefault'
+import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
@@ -59,7 +61,8 @@ const CustomTable = React.memo(CustomTableBase)
 // run validations on defaulted dats
 // build/merge into happy path
 
-const customWidgets = define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
+const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
+    ...baseComponents,
     InfoRenderer: InfoRenderer,
 
     widgetPlugins: [
@@ -82,14 +85,14 @@ const customWidgets = define<{ InfoRenderer?: React.ComponentType<InfoRendererPr
         ValidityReporter,
         WidgetRenderer,
     ],
-    types: widgetsTypes(),
+    types: typeWidgets,
     custom: {
-        ...widgetsCustom(),
+        ...bindingExtended,
         SelectChips: SelectChips,
         Table: CustomTable,
         TableAdvanced: TableAdvanced,
     },
-})
+}
 //widgets.types.null = () => 'null'
 
 const loadSchema = (url, versions) => {

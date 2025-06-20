@@ -1,3 +1,5 @@
+import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
+import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { escapePointer } from '@ui-schema/json-pointer'
 import { resourceFromSchema, SchemaResource } from '@ui-schema/json-schema/SchemaResource'
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
@@ -16,7 +18,6 @@ import { WidgetPayload } from '@ui-schema/system/Widget'
 import React, { useMemo } from 'react'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
-import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes } from '@ui-schema/ds-material/BindingType'
 import { browserT } from '../t'
 import { Table } from '@ui-schema/ds-material/Widgets/Table'
@@ -27,7 +28,6 @@ import { MuiJsonEditor, MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { Map, OrderedMap } from 'immutable'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
-import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { SelectChips } from '@ui-schema/ds-material/Widgets'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { UISchema, UISchemaMap } from '@ui-schema/json-schema/Definitions'
@@ -60,8 +60,9 @@ const CustomTable: React.ComponentType<WidgetProps> = ({widgets, ...props}) => {
     />
 }
 // const {widgetPlugins} = WidgetsDefault.plugins()
-const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
-    InfoRenderer: InfoRenderer,
+// const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
+const customWidgets: CustomWidgetsBinding = {
+    ...baseComponents,
     // the referencing network handler should be at first position
     // must be before the `ReferencingHandler`, thus if the root schema for the level is a network schema,
     // the network handler can download it, and the normal referencing handler may handle references inside of e.g. `if`
@@ -69,6 +70,7 @@ const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType
     // widgetPlugins.splice(0, 0, ReferencingNetworkHandler)
     // widgetPlugins.splice(1, 0, InjectSplitSchemaPlugin)
     widgetPlugins: [
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         ReferencingHandler, //  needed for legacy widget plugin, as relying on RootProvider/rootContext handling from it
         DefaultHandler,
         SchemaPluginsAdapterBuilder([
@@ -98,19 +100,20 @@ const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType
                 },
             } satisfies SchemaPlugin<WidgetPayload & { resource?: SchemaResource, styleSchema?: UISchemaMap }>,
         ]),
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         InjectSplitSchemaPlugin, // legacy widget plugin
         SchemaGridHandler,
         ValidityReporter,
         WidgetRenderer,
     ],
-    types: WidgetsDefault.widgetsTypes(),
+    types: typeWidgets,
     custom: {
-        ...WidgetsDefault.widgetsCustom(),
+        ...bindingExtended,
         SelectChips: SelectChips,
         Table: CustomTable,
         TableAdvanced: TableAdvanced,
     },
-}) as CustomWidgetsBinding
+}
 
 const schemaData = createOrderedMap({
     // id is not needed when using the `rootContext` prop

@@ -1,11 +1,15 @@
 /**
  * @jest-environment jsdom
  */
+import { resourceFromSchema } from '@ui-schema/json-schema/SchemaResource'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
+import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
+import { requiredPlugin } from '@ui-schema/react-json-schema/RequiredPlugin'
+import { SchemaResourceProvider } from '@ui-schema/react-json-schema/SchemaResourceProvider'
 import { validatorPlugin } from '@ui-schema/react-json-schema/ValidatorPlugin'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useMemo } from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'
@@ -53,17 +57,36 @@ widgets.GroupRenderer =
             className={'group-renderer'}
         >{children}</div>
     }
-widgets.widgetPlugins = [
-    // plugin to have every widget in it's own div - to query against in tests
+
+// todo: make three separate and ensure test are the same, one with legacy, one with modern, one both mixed (as far as supported)
+const widgetPluginsLegacy = [
+    // plugin to have every widget in its own div - to query against in tests
     (props) => <div><NextPluginRenderer {...props}/></div>,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     ReferencingHandler,
     // ExtractStorePlugin,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     CombiningHandler,
     DefaultHandler,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     DependentHandler,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     ConditionalHandler,
     SchemaPluginsAdapterBuilder([
+        // todo: should this exclude the validators which replaced the deprecated widget plugins?
         validatorPlugin,
+    ]),
+    ValidityReporter,
+    WidgetRenderer,
+]
+
+const widgetPlugins = [
+    // plugin to have every widget in its own div - to query against in tests
+    (props) => <div><NextPluginRenderer {...props}/></div>,
+    DefaultHandler,
+    SchemaPluginsAdapterBuilder([
+        validatorPlugin,
+        requiredPlugin,
     ]),
     ValidityReporter,
     WidgetRenderer,
@@ -114,6 +137,7 @@ const TestUIRenderer = (props: {
     }
     notT?: boolean
     noStore?: boolean
+    legacy?: boolean
 }) => {
     // needed variables and setters for the UIGenerator, create wherever you like
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(props.data || {demo_string: ''})))
@@ -139,7 +163,9 @@ const TestUIRenderer = (props: {
                     } as JsonSchema,
                     children: {
                         type: 'array',
-                        items: {$ref: '#/definitions/person'},
+                        // note: new validator is more spec compliant, no $defs/definitions aliasing
+                        // items: {$ref: '#/definitions/person'},
+                        items: {$ref: '#/$defs/person'},
                         'default': [],
                     },
                 },
@@ -182,7 +208,9 @@ const TestUIRenderer = (props: {
                     type: 'string',
                 },
             },
-            person: {$ref: '#/definitions/person'},
+            // note: new validator is more spec compliant, no $defs/definitions aliasing
+            // person: {$ref: '#/definitions/person'},
+            person: {$ref: '#/$defs/person'},
         },
         allOf: [{
             if: {
@@ -225,10 +253,19 @@ const TestUIRenderer = (props: {
         setStore(storeUpdater(actions))
     }, [setStore])
 
-    return <UIMetaProvider
-        widgets={widgets}
+    const appliedWidgets = useMemo(() => {
+        return {
+            ...widgets,
+            widgetPlugins: props.legacy ? widgetPluginsLegacy : widgetPlugins,
+        }
+    }, [props.legacy])
+
+    const resource = useMemo(() => (schema && !props.legacy ? resourceFromSchema(schema, {}) : undefined), [props.legacy, schema])
+
+    const standard = <UIMetaProvider
+        widgets={appliedWidgets}
         t={props.notT ? translateRelative : (text: string) => text}
-        validate={Validator(standardValidators).validate}
+        validate={props.legacy ? validatePlain : validate}
     >
         <UIStoreProvider
             store={props.noStore ? undefined : store}
@@ -239,12 +276,32 @@ const TestUIRenderer = (props: {
         </UIStoreProvider>
         <div>store-is-{isInvalid(store.getValidity()) ? 'invalid' : 'correct'}</div>
     </UIMetaProvider>
+
+    if (props.legacy) {
+        return standard
+    }
+
+    // for $ref support in new validator system, the resource system is needed
+    return <SchemaResourceProvider
+        resource={resource}
+    >
+        {standard}
+    </SchemaResourceProvider>
 }
 
-describe('UIGenerator Integration', () => {
+const validatePlain = Validator([
+    ...standardValidators,
+]).validate
+
+const validate = Validator([
+    ...standardValidators,
+    requiredValidatorLegacy, // this is a compact plugin, to behave like the old one
+]).validate
+
+const setupTests = (legacy: boolean) => describe('UIGenerator Integration' + (legacy ? ' legacy' : ''), () => {
     it('TestUIRenderer', async () => {
         const {queryByText, queryAllByText, container} = render(
-            <TestUIRenderer data={{demo_number: 10, demo_array2: ['val-test']}}/>,
+            <TestUIRenderer legacy={legacy} data={{demo_number: 10, demo_array2: ['val-test']}}/>,
         )
         // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-container').length).toBe(1)
@@ -259,9 +316,9 @@ describe('UIGenerator Integration', () => {
     })
     it('TestUIRenderer no `store`', async () => {
         const {queryByText, queryAllByText, container} = render(
-            <TestUIRenderer noStore/>,
+            <TestUIRenderer legacy={legacy} noStore/>,
         )
-        //expect(container).toMatchSnapshot()
+        // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-container').length).toBe(1)
         expect(container.querySelectorAll('.group-renderer').length).toBe(2)
 
@@ -276,7 +333,7 @@ describe('UIGenerator Integration', () => {
     })
     it('TestUIRenderer not `t`', async () => {
         const {queryByText, queryAllByText, container} = render(
-            <TestUIRenderer notT/>,
+            <TestUIRenderer legacy={legacy} notT/>,
         )
         // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-container').length).toBe(1)
@@ -287,7 +344,7 @@ describe('UIGenerator Integration', () => {
     })
     it('TestUIRenderer ConditionalCombining', async () => {
         const {queryByText, container} = render(
-            <TestUIRenderer data={{demo_string: 'test'}}/>,
+            <TestUIRenderer legacy={legacy} data={{demo_string: 'test'}}/>,
         )
         // expect(container).toMatchSnapshot()
         expect(container.querySelectorAll('.root-container').length === 1).toBeTruthy()
@@ -297,7 +354,7 @@ describe('UIGenerator Integration', () => {
     })
     it('TestUIRendererError', async () => {
         const {queryByText, queryAllByText, container} = render(
-            <TestUIRenderer data={{
+            <TestUIRenderer legacy={legacy} data={{
                 demo_string: 'to-long-text', demo_number: 83,
                 // @ts-expect-error
                 demo_array: 'not-an-array',
@@ -315,3 +372,5 @@ describe('UIGenerator Integration', () => {
     })
 })
 
+setupTests(true)
+setupTests(false)

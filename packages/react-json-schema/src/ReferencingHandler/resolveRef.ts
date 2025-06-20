@@ -1,10 +1,17 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { resolvePointer } from '@ui-schema/json-pointer/resolvePointer'
 import { ParseRefsContent } from './parseRefs.js'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
+/**
+ * @deprecated use new validatorPlugin instead
+ */
 export class SchemaRefPending extends Error {
 }
 
+/**
+ * @deprecated use new validatorPlugin instead
+ */
 export const resolveRef = (ref: string, context: ParseRefsContent, schemaVersion?: string): UISchemaMap | undefined => {
     const {
         // the id of the parent schema

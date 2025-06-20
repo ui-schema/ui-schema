@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { List, Map } from 'immutable'
 import { getSchemaRefPlugin, resolveRef, SchemaRefPending } from '@ui-schema/react-json-schema/ReferencingHandler'
 import { isRootSchema, SchemaRootContext } from '@ui-schema/react-json-schema/SchemaRootProvider'
@@ -14,7 +15,9 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
  * }
  */
 export type SchemaRefsPending = Map<string, Map<string, List<string>>>
-
+/**
+ * @deprecated use new validatorPlugin instead
+ */
 export interface ParseRefsContent {
     // the active root-id
     id?: string
@@ -148,6 +151,9 @@ const parseRefsInConditionalKeywords = (schema: UISchemaMap, context: ParseRefsC
     return res
 }
 
+/**
+ * @deprecated use new validatorPlugin instead
+ */
 export const parseRefs = (
     schema: UISchemaMap,
     context: ParseRefsContent,

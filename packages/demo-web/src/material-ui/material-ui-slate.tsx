@@ -1,3 +1,6 @@
+import { MuiWidgetsBinding } from '@ui-schema/ds-material'
+import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
+import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import React from 'react'
 import Grid from '@mui/material/Grid'
 import { RichContent, RichContentInline } from '@ui-schema/material-slate'
@@ -6,21 +9,21 @@ import { RichContentPane } from '@ui-schema/material-slate/Widgets'
 import { browserT } from '../t'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { DummyRenderer } from './component/MuiMainDummy'
-import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
+import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
-const {widgetPlugins} = WidgetsDefault.plugins()
-const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
+const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
+    ...baseComponents,
     InfoRenderer: InfoRenderer,
-    widgetPlugins: widgetPlugins,
-    types: WidgetsDefault.widgetsTypes(),
+    widgetPlugins: widgetPluginsLegacy,
+    types: typeWidgets,
     custom: {
-        ...WidgetsDefault.widgetsCustom(),
+        ...bindingExtended,
         RichContentPane: RichContentPane,
         RichContent: RichContent,
         RichContentInline: RichContentInline,
     },
-})
+}
 
 // eslint-disable-next-line react/display-name
 export default () => <>

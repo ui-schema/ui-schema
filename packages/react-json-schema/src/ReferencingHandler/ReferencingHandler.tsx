@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import React from 'react'
 import { Translate } from '@ui-schema/react/Translate'
 import {
@@ -8,6 +9,9 @@ import { useSchemaRef } from '@ui-schema/react-json-schema/ReferencingHandler'
 import { NextPluginRendererMemo, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { getSchemaId } from '@ui-schema/system/Utils/getSchema'
 
+/**
+ * @deprecated use new validatorPlugin with SchemaResource instead
+ */
 export const ReferencingHandler: React.FC<WidgetPluginProps & { rootContext?: { [k: string]: any } }> = ({rootContext, ...props}) => {
     const {schema: baseSchema, isVirtual} = props
     const {schema: maybeRootSchema, definitions: maybeDefinitions, ...nestedRootProps} = useSchemaRoot()

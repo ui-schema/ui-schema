@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { ValidateFn } from '@ui-schema/system/Validate'
 import { useMemo } from 'react'
 import { List, Map, OrderedMap } from 'immutable'
@@ -5,6 +6,9 @@ import { handleIfElseThen } from '@ui-schema/react-json-schema/ConditionalHandle
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { mergeSchema } from '@ui-schema/system/Utils/mergeSchema'
 
+/**
+ * @deprecated use new validatorPlugin instead
+ */
 export const handleSchemaCombine = (
     validate: ValidateFn,
     schema: UISchemaMap,
@@ -32,6 +36,9 @@ export const handleSchemaCombine = (
     return schema
 }
 
+/**
+ * @deprecated use new validatorPlugin instead
+ */
 export const useSchemaCombine = (
     validate: ValidateFn | undefined,
     schema: UISchemaMap,

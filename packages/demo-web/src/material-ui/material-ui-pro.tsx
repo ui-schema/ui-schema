@@ -1,3 +1,6 @@
+import { MuiWidgetsBinding } from '@ui-schema/ds-material'
+import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
+import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import React from 'react'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
@@ -21,18 +24,18 @@ import { toHistory, useStorePro } from '@ui-schema/pro/UIStorePro'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
-import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import Grid from '@mui/material/Grid'
+import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
-const {widgetPlugins} = WidgetsDefault.plugins()
-const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
+const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
+    ...baseComponents,
     InfoRenderer: InfoRenderer,
-    widgetPlugins: widgetPlugins,
-    types: WidgetsDefault.widgetsTypes(),
+    widgetPlugins: widgetPluginsLegacy,
+    types: typeWidgets,
     custom: {
-        ...WidgetsDefault.widgetsCustom(),
+        ...bindingExtended,
     },
-})
+}
 
 // or set to `undefined` for no-initial values
 //const initialStore = createStore(fromJSOrdered({person: {name: 'Kim Smith'}}))

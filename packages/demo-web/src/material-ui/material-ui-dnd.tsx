@@ -1,3 +1,5 @@
+import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
+import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import React from 'react'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
@@ -6,7 +8,6 @@ import Label from '@mui/material/FormLabel'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
-import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { createEmptyStore, createStore, UIStoreProvider, UIStoreType, WithScalarValue } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
@@ -29,21 +30,23 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
+import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
 type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
     SortableList: React.ComponentType<WidgetProps<CustomWidgetsBinding> & WithScalarValue>
 }>
-const {widgetPlugins} = WidgetsDefault.plugins()
-const customWidgets = WidgetsDefault.define<CustomWidgetsBinding, {}>({
-    widgetPlugins: widgetPlugins,
+
+const customWidgets: CustomWidgetsBinding = {
+    ...baseComponents,
+    widgetPlugins: widgetPluginsLegacy,
     types: {
-        ...WidgetsDefault.widgetsTypes(),
+        ...typeWidgets,
     },
     custom: {
-        ...WidgetsDefault.widgetsCustom(),
+        ...bindingExtended,
         SortableList: SortableList,
     },
-})
+}
 
 const schemas: [UISchemaMap, boolean][] = [
     [schemaDragDropSortableList1 as UISchemaMap, true],

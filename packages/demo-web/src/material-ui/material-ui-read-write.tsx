@@ -1,4 +1,6 @@
+import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
+import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
 import { DefaultHandler } from '@ui-schema/react-json-schema'
@@ -24,7 +26,6 @@ import {
 } from '@ui-schema/ds-material/WidgetsRead'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
-import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { WidgetOptionsRead } from '@ui-schema/ds-material/WidgetsRead/WidgetOptionsRead'
 import { GroupRendererProps, WidgetType } from '@ui-schema/react/Widgets'
@@ -159,16 +160,15 @@ export interface ReadWidgetsBinding {
 
 // Notice: `customWidgets` are supplied by the global `UIMetaProvider` at the end of this file,
 //         while `readWidgets` are supplied in the nested `UIMetaProvider` - which re-uses everything else from the global provider
-const customWidgets = {
-    ...WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
-        InfoRenderer: InfoRenderer,
-        widgetPlugins: [],
-        types: WidgetsDefault.widgetsTypes(),
-        custom: {
-            ...WidgetsDefault.widgetsCustom(),
-            SelectChips: SelectChips,
-        },
-    }),
+const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
+    ...baseComponents,
+    InfoRenderer: InfoRenderer,
+    widgetPlugins: [],
+    types: typeWidgets,
+    custom: {
+        ...bindingExtended,
+        SelectChips: SelectChips,
+    },
     GroupRenderer: GroupRenderer,
 }
 

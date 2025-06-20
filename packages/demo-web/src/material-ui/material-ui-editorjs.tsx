@@ -1,3 +1,6 @@
+import { MuiWidgetsBinding } from '@ui-schema/ds-material'
+import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
+import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import React from 'react'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
@@ -23,11 +26,11 @@ import List from '@editorjs/list'
 import Header from '@editorjs/header'
 import Table from '@editorjs/table'
 import { schemaDemoEditorJS } from '../schemas/demoEditorJS'
-import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
+import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
 const tools = {
     paragraph: Paragraph,
@@ -42,16 +45,17 @@ const EditorJSRichContent = (props) => {
         tools={tools}
     />
 }
-const {widgetPlugins} = WidgetsDefault.plugins()
-const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
+
+const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
+    ...baseComponents,
     InfoRenderer: InfoRenderer,
-    widgetPlugins: widgetPlugins,
-    types: WidgetsDefault.widgetsTypes(),
+    widgetPlugins: widgetPluginsLegacy,
+    types: typeWidgets,
     custom: {
-        ...WidgetsDefault.widgetsCustom(),
+        ...bindingExtended,
         EditorJS: EditorJSRichContent,
     },
-})
+}
 
 const initialStore: UIStoreType | undefined = undefined as undefined | UIStoreType
 const GridStack = injectWidgetEngine(GridContainer)

@@ -69,6 +69,8 @@
     - `type` now no longer used for some validators, only internal `valueType`
     - validators now are directly tied to `valueType` instead of needing to do such checks internally
     - strict-type validation based on path depth
+    - `$ref` and resolving pointer is now more spec compliant, which fixes a lot, but also removes some previous behaviour
+        - in `<=0.4.x` the `$ref`: `'#/definitions/person'` and `$ref: '#/$defs/person'`  where treated as the same and resolved by the nearest `definitions` or `$defs`; now those are treated as pointer and not as definition aliases, thus two different schema locations would be tried
 - [ ] verify all pass downs of `params` to not pass down e.g. `instanceKey` when switching instances
 - [ ] verify all pass downs of `params` to pass down `parentSchema`, for legacy/HTML-like required checks AND not pass it down where it no longer is applicable
 - **todo:** rethink/redo validation based on "rendered by schema/value"

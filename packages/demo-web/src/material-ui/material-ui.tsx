@@ -1,6 +1,9 @@
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material'
+import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
+import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
@@ -16,9 +19,6 @@ import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
-import { define } from '@ui-schema/ds-material/WidgetsDefault/define'
-import { widgetsCustom } from '@ui-schema/ds-material/WidgetsDefault/widgetsCustom'
-import { widgetsTypes } from '@ui-schema/ds-material/WidgetsDefault/widgetsTypes'
 import { createOrderedMap, createMap } from '@ui-schema/system/createMap'
 import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { createStore, createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
@@ -32,7 +32,8 @@ import { TableAdvanced } from '@ui-schema/ds-material/Widgets/TableAdvanced'
 import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
 
-const customWidgets = define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
+const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
+    ...baseComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: [
         // ReferencingHandler,// must be before AND maybe after combining/conditional?
@@ -52,13 +53,13 @@ const customWidgets = define<{ InfoRenderer?: React.ComponentType<InfoRendererPr
         ValidityReporter,
         WidgetRenderer,
     ],
-    types: widgetsTypes(),
+    types: typeWidgets,
     custom: {
-        ...widgetsCustom(),
+        ...bindingExtended,
         SelectChips: SelectChips,
         TableAdvanced: TableAdvanced,
     },
-})
+}
 //widgets.types.null = () => 'null'
 
 const GridStack = injectWidgetEngine(GridContainer)

@@ -30,15 +30,19 @@ List of renamed functions, components etc., most are also moved to other package
 - adjusted root import paths, no longer exports the actual widgets directly - only with sub-folder
 - `widgetsBinding` case adjusted to `*W*idgetsBinding`, no longer exports `widgets`
 - `WidgetBinding | WidgetsBinding | MuiWidgetsBinding` types, folder and file names normalized to be `WidgetsBinding`
-- previous `widgetsBinding.widgets` now exported with multiple modular functions:
-    - separate files in `WidgetsDefault`, to be able to only import the ones really used in your app
-    - import all: `import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'`
-    - import modular, e.g. `import {define} from '@ui-schema/ds-material/WidgetsDefault/define'`
-    - `define(partialBinding)` just generates the basic structure without any plugins or widgets
-        - accepts the rest of the binding as parameter
-    - `plugins()` returns ~~`schemaPlugins`~~ and `widgetPlugins`
-    - `widgetsTypes()` just returns `types` widgets
-    - `widgetsCustom()` just returns some recommended `custom` widgets
+- ~~previous `widgetsBinding.widgets` now exported with multiple modular functions:~~
+    - ~~separate files in `WidgetsDefault`, to be able to only import the ones really used in your app~~
+    - i~~mport all: `import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'`~~
+    - ~~import modular, e.g. `import {define} from '@ui-schema/ds-material/WidgetsDefault/define'`~~
+    - ~~`define(partialBinding)` just generates the basic structure without any plugins or widgets~~
+        - ~~accepts the rest of the binding as parameter~~
+    - ~~`plugins()` returns ~~`schemaPlugins`~~ and `widgetPlugins`~~
+    - ~~`widgetsTypes()` just returns `types` widgets~~
+    - ~~`widgetsCustom()` just returns some recommended `custom` widgets~~
+- previous `widgetsBinding.widgets` now exported as modular objects:
+    - `ds-material/BindingDefault` (atm.) exports `typeWidgets` and `baseCompoents` (*maybe split up, but could need renaming of type or even widgets folders*)
+    - `ds-material/BindingExtended` exports `bindingExtended` for `.custom` widget binding
+    - no default `schemaPlugins`/`widgetPlugins`; *maybe add a legacy compat to make migration easier, atm. in demo-web*
 - `pluginStack` removed, now included directly in `widgetsBinding`
 
 ### DS Bootstrap
@@ -341,7 +345,15 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
           while a `schemaKeys` based inject plugin was never stable, instead it should use a value-location to schema-location matcher,
           and can now use the new `SchemaResource` system to resolve canonical ids and pointers, which wasn't possible beforehand,
           with a further refined resource handling and resolving, more information about all applied `$id` for a valueLocation can be used to influence style schema injection
-- [ ] deprecate `InjectSplitSchemaPlugin`, `RootProvider`, `ReferencingHandler`, ...
+- [ ] deprecate widget plugins and components replaced by new validator and schema plugins
+    - `/*` means anything in that folder will be deprecated and removed in a next version (and not just the symbol with that name)
+    - [x] `InjectSplitSchemaPlugin` (use schemaPlugin instead)
+    - [x] `CombiningHandler/*` (new validator)
+    - [x] `ConditionalHandler` (new validator)
+    - [x] `DependentHandler` (new validator)
+    - [x] `ReferencingHandler/*` (new schema resource + validator)
+    - [x] `SchemaRootProvider/*` (new schema resource + validator)
+    - [ ] `RequiredPlugin`, or keep until better solution for required behaviour?
 - [ ] add new schema plugin: injectSplitSchema, deprecate widget plugin: InjectSplitSchema
 - [ ] deprecate `SchemaPlugin` methods `.should` and `.noHandle`; always use `.handle`
 - [ ] enable TS rules `@typescript-eslint/no-empty-object-type, "@typescript-eslint/no-wrapper-object-types, @typescript-eslint/no-unsafe-function-type, @typescript-eslint/consistent-indexed-object-style, @typescript-eslint/consistent-type-definitions, @typescript-eslint/no-empty-function`

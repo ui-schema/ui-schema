@@ -10,13 +10,14 @@ export interface InjectSplitSchemaRootContext {
 }
 
 /**
- * @experimental
+ * @deprecated use a custom schemaPlugin instead
  */
 export const InjectSplitSchemaPlugin: React.ComponentType<WidgetPluginProps> = (props) => {
     const {
         schema, storeKeys,
         currentPluginIndex,
     } = props
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const {schemaStyle} = useSchemaRoot<InjectSplitSchemaRootContext>()
     const next = currentPluginIndex + 1
     const Plugin = getNextPlugin(next, props.widgets)

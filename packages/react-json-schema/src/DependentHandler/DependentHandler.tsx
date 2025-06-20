@@ -56,6 +56,9 @@ const DependentRenderer: React.FC<WidgetPluginProps & {
     return <NextPluginRendererMemo {...props} schema={parsedSchema}/>
 }
 
+/**
+ * @deprecated use new validatorPlugin instead
+ */
 export const DependentHandler: React.FC<WidgetPluginProps> = (props) => {
     const {schema, currentPluginIndex} = props
     const next = currentPluginIndex + 1

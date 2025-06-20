@@ -1,3 +1,5 @@
+import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
+import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import React from 'react'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
@@ -26,7 +28,6 @@ import { DragDropBlockSelector } from '@ui-schema/material-dnd/DragDropBlockSele
 import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd/DragDropBlock'
 import { DropArea } from '@ui-schema/material-dnd/Widgets/DropArea'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
-import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { createEmptyStore, createStore, onChangeHandler, UIStoreProvider, UIStoreType, WithOnChange } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
@@ -38,19 +39,21 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
+import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
 type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
     DragDropArea: React.ComponentType<WidgetProps<MuiWidgetsBinding & DragDropBlockComponentsBinding> & WithOnChange>
 }>
-const {widgetPlugins} = WidgetsDefault.plugins()
-const customWidgets = WidgetsDefault.define<CustomWidgetsBinding, {}>({
-    widgetPlugins: widgetPlugins,
+
+const customWidgets: CustomWidgetsBinding = {
+    ...baseComponents,
+    widgetPlugins: widgetPluginsLegacy,
     DndBlockSelector: DragDropBlockSelector,
     types: {
-        ...WidgetsDefault.widgetsTypes(),
+        ...typeWidgets,
     },
     custom: {
-        ...WidgetsDefault.widgetsCustom(),
+        ...bindingExtended,
         // @ts-ignore
         DropArea: DropArea,
         DragDropArea: DragDropArea,
@@ -59,7 +62,7 @@ const customWidgets = WidgetsDefault.define<CustomWidgetsBinding, {}>({
         RichContent: RichContent,
         RichContentInline: RichContentInline,
     },
-})
+}
 
 const blocks: DndBlock[] = [
     {

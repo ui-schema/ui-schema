@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { parseRefs, SchemaRefsPending, useSchemaNetworkRef } from '@ui-schema/react-json-schema/ReferencingHandler'
 import React from 'react'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'

@@ -1,3 +1,7 @@
+import { MuiWidgetsBinding } from '@ui-schema/ds-material'
+import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
+import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import React from 'react'
 import AppTheme from './AppTheme'
 import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
@@ -20,13 +24,12 @@ import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker'
 import { StaticTimePicker } from '@mui/x-date-pickers/StaticTimePicker'
 import { List } from 'immutable'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
-import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { createEmptyStore, onChangeHandler, UIStoreProvider, UIStoreType, WithScalarValue } from '@ui-schema/react/UIStore'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
-import { isInvalid } from '@ui-schema/react/ValidityReporter'
+import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { Paper } from '@mui/material'
 
@@ -108,18 +111,23 @@ const CustomTimePicker: React.FC<WidgetProps & WithScalarValue> = (props) => {
         pickerProps={pickerProps}
     />
 }
-const {widgetPlugins} = WidgetsDefault.plugins()
-const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
+
+// const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
+const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
+    ...baseComponents,
     InfoRenderer: InfoRenderer,
-    widgetPlugins: widgetPlugins,
-    types: WidgetsDefault.widgetsTypes(),
+    widgetPlugins: [
+        ValidityReporter,
+        WidgetRenderer,
+    ],
+    types: typeWidgets,
     custom: {
-        ...WidgetsDefault.widgetsCustom(),
+        ...bindingExtended,
         DateTime: CustomDateTimePicker,
         Date: CustomDatePicker,
         Time: CustomTimePicker,
     },
-})
+}
 
 const schema = schemaDatePickers
 const GridStack = injectWidgetEngine(GridContainer)

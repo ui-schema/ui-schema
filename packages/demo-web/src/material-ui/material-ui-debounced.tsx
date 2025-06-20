@@ -1,8 +1,10 @@
+import { MuiWidgetsBinding } from '@ui-schema/ds-material'
+import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
+import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import React from 'react'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
-import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
@@ -14,22 +16,23 @@ import { NumberRendererDebounced, StringRendererDebounced, TextRendererDebounced
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
+import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
-const {widgetPlugins} = WidgetsDefault.plugins()
-const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
+const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
+    ...baseComponents,
     InfoRenderer: InfoRenderer,
-    widgetPlugins: widgetPlugins,
+    widgetPlugins: widgetPluginsLegacy,
     types: {
-        ...WidgetsDefault.widgetsTypes(),
+        ...typeWidgets,
         string: StringRendererDebounced,
         number: NumberRendererDebounced,
         integer: NumberRendererDebounced,
     },
     custom: {
-        ...WidgetsDefault.widgetsCustom(),
+        ...bindingExtended,
         Text: TextRendererDebounced,
     },
-})
+}
 
 const formSchema = createOrderedMap({
     type: 'object',

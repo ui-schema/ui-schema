@@ -1,3 +1,6 @@
+/**
+ * @deprecated use new validatorPlugin instead
+ */
 export const isRelUrl = (schemaRef: string): boolean => {
     return (
         schemaRef.indexOf('https://') !== 0 &&
@@ -14,6 +17,9 @@ const removeFragmentFromRevUrl = (url) => url.slice(
         url.indexOf('#') !== -1 ? url.indexOf('#') + 1 : 0,
 )
 
+/**
+ * @deprecated use new validatorPlugin instead
+ */
 export const getFragmentFromUrl = (url: string): string => {
     const revUrl = [...url].reverse().join('')
     const revUrlFragment = revUrl.slice(0,
@@ -23,6 +29,9 @@ export const getFragmentFromUrl = (url: string): string => {
     return [...revUrlFragment].reverse().join('')
 }
 
+/**
+ * @deprecated use new validatorPlugin instead
+ */
 export const getCleanRefUrl = (schemaRef: string | undefined): string | undefined => {
     if (typeof schemaRef === 'string') {
         const revId = [...schemaRef].reverse().join('')
@@ -33,6 +42,9 @@ export const getCleanRefUrl = (schemaRef: string | undefined): string | undefine
     return schemaRef
 }
 
+/**
+ * @deprecated use new validatorPlugin instead
+ */
 export const makeUrlFromRef = (schemaRef: string, id: string | undefined) => {
     let schemaUrl = schemaRef
     if (id) {

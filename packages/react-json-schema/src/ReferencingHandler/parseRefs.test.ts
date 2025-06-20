@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { test, expect, describe } from '@jest/globals'
 import { List, OrderedMap, Map } from 'immutable'
 import { parseRefs, ParseRefsContent } from './parseRefs.js'

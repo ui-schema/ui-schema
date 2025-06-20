@@ -1,3 +1,11 @@
+import { SchemaGridHandler } from '@ui-schema/ds-bootstrap/Grid'
+import { ReferencingHandler } from '@ui-schema/react-json-schema/ReferencingHandler'
+import { CombiningHandler } from '@ui-schema/react-json-schema/CombiningHandler'
+import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
+import { DependentHandler } from '@ui-schema/react-json-schema/DependentHandler'
+import { ConditionalHandler } from '@ui-schema/react-json-schema/ConditionalHandler'
+import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
+import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
 import React from 'react'
@@ -15,6 +23,25 @@ import { createOrderedMap } from '@ui-schema/system/createMap'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { isInvalid } from '@ui-schema/react/ValidityReporter'
 
+const customWidgets: typeof widgets = {
+    ...widgets,
+    widgetPlugins: [
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        ReferencingHandler,
+        SchemaGridHandler,
+        // ExtractStorePlugin,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        CombiningHandler,
+        DefaultHandler,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        DependentHandler,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        ConditionalHandler,
+        ValidityReporter,
+        WidgetRenderer,
+    ],
+}
+
 const GridStack = injectWidgetEngine(GridContainer)
 const DemoGrid = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap({})))
@@ -24,7 +51,7 @@ const DemoGrid = () => {
     }, [setStore])
 
     return <UIMetaProvider
-        widgets={widgets}
+        widgets={customWidgets}
         t={browserT}
         validate={Validator(standardValidators).validate}
     >
@@ -50,7 +77,7 @@ const MainStore = () => {
 
     return <React.Fragment>
         <UIMetaProvider
-            widgets={widgets}
+            widgets={customWidgets}
             t={browserT}
             validate={Validator(standardValidators).validate}
         >

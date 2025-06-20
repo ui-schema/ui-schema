@@ -2,6 +2,9 @@ import { FC } from 'react'
 import { NextPluginRendererMemo, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { handleIfElseThen } from './handleIfElseThen.js'
 
+/**
+ * @deprecated use new validatorPlugin instead
+ */
 export const ConditionalHandler: FC<WidgetPluginProps> = (props) => {
     const {value, validate} = props
     let {schema} = props
