@@ -3,16 +3,16 @@ import { Map } from 'immutable'
 import { createOrderedMap } from '@ui-schema/system/createMap'
 import { handleIfElseThen } from '@ui-schema/react-json-schema/ConditionalHandler'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { newMockStateNested } from '../../../uis-json-schema/tests/mocks/ValidatorState.mock.js'
+import { newMockStateNested } from '../../../json-schema/tests/mocks/ValidatorState.mock.js'
 
 /**
  * npm test -- --testPathPattern=ConditionalHandler --watch --watchman --coverage=false
  * npm run tdd -- --testPathPattern=ConditionalHandler
- * npm run tdd -- --runTestsByPath=packages/uis-react-json-schema/src/ConditionalHandler
- * npm run tdd -- --runTestsByPath "./packages/uis-react-json-schema/src/ConditionalHandler"
- * npm run tdd -- --runTestsByPath "./packages/uis-react-json-schema/src/ConditionalHandler/handleIfElseThen.test.ts" --selectProjects test-@ui-schema/react-json-schema
- * npm run test -- --runTestsByPath "./packages/uis-react-json-schema/src/ConditionalHandler/handleIfElseThen.test.ts"
- * npm run test -- --runTestsByPath "./packages/uis-react-json-schema/src/ConditionalHandler/handleIfElseThen.test.ts" --selectProjects test-@ui-schema/react-json-schema
+ * npm run tdd -- --runTestsByPath=packages/react-json-schema/src/ConditionalHandler
+ * npm run tdd -- --runTestsByPath "./packages/react-json-schema/src/ConditionalHandler"
+ * npm run tdd -- --runTestsByPath "./packages/react-json-schema/src/ConditionalHandler/handleIfElseThen.test.ts" --selectProjects test-@ui-schema/react-json-schema
+ * npm run test -- --runTestsByPath "./packages/react-json-schema/src/ConditionalHandler/handleIfElseThen.test.ts"
+ * npm run test -- --runTestsByPath "./packages/react-json-schema/src/ConditionalHandler/handleIfElseThen.test.ts" --selectProjects test-@ui-schema/react-json-schema
  */
 
 

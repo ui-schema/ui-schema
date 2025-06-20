@@ -10,7 +10,7 @@ cd ui-schema
 cp README.md build/ && cp ../../LICENSE build/
 cd ../
 
-cd uis-pro
+cd pro
 cp README.md build/ && cp ../../LICENSE build/
 cd ../
 

@@ -1,5 +1,5 @@
 {
-    "name": "@ui-schema/react-json-schema",
+    "name": "@ui-schema/react",
     "version": "0.5.0-alpha.0",
     "description": "JSON-Schema based UI and Form Generator for React, for any Design-System",
     "homepage": "https://ui-schema.bemit.codes",
@@ -23,13 +23,13 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/ui-schema/ui-schema.git",
-        "directory": "packages/uis-react-json-schema"
+        "directory": "packages/react"
     },
     "bugs": {
         "url": "https://github.com/ui-schema/ui-schema/issues"
     },
     "scripts": {
-        "dtsgen": "tsc --declaration --emitDeclarationOnly --pretty --rootDir ../ && node ../../tools/merge-dirs.js build/dts/uis-react-json-schema/src build && rimraf build/dts && rimraf --glob build/**/*.test.* build/**/*.mock.*",
+        "dtsgen": "tsc --declaration --emitDeclarationOnly --pretty --rootDir ../ && node ../../tools/merge-dirs.js build/dts/react/src build && rimraf build/dts && rimraf --glob build/**/*.test.* build/**/*.mock.*",
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "type": "module",
@@ -51,8 +51,6 @@
     "sideEffects": false,
     "devDependencies": {
         "@ui-schema/system": "~0.5.0-alpha.0",
-        "@ui-schema/react": "~0.5.0-alpha.0",
-        "@ui-schema/json-pointer": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "immutable": "^5.0.0",
         "@types/react": "^18.0",
@@ -61,8 +59,6 @@
     },
     "peerDependencies": {
         "@ui-schema/system": "~0.5.0-alpha.0",
-        "@ui-schema/react": "~0.5.0-alpha.0",
-        "@ui-schema/json-pointer": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "immutable": "^4.0.0 || ^5.0.0",
         "react": "^18.0",

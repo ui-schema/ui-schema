@@ -63,40 +63,40 @@
                 "material-dnd/src/*/index.ts"
             ],
             "@ui-schema/system": [
-                "uis-system/src/index.ts"
+                "system/src/index.ts"
             ],
             "@ui-schema/system/*": [
-                "uis-system/src/*/index.ts"
+                "system/src/*/index.ts"
             ],
             "@ui-schema/react": [
-                "uis-react/src/index.ts"
+                "react/src/index.ts"
             ],
             "@ui-schema/react/*": [
-                "uis-react/src/*/index.ts"
+                "react/src/*/index.ts"
             ],
             "@ui-schema/react-json-schema": [
-                "uis-react-json-schema/src/index.ts"
+                "react-json-schema/src/index.ts"
             ],
             "@ui-schema/react-json-schema/*": [
-                "uis-react-json-schema/src/*/index.ts"
+                "react-json-schema/src/*/index.ts"
             ],
             "@ui-schema/json-pointer": [
-                "uis-json-pointer/src/index.ts"
+                "json-pointer/src/index.ts"
             ],
             "@ui-schema/json-pointer/*": [
-                "uis-json-pointer/src/*/index.ts"
+                "json-pointer/src/*/index.ts"
             ],
             "@ui-schema/json-schema": [
-                "uis-json-schema/src/index.ts"
+                "json-schema/src/index.ts"
             ],
             "@ui-schema/json-schema/*": [
-                "uis-json-schema/src/*/index.ts"
+                "json-schema/src/*/index.ts"
             ],
             "@ui-schema/pro": [
-                "uis-pro/src/index.ts"
+                "pro/src/index.ts"
             ],
             "@ui-schema/pro/*": [
-                "uis-pro/src/*/index.ts"
+                "pro/src/*/index.ts"
             ],
             "@ui-schema/dictionary": [
                 "dictionary/src/index.ts"

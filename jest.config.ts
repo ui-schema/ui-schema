@@ -8,12 +8,12 @@ import { createDefaultEsmPreset } from 'ts-jest'
 // npm run test -- --no-cache --selectProjects=test-@ui-schema/kit-dnd --maxWorkers=4
 
 const packages: [name: string, folder: string][] = [
-    ['@ui-schema/system', 'uis-system'],
-    ['@ui-schema/react-json-schema', 'uis-react-json-schema'],
-    ['@ui-schema/react', 'uis-react'],
-    ['@ui-schema/pro', 'uis-pro'],
-    ['@ui-schema/json-pointer', 'uis-json-pointer'],
-    ['@ui-schema/json-schema', 'uis-json-schema'],
+    ['@ui-schema/system', 'system'],
+    ['@ui-schema/react-json-schema', 'react-json-schema'],
+    ['@ui-schema/react', 'react'],
+    ['@ui-schema/pro', 'pro'],
+    ['@ui-schema/json-pointer', 'json-pointer'],
+    ['@ui-schema/json-schema', 'json-schema'],
     ['@ui-schema/ds-bootstrap', 'ds-bootstrap'],
     ['@ui-schema/ds-material', 'ds-material'],
     ['@ui-schema/kit-dnd', 'kit-dnd'],

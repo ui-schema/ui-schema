@@ -16,7 +16,7 @@ const include = [
     // path.resolve(__dirname, 'packages', 'material-richtext/src'),
     path.resolve(__dirname, 'packages', 'material-slate/src'),
     path.resolve(__dirname, 'packages', 'ui-schema/src'),
-    path.resolve(__dirname, 'packages', 'uis-pro/src'),
+    path.resolve(__dirname, 'packages', 'pro/src'),
 ];
 
 let scannner = function(dir, root, fileList = []) {

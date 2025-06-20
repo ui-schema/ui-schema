@@ -193,7 +193,11 @@ export default defineConfig([
         },
     },
     {
-        files: ['**/demo-server/*.{ts,tsx,mjs,js}'],
+        files: [
+            '**/demo-server/*.{ts,tsx,mjs,js}',
+            'packerConfig.js',
+            'jest.config.ts',
+        ],
         languageOptions: {
             globals: {
                 ...globals.node,
