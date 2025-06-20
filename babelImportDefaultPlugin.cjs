@@ -11,7 +11,7 @@
 module.exports = function({types: t}) {
     return {
         visitor: {
-            // eslint-disable-next-line no-unused-vars
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             ImportDeclaration(path, state) {
                 const source = path.node.source.value
 

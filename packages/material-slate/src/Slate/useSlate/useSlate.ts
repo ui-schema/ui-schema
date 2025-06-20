@@ -8,7 +8,6 @@ export function isSlateEmpty(value: List<any> | undefined): boolean {
     return !value?.size || !value.get(0)?.get('children')?.size || value.get(0).get('children').get(0)?.get('text') === ''
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useSlate = (schema: WidgetProps['schema'], value: SlateImmutableType | undefined) => {
     const [focused, setFocus] = React.useState(false)
 

@@ -13,6 +13,9 @@ npm start
 
 # npm run check
 # npm run build
+
+# clean install / remake package-lock
+# npm run clean && npm run clean-lock && rm -rf node_modules && rm -f package-lock.json && npm i --legacy-peer-deps
 ```
 
 ## develop branch (0.4.0)

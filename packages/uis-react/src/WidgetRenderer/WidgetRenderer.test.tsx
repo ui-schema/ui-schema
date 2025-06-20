@@ -17,13 +17,9 @@ import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { translateRelative } from '@ui-schema/system/TranslatorRelative'
 
 export const virtualWidgets: VirtualWidgetsMapping & { default_with_id: VirtualWidgetsMapping['default'] } = {
-    // eslint-disable-next-line react/display-name
     'default': () => <span>virtual-default-renderer</span>,
-    // eslint-disable-next-line react/display-name
     'default_with_id': ({value}) => <span id={'virtual-default-renderer__' + value}/>,
-    // eslint-disable-next-line react/display-name
     'object': ObjectRenderer,
-    // eslint-disable-next-line react/display-name
     'array': () => <span>virtual-array-renderer</span>,
 }
 

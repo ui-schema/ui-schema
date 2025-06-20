@@ -1,8 +1,8 @@
-import path, {dirname} from 'path'
+import path, {dirname} from 'node:path'
 import {packer, webpack} from 'lerna-packer'
 import {copyRootPackageJson, makeModulePackageJson} from 'lerna-packer/packer/modulePackages.js'
-import fs from 'fs'
-import {fileURLToPath} from 'url'
+import fs from 'node:fs'
+import {fileURLToPath} from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -161,6 +161,14 @@ const packages = {
     },
 }
 
+// const require = createRequire(import.meta.url)
+
+const webpackEslintConfig = {
+    // note: eslint@8/lerna-packer@0.10.x compat:
+    // eslintPath: require.resolve('eslint/use-at-your-own-risk'),
+    // configType: 'eslintrc',
+}
+
 packer({
     apps: {
         demoWeb: {
@@ -178,6 +186,7 @@ packer({
             },
             publicPath: '/',
             aliasPackagesBuild: 'production',
+            eslintOptions: webpackEslintConfig,
         },
         pickersDemo: {
             root: path.resolve(__dirname, 'packages', 'material-pickers'),
@@ -195,6 +204,7 @@ packer({
             },
             publicPath: '/',
             aliasPackagesBuild: 'production',
+            eslintOptions: webpackEslintConfig,
         },
         docs: {
             root: path.resolve(__dirname, 'packages', 'docs'),
@@ -313,6 +323,7 @@ packer({
             ],
             // noParse: [require.resolve('typescript/lib/typescript.js')],
             aliasPackagesBuild: 'production',
+            eslintOptions: webpackEslintConfig,
         },
     },
     backends: {

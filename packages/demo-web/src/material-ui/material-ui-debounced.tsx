@@ -66,7 +66,7 @@ const FormComp = () => {
     </UIStoreProvider>
 }
 
-// eslint-disable-next-line react/display-name,@typescript-eslint/explicit-module-boundary-types
+// eslint-disable-next-line react/display-name
 export default () => <>
     <UIMetaProvider widgets={customWidgets} t={browserT}>
         <Grid container spacing={3}>

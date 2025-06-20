@@ -41,7 +41,7 @@ export const DndListRendererBase = (
         value,
         // remove `internalValue` from the widget, performance optimize
         // @ts-ignore
-        // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         internalValue,
         storeKeys,
         Item, parentSchema,

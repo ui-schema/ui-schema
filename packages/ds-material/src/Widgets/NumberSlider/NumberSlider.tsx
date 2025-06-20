@@ -113,8 +113,8 @@ const NumberSliderRenderer: React.FC<{
                 size={schema.getIn(['view', 'size']) as SliderProps['size']}
                 min={min}
                 max={max}
-                components={{
-                    Thumb: ThumbComponent,
+                slots={{
+                    thumb: ThumbComponent,
                 }}
                 /*components={{
                     Thumb: hasMulti ? p => <ThumbComponent
@@ -132,9 +132,9 @@ const NumberSliderRenderer: React.FC<{
                         canDelete={value && value.size > minItems}
                     /> : ThumbComponent,
                 }}*/
-                componentsProps={{
+                slotProps={{
                     thumb: {
-                        // @ts-ignore
+                        // @ts-expect-error custom thumb feature
                         onDelete: hasMulti ? (index) =>
                             onChange({
                                 storeKeys,

@@ -219,9 +219,9 @@ export const storeUpdater =
                         // @ts-expect-error union type not reduced by TS
                         action,
                     )
-                    // eslint-disable-next-line deprecation/deprecation
+                    // eslint-disable-next-line @typescript-eslint/no-deprecated
                     if (action.effect) {
-                        // eslint-disable-next-line deprecation/deprecation
+                        // eslint-disable-next-line @typescript-eslint/no-deprecated
                         action.effect(
                             // todo: now it is no longer possible to know what was changed, only pass down store for simplicity here?
                             //       would require using e.g. extractValues where effect is used;

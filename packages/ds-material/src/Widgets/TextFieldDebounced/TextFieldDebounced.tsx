@@ -15,6 +15,9 @@ import { useDebounceValue } from '@ui-schema/react/Utils/useDebounceValue'
 import { forbidInvalidNumber, InfoRendererType, MuiWidgetsBinding } from '@ui-schema/ds-material'
 
 export interface StringRendererDebouncedProps {
+    /**
+     * @deprecated
+     */
     onKeyPress?: StringRendererProps['onKeyPress']
     debounceTime?: number
 }
@@ -28,6 +31,7 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetsBinding<
         showValidity, valid, errors, required,
         style,
         onClick, onFocus, onBlur, onKeyUp, onKeyDown,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         onKeyPress,
         inputProps = {}, InputProps = {}, inputRef: customInputRef,
         debounceTime = 340, widgets,
@@ -94,6 +98,7 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetsBinding<
                 onKeyDown ? onKeyDown :
                     e => forbidInvalidNumber(e.nativeEvent, schema.get('type') as unknown as string)
             }
+            /* eslint-disable-next-line @typescript-eslint/no-deprecated */
             onKeyPress={onKeyPress}
             id={'uis-' + uid}
             style={style}

@@ -344,6 +344,7 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
 - [ ] deprecate `InjectSplitSchemaPlugin`, `RootProvider`, `ReferencingHandler`, ...
 - [ ] add new schema plugin: injectSplitSchema, deprecate widget plugin: InjectSplitSchema
 - [ ] deprecate `SchemaPlugin` methods `.should` and `.noHandle`; always use `.handle`
+- [ ] enable TS rules `@typescript-eslint/no-empty-object-type, "@typescript-eslint/no-wrapper-object-types, @typescript-eslint/no-unsafe-function-type, @typescript-eslint/consistent-indexed-object-style, @typescript-eslint/consistent-type-definitions, @typescript-eslint/no-empty-function`
 
 ## Todo 0.6.x
 

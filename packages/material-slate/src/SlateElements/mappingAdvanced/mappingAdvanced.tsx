@@ -6,7 +6,6 @@ import { pluginOptions } from '@ui-schema/material-slate/Slate/pluginOptions'
 import { ElementMapping } from '@ui-schema/material-slate/SlateElements/ElementMapper'
 
 export const mappingAdvanced: ElementMapping = {
-    // eslint-disable-next-line react/display-name
     [pluginOptions.todo_li.type]: ({element, children}) => {
         const editor = useSlateStatic()
         // @ts-ignore

@@ -48,20 +48,23 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetsBinding>
                     disabled={schema.get('readOnly') as boolean || itemSchema?.get('readOnly') as boolean}
                     color={(schema.getIn(['view', 'color']) as any) || 'primary'}
                     onClick={() => {
-                        !schema.get('readOnly') &&
-                        !itemSchema?.get('readOnly') &&
-                        onChange({
-                            storeKeys,
-                            scopes: ['value'],
-                            type: 'update',
-                            schema,
-                            required,
-                            updater: ({value = List()}: { value?: List<string> }) => ({
-                                value: value.indexOf(itemValue as string) === -1 ?
-                                    sortScalarList(value.push(itemValue as string)) :
-                                    sortScalarList(value.splice(value.indexOf(itemValue as string), 1)),
-                            }),
-                        })
+                        if (
+                            !schema.get('readOnly') &&
+                            !itemSchema?.get('readOnly')
+                        ) {
+                            onChange({
+                                storeKeys,
+                                scopes: ['value'],
+                                type: 'update',
+                                schema,
+                                required,
+                                updater: ({value = List()}: { value?: List<string> }) => ({
+                                    value: value.indexOf(itemValue as string) === -1 ?
+                                        sortScalarList(value.push(itemValue as string)) :
+                                        sortScalarList(value.splice(value.indexOf(itemValue as string), 1)),
+                                }),
+                            })
+                        }
                     }}
                 />
             ).valueSeq()}

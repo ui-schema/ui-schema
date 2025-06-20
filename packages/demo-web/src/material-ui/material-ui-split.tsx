@@ -232,7 +232,7 @@ const Main = () => {
     </React.Fragment>
 }
 
-// eslint-disable-next-line react/display-name,@typescript-eslint/explicit-module-boundary-types
+// eslint-disable-next-line react/display-name
 export default () => <>
     <Grid container spacing={3}>
         <Grid item xs={12}>

@@ -30,7 +30,7 @@ class Loading extends React.PureComponent {
             opacity: 0.2
         };
 
-        const dur = 1.2 || 0.925;
+        const dur = 1.2;
         const item = {
             attributeType: "XML",
             dur: dur + 's',

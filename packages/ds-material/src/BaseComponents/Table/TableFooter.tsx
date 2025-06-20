@@ -119,6 +119,7 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                         scrollbarWidth: 'thin',
                     },
                 }}
+                /* eslint-disable-next-line @typescript-eslint/no-deprecated */
                 SelectProps={{
                     inputProps: {'aria-label': t ? t('pagination.rows-per-page') as string : 'per Page'},
                     //native: true,
@@ -128,11 +129,13 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                     setPage(0)
                     setRows(Number(e.target.value))
                 }}
+                /* eslint-disable-next-line @typescript-eslint/no-deprecated */
                 backIconButtonProps={{
                     size: btnSize,
                     // using these props as a wrapper - as otherwise not possible to pass down
                     noFirstPageButton: noFirstPageButton,
                 } as unknown as IconButtonProps}
+                /* eslint-disable-next-line @typescript-eslint/no-deprecated */
                 nextIconButtonProps={{
                     size: btnSize,
                     style: {

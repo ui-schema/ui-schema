@@ -9,11 +9,8 @@ import { VirtualWidgetRenderer, VirtualWidgetsMapping } from '@ui-schema/react/V
 import { List, OrderedMap } from 'immutable'
 
 const virtualWidgets: VirtualWidgetsMapping = {
-    // eslint-disable-next-line react/display-name
     'default': () => <span>virtual-default-renderer</span>,
-    // eslint-disable-next-line react/display-name
     'object': () => <span>virtual-object-renderer</span>,
-    // eslint-disable-next-line react/display-name
     'array': () => <span>virtual-array-renderer</span>,
 }
 

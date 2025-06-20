@@ -42,7 +42,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetsBindi
         showValidity, valid, errors, required,
         style = {},
         onClick, onFocus, onBlur, onKeyUp, onKeyDown,
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         onKeyPress,
         inputProps = {},
         inputRef: customInputRef,
@@ -118,6 +118,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetsBindi
                 onKeyDown ? onKeyDown :
                     e => forbidInvalidNumber(e.nativeEvent, schema.get('type') as unknown as string)
             }
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             onKeyPress={onKeyPress}
             style={style}
             onChange={(e) => {

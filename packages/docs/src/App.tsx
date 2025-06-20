@@ -78,7 +78,6 @@ const i18n: I18nProviderContext = {
     expiration: 0,
 }
 
-// eslint-disable-next-line react/display-name
 // export const loading = (title) => (props) => <LoadingCircular {...props} title={title}/>
 
 const loading = (title: string, LoadableContent) => {
