@@ -3,11 +3,11 @@ import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
-import { requiredValidator } from '@ui-schema/json-schema/Validators'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
 import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd'
 import { DefaultHandler } from '@ui-schema/react-json-schema'
+import { requiredPlugin } from '@ui-schema/react-json-schema/RequiredPlugin'
 import { validatorPlugin } from '@ui-schema/react-json-schema/ValidatorPlugin'
 import { SchemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
@@ -87,7 +87,7 @@ const customWidgets: MuiWidgetsBinding<{
         DefaultHandler,
         SchemaPluginsAdapterBuilder([
             validatorPlugin,
-            requiredValidator,// must be after validator; todo: remove the compat. plugin
+            requiredPlugin,
         ]),
         SchemaGridHandler,
         ValidityReporter,
@@ -169,7 +169,7 @@ const LazyEditorJs = lazy(() => import('./EditorJSComp').then(r => ({default: r.
 export const uiMeta = {
     validate: Validator([
         ...standardValidators,
-        requiredValidatorLegacy, // todo: remove the compat. plugin
+        requiredValidatorLegacy,
     ]).validate,
     widgets: customWidgets,
     t: browserT,

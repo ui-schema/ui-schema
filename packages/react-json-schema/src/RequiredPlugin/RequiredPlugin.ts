@@ -9,17 +9,14 @@ import { List } from 'immutable'
  *       still would need better support for applied-to-child vs. applied-to-self
  */
 export const requiredPlugin: SchemaPlugin<WidgetPayload> = {
-    should: ({parentSchema, storeKeys}) => {
-        const requiredList = parentSchema?.get('required')
-        if (requiredList && List.isList(requiredList) && storeKeys) {
-            const ownKey = storeKeys.last()
-            return typeof ownKey === 'string' && requiredList.contains(ownKey)
+    handle: ({parentSchema, storeKeys}) => {
+        const requiredList = parentSchema?.get('required') as List<string> | undefined
+        if (!requiredList || !List.isList(requiredList) || !storeKeys) {
+            return {required: false}
         }
-        return false
-    },
-    noHandle: () => ({required: false}),
-    handle: ({schema}) => {
-        if (!schema) return {}
-        return {required: true}
+        const ownKey = storeKeys.last()
+        return {
+            required: typeof ownKey === 'string' && requiredList.contains(ownKey),
+        }
     },
 }

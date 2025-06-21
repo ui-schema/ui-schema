@@ -11,16 +11,23 @@ export const SchemaPluginStack = <TProps extends WidgetPayload>(
                 return
             }
 
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             if (typeof propsPlugin.should === 'function') {
+                // eslint-disable-next-line @typescript-eslint/no-deprecated
                 if (!propsPlugin.should(props)) {
+                    // eslint-disable-next-line @typescript-eslint/no-deprecated
                     if (typeof propsPlugin.noHandle === 'function') {
+                        // eslint-disable-next-line @typescript-eslint/no-deprecated
                         props = {...props, ...propsPlugin.noHandle(props)}
                     }
                     return
                 }
             }
 
-            props = {...props, ...propsPlugin.handle(props)}
+            const partialProps = propsPlugin.handle(props)
+            if (partialProps) {
+                props = {...props, ...partialProps}
+            }
         })
     }
 

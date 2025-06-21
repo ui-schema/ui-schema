@@ -23,7 +23,13 @@ export interface WithValidatorErrors {
  *       - `should` doesn't need to get errors, as plugins may not rely on `errors` to decide if they should run
  */
 export interface SchemaPlugin<TProps extends WidgetPayload = WidgetPayload> {
-    handle: (props: Partial<TProps> & WithValuePlain & WithValidatorErrors) => Partial<TProps & WithValuePlain & WithValidatorErrors>
+    handle: (props: Partial<TProps> & WithValuePlain & WithValidatorErrors) => Partial<TProps & WithValuePlain & WithValidatorErrors> | null
+    /**
+     * @deprecated no replacement, move logic into handle
+     */
     noHandle?: (props: Partial<TProps> & WithValuePlain & WithValidatorErrors) => Partial<TProps & WithValuePlain & WithValidatorErrors>
+    /**
+     * @deprecated no replacement, move logic into handle
+     */
     should?: (props: Partial<TProps> & WithValuePlain & WithValidatorErrors) => boolean
 }

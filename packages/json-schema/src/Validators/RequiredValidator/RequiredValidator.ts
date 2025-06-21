@@ -23,18 +23,19 @@ export const checkValueExists = (type: string | List<string> | string[], value: 
 }
 
 // todo: remove this once the new required validator works like previously
+/**
+ * @deprecated
+ */
 export const requiredValidator: SchemaPlugin<WidgetPayload> = {
-    should: ({parentSchema, storeKeys}) => {
+    handle: ({parentSchema, schema, storeKeys, value, errors, valid}) => {
         const requiredList = parentSchema?.get('required') as List<string> | undefined
-        if (requiredList && List.isList(requiredList) && storeKeys) {
-            const ownKey = storeKeys.last()
-            return typeof ownKey === 'string' && requiredList.contains(ownKey)
+        if (!schema || !requiredList || !List.isList(requiredList) || !storeKeys) {
+            return {required: false}
         }
-        return false
-    },
-    noHandle: () => ({required: false}),
-    handle: ({schema, value, errors, valid}) => {
-        if (!schema) return {}
+        const ownKey = storeKeys.last()
+        if (typeof ownKey !== 'string' || !requiredList.contains(ownKey)) {
+            return {required: false}
+        }
         // @ts-expect-error invalid typing in `UISchemaMap`
         const type = schema.get('type') as string | List<string>
         if (!checkValueExists(type, value)) {

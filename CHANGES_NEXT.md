@@ -355,8 +355,9 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
     - [x] `SchemaRootProvider/*` (new schema resource + validator)
     - [ ] `RequiredPlugin`, or keep until better solution for required behaviour?
 - [ ] add new schema plugin: injectSplitSchema, deprecate widget plugin: InjectSplitSchema
-- [ ] deprecate `SchemaPlugin` methods `.should` and `.noHandle`; always use `.handle`
+- [x] deprecate `SchemaPlugin` methods `.should` and `.noHandle`; always use `.handle`
 - [ ] enable TS rules `@typescript-eslint/no-empty-object-type, "@typescript-eslint/no-wrapper-object-types, @typescript-eslint/no-unsafe-function-type, @typescript-eslint/consistent-indexed-object-style, @typescript-eslint/consistent-type-definitions, @typescript-eslint/no-empty-function`
+- [ ] move non-react schemaPlugins into json-schema packages: `InheritKeywords`, `requiredPlugin`, `sortPlugin`, `validatorPlugin`
 
 ## Todo 0.6.x
 
