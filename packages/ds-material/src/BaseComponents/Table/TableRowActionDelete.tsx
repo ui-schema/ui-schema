@@ -1,7 +1,6 @@
 import React from 'react'
 import IconButton from '@mui/material/IconButton'
 import Delete from '@mui/icons-material/Delete'
-import { WidgetProps } from '@ui-schema/react/Widgets'
 import { Translate } from '@ui-schema/react/Translate'
 import { onChangeHandler, StoreKeys } from '@ui-schema/react/UIStore'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
@@ -11,7 +10,7 @@ import { Map } from 'immutable'
 
 export interface TableRowActionDeleteProps {
     onChange: onChangeHandler
-    storeKeys: WidgetProps['storeKeys']
+    storeKeys: StoreKeys
     showRows: TableRowProps['showRows']
     setPage: TableRowProps['setPage']
     index: number

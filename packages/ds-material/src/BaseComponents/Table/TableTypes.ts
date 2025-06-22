@@ -60,9 +60,9 @@ export interface TableFooterProps extends ListButtonOverwrites {
     rows: number
     setRows: React.Dispatch<React.SetStateAction<number>>
     onChange: onChangeHandler
-    storeKeys: WidgetProps['storeKeys']
-    schema: WidgetProps['schema']
-    showValidity: WidgetProps['showValidity']
+    storeKeys: StoreKeys
+    schema: UISchemaMap
+    showValidity: boolean | undefined
     colSize: number
     rowsPerPage: List<number | { label: string, value: number }>
     rowsShowAll?: boolean

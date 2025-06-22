@@ -15,7 +15,6 @@ import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { Map } from 'immutable'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { InfoRendererProps, MuiWidgetsBinding } from '@ui-schema/ds-material'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { UIStoreActionListItemDelete } from '@ui-schema/react/UIStoreActions'
 import { ButtonProps } from '@mui/material/Button'
@@ -64,7 +63,7 @@ export const SimpleListItemBase: React.FC<SimpleListItemProps & Pick<WithValue, 
 }
 export const SimpleListItem = memo(SimpleListItemBase)
 
-export const SimpleListInner: React.FC<WidgetProps<MuiWidgetsBinding & { InfoRenderer?: React.ComponentType<InfoRendererProps> }> & { listSize: number, btnAddShowLabel?: boolean, btnAddStyle?: React.CSSProperties } & ListButtonOverwrites & WithOnChange> = (
+export const SimpleListInner: React.FC<WidgetProps & { listSize: number, btnAddShowLabel?: boolean, btnAddStyle?: React.CSSProperties } & ListButtonOverwrites & WithOnChange> = (
     {
         storeKeys, schema, listSize, onChange,
         showValidity, valid, errors, required,
@@ -148,7 +147,7 @@ export const SimpleListInner: React.FC<WidgetProps<MuiWidgetsBinding & { InfoRen
 }
 export const SimpleListBase = memo(SimpleListInner)
 
-export const SimpleListWrapper: React.FC<WidgetProps<MuiWidgetsBinding & { InfoRenderer?: React.ComponentType<InfoRendererProps> }> & { btnAddShowLabel?: boolean, btnAddStyle?: React.CSSProperties } & ListButtonOverwrites & WithValue> = (
+export const SimpleListWrapper: React.FC<WidgetProps & { btnAddShowLabel?: boolean, btnAddStyle?: React.CSSProperties } & ListButtonOverwrites & WithValue> = (
     {
         value,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

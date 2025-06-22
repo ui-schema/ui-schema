@@ -1,3 +1,5 @@
+import { StoreKeys } from '@ui-schema/system/ValueStore'
+import { WidgetPayload } from '@ui-schema/system/Widget'
 import React from 'react'
 import clsx from 'clsx'
 import makeStyles from '@mui/styles/makeStyles'
@@ -6,7 +8,6 @@ import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import { inputClasses } from '@mui/material/Input'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import { WidgetProps } from '@ui-schema/react/Widgets'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { MarkdownLabel } from '@ui-schema/material-slate/EditorWrapper'
 
@@ -42,13 +43,9 @@ export const FormWrapper: React.ComponentType<React.PropsWithChildren<{
     dense: boolean
     focused: boolean
     empty: boolean
-    storeKeys: WidgetProps['storeKeys']
-    schema: WidgetProps['schema']
-    errors: WidgetProps['errors']
-    showValidity: WidgetProps['showValidity']
-    valid: WidgetProps['valid']
+    storeKeys: StoreKeys
     classes: Record<'wrapper' | 'editor', string>
-}>> = (
+} & Pick<WidgetPayload, 'errors' | 'schema' | 'showValidity' | 'valid'>>> = (
     {
         storeKeys,
         schema,
@@ -60,7 +57,7 @@ export const FormWrapper: React.ComponentType<React.PropsWithChildren<{
         focused,
         empty,
         classes,
-    }
+    },
 ) => {
     const hideMd = schema.getIn(['view', 'hideMd'])
     return <FormControl className={classes.wrapper}>
@@ -84,7 +81,7 @@ export const FormWrapper: React.ComponentType<React.PropsWithChildren<{
             className={clsx(
                 classes.editor,
                 !schema.getIn(['view', 'noUnderline']) ? inputClasses.underline : null,
-                focused ? inputClasses.focused : null
+                focused ? inputClasses.focused : null,
             )}
         >
             {children}

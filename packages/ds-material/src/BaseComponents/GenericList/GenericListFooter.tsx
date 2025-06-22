@@ -1,9 +1,9 @@
 import { ListButton, ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
 import Add from '@mui/icons-material/Add'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { WidgetProps } from '@ui-schema/react/Widgets'
 import { Translate } from '@ui-schema/react/Translate'
 import { onChangeHandler, StoreKeys } from '@ui-schema/react/UIStore'
+import { ValidationErrorsImmutable } from '@ui-schema/system/ValidatorOutput'
 import { Map } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import React from 'react'
@@ -19,8 +19,8 @@ export interface GenericListFooterProps extends ListButtonOverwrites {
     required?: boolean
     btnAddShowLabel?: boolean
     btnAddStyle?: React.CSSProperties
-    errors: WidgetProps['errors']
-    showValidity: WidgetProps['showValidity']
+    errors: ValidationErrorsImmutable | undefined
+    showValidity: boolean | undefined
 }
 
 export const GenericListFooter: React.ComponentType<GenericListFooterProps> = (
@@ -31,7 +31,7 @@ export const GenericListFooter: React.ComponentType<GenericListFooterProps> = (
         btnColor, btnVariant, btnSize,
         btnAddShowLabel, btnAddStyle,
         errors, showValidity,
-    }
+    },
 ) => {
     return <Box mt={2}>
         {!schema.get('readOnly') && !notAddable ?

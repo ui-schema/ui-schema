@@ -1,3 +1,4 @@
+import { ValidationErrorsImmutable } from '@ui-schema/system/ValidatorOutput'
 import React from 'react'
 import { List } from 'immutable'
 import { useUID } from 'react-uid'
@@ -54,7 +55,7 @@ const NumberSliderRenderer: React.FC<{
     schema: UISchemaMap
     showValidity?: boolean
     valid?: boolean
-    errors?: WidgetProps['errors']
+    errors?: ValidationErrorsImmutable
     required?: boolean
 } & WithValue> = (
     {

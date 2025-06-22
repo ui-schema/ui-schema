@@ -1,4 +1,6 @@
-import React, { MouseEvent } from 'react'
+import { resourceFromSchema } from '@ui-schema/json-schema/SchemaResource'
+import { SchemaResourceProvider } from '@ui-schema/react-json-schema/SchemaResourceProvider'
+import React, { MouseEvent, useMemo } from 'react'
 import { useRouteMatch, useHistory } from 'react-router-dom'
 import { Map, List } from 'immutable'
 import FormControl from '@mui/material/FormControl'
@@ -622,6 +624,16 @@ const EditorHandler = ({activeSchema}: any) => {
     const {onIntent} = useOnIntent({edgeSize: 12})
     const {onMove} = useOnDirectedMove(onIntent, onChange)
 
+    const resource = useMemo(() => {
+        try {
+            return activeState.schema ? resourceFromSchema(activeState.schema, {}) : undefined
+        } catch (e) {
+            // todo: make available for users, including more details about not resolved schemas
+            console.error('Resource building failed', e)
+            return undefined
+        }
+    }, [activeState.schema])
+
     return <>
         {/*<MuiPickersUtilsProvider utils={LuxonAdapter}>*/}
         <KitDndProvider onMove={onMove}>
@@ -716,7 +728,11 @@ const EditorHandler = ({activeSchema}: any) => {
                                 </Typography>
                             </Paper> :
                             activeState.schema ? <Paper style={{margin: 12, padding: 24}}>
-                                <GridStack key={resetId} schema={activeState.schema} isRoot/>
+                                <SchemaResourceProvider
+                                    resource={resource}
+                                >
+                                    <GridStack key={resetId} schema={activeState.schema} isRoot/>
+                                </SchemaResourceProvider>
 
                                 <InvalidLabel invalid={isInvalid(activeState.store?.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>
                             </Paper> : null}

@@ -1,3 +1,4 @@
+import { useUIMeta } from '@ui-schema/react/UIMeta'
 import React from 'react'
 import { useUID } from 'react-uid'
 import FormControl from '@mui/material/FormControl'
@@ -10,20 +11,20 @@ import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 
 export type SelectProps = {
     variant?: MuiSelectProps['variant']
-} & WidgetProps<MuiWidgetsBinding> & WithScalarValue
+} & WidgetProps & WithScalarValue
 
 export const Select = <P extends SelectProps>(
     {
         storeKeys, schema, value, onChange,
-        showValidity, valid, required, errors, t,
+        showValidity, valid, required, errors,
         variant,
     }: P,
 ): React.ReactElement => {
+    const {t} = useUIMeta()
     const uid = useUID()
 
     const {valueSchemas} = useOptionsFromSchema(storeKeys, schema)

@@ -3,6 +3,7 @@ import { List, Map, OrderedMap } from 'immutable'
 import { DraggableRendererProps } from '@ui-schema/kit-dnd/useDraggable'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { extractValue, WithOnChange, WithValue } from '@ui-schema/react/UIStore'
+import { StoreKeys } from '@ui-schema/system/ValueStore'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { memo } from '@ui-schema/react/Utils/memo'
 
@@ -13,7 +14,7 @@ export interface DndListItemComponentProps extends Pick<WidgetProps, 'storeKeys'
     noDragOnNodes?: string[]
 }
 
-export interface DndListRendererProps extends Pick<WidgetProps, 'storeKeys' | 'required'> {
+export interface DndListRendererProps {
     idKey: string
 
     Item: React.ComponentType<DndListItemComponentProps & DraggableRendererProps>
@@ -22,12 +23,15 @@ export interface DndListRendererProps extends Pick<WidgetProps, 'storeKeys' | 'r
     scoped?: string
 
     // the schema of the `array` level
-    parentSchema: WidgetProps['parentSchema']
+    parentSchema: UISchemaMap
 
     // either `itemsSchema` OR `schemaFromArea`L
     //
     // the schema for the `array` items
-    itemsSchema: WidgetProps['schema']
+    itemsSchema: UISchemaMap
+
+    storeKeys: StoreKeys
+    required?: boolean
 
     // to tell this component renders non-droppable
     itemType: string
@@ -47,7 +51,7 @@ export const DndListRendererBase = (
         Item, parentSchema,
         onChange, required,
         itemsSchema, itemType,
-    }: DndListRendererProps & WithValue
+    }: DndListRendererProps & WithValue,
 ): React.ReactElement => {
     // extracting and calculating the list size here, not passing down the actual list for performance reasons
     // https://github.com/ui-schema/ui-schema/issues/133

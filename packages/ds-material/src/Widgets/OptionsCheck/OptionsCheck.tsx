@@ -14,10 +14,8 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { useUID } from 'react-uid'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { sortScalarList } from '@ui-schema/system/Utils/sortScalarList'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
 import { SwitchBaseProps } from '@mui/material/internal/SwitchBase'
 import { OptionValueSchema, useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
-import { InfoRendererType } from '@ui-schema/ds-material/Component'
 
 const OptionCheck: React.ComponentType<{
     disabled?: boolean
@@ -92,11 +90,11 @@ export interface OptionsCheckRendererProps {
     row?: boolean
 }
 
-export const OptionsCheck = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> & OptionsCheckRendererProps>(
+export const OptionsCheck = (
     {
         schema, storeKeys, showValidity, valid, required, errors,
         row, widgets,
-    }: P,
+    }: WidgetProps & OptionsCheckRendererProps,
 ): React.ReactElement => {
     const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as UISchemaMap)
     const InfoRenderer = widgets?.InfoRenderer

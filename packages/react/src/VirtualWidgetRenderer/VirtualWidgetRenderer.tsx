@@ -1,16 +1,17 @@
+import { StoreKeys } from '@ui-schema/system/ValueStore'
+import { WidgetFieldSchemaProps } from '@ui-schema/system/Widget'
 import React from 'react'
 import { List } from 'immutable'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import { schemaTypeToDistinct } from '@ui-schema/system/schemaTypeToDistinct'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { LegacyWidgets, WidgetProps } from '@ui-schema/react/Widgets'
 import { WithValue } from '@ui-schema/react/UIStore'
 
-export interface VirtualArrayRendererProps {
-    storeKeys: WidgetProps['storeKeys']
-    schema: WidgetProps['schema']
+export interface VirtualArrayRendererProps extends LegacyWidgets {
+    storeKeys: StoreKeys
+    schema: WidgetFieldSchemaProps['schema']
     value: WithValue['value']
-    widgets?: WidgetProps['widgets']
     virtualWidgets?: VirtualWidgetRendererProps['virtualWidgets']
 }
 

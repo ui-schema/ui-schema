@@ -1,6 +1,6 @@
+import { SomeSchema } from '@ui-schema/system/CommonTypings'
 import React from 'react'
 import { WidgetPluginType } from '@ui-schema/react/WidgetEngine'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { StoreKeys, WithValue } from '@ui-schema/react/UIStore'
 import { List } from 'immutable'
@@ -14,7 +14,7 @@ export interface NoWidgetProps {
 
 export interface GroupRendererProps {
     storeKeys: StoreKeys
-    schema: UISchemaMap
+    schema: SomeSchema
     noGrid?: boolean
     style?: {}
     className?: string
@@ -32,7 +32,7 @@ export interface ErrorFallbackProps {
 export interface WidgetsBindingComponents {
     ErrorFallback?: React.ComponentType<ErrorFallbackProps>
     // wraps any `object` that has no custom widget
-    GroupRenderer: React.ComponentType<GroupRendererProps>
+    GroupRenderer?: React.ComponentType<GroupRendererProps>
     // if using `isVirtual` for no-output based rendering
     VirtualRenderer?: React.ComponentType<WidgetProps & WithValue>
     // if no widget can be matched

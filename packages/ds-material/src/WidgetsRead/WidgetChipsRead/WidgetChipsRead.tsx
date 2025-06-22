@@ -8,14 +8,12 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
 import { List, Map, OrderedMap } from 'immutable'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
 import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
 import Typography from '@mui/material/Typography'
-import { InfoRendererType } from '@ui-schema/ds-material/Component'
 
-export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetsBinding & { InfoRenderer?: InfoRendererType }> & UIMetaReadContextType & WithValue> = (
+export const WidgetChipsReadBase: React.ComponentType<WidgetProps & UIMetaReadContextType & WithValue> = (
     {
         storeKeys, schema, value,
         showValidity, errors,
@@ -70,4 +68,4 @@ export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetsBind
     </Box>
 }
 
-export const WidgetChipsRead = extractValue(memo(WidgetChipsReadBase)) as React.ComponentType<WidgetProps<MuiWidgetsBinding>>
+export const WidgetChipsRead = extractValue(memo(WidgetChipsReadBase)) as React.ComponentType<WidgetProps>

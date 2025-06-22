@@ -1,10 +1,10 @@
 export interface WidgetsBindingRoot<TW extends {} = {}, CW extends {} = {}> {
     // define native `type` widgets
-    types: {
+    types?: {
         [K1 in keyof TW]: TW[K1]
     }
     // define `custom` widgets
-    custom: {
+    custom?: {
         [K2 in keyof CW]: CW[K2]
     }
 }

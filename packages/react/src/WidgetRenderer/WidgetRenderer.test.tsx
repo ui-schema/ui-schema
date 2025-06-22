@@ -12,7 +12,7 @@ import { NoWidgetProps, WidgetProps, WidgetsBindingFactory } from '@ui-schema/re
 import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import { List } from 'immutable'
 import { ExtractStorePlugin } from '@ui-schema/react/ExtractStorePlugin'
-import { createStore, UIStoreProvider, WithScalarValue } from '@ui-schema/react/UIStore'
+import { createStore, onChangeHandler, UIStoreProvider, WithScalarValue } from '@ui-schema/react/UIStore'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { translateRelative } from '@ui-schema/system/TranslatorRelative'
 
@@ -25,16 +25,18 @@ export const virtualWidgets: VirtualWidgetsMapping & { default_with_id: VirtualW
 
 const NoWidget = ({scope, matching}: NoWidgetProps): ReactNode => <>missing-{scope}{matching ? '-' + matching : ''}</>
 
+const mockProps = {
+    storeKeys: List([]),
+    internalValue: undefined,
+    onChange: undefined as unknown as onChangeHandler,
+}
+
 describe('WidgetRenderer', () => {
     it('missing type widget', async () => {
         const {queryByText} = render(
             <WidgetRenderer
                 widgets={{
-                    // @ts-ignore
-                    RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
                     NoWidget: NoWidget,
-                    types: {},
-                    custom: {},
                     widgetPlugins: [
                         ExtractStorePlugin,
                         WidgetRenderer,
@@ -42,9 +44,9 @@ describe('WidgetRenderer', () => {
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string'})}
+                {...mockProps}
             />,
         )
-        // todo: adjust test for 0.5.0
         expect(queryByText('missing-type-string') !== null).toBeTruthy()
     })
 
@@ -52,11 +54,7 @@ describe('WidgetRenderer', () => {
         const {queryByText} = render(
             <WidgetRenderer
                 widgets={{
-                    // @ts-ignore
-                    RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
                     NoWidget: NoWidget,
-                    types: {},
-                    custom: {},
                     widgetPlugins: [
                         ExtractStorePlugin,
                         WidgetRenderer,
@@ -64,9 +62,9 @@ describe('WidgetRenderer', () => {
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string', widget: 'Text'})}
+                {...mockProps}
             />,
         )
-        // todo: adjust test for 0.5.0
         expect(queryByText('missing-custom-Text') !== null).toBeTruthy()
     })
 
@@ -74,12 +72,9 @@ describe('WidgetRenderer', () => {
         const {queryByText} = render(
             <WidgetRenderer
                 widgets={{
-                    // @ts-ignore
-                    RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
                     types: {
                         string: (props: WidgetProps & WithScalarValue) => props.value,
                     },
-                    custom: {},
                     widgetPlugins: [
                         ExtractStorePlugin,
                         WidgetRenderer,
@@ -87,10 +82,10 @@ describe('WidgetRenderer', () => {
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string'})}
+                {...mockProps}
             />,
         )
         expect(queryByText('demo-value') !== null).toBeTruthy()
-        // todo: adjust test for 0.5.0
         expect(queryByText('missing-type-string') === null).toBeTruthy()
     })
 
@@ -98,9 +93,6 @@ describe('WidgetRenderer', () => {
         const {queryByText} = render(
             <WidgetRenderer
                 widgets={{
-                    // @ts-ignore
-                    RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
-                    types: {},
                     custom: {
                         Text: (props: WidgetProps & WithScalarValue) => props.value,
                     },
@@ -111,10 +103,10 @@ describe('WidgetRenderer', () => {
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string', widget: 'Text'})}
+                {...mockProps}
             />,
         )
         expect(queryByText('demo-value') !== null).toBeTruthy()
-        // todo: adjust test for 0.5.0
         expect(queryByText('missing-custom-Text') === null).toBeTruthy()
     })
 
@@ -122,12 +114,9 @@ describe('WidgetRenderer', () => {
         const {queryByText} = render(
             <WidgetRenderer
                 widgets={{
-                    // @ts-ignore
-                    RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
                     types: {
                         array: (props: WidgetProps & { value?: unknown }) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set',
                     },
-                    custom: {},
                     widgetPlugins: [
                         ExtractStorePlugin,
                         WidgetRenderer,
@@ -135,6 +124,7 @@ describe('WidgetRenderer', () => {
                 }}
                 value={[]}
                 schema={createOrderedMap({type: 'array'})}
+                {...mockProps}
             />,
         )
         // todo: remove experimental 0.5.x
@@ -146,9 +136,6 @@ describe('WidgetRenderer', () => {
         const {queryByText} = render(
             <WidgetRenderer
                 widgets={{
-                    // @ts-ignore
-                    RootRenderer: null, GroupRenderer: null, ErrorFallback: null,
-                    types: {},
                     custom: {
                         CustomObj: (props: WidgetProps & { value?: unknown }) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set',
                     },
@@ -159,6 +146,7 @@ describe('WidgetRenderer', () => {
                 }}
                 value={{}}
                 schema={createOrderedMap({type: 'object', widget: 'CustomObj'})}
+                {...mockProps}
             />,
         )
         // todo: remove experimental 0.5.x
@@ -177,15 +165,12 @@ describe('WidgetRenderer', () => {
                 // @ts-ignore
                 onChange={undefined}
             >
-                <WidgetRenderer
+                <WidgetRenderer<{ virtualWidgets: typeof virtualWidgets }>
                     widgets={{
-                        // @ts-ignore
-                        RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
                         types: {
                             string: () => 'string-renderer',
                             number: () => 'number-renderer',
                         },
-                        custom: {},
                         widgetPlugins: [
                             ExtractStorePlugin,
                             WidgetRenderer,
@@ -193,7 +178,6 @@ describe('WidgetRenderer', () => {
                     }}
                     value={value}
                     virtualWidgets={virtualWidgets}
-                    storeKeys={List()}
                     schema={createOrderedMap({
                         type: 'object',
                         properties: {
@@ -206,6 +190,7 @@ describe('WidgetRenderer', () => {
                         },
                     })}
                     isVirtual
+                    {...mockProps}
                 />
             </UIStoreProvider>,
         )
@@ -240,10 +225,8 @@ describe('WidgetRenderer', () => {
                 // @ts-ignore
                 onChange={undefined}
             >
-                <WidgetRenderer
+                <WidgetRenderer<{ virtualWidgets: typeof virtualWidgets2 }>
                     widgets={{
-                        // @ts-ignore
-                        RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
                         types: {
                             string: () => 'string-renderer',
                             number: () => 'number-renderer',
@@ -256,9 +239,9 @@ describe('WidgetRenderer', () => {
                     }}
                     value={value}
                     virtualWidgets={virtualWidgets2}
-                    storeKeys={List()}
                     schema={schema}
                     isVirtual
+                    {...mockProps}
                 />
             </UIStoreProvider>,
         )
@@ -275,13 +258,10 @@ describe('WidgetRenderer', () => {
             object: ObjectRenderer,
         }
         const widgets: WidgetsBindingFactory = {
-            // @ts-ignore
-            RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
             types: {
                 string: () => 'string-renderer',
                 number: () => 'number-renderer',
             },
-            custom: {},
             widgetPlugins: [
                 ExtractStorePlugin,
                 WidgetRenderer,
@@ -290,7 +270,6 @@ describe('WidgetRenderer', () => {
         const value = createOrderedMap({dummy_array: ['lorem ipsum', 42]})
         const store = createStore(value)
         const {queryByText, queryAllByText} = render(
-            // @ts-ignore
             <UIMetaProvider widgets={widgets} t={translateRelative}>
                 {/* @ts-expect-error */}
                 <UIStoreProvider
@@ -299,11 +278,10 @@ describe('WidgetRenderer', () => {
                     // @ts-ignore
                     onChange={undefined}
                 >
-                    <WidgetRenderer
+                    <WidgetRenderer<{ virtualWidgets: typeof virtualWidgets2 }>
                         widgets={widgets}
                         value={value}
                         virtualWidgets={virtualWidgets2}
-                        storeKeys={List()}
                         schema={createOrderedMap({
                             type: 'object',
                             properties: {
@@ -318,11 +296,7 @@ describe('WidgetRenderer', () => {
                             },
                         })}
                         isVirtual
-                        internalValue={undefined}
-                        t={undefined as any}
-                        onChange={undefined as any}
-                        required={false}
-                        errors={undefined as any}
+                        {...mockProps}
                     />
                 </UIStoreProvider>
             </UIMetaProvider>,
@@ -339,13 +313,10 @@ describe('WidgetRenderer', () => {
             object: ObjectRenderer,
         }
         const widgets: WidgetsBindingFactory = {
-            // @ts-ignore
-            RootRenderer: null, GroupRenderer: null, ErrorFallback: () => null,
             types: {
                 string: () => 'string-renderer',
                 number: () => 'number-renderer',
             },
-            custom: {},
             widgetPlugins: [
                 ExtractStorePlugin,
                 WidgetRenderer,
@@ -354,7 +325,6 @@ describe('WidgetRenderer', () => {
         const value = createOrderedMap({dummy_array: [['lorem ipsum', 42], ['dolor sit', 43]]})
         const store = createStore(value)
         const {queryByText, queryAllByText} = render(
-            // @ts-ignore
             <UIMetaProvider widgets={widgets} t={translateRelative}>
                 {/* @ts-expect-error */}
                 <UIStoreProvider
@@ -363,10 +333,9 @@ describe('WidgetRenderer', () => {
                     // @ts-ignore
                     onChange={undefined}
                 >
-                    <WidgetRenderer<WidgetsBindingFactory, Pick<VirtualWidgetRendererProps, 'virtualWidgets'> & WidgetRendererProps>
+                    <WidgetRenderer<Pick<VirtualWidgetRendererProps, 'virtualWidgets'> & WidgetRendererProps>
                         widgets={widgets}
                         value={value}
-                        storeKeys={List()}
                         virtualWidgets={virtualWidgets2}
                         schema={createOrderedMap({
                             type: 'object',
@@ -385,11 +354,7 @@ describe('WidgetRenderer', () => {
                             },
                         })}
                         isVirtual
-                        internalValue={undefined}
-                        t={undefined as any}
-                        onChange={undefined as any}
-                        required={false}
-                        errors={undefined as any}
+                        {...mockProps}
                     />
                 </UIStoreProvider>
             </UIMetaProvider>,

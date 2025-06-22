@@ -2,14 +2,14 @@ import { List } from 'immutable'
 import React from 'react'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 import { ErrorNoWidgetMatching, widgetMatcher } from '@ui-schema/system/widgetMatcher'
-import { WidgetEngineProps, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import { WidgetEngineOverrideProps, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { WithValue } from '@ui-schema/react/UIStore'
 import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
 import { VirtualWidgetRenderer } from '@ui-schema/react/VirtualWidgetRenderer'
-import { WidgetsBindingFactory, WidgetType } from '@ui-schema/react/Widgets'
+import { WidgetType } from '@ui-schema/react/Widgets'
 
-export interface WidgetRendererProps<W extends WidgetsBindingFactory = WidgetsBindingFactory> extends Omit<WidgetPluginProps<W>, 'currentPluginIndex'>, WithValue {
-    WidgetOverride?: WidgetEngineProps['WidgetOverride']
+export interface WidgetRendererProps extends Omit<WidgetPluginProps, 'currentPluginIndex'>, WithValue {
+    WidgetOverride?: WidgetEngineOverrideProps['WidgetOverride']
     // current number of plugin in the stack, received when executed as generic widget
     // but not when used on its own
     currentPluginIndex?: number
@@ -20,9 +20,9 @@ export interface WidgetRendererProps<W extends WidgetsBindingFactory = WidgetsBi
  *       check tests and remove experimental in WidgetRenderer.test.tsx and UIEngineIntegration.test.tsx
  *       `remove experimental 0.5.x`
  */
-const noExtractValueEnabled = true
+const noExtractValueEnabled = false
 
-export const WidgetRenderer = <W extends WidgetsBindingFactory = WidgetsBindingFactory, P extends WidgetRendererProps = WidgetRendererProps, WT extends WidgetType<{}, W> = WidgetType<{}, W>>(
+export const WidgetRenderer = <P extends {} = {}, WT extends WidgetType<{}> = WidgetType<{}>>(
     {
         // we do not want `value`/`internalValue` to be passed to non-scalar widgets for performance reasons
         value, internalValue,
@@ -33,7 +33,7 @@ export const WidgetRenderer = <W extends WidgetsBindingFactory = WidgetsBindingF
         currentPluginIndex,
         // `props` contains all props accumulated in the WidgetEngine
         ...props
-    }: P,
+    }: WidgetRendererProps & Omit<NoInfer<P>, keyof WidgetRendererProps>,
 ): React.ReactNode => {
     const {schema, widgets, isVirtual} = props
     const currentErrors = useImmutable(errors)
@@ -55,10 +55,10 @@ export const WidgetRenderer = <W extends WidgetsBindingFactory = WidgetsBindingF
                     //       to be able to use that directly where needed (e.g. FormGroup),
                     //       but in an adjusted version, which allows using "most WidgetProps" for the matcher logic
                     // @ts-ignore
-                    widgetMatcher<WT, WT, W>({
+                    widgetMatcher<WT, WT>({
                         widgetName: widgetName,
                         schemaType: schemaType,
-                        widgets: widgets as W,
+                        widgets: widgets,
                     })
     } catch (e) {
         if (e instanceof ErrorNoWidgetMatching) {
@@ -88,8 +88,8 @@ export const WidgetRenderer = <W extends WidgetsBindingFactory = WidgetsBindingF
         /* @ts-ignore */
         <Widget
             {...props}
-            value={noExtractValue && !noExtractValueEnabled ? undefined : value}
-            internalValue={noExtractValue && !noExtractValueEnabled ? undefined : internalValue}
+            value={noExtractValue && noExtractValueEnabled ? undefined : value}
+            internalValue={noExtractValue && noExtractValueEnabled ? undefined : internalValue}
             errors={currentErrors}
         /> : null
 }

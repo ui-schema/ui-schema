@@ -1,7 +1,7 @@
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import React from 'react'
 import Add from '@mui/icons-material/Add'
 import { Translate } from '@ui-schema/react/Translate'
-import { WidgetProps } from '@ui-schema/react/Widgets'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import TablePagination from '@mui/material/TablePagination'
@@ -15,8 +15,8 @@ import { IconButtonProps } from '@mui/material/IconButton'
 
 export interface TableFooterErrorsBaseProps {
     colSize: number | undefined
-    showValidity: WidgetProps['showValidity']
-    schema: WidgetProps['schema']
+    showValidity: boolean | undefined
+    schema: UISchemaMap
 }
 
 export const TableFooterErrorsBase: React.ComponentType<TableFooterErrorsBaseProps & TableContextType> = (
@@ -25,7 +25,7 @@ export const TableFooterErrorsBase: React.ComponentType<TableFooterErrorsBasePro
         showValidity,
         schema,
         valid, errors,
-    }
+    },
 ) => {
     return !valid && showValidity ? <TableRow>
         <TableCell
@@ -66,7 +66,7 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
         showValidity,
         rowsPerPage, rowsShowAll,
         noFirstPageButton, noLastPageButton,
-    }
+    },
 ) => {
     return <MuiTableFooter>
         <TableRow>

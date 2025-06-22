@@ -36,7 +36,6 @@ export const requiredValidator: SchemaPlugin<WidgetPayload> = {
         if (typeof ownKey !== 'string' || !requiredList.contains(ownKey)) {
             return {required: false}
         }
-        // @ts-expect-error invalid typing in `UISchemaMap`
         const type = schema.get('type') as string | List<string>
         if (!checkValueExists(type, value)) {
             valid = false

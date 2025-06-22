@@ -10,9 +10,8 @@ import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelpe
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { WithScalarValue } from '@ui-schema/react/UIStore'
-import { InfoRendererProps, MuiWidgetsBinding } from '@ui-schema/ds-material'
 
-export interface OptionsRadioProps extends WidgetProps<MuiWidgetsBinding & { InfoRenderer?: React.ComponentType<InfoRendererProps> }> {
+export interface OptionsRadioProps extends WidgetProps {
     row?: boolean
 }
 

@@ -207,7 +207,8 @@ const Main = () => {
                     resource={resource}
                     // loadSchema={loadSchema}
                 >
-                    <GridStack<{ rootContext?: InjectSplitSchemaRootContext }>
+                    {/* todo: i think its the not-migrated HOC, but now here isRoot is needed */}
+                    <GridStack<{ isRoot?: boolean, rootContext?: InjectSplitSchemaRootContext }>
                         isRoot
                         schema={schemaData}
                         // injection for legacy widget plugin, which used RootProvider

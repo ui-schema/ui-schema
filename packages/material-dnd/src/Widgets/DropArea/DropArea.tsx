@@ -3,7 +3,7 @@ import { memo } from '@ui-schema/react/Utils/memo'
 import { WithOnChange } from '@ui-schema/react/UIStore'
 import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widgets'
 import { UIStoreActionListItemAddWithValue, UIStoreActionScoped } from '@ui-schema/react/UIStoreActions'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
 import IconButton from '@mui/material/IconButton'
@@ -13,7 +13,6 @@ import Dialog from '@mui/material/Dialog'
 import Typography, { TypographyProps } from '@mui/material/Typography'
 import { OrderedMap } from 'immutable'
 import { genId } from '@ui-schema/kit-dnd'
-import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd/DragDropBlock'
 import { DndBlocksRenderer } from '@ui-schema/material-dnd/DndBlocksRenderer'
 import { DndBlock } from '@ui-schema/material-dnd/DragDropBlockProvider'
 import { AreaRenderer } from '@ui-schema/material-dnd/WidgetsBase/AreaRenderer'
@@ -22,7 +21,7 @@ export const DropAreaBase = (
     {
         widgets,
         ...props
-    }: WidgetProps<WidgetsBindingFactory<DragDropBlockComponentsBinding>> & WithOnChange
+    }: WidgetProps & WithOnChange,
 ): React.ReactElement => {
     const [showSelector, setShowSelector] = React.useState(false)
     const {schema, storeKeys, onChange, required} = props

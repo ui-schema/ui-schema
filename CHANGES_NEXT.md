@@ -149,6 +149,9 @@ Todo:
         - value-first uses what is in schema depending on the actual value, for widgets which are more universal and could switch between `items` and `properties` depending if the value is `array` or `object`
             - which is against the predictable schema rendering, as if no value exists, it can't be decided
             - which still works reliable in e.g. list widgets, e.g. in `Table` for row-level, as a row only will be rendered if it exists in value
+- rewrite the "Combination with Conditional" demo and explain why that is caused and how to prevent non-existing values from causing validations to not behave like expected with what is rendered
+    - the point with e.g. `required` only validates if a value is `object`, not if the value is a `string` (and all other switch to `typeof` checks instead of `type` keyword),
+      and as UI is rendered for the whole schema and not only for existing values, the validation must correctly cascade or `default` values must be set
 
 > See also [CHANGES_NEXT_VALIDATE_TODOS.md](./CHANGES_NEXT_VALIDATE_TODOS.md) for more specific validator todos.
 
@@ -216,6 +219,7 @@ Todo:
 - removed `required`/`requiredList` in `WidgetEngine`
     - **todo:** for required info/validators are not finalized and there exist two different versions
       e.g. `RequiredPlugin` uses `parentSchema` directly for props injection, yet it should better support allOf etc.
+- relies on TS5.4 for `NoInfer`
 
 Todos:
 
@@ -237,6 +241,8 @@ Todos:
 - browser error translation switched from `"t": "browser"` to `"tBy": "browser"`
 - removed `schemaPlugins` and new `SchemaPluginsAdapterBuilder` which receives the plugins as initializer
 - rewrite of validator-schemaPlugins into `ValidatorHandler` for new validator system
+- now optional in components binding: `.GroupRenderer`
+- now optional in widgets binding: `.types` and `.custom`
 
 ## Todo Bindings
 
@@ -267,18 +273,61 @@ Todos:
     - to be able to add complex default for `object` and `array`, there should be a hint which tells if "inside an wrapper-widget" and thus the "native" widget should be returned
     - for better code-split, maybe remove the "widgets" completely from the context bindings, only supply through direct plugin binding, as only "types" and "components" should be used directly anyway, all other widgets should only be injected through matcher and never directly used from other widgets; for Table would require to add something like "prefer variant" or "in scope Table/Form"
 - make `WidgetRenderer` and `VirtualRenderer` better integrated, remove all hard coded wiring to `VirtualWidgetRenderer`
+    - this may relate to cleaning up unwanted package deps., as `ObjectRenderer` is in `react-json-schema`, the `react` package depends on that and `json-schema`,
+      which shouldn't be the case (except through system typings),
+        - this can only be solved partially in the 0.5.x version, as it needs more separation between json-schema and non-json-schema related "schema",
+          ... *(if that is wanted/needed at all)*
+        - `json-schema` currently includes some UI-Schema typings
+            - but especially the new validator system
+                - which is a widgetPlugin + an implementation of the SchemaPlugin + ValidatorOutput defined in `system`
+            - but also includes the typing and actual logic for schema resource building
+        - `react-json-schema` includes the resource-provider, while `react` contains all other
+            - but a lot of non-deprecated parts will be moved to `json-schema`
+            - actually, only the `SchemaResourceProvider`, `DefaultHandler` and `ObjectRenderer` would remain, which can't be in `react` due to relying on `json-schema` for resource building,
+              and intended to be expanded with better included loaders and caching, special for react.
+              and as react specific, of course can't be moved into `json-schema`, where the rest of the resource stuff is
+            - I think, schema plugin adapter will move into here, thus more meaning and need for the `react-json-schema` package again
+            - but `DefaultHandler` may move into validator, or will be removed when moving to central validator
+        - `system` includes a lot of json-schema specific types and logic, just not actual validator or branching,
+          but also a lot of widget rendering specific types and utils, including the translator
+        - `react` depends on too much and includes too many parts, better in other packages
+            - but also `SchemaPluginsAdapter` is included in `react`, which depends on the resource system, and thus atm. maked `react` depending on `react-json-schema` and `json-schema`,
+              while it should only need the `system` and provide the stuff which `react-json-schema` could rely on.
+            - `VirtualWidgetRenderer` depends on `ObjectRenderer` from `react-json-schema`, while currently rather hard coded, should be moved to `react-json-schema` completely
 
 ## Todo WidgetProps
 
-- make `WidgetProps` always include a `value: unknown`
-    - experiment with removing the current "value is removed before rendering widget" and the performance implications
-- refactor `WithValue`/`WithScalarValue`
-- include type guards for usage in widgets
-    - maybe rely on `value` and `errors` to know if valid, needs `errors` and not `valid` to check if `TYPE_ERROR` of any other error
-    - **TBD:** include for `typeof v === 'string'` or only for complex types?
+- safer `value` typing
+    - make `WidgetProps` always include a `value: unknown`
+        - experiment with removing the current "value is removed before rendering widget" and the performance implications
+    - refactor `WithValue`/`WithScalarValue`
+    - include type guards for usage in widgets
+        - maybe rely on `value` and `errors` to know if valid, needs `errors` and not `valid` to check if `TYPE_ERROR` of any other error
+        - **TBD:** include for `typeof v === 'string'` or only for complex types?
+    - **Reason:** it can't be typed what "value type" a widget allows, as it could receive any (invalid) value (from e.g. remote states).
 - make `WidgetProps` independent of schema typing or move out of `/system`, as that package should not depend on package `/json-schema`
+- optimize/separate WidgetProps/UIMetaContext
+    - UIMeta will be injected, thus will reach widget, but typing can't be ensured reliable with current recursive widgets in context itself,
+      especially for some parts, like `widgets` and `t`, it would be better if users use the hooks themself
 
-Reason: it can't be typed what "value type" a widget allows, as it could receive any (invalid) value (from e.g. remote states).
+new widget engine functions:
+
+- root vs. location props
+- basic schema / value props
+- widgets binding override
+- widget override w/ type inference
+    - the component must be compatible and adds more types to the props
+- standard plugin / feature props
+    - isVirtual
+    - noGrid
+    - noGrid + meta overrides like sHowValidity
+- wrapper and props - but whats the feature of that? hidden, dyn. etc only work once plugins are done (or decide not render further)
+- WidgetProps schemaLocation, or those from isRoot, should be removed to another typing
+
+> maybe split up the part that connects with context and that which don't? to make overriding widgets easier - as its either one or the other; but that's already with next plugin renderer vs. widget engine?!
+>
+>
+> !! finalize `widgets`. atm. added to `WidgetProps` with `any` to ignore that for the time, as needs decision about UIMeta pass through
 
 ## Todos Misc
 
@@ -302,6 +351,7 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
     - the generic in `UIStoreProvider` causes no issue in `demo-web`, yet in `WidgetRenderer.test` causes props to be inferred as `never`, causing a lot of type errors
     - cleanup workarounds in:
         - `NextPluginRenderer`
+    - **note:** solved with `NoInfer` in `WidgetEngine` and using also `object` for stricter props/context-baggage
 - [ ] fix/finalize strict UISchemaMap typing and json-schema types
 - [ ] stricter typings, with many `any` switched to `unknown`
 - [x] finalize `package.json` generation for strict esm with ESM and CJS support
@@ -310,7 +360,7 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
     - [ ] switch to strict-ESM for ds-bootstrap
         - [ ] remove `clsx`, as not `Node16` compatible
     - [x] switch to cjs/esm build with `.cjs` file extension instead of separate folders
-- [ ] control and optimize circular package dependencies, remove all which where added as workarounds
+- [ ] control and optimize circular package dependencies, remove all which where added as workarounds (see noted in bindings about separating packages and `VirtualWidgetRenderer`)
 - [ ] improve file/folder depth for easier usage of `no-restricted-imports` - or isn't that needed once `exports` are used?
     - the eslint plugin shouldn't be needed, yet a consistent depth makes the `tsconfig` for local dev easier,
       see the `ui-schema/react-codemirror` repo for a working example;
@@ -358,6 +408,14 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
 - [x] deprecate `SchemaPlugin` methods `.should` and `.noHandle`; always use `.handle`
 - [ ] enable TS rules `@typescript-eslint/no-empty-object-type, "@typescript-eslint/no-wrapper-object-types, @typescript-eslint/no-unsafe-function-type, @typescript-eslint/consistent-indexed-object-style, @typescript-eslint/consistent-type-definitions, @typescript-eslint/no-empty-function`
 - [ ] move non-react schemaPlugins into json-schema packages: `InheritKeywords`, `requiredPlugin`, `sortPlugin`, `validatorPlugin`
+- [ ] deprecate `useUIConfig`/`UIConfigProvider` and related parts, or remove directly if typing compat. isn't easy
+- [ ] deprecate `onErrors`, once the validation system is available to get any child errors in another component without much performance impact
+- [ ] optimize unnecessary rendering of empty parts, e.g. `ObjectRenderer` only checks for `properties` existence, but not if empty (maybe add the `getFields` utils already?)
+- [ ] remove or just deprecate the `injectWidgetEngine`, `applyWidgetEngine` HOCs? type migration with be headache
+    - these functions never provided much optimization
+    - people who need that micro optimization, should get better ways to do it their way (which now exists, also as `SchemaRootProvider` provides access to the root level schema)
+    - their introduction, prevented users to focus on how to use `WidgetEngine` (or then `PluginStack`)
+    - remove would allow removing all of the `StackWrapper` code in `WidgetEngine`
 
 ## Todo 0.6.x
 
@@ -377,3 +435,13 @@ Reason: it can't be typed what "value type" a widget allows, as it could receive
         - this is applies especially to widget plugins which where before the validator and relied on schema and modified the value, which then the validator would already use,
           to validate but also use to evaluate conditional branches; one solution i see is to allow the validator to modify value while traversing and emitting effects for store changes, which are fired after it is done
     - the performance must be checked and compared against the render-reduction + validation approach
+- schemaLocation vs valueLocation for schema resolving, reduction, store connection and happy path selection and rendering
+- deprecate `parentSchema`, `schema` in props of widget engine, but not in widget payload
+- better support for skipping `hidden` and empty schema while rendering, to not produce empty grid slots; depends also on central schema validation and building of applied UI happy paths, with some central index for stuff like hidden etc.
+
+
+---
+
+experiment on how to do a `<Next/>` prop in `widgetPlugin` without `currentPluginIndex`:
+
+idea: remapping `widgetPlugins` in `UIMetaContext` and wrapping each in a HOC which takes care of it and so on, thus the `Next` can be made available with `useUIMeta`, instead of the actual `widgetsPlugins`, which can help even further with widget binding types and the recursive dependencies in generics.

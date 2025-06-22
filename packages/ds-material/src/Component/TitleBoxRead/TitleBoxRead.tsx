@@ -1,9 +1,9 @@
 import Typography from '@mui/material/Typography'
-import { WidgetProps } from '@ui-schema/react/Widgets'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { StoreKeys } from '@ui-schema/react/UIStore'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import Box from '@mui/material/Box'
+import { ValidationErrorsImmutable } from '@ui-schema/system/ValidatorOutput'
 import React from 'react'
 import { InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 
@@ -13,7 +13,7 @@ export interface TitleBoxReadProps {
     schema: UISchemaMap
     storeKeys: StoreKeys
     valid?: boolean
-    errors?: WidgetProps['errors']
+    errors?: ValidationErrorsImmutable
     InfoRenderer?: React.ComponentType<InfoRendererProps>
 }
 

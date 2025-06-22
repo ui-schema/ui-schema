@@ -1,41 +1,26 @@
 import { UIMetaContext } from '@ui-schema/react/UIMeta'
 import React from 'react'
-import { WidgetEngine, WidgetEngineInjectProps, WidgetEngineWrapperProps } from '@ui-schema/react/WidgetEngine'
+import { WidgetEngine, WidgetEngineWrapperProps } from '@ui-schema/react/WidgetEngine'
 import { getDisplayName, memo } from '@ui-schema/react/Utils/memo'
-import { StoreKeys, WithValue } from '@ui-schema/react/UIStore'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
-// import { UIMetaContext } from '@ui-schema/react/UIMeta'
+import { WithValue } from '@ui-schema/react/UIStore'
+import { WidgetProps } from '@ui-schema/react/Widgets'
 
-export type WidgetEngineRootProps = {
-    isRoot: true
-}
-
-export type WidgetEngineNestedProps = {
-    isRoot?: false
-    // all indices of the current widget, must be set for nested plugins
-    storeKeys: StoreKeys
-    // `parentSchema` will only be `undefined` in the root level of a schema
-    // todo: should this be typed differently between "props/passing-down" and "consuming/usages"?
-    parentSchema: UISchemaMap | undefined
-}
-
-export type WidgetEngineRootOrNestedProps =
-    WidgetEngineRootProps |
-    WidgetEngineNestedProps
+export type WidgetEngineInjectProps = 'currentPluginIndex' | 'errors' | 'valid' | 'storeKeys'/* | 'parentSchema'*/// |
+// todo find a better way to define from-plugin injected values as "required" - or shouldn't?
+// 'value' | 'onChange' | 'internalValue'
 
 // todo: add also generic widgets here?
-export type AppliedWidgetEngineProps<CMeta = UIMetaContext, W = WidgetsBindingFactory, PWidget extends WidgetProps<W> = WidgetProps<W>> =
+export type AppliedWidgetEngineProps<CMeta = UIMetaContext, PWidget extends WidgetProps = WidgetProps> =
     Omit<PWidget, WidgetEngineInjectProps | keyof CMeta | keyof WithValue>
     // Omit<PWidget, WidgetEngineInjectProps | keyof (UIMetaContext<W> & CMeta) | keyof WithValue>
     // & Partial<UIMetaContext<W> & CMeta>
     & Partial<CMeta>
     & Partial<Pick<PWidget, 'showValidity'>>
-    & WidgetEngineRootOrNestedProps
+    //& WidgetEngineRootOrNestedProps
 
-export function applyWidgetEngine<CMeta = UIMetaContext, W = WidgetsBindingFactory, PWidget extends WidgetProps<W> = WidgetProps<W>>(
+export function applyWidgetEngine<CMeta = UIMetaContext, PWidget extends WidgetProps = WidgetProps>(
     CustomWidget: React.ComponentType<PWidget>,
-): <PPlugin extends {} = {}>(props: AppliedWidgetEngineProps<CMeta, W, PWidget> & PPlugin) => React.ReactElement {
+): <PPlugin extends {} = {}>(props: AppliedWidgetEngineProps<CMeta, PWidget> & PPlugin) => React.ReactElement {
     const CustomStack = (p) =>
         <WidgetEngine
             {...p}
@@ -46,10 +31,10 @@ export function applyWidgetEngine<CMeta = UIMetaContext, W = WidgetsBindingFacto
     return memo(CustomStack)
 }
 
-export function injectWidgetEngine<CMeta = UIMetaContext, W = WidgetsBindingFactory, PWidget extends WidgetProps<W> = WidgetProps<W>>(
+export function injectWidgetEngine<CMeta = UIMetaContext, PWidget extends WidgetProps = WidgetProps>(
     Wrapper: React.ComponentType<WidgetEngineWrapperProps>,
     CustomWidget?: React.ComponentType<PWidget>,
-): <PPlugin extends {} = {}>(props: AppliedWidgetEngineProps<CMeta, W, PWidget> & PPlugin) => React.ReactElement {
+): <PPlugin extends {} = {}>(props: AppliedWidgetEngineProps<CMeta, PWidget> & PPlugin) => React.ReactElement {
     const CustomStack = (p) =>
         <WidgetEngine
             {...p}

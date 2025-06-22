@@ -151,10 +151,10 @@ const formSchema = createOrderedMap({
 
 export interface ReadWidgetsBinding {
     types: {
-        [k: string]: WidgetType<UIMetaReadContextType, MuiWidgetsBinding>
+        [k: string]: WidgetType<UIMetaReadContextType>
     }
     custom: {
-        [k: string]: WidgetType<UIMetaReadContextType, MuiWidgetsBinding>
+        [k: string]: WidgetType<UIMetaReadContextType>
     }
 }
 

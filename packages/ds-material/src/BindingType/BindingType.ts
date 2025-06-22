@@ -1,21 +1,21 @@
-import React from 'react'
-import { WidgetProps, WidgetType } from '@ui-schema/react/Widgets'
-import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
-import { WithScalarValue } from '@ui-schema/react/UIStore'
-import { WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import type { ComponentType } from 'react'
+import type { WidgetProps, WidgetType } from '@ui-schema/react/Widgets'
+import type { UIStoreActions } from '@ui-schema/react/UIStoreActions'
+import type { WithScalarValue } from '@ui-schema/react/UIStore'
+import type { WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 
-export interface MuiWidgetsBindingTypes<C extends {} = {}, W extends MuiWidgetsBinding = MuiWidgetsBinding> {
-    string?: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
-    boolean?: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
-    number?: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
-    integer?: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
-    null?: React.ComponentType<WidgetProps<W> & C & WithScalarValue>
-    array?: React.ComponentType<WidgetProps<W> & C>
-    object?: React.ComponentType<WidgetProps<W> & C>
+export interface MuiWidgetsBindingTypes<C extends {} = {}> {
+    string?: ComponentType<WidgetProps & C & WithScalarValue>
+    boolean?: ComponentType<WidgetProps & C & WithScalarValue>
+    number?: ComponentType<WidgetProps & C & WithScalarValue>
+    integer?: ComponentType<WidgetProps & C & WithScalarValue>
+    null?: ComponentType<WidgetProps & C & WithScalarValue>
+    array?: ComponentType<WidgetProps & C>
+    object?: ComponentType<WidgetProps & C>
 }
 
-export interface MuiWidgetsBindingCustom<C extends {} = {}, W extends MuiWidgetsBinding = MuiWidgetsBinding, A = UIStoreActions> {
-    [key: string]: WidgetType<C, W, A> | WidgetType<C, WidgetsBindingFactory, A>
+export interface MuiWidgetsBindingCustom<C extends {} = {}, A = UIStoreActions> {
+    [key: string]: WidgetType<C, A>
 }
 
 export type MuiWidgetsBinding<WE extends {} = {}, C extends {} = {}> = WidgetsBindingFactory<WE, MuiWidgetsBindingTypes<C>, MuiWidgetsBindingCustom<C>>

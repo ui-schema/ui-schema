@@ -4,10 +4,8 @@ import Typography from '@mui/material/Typography'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { WithScalarValue } from '@ui-schema/react/UIStore'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
 import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
-import { InfoRendererType } from '@ui-schema/ds-material/Component'
 
 export interface StringRendererReadBaseProps {
     onClick?: MouseEventHandler<HTMLDivElement> | undefined
@@ -18,7 +16,7 @@ export interface StringRendererReadProps extends StringRendererReadBaseProps {
     style?: React.CSSProperties
 }
 
-export const StringRendererRead = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> & UIMetaReadContextType>(
+export const StringRendererRead = (
     {
         multiline,
         storeKeys, schema, value,
@@ -26,7 +24,7 @@ export const StringRendererRead = <P extends WidgetProps<MuiWidgetsBinding<{ Inf
         style,
         onClick,
         widgets, readDense,
-    }: P & WithScalarValue & StringRendererReadProps,
+    }: WidgetProps & UIMetaReadContextType & WithScalarValue & StringRendererReadProps,
 ): React.ReactElement => {
     const hideTitle = Boolean(schema.getIn(['view', 'hideTitle']))
     const InfoRenderer = widgets?.InfoRenderer
@@ -66,11 +64,11 @@ export const StringRendererRead = <P extends WidgetProps<MuiWidgetsBinding<{ Inf
     </>
 }
 
-export const TextRendererRead = <P extends WidgetProps<MuiWidgetsBinding> & UIMetaReadContextType = WidgetProps<MuiWidgetsBinding> & UIMetaReadContextType>(
+export const TextRendererRead = (
     {
         schema,
         ...props
-    }: P & WithScalarValue & StringRendererReadBaseProps,
+    }: WidgetProps & UIMetaReadContextType & WithScalarValue & StringRendererReadBaseProps,
 ): React.ReactElement => {
     return <StringRendererRead
         {...props}
@@ -79,11 +77,10 @@ export const TextRendererRead = <P extends WidgetProps<MuiWidgetsBinding> & UIMe
     />
 }
 
-export const NumberRendererRead = <P extends WidgetProps<MuiWidgetsBinding> & UIMetaReadContextType = WidgetProps<MuiWidgetsBinding> & UIMetaReadContextType>(
-    props: P & WithScalarValue & StringRendererReadBaseProps,
+export const NumberRendererRead = (
+    props: WidgetProps & UIMetaReadContextType & WithScalarValue & StringRendererReadBaseProps,
 ): React.ReactElement => {
     return <StringRendererRead
         {...props}
-        type={'number'}
     />
 }

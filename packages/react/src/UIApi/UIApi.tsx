@@ -1,7 +1,7 @@
+import { SomeSchema } from '@ui-schema/system/CommonTypings'
 import React from 'react'
 import { Map } from 'immutable'
 import { createOrderedMap } from '@ui-schema/system/createMap'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 export const PROGRESS_NONE = false
 export const PROGRESS_START = 'start'
@@ -15,7 +15,7 @@ export function useProgress(): [PROGRESS, React.Dispatch<React.SetStateAction<PR
 }
 
 export interface UIApiContextType {
-    schemas?: Map<string, UISchemaMap>
+    schemas?: Map<string, SomeSchema>
     loadSchema?: (url: string, versions?: string[]) => Promise<PROGRESS>
 }
 
@@ -30,7 +30,7 @@ export const useUIApi = (): UIApiContextType => React.useContext(UIApiContext)
 
 export const schemaLocalCachePath = 'uischema-cache' + (typeof window === 'undefined' ? 0 : window.location.port)
 
-const initialState = ({noCache = false}): Map<'schemas', Map<string, UISchemaMap>> => {
+const initialState = ({noCache = false}): Map<'schemas', Map<string, SomeSchema>> => {
     let cached
     if (!noCache) {
         const cachedRaw = window?.localStorage?.getItem(schemaLocalCachePath)
@@ -55,7 +55,7 @@ export interface UIApiActionSchemaLoaded {
     noCache: boolean | undefined
 }
 
-function reducer(state: Map<'schemas', Map<string, UISchemaMap>>, action: UIApiActionSchemaLoaded) {
+function reducer(state: Map<'schemas', Map<string, SomeSchema>>, action: UIApiActionSchemaLoaded) {
     if (action.type === 'SCHEMA_LOADED') {
         return (() => {
             const tmpState = state.setIn(['schemas', action.id], createOrderedMap(action.value))

@@ -94,7 +94,7 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
                     {validItemSchema && listSize ?
                         Array(listSize).fill(null).map((_val: any, i) => {
                             const isVirtual = (i as number) < currentRowsStartVisible || (i as number) >= (currentRowsStartVisible + currentRows)
-                            return <WidgetEngine<TableRowProps & WidgetProps>
+                            return <WidgetEngine<TableRowProps, typeof TableRowRenderer>
                                 key={i}
                                 storeKeys={storeKeys.push(i as number)}
                                 schema={itemsSchema}

@@ -1,7 +1,7 @@
 import { List } from 'immutable'
 import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
 
-export const schemaTypeToDistinct = (schemaType: SchemaTypesType, noInputTypes: string[] = ['null']): string | undefined => {
+export const schemaTypeToDistinct = (schemaType: unknown | SchemaTypesType, noInputTypes: string[] = ['null']): string | undefined => {
     let distinctInputType: string | undefined
     if (!schemaType) return distinctInputType
 

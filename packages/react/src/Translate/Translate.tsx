@@ -1,13 +1,15 @@
+import { Map } from 'immutable'
 import { FC } from 'react'
 import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { translation, Translator, TranslatorContext } from '@ui-schema/system/Translator'
-import { UISchema } from '@ui-schema/json-schema/Definitions'
-import { ValueOrImmutableOrdered } from '@ui-schema/system/createMap'
 
 export interface TranslateProps {
     text: string
     context?: TranslatorContext
-    schema?: ValueOrImmutableOrdered<UISchema['t']>
+    /**
+     * @todo rename to `dict`? as its just the `t` keyword, not any real schema
+     */
+    schema?: Map<unknown, unknown>// ValueOrImmutableOrdered<UISchema['t']>
     fallback?: translation
     // overwrite the context `t` function
     t?: Translator

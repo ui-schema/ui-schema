@@ -10,9 +10,7 @@ import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelpe
 import InputBase, { InputBaseProps, InputBaseComponentProps } from '@mui/material/InputBase'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
 import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
-import { visuallyHidden } from '@mui/utils'
-import { InfoRendererType } from '@ui-schema/ds-material/Component'
+import visuallyHidden from '@mui/utils/visuallyHidden'
 
 export interface StringRendererCellProps {
     type?: string
@@ -34,7 +32,7 @@ export interface StringRendererCellProps {
     labelledBy?: string
 }
 
-export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> & WithScalarValue & StringRendererCellProps> = (
+export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarValue & StringRendererCellProps> = (
     {
         type,
         multiline, minRows, maxRows,
@@ -47,7 +45,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetsBindi
         inputProps = {},
         inputRef: customInputRef,
         labelledBy, widgets,
-    }
+    },
 ) => {
     const uid = useUID()
     // todo: this could break law-of-hooks
@@ -159,7 +157,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetsBindi
     </>
 }
 
-export const TextRendererCell: React.ComponentType<WidgetProps<MuiWidgetsBinding> & WithScalarValue & StringRendererCellProps> = ({schema, ...props}) => {
+export const TextRendererCell: React.ComponentType<WidgetProps & WithScalarValue & StringRendererCellProps> = ({schema, ...props}) => {
     return <StringRendererCell
         {...props}
         schema={schema}
@@ -175,7 +173,7 @@ export const TextRendererCell: React.ComponentType<WidgetProps<MuiWidgetsBinding
     />
 }
 
-export const NumberRendererCell: React.ComponentType<WidgetProps<MuiWidgetsBinding> & WithScalarValue & StringRendererCellProps> = (props) => {
+export const NumberRendererCell: React.ComponentType<WidgetProps & WithScalarValue & StringRendererCellProps> = (props) => {
     return <StringRendererCell
         {...props}
         type={'number'}

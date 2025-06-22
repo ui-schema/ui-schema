@@ -1,12 +1,12 @@
+import { SomeSchema } from '@ui-schema/system/CommonTypings'
 import React from 'react'
 import { Map, List } from 'immutable'
 import { beautifyKey } from '@ui-schema/system/Utils/beautify'
 import { Translate } from '@ui-schema/react/Translate'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { StoreKeys } from '@ui-schema/react/UIStore'
 
 export interface TranslateTitleProps {
-    schema: UISchemaMap
+    schema: SomeSchema
     storeKeys: StoreKeys
 }
 

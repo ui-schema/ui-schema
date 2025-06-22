@@ -11,8 +11,6 @@ import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/system/schemaTypeIs'
 import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
-import { InfoRendererType } from '@ui-schema/ds-material/Component'
 
 export interface StringRendererBaseProps {
     type?: string
@@ -45,7 +43,7 @@ export interface NumberRendererProps extends StringRendererBaseProps {
     steps?: number | 'any'
 }
 
-export const StringRenderer = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> = WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>>>(
+export const StringRenderer = (
     {
         type,
         multiline,
@@ -58,7 +56,7 @@ export const StringRenderer = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRen
         onKeyPress,
         inputProps = {}, InputProps = {}, inputRef: customInputRef,
         widgets,
-    }: P & WithScalarValue & StringRendererProps
+    }: WidgetProps & WithScalarValue & StringRendererProps,
 ): React.ReactElement => {
     const uid = useUID()
     // todo: this could break law-of-hooks
@@ -140,23 +138,23 @@ export const StringRenderer = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRen
     </React.Fragment>
 }
 
-export const TextRenderer = <P extends WidgetProps<MuiWidgetsBinding> = WidgetProps<MuiWidgetsBinding>>({schema, ...props}: P & WithScalarValue & TextRendererProps): React.ReactElement => {
+export const TextRenderer = ({schema, ...props}: WidgetProps & WithScalarValue & TextRendererProps): React.ReactElement => {
     return <StringRenderer
         {...props}
         schema={schema}
         minRows={
             typeof props.minRows === 'number' ? props.minRows :
-                schema.getIn(['view', 'rows'])
+                schema.getIn(['view', 'rows']) as number
         }
         maxRows={
             typeof props.maxRows === 'number' ? props.maxRows :
-                schema.getIn(['view', 'rowsMax'])
+                schema.getIn(['view', 'rowsMax']) as number
         }
         multiline
     />
 }
 
-export const NumberRenderer = <P extends WidgetProps<MuiWidgetsBinding> = WidgetProps<MuiWidgetsBinding>>(props: P & WithScalarValue & NumberRendererProps): React.ReactElement => {
+export const NumberRenderer = (props: WidgetProps & WithScalarValue & NumberRendererProps): React.ReactElement => {
     const {schema, inputProps: inputPropsProps = {}, steps = 'any'} = props
     const schemaType = schema.get('type') as string | undefined
     const inputProps = React.useMemo(() => {

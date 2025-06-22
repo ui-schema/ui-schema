@@ -8,9 +8,8 @@ import { extractValue, WithScalarValue, WithValue } from '@ui-schema/react/UISto
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
 
-export const FormGroupBase: React.ComponentType<WidgetProps<MuiWidgetsBinding> & WithValue> = (props) => {
+export const FormGroupBase: React.ComponentType<WidgetProps & WithValue> = (props) => {
     const {storeKeys, widgets, schema} = props
     const {spacing} = useTheme()
 
@@ -46,4 +45,4 @@ export const FormGroupBase: React.ComponentType<WidgetProps<MuiWidgetsBinding> &
     </FormControl>
 }
 
-export const FormGroup = extractValue(memo(FormGroupBase)) as <P extends WidgetProps<MuiWidgetsBinding>>(props: P) => React.ReactElement
+export const FormGroup = extractValue(memo(FormGroupBase)) as <P extends WidgetProps>(props: P) => React.ReactElement

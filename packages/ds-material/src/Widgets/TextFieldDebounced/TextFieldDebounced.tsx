@@ -12,7 +12,7 @@ import { NumberRendererProps, StringRendererProps, TextRendererProps } from '@ui
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { useDebounceValue } from '@ui-schema/react/Utils/useDebounceValue'
-import { forbidInvalidNumber, InfoRendererType, MuiWidgetsBinding } from '@ui-schema/ds-material'
+import { forbidInvalidNumber } from '@ui-schema/ds-material'
 
 export interface StringRendererDebouncedProps {
     /**
@@ -22,7 +22,7 @@ export interface StringRendererDebouncedProps {
     debounceTime?: number
 }
 
-export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> = WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>>>(
+export const StringRendererDebounced = (
     {
         type,
         multiline,
@@ -35,7 +35,7 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetsBinding<
         onKeyPress,
         inputProps = {}, InputProps = {}, inputRef: customInputRef,
         debounceTime = 340, widgets,
-    }: P & WithScalarValue & Omit<StringRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps
+    }: WidgetProps & WithScalarValue & Omit<StringRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps,
 ): React.ReactElement => {
     const uid = useUID()
     // todo: this could break law-of-hooks
@@ -126,28 +126,28 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetsBinding<
     </React.Fragment>
 }
 
-export const TextRendererDebounced = <P extends WidgetProps<MuiWidgetsBinding> = WidgetProps<MuiWidgetsBinding>>(
+export const TextRendererDebounced = (
     {
         schema,
         ...props
-    }: P & WithScalarValue & Omit<TextRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps
+    }: WidgetProps & WithScalarValue & Omit<TextRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps,
 ): React.ReactElement => {
     return <StringRendererDebounced
         {...props}
         schema={schema}
         minRows={
             typeof props.minRows === 'number' ? props.minRows :
-                schema.getIn(['view', 'rows'])
+                schema.getIn(['view', 'rows']) as number
         }
         maxRows={
             typeof props.maxRows === 'number' ? props.maxRows :
-                schema.getIn(['view', 'rowsMax'])
+                schema.getIn(['view', 'rowsMax']) as number
         }
         multiline
     />
 }
 
-export const NumberRendererDebounced = <P extends WidgetProps<MuiWidgetsBinding> = WidgetProps<MuiWidgetsBinding>>(props: P & WithScalarValue & Omit<NumberRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps): React.ReactElement => {
+export const NumberRendererDebounced = (props: WidgetProps & WithScalarValue & Omit<NumberRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps): React.ReactElement => {
     const {schema, inputProps: inputPropsProps = {}, steps = 'any'} = props
     const schemaType = schema.get('type') as string | undefined
     const inputProps = React.useMemo(() => {

@@ -11,6 +11,8 @@ import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
 import { requiredPlugin } from '@ui-schema/react-json-schema/RequiredPlugin'
 import { validatorPlugin } from '@ui-schema/react-json-schema/ValidatorPlugin'
 import { SchemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
+import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import React from 'react'
 import { useToggle } from '../component/useToggle'
@@ -23,7 +25,6 @@ import { createOrderedMap, createMap } from '@ui-schema/system/createMap'
 import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { createStore, createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
-import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { browserT } from '../t'
@@ -100,7 +101,10 @@ const MainStore = () => {
                     flexDirection: 'column',
                 }}
             >
-                <GridStack isRoot schema={schema}/>
+                <GridContainer>
+                    <WidgetEngine isRoot schema={schema}/>
+                </GridContainer>
+                {/*<GridStack isRoot schema={schema}/>*/}
                 <MuiSchemaDebug setSchema={setSchema} schema={schema}/>
 
                 <Box sx={{display: 'flex', alignItems: 'center'}}>

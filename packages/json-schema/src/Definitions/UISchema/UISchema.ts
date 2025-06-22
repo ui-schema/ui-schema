@@ -1,15 +1,14 @@
 import { tt } from '@ui-schema/system/Utils/beautify'
 
+type UISchemaKeywordTranslations =
+    {
+        [key: string]: string | number | UISchemaKeywordTranslations
+    }
+
 export interface UISchema {
     title?: string
     tt?: tt
-    t?: {
-        [key: string]: string | number
-    } | {
-        [key: string]: {
-            [key: string]: string | number
-        }
-    }
+    t?: UISchemaKeywordTranslations
     tBy?: 'browser' | string
     widget?: string
     api?: {

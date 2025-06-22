@@ -1,8 +1,10 @@
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { ValidationErrorsImmutable } from '@ui-schema/system/ValidatorOutput'
+import { StoreKeys } from '@ui-schema/system/ValueStore'
 import React from 'react'
 import makeStyles from '@mui/styles/makeStyles'
 import { ClassNameMap } from '@mui/styles/withStyles'
 import { Theme } from '@mui/material/styles'
-import { WidgetProps } from '@ui-schema/react/Widgets'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { MarkdownLabel } from '@ui-schema/material-slate/EditorWrapper'
 
@@ -29,11 +31,11 @@ export const PaneWrapper: React.ComponentType<React.PropsWithChildren<{
     dense: boolean
     focused: boolean
     empty: boolean
-    storeKeys: WidgetProps['storeKeys']
-    schema: WidgetProps['schema']
-    errors: WidgetProps['errors']
-    showValidity: WidgetProps['showValidity']
-    valid: WidgetProps['valid']
+    storeKeys: StoreKeys
+    schema: UISchemaMap
+    errors: ValidationErrorsImmutable | undefined
+    showValidity: boolean | undefined
+    valid: boolean | undefined
     //classes: Record<'wrapper' | 'editor', string>
     classes: ClassNameMap<'wrapper' | 'editor'>
 }>> = (
@@ -44,7 +46,7 @@ export const PaneWrapper: React.ComponentType<React.PropsWithChildren<{
         children,
         focused,
         classes,
-    }
+    },
 ) => {
     const hideMd = schema.getIn(['view', 'hideMd'])
     return <div className={classes.wrapper}>

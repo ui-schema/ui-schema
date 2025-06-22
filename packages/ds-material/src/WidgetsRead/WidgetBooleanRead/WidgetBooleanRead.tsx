@@ -6,10 +6,8 @@ import Typography from '@mui/material/Typography'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
 import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
-import { InfoRendererType } from '@ui-schema/ds-material/Component'
 
 export interface WidgetBooleanReadProps {
     style?: React.CSSProperties
@@ -17,7 +15,7 @@ export interface WidgetBooleanReadProps {
     IconNo?: React.ComponentType<{ fontSize?: 'default' | 'inherit' | 'large' | 'medium' | 'small' }>
 }
 
-export const WidgetBooleanRead = <P extends WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> & UIMetaReadContextType = WidgetProps<MuiWidgetsBinding<{ InfoRenderer?: InfoRendererType }>> & UIMetaReadContextType>(
+export const WidgetBooleanRead = (
     {
         storeKeys, schema, value,
         showValidity, valid, errors,
@@ -25,7 +23,7 @@ export const WidgetBooleanRead = <P extends WidgetProps<MuiWidgetsBinding<{ Info
         widgets,
         IconYes, IconNo,
         readDense,
-    }: P & WithScalarValue & WidgetBooleanReadProps,
+    }: WidgetProps & UIMetaReadContextType & WithScalarValue & WidgetBooleanReadProps,
 ): React.ReactElement => {
     const hideTitle = Boolean(schema.getIn(['view', 'hideTitle']))
     const InfoRenderer = widgets?.InfoRenderer

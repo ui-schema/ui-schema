@@ -1,5 +1,5 @@
 import { UIStoreType, UIStoreUpdaterFn } from '@ui-schema/react/UIStore'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { SomeSchema } from '@ui-schema/system/CommonTypings'
 import { StoreKeys } from '@ui-schema/system/ValueStore'
 
 export interface UIStoreUpdaterData {
@@ -19,7 +19,7 @@ export type UIStoreActionScoped<D extends UIStoreUpdaterData = UIStoreUpdaterDat
 export interface UIStoreAction<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> {
     storeKeys: StoreKeys
     type: string
-    schema?: UISchemaMap
+    schema?: SomeSchema
     required?: boolean
     /**
      * @deprecated use normal react flow and effects instead
@@ -34,7 +34,7 @@ export interface UIStoreActionListItemAddWithValue<S extends UIStoreType = UISto
 
 export interface UIStoreActionListItemAddWithSchema<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> extends UIStoreAction<S, D> {
     type: 'list-item-add'
-    schema: UISchemaMap
+    schema: SomeSchema
 }
 
 export type UIStoreActionListItemAdd<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> =

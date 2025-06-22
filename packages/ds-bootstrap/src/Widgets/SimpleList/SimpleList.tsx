@@ -34,7 +34,7 @@ const SimpleList = extractValue(memo((
                     key={i}
                     className={classFormGroup.join(' ')}
                 >
-                    <WidgetEngine<WidgetProps & { className?: string }>
+                    <WidgetEngine<{ className?: string }>
                         className={classFormControl.join(' ')}
                         showValidity={showValidity}
                         storeKeys={storeKeys.push(i)}

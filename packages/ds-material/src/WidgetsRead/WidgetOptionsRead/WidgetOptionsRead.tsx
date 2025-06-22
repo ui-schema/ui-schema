@@ -6,12 +6,11 @@ import { StoreKeys, extractValue, WithScalarValue } from '@ui-schema/react/UISto
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
 import Box from '@mui/material/Box'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
 import Typography from '@mui/material/Typography'
 import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
-import { InfoRendererProps, OptionValueSchema, useOptionsFromSchema } from '@ui-schema/ds-material'
+import { OptionValueSchema, useOptionsFromSchema } from '@ui-schema/ds-material/Utils/useOptionsFromSchema'
 
 const checkActive = (list: List<any>, name: string | undefined | number) => list && list.contains && typeof list.contains(name) !== 'undefined' ? list.contains(name) : false
 
@@ -75,14 +74,14 @@ export interface WidgetOptionsReadProps {
     style?: React.CSSProperties
 }
 
-export const WidgetOptionsRead: React.ComponentType<WidgetProps<MuiWidgetsBinding & { InfoRenderer?: React.ComponentType<InfoRendererProps> }> & UIMetaReadContextType & WithScalarValue & WidgetOptionsReadProps> = (
+export const WidgetOptionsRead: React.ComponentType<WidgetProps & UIMetaReadContextType & WithScalarValue & WidgetOptionsReadProps> = (
     {
         schema, storeKeys, showValidity,
         valid, errors, value,
         widgets,
         onClick, style,
         readDense,
-    }
+    },
 ) => {
     const hideTitle = schema.getIn(['view', 'hideTitle']) as boolean | undefined
     const InfoRenderer = widgets?.InfoRenderer

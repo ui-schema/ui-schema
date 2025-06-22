@@ -1,5 +1,4 @@
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { WidgetProps } from '@ui-schema/react/Widgets'
 import { StoreKeys } from '@ui-schema/react/UIStore'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
@@ -9,6 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import IcInfo from '@mui/icons-material/Info'
+import { ValidationErrorsImmutable } from '@ui-schema/system/ValidatorOutput'
 import React from 'react'
 import { List } from 'immutable'
 
@@ -22,7 +22,7 @@ export interface InfoRendererProps {
     storeKeys: StoreKeys
 
     valid?: boolean
-    errors?: WidgetProps['errors']
+    errors?: ValidationErrorsImmutable
 }
 
 export type InfoRendererType<P extends InfoRendererProps = InfoRendererProps> = React.ComponentType<P>
@@ -31,7 +31,7 @@ export const InfoRenderer: React.ComponentType<InfoRendererProps> = (
     {
         schema, variant, openAs,
         align, dense,
-    }
+    },
 ) => {
     const [open, setOpen] = React.useState(false)
     const content = <>
