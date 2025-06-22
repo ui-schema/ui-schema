@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
-import { ValidateFn } from '@ui-schema/system/Validate'
+import { ValidateFn } from '@ui-schema/ui-schema/Validate'
 import { useMemo } from 'react'
 import { List, Map, OrderedMap } from 'immutable'
 import { handleIfElseThen } from '@ui-schema/react-json-schema/ConditionalHandler'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { mergeSchema } from '@ui-schema/system/Utils/mergeSchema'
+import { mergeSchema } from '@ui-schema/ui-schema/Utils/mergeSchema'
 
 /**
  * @deprecated use new validatorPlugin instead

@@ -5,7 +5,7 @@
 See [localization text-transform](/docs/localization#text-transform), this is the base function for beautifying.
 
 ```js
-import {beautify} from '@ui-schema/system/Utils/beautify'
+import {beautify} from '@ui-schema/ui-schema/Utils/beautify'
 ```
 
 ## createMap
@@ -13,7 +13,7 @@ import {beautify} from '@ui-schema/system/Utils/beautify'
 Deep change directly from `{}` or `[]` to `Map`/`List` structures:
 
 ```js
-import {createMap} from '@ui-schema/system/createMap'
+import {createMap} from '@ui-schema/ui-schema/createMap'
 
 let dataMap = createMap({});
 ```
@@ -23,7 +23,7 @@ let dataMap = createMap({});
 Deep change directly from `{}` or `[]` to `OrderedMap`/`List` structures:
 
 ```js
-import {createOrderedMap} from '@ui-schema/system/createMap'
+import {createOrderedMap} from '@ui-schema/ui-schema/createMap'
 
 let dataMap = createOrderedMap({});
 ```

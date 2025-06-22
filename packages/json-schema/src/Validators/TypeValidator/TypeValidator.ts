@@ -1,5 +1,5 @@
 import { List, Map, Record } from 'immutable'
-import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
+import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 
 export const ERROR_WRONG_TYPE = 'wrong-type'
 

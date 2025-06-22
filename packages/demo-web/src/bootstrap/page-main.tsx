@@ -19,7 +19,7 @@ import clsx from 'clsx'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
-import { createOrderedMap } from '@ui-schema/system/createMap'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { isInvalid } from '@ui-schema/react/ValidityReporter'
 

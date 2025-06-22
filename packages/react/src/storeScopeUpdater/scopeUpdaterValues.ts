@@ -3,7 +3,7 @@ import {
 } from '@ui-schema/react/UIStore'
 import { List, Map, OrderedMap, Record } from 'immutable'
 import { UIStoreAction } from '@ui-schema/react/UIStoreActions'
-import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
+import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import { updateStoreScope } from '@ui-schema/react/storeScopeUpdater'
 import { storeBuildScopeTree } from '@ui-schema/react/storeBuildScopeTree'
 

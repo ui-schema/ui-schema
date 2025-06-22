@@ -279,21 +279,25 @@ Todos:
           ... *(if that is wanted/needed at all)*
         - `json-schema` currently includes some UI-Schema typings
             - but especially the new validator system
-                - which is a widgetPlugin + an implementation of the SchemaPlugin + ValidatorOutput defined in `system`
-            - but also includes the typing and actual logic for schema resource building
-        - `react-json-schema` includes the resource-provider, while `react` contains all other
-            - but a lot of non-deprecated parts will be moved to `json-schema`
-            - actually, only the `SchemaResourceProvider`, `DefaultHandler` and `ObjectRenderer` would remain, which can't be in `react` due to relying on `json-schema` for resource building,
+                - which is an implementation of the SchemaPlugin + ValidatorOutput defined in `/ui-schema`
+            - ~~but also includes the typing and actual logic for schema resource building~~ moved to system
+        - `react-json-schema` ~~includes the resource-provider, while `react` contains all other~~
+            - (done) but a lot of non-deprecated parts will be moved to `json-schema`
+            - outdated, as resource is now in system and react, but not relying on json-schema
+              ~~actually, only the `SchemaResourceProvider`, `DefaultHandler` and `ObjectRenderer` would remain, which can't be in `react` due to relying on `json-schema` for resource building,
               and intended to be expanded with better included loaders and caching, special for react.
-              and as react specific, of course can't be moved into `json-schema`, where the rest of the resource stuff is
-            - I think, schema plugin adapter will move into here, thus more meaning and need for the `react-json-schema` package again
-            - but `DefaultHandler` may move into validator, or will be removed when moving to central validator
-        - `system` includes a lot of json-schema specific types and logic, just not actual validator or branching,
+              and as react specific, of course can't be moved into `json-schema`, where the rest of the resource stuff is~~
+            - (done) I think, schema plugin adapter will move into here, thus more meaning and need for the `react-json-schema` package again
+            - but `DefaultHandler` may be replaced with new validator, once supporting effects or alike, or will be removed when moving to central validator
+        - ~~`system`~~ `/ui-schema` includes a lot of json-schema specific types and logic, just not actual validator or branching,
           but also a lot of widget rendering specific types and utils, including the translator
+            - renamed again to `ui-schema`, as it contains a lot of ui-schema specific handling
+            - move schema resource builder and typings here, but this adds the `json-pointer` dep. to system, which is ok for the moment
         - `react` depends on too much and includes too many parts, better in other packages
-            - but also `SchemaPluginsAdapter` is included in `react`, which depends on the resource system, and thus atm. maked `react` depending on `react-json-schema` and `json-schema`,
-              while it should only need the `system` and provide the stuff which `react-json-schema` could rely on.
+            - ~~but also `SchemaPluginsAdapter` is included in `react`, which depends on the resource system, and thus atm. maked `react` depending on `react-json-schema` and `json-schema`,
+              while it should only need the `/ui-schema` and provide the stuff which `react-json-schema` could rely on.~~
             - `VirtualWidgetRenderer` depends on `ObjectRenderer` from `react-json-schema`, while currently rather hard coded, should be moved to `react-json-schema` completely
+            - (done) move schema resource provider here
 
 ## Todo WidgetProps
 
@@ -305,10 +309,14 @@ Todos:
         - maybe rely on `value` and `errors` to know if valid, needs `errors` and not `valid` to check if `TYPE_ERROR` of any other error
         - **TBD:** include for `typeof v === 'string'` or only for complex types?
     - **Reason:** it can't be typed what "value type" a widget allows, as it could receive any (invalid) value (from e.g. remote states).
-- make `WidgetProps` independent of schema typing or move out of `/system`, as that package should not depend on package `/json-schema`
+- [x] make `WidgetProps` independent of schema typing or move out of `/ui-schema`, as that package should not depend on package `/json-schema`
 - optimize/separate WidgetProps/UIMetaContext
     - UIMeta will be injected, thus will reach widget, but typing can't be ensured reliable with current recursive widgets in context itself,
       especially for some parts, like `widgets` and `t`, it would be better if users use the hooks themself
+    - atm. still needed for `widgetPlugins` to work and many components depend on `widgets` as prop, but especially for "components" - not for widgets,
+      and widgets are especially used by virtual-/widget-renderer, these may be replaced with using only the new matcher, yet that still needs a replacement
+      for overriding the next widgets, like done in table; maybe via a new `container` prop, which would replace the overwriting with a general way to know "where mounted",
+      which would imho. be `TableCell` for the current table stuff, while `Table` is the container of `TableRow` and `TableRow` is the container of `TableCell`
 
 new widget engine functions:
 
@@ -357,14 +365,15 @@ new widget engine functions:
 - [x] finalize `package.json` generation for strict esm with ESM and CJS support
 - [ ] finalize strict-ESM compatible imports/exports, especially in packages
     - [x] switch to strict-ESM for all core packages, with `Node16`
-    - [ ] switch to strict-ESM for ds-bootstrap
-        - [ ] remove `clsx`, as not `Node16` compatible
+    - [X] switch to strict-ESM for ds-bootstrap
     - [x] switch to cjs/esm build with `.cjs` file extension instead of separate folders
-- [ ] control and optimize circular package dependencies, remove all which where added as workarounds (see noted in bindings about separating packages and `VirtualWidgetRenderer`)
-- [ ] improve file/folder depth for easier usage of `no-restricted-imports` - or isn't that needed once `exports` are used?
+- [ ] control and optimize circular package dependencies, remove all which where added as workarounds
+    - [x] core packages cleaned up; ds are already clean
+    - [ ] solve `/react` depends on `ObjectRenderer`/`VirtualWidgetRenderer` (see noted in bindings about separating packages and `VirtualWidgetRenderer`)
+- [X] switched to strict esm, should no longer be needed ~~improve file/folder depth for easier usage of `no-restricted-imports` - or isn't that needed once `exports` are used?~~
     - the eslint plugin shouldn't be needed, yet a consistent depth makes the `tsconfig` for local dev easier,
       see the `ui-schema/react-codemirror` repo for a working example;
-        - validated: it isn't necessary, as instead the consistent `/index.ts` export is used, as this is consistent for `.tsx`/`.ts` components
+        - validated: it isn't necessary, as instead `/index.ts` files are consistently used with wildcard exports `"import": "./*/index.js"`, which is consistent for `.tsx`/`.ts` components
     - the `exports` with sub-path patterns may expose too much, where the eslint plugin makes sense again,
       depending on if the `*` maps directly to `*/index.js` or more generically to anything
 - [ ] normalize `tsconfig` `moduleResolution`
@@ -407,8 +416,8 @@ new widget engine functions:
 - [ ] add new schema plugin: injectSplitSchema, deprecate widget plugin: InjectSplitSchema
 - [x] deprecate `SchemaPlugin` methods `.should` and `.noHandle`; always use `.handle`
 - [ ] enable TS rules `@typescript-eslint/no-empty-object-type, "@typescript-eslint/no-wrapper-object-types, @typescript-eslint/no-unsafe-function-type, @typescript-eslint/consistent-indexed-object-style, @typescript-eslint/consistent-type-definitions, @typescript-eslint/no-empty-function`
-- [ ] move non-react schemaPlugins into json-schema packages: `InheritKeywords`, `requiredPlugin`, `sortPlugin`, `validatorPlugin`
-- [ ] deprecate `useUIConfig`/`UIConfigProvider` and related parts, or remove directly if typing compat. isn't easy
+- [x] move non-react schemaPlugins into json-schema packages: `InheritKeywords`, `requiredPlugin`, `sortPlugin`, `validatorPlugin`
+- [ ] deprecate `useUIConfig`/`UIConfigProvider` and related parts, or remove directly if migrating typings isn't easy
 - [ ] deprecate `onErrors`, once the validation system is available to get any child errors in another component without much performance impact
 - [ ] optimize unnecessary rendering of empty parts, e.g. `ObjectRenderer` only checks for `properties` existence, but not if empty (maybe add the `getFields` utils already?)
 - [ ] remove or just deprecate the `injectWidgetEngine`, `applyWidgetEngine` HOCs? type migration with be headache
@@ -438,7 +447,6 @@ new widget engine functions:
 - schemaLocation vs valueLocation for schema resolving, reduction, store connection and happy path selection and rendering
 - deprecate `parentSchema`, `schema` in props of widget engine, but not in widget payload
 - better support for skipping `hidden` and empty schema while rendering, to not produce empty grid slots; depends also on central schema validation and building of applied UI happy paths, with some central index for stuff like hidden etc.
-
 
 ---
 

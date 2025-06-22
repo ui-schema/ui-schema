@@ -9,7 +9,7 @@ import { extractValue, WithScalarValue, WithValue } from '@ui-schema/react/UISto
 // import { WidgetCodeSelectable } from '@ui-schema/material-code/WidgetCodeSelectable'
 import { CustomCodeMirror } from './CustomCodeMirror'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { StoreKeyType } from '@ui-schema/system/ValueStore'
+import { StoreKeyType } from '@ui-schema/ui-schema/ValueStore'
 import { memo } from '@ui-schema/react/Utils/memo'
 
 export const CustomWidgetCode: React.ComponentType<WidgetProps & WithScalarValue> = (props) => {

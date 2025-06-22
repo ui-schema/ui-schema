@@ -1,6 +1,6 @@
 import { toPointer } from '@ui-schema/json-pointer'
 import { ValidatorParams, ValidatorState, ValidatorStateNested, ValidatorHandler, getValueType } from '@ui-schema/json-schema/Validator'
-import { ValidatorOutput } from '@ui-schema/system/ValidatorOutput'
+import { ValidatorOutput } from '@ui-schema/ui-schema/ValidatorOutput'
 import { List } from 'immutable'
 import { ERROR_WRONG_TYPE } from '@ui-schema/json-schema/Validators/TypeValidator'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'

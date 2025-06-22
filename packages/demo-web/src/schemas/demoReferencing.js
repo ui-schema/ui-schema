@@ -1,4 +1,4 @@
-import {createOrderedMap} from '@ui-schema/system/createMap';
+import {createOrderedMap} from '@ui-schema/ui-schema/createMap';
 
 export const schemaDemoReferencing = createOrderedMap({
     '$id': 'http://localhost:4200/api/demo-referencing.json',

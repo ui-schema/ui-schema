@@ -1,5 +1,5 @@
 import { expect, describe, test } from '@jest/globals'
-import { createMap } from '@ui-schema/system/createMap'
+import { createMap } from '@ui-schema/ui-schema/createMap'
 import { getGridClasses } from '@ui-schema/ds-bootstrap/Grid'
 
 describe('getGridClasses', () => {

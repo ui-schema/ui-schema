@@ -1,7 +1,7 @@
 import { expect, describe, test } from '@jest/globals'
 import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
 import { Map } from 'immutable'
-import { createMap } from '@ui-schema/system/createMap'
+import { createMap } from '@ui-schema/ui-schema/createMap'
 
 describe('schemaRulesToNative', () => {
     test.each([

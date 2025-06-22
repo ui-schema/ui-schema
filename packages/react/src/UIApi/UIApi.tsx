@@ -1,7 +1,7 @@
-import { SomeSchema } from '@ui-schema/system/CommonTypings'
+import { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import React from 'react'
 import { Map } from 'immutable'
-import { createOrderedMap } from '@ui-schema/system/createMap'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 
 export const PROGRESS_NONE = false
 export const PROGRESS_START = 'start'

@@ -1,6 +1,6 @@
 import { expect, describe, test } from '@jest/globals'
 import { Map } from 'immutable'
-import { createOrderedMap } from '@ui-schema/system/createMap'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { handleIfElseThen } from '@ui-schema/react-json-schema/ConditionalHandler'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { newMockStateNested } from '../../../json-schema/tests/mocks/ValidatorState.mock.js'

@@ -1,5 +1,5 @@
-import { StoreKeys } from '@ui-schema/system/ValueStore'
-import { WidgetPayload } from '@ui-schema/system/Widget'
+import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
+import { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import React from 'react'
 import clsx from 'clsx'
 import makeStyles from '@mui/styles/makeStyles'

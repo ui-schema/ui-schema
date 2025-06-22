@@ -1,5 +1,5 @@
 import { ValidatorParams, ValidatorState, ValidatorHandler } from '@ui-schema/json-schema/Validator'
-import { ValidatorOutput } from '@ui-schema/system/ValidatorOutput'
+import { ValidatorOutput } from '@ui-schema/ui-schema/ValidatorOutput'
 import { List } from 'immutable'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 

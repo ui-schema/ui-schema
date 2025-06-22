@@ -1,5 +1,5 @@
 import { JsonSchemaPureAny, UISchema } from '@ui-schema/json-schema/Definitions'
-import { NestedOrderedMap } from '@ui-schema/system/createMap'
+import { NestedOrderedMap } from '@ui-schema/ui-schema/createMap'
 //import { FromJS } from 'immutable'
 
 /**

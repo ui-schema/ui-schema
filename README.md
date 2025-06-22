@@ -120,13 +120,13 @@ import React from 'react';
 
 // Import Schema UI Provider and Render engine
 import {isInvalid} from '@ui-schema/react/ValidityReporter';
-import {createOrderedMap} from '@ui-schema/system/createMap';
+import {createOrderedMap} from '@ui-schema/ui-schema/createMap';
 import {UIStoreProvider, createStore} from '@ui-schema/react/UIStore';
 import {storeUpdater} from '@ui-schema/react/storeUpdater';
 import {UIMetaProvider, useUIMeta} from '@ui-schema/react/UIMeta';
 import {injectWidgetEngine} from '@ui-schema/react/applyWidgetEngine';
 // basic in-schema translator / `t` keyword support
-import {translateRelative} from '@ui-schema/system/TranslatorRelative';
+import {translateRelative} from '@ui-schema/ui-schema/TranslatorRelative';
 // Get the widgets binding for your design-system
 import {defineBinding} from '@ui-schema/ds-material/defineBinding';
 import {getStandardPlugins} from '@ui-schema/ds-material/getStandardPlugins';

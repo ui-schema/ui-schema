@@ -4,7 +4,7 @@
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'
-import { createOrderedMap } from '@ui-schema/system/createMap'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { List } from 'immutable'
 import { StringRendererCell } from './TextFieldCell.js'
 import { MockSchemaMetaProvider } from '../../../tests/MockSchemaProvider.mock.js'

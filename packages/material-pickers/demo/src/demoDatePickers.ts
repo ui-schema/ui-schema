@@ -1,4 +1,4 @@
-import { createOrderedMap } from '@ui-schema/system/createMap'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { OrderedMap } from 'immutable'
 
 const schemaDatePickers: OrderedMap<any, any> = createOrderedMap({

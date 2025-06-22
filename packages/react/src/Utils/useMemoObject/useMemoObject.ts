@@ -1,5 +1,5 @@
-import { isEqual } from '@ui-schema/system/Utils/isEqual'
-import { isEqualObjectContents } from '@ui-schema/system/Utils/isEqualObjectContents'
+import { isEqual } from '@ui-schema/ui-schema/Utils/isEqual'
+import { isEqualObjectContents } from '@ui-schema/ui-schema/Utils/isEqualObjectContents'
 import { useRef } from 'react'
 
 /**

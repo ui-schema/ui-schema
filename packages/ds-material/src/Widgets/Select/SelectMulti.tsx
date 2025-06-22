@@ -15,7 +15,7 @@ import { memo } from '@ui-schema/react/Utils/memo'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { sortScalarList } from '@ui-schema/system/Utils/sortScalarList'
+import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 
 export interface SelectMultiProps {

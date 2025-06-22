@@ -1,4 +1,4 @@
-import { ValidationErrorsImmutable } from '@ui-schema/system/ValidatorOutput'
+import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
 import React from 'react'
 import { OrderedMap } from 'immutable'
 import { useUID } from 'react-uid'

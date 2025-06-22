@@ -40,7 +40,7 @@
         "@mui/icons-material": "^5.1",
         "@emotion/react": "^11.9.0",
         "@emotion/styled": "^11.8.1",
-        "@ui-schema/system": "~0.5.0-alpha.0",
+        "@ui-schema/ui-schema": "~0.5.0-alpha.0",
         "@ui-schema/react": "~0.5.0-alpha.0",
         "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",
@@ -55,7 +55,7 @@
     "peerDependencies": {
         "@mui/material": "^5.1",
         "@mui/icons-material": "^5.1",
-        "@ui-schema/system": "~0.5.0-alpha.0",
+        "@ui-schema/ui-schema": "~0.5.0-alpha.0",
         "@ui-schema/react": "~0.5.0-alpha.0",
         "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",

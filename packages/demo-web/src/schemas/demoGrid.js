@@ -1,4 +1,4 @@
-import {createOrderedMap} from "@ui-schema/system/createMap";
+import {createOrderedMap} from "@ui-schema/ui-schema/createMap";
 
 const schemaGrid = columns => createOrderedMap({
     type: 'object',

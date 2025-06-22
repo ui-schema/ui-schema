@@ -6,8 +6,8 @@ import '@testing-library/jest-dom/jest-globals'
 import { List, Map } from 'immutable'
 import { UIStore, createStore, StoreKeys, UIStoreType } from '@ui-schema/react/UIStore'
 import { doExtractValues } from '@ui-schema/react/UIStore'
-import { isEqualObject } from '@ui-schema/system/Utils/isEqualObject'
-import { fromJSOrdered } from '@ui-schema/system/createMap'
+import { isEqualObject } from '@ui-schema/ui-schema/Utils/isEqualObject'
+import { fromJSOrdered } from '@ui-schema/ui-schema/createMap'
 
 describe('UIStoreProvider', () => {
     test.each([

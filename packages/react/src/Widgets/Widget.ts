@@ -2,7 +2,7 @@ import * as React from 'react'
 import { WithOnChange, WithScalarValue } from '@ui-schema/react/UIStore'
 import { GroupRendererProps } from '@ui-schema/react/Widgets'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
-import { WidgetPayload } from '@ui-schema/system/Widget'
+import { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 
 /**
  * dev note: here `P` must not use NoInfer, or it breaks the WidgetEngine `WidgetEngineOverrideProps`

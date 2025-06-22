@@ -1,10 +1,10 @@
-import { SomeSchema } from '@ui-schema/system/CommonTypings'
+import { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import React from 'react'
 import { WidgetPluginType } from '@ui-schema/react/WidgetEngine'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { StoreKeys, WithValue } from '@ui-schema/react/UIStore'
 import { List } from 'immutable'
-import { WidgetsBindingRoot } from '@ui-schema/system/WidgetsBinding'
+import { WidgetsBindingRoot } from '@ui-schema/ui-schema/WidgetsBinding'
 
 export interface NoWidgetProps {
     storeKeys: StoreKeys

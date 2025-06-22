@@ -24,7 +24,7 @@
         "@emotion/styled": "^11.8.1",
         "@mui/lab": "^5.0.0-alpha.45",
         "@udecode/slate-plugins": "~0.75.2",
-        "@ui-schema/system": "~0.5.0-alpha.0",
+        "@ui-schema/ui-schema": "~0.5.0-alpha.0",
         "@ui-schema/react": "~0.5.0-alpha.0",
         "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",

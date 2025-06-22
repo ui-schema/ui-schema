@@ -1,4 +1,4 @@
-import { ValidatorOutput } from '@ui-schema/system/ValidatorOutput'
+import { ValidatorOutput } from '@ui-schema/ui-schema/ValidatorOutput'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
 

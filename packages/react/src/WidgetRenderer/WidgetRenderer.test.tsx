@@ -6,7 +6,7 @@ import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'
 import { WidgetRenderer, WidgetRendererProps } from './WidgetRenderer.js'
-import { createOrderedMap } from '@ui-schema/system/createMap'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { VirtualArrayRenderer, VirtualWidgetRendererProps, VirtualWidgetsMapping } from '@ui-schema/react/VirtualWidgetRenderer'
 import { NoWidgetProps, WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
@@ -14,7 +14,7 @@ import { List } from 'immutable'
 import { ExtractStorePlugin } from '@ui-schema/react/ExtractStorePlugin'
 import { createStore, onChangeHandler, UIStoreProvider, WithScalarValue } from '@ui-schema/react/UIStore'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
-import { translateRelative } from '@ui-schema/system/TranslatorRelative'
+import { translateRelative } from '@ui-schema/ui-schema/TranslatorRelative'
 
 export const virtualWidgets: VirtualWidgetsMapping & { default_with_id: VirtualWidgetsMapping['default'] } = {
     'default': () => <span>virtual-default-renderer</span>,

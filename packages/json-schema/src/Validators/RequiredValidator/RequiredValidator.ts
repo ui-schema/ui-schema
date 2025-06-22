@@ -1,7 +1,7 @@
-import { SchemaPlugin } from '@ui-schema/system/SchemaPlugin'
-import { WidgetPayload } from '@ui-schema/system/Widget'
+import { SchemaPlugin } from '@ui-schema/ui-schema/SchemaPlugin'
+import { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import { List, Map } from 'immutable'
-import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/system/schemaTypeIs'
+import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
 
 export const ERROR_NOT_SET = 'required-not-set'
 

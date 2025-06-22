@@ -1,6 +1,6 @@
 import { JsonSchemaKeywordType } from '@ui-schema/json-schema/Definitions'
-import { ValidateFn, ValidateParams, ValidateStateNested, ValidateStateOutput, ValidationDetails, ValidationResult } from '@ui-schema/system/Validate'
-import { ValidatorOutput } from '@ui-schema/system/ValidatorOutput'
+import { ValidateFn, ValidateParams, ValidateStateNested, ValidateStateOutput, ValidationDetails, ValidationResult } from '@ui-schema/ui-schema/Validate'
+import { ValidatorOutput } from '@ui-schema/ui-schema/ValidatorOutput'
 import { getValueType } from './getValueType.js'
 
 export type ValidatorStateNested =

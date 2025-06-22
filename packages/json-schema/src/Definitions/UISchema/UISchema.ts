@@ -1,4 +1,4 @@
-import { tt } from '@ui-schema/system/Utils/beautify'
+import { tt } from '@ui-schema/ui-schema/Utils/beautify'
 
 type UISchemaKeywordTranslations =
     {

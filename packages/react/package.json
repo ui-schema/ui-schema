@@ -1,7 +1,7 @@
 {
     "name": "@ui-schema/react",
     "version": "0.5.0-alpha.0",
-    "description": "JSON-Schema based UI and Form Generator for React, for any Design-System",
+    "description": "Schema-driven UI generator for React, based on JSON Schema. Build headless, dynamic forms and interfaces.",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
     "license": "MIT",
@@ -50,7 +50,7 @@
     },
     "sideEffects": false,
     "devDependencies": {
-        "@ui-schema/system": "~0.5.0-alpha.0",
+        "@ui-schema/ui-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "immutable": "^5.0.0",
         "@types/react": "^18.0",
@@ -58,7 +58,7 @@
         "react-dom": "^18.0"
     },
     "peerDependencies": {
-        "@ui-schema/system": "~0.5.0-alpha.0",
+        "@ui-schema/ui-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "immutable": "^4.0.0 || ^5.0.0",
         "react": "^18.0",

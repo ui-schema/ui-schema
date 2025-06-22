@@ -1,10 +1,10 @@
-import { StoreKeys } from '@ui-schema/system/ValueStore'
-import { WidgetFieldSchemaProps } from '@ui-schema/system/Widget'
+import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
+import { WidgetFieldSchemaProps } from '@ui-schema/ui-schema/Widget'
 import React from 'react'
 import { List } from 'immutable'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
-import { schemaTypeToDistinct } from '@ui-schema/system/schemaTypeToDistinct'
+import { schemaTypeToDistinct } from '@ui-schema/ui-schema/schemaTypeToDistinct'
 import { LegacyWidgets, WidgetProps } from '@ui-schema/react/Widgets'
 import { WithValue } from '@ui-schema/react/UIStore'
 

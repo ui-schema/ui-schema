@@ -1,4 +1,4 @@
-import { ValidationErrorsImmutable } from '@ui-schema/system/ValidatorOutput'
+import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
 import React from 'react'
 import { getDisplayName } from '@ui-schema/react/Utils/memo'
 

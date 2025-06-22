@@ -194,7 +194,7 @@ Since `0.4.0-alpha.1`, this function also applies [`memo`](/docs/core-utils#memo
 ```typescript jsx
 import React from 'react'
 import Grid from '@mui/material/Grid'
-import { createOrderedMap } from '@ui-schema/system/createMap'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { StringRenderer } from '@ui-schema/ds-material/Widgets/TextField'
 import { applyWidgetEngine } from '@ui-schema/ui-schema/applyWidgetEngine'

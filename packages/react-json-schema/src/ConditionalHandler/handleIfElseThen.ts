@@ -1,5 +1,5 @@
 import { makeParams, ValidatorStateNested } from '@ui-schema/json-schema/Validator'
-import { mergeSchema } from '@ui-schema/system/Utils/mergeSchema'
+import { mergeSchema } from '@ui-schema/ui-schema/Utils/mergeSchema'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 /**

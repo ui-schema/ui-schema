@@ -1,7 +1,7 @@
 import type { ComponentType } from 'react'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { WidgetPluginPayload } from '@ui-schema/system/WidgetPlugin'
-import { onErrorHandler } from '@ui-schema/system/ValidatorOutput'
+import { WidgetPluginPayload } from '@ui-schema/ui-schema/WidgetPlugin'
+import { onErrorHandler } from '@ui-schema/ui-schema/ValidatorOutput'
 import { WithValue } from '@ui-schema/react/UIStore'
 
 export type WidgetPluginProps = WidgetPluginPayload & WidgetProps & WithValue & {

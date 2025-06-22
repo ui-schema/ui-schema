@@ -17,7 +17,7 @@ import {
     NumberRendererRead, StringRendererRead, TextRendererRead,
     WidgetBooleanRead, WidgetChipsRead, WidgetOptionsRead,
 } from '@ui-schema/ds-material/WidgetsRead'
-import { createOrdered, createOrderedMap } from '@ui-schema/system/createMap'
+import { createOrdered, createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { UIMetaProvider, useUIMeta } from '@ui-schema/react/UIMeta'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'

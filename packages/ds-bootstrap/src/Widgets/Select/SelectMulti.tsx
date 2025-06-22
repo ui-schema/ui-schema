@@ -1,11 +1,11 @@
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import React from 'react'
-import { beautifyKey, tt } from '@ui-schema/system/Utils/beautify'
+import { beautifyKey, tt } from '@ui-schema/ui-schema/Utils/beautify'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { extractValue, WithValue } from '@ui-schema/react/UIStore'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { sortScalarList } from '@ui-schema/system/Utils/sortScalarList'
+import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
 import { List, Map, isImmutable } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
 

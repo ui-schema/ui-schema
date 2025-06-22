@@ -1,4 +1,4 @@
-import { toPointer } from '@ui-schema/json-pointer'
+import { toPointer } from '@ui-schema/json-pointer/toPointer'
 import { ValidatorHandler, getValueType } from '@ui-schema/json-schema/Validator'
 import {
     ERROR_CONST_MISMATCH,
@@ -15,7 +15,7 @@ import {
     validateEmail,
     validateMinMaxString, validateMinMaxNumber, validateMinMaxArray, validateMinMaxObject,
 } from '@ui-schema/json-schema/Validators'
-import { ValidatorOutput } from '@ui-schema/system/ValidatorOutput'
+import { ValidatorOutput } from '@ui-schema/ui-schema/ValidatorOutput'
 import { List, Map, Record } from 'immutable'
 
 export const standardValidators: ValidatorHandler[] = [

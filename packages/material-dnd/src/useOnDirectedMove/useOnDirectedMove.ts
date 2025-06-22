@@ -3,7 +3,7 @@ import { List, Map } from 'immutable'
 import { addNestKey, DndIntents, moveDraggedValue, onIntentFactory, onMovedType, PathKey } from '@ui-schema/kit-dnd'
 import { onChangeHandler } from '@ui-schema/react/UIStore'
 import { DragDropSpec } from '@ui-schema/material-dnd/DragDropSpec'
-import { StoreKeys } from '@ui-schema/system/ValueStore'
+import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 
 export const useOnDirectedMove = <C extends HTMLElement = HTMLElement, S extends DragDropSpec = DragDropSpec>(
     onIntent: onIntentFactory<C, S>,

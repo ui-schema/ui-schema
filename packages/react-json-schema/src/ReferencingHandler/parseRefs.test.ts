@@ -2,7 +2,7 @@
 import { test, expect, describe } from '@jest/globals'
 import { List, OrderedMap, Map } from 'immutable'
 import { parseRefs, ParseRefsContent } from './parseRefs.js'
-import { createMap, createOrderedMap } from '@ui-schema/system/createMap'
+import { createMap, createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 const mockDefinitions = createOrderedMap({

@@ -7,7 +7,7 @@ import {
 import { dataConditional, dataConditionalAllOf, schemaConditional, schemaConditionalAllOf } from './demoConditional'
 import { dataDependencies, dataDependenciesBooleans, schemaDependencies, schemaDependenciesBooleans } from './demoDependencies'
 import { schemaLists } from './demoLists'
-import { createOrderedMap } from '@ui-schema/system/createMap'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { demoTable } from '../content/docs/widgets/TableDemo'
 import { List } from 'immutable'
 

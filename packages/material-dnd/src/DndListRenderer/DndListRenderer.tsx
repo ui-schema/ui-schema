@@ -3,7 +3,7 @@ import { List, Map, OrderedMap } from 'immutable'
 import { DraggableRendererProps } from '@ui-schema/kit-dnd/useDraggable'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { extractValue, WithOnChange, WithValue } from '@ui-schema/react/UIStore'
-import { StoreKeys } from '@ui-schema/system/ValueStore'
+import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { memo } from '@ui-schema/react/Utils/memo'
 

@@ -112,7 +112,7 @@ Creates the initial store out of passed in values.
 
 ```js
 import {createStore} from '@ui-schema/ui-schema/UIStore'
-import {createOrderedMap} from '@ui-schema/system/createMap'
+import {createOrderedMap} from '@ui-schema/ui-schema/createMap'
 
 const [data, setStore] = React.useState(() => createStore(createOrderedMap(initialData)));
 ```

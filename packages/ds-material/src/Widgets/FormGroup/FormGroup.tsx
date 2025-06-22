@@ -1,4 +1,4 @@
-import { widgetMatcher } from '@ui-schema/system/widgetMatcher'
+import { widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
 import React from 'react'
 import FormLabel from '@mui/material/FormLabel'
 import FormControl from '@mui/material/FormControl'

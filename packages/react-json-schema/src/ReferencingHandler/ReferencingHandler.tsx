@@ -7,7 +7,7 @@ import {
 } from '@ui-schema/react-json-schema/SchemaRootProvider'
 import { useSchemaRef } from '@ui-schema/react-json-schema/ReferencingHandler'
 import { NextPluginRendererMemo, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
-import { getSchemaId } from '@ui-schema/system/Utils/getSchema'
+import { getSchemaId } from '@ui-schema/ui-schema/Utils/getSchema'
 
 /**
  * @deprecated use new validatorPlugin with SchemaResource instead

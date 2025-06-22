@@ -1,6 +1,6 @@
 import { CircularProgress } from '@mui/material'
-import { getBaseUrl } from '@ui-schema/json-schema/SchemaResource'
-import { createOrdered } from '@ui-schema/system/createMap'
+import { getBaseUrl } from '@ui-schema/ui-schema/SchemaResource'
+import { createOrdered } from '@ui-schema/ui-schema/createMap'
 import React, { useEffect, useMemo, useState } from 'react'
 import { isInvalid } from '@ui-schema/react/ValidityReporter'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
@@ -11,8 +11,8 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
-import { SchemaResourceProvider } from '@ui-schema/react-json-schema/SchemaResourceProvider'
-import { resourceFromSchema, SchemaResource } from '@ui-schema/json-schema/SchemaResource'
+import { SchemaResourceProvider } from '@ui-schema/react/SchemaResourceProvider'
+import { resourceFromSchema, SchemaResource } from '@ui-schema/ui-schema/SchemaResource'
 
 const loadSchema = (url: string, versions?: string[]) => {
     console.log('Demo loadSchema (url, optional versions)', url, versions)

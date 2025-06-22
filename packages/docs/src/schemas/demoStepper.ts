@@ -1,4 +1,4 @@
-import { createOrderedMap } from '@ui-schema/system/createMap'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { demoStepperSchema } from '../content/docs/widgets/StepperDemo'
 
 const schemaStepper = createOrderedMap(demoStepperSchema)

@@ -1,4 +1,4 @@
-import { isEqual } from '@ui-schema/system/Utils/isEqual'
+import { isEqual } from '@ui-schema/ui-schema/Utils/isEqual'
 import { fromJS, isImmutable, List, Map, Record } from 'immutable'
 
 export const ERROR_CONST_MISMATCH = 'const-mismatch'

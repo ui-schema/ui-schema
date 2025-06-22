@@ -1,7 +1,7 @@
 import { Map } from 'immutable'
 import { FC } from 'react'
 import { useUIMeta } from '@ui-schema/react/UIMeta'
-import { translation, Translator, TranslatorContext } from '@ui-schema/system/Translator'
+import { translation, Translator, TranslatorContext } from '@ui-schema/ui-schema/Translator'
 
 export interface TranslateProps {
     text: string

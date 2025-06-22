@@ -1,9 +1,9 @@
 import { scopeUpdaterInternals, scopeUpdaterValidity, scopeUpdaterValues } from '@ui-schema/react/storeScopeUpdater'
 import { addNestKey, UIStoreType } from '@ui-schema/react/UIStore'
 import { UIStoreAction, UIStoreActions, UIStoreUpdaterData } from '@ui-schema/react/UIStoreActions'
-import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
-import { moveItem } from '@ui-schema/system/Utils'
-import { StoreKeys } from '@ui-schema/system/ValueStore'
+import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
+import { moveItem } from '@ui-schema/ui-schema/Utils'
+import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { List, Map, OrderedMap } from 'immutable'
 
 function getScopedData<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData>(

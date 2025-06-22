@@ -1,7 +1,7 @@
 import React from 'react'
 import { getNextPlugin, NextPluginRendererMemo, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { useUIStore } from '@ui-schema/react/UIStore'
-import { mergeSchema } from '@ui-schema/system/Utils/mergeSchema'
+import { mergeSchema } from '@ui-schema/ui-schema/Utils/mergeSchema'
 import { List, Map } from 'immutable'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 

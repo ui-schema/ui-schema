@@ -1,6 +1,6 @@
 import { List, Map, Record } from 'immutable'
 import { addNestKey, UIStoreInternalsType, UIStoreType } from '@ui-schema/react/UIStore'
-import { StoreKeys } from '@ui-schema/system/ValueStore'
+import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 
 export type ExtractValueOverwriteProps = { showValidity?: boolean }
 

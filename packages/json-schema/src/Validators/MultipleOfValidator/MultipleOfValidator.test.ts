@@ -2,7 +2,7 @@ import { test, expect, describe } from '@jest/globals'
 import {
     validateMultipleOf,
 } from '@ui-schema/json-schema/Validators/MultipleOfValidator'
-import { createOrderedMap } from '@ui-schema/system/createMap'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { UISchema, JsonSchemaNumber } from '@ui-schema/json-schema/Definitions'
 
 describe('validateMultipleOf', () => {

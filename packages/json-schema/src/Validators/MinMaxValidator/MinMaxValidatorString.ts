@@ -1,5 +1,5 @@
 import { ERROR_MAX_LENGTH, ERROR_MIN_LENGTH } from './MinMaxValidatorErrorCodes.js'
-import { ValidatorOutput } from '@ui-schema/system/ValidatorOutput'
+import { ValidatorOutput } from '@ui-schema/ui-schema/ValidatorOutput'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 export const validateMinMaxString = (

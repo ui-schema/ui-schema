@@ -47,11 +47,11 @@ const transformerForEsmCjs = () => {
 
 const packages = {
     uiSchemaSystem: {
-        name: '@ui-schema/system',
+        name: '@ui-schema/ui-schema',
         doServeWatch: false,
         esmOnly: false,
-        root: path.resolve(__dirname, 'packages', 'system'),
-        entry: path.resolve(__dirname, 'packages', 'system/src/'),
+        root: path.resolve(__dirname, 'packages', 'ui-schema'),
+        entry: path.resolve(__dirname, 'packages', 'ui-schema/src/'),
         babelTargets: babelTargetsEsmCjs,
     },
     uiSchemaReact: {
@@ -339,7 +339,7 @@ packer({
                 '-e', 'js,ts,tsx,jsx,json,scss',
                 '-w', path.resolve(__dirname, 'packages', 'react') + '/**/*.ts',
                 '-w', path.resolve(__dirname, 'packages', 'json-pointer') + '/**/*.ts',
-                '-w', path.resolve(__dirname, 'packages', 'system') + '/**/*.ts',
+                '-w', path.resolve(__dirname, 'packages', 'ui-schema') + '/**/*.ts',
             ],
             nodeExperimental: {
                 jsonModules: true,
@@ -379,7 +379,7 @@ packer({
             if (execs.indexOf('doBuildBabel') !== -1) {
                 const nodePackages = [
                     // [path, esmOnly]
-                    // [path.resolve(__dirname, 'packages', 'system'), true],
+                    // [path.resolve(__dirname, 'packages', 'ui-schema'), true],
                     // [path.resolve(__dirname, 'packages', 'json-pointer'), true],
                     // [path.resolve(__dirname, 'packages', 'json-schema'), true],
                     ...Object.values(packages).map(pkg => {

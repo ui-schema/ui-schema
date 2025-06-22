@@ -5,7 +5,7 @@ import {
     validateObject,
     ERROR_ADDITIONAL_PROPERTIES, objectValidator,
 } from '@ui-schema/json-schema/Validators/ObjectValidator'
-import { createMap, createOrderedMap } from '@ui-schema/system/createMap'
+import { createMap, createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { newMockState } from '../../../tests/mocks/ValidatorState.mock.js'
 
 

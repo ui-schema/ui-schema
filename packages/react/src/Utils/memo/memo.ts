@@ -1,6 +1,6 @@
 import React from 'react'
 import { getDisplayName } from './getDisplayName.js'
-import { isEqualObject } from '@ui-schema/system/Utils/isEqualObject'
+import { isEqualObject } from '@ui-schema/ui-schema/Utils/isEqualObject'
 
 /**
  * Immutable compatible `React.memo` comparison

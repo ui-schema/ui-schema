@@ -1,10 +1,10 @@
 import { List } from 'immutable'
 import React from 'react'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
-import { ErrorNoWidgetMatching, widgetMatcher } from '@ui-schema/system/widgetMatcher'
+import { ErrorNoWidgetMatching, widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
 import { WidgetEngineOverrideProps, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { WithValue } from '@ui-schema/react/UIStore'
-import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
+import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import { VirtualWidgetRenderer } from '@ui-schema/react/VirtualWidgetRenderer'
 import { WidgetType } from '@ui-schema/react/Widgets'
 
@@ -47,6 +47,7 @@ export const WidgetRenderer = <P extends {} = {}, WT extends WidgetType<{}> = Wi
         Widget =
             isVirtual ?
                 // todo: only use widgets binding? move into future `widgetMatcher`?
+                //       ... would be needed to remove the dependency of react with react-/json-schema ...
                 widgets.VirtualRenderer as unknown as WT || VirtualWidgetRenderer as WT :
                 WidgetOverride ?
                     // todo: fix/change 0.5.0 WidgetOverride typing

@@ -1,7 +1,7 @@
-import { SomeSchema } from '@ui-schema/system/CommonTypings'
+import { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import React from 'react'
 import { Map, List } from 'immutable'
-import { beautifyKey } from '@ui-schema/system/Utils/beautify'
+import { beautifyKey } from '@ui-schema/ui-schema/Utils/beautify'
 import { Translate } from '@ui-schema/react/Translate'
 import { StoreKeys } from '@ui-schema/react/UIStore'
 

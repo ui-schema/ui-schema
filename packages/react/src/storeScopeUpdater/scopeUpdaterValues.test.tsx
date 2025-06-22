@@ -3,7 +3,7 @@
  */
 import { test, expect, describe } from '@jest/globals'
 import '@testing-library/jest-dom/jest-globals'
-import { StoreKeyType } from '@ui-schema/system/ValueStore'
+import { StoreKeyType } from '@ui-schema/ui-schema/ValueStore'
 import { List, Map, OrderedMap } from 'immutable'
 import { UIStore, StoreKeys, UIStoreType, createEmptyStore } from '@ui-schema/react/UIStore'
 import { scopeUpdaterValues } from './scopeUpdaterValues.js'

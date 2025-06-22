@@ -1,6 +1,6 @@
 import { jest, describe, test, expect } from '@jest/globals'
 import { makeParams } from '@ui-schema/json-schema/Validator'
-import { createOrderedMap } from '@ui-schema/system/createMap'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { validateOneOf } from '@ui-schema/json-schema/Validators/OneOfValidator'
 import { newMockState } from '../../../tests/mocks/ValidatorState.mock.js'
 

@@ -2,7 +2,7 @@
 import { List, Map } from 'immutable'
 import { getSchemaRefPlugin, resolveRef, SchemaRefPending } from '@ui-schema/react-json-schema/ReferencingHandler'
 import { isRootSchema, SchemaRootContext } from '@ui-schema/react-json-schema/SchemaRootProvider'
-import { getSchemaId } from '@ui-schema/system/Utils/getSchema'
+import { getSchemaId } from '@ui-schema/ui-schema/Utils/getSchema'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 /**

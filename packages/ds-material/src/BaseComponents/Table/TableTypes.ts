@@ -1,6 +1,6 @@
 import { onChangeHandler, StoreKeys, WithValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { Translator } from '@ui-schema/system/Translator'
+import { Translator } from '@ui-schema/ui-schema/Translator'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import React from 'react'
 import { List, OrderedMap } from 'immutable'

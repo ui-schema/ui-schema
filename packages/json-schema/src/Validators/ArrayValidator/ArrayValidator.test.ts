@@ -10,7 +10,7 @@ import {
     validateArrayContent,
     validateAdditionalItems, ERROR_DUPLICATE_ITEMS,
 } from './ArrayValidator.js'
-import { createOrderedMap } from '@ui-schema/system/createMap'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 
 describe('validateArrayContent', () => {
     test.each<[any, unknown, boolean | undefined, number, ValidatorParams | undefined]>([

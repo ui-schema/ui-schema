@@ -62,11 +62,11 @@
             "@ui-schema/material-dnd/*": [
                 "material-dnd/src/*/index.ts"
             ],
-            "@ui-schema/system": [
-                "system/src/index.ts"
+            "@ui-schema/ui-schema": [
+                "ui-schema/src/index.ts"
             ],
-            "@ui-schema/system/*": [
-                "system/src/*/index.ts"
+            "@ui-schema/ui-schema/*": [
+                "ui-schema/src/*/index.ts"
             ],
             "@ui-schema/react": [
                 "react/src/index.ts"

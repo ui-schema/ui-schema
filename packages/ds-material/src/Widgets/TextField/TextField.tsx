@@ -8,7 +8,7 @@ import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
 import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
-import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/system/schemaTypeIs'
+import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
 import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 

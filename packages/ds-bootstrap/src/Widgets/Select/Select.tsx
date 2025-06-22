@@ -1,7 +1,7 @@
 import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import React from 'react'
-import { beautifyKey } from '@ui-schema/system/Utils/beautify'
+import { beautifyKey } from '@ui-schema/ui-schema/Utils/beautify'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { List, Map } from 'immutable'

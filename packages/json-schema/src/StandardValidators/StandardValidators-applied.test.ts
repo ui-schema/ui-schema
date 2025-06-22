@@ -1,6 +1,6 @@
 import { expect, describe, test } from '@jest/globals'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
-import { createOrdered } from '@ui-schema/system/createMap'
+import { createOrdered } from '@ui-schema/ui-schema/createMap'
 import { Validator } from '@ui-schema/json-schema/Validator'
 import fs from 'node:fs/promises'
 import path from 'node:path'

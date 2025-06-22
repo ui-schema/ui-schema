@@ -4,7 +4,7 @@
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'
-import { createOrderedMap } from '@ui-schema/system/createMap'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { StringRendererDebounced } from './TextFieldDebounced.js'
 import { List } from 'immutable'
 import { MockSchemaMetaProvider } from '../../../tests/MockSchemaProvider.mock.js'

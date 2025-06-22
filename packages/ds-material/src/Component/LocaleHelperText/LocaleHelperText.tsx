@@ -1,8 +1,8 @@
-import { ValidationErrorsImmutable } from '@ui-schema/system/ValidatorOutput'
+import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
 import React from 'react'
 import FormHelperText from '@mui/material/FormHelperText'
 import { Translate } from '@ui-schema/react/Translate'
-import { showValidity } from '@ui-schema/system/CommonTypings'
+import { showValidity } from '@ui-schema/ui-schema/CommonTypings'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 export interface ValidityHelperTextProps {

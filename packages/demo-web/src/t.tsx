@@ -1,7 +1,7 @@
 import React from 'react'
 import AccountBox from '@mui/icons-material/AccountBox'
-import { createMap } from '@ui-schema/system/createMap'
-import { makeTranslator, translation, TranslatorDictionary } from '@ui-schema/system/Translator'
+import { createMap } from '@ui-schema/ui-schema/createMap'
+import { makeTranslator, translation, TranslatorDictionary } from '@ui-schema/ui-schema/Translator'
 import * as en from '@ui-schema/dictionary/en'
 import * as de from '@ui-schema/dictionary/de'
 

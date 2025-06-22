@@ -1,9 +1,9 @@
 import { Record, Map, List, OrderedMap, RecordOf } from 'immutable'
-import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/system/schemaTypeIs'
+import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
 import { doExtractValues } from '@ui-schema/react/UIStore'
 import { UIStoreActions, UIStoreUpdaterData } from '@ui-schema/react/UIStoreActions'
-import { StoreKeys as ValueStoreKeys } from '@ui-schema/system/ValueStore'
-import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
+import { StoreKeys as ValueStoreKeys } from '@ui-schema/ui-schema/ValueStore'
+import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 
 export type Values<V> = List<V> | string | number | boolean | Map<string, V> | OrderedMap<string, V>
 export type ValuesJS = any[] | string | number | boolean | Object

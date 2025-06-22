@@ -274,7 +274,7 @@ import { injectWidgetEngine } from '@ui-schema/ui-schema/applyWidgetEngine';
 // for validity checking
 import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter';
 // for deep immutables
-import { createOrderedMap } from '@ui-schema/system/createMap';
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap';
 // for \`t\` keyword support / basic in-schema translation
 import { relTranslator } from '@ui-schema/ui-schema/Translate/relT';
 

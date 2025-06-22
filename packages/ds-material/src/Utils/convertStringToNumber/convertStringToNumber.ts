@@ -1,5 +1,5 @@
-import { SchemaTypesType } from '@ui-schema/system/CommonTypings'
-import { schemaTypeIsNumeric } from '@ui-schema/system/schemaTypeIs'
+import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
+import { schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
 
 export type convertStringToNumberType = (value: string | number | any, type: SchemaTypesType) => any | string | number
 

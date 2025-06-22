@@ -37,7 +37,7 @@
         "remark-rehype": "^10.1.0",
         "remark-gfm": "^3.0.1",
         "clsx": "^2.0.0",
-        "@ui-schema/system": "~0.5.0-alpha.0",
+        "@ui-schema/ui-schema": "~0.5.0-alpha.0",
         "@ui-schema/react": "~0.5.0-alpha.0",
         "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",

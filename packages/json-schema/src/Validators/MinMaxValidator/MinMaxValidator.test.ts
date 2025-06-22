@@ -1,8 +1,8 @@
 import { test, expect, describe } from '@jest/globals'
-import { ValidatorOutput } from '@ui-schema/system/ValidatorOutput'
+import { ValidatorOutput } from '@ui-schema/ui-schema/ValidatorOutput'
 import { List } from 'immutable'
 import { validateMinMaxArray, validateMinMaxNumber, validateMinMaxObject, validateMinMaxString } from '@ui-schema/json-schema/Validators/MinMaxValidator'
-import { createMap, createOrderedMap } from '@ui-schema/system/createMap'
+import { createMap, createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { UISchema, JsonSchemaPure } from '@ui-schema/json-schema/Definitions'
 
 describe('validateMinMax', () => {

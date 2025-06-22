@@ -1,4 +1,4 @@
-import {createOrderedMap} from "@ui-schema/system/createMap";
+import {createOrderedMap} from "@ui-schema/ui-schema/createMap";
 
 const schemaWCombining = createOrderedMap({
     type: "object",

@@ -1,6 +1,6 @@
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { ValidationErrorsImmutable } from '@ui-schema/system/ValidatorOutput'
-import { StoreKeys } from '@ui-schema/system/ValueStore'
+import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
+import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import React from 'react'
 import makeStyles from '@mui/styles/makeStyles'
 import { ClassNameMap } from '@mui/styles/withStyles'

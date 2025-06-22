@@ -48,7 +48,7 @@
         "@emotion/styled": "^11.8.1",
         "@mui/x-date-pickers": "^5.0.0-alpha.0",
         "@ui-schema/ds-material": "~0.5.0-alpha.0",
-        "@ui-schema/system": "~0.5.0-alpha.0",
+        "@ui-schema/ui-schema": "~0.5.0-alpha.0",
         "@ui-schema/react": "~0.5.0-alpha.0",
         "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",
