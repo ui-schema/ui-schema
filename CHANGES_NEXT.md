@@ -152,6 +152,8 @@ Todo:
 - rewrite the "Combination with Conditional" demo and explain why that is caused and how to prevent non-existing values from causing validations to not behave like expected with what is rendered
     - the point with e.g. `required` only validates if a value is `object`, not if the value is a `string` (and all other switch to `typeof` checks instead of `type` keyword),
       and as UI is rendered for the whole schema and not only for existing values, the validation must correctly cascade or `default` values must be set
+      - "in json-schema by default a schema won't be evaluated further if the value does not exist, while for UI we want to render nested fields and lazily initialize the tree up to that field, even if no value exists at all"
+    - **TBD:** doesn't that also mean, that `if` shouldn't be evaluated at all if there isn't a value to evaluated?! which would restore similar behaviour like <=0.4.x validators, while being spec. compliant
 
 > See also [CHANGES_NEXT_VALIDATE_TODOS.md](./CHANGES_NEXT_VALIDATE_TODOS.md) for more specific validator todos.
 
@@ -162,6 +164,10 @@ Todo:
 - rewrite `resolvePointer` to work with native-JS and immutable, manually iterating all keys
     - casts the key to `number` if the current value is `array | List`, only proceeds if is not-NaN (e.g. to prevent access to `arr['length']`)
 - added `walkPointer` for easier resolving of json-pointer against any data structures, incl. trees
+- fixed too forgiving pointer handling, prev. trimmed `#` from e.g. `#address` and resolved `address` as property,
+  now only slices `#/` and `/` from the pointer and treats just `#` as root, while using any other pointer as is,
+  this behaviour may change to a fatal error for incorrect formats in a next version;
+  and `#address` must be resolved using the schema resource system, as it is an `$anchor` and not pointer
 
 ### React
 
@@ -453,3 +459,5 @@ new widget engine functions:
 experiment on how to do a `<Next/>` prop in `widgetPlugin` without `currentPluginIndex`:
 
 idea: remapping `widgetPlugins` in `UIMetaContext` and wrapping each in a HOC which takes care of it and so on, thus the `Next` can be made available with `useUIMeta`, instead of the actual `widgetsPlugins`, which can help even further with widget binding types and the recursive dependencies in generics.
+
+would this be too much overhead, "just" for better DX and coding patterns? ... actually, it wouldn't be much more than atm., where many use and rely on `NextPluginRenderer`, which is similar in overhead to what a central wrapping would add.
