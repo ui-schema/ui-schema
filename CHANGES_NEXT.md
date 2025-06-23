@@ -251,6 +251,7 @@ Todos:
 #### WidgetsBinding
 
 - `pluginStack` to `widgetPlugins`
+    - **important:** `widgetPlugins` must not be rendered manually, only with the `Next` prop., the `widgetPlugins` must not be modified in widgets/plugins, the `Next` is materialized in the `UIMetaProvider` from the `widgetPlugins` passed to it.
 - ~~`pluginSimpleStack` to `schemaPlugins`~~
 - added `ObjectRenderer` as `type.object` / no longer as hard coded default
 - added `NoWidget` as `NoWidget` / no longer as hard coded default
@@ -427,6 +428,7 @@ new widget engine functions:
     - their introduction, prevented users to focus on how to use `WidgetEngine` (or then `PluginStack`)
     - remove would allow removing all of the `StackWrapper` code in `WidgetEngine`
 - [ ] check `mergeSchema` changes and adjust to respect new applicable schema merging strategy
+- [ ] rethink the decision to make `WidgetRenderer` a `widgetPlugin`, now with `Next` even more complex "what if no widgetPlugins exist" and problems with stateless/context-less rendering, where now the materialized `Next` is needed, even when just the "render final widget" would be enough. so moving `WidgetRenderer` again to a binding property should make these easier again, and the new `Next` would even allow injecting the `WidgetRenderer` from `UIMetaProvider` as the final (or first) `Next` itself.
 
 ## Todo 0.6.x
 

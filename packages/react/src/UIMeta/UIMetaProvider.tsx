@@ -18,7 +18,7 @@ export interface UIMetaContext<W = WidgetsBindingFactory> {
 const UIMetaContextObj = createContext<UIMetaContextInternal<any, any>>({
     t: text => text,
     // todo: this obj. is awful as solution for no-widgets/no-context rendering, even for tests
-    // @ts-expect-error initialize with some dummy Next, for contextless tests;
+    // @ts-expect-error initialize with some dummy Next, for context-less tests;
     Next: {Component: ({WidgetOverride, ...props}) => WidgetOverride ? <WidgetOverride {...props}/> : null},
 })
 

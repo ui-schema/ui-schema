@@ -11,7 +11,11 @@ import {
     validateMultipleOf,
     validatePattern,
     arrayValidator,
-    objectValidator, oneOfValidator, validateTypes, ERROR_NOT_SET, ERROR_EMAIL_INVALID,
+    objectValidator,
+    oneOfValidator,
+    validateTypes,
+    ERROR_NOT_SET,
+    ERROR_EMAIL_INVALID,
     validateEmail,
     validateMinMaxString, validateMinMaxNumber, validateMinMaxArray, validateMinMaxObject,
 } from '@ui-schema/json-schema/Validators'
@@ -77,8 +81,12 @@ export const standardValidators: ValidatorHandler[] = [
     {
         // `not` validator
         validate: (schema, value, params) => {
-            if (!schema.has('not')) return
             const not = schema.get('not')
+            if (
+                !not ||
+                // never resolving conditionals if the value is undefined
+                typeof value === 'undefined'
+            ) return
             // supporting `not` for any validations
             // https://json-schema.org/understanding-json-schema/reference/combining.html#not
             const tmpNot = params.validate(
@@ -295,7 +303,17 @@ export const standardValidators: ValidatorHandler[] = [
         id: 'if',
         validate: (schema, value, params) => {
             const keyIf = schema.get('if')
-            if (!keyIf) return undefined
+            if (
+                !keyIf ||
+                // never resolving conditionals if the value is undefined,
+                // json-schema standard doesn't traverse branches not needed to be evaluated,
+                // while ui-schema needs to reduce all possible reachable branches directly,
+                // leading to the case where ui-schema encounters conditionals which normally won't have any effect
+                // todo: improve behaviour with explicitly tracking existence and how to traverse deeper,
+                //       - validation doesn't need to go in level where no value exists
+                //       - ui-generation needs to look a head for reducing branches to a happy path
+                typeof value === 'undefined'
+            ) return undefined
             const keyThen = schema.get('then')
             const keyElse = schema.get('else')
 
@@ -305,6 +323,7 @@ export const standardValidators: ValidatorHandler[] = [
                 {
                     ...params,
                     keywordLocation: [...params.keywordLocation, 'if'],
+                    // todo: this comment and behaviour is outdated
                     instanceLocation: [],// reset to empty instanceLocation, to force strict undefined checks against `type`
                     instanceKey: undefined,
                     parentSchema: undefined,

@@ -1,5 +1,6 @@
 import { MuiComponentsBinding } from '@ui-schema/ds-material'
-import { handleSchema } from '@ui-schema/react-json-schema/ResourceBranchHandler'
+import { makeParams } from '@ui-schema/json-schema/Validator'
+import { mergeSchemas } from '@ui-schema/json-schema/ValidatorPlugin'
 import { useSchemaResource } from '@ui-schema/react/SchemaResourceProvider'
 import React from 'react'
 import { useUID } from 'react-uid'
@@ -51,12 +52,15 @@ export const TableRendererBase: React.ComponentType<Omit<WidgetProps<WidgetsBind
     //       resolve any $ref in `items`, yet don't handle any conditionals - as that only works with the items value
     const itemsSchema =
         validate && resource ?
-            handleSchema(
-                validate,
-                resource,
-                schema.get('items') as UISchemaMap,
+            mergeSchemas(schema.get('items'), ...validate?.(
+                schema.get('items'),
                 undefined,
-            ) as UISchemaMap :
+                {
+                    ...makeParams(),
+                    recursive: false,
+                    resource: resource,
+                },
+            )?.applied || []) :
             schema.get('items') as UISchemaMap
     const readOnly = schema.get('readOnly') as boolean
 

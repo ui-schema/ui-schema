@@ -2,7 +2,7 @@ import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { SchemaResource } from '@ui-schema/ui-schema/SchemaResource'
 import { createOrdered } from '@ui-schema/ui-schema/createMap'
 import { SchemaPlugin } from '@ui-schema/ui-schema/SchemaPlugin'
-import { Map, List } from 'immutable'
+import { Map, List, OrderedMap } from 'immutable'
 
 /**
  * @todo rewrite as a more reliable schema-reduction, only a first PoC scribble
@@ -17,8 +17,8 @@ import { Map, List } from 'immutable'
  *          - same for `pattern` and all other validation keywords here no intersection can be produced
  */
 export function mergeSchemas(baseSchema: any, ...appliedSchemas: any[]) {
-    let schema = baseSchema as Map<string, any>
-    appliedSchemas.forEach(appliedSchema => {
+    let schema = baseSchema as Map<string, any> || OrderedMap()
+    appliedSchemas.forEach((appliedSchema) => {
         // if (schema.has('required') && appliedSchema.has('required')) {
         //     schema = schema.set('required', schema.get('required').push(...appliedSchema.get('required')))
         // }
@@ -40,8 +40,15 @@ export function mergeSchemas(baseSchema: any, ...appliedSchemas: any[]) {
             appliedSchema = appliedSchema.delete('properties')
         }
 
+        // todo: make ref available after merging
+        // removing $ref for the moment, to prevent unstable merging and recursive resolving
+        if (appliedSchema.has('$ref')) {
+            appliedSchema = appliedSchema.delete('$ref')
+        }
+
         schema = schema.mergeDeep(appliedSchema)
     })
+
     return schema
 }
 

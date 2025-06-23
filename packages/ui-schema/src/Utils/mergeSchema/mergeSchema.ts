@@ -47,6 +47,8 @@ export const mergeSchema = <TSchema extends Map<unknown, unknown>>(
         aSchema = aSchema.set('enum', mergeListUnique(aSchema.get('enum'), bSchema.get('enum')))
     }
 
+    // todo: oneOf will never resolve when merging like this, as exactly one must match,
+    //       I think an alternative will be adding both `oneOf` into a single `allOf`: `{"allOf": [oneOfA, oneOfB]}`
     if (bSchema.get('oneOf')) {
         const aOneOf = aSchema.get('oneOf')
         const bOneOf = bSchema.get('oneOf')
