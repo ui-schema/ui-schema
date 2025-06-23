@@ -26,7 +26,7 @@ import { List } from 'immutable'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { createEmptyStore, onChangeHandler, UIStoreProvider, UIStoreType, WithScalarValue } from '@ui-schema/react/UIStore'
+import { createEmptyStore, onChangeHandler, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
@@ -49,7 +49,7 @@ const getExtraProps = (schema: UISchemaMap, type: 'date' | 'date-time' | 'time')
     return data
 }
 
-const CustomDatePicker: React.FC<WidgetProps & WithScalarValue> = (props) => {
+const CustomDatePicker: React.FC<WidgetProps> = (props) => {
     const {schema} = props
     const Picker =
         schema.getIn(['date', 'variant']) === 'dialog' ?
@@ -70,7 +70,7 @@ const CustomDatePicker: React.FC<WidgetProps & WithScalarValue> = (props) => {
     />
 }
 
-const CustomDateTimePicker: React.FC<WidgetProps & WithScalarValue> = (props) => {
+const CustomDateTimePicker: React.FC<WidgetProps> = (props) => {
     const {schema} = props
     const Picker =
         schema.getIn(['date', 'variant']) === 'dialog' ?
@@ -91,7 +91,7 @@ const CustomDateTimePicker: React.FC<WidgetProps & WithScalarValue> = (props) =>
     />
 }
 
-const CustomTimePicker: React.FC<WidgetProps & WithScalarValue> = (props) => {
+const CustomTimePicker: React.FC<WidgetProps> = (props) => {
     const {schema} = props
     const Picker =
         schema.getIn(['date', 'variant']) === 'dialog' ?

@@ -5,7 +5,7 @@ import { MuiWidgetsBindingTypes } from '@ui-schema/ds-material/BindingType'
 import { GroupRenderer } from '@ui-schema/ds-material/Grid'
 import { ErrorFallback } from '@ui-schema/ds-material/ErrorFallback'
 import { WidgetsBindingComponents } from '@ui-schema/react/Widgets'
-import { VirtualWidgetRenderer } from '@ui-schema/react/VirtualWidgetRenderer'
+import { VirtualWidgetRenderer } from '@ui-schema/react-json-schema/VirtualWidgetRenderer'
 import { NoWidget } from '@ui-schema/react/NoWidget'
 
 export const typeWidgets = {

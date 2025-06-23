@@ -5,7 +5,7 @@ import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
-import { VirtualWidgetRenderer, VirtualWidgetsMapping } from '@ui-schema/react/VirtualWidgetRenderer'
+import { VirtualWidgetRenderer, VirtualWidgetsMapping } from '@ui-schema/react-json-schema/VirtualWidgetRenderer'
 import { List, OrderedMap } from 'immutable'
 
 const virtualWidgets: VirtualWidgetsMapping = {

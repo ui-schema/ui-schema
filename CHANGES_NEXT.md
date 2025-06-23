@@ -56,6 +56,8 @@ List of renamed functions, components etc., most are also moved to other package
 - new universal JS utils, system, SchemaPlugins, not coupled to react dependencies
 - removed function `checkNativeValidity` in `schemaToNative`
 - moved react-specific widget matching logic from `widgetMatcher` to `WidgetRenderer`
+- `schemaTypeToDisctint`, used for matching widgets by `type` keyword, now supports multiple types
+    - for `["string", "number"]` will now sort it and try to access a widget with the ID `number+string`, see default `widgetMatcher` source for entrypoint on general matching algo.
 
 Todo:
 
@@ -239,6 +241,11 @@ Todos:
         - only resolves the current schemas $ref, no longer materialized all nested $ref
         - combines conditional and composition with $ref resolving
         - *integrated into `ValidatorPlugin`, using the `applied` schemas that are emitted by `validate`*
+- experiment on how to do a `<Next/>` prop in `widgetPlugin` without `currentPluginIndex`:
+
+  idea: remapping `widgetPlugins` in `UIMetaContext` and wrapping each in a HOC which takes care of it and so on, thus the `Next` can be made available with `useUIMeta`, instead of the actual `widgetsPlugins`, which can help even further with widget binding types and the recursive dependencies in generics.
+
+  would this be too much overhead, "just" for better DX and coding patterns? ... actually, it wouldn't be much more than atm., where many use and rely on `NextPluginRenderer`, which is similar in overhead to what a central wrapping would add.
 
 #### WidgetsBinding
 
@@ -252,65 +259,48 @@ Todos:
 - now optional in components binding: `.GroupRenderer`
 - now optional in widgets binding: `.types` and `.custom`
 - rename from `widgets` to `binding`, added nested `binding.widgets` and moved `.types` and `.custom` there (for the moment)
-
-## Todo Bindings
-
-To make bindings more portable, some things should be refactored, removed and newly added.
-
-New philosophy ideas:
-
-- only functions needed independently are added in the binding
-- widgets must be able to define optional and required "components", which must be able to be validated when adding the widgets binding
-- `components` should not be confused with `widgetPlugins`
-- if a `widgetPlugin` is relying on something in the binding, it is preferred to initialize it with it and not add it to the binding
-    - except if that dependency is required inside widgets directly, outside the plugin stacks
-- the widgets binding may be split up, for fewer circular dependencies in typings:
-    - hooks: like validator
-    - components: like NoWidget
-    - `types` and `custom` could be combined and normalized as `widgets`
-    - independent not usable "plugin stacks", these must be added to their widgetPlugin directly
-        - with the exception to `widgetPlugins` itself (only widgetPlugins can currently execute any further logic)
-            - otherwise `WidgetEngine` must be added to the widgets binding itself, which makes component-based execution very hard, the easiest is that this central component uses the respective contexts to fetch the bindings and start the execution of any further schema-layer
-
-Todos:
-
-- [x] add a `.validate` to bindings, for universal reuse of any WidgetPlugin and the ValidatorPlugin, handle validation and allow custom validation rules which are used everywhere
+- add a `.validate` to bindings, for universal reuse of any WidgetPlugin and the ValidatorPlugin, handle validation and allow custom validation rules which are used everywhere
     - **todo:** check all current `widgetPlugins` which rely on validation, to normalize and interop with the new validator plugin and callback
     - **TBD:** added to `UIMetaContext` instead of `widgets` binding, rethink `widgetsBinding` more as a part of `uiMetaBinding`
-- [x] refactor `widgetMatcher` to `widgets` binding, currently internal of `WidgetRenderer`
+- refactor `widgetMatcher` to `widgets` binding, currently internal of `WidgetRenderer`
     - must be usable outside of plugins to match and render widgets in e.g. mui `FormGroup` and other "wrapper widgets", these don't add another layer but should reuse existing bindings, e.g. only relying on `ObjectRenderer`
     - ~~to be able to add complex default for `object` and `array`, there should be a hint which tells if "inside an wrapper-widget" and thus the "native" widget should be returned~~ (see container idea)
     - (skipped for now) for better code-split, maybe remove the "widgets" completely from the context bindings, only supply through direct plugin binding, as only "types" and "components" should be used directly anyway, all other widgets should only be injected through matcher and never directly used from other widgets; for Table would require to add something like "prefer variant" or "in scope Table/Form"
 - make `WidgetRenderer` and `VirtualRenderer` better integrated, remove all hard coded wiring to `VirtualWidgetRenderer`
-    - this may relate to cleaning up unwanted package deps., as `ObjectRenderer` is in `react-json-schema`, the `react` package depends on that and `json-schema`,
-      which shouldn't be the case (except through system typings),
-        - this can only be solved partially in the 0.5.x version, as it needs more separation between json-schema and non-json-schema related "schema",
-          ... *(if that is wanted/needed at all)*
-        - `json-schema` currently includes some UI-Schema typings
-            - but especially the new validator system
-                - which is an implementation of the SchemaPlugin + ValidatorOutput defined in `/ui-schema`
-            - ~~but also includes the typing and actual logic for schema resource building~~ moved to system
-        - `react-json-schema` ~~includes the resource-provider, while `react` contains all other~~
-            - (done) but a lot of non-deprecated parts will be moved to `json-schema`
-            - outdated, as resource is now in system and react, but not relying on json-schema
-              ~~actually, only the `SchemaResourceProvider`, `DefaultHandler` and `ObjectRenderer` would remain, which can't be in `react` due to relying on `json-schema` for resource building,
-              and intended to be expanded with better included loaders and caching, special for react.
-              and as react specific, of course can't be moved into `json-schema`, where the rest of the resource stuff is~~
-            - (done) I think, schema plugin adapter will move into here, thus more meaning and need for the `react-json-schema` package again
-            - but `DefaultHandler` may be replaced with new validator, once supporting effects or alike, or will be removed when moving to central validator
-        - ~~`system`~~ `/ui-schema` includes a lot of json-schema specific types and logic, just not actual validator or branching,
-          but also a lot of widget rendering specific types and utils, including the translator
-            - renamed again to `ui-schema`, as it contains a lot of ui-schema specific handling
-            - move schema resource builder and typings here, but this adds the `json-pointer` dep. to system, which is ok for the moment
-        - `react` depends on too much and includes too many parts, better in other packages
-            - ~~but also `SchemaPluginsAdapter` is included in `react`, which depends on the resource system, and thus atm. maked `react` depending on `react-json-schema` and `json-schema`,
-              while it should only need the `/ui-schema` and provide the stuff which `react-json-schema` could rely on.~~
-            - `VirtualWidgetRenderer` depends on `ObjectRenderer` from `react-json-schema`, while currently rather hard coded, should be moved to `react-json-schema` completely
-            - (done) move schema resource provider here
+    - moved `VirtualWidgetRenderer` into `react-json-schema` and removed defaults in `react` core
+    - `isVirtual` is still handled by the `WidgetRenderer` plugin, now if no `VirtualRenderer` is specified in binding, it won't render anything
+    - some notes, not fully cleaned up:
+    - ```
+        - this may relate to cleaning up unwanted package deps., as `ObjectRenderer` is in `react-json-schema`, the `react` package depends on that and `json-schema`,
+          which shouldn't be the case (except through system typings),
+            - this can only be solved partially in the 0.5.x version, as it needs more separation between json-schema and non-json-schema related "schema",
+              ... *(if that is wanted/needed at all)*
+            - `json-schema` currently includes some UI-Schema typings
+                - but especially the new validator system
+                    - which is an implementation of the SchemaPlugin + ValidatorOutput defined in `/ui-schema`
+                - ~~but also includes the typing and actual logic for schema resource building~~ moved to system
+            - `react-json-schema` ~~includes the resource-provider, while `react` contains all other~~
+                - (done) but a lot of non-deprecated parts will be moved to `json-schema`
+                - outdated, as resource is now in system and react, but not relying on json-schema
+                  ~~actually, only the `SchemaResourceProvider`, `DefaultHandler` and `ObjectRenderer` would remain, which can't be in `react` due to relying on `json-schema` for resource building,
+                  and intended to be expanded with better included loaders and caching, special for react.
+                  and as react specific, of course can't be moved into `json-schema`, where the rest of the resource stuff is~~
+                - (done) I think, schema plugin adapter will move into here, thus more meaning and need for the `react-json-schema` package again
+                - but `DefaultHandler` may be replaced with new validator, once supporting effects or alike, or will be removed when moving to central validator
+            - ~~`system`~~ `/ui-schema` includes a lot of json-schema specific types and logic, just not actual validator or branching,
+              but also a lot of widget rendering specific types and utils, including the translator
+                - renamed again to `ui-schema`, as it contains a lot of ui-schema specific handling
+                - move schema resource builder and typings here, but this adds the `json-pointer` dep. to system, which is ok for the moment
+            - `react` depends on too much and includes too many parts, better in other packages
+                - ~~but also `SchemaPluginsAdapter` is included in `react`, which depends on the resource system, and thus atm. maked `react` depending on `react-json-schema` and `json-schema`,
+                  while it should only need the `/ui-schema` and provide the stuff which `react-json-schema` could rely on.~~
+                - `VirtualWidgetRenderer` depends on `ObjectRenderer` from `react-json-schema`, while currently rather hard coded, should be moved to `react-json-schema` completely
+                - (done) move schema resource provider here
+      ```
 
 ## Todo WidgetProps
 
-- safer `value` typing
+- [ ] safer `value` typing
     - make `WidgetProps` always include a `value: unknown`
         - experiment with removing the current "value is removed before rendering widget" and the performance implications
     - refactor `WithValue`/`WithScalarValue`
@@ -319,7 +309,7 @@ Todos:
         - **TBD:** include for `typeof v === 'string'` or only for complex types?
     - **Reason:** it can't be typed what "value type" a widget allows, as it could receive any (invalid) value (from e.g. remote states).
 - [x] make `WidgetProps` independent of schema typing or move out of `/ui-schema`, as that package should not depend on package `/json-schema`
-- optimize/separate WidgetProps/UIMetaContext
+- [ ] optimize/separate WidgetProps/UIMetaContext
     - UIMeta will be injected, thus will reach widget, but typing can't be ensured reliable with current recursive widgets in context itself,
       especially for some parts, like `widgets` and `t`, it would be better if users use the hooks themself
     - atm. still needed for `widgetPlugins` to work and many components depend on `widgets` as prop, but especially for "components" - not for widgets,
@@ -376,9 +366,10 @@ new widget engine functions:
     - [x] switch to strict-ESM for all core packages, with `Node16`
     - [X] switch to strict-ESM for ds-bootstrap
     - [x] switch to cjs/esm build with `.cjs` file extension instead of separate folders
-- [ ] control and optimize circular package dependencies, remove all which where added as workarounds
+    - [ ] verify working behaviour once first alpha is published
+- [x] control and optimize circular package dependencies, remove all which where added as workarounds
     - [x] core packages cleaned up; ds are already clean
-    - [ ] solve `/react` depends on `ObjectRenderer`/`VirtualWidgetRenderer` (see noted in bindings about separating packages and `VirtualWidgetRenderer`)
+    - [x] solve `/react` depends on `ObjectRenderer`/`VirtualWidgetRenderer` (see noted in bindings about separating packages and `VirtualWidgetRenderer`)
 - [X] switched to strict esm, should no longer be needed ~~improve file/folder depth for easier usage of `no-restricted-imports` - or isn't that needed once `exports` are used?~~
     - the eslint plugin shouldn't be needed, yet a consistent depth makes the `tsconfig` for local dev easier,
       see the `ui-schema/react-codemirror` repo for a working example;
@@ -459,8 +450,33 @@ new widget engine functions:
 
 ---
 
-experiment on how to do a `<Next/>` prop in `widgetPlugin` without `currentPluginIndex`:
+Prompt helper for git changes (only use AI in this project for docs)
 
-idea: remapping `widgetPlugins` in `UIMetaContext` and wrapping each in a HOC which takes care of it and so on, thus the `Next` can be made available with `useUIMeta`, instead of the actual `widgetsPlugins`, which can help even further with widget binding types and the recursive dependencies in generics.
+Generate diff of important parts:
 
-would this be too much overhead, "just" for better DX and coding patterns? ... actually, it wouldn't be much more than atm., where many use and rely on `NextPluginRenderer`, which is similar in overhead to what a central wrapping would add.
+```shell
+git diff master..feature/develop-0.5.0-r2 -- \
+  packages \
+  ':!packages/demo/**' \
+  ':!packages/demo-web/**' \
+  ':!packages/demo-server/**' \
+  ':!packages/docs/**' \
+  ':!packages/ds-bootstrap/**' \
+  ':!**eslint**' \
+  ':!**ignore**' \
+  ':!**tsconfig**' \
+  ':!**/package-lock.json' \
+  > ../uis-050.patch
+```
+
+Switch `summarize` to `create a full and detailed changelog` for a long version:
+
+```
+summarize the changes described in the current file, its a git diff.
+
+focus on lib changes and write up a changelog with all typical content and enough details. do not focus on dev suite, so changes for stuff that is only internal, and is not changing the released packages, must be ignored.
+
+only use code file diffs. ignore any changes in markdown/documentation - as they may not reflect the latest changes!
+```
+
+> Gemini often skips over some changes, so add specific questions to get better help specific to your setup.

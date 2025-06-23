@@ -1,6 +1,5 @@
 import React from 'react'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { UIStoreActionSet } from '@ui-schema/react/UIStoreActions'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { MuiPickersAdapterContext } from '@mui/x-date-pickers/LocalizationProvider'
@@ -14,7 +13,7 @@ export interface WidgetDatePickerProps<TInputDate, TDate, P extends BaseDatePick
     pickerProps?: any
 }
 
-export const WidgetDatePicker: React.FC<WidgetProps & WithScalarValue & WidgetDatePickerProps<any, any>> = (
+export const WidgetDatePicker: React.FC<WidgetProps & WidgetDatePickerProps<any, any>> = (
     {
         value, storeKeys, onChange, schema, required,
         Picker,

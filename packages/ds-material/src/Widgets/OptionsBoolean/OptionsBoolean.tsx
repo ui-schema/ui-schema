@@ -4,10 +4,9 @@ import Switch, { SwitchProps } from '@mui/material/Switch'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { TypographyProps } from '@mui/material/Typography'
 
-export const BoolRenderer: React.FC<WidgetProps & WithScalarValue & {
+export const BoolRenderer: React.FC<WidgetProps & {
     labelledBy?: string
     checkedIcon?: SwitchProps['checkedIcon']
     edge?: SwitchProps['edge']

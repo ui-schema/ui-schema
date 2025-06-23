@@ -6,7 +6,7 @@ import url from 'node:url'
 import { resourceFromSchema, SchemaBranchType } from './SchemaResource.js'
 
 /**
- * npm run tdd -- --testPathPattern=SchemaResource --selectProjects=test-@ui-schema/json-schema
+ * npm run tdd -- --testPathPattern=SchemaResource --selectProjects=test-@ui-schema/ui-schema
  */
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url))

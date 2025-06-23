@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { StoreKeyType, WithValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { memo } from '@ui-schema/react/Utils/memo'
@@ -55,7 +55,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
         cellSchema = orderedCellSchema
     }
 
-    const GroupRenderer = binding?.GroupRenderer
+    const GroupRenderer = binding?.GroupRenderer || Fragment
 
     return <TableRow>
         {cellSchema.map((item, j) =>

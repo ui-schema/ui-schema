@@ -1,5 +1,7 @@
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd'
+import type { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 import React from 'react'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
@@ -27,7 +29,7 @@ import { DragDropArea } from '@ui-schema/material-dnd/Widgets/DragDropArea'
 import { DragDropBlockSelector } from '@ui-schema/material-dnd/DragDropBlockSelector'
 import { DropArea } from '@ui-schema/material-dnd/Widgets/DropArea'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
-import { createEmptyStore, createStore, onChangeHandler, UIStoreProvider, UIStoreType, WithOnChange } from '@ui-schema/react/UIStore'
+import { createEmptyStore, createStore, onChangeHandler, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { UIMetaContext, UIMetaProvider } from '@ui-schema/react/UIMeta'
@@ -40,11 +42,7 @@ import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
-type CustomWidgetsBinding = WidgetsBindingFactory<MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
-    DragDropArea: React.ComponentType<WidgetProps & WithOnChange>
-}> & {
-    DndBlockSelector: typeof DragDropBlockSelector
-}
+type CustomWidgetsBinding = WidgetsBindingFactory<MuiWidgetsBindingTypes, MuiWidgetsBindingCustom<UIStoreActions, WidgetProps<WidgetsBindingFactory & DragDropBlockComponentsBinding>>> & DragDropBlockComponentsBinding
 
 const customWidgets: CustomWidgetsBinding = {
     ...baseComponents,

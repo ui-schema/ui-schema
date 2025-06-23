@@ -1,6 +1,7 @@
+import { MuiComponentsBinding } from '@ui-schema/ds-material'
 import React, { CSSProperties, EventHandler } from 'react'
 import { useUID } from 'react-uid'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
@@ -32,7 +33,7 @@ export interface StringRendererCellProps {
     labelledBy?: string
 }
 
-export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarValue & StringRendererCellProps> = (
+export const StringRendererCell: React.ComponentType<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & StringRendererCellProps> = (
     {
         type,
         multiline, minRows, maxRows,
@@ -157,7 +158,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarVal
     </>
 }
 
-export const TextRendererCell: React.ComponentType<WidgetProps & WithScalarValue & StringRendererCellProps> = ({schema, ...props}) => {
+export const TextRendererCell: React.ComponentType<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & WithScalarValue & StringRendererCellProps> = ({schema, ...props}) => {
     return <StringRendererCell
         {...props}
         schema={schema}
@@ -173,7 +174,7 @@ export const TextRendererCell: React.ComponentType<WidgetProps & WithScalarValue
     />
 }
 
-export const NumberRendererCell: React.ComponentType<WidgetProps & WithScalarValue & StringRendererCellProps> = (props) => {
+export const NumberRendererCell: React.ComponentType<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & WithScalarValue & StringRendererCellProps> = (props) => {
     return <StringRendererCell
         {...props}
         type={'number'}

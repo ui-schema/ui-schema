@@ -1,11 +1,11 @@
+import { MuiComponentsBinding } from '@ui-schema/ds-material'
 import React from 'react'
 import Box from '@mui/material/Box'
 import IcYes from '@mui/icons-material/CheckCircle'
 import IcNo from '@mui/icons-material/CancelOutlined'
 import Typography from '@mui/material/Typography'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { WithScalarValue } from '@ui-schema/react/UIStore'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
 
@@ -23,7 +23,7 @@ export const WidgetBooleanRead = (
         binding,
         IconYes, IconNo,
         readDense,
-    }: WidgetProps & UIMetaReadContextType & WithScalarValue & WidgetBooleanReadProps,
+    }: WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & UIMetaReadContextType & WidgetBooleanReadProps,
 ): React.ReactElement => {
     const hideTitle = Boolean(schema.getIn(['view', 'hideTitle']))
     const InfoRenderer = binding?.InfoRenderer

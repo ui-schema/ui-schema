@@ -1,31 +1,25 @@
-import React from 'react'
+import type { ComponentType, ReactNode } from 'react'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import { GroupRendererProps, WidgetProps } from '@ui-schema/react/Widgets'
+import type { GroupRendererProps, WidgetProps } from '@ui-schema/react/Widgets'
 
 export interface ObjectRendererProps extends WidgetProps {
     noGrid?: GroupRendererProps['noGrid']
-    binding?: { GroupRenderer?: React.ComponentType<GroupRendererProps> }
+    binding?: { GroupRenderer?: ComponentType<GroupRendererProps> }
 }
 
-const ObjectRendererBase: React.FC<ObjectRendererProps> = (
+const ObjectRendererBase = (
     {
         schema, storeKeys,
         // for performance reasons, not pushing errors deeper
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         errors,
         ...props
-    },
-) => {
+    }: ObjectRendererProps,
+): ReactNode => {
     const {isVirtual, binding} = props
     const properties = schema.get('properties')
 
-    // if (!isVirtual && !binding.GroupRenderer) {
-    //     if (process.env.NODE_ENV === 'development') {
-    //         console.error('Widget GroupRenderer not existing')
-    //     }
-    //     return null
-    // }
     const GroupRenderer = binding?.GroupRenderer
 
     const propertyTree = properties?.map((childSchema, childKey) =>
@@ -49,6 +43,7 @@ const ObjectRendererBase: React.FC<ObjectRendererProps> = (
                 >
                     {propertyTree}
                 </GroupRenderer> : null
-    ) as unknown as React.ReactElement
+    )
 }
+
 export const ObjectRenderer = memo(ObjectRendererBase)

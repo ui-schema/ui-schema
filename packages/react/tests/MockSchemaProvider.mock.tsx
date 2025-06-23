@@ -15,7 +15,6 @@ import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
-import { VirtualWidgetRenderer } from '@ui-schema/react/VirtualWidgetRenderer'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
@@ -31,7 +30,6 @@ export const MockWidgets: WidgetsBindingFactory<{
     ErrorFallback: () => null,
     GroupRenderer: () => null,
     NoWidget: NoWidget,
-    VirtualRenderer: VirtualWidgetRenderer,
     widgetPlugins: [WidgetRenderer],
     widgets: {
         types: {

@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography'
 import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { extractValue, WithScalarValue, WithValue } from '@ui-schema/react/UIStore'
+import { extractValue, WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
 import { schemaTypeToDistinct } from '@ui-schema/ui-schema/schemaTypeToDistinct'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
@@ -57,7 +57,7 @@ const NumberSliderRenderer: React.FC<{
     valid?: boolean
     errors?: ValidationErrorsImmutable
     required?: boolean
-} & WithValue> = (
+} & WithValuePlain & WithOnChange> = (
     {
         multipleOf, min, max, enumVal, constVal, defaultVal,
         storeKeys, schema, value, onChange,
@@ -145,12 +145,12 @@ const NumberSliderRenderer: React.FC<{
                                 schema,
                                 required,
                             }) : undefined,
-                        canDelete: Boolean(hasMulti && value && (value.size > (minItems as number))),
+                        canDelete: Boolean(hasMulti && value && List.isList(value) && (value.size > (minItems as number))),
                     },
                 }}
                 value={(schemaTypeToDistinct(schema.get('type')) === 'array' ?
-                    value && value.size ? value.toJS() : defaultVal :
-                    typeof value === 'number' ? value : defaultVal)}
+                    value && List.isList(value) && value.size ? value.toJS() as number[] : List.isList(defaultVal) ? defaultVal.toJS() as number[] : defaultVal :
+                    typeof value === 'number' ? value : List.isList(defaultVal) ? defaultVal.toJS() as number[] : defaultVal)}
                 onChange={(e, newValue) => {
                     if (schemaTypeToDistinct(schema.get('type')) !== 'array' && isNaN(newValue as number * 1)) {
                         console.error('Invalid Type: input not a number in:', e.target, newValue)
@@ -197,10 +197,10 @@ const NumberSliderRenderer: React.FC<{
 
 const ValueNumberSliderRenderer = extractValue(memo(NumberSliderRenderer))
 
-export const NumberSlider = <P extends WidgetProps & WithScalarValue>(
+export const NumberSlider = (
     {
         schema, ...props
-    }: P,
+    }: WidgetProps,
 ): React.ReactElement => {
     let min: number = 0
     let max: number = 100

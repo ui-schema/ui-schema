@@ -29,9 +29,9 @@ import { UIApiProvider } from '@ui-schema/react/UIApi'
 import { schemaDemoTable, schemaDemoTableAdvanced, schemaDemoTableMap, schemaDemoTableMapBig } from '../schemas/demoTable'
 import { Table } from '@ui-schema/ds-material/Widgets/Table'
 import { NumberRendererCell, StringRendererCell, TextRendererCell } from '@ui-schema/ds-material/Widgets/TextFieldCell'
-import { TableAdvanced } from '@ui-schema/ds-material/Widgets/TableAdvanced'
+import { TableAdvancedBase as TableAdvanced } from '@ui-schema/ds-material/Widgets/TableAdvanced'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
-import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
+import { SelectChipsBase as SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 
 const CustomTableBase: React.ComponentType<WidgetProps> = ({binding, ...props}) => {
@@ -57,7 +57,7 @@ const CustomTableBase: React.ComponentType<WidgetProps> = ({binding, ...props}) 
         binding={customWidgets}
     />
 }
-const CustomTable = React.memo(CustomTableBase)
+// const CustomTable = React.memo(CustomTableBase)
 
 // use current data to build applicable schemas
 // make default
@@ -93,7 +93,7 @@ const customWidgets: MuiWidgetsBinding = {
         custom: {
             ...bindingExtended,
             SelectChips: SelectChips,
-            Table: CustomTable,
+            Table: CustomTableBase,
             TableAdvanced: TableAdvanced,
         },
     },

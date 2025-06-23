@@ -1,9 +1,10 @@
+import { MuiComponentsBinding } from '@ui-schema/ds-material'
 import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
 import React from 'react'
 import { OrderedMap } from 'immutable'
 import { useUID } from 'react-uid'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { memo } from '@ui-schema/react/Utils/memo'
@@ -23,7 +24,7 @@ export interface AccordionStackBaseProps {
     SummaryTitle?: AccordionsRendererProps['SummaryTitle']
 }
 
-const AccordionStackBase: React.ComponentType<WidgetProps & AccordionStackBaseProps & WithValidity> = (
+const AccordionStackBase: React.ComponentType<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & AccordionStackBaseProps & WithValidity> = (
     {validity, SummaryTitle, ...props},
 ) => {
     const uid = useUID()
@@ -107,7 +108,7 @@ export const AccordionsRendererBase = (
         schema, storeKeys,
         errors, showValidity,
         ...props
-    }: WidgetProps,
+    }: WidgetProps<WidgetsBindingFactory & MuiComponentsBinding>,
 ): React.ReactElement => {
     const [open, setOpen] = React.useState<string>(schema.get('defaultExpanded') as string || '')
 

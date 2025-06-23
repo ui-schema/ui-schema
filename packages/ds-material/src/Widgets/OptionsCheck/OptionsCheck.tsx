@@ -1,3 +1,4 @@
+import { MuiComponentsBinding } from '@ui-schema/ds-material'
 import React from 'react'
 import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
@@ -9,7 +10,7 @@ import { memo } from '@ui-schema/react/Utils/memo'
 import { StoreKeys, WithValue, extractValue } from '@ui-schema/react/UIStore'
 import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { useUID } from 'react-uid'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
@@ -94,7 +95,7 @@ export const OptionsCheck = (
     {
         schema, storeKeys, showValidity, valid, required, errors,
         row, binding,
-    }: WidgetProps & OptionsCheckRendererProps,
+    }: WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & OptionsCheckRendererProps,
 ): React.ReactElement => {
     const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as UISchemaMap)
     const InfoRenderer = binding?.InfoRenderer

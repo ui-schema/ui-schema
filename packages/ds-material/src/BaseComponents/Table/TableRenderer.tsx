@@ -1,3 +1,4 @@
+import { MuiComponentsBinding } from '@ui-schema/ds-material'
 import { handleSchema } from '@ui-schema/react-json-schema/ResourceBranchHandler'
 import { useSchemaResource } from '@ui-schema/react/SchemaResourceProvider'
 import React from 'react'
@@ -7,7 +8,7 @@ import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import { schemaTypeIsAny } from '@ui-schema/ui-schema/schemaTypeIs'
 import { List, Map, OrderedMap } from 'immutable'
@@ -18,7 +19,7 @@ import { TableRendererBaseProps, TableRendererExtractorProps, TableRowProps, Tab
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
-export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<keyof WidgetProps, 'value' | 'errors' | 'valid'>> & Pick<WithValue, 'onChange'> & TableRendererBaseProps & ListButtonOverwrites> = (
+export const TableRendererBase: React.ComponentType<Omit<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding>, 'value' | 'internalValue' | 'errors' | 'valid'> & Pick<WithValue, 'onChange'> & TableRendererBaseProps & ListButtonOverwrites> = (
     {
         storeKeys, schema, onChange,
         showValidity,
@@ -146,7 +147,7 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
 
 export const TableRendererBaseMemo = memo(TableRendererBase)
 
-export const TableRendererExtractor: React.ComponentType<WidgetProps & WithValue & TableRendererExtractorProps> = (
+export const TableRendererExtractor: React.ComponentType<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & TableRendererExtractorProps> = (
     {
         value,
         // remove `internalValue` from the table widget, performance optimize
@@ -163,9 +164,9 @@ export const TableRendererExtractor: React.ComponentType<WidgetProps & WithValue
     // extracting and calculating the list size here, not passing down the actual list for performance reasons
     // https://github.com/ui-schema/ui-schema/issues/115
     return <TableContext.Provider value={{errors, valid}}>
-        <TableRendererBaseMemo {...props} listSize={value?.size || 0} t={t}/>
+        <TableRendererBaseMemo {...props} listSize={List.isList(value) ? value.size : 0} t={t}/>
     </TableContext.Provider>
 }
 
-export const TableRendererMemo = memo(TableRendererExtractor) as React.FC<WidgetProps & WithValue & TableRendererExtractorProps>
-export const TableRenderer = extractValue(TableRendererMemo) as React.FC<WidgetProps & TableRendererExtractorProps>
+export const TableRendererMemo = memo(TableRendererExtractor)
+export const TableRenderer = extractValue(TableRendererMemo)

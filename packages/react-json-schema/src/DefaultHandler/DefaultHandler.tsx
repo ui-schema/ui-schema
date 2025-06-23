@@ -21,7 +21,7 @@ export const DefaultHandler: React.FC<DefaultHandlerProps & WidgetPluginProps> =
 
     const valRef = React.useRef(value)
     valRef.current = value
-    const defaultHandled = Boolean(internalValue?.get('defaultHandled') || doNotDefault || readOnly || schema?.get('readOnly'))
+    const defaultHandled = Boolean((Map.isMap(internalValue) && internalValue?.get('defaultHandled')) || doNotDefault || readOnly || schema?.get('readOnly'))
     React.useEffect(() => {
         if (defaultHandled) return
         if (typeof defaultVal === 'undefined') return

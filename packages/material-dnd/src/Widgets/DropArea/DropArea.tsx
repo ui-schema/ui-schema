@@ -1,9 +1,8 @@
 import React from 'react'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { WithOnChange } from '@ui-schema/react/UIStore'
 import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { UIStoreActionListItemAddWithValue, UIStoreActionScoped } from '@ui-schema/react/UIStoreActions'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
 import IconButton from '@mui/material/IconButton'
@@ -16,12 +15,13 @@ import { genId } from '@ui-schema/kit-dnd'
 import { DndBlocksRenderer } from '@ui-schema/material-dnd/DndBlocksRenderer'
 import { DndBlock } from '@ui-schema/material-dnd/DragDropBlockProvider'
 import { AreaRenderer } from '@ui-schema/material-dnd/WidgetsBase/AreaRenderer'
+import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd/DragDropBlock'
 
 export const DropAreaBase = (
     {
         binding,
         ...props
-    }: WidgetProps & WithOnChange,
+    }: WidgetProps<WidgetsBindingFactory & DragDropBlockComponentsBinding>,
 ): React.ReactElement => {
     const [showSelector, setShowSelector] = React.useState(false)
     const {schema, storeKeys, onChange, required} = props
@@ -29,7 +29,7 @@ export const DropAreaBase = (
     //const notSortable = schema.get('notSortable')
     const notAddable = schema.get('notAddable')
     //const notDeletable = schema.get('notDeletable')
-    const Selector = binding.DndBlockSelector
+    const Selector = binding?.DndBlockSelector
 
     return <>
         {schema.getIn(['view', 'showTitle']) ?
@@ -48,24 +48,25 @@ export const DropAreaBase = (
             Item={AreaRenderer}
         />
 
-        <Dialog
-            open={showSelector}
-            onClose={() => setShowSelector(false)}
-        >
-            <Selector
-                onSelect={(block: DndBlock) => onChange({
-                    storeKeys,
-                    type: 'list-item-add',
-                    itemValue: OrderedMap({
-                        [block.idKey]: genId(),
-                        [block.typeKey]: block.type,
-                    }),
-                } as UIStoreActionListItemAddWithValue & UIStoreActionScoped)}
-            />
-        </Dialog>
+        {Selector ?
+            <Dialog
+                open={showSelector}
+                onClose={() => setShowSelector(false)}
+            >
+                <Selector
+                    onSelect={(block: DndBlock) => onChange({
+                        storeKeys,
+                        type: 'list-item-add',
+                        itemValue: OrderedMap({
+                            [block.idKey]: genId(),
+                            [block.typeKey]: block.type,
+                        }),
+                    } as UIStoreActionListItemAddWithValue & UIStoreActionScoped)}
+                />
+            </Dialog> : null}
 
         <Box mt={1}>
-            {!schema.get('readOnly') && !notAddable ?
+            {!schema.get('readOnly') && !notAddable && Selector ?
                 <IconButton
                     onClick={() => setShowSelector(o => !o)}
                     size={btnSize as 'small' | 'medium'}

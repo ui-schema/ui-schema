@@ -1,5 +1,4 @@
-import React from 'react'
-import { extractValue, WithValue } from '@ui-schema/react/UIStore'
+import { extractValue } from '@ui-schema/react/UIStore'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
@@ -8,7 +7,7 @@ import { memo } from '@ui-schema/react/Utils/memo'
 export const TableAdvancedBase = (
     {
         showValidity, schema, ...props
-    }: WidgetProps & WithValue,
+    }: WidgetProps,
 ) => {
     const {storeKeys} = props
     const readOnly = schema.get('readOnly') as boolean

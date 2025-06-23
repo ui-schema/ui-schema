@@ -1,7 +1,7 @@
-import { ValidateFn } from '@ui-schema/ui-schema/Validate'
-import * as React from 'react'
-import { WithOnChange, WithScalarValue } from '@ui-schema/react/UIStore'
-import { GroupRendererProps } from '@ui-schema/react/Widgets'
+import { UIMetaContext } from '@ui-schema/react/UIMeta'
+import { ComponentType } from 'react'
+import { WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
+import { GroupRendererProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 import { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 
@@ -9,9 +9,9 @@ import { WidgetPayload } from '@ui-schema/ui-schema/Widget'
  * dev note: here `P` must not use NoInfer, or it breaks the WidgetEngine `WidgetEngineOverrideProps`
  */
 export type WidgetType<P = {}, A = UIStoreActions> =
-    React.ComponentType<WidgetProps & P> |
-    React.ComponentType<WidgetProps & P & WithOnChange<A>> |
-    React.ComponentType<WidgetProps & P & WithScalarValue<A>>
+    ComponentType<WidgetPayload & P> |
+    ComponentType<WidgetPayload & P & WithOnChange<A>> |
+    ComponentType<WidgetPayload & P & WithValuePlain & WithOnChange<A>>
 
 /**
  * Base widget props which are expected to exist no matter which data "type" the widget is for
@@ -19,22 +19,11 @@ export type WidgetType<P = {}, A = UIStoreActions> =
  * - for any-value-type widgets add `WithValue` and use the HOC `extractValue`
  * - `C` = custom `UIMetaContext` definition
  */
-export interface WidgetProps extends WidgetPayload, LegacyWidgets {
+export interface WidgetProps<W = WidgetsBindingFactory, A = UIStoreActions> extends WidgetPayload, UIMetaContext<W>, WithOnChange<A>, WithValuePlain {
     // used by grid system
     // todo: move to "ReactWidgetStack of DS" / remove from standard / move from "WidgetProps" to the successor of "WidgetEngine", somehow coupled to the successor of "WidgetRenderer"
     noGrid?: GroupRendererProps['noGrid']
 
     // specifying hidden inputs / virtual lists etc.
     isVirtual?: boolean
-
-    // contains the value for non-scalar items, for objects/array it is undefined
-    // use typing `WithScalarValue` for those, otherwise for `array`/`object` checkout the HOC: `extractValue` and typing `WithValue`
-
-    /**
-     * @todo move into UIMeta context (and typing)?
-     */
-    validate?: ValidateFn
 }
-
-// todo: remove this typing, just added until UIMeta pass through and typing is decided and migrated
-export type LegacyWidgets = { binding?: any }

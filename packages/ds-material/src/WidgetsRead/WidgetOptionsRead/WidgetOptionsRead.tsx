@@ -1,9 +1,10 @@
+import { MuiComponentsBinding } from '@ui-schema/ds-material'
 import React, { MouseEventHandler } from 'react'
 import { List } from 'immutable'
 import { Translate } from '@ui-schema/react/Translate'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { StoreKeys, extractValue, WithScalarValue } from '@ui-schema/react/UIStore'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { StoreKeys, extractValue } from '@ui-schema/react/UIStore'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import Box from '@mui/material/Box'
@@ -74,7 +75,7 @@ export interface WidgetOptionsReadProps {
     style?: React.CSSProperties
 }
 
-export const WidgetOptionsRead: React.ComponentType<WidgetProps & UIMetaReadContextType & WithScalarValue & WidgetOptionsReadProps> = (
+export const WidgetOptionsRead: React.ComponentType<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & UIMetaReadContextType & WidgetOptionsReadProps> = (
     {
         schema, storeKeys, showValidity,
         valid, errors, value,

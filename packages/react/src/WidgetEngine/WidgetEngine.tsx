@@ -1,6 +1,6 @@
 import { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { StoreKeyType } from '@ui-schema/ui-schema/ValueStore'
-import { WidgetPayloadFieldSchema, WidgetPayloadFieldLocation } from '@ui-schema/ui-schema/Widget'
+import { WidgetPayloadFieldSchema, WidgetPayloadFieldLocation, WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import { ComponentType, ReactElement, ReactNode, useMemo } from 'react'
 import { List } from 'immutable'
 import { getDisplayName, memo } from '@ui-schema/react/Utils/memo'
@@ -14,7 +14,7 @@ import { useUIStoreActions } from '@ui-schema/react/UIStoreActions'
 
 type WidgetEngineRootProps = {
     isRoot: true
-}
+} & Pick<WidgetPayloadFieldSchema, 'schema'>
 
 type WidgetEngineNestedProps = {
     isRoot?: false
@@ -25,7 +25,6 @@ type WidgetEngineNestedProps = {
     // Required<WidgetFieldSchemaProps>
     (WidgetPayloadFieldSchema &
         {
-            schema: WidgetPayloadFieldSchema['schema']
             parentSchema: WidgetPayloadFieldSchema['parentSchema']
         })
 
@@ -42,19 +41,20 @@ export type WidgetEngineWrapperProps = {
 export type WidgetEngineProps<
     PWrapper extends object = object
 > =
-    Omit<WidgetProps, 'storeKeys' | 'parentSchema' | 'binding'>
-    & WidgetEngineRootOrNestedProps
-    & {
-    // todo: why is this defined here? this is also mixing up engine and plugin props,
-    //       but something which doesn't reach binding; and atm. it should not get any child error, just errors in the next layer
-    onErrors?: onErrorHandler
+    Omit<WidgetPayload, keyof WidgetPayloadFieldLocation | keyof WidgetPayloadFieldSchema> &
+    WidgetEngineRootOrNestedProps &
+    {
+        // todo: why is this defined here? this is also mixing up engine and plugin props,
+        //       but something which doesn't reach binding; and atm. it should not get any child error, just errors in the next layer
+        onErrors?: onErrorHandler
 
-    // wraps the whole stack internally, as interfacing for the utility function `injectWidgetEngine`
-    // only rendered when not "virtual"
-    StackWrapper?: ComponentType<WidgetEngineWrapperProps & PWrapper>
+        // wraps the whole stack internally, as interfacing for the utility function `injectWidgetEngine`
+        // only rendered when not "virtual"
+        StackWrapper?: ComponentType<WidgetEngineWrapperProps & PWrapper>
 
-    wrapperProps?: PWrapper
-}
+        wrapperProps?: PWrapper
+    } &
+    Pick<WidgetProps, 'isVirtual' | 'noGrid'>
 
 export type WidgetEngineOverrideProps<
     PWidget extends object = object,
@@ -63,14 +63,14 @@ export type WidgetEngineOverrideProps<
 // todo: here we will run into the issue wit required props injected by plugins;
 //       or maybe not if we keep PWidget also in the override type and
 //       that works with all other things
-    & (TWidgetOverride extends WidgetType<infer InferredPWidget, any> ? InferredPWidget : object)
-    & NoInfer<PWidget>
-    & {
-    // override any widget for just this WidgetEngine, not passed down further on
-    // better use `applyWidgetEngine` instead! https://ui-schema.bemit.codes/docs/core-pluginstack#applypluginstack
-    // todo: actually `WidgetOverride` is a WidgetRenderer prop - and also passed through the plugins, so should be available in PluginProps?
-    WidgetOverride?: TWidgetOverride
-}
+    (TWidgetOverride extends WidgetType<infer InferredPWidget, any> ? InferredPWidget : object) &
+    NoInfer<PWidget> &
+    {
+        // override any widget for just this WidgetEngine, not passed down further on
+        // better use `applyWidgetEngine` instead! https://ui-schema.bemit.codes/docs/core-pluginstack#applypluginstack
+        // todo: actually `WidgetOverride` is a WidgetRenderer prop - and also passed through the plugins, so should be available in PluginProps?
+        WidgetOverride?: TWidgetOverride
+    }
 
 function isRootProps(props: WidgetEngineRootOrNestedProps): props is WidgetEngineRootProps {
     return props.isRoot === true
@@ -92,8 +92,6 @@ export const WidgetEngine = <
     const {onChange} = useUIStoreActions()
 
     const {
-        // schema,
-        // parentSchema,
         binding: customBinding,
         StackWrapper, wrapperProps,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -150,6 +148,11 @@ export const WidgetEngine = <
             // `showValidity` is overridable by render flow, e.g. nested Stepper
             showValidity={props.showValidity || showValidity}
             onChange={onChange}
+            // todo: support adding values via props, e.g. needed for stateless rendering,
+            //       could be used by VirtualRenderer (which should be a big focus, as the preferred central validator makes it unnecessary)
+            //       keep in mind, this then would need more care when passing props from parent, which previously wasn't necessary,
+            //       e.g. the ObjectRenderer passes any value to the children WidgetEngine, and this here prevents that from causing performance issues;
+            //       but that will need more care in the future, when someone wants the benefits from store events
             {...values || {}} // pass down all extracted, to support extending `extractValues`
             value={values?.value}
             internalValue={values?.internalValue}
@@ -188,6 +191,18 @@ export const WidgetEngine = <
             wrappedStack :
         null
 }
+
+/**
+ * A simple replacement for rendering components with immutable props in a memoized way without the component being memoized.
+ * To use native memo and its special `isEqual`, which no other hook has and would need extra tracking of prev values and comparing.
+ * @experimental
+ */
+const RenderMemoBase = <P = {}>(
+    {Component, ...props}: { Component: ComponentType<Omit<P, 'Component'>> } & Omit<P, 'Component'>,
+) => {
+    return <Component {...props as Omit<P, 'Component'>}/>
+}
+const RenderMemo = memo(RenderMemoBase) as typeof RenderMemoBase
 
 /**
  * Super simple PoC for `Next` wrapped widget plugin stack, which should be materialized in binding/context,
@@ -290,18 +305,6 @@ export const NextPluginRenderer = <C extends object>(
     const Plugin = getNextPlugin<C, W>(next, props.binding)
     return <Plugin {...{currentPluginIndex: next, ...props} as P & C & U}/>
 }
-
-/**
- * A simple replacement for rendering components with immutable props in a memoized way without the component being memoized.
- * To use native memo and its special `isEqual`, which no other hook has and would need extra tracking of prev values and comparing.
- * @experimental
- */
-const RenderMemoBase = <P = {}>(
-    {Component, ...props}: { Component: ComponentType<Omit<P, 'Component'>> } & Omit<P, 'Component'>,
-) => {
-    return <Component {...props as Omit<P, 'Component'>}/>
-}
-const RenderMemo = memo(RenderMemoBase) as typeof RenderMemoBase
 
 // export const NextPluginRendererMemo = memo(NextPluginRenderer) as <C = {}, U extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory, P extends WidgetPluginProps<W> = WidgetPluginProps<W>>(props: P & C & U) => ReactElement
 export const NextPluginRendererMemo = memo(NextPluginRenderer)

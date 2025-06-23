@@ -5,7 +5,6 @@ import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import MuiSelect, { SelectProps as MuiSelectProps } from '@mui/material/Select'
-import { WithScalarValue } from '@ui-schema/react/UIStore'
 import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
@@ -15,7 +14,7 @@ import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 
 export type SelectProps = {
     variant?: MuiSelectProps['variant']
-} & WidgetProps & WithScalarValue
+} & WidgetProps
 
 export const Select = <P extends SelectProps>(
     {

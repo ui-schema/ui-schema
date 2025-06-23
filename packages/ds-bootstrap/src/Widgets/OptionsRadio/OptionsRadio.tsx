@@ -1,4 +1,3 @@
-import { WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import React from 'react'
 import { beautifyKey } from '@ui-schema/ui-schema/Utils/beautify'
@@ -39,7 +38,7 @@ const RadioInput = ({classForm, enumName, classLabel, required, classFormControl
     </div>
 }
 
-const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, required, errors}: WidgetProps & WithValuePlain & WithOnChange) => {
+const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, required, errors}: WidgetProps) => {
     const enumVal = schema.get('enum')
     if (!enumVal) return null
 

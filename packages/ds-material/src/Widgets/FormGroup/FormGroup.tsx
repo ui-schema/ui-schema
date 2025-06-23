@@ -3,15 +3,15 @@ import FormLabel from '@mui/material/FormLabel'
 import FormControl from '@mui/material/FormControl'
 import MuiFormGroup from '@mui/material/FormGroup'
 import { useTheme } from '@mui/material/styles'
-import { extractValue, WithValue } from '@ui-schema/react/UIStore'
+import { extractValue } from '@ui-schema/react/UIStore'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 
-export const FormGroupBase: React.ComponentType<WidgetProps & WithValue> = (props) => {
+export const FormGroupBase: React.ComponentType<WidgetProps> = (props) => {
     const {storeKeys, binding, schema} = props
     const {spacing} = useTheme()
-    const Widget = binding?.matchWidget({
+    const Widget = binding?.matchWidget?.({
         widgetName: undefined,
         schemaType: schema.get('type'),
         // @ts-ignore

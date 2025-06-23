@@ -8,7 +8,7 @@ import MenuItem from '@mui/material/MenuItem'
 import MuiSelect, { SelectProps as MuiSelectProps } from '@mui/material/Select'
 import Checkbox from '@mui/material/Checkbox'
 import ListItemText from '@mui/material/ListItemText'
-import { extractValue, WithValue } from '@ui-schema/react/UIStore'
+import { extractValue } from '@ui-schema/react/UIStore'
 import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { memo } from '@ui-schema/react/Utils/memo'
@@ -22,7 +22,7 @@ export interface SelectMultiProps {
     variant?: MuiSelectProps['variant']
 }
 
-export const SelectMultiBase: React.ComponentType<WidgetProps & WithValue & SelectMultiProps> = (
+export const SelectMultiBase: React.ComponentType<WidgetProps & SelectMultiProps> = (
     {
         storeKeys, schema, value, onChange,
         showValidity, valid, required, errors,
@@ -49,7 +49,7 @@ export const SelectMultiBase: React.ComponentType<WidgetProps & WithValue & Sele
             variant={variant}
             // note: for variant `outlined` the label needs to be also here, as we don't know e.g. theme provider overrides, it is applied all the time
             label={<TranslateTitle schema={schema} storeKeys={storeKeys}/>}
-            value={currentValue.toArray()}
+            value={List.isList(currentValue) ? currentValue.toArray() : Array.isArray(currentValue) ? currentValue : null}
             multiple
             renderValue={selected => {
                 const sel = selected as string[]
@@ -83,7 +83,7 @@ export const SelectMultiBase: React.ComponentType<WidgetProps & WithValue & Sele
                     dense={denseOptions}
                     disabled={schema?.get('readOnly') as boolean}
                 >
-                    <Checkbox checked={currentValue.contains(value)}/>
+                    <Checkbox checked={(List.isList(currentValue) && currentValue.contains(value)) || (Array.isArray(currentValue) && currentValue.includes(value))}/>
                     <ListItemText primary={<Translate
                         schema={schema?.get('t') as unknown as UISchemaMap}
                         text={text}

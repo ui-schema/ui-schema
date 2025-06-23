@@ -4,8 +4,9 @@ import { createContext, PropsWithChildren, useContext } from 'react'
 import { Translator } from '@ui-schema/ui-schema/Translator'
 import { WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 
-// @ts-expect-error initialized in provider
-const UIMetaContextObj = createContext<UIMetaContext>({})
+const UIMetaContextObj = createContext<UIMetaContext>({
+    t: text => text,
+})
 
 export interface UIMetaContext<W = WidgetsBindingFactory> {
     binding?: W

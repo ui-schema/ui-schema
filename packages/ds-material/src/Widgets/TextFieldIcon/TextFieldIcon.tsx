@@ -3,7 +3,6 @@ import InputAdornment from '@mui/material/InputAdornment'
 import { NumberRenderer, NumberRendererProps, StringRenderer, StringRendererProps, TextRenderer, TextRendererProps } from '@ui-schema/ds-material/Widgets/TextField'
 import { Translate } from '@ui-schema/react/Translate'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { WithScalarValue } from '@ui-schema/react/UIStore'
 
 const useComputeIcon = (schema, baseInputProps) => {
     const icon = schema.getIn(['view', 'icon'])
@@ -27,7 +26,7 @@ const useComputeIcon = (schema, baseInputProps) => {
     }, [icon, iconEnd, baseInputProps])
 }
 
-export const StringIconRenderer: React.FC<WidgetProps & WithScalarValue & StringRendererProps> = ({schema, ...props}) => {
+export const StringIconRenderer: React.FC<WidgetProps & StringRendererProps> = ({schema, ...props}) => {
     const InputProps = useComputeIcon(schema, props.InputProps)
     return <StringRenderer
         {...props}
@@ -36,7 +35,7 @@ export const StringIconRenderer: React.FC<WidgetProps & WithScalarValue & String
     />
 }
 
-export const TextIconRenderer: React.FC<WidgetProps & WithScalarValue & TextRendererProps> = ({schema, ...props}) => {
+export const TextIconRenderer: React.FC<WidgetProps & TextRendererProps> = ({schema, ...props}) => {
     const InputProps = useComputeIcon(schema, props.InputProps)
     return <TextRenderer
         {...props}
@@ -45,7 +44,7 @@ export const TextIconRenderer: React.FC<WidgetProps & WithScalarValue & TextRend
     />
 }
 
-export const NumberIconRenderer: React.FC<WidgetProps & WithScalarValue & NumberRendererProps> = ({schema, ...props}) => {
+export const NumberIconRenderer: React.FC<WidgetProps & NumberRendererProps> = ({schema, ...props}) => {
     const InputProps = useComputeIcon(schema, props.InputProps)
     return <NumberRenderer
         {...props}

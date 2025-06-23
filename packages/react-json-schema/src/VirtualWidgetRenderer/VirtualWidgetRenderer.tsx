@@ -1,23 +1,25 @@
-import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
-import { WidgetPayloadFieldSchema } from '@ui-schema/ui-schema/Widget'
-import React from 'react'
+import type { UIMetaContext } from '@ui-schema/react/UIMeta'
+import type { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
+import type { WidgetPayloadFieldSchema } from '@ui-schema/ui-schema/Widget'
+import type { ComponentType, ReactNode } from 'react'
 import { List } from 'immutable'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import { schemaTypeToDistinct } from '@ui-schema/ui-schema/schemaTypeToDistinct'
-import { LegacyWidgets, WidgetProps } from '@ui-schema/react/Widgets'
-import { WithValue } from '@ui-schema/react/UIStore'
+import type { WidgetProps } from '@ui-schema/react/Widgets'
+import type { WithValue, WithValuePlain } from '@ui-schema/react/UIStore'
 
-export interface VirtualArrayRendererProps extends LegacyWidgets {
+export interface VirtualArrayRendererProps {
     storeKeys: StoreKeys
     schema: WidgetPayloadFieldSchema['schema']
     value: WithValue['value']
     virtualWidgets?: VirtualWidgetRendererProps['virtualWidgets']
+    binding?: UIMetaContext['binding']
 }
 
 export const VirtualArrayRenderer = (
     {storeKeys, value, schema, virtualWidgets, binding}: VirtualArrayRendererProps,
-): React.ReactElement => {
+): ReactNode => {
     const items = schema?.get('items')
     return value ? value.map((_val, i) =>
         <WidgetEngine<VirtualWidgetRendererProps>
@@ -33,24 +35,22 @@ export const VirtualArrayRenderer = (
 }
 
 export interface VirtualWidgetsMapping {
-    default: null | React.ComponentType<WidgetProps & Partial<WithValue>>
-    object: React.ComponentType<WidgetProps & Partial<WithValue>>
-    array: React.ComponentType<VirtualArrayRendererProps>
+    default: null | ComponentType<WidgetProps & Partial<WithValue>>
+    object: ComponentType<WidgetProps & Partial<WithValue>>
+    array: ComponentType<VirtualArrayRendererProps>
 }
 
 export interface VirtualWidgetRendererProps extends WidgetProps {
     virtualWidgets?: VirtualWidgetsMapping
 }
 
-export const getVirtualWidgets = (): VirtualWidgetsMapping => ({
+export const defaultVirtualWidgets: VirtualWidgetsMapping = {
     'default': null,
     'object': ObjectRenderer,
     'array': VirtualArrayRenderer,
-})
+}
 
-const defaultVirtualWidgets = getVirtualWidgets()
-
-export const VirtualWidgetRenderer = <P extends WithValue & VirtualWidgetRendererProps>(props: P): React.ReactElement => {
+export const VirtualWidgetRenderer = (props: WithValuePlain & VirtualWidgetRendererProps): ReactNode => {
     const {
         schema, value,
         virtualWidgets: virtualWidgetsProps,
@@ -58,7 +58,7 @@ export const VirtualWidgetRenderer = <P extends WithValue & VirtualWidgetRendere
     const type = schemaTypeToDistinct(schema?.get('type'))
     const virtualWidgets = virtualWidgetsProps || defaultVirtualWidgets
 
-    let Widget: React.ComponentType<WidgetProps> | React.ComponentType<VirtualArrayRendererProps> | null = virtualWidgets['default']
+    let Widget: ComponentType<WidgetProps> | ComponentType<VirtualArrayRendererProps> | null = virtualWidgets['default']
 
     if (type) {
         if (type === 'object') {
@@ -68,5 +68,5 @@ export const VirtualWidgetRenderer = <P extends WithValue & VirtualWidgetRendere
         }
     }
 
-    return Widget ? <Widget {...props} value={value as WithValue['value']}/> : null as unknown as React.ReactElement
+    return Widget ? <Widget {...props} value={value as WithValue['value']}/> : null
 }

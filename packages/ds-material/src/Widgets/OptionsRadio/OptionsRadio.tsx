@@ -1,3 +1,4 @@
+import { MuiComponentsBinding } from '@ui-schema/ds-material'
 import React from 'react'
 import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
@@ -8,14 +9,13 @@ import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
-import { WidgetProps } from '@ui-schema/react/Widgets'
-import { WithScalarValue } from '@ui-schema/react/UIStore'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 
-export interface OptionsRadioProps extends WidgetProps {
+export interface OptionsRadioProps extends WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> {
     row?: boolean
 }
 
-export const OptionsRadio: React.FC<OptionsRadioProps & WithScalarValue> = (
+export const OptionsRadio: React.FC<OptionsRadioProps> = (
     {
         schema, value, onChange, storeKeys, showValidity, valid, required, errors,
         row, binding,

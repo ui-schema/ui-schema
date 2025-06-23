@@ -1,3 +1,4 @@
+import { MuiComponentsBinding } from '@ui-schema/ds-material'
 import React from 'react'
 import FormControl from '@mui/material/FormControl'
 import Grid from '@mui/material/Grid'
@@ -9,12 +10,12 @@ import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelpe
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
 import { ListButton, ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { extractValue, WithOnChange, WithValue } from '@ui-schema/react/UIStore'
+import { extractValue, WithValue } from '@ui-schema/react/UIStore'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import { Map } from 'immutable'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { List, Map } from 'immutable'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { UIStoreActionListItemDelete } from '@ui-schema/react/UIStoreActions'
 import { ButtonProps } from '@mui/material/Button'
@@ -63,7 +64,11 @@ export const SimpleListItemBase: React.FC<SimpleListItemProps & Pick<WithValue, 
 }
 export const SimpleListItem = memo(SimpleListItemBase)
 
-export const SimpleListInner: React.FC<WidgetProps & { listSize: number, btnAddShowLabel?: boolean, btnAddStyle?: React.CSSProperties } & ListButtonOverwrites & WithOnChange> = (
+export const SimpleListInner: React.FC<Omit<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding>, 'value' | 'internalValue'> & {
+    listSize: number
+    btnAddShowLabel?: boolean
+    btnAddStyle?: React.CSSProperties
+} & ListButtonOverwrites> = (
     {
         storeKeys, schema, listSize, onChange,
         showValidity, valid, errors, required,
@@ -147,7 +152,7 @@ export const SimpleListInner: React.FC<WidgetProps & { listSize: number, btnAddS
 }
 export const SimpleListBase = memo(SimpleListInner)
 
-export const SimpleListWrapper: React.FC<WidgetProps & { btnAddShowLabel?: boolean, btnAddStyle?: React.CSSProperties } & ListButtonOverwrites & WithValue> = (
+export const SimpleListWrapper: React.FC<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & { btnAddShowLabel?: boolean, btnAddStyle?: React.CSSProperties } & ListButtonOverwrites> = (
     {
         value,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -155,6 +160,9 @@ export const SimpleListWrapper: React.FC<WidgetProps & { btnAddShowLabel?: boole
         ...props
     },
 ) => {
-    return <SimpleListBase listSize={value?.size} {...props}/>
+    return <SimpleListBase
+        {...props}
+        listSize={List.isList(value) ? value.size : 0}
+    />
 }
 export const SimpleList = extractValue(SimpleListWrapper)

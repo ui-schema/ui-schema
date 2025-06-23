@@ -10,7 +10,7 @@ import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { schemaTypeToDistinct } from '@ui-schema/ui-schema/schemaTypeToDistinct'
-import React from 'react'
+import React, { ComponentType } from 'react'
 import Grid, { GridSpacing } from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
@@ -28,7 +28,7 @@ import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { WidgetOptionsRead } from '@ui-schema/ds-material/WidgetsRead/WidgetOptionsRead'
-import { GroupRendererProps, WidgetType } from '@ui-schema/react/Widgets'
+import { GroupRendererProps, WidgetProps } from '@ui-schema/react/Widgets'
 import { UIMetaContext, UIMetaProvider, useUIMeta } from '@ui-schema/react/UIMeta'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
@@ -151,10 +151,10 @@ const formSchema = createOrderedMap({
 
 export interface ReadWidgetsBinding {
     types: {
-        [k: string]: WidgetType<UIMetaReadContextType>
+        [k: string]: ComponentType<WidgetProps & UIMetaReadContextType>
     }
     custom: {
-        [k: string]: WidgetType<UIMetaReadContextType>
+        [k: string]: ComponentType<WidgetProps & UIMetaReadContextType>
     }
 }
 

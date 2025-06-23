@@ -1,4 +1,4 @@
-import { ErrorFallbackProps, WidgetPropsComplete, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { ErrorFallbackProps, WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import React from 'react'
 import { NumberRenderer, StringRenderer, TextRenderer } from '@ui-schema/ds-bootstrap/Widgets/TextField'
 import { Select, SelectMulti } from '@ui-schema/ds-bootstrap/Widgets/Select'
@@ -18,15 +18,15 @@ const MyFallbackComponent = ({type, widget}: ErrorFallbackProps) => (
 )
 
 export type BtsWidgetBinding = WidgetsBindingFactory<{
-    string?: React.ComponentType<WidgetPropsComplete>
-    boolean?: React.ComponentType<WidgetPropsComplete>
-    number?: React.ComponentType<WidgetPropsComplete>
-    integer?: React.ComponentType<WidgetPropsComplete>
-    null?: React.ComponentType<WidgetPropsComplete>
-    object?: React.ComponentType<WidgetPropsComplete>
-    array?: React.ComponentType<WidgetPropsComplete>
+    string?: React.ComponentType<WidgetProps>
+    boolean?: React.ComponentType<WidgetProps>
+    number?: React.ComponentType<WidgetProps>
+    integer?: React.ComponentType<WidgetProps>
+    null?: React.ComponentType<WidgetProps>
+    object?: React.ComponentType<WidgetProps>
+    array?: React.ComponentType<WidgetProps>
 }, {
-    [k: string]: React.ComponentType<WidgetPropsComplete>
+    [k: string]: React.ComponentType<WidgetProps>
 }>
 
 export const widgets: BtsWidgetBinding = {

@@ -1,6 +1,7 @@
+import { MuiComponentsBinding } from '@ui-schema/ds-material'
 import React from 'react'
-import { extractValue, WithValue } from '@ui-schema/react/UIStore'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { extractValue } from '@ui-schema/react/UIStore'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { Translate } from '@ui-schema/react/Translate'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { beautifyKey, tt } from '@ui-schema/ui-schema/Utils/beautify'
@@ -13,13 +14,13 @@ import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
 import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
 import Typography from '@mui/material/Typography'
 
-export const WidgetChipsReadBase: React.ComponentType<WidgetProps & UIMetaReadContextType & WithValue> = (
+export const WidgetChipsReadBase = (
     {
         storeKeys, schema, value,
         showValidity, errors,
         valid, binding,
         readDense,
-    },
+    }: WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & UIMetaReadContextType,
 ) => {
     if (!schema) return null
 
@@ -58,7 +59,7 @@ export const WidgetChipsReadBase: React.ComponentType<WidgetProps & UIMetaReadCo
                         size={!readDense && schema.getIn(['view', 'size']) === 'medium' ? 'medium' : 'small'}
                         variant={'filled'}
                         color={'primary'}
-                    />
+                    />,
                 ).valueSeq() :
                 <Typography variant={readDense ? 'body2' : 'body1'} style={{opacity: 0.65}}>-</Typography>
             }
@@ -68,4 +69,4 @@ export const WidgetChipsReadBase: React.ComponentType<WidgetProps & UIMetaReadCo
     </Box>
 }
 
-export const WidgetChipsRead = extractValue(memo(WidgetChipsReadBase)) as React.ComponentType<WidgetProps>
+export const WidgetChipsRead = extractValue(memo(WidgetChipsReadBase))

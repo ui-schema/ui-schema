@@ -4,10 +4,10 @@
 import { expect, describe, test } from '@jest/globals'
 import { render } from '@testing-library/react'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
-import { LegacyWidgets } from '@ui-schema/react/Widgets'
+import { WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
-import { SchemaPluginProps } from '@ui-schema/ui-schema/SchemaPlugin'
+import { SchemaPlugin, SchemaPluginProps } from '@ui-schema/ui-schema/SchemaPlugin'
 import { SchemaPluginStack } from '@ui-schema/ui-schema/SchemaPluginStack'
 import { List, OrderedMap } from 'immutable'
 
@@ -35,6 +35,7 @@ describe('SchemaPluginsAdapter', () => {
                 value={undefined}
                 internalValue={undefined}
                 onChange={undefined as any}
+                t={text => text}
             />,
         )
         expect(queryByText('is-valid') !== null).toBeTruthy()
@@ -47,7 +48,7 @@ describe('SchemaPluginStack', () => {
         storeKeys: List<string | number>([]),
         schema: OrderedMap<string | number, any>(),
     }
-    const testCases: [SchemaPluginProps & Partial<LegacyWidgets>, string, unknown][] = [
+    const testCases: [SchemaPluginProps & { binding?: WidgetsBindingFactory & { schemaPlugins?: SchemaPlugin<any>[] } }, string, unknown][] = [
         [{
             binding: {
                 schemaPlugins: [{
@@ -67,6 +68,7 @@ describe('SchemaPluginStack', () => {
         }, 'valid', undefined],
         [{
             binding: {
+                // @ts-expect-error missing handle
                 schemaPlugins: [{
                     should: (): boolean => true,
                 }],
@@ -101,7 +103,10 @@ describe('SchemaPluginStack', () => {
     test.each(testCases)(
         'SchemaPluginStack(%j): %j, %j',
         (props, keyA: string, expectA: any) => {
-            const newProps = SchemaPluginStack(props, props.binding?.schemaPlugins)
+            const newProps = SchemaPluginStack(
+                props,
+                props.binding?.schemaPlugins || [],
+            )
             expect(newProps[keyA]).toBe(expectA)
         },
     )

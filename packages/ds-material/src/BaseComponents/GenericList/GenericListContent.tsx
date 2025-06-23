@@ -1,26 +1,30 @@
-import React from 'react'
+import type { MuiComponentsBinding } from '@ui-schema/ds-material'
+import type { UIMetaContext } from '@ui-schema/react/UIMeta'
+import type { WithOnChange } from '@ui-schema/react/UIStore'
+import type { WidgetPayload } from '@ui-schema/ui-schema/Widget'
+import type { ComponentType, CSSProperties, ReactNode } from 'react'
 import FormControl from '@mui/material/FormControl'
-import Grid, { GridSpacing } from '@mui/material/Grid'
+import Grid from '@mui/material/Grid'
+import type { GridSpacing } from '@mui/material/Grid'
 import FormLabel from '@mui/material/FormLabel'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import { WidgetProps } from '@ui-schema/react/Widgets'
-import { WithOnChange } from '@ui-schema/react/UIStore'
-import { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
-import { GenericListFooterProps, GenericListItemProps, GenericListItemSharedProps } from '@ui-schema/ds-material/BaseComponents/GenericList'
+import type { WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import type { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
+import type { GenericListFooterProps, GenericListItemProps, GenericListItemSharedProps } from '@ui-schema/ds-material/BaseComponents/GenericList'
 import Box from '@mui/material/Box'
 
 export interface GenericListContentProps extends ListButtonOverwrites {
     btnAddShowLabel?: boolean
-    btnAddStyle?: React.CSSProperties
-    ComponentItemPos?: React.ComponentType<GenericListItemSharedProps>
-    ComponentItemMore?: React.ComponentType<GenericListItemSharedProps>
-    ComponentItem: React.ComponentType<GenericListItemProps>
-    ComponentFooter?: React.ComponentType<GenericListFooterProps>
+    btnAddStyle?: CSSProperties
+    ComponentItemPos?: ComponentType<GenericListItemSharedProps>
+    ComponentItemMore?: ComponentType<GenericListItemSharedProps>
+    ComponentItem: ComponentType<GenericListItemProps>
+    ComponentFooter?: ComponentType<GenericListFooterProps>
     listSize: number
     listSpacing?: GridSpacing
 }
 
-export const GenericListContent = <P extends WidgetProps>(
+export const GenericListContent = (
     {
         storeKeys, schema, listSize, onChange,
         showValidity, valid, errors, required, binding,
@@ -31,8 +35,8 @@ export const GenericListContent = <P extends WidgetProps>(
         btnVariant: btnVariantProp,
         btnColor: btnColorProp,
         listSpacing = 3,
-    }: P & WithOnChange & GenericListContentProps,
-): React.ReactElement => {
+    }: WidgetPayload & UIMetaContext<WidgetsBindingFactory & MuiComponentsBinding> & WithOnChange & GenericListContentProps,
+): ReactNode => {
     const btnSize = (schema.getIn(['view', 'btnSize']) || btnSizeProp || 'small') as ListButtonOverwrites['btnSize']
     const deleteBtnSize = (schema.getIn(['view', 'deleteBtnSize']) || btnSizeProp || 'small') as ListButtonOverwrites['btnSize']
     const btnVariant = (schema.getIn(['view', 'btnVariant']) || btnVariantProp || undefined) as ListButtonOverwrites['btnVariant']

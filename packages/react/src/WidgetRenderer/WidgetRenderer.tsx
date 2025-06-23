@@ -1,15 +1,15 @@
-import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
-import { VirtualWidgetRenderer } from '@ui-schema/react/VirtualWidgetRenderer'
+import type { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 import { List } from 'immutable'
-import React, { ComponentType, ReactNode } from 'react'
+import { useEffect } from 'react'
+import type { ComponentType, ReactNode } from 'react'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 import { ErrorNoWidgetMatching, widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
-import { WidgetEngineOverrideProps, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
-import { WithValue } from '@ui-schema/react/UIStore'
-import { SchemaKeywordType, SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
-import { MatchProps, NoWidgetProps, WidgetPropsComplete } from '@ui-schema/react/Widgets'
+import type { WidgetEngineOverrideProps, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import type { WithValue } from '@ui-schema/react/UIStore'
+import type { SchemaKeywordType, SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
+import type { MatchProps, NoWidgetProps, WidgetProps } from '@ui-schema/react/Widgets'
 
-export interface WidgetRendererProps extends Omit<WidgetPluginProps, 'binding' | 'currentPluginIndex'>, WithValue {
+export interface WidgetRendererProps extends Omit<WidgetPluginProps, 'binding' | 'currentPluginIndex'> {
     WidgetOverride?: WidgetEngineOverrideProps['WidgetOverride']
     // current number of plugin in the stack, received when executed as generic widget
     // but not when used on its own
@@ -24,7 +24,7 @@ export interface WidgetRendererProps extends Omit<WidgetPluginProps, 'binding' |
  */
 const noExtractValueEnabled = false
 
-export const WidgetRenderer = <A = UIStoreActions, WP extends WidgetPropsComplete<A> = WidgetPropsComplete<A>>(
+export const WidgetRenderer = <A = UIStoreActions, B = {}, WP extends WidgetProps<B, A> = WidgetProps<B, A>>(
     {
         // we do not want `value`/`internalValue` to be passed to non-scalar widgets for performance reasons
         value, internalValue,
@@ -39,13 +39,14 @@ export const WidgetRenderer = <A = UIStoreActions, WP extends WidgetPropsComplet
         WidgetRendererProps &
         Omit<NoInfer<WP>, 'binding' | keyof WidgetRendererProps> &
         {
-            binding?: {
-                NoWidget?: React.ComponentType<NoWidgetProps>
+            binding?: Omit<NoInfer<B>, 'VirtualRenderer' | 'NoWidget' | 'widgets' | 'matchWidget'> & {
+                VirtualRenderer?: ComponentType<WidgetProps & WithValue>
+                NoWidget?: ComponentType<NoWidgetProps>
                 widgets?: {
                     types?: { [K in SchemaKeywordType]?: (props: WP) => ReactNode }
                     custom?: Record<string, (props: WP) => ReactNode>
                 }
-                matchWidget?: (props: MatchProps<A, WP>) => null | (<PWidget>(props: Omit<NoInfer<PWidget>, keyof WP> & WP) => ReactNode)
+                matchWidget?: (props: MatchProps<WP>) => null | (<PWidget>(props: Omit<NoInfer<PWidget>, keyof WP> & WP) => ReactNode)
             }
         },
     // {
@@ -66,29 +67,32 @@ export const WidgetRenderer = <A = UIStoreActions, WP extends WidgetPropsComplet
     //         matchWidget?: (props: MatchProps<A, WP>) => null | (<PWidget>(props: Omit<NoInfer<PWidget>, keyof WP> & WP) => ReactNode)
     //     }
     // },
-): React.ReactNode => {
+): ReactNode => {
     const {schema, binding, isVirtual} = props
     const currentErrors = useImmutable(errors)
 
-    React.useEffect(() => onErrors && onErrors(currentErrors), [onErrors, currentErrors])
+    useEffect(() => onErrors && onErrors(currentErrors), [onErrors, currentErrors])
 
     const schemaType = schema.get('type') as SchemaTypesType | undefined
     const widgetName = schema.get('widget') as string | undefined
-    let Widget: ComponentType<WP> | null = WidgetOverride || null
-    if (!Widget) {
+    let Widget: ComponentType<WP> | null = null
+    // todo: try further extracting isVirtual into a widgetPlugin, which uses WidgetOverride to switch to it?
+    //       which also the virtualWidgets could use, to not further need `isVirtual`
+    if (isVirtual) {
+        Widget = binding?.VirtualRenderer as unknown as ComponentType<WP> || null
+    } else if (WidgetOverride) {
+        Widget = WidgetOverride
+    } else {
         // todo: remove fallback once dev project is migrated? or allow optional?
         // todo: check typings and fix it, `binding` is already `any`
         const matchWidget = binding?.matchWidget || widgetMatcher
         const widgets = binding?.widgets
         try {
-            Widget =
-                // todo: optimize/migrate isVirtual
-                isVirtual ? binding?.VirtualRenderer || VirtualWidgetRenderer :
-                    matchWidget({
-                        widgetName: widgetName,
-                        schemaType: schemaType,
-                        widgets: widgets,
-                    })
+            Widget = matchWidget({
+                widgetName: widgetName,
+                schemaType: schemaType,
+                widgets: widgets,
+            })
         } catch (e) {
             if (e instanceof ErrorNoWidgetMatching) {
                 const NoWidget = binding?.NoWidget

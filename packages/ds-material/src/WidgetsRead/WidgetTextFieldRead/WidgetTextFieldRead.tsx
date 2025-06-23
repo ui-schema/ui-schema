@@ -1,9 +1,9 @@
+import { MuiComponentsBinding } from '@ui-schema/ds-material'
 import React, { MouseEventHandler } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { WidgetProps } from '@ui-schema/react/Widgets'
-import { WithScalarValue } from '@ui-schema/react/UIStore'
+import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
 
@@ -24,7 +24,7 @@ export const StringRendererRead = (
         style,
         onClick,
         binding, readDense,
-    }: WidgetProps & UIMetaReadContextType & WithScalarValue & StringRendererReadProps,
+    }: WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & UIMetaReadContextType & StringRendererReadProps,
 ): React.ReactElement => {
     const hideTitle = Boolean(schema.getIn(['view', 'hideTitle']))
     const InfoRenderer = binding?.InfoRenderer
@@ -68,7 +68,7 @@ export const TextRendererRead = (
     {
         schema,
         ...props
-    }: WidgetProps & UIMetaReadContextType & WithScalarValue & StringRendererReadBaseProps,
+    }: WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & UIMetaReadContextType & StringRendererReadBaseProps,
 ): React.ReactElement => {
     return <StringRendererRead
         {...props}
@@ -78,7 +78,7 @@ export const TextRendererRead = (
 }
 
 export const NumberRendererRead = (
-    props: WidgetProps & UIMetaReadContextType & WithScalarValue & StringRendererReadBaseProps,
+    props: WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & UIMetaReadContextType & StringRendererReadBaseProps,
 ): React.ReactElement => {
     return <StringRendererRead
         {...props}

@@ -32,7 +32,7 @@ import { browserT } from '../t'
 import { UIApiProvider } from '@ui-schema/react/UIApi'
 import { TableAdvanced } from '@ui-schema/ds-material/Widgets/TableAdvanced'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
-import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
+import { SelectChipsBase as SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
 
 const customBinding: MuiWidgetsBinding = {
     ...baseComponents,
