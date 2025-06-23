@@ -20,7 +20,6 @@ const packages: [name: string, folder: string][] = [
     ['@ui-schema/dictionary', 'dictionary'],
     ['@ui-schema/material-dnd', 'material-dnd'],
     ['@ui-schema/material-pickers', 'material-pickers'],
-    ['@ui-schema/material-slate', 'material-slate'],
 ]
 
 const toPackageFolder = (pkg: [name: string, folder?: string]) => {

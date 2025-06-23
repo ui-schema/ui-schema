@@ -13,7 +13,6 @@ import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/Schema
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import React, { lazy, Suspense } from 'react'
 /*import {
     Color, ColorDialog,
     ColorSwatches,
@@ -30,6 +29,7 @@ import { DragDropBlockSelector } from '@ui-schema/material-dnd/DragDropBlockSele
 import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { TableAdvanced } from '@ui-schema/ds-material/Widgets'
+import { useMemo } from 'react'
 import { browserT } from '../../t'
 //import {WidgetColorful} from '@ui-schema/material-colorful'
 /*import {
@@ -57,7 +57,7 @@ const CustomTable = ({binding, ...props}: WidgetProps) => {
 
     // dynamic overwrite for all widgets, which need a special TableCell formatting
     // you can also only enable specific widgets here
-    const customWidgets = React.useMemo(() => ({
+    const customWidgets = useMemo(() => ({
         ...binding,
         widgets: {
             ...binding?.widgets,
@@ -145,9 +145,9 @@ const customWidgets: MuiWidgetsBinding & {
                 loader: () => import('@ui-schema/material-pickers').then(r => r.TimePicker),
                 loading: () => <LoadingCircular title={'Loading Time Widget'}/>,
             }),*/
-            EditorJS: (props) => <Suspense>
-                <LazyEditorJs {...props}/>
-            </Suspense>,
+            // EditorJS: (props) => <Suspense>
+            //     <LazyEditorJs {...props}/>
+            // </Suspense>,
             //     Loadable({
             //     loader: () => import('./EditorJSComp').then(r => r.EditorJSComp),
             //     loading: () => <LoadingCircular title={'Loading EditorJS'}/>,
@@ -167,8 +167,6 @@ const customWidgets: MuiWidgetsBinding & {
         },
     },
 }
-
-const LazyEditorJs = lazy(() => import('./EditorJSComp').then(r => ({default: r.EditorJSComp})))
 
 export const uiMeta = {
     validate: Validator([

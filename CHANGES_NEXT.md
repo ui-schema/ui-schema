@@ -395,9 +395,8 @@ new widget engine functions:
     - see issues:
         - https://github.com/ui-schema/ui-schema/issues/94
 - [ ] try out the `publishConfig.directory` option in `package.json`
-- [ ] remove slate/editorjs or migrate to basic react18 support
-    - migrate from `@mui/styles`
-    - upgrade peer deps to react18 support
+- [x] remove slate/editorjs ~~or migrate to basic react18 support~~
+    - too much work for too little use cases ~~migrate from `@mui/styles`, upgrade peer deps to react18 support~~
 - [x] remove schemaKeys, as they won't work in recursive references due to ever increasing keys list, also when merged in conditionals, no information if end of schemaKeys etc. exist
     - [x] remove schemaKeys
     - [x] ~~provide a util which can resolve storeKeys to applicable schemas, for splitSchema~~

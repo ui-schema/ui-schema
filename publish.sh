@@ -34,15 +34,7 @@ cd material-dnd
 cp README.md build/ && cp ../../LICENSE build/
 cd ../
 
-cd material-editorjs
-cp README.md build/ && cp ../../LICENSE build/
-cd ../
-
 cd material-pickers
-cp README.md build/ && cp ../../LICENSE build/
-cd ../
-
-cd material-slate
 cp README.md build/ && cp ../../LICENSE build/
 cd ../
 

@@ -10,8 +10,7 @@ import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import { TableRowProps, TableRowActionDelete } from '@ui-schema/ds-material/BaseComponents/Table'
 import { TableCellSchemaImmutable } from '@ui-schema/ds-material/Widgets/Table'
-import { useTheme, Theme } from '@mui/material/styles'
-import { SxProps } from '@mui/system'
+import { useTheme, Theme, SxProps } from '@mui/material/styles'
 
 const useStyles = (theme: Theme, {dense}: { dense: boolean }): SxProps => ({
     padding:

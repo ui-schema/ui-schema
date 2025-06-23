@@ -86,10 +86,6 @@
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/docs/widgets/EditorJS</loc>
-        <changefreq>weekly</changefreq>
-    </url>
-    <url>
         <loc>https://ui-schema.bemit.codes/docs/widgets/GenericList</loc>
         <changefreq>weekly</changefreq>
     </url>
@@ -99,10 +95,6 @@
     </url>
     <url>
         <loc>https://ui-schema.bemit.codes/docs/widgets/OptionsList</loc>
-        <changefreq>weekly</changefreq>
-    </url>
-    <url>
-        <loc>https://ui-schema.bemit.codes/docs/widgets/RichText</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>

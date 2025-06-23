@@ -137,20 +137,6 @@ const packages = {
         entry: path.resolve(__dirname, 'packages', 'material-pickers/src/'),
         babelTargets: babelTargetsEsmCjs,
     },
-    materialSlate: {
-        name: '@ui-schema/material-slate',
-        esmOnly: false,
-        root: path.resolve(__dirname, 'packages', 'material-slate'),
-        entry: path.resolve(__dirname, 'packages', 'material-slate/src/'),
-        babelTargets: babelTargetsEsmCjs,
-    },
-    materialEditorJs: {
-        name: '@ui-schema/material-editorjs',
-        esmOnly: false,
-        root: path.resolve(__dirname, 'packages', 'material-editorjs'),
-        entry: path.resolve(__dirname, 'packages', 'material-editorjs/src/'),
-        babelTargets: babelTargetsEsmCjs,
-    },
     materialDnd: {
         name: '@ui-schema/material-dnd',
         doServeWatch: false,
@@ -352,9 +338,7 @@ packer({
         const nonStrictPackages = [
             'dsMaterial',
             'materialDnd',
-            'materialEditorjs',
             'materialPickers',
-            'materialSlate',
         ]
         return Promise.all([
             makeModulePackageJson(transformerForEsmCjs)(

@@ -42,7 +42,6 @@
         "@types/react": "^18.0",
         "@types/react-dom": "^18.0",
         "@mui/material": "^5.1",
-        "@mui/system": "^5.1",
         "@mui/icons-material": "^5.1",
         "@emotion/react": "^11.9.0",
         "@emotion/styled": "^11.8.1",

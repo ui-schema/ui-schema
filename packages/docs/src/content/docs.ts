@@ -6,7 +6,6 @@ import { demoDateTimePickers } from './docs/widgets/DateTimePickersDemo'
 import { demoGenericList } from './docs/widgets/GenericListDemo'
 import { demoGridHandler } from './docs/widgets/GridHandlerDemo'
 import { demoOptionsList } from './docs/widgets/OptionsListDemo'
-import { demoRichText } from './docs/widgets/RichTextDemo'
 import { demoNumberSlider } from './docs/widgets/NumberSliderDemo'
 import { demoSelect } from './docs/widgets/SelectDemo'
 import { demoSimpleList } from './docs/widgets/SimpleListDemo'
@@ -14,7 +13,6 @@ import { demoStepper } from './docs/widgets/StepperDemo'
 import { demoSwitch } from './docs/widgets/SwitchDemo'
 import { demoTable } from './docs/widgets/TableDemo'
 import { demoTextField } from './docs/widgets/TextFieldDemo'
-import { demoEditorJS } from './docs/widgets/EditorJSDemo'
 import { demoDragnDropGenericDemo } from './docs/material-dnd/widgets-genericDemo'
 import { demoSelectChips } from './docs/widgets/SelectChipsDemo'
 import { demoCard } from './docs/widgets/CardDemo'
@@ -142,11 +140,6 @@ export const routesFurtherDesignSystem = [
                     schema: demoDateTimePickers,
                 },
             }),
-            createDoc('widgets/EditorJS', 'EditorJS', {
-                demos: {
-                    schema: demoEditorJS,
-                },
-            }),
             createDoc('widgets/GenericList', 'Generic List', {
                 demos: {
                     schema: demoGenericList,
@@ -160,11 +153,6 @@ export const routesFurtherDesignSystem = [
             createDoc('widgets/OptionsList', 'Options List', {
                 demos: {
                     schema: demoOptionsList,
-                },
-            }),
-            createDoc('widgets/RichText', 'Rich-Text / Rich-Content', {
-                demos: {
-                    schema: demoRichText,
                 },
             }),
             createDoc('widgets/NumberSlider', 'Number Slider', {
