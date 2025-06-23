@@ -1,7 +1,7 @@
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { OrderedMap } from 'immutable'
 import React from 'react'
-import { NextPluginRenderer, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import clsx from 'clsx'
 
 export const getGridClasses = (schema: UISchemaMap): string[] => {
@@ -41,14 +41,14 @@ const GroupRenderer = ({children}: React.PropsWithChildren) =>
     </div>
 
 const SchemaGridHandler = <P extends WidgetPluginProps>(props: P) => {
-    const {schema, noGrid, isVirtual} = props
+    const {schema, noGrid, Next, isVirtual} = props
 
     if (noGrid || isVirtual || schema.getIn(['view', 'noGrid'])) {
-        return <NextPluginRenderer {...props}/>
+        return <Next.Component {...props}/>
     }
 
     return <SchemaGridItem schema={schema}>
-        <NextPluginRenderer {...props}/>
+        <Next.Component {...props}/>
     </SchemaGridItem>
 }
 

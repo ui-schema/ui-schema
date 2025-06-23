@@ -13,7 +13,7 @@ const ObjectRendererBase = (
         schema, storeKeys,
         // for performance reasons, not pushing errors deeper
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        errors,
+        errors, value, internalValue, valid,
         ...props
     }: ObjectRendererProps,
 ): ReactNode => {

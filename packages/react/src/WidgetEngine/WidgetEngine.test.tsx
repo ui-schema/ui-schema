@@ -1,119 +1,138 @@
 /**
  * @jest-environment jsdom
  */
-import { NoWidget } from '@ui-schema/react/NoWidget'
 import { it, expect, describe, jest } from '@jest/globals'
 import { render, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'
-import { NextPluginRenderer, NextPluginRendererMemo, WidgetEngine, WidgetPluginType } from '@ui-schema/react/WidgetEngine'
+import { NoWidget } from '@ui-schema/react/NoWidget'
+import { makeNext, NextPluginMemo, WidgetEngine, WidgetPluginType } from '@ui-schema/react/WidgetEngine'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { List, OrderedMap } from 'immutable'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 
 describe('NextPluginRenderer', () => {
+    const mockProps = {
+        storeKeys: List<string | number>(),
+        onChange: undefined as any,
+        value: undefined,
+        internalValue: undefined,
+        t: text => text,
+        currentPluginIndex: -1,
+    }
     it('Empty NextPluginRenderer', async () => {
-        const {queryByText} = render(
-            <NextPluginRenderer
-                binding={{
-                    NoWidget: NoWidget,
-                    widgetPlugins: [
-                        WidgetRenderer,
-                    ] satisfies WidgetPluginType[],
-                }}
-                currentPluginIndex={-1}
-                schema={createOrderedMap({type: 'string'})}
-            />,
-        )
-        expect(queryByText('missing-type-string') !== null).toBeTruthy()
-    })
-    it('Single NextPluginRenderer - current', async () => {
-        const {queryByText} = render(
-            <NextPluginRenderer
-                binding={{
-                    NoWidget: NoWidget,
-                    widgetPlugins: [
-                        (p) => <>
-                            <span>plugin-1</span>
-                            <NextPluginRenderer {...p}/>
-                        </>,
-                        WidgetRenderer,
-                    ] satisfies WidgetPluginType[],
-                }}
-                currentPluginIndex={-1}
-                schema={createOrderedMap({type: 'string'})}
-            />,
-        )
-        expect(queryByText('plugin-1') !== null).toBeTruthy()
-        expect(queryByText('missing-type-string') !== null).toBeTruthy()
-    })
-    it('Single NextPluginRenderer - current · memo', async () => {
-        const {queryByText} = render(
-            <NextPluginRendererMemo
-                binding={{
-                    NoWidget: NoWidget,
-                    widgetPlugins: [
-                        (p) => <>
-                            <span>plugin-1</span>
-                            <NextPluginRendererMemo {...p}/>
-                        </>,
-                        WidgetRenderer,
-                    ] satisfies WidgetPluginType[],
-                }}
-                currentPluginIndex={-1}
-                schema={createOrderedMap({type: 'string'})}
-            />,
-        )
-        expect(queryByText('plugin-1') !== null).toBeTruthy()
-        expect(queryByText('missing-type-string') !== null).toBeTruthy()
-    })
-    it('Single NextPluginRenderer - prev', async () => {
-        const {queryByText} = render(
-            <NextPluginRenderer
-                binding={{
-                    NoWidget: NoWidget,
-                    widgetPlugins: [
-                        (p) => <>
-                            <span>plugin-1</span>
-                            <NextPluginRenderer {...p}/>
-                        </>,
-                        WidgetRenderer,
-                    ] satisfies WidgetPluginType[],
-                }}
-                currentPluginIndex={0} // simulate that the first plugin was already rendered
-                schema={createOrderedMap({type: 'string'})}
-            />,
-        )
-        expect(queryByText('plugin-1') === null).toBeTruthy()
-        expect(queryByText('missing-type-string') !== null).toBeTruthy()
-    })
-    it('Single NextPluginRenderer - err', async () => {
+        const Next = makeNext([] satisfies WidgetPluginType[])
         // disable default log inside react lib.
         jest.spyOn(console, 'error').mockImplementation(() => jest.fn())
 
         await waitFor(
             () => expect(
                 () => render(
-                    <NextPluginRenderer
-                        binding={{
-                            NoWidget: NoWidget,
-                            widgetPlugins: [
-                                (p) => <>
-                                    <span>plugin-1</span>
-                                    <NextPluginRenderer {...p}/>
-                                </>,
-                            ] satisfies WidgetPluginType[],
-                        }}
-                        currentPluginIndex={-1}
+                    <Next.Component
                         schema={createOrderedMap({type: 'string'})}
+                        {...mockProps}
                     />,
                 ),
             )
-                .toThrow('WidgetPlugin overflow, no plugin at 1.'),
+                .toThrow('WidgetPlugin overflow, no plugins.'),
         )
 
         jest.restoreAllMocks()
     })
+    it('Single NextPluginRenderer - current', async () => {
+        const Next = makeNext([
+            ({Next, ...p}) => <>
+                <span>plugin-1</span>
+                <Next.Component {...p}/>
+            </>,
+            WidgetRenderer,
+        ] satisfies WidgetPluginType[])
+        const {queryByText} = render(
+            <Next.Component
+                schema={createOrderedMap({type: 'string'})}
+                binding={{
+                    NoWidget: NoWidget,
+                }}
+                {...mockProps}
+            />,
+        )
+        expect(queryByText('plugin-1') !== null).toBeTruthy()
+        expect(queryByText('missing-type-string') !== null).toBeTruthy()
+    })
+    it('Single NextPluginRenderer - current · memo', async () => {
+        const Next = makeNext([
+            (p) => <>
+                <span>plugin-1</span>
+                <NextPluginMemo {...p}/>
+            </>,
+            WidgetRenderer,
+        ] satisfies WidgetPluginType[])
+        const {queryByText} = render(
+            <Next.Component
+                schema={createOrderedMap({type: 'string'})}
+                binding={{
+                    NoWidget: NoWidget,
+                }}
+                {...mockProps}
+            />,
+        )
+        expect(queryByText('plugin-1') !== null).toBeTruthy()
+        expect(queryByText('missing-type-string') !== null).toBeTruthy()
+    })
+    // (impossible now, when using <Next/>)
+    // it('Single NextPluginRenderer - prev', async () => {
+    //     const Next = makeNext([
+    //         WidgetRenderer,
+    //     ] satisfies WidgetPluginType[])
+    //     const {queryByText} = render(
+    //         <NextPluginRenderer
+    //             binding={{
+    //                 NoWidget: NoWidget,
+    //                 widgetPlugins: [
+    //                     (p) => <>
+    //                         <span>plugin-1</span>
+    //                         <NextPluginRenderer {...p}/>
+    //                     </>,
+    //                     WidgetRenderer,
+    //                 ] satisfies WidgetPluginType[],
+    //             }}
+    //             currentPluginIndex={0} // simulate that the first plugin was already rendered
+    //             schema={createOrderedMap({type: 'string'})}
+    //         />,
+    //     )
+    //     expect(queryByText('plugin-1') === null).toBeTruthy()
+    //     expect(queryByText('missing-type-string') !== null).toBeTruthy()
+    // })
+    // it('Single NextPluginRenderer - err', async () => {
+    //     const Next = makeNext([
+    //         WidgetRenderer,
+    //     ] satisfies WidgetPluginType[])
+    //     // disable default log inside react lib.
+    //     jest.spyOn(console, 'error').mockImplementation(() => jest.fn())
+    //
+    //     await waitFor(
+    //         () => expect(
+    //             () => render(
+    //                 <NextPluginRenderer
+    //                     binding={{
+    //                         NoWidget: NoWidget,
+    //                         widgetPlugins: [
+    //                             (p) => <>
+    //                                 <span>plugin-1</span>
+    //                                 <NextPluginRenderer {...p}/>
+    //                             </>,
+    //                         ] satisfies WidgetPluginType[],
+    //                     }}
+    //                     currentPluginIndex={-1}
+    //                     schema={createOrderedMap({type: 'string'})}
+    //                 />,
+    //             ),
+    //         )
+    //             .toThrow('WidgetPlugin overflow, no plugin at 1.'),
+    //     )
+    //
+    //     jest.restoreAllMocks()
+    // })
 
     it('Plugin Stack - noSchema', async () => {
         const {queryByText} = render(

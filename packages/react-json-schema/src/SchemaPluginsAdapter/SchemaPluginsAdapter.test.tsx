@@ -6,7 +6,6 @@ import { render } from '@testing-library/react'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
 import { WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
-import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { SchemaPlugin, SchemaPluginProps } from '@ui-schema/ui-schema/SchemaPlugin'
 import { SchemaPluginStack } from '@ui-schema/ui-schema/SchemaPluginStack'
 import { List, OrderedMap } from 'immutable'
@@ -18,17 +17,7 @@ describe('SchemaPluginsAdapter', () => {
         ])
         const {queryByText} = render(
             <SchemaPluginsAdapter
-                binding={{
-                    widgets: {
-                        types: {
-                            string: ({valid}: { valid?: boolean, handled?: boolean }) =>
-                                valid ? 'is-valid' : 'is-invalid',
-                        },
-                    },
-                    widgetPlugins: [
-                        WidgetRenderer,
-                    ],
-                }}
+                binding={{}}
                 schema={createOrderedMap({type: 'string'})}
                 currentPluginIndex={-1}
                 storeKeys={List()}
@@ -36,6 +25,14 @@ describe('SchemaPluginsAdapter', () => {
                 internalValue={undefined}
                 onChange={undefined as any}
                 t={text => text}
+                Next={{
+                    name: 'MockWidgetNext',
+                    plugin: null,
+                    index: -1,
+                    Component:
+                        ({valid}: { valid?: boolean, handled?: boolean }) =>
+                            valid ? 'is-valid' : 'is-invalid',
+                }}
             />,
         )
         expect(queryByText('is-valid') !== null).toBeTruthy()

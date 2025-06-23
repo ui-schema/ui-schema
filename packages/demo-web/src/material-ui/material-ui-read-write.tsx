@@ -29,7 +29,7 @@ import Box from '@mui/material/Box'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { WidgetOptionsRead } from '@ui-schema/ds-material/WidgetsRead/WidgetOptionsRead'
 import { GroupRendererProps, WidgetProps } from '@ui-schema/react/Widgets'
-import { UIMetaContext, UIMetaProvider, useUIMeta } from '@ui-schema/react/UIMeta'
+import { UIMetaContext, UIMetaContextInternal, UIMetaProvider, useUIMeta } from '@ui-schema/react/UIMeta'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
@@ -40,7 +40,7 @@ import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 
 // custom `GroupRenderer` that supports `is-read and display-dense`
 const GroupRenderer: React.ComponentType<GroupRendererProps> = ({schema, children, noGrid}) => {
-    const {readDense, readActive} = useUIMeta<UIMetaContext & UIMetaReadContextType>()
+    const {readDense, readActive} = useUIMeta<UIMetaContextInternal & UIMetaReadContextType>()
     return noGrid ? children as unknown as React.ReactElement :
         <Grid
             container

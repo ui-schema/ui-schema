@@ -1,6 +1,6 @@
 import React from 'react'
 import { Map } from 'immutable'
-import { getNextPlugin, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 
 export interface DefaultHandlerProps {
     doNotDefault?: boolean
@@ -8,11 +8,8 @@ export interface DefaultHandlerProps {
 }
 
 export const DefaultHandler: React.FC<DefaultHandlerProps & WidgetPluginProps> = (props) => {
-    const {schema, currentPluginIndex, doNotDefault, readOnly} = props
-    const next = currentPluginIndex + 1
-    // @ts-expect-error feature experiment
+    const {schema, doNotDefault, readOnly} = props
     const Next = props.Next
-    const Plugin = Next || getNextPlugin(next, props.binding)
 
     const defaultVal = schema.get('default')
 
@@ -53,10 +50,11 @@ export const DefaultHandler: React.FC<DefaultHandlerProps & WidgetPluginProps> =
         nextValue = defaultVal
     }
 
-    return <Plugin
+    if (!Next) return null
+
+    return <Next.Component
         {...props}
         value={nextValue}
-        currentPluginIndex={Next ? undefined : next}
     />
 }
 

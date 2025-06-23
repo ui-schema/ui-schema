@@ -3,10 +3,11 @@ import { ValidateFn } from '@ui-schema/ui-schema/Validate'
 import { createContext, PropsWithChildren, useContext } from 'react'
 import { Translator } from '@ui-schema/ui-schema/Translator'
 import { WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { NextWidgetPlugin, useNext } from '@ui-schema/react/WidgetEngine'
 
-const UIMetaContextObj = createContext<UIMetaContext>({
-    t: text => text,
-})
+export interface UIMetaContextInternal<W = WidgetsBindingFactory, P = {}> extends UIMetaContext<W> {
+    Next: NextWidgetPlugin<P>
+}
 
 export interface UIMetaContext<W = WidgetsBindingFactory> {
     binding?: W
@@ -14,18 +15,29 @@ export interface UIMetaContext<W = WidgetsBindingFactory> {
     validate?: ValidateFn
 }
 
-export function UIMetaProvider<C extends {}, W = WidgetsBindingFactory>(
+const UIMetaContextObj = createContext<UIMetaContextInternal<any, any>>({
+    t: text => text,
+    // todo: this obj. is awful as solution for no-widgets/no-context rendering, even for tests
+    // @ts-expect-error initialize with some dummy Next, for contextless tests;
+    Next: {Component: ({WidgetOverride, ...props}) => WidgetOverride ? <WidgetOverride {...props}/> : null},
+})
+
+export function UIMetaProvider<C extends {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(
     {children, ...props}: PropsWithChildren<
         UIMetaContext<W> &
-        NoInfer<C>
+        Omit<NoInfer<C>, keyof UIMetaContext<W> | 'children'>
     >,
 ) {
-    const ctx = useMemoObject(props)
-    return <UIMetaContextObj.Provider value={ctx as UIMetaContext}>
+    const Next = useNext(props.binding?.widgetPlugins)
+    const ctx = useMemoObject({
+        ...props,
+        Next: Next,
+    })
+    return <UIMetaContextObj.Provider value={ctx}>
         {children}
     </UIMetaContextObj.Provider>
 }
 
-export const useUIMeta = <C extends UIMetaContext = UIMetaContext>(): C => {
+export const useUIMeta = <C extends UIMetaContextInternal<any, any> = UIMetaContextInternal>(): C => {
     return useContext(UIMetaContextObj) as C
 }

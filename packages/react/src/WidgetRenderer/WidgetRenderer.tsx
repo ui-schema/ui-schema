@@ -9,7 +9,7 @@ import type { WithValue } from '@ui-schema/react/UIStore'
 import type { SchemaKeywordType, SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import type { MatchProps, NoWidgetProps, WidgetProps } from '@ui-schema/react/Widgets'
 
-export interface WidgetRendererProps extends Omit<WidgetPluginProps, 'binding' | 'currentPluginIndex'> {
+export interface WidgetRendererProps extends Omit<WidgetPluginProps, 'binding' | 'currentPluginIndex' | 'Next'> {
     WidgetOverride?: WidgetEngineOverrideProps['WidgetOverride']
     // current number of plugin in the stack, received when executed as generic widget
     // but not when used on its own
@@ -33,6 +33,9 @@ export const WidgetRenderer = <A = UIStoreActions, B = {}, WP extends WidgetProp
         onErrors,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         currentPluginIndex,
+        // @ts-expect-error is currently omitted from props, as not needed, will still be passed down, lets prevent it from reaching Widget
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        Next,
         // `props` contains all props accumulated in the WidgetEngine
         ...props
     }:

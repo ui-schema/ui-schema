@@ -1,5 +1,5 @@
 import React from 'react'
-import { getNextPlugin, NextPluginRendererMemo, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { useUIStore } from '@ui-schema/react/UIStore'
 import { mergeSchema } from '@ui-schema/ui-schema/Utils/mergeSchema'
 import { List, Map } from 'immutable'
@@ -9,7 +9,7 @@ const DependentRenderer: React.FC<WidgetPluginProps & {
     dependencies?: List<string> | UISchemaMap
     dependentSchemas?: UISchemaMap
     dependentRequired?: List<string>
-}> = ({dependencies, dependentSchemas, dependentRequired, ...props}) => {
+}> = ({dependencies, dependentSchemas, dependentRequired, Next, ...props}) => {
     const {schema, storeKeys} = props
     const {store} = useUIStore()
 
@@ -53,16 +53,14 @@ const DependentRenderer: React.FC<WidgetPluginProps & {
         return parsedSchema
     }, [currentValues, schema, dependencies, dependentSchemas, dependentRequired])
 
-    return <NextPluginRendererMemo {...props} schema={parsedSchema}/>
+    return <Next.Component {...props} schema={parsedSchema}/>
 }
 
 /**
  * @deprecated use new validatorPlugin instead
  */
 export const DependentHandler: React.FC<WidgetPluginProps> = (props) => {
-    const {schema, currentPluginIndex} = props
-    const next = currentPluginIndex + 1
-    const Plugin = getNextPlugin(next, props.binding)
+    const {schema, Next} = props
 
     const dependencies = schema.get('dependencies')
     const dependentSchemas = schema.get('dependentSchemas')
@@ -75,5 +73,5 @@ export const DependentHandler: React.FC<WidgetPluginProps> = (props) => {
             dependentRequired={dependentRequired}
             {...props}
         /> :
-        <Plugin {...props} currentPluginIndex={next}/>
+        <Next.Component {...props}/>
 }

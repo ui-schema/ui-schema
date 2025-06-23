@@ -1,7 +1,7 @@
 import React from 'react'
 import Grid, { GridSize, GridSpacing } from '@mui/material/Grid'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { getNextPlugin, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { OrderedMap } from 'immutable'
 import { GroupRendererProps } from '@ui-schema/react/Widgets'
 
@@ -60,9 +60,7 @@ export const GroupRenderer: React.ComponentType<React.PropsWithChildren<GroupRen
         </Grid>
 
 export const SchemaGridHandler = <P extends WidgetPluginProps>(props: P): React.ReactElement => {
-    const {schema, noGrid: noGridProp, isVirtual, currentPluginIndex} = props
-    const next = currentPluginIndex + 1
-    const Plugin = getNextPlugin(next, props.binding)
+    const {schema, noGrid: noGridProp, isVirtual, Next} = props
 
     const align = schema.getIn(['view', 'align'])
     const style: React.CSSProperties = React.useMemo(() => ({
@@ -72,7 +70,7 @@ export const SchemaGridHandler = <P extends WidgetPluginProps>(props: P): React.
     // todo: support `hidden: true` for object type here? e.g. only available after if/else/then eval
     // todo: using `noGrid` may produce an empty `GridContainer` (when all props e.g. hidden/noGrid), can this be optimized?
     const noGrid = (noGridProp || isVirtual || schema.getIn(['view', 'noGrid']))
-    const nestedNext = <Plugin {...props} currentPluginIndex={next}/>
+    const nestedNext = <Next.Component {...props}/>
 
     return noGrid ? nestedNext :
         <SchemaGridItem schema={schema} style={style}>

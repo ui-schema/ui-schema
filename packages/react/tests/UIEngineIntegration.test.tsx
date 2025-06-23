@@ -29,7 +29,7 @@ import { JsonSchema } from '@ui-schema/json-schema/Definitions'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { NextPluginRenderer, WidgetEngine } from '@ui-schema/react/WidgetEngine'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 
 /**
  * This file serves as general integration test
@@ -63,7 +63,7 @@ widgets.GroupRenderer =
 // todo: make three separate and ensure test are the same, one with legacy, one with modern, one both mixed (as far as supported)
 const widgetPluginsLegacy = [
     // plugin to have every widget in its own div - to query against in tests
-    (props) => <div><NextPluginRenderer {...props}/></div>,
+    ({Next, ...props}) => <div><Next.Component {...props}/></div>,
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     ReferencingHandler,
     // ExtractStorePlugin,
@@ -84,7 +84,7 @@ const widgetPluginsLegacy = [
 
 const widgetPlugins = [
     // plugin to have every widget in its own div - to query against in tests
-    (props) => <div><NextPluginRenderer {...props}/></div>,
+    ({Next, ...props}) => <div><Next.Component {...props}/></div>,
     DefaultHandler,
     schemaPluginsAdapterBuilder([
         validatorPlugin,

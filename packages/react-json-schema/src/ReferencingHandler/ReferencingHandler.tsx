@@ -6,13 +6,13 @@ import {
     isRootSchema, useSchemaRoot,
 } from '@ui-schema/react-json-schema/SchemaRootProvider'
 import { useSchemaRef } from '@ui-schema/react-json-schema/ReferencingHandler'
-import { NextPluginRendererMemo, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { getSchemaId } from '@ui-schema/ui-schema/Utils/getSchema'
 
 /**
  * @deprecated use new validatorPlugin with SchemaResource instead
  */
-export const ReferencingHandler: React.FC<WidgetPluginProps & { rootContext?: { [k: string]: any } }> = ({rootContext, ...props}) => {
+export const ReferencingHandler: React.FC<WidgetPluginProps & { rootContext?: { [k: string]: any } }> = ({rootContext, Next, ...props}) => {
     const {schema: baseSchema, isVirtual} = props
     const {schema: maybeRootSchema, definitions: maybeDefinitions, ...nestedRootProps} = useSchemaRoot()
     const isRoot = Boolean(isRootSchema(baseSchema) || rootContext || baseSchema.get('definitions') || baseSchema.get('$defs'))
@@ -21,13 +21,14 @@ export const ReferencingHandler: React.FC<WidgetPluginProps & { rootContext?: { 
         maybeRootSchema, definitions, isRoot, baseSchema,
     )
 
+    // todo: Next was memoized here
     return (
         refsPending && refsPending.size > 0 ?
             isVirtual ? null : <Translate text={'labels.loading'} fallback={'Loading'}/> :
             isRoot ?
                 <SchemaRootProvider {...nestedRootProps} {...(rootContext || {})} id={getSchemaId(schema)} schema={schema} definitions={definitions}>
-                    <NextPluginRendererMemo {...props} schema={schema}/>
+                    <Next.Component {...props} schema={schema}/>
                 </SchemaRootProvider> :
-                <NextPluginRendererMemo {...props} schema={schema}/>
+                <Next.Component {...props} schema={schema}/>
     ) as unknown as React.ReactElement
 }

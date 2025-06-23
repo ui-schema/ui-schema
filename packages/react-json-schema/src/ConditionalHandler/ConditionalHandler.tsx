@@ -1,12 +1,12 @@
 import { FC } from 'react'
-import { NextPluginRendererMemo, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { handleIfElseThen } from './handleIfElseThen.js'
 
 /**
  * @deprecated use new validatorPlugin instead
  */
 export const ConditionalHandler: FC<WidgetPluginProps> = (props) => {
-    const {value, validate} = props
+    const {value, validate, Next} = props
     let {schema} = props
 
     const keyIf = schema.get('if')
@@ -15,5 +15,5 @@ export const ConditionalHandler: FC<WidgetPluginProps> = (props) => {
         schema = handleIfElseThen(schema, value, schema, {validate: validate})
     }
 
-    return <NextPluginRendererMemo {...props} schema={schema}/>
+    return <Next.Component {...props} schema={schema}/>
 }

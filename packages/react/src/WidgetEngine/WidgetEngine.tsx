@@ -1,15 +1,14 @@
 import { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { StoreKeyType } from '@ui-schema/ui-schema/ValueStore'
 import { WidgetPayloadFieldSchema, WidgetPayloadFieldLocation, WidgetPayload } from '@ui-schema/ui-schema/Widget'
-import { ComponentType, ReactElement, ReactNode, useMemo } from 'react'
+import { ComponentType, ReactNode } from 'react'
 import { List } from 'immutable'
-import { getDisplayName, memo } from '@ui-schema/react/Utils/memo'
-import { UIMetaContext, useUIMeta } from '@ui-schema/react/UIMeta'
+import { UIMetaContext, UIMetaContextInternal, useUIMeta } from '@ui-schema/react/UIMeta'
 import { onErrorHandler } from '@ui-schema/ui-schema/ValidatorOutput'
 import { StoreKeys, useUIConfig, useUIStore, WithValue } from '@ui-schema/react/UIStore'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
-import { WidgetEngineErrorBoundary, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
-import { WidgetType, WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { NextPluginMemo, WidgetEngineErrorBoundary, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import { WidgetType, WidgetProps } from '@ui-schema/react/Widgets'
 import { useUIStoreActions } from '@ui-schema/react/UIStoreActions'
 
 type WidgetEngineRootProps = {
@@ -86,7 +85,8 @@ export const WidgetEngine = <
       Partial<NoInfer<CMeta>> &
       Omit<WidgetEngineOverrideProps<PWidget, TWidgetOverride>, keyof WidgetEngineProps | keyof NoInfer<CMeta> | keyof WithValue>): ReactNode => {
     type U = object
-    const {binding, ...meta} = useUIMeta<NoInfer<CMeta>>()
+    // todo: Next isn't fully typed with same as incoming props
+    const {binding, Next, ...meta} = useUIMeta<NoInfer<CMeta> & UIMetaContextInternal<{}, WidgetPluginProps<{}>>>()
     const config = useUIConfig<U>()
     const {store, showValidity} = useUIStore()
     const {onChange} = useUIStoreActions()
@@ -127,23 +127,17 @@ export const WidgetEngine = <
     //       (only not more, not improving the current situation)
     const isVirtual = Boolean(props.isVirtual || schema?.get('hidden'))
 
-    // todo: directly use getNextPlugin here, but how to ensure there is a memoized layer?! telling users to add that as a plugin themself?
-    //       or... again adding a store connector widgetPlugin, and here not doing any memo at all (needs try w/ perf. check)
-    //       with migrating to a external store #120 it may be not needed any more at all / the WidgetEngine itself could be memoized instead
-
-    const Next = useNext(activeWidgets?.widgetPlugins)
-
-    if (!Next || !activeWidgets?.widgetPlugins?.length) {
+    if (!Next/* || !activeWidgets?.widgetPlugins?.length*/) {
         // todo: TBD, keep failure without context/without widgetsPlugins or allow any thing optional?
         return null
     }
 
     const stack =
-        // <NextPluginRendererMemo<{}, U, WidgetsBindingFactory>
-        <RenderMemo
+        <NextPluginMemo
             {...meta}
             {...config}
             {...nestedProps}
+            Next={Next}
 
             // `showValidity` is overridable by render flow, e.g. nested Stepper
             showValidity={props.showValidity || showValidity}
@@ -158,7 +152,6 @@ export const WidgetEngine = <
             internalValue={values?.internalValue}
             valid
 
-            Component={Next.Component}
             currentPluginIndex={-1}
             isVirtual={isVirtual}
             binding={activeWidgets}
@@ -191,120 +184,3 @@ export const WidgetEngine = <
             wrappedStack :
         null
 }
-
-/**
- * A simple replacement for rendering components with immutable props in a memoized way without the component being memoized.
- * To use native memo and its special `isEqual`, which no other hook has and would need extra tracking of prev values and comparing.
- * @experimental
- */
-const RenderMemoBase = <P = {}>(
-    {Component, ...props}: { Component: ComponentType<Omit<P, 'Component'>> } & Omit<P, 'Component'>,
-) => {
-    return <Component {...props as Omit<P, 'Component'>}/>
-}
-const RenderMemo = memo(RenderMemoBase) as typeof RenderMemoBase
-
-/**
- * Super simple PoC for `Next` wrapped widget plugin stack, which should be materialized in binding/context,
- * still using index to provide compatibility with non migrated plugins.
- * @todo finalize, move out of here, be sure to adjust memo like explained above to work here, do we want to memo the first component here?!
- *
- * the only "less overhead" with the same DX is using render functions - which are no longer JSX elements themself,
- * which brings a lot of draw backs in terms of types, hot reload and (imho.) general react best practice,
- * and I think could even break hook usage, due to it being possible that the widgetPlugins change dynamically,
- * which wouldn't be (i think) recognized with normal react un/mounts.
- *
- * type PluginRenderFn = (props: PluginProps, next: PluginRenderFn | null) => ReactNode;
- *
- * function renderPluginChain(plugins: PluginRenderFn[], props: PluginProps): ReactNode {
- *     const invoke = (i: number): ReactNode => {
- *         if (i >= plugins.length) return null
- *         const plugin = plugins[i]
- *         return plugin(props, (nextProps) => invoke(i + 1))
- *     }
- *     return invoke(0)
- * }
- *
- * // here `Next` is the second argument and no longer in `props` itself
- * const MyPlugin: PluginRenderFn = (props, Next) => {
- *     // ... do something with props
- *     return <div>
- *         {Next ? Next(props) : null}
- *     </div>
- * }
- */
-const useNext = (widgetPlugins: any[] | undefined | null) => {
-    return useMemo(() => {
-        let First: {
-            Component: any
-            plugin: any
-            index: number
-            name: string
-        } | undefined = undefined
-
-        if (widgetPlugins && widgetPlugins.length > 0) {
-            for (let i = widgetPlugins.length - 1; i >= 0; i--) {
-                const widgetPlugin = widgetPlugins[i]
-                const Next = widgetPlugin
-                const NextNextComponent = First?.Component
-                const name = getDisplayName(Next) || `Plugin${i}`
-                const Component = (props: any) => {
-                    return <Next
-                        {...props}
-                        Next={NextNextComponent}
-                        currentPluginIndex={i}
-                        // currentPluginIndex={props.currentPluginIndex}
-                    />
-                }
-                Component.displayName = `WidgetPlugin(${name})`
-                First = {
-                    Component,
-                    plugin: widgetPlugin,
-                    name: name,
-                    index: i,
-                }
-            }
-        }
-
-        // todo: decide if this is the best replacement or enforcing using a memo plugin
-        //       and not only the First is sometimes needed, but also
-        //       just before rendering a widget if the schema was e.g. normalized
-        // if (First) {
-        //     First.Component = memo(First.Component)
-        // }
-
-        return First
-    }, [widgetPlugins])
-}
-
-export const getNextPlugin =
-    <C = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(
-        next: number,
-        {widgetPlugins: wps}: W | undefined = {} as W,
-    ): ComponentType<WidgetPluginProps & NoInfer<C>> => {
-        if (wps && next in wps) {
-            return wps[next] as ComponentType<WidgetPluginProps & NoInfer<C>>
-        }
-
-        throw new Error(`WidgetPlugin overflow, no plugin at ${next}.`)
-    }
-
-// todo: replace with some simpler typed replacement for the legacy widgetPlugins,
-//       deprecate and migrate to normal usage of `getNextPlugin`
-// export const NextPluginRenderer = <C = {}, U extends object = object, W extends WidgetsBindingFactory = WidgetsBindingFactory, P extends WidgetPluginProps<W> = WidgetPluginProps<W>>(
-export const NextPluginRenderer = <C extends object>(
-    {
-        currentPluginIndex,
-        ...props
-    }: NoInfer<C> & { currentPluginIndex: number } & any & WidgetProps,// WidgetPluginProps2,
-): ReactElement => {
-    type W = any
-    type P = any
-    type U = any
-    const next = currentPluginIndex + 1
-    const Plugin = getNextPlugin<C, W>(next, props.binding)
-    return <Plugin {...{currentPluginIndex: next, ...props} as P & C & U}/>
-}
-
-// export const NextPluginRendererMemo = memo(NextPluginRenderer) as <C = {}, U extends {} = {}, W extends WidgetsBindingFactory = WidgetsBindingFactory, P extends WidgetPluginProps<W> = WidgetPluginProps<W>>(props: P & C & U) => ReactElement
-export const NextPluginRendererMemo = memo(NextPluginRenderer)

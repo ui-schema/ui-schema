@@ -45,7 +45,7 @@ export function mergeSchemas(baseSchema: any, ...appliedSchemas: any[]) {
     return schema
 }
 
-export const validatorPlugin: SchemaPlugin<Omit<WidgetPluginProps, 'currentPluginIndex'> & { resource?: SchemaResource }> = {
+export const validatorPlugin: SchemaPlugin<Omit<WidgetPluginProps, 'currentPluginIndex' | 'Next'> & { resource?: SchemaResource }> = {
     handle: (props) => {
         if (!props.validate) return {}
         const ownKey = props.storeKeys?.last()

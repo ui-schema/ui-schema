@@ -38,48 +38,46 @@ describe('WidgetRenderer', () => {
     it('virtual widget object', async () => {
         const value = createOrderedMap({dummy: ['lorem ipsum', 42]})
         const store = createStore(value)
+        const widgets = {
+            VirtualRenderer: VirtualWidgetRenderer,
+            widgets: {
+                types: {
+                    string: () => 'string-renderer',
+                    number: () => 'number-renderer',
+                },
+            },
+            widgetPlugins: [
+                WidgetRenderer,
+            ],
+        }
         const {queryByText, queryAllByText} = render(
-            // @ts-expect-error
-            <UIStoreProvider
-                // @ts-expect-error
-                store={store}
-                // @ts-ignore
-                onChange={undefined}
-            >
-                <WidgetRenderer<UIStoreActions, {}, { virtualWidgets: typeof virtualWidgets } & WidgetProps>
-                    binding={{
-                        VirtualRenderer: VirtualWidgetRenderer,
-                        widgets: {
-                            types: {
-                                string: () => 'string-renderer',
-                                number: () => 'number-renderer',
+            <UIMetaProvider binding={widgets} t={translateRelative}>
+                <UIStoreProvider
+                    store={store}
+                    onChange={undefined as any}
+                >
+                    <WidgetRenderer<UIStoreActions, {}, { virtualWidgets: typeof virtualWidgets } & WidgetProps>
+                        binding={widgets}
+                        value={value}
+                        virtualWidgets={virtualWidgets}
+                        schema={createOrderedMap({
+                            type: 'object',
+                            properties: {
+                                dummy: {
+                                    type: 'string',
+                                },
+                                dummy_nr: {
+                                    type: 'number',
+                                },
                             },
-                        },
-                        // @ts-expect-error expand typing or use meta provider? virtual relies on WidgetEngine,
-                        // thus requires a `WidgetRenderer` for nested rendering
-                        widgetPlugins: [
-                            WidgetRenderer,
-                        ],
-                    }}
-                    value={value}
-                    virtualWidgets={virtualWidgets}
-                    schema={createOrderedMap({
-                        type: 'object',
-                        properties: {
-                            dummy: {
-                                type: 'string',
-                            },
-                            dummy_nr: {
-                                type: 'number',
-                            },
-                        },
-                    })}
-                    isVirtual
-                    {...mockProps}
-                />
-            </UIStoreProvider>,
+                        })}
+                        isVirtual
+                        {...mockProps}
+                    />
+                </UIStoreProvider>
+            </UIMetaProvider>,
         )
-        expect(queryAllByText('virtual-default-renderer').length === 2).toBeTruthy()
+        expect(queryAllByText('virtual-default-renderer').length).toBe(2)
         expect(queryByText('string-renderer') === null).toBeTruthy()
         expect(queryByText('number-renderer') === null).toBeTruthy()
     })
@@ -102,37 +100,35 @@ describe('WidgetRenderer', () => {
             dummy_string2: 'dolor_sit',
         })
         const store = createStore(value)
+        const widgets = {
+            VirtualRenderer: VirtualWidgetRenderer,
+            widgets: {
+                types: {
+                    string: () => 'string-renderer',
+                    number: () => 'number-renderer',
+                },
+                custom: {},
+            },
+            widgetPlugins: [
+                WidgetRenderer,
+            ],
+        }
         const {queryByText, container} = render(
-            // @ts-expect-error
-            <UIStoreProvider
-                // @ts-expect-error
-                store={store}
-                // @ts-ignore
-                onChange={undefined}
-            >
-                <WidgetRenderer<UIStoreActions, {}, { virtualWidgets: typeof virtualWidgets2 } & WidgetProps>
-                    binding={{
-                        VirtualRenderer: VirtualWidgetRenderer,
-                        widgets: {
-                            types: {
-                                string: () => 'string-renderer',
-                                number: () => 'number-renderer',
-                            },
-                            custom: {},
-                        },
-                        // @ts-expect-error expand typing or use meta provider? virtual relies on WidgetEngine,
-                        // thus requires a `WidgetRenderer` for nested rendering
-                        widgetPlugins: [
-                            WidgetRenderer,
-                        ],
-                    }}
-                    value={value}
-                    virtualWidgets={virtualWidgets2}
-                    schema={schema}
-                    isVirtual
-                    {...mockProps}
-                />
-            </UIStoreProvider>,
+            <UIMetaProvider binding={widgets} t={translateRelative}>
+                <UIStoreProvider
+                    store={store}
+                    onChange={undefined as any}
+                >
+                    <WidgetRenderer<UIStoreActions, {}, { virtualWidgets: typeof virtualWidgets2 } & WidgetProps>
+                        binding={widgets}
+                        value={value}
+                        virtualWidgets={virtualWidgets2}
+                        schema={schema}
+                        isVirtual
+                        {...mockProps}
+                    />
+                </UIStoreProvider>
+            </UIMetaProvider>,
         )
         expect(container.querySelector('#virtual-default-renderer__lorem_ipsum') !== null).toBeTruthy()
         expect(container.querySelector('#virtual-default-renderer__dolor_sit') !== null).toBeTruthy()
@@ -163,12 +159,9 @@ describe('WidgetRenderer', () => {
         const store = createStore(value)
         const {queryByText, queryAllByText} = render(
             <UIMetaProvider binding={widgets} t={translateRelative}>
-                {/* @ts-expect-error */}
                 <UIStoreProvider
-                    // @ts-expect-error
                     store={store}
-                    // @ts-ignore
-                    onChange={undefined}
+                    onChange={undefined as any}
                 >
                     <WidgetRenderer<UIStoreActions, {}, { virtualWidgets: typeof virtualWidgets2 } & WidgetProps<typeof widgets>>
                         binding={widgets}
@@ -221,12 +214,9 @@ describe('WidgetRenderer', () => {
         const store = createStore(value)
         const {queryByText, queryAllByText} = render(
             <UIMetaProvider binding={widgets} t={translateRelative}>
-                {/* @ts-expect-error */}
                 <UIStoreProvider
-                    // @ts-expect-error
                     store={store}
-                    // @ts-ignore
-                    onChange={undefined}
+                    onChange={undefined as any}
                 >
                     <WidgetRenderer<UIStoreActions, {}, Pick<VirtualWidgetRendererProps, 'virtualWidgets'> & WidgetRendererProps>
                         binding={widgets}

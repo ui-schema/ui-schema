@@ -1,12 +1,9 @@
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { SchemaResource } from '@ui-schema/ui-schema/SchemaResource'
 import { makeParams } from '@ui-schema/json-schema/Validator'
-import { useSchemaResource } from '@ui-schema/react/SchemaResourceProvider'
 import { mergeSchema } from '@ui-schema/ui-schema/Utils'
 import { ValidateFn } from '@ui-schema/ui-schema/Validate'
 import { List } from 'immutable'
-import { FC } from 'react'
-import { NextPluginRendererMemo, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 
 /**
  * PoC for a replacement for CombiningHandler/ConditionalHandler/ReferencingHandler
@@ -75,24 +72,24 @@ export const handleSchema = (
     return schema
 }
 
-/**
- * @todo remove this scribble once validator-applied is finalized, kept for having PoC alternative
- */
-export const ResourceBranchHandler: FC<WidgetPluginProps> = (props) => {
-    const {validate, value} = props
-    const {resource} = useSchemaResource()
-
-    if (resource && validate) {
-        const schema =
-            handleSchema(
-                validate,
-                resource,
-                props.schema,
-                value,
-            )
-
-        return <NextPluginRendererMemo {...props} schema={schema}/>
-    }
-
-    return <NextPluginRendererMemo {...props}/>
-}
+// /**
+//  * @todo remove this scribble once validator-applied is finalized, kept for having PoC alternative
+//  */
+// export const ResourceBranchHandler: FC<WidgetPluginProps> = (props) => {
+//     const {validate, value} = props
+//     const {resource} = useSchemaResource()
+//
+//     if (resource && validate) {
+//         const schema =
+//             handleSchema(
+//                 validate,
+//                 resource,
+//                 props.schema,
+//                 value,
+//             )
+//
+//         return <NextPluginRendererMemo {...props} schema={schema}/>
+//     }
+//
+//     return <NextPluginRendererMemo {...props}/>
+// }

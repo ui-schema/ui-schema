@@ -157,6 +157,7 @@ Todo:
       and as UI is rendered for the whole schema and not only for existing values, the validation must correctly cascade or `default` values must be set
         - "in json-schema by default a schema won't be evaluated further if the value does not exist, while for UI we want to render nested fields and lazily initialize the tree up to that field, even if no value exists at all"
     - **TBD:** doesn't that also mean, that `if` shouldn't be evaluated at all if there isn't a value to evaluated?! which would restore similar behaviour like <=0.4.x validators, while being spec. compliant
+    - **NOTE:** in `if` and `not` keyword validators, they no longer evaluate deeper if the value is `undefined`, which fixes the behaviour of the combination w/ conditional example! that seems to be the solution.
 
 > See also [CHANGES_NEXT_VALIDATE_TODOS.md](./CHANGES_NEXT_VALIDATE_TODOS.md) for more specific validator todos.
 
@@ -425,6 +426,7 @@ new widget engine functions:
     - people who need that micro optimization, should get better ways to do it their way (which now exists, also as `SchemaRootProvider` provides access to the root level schema)
     - their introduction, prevented users to focus on how to use `WidgetEngine` (or then `PluginStack`)
     - remove would allow removing all of the `StackWrapper` code in `WidgetEngine`
+- [ ] check `mergeSchema` changes and adjust to respect new applicable schema merging strategy
 
 ## Todo 0.6.x
 
