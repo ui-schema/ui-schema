@@ -20,7 +20,7 @@ import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 
-export const MockWidgets: WidgetsBindingFactory<{}, {
+export const MockWidgets: WidgetsBindingFactory<{
     string?: React.ComponentType<WidgetProps & WithScalarValue>
     boolean?: React.ComponentType<WidgetProps & WithScalarValue>
     number?: React.ComponentType<WidgetProps & WithScalarValue>
@@ -33,10 +33,12 @@ export const MockWidgets: WidgetsBindingFactory<{}, {
     NoWidget: NoWidget,
     VirtualRenderer: VirtualWidgetRenderer,
     widgetPlugins: [WidgetRenderer],
-    types: {
-        object: ObjectRenderer,
+    widgets: {
+        types: {
+            object: ObjectRenderer,
+        },
+        custom: {},
     },
-    custom: {},
 }
 
 const validate = Validator(standardValidators).validate
@@ -59,7 +61,7 @@ export const MockSchemaProvider: React.ComponentType<{
 
     return <UIMetaProvider
         // @ts-ignore
-        widgets={widgets}
+        binding={widgets}
         t={t || translateRelative}
         validate={validate}
     >
@@ -81,7 +83,7 @@ export const MockSchemaMetaProvider: React.ComponentType<React.PropsWithChildren
 
     return <UIMetaProvider
         // @ts-ignore
-        widgets={widgets}
+        binding={widgets}
         t={t || translateRelative}
         validate={validate}
     >

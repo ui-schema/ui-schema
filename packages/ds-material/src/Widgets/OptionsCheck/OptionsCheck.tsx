@@ -93,11 +93,11 @@ export interface OptionsCheckRendererProps {
 export const OptionsCheck = (
     {
         schema, storeKeys, showValidity, valid, required, errors,
-        row, widgets,
+        row, binding,
     }: WidgetProps & OptionsCheckRendererProps,
 ): React.ReactElement => {
     const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as UISchemaMap)
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
     return <FormControl
         required={required} error={!valid && showValidity} component="fieldset" fullWidth
         size={schema.getIn(['view', 'dense']) ? 'small' : undefined}

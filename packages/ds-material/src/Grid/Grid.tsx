@@ -62,7 +62,7 @@ export const GroupRenderer: React.ComponentType<React.PropsWithChildren<GroupRen
 export const SchemaGridHandler = <P extends WidgetPluginProps>(props: P): React.ReactElement => {
     const {schema, noGrid: noGridProp, isVirtual, currentPluginIndex} = props
     const next = currentPluginIndex + 1
-    const Plugin = getNextPlugin(next, props.widgets)
+    const Plugin = getNextPlugin(next, props.binding)
 
     const align = schema.getIn(['view', 'align'])
     const style: React.CSSProperties = React.useMemo(() => ({

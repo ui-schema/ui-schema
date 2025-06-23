@@ -1,5 +1,6 @@
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
 import React from 'react'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
@@ -32,19 +33,22 @@ import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
-type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
+type CustomWidgetsBinding = WidgetsBindingFactory<MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
     SortableList: React.ComponentType<WidgetProps & WithScalarValue>
 }>
 
 const customWidgets: CustomWidgetsBinding = {
     ...baseComponents,
     widgetPlugins: widgetPluginsLegacy,
-    types: {
-        ...typeWidgets,
-    },
-    custom: {
-        ...bindingExtended,
-        SortableList: SortableList,
+    matchWidget: widgetMatcher,
+    widgets: {
+        types: {
+            ...typeWidgets,
+        },
+        custom: {
+            ...bindingExtended,
+            SortableList: SortableList,
+        },
     },
 }
 
@@ -119,7 +123,7 @@ const SingleEditor = () => {
 // @ts-ignore
 // eslint-disable-next-line react/display-name
 export default () => <>
-    <UIMetaProvider widgets={customWidgets} t={browserT}>
+    <UIMetaProvider binding={customWidgets} t={browserT}>
         <Grid container spacing={3}>
             <Grid item xs={12}>
                 <Paper

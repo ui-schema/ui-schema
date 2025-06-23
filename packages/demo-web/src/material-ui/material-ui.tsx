@@ -10,10 +10,11 @@ import { Validator } from '@ui-schema/json-schema/Validator'
 import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
 import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
-import { SchemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
+import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
+import { widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
 import React from 'react'
 import { useToggle } from '../component/useToggle'
 import { dataDemoMain, schemaDemoMain, schemaUser } from '../schemas/demoMain'
@@ -30,10 +31,10 @@ import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { browserT } from '../t'
 import { UIApiProvider } from '@ui-schema/react/UIApi'
 import { TableAdvanced } from '@ui-schema/ds-material/Widgets/TableAdvanced'
-import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
+import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
 
-const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
+const customBinding: MuiWidgetsBinding = {
     ...baseComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: [
@@ -43,7 +44,7 @@ const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<Info
         // CombiningHandler,
         // DependentHandler,
         // ConditionalHandler,
-        SchemaPluginsAdapterBuilder([
+        schemaPluginsAdapterBuilder([
             validatorPlugin,
             // requiredValidator,// must be after validator; todo: remove the compat. plugin
             requiredPlugin,
@@ -54,12 +55,15 @@ const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<Info
         ValidityReporter,
         WidgetRenderer,
     ],
-    types: typeWidgets,
-    custom: {
-        ...bindingExtended,
-        SelectChips: SelectChips,
-        TableAdvanced: TableAdvanced,
+    widgets: {
+        types: typeWidgets,
+        custom: {
+            ...bindingExtended,
+            SelectChips: SelectChips,
+            TableAdvanced: TableAdvanced,
+        },
     },
+    matchWidget: widgetMatcher,//<NonNullable<NonNullable<MuiWidgetsBinding['widgets']>['types']>, NonNullable<NonNullable<MuiWidgetsBinding['widgets']>['custom']>>,
 }
 //widgets.types.null = () => 'null'
 
@@ -197,7 +201,7 @@ const validate = Validator([
 export default function MaterialDemo() {
     return <>
         <UIMetaProvider
-            widgets={customWidgets}
+            binding={customBinding}
             t={browserT}
             validate={validate}
         >

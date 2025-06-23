@@ -19,7 +19,7 @@ import { injectBlock, WithDndBlock } from '@ui-schema/material-dnd/injectBlock'
 
 export const DragDropAreaBase = (
     {
-        widgets, block,
+        binding, block,
         ...props
     }: WidgetProps & WithOnChange & WithDndBlock
 ): React.ReactElement => {
@@ -29,7 +29,7 @@ export const DragDropAreaBase = (
     //const notSortable = schema.get('notSortable')
     const notAddable = schema.get('notAddable')
     //const notDeletable = schema.get('notDeletable')
-    const Selector = widgets.DndBlockSelector
+    const Selector = binding.DndBlockSelector
 
     if (!block) {
         throw new Error('Missing `block` in DragDropArea')

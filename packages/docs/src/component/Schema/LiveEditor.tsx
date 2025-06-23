@@ -727,11 +727,11 @@ const EditorHandler = ({activeSchema}: any) => {
                                     {activeState.jsonError.replace('SyntaxError: JSON.parse: ', '')}
                                 </Typography>
                             </Paper> :
-                            activeState.schema ? <Paper style={{margin: 12, padding: 24}}>
+                            resource ? <Paper style={{margin: 12, padding: 24}}>
                                 <SchemaResourceProvider
                                     resource={resource}
                                 >
-                                    <GridStack key={resetId} schema={activeState.schema} isRoot/>
+                                    <GridStack key={resetId} schema={resource.branch.value()} isRoot/>
                                 </SchemaResourceProvider>
 
                                 <InvalidLabel invalid={isInvalid(activeState.store?.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>

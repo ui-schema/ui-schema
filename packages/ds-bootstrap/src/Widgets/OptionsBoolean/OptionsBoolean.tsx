@@ -1,14 +1,13 @@
-import { WithScalarValue } from '@ui-schema/react/UIStore'
+import { WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import React from 'react'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
 
-export interface WidgetPropsBoolean extends WidgetProps {
-    value: boolean
+export interface WidgetPropsBoolean extends WidgetProps, WithValuePlain, WithOnChange {
 }
 
-const BoolRenderer = ({showValidity, required, errors, value, storeKeys, onChange, schema}: WidgetPropsBoolean & WithScalarValue) => {
+const BoolRenderer = ({showValidity, required, errors, value, storeKeys, onChange, schema}: WidgetPropsBoolean) => {
     const id = React.useId()
     const classForm = ['custom-control', 'custom-switch']
     const classLabel = ['custom-control-label', 'text-light']

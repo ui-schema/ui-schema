@@ -1,24 +1,21 @@
-import { widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
 import React from 'react'
 import FormLabel from '@mui/material/FormLabel'
 import FormControl from '@mui/material/FormControl'
 import MuiFormGroup from '@mui/material/FormGroup'
 import { useTheme } from '@mui/material/styles'
-import { extractValue, WithScalarValue, WithValue } from '@ui-schema/react/UIStore'
+import { extractValue, WithValue } from '@ui-schema/react/UIStore'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 
 export const FormGroupBase: React.ComponentType<WidgetProps & WithValue> = (props) => {
-    const {storeKeys, widgets, schema} = props
+    const {storeKeys, binding, schema} = props
     const {spacing} = useTheme()
-
-    // todo: refactor once widgetMatcher exists in `widgets`
-    const Widget = widgetMatcher<React.ComponentType<WidgetProps & WithScalarValue>, React.ComponentType<WidgetProps>>({
+    const Widget = binding?.matchWidget({
         widgetName: undefined,
         schemaType: schema.get('type'),
         // @ts-ignore
-        widgets: widgets,
+        widgets: binding?.widgets,
     })
 
     if (!Widget) return null

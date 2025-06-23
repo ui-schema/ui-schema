@@ -8,7 +8,7 @@ import { Validator } from '@ui-schema/json-schema/Validator'
 import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
 import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
-import { SchemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
+import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import React from 'react'
@@ -30,28 +30,31 @@ import { schemaDemoTable, schemaDemoTableAdvanced, schemaDemoTableMap, schemaDem
 import { Table } from '@ui-schema/ds-material/Widgets/Table'
 import { NumberRendererCell, StringRendererCell, TextRendererCell } from '@ui-schema/ds-material/Widgets/TextFieldCell'
 import { TableAdvanced } from '@ui-schema/ds-material/Widgets/TableAdvanced'
-import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
+import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 
-const CustomTableBase: React.ComponentType<WidgetProps> = ({widgets, ...props}) => {
+const CustomTableBase: React.ComponentType<WidgetProps> = ({binding, ...props}) => {
     const customWidgets = React.useMemo(() => ({
-        ...widgets,
-        types: {
-            ...widgets.types,
-            string: StringRendererCell,
-            number: NumberRendererCell,
-            integer: NumberRendererCell,
+        ...binding,
+        widgets: {
+            ...binding?.widgets,
+            types: {
+                ...binding?.widgets?.types,
+                string: StringRendererCell,
+                number: NumberRendererCell,
+                integer: NumberRendererCell,
+            },
+            custom: {
+                ...binding?.widgets?.custom,
+                Text: TextRendererCell,
+            },
         },
-        custom: {
-            ...widgets.custom,
-            Text: TextRendererCell,
-        },
-    }), [widgets])
+    }), [binding])
 
     return <Table
         {...props}
-        widgets={customWidgets}
+        binding={customWidgets}
     />
 }
 const CustomTable = React.memo(CustomTableBase)
@@ -61,7 +64,7 @@ const CustomTable = React.memo(CustomTableBase)
 // run validations on defaulted dats
 // build/merge into happy path
 
-const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
+const customWidgets: MuiWidgetsBinding = {
     ...baseComponents,
     InfoRenderer: InfoRenderer,
 
@@ -73,7 +76,7 @@ const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<Info
         //CombiningHandler, // < pure schema, but changing applicable schema
         //DependentHandler, // < pure schema, but changing applicable schema
         //ConditionalHandler, // < pure schema, but changing applicable schema
-        SchemaPluginsAdapterBuilder([
+        schemaPluginsAdapterBuilder([
             validatorPlugin,
             // requiredValidator,// must be after validator; todo: remove the compat. plugin
             requiredPlugin,
@@ -85,12 +88,14 @@ const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<Info
         ValidityReporter,
         WidgetRenderer,
     ],
-    types: typeWidgets,
-    custom: {
-        ...bindingExtended,
-        SelectChips: SelectChips,
-        Table: CustomTable,
-        TableAdvanced: TableAdvanced,
+    widgets: {
+        types: typeWidgets,
+        custom: {
+            ...bindingExtended,
+            SelectChips: SelectChips,
+            Table: CustomTable,
+            TableAdvanced: TableAdvanced,
+        },
     },
 }
 //widgets.types.null = () => 'null'
@@ -193,7 +198,7 @@ const validate = Validator([
 export default function MaterialDemo() {
     return <>
         <UIMetaProvider
-            widgets={customWidgets}
+            binding={customWidgets}
             t={browserT}
             validate={validate}
         >

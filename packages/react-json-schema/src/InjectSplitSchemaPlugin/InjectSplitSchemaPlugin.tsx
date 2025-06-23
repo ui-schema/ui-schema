@@ -20,7 +20,7 @@ export const InjectSplitSchemaPlugin: React.ComponentType<WidgetPluginProps> = (
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     const {schemaStyle} = useSchemaRoot<InjectSplitSchemaRootContext>()
     const next = currentPluginIndex + 1
-    const Plugin = getNextPlugin(next, props.widgets)
+    const Plugin = getNextPlugin(next, props.binding)
     const pointer = storeKeys.size > 0 ? '/' + storeKeys.map(k => escapePointer(String(k))).join('/') : ''
 
     const schemaStyleLevel = schemaStyle?.get(pointer) as Map<string, any> | undefined

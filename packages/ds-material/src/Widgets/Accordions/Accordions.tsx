@@ -31,14 +31,14 @@ const AccordionStackBase: React.ComponentType<WidgetProps & AccordionStackBasePr
         storeKeys, schema,
         parentSchema,
         showValidity,
-        isOpen, setOpen, valid, widgets,
+        isOpen, setOpen, valid, binding,
     } = props
     const [errors, setErrors] = React.useState<ValidationErrorsImmutable | undefined>()
     const elevation = parentSchema?.getIn(['view', 'ev']) as AccordionProps['elevation']
     const variant = parentSchema?.getIn(['view', 'variant']) as AccordionProps['variant']
     const titleVariant = parentSchema?.getIn(['view', 'titleVariant']) as TypographyProps['variant']
     const childInvalid = isInvalid(validity)
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
 
     const ownKey = storeKeys.last()
 

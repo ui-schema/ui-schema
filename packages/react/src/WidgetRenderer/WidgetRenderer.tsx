@@ -1,17 +1,19 @@
+import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
+import { VirtualWidgetRenderer } from '@ui-schema/react/VirtualWidgetRenderer'
 import { List } from 'immutable'
-import React from 'react'
+import React, { ComponentType, ReactNode } from 'react'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 import { ErrorNoWidgetMatching, widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
 import { WidgetEngineOverrideProps, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { WithValue } from '@ui-schema/react/UIStore'
-import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
-import { VirtualWidgetRenderer } from '@ui-schema/react/VirtualWidgetRenderer'
-import { WidgetType } from '@ui-schema/react/Widgets'
+import { SchemaKeywordType, SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
+import { MatchProps, NoWidgetProps, WidgetPropsComplete } from '@ui-schema/react/Widgets'
 
-export interface WidgetRendererProps extends Omit<WidgetPluginProps, 'currentPluginIndex'>, WithValue {
+export interface WidgetRendererProps extends Omit<WidgetPluginProps, 'binding' | 'currentPluginIndex'>, WithValue {
     WidgetOverride?: WidgetEngineOverrideProps['WidgetOverride']
     // current number of plugin in the stack, received when executed as generic widget
     // but not when used on its own
+    // todo; cleanup, with 0.5.x there is no reason to use it on its own
     currentPluginIndex?: number
 }
 
@@ -22,7 +24,7 @@ export interface WidgetRendererProps extends Omit<WidgetPluginProps, 'currentPlu
  */
 const noExtractValueEnabled = false
 
-export const WidgetRenderer = <P extends {} = {}, WT extends WidgetType<{}> = WidgetType<{}>>(
+export const WidgetRenderer = <A = UIStoreActions, WP extends WidgetPropsComplete<A> = WidgetPropsComplete<A>>(
     {
         // we do not want `value`/`internalValue` to be passed to non-scalar widgets for performance reasons
         value, internalValue,
@@ -33,49 +35,77 @@ export const WidgetRenderer = <P extends {} = {}, WT extends WidgetType<{}> = Wi
         currentPluginIndex,
         // `props` contains all props accumulated in the WidgetEngine
         ...props
-    }: WidgetRendererProps & Omit<NoInfer<P>, keyof WidgetRendererProps>,
+    }:
+        WidgetRendererProps &
+        Omit<NoInfer<WP>, 'binding' | keyof WidgetRendererProps> &
+        {
+            binding?: {
+                NoWidget?: React.ComponentType<NoWidgetProps>
+                widgets?: {
+                    types?: { [K in SchemaKeywordType]?: (props: WP) => ReactNode }
+                    custom?: Record<string, (props: WP) => ReactNode>
+                }
+                matchWidget?: (props: MatchProps<A, WP>) => null | (<PWidget>(props: Omit<NoInfer<PWidget>, keyof WP> & WP) => ReactNode)
+            }
+        },
+    // {
+    //     binding?: {
+    //         NoWidget?: React.ComponentType<NoWidgetProps>
+    //     }
+    // } &
+    // {
+    //     binding?: {
+    //         widgets?: {
+    //             types?: { [K in SchemaKeywordType]?: (props: WP) => ReactNode }
+    //             custom?: Record<string, (props: WP) => ReactNode>
+    //         }
+    //     }
+    // } &
+    // {
+    //     binding?: {
+    //         matchWidget?: (props: MatchProps<A, WP>) => null | (<PWidget>(props: Omit<NoInfer<PWidget>, keyof WP> & WP) => ReactNode)
+    //     }
+    // },
 ): React.ReactNode => {
-    const {schema, widgets, isVirtual} = props
+    const {schema, binding, isVirtual} = props
     const currentErrors = useImmutable(errors)
 
     React.useEffect(() => onErrors && onErrors(currentErrors), [onErrors, currentErrors])
 
     const schemaType = schema.get('type') as SchemaTypesType | undefined
     const widgetName = schema.get('widget') as string | undefined
-    let Widget: WT | null = null
-    try {
-        Widget =
-            isVirtual ?
-                // todo: only use widgets binding? move into future `widgetMatcher`?
-                //       ... would be needed to remove the dependency of react with react-/json-schema ...
-                widgets.VirtualRenderer as unknown as WT || VirtualWidgetRenderer as WT :
-                WidgetOverride ?
-                    // todo: fix/change 0.5.0 WidgetOverride typing
-                    WidgetOverride as unknown as WT :
-                    // todo: as WidgetRenderer is now in widgetPlugins directly, move the matcher to the `widgets` binding,
-                    //       to be able to use that directly where needed (e.g. FormGroup),
-                    //       but in an adjusted version, which allows using "most WidgetProps" for the matcher logic
-                    // @ts-ignore
-                    widgetMatcher<WT, WT>({
+    let Widget: ComponentType<WP> | null = WidgetOverride || null
+    if (!Widget) {
+        // todo: remove fallback once dev project is migrated? or allow optional?
+        // todo: check typings and fix it, `binding` is already `any`
+        const matchWidget = binding?.matchWidget || widgetMatcher
+        const widgets = binding?.widgets
+        try {
+            Widget =
+                // todo: optimize/migrate isVirtual
+                isVirtual ? binding?.VirtualRenderer || VirtualWidgetRenderer :
+                    matchWidget({
                         widgetName: widgetName,
                         schemaType: schemaType,
                         widgets: widgets,
                     })
-    } catch (e) {
-        if (e instanceof ErrorNoWidgetMatching) {
-            const {NoWidget} = widgets
-            if (NoWidget) {
-                return <NoWidget
-                    matching={e.matching}
-                    scope={e.scope}
-                    storeKeys={props.storeKeys}
-                />
+        } catch (e) {
+            if (e instanceof ErrorNoWidgetMatching) {
+                const NoWidget = binding?.NoWidget
+                if (NoWidget) {
+                    return <NoWidget
+                        matching={e.matching}
+                        scope={e.scope}
+                        storeKeys={props.storeKeys}
+                    />
+                }
+                return null
             }
-            return null
+            throw e
         }
     }
 
-    const noExtractValue = !isVirtual && (
+    const noExtractValue = noExtractValueEnabled && !isVirtual && (
         schemaType === 'array' || schemaType === 'object' ||
         (
             List.isList(schemaType) && (
@@ -86,11 +116,10 @@ export const WidgetRenderer = <P extends {} = {}, WT extends WidgetType<{}> = Wi
     )
 
     return Widget ?
-        /* @ts-ignore */
         <Widget
-            {...props}
-            value={noExtractValue && noExtractValueEnabled ? undefined : value}
-            internalValue={noExtractValue && noExtractValueEnabled ? undefined : internalValue}
+            {...props as unknown as WP}
+            value={noExtractValue ? undefined : value}
+            internalValue={noExtractValue ? undefined : internalValue}
             errors={currentErrors}
         /> : null
 }

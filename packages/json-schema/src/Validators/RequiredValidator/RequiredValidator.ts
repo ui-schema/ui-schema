@@ -1,5 +1,5 @@
+import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { SchemaPlugin } from '@ui-schema/ui-schema/SchemaPlugin'
-import { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import { List, Map } from 'immutable'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
 
@@ -26,7 +26,7 @@ export const checkValueExists = (type: string | List<string> | string[], value: 
 /**
  * @deprecated
  */
-export const requiredValidator: SchemaPlugin<WidgetPayload> = {
+export const requiredValidator: SchemaPlugin<Omit<WidgetPluginProps, 'currentPluginIndex'>> = {
     handle: ({parentSchema, schema, storeKeys, value, errors, valid}) => {
         const requiredList = parentSchema?.get('required') as List<string> | undefined
         if (!schema || !requiredList || !List.isList(requiredList) || !storeKeys) {

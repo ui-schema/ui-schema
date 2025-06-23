@@ -1,17 +1,16 @@
-import { WithScalarValue } from '@ui-schema/react/UIStore'
+import { WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import React from 'react'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
 
-export interface StringRendererProps extends WidgetProps {
+export interface StringRendererProps extends WidgetProps, WithValuePlain, WithOnChange {
     multiline?: boolean
     type?: string
     rows?: number
 }
 
-export interface NumberRendererProps extends WidgetProps {
-    type: string
+export interface NumberRendererProps extends WidgetProps, WithValuePlain, WithOnChange {
 }
 
 export const convertStringToNumber = (value, type) => {
@@ -25,7 +24,7 @@ export const convertStringToNumber = (value, type) => {
     return value
 }
 
-const StringRenderer = ({schema, value, multiline = false, onChange, storeKeys, showValidity, required, errors, type, rows}: StringRendererProps & WithScalarValue) => {
+const StringRenderer = ({schema, value, multiline = false, onChange, storeKeys, showValidity, required, errors, type, rows}: StringRendererProps) => {
     const format = schema.get('format')
     const uid = React.useId()
 
@@ -69,7 +68,7 @@ const StringRenderer = ({schema, value, multiline = false, onChange, storeKeys, 
     </div>
 }
 
-const TextRenderer = ({schema, ...props}: StringRendererProps & WithScalarValue) => {
+const TextRenderer = ({schema, ...props}: StringRendererProps) => {
     return <StringRenderer
         {...props}
         schema={schema}
@@ -79,7 +78,7 @@ const TextRenderer = ({schema, ...props}: StringRendererProps & WithScalarValue)
 }
 
 
-const NumberRenderer = ({schema, ...props}: NumberRendererProps & WithScalarValue) => {
+const NumberRenderer = ({schema, ...props}: NumberRendererProps) => {
     return <StringRenderer
         {...props}
         schema={schema}

@@ -55,6 +55,9 @@ export const schemaDemoReferencing = createOrderedMap({
         address_germany: {
             '$id': '#address_germany',
             type: 'object',
+            properties: {
+                country: {default: 'germany'},
+            },
             allOf: [
                 {
                     if: {type: 'object', properties: {country: {$ref: '#germany'}}, required: ['country']},

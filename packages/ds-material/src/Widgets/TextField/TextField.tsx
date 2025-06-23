@@ -55,7 +55,7 @@ export const StringRenderer = (
         // eslint-disable-next-line @typescript-eslint/no-deprecated
         onKeyPress,
         inputProps = {}, InputProps = {}, inputRef: customInputRef,
-        widgets,
+        binding,
     }: WidgetProps & WithScalarValue & StringRendererProps,
 ): React.ReactElement => {
     const uid = useUID()
@@ -68,7 +68,7 @@ export const StringRenderer = (
     inputProps = schemaRulesToNative(inputProps, schema)
 
     const hideTitle = schema.getIn(['view', 'hideTitle'])
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
     if (InfoRenderer && schema?.get('info')) {
         InputProps['endAdornment'] = <InputAdornment position="end">
             <InfoRenderer

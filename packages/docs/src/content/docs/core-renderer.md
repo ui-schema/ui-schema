@@ -74,7 +74,7 @@ const FreeFormEditor = () => {
         schema={freeFormSchema}
         store={store}
         onChange={onChange}
-        // widgets={customWidgets}
+        // binding={customWidgets}
         // showValidity={showValidity}
         // t={browserT}
     >

@@ -22,8 +22,8 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
     {
         storeKeys, schema, onChange,
         showValidity,
-        // widgets must come from an own wrapper component, to overwrite/enable any widgets for special `TableCell` formatting
-        widgets,
+        // binding must come from an own wrapper component, to overwrite/enable any widgets for special `TableCell` formatting
+        binding,
         TableRowRenderer,
         TableFooter,
         TableHeader,
@@ -102,7 +102,7 @@ export const TableRendererBase: React.ComponentType<Pick<WidgetProps, Exclude<ke
                                 isVirtual={isVirtual}
                                 noGrid
 
-                                widgets={widgets}
+                                binding={binding}
                                 WidgetOverride={TableRowRenderer}
                                 setPage={setPage}
                                 showRows={isVirtual ? undefined : rows}
@@ -167,5 +167,5 @@ export const TableRendererExtractor: React.ComponentType<WidgetProps & WithValue
     </TableContext.Provider>
 }
 
-export const TableRendererMemo = memo(TableRendererExtractor) as React.ComponentType<WidgetProps & WithValue & TableRendererExtractorProps>
-export const TableRenderer = extractValue(TableRendererMemo) as React.ComponentType<WidgetProps & TableRendererExtractorProps>
+export const TableRendererMemo = memo(TableRendererExtractor) as React.FC<WidgetProps & WithValue & TableRendererExtractorProps>
+export const TableRenderer = extractValue(TableRendererMemo) as React.FC<WidgetProps & TableRendererExtractorProps>

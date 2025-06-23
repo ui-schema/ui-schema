@@ -9,7 +9,7 @@ import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd'
 import { DefaultHandler } from '@ui-schema/react-json-schema'
 import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
-import { SchemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
+import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { WidgetProps } from '@ui-schema/react/Widgets'
@@ -28,7 +28,7 @@ import { NumberRendererCell, StringRendererCell, TextRendererCell } from '@ui-sc
 import { Table } from '@ui-schema/ds-material/Widgets/Table'
 import { DragDropBlockSelector } from '@ui-schema/material-dnd/DragDropBlockSelector'
 import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
-import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
+import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { TableAdvanced } from '@ui-schema/ds-material/Widgets'
 import { browserT } from '../../t'
 //import {WidgetColorful} from '@ui-schema/material-colorful'
@@ -53,39 +53,41 @@ const ColorfulRgbaBase =
         />
 const ColorfulRgba = extractValue(memo(ColorfulRgbaBase))*/
 
-const CustomTable = ({widgets, ...props}: WidgetProps) => {
+const CustomTable = ({binding, ...props}: WidgetProps) => {
 
     // dynamic overwrite for all widgets, which need a special TableCell formatting
     // you can also only enable specific widgets here
     const customWidgets = React.useMemo(() => ({
-        ...widgets,
-        types: {
-            ...widgets.types,
-            string: StringRendererCell,
-            number: NumberRendererCell,
-            integer: NumberRendererCell,
+        ...binding,
+        widgets: {
+            ...binding?.widgets,
+            types: {
+                ...binding?.widgets?.types,
+                string: StringRendererCell,
+                number: NumberRendererCell,
+                integer: NumberRendererCell,
+            },
+            custom: {
+                ...binding?.widgets?.custom,
+                Text: TextRendererCell,
+            },
         },
-        custom: {
-            ...widgets.custom,
-            Text: TextRendererCell,
-        },
-    }), [widgets])
+    }), [binding])
 
     return <Table
         {...props}
-        widgets={customWidgets}
+        binding={customWidgets}
     />
 }
 
-const customWidgets: MuiWidgetsBinding<{
-    InfoRenderer?: React.ComponentType<InfoRendererProps>
+const customWidgets: MuiWidgetsBinding & {
     DndBlockSelector?: DragDropBlockComponentsBinding['DndBlockSelector']
-}> = {
+} = {
     ...baseComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: [
         DefaultHandler,
-        SchemaPluginsAdapterBuilder([
+        schemaPluginsAdapterBuilder([
             validatorPlugin,
             requiredPlugin,
         ]),
@@ -94,73 +96,75 @@ const customWidgets: MuiWidgetsBinding<{
         WidgetRenderer,
     ],
     DndBlockSelector: DragDropBlockSelector,
-    types: typeWidgets,
-    custom: {
-        ...bindingExtended,
-        SelectChips: SelectChips,
-        Table: CustomTable,
-        TableAdvanced: TableAdvanced,
+    widgets: {
+        types: typeWidgets,
+        custom: {
+            ...bindingExtended,
+            SelectChips: SelectChips,
+            Table: CustomTable,
+            TableAdvanced: TableAdvanced,
 
-        /*Color,
-        ColorDialog,
-        ColorStatic,
-        ColorSwatches,
-        ColorCircle,
-        ColorCompact,
-        ColorMaterial,
-        ColorTwitter,
-        ColorBlock,
-        ColorSlider,
-        ColorAlpha,
-        ColorHue,
-        ColorSketch,
-        ColorSliderStatic,
-        ColorCircleStatic,
-        ColorTwitterStatic,
-        ColorSketchStatic,
-        ColorSketchDialog,
-        Colorful: ColorfulHex,
-        ColorfulHsla: ColorfulHsla,
-        ColorfulRgba: ColorfulRgba,*/
-        // Code: Loadable({
-        //     loader: () => import('../CustomCodeWidgets').then(r => r.CustomWidgetCode),
-        //     loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
-        // }),
-        // CodeSelectable: Loadable({
-        //     loader: () => import('../CustomCodeWidgets').then(r => r.CustomWidgetCodeSelectable),
-        //     loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
-        // }),
-        /*DateTime: Loadable({
-            loader: () => import('@ui-schema/material-pickers').then(r => r.DateTimePicker),
-            loading: () => <LoadingCircular title={'Loading DateTime Widget'}/>,
-        }),
-        Date: Loadable({
-            loader: () => import('@ui-schema/material-pickers').then(r => r.DatePicker),
-            loading: () => <LoadingCircular title={'Loading Date Widget'}/>,
-        }),
-        Time: Loadable({
-            loader: () => import('@ui-schema/material-pickers').then(r => r.TimePicker),
-            loading: () => <LoadingCircular title={'Loading Time Widget'}/>,
-        }),*/
-        EditorJS: (props) => <Suspense>
-            <LazyEditorJs {...props}/>
-        </Suspense>,
-        //     Loadable({
-        //     loader: () => import('./EditorJSComp').then(r => r.EditorJSComp),
-        //     loading: () => <LoadingCircular title={'Loading EditorJS'}/>,
-        // }),
-        // SortableList: Loadable({
-        //     loader: () => import('@ui-schema/material-dnd/Widgets/SortableList').then(r => r.SortableList),
-        //     loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
-        // }),
-        // DragDropArea: Loadable({
-        //     loader: () => import('@ui-schema/material-dnd/Widgets/DragDropArea').then(r => r.DragDropArea),
-        //     loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
-        // }),
-        // DropArea: Loadable({
-        //     loader: () => import('@ui-schema/material-dnd/Widgets/DropArea').then(r => r.DropArea),
-        //     loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
-        // }),
+            /*Color,
+            ColorDialog,
+            ColorStatic,
+            ColorSwatches,
+            ColorCircle,
+            ColorCompact,
+            ColorMaterial,
+            ColorTwitter,
+            ColorBlock,
+            ColorSlider,
+            ColorAlpha,
+            ColorHue,
+            ColorSketch,
+            ColorSliderStatic,
+            ColorCircleStatic,
+            ColorTwitterStatic,
+            ColorSketchStatic,
+            ColorSketchDialog,
+            Colorful: ColorfulHex,
+            ColorfulHsla: ColorfulHsla,
+            ColorfulRgba: ColorfulRgba,*/
+            // Code: Loadable({
+            //     loader: () => import('../CustomCodeWidgets').then(r => r.CustomWidgetCode),
+            //     loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
+            // }),
+            // CodeSelectable: Loadable({
+            //     loader: () => import('../CustomCodeWidgets').then(r => r.CustomWidgetCodeSelectable),
+            //     loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
+            // }),
+            /*DateTime: Loadable({
+                loader: () => import('@ui-schema/material-pickers').then(r => r.DateTimePicker),
+                loading: () => <LoadingCircular title={'Loading DateTime Widget'}/>,
+            }),
+            Date: Loadable({
+                loader: () => import('@ui-schema/material-pickers').then(r => r.DatePicker),
+                loading: () => <LoadingCircular title={'Loading Date Widget'}/>,
+            }),
+            Time: Loadable({
+                loader: () => import('@ui-schema/material-pickers').then(r => r.TimePicker),
+                loading: () => <LoadingCircular title={'Loading Time Widget'}/>,
+            }),*/
+            EditorJS: (props) => <Suspense>
+                <LazyEditorJs {...props}/>
+            </Suspense>,
+            //     Loadable({
+            //     loader: () => import('./EditorJSComp').then(r => r.EditorJSComp),
+            //     loading: () => <LoadingCircular title={'Loading EditorJS'}/>,
+            // }),
+            // SortableList: Loadable({
+            //     loader: () => import('@ui-schema/material-dnd/Widgets/SortableList').then(r => r.SortableList),
+            //     loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
+            // }),
+            // DragDropArea: Loadable({
+            //     loader: () => import('@ui-schema/material-dnd/Widgets/DragDropArea').then(r => r.DragDropArea),
+            //     loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
+            // }),
+            // DropArea: Loadable({
+            //     loader: () => import('@ui-schema/material-dnd/Widgets/DropArea').then(r => r.DropArea),
+            //     loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
+            // }),
+        },
     },
 }
 
@@ -171,6 +175,6 @@ export const uiMeta = {
         ...standardValidators,
         requiredValidatorLegacy,
     ]).validate,
-    widgets: customWidgets,
+    binding: customWidgets,
     t: browserT,
 }

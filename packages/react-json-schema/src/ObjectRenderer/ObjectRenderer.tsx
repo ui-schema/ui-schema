@@ -5,7 +5,7 @@ import { GroupRendererProps, WidgetProps } from '@ui-schema/react/Widgets'
 
 export interface ObjectRendererProps extends WidgetProps {
     noGrid?: GroupRendererProps['noGrid']
-    widgets: { GroupRenderer?: React.ComponentType<GroupRendererProps> }
+    binding?: { GroupRenderer?: React.ComponentType<GroupRendererProps> }
 }
 
 const ObjectRendererBase: React.FC<ObjectRendererProps> = (
@@ -17,16 +17,16 @@ const ObjectRendererBase: React.FC<ObjectRendererProps> = (
         ...props
     },
 ) => {
-    const {isVirtual, widgets} = props
+    const {isVirtual, binding} = props
     const properties = schema.get('properties')
 
-    // if (!isVirtual && !widgets.GroupRenderer) {
+    // if (!isVirtual && !binding.GroupRenderer) {
     //     if (process.env.NODE_ENV === 'development') {
     //         console.error('Widget GroupRenderer not existing')
     //     }
     //     return null
     // }
-    const GroupRenderer = widgets.GroupRenderer
+    const GroupRenderer = binding?.GroupRenderer
 
     const propertyTree = properties?.map((childSchema, childKey) =>
         <WidgetEngine

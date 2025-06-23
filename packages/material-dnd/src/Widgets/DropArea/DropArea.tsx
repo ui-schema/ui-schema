@@ -19,7 +19,7 @@ import { AreaRenderer } from '@ui-schema/material-dnd/WidgetsBase/AreaRenderer'
 
 export const DropAreaBase = (
     {
-        widgets,
+        binding,
         ...props
     }: WidgetProps & WithOnChange,
 ): React.ReactElement => {
@@ -29,7 +29,7 @@ export const DropAreaBase = (
     //const notSortable = schema.get('notSortable')
     const notAddable = schema.get('notAddable')
     //const notDeletable = schema.get('notDeletable')
-    const Selector = widgets.DndBlockSelector
+    const Selector = binding.DndBlockSelector
 
     return <>
         {schema.getIn(['view', 'showTitle']) ?

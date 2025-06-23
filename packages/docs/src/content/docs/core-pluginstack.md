@@ -75,7 +75,7 @@ Overwrite `props` rules for any `widgets.widgetPlugins` plugin:
     parentSchema={schema}
     isVirtual={isVirtual}
     noGrid
-    widgets={widgets}
+    binding={widgets}
 
     WidgetOverride={TableRowRenderer}
 
@@ -149,7 +149,7 @@ const UnitCalcDummyBase: React.ComponentType<WidgetProps & WithValue> = (
             // additional props we want to override/add
             showValidity={showValidity}
             readOnly={readOnly}
-            widgets={widgets}
+            binding={widgets}
             noGrid // turning grid off, or use e.g. `schema.setIn(['view', 'noGrid'], true)`
         />
 
@@ -166,7 +166,7 @@ const UnitCalcDummyBase: React.ComponentType<WidgetProps & WithValue> = (
             // additional props we want to override/add
             showValidity={showValidity}
             readOnly={readOnly}
-            widgets={widgets}
+            binding={widgets}
             noGrid
 
             // is received by the `number` widget
@@ -245,7 +245,7 @@ const EditorStub = () => {
         store={store}
         onChange={onChange}
         schema={freeFormSchema}
-        /* widgets={} showValidity={} t={} */
+        /* binding={} showValidity={} t={} */
     >
         {/*
           * this could be in any component below `UIProvider`,

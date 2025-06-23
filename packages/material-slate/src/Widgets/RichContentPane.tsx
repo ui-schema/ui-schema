@@ -9,7 +9,7 @@ import { PaneWrapper, usePaneEditorStyles } from '@ui-schema/material-slate/Edit
 import { useSlate } from '@ui-schema/material-slate/Slate/useSlate'
 import { slatePlugins, withPlugins } from '@ui-schema/material-slate/Slate/slatePlugins'
 
-const RichContentPaneBase: React.ComponentType<WidgetProps & WithOnChange & { value?: any, internalValue?: any }> = (props) => {
+const RichContentPaneBase: React.FC<WidgetProps & WithOnChange & { value?: any, internalValue?: any }> = (props) => {
     const {
         internalValue, value, schema, storeKeys,
         errors,
@@ -38,4 +38,4 @@ const RichContentPaneBase: React.ComponentType<WidgetProps & WithOnChange & { va
     </PaneWrapper>
 }
 
-export const RichContentPane: React.ComponentType<WidgetProps> = extractValue(memo(RichContentPaneBase))
+export const RichContentPane = extractValue(memo(RichContentPaneBase))

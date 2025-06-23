@@ -17,7 +17,7 @@ export const WidgetChipsReadBase: React.ComponentType<WidgetProps & UIMetaReadCo
     {
         storeKeys, schema, value,
         showValidity, errors,
-        valid, widgets,
+        valid, binding,
         readDense,
     },
 ) => {
@@ -27,7 +27,7 @@ export const WidgetChipsReadBase: React.ComponentType<WidgetProps & UIMetaReadCo
     if (!oneOfVal) return null
 
     const hideTitle = schema.getIn(['view', 'hideTitle']) as boolean | undefined
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
     const hasInfo = Boolean(InfoRenderer && schema?.get('info')) as boolean | undefined
 
     const currentValue = (typeof value !== 'undefined' ? value : (List(schema.get('default') as string[]) || List())) as List<string>

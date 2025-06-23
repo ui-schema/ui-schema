@@ -20,13 +20,13 @@ export const WidgetBooleanRead = (
         storeKeys, schema, value,
         showValidity, valid, errors,
         style,
-        widgets,
+        binding,
         IconYes, IconNo,
         readDense,
     }: WidgetProps & UIMetaReadContextType & WithScalarValue & WidgetBooleanReadProps,
 ): React.ReactElement => {
     const hideTitle = Boolean(schema.getIn(['view', 'hideTitle']))
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
     const hasInfo = Boolean(InfoRenderer && schema?.get('info'))
     return <>
         <Box style={style}>

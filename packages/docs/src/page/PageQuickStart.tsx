@@ -345,7 +345,7 @@ export const Generator = () => {
     return (
         // move \`UIMetaProvider\` somewhere higher in your app
         <UIMetaProvider
-            widgets={widgets}
+            binding={widgets}
             t={relTranslator}
         >
             <UIStoreProvider
@@ -425,7 +425,7 @@ export const Generator = () => {
     return (
         <React.Fragment>
             <UIMetaProvider
-                widgets={widgets}
+                binding={widgets}
                 t={relTranslator}
             >
                 <UIStoreProvider
@@ -555,7 +555,7 @@ export const Generator = () => {
     return (
         // move \`UIMetaProvider\` somewhere higher in your app
         <UIMetaProvider
-            widgets={widgets}
+            binding={widgets}
             t={relTranslator}
         >
             <UIStoreProvider

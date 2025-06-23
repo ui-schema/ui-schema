@@ -12,7 +12,7 @@ export interface WithDndBlock {
 
 export const injectBlock = <P extends WithDndBlock & {
     storeKeys: StoreKeys
-}>(Component: React.ComponentType<P>): React.ComponentType<Omit<P, keyof WithDndBlock>> => {
+}>(Component: React.FC<P>): React.FC<Omit<P, keyof WithDndBlock>> => {
     const InjectBlock = (
         p: Omit<P, keyof WithDndBlock>
     ) => {

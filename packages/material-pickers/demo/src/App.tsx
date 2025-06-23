@@ -4,7 +4,7 @@ import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefau
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import React from 'react'
 import AppTheme from './AppTheme'
-import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
+import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { WidgetDatePicker } from '@ui-schema/material-pickers/WidgetDatePicker'
 import { WidgetDateTimePicker } from '@ui-schema/material-pickers/WidgetDateTimePicker'
 import { WidgetTimePicker } from '@ui-schema/material-pickers/WidgetTimePicker'
@@ -113,19 +113,21 @@ const CustomTimePicker: React.FC<WidgetProps & WithScalarValue> = (props) => {
 }
 
 // const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
-const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
+const customWidgets: MuiWidgetsBinding = {
     ...baseComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: [
         ValidityReporter,
         WidgetRenderer,
     ],
-    types: typeWidgets,
-    custom: {
-        ...bindingExtended,
-        DateTime: CustomDateTimePicker,
-        Date: CustomDatePicker,
-        Time: CustomTimePicker,
+    widgets: {
+        types: typeWidgets,
+        custom: {
+            ...bindingExtended,
+            DateTime: CustomDateTimePicker,
+            Date: CustomDatePicker,
+            Time: CustomTimePicker,
+        },
     },
 }
 
@@ -159,7 +161,7 @@ const Main = () => {
 export const App = () =>
     <LocalizationProvider dateAdapter={AdapterLuxon}>
         <AppTheme>
-            <UIMetaProvider widgets={customWidgets} t={browserT}>
+            <UIMetaProvider binding={customWidgets} t={browserT}>
                 <Paper
                     sx={{p: 2, mx: 1, my: 4}}
                 >

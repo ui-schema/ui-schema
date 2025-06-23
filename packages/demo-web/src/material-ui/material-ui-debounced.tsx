@@ -1,6 +1,7 @@
 import { MuiWidgetsBinding } from '@ui-schema/ds-material'
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
 import React from 'react'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
@@ -14,23 +15,26 @@ import { browserT } from '../t'
 import { OrderedMap } from 'immutable'
 import { NumberRendererDebounced, StringRendererDebounced, TextRendererDebounced } from '@ui-schema/ds-material/Widgets/TextFieldDebounced'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
-import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
+import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
-const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
+const customWidgets: MuiWidgetsBinding = {
     ...baseComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: widgetPluginsLegacy,
-    types: {
-        ...typeWidgets,
-        string: StringRendererDebounced,
-        number: NumberRendererDebounced,
-        integer: NumberRendererDebounced,
-    },
-    custom: {
-        ...bindingExtended,
-        Text: TextRendererDebounced,
+    matchWidget: widgetMatcher,
+    widgets: {
+        types: {
+            ...typeWidgets,
+            string: StringRendererDebounced,
+            number: NumberRendererDebounced,
+            integer: NumberRendererDebounced,
+        },
+        custom: {
+            ...bindingExtended,
+            Text: TextRendererDebounced,
+        },
     },
 }
 
@@ -71,7 +75,7 @@ const FormComp = () => {
 
 // eslint-disable-next-line react/display-name
 export default () => <>
-    <UIMetaProvider widgets={customWidgets} t={browserT}>
+    <UIMetaProvider binding={customWidgets} t={browserT}>
         <Grid container spacing={3}>
             <Grid item xs={12}>
                 <Paper

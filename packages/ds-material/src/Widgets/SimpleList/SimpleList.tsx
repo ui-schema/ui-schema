@@ -67,7 +67,7 @@ export const SimpleListInner: React.FC<WidgetProps & { listSize: number, btnAddS
     {
         storeKeys, schema, listSize, onChange,
         showValidity, valid, errors, required,
-        widgets,
+        binding,
         btnAddShowLabel, btnAddStyle,
         btnSize: btnSizeProp,
         btnVariant: btnVariantProp,
@@ -80,7 +80,7 @@ export const SimpleListInner: React.FC<WidgetProps & { listSize: number, btnAddS
     const notAddable = schema.get('notAddable')
     const notDeletable = schema.get('notDeletable')
     const readOnly = schema.get('readOnly')
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
     return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
         <Grid container spacing={2}>
             {!schema.getIn(['view', 'hideTitle']) ? <Grid item xs={12}>

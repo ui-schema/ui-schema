@@ -100,6 +100,7 @@ Todo:
         - widgets can't resolve the actual branches, as they don't have a stable knowledge about their real position in complex schemas,
           caused by that, they must resolve the $ref themself when needed, to facilitate it the $ref must be canonicalized while building the schema resource
     - [x] interops with Validator for resolving `$ref` in validator and uses validate for traversing conditionals
+    - [ ] better highlight what is important when using it: use the root branch value as schema (for having the prepared, and not the plain schema), check unresolved, use without `inject/applyWidgetEngine` HOCs to move schema root rendering component
 - [ ] validator support of defaulting values, initially and after applying conditional schema
     - **tbd:** `default` handling and conditionals/selecting branches in ref/allOf/oneOf chains
 - [x] validator support of composition and conditional schemas
@@ -152,7 +153,7 @@ Todo:
 - rewrite the "Combination with Conditional" demo and explain why that is caused and how to prevent non-existing values from causing validations to not behave like expected with what is rendered
     - the point with e.g. `required` only validates if a value is `object`, not if the value is a `string` (and all other switch to `typeof` checks instead of `type` keyword),
       and as UI is rendered for the whole schema and not only for existing values, the validation must correctly cascade or `default` values must be set
-      - "in json-schema by default a schema won't be evaluated further if the value does not exist, while for UI we want to render nested fields and lazily initialize the tree up to that field, even if no value exists at all"
+        - "in json-schema by default a schema won't be evaluated further if the value does not exist, while for UI we want to render nested fields and lazily initialize the tree up to that field, even if no value exists at all"
     - **TBD:** doesn't that also mean, that `if` shouldn't be evaluated at all if there isn't a value to evaluated?! which would restore similar behaviour like <=0.4.x validators, while being spec. compliant
 
 > See also [CHANGES_NEXT_VALIDATE_TODOS.md](./CHANGES_NEXT_VALIDATE_TODOS.md) for more specific validator todos.
@@ -216,6 +217,7 @@ Todo:
 - stricter types, requires that generics extends `UIMetaContext`
 - added `validate` to context
 - improved context memoization
+- removed HOC `withUIMeta`, use hook instead
 
 #### React Plugins / WidgetEngine
 
@@ -249,6 +251,7 @@ Todos:
 - rewrite of validator-schemaPlugins into `ValidatorHandler` for new validator system
 - now optional in components binding: `.GroupRenderer`
 - now optional in widgets binding: `.types` and `.custom`
+- rename from `widgets` to `binding`, added nested `binding.widgets` and moved `.types` and `.custom` there (for the moment)
 
 ## Todo Bindings
 
@@ -274,10 +277,10 @@ Todos:
 - [x] add a `.validate` to bindings, for universal reuse of any WidgetPlugin and the ValidatorPlugin, handle validation and allow custom validation rules which are used everywhere
     - **todo:** check all current `widgetPlugins` which rely on validation, to normalize and interop with the new validator plugin and callback
     - **TBD:** added to `UIMetaContext` instead of `widgets` binding, rethink `widgetsBinding` more as a part of `uiMetaBinding`
-- refactor `widgetMatcher` to `widgets` binding, currently internal of `WidgetRenderer`
+- [x] refactor `widgetMatcher` to `widgets` binding, currently internal of `WidgetRenderer`
     - must be usable outside of plugins to match and render widgets in e.g. mui `FormGroup` and other "wrapper widgets", these don't add another layer but should reuse existing bindings, e.g. only relying on `ObjectRenderer`
-    - to be able to add complex default for `object` and `array`, there should be a hint which tells if "inside an wrapper-widget" and thus the "native" widget should be returned
-    - for better code-split, maybe remove the "widgets" completely from the context bindings, only supply through direct plugin binding, as only "types" and "components" should be used directly anyway, all other widgets should only be injected through matcher and never directly used from other widgets; for Table would require to add something like "prefer variant" or "in scope Table/Form"
+    - ~~to be able to add complex default for `object` and `array`, there should be a hint which tells if "inside an wrapper-widget" and thus the "native" widget should be returned~~ (see container idea)
+    - (skipped for now) for better code-split, maybe remove the "widgets" completely from the context bindings, only supply through direct plugin binding, as only "types" and "components" should be used directly anyway, all other widgets should only be injected through matcher and never directly used from other widgets; for Table would require to add something like "prefer variant" or "in scope Table/Form"
 - make `WidgetRenderer` and `VirtualRenderer` better integrated, remove all hard coded wiring to `VirtualWidgetRenderer`
     - this may relate to cleaning up unwanted package deps., as `ObjectRenderer` is in `react-json-schema`, the `react` package depends on that and `json-schema`,
       which shouldn't be the case (except through system typings),
@@ -408,7 +411,7 @@ new widget engine functions:
         - splitSchema never used `schemaKeys`, but that use case was explained somewhere,
           the existing `InjectSplitSchemaPlugin` uses `storeKeys` and stays compatible as-is,
           while a `schemaKeys` based inject plugin was never stable, instead it should use a value-location to schema-location matcher,
-          and can now use the new `SchemaResource` system to resolve canonical ids and pointers, which wasn't possible beforehand,
+          and ~~can~~ must now use the new `SchemaResource` system to resolve canonical ids and pointers, which wasn't possible beforehand,
           with a further refined resource handling and resolving, more information about all applied `$id` for a valueLocation can be used to influence style schema injection
 - [ ] deprecate widget plugins and components replaced by new validator and schema plugins
     - `/*` means anything in that folder will be deprecated and removed in a next version (and not just the symbol with that name)
@@ -426,7 +429,7 @@ new widget engine functions:
 - [ ] deprecate `useUIConfig`/`UIConfigProvider` and related parts, or remove directly if migrating typings isn't easy
 - [ ] deprecate `onErrors`, once the validation system is available to get any child errors in another component without much performance impact
 - [ ] optimize unnecessary rendering of empty parts, e.g. `ObjectRenderer` only checks for `properties` existence, but not if empty (maybe add the `getFields` utils already?)
-- [ ] remove or just deprecate the `injectWidgetEngine`, `applyWidgetEngine` HOCs? type migration with be headache
+- [ ] remove or just deprecate the `injectWidgetEngine`, `applyWidgetEngine` HOCs? type migration will be a headache
     - these functions never provided much optimization
     - people who need that micro optimization, should get better ways to do it their way (which now exists, also as `SchemaRootProvider` provides access to the root level schema)
     - their introduction, prevented users to focus on how to use `WidgetEngine` (or then `PluginStack`)

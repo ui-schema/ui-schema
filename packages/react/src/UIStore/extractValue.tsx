@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { getDisplayName } from '@ui-schema/react/Utils/memo'
 import { StoreKeys, useUIStore, WithValue, ExtractValueOverwriteProps } from '@ui-schema/react/UIStore'
 import { UIStoreActions, useUIStoreActions } from '@ui-schema/react/UIStoreActions'
 
 export function extractValue<A = UIStoreActions, P extends Partial<WithValue<A>> & { storeKeys: StoreKeys } = Partial<WithValue<A>> & { storeKeys: StoreKeys }>(
-    Component: React.ComponentType<P>,
-): React.ComponentType<Omit<P, keyof WithValue<A>> & ExtractValueOverwriteProps> {
+    // not using ComponentType here to solve problems with too strict types from propTypes
+    Component: (props: P) => ReactNode,
+): (props: Omit<P, keyof WithValue<A>> & ExtractValueOverwriteProps) => ReactNode {
     const ExtractValue = (p: Omit<P, keyof WithValue<A>> & ExtractValueOverwriteProps) => {
         const {store, showValidity} = useUIStore()
         const {onChange} = useUIStoreActions()

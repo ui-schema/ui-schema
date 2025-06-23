@@ -11,14 +11,13 @@ export function widgetMatcher<TW extends {} = {}, CW extends {} = {}, W extends 
     }: {
         widgetName: string | undefined
         schemaType: SchemaTypesType
-        widgets: W
+        widgets?: W | undefined
     },
 ): TW | CW | null {
     let Widget: TW | CW | null = null
 
-    // getting the to-render widget based on if it finds a custom object-widget or a widget extending native-types,
     if (widgetName) {
-        if (widgets.custom && widgets.custom[widgetName]) {
+        if (widgets?.custom && widgets.custom[widgetName]) {
             Widget = widgets.custom[widgetName] as TW | CW
         } else {
             throw new ErrorNoWidgetMatching()
@@ -26,7 +25,7 @@ export function widgetMatcher<TW extends {} = {}, CW extends {} = {}, W extends 
                 .setMatching(widgetName)
         }
     } else if (schemaType) {
-        if (widgets.types) {
+        if (widgets?.types) {
             const distinctInputType = schemaTypeToDistinct(schemaType)
 
             if (distinctInputType) {

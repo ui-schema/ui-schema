@@ -1,3 +1,4 @@
+import { ValidateFn } from '@ui-schema/ui-schema/Validate'
 import * as React from 'react'
 import { WithOnChange, WithScalarValue } from '@ui-schema/react/UIStore'
 import { GroupRendererProps } from '@ui-schema/react/Widgets'
@@ -28,7 +29,12 @@ export interface WidgetProps extends WidgetPayload, LegacyWidgets {
 
     // contains the value for non-scalar items, for objects/array it is undefined
     // use typing `WithScalarValue` for those, otherwise for `array`/`object` checkout the HOC: `extractValue` and typing `WithValue`
+
+    /**
+     * @todo move into UIMeta context (and typing)?
+     */
+    validate?: ValidateFn
 }
 
 // todo: remove this typing, just added until UIMeta pass through and typing is decided and migrated
-export type LegacyWidgets = { widgets: any }
+export type LegacyWidgets = { binding?: any }

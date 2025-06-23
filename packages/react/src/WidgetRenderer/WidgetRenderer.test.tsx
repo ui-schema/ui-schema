@@ -1,6 +1,8 @@
 /**
  * @jest-environment jsdom
  */
+import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
+import { widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
 import { ReactNode } from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
@@ -8,17 +10,20 @@ import '@testing-library/jest-dom/jest-globals'
 import { WidgetRenderer, WidgetRendererProps } from './WidgetRenderer.js'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { VirtualArrayRenderer, VirtualWidgetRendererProps, VirtualWidgetsMapping } from '@ui-schema/react/VirtualWidgetRenderer'
-import { NoWidgetProps, WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { NoWidgetProps, WidgetProps, WidgetPropsComplete, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import { List } from 'immutable'
-import { ExtractStorePlugin } from '@ui-schema/react/ExtractStorePlugin'
 import { createStore, onChangeHandler, UIStoreProvider, WithScalarValue } from '@ui-schema/react/UIStore'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { translateRelative } from '@ui-schema/ui-schema/TranslatorRelative'
 
 export const virtualWidgets: VirtualWidgetsMapping & { default_with_id: VirtualWidgetsMapping['default'] } = {
-    'default': () => <span>virtual-default-renderer</span>,
-    'default_with_id': ({value}) => <span id={'virtual-default-renderer__' + value}/>,
+    'default': () => {
+        return <span>virtual-default-renderer</span>
+    },
+    'default_with_id': ({value}) => {
+        return <span id={'virtual-default-renderer__' + value}/>
+    },
     'object': ObjectRenderer,
     'array': () => <span>virtual-array-renderer</span>,
 }
@@ -35,12 +40,11 @@ describe('WidgetRenderer', () => {
     it('missing type widget', async () => {
         const {queryByText} = render(
             <WidgetRenderer
-                widgets={{
+                binding={{
                     NoWidget: NoWidget,
-                    widgetPlugins: [
-                        ExtractStorePlugin,
-                        WidgetRenderer,
-                    ],
+                    // widgetPlugins: [
+                    //     WidgetRenderer,
+                    // ],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string'})}
@@ -53,12 +57,11 @@ describe('WidgetRenderer', () => {
     it('missing custom widget', async () => {
         const {queryByText} = render(
             <WidgetRenderer
-                widgets={{
+                binding={{
                     NoWidget: NoWidget,
-                    widgetPlugins: [
-                        ExtractStorePlugin,
-                        WidgetRenderer,
-                    ],
+                    // widgetPlugins: [
+                    //     WidgetRenderer,
+                    // ],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string', widget: 'Text'})}
@@ -71,14 +74,15 @@ describe('WidgetRenderer', () => {
     it('type widget', async () => {
         const {queryByText} = render(
             <WidgetRenderer
-                widgets={{
-                    types: {
-                        string: (props: WidgetProps & WithScalarValue) => props.value,
+                binding={{
+                    widgets: {
+                        types: {
+                            string: (props: WidgetProps & WithScalarValue) => props.value,
+                        },
                     },
-                    widgetPlugins: [
-                        ExtractStorePlugin,
-                        WidgetRenderer,
-                    ],
+                    // widgetPlugins: [
+                    //     WidgetRenderer,
+                    // ],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string'})}
@@ -92,14 +96,15 @@ describe('WidgetRenderer', () => {
     it('custom widget', async () => {
         const {queryByText} = render(
             <WidgetRenderer
-                widgets={{
-                    custom: {
-                        Text: (props: WidgetProps & WithScalarValue) => props.value,
+                binding={{
+                    widgets: {
+                        custom: {
+                            Text: (props: WidgetProps & WithScalarValue) => props.value,
+                        },
                     },
-                    widgetPlugins: [
-                        ExtractStorePlugin,
-                        WidgetRenderer,
-                    ],
+                    // widgetPlugins: [
+                    //     WidgetRenderer,
+                    // ],
                 }}
                 value={'demo-value'}
                 schema={createOrderedMap({type: 'string', widget: 'Text'})}
@@ -113,14 +118,15 @@ describe('WidgetRenderer', () => {
     it('array widget', async () => {
         const {queryByText} = render(
             <WidgetRenderer
-                widgets={{
-                    types: {
-                        array: (props: WidgetProps & { value?: unknown }) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set',
+                binding={{
+                    widgets: {
+                        types: {
+                            array: (props: WidgetProps & { value?: unknown }) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set',
+                        },
                     },
-                    widgetPlugins: [
-                        ExtractStorePlugin,
-                        WidgetRenderer,
-                    ],
+                    // widgetPlugins: [
+                    //     WidgetRenderer,
+                    // ],
                 }}
                 value={[]}
                 schema={createOrderedMap({type: 'array'})}
@@ -135,14 +141,15 @@ describe('WidgetRenderer', () => {
     it('object widget', async () => {
         const {queryByText} = render(
             <WidgetRenderer
-                widgets={{
-                    custom: {
-                        CustomObj: (props: WidgetProps & { value?: unknown }) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set',
+                binding={{
+                    widgets: {
+                        custom: {
+                            CustomObj: (props: WidgetProps & { value?: unknown }) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set',
+                        },
                     },
-                    widgetPlugins: [
-                        ExtractStorePlugin,
-                        WidgetRenderer,
-                    ],
+                    // widgetPlugins: [
+                    //     WidgetRenderer,
+                    // ],
                 }}
                 value={{}}
                 schema={createOrderedMap({type: 'object', widget: 'CustomObj'})}
@@ -165,14 +172,17 @@ describe('WidgetRenderer', () => {
                 // @ts-ignore
                 onChange={undefined}
             >
-                <WidgetRenderer<{ virtualWidgets: typeof virtualWidgets }>
-                    widgets={{
-                        types: {
-                            string: () => 'string-renderer',
-                            number: () => 'number-renderer',
+                <WidgetRenderer<UIStoreActions, { virtualWidgets: typeof virtualWidgets } & WidgetPropsComplete>
+                    binding={{
+                        widgets: {
+                            types: {
+                                string: () => 'string-renderer',
+                                number: () => 'number-renderer',
+                            },
                         },
+                        // @ts-expect-error expand typing or use meta provider? virtual relies on WidgetEngine,
+                        // thus requires a `WidgetRenderer` for nested rendering
                         widgetPlugins: [
-                            ExtractStorePlugin,
                             WidgetRenderer,
                         ],
                     }}
@@ -225,15 +235,18 @@ describe('WidgetRenderer', () => {
                 // @ts-ignore
                 onChange={undefined}
             >
-                <WidgetRenderer<{ virtualWidgets: typeof virtualWidgets2 }>
-                    widgets={{
-                        types: {
-                            string: () => 'string-renderer',
-                            number: () => 'number-renderer',
+                <WidgetRenderer<UIStoreActions, { virtualWidgets: typeof virtualWidgets2 } & WidgetPropsComplete>
+                    binding={{
+                        widgets: {
+                            types: {
+                                string: () => 'string-renderer',
+                                number: () => 'number-renderer',
+                            },
+                            custom: {},
                         },
-                        custom: {},
+                        // @ts-expect-error expand typing or use meta provider? virtual relies on WidgetEngine,
+                        // thus requires a `WidgetRenderer` for nested rendering
                         widgetPlugins: [
-                            ExtractStorePlugin,
                             WidgetRenderer,
                         ],
                     }}
@@ -258,19 +271,21 @@ describe('WidgetRenderer', () => {
             object: ObjectRenderer,
         }
         const widgets: WidgetsBindingFactory = {
-            types: {
-                string: () => 'string-renderer',
-                number: () => 'number-renderer',
+            widgets: {
+                types: {
+                    string: () => 'string-renderer',
+                    number: () => 'number-renderer',
+                },
             },
             widgetPlugins: [
-                ExtractStorePlugin,
                 WidgetRenderer,
             ],
+            matchWidget: widgetMatcher,
         }
         const value = createOrderedMap({dummy_array: ['lorem ipsum', 42]})
         const store = createStore(value)
         const {queryByText, queryAllByText} = render(
-            <UIMetaProvider widgets={widgets} t={translateRelative}>
+            <UIMetaProvider binding={widgets} t={translateRelative}>
                 {/* @ts-expect-error */}
                 <UIStoreProvider
                     // @ts-expect-error
@@ -278,8 +293,8 @@ describe('WidgetRenderer', () => {
                     // @ts-ignore
                     onChange={undefined}
                 >
-                    <WidgetRenderer<{ virtualWidgets: typeof virtualWidgets2 }>
-                        widgets={widgets}
+                    <WidgetRenderer<UIStoreActions, { virtualWidgets: typeof virtualWidgets2 } & WidgetPropsComplete>
+                        binding={widgets}
                         value={value}
                         virtualWidgets={virtualWidgets2}
                         schema={createOrderedMap({
@@ -313,19 +328,21 @@ describe('WidgetRenderer', () => {
             object: ObjectRenderer,
         }
         const widgets: WidgetsBindingFactory = {
-            types: {
-                string: () => 'string-renderer',
-                number: () => 'number-renderer',
+            widgets: {
+                types: {
+                    string: () => 'string-renderer',
+                    number: () => 'number-renderer',
+                },
             },
             widgetPlugins: [
-                ExtractStorePlugin,
                 WidgetRenderer,
             ],
+            matchWidget: widgetMatcher,
         }
         const value = createOrderedMap({dummy_array: [['lorem ipsum', 42], ['dolor sit', 43]]})
         const store = createStore(value)
         const {queryByText, queryAllByText} = render(
-            <UIMetaProvider widgets={widgets} t={translateRelative}>
+            <UIMetaProvider binding={widgets} t={translateRelative}>
                 {/* @ts-expect-error */}
                 <UIStoreProvider
                     // @ts-expect-error
@@ -333,8 +350,8 @@ describe('WidgetRenderer', () => {
                     // @ts-ignore
                     onChange={undefined}
                 >
-                    <WidgetRenderer<Pick<VirtualWidgetRendererProps, 'virtualWidgets'> & WidgetRendererProps>
-                        widgets={widgets}
+                    <WidgetRenderer<UIStoreActions, Pick<VirtualWidgetRendererProps, 'virtualWidgets'> & WidgetRendererProps>
+                        binding={widgets}
                         value={value}
                         virtualWidgets={virtualWidgets2}
                         schema={createOrderedMap({

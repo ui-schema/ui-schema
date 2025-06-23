@@ -5,10 +5,10 @@ import { WidgetProps } from '@ui-schema/react/Widgets'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { memo } from '@ui-schema/react/Utils/memo'
 
-export const TableAdvancedBase: React.ComponentType<WidgetProps & WithValue> = (
+export const TableAdvancedBase = (
     {
         showValidity, schema, ...props
-    }
+    }: WidgetProps & WithValue,
 ) => {
     const {storeKeys} = props
     const readOnly = schema.get('readOnly') as boolean
@@ -24,4 +24,4 @@ export const TableAdvancedBase: React.ComponentType<WidgetProps & WithValue> = (
     </>
 }
 
-export const TableAdvanced: React.ComponentType<WidgetProps> = extractValue(memo(TableAdvancedBase))
+export const TableAdvanced = extractValue(memo(TableAdvancedBase))

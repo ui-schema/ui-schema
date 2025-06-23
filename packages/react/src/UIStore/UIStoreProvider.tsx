@@ -76,6 +76,14 @@ export interface WithScalarValue<A = UIStoreActions> {
     onChange: onChangeHandler<A>
 }
 
+/**
+ * @todo normalize with `WithValue` once finalized stricter widget/plugin props overall
+ */
+export interface WithValuePlain {
+    value: unknown
+    internalValue: unknown
+}
+
 // todo: this type leads to circular references
 // type Validity = MapOf<{
 //     valid?: boolean

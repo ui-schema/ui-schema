@@ -40,26 +40,29 @@ import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
-type CustomWidgetsBinding = WidgetsBindingFactory<{ DndBlockSelector: typeof DragDropBlockSelector }, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
+type CustomWidgetsBinding = WidgetsBindingFactory<MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
     DragDropArea: React.ComponentType<WidgetProps & WithOnChange>
-}>
+}> & {
+    DndBlockSelector: typeof DragDropBlockSelector
+}
 
 const customWidgets: CustomWidgetsBinding = {
     ...baseComponents,
     widgetPlugins: widgetPluginsLegacy,
     DndBlockSelector: DragDropBlockSelector,
-    types: {
-        ...typeWidgets,
-    },
-    custom: {
-        ...bindingExtended,
-        // @ts-ignore
-        DropArea: DropArea,
-        DragDropArea: DragDropArea,
-        SortableList: SortableList,
-        RichContentPane: RichContentPane,
-        RichContent: RichContent,
-        RichContentInline: RichContentInline,
+    widgets: {
+        types: {
+            ...typeWidgets,
+        },
+        custom: {
+            ...bindingExtended,
+            DropArea: DropArea,
+            DragDropArea: DragDropArea,
+            SortableList: SortableList,
+            RichContentPane: RichContentPane,
+            RichContent: RichContent,
+            RichContentInline: RichContentInline,
+        },
     },
 }
 
@@ -212,7 +215,7 @@ const SingleEditor = () => {
 // eslint-disable-next-line react/display-name
 export default () => <>
     <UIMetaProvider<UIMetaContext<CustomWidgetsBinding>, CustomWidgetsBinding>
-        widgets={customWidgets}
+        binding={customWidgets}
         t={browserT}
     >
         <Grid container spacing={3}>

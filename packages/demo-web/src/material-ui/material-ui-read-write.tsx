@@ -7,7 +7,7 @@ import { DefaultHandler } from '@ui-schema/react-json-schema'
 import { InheritKeywords } from '@ui-schema/json-schema/InheritKeywords'
 import { SortPlugin } from '@ui-schema/json-schema/SortPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
-import { SchemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
+import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { schemaTypeToDistinct } from '@ui-schema/ui-schema/schemaTypeToDistinct'
 import React from 'react'
@@ -31,7 +31,7 @@ import { WidgetOptionsRead } from '@ui-schema/ds-material/WidgetsRead/WidgetOpti
 import { GroupRendererProps, WidgetType } from '@ui-schema/react/Widgets'
 import { UIMetaContext, UIMetaProvider, useUIMeta } from '@ui-schema/react/UIMeta'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
-import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
+import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { createStore, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
@@ -160,14 +160,16 @@ export interface ReadWidgetsBinding {
 
 // Notice: `customWidgets` are supplied by the global `UIMetaProvider` at the end of this file,
 //         while `readWidgets` are supplied in the nested `UIMetaProvider` - which re-uses everything else from the global provider
-const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
+const customWidgets: MuiWidgetsBinding = {
     ...baseComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: [],
-    types: typeWidgets,
-    custom: {
-        ...bindingExtended,
-        SelectChips: SelectChips,
+    widgets: {
+        types: typeWidgets,
+        custom: {
+            ...bindingExtended,
+            SelectChips: SelectChips,
+        },
     },
     GroupRenderer: GroupRenderer,
 }
@@ -192,7 +194,7 @@ const readWidgets: ReadWidgetsBinding = {
 
 const GridStack = injectWidgetEngine(GridContainer)
 const ReadableWritableEditor = () => {
-    const {widgets, ...metaCtx} = useUIMeta()
+    const {binding, ...metaCtx} = useUIMeta()
     const [showValidity, setShowValidity] = React.useState(true)
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
     const [edit, setEdit] = React.useState(false)
@@ -204,10 +206,10 @@ const ReadableWritableEditor = () => {
     }, [setStore])
 
     const customWidgetsRtd = React.useMemo(() => ({
-        ...widgets,
+        ...binding,
         widgetPlugins: [
             DefaultHandler,
-            SchemaPluginsAdapterBuilder([
+            schemaPluginsAdapterBuilder([
                 validatorPlugin,
                 SortPlugin,
                 // non-read widgets do not support a `dense` property by default, thus forcing with inheriting from parent schema
@@ -221,9 +223,11 @@ const ReadableWritableEditor = () => {
             ValidityReporter,
             WidgetRenderer,
         ],
-        types: edit ? widgets.types : readWidgets.types,
-        custom: edit ? widgets.custom : readWidgets.custom,
-    }), [widgets, edit])
+        widgets: {
+            types: edit ? binding?.widgets?.types : readWidgets.types,
+            custom: edit ? binding?.widgets?.custom : readWidgets.custom,
+        },
+    }), [binding, edit])
 
     const schema = edit && dense ? formSchema.setIn(['view', 'dense'], true) : formSchema
     const schemaWithSort = sort ? schema.set('sortOrder', schema.get('properties').keySeq().sort((a, b) => a.localeCompare(b)).concat(['prop_x'])) : schema
@@ -235,7 +239,7 @@ const ReadableWritableEditor = () => {
         </Box>
         <UIMetaProvider<UIMetaContext<typeof customWidgetsRtd> & UIMetaReadContextType>
             // re-use & overwrite of the global meta-context
-            widgets={customWidgetsRtd} {...metaCtx}
+            binding={customWidgetsRtd} {...metaCtx}
             // custom meta-ctx only available within this UIMetaProvider context
             readActive={!edit} readDense={dense}
         >
@@ -265,7 +269,7 @@ const validate = Validator([
 export default (): React.ReactElement =>
     <>
         <UIMetaProvider
-            widgets={customWidgets}
+            binding={customWidgets}
             t={browserT}
             validate={validate}
         >

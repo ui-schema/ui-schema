@@ -34,7 +34,7 @@ export const StringRendererDebounced = (
         // eslint-disable-next-line @typescript-eslint/no-deprecated
         onKeyPress,
         inputProps = {}, InputProps = {}, inputRef: customInputRef,
-        debounceTime = 340, widgets,
+        debounceTime = 340, binding,
     }: WidgetProps & WithScalarValue & Omit<StringRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps,
 ): React.ReactElement => {
     const uid = useUID()
@@ -61,7 +61,7 @@ export const StringRendererDebounced = (
 
     const hideTitle = schema.getIn(['view', 'hideTitle'])
 
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
     if (InfoRenderer && schema?.get('info')) {
         InputProps['endAdornment'] = <InputAdornment position="end">
             <InfoRenderer

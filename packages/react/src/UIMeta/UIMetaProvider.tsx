@@ -1,40 +1,30 @@
 import { useMemoObject } from '@ui-schema/react/Utils/useMemoObject'
 import { ValidateFn } from '@ui-schema/ui-schema/Validate'
-import { ComponentType, createContext, PropsWithChildren, useContext } from 'react'
+import { createContext, PropsWithChildren, useContext } from 'react'
 import { Translator } from '@ui-schema/ui-schema/Translator'
-import { WidgetProps } from '@ui-schema/react/Widgets'
-import { getDisplayName } from '@ui-schema/react/Utils/memo'
 import { WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 
 // @ts-expect-error initialized in provider
 const UIMetaContextObj = createContext<UIMetaContext>({})
 
 export interface UIMetaContext<W = WidgetsBindingFactory> {
-    widgets: W
+    binding?: W
     t: Translator
     validate?: ValidateFn
 }
 
-export function UIMetaProvider<C extends UIMetaContext = UIMetaContext, W extends WidgetsBindingFactory = WidgetsBindingFactory>(
-    {children, ...props}: PropsWithChildren<C & Pick<UIMetaContext<W>, 'widgets'>>,
+export function UIMetaProvider<C extends {}, W = WidgetsBindingFactory>(
+    {children, ...props}: PropsWithChildren<
+        UIMetaContext<W> &
+        NoInfer<C>
+    >,
 ) {
     const ctx = useMemoObject(props)
-    return <UIMetaContextObj.Provider value={ctx}>
+    return <UIMetaContextObj.Provider value={ctx as UIMetaContext}>
         {children}
     </UIMetaContextObj.Provider>
 }
 
-export const useUIMeta = <C extends UIMetaContext = UIMetaContext, W extends WidgetsBindingFactory = WidgetsBindingFactory>(): C & Pick<UIMetaContext<W>, 'widgets'> => {
-    return useContext(UIMetaContextObj) as C & Pick<UIMetaContext<W>, 'widgets'>
-}
-
-export const withUIMeta = <P extends WidgetProps, C extends UIMetaContext, W extends WidgetsBindingFactory = WidgetsBindingFactory>(
-    Component: ComponentType<P & C & Pick<UIMetaContext<W>, 'widgets'>>,
-): ComponentType<P> => {
-    const WithUIMeta = (p: P) => {
-        const meta = useUIMeta<C, W>()
-        return <Component {...meta} {...p}/>
-    }
-    WithUIMeta.displayName = `WithUIMeta(${getDisplayName(Component)})`
-    return WithUIMeta
+export const useUIMeta = <C extends UIMetaContext = UIMetaContext>(): C => {
+    return useContext(UIMetaContextObj) as C
 }

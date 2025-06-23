@@ -20,8 +20,10 @@ export const MockWidgets: WidgetsBindingFactory = {
     ErrorFallback: () => null,
     GroupRenderer: () => null,
     widgetPlugins: [WidgetRenderer],
-    types: {},
-    custom: {},
+    widgets: {
+        types: {},
+        custom: {},
+    },
 }
 
 const validate = Validator(standardValidators).validate
@@ -44,7 +46,7 @@ export const MockSchemaProvider: React.ComponentType<{
 
     return <UIMetaProvider
         // @ts-ignore
-        widgets={widgets}
+        binding={widgets}
         t={t || translateRelative}
         validate={validate}
     >
@@ -66,7 +68,7 @@ export const MockSchemaMetaProvider: React.ComponentType<React.PropsWithChildren
 
     return <UIMetaProvider
         // @ts-ignore
-        widgets={widgets}
+        binding={widgets}
         t={t || translateRelative}
         validate={validate}
     >

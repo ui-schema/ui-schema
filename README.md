@@ -212,7 +212,7 @@ const validate = Validator(standardValidators).validate
 
 export default function App() {
     return <UIMetaProvider
-        widgets={customWidgets}
+        binding={customWidgets}
         validate={validate}
         t={translateRelative}
         // never pass down functions like this - always use e.g. `React.useCallback`, check performance docs for more

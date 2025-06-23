@@ -44,7 +44,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarVal
         onKeyPress,
         inputProps = {},
         inputRef: customInputRef,
-        labelledBy, widgets,
+        labelledBy, binding,
     },
 ) => {
     const uid = useUID()
@@ -91,7 +91,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps & WithScalarVal
         inputProps.style.minWidth = schema.getIn(['view', 'minWidth']) as any || '40px'
     }
 
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
     return <>
         {!labelledBy ? <span style={visuallyHidden} id={inputProps['aria-labelledby']}>
             <TranslateTitle schema={schema} storeKeys={storeKeys}/>

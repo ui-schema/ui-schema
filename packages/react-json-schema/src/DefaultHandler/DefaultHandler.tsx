@@ -10,7 +10,9 @@ export interface DefaultHandlerProps {
 export const DefaultHandler: React.FC<DefaultHandlerProps & WidgetPluginProps> = (props) => {
     const {schema, currentPluginIndex, doNotDefault, readOnly} = props
     const next = currentPluginIndex + 1
-    const Plugin = getNextPlugin(next, props.widgets)
+    // @ts-expect-error feature experiment
+    const Next = props.Next
+    const Plugin = Next || getNextPlugin(next, props.binding)
 
     const defaultVal = schema.get('default')
 
@@ -51,6 +53,10 @@ export const DefaultHandler: React.FC<DefaultHandlerProps & WidgetPluginProps> =
         nextValue = defaultVal
     }
 
-    return <Plugin {...props} value={nextValue} currentPluginIndex={next}/>
+    return <Plugin
+        {...props}
+        value={nextValue}
+        currentPluginIndex={Next ? undefined : next}
+    />
 }
 

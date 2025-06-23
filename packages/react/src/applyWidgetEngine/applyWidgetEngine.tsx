@@ -16,7 +16,8 @@ export type AppliedWidgetEngineProps<CMeta = UIMetaContext, PWidget extends Widg
     // & Partial<UIMetaContext<W> & CMeta>
     & Partial<CMeta>
     & Partial<Pick<PWidget, 'showValidity'>>
-    //& WidgetEngineRootOrNestedProps
+
+//& WidgetEngineRootOrNestedProps
 
 export function applyWidgetEngine<CMeta = UIMetaContext, PWidget extends WidgetProps = WidgetProps>(
     CustomWidget: React.ComponentType<PWidget>,

@@ -23,11 +23,11 @@ export const StringRendererRead = (
         showValidity, valid, errors,
         style,
         onClick,
-        widgets, readDense,
+        binding, readDense,
     }: WidgetProps & UIMetaReadContextType & WithScalarValue & StringRendererReadProps,
 ): React.ReactElement => {
     const hideTitle = Boolean(schema.getIn(['view', 'hideTitle']))
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
     const lines = multiline && typeof value === 'string' ? value.split('\n') : []
     const hasInfo = Boolean(InfoRenderer && schema?.get('info'))
     return <>

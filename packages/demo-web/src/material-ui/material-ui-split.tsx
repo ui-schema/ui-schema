@@ -11,14 +11,15 @@ import { DefaultHandler, DefaultHandlerProps } from '@ui-schema/react-json-schem
 import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin'
 import { SchemaResourceProvider } from '@ui-schema/react/SchemaResourceProvider'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
-import { SchemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
+import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { SchemaPlugin } from '@ui-schema/ui-schema/SchemaPlugin'
+import { widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
 import { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import React, { useMemo } from 'react'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
-import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes } from '@ui-schema/ds-material/BindingType'
+import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
 import { browserT } from '../t'
 import { Table } from '@ui-schema/ds-material/Widgets/Table'
 import { NumberRendererCell, StringRendererCell, TextRendererCell } from '@ui-schema/ds-material/Widgets/TextFieldCell'
@@ -27,7 +28,7 @@ import { InjectSplitSchemaPlugin, InjectSplitSchemaRootContext } from '@ui-schem
 import { MuiJsonEditor, MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { Map, OrderedMap } from 'immutable'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
-import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widgets'
 import { SelectChips } from '@ui-schema/ds-material/Widgets'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { UISchema, UISchemaMap } from '@ui-schema/json-schema/Definitions'
@@ -37,26 +38,30 @@ import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { UIMetaContext, UIMetaProvider } from '@ui-schema/react/UIMeta'
 
-type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}>>
+// type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}>>
+type CustomWidgetsBinding = MuiWidgetsBinding
 
-const CustomTable: React.ComponentType<WidgetProps> = ({widgets, ...props}) => {
+const CustomTable: React.ComponentType<WidgetProps> = ({binding, ...props}) => {
     const customWidgets = React.useMemo(() => ({
-        ...widgets,
-        types: {
-            ...widgets.types,
-            string: StringRendererCell,
-            number: NumberRendererCell,
-            integer: NumberRendererCell,
+        ...binding,
+        widgets: {
+            ...binding?.widgets,
+            types: {
+                ...binding?.widgets?.types,
+                string: StringRendererCell,
+                number: NumberRendererCell,
+                integer: NumberRendererCell,
+            },
+            custom: {
+                ...binding?.widgets?.custom,
+                Text: TextRendererCell,
+            },
         },
-        custom: {
-            ...widgets.custom,
-            Text: TextRendererCell,
-        },
-    }), [widgets])
+    }), [binding])
 
     return <Table
         {...props}
-        widgets={customWidgets}
+        binding={customWidgets}
     />
 }
 // const {widgetPlugins} = WidgetsDefault.plugins()
@@ -73,7 +78,7 @@ const customWidgets: CustomWidgetsBinding = {
         // eslint-disable-next-line @typescript-eslint/no-deprecated
         ReferencingHandler, //  needed for legacy widget plugin, as relying on RootProvider/rootContext handling from it
         DefaultHandler,
-        SchemaPluginsAdapterBuilder([
+        schemaPluginsAdapterBuilder([
             validatorPlugin,
             requiredPlugin,
             {
@@ -106,13 +111,16 @@ const customWidgets: CustomWidgetsBinding = {
         ValidityReporter,
         WidgetRenderer,
     ],
-    types: typeWidgets,
-    custom: {
-        ...bindingExtended,
-        SelectChips: SelectChips,
-        Table: CustomTable,
-        TableAdvanced: TableAdvanced,
+    widgets: {
+        types: typeWidgets,
+        custom: {
+            ...bindingExtended,
+            SelectChips: SelectChips,
+            Table: CustomTable,
+            TableAdvanced: TableAdvanced,
+        },
     },
+    matchWidget: widgetMatcher,
 }
 
 const schemaData = createOrderedMap({
@@ -190,7 +198,7 @@ const Main = () => {
         <Button size={'small'} sx={{mb: 3}} onClick={() => setShowLegacy(s => !s)}>{legacy ? 'switch to schema-plugin' : 'switch to widget-plugin'}</Button>
 
         <UIMetaProvider<UIMetaContext & { styleSchema?: UISchemaMap }>
-            widgets={customWidgets}
+            binding={customWidgets}
             t={browserT}
             validate={validate}
             // new injection, for schema plugin
@@ -208,12 +216,13 @@ const Main = () => {
                     // loadSchema={loadSchema}
                 >
                     {/* todo: i think its the not-migrated HOC, but now here isRoot is needed */}
-                    <GridStack<{ isRoot?: boolean, rootContext?: InjectSplitSchemaRootContext }>
-                        isRoot
-                        schema={schemaData}
-                        // injection for legacy widget plugin, which used RootProvider
-                        rootContext={legacy ? rootContext : undefined}
-                    />
+                    {resource ?
+                        <GridStack<{ isRoot?: boolean, rootContext?: InjectSplitSchemaRootContext }>
+                            isRoot
+                            schema={resource.branch.value()}
+                            // injection for legacy widget plugin, which used RootProvider
+                            rootContext={legacy ? rootContext : undefined}
+                        /> : null}
                 </SchemaResourceProvider>
 
                 <MuiJsonEditor

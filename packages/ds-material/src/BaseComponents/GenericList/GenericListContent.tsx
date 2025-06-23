@@ -23,7 +23,7 @@ export interface GenericListContentProps extends ListButtonOverwrites {
 export const GenericListContent = <P extends WidgetProps>(
     {
         storeKeys, schema, listSize, onChange,
-        showValidity, valid, errors, required, widgets,
+        showValidity, valid, errors, required, binding,
         ComponentItemMore, ComponentItemPos,
         ComponentItem, ComponentFooter,
         btnAddShowLabel, btnAddStyle,
@@ -40,7 +40,7 @@ export const GenericListContent = <P extends WidgetProps>(
     const notSortable = schema.get('notSortable') as boolean | undefined
     const notAddable = schema.get('notAddable') as boolean | undefined
     const notDeletable = schema.get('notDeletable') as boolean | undefined
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
 
     const info = InfoRenderer && schema?.get('info') ?
         <InfoRenderer

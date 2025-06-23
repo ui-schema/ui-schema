@@ -9,25 +9,27 @@ import { RichContentPane } from '@ui-schema/material-slate/Widgets'
 import { browserT } from '../t'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { DummyRenderer } from './component/MuiMainDummy'
-import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
+import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
-const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
+const customWidgets: MuiWidgetsBinding = {
     ...baseComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: widgetPluginsLegacy,
-    types: typeWidgets,
-    custom: {
-        ...bindingExtended,
-        RichContentPane: RichContentPane,
-        RichContent: RichContent,
-        RichContentInline: RichContentInline,
+    widgets: {
+        types: typeWidgets,
+        custom: {
+            ...bindingExtended,
+            RichContentPane: RichContentPane,
+            RichContent: RichContent,
+            RichContentInline: RichContentInline,
+        },
     },
 }
 
 // eslint-disable-next-line react/display-name
 export default () => <>
-    <UIMetaProvider widgets={customWidgets} t={browserT}>
+    <UIMetaProvider binding={customWidgets} t={browserT}>
         <Grid container spacing={3}>
             <Grid item xs={12}>
                 <DummyRenderer id={'schemaSlate'} open schema={schemaDemoSlateSingle}/>

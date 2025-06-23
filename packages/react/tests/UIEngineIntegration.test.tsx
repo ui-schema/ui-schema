@@ -22,7 +22,7 @@ import {
     CombiningHandler, ConditionalHandler, DefaultHandler, DependentHandler, ReferencingHandler,
 } from '@ui-schema/react-json-schema'
 import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
-import { SchemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
+import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { translateRelative } from '@ui-schema/ui-schema/TranslatorRelative'
 import { JsonSchema } from '@ui-schema/json-schema/Definitions'
@@ -45,8 +45,10 @@ import { NextPluginRenderer, WidgetEngine } from '@ui-schema/react/WidgetEngine'
 
 const widgets = {
     ...MockWidgets,
-    types: {...MockWidgets.types},
-    custom: {...MockWidgets.custom},
+    widgets: {
+        types: {...MockWidgets.widgets?.types},
+        custom: {...MockWidgets.widgets?.custom},
+    },
 }
 // todo: add custom ErrorFallback, otherwise some errors may be catched there - and the test will not fail
 
@@ -72,7 +74,7 @@ const widgetPluginsLegacy = [
     DependentHandler,
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     ConditionalHandler,
-    SchemaPluginsAdapterBuilder([
+    schemaPluginsAdapterBuilder([
         // todo: should this exclude the validators which replaced the deprecated widget plugins?
         validatorPlugin,
     ]),
@@ -84,7 +86,7 @@ const widgetPlugins = [
     // plugin to have every widget in its own div - to query against in tests
     (props) => <div><NextPluginRenderer {...props}/></div>,
     DefaultHandler,
-    SchemaPluginsAdapterBuilder([
+    schemaPluginsAdapterBuilder([
         validatorPlugin,
         requiredPlugin,
     ]),
@@ -92,7 +94,7 @@ const widgetPlugins = [
     WidgetRenderer,
 ]
 
-widgets.types.string = function WidgetString(props: WidgetProps) {
+widgets.widgets.types.string = function WidgetString(props: WidgetProps) {
     return <>
         <span data-path={props.storeKeys.join('.')}>string-renderer</span>
         <span><TranslateTitle schema={props.schema} storeKeys={props.storeKeys}/></span>
@@ -101,7 +103,7 @@ widgets.types.string = function WidgetString(props: WidgetProps) {
     </>
 }
 
-widgets.types.array = extractValue(function WidgetArray(props: WidgetProps & WithValue) {
+widgets.widgets.types.array = extractValue(function WidgetArray(props: WidgetProps & WithValue) {
     const itemsSchema = props.schema.get('items')
     return <>
         <span data-path={props.storeKeys.join('.')}>array-renderer</span>
@@ -263,7 +265,7 @@ const TestUIRenderer = (props: {
     const resource = useMemo(() => (schema && !props.legacy ? resourceFromSchema(schema, {}) : undefined), [props.legacy, schema])
 
     const standard = <UIMetaProvider
-        widgets={appliedWidgets}
+        binding={appliedWidgets}
         t={props.notT ? translateRelative : (text: string) => text}
         validate={props.legacy ? validatePlain : validate}
     >
@@ -272,7 +274,7 @@ const TestUIRenderer = (props: {
             onChange={onChange}
             showValidity
         >
-            <RootStack isRoot schema={schema}/>
+            <RootStack isRoot schema={props.legacy ? schema : resource?.branch.value()}/>
         </UIStoreProvider>
         <div>store-is-{isInvalid(store.getValidity()) ? 'invalid' : 'correct'}</div>
     </UIMetaProvider>

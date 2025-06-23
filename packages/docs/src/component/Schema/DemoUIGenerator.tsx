@@ -35,7 +35,7 @@ const SchemaJSONEditor = ({schema, setJsonError, setSchema, tabSize, fontSize, r
             try {
                 setJsonError(false)
                 setSchema(createOrderedMap(JSON.parse(newValue)))
-            } catch(e) {
+            } catch (e) {
                 setJsonError(e instanceof Error ? e.toString() : 'Failed to parse JSON')
                 setSchema(newValue)
             }
@@ -81,7 +81,7 @@ const DemoUIGenerator = (
     const [jsonError, setJsonError] = React.useState<string | undefined>(undefined)
     const [showReadOnly, setShowReadOnly] = React.useState(false)
     const [maxLines /*setMaxLines*/] = React.useState(15)
-    const {widgets, ...mainMeta} = useUIMeta()
+    const {binding, ...mainMeta} = useUIMeta()
     const {breakpoints} = useTheme()
     const isMd = useMediaQuery(breakpoints.up('md'))
 
@@ -122,35 +122,38 @@ const DemoUIGenerator = (
     const {onMove} = useOnDirectedMove(onIntent, onChange)
 
     const activeWidgets = React.useMemo(() => ({
-        ...widgets,
-        types: {
-            ...widgets.types,
-            ...(showReadOnly ? {
-                string: StringRendererRead,
-                number: NumberRendererRead,
-                int: NumberRendererRead,
-                boolean: WidgetBooleanRead,
-            } : {}),
+        ...binding,
+        widgets: {
+            ...binding?.widgets,
+            types: {
+                ...binding?.widgets?.types,
+                ...(showReadOnly ? {
+                    string: StringRendererRead,
+                    number: NumberRendererRead,
+                    int: NumberRendererRead,
+                    boolean: WidgetBooleanRead,
+                } : {}),
+            },
+            custom: {
+                ...binding?.widgets?.custom,
+                ...(showReadOnly ? {
+                    Text: TextRendererRead,
+                    Select: WidgetOptionsRead,
+                    SelectMulti: WidgetOptionsRead,
+                    SelectChips: WidgetChipsRead,
+                    OptionsRadio: WidgetOptionsRead,
+                    OptionsCheck: WidgetOptionsRead,
+                } : {}),
+            },
         },
-        custom: {
-            ...widgets.custom,
-            ...(showReadOnly ? {
-                Text: TextRendererRead,
-                Select: WidgetOptionsRead,
-                SelectMulti: WidgetOptionsRead,
-                SelectChips: WidgetChipsRead,
-                OptionsRadio: WidgetOptionsRead,
-                OptionsCheck: WidgetOptionsRead,
-            } : {}),
-        },
-    }), [widgets, showReadOnly])
+    }), [binding, showReadOnly])
 
     const tabSize = 2
     const fontSize = 13
 
     return <div style={uiStyle}>
         {/*<MuiPickersUtilsProvider utils={LuxonAdapter}>*/}
-        <UIMetaProvider widgets={activeWidgets} {...mainMeta}>
+        <UIMetaProvider binding={activeWidgets} {...mainMeta}>
             <KitDndProvider onMove={onMove}>
                 <UIStoreProvider
                     store={store}

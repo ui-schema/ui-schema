@@ -78,13 +78,13 @@ export const WidgetOptionsRead: React.ComponentType<WidgetProps & UIMetaReadCont
     {
         schema, storeKeys, showValidity,
         valid, errors, value,
-        widgets,
+        binding,
         onClick, style,
         readDense,
     },
 ) => {
     const hideTitle = schema.getIn(['view', 'hideTitle']) as boolean | undefined
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
     const hasInfo = Boolean(InfoRenderer && schema?.get('info')) as boolean | undefined
     const isMultiOption = Boolean(schema.get('items'))
     const {valueSchemas} = useOptionsFromSchema(

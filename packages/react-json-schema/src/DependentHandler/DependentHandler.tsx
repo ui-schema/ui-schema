@@ -62,7 +62,7 @@ const DependentRenderer: React.FC<WidgetPluginProps & {
 export const DependentHandler: React.FC<WidgetPluginProps> = (props) => {
     const {schema, currentPluginIndex} = props
     const next = currentPluginIndex + 1
-    const Plugin = getNextPlugin(next, props.widgets)
+    const Plugin = getNextPlugin(next, props.binding)
 
     const dependencies = schema.get('dependencies')
     const dependentSchemas = schema.get('dependentSchemas')

@@ -15,7 +15,7 @@ describe('NextPluginRenderer', () => {
     it('Empty NextPluginRenderer', async () => {
         const {queryByText} = render(
             <NextPluginRenderer
-                widgets={{
+                binding={{
                     NoWidget: NoWidget,
                     widgetPlugins: [
                         WidgetRenderer,
@@ -30,7 +30,7 @@ describe('NextPluginRenderer', () => {
     it('Single NextPluginRenderer - current', async () => {
         const {queryByText} = render(
             <NextPluginRenderer
-                widgets={{
+                binding={{
                     NoWidget: NoWidget,
                     widgetPlugins: [
                         (p) => <>
@@ -50,7 +50,7 @@ describe('NextPluginRenderer', () => {
     it('Single NextPluginRenderer - current · memo', async () => {
         const {queryByText} = render(
             <NextPluginRendererMemo
-                widgets={{
+                binding={{
                     NoWidget: NoWidget,
                     widgetPlugins: [
                         (p) => <>
@@ -70,7 +70,7 @@ describe('NextPluginRenderer', () => {
     it('Single NextPluginRenderer - prev', async () => {
         const {queryByText} = render(
             <NextPluginRenderer
-                widgets={{
+                binding={{
                     NoWidget: NoWidget,
                     widgetPlugins: [
                         (p) => <>
@@ -95,7 +95,7 @@ describe('NextPluginRenderer', () => {
             () => expect(
                 () => render(
                     <NextPluginRenderer
-                        widgets={{
+                        binding={{
                             NoWidget: NoWidget,
                             widgetPlugins: [
                                 (p) => <>
@@ -120,7 +120,7 @@ describe('NextPluginRenderer', () => {
             <WidgetEngine
                 // @ts-expect-error
                 schema={undefined}
-                widgets={{
+                binding={{
                     widgetPlugins: [
                         (() => {
                             throw new Error('dummy-error')
@@ -159,7 +159,7 @@ describe('NextPluginRenderer', () => {
                 schema={mockSchemaRoot}
                 isRoot
 
-                widgets={{}} // needed to prevent internals to break without context
+                binding={{}} // needed to prevent internals to break without context
             />,
         )
         expect(queryByText('error-fallback') === null).toBeTruthy()
@@ -172,7 +172,7 @@ describe('NextPluginRenderer', () => {
                 parentSchema={mockSchemaRoot}
                 storeKeys={storeKeysField}
 
-                widgets={{}} // needed to prevent internals to break without context
+                binding={{}} // needed to prevent internals to break without context
             />,
         )
         expect(queryByText('error-fallback') === null).toBeTruthy()
@@ -184,7 +184,7 @@ describe('NextPluginRenderer', () => {
             <WidgetEngine
                 schema={mockSchemaField}
 
-                widgets={{}} // needed to prevent internals to break without context
+                binding={{}} // needed to prevent internals to break without context
             />,
         )
         expect(queryByText('error-fallback') === null).toBeTruthy()
@@ -202,7 +202,7 @@ describe('NextPluginRenderer', () => {
                 // @ts-expect-error not defined and NoInfer should catch it
                 className={'some-class'}
 
-                widgets={{}} // needed to prevent internals to break without context
+                binding={{}} // needed to prevent internals to break without context
             />,
         )
         expect(queryByText('error-fallback') === null).toBeTruthy()
@@ -217,7 +217,7 @@ describe('NextPluginRenderer', () => {
 
                 className={'some-class'}
 
-                widgets={{}} // needed to prevent internals to break without context
+                binding={{}} // needed to prevent internals to break without context
             />,
         )
         expect(queryByText('error-fallback') === null).toBeTruthy()
@@ -233,7 +233,7 @@ describe('NextPluginRenderer', () => {
                 parentSchema={mockSchemaRoot}
                 storeKeys={storeKeysField}
 
-                widgets={{}} // needed to prevent internals to break without context
+                binding={{}} // needed to prevent internals to break without context
             />,
         )
         expect(queryByText('error-fallback') === null).toBeTruthy()
@@ -271,7 +271,7 @@ describe('NextPluginRenderer', () => {
                 // @ts-expect-error not defined and NoInfer should catch it
                 className={'some-class'}
 
-                widgets={{}} // needed to prevent internals to break without context
+                binding={{}} // needed to prevent internals to break without context
             />,
         )
         expect(queryByText('error-fallback') === null).toBeTruthy()
@@ -287,7 +287,7 @@ describe('NextPluginRenderer', () => {
                 WidgetOverride={CustomWidgetOptionalProps}
                 className={'some-class'}
 
-                widgets={{}} // needed to prevent internals to break without context
+                binding={{}} // needed to prevent internals to break without context
             />,
         )
         expect(queryByText('error-fallback') === null).toBeTruthy()
@@ -305,7 +305,7 @@ describe('NextPluginRenderer', () => {
                 storeKeys={storeKeysField}
                 WidgetOverride={CustomWidgetRequiredProps}
 
-                widgets={{}} // needed to prevent internals to break without context
+                binding={{}} // needed to prevent internals to break without context
             />,
         )
         expect(queryByText('error-fallback') === null).toBeTruthy()

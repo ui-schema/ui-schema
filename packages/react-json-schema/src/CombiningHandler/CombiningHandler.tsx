@@ -11,6 +11,6 @@ export const CombiningHandler: React.FC<WidgetPluginProps & Partial<WithValue>> 
     const {schema: baseSchema, value, currentPluginIndex} = props
     const schema = useSchemaCombine(props.validate, baseSchema, value)
     const next = currentPluginIndex + 1
-    const Plugin = getNextPlugin(next, props.widgets)
+    const Plugin = getNextPlugin(next, props.binding)
     return <Plugin {...props} currentPluginIndex={next} schema={schema}/>
 }

@@ -7,6 +7,6 @@ import { isEqualObject } from '@ui-schema/ui-schema/Utils/isEqualObject'
  */
 export const memo = <C extends React.ComponentType<any> = React.ComponentType<any>>(Component: C): C => {
     const Memoized = React.memo(Component, isEqualObject)
-    Memoized.displayName = getDisplayName(Component)
+    Memoized.displayName = `ImmutableMemo(${getDisplayName(Component)})`
     return Memoized as unknown as C
 }

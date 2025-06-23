@@ -1,8 +1,9 @@
-import { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
-import React from 'react'
+import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
+import { SchemaKeywordType, SchemaTypesType, SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
+import React, { ReactNode } from 'react'
 import { WidgetPluginType } from '@ui-schema/react/WidgetEngine'
 import { WidgetProps } from '@ui-schema/react/Widgets'
-import { StoreKeys, WithValue } from '@ui-schema/react/UIStore'
+import { StoreKeys, WithOnChange, WithValue, WithValuePlain } from '@ui-schema/react/UIStore'
 import { List } from 'immutable'
 import { WidgetsBindingRoot } from '@ui-schema/ui-schema/WidgetsBinding'
 
@@ -45,12 +46,39 @@ export interface WidgetsBindingComponents {
     // validator: () => void
 }
 
+export interface MatchProps<A = UIStoreActions, WP extends WidgetPropsComplete<A> = WidgetPropsComplete<A>> {
+    widgetName: string | undefined
+    schemaType: SchemaTypesType
+    isVirtual?: boolean
+
+    widgets?: {
+        types?: { [K in SchemaKeywordType]?: (props: WP) => ReactNode }
+        custom?: Record<string, (props: WP) => ReactNode>
+    }
+}
+
+// todo: clean up
+export type WidgetPropsComplete<A = UIStoreActions> = WidgetProps & WithOnChange<A> & WithValuePlain
+
+// todo: move into UISchema as a generic-generic factory typing?! this shit again...
+//       - TMatchProps depends on what the WidgetRenderer plugin supports
+// todo: why not move as arg. of WidgetRenderer?
+// export type WidgetMatcher<TWidget, TMatchProps extends MatchProps = MatchProps> =
+//     (matchProps: TMatchProps) => TWidget
+
 /**
  * widget binding
  * - `C` = own `UIMetaContext` definition
  * - `TW` = own type widgets definition
  * - `CW` = own custom widgets definition
+ * @todo make stricter and add support for strict checks in UIMetaProvider with inferring,
+         and normalize with all other matchWidget/widgets types, atm. testing MUI with strict shared interface
  */
-export type WidgetsBindingFactory<W extends {} = {}, TW extends {} = {}, CW extends {} = {}> =
-    WidgetsBindingComponents & W &
-    WidgetsBindingRoot<TW, CW>
+export type WidgetsBindingFactory<TW extends {} = {}, CW extends {} = {}> =
+    WidgetsBindingComponents &
+    {
+        widgets?: WidgetsBindingRoot<TW, CW>
+    } &
+    {
+        matchWidget?: (props: MatchProps<any, any>) => null | ((props: any) => ReactNode)
+    }

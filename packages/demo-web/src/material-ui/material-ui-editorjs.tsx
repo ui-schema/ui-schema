@@ -8,7 +8,7 @@ import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import { ImmutableEditor, themeMaterial, themeMaterialLight } from 'react-immutable-editor'
-import { InfoRenderer, InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
+import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { browserT } from '../t'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import IcSave from '@mui/icons-material/Save'
@@ -46,14 +46,16 @@ const EditorJSRichContent = (props) => {
     />
 }
 
-const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
+const customWidgets: MuiWidgetsBinding = {
     ...baseComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: widgetPluginsLegacy,
-    types: typeWidgets,
-    custom: {
-        ...bindingExtended,
-        EditorJS: EditorJSRichContent,
+    widgets: {
+        types: typeWidgets,
+        custom: {
+            ...bindingExtended,
+            EditorJS: EditorJSRichContent,
+        },
     },
 }
 
@@ -163,7 +165,7 @@ const Main = () => {
 
 // eslint-disable-next-line react/display-name
 export default () => <>
-    <UIMetaProvider widgets={customWidgets} t={browserT}>
+    <UIMetaProvider binding={customWidgets} t={browserT}>
         <Grid container spacing={3}>
             <Grid item xs={12} /*style={{margin: '0 16px', width: '100%'}}*/>
                 <Main/>

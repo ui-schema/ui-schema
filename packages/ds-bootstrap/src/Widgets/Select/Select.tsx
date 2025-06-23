@@ -1,4 +1,4 @@
-import { WithScalarValue } from '@ui-schema/react/UIStore'
+import { WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import React from 'react'
 import { beautifyKey } from '@ui-schema/ui-schema/Utils/beautify'
@@ -7,7 +7,7 @@ import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { List, Map } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
 
-export const Select = ({schema, storeKeys, showValidity, errors, value, onChange, required}: WidgetProps & WithScalarValue) => {
+export const Select = ({schema, storeKeys, showValidity, errors, value, onChange, required}: WidgetProps & WithValuePlain & WithOnChange) => {
     const enum_val = schema.get('enum')
     const {t} = useUIMeta()
 

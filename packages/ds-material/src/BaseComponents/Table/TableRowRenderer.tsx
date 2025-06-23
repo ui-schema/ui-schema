@@ -26,7 +26,7 @@ const WidgetEngineMemo = memo(WidgetEngine)
 export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps & Pick<WithValue, 'onChange'>> = (
     {
         parentSchema, schema,
-        showValidity, widgets,
+        showValidity, binding,
         storeKeys,
         uid,
         onChange, required,
@@ -55,7 +55,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
         cellSchema = orderedCellSchema
     }
 
-    const GroupRenderer = widgets.GroupRenderer
+    const GroupRenderer = binding?.GroupRenderer
 
     return <TableRow>
         {cellSchema.map((item, j) =>
@@ -82,7 +82,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                                 readOnly={readOnly}
 
                                 // overwriting `widgets`, needs to be passed down further on depending on use cases:
-                                widgets={widgets}
+                                binding={binding}
 
                                 // table field a11y labelling not supported for object,
                                 // must be done by in-cell translation
@@ -98,7 +98,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                             noGrid
 
                             // overwriting `widgets`, needs to be passed down further on depending on use cases:
-                            widgets={widgets}
+                            binding={binding}
 
                             // custom table field prop for a11y labelling
                             // todo: `j` is correct for lists, as it mimics the tuple part

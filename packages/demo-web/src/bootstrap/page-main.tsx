@@ -23,7 +23,7 @@ import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { isInvalid } from '@ui-schema/react/ValidityReporter'
 
-const customWidgets: typeof widgets = {
+const customBinding: typeof widgets = {
     ...widgets,
     widgetPlugins: [
         // eslint-disable-next-line @typescript-eslint/no-deprecated
@@ -51,7 +51,7 @@ const DemoGrid = () => {
     }, [setStore])
 
     return <UIMetaProvider
-        widgets={customWidgets}
+        binding={customBinding}
         t={browserT}
         validate={Validator(standardValidators).validate}
     >
@@ -77,7 +77,7 @@ const MainStore = () => {
 
     return <React.Fragment>
         <UIMetaProvider
-            widgets={customWidgets}
+            binding={customBinding}
             t={browserT}
             validate={Validator(standardValidators).validate}
         >

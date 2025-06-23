@@ -1,7 +1,7 @@
+import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { SchemaResource } from '@ui-schema/ui-schema/SchemaResource'
 import { createOrdered } from '@ui-schema/ui-schema/createMap'
 import { SchemaPlugin } from '@ui-schema/ui-schema/SchemaPlugin'
-import { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import { Map, List } from 'immutable'
 
 /**
@@ -45,7 +45,7 @@ export function mergeSchemas(baseSchema: any, ...appliedSchemas: any[]) {
     return schema
 }
 
-export const validatorPlugin: SchemaPlugin<WidgetPayload & { resource?: SchemaResource }> = {
+export const validatorPlugin: SchemaPlugin<Omit<WidgetPluginProps, 'currentPluginIndex'> & { resource?: SchemaResource }> = {
     handle: (props) => {
         if (!props.validate) return {}
         const ownKey = props.storeKeys?.last()

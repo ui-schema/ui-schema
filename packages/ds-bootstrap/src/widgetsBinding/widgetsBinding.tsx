@@ -1,4 +1,4 @@
-import { ErrorFallbackProps, WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { ErrorFallbackProps, WidgetPropsComplete, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import React from 'react'
 import { NumberRenderer, StringRenderer, TextRenderer } from '@ui-schema/ds-bootstrap/Widgets/TextField'
 import { Select, SelectMulti } from '@ui-schema/ds-bootstrap/Widgets/Select'
@@ -17,38 +17,36 @@ const MyFallbackComponent = ({type, widget}: ErrorFallbackProps) => (
     </div>
 )
 
-export interface BtsWidgetBinding extends WidgetsBindingFactory {
-    types: {
-        string?: React.ComponentType<WidgetProps>
-        boolean?: React.ComponentType<WidgetProps>
-        number?: React.ComponentType<WidgetProps>
-        integer?: React.ComponentType<WidgetProps>
-        null?: React.ComponentType<WidgetProps>
-        object?: React.ComponentType<WidgetProps>
-        array?: React.ComponentType<WidgetProps>
-    }
-    custom: {
-        [k: string]: React.ComponentType<WidgetProps>
-    }
-}
+export type BtsWidgetBinding = WidgetsBindingFactory<{
+    string?: React.ComponentType<WidgetPropsComplete>
+    boolean?: React.ComponentType<WidgetPropsComplete>
+    number?: React.ComponentType<WidgetPropsComplete>
+    integer?: React.ComponentType<WidgetPropsComplete>
+    null?: React.ComponentType<WidgetPropsComplete>
+    object?: React.ComponentType<WidgetPropsComplete>
+    array?: React.ComponentType<WidgetPropsComplete>
+}, {
+    [k: string]: React.ComponentType<WidgetPropsComplete>
+}>
 
 export const widgets: BtsWidgetBinding = {
     ErrorFallback: MyFallbackComponent,
     GroupRenderer,
-    // todo: fix all existing bootstrap widget typings
-    types: {
-        object: ObjectRenderer,
-        string: StringRenderer as React.ComponentType<WidgetProps>,
-        boolean: BoolRenderer as React.ComponentType<WidgetProps>,
-        number: NumberRenderer as React.ComponentType<WidgetProps>,
-        integer: NumberRenderer as React.ComponentType<WidgetProps>,
-    },
-    custom: {
-        Text: TextRenderer as React.ComponentType<WidgetProps>,
-        SimpleList,
-        OptionsCheck,
-        OptionsRadio: OptionsRadio as React.ComponentType<WidgetProps>,
-        Select: Select as React.ComponentType<WidgetProps>,
-        SelectMulti,
+    widgets: {
+        types: {
+            object: ObjectRenderer,
+            string: StringRenderer,
+            boolean: BoolRenderer,
+            number: NumberRenderer,
+            integer: NumberRenderer,
+        },
+        custom: {
+            Text: TextRenderer,
+            SimpleList,
+            OptionsCheck,
+            OptionsRadio: OptionsRadio,
+            Select: Select,
+            SelectMulti,
+        },
     },
 }

@@ -1,13 +1,12 @@
-import { WithValidatorErrors, WithValuePlain } from '@ui-schema/ui-schema/SchemaPlugin'
 import { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import { OrderedMap } from 'immutable'
 
 export const InheritKeywords =
     <TProps extends WidgetPayload>(
         keywords: (string | (string[]))[],
-        should?: (props: Partial<TProps> & WithValuePlain & WithValidatorErrors) => boolean,
+        should?: (props: Partial<TProps>) => boolean,
     ) => ({
-        handle: (props: Partial<TProps> & WithValuePlain & WithValidatorErrors) => {
+        handle: (props: Partial<TProps>) => {
             if (should && !should(props)) return null
 
             const {parentSchema, schema} = props

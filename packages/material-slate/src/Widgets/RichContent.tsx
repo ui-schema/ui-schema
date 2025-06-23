@@ -8,7 +8,7 @@ import { FormWrapper, useFormEditorStyles } from '@ui-schema/material-slate/Edit
 import { useSlate } from '@ui-schema/material-slate/Slate/useSlate'
 import { slatePlugins, withPlugins } from '@ui-schema/material-slate/Slate/slatePlugins'
 
-const RichContentBase: React.ComponentType<WidgetProps & WithValue> = (props) => {
+const RichContentBase: React.FC<WidgetProps & WithValue> = (props) => {
     const {
         /*internalValue,*/ value, schema, storeKeys,
         errors,
@@ -35,4 +35,4 @@ const RichContentBase: React.ComponentType<WidgetProps & WithValue> = (props) =>
     </FormWrapper>
 }
 
-export const RichContent = extractValue(memo(RichContentBase)) as React.ComponentType<WidgetProps>
+export const RichContent = extractValue(memo(RichContentBase))

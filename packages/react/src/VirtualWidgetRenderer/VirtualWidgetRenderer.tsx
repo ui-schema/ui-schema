@@ -1,5 +1,5 @@
 import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
-import { WidgetFieldSchemaProps } from '@ui-schema/ui-schema/Widget'
+import { WidgetPayloadFieldSchema } from '@ui-schema/ui-schema/Widget'
 import React from 'react'
 import { List } from 'immutable'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
@@ -10,24 +10,23 @@ import { WithValue } from '@ui-schema/react/UIStore'
 
 export interface VirtualArrayRendererProps extends LegacyWidgets {
     storeKeys: StoreKeys
-    schema: WidgetFieldSchemaProps['schema']
+    schema: WidgetPayloadFieldSchema['schema']
     value: WithValue['value']
     virtualWidgets?: VirtualWidgetRendererProps['virtualWidgets']
 }
 
 export const VirtualArrayRenderer = (
-    {storeKeys, value, schema, virtualWidgets, widgets}: VirtualArrayRendererProps,
+    {storeKeys, value, schema, virtualWidgets, binding}: VirtualArrayRendererProps,
 ): React.ReactElement => {
     const items = schema?.get('items')
     return value ? value.map((_val, i) =>
         <WidgetEngine<VirtualWidgetRendererProps>
             key={i}
-            // @ts-ignore
             schema={List.isList(items) ? items.get(i) : items}
             parentSchema={schema}
             storeKeys={storeKeys.push(i)}
             virtualWidgets={virtualWidgets}
-            widgets={widgets}
+            binding={binding}
             isVirtual
         />,
     ).valueSeq() : null

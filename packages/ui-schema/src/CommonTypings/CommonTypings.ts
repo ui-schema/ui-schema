@@ -2,6 +2,12 @@ import { List, OrderedMap } from 'immutable'
 
 export type showValidity = boolean
 
+/**
+ * @todo duplicated with json-schema, but no other way found as needed in react/system;
+ *       and increase usage then across the board, to make `type` stricter
+ */
+export type SchemaKeywordType = 'string' | 'number' | 'integer' | 'boolean' | 'null' | 'object' | 'array'
+
 export type SchemaTypesType = List<string> | string[] | string | undefined
 
 /**

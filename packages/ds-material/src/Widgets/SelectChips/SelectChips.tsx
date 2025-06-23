@@ -73,4 +73,4 @@ export const SelectChipsBase: React.ComponentType<WidgetProps & WithValue> = (
     </Box>
 }
 
-export const SelectChips = extractValue(memo(SelectChipsBase)) as React.ComponentType<WidgetProps>
+export const SelectChips = extractValue(memo(SelectChipsBase))

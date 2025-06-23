@@ -1,8 +1,7 @@
-import { SchemaPlugin, WithValidatorErrors, WithValuePlain } from '@ui-schema/ui-schema/SchemaPlugin'
-import { WidgetPayload } from '@ui-schema/ui-schema/Widget'
+import { SchemaPlugin, SchemaPluginProps } from '@ui-schema/ui-schema/SchemaPlugin'
 
-export const SchemaPluginStack = <TProps extends WidgetPayload>(
-    props: TProps & WithValuePlain & WithValidatorErrors,
+export const SchemaPluginStack = <TProps extends SchemaPluginProps>(
+    props: TProps,
     schemaPlugins: SchemaPlugin<TProps>[],
 ) => {
     if (schemaPlugins && Array.isArray(schemaPlugins)) {
