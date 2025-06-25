@@ -164,16 +164,18 @@ export const SearchBox: React.ComponentType = () => {
     return <Dialog
         open={open} onClose={() => setOpen(false)}
         maxWidth={'sm'} fullWidth
-        PaperProps={{
-            style: {
-                background: 'transparent', overflow: 'visible',
-                margin: '24px 32px 32px 12px',
+        slotProps={{
+            paper: {
+                style: {
+                    background: 'transparent', overflow: 'visible',
+                    margin: '24px 32px 32px 12px',
+                },
+                elevation: 0,
             },
-            elevation: 0,
-        }}
-        TransitionProps={{
-            style: {
-                alignItems: 'flex-start',
+            transition: {
+                style: {
+                    alignItems: 'flex-start',
+                },
             },
         }}
     >
@@ -185,20 +187,22 @@ export const SearchBox: React.ComponentType = () => {
                 onChange={e => setBounceVal({value: e.target.value, changed: true})}
                 autoFocus
                 inputRef={searchRef}
-                InputProps={{
-                    style: {borderRadius: 5},
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <IcSearch/>
-                        </InputAdornment>
-                    ),
-                    endAdornment:
-                        searchTerm && searchTerm.length >= 3 ?
-                            <InputAdornment position="end">
-                                <IconButton onClick={() => setSearchTerm('')}>
-                                    <IcHistory/>
-                                </IconButton>
-                            </InputAdornment> : null,
+                slotProps={{
+                    input: {
+                        style: {borderRadius: 5},
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <IcSearch/>
+                            </InputAdornment>
+                        ),
+                        endAdornment:
+                            searchTerm && searchTerm.length >= 3 ?
+                                <InputAdornment position="end">
+                                    <IconButton onClick={() => setSearchTerm('')}>
+                                        <IcHistory/>
+                                    </IconButton>
+                                </InputAdornment> : null,
+                    },
                 }}
                 onBlur={() => {
                     bubbleBounce(searchTerm as string)
@@ -243,7 +247,7 @@ export const SearchBox: React.ComponentType = () => {
                     <span style={{marginRight: 'auto'}}>Pages</span>
                     <FormControlLabel
                         labelPlacement={'start'}
-                        componentsProps={{typography: {variant: 'body2'}}}
+                        slotProps={{typography: {variant: 'body2'}}}
                         label={'search Headlines'}
                         control={<Switch size={'small'}/>}
                         checked={showHeadlines}

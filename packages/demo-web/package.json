@@ -10,11 +10,11 @@
         "tscheck": "tsc --noEmit"
     },
     "dependencies": {
-        "@mui/material": "^5.1",
-        "@mui/icons-material": "^5.1",
+        "@mui/material": "^6.4",
+        "@mui/icons-material": "^6.4",
         "@emotion/react": "^11.9.0",
         "@emotion/styled": "^11.8.1",
-        "@mui/lab": "^5.0.0-alpha.45",
+        "@mui/lab": "^6.0.1-beta.35",
         "@ui-schema/ui-schema": "~0.5.0-alpha.0",
         "@ui-schema/react": "~0.5.0-alpha.0",
         "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
@@ -27,15 +27,15 @@
         "clsx": "^2.0.0",
         "immutable": "^5.0.0",
         "jquery": "^3.5.0",
-        "@date-io/luxon": "^2.10.11",
-        "luxon": "^2.3.0",
+        "@date-io/luxon": "^3.2.0",
+        "luxon": "^3.6.1",
         "popper.js": "^1.16.1",
         "prop-types": "^15.7.2",
-        "react": "^18.0",
+        "react": "^19.0",
         "react-dnd": "^14.0.0",
         "rdndmb-html5-to-touch": "^7.0.0-alpha.1",
         "react-dnd-multi-backend": "^7.0.0-alpha.4",
-        "react-dom": "^18.0",
+        "react-dom": "^19.0",
         "react-helmet": "^5.2.1",
         "react-immutable-editor": "^0.6.1",
         "react-router": "^5.1.2",
@@ -44,10 +44,10 @@
         "styled-components": "^5.0.0"
     },
     "devDependencies": {
-        "@types/react": "^18.0",
-        "@types/react-dom": "^18.0",
+        "@types/react": "^19.0",
+        "@types/react-dom": "^19.0",
         "@types/react-router-dom": "^5.1.7",
-        "@types/luxon": "^2.3.0",
+        "@types/luxon": "^3.6.2",
         "@types/react-helmet": "^6.1.11"
     }
 }

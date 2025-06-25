@@ -27,6 +27,7 @@ export const SchemaGridItem: React.ComponentType<React.PropsWithChildren<{
     const viewLg = view ? view.get('sizeLg') : undefined
     const viewXl = view ? view.get('sizeXl') : undefined
 
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     return <Grid
         item
         xs={viewXs}
@@ -50,6 +51,7 @@ export const GroupRenderer: React.ComponentType<React.PropsWithChildren<GroupRen
     },
 ) =>
     noGrid ? children as React.ReactElement :
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         <Grid
             container wrap={'wrap'}
             spacing={typeof schema.getIn(['view', 'spacing']) === 'number' ? schema.getIn(['view', 'spacing']) as GridSpacing : spacing as GridSpacing}

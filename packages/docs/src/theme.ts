@@ -7,7 +7,7 @@ export type PartialTheme = { [K in keyof Theme]: Partial<Theme[K]> }
 
 const universal: Pick<PartialTheme, 'palette' | 'typography' | 'shape' | 'breakpoints' | 'components'> = {
     palette: {
-        contrastThreshold: 4,
+        contrastThreshold: 4.5,
     },
     breakpoints: {
         values: {

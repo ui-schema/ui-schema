@@ -41,6 +41,7 @@ export const BoolRenderer: React.FC<WidgetProps & {
         required={required}
         checked={currentVal}
         disabled={schema.get('readOnly')}
+        /* eslint-disable-next-line @typescript-eslint/no-deprecated */
         inputProps={{
             'aria-labelledby': labelledBy,
         }}
@@ -66,6 +67,7 @@ export const BoolRenderer: React.FC<WidgetProps & {
                 disabled={schema.get('readOnly')}
                 control={control}
                 labelPlacement={schema.getIn(['view', 'labelPlacement']) as FormControlLabelProps['labelPlacement']}
+                /* eslint-disable-next-line @typescript-eslint/no-deprecated */
                 componentsProps={{
                     typography: {
                         variant:

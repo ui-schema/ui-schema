@@ -62,6 +62,7 @@ export const DraggableBlock: React.ComponentType<DraggableRendererProps & Dragga
                 transition: 'opacity 0.25s ease-out, background 0.16s ease-in',
             }}
         >
+            {/* @ts-expect-error react-dnd not react18 compat / not updated yet here */}
             <span ref={fullDrag ? undefined : drag} style={{cursor: 'grab', padding: 6, fontSize: '1.5rem', lineHeight: '1.5rem'}}>☰</span>
             <code style={{padding: '4px 8px', fontSize: '1rem'}}>{index + 1}.</code>
             <div style={{display: 'flex', flexDirection: 'column', marginLeft: 6}}>

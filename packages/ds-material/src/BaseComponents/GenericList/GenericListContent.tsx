@@ -67,6 +67,7 @@ export const GenericListContent = (
         {schema.getIn(['view', 'hideTitle']) ?
             <Box mb={1}>{info}</Box> : null}
 
+        {/* eslint-disable-next-line @typescript-eslint/no-deprecated */}
         <Grid container spacing={listSpacing}>
             {Array(listSize).fill(null).map((_val, i) =>
                 <ComponentItem

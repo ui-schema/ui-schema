@@ -1,6 +1,6 @@
 import React from 'react'
 import TextField from '@mui/material/TextField'
-import { InputProps } from '@mui/material/Input'
+import type { InputProps } from '@mui/material/Input'
 import { useUID } from 'react-uid'
 import InputAdornment from '@mui/material/InputAdornment'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
@@ -8,10 +8,11 @@ import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
-import { NumberRendererProps, StringRendererProps, TextRendererProps } from '@ui-schema/ds-material/Widgets/TextField'
-import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import type { NumberRendererProps, StringRendererProps, TextRendererProps } from '@ui-schema/ds-material/Widgets/TextField'
+import type { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { useDebounceValue } from '@ui-schema/react/Utils/useDebounceValue'
-import { forbidInvalidNumber, MuiComponentsBinding } from '@ui-schema/ds-material'
+import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils/forbidInvalidNumber'
+import type { MuiComponentsBinding } from '@ui-schema/ds-material/BindingType'
 
 export interface StringRendererDebouncedProps {
     /**
@@ -39,7 +40,7 @@ export const StringRendererDebounced = (
     const uid = useUID()
     // todo: this could break law-of-hooks
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const inputRef = customInputRef || React.useRef()
+    const inputRef = customInputRef || React.useRef(null)
 
     const setter = React.useCallback((newVal: string | number | undefined) => {
         onChange({
@@ -114,8 +115,11 @@ export const StringRendererDebounced = (
                 }
                 setBounceVal({changed: true, value: newVal})
             }}
+            /* eslint-disable-next-line @typescript-eslint/no-deprecated */
             InputLabelProps={{shrink: schema.getIn(['view', 'shrink']) as boolean}}
+            /* eslint-disable-next-line @typescript-eslint/no-deprecated */
             InputProps={InputProps}
+            /* eslint-disable-next-line @typescript-eslint/no-deprecated */
             inputProps={inputProps}
         />
 

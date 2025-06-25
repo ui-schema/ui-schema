@@ -1,24 +1,23 @@
+import { TimeViewWithMeridiem } from '@mui/x-date-pickers/internals/models'
 import React from 'react'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { UIStoreActionSet } from '@ui-schema/react/UIStoreActions'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { MuiPickersAdapterContext } from '@mui/x-date-pickers/LocalizationProvider'
-import TextField from '@mui/material/TextField'
 import { BaseTimePickerProps } from '@mui/x-date-pickers/TimePicker/shared'
 import { List } from 'immutable'
-import { ClockPickerView } from '@mui/x-date-pickers/internals/models'
 
-export interface WidgetTimePickerProps<TInputDate, TTime, P extends BaseTimePickerProps<TInputDate, TTime> = BaseTimePickerProps<TInputDate, TTime>> {
+export interface WidgetTimePickerProps<TView extends TimeViewWithMeridiem, P extends BaseTimePickerProps<any, TView> = BaseTimePickerProps<any, TView>> {
     Picker: React.ComponentType<P>
     pickerProps?: any
 }
 
-export const WidgetTimePicker: React.FC<WidgetProps & WidgetTimePickerProps<any, any>> = (
+export const WidgetTimePicker: React.FC<WidgetProps & WidgetTimePickerProps<any>> = (
     {
         value, storeKeys, onChange, schema, required,
         Picker,
         pickerProps,
-    }
+    },
 ) => {
     const adapter = React.useContext(MuiPickersAdapterContext)
     const {utils} = adapter || {}
@@ -33,11 +32,11 @@ export const WidgetTimePicker: React.FC<WidgetProps & WidgetTimePickerProps<any,
 
     const viewsList = schema.getIn(['date', 'views'])
     const views = React.useMemo(
-        () => List.isList(viewsList) ? viewsList.toArray() as ClockPickerView[] : undefined,
+        () => List.isList(viewsList) ? viewsList.toArray() : undefined,
         [viewsList],
     )
 
-    const openTo = schema.getIn(['date', 'openTo']) as ClockPickerView
+    const openTo = schema.getIn(['date', 'openTo'])
     const orientation = schema.getIn(['date', 'orientation']) as 'landscape' | 'portrait' | undefined
     if (!views) {
         console.error('WidgetDatePicker invalid, requires `views` at: ', storeKeys.toJS())
@@ -62,7 +61,9 @@ export const WidgetTimePicker: React.FC<WidgetProps & WidgetTimePickerProps<any,
                 data: {value: e ? utils.formatByString(e, dateFormatData) : ''},
             } as UIStoreActionSet)
         }}
-        renderInput={(params) => <TextField {...params} fullWidth/>}
+        slotProps={{
+            textField: {fullWidth: true},
+        }}
         {...pickerProps || {}}
     />
 }

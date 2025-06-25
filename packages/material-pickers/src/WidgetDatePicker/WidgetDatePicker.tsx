@@ -1,19 +1,17 @@
-import React from 'react'
+import { BaseDatePickerProps } from '@mui/x-date-pickers/DatePicker/shared'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { UIStoreActionSet } from '@ui-schema/react/UIStoreActions'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { MuiPickersAdapterContext } from '@mui/x-date-pickers/LocalizationProvider'
-import TextField from '@mui/material/TextField'
-import { BaseDatePickerProps } from '@mui/x-date-pickers/DatePicker/shared'
-import { CalendarPickerView } from '@mui/x-date-pickers/internals/models'
 import { List } from 'immutable'
+import React from 'react'
 
-export interface WidgetDatePickerProps<TInputDate, TDate, P extends BaseDatePickerProps<TInputDate, TDate> = BaseDatePickerProps<TInputDate, TDate>> {
+export interface WidgetDatePickerProps<P extends BaseDatePickerProps<any> = BaseDatePickerProps<any>> {
     Picker: React.ComponentType<P>
     pickerProps?: any
 }
 
-export const WidgetDatePicker: React.FC<WidgetProps & WidgetDatePickerProps<any, any>> = (
+export const WidgetDatePicker: React.FC<WidgetProps & WidgetDatePickerProps> = (
     {
         value, storeKeys, onChange, schema, required,
         Picker,
@@ -33,11 +31,11 @@ export const WidgetDatePicker: React.FC<WidgetProps & WidgetDatePickerProps<any,
 
     const viewsList = schema.getIn(['date', 'views'])
     const views = React.useMemo(
-        () => List.isList(viewsList) ? viewsList.toArray() as CalendarPickerView[] : [],
+        () => List.isList(viewsList) ? viewsList.toArray() : [],
         [viewsList],
     )
 
-    const openTo = schema.getIn(['date', 'openTo']) as CalendarPickerView
+    const openTo = schema.getIn(['date', 'openTo'])
     const orientation = schema.getIn(['date', 'orientation']) as 'landscape' | 'portrait' | undefined
     if (!views) {
         console.error('WidgetDatePicker invalid, requires `views` at: ', storeKeys.toJS())
@@ -62,8 +60,9 @@ export const WidgetDatePicker: React.FC<WidgetProps & WidgetDatePickerProps<any,
                 data: {value: e ? utils.formatByString(e, dateFormatData) : ''},
             } as UIStoreActionSet)
         }}
-        // todo: pass down textFieldProps
-        renderInput={(params) => <TextField {...params} fullWidth/>}
+        slotProps={{
+            textField: {fullWidth: true},
+        }}
         {...pickerProps || {}}
     />
 }

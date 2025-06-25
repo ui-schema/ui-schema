@@ -45,6 +45,8 @@ List of renamed functions, components etc., most are also moved to other package
     - no default `schemaPlugins`/`widgetPlugins`; *maybe add a legacy compat to make migration easier, atm. in demo-web*
 - `pluginStack` removed, now included directly in `widgetsBinding`
 
+> todo: add `Grid2` components/widgets as a migration path from 5/6 to 7
+
 ### DS Bootstrap
 
 - switched to strict esm
@@ -414,6 +416,7 @@ new widget engine functions:
     - [x] `ReferencingHandler/*` (new schema resource + validator)
     - [x] `SchemaRootProvider/*` (new schema resource + validator)
     - [ ] `RequiredPlugin`, or keep until better solution for required behaviour?
+- [ ] deprecate `UIApi` (new resource system hoists loading out of widget-engine/-plugins)
 - [ ] add new schema plugin: injectSplitSchema, deprecate widget plugin: InjectSplitSchema
 - [x] deprecate `SchemaPlugin` methods `.should` and `.noHandle`; always use `.handle`
 - [ ] enable TS rules `@typescript-eslint/no-empty-object-type, "@typescript-eslint/no-wrapper-object-types, @typescript-eslint/no-unsafe-function-type, @typescript-eslint/consistent-indexed-object-style, @typescript-eslint/consistent-type-definitions, @typescript-eslint/no-empty-function`
@@ -427,7 +430,9 @@ new widget engine functions:
     - their introduction, prevented users to focus on how to use `WidgetEngine` (or then `PluginStack`)
     - remove would allow removing all of the `StackWrapper` code in `WidgetEngine`
 - [ ] check `mergeSchema` changes and adjust to respect new applicable schema merging strategy
-- [ ] rethink the decision to make `WidgetRenderer` a `widgetPlugin`, now with `Next` even more complex "what if no widgetPlugins exist" and problems with stateless/context-less rendering, where now the materialized `Next` is needed, even when just the "render final widget" would be enough. so moving `WidgetRenderer` again to a binding property should make these easier again, and the new `Next` would even allow injecting the `WidgetRenderer` from `UIMetaProvider` as the final (or first) `Next` itself.
+- [ ] rethink the decision to make `WidgetRenderer` a `widgetPlugin`, now with `Next` even more complex "what if no widgetPlugins exist" and problems with stateless/context-less rendering, where now the materialized `Next` is needed, even when just the "render final widget" would be enough. so moving `WidgetRenderer` again to a binding property should make these easier again, and the new `Next` would even allow injecting the `WidgetRenderer` from `UIMetaProvider` as the final (or first) `Next` itself
+- [ ] rename `widgetPlugins` to just plugins? as no other plugins exist anymore in the `binding`
+- [ ] in pickers only types are migrated and props adjusted for fullWidth, nothing else was verified
 
 ## Todo 0.6.x
 

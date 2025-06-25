@@ -132,6 +132,46 @@ export default defineConfig([
                             'from': 'file',
                             'name': 'CombiningHandler',
                         },
+                        {
+                            'from': 'package',
+                            'name': 'InputLabelProps',
+                            'package': '@mui/material',
+                        },
+                        {
+                            'from': 'package',
+                            'name': 'InputProps',
+                            'package': '@mui/material',
+                        },
+                        {
+                            'from': 'package',
+                            'name': 'inputProps',
+                            'package': '@mui/material',
+                        },
+                        {
+                            'from': 'package',
+                            'name': 'Grid',
+                            'package': '@mui/material',
+                        },
+                        {
+                            'from': 'package',
+                            'name': 'Grid',
+                            'package': '@mui/material/Grid',
+                        },
+                        {
+                            'from': 'package',
+                            'name': 'default',
+                            'package': '@mui/material',
+                        },
+                        {
+                            'from': 'package',
+                            'name': 'default',
+                            'package': '@mui/material/Grid',
+                        },
+                        {
+                            'from': 'package',
+                            'name': 'componentsProps',
+                            'package': '@mui/material',
+                        },
                     ],
                 },
             ],

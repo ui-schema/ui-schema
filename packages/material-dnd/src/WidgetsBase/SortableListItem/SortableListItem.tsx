@@ -77,6 +77,7 @@ export const SortableListItemBase = <C extends HTMLElement = HTMLElement, S exte
                 transition: 'opacity 0.25s ease-out, background 0.16s ease-in',
             }}
         >
+            {/* @ts-expect-error react-dnd not react18 compat / not updated yet here */}
             <IconButton
                 ref={fullDrag ? undefined : drag}
                 style={{

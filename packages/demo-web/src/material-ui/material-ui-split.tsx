@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { escapePointer } from '@ui-schema/json-pointer'
@@ -75,7 +76,6 @@ const customWidgets: CustomWidgetsBinding = {
     // widgetPlugins.splice(0, 0, ReferencingNetworkHandler)
     // widgetPlugins.splice(1, 0, InjectSplitSchemaPlugin)
     widgetPlugins: [
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
         ReferencingHandler, //  needed for legacy widget plugin, as relying on RootProvider/rootContext handling from it
         DefaultHandler,
         schemaPluginsAdapterBuilder([
@@ -105,7 +105,6 @@ const customWidgets: CustomWidgetsBinding = {
                 },
             } satisfies SchemaPlugin<WidgetPayload & { resource?: SchemaResource, styleSchema?: UISchemaMap }>,
         ]),
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
         InjectSplitSchemaPlugin, // legacy widget plugin
         SchemaGridHandler,
         ValidityReporter,

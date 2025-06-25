@@ -61,7 +61,7 @@ export const StringRenderer = (
     const uid = useUID()
     // todo: this could break law-of-hooks
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const inputRef = customInputRef || React.useRef()
+    const inputRef = customInputRef || React.useRef(null)
 
     const format = schema.get('format')
 
@@ -127,8 +127,11 @@ export const StringRenderer = (
                     data: {value: newVal},
                 })
             }}
+            /* eslint-disable-next-line @typescript-eslint/no-deprecated */
             InputLabelProps={{shrink: schema.getIn(['view', 'shrink']) as boolean}}
+            /* eslint-disable-next-line @typescript-eslint/no-deprecated */
             InputProps={InputProps}
+            /* eslint-disable-next-line @typescript-eslint/no-deprecated */
             inputProps={inputProps}
         />
 

@@ -51,7 +51,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<WidgetsBindingF
     const uid = useUID()
     // todo: this could break law-of-hooks
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const inputRef = customInputRef || React.useRef()
+    const inputRef = customInputRef || React.useRef(null)
 
     const format = schema.get('format') as string | undefined
     const currentRef = inputRef.current

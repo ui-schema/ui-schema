@@ -11,5 +11,6 @@ export const GridContainer = (
         children,
     }: GridContainerProps & Partial<WidgetEngineWrapperProps>,
 ) => {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     return <Grid container spacing={spacing}>{children}</Grid>
 }

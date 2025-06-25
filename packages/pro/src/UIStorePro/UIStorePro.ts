@@ -94,7 +94,7 @@ export const useStorePro = (
     store: UIStoreProType
     setStore: setStorePro
 } => {
-    const timer = React.useRef<number | undefined>()
+    const timer = React.useRef<number | undefined>(undefined)
     const historyChangeRater = React.useRef(initialChangeRater)
     const historyDebounce = React.useRef<any[]>([])
     const [store, setStore] = React.useState<UIStoreProType>(() => makeStorePro(type, initialStore) as UIStoreProType)

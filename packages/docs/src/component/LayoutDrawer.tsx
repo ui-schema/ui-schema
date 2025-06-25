@@ -109,7 +109,12 @@ export const LayoutDrawerBase: React.ComponentType = () => {
             <ListItemLink to={'/impress'} primary={'Impress'} dense disableNavLink={false} onClick={closeOnClick}/>
             <ListItemLink to={'/privacy'} primary={'Privacy Policy'} dense disableNavLink={false} onClick={closeOnClick}/>
             <ListItemButton onClick={() => toggleUi()} dense>
-                <ListItemText primary={'Privacy Settings'} primaryTypographyProps={{variant: 'body2'}}/>
+                <ListItemText
+                    primary={'Privacy Settings'}
+                    slotProps={{
+                        primary: {variant: 'body2'},
+                    }}
+                />
             </ListItemButton>
             <Divider/>
         </List>

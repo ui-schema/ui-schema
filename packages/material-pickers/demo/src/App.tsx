@@ -1,6 +1,9 @@
+import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
 import { MuiWidgetsBinding } from '@ui-schema/ds-material'
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import React from 'react'
 import AppTheme from './AppTheme'
@@ -27,7 +30,6 @@ import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { createEmptyStore, onChangeHandler, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
-import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
@@ -117,6 +119,8 @@ const customWidgets: MuiWidgetsBinding = {
     ...baseComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: [
+        DefaultHandler,
+        SchemaGridHandler,
         ValidityReporter,
         WidgetRenderer,
     ],
@@ -132,7 +136,6 @@ const customWidgets: MuiWidgetsBinding = {
 }
 
 const schema = schemaDatePickers
-const GridStack = injectWidgetEngine(GridContainer)
 const Main = () => {
     const [showValidity, setShowValidity] = React.useState(false)
     const [store, setStore] = React.useState<UIStoreType>(() => createEmptyStore(schema.get('type') as string))
@@ -142,7 +145,7 @@ const Main = () => {
         [setStore],
     )
 
-    console.log(store.valuesToJS())
+    console.log('pickers-store', store.valuesToJS())
 
     return <>
         <UIStoreProvider
@@ -150,7 +153,9 @@ const Main = () => {
             onChange={onChangeNext}
             showValidity={showValidity}
         >
-            <GridStack isRoot schema={schema}/>
+            <GridContainer>
+                <WidgetEngine isRoot schema={schema}/>
+            </GridContainer>
         </UIStoreProvider>
 
         <Button onClick={() => setShowValidity(!showValidity)}>validity</Button>

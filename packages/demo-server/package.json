@@ -33,10 +33,10 @@
         "cors": "^2.8.5",
         "concurrently": "^5.3.0",
         "symlink-dir": "^5.0.1",
-        "luxon": "^2.4.0"
+        "luxon": "^3.6.1"
     },
     "devDependencies": {
-        "@types/luxon": "^2.0.4",
+        "@types/luxon": "^3.6.2",
         "@types/nanoid": "^3.0.0",
         "@types/superagent": "^4.1.14",
         "@types/cors": "^2.8.12",

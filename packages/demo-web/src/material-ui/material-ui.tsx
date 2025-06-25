@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { MuiWidgetsBinding } from '@ui-schema/ds-material'

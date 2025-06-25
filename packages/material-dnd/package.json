@@ -36,9 +36,9 @@
     "dependencies": {
     },
     "devDependencies": {
-        "@types/react": "^18.0",
-        "@mui/material": "^5.1",
-        "@mui/icons-material": "^5.1",
+        "@types/react": "^19.0",
+        "@mui/material": "^6.4",
+        "@mui/icons-material": "^6.4",
         "@ui-schema/ds-material": "~0.5.0-alpha.0",
         "@ui-schema/kit-dnd": "~0.0.6",
         "@ui-schema/ui-schema": "~0.5.0-alpha.0",
@@ -46,13 +46,13 @@
         "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "immutable": "^5.0.0",
-        "react": "^18.0",
+        "react": "^19.0",
         "react-dnd": "^14.0.0",
-        "react-dom": "^18.0"
+        "react-dom": "^19.0"
     },
     "peerDependencies": {
-        "@mui/material": "^5.1",
-        "@mui/icons-material": "^5.1",
+        "@mui/material": "^5.1 || ^6.4",
+        "@mui/icons-material": "^5.1 || ^6.4",
         "@ui-schema/ds-material": "~0.5.0-alpha.0",
         "@ui-schema/kit-dnd": "~0.0.6",
         "@ui-schema/ui-schema": "~0.5.0-alpha.0",
@@ -60,7 +60,7 @@
         "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "immutable": "^4.0.0 || ^5.0.0",
-        "react": "^18.0",
+        "react": "^18.0 || ^19.0",
         "react-dnd": "^14.0.0"
     },
     "publishConfig": {

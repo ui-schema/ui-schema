@@ -1,7 +1,7 @@
 import React from 'react'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
+import Grid from '@mui/material/Grid2'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import ToggleButton from '@mui/material/ToggleButton'
 import Paper from '@mui/material/Paper'
@@ -102,14 +102,14 @@ See the [**list of widgets**](/docs/overview#widget-list) for the different desi
 - custom UI with autowired and always validated widgets / partial-automatic rendering
 
 `}/>
-                <Box>
+                <Box mt={1}>
                     <ToggleButtonGroup
                         value={render}
                         exclusive
                         onChange={(_, value) => setRender(value)}
                         aria-label="rendering mode"
                         size={'large'}
-                        color={'secondary'}
+                        color={'primary'}
                         fullWidth
                     >
                         <ToggleButton value="automatic" aria-label="automatic rendering">
@@ -131,14 +131,14 @@ See the [**list of widgets**](/docs/overview#widget-list) for the different desi
 First select the design-system and install ui-schema and dependencies.
 `}/>
 
-                <Box mb={4}>
+                <Box mb={4} mt={1}>
                     <ToggleButtonGroup
                         value={ds}
                         exclusive
                         onChange={(_, value) => setDS(value)}
                         aria-label="rendering mode"
                         size={'large'}
-                        color={'secondary'}
+                        color={'primary'}
                         fullWidth
                     >
                         <ToggleButton value="mui">
@@ -199,7 +199,7 @@ Create an empty generator component in the file with the needed imports, move th
 `}/>
 
                     <Grid container>
-                        <Grid item xs={12}>
+                        <Grid size={12}>
                             <Markdown source={`
 \`\`\`jsx
 import React from "react";
@@ -257,7 +257,7 @@ Add an empty provider in the file with the needed imports.
 `}/>
 
                     <Grid container>
-                        <Grid item xs={12}>
+                        <Grid size={12}>
                             <Markdown source={`
 \`\`\`jsx
 import React from "react";
@@ -318,7 +318,7 @@ The schema in this example is bundled with the component and not dynamic, the sc
 `}/>
 
                 <Grid container>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Markdown source={`
 \`\`\`jsx
 // Minimal Schema, transformed from JS-Object into deep immutable
@@ -366,7 +366,7 @@ export const Generator = () => {
 
             <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                 <Grid container>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Markdown source={`
 ## 4. Add First Inputs
 
@@ -377,7 +377,7 @@ Properties defined in \`required\` must be filled out, see what is [invalid for 
 See [schema docs](/docs/schema) for the keywords of each type.
 `}/>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Markdown source={`
 \`\`\`jsx
 const schema = createOrderedMap(${JSON.stringify(demoSchema, null, 2)});
@@ -386,14 +386,14 @@ const schema = createOrderedMap(${JSON.stringify(demoSchema, null, 2)});
                     </Grid>
                 </Grid>
                 {render === 'automatic' ? <>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Markdown source={`
 ---
 
 > Your editor should look like this when using **ds-material**:
 `}/>
                     </Grid>
-                    <Grid item xs={12} md={9} style={{margin: '0 auto'}}>
+                    <Grid size={{xs: 12, md: 9}} style={{margin: '0 auto'}}>
                         <DemoUIGenerator activeSchema={demoSchema} id={'qs-demo'}/>
                     </Grid>
                 </> : null}
@@ -401,7 +401,7 @@ const schema = createOrderedMap(${JSON.stringify(demoSchema, null, 2)});
             {render === 'automatic' ?
                 <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                     <Grid container>
-                        <Grid item xs={12}>
+                        <Grid size={12}>
                             <Markdown source={`
 ## 5. Add API Call
 
@@ -410,7 +410,7 @@ Now we add a button that will send the store of the editor to an API if the form
 We tell the editor also to display validity from start on.
 `}/>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid size={12}>
                             <Markdown source={`
 \`\`\`jsx
 const GridStack = injectWidgetEngine(GridContainer)
@@ -465,17 +465,17 @@ export const Generator = () => {
 `}/>
                         </Grid>
 
-                        <Grid item xs={12}>
+                        <Grid size={12}>
                             <Markdown source={`
 Test the demo form below, it will send the entered data to [httpbin.org*](https://httpbin.org) with \`POST\` and display the response after the form.
 `}/>
                         </Grid>
 
-                        <Grid item xs={12} md={9} style={{margin: '24px auto 0 auto'}}>
+                        <Grid size={{xs: 12, md: 9}} style={{margin: '24px auto 0 auto'}}>
                             <QuickStartEditor/>
                         </Grid>
 
-                        <Grid item xs={12} style={{marginTop: 16}}>
+                        <Grid size={12} style={{marginTop: 16}}>
                             <Markdown source={`
 ### Next Steps
 
@@ -492,7 +492,7 @@ Test the demo form below, it will send the entered data to [httpbin.org*](https:
             {render === 'custom' ? <>
                 <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                     <Grid container>
-                        <Grid item xs={12}>
+                        <Grid size={12}>
                             <Markdown source={`
 ## 5. Add Root Level Renderer
 
@@ -501,7 +501,7 @@ Now we add the root level renderer, the \`CustomGroup\` is responsible to valida
 It is recommended to nest \`type=object\` schemas for best and easiest conditional and referencing handling, otherwise checkout [ObjectGroup](/docs/core-renderer#objectgroup).
 `}/>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid size={12}>
                             <Markdown source={`
 \`\`\`jsx
 import {StringRenderer} from '@ui-schema/${ds === 'mui' ? 'ds-material' : 'ds-bootstrap'}/Widgets/TextField'
@@ -584,14 +584,14 @@ export const Generator = () => {
 
                 <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                     <Grid container>
-                        <Grid item xs={12}>
+                        <Grid size={12}>
                             <Markdown source={`
 ## 6. Add API Call
 
 Now we add a button that will send the store of the editor to an API if the form is valid.
 `}/>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid size={12}>
                             <Markdown source={`
 \`\`\`jsx
 export const Generator = () => {
@@ -629,17 +629,17 @@ export const Generator = () => {
 `}/>
                         </Grid>
 
-                        <Grid item xs={12}>
+                        <Grid size={12}>
                             <Markdown source={`
 Test the demo form below, it will send the entered data to [httpbin.org*](https://httpbin.org) with \`POST\` and display the response after the form.
 `}/>
                         </Grid>
 
-                        <Grid item xs={12} md={9} style={{margin: '24px auto 0 auto'}}>
+                        <Grid size={{xs: 12, md: 9}} style={{margin: '24px auto 0 auto'}}>
                             <QuickStartEditor/>
                         </Grid>
 
-                        <Grid item xs={12} style={{marginTop: 16}}>
+                        <Grid size={12} style={{marginTop: 16}}>
                             <Markdown source={`
 ### Next Steps
 

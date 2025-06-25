@@ -217,7 +217,7 @@ const CustomDocDetails = <D extends DocRoute = DocRoute>(
         title, description,
         headProps = {}, scrollContainer,
         Content, NotFound,
-    }: DocDetailsProps<D>,
+    }: Omit<DocDetailsProps<D>, 'path'>,
 ): React.ReactElement => {
     const {routes} = useRouter()
     const location = useLocation()
@@ -247,10 +247,9 @@ const CustomDocDetails = <D extends DocRoute = DocRoute>(
     </React.Fragment>
 }
 
-const DocsDetails: React.FC<{ scrollContainer: React.MutableRefObject<HTMLDivElement | null> }> = ({scrollContainer}) => {
+const DocsDetails: React.FC<{ scrollContainer: React.RefObject<HTMLDivElement | null> }> = ({scrollContainer}) => {
     return <React.Fragment>
         <CustomDocDetails
-            matchDocKey={'docId'}
             scrollContainer={scrollContainer}
             title={doc => doc?.nav?.label ?
                 doc.nav.label + ' · UI Schema Docs' : 'UI Schema Documentation'}

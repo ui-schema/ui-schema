@@ -36,30 +36,30 @@
     "dependencies": {
     },
     "devDependencies": {
-        "@date-io/luxon": "^2.10.11",
-        "@types/luxon": "^2.3.0",
-        "luxon": "^2.3.0",
-        "@types/react": "^18.0",
-        "@types/react-dom": "^18.0",
-        "@mui/material": "^5.1",
-        "@mui/icons-material": "^5.1",
+        "@date-io/luxon": "^3.2.0",
+        "@types/luxon": "^3.6.2",
+        "luxon": "^3.6.1",
+        "@types/react": "^19.0",
+        "@types/react-dom": "^19.0",
+        "@mui/material": "^6.4",
+        "@mui/icons-material": "^6.4",
         "@emotion/react": "^11.9.0",
         "@emotion/styled": "^11.8.1",
-        "@mui/x-date-pickers": "^5.0.0-alpha.0",
+        "@mui/x-date-pickers": "^7.29.4",
         "@ui-schema/ds-material": "~0.5.0-alpha.0",
         "@ui-schema/ui-schema": "~0.5.0-alpha.0",
         "@ui-schema/react": "~0.5.0-alpha.0",
         "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "immutable": "^5.0.0",
-        "react": "^18.0",
-        "react-dom": "^18.0"
+        "react": "^19.0",
+        "react-dom": "^19.0"
     },
     "peerDependencies": {
-        "@mui/material": "^5.1",
-        "@mui/x-date-pickers": "^5.0.0-alpha.0",
+        "@mui/material": "^5.1 || ^6.4",
+        "@mui/x-date-pickers": "^5.0.0-alpha.0 || ^6.0 || ^7.0 || ^8.0",
         "immutable": "^4.0.0 || ^5.0.0",
-        "react": "^^18.0"
+        "react": "^18.0 || ^19.0"
     },
     "publishConfig": {
         "tag": "next",

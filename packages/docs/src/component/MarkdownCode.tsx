@@ -11,22 +11,22 @@ const languageMapping = {
     'ui-schema': 'json',
 }
 
-const Code = ({variant, className, children}: { variant?: TypographyProps['variant'], className?: string, children: string }) => {
+const Code = ({variant, className, children}: { variant?: TypographyProps['variant'], className?: string[], children: string }) => {
     const {palette} = useTheme()
-    const language = className && className.indexOf('language-') === 0 ? className.slice('language-'.length) : undefined
+    const language = className?.find(cls => cls.indexOf('language-') === 0)?.slice('language-'.length)
     const currentMode = language && languageMapping[language] ? languageMapping[language] : language
     if (language === 'ui-schema') {
         let value = {}
         try {
             value = JSON.parse(children)
-        } catch(e) {
+        } catch (e) {
             console.error(e)
         }
         return <div style={{marginTop: 24}}><DemoUIGenerator uiStyle={{margin: 12}} activeSchema={value} id={'ui-schema'} split={false}/></div>
     }
 
-    if (supportedModes.indexOf(currentMode) === -1) {
-        console.log('unsupported', currentMode, supportedModes)
+    if (currentMode && supportedModes.indexOf(currentMode) === -1) {
+        console.log('unsupported', currentMode)
     }
 
     return supportedModes.indexOf(currentMode) === -1 ?
