@@ -14,13 +14,13 @@
         - [ ] support handling of `prefixItems` with additional `items`
         - [ ] remove type validate inside tuple validation, once clarified why that was added there
     - [x] EmailValidator
-        - type: `validate:boolean`
+        - kind: `validate:boolean`
     - [x] MinMaxValidator
-        - type: `validate:void`
+        - kind: `validate:void`
         - [x] split up by value-type
         - [ ] add params for adding keywordLocation/instanceLocation at all `addError`
     - [x] MultipleOfValidator
-        - type: `validate:boolean`
+        - kind: `validate:boolean`
     - [ ] ObjectValidator
         - [x] migrated to `.output`
         - [x] support `recursive`
@@ -31,17 +31,17 @@
         - [x] forced `recursive`
             - [ ] add tests for `recursive`
     - [x] PatternValidator
-        - type: `validate:boolean`
+        - kind: `validate:boolean`
     - [ ] RequiredValidator
         - **todo:** unused HTML-like required fn, which works directly on field-level value and not object
     - [x] TypeValidator
-        - type: `validate:boolean`
+        - kind: `validate:boolean`
     - [x] ValueValidator
         - [x] ValueValidator-Const
-            - type: `validate:boolean`
+            - kind: `validate:boolean`
             - improved object/array/Map/List support
         - [x] ValueValidator-Enum
-            - type: `validate:boolean`
+            - kind: `validate:boolean`
     - [ ] NotValidator
         - **todo:** add newly?
 - `StandardValidators`

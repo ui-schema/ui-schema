@@ -33,7 +33,7 @@ import { DropArea } from '@ui-schema/material-dnd/Widgets/DropArea'
 import { createEmptyStore, createStore, onChangeHandler, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { UIMetaContext, UIMetaProvider } from '@ui-schema/react/UIMeta'
-import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes } from '@ui-schema/ds-material/BindingType'
+import { MuiWidgetsBindingWidgets } from '@ui-schema/ds-material/BindingType'
 import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
@@ -42,22 +42,18 @@ import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
-type CustomWidgetsBinding = WidgetsBindingFactory<MuiWidgetsBindingTypes, MuiWidgetsBindingCustom<UIStoreActions, WidgetProps<WidgetsBindingFactory & DragDropBlockComponentsBinding>>> & DragDropBlockComponentsBinding
+type CustomWidgetsBinding = WidgetsBindingFactory<MuiWidgetsBindingWidgets<UIStoreActions, WidgetProps<WidgetsBindingFactory<any> & DragDropBlockComponentsBinding>>> & DragDropBlockComponentsBinding
 
 const customWidgets: CustomWidgetsBinding = {
     ...baseComponents,
     widgetPlugins: widgetPluginsLegacy,
     DndBlockSelector: DragDropBlockSelector,
     widgets: {
-        types: {
-            ...typeWidgets,
-        },
-        custom: {
-            ...bindingExtended,
-            DropArea: DropArea,
-            DragDropArea: DragDropArea,
-            SortableList: SortableList,
-        },
+        ...typeWidgets,
+        ...bindingExtended,
+        DropArea: DropArea,
+        DragDropArea: DragDropArea,
+        SortableList: SortableList,
     },
 }
 

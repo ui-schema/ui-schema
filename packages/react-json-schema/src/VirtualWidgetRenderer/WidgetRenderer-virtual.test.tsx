@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
-import { widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
+import { matchWidget } from '@ui-schema/ui-schema/matchWidget'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'
@@ -10,7 +10,7 @@ import { WidgetRenderer, WidgetRendererProps } from '@ui-schema/react/WidgetRend
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { VirtualArrayRenderer, VirtualWidgetRenderer, VirtualWidgetRendererProps, VirtualWidgetsMapping } from '@ui-schema/react-json-schema/VirtualWidgetRenderer'
 import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
-import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
+import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import { List } from 'immutable'
 import { createStore, onChangeHandler, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
@@ -41,14 +41,10 @@ describe('WidgetRenderer', () => {
         const widgets = {
             VirtualRenderer: VirtualWidgetRenderer,
             widgets: {
-                types: {
-                    string: () => 'string-renderer',
-                    number: () => 'number-renderer',
-                },
+                string: () => 'string-renderer',
+                number: () => 'number-renderer',
             },
-            widgetPlugins: [
-                WidgetRenderer,
-            ],
+            WidgetRenderer: WidgetRenderer,
         }
         const {queryByText, queryAllByText} = render(
             <UIMetaProvider binding={widgets} t={translateRelative}>
@@ -103,15 +99,11 @@ describe('WidgetRenderer', () => {
         const widgets = {
             VirtualRenderer: VirtualWidgetRenderer,
             widgets: {
-                types: {
-                    string: () => 'string-renderer',
-                    number: () => 'number-renderer',
-                },
-                custom: {},
+                string: () => 'string-renderer',
+                number: () => 'number-renderer',
             },
-            widgetPlugins: [
-                WidgetRenderer,
-            ],
+            widgetPlugins: [],
+            WidgetRenderer: WidgetRenderer,
         }
         const {queryByText, container} = render(
             <UIMetaProvider binding={widgets} t={translateRelative}>
@@ -145,15 +137,12 @@ describe('WidgetRenderer', () => {
         const widgets: WidgetsBindingFactory = {
             VirtualRenderer: VirtualWidgetRenderer,
             widgets: {
-                types: {
-                    string: () => 'string-renderer',
-                    number: () => 'number-renderer',
-                },
+                string: () => 'string-renderer',
+                number: () => 'number-renderer',
             },
-            widgetPlugins: [
-                WidgetRenderer,
-            ],
-            matchWidget: widgetMatcher,
+            widgetPlugins: [],
+            WidgetRenderer: WidgetRenderer,
+            matchWidget: matchWidget,
         }
         const value = createOrderedMap({dummy_array: ['lorem ipsum', 42]})
         const store = createStore(value)
@@ -200,15 +189,11 @@ describe('WidgetRenderer', () => {
         const widgets: WidgetsBindingFactory = {
             VirtualRenderer: VirtualWidgetRenderer,
             widgets: {
-                types: {
-                    string: () => 'string-renderer',
-                    number: () => 'number-renderer',
-                },
+                string: () => 'string-renderer',
+                number: () => 'number-renderer',
             },
-            widgetPlugins: [
-                WidgetRenderer,
-            ],
-            matchWidget: widgetMatcher,
+            WidgetRenderer: WidgetRenderer,
+            matchWidget: matchWidget,
         }
         const value = createOrderedMap({dummy_array: [['lorem ipsum', 42], ['dolor sit', 43]]})
         const store = createStore(value)

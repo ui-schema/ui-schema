@@ -21,7 +21,7 @@ describe('NextPluginRenderer', () => {
         currentPluginIndex: -1,
     }
     it('Empty NextPluginRenderer', async () => {
-        const Next = makeNext([] satisfies WidgetPluginType[])
+        const Next = makeNext(undefined, [] satisfies WidgetPluginType[])
         // disable default log inside react lib.
         jest.spyOn(console, 'error').mockImplementation(() => jest.fn())
 
@@ -40,12 +40,11 @@ describe('NextPluginRenderer', () => {
         jest.restoreAllMocks()
     })
     it('Single NextPluginRenderer - current', async () => {
-        const Next = makeNext([
+        const Next = makeNext(WidgetRenderer, [
             ({Next, ...p}) => <>
                 <span>plugin-1</span>
                 <Next.Component {...p}/>
             </>,
-            WidgetRenderer,
         ] satisfies WidgetPluginType[])
         const {queryByText} = render(
             <Next.Component
@@ -60,12 +59,11 @@ describe('NextPluginRenderer', () => {
         expect(queryByText('missing-type-string') !== null).toBeTruthy()
     })
     it('Single NextPluginRenderer - current · memo', async () => {
-        const Next = makeNext([
+        const Next = makeNext(WidgetRenderer, [
             (p) => <>
                 <span>plugin-1</span>
                 <NextPluginMemo {...p}/>
             </>,
-            WidgetRenderer,
         ] satisfies WidgetPluginType[])
         const {queryByText} = render(
             <Next.Component

@@ -1,5 +1,6 @@
 import { getDisplayName, memo } from '@ui-schema/react/Utils/memo'
-import type { ComponentType, ReactNode } from 'react'
+import { MinimalComponentType } from '@ui-schema/react/Widgets'
+import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 import type { WidgetPluginProps } from './Plugin.js'
 
@@ -39,26 +40,37 @@ export type NextWidgetPlugin<P = {}> = {
  *     </div>
  * }
  */
-export const useNext = <PWidgetPlugin extends WidgetPluginProps>(widgetPlugins: ComponentType<PWidgetPlugin>[] | undefined | null) => {
+export const useNext = <PWidgetPlugin extends WidgetPluginProps>(
+    WidgetRenderer: MinimalComponentType<PWidgetPlugin> | undefined | null,
+    widgetPlugins: MinimalComponentType<PWidgetPlugin>[] | undefined | null,
+) => {
     return useMemo(() => {
-        return makeNext(widgetPlugins)
-    }, [widgetPlugins])
+        return makeNext(WidgetRenderer, widgetPlugins)
+    }, [WidgetRenderer, widgetPlugins])
 }
 
-export const makeNext = <PWidgetPlugin extends WidgetPluginProps>(widgetPlugins: ComponentType<PWidgetPlugin>[] | undefined | null) => {
+export const makeNext = <PWidgetPlugin extends WidgetPluginProps>(
+    WidgetRenderer: MinimalComponentType<PWidgetPlugin> | undefined | null,
+    widgetPlugins: MinimalComponentType<PWidgetPlugin>[] | undefined | null,
+) => {
     let First: NextWidgetPlugin<Omit<PWidgetPlugin, 'Next'>> | undefined = undefined
+
+    const WidgetRendererNext: NextWidgetPlugin<Omit<PWidgetPlugin, 'Next'>> = {
+        index: 0,
+        name: '$WidgetRenderer',
+        Component: WidgetRenderer as NextWidgetPlugin<Omit<PWidgetPlugin, 'Next'>>['Component'],
+        plugin: null,
+    }
 
     if (widgetPlugins && widgetPlugins.length > 0) {
         for (let i = widgetPlugins.length - 1; i >= 0; i--) {
             const widgetPlugin = widgetPlugins[i]
             const Next = widgetPlugin
             const NextNextComponent = First || {
-                Component: () => {
+                ...WidgetRendererNext,
+                Component: WidgetRendererNext.Component || (() => {
                     throw new Error(`WidgetPlugin overflow, no plugin at ${i + 1}.`)
-                },
-                plugin: null as any,
-                name: '',
-                index: -1,
+                }) as MinimalComponentType<PWidgetPlugin>,
             }
             const name = getDisplayName(Next) || `Plugin${i}`
             const Component = (props: any) => {
@@ -81,12 +93,10 @@ export const makeNext = <PWidgetPlugin extends WidgetPluginProps>(widgetPlugins:
 
     if (!First) {
         First = {
-            Component: () => {
-                throw new Error('WidgetPlugin overflow, no plugins.')
-            },
-            plugin: null as any,
-            name: '',
-            index: -1,
+            ...WidgetRendererNext,
+            Component: WidgetRendererNext.Component || (() => {
+                throw new Error(`WidgetPlugin overflow, no plugins.`)
+            }),
         }
     }
 

@@ -3,7 +3,7 @@ import { List } from 'immutable'
 import { useEffect } from 'react'
 import type { ComponentType, ReactNode } from 'react'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
-import { ErrorNoWidgetMatching, widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
+import { ErrorNoWidgetMatching, matchWidget } from '@ui-schema/ui-schema/matchWidget'
 import type { WidgetEngineOverrideProps, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import type { WithValuePlain } from '@ui-schema/react/UIStore'
 import type { SchemaKeywordType, SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
@@ -45,10 +45,7 @@ export const WidgetRenderer = <A = UIStoreActions, B = {}, WP extends WidgetProp
             binding?: Omit<NoInfer<B>, 'VirtualRenderer' | 'NoWidget' | 'widgets' | 'matchWidget'> & {
                 VirtualRenderer?: ComponentType<WidgetProps & WithValuePlain>
                 NoWidget?: ComponentType<NoWidgetProps>
-                widgets?: {
-                    types?: { [K in SchemaKeywordType]?: (props: WP) => ReactNode }
-                    custom?: Record<string, (props: WP) => ReactNode>
-                }
+                widgets?: { [K in SchemaKeywordType]?: (props: WP) => ReactNode } & { [K: string]: (props: WP) => ReactNode }
                 matchWidget?: (props: MatchProps<WP>) => null | (<PWidget>(props: Omit<NoInfer<PWidget>, keyof WP> & WP) => ReactNode)
             }
         },
@@ -59,10 +56,7 @@ export const WidgetRenderer = <A = UIStoreActions, B = {}, WP extends WidgetProp
     // } &
     // {
     //     binding?: {
-    //         widgets?: {
-    //             types?: { [K in SchemaKeywordType]?: (props: WP) => ReactNode }
-    //             custom?: Record<string, (props: WP) => ReactNode>
-    //         }
+    //         widgets?: { [K in SchemaKeywordType]?: (props: WP) => ReactNode } & { [K: string]: (props: WP) => ReactNode }
     //     }
     // } &
     // {
@@ -88,10 +82,10 @@ export const WidgetRenderer = <A = UIStoreActions, B = {}, WP extends WidgetProp
     } else {
         // todo: remove fallback once dev project is migrated? or allow optional?
         // todo: check typings and fix it, `binding` is already `any`
-        const matchWidget = binding?.matchWidget || widgetMatcher
+        const matchWidgetFn = binding?.matchWidget || matchWidget
         const widgets = binding?.widgets
         try {
-            Widget = matchWidget({
+            Widget = matchWidgetFn({
                 widgetName: widgetName,
                 schemaType: schemaType,
                 widgets: widgets,

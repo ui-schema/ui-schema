@@ -6,7 +6,6 @@ import { DependentHandler } from '@ui-schema/react-json-schema/DependentHandler'
 import { ConditionalHandler } from '@ui-schema/react-json-schema/ConditionalHandler'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
-import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
 import React from 'react'
@@ -38,7 +37,6 @@ const customBinding: typeof widgets = {
         // eslint-disable-next-line @typescript-eslint/no-deprecated
         ConditionalHandler,
         ValidityReporter,
-        WidgetRenderer,
     ],
 }
 

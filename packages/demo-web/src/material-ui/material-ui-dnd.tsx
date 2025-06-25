@@ -3,7 +3,6 @@ import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import { widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
 import React from 'react'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
@@ -14,7 +13,7 @@ import Select from '@mui/material/Select'
 import { createEmptyStore, createStore, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
-import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes } from '@ui-schema/ds-material/BindingType'
+import { MuiWidgetsBindingWidgets } from '@ui-schema/ds-material/BindingType'
 import { browserT } from '../t'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { isInvalid } from '@ui-schema/react/ValidityReporter'
@@ -34,22 +33,17 @@ import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
-type CustomWidgetsBinding = WidgetsBindingFactory<MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
+type CustomWidgetsBinding = WidgetsBindingFactory<MuiWidgetsBindingWidgets<{}> & {
     SortableList: React.ComponentType<WidgetProps>
 }>
 
 const customWidgets: CustomWidgetsBinding = {
     ...baseComponents,
     widgetPlugins: widgetPluginsLegacy,
-    matchWidget: widgetMatcher,
     widgets: {
-        types: {
-            ...typeWidgets,
-        },
-        custom: {
-            ...bindingExtended,
-            SortableList: SortableList,
-        },
+        ...typeWidgets,
+        ...bindingExtended,
+        SortableList: SortableList,
     },
 }
 

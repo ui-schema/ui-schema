@@ -123,26 +123,20 @@ const DemoUIGenerator = (
         ...binding,
         widgets: {
             ...binding?.widgets,
-            types: {
-                ...binding?.widgets?.types,
-                ...(showReadOnly ? {
-                    string: StringRendererRead,
-                    number: NumberRendererRead,
-                    int: NumberRendererRead,
-                    boolean: WidgetBooleanRead,
-                } : {}),
-            },
-            custom: {
-                ...binding?.widgets?.custom,
-                ...(showReadOnly ? {
-                    Text: TextRendererRead,
-                    Select: WidgetOptionsRead,
-                    SelectMulti: WidgetOptionsRead,
-                    SelectChips: WidgetChipsRead,
-                    OptionsRadio: WidgetOptionsRead,
-                    OptionsCheck: WidgetOptionsRead,
-                } : {}),
-            },
+            ...(showReadOnly ? {
+                string: StringRendererRead,
+                number: NumberRendererRead,
+                int: NumberRendererRead,
+                boolean: WidgetBooleanRead,
+            } : {}),
+            ...(showReadOnly ? {
+                Text: TextRendererRead,
+                Select: WidgetOptionsRead,
+                SelectMulti: WidgetOptionsRead,
+                SelectChips: WidgetChipsRead,
+                OptionsRadio: WidgetOptionsRead,
+                OptionsCheck: WidgetOptionsRead,
+            } : {}),
         },
     }), [binding, showReadOnly])
 

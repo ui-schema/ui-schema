@@ -33,10 +33,8 @@ const customWidgets: MuiWidgetsBinding = {
     InfoRenderer: InfoRenderer,
     widgetPlugins: widgetPluginsLegacy,
     widgets: {
-        types: typeWidgets,
-        custom: {
-            ...bindingExtended,
-        },
+        ...typeWidgets,
+        ...bindingExtended,
     },
 }
 

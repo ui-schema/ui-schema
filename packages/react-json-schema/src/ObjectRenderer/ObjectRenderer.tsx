@@ -8,7 +8,7 @@ export interface ObjectRendererProps extends WidgetProps {
     binding?: { GroupRenderer?: ComponentType<GroupRendererProps> }
 }
 
-const ObjectRendererBase = (
+export const ObjectRendererBase = (
     {
         schema, storeKeys,
         // for performance reasons, not pushing errors deeper

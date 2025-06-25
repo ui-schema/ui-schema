@@ -19,11 +19,9 @@ import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 export const MockWidgets: WidgetsBindingFactory = {
     ErrorFallback: () => null,
     GroupRenderer: () => null,
-    widgetPlugins: [WidgetRenderer],
-    widgets: {
-        types: {},
-        custom: {},
-    },
+    widgetPlugins: [],
+    WidgetRenderer: WidgetRenderer,
+    widgets: {},
 }
 
 const validate = Validator(standardValidators).validate

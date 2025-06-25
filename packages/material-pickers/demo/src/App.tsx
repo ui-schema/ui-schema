@@ -4,7 +4,6 @@ import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import React from 'react'
 import AppTheme from './AppTheme'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
@@ -122,16 +121,13 @@ const customWidgets: MuiWidgetsBinding = {
         DefaultHandler,
         SchemaGridHandler,
         ValidityReporter,
-        WidgetRenderer,
     ],
     widgets: {
-        types: typeWidgets,
-        custom: {
-            ...bindingExtended,
-            DateTime: CustomDateTimePicker,
-            Date: CustomDatePicker,
-            Time: CustomTimePicker,
-        },
+        ...typeWidgets,
+        ...bindingExtended,
+        DateTime: CustomDateTimePicker,
+        Date: CustomDatePicker,
+        Time: CustomTimePicker,
     },
 }
 

@@ -11,7 +11,6 @@ import { SortPlugin } from '@ui-schema/json-schema/SortPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { schemaTypeToDistinct } from '@ui-schema/ui-schema/schemaTypeToDistinct'
 import React, { ComponentType } from 'react'
 import Grid, { GridSpacing } from '@mui/material/Grid'
@@ -37,7 +36,7 @@ import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { createStore, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
-import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
+import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 
 // custom `GroupRenderer` that supports `is-read and display-dense`
 const GroupRenderer: React.ComponentType<GroupRendererProps> = ({schema, children, noGrid}) => {
@@ -150,13 +149,8 @@ const formSchema = createOrderedMap({
     },
 })
 
-export interface ReadWidgetsBinding {
-    types: {
-        [k: string]: ComponentType<WidgetProps & UIMetaReadContextType>
-    }
-    custom: {
-        [k: string]: ComponentType<WidgetProps & UIMetaReadContextType>
-    }
+export type ReadWidgetsBinding = {
+    [k: string]: ComponentType<WidgetProps & UIMetaReadContextType>
 }
 
 // Notice: `customWidgets` are supplied by the global `UIMetaProvider` at the end of this file,
@@ -166,31 +160,25 @@ const customWidgets: MuiWidgetsBinding = {
     InfoRenderer: InfoRenderer,
     widgetPlugins: [],
     widgets: {
-        types: typeWidgets,
-        custom: {
-            ...bindingExtended,
-            SelectChips: SelectChips,
-        },
+        ...typeWidgets,
+        ...bindingExtended,
+        SelectChips: SelectChips,
     },
     GroupRenderer: GroupRenderer,
 }
 
 const readWidgets: ReadWidgetsBinding = {
-    types: {
-        object: ObjectRenderer,
-        string: StringRendererRead,
-        number: NumberRendererRead,
-        int: NumberRendererRead,
-        boolean: WidgetBooleanRead,
-    },
-    custom: {
-        Text: TextRendererRead,
-        Select: WidgetOptionsRead,
-        SelectMulti: WidgetOptionsRead,
-        SelectChips: WidgetChipsRead,
-        OptionsRadio: WidgetOptionsRead,
-        OptionsCheck: WidgetOptionsRead,
-    },
+    object: ObjectRenderer,
+    string: StringRendererRead,
+    number: NumberRendererRead,
+    int: NumberRendererRead,
+    boolean: WidgetBooleanRead,
+    Text: TextRendererRead,
+    Select: WidgetOptionsRead,
+    SelectMulti: WidgetOptionsRead,
+    SelectChips: WidgetChipsRead,
+    OptionsRadio: WidgetOptionsRead,
+    OptionsCheck: WidgetOptionsRead,
 }
 
 const ReadableWritableEditor = () => {
@@ -221,12 +209,8 @@ const ReadableWritableEditor = () => {
             ]),
             SchemaGridHandler,
             ValidityReporter,
-            WidgetRenderer,
         ],
-        widgets: {
-            types: edit ? binding?.widgets?.types : readWidgets.types,
-            custom: edit ? binding?.widgets?.custom : readWidgets.custom,
-        },
+        widgets: edit ? binding?.widgets : readWidgets,
     }), [binding, edit])
 
     const schema = edit && dense ? formSchema.setIn(['view', 'dense'], true) : formSchema

@@ -4,7 +4,6 @@ import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import { widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
 import React from 'react'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
@@ -24,18 +23,13 @@ const customWidgets: MuiWidgetsBinding = {
     ...baseComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: widgetPluginsLegacy,
-    matchWidget: widgetMatcher,
     widgets: {
-        types: {
-            ...typeWidgets,
-            string: StringRendererDebounced,
-            number: NumberRendererDebounced,
-            integer: NumberRendererDebounced,
-        },
-        custom: {
-            ...bindingExtended,
-            Text: TextRendererDebounced,
-        },
+        ...typeWidgets,
+        string: StringRendererDebounced,
+        number: NumberRendererDebounced,
+        integer: NumberRendererDebounced,
+        ...bindingExtended,
+        Text: TextRendererDebounced,
     },
 }
 

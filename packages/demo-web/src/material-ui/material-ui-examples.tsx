@@ -11,7 +11,6 @@ import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
-import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import React from 'react'
 import { useToggle } from '../component/useToggle'
 import { schemaWCombining } from '../schemas/demoCombining'
@@ -40,16 +39,10 @@ const CustomTableBase: React.ComponentType<WidgetProps> = ({binding, ...props}) 
         ...binding,
         widgets: {
             ...binding?.widgets,
-            types: {
-                ...binding?.widgets?.types,
-                string: StringRendererCell,
-                number: NumberRendererCell,
-                integer: NumberRendererCell,
-            },
-            custom: {
-                ...binding?.widgets?.custom,
-                Text: TextRendererCell,
-            },
+            string: StringRendererCell,
+            number: NumberRendererCell,
+            integer: NumberRendererCell,
+            Text: TextRendererCell,
         },
     }), [binding])
 
@@ -87,16 +80,13 @@ const customWidgets: MuiWidgetsBinding = {
         //       (old) but why was it this high? wasn't that because of e.g. conditional object grids
         SchemaGridHandler,
         ValidityReporter,
-        WidgetRenderer,
     ],
     widgets: {
-        types: typeWidgets,
-        custom: {
-            ...bindingExtended,
-            SelectChips: SelectChips,
-            Table: CustomTableBase,
-            TableAdvanced: TableAdvanced,
-        },
+        ...typeWidgets,
+        ...bindingExtended,
+        SelectChips: SelectChips,
+        Table: CustomTableBase,
+        TableAdvanced: TableAdvanced,
     },
 }
 //widgets.types.null = () => 'null'

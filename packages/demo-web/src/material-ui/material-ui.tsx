@@ -14,8 +14,7 @@ import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
-import { widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
+import { matchWidget } from '@ui-schema/ui-schema/matchWidget'
 import React from 'react'
 import { useToggle } from '../component/useToggle'
 import { dataDemoMain, schemaDemoMain, schemaUser } from '../schemas/demoMain'
@@ -54,17 +53,14 @@ const customBinding: MuiWidgetsBinding = {
         //       (old) but why was it this high? wasn't that because of e.g. conditional object grids
         SchemaGridHandler,
         ValidityReporter,
-        WidgetRenderer,
     ],
     widgets: {
-        types: typeWidgets,
-        custom: {
-            ...bindingExtended,
-            SelectChips: SelectChips,
-            TableAdvanced: TableAdvanced,
-        },
+        ...typeWidgets,
+        ...bindingExtended,
+        SelectChips: SelectChips,
+        TableAdvanced: TableAdvanced,
     },
-    matchWidget: widgetMatcher,//<NonNullable<NonNullable<MuiWidgetsBinding['widgets']>['types']>, NonNullable<NonNullable<MuiWidgetsBinding['widgets']>['custom']>>,
+    matchWidget: matchWidget,//<NonNullable<NonNullable<MuiWidgetsBinding['widgets']>['types']>, NonNullable<NonNullable<MuiWidgetsBinding['widgets']>['custom']>>,
 }
 //widgets.types.null = () => 'null'
 

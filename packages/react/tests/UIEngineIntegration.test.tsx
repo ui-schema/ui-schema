@@ -45,8 +45,7 @@ import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 const widgets = {
     ...MockWidgets,
     widgets: {
-        types: {...MockWidgets.widgets?.types},
-        custom: {...MockWidgets.widgets?.custom},
+        ...MockWidgets.widgets,
     },
 }
 // todo: add custom ErrorFallback, otherwise some errors may be catched there - and the test will not fail
@@ -78,7 +77,6 @@ const widgetPluginsLegacy = [
         validatorPlugin,
     ]),
     ValidityReporter,
-    WidgetRenderer,
 ]
 
 const widgetPlugins = [
@@ -90,10 +88,9 @@ const widgetPlugins = [
         requiredPlugin,
     ]),
     ValidityReporter,
-    WidgetRenderer,
 ]
 
-widgets.widgets.types.string = function WidgetString(props: WidgetProps) {
+widgets.widgets.string = function WidgetString(props: WidgetProps) {
     return <>
         <span data-path={props.storeKeys.join('.')}>string-renderer</span>
         <span><TranslateTitle schema={props.schema} storeKeys={props.storeKeys}/></span>
@@ -102,7 +99,7 @@ widgets.widgets.types.string = function WidgetString(props: WidgetProps) {
     </>
 }
 
-widgets.widgets.types.array = extractValue(function WidgetArray(props: WidgetProps) {
+widgets.widgets.array = extractValue(function WidgetArray(props: WidgetProps) {
     const itemsSchema = props.schema.get('items')
     return <>
         <span data-path={props.storeKeys.join('.')}>array-renderer</span>
@@ -256,6 +253,7 @@ const TestUIRenderer = (props: {
     const appliedWidgets = useMemo(() => {
         return {
             ...widgets,
+            WidgetRenderer: WidgetRenderer,
             widgetPlugins: props.legacy ? widgetPluginsLegacy : widgetPlugins,
         }
     }, [props.legacy])

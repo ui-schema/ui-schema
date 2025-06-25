@@ -60,9 +60,7 @@ describe('WidgetRenderer', () => {
             <WidgetRenderer
                 binding={{
                     widgets: {
-                        types: {
-                            string: (props: WidgetProps) => <span>{typeof props.value === 'string' ? props.value : ''}</span>,
-                        },
+                        string: (props: WidgetProps) => <span>{typeof props.value === 'string' ? props.value : ''}</span>,
                     },
                     // widgetPlugins: [
                     //     WidgetRenderer,
@@ -82,9 +80,7 @@ describe('WidgetRenderer', () => {
             <WidgetRenderer
                 binding={{
                     widgets: {
-                        custom: {
-                            Text: (props: WidgetProps) => <span>{typeof props.value === 'string' ? props.value : ''}</span>,
-                        },
+                        Text: (props: WidgetProps) => <span>{typeof props.value === 'string' ? props.value : ''}</span>,
                     },
                     // widgetPlugins: [
                     //     WidgetRenderer,
@@ -104,9 +100,7 @@ describe('WidgetRenderer', () => {
             <WidgetRenderer
                 binding={{
                     widgets: {
-                        types: {
-                            array: (props: WidgetProps & { value?: unknown }) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set',
-                        },
+                        array: (props: WidgetProps & { value?: unknown }) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set',
                     },
                     // widgetPlugins: [
                     //     WidgetRenderer,
@@ -127,9 +121,7 @@ describe('WidgetRenderer', () => {
             <WidgetRenderer
                 binding={{
                     widgets: {
-                        custom: {
-                            CustomObj: (props: WidgetProps & { value?: unknown }) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set',
-                        },
+                        CustomObj: (props: WidgetProps & { value?: unknown }) => typeof props.value === 'undefined' ? 'is-undef' : 'is-set',
                     },
                     // widgetPlugins: [
                     //     WidgetRenderer,

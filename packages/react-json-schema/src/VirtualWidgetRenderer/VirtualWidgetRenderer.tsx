@@ -5,7 +5,7 @@ import type { WidgetPayloadFieldSchema } from '@ui-schema/ui-schema/Widget'
 import type { ComponentType, ReactNode } from 'react'
 import { List } from 'immutable'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
+import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import { schemaTypeToDistinct } from '@ui-schema/ui-schema/schemaTypeToDistinct'
 import type { WidgetProps } from '@ui-schema/react/Widgets'
 

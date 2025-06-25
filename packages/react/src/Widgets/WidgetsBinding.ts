@@ -1,11 +1,41 @@
-import { SchemaKeywordType, SchemaTypesType, SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
+import { SchemaTypesType, SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { WidgetPayload } from '@ui-schema/ui-schema/Widget'
-import type { ComponentType, ReactNode } from 'react'
-import { WidgetPluginType } from '@ui-schema/react/WidgetEngine'
-import { WidgetProps } from '@ui-schema/react/Widgets'
-import { StoreKeys, WithValuePlain } from '@ui-schema/react/UIStore'
+import type { ComponentType, FunctionComponent, ReactNode, Component } from 'react'
+import type { WidgetPluginType } from '@ui-schema/react/WidgetEngine'
+import type { WidgetProps } from '@ui-schema/react/Widgets'
+import { StoreKeys } from '@ui-schema/react/UIStore'
 import { List } from 'immutable'
 import { WidgetsBindingRoot } from '@ui-schema/ui-schema/WidgetsBinding'
+
+/**
+ * note: we can't use ComponentType here, as it leads to problems with FC vs. others and
+ *      throwing errors if a component has optional props, which are defined are required in the binding,
+ *      which is of course ok, as a widget can always rely on less, just not more (required) as defined in the shared interface
+ *
+ * @experimental mv into central react and use for any component type?
+ * @todo setup CI test to check against lowest possible react version, so that error doesn't occur,
+ *       even if dev setup react is "fixed" (react19 has propTypes any)
+ * @todo care about `ClassComponent` at all or enforce `.FC` usage?
+ */
+type MinimalClassComponent<P> = {
+    new(
+        props: P,
+    ): Component<any, any, any>
+    // ): {
+    //     render(): ReactNode
+    // }
+
+    displayName?: string
+}
+
+export type MinimalComponentType<P> =
+    {
+        // using this for react18/19 compat, as feature detection on async components
+        (props: P): ReturnType<FunctionComponent>
+        displayName?: string
+    } |
+    MinimalClassComponent<P>
+
 
 export interface NoWidgetProps {
     storeKeys: StoreKeys
@@ -42,7 +72,7 @@ export interface WidgetsBindingComponents {
     /**
      * When used with `isVirtual` in `WidgetEngine`, this component is used to render virtual widgets.
      */
-    VirtualRenderer?: ComponentType<WidgetProps & WithValuePlain>
+    VirtualRenderer?: ComponentType<WidgetProps>
     /**
      * When `matchWidget` cannot find a widget and throws an `ErrorNoWidgetMatching`, this component is used.
      */
@@ -57,11 +87,10 @@ export interface MatchProps<WP extends WidgetPayload = WidgetPayload> {
     widgetName: string | undefined
     schemaType: SchemaTypesType
 
-    widgets?: {
-        types?: { [K in SchemaKeywordType]?: (props: WP) => ReactNode }
-        custom?: Record<string, (props: WP) => ReactNode>
-    }
+    widgets?: Record<string, (props: WP) => ReactNode>
 }
+
+// type MinimalWidgetPayload<A = UIStoreActions> = WidgetPayload & UIMetaContextBase & WithOnChange<A> & WithValuePlain
 
 /**
  * widget binding
@@ -70,12 +99,23 @@ export interface MatchProps<WP extends WidgetPayload = WidgetPayload> {
  * - `CW` = own custom widgets definition
  * @todo make stricter and add support for strict checks in UIMetaProvider with inferring,
  *       and normalize with all other matchWidget/widgets types, atm. testing MUI with strict shared interface
+ * @todo support OnChange generics
+ * @todo typing `PWidgetPlugins` strict here leads again to the problem with circular types, but why isn't that the cause with `widgetPlugins`?
+ *       switched to `any` here, as the stricter typing comes from mui bindingType and WidgetRenderer atm.,
+ *       and here it must be as loose as possible to infer it correctly, while there is must be infer all at once.
  */
-export type WidgetsBindingFactory<TW extends {} = {}, CW extends {} = {}> =
-    WidgetsBindingComponents &
+// export type WidgetsBindingFactory<TW extends {} = {}, PWidgetPlugins extends MinimalWidgetPayload = MinimalWidgetPayload> =
+export type WidgetsBindingFactory<TW extends {} = {}> =
+    Omit<WidgetsBindingComponents, 'widgetPlugins'> &
     {
-        widgets?: WidgetsBindingRoot<TW, CW>
-    } &
-    {
+        widgetPlugins?: ComponentType<any>[]
+
+        /**
+         * The component which is rendered inside the WidgetEngine, after any widgetPlugin is applied.
+         */
+        WidgetRenderer?: MinimalComponentType<any>
+
+        widgets?: WidgetsBindingRoot<TW>
+
         matchWidget?: (props: MatchProps<any>) => null | ((props: any) => ReactNode)
     }

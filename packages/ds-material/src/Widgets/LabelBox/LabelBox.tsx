@@ -1,7 +1,7 @@
 import React from 'react'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
+import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import Box from '@mui/material/Box'
 import Typography, { TypographyProps } from '@mui/material/Typography'
 
@@ -27,6 +27,7 @@ export const LabelBox = (props: WidgetProps): React.ReactElement => {
                 <TranslateTitle schema={schema} storeKeys={storeKeys}/>
                 {/* todo: add `info` support */}
             </Typography>}
+        {/* todo: use widget matcher? i think i migrated this away on purpose */}
         <ObjectRenderer {...props}/>
     </Box>
 }

@@ -11,7 +11,6 @@ import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
-import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 /*import {
     Color, ColorDialog,
@@ -29,7 +28,7 @@ import { DragDropBlockSelector } from '@ui-schema/material-dnd/DragDropBlockSele
 import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { TableAdvanced } from '@ui-schema/ds-material/Widgets'
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { browserT } from '../../t'
 //import {WidgetColorful} from '@ui-schema/material-colorful'
 /*import {
@@ -61,16 +60,10 @@ const CustomTable = ({binding, ...props}: WidgetProps) => {
         ...binding,
         widgets: {
             ...binding?.widgets,
-            types: {
-                ...binding?.widgets?.types,
-                string: StringRendererCell,
-                number: NumberRendererCell,
-                integer: NumberRendererCell,
-            },
-            custom: {
-                ...binding?.widgets?.custom,
-                Text: TextRendererCell,
-            },
+            string: StringRendererCell,
+            number: NumberRendererCell,
+            integer: NumberRendererCell,
+            Text: TextRendererCell,
         },
     }), [binding])
 
@@ -93,78 +86,75 @@ const customWidgets: MuiWidgetsBinding & {
         ]),
         SchemaGridHandler,
         ValidityReporter,
-        WidgetRenderer,
     ],
     DndBlockSelector: DragDropBlockSelector,
     widgets: {
-        types: typeWidgets,
-        custom: {
-            ...bindingExtended,
-            SelectChips: SelectChips,
-            Table: CustomTable,
-            TableAdvanced: TableAdvanced,
+        ...typeWidgets,
+        ...bindingExtended,
+        SelectChips: SelectChips,
+        Table: CustomTable,
+        TableAdvanced: TableAdvanced,
 
-            /*Color,
-            ColorDialog,
-            ColorStatic,
-            ColorSwatches,
-            ColorCircle,
-            ColorCompact,
-            ColorMaterial,
-            ColorTwitter,
-            ColorBlock,
-            ColorSlider,
-            ColorAlpha,
-            ColorHue,
-            ColorSketch,
-            ColorSliderStatic,
-            ColorCircleStatic,
-            ColorTwitterStatic,
-            ColorSketchStatic,
-            ColorSketchDialog,
-            Colorful: ColorfulHex,
-            ColorfulHsla: ColorfulHsla,
-            ColorfulRgba: ColorfulRgba,*/
-            // Code: Loadable({
-            //     loader: () => import('../CustomCodeWidgets').then(r => r.CustomWidgetCode),
-            //     loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
-            // }),
-            // CodeSelectable: Loadable({
-            //     loader: () => import('../CustomCodeWidgets').then(r => r.CustomWidgetCodeSelectable),
-            //     loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
-            // }),
-            /*DateTime: Loadable({
-                loader: () => import('@ui-schema/material-pickers').then(r => r.DateTimePicker),
-                loading: () => <LoadingCircular title={'Loading DateTime Widget'}/>,
-            }),
-            Date: Loadable({
-                loader: () => import('@ui-schema/material-pickers').then(r => r.DatePicker),
-                loading: () => <LoadingCircular title={'Loading Date Widget'}/>,
-            }),
-            Time: Loadable({
-                loader: () => import('@ui-schema/material-pickers').then(r => r.TimePicker),
-                loading: () => <LoadingCircular title={'Loading Time Widget'}/>,
-            }),*/
-            // EditorJS: (props) => <Suspense>
-            //     <LazyEditorJs {...props}/>
-            // </Suspense>,
-            //     Loadable({
-            //     loader: () => import('./EditorJSComp').then(r => r.EditorJSComp),
-            //     loading: () => <LoadingCircular title={'Loading EditorJS'}/>,
-            // }),
-            // SortableList: Loadable({
-            //     loader: () => import('@ui-schema/material-dnd/Widgets/SortableList').then(r => r.SortableList),
-            //     loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
-            // }),
-            // DragDropArea: Loadable({
-            //     loader: () => import('@ui-schema/material-dnd/Widgets/DragDropArea').then(r => r.DragDropArea),
-            //     loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
-            // }),
-            // DropArea: Loadable({
-            //     loader: () => import('@ui-schema/material-dnd/Widgets/DropArea').then(r => r.DropArea),
-            //     loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
-            // }),
-        },
+        /*Color,
+        ColorDialog,
+        ColorStatic,
+        ColorSwatches,
+        ColorCircle,
+        ColorCompact,
+        ColorMaterial,
+        ColorTwitter,
+        ColorBlock,
+        ColorSlider,
+        ColorAlpha,
+        ColorHue,
+        ColorSketch,
+        ColorSliderStatic,
+        ColorCircleStatic,
+        ColorTwitterStatic,
+        ColorSketchStatic,
+        ColorSketchDialog,
+        Colorful: ColorfulHex,
+        ColorfulHsla: ColorfulHsla,
+        ColorfulRgba: ColorfulRgba,*/
+        // Code: Loadable({
+        //     loader: () => import('../CustomCodeWidgets').then(r => r.CustomWidgetCode),
+        //     loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
+        // }),
+        // CodeSelectable: Loadable({
+        //     loader: () => import('../CustomCodeWidgets').then(r => r.CustomWidgetCodeSelectable),
+        //     loading: () => <LoadingCircular title={'Loading Code Widget'}/>,
+        // }),
+        /*DateTime: Loadable({
+            loader: () => import('@ui-schema/material-pickers').then(r => r.DateTimePicker),
+            loading: () => <LoadingCircular title={'Loading DateTime Widget'}/>,
+        }),
+        Date: Loadable({
+            loader: () => import('@ui-schema/material-pickers').then(r => r.DatePicker),
+            loading: () => <LoadingCircular title={'Loading Date Widget'}/>,
+        }),
+        Time: Loadable({
+            loader: () => import('@ui-schema/material-pickers').then(r => r.TimePicker),
+            loading: () => <LoadingCircular title={'Loading Time Widget'}/>,
+        }),*/
+        // EditorJS: (props) => <Suspense>
+        //     <LazyEditorJs {...props}/>
+        // </Suspense>,
+        //     Loadable({
+        //     loader: () => import('./EditorJSComp').then(r => r.EditorJSComp),
+        //     loading: () => <LoadingCircular title={'Loading EditorJS'}/>,
+        // }),
+        // SortableList: Loadable({
+        //     loader: () => import('@ui-schema/material-dnd/Widgets/SortableList').then(r => r.SortableList),
+        //     loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
+        // }),
+        // DragDropArea: Loadable({
+        //     loader: () => import('@ui-schema/material-dnd/Widgets/DragDropArea').then(r => r.DragDropArea),
+        //     loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
+        // }),
+        // DropArea: Loadable({
+        //     loader: () => import('@ui-schema/material-dnd/Widgets/DropArea').then(r => r.DropArea),
+        //     loading: () => <LoadingCircular title={'Loading drag \'n drop'}/>,
+        // }),
     },
 }
 

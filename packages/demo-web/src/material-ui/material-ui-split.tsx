@@ -14,9 +14,7 @@ import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin'
 import { SchemaResourceProvider } from '@ui-schema/react/SchemaResourceProvider'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
-import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { SchemaPlugin } from '@ui-schema/ui-schema/SchemaPlugin'
-import { widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
 import { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import React, { useMemo } from 'react'
 import Grid from '@mui/material/Grid'
@@ -47,16 +45,10 @@ const CustomTable: React.ComponentType<WidgetProps> = ({binding, ...props}) => {
         ...binding,
         widgets: {
             ...binding?.widgets,
-            types: {
-                ...binding?.widgets?.types,
-                string: StringRendererCell,
-                number: NumberRendererCell,
-                integer: NumberRendererCell,
-            },
-            custom: {
-                ...binding?.widgets?.custom,
-                Text: TextRendererCell,
-            },
+            string: StringRendererCell,
+            number: NumberRendererCell,
+            integer: NumberRendererCell,
+            Text: TextRendererCell,
         },
     }), [binding])
 
@@ -108,18 +100,14 @@ const customWidgets: CustomWidgetsBinding = {
         InjectSplitSchemaPlugin, // legacy widget plugin
         SchemaGridHandler,
         ValidityReporter,
-        WidgetRenderer,
     ],
     widgets: {
-        types: typeWidgets,
-        custom: {
-            ...bindingExtended,
-            SelectChips: SelectChips,
-            Table: CustomTable,
-            TableAdvanced: TableAdvanced,
-        },
+        ...typeWidgets,
+        ...bindingExtended,
+        SelectChips: SelectChips,
+        Table: CustomTable,
+        TableAdvanced: TableAdvanced,
     },
-    matchWidget: widgetMatcher,
 }
 
 const schemaData = createOrderedMap({

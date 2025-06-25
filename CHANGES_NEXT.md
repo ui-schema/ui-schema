@@ -57,9 +57,9 @@ List of renamed functions, components etc., most are also moved to other package
 
 - new universal JS utils, system, SchemaPlugins, not coupled to react dependencies
 - removed function `checkNativeValidity` in `schemaToNative`
-- moved react-specific widget matching logic from `widgetMatcher` to `WidgetRenderer`
+- moved react-specific widget matching logic from `matchWidget` to `WidgetRenderer`
 - `schemaTypeToDisctint`, used for matching widgets by `type` keyword, now supports multiple types
-    - for `["string", "number"]` will now sort it and try to access a widget with the ID `number+string`, see default `widgetMatcher` source for entrypoint on general matching algo.
+    - for `["string", "number"]` will now sort it and try to access a widget with the ID `number+string`, see default `matchWidget` source for entrypoint of general matching algo.
 
 Todo:
 
@@ -228,11 +228,14 @@ Todo:
 
 - removed `ExtractStorePlugin`, included now in `WidgetEngine` directly (for the moment, experimenting performance/typing)
 - removed `level` property, use ~~`schemaKeys`~~/`storeKeys` to calc. that when necessary
-- removed `WidgetRenderer` from `getNextPlugin` internals, moved to `widgetPlugins` directly
+- removed `WidgetRenderer` from `getNextPlugin` internals, moved to `binding` directly
 - removed `required`/`requiredList` in `WidgetEngine`
     - **todo:** for required info/validators are not finalized and there exist two different versions
       e.g. `RequiredPlugin` uses `parentSchema` directly for props injection, yet it should better support allOf etc.
 - relies on TS5.4 for `NoInfer`
+- new `widgetPlugin` and `WidgetRenderer` system, with a materialized render-stack, available as `<Next/>` prop in `widgetPlugin`, removes `currentPluginIndex`
+
+  materializes in `UIMetaContext` and wraps each plugin in a HOC which takes care of its injections. the `Next` is available with `useUIMeta`, never render the actual `widgetsPlugins` manually or modify them dynamically.
 
 Todos:
 
@@ -244,11 +247,6 @@ Todos:
         - only resolves the current schemas $ref, no longer materialized all nested $ref
         - combines conditional and composition with $ref resolving
         - *integrated into `ValidatorPlugin`, using the `applied` schemas that are emitted by `validate`*
-- experiment on how to do a `<Next/>` prop in `widgetPlugin` without `currentPluginIndex`:
-
-  idea: remapping `widgetPlugins` in `UIMetaContext` and wrapping each in a HOC which takes care of it and so on, thus the `Next` can be made available with `useUIMeta`, instead of the actual `widgetsPlugins`, which can help even further with widget binding types and the recursive dependencies in generics.
-
-  would this be too much overhead, "just" for better DX and coding patterns? ... actually, it wouldn't be much more than atm., where many use and rely on `NextPluginRenderer`, which is similar in overhead to what a central wrapping would add.
 
 #### WidgetsBinding
 
@@ -262,17 +260,15 @@ Todos:
 - rewrite of validator-schemaPlugins into `ValidatorHandler` for new validator system
 - now optional in components binding: `.GroupRenderer`
 - now optional in widgets binding: `.types` and `.custom`
-- rename from `widgets` to `binding`, added nested `binding.widgets` and moved `.types` and `.custom` there (for the moment)
-- add a `.validate` to bindings, for universal reuse of any WidgetPlugin and the ValidatorPlugin, handle validation and allow custom validation rules which are used everywhere
-    - **todo:** check all current `widgetPlugins` which rely on validation, to normalize and interop with the new validator plugin and callback
-    - **TBD:** added to `UIMetaContext` instead of `widgets` binding, rethink `widgetsBinding` more as a part of `uiMetaBinding`
-- refactor `widgetMatcher` to `widgets` binding, currently internal of `WidgetRenderer`
+- rename from `widgets` to `binding`, added nested `binding.widgets` and flattened `.types` and `.custom` there
+- added `.validate` to bindings, for universal reuse in any WidgetPlugin and the ValidatorPlugin, handles validation and allow custom validation rules which are used everywhere
+- refactored `matchWidget` to `widgets` binding, now only as default in `WidgetRenderer`
     - must be usable outside of plugins to match and render widgets in e.g. mui `FormGroup` and other "wrapper widgets", these don't add another layer but should reuse existing bindings, e.g. only relying on `ObjectRenderer`
     - ~~to be able to add complex default for `object` and `array`, there should be a hint which tells if "inside an wrapper-widget" and thus the "native" widget should be returned~~ (see container idea)
     - (skipped for now) for better code-split, maybe remove the "widgets" completely from the context bindings, only supply through direct plugin binding, as only "types" and "components" should be used directly anyway, all other widgets should only be injected through matcher and never directly used from other widgets; for Table would require to add something like "prefer variant" or "in scope Table/Form"
 - make `WidgetRenderer` and `VirtualRenderer` better integrated, remove all hard coded wiring to `VirtualWidgetRenderer`
     - moved `VirtualWidgetRenderer` into `react-json-schema` and removed defaults in `react` core
-    - `isVirtual` is still handled by the `WidgetRenderer` plugin, now if no `VirtualRenderer` is specified in binding, it won't render anything
+    - `isVirtual` is still handled by the `WidgetRenderer` ~~plugin~~, now if no `VirtualRenderer` is specified in binding, it won't render anything
     - some notes, not fully cleaned up:
     - ```
         - this may relate to cleaning up unwanted package deps., as `ObjectRenderer` is in `react-json-schema`, the `react` package depends on that and `json-schema`,
@@ -301,18 +297,17 @@ Todos:
                 - `VirtualWidgetRenderer` depends on `ObjectRenderer` from `react-json-schema`, while currently rather hard coded, should be moved to `react-json-schema` completely
                 - (done) move schema resource provider here
       ```
+- safer `value` typing
+    - make `WidgetProps` always include a `value: unknown`
+        - experiment with removing the current "value is removed before rendering widget" and the performance implications
+    - replaced `WithValue`/`WithScalarValue` with `WithValuePlain` and otherwise use the existing `WithOnChange`
+    - **Reason:** it can't be typed what "value type" a widget allows, as it could receive any (invalid) value (from e.g. remote states).
 
 ## Todo WidgetProps
 
-- [ ] safer `value` typing
-    - make `WidgetProps` always include a `value: unknown`
-        - experiment with removing the current "value is removed before rendering widget" and the performance implications
-    - refactor `WithValue`/`WithScalarValue`
-    - include type guards for usage in widgets
-        - maybe rely on `value` and `errors` to know if valid, needs `errors` and not `valid` to check if `TYPE_ERROR` of any other error
-        - **TBD:** include for `typeof v === 'string'` or only for complex types?
-    - **Reason:** it can't be typed what "value type" a widget allows, as it could receive any (invalid) value (from e.g. remote states).
-- [x] make `WidgetProps` independent of schema typing or move out of `/ui-schema`, as that package should not depend on package `/json-schema`
+- [ ] include type guards for usage in widgets
+    - maybe rely on `value` and `errors` to know if valid, needs `errors` and not `valid` to check if `TYPE_ERROR` of any other error
+    - **TBD:** include for `typeof v === 'string'` or only for complex types?
 - [ ] optimize/separate WidgetProps/UIMetaContext
     - UIMeta will be injected, thus will reach widget, but typing can't be ensured reliable with current recursive widgets in context itself,
       especially for some parts, like `widgets` and `t`, it would be better if users use the hooks themself
@@ -334,11 +329,6 @@ new widget engine functions:
     - noGrid + meta overrides like sHowValidity
 - wrapper and props - but whats the feature of that? hidden, dyn. etc only work once plugins are done (or decide not render further)
 - WidgetProps schemaLocation, or those from isRoot, should be removed to another typing
-
-> maybe split up the part that connects with context and that which don't? to make overriding widgets easier - as its either one or the other; but that's already with next plugin renderer vs. widget engine?!
->
->
-> !! finalize `widgets`. atm. added to `WidgetProps` with `any` to ignore that for the time, as needs decision about UIMeta pass through
 
 ## Todos Misc
 
@@ -434,7 +424,8 @@ new widget engine functions:
 - [x] deprecate `applyWidgetEngine*`: `WidgetEngineInjectProps`, `AppliedWidgetEngineProps`, `applyWidgetEngine`, `injectWidgetEngine`
     - without full migration, they work like previously and are compatible with new system, but their types where not optimized/verified
 - [ ] check `mergeSchema` changes and adjust to respect new applicable schema merging strategy
-- [ ] rethink the decision to make `WidgetRenderer` a `widgetPlugin`, now with `Next` even more complex "what if no widgetPlugins exist" and problems with stateless/context-less rendering, where now the materialized `Next` is needed, even when just the "render final widget" would be enough. so moving `WidgetRenderer` again to a binding property should make these easier again, and the new `Next` would even allow injecting the `WidgetRenderer` from `UIMetaProvider` as the final (or first) `Next` itself
+- [x] reworked integration of `WidgetRenderer` with new `widgetPlugin`, now thew new `Next` injects the `WidgetRenderer` as the final (or first) `Next` itself
+    - the binding `.WidgetRenderer` and `.widgetPlugins` are materialized in `UIMetaProvider` and `Next` rendering is started in `WidgetEngine`, the materialized and must not be modified after passing down and `widgetPlugins` must not be rendered manually, it is no longer possible to skip plugins (which was previously possible by increasing `currentPluginIndex`, yet would have been a bad pattern anyways)
 - [ ] rename `widgetPlugins` to just plugins? as no other plugins exist anymore in the `binding`
 - [ ] in pickers only types are migrated and props adjusted for `fullWidth`, nothing else was verified
 - [ ] check/migrate `SchemaLayer` to new `WigetEngine`

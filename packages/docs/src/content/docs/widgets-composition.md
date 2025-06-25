@@ -71,7 +71,7 @@ Together with cases like: `deleteOnEmpty` within `array` [issue #106](https://gi
 
 These are the only positions where `@ui-schema/ui-schema` renders output directly.
 
-- error info in `widgetMatcher` (and thus also `WidgetRenderer`) renders an empty fragment with `missing-*` text when no widget is matching
+- error info in `matchWidget` (and thus also `WidgetRenderer`) renders an empty fragment with `missing-*` text when no widget is matching
     - can be changed with a custom `WidgetRenderer` and the prop-component `NoWidget`, bind the custom renderer to `widgets.WidgetRenderer`
 - loading info in `Plugins/ReferencingHandler`while missing schemas are loaded AND it is not virtual
     - the `Translate` component is rendered with `labels.loading` and with fallback text `Loading`

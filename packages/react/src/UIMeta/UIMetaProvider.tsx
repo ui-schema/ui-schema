@@ -9,17 +9,28 @@ export interface UIMetaContextInternal<W = WidgetsBindingFactory, P = {}> extend
     Next: NextWidgetPlugin<P>
 }
 
-export interface UIMetaContext<W = WidgetsBindingFactory> {
-    binding?: W
+export interface UIMetaContext<W = WidgetsBindingFactory> extends UIMetaContextBinding<W>, UIMetaContextBase {
+}
+
+export interface UIMetaContextBase {
     t: Translator
     validate?: ValidateFn
+}
+
+export interface UIMetaContextBinding<W = WidgetsBindingFactory> {
+    binding?: W
 }
 
 const UIMetaContextObj = createContext<UIMetaContextInternal<any, any>>({
     t: text => text,
     // todo: this obj. is awful as solution for no-widgets/no-context rendering, even for tests
-    // @ts-expect-error initialize with some dummy Next, for context-less tests;
-    Next: {Component: ({WidgetOverride, ...props}) => WidgetOverride ? <WidgetOverride {...props}/> : null},
+    // initialized with some dummy Next, for context-less tests
+    Next: {
+        name: 'WidgetOverrideRenderer',
+        index: -1,
+        plugin: null,
+        Component: ({WidgetOverride, ...props}) => WidgetOverride ? <WidgetOverride {...props}/> : null,
+    },
 })
 
 export function UIMetaProvider<C extends {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(
@@ -28,7 +39,10 @@ export function UIMetaProvider<C extends {}, W extends WidgetsBindingFactory = W
         Omit<NoInfer<C>, keyof UIMetaContext<W> | 'children'>
     >,
 ) {
-    const Next = useNext(props.binding?.widgetPlugins)
+    const Next = useNext(
+        props.binding?.WidgetRenderer,
+        props.binding?.widgetPlugins,
+    )
     const ctx = useMemoObject({
         ...props,
         Next: Next,

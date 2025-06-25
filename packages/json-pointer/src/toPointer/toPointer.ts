@@ -1,4 +1,4 @@
-import { escapePointer } from '@ui-schema/json-pointer'
+import { escapePointer } from '@ui-schema/json-pointer/escapePointer'
 import { List } from 'immutable'
 
 const transformKey = (key: string | number) => {

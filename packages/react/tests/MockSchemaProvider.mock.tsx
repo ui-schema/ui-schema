@@ -30,12 +30,9 @@ export const MockWidgets: WidgetsBindingFactory<{
     ErrorFallback: () => null,
     GroupRenderer: () => null,
     NoWidget: NoWidget,
-    widgetPlugins: [WidgetRenderer],
+    WidgetRenderer: WidgetRenderer,
     widgets: {
-        types: {
-            object: ObjectRenderer,
-        },
-        custom: {},
+        object: ObjectRenderer,
     },
 }
 

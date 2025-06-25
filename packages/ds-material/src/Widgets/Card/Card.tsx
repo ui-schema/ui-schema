@@ -1,7 +1,7 @@
 import React from 'react'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
+import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import Card, { CardProps } from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography, { TypographyProps } from '@mui/material/Typography'
@@ -26,6 +26,7 @@ export const CardRenderer = (props: WidgetProps): React.ReactElement => {
                 </Typography>}
             {/* todo: add `description` support */}
             <Box py={1}>
+                {/* todo: use widget matcher? i think i migrated this away on purpose */}
                 <ObjectRenderer {...props}/>
             </Box>
         </CardContent>

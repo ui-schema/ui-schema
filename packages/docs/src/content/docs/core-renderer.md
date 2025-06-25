@@ -49,7 +49,7 @@ Executes `onErrors` for that schema level, when `errors` have changed and `onErr
 
 **Is itself in the `widgets` binding** and can be replaced / extended this way, `widgets.WidgetRenderer` (since `0.3.0`).
 
-Uses `widgetMatcher` to execute the default matching logic: `import {widgetMatcher} from '@ui-schema/ui-schema/widgetMatcher';`
+Uses `matchWidget` to execute the default matching logic: `import {matchWidget} from '@ui-schema/ui-schema/matchWidget';`
 
 ## ObjectGroup
 
