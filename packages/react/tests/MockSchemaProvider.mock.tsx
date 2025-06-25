@@ -9,7 +9,7 @@ import { OrderedMap } from 'immutable'
 import React from 'react'
 import { Translator } from '@ui-schema/ui-schema/Translator'
 import { translateRelative } from '@ui-schema/ui-schema/TranslatorRelative'
-import { createEmptyStore, UIStoreProvider, WithScalarValue } from '@ui-schema/react/UIStore'
+import { createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
@@ -20,10 +20,10 @@ import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 
 export const MockWidgets: WidgetsBindingFactory<{
-    string?: React.ComponentType<WidgetProps & WithScalarValue>
-    boolean?: React.ComponentType<WidgetProps & WithScalarValue>
-    number?: React.ComponentType<WidgetProps & WithScalarValue>
-    integer?: React.ComponentType<WidgetProps & WithScalarValue>
+    string?: React.ComponentType<WidgetProps>
+    boolean?: React.ComponentType<WidgetProps>
+    number?: React.ComponentType<WidgetProps>
+    integer?: React.ComponentType<WidgetProps>
     object?: React.ComponentType<WidgetProps>
     array?: React.ComponentType<WidgetProps>
 }> = {

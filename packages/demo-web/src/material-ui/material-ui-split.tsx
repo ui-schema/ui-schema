@@ -2,6 +2,7 @@
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { escapePointer } from '@ui-schema/json-pointer'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { resourceFromSchema, SchemaResource } from '@ui-schema/ui-schema/SchemaResource'
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
@@ -33,7 +34,6 @@ import { WidgetProps } from '@ui-schema/react/Widgets'
 import { SelectChips } from '@ui-schema/ds-material/Widgets'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { UISchema, UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { createStore, onChangeHandler, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
@@ -171,7 +171,6 @@ const validate = Validator([
 
 export type CustomConfig = Partial<DefaultHandlerProps>
 
-const GridStack = injectWidgetEngine(GridContainer)
 const Main = () => {
     const [legacy, setShowLegacy] = React.useState(false)
     const [showValidity, setShowValidity] = React.useState(false)
@@ -216,12 +215,14 @@ const Main = () => {
                 >
                     {/* todo: i think its the not-migrated HOC, but now here isRoot is needed */}
                     {resource ?
-                        <GridStack<{ isRoot?: boolean, rootContext?: InjectSplitSchemaRootContext }>
-                            isRoot
-                            schema={resource.branch.value()}
-                            // injection for legacy widget plugin, which used RootProvider
-                            rootContext={legacy ? rootContext : undefined}
-                        /> : null}
+                        <GridContainer>
+                            <WidgetEngine<{ isRoot?: boolean, rootContext?: InjectSplitSchemaRootContext }>
+                                isRoot
+                                schema={resource.branch.value()}
+                                // injection for legacy widget plugin, which used RootProvider
+                                rootContext={legacy ? rootContext : undefined}
+                            />
+                        </GridContainer> : null}
                 </SchemaResourceProvider>
 
                 <MuiJsonEditor

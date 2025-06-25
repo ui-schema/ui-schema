@@ -2,6 +2,8 @@
 import { MuiWidgetsBinding } from '@ui-schema/ds-material'
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import React from 'react'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
@@ -23,8 +25,6 @@ import { fromJSOrdered } from '@ui-schema/ui-schema/createMap'
 import { createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { toHistory, useStorePro } from '@ui-schema/pro/UIStorePro'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
-import { GridContainer } from '@ui-schema/ds-material/GridContainer'
-import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import Grid from '@mui/material/Grid'
 import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
@@ -78,7 +78,6 @@ const initialStore = createStore(fromJSOrdered({
 }))
 
 const schema = schemaDemoReferencingRecursive
-const GridStack = injectWidgetEngine(GridContainer)
 const Main = () => {
     const theme = useTheme()
 
@@ -138,7 +137,9 @@ const Main = () => {
             onChange={onChange}
             showValidity={showValidity}
         >
-            <GridStack isRoot schema={schema}/>
+            <GridContainer>
+                <WidgetEngine isRoot schema={schema}/>
+            </GridContainer>
             <MuiSchemaDebug schema={schema}/>
         </UIStoreProvider>
 

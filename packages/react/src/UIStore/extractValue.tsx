@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import type { ComponentType, ReactNode } from 'react'
 import { getDisplayName } from '@ui-schema/react/Utils/memo'
 import { StoreKeys, useUIStore, WithValue, ExtractValueOverwriteProps } from '@ui-schema/react/UIStore'

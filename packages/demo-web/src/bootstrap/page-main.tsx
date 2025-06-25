@@ -4,6 +4,7 @@ import { CombiningHandler } from '@ui-schema/react-json-schema/CombiningHandler'
 import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
 import { DependentHandler } from '@ui-schema/react-json-schema/DependentHandler'
 import { ConditionalHandler } from '@ui-schema/react-json-schema/ConditionalHandler'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
@@ -17,7 +18,6 @@ import { browserT } from '../t'
 import { BtsSchemaDebug } from '../component/BtsSchemaDebug'
 import clsx from 'clsx'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
-import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
@@ -42,7 +42,6 @@ const customBinding: typeof widgets = {
     ],
 }
 
-const GridStack = injectWidgetEngine(GridContainer)
 const DemoGrid = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap({})))
 
@@ -60,7 +59,9 @@ const DemoGrid = () => {
             onChange={onChange}
             showValidity
         >
-            <GridStack isRoot schema={schemaGrid(12)}/>
+            <GridContainer>
+                <WidgetEngine isRoot schema={schemaGrid(12)}/>
+            </GridContainer>
             <BtsSchemaDebug/>
         </UIStoreProvider>
     </UIMetaProvider>
@@ -86,7 +87,9 @@ const MainStore = () => {
                 onChange={onChange}
                 showValidity={showValidity}
             >
-                <GridStack isRoot schema={schema}/>
+                <GridContainer>
+                    <WidgetEngine isRoot schema={schema}/>
+                </GridContainer>
                 <BtsSchemaDebug setSchema={setSchema} schema={schema}/>
             </UIStoreProvider>
         </UIMetaProvider>

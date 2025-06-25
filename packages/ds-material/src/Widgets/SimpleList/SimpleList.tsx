@@ -11,7 +11,7 @@ import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelpe
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
 import { ListButton, ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { extractValue, WithValue } from '@ui-schema/react/UIStore'
+import { extractValue, WithOnChange } from '@ui-schema/react/UIStore'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
@@ -28,7 +28,7 @@ export type SimpleListItemProps = Pick<WidgetProps, 'showValidity' | 'schema' | 
     btnSize?: IconButtonProps['size']
 }
 
-export const SimpleListItemBase: React.FC<SimpleListItemProps & Pick<WithValue, 'onChange'>> = (
+export const SimpleListItemBase: React.FC<SimpleListItemProps & WithOnChange> = (
     {
         showValidity, schema, storeKeys, notDeletable,
         readOnly, required, onChange, index, btnSize,

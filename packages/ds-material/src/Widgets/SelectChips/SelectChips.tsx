@@ -1,6 +1,6 @@
 import React from 'react'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { extractValue, WithValue } from '@ui-schema/react/UIStore'
+import { extractValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
@@ -13,16 +13,16 @@ import Box from '@mui/material/Box'
 import { List } from 'immutable'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 
-export const SelectChipsBase: React.ComponentType<WidgetProps & WithValue> = (
+export const SelectChipsBase: React.ComponentType<WidgetProps> = (
     {
         storeKeys, schema, value, onChange,
         showValidity, errors, required,
         valid,
-    }
+    },
 ) => {
     const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as UISchemaMap)
 
-    const currentValue = (typeof value !== 'undefined' ? value : (List(schema.get('default') as string[]) || List())) as List<string>
+    const currentValue = (List.isList(value) ? value : (List(schema.get('default') as string[]) || List())) as List<string>
 
     return <Box>
         <Typography color={showValidity && !valid ? 'error' : undefined}>
@@ -65,7 +65,7 @@ export const SelectChipsBase: React.ComponentType<WidgetProps & WithValue> = (
                             })
                         }
                     }}
-                />
+                />,
             ).valueSeq()}
         </Box>
 

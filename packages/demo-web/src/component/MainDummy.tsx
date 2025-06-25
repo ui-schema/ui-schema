@@ -1,9 +1,9 @@
 import { CircularProgress } from '@mui/material'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { getBaseUrl } from '@ui-schema/ui-schema/SchemaResource'
 import { createOrdered } from '@ui-schema/ui-schema/createMap'
 import React, { useEffect, useMemo, useState } from 'react'
 import { isInvalid } from '@ui-schema/react/ValidityReporter'
-import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
@@ -19,7 +19,6 @@ const loadSchema = (url: string, versions?: string[]) => {
     return fetch(url).then(r => r.json())
 }
 
-const GridStack = injectWidgetEngine(GridContainer)
 export const MainDummy = ({schema, Debugger, Button}) => {
     const [showValidity, setShowValidity] = React.useState(false)
     const [store, setStore] = React.useState(() => createEmptyStore(schema.get('type')))
@@ -116,7 +115,9 @@ export const MainDummy = ({schema, Debugger, Button}) => {
                             </Box>)}
                     </Alert> : null}
                 {!loading ?
-                    <GridStack isRoot schema={resource?.branch.value()}/> : null}
+                    <GridContainer>
+                        <WidgetEngine isRoot schema={resource?.branch.value()}/>
+                    </GridContainer> : null}
             </SchemaResourceProvider>
 
             <Box sx={{display: 'flex', alignItems: 'center'}}>

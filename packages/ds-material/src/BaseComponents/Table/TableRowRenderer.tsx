@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { StoreKeyType, WithValue } from '@ui-schema/react/UIStore'
+import { StoreKeyType, WithOnChange } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
@@ -22,7 +22,7 @@ const useStyles = (theme: Theme, {dense}: { dense: boolean }): SxProps => ({
 
 const WidgetEngineMemo = memo(WidgetEngine)
 
-export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps & Pick<WithValue, 'onChange'>> = (
+export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps & WithOnChange> = (
     {
         parentSchema, schema,
         showValidity, binding,

@@ -18,6 +18,14 @@ npm start
 # npm run clean && npm run clean-lock && rm -rf node_modules && rm -f package-lock.json && npm i --legacy-peer-deps
 ```
 
+If you run `serve` and `build` at the same time, some build tool seems to break its cache. Existing lint/ts errors are not reevaluated and stay reported.
+
+Clearing the cache seems to fix it:
+
+```shell
+rm -rf node_modules/.cache
+```
+
 ## develop branch (0.4.0)
 
 1. Fork/Clone repository **branch `develop`**

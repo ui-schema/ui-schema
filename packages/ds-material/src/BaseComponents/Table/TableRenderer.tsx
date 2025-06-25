@@ -4,7 +4,7 @@ import { mergeSchemas } from '@ui-schema/json-schema/ValidatorPlugin'
 import { useSchemaResource } from '@ui-schema/react/SchemaResourceProvider'
 import React from 'react'
 import { useUID } from 'react-uid'
-import { extractValue, WithValue } from '@ui-schema/react/UIStore'
+import { extractValue, WithOnChange } from '@ui-schema/react/UIStore'
 import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { memo } from '@ui-schema/react/Utils/memo'
@@ -20,7 +20,7 @@ import { TableRendererBaseProps, TableRendererExtractorProps, TableRowProps, Tab
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
-export const TableRendererBase: React.ComponentType<Omit<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding>, 'value' | 'internalValue' | 'errors' | 'valid'> & Pick<WithValue, 'onChange'> & TableRendererBaseProps & ListButtonOverwrites> = (
+export const TableRendererBase: React.ComponentType<Omit<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding>, 'value' | 'internalValue' | 'errors' | 'valid'> & WithOnChange & TableRendererBaseProps & ListButtonOverwrites> = (
     {
         storeKeys, schema, onChange,
         showValidity,

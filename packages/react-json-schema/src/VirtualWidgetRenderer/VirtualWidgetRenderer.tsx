@@ -1,4 +1,5 @@
 import type { UIMetaContext } from '@ui-schema/react/UIMeta'
+import { WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
 import type { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import type { WidgetPayloadFieldSchema } from '@ui-schema/ui-schema/Widget'
 import type { ComponentType, ReactNode } from 'react'
@@ -7,12 +8,11 @@ import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import { schemaTypeToDistinct } from '@ui-schema/ui-schema/schemaTypeToDistinct'
 import type { WidgetProps } from '@ui-schema/react/Widgets'
-import type { WithValue, WithValuePlain } from '@ui-schema/react/UIStore'
 
 export interface VirtualArrayRendererProps {
     storeKeys: StoreKeys
     schema: WidgetPayloadFieldSchema['schema']
-    value: WithValue['value']
+    value: unknown
     virtualWidgets?: VirtualWidgetRendererProps['virtualWidgets']
     binding?: UIMetaContext['binding']
 }
@@ -21,7 +21,7 @@ export const VirtualArrayRenderer = (
     {storeKeys, value, schema, virtualWidgets, binding}: VirtualArrayRendererProps,
 ): ReactNode => {
     const items = schema?.get('items')
-    return value ? value.map((_val, i) =>
+    return List.isList(value) ? value.map((_val, i) =>
         <WidgetEngine<VirtualWidgetRendererProps>
             key={i}
             schema={List.isList(items) ? items.get(i) : items}
@@ -35,8 +35,8 @@ export const VirtualArrayRenderer = (
 }
 
 export interface VirtualWidgetsMapping {
-    default: null | ComponentType<WidgetProps & Partial<WithValue>>
-    object: ComponentType<WidgetProps & Partial<WithValue>>
+    default: null | ComponentType<WidgetProps & Partial<WithValuePlain & WithOnChange>>
+    object: ComponentType<WidgetProps & Partial<WithValuePlain & WithOnChange>>
     array: ComponentType<VirtualArrayRendererProps>
 }
 
@@ -50,7 +50,7 @@ export const defaultVirtualWidgets: VirtualWidgetsMapping = {
     'array': VirtualArrayRenderer,
 }
 
-export const VirtualWidgetRenderer = (props: WithValuePlain & VirtualWidgetRendererProps): ReactNode => {
+export const VirtualWidgetRenderer = (props: VirtualWidgetRendererProps): ReactNode => {
     const {
         schema, value,
         virtualWidgets: virtualWidgetsProps,
@@ -68,5 +68,5 @@ export const VirtualWidgetRenderer = (props: WithValuePlain & VirtualWidgetRende
         }
     }
 
-    return Widget ? <Widget {...props} value={value as WithValue['value']}/> : null
+    return Widget ? <Widget {...props} value={value}/> : null
 }

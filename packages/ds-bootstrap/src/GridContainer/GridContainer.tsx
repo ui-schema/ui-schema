@@ -6,7 +6,7 @@ export interface GridContainerProps {
     className?: string
 }
 
-export const GridContainer: React.FC<GridContainerProps & WidgetEngineWrapperProps> = (
+export const GridContainer: React.FC<GridContainerProps & Partial<WidgetEngineWrapperProps>> = (
     {
         className,
         children,

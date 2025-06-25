@@ -14,7 +14,7 @@ const BaseIcon = ({onClick, label, iconName, btnSize}: Icon) => {
 
     React.useEffect(() => {
         // @ts-ignore
-        window.$('[data-toggle="tooltip"]').tooltip()
+        window.$('[data-toggle="tooltip"]').tooltip?.()
     }, [])
 
     let btnScale

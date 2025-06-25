@@ -3,13 +3,13 @@ import React from 'react'
 import { beautifyKey, tt } from '@ui-schema/ui-schema/Utils/beautify'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { useUIMeta } from '@ui-schema/react/UIMeta'
-import { extractValue, WithValue } from '@ui-schema/react/UIStore'
+import { extractValue } from '@ui-schema/react/UIStore'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
 import { List, Map, isImmutable } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
 
-export const SelectMulti = extractValue(memo(({schema, storeKeys, showValidity, errors, value, onChange, required}: WidgetProps & WithValue) => {
+export const SelectMulti = extractValue(memo(({schema, storeKeys, showValidity, errors, value, onChange, required}: WidgetProps) => {
     const {t} = useUIMeta()
 
     if (!schema) return null
@@ -24,13 +24,13 @@ export const SelectMulti = extractValue(memo(({schema, storeKeys, showValidity, 
     if (showValidity && !errors?.size) {
         classForm.push('was-validated')
     }
-    const currentValue = typeof value !== 'undefined' ? value :
+    const currentValue = List.isList(value) ? value :
         schema.get('default') ? List(schema.get('default')) : List([])
 
     return <div className={classFormParent.join(' ')}>
         <label><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
         <select
-            value={currentValue.toArray()}
+            value={currentValue.toArray() as string[]}
             className={classForm.join(' ')}
             multiple
             onChange={(e) => {
@@ -55,7 +55,7 @@ export const SelectMulti = extractValue(memo(({schema, storeKeys, showValidity, 
                 return <option
                     key={oneOfVal}
                     value={oneOfVal}
-                    defaultValue={currentValue.toArray().includes(oneOfVal)}>
+                >
                     {typeof Translated === 'string' || typeof Translated === 'number' ?
                         Translated :
                         beautifyKey(oneOfVal, oneOfSchema.get('tt') as tt)}

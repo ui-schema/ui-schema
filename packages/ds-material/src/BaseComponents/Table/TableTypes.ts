@@ -1,4 +1,4 @@
-import { onChangeHandler, StoreKeys, WithValue } from '@ui-schema/react/UIStore'
+import { onChangeHandler, StoreKeys, WithOnChange } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { Translator } from '@ui-schema/ui-schema/Translator'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
@@ -16,7 +16,7 @@ export interface TableRowProps {
 }
 
 export interface TableRendererExtractorProps {
-    TableRowRenderer: React.ComponentType<WidgetProps & Pick<WithValue, 'onChange'> & TableRowProps>
+    TableRowRenderer: React.ComponentType<WidgetProps & WithOnChange & TableRowProps>
     TableFooter: React.ComponentType<TableFooterProps>
     TableHeader: React.ComponentType<TableHeaderProps>
     rowsPerPage: List<number>

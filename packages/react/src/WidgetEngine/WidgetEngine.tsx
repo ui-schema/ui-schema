@@ -5,7 +5,7 @@ import { ComponentType, ReactNode } from 'react'
 import { List } from 'immutable'
 import { UIMetaContext, UIMetaContextInternal, useUIMeta } from '@ui-schema/react/UIMeta'
 import { onErrorHandler } from '@ui-schema/ui-schema/ValidatorOutput'
-import { StoreKeys, useUIConfig, useUIStore, WithValue } from '@ui-schema/react/UIStore'
+import { StoreKeys, useUIConfig, useUIStore, WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 import { NextPluginMemo, WidgetEngineErrorBoundary, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { WidgetType, WidgetProps } from '@ui-schema/react/Widgets'
@@ -83,7 +83,7 @@ export const WidgetEngine = <
 >(props:
       WidgetEngineProps<NoInfer<PWrapper>> &
       Partial<NoInfer<CMeta>> &
-      Omit<WidgetEngineOverrideProps<PWidget, TWidgetOverride>, keyof WidgetEngineProps | keyof NoInfer<CMeta> | keyof WithValue>): ReactNode => {
+      Omit<WidgetEngineOverrideProps<PWidget, TWidgetOverride>, keyof WidgetEngineProps | keyof NoInfer<CMeta> | keyof WithValuePlain | keyof WithOnChange>): ReactNode => {
     type U = object
     // todo: Next isn't fully typed with same as incoming props
     const {binding, Next, ...meta} = useUIMeta<NoInfer<CMeta> & UIMetaContextInternal<{}, WidgetPluginProps<{}>>>()

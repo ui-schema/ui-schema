@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
 import React from 'react'
 import Button from '@mui/material/Button'
@@ -9,10 +11,8 @@ import MenuItem from '@mui/material/MenuItem'
 import Label from '@mui/material/FormLabel'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
-import { GridContainer } from '@ui-schema/ds-material/GridContainer'
-import { createEmptyStore, createStore, UIStoreProvider, UIStoreType, WithScalarValue } from '@ui-schema/react/UIStore'
+import { createEmptyStore, createStore, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
-import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes } from '@ui-schema/ds-material/BindingType'
 import { browserT } from '../t'
@@ -35,7 +35,7 @@ import Paper from '@mui/material/Paper'
 import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
 type CustomWidgetsBinding = WidgetsBindingFactory<MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}> & {
-    SortableList: React.ComponentType<WidgetProps & WithScalarValue>
+    SortableList: React.ComponentType<WidgetProps>
 }>
 
 const customWidgets: CustomWidgetsBinding = {
@@ -61,7 +61,6 @@ const schemas: [UISchemaMap, boolean][] = [
     [schemaDragDropSortableList5 as UISchemaMap, false],
 ]
 
-const GridStack = injectWidgetEngine(GridContainer)
 const SingleEditor = () => {
     const [showValidity, setShowValidity] = React.useState(false)
 
@@ -106,7 +105,9 @@ const SingleEditor = () => {
                     onChange={onChange}
                     showValidity={showValidity}
                 >
-                    <GridStack isRoot schema={schemas[schema][0]}/>
+                    <GridContainer>
+                        <WidgetEngine isRoot schema={schemas[schema][0]}/>
+                    </GridContainer>
                     <MuiSchemaDebug schema={schemas[schema][0]}/>
                 </UIStoreProvider>
             </DndProvider>

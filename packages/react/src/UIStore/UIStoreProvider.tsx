@@ -53,6 +53,17 @@ export interface WithOnChange<A = UIStoreActions> {
     onChange: onChangeHandler<A>
 }
 
+/**
+ * @todo normalize with `WithValue` once finalized stricter widget/plugin props overall
+ */
+export interface WithValuePlain {
+    value: unknown
+    internalValue: unknown
+}
+
+/**
+ * @deprecated use `WithValuePlain` + `WithOnChange` instead, which is also included in `WidgetProps` now
+ */
 export interface WithValue<A = UIStoreActions> {
     /**
      * @todo switch to `unknown`
@@ -68,20 +79,13 @@ export interface WithValue<A = UIStoreActions> {
 
 /**
  * @todo remove this typing, `WithValue` should be used with type guards
+ * @deprecated use `WithValuePlain` instead
  */
 export interface WithScalarValue<A = UIStoreActions> {
     value: string | number | boolean | undefined | null
     internalValue: any
     showValidity?: UIStoreContext['showValidity']
     onChange: onChangeHandler<A>
-}
-
-/**
- * @todo normalize with `WithValue` once finalized stricter widget/plugin props overall
- */
-export interface WithValuePlain {
-    value: unknown
-    internalValue: unknown
 }
 
 // todo: this type leads to circular references

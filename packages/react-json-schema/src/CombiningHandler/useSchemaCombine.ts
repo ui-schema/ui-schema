@@ -12,7 +12,7 @@ import { mergeSchema } from '@ui-schema/ui-schema/Utils/mergeSchema'
 export const handleSchemaCombine = (
     validate: ValidateFn,
     schema: UISchemaMap,
-    value: Map<string | number, any> | OrderedMap<string | number, any>,
+    value: Map<unknown, unknown> | OrderedMap<unknown, unknown>,
 ): UISchemaMap => {
     const allOf = schema.get('allOf') as List<UISchemaMap>
     if (allOf) {
@@ -42,10 +42,10 @@ export const handleSchemaCombine = (
 export const useSchemaCombine = (
     validate: ValidateFn | undefined,
     schema: UISchemaMap,
-    value: Map<string | number, any> | OrderedMap<string | number, any>,
+    value: unknown,
 ) => {
     return useMemo(
-        () => validate ? handleSchemaCombine(validate, schema, value) : schema,
+        () => validate && (Map.isMap(value) || OrderedMap.isOrderedMap(value)) ? handleSchemaCombine(validate, schema, value) : schema,
         [validate, schema, value],
     )
 }

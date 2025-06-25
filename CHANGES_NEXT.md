@@ -417,6 +417,8 @@ new widget engine functions:
     - [x] `SchemaRootProvider/*` (new schema resource + validator)
     - [ ] `RequiredPlugin`, or keep until better solution for required behaviour?
 - [ ] deprecate `UIApi` (new resource system hoists loading out of widget-engine/-plugins)
+- [x] deprecate `WithScalarValue`/`WithValue` (switch to `WithValuePlain` and `WithOnChange` - if needed, as now included in `WidgetProps`)
+- [ ] deprecate `WithValidity`, once new validation is available via hooks
 - [ ] add new schema plugin: injectSplitSchema, deprecate widget plugin: InjectSplitSchema
 - [x] deprecate `SchemaPlugin` methods `.should` and `.noHandle`; always use `.handle`
 - [ ] enable TS rules `@typescript-eslint/no-empty-object-type, "@typescript-eslint/no-wrapper-object-types, @typescript-eslint/no-unsafe-function-type, @typescript-eslint/consistent-indexed-object-style, @typescript-eslint/consistent-type-definitions, @typescript-eslint/no-empty-function`
@@ -424,15 +426,18 @@ new widget engine functions:
 - [ ] deprecate `useUIConfig`/`UIConfigProvider` and related parts, or remove directly if migrating typings isn't easy
 - [ ] deprecate `onErrors`, once the validation system is available to get any child errors in another component without much performance impact
 - [ ] optimize unnecessary rendering of empty parts, e.g. `ObjectRenderer` only checks for `properties` existence, but not if empty (maybe add the `getFields` utils already?)
-- [ ] remove or just deprecate the `injectWidgetEngine`, `applyWidgetEngine` HOCs? type migration will be a headache
+- [x] ~~remove or~~ just deprecate the `injectWidgetEngine`, `applyWidgetEngine` HOCs? type migration will be a headache
     - these functions never provided much optimization
     - people who need that micro optimization, should get better ways to do it their way (which now exists, also as `SchemaRootProvider` provides access to the root level schema)
     - their introduction, prevented users to focus on how to use `WidgetEngine` (or then `PluginStack`)
     - remove would allow removing all of the `StackWrapper` code in `WidgetEngine`
+- [x] deprecate `applyWidgetEngine*`: `WidgetEngineInjectProps`, `AppliedWidgetEngineProps`, `applyWidgetEngine`, `injectWidgetEngine`
+    - without full migration, they work like previously and are compatible with new system, but their types where not optimized/verified
 - [ ] check `mergeSchema` changes and adjust to respect new applicable schema merging strategy
 - [ ] rethink the decision to make `WidgetRenderer` a `widgetPlugin`, now with `Next` even more complex "what if no widgetPlugins exist" and problems with stateless/context-less rendering, where now the materialized `Next` is needed, even when just the "render final widget" would be enough. so moving `WidgetRenderer` again to a binding property should make these easier again, and the new `Next` would even allow injecting the `WidgetRenderer` from `UIMetaProvider` as the final (or first) `Next` itself
 - [ ] rename `widgetPlugins` to just plugins? as no other plugins exist anymore in the `binding`
-- [ ] in pickers only types are migrated and props adjusted for fullWidth, nothing else was verified
+- [ ] in pickers only types are migrated and props adjusted for `fullWidth`, nothing else was verified
+- [ ] check/migrate `SchemaLayer` to new `WigetEngine`
 
 ## Todo 0.6.x
 

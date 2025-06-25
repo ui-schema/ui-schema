@@ -2,6 +2,7 @@
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
 import { DefaultHandler } from '@ui-schema/react-json-schema'
@@ -9,6 +10,7 @@ import { InheritKeywords } from '@ui-schema/json-schema/InheritKeywords'
 import { SortPlugin } from '@ui-schema/json-schema/SortPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { schemaTypeToDistinct } from '@ui-schema/ui-schema/schemaTypeToDistinct'
 import React, { ComponentType } from 'react'
@@ -27,13 +29,11 @@ import {
 } from '@ui-schema/ds-material/WidgetsRead'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
-import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { WidgetOptionsRead } from '@ui-schema/ds-material/WidgetsRead/WidgetOptionsRead'
 import { GroupRendererProps, WidgetProps } from '@ui-schema/react/Widgets'
 import { UIMetaContext, UIMetaContextInternal, UIMetaProvider, useUIMeta } from '@ui-schema/react/UIMeta'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
-import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { createStore, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
@@ -193,7 +193,6 @@ const readWidgets: ReadWidgetsBinding = {
     },
 }
 
-const GridStack = injectWidgetEngine(GridContainer)
 const ReadableWritableEditor = () => {
     const {binding, ...metaCtx} = useUIMeta()
     const [showValidity, setShowValidity] = React.useState(true)
@@ -249,7 +248,9 @@ const ReadableWritableEditor = () => {
                 onChange={onChange}
                 showValidity={showValidity}
             >
-                <GridStack isRoot schema={schemaWithSort}/>
+                <GridContainer>
+                    <WidgetEngine isRoot schema={schemaWithSort}/>
+                </GridContainer>
                 <MuiSchemaDebug schema={schemaWithSort}/>
             </UIStoreProvider>
         </UIMetaProvider>

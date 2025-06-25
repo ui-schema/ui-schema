@@ -5,7 +5,7 @@ import type { ComponentType, ReactNode } from 'react'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 import { ErrorNoWidgetMatching, widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
 import type { WidgetEngineOverrideProps, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
-import type { WithValue } from '@ui-schema/react/UIStore'
+import type { WithValuePlain } from '@ui-schema/react/UIStore'
 import type { SchemaKeywordType, SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import type { MatchProps, NoWidgetProps, WidgetProps } from '@ui-schema/react/Widgets'
 
@@ -43,7 +43,7 @@ export const WidgetRenderer = <A = UIStoreActions, B = {}, WP extends WidgetProp
         Omit<NoInfer<WP>, 'binding' | keyof WidgetRendererProps> &
         {
             binding?: Omit<NoInfer<B>, 'VirtualRenderer' | 'NoWidget' | 'widgets' | 'matchWidget'> & {
-                VirtualRenderer?: ComponentType<WidgetProps & WithValue>
+                VirtualRenderer?: ComponentType<WidgetProps & WithValuePlain>
                 NoWidget?: ComponentType<NoWidgetProps>
                 widgets?: {
                     types?: { [K in SchemaKeywordType]?: (props: WP) => ReactNode }

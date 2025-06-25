@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import type { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 import React from 'react'
 import Button from '@mui/material/Button'
@@ -28,10 +30,8 @@ import { SortableList } from '@ui-schema/material-dnd/Widgets/SortableList'
 import { DragDropArea } from '@ui-schema/material-dnd/Widgets/DragDropArea'
 import { DragDropBlockSelector } from '@ui-schema/material-dnd/DragDropBlockSelector'
 import { DropArea } from '@ui-schema/material-dnd/Widgets/DropArea'
-import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { createEmptyStore, createStore, onChangeHandler, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
-import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { UIMetaContext, UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { MuiWidgetsBindingCustom, MuiWidgetsBindingTypes } from '@ui-schema/ds-material/BindingType'
 import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
@@ -142,7 +142,6 @@ export const HTML5toTouch: MultiBackendOptions = {
     ],
 }
 
-const GridStack = injectWidgetEngine(GridContainer)
 const SingleEditor = () => {
     const [showValidity, setShowValidity] = React.useState(false)
 
@@ -190,7 +189,9 @@ const SingleEditor = () => {
                         onChange={onChange}
                         showValidity={showValidity}
                     >
-                        <GridStack isRoot schema={schemas[schema][0]}/>
+                        <GridContainer>
+                            <WidgetEngine isRoot schema={schemas[schema][0]}/>
+                        </GridContainer>
                         <MuiSchemaDebug schema={schemas[schema][0]}/>
                     </UIStoreProvider>
                 </DndProvider>

@@ -1,10 +1,11 @@
+import { Map } from 'immutable'
 import React from 'react'
 import Button from '@mui/material/Button'
 import { json } from '@codemirror/lang-json'
 import { javascript } from '@codemirror/lang-javascript'
 import { html } from '@codemirror/lang-html'
 import { css } from '@codemirror/lang-css'
-import { extractValue, WithScalarValue, WithValue } from '@ui-schema/react/UIStore'
+import { extractValue } from '@ui-schema/react/UIStore'
 // import { WidgetCode } from '@ui-schema/material-code'
 // import { WidgetCodeSelectable } from '@ui-schema/material-code/WidgetCodeSelectable'
 import { CustomCodeMirror } from './CustomCodeMirror'
@@ -12,7 +13,7 @@ import { WidgetProps } from '@ui-schema/react/Widgets'
 import { StoreKeyType } from '@ui-schema/ui-schema/ValueStore'
 import { memo } from '@ui-schema/react/Utils/memo'
 
-export const CustomWidgetCode: React.ComponentType<WidgetProps & WithScalarValue> = (props) => {
+export const CustomWidgetCode: React.ComponentType<WidgetProps> = (props) => {
     const format = props.schema.get('format')
     // map the to-be-supported CodeMirror language, or add other extensions
     const extensions = React.useMemo(() => [
@@ -33,7 +34,7 @@ export const CustomWidgetCode: React.ComponentType<WidgetProps & WithScalarValue
     />
 }
 
-const CustomWidgetCodeSelectableBase: React.ComponentType<WidgetProps & WithValue> = (
+const CustomWidgetCodeSelectableBase: React.ComponentType<WidgetProps> = (
     {value, ...props},
 ) => {
     const {schema, onChange, storeKeys} = props
@@ -43,8 +44,9 @@ const CustomWidgetCodeSelectableBase: React.ComponentType<WidgetProps & WithValu
     // - for objects: {lang, code}
     const formatKey: StoreKeyType = valueType === 'array' ? 0 : 'lang'
     const valueKey: StoreKeyType = valueType === 'array' ? 1 : 'code'
-    const format = value?.get(formatKey) as string | undefined || schema.get('formatDefault') as string | undefined
-    const codeValue = value?.get(valueKey) as string | undefined
+    const mapValue = Map.isMap(value) ? value : undefined
+    const format = mapValue?.get(formatKey) as string | undefined || schema.get('formatDefault') as string | undefined
+    const codeValue = mapValue?.get(valueKey) as string | undefined
 
     // map the to-be-supported CodeMirror language, or add other extensions
     const extensions = React.useMemo(() => [
@@ -90,4 +92,4 @@ const CustomWidgetCodeSelectableBase: React.ComponentType<WidgetProps & WithValu
         }
     />
 }
-export const CustomWidgetCodeSelectable = extractValue(memo(CustomWidgetCodeSelectableBase)) as React.ComponentType<WidgetProps & WithValue>
+export const CustomWidgetCodeSelectable = extractValue(memo(CustomWidgetCodeSelectableBase)) as React.ComponentType<WidgetProps>

@@ -7,7 +7,7 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import { List } from 'immutable'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { StoreKeys, WithValue, extractValue } from '@ui-schema/react/UIStore'
+import { StoreKeys, extractValue, WithOnChange } from '@ui-schema/react/UIStore'
 import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
@@ -39,7 +39,7 @@ const OptionCheck: React.ComponentType<{
     />
 }
 
-const checkActive = (list: List<any>, name: string | undefined | number) => list && list.contains && typeof list.contains(name) !== 'undefined' ? list.contains(name) : false
+const checkActive = (list: List<unknown>, name: string | undefined | number) => list && list.contains && typeof list.contains(name) !== 'undefined' ? list.contains(name) : false
 
 const OptionsCheckValuesBase: React.ComponentType<{
     storeKeys: StoreKeys
@@ -47,7 +47,8 @@ const OptionsCheckValuesBase: React.ComponentType<{
     valueSchemas?: List<OptionValueSchema>
     schema: UISchemaMap
     disabled?: boolean
-} & WithValue> = (
+    value: List<unknown>
+} & WithOnChange> = (
     {
         valueSchemas, storeKeys, value, onChange,
         required, schema: parentSchema, disabled,
@@ -83,7 +84,7 @@ const OptionsCheckValuesBase: React.ComponentType<{
             />
         }).valueSeq()
         : null
-) as unknown as React.ReactElement
+)
 
 const OptionsCheckValues = extractValue(memo(OptionsCheckValuesBase))
 

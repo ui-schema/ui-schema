@@ -1,3 +1,4 @@
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { resourceFromSchema } from '@ui-schema/ui-schema/SchemaResource'
 import { SchemaResourceProvider } from '@ui-schema/react/SchemaResourceProvider'
 import React, { MouseEvent, useMemo } from 'react'
@@ -37,7 +38,6 @@ import { KitDndProvider, useOnIntent } from '@ui-schema/kit-dnd'
 import { useOnDirectedMove } from '@ui-schema/material-dnd/useOnDirectedMove'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { createEmptyStore, createStore, onChangeHandler, UIStoreProvider, UIStoreType, useUIStore } from '@ui-schema/react/UIStore'
-import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { isInvalid } from '@ui-schema/react/ValidityReporter'
 
@@ -483,7 +483,6 @@ const EditorSchemaInfoBase = (
 }
 const EditorSchemaInfo = React.memo(EditorSchemaInfoBase)
 
-const GridStack = injectWidgetEngine(GridContainer)
 const EditorHandler = ({activeSchema}: any) => {
     const history = useHistory()
     const initialVertical = initialLocalBoolean('live-editor-vertical', 800 < window.innerWidth)// Vertical by default for desktop
@@ -731,7 +730,9 @@ const EditorHandler = ({activeSchema}: any) => {
                                 <SchemaResourceProvider
                                     resource={resource}
                                 >
-                                    <GridStack key={resetId} schema={resource.branch.value()} isRoot/>
+                                    <GridContainer>
+                                        <WidgetEngine key={resetId} schema={resource.branch.value()} isRoot/>
+                                    </GridContainer>
                                 </SchemaResourceProvider>
 
                                 <InvalidLabel invalid={isInvalid(activeState.store?.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>

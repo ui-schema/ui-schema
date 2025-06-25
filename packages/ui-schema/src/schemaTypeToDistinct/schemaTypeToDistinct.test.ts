@@ -35,6 +35,21 @@ describe('schemaTypeToDistinct', () => {
             expected: 'string',
         },
         {
+            // if only `null` type exists, it is used
+            type: ['null'],
+            expected: 'null',
+        },
+        {
+            type: ['string'],
+            expected: 'string',
+        },
+        {
+            // if only `null` and another type exist, the other types are used
+            type: ['null', 'string'],
+            expected: 'string',
+        },
+        {
+            // multiple types are sorted by alphabetical order and joined with `+`
             type: ['string', 'number'],
             expected: 'number+string',
         },
@@ -43,12 +58,12 @@ describe('schemaTypeToDistinct', () => {
             expected: 'number+string',
         },
         {
-            type: ['null', 'string'],
-            expected: 'string',
-        },
-        {
             type: ['null', 'string', 'number', 'boolean'],
             expected: 'boolean+number+string',
+        },
+        {
+            type: List(['number']),
+            expected: 'number',
         },
         {
             type: List(['number', 'string']),

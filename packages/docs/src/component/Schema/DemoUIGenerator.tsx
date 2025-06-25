@@ -1,3 +1,5 @@
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { isImmutable } from 'immutable'
 import React from 'react'
 import Button from '@mui/material/Button'
@@ -12,13 +14,11 @@ import { RichCodeEditor } from '../RichCodeEditor'
 // import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import { KitDndProvider, useOnIntent } from '@ui-schema/kit-dnd'
 import { useOnDirectedMove } from '@ui-schema/material-dnd/useOnDirectedMove'
-import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import {
     NumberRendererRead, StringRendererRead, TextRendererRead,
     WidgetBooleanRead, WidgetChipsRead, WidgetOptionsRead,
 } from '@ui-schema/ds-material/WidgetsRead'
 import { createOrdered, createOrderedMap } from '@ui-schema/ui-schema/createMap'
-import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { UIMetaProvider, useUIMeta } from '@ui-schema/react/UIMeta'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 
@@ -56,8 +56,6 @@ const SchemaDataDebug = ({tabSize, fontSize, richIde, renderChange, theme, maxLi
         readOnly
     />
 }
-
-const GridStack = injectWidgetEngine(GridContainer)
 
 const DemoUIGenerator = (
     {
@@ -180,7 +178,10 @@ const DemoUIGenerator = (
                             </Typography>
                         </Box> : null}
 
-                    {typeof schema === 'string' || !store ? null : <GridStack isRoot schema={schema}/>}
+                    {typeof schema === 'string' || !store ? null :
+                        <GridContainer>
+                            <WidgetEngine isRoot schema={schema}/>
+                        </GridContainer>}
                 </UIStoreProvider>
             </KitDndProvider>
         </UIMetaProvider>

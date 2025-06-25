@@ -2,15 +2,15 @@
 import { MuiWidgetsBinding } from '@ui-schema/ds-material'
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { widgetMatcher } from '@ui-schema/ui-schema/widgetMatcher'
 import React from 'react'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
-import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
-import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { browserT } from '../t'
 import { OrderedMap } from 'immutable'
@@ -55,7 +55,6 @@ const formSchema = createOrderedMap({
     },
 }/* satisfies JsonSchema*/)
 
-const GridStack = injectWidgetEngine(GridContainer)
 const FormComp = () => {
     const showValidity = true
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
@@ -69,7 +68,9 @@ const FormComp = () => {
         onChange={onChange}
         showValidity={showValidity}
     >
-        <GridStack isRoot schema={formSchema}/>
+        <GridContainer>
+            <WidgetEngine isRoot schema={formSchema}/>
+        </GridContainer>
         <MuiSchemaDebug schema={formSchema}/>
     </UIStoreProvider>
 }

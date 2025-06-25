@@ -3,7 +3,7 @@ import { WidgetProps } from '@ui-schema/react/Widgets'
 import React from 'react'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { extractValue, WithValue } from '@ui-schema/react/UIStore'
+import { extractValue } from '@ui-schema/react/UIStore'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { List } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
@@ -13,7 +13,7 @@ const SimpleList = extractValue(memo((
     {
         storeKeys, schema, value, onChange,
         showValidity, errors, required,
-    }: WidgetProps & WithValue,
+    }: WidgetProps,
 ) => {
     const btnSize = schema.getIn(['view', 'btnSize']) as string || 'small'
 
@@ -29,7 +29,7 @@ const SimpleList = extractValue(memo((
     return <React.Fragment>
         <TranslateTitle schema={schema} storeKeys={storeKeys}/>
         <div>
-            {value ? value.map((_val, i) =>
+            {List.isList(value) ? value.map((_val, i) =>
                 <div
                     key={i}
                     className={classFormGroup.join(' ')}

@@ -15,7 +15,7 @@ import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'
 import { List } from 'immutable'
 import { MockWidgets } from './MockSchemaProvider.mock'
-import { createStore, extractValue, UIStoreProvider, WithValue } from '@ui-schema/react/UIStore'
+import { createStore, extractValue, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import {
@@ -27,7 +27,6 @@ import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { translateRelative } from '@ui-schema/ui-schema/TranslatorRelative'
 import { JsonSchema } from '@ui-schema/json-schema/Definitions'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
-import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { WidgetProps } from '@ui-schema/react/Widgets'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 
@@ -103,7 +102,7 @@ widgets.widgets.types.string = function WidgetString(props: WidgetProps) {
     </>
 }
 
-widgets.widgets.types.array = extractValue(function WidgetArray(props: WidgetProps & WithValue) {
+widgets.widgets.types.array = extractValue(function WidgetArray(props: WidgetProps) {
     const itemsSchema = props.schema.get('items')
     return <>
         <span data-path={props.storeKeys.join('.')}>array-renderer</span>
@@ -128,7 +127,6 @@ widgets.widgets.types.array = extractValue(function WidgetArray(props: WidgetPro
 
 // note: for DS which implement a grid system, this is the `GridContainer`/`GridStack` components
 const RootContainer = ({children}: PropsWithChildren<any>): React.ReactElement => <div className={'root-container'}>{children}</div>
-const RootStack = injectWidgetEngine(RootContainer)
 
 const TestUIRenderer = (props: {
     data?: {
@@ -274,7 +272,9 @@ const TestUIRenderer = (props: {
             onChange={onChange}
             showValidity
         >
-            <RootStack isRoot schema={props.legacy ? schema : resource?.branch.value()}/>
+            <RootContainer>
+                <WidgetEngine isRoot schema={props.legacy ? schema : resource?.branch.value()}/>
+            </RootContainer>
         </UIStoreProvider>
         <div>store-is-{isInvalid(store.getValidity()) ? 'invalid' : 'correct'}</div>
     </UIMetaProvider>

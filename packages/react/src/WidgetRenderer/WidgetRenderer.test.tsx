@@ -9,7 +9,7 @@ import { WidgetRenderer } from './WidgetRenderer.js'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { NoWidgetProps, WidgetProps } from '@ui-schema/react/Widgets'
 import { List } from 'immutable'
-import { onChangeHandler, WithScalarValue } from '@ui-schema/react/UIStore'
+import { onChangeHandler } from '@ui-schema/react/UIStore'
 
 const NoWidget = ({scope, matching}: NoWidgetProps): ReactNode => <>missing-{scope}{matching ? '-' + matching : ''}</>
 
@@ -61,7 +61,7 @@ describe('WidgetRenderer', () => {
                 binding={{
                     widgets: {
                         types: {
-                            string: (props: WidgetProps & WithScalarValue) => props.value,
+                            string: (props: WidgetProps) => <span>{typeof props.value === 'string' ? props.value : ''}</span>,
                         },
                     },
                     // widgetPlugins: [
@@ -83,7 +83,7 @@ describe('WidgetRenderer', () => {
                 binding={{
                     widgets: {
                         custom: {
-                            Text: (props: WidgetProps & WithScalarValue) => props.value,
+                            Text: (props: WidgetProps) => <span>{typeof props.value === 'string' ? props.value : ''}</span>,
                         },
                     },
                     // widgetPlugins: [
