@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
-    -   name: UI-Schema Slack
-        url: https://join.slack.com/t/ui-schema/shared_invite/zt-smbsybk5-dFIRLEPCJerzDwtycaA71w
-        about: Ask questions and discuss in our Slack Community
+    -   name: UI-Schema Discord
+        url: https://discord.gg/MAjgpwnm36
+        about: Ask questions and discuss in our Discord Community
     -   name: Material-UI
         url: https://github.com/mui-org/material-ui
         about: "When you got question not about the design-system bindings: docs + project of **Material-UI**"

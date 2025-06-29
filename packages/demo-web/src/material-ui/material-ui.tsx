@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { MuiWidgetsBinding } from '@ui-schema/ds-material'
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
-import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
+import { Group2Renderer, SchemaGrid2Handler } from '@ui-schema/ds-material/Grid2'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
@@ -18,10 +18,10 @@ import { matchWidget } from '@ui-schema/ui-schema/matchWidget'
 import React from 'react'
 import { useToggle } from '../component/useToggle'
 import { dataDemoMain, schemaDemoMain, schemaUser } from '../schemas/demoMain'
-import Grid from '@mui/material/Grid'
+import Grid2 from '@mui/material/Grid2'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
-import { GridContainer } from '@ui-schema/ds-material/GridContainer'
+import { Grid2Container } from '@ui-schema/ds-material/Grid2Container'
 import { createOrderedMap, createMap } from '@ui-schema/ui-schema/createMap'
 import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { createStore, createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
@@ -51,7 +51,7 @@ const customBinding: MuiWidgetsBinding = {
         ]),
         // todo: Grid must be after e.g. ConditionalHandler, yet if referencing/combining results in loading, yet should also be used there
         //       (old) but why was it this high? wasn't that because of e.g. conditional object grids
-        SchemaGridHandler,
+        SchemaGrid2Handler,
         ValidityReporter,
     ],
     widgets: {
@@ -61,10 +61,12 @@ const customBinding: MuiWidgetsBinding = {
         TableAdvanced: TableAdvanced,
     },
     matchWidget: matchWidget,//<NonNullable<NonNullable<MuiWidgetsBinding['widgets']>['types']>, NonNullable<NonNullable<MuiWidgetsBinding['widgets']>['custom']>>,
+
+    GroupRenderer: Group2Renderer,
 }
 //widgets.types.null = () => 'null'
 
-const GridStack = injectWidgetEngine(GridContainer)
+const GridStack = injectWidgetEngine(Grid2Container)
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false)
@@ -102,9 +104,9 @@ const MainStore = () => {
                     flexDirection: 'column',
                 }}
             >
-                <GridContainer>
+                <Grid2Container>
                     <WidgetEngine isRoot schema={schema}/>
-                </GridContainer>
+                </Grid2Container>
                 {/*<GridStack isRoot schema={schema}/>*/}
                 <MuiSchemaDebug setSchema={setSchema} schema={schema}/>
 
@@ -145,8 +147,8 @@ const DemoUser: React.FC<{}> = () => {
         setStore(storeUpdater(actions))
     }, [setStore])
 
-    return <Grid container spacing={3} sx={{justifyContent: 'center'}}>
-        <Grid item xs={12} md={8}>
+    return <Grid2 container spacing={3} sx={{justifyContent: 'center'}}>
+        <Grid2 size={{xs: 12, md: 8}}>
             <UIStoreProvider
                 store={store}
                 onChange={onChange}
@@ -155,8 +157,8 @@ const DemoUser: React.FC<{}> = () => {
                 <GridStack isRoot schema={schemaUser}/>
                 <MuiSchemaDebug schema={schemaUser}/>
             </UIStoreProvider>
-        </Grid>
-    </Grid>
+        </Grid2>
+    </Grid2>
 }
 
 const loadSchema = (url, versions) => {
@@ -167,11 +169,11 @@ const loadSchema = (url, versions) => {
 const Main = () => {
     const [toggle, getToggle] = useToggle()
 
-    return <Grid container spacing={3}>
-        <Grid item xs={12}>
+    return <Grid2 container spacing={3}>
+        <Grid2 size={12}>
             <MainStore/>
-        </Grid>
-        <Grid item xs={12}>
+        </Grid2>
+        <Grid2 size={12}>
             <Button style={{marginBottom: 12}} onClick={() => toggle('demoUser')} variant={getToggle('demoUser') ? 'contained' : 'outlined'}>
                 demo User
             </Button>
@@ -186,8 +188,8 @@ const Main = () => {
                 >
                     <DemoUser/>
                 </Paper> : null}
-        </Grid>
-    </Grid>
+        </Grid2>
+    </Grid2>
 }
 
 const validate = Validator([

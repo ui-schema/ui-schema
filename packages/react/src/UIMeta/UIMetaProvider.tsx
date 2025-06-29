@@ -1,6 +1,7 @@
 import { useMemoObject } from '@ui-schema/react/Utils/useMemoObject'
+import { matchWidget } from '@ui-schema/ui-schema/matchWidget'
 import { ValidateFn } from '@ui-schema/ui-schema/Validate'
-import { createContext, PropsWithChildren, useContext } from 'react'
+import { createContext, PropsWithChildren, useContext, useMemo } from 'react'
 import { Translator } from '@ui-schema/ui-schema/Translator'
 import { WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { NextWidgetPlugin, useNext } from '@ui-schema/react/WidgetEngine'
@@ -46,6 +47,16 @@ export function UIMetaProvider<C extends {}, W extends WidgetsBindingFactory = W
     const ctx = useMemoObject({
         ...props,
         Next: Next,
+        binding: useMemo(() => {
+            return {
+                ...props.binding,
+                // todo: it is rather confusing without a default matchWidget and only a fallback in WidgetRenderer,
+                //       which brings hard to debug hidden-widgets, e.g. when FormGroup won't render, but the parent object does.
+                //       the baseComponent types should be refactored to include the widgets-interfacing,
+                //       improve it when moving the strict-widgets typing out of mui to react-core.
+                matchWidget: props.binding?.matchWidget || matchWidget,
+            }
+        }, [props.binding]),
     })
     return <UIMetaContextObj.Provider value={ctx}>
         {children}

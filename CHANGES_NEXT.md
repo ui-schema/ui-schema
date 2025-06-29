@@ -43,9 +43,7 @@ List of renamed functions, components etc., most are also moved to other package
     - `ds-material/BindingDefault` (atm.) exports `typeWidgets` and `baseCompoents` (*maybe split up, but could need renaming of type or even widgets folders*)
     - `ds-material/BindingExtended` exports `bindingExtended` for `.custom` widget binding
     - no default `schemaPlugins`/`widgetPlugins`; *maybe add a legacy compat to make migration easier, atm. in demo-web*
-- `pluginStack` removed, now included directly in `widgetsBinding`
-
-> todo: add `Grid2` components/widgets as a migration path from 5/6 to 7
+- added `Grid2` components and plugins, for future migration path from mui5/6 to 7
 
 ### DS Bootstrap
 
@@ -60,6 +58,8 @@ List of renamed functions, components etc., most are also moved to other package
 - moved react-specific widget matching logic from `matchWidget` to `WidgetRenderer`
 - `schemaTypeToDisctint`, used for matching widgets by `type` keyword, now supports multiple types
     - for `["string", "number"]` will now sort it and try to access a widget with the ID `number+string`, see default `matchWidget` source for entrypoint of general matching algo.
+- `matchWidget` now return identifiers about what has matched
+- renamed `ErrorNoWidgetMatching` to `ErrorNoWidgetMatches`
 
 Todo:
 
@@ -302,6 +302,7 @@ Todos:
         - experiment with removing the current "value is removed before rendering widget" and the performance implications
     - replaced `WithValue`/`WithScalarValue` with `WithValuePlain` and otherwise use the existing `WithOnChange`
     - **Reason:** it can't be typed what "value type" a widget allows, as it could receive any (invalid) value (from e.g. remote states).
+- `binding.NoWidget`/`NoWidgetProps`: renamed `matching` to `widgetId`
 
 ## Todo WidgetProps
 
@@ -429,6 +430,7 @@ new widget engine functions:
 - [ ] rename `widgetPlugins` to just plugins? as no other plugins exist anymore in the `binding`
 - [ ] in pickers only types are migrated and props adjusted for `fullWidth`, nothing else was verified
 - [ ] check/migrate `SchemaLayer` to new `WigetEngine`
+- [ ] in the new schema merging, in the `object` level the property-collision conversion takes place, while in the property level it merges the `allOf` produced in the `object` level, which duplicates the keywords, should this be cleaned up internally or is it helpful to have the `allOf` still available, e.g. to access all `$ref` still in there
 
 ## Todo 0.6.x
 

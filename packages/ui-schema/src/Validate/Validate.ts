@@ -97,5 +97,29 @@ export type ValidationResult<TData = unknown> =
     ({ valid: false, errors: ValidatorOutput['errors'] } & ValidationDetails)
 
 export interface ValidationDetails {
+    /**
+     * A list of `schema` which are applied to the current field.
+     *
+     * @todo track the location of where the applied schema comes from,
+     *       should contain, if possible, the absolute pointer and
+     *       the relative pointer based on the current schema layer,
+     *       while the first would be needed once the validation happens centrally,
+     *       and the second for incremental rendering validation, where schemas could
+     *       already been partially merged, e.g. `allOf` in properties, which for properties
+     *       are merged once the property is rendered, and here some cleanup would be helpful,
+     *       from performance optimization (due to less re-rendering, memo),
+     *       or also preventing conflicting and recursive evaluation of already merged schemas.
+     *       Thus the allOf for a property should be removed once merged,
+     *       but also collect meta data like all applied $ref,
+     *       and see if there (via `SchemaPluginsAdapter` or `Validator`) "on schema" callbacks can be added,
+     *       to provide e.g. custom reduction logic, like deciding how to resolve conflicting keywords:
+     *       "`hidden` keyword exists in n-applied schemas, any of the keyword values is `true`, then enable `hidden`"
+     *       (this would prevent `false` from overwriting another active `true`).
+     *       Tracking and running these reductions on keyword level could allow an
+     *       easier integrated cleanup of those expected to be handled.
+     *       ---
+     *       For the moment, basic happy path reduction is hard coded in `@ui-schema/json-schema/validatorPlugin`,
+     *       switch that plugin with your own implementation or use either schemaPlugins or WidgetPlugins to modify the merged schema.
+     */
     applied?: any[]
 }

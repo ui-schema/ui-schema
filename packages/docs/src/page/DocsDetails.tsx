@@ -1,3 +1,4 @@
+import Tooltip from '@mui/material/Tooltip'
 import React from 'react'
 import Paper from '@mui/material/Paper'
 import Link from '@mui/material/Link'
@@ -52,14 +53,17 @@ const DocContent: React.FC<{
             setLoadingModuleDocs(false)
             return
         }
+
         const cachedCodeDocs = cachedContent.get(codeDocsPath)
         if (cachedCodeDocs) {
             setModules(cachedCodeDocs)
             setLoadingModuleDocs(false)
-            return
+            // still try loading, to refresh on changes, e.g. for local HMR updates
+        } else {
+            setLoadingModuleDocs(true)
         }
+
         const abort = new AbortController()
-        setLoadingModuleDocs(true)
         fetch(codeDocsPath, {signal: abort.signal})
             .then((res) => res.status !== 200 ? Promise.reject(res) : res.json())
             .then((data) => {
@@ -93,18 +97,20 @@ const DocContent: React.FC<{
         <PageContent maxWidth={isLg && fullWidth ? 'xl' : 'md'} style={{flexGrow: 1}}>
             <div style={{display: 'flex', alignItems: 'center', margin: '4px 12px'}}>
                 {isLg ?
-                    <Button
-                        onClick={() => {
-                            setFullWidth(f => {
-                                const n = !f
-                                window.localStorage.setItem('docs-details--fullWidth', n ? 'yes' : 'no')
-                                return n
-                            })
-                        }}
-                        color={'secondary'} size={'small'}
-                    >
-                        {fullWidth ? <IcShowCompact style={{transform: 'rotate(90deg)'}}/> : <IcShowFull style={{transform: 'rotate(90deg)'}}/>}
-                    </Button> : null}
+                    <Tooltip title={fullWidth ? 'show compact' : 'show full width'}>
+                        <Button
+                            onClick={() => {
+                                setFullWidth(f => {
+                                    const n = !f
+                                    window.localStorage.setItem('docs-details--fullWidth', n ? 'yes' : 'no')
+                                    return n
+                                })
+                            }}
+                            color={'secondary'} size={'small'}
+                        >
+                            {fullWidth ? <IcShowCompact style={{transform: 'rotate(90deg)'}}/> : <IcShowFull style={{transform: 'rotate(90deg)'}}/>}
+                        </Button>
+                    </Tooltip> : null}
                 <Typography variant={'body2'} style={{marginLeft: 'auto'}}>
                     <Link
                         target={'_blank'} rel="noreferrer noopener nofollow"

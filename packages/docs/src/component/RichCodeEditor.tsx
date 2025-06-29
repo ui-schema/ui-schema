@@ -15,6 +15,7 @@ import 'brace/mode/html'
 import 'brace/mode/javascript'
 import 'brace/mode/typescript'
 import 'brace/mode/jsx'
+import 'brace/mode/tsx'
 import 'brace/mode/mysql'
 import 'brace/mode/php'
 import 'brace/mode/powershell'
@@ -57,12 +58,24 @@ import "ace-builds/src-noconflict/theme-monokai";
 ace.config.set("basePath", "https://cdn.jsdelivr.net/npm/ace-builds@1.4.8/src-noconflict/");
 ace.config.setModuleUrl('ace/mode/javascript_worker', "https://cdn.jsdelivr.net/npm/ace-builds@1.4.8/src-noconflict/worker-javascript.js");*/
 
-const supportedModes = ['json', 'css', 'dockerfile', 'html', 'js', 'javascript', 'jsx', 'ts', 'typescript', 'typescript jsx', 'mysql', 'php', 'powershell', 'scss', 'yaml']
+const supportedModes = [
+    'json', 'css', 'dockerfile', 'html',
+    'js', 'javascript', 'jsx',
+    'ts', 'typescript', 'tsx',
+    'ts', 'typescript', 'tsx',
+    'mysql', 'php',
+    'powershell',
+    'shell',
+    'scss', 'yaml',
+]
 const themes = ['clouds_midnight', 'cobalt', 'gruvbox', 'monokai']
 
 const modeAlias = {
     ts: 'typescript',
     js: 'javascript',
+    shell: 'powershell',
+    'javascript+tsx': 'jsx',
+    'typescript+tsx': 'tsx',
 }
 
 const themesLight = ['chrome', 'github']

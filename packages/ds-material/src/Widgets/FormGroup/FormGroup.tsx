@@ -14,10 +14,10 @@ export const FormGroupBase: React.ComponentType<WidgetProps> = (props) => {
     const Widget = binding?.matchWidget?.({
         widgetName: undefined,
         schemaType: schema.get('type'),
-        // @ts-ignore
         widgets: binding?.widgets,
-    })
+    })?.Widget
 
+    // todo: also render NoWidget?
     if (!Widget) return null
 
     return <FormControl

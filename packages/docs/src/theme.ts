@@ -47,13 +47,13 @@ const universal: Pick<PartialTheme, 'palette' | 'typography' | 'shape' | 'breakp
         },
         body1: {
             fontFamily: headingBody,
-            fontSize: '0.93125rem',
-            letterSpacing: '0.0067235em',
+            //fontSize: '0.93125rem',
+            //letterSpacing: '0.0067235em',
         },
         body2: {
             fontFamily: headingBody,
-            fontSize: '0.875rem',
-            letterSpacing: '0.004215em',
+            //fontSize: '0.875rem',
+            //letterSpacing: '0.004215em',
         },
         subtitle1: {
             fontFamily: headingFont,

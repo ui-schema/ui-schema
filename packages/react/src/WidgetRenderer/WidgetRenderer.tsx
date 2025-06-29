@@ -3,7 +3,7 @@ import { List } from 'immutable'
 import { useEffect } from 'react'
 import type { ComponentType, ReactNode } from 'react'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
-import { ErrorNoWidgetMatching, matchWidget } from '@ui-schema/ui-schema/matchWidget'
+import { ErrorNoWidgetMatches, matchWidget, WidgetMatch } from '@ui-schema/ui-schema/matchWidget'
 import type { WidgetEngineOverrideProps, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import type { WithValuePlain } from '@ui-schema/react/UIStore'
 import type { SchemaKeywordType, SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
@@ -46,7 +46,7 @@ export const WidgetRenderer = <A = UIStoreActions, B = {}, WP extends WidgetProp
                 VirtualRenderer?: ComponentType<WidgetProps & WithValuePlain>
                 NoWidget?: ComponentType<NoWidgetProps>
                 widgets?: { [K in SchemaKeywordType]?: (props: WP) => ReactNode } & { [K: string]: (props: WP) => ReactNode }
-                matchWidget?: (props: MatchProps<WP>) => null | (<PWidget>(props: Omit<NoInfer<PWidget>, keyof WP> & WP) => ReactNode)
+                matchWidget?: (props: MatchProps<WP>) => null | WidgetMatch<(<PWidget>(props: Omit<NoInfer<PWidget>, keyof WP> & WP) => ReactNode)>
             }
         },
     // {
@@ -89,15 +89,15 @@ export const WidgetRenderer = <A = UIStoreActions, B = {}, WP extends WidgetProp
                 widgetName: widgetName,
                 schemaType: schemaType,
                 widgets: widgets,
-            })
+            })?.Widget || null
         } catch (e) {
-            if (e instanceof ErrorNoWidgetMatching) {
+            if (e instanceof ErrorNoWidgetMatches) {
                 const NoWidget = binding?.NoWidget
                 if (NoWidget) {
                     return <NoWidget
-                        matching={e.matching}
-                        scope={e.scope}
                         storeKeys={props.storeKeys}
+                        scope={e.scope}
+                        widgetId={e.widgetId}
                     />
                 }
                 return null

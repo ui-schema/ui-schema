@@ -79,14 +79,16 @@ renderersContent.pre = ({node, ...p}) => {
     return <Code {...codeChild.properties} variant={'body2'}>{codeChild.children[0]?.value as string}</Code>
 }
 // @ts-ignore
-renderersContent.h1 = renderersContent.h3 = renderersContent.h4 = renderersContent.h5 = renderersContent.h6 = p => <LinkableHeadline level={Number(p.node?.tagName.slice(1))} levelOffset={0}>{p.children}</LinkableHeadline>
+renderersContent.h1 = renderersContent.h3 = renderersContent.h4 = renderersContent.h5 = renderersContent.h6 = p =>
+    // @ts-ignore
+    <LinkableHeadline level={Number(p.node?.tagName.slice(1))} levelOffset={0}>{typeof p.children === 'string' ? [p.children] : p.children}</LinkableHeadline>
 renderersContent.a = LinkInternalLocale
 
 renderersContent.h2 = ({children, ...p}) => {
     return p.id === 'footnote-label' ?
         <Typography variant={'h2'} {...p}>Footnotes</Typography> :
         // @ts-ignore
-        <LinkableHeadline level={Number(p.node?.tagName.slice(1))} levelOffset={0}>{children}</LinkableHeadline>
+        <LinkableHeadline level={Number(p.node?.tagName.slice(1))} levelOffset={0}>{typeof children === 'string' ? [children] : children}</LinkableHeadline>
 }
 
 // @ts-ignore

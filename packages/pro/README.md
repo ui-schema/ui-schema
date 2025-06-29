@@ -17,8 +17,6 @@ Checkout the [monorepo home](https://github.com/ui-schema/ui-schema) for more.
 
 **🚀 Demo: UI-Schema + Material Design + CRA** *[Demo Source](https://github.com/ui-schema/demo-cra)*
 
-> 🔥 **Professional service & support available, [reach out now](https://bemit.codes/get-quote)!**
->
 ---
 
 ## Versions
@@ -31,7 +29,7 @@ This project is free software distributed under the **MIT License**.
 
 See: [LICENSE](https://github.com/ui-schema/ui-schema/blob/master/LICENSE).
 
-© 2024 bemit UG (haftungsbeschränkt)
+© 2025 bemit UG (haftungsbeschränkt)
 
 ### License Icons
 

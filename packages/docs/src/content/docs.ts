@@ -1,5 +1,4 @@
 import { demoAccordions } from './docs/widgets/AccordionsDemo'
-import { demoCode } from './docs/material-code/material-codeDemo'
 import { demoColorful } from './docs/material-colorful/material-colorfulDemo'
 import { demoColor } from './docs/widgets/ColorDemo'
 import { demoDateTimePickers } from './docs/widgets/DateTimePickersDemo'
@@ -379,16 +378,14 @@ export const routesFurtherDesignSystem = [
             }),
         ],
     }, {
-        nav: {
-            label: 'Material Code',
-            initialOpen: false,
-            to: '/docs/material-code',
-        },
+        // nav: {
+        //     label: 'Material Code',
+        //     initialOpen: false,
+        //     to: '/docs/material-code',
+        // },
         routes: [
             createDoc('material-code/material-code', 'Overview', {
-                demos: {
-                    schema: demoCode,
-                },
+                hidden: true,
             }),
         ],
     }, {
@@ -445,13 +442,15 @@ export const routesFurtherAddOns = [
             createDoc('kit-dnd/kit-dnd', 'Overview'),
         ],
     }, {
-        nav: {
-            label: 'Kit: CodeMirror',
-            initialOpen: false,
-            to: '/docs/kit-codemirror',
-        },
+        // nav: {
+        //     label: 'Kit: CodeMirror',
+        //     initialOpen: false,
+        //     to: '/docs/kit-codemirror',
+        // },
         routes: [
-            createDoc('kit-codemirror/kit-codemirror', 'Overview'),
+            createDoc('kit-codemirror/kit-codemirror', 'Overview', {
+                hidden: true,
+            }),
         ],
     }, {
         nav: {

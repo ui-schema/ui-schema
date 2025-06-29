@@ -11,7 +11,7 @@ import { NoWidgetProps, WidgetProps } from '@ui-schema/react/Widgets'
 import { List } from 'immutable'
 import { onChangeHandler } from '@ui-schema/react/UIStore'
 
-const NoWidget = ({scope, matching}: NoWidgetProps): ReactNode => <>missing-{scope}{matching ? '-' + matching : ''}</>
+const NoWidget = ({scope, widgetId}: NoWidgetProps): ReactNode => <>missing-{scope}{widgetId ? '-' + widgetId : ''}</>
 
 const mockProps = {
     storeKeys: List([]),

@@ -9,13 +9,17 @@ JSON Schema form + UI generator for any design system, first-class support for [
 Develop your next React app faster, with less code duplications - and without wasting time to implement validations.
 
 [![Github actions Build](https://github.com/ui-schema/ui-schema/actions/workflows/blank.yml/badge.svg)](https://github.com/ui-schema/ui-schema/actions)
-[![react compatibility](https://img.shields.io/badge/React-18-success?style=flat-square&logo=react)](https://reactjs.org/)
+[![react compatibility](https://img.shields.io/badge/React-18,%2019-success?style=flat-square&logo=react)](https://reactjs.org/)
 [![MIT license](https://img.shields.io/npm/l/@ui-schema/ui-schema?style=flat-square)](https://github.com/ui-schema/ui-schema/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Coverage Status](https://img.shields.io/codecov/c/github/ui-schema/ui-schema/master.svg?style=flat-square)](https://codecov.io/gh/ui-schema/ui-schema/branch/master)
 ![Typed](https://flat.badgen.net/badge/icon/Typed?icon=typescript&label&labelColor=blue&color=555555)
 
 - @ui-schema/ui-schema [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ui-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ui-schema)
+- @ui-schema/react [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/react?style=flat-square)](https://www.npmjs.com/package/@ui-schema/react)
+- @ui-schema/react-json-schema [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/react-json-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/react-json-schema)
+- @ui-schema/json-schema [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/json-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/json-schema)
+- @ui-schema/json-pointer [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/json-pointer?style=flat-square)](https://www.npmjs.com/package/@ui-schema/json-pointer)
 - @ui-schema/ds-material [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-material?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-material)
 - @ui-schema/ds-bootstrap [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-bootstrap?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-bootstrap)
 - @ui-schema/pro [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/pro?style=flat-square)](https://www.npmjs.com/package/@ui-schema/pro)
@@ -37,7 +41,7 @@ Develop your next React app faster, with less code duplications - and without wa
 
 [![Schema Examples + Live Editor](https://img.shields.io/badge/Schema%20Examples%20+%20Live%20Editor-green?labelColor=fff&color=1e970c&style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAE3ElEQVR4nO2bX0xbVRzHz9TExKc9mBjjn+gLgcEA2wL33ra3pV0pf/uX3t6yMAQKEkahlQkBNavbMG6BYMzG4nxYYZBoycIMfxJ9cL4oI5CYGR7FLAtkeyA+oEHDgJ8PBnLPhULLbXt0nm/yfeltcn7fzzn3nHvOzUWIiooqHQqHw88lYkJlJk++en/kJMNvZ6gYUOK3dMWbvvqmj0jnSUi9fX0vnSjUKgoudS5r2CKdKSH1Dg6+nEwAeZzpvwUAIYTO+N/5Mpc1KL4F8rXG7ZrGpk9I5zmSotHos9lFOizQj7OzMD8/H9P52mLs/4Guy6+SzqFIcgCz9+7BwsJCTMsBhEKXXiGdQZEoAAqAAqAAKAAKgAKgACgACoACoAAoAAqAAqAAKID/HQDZ6bCJNYCZ5WM6U80+PQCi3d2vZ8kCJeqPAwE96RxH1qWa0z8rCZ+hYqDL7fmVdI4jaSIcPs4X6RWFz1AxoC7QwhdtbW+SzpOw+n21P0iDnFSzsOhwwgOX+0AvOV3AFHAYhA88vkXSeRLSTCDw/CkOfyt0vtgC4PXG5SFLKQaAKdRCfzj8IulccevTuoYZaYAsFQPLLnfcANY8HlBp8FEQ9p2eI50rLgFCx+xa0xY2kRnNcYffcb/ZigEwMPrtz5ubXyCd71BdrfePSQvPVLOw5HTFDLoSCsHkyAhMRSLwOBDY/X3VXQ25siW0r6b2W9L5DpVQXLIpLbqNNx3Y01+PjkI0GoVoNArTN29i1y6YLBgAC2fYRgg9QzpjTN1oavpMvowtOpyxAYgiTEgATEUi+OhwV8MJ2Si4XNfwFemcMVVnKtmQFtugKz70Xn947hxMjI7CnVu3YCUY3HO922DGANh48ybpnPsq0tr+vrz352yO+CY9UYx5bcnp2rM/GGj0D5HOu0ctJZXr0iJFzpDwzB/LAd6EAfAaT22QzotprL29Wd5LdyurkgZg0eHc84g82NwSJp17V8FK+xp2n7J80sLvuEFnxACcMZf+STo3Qgih8WCnK1vW+9PllbuFL0vW+Uft7UcGMGdz7BkFQ/7ms6Tzoy67axVbqxk9bAnCbuF3pMvc8LCiUSByBgxAk7Xqd6Lhb3d08HmyZ/bx0oqY6/zkyIgiAN9X2bC2MtUsXG05KxAD8KFTWMGe1wt18ETS++D1wsPOzgPX+URtY3kMQmuF7Tci4afC4RyNbN8+bC3bv3BRPHCtl3o5FILJ4eF/9gb7zBnT5ZVYm9lqFq77W0xpB3BREH/B9uwFHKzLej9hiyI2Z8j3BuD1wpYggIXBT5rerXI/Smv4bwYGXuMK8ePuIUup8uXukL3BjqNlFVjbeRoObrS25qcNwBVf7X1pASoNB2sej3IA3sP3BuD1woYgAC9739CbrsPTu4ODx42yIdhvtiYlfCJzRsRajtWgKeDgejD4RsoBXKtr/E7acK6ahVV3dXIBxOF1QYCiAvyly3mP737KAdSZrE+kjV4wxX/YmWxfkx2e2nXm1H9XID+s/MnugL8EgYgfuNxYLVkqBhBCx1IKgE3ilyDJdo6GTT2Angr7H6SDxvLblrLU7xBv9/TYrLLH0X+DDYwexjo6PCkHgBBCM+/1GK54fY+tLA/ZahZy1AwRZ6tZMDB6uOisXh3v7CxLS3gqKqqnSn8D0EwMpE6f7XEAAAAASUVORK5CYII=)](https://ui-schema.bemit.codes/examples)
 
-[![Get Help on Slack](https://img.shields.io/badge/Get%20Help%20on%20Slack-blue?labelColor=fff&logoColor=505050&color=7B16FF&style=for-the-badge&logo=slack)](https://join.slack.com/t/ui-schema/shared_invite/zt-smbsybk5-dFIRLEPCJerzDwtycaA71w)
+[![Get Help on Discord](https://img.shields.io/badge/Get%20Help%20on%20Discord-blue?labelColor=fff&logoColor=505050&color=7B16FF&style=for-the-badge&logo=discord)](https://discord.gg/MAjgpwnm36)
 
 **🚀 Demo: UI Schema + Material Design + Create React App**: *[Demo Source](https://github.com/ui-schema/demo-cra)*
 
@@ -80,7 +84,7 @@ Use JSON Schema to validate data and automatically create UIs with it - UI-Schem
 - [performance optimized](https://ui-schema.bemit.codes/docs/performance), only updates HTML which must re-render, perfect for big schemas
 - code-splitting, with custom widget mappings / lazy-loading widgets
 - includes helper functions for store and immutable handling
-- easy nesting for custom object/array widgets with [`PluginStack`](https://ui-schema.bemit.codes/docs/core-pluginstack)
+- easy nesting for custom object/array widgets with [`WidgetEngine`](https://ui-schema.bemit.codes/docs/core-widgetengine)
 - validate hidden/auto-generated values, virtualize schema levels ([`hidden` keyword](https://ui-schema.bemit.codes/docs/schema#hidden-keyword--virtualization))
 - handle store update from anywhere and however you want
 - extensive documentations of core, widgets
@@ -90,8 +94,6 @@ Use JSON Schema to validate data and automatically create UIs with it - UI-Schem
 - definitions and JSON-Pointer references in schemas
 - JSON Schema extension: UI Schema, change design and even behaviour of widgets
 - **JSON Schema versions** supported: Draft 2019-09 / Draft-08, Draft-07, Draft-06, Draft-04
-
-> 🔥 **Professional service & support available, [reach out now](https://bemit.codes/get-quote)!**
 
 *[Design-System and Widgets Overview](https://ui-schema.bemit.codes/docs/overview)*
 
@@ -111,7 +113,7 @@ First time? [Take the quick-start](https://ui-schema.bemit.codes/quick-start) or
 
 Example setup of a renderer, followed by a [simple text widget](#example-simple-text-widget).
 
-Instead of using a `PluginStack` at root level (automatic rendering of full schema), it's also possible to use [full custom rendering](https://ui-schema.bemit.codes/quick-start?render=custom) with e.g. [ObjectGroup](https://ui-schema.bemit.codes/docs/core-renderer#objectgroup).
+Instead of using a `WidgetEngine` at root level (automatic rendering of full schema), it's also possible to use [full custom rendering](https://ui-schema.bemit.codes/quick-start?render=custom) with e.g. [ObjectGroup](https://ui-schema.bemit.codes/docs/core-renderer#objectgroup).
 
 ```js
 import React from 'react';
@@ -122,14 +124,12 @@ import {createOrderedMap} from '@ui-schema/ui-schema/createMap';
 import {UIStoreProvider, createStore} from '@ui-schema/react/UIStore';
 import {storeUpdater} from '@ui-schema/react/storeUpdater';
 import {UIMetaProvider, useUIMeta} from '@ui-schema/react/UIMeta';
-import {injectWidgetEngine} from '@ui-schema/react/applyWidgetEngine';
+import {WidgetEngine} from '@ui-schema/react/WidgetEngine';
 // basic in-schema translator / `t` keyword support
 import {translateRelative} from '@ui-schema/ui-schema/TranslatorRelative';
 // Get the widgets binding for your design-system
-import {defineBinding} from '@ui-schema/ds-material/defineBinding';
-import {getStandardPlugins} from '@ui-schema/ds-material/getStandardPlugins';
-import {getCustomWidgets} from '@ui-schema/ds-material/getCustomWidgets';
-import {getTypeWidgets} from '@ui-schema/ds-material/getTypeWidgets';
+import {baseComponents, typeWidgets} from '@ui-schema/ds-material/BindingDefault'
+import {bindingExtended} from '@ui-schema/ds-material/BindingExtended';
 import {GridContainer} from '@ui-schema/ds-material/GridContainer';
 
 // could be fetched from some API or bundled with the app
@@ -161,8 +161,6 @@ const schemaBase = {
 // or fetch from API
 const data = {};
 
-const GridStack = injectWidgetEngine(GridContainer)
-
 export const DemoForm = () => {
     // optional state for display errors/validity
     const [showValidity, setShowValidity] = React.useState(false);
@@ -184,7 +182,9 @@ export const DemoForm = () => {
             onChange={onChange}
             showValidity={showValidity}
         >
-            <GridStack isRoot schema={schema}/>
+            <GridContainer>
+                <WidgetEngine isRoot schema={schema}/>
+            </GridContainer>
         </UIStoreProvider>
 
         <button
@@ -194,26 +194,28 @@ export const DemoForm = () => {
                     setShowValidity(true) :
                     console.log('doingSomeAction:', store.valuesToJS())
             }
-        >send!
+        >
+            submit
         </button>
     </>
 };
 
-const {widgetPlugins} = getStandardPlugins()
-const customWidgets = defineBinding({
-    widgetPlugins: widgetPlugins,
-    types: getTypeWidgets(),
-    custom: getCustomWidgets(),
-})
+const customBinding: MuiWidgetsBinding = {
+    ...baseComponents,
+    widgets: {
+        ...typeWidgets,
+        ...bindingExtended,
+    },
+}
 
 const validate = Validator(standardValidators).validate
 
 export default function App() {
     return <UIMetaProvider
-        binding={customWidgets}
+        binding={customBinding}
         validate={validate}
         t={translateRelative}
-        // never pass down functions like this - always use e.g. `React.useCallback`, check performance docs for more
+        // never pass down functions like this - always use e.g. `React.useCallback` or use non dynamic functions, check performance docs for more
         //t={(text, context, schema) => {/* add translations */}}
     >
         {/*
@@ -231,40 +233,44 @@ export default function App() {
 Easily create new widgets, this is all for a simple text (`type=string`) widget:
 
 ```typescript jsx
-import React from 'react';
-import { TranslateTitle, WidgetProps, WithScalarValue } from '@ui-schema/ui-schema';
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { WidgetProps } from '@ui-schema/react/Widgets'
 
 const Widget = (
     {
         value, storeKeys, onChange,
         required, schema,
         errors, valid,
-        ...props
-    }: WidgetProps & WithScalarValue,
+    }: WidgetProps,
 ) => {
+    // as any value could come in, from e.g. remote sources,
+    // typeguard `value` for the actual input you implement
+    const inputValue = typeof value === 'string' || typeof value === 'number' ? value : ''
     return <>
-        <label><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
+        <label>
+            <span><TranslateTitle schema={schema} storeKeys={storeKeys}/></span>
 
-        <input
-            type={'text'}
-            required={required}
-            value={value || ''}
-            onChange={(e) => {
-                onChange({
-                    storeKeys,
-                    scopes: ['value'],
-                    // or use another StoreAction like `update`
-                    type: 'set',
-                    data: {
-                        value: e.target.value,
-                        //internalValue: undefined
-                        //valid: undefined
-                    },
-                    schema,
-                    required,
-                })
-            }}
-        />
+            <input
+                type={'text'}
+                required={required}
+                value={inputValue}
+                onChange={(e) => {
+                    onChange({
+                        storeKeys,
+                        scopes: ['value'],
+                        // or use another StoreAction like `update`
+                        type: 'set',
+                        data: {
+                            value: e.target.value,
+                            //internalValue: undefined
+                            //valid: undefined
+                        },
+                        schema,
+                        required,
+                    })
+                }}
+            />
+        </label>
     </>
 }
 ```
@@ -279,7 +285,7 @@ This project is free software distributed under the **MIT License**.
 
 See: [LICENSE](LICENSE).
 
-© 2024 bemit UG (haftungsbeschränkt)
+© 2025 bemit UG (haftungsbeschränkt)
 
 ### License Icons
 

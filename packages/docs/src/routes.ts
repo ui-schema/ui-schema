@@ -55,7 +55,8 @@ export const routes = (loading: Loading): DocRouteModule<Comp> => ({
                         initialOpen: false,
                         label: 'v0.2.0 to v0.3.0',
                     },
-                }, {
+                },
+                {
                     // @ts-ignore
                     doc: 'updates/v0.3.0-v0.4.0',
                     path: '/updates/v0.3.0-v0.4.0',
@@ -63,6 +64,16 @@ export const routes = (loading: Loading): DocRouteModule<Comp> => ({
                         to: '/updates/v0.3.0-v0.4.0',
                         initialOpen: false,
                         label: 'v0.3.0 to v0.4.0',
+                    },
+                },
+                {
+                    // @ts-ignore
+                    doc: 'updates/v0.4.0-v0.5.0',
+                    path: '/updates/v0.4.0-v0.5.0',
+                    nav: {
+                        to: '/updates/v0.4.0-v0.5.0',
+                        initialOpen: false,
+                        label: 'v0.4.0 to v0.5.0',
                     },
                 },
             ],

@@ -1,7 +1,12 @@
+import Checkbox from '@mui/material/Checkbox'
+import Popover from '@mui/material/Popover'
+import Tooltip from '@mui/material/Tooltip'
+import { toPointer } from '@ui-schema/json-pointer'
+import { useUIMeta, UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { resourceFromSchema } from '@ui-schema/ui-schema/SchemaResource'
 import { SchemaResourceProvider } from '@ui-schema/react/SchemaResourceProvider'
-import React, { MouseEvent, useMemo } from 'react'
+import React, { MouseEvent, useMemo, useState } from 'react'
 import { useRouteMatch, useHistory } from 'react-router-dom'
 import { Map, List } from 'immutable'
 import FormControl from '@mui/material/FormControl'
@@ -40,6 +45,7 @@ import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { createEmptyStore, createStore, onChangeHandler, UIStoreProvider, UIStoreType, useUIStore } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { isInvalid } from '@ui-schema/react/ValidityReporter'
+import { SchemaInspectorLocation, SchemaInspectorProvider } from './SchemaInspector'
 
 const IconInput = (
     {
@@ -589,6 +595,8 @@ const EditorHandler = ({activeSchema}: any) => {
         }))
     }, [tabSize])
 
+    const [fullWidth] = React.useState(true)
+
     const onSchemaManual = React.useCallback((schema) => {
         setActiveState((activeState) => {
             const oldSchema = activeState.schema
@@ -633,123 +641,290 @@ const EditorHandler = ({activeSchema}: any) => {
         }
     }, [activeState.schema])
 
+    const [defaultArrayWidget, setDefaultArrayWidget] = useState(false)
+
+    const {binding, ...mainMeta} = useUIMeta()
+    const activeWidgets = useMemo(() => ({
+        ...binding,
+        widgets: {
+            ...binding?.widgets,
+            // @ts-ignore
+            array: defaultArrayWidget ? binding?.widgets?.GenericList : undefined,
+        },
+    }), [defaultArrayWidget, binding])
+
+    const [inspectorEnabled, setInspectorEnabled] = useState(true)
+    const [inspectorOpen, setInspectorOpen] = useState<SchemaInspectorLocation | null>(null)
+    const onInspectorOpen = setInspectorOpen
+
     return <>
         {/*<MuiPickersUtilsProvider utils={LuxonAdapter}>*/}
-        <KitDndProvider onMove={onMove}>
-            <UIStoreProvider store={activeState.store} onChange={onChange} showValidity={showValidity}>
-                <div style={{display: 'flex', flexGrow: 2, overflow: 'auto', flexDirection: verticalSplit ? 'row' : 'column'}}>
-                    <div style={{
-                        width: verticalSplit ? '45%' : '100%',
-                        height: verticalSplit ? 'auto' : (jsonEditHeight + 'px'),
-                        maxHeight: verticalSplit ? 'none' : '95vh',
-                        display: 'flex', flexShrink: 0,
-                        order: verticalSplit ? 1 : 3,
-                        overflow: 'auto',
-                    }}>
+        <UIMetaProvider binding={activeWidgets} {...mainMeta}>
+            <KitDndProvider onMove={onMove}>
+                <UIStoreProvider store={activeState.store} onChange={onChange} showValidity={showValidity}>
+                    <div style={{display: 'flex', flexGrow: 2, overflow: 'auto', flexDirection: verticalSplit ? 'row' : 'column'}}>
                         <div style={{
-                            display: 'flex',
-                            flexDirection: verticalSplit ? 'column' : 'row',
-                            minWidth: verticalSplit ? 'auto' : 800,
-                            flexGrow: 2,
+                            width: verticalSplit ? '45%' : '100%',
+                            height: verticalSplit ? 'auto' : (jsonEditHeight + 'px'),
+                            maxHeight: verticalSplit ? 'none' : '95vh',
+                            display: 'flex', flexShrink: 0,
+                            order: verticalSplit ? 1 : 3,
+                            overflow: 'auto',
                         }}>
-                            <EditorSchemaInfo
-                                verticalSplit={verticalSplit}
-                                toggleInfoBox={toggleInfoBox}
-                                info={schemas[activeSchema][3]}
-                                schema={activeState.input}
-                                infoBox={infoBox}
-                                showInfo={showInfo}
-                                setRenderChange={setRenderChange}
-                                activeSchema={activeSchema}
-                                changeSchema={changeSchema}
-                                onSchemaManual={onSchemaManual}
-                                tabSize={tabSize}
-                                fontSize={fontSize}
-                                richIde={richIde}
-                                renderChange={renderChange}
-                                editorTheme={editorTheme}
-                            />
-
                             <div style={{
-                                height: verticalSplit ? showStore ? '30%' : 'auto' : 'auto', display: 'flex', flexDirection: 'column', flexShrink: 1,
-                                width: verticalSplit ? 'auto' : showStore ? '33%' : 'auto',
-                                paddingLeft: verticalSplit ? 0 : 12, boxSizing: 'border-box',
+                                display: 'flex',
+                                flexDirection: verticalSplit ? 'column' : 'row',
+                                minWidth: verticalSplit ? 'auto' : 800,
+                                flexGrow: 2,
                             }}>
-                                <Button
-                                    variant={'outlined'} size={'small'}
-                                    style={{display: 'flex', lineHeight: 2.66, minWidth: 0, flexShrink: 0, color: 'inherit', border: 0, padding: '0 0 0 4px', cursor: 'pointer'}}
-                                    onClick={() => toggleDataBox(o => !o)} onMouseUp={unFocus}>
-                                    {showStore || verticalSplit ? 'Data:' : 'D·'}
+                                <EditorSchemaInfo
+                                    verticalSplit={verticalSplit}
+                                    toggleInfoBox={toggleInfoBox}
+                                    info={schemas[activeSchema][3]}
+                                    schema={activeState.input}
+                                    infoBox={infoBox}
+                                    showInfo={showInfo}
+                                    setRenderChange={setRenderChange}
+                                    activeSchema={activeSchema}
+                                    changeSchema={changeSchema}
+                                    onSchemaManual={onSchemaManual}
+                                    tabSize={tabSize}
+                                    fontSize={fontSize}
+                                    richIde={richIde}
+                                    renderChange={renderChange}
+                                    editorTheme={editorTheme}
+                                />
 
-                                    {showStore ?
-                                        <VisibilityOff fontSize={'small'} style={{margin: 'auto 0 auto auto'}}/> :
-                                        <Visibility fontSize={'small'} style={{margin: 'auto 0 auto auto'}}/>}
-                                </Button>
-                                {schemas[activeSchema][3] && showStore ?
-                                    <SchemaDataDebug tabSize={tabSize} fontSize={fontSize} richIde={richIde} renderChange={renderChange} theme={editorTheme}/> :
-                                    null}
+                                <div style={{
+                                    height: verticalSplit ? showStore ? '30%' : 'auto' : 'auto', display: 'flex', flexDirection: 'column', flexShrink: 1,
+                                    width: verticalSplit ? 'auto' : showStore ? '33%' : 'auto',
+                                    paddingLeft: verticalSplit ? 0 : 12, boxSizing: 'border-box',
+                                }}>
+                                    <Button
+                                        variant={'outlined'} size={'small'}
+                                        style={{display: 'flex', lineHeight: 2.66, minWidth: 0, flexShrink: 0, color: 'inherit', border: 0, padding: '0 0 0 4px', cursor: 'pointer'}}
+                                        onClick={() => toggleDataBox(o => !o)} onMouseUp={unFocus}>
+                                        {showStore || verticalSplit ? 'Data:' : 'D·'}
+
+                                        {showStore ?
+                                            <VisibilityOff fontSize={'small'} style={{margin: 'auto 0 auto auto'}}/> :
+                                            <Visibility fontSize={'small'} style={{margin: 'auto 0 auto auto'}}/>}
+                                    </Button>
+                                    {schemas[activeSchema][3] && showStore ?
+                                        <SchemaDataDebug tabSize={tabSize} fontSize={fontSize} richIde={richIde} renderChange={renderChange} theme={editorTheme}/> :
+                                        null}
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <EditorsNav
-                        changeSplit={changeSplit}
-                        verticalSplit={verticalSplit}
-                        activeSchema={activeSchema}
-                        changeSchema={changeSchema}
-                        resetState={resetState}
-                        setTabSize={setTabSize}
-                        tabSize={tabSize}
-                        setFontSize={setFontSize}
-                        fontSize={fontSize}
-                        toggleRichIde={toggleRichIde}
-                        richIde={richIde}
-                        schemas={schemas}
-                        showInfo={showInfo}
-                        toggleInfoBox={toggleInfoBox}
-                        hasInfo={!!schemas[activeSchema][3]}
-                        jsonEditHeight={jsonEditHeight}
-                        setJsonEditHeight={setJsonEditHeight}
-                        setRenderChange={setRenderChange}
-                        setEditorTheme={setEditorTheme}
-                        editorTheme={editorTheme}
-                    />
+                        <EditorsNav
+                            changeSplit={changeSplit}
+                            verticalSplit={verticalSplit}
+                            activeSchema={activeSchema}
+                            changeSchema={changeSchema}
+                            resetState={resetState}
+                            setTabSize={setTabSize}
+                            tabSize={tabSize}
+                            setFontSize={setFontSize}
+                            fontSize={fontSize}
+                            toggleRichIde={toggleRichIde}
+                            richIde={richIde}
+                            schemas={schemas}
+                            showInfo={showInfo}
+                            toggleInfoBox={toggleInfoBox}
+                            hasInfo={!!schemas[activeSchema][3]}
+                            jsonEditHeight={jsonEditHeight}
+                            setJsonEditHeight={setJsonEditHeight}
+                            setRenderChange={setRenderChange}
+                            setEditorTheme={setEditorTheme}
+                            editorTheme={editorTheme}
+                        />
 
-                    <main className="App-main" style={{height: '100%', overflow: 'auto', maxWidth: 'none', margin: verticalSplit ? '0 auto' : 0, order: verticalSplit ? 3 : 1}}>
-                        {activeState.jsonError ?
-                            <Paper style={{margin: 12, padding: 24}}>
-                                <Typography component={'h2'} variant={'h5'} color={'error'}>
-                                    JSON-Error:
-                                </Typography>
+                        <main className="App-main" style={{height: '100%', overflow: 'auto', width: fullWidth ? '100%' : undefined, maxWidth: 'none', margin: verticalSplit ? '0 auto' : 0, order: verticalSplit ? 3 : 1}}>
+                            {activeState.jsonError ?
+                                <Paper sx={{margin: 2, padding: 3}}>
+                                    <Typography component={'h2'} variant={'h5'} color={'error'}>
+                                        JSON-Error:
+                                    </Typography>
 
-                                <Typography component={'p'} variant={'subtitle1'} style={{marginTop: 12}}>
-                                    {activeState.jsonError.replace('SyntaxError: JSON.parse: ', '')}
-                                </Typography>
-                            </Paper> :
-                            resource ? <Paper style={{margin: 12, padding: 24}}>
-                                <SchemaResourceProvider
-                                    resource={resource}
+                                    <Typography component={'p'} variant={'subtitle1'} style={{marginTop: 12}}>
+                                        {activeState.jsonError.replace('SyntaxError: JSON.parse: ', '')}
+                                    </Typography>
+                                </Paper> :
+                                resource ? <Paper sx={{margin: 2, padding: 3}}>
+                                    <SchemaResourceProvider
+                                        resource={resource}
+                                    >
+                                        <SchemaInspectorProvider
+                                            onOpen={inspectorEnabled ? onInspectorOpen : undefined}
+                                            openStoreKeys={inspectorOpen?.storeKeys}
+                                        >
+                                            <GridContainer>
+                                                <WidgetEngine key={resetId} schema={resource.branch.value()} isRoot/>
+                                            </GridContainer>
+                                        </SchemaInspectorProvider>
+
+                                        <Popover
+                                            open={Boolean(inspectorOpen)}
+                                            anchorEl={inspectorOpen?.element || null}
+                                            onClose={() => setInspectorOpen(null)}
+                                            anchorOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'left',
+                                            }}
+                                            // todo: optimize transform origin and top-bottom vs left-right layout
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            slotProps={{
+                                                paper: {
+                                                    sx: {
+                                                        borderRadius: 1,
+                                                        border: '1px solid transparent',
+                                                        borderColor: 'info.main',
+                                                    },
+                                                },
+                                            }}
+                                        >
+                                            {inspectorOpen ?
+                                                <Box pt={1} pb={2} px={2}>
+                                                    <Typography variant={'overline'} color={'primary'} gutterBottom>
+                                                        {'Schema Inspector'}
+                                                    </Typography>
+                                                    <Typography variant={'body2'} gutterBottom>
+                                                        {'Store Keys: '}
+                                                        <code>{'[ '}{inspectorOpen?.storeKeys.toArray().map(k => JSON.stringify(k)).join(', ')}{' ]'}</code>
+                                                    </Typography>
+                                                    <Typography variant={'body2'} gutterBottom>
+                                                        {'JSON-Pointer: '}
+                                                        <code>{'#' + toPointer(inspectorOpen?.storeKeys)}</code>
+                                                    </Typography>
+                                                    <Typography variant={'body2'} gutterBottom>
+                                                        {'Widget Match: '}
+                                                        {inspectorOpen?.matchedWidget
+                                                            ? inspectorOpen?.matchedWidget instanceof Error ? inspectorOpen?.matchedWidget?.message :
+                                                                <Box component={'span'} display={'block'} pl={1.5}>
+                                                                    {'scope: ' + inspectorOpen.matchedWidget.scope}<br/>
+                                                                    {'id: ' + inspectorOpen.matchedWidget.id}
+                                                                </Box> :
+                                                            <em>{'none'}</em>}
+                                                    </Typography>
+                                                    <Typography variant={'body2'} gutterBottom>
+                                                        {'WidgetOverride: '}
+                                                        {inspectorOpen?.WidgetOverride ? 'yes' : 'no'}
+                                                    </Typography>
+                                                    <Typography variant={'body2'} gutterBottom>
+                                                        {'Applied Schema:'}
+                                                    </Typography>
+
+                                                    <Typography
+                                                        variant={'body2'}
+                                                        component={'pre'}
+                                                        sx={{
+                                                            whiteSpace: 'pre-wrap', p: 0,
+                                                            minWidth: {
+                                                                xs: '80vw',
+                                                                sm: '70vw',
+                                                                md: 320,
+                                                                lg: 360,
+                                                            },
+                                                        }}
+                                                    >
+                                                        {/* @ts-expect-error */}
+                                                        <code style={{fontSize: '0.92em'}}>{JSON.stringify(inspectorOpen?.schema?.toJS(), undefined, 2)}</code>
+                                                    </Typography>
+
+                                                    {/* todo: could not get editor height working in popover */}
+                                                    {/*<RichCodeEditor
+                                                    // @ts-expect-error
+                                                    value={JSON.stringify(inspectorOpen?.schema?.toJS(), undefined, 2)} readOnly mode={'json'}
+                                                    fontSize={14}
+                                                    style={{margin: '8px 0 12px 0'}}
+                                                />*/}
+                                                </Box> : null}
+                                        </Popover>
+
+                                    </SchemaResourceProvider>
+
+                                    <InvalidLabel invalid={isInvalid(activeState.store?.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>
+                                </Paper> : null}
+
+                            <Paper
+                                sx={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 1, mx: 2, mb: 2, p: 2}}
+                            >
+                                {/* todo: dynamic width is confusing, but toggling without change also, enable this with fixed width breakpoint select */}
+                                {/*<Tooltip title={fullWidth ? 'show in dynamic width' : 'show full width'}>
+                                <Button
+                                    onClick={() => {
+                                        setFullWidth(f => !f)
+                                    }}
+                                    color={'secondary'} size={'small'}
                                 >
-                                    <GridContainer>
-                                        <WidgetEngine key={resetId} schema={resource.branch.value()} isRoot/>
-                                    </GridContainer>
-                                </SchemaResourceProvider>
+                                    {fullWidth ? <IcShowCompact style={{transform: 'rotate(90deg)'}}/> : <IcShowFull style={{transform: 'rotate(90deg)'}}/>}
+                                </Button>
+                            </Tooltip>*/}
 
-                                <InvalidLabel invalid={isInvalid(activeState.store?.getValidity())} setShowValidity={setShowValidity} showValidity={showValidity}/>
-                            </Paper> : null}
+                                <Tooltip
+                                    title={
+                                        'right click on a rendered widget to inspect the storeKeys, widget matching info and its applied schema'
+                                    }
+                                >
+                                    <Button
+                                        color={'secondary'}
+                                        onClick={() => setInspectorEnabled(s => !s)}
+                                        endIcon={
+                                            <Checkbox
+                                                checked={inspectorEnabled}
+                                                disableRipple
+                                                size={'small'}
+                                                color={'secondary'}
+                                                sx={{p: 0}}
+                                            />
+                                        }
+                                    >
+                                        {'inspector'}
+                                    </Button>
+                                </Tooltip>
 
-                        <Button
-                            onClick={() => setResetId(Date.now().toString())}
-                            sx={{mx: 2, my: 1}}
-                            size={'small'}
-                            color={'secondary'}
-                        >{'remount'}</Button>
+                                <Tooltip
+                                    title={'enable a default array widget, as the best UX for editing arrays depends heavily on the setup, no default array widget is set by default.'}
+                                    // todo: add a info dialog, this is way too long for a tooltip
+                                    // as array widgets often need more specialized code as others, this allows using the default type widgets without unnecessary overhead when adding an own default array widget.
+                                >
+                                    <Button
+                                        onClick={() => setDefaultArrayWidget(s => !s)}
+                                        color={'secondary'}
+                                        endIcon={
+                                            <Checkbox
+                                                checked={defaultArrayWidget}
+                                                disableRipple
+                                                size={'small'}
+                                                color={'secondary'}
+                                                sx={{p: 0}}
+                                            />
+                                        }
+                                        sx={{whiteSpace: 'pre'}}
+                                    >{'array widget'}</Button>
+                                </Tooltip>
 
-                        <div style={{height: 24, width: 1, flexShrink: 0}}/>
-                    </main>
-                </div>
-            </UIStoreProvider>
-        </KitDndProvider>
+                                <Tooltip
+                                    title={'this force remounts the widget engine, use it to clear runtime component errors (e.g. due to invalid schema input)'}
+                                >
+                                    <Button
+                                        onClick={() => setResetId(Date.now().toString())}
+                                        color={'secondary'}
+                                        sx={{justifySelf: 'flex-end'}}
+                                    >{'remount'}</Button>
+                                </Tooltip>
+                            </Paper>
+
+                            <div style={{height: 24, width: 1, flexShrink: 0}}/>
+                        </main>
+                    </div>
+                </UIStoreProvider>
+            </KitDndProvider>
+        </UIMetaProvider>
         {/*</MuiPickersUtilsProvider>*/}
     </>
 }

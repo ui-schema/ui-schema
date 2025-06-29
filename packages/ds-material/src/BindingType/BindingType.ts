@@ -1,4 +1,5 @@
 import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import type { WidgetMatch } from '@ui-schema/ui-schema/matchWidget'
 import type { ComponentType, ReactNode } from 'react'
 import type { MatchProps, MinimalComponentType, WidgetProps, WidgetsBindingComponents } from '@ui-schema/react/Widgets'
 import type { UIStoreActions } from '@ui-schema/react/UIStoreActions'
@@ -29,5 +30,5 @@ export type MuiWidgetsBinding<A = UIStoreActions, WP extends WidgetProps<{}, A> 
         widgets?: MuiWidgetsBindingWidgets<A, WP>
     } &
     {
-        matchWidget?: (props: MatchProps<WP>) => null | (<PWidget>(props: Omit<NoInfer<PWidget>, keyof WP> & WP) => ReactNode)
+        matchWidget?: (props: MatchProps<WP>) => null | WidgetMatch<<PWidget>(props: Omit<NoInfer<PWidget>, keyof WP> & WP) => ReactNode>
     }

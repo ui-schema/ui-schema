@@ -1,52 +1,45 @@
+import { Breakpoint } from '@mui/material/styles'
 import React, { MouseEventHandler } from 'react'
-import Grid, { GridSize, GridSpacing } from '@mui/material/Grid'
+import Grid2, { GridSize, GridSpacing } from '@mui/material/Grid2'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { OrderedMap } from 'immutable'
 import { GroupRendererProps } from '@ui-schema/react/Widgets'
 
-export const SchemaGridItem: React.ComponentType<React.PropsWithChildren<{
+export const SchemaGrid2Item: React.ComponentType<React.PropsWithChildren<{
     schema: UISchemaMap
     defaultMd?: GridSize
     style?: React.CSSProperties
     className?: string
-    // todo: add correct typing for mui `classes`
-    classes?: any
     onContextMenu?: MouseEventHandler<HTMLDivElement>
 }>> = (
     {
         schema, children,
         defaultMd, style,
-        className, classes,
+        className,
         onContextMenu,
     },
 ) => {
     const view = schema ? schema.get('view') as OrderedMap<string, GridSize> : undefined
 
-    const viewXs = view ? (view.get('sizeXs') || 12) : 12
-    const viewSm = view ? view.get('sizeSm') : undefined
-    const viewMd = view ? view.get('sizeMd') : defaultMd as GridSize
-    const viewLg = view ? view.get('sizeLg') : undefined
-    const viewXl = view ? view.get('sizeXl') : undefined
+    const size: Partial<Record<Breakpoint, GridSize>> = {}
+    size.xs = view ? (view.get('sizeXs') || 12) : 12
+    size.sm = view ? view.get('sizeSm') : undefined
+    size.md = view ? view.get('sizeMd') : defaultMd as GridSize
+    size.lg = view ? view.get('sizeLg') : undefined
+    size.xl = view ? view.get('sizeXl') : undefined
 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    return <Grid
-        item
-        xs={viewXs}
-        sm={viewSm}
-        md={viewMd}
-        lg={viewLg}
-        xl={viewXl}
+    return <Grid2
+        size={size}
         style={style}
         className={className}
-        classes={classes}
         onContextMenu={onContextMenu}
     >
         {children}
-    </Grid>
+    </Grid2>
 }
 
-export const GroupRenderer: React.ComponentType<React.PropsWithChildren<GroupRendererProps>> = (
+export const Group2Renderer: React.ComponentType<React.PropsWithChildren<GroupRendererProps>> = (
     {
         schema, noGrid,
         spacing = 2, style, className,
@@ -54,17 +47,16 @@ export const GroupRenderer: React.ComponentType<React.PropsWithChildren<GroupRen
     },
 ) =>
     noGrid ? children as React.ReactElement :
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        <Grid
+        <Grid2
             container wrap={'wrap'}
             spacing={typeof schema.getIn(['view', 'spacing']) === 'number' ? schema.getIn(['view', 'spacing']) as GridSpacing : spacing as GridSpacing}
             style={style}
             className={className}
         >
             {children}
-        </Grid>
+        </Grid2>
 
-export const SchemaGridHandler = <P extends WidgetPluginProps>(props: P): React.ReactElement => {
+export const SchemaGrid2Handler = <P extends WidgetPluginProps>(props: P): React.ReactElement => {
     const {schema, noGrid: noGridProp, isVirtual, Next} = props
 
     const align = schema.getIn(['view', 'align'])
@@ -78,8 +70,8 @@ export const SchemaGridHandler = <P extends WidgetPluginProps>(props: P): React.
     const nestedNext = <Next.Component {...props}/>
 
     return noGrid ? nestedNext :
-        <SchemaGridItem schema={schema} style={style}>
+        <SchemaGrid2Item schema={schema} style={style}>
             {nestedNext}
-        </SchemaGridItem>
+        </SchemaGrid2Item>
 }
 

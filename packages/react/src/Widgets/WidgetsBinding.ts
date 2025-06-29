@@ -1,11 +1,12 @@
-import { SchemaTypesType, SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
-import { WidgetPayload } from '@ui-schema/ui-schema/Widget'
+import type { SchemaTypesType, SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
+import type { WidgetMatch } from '@ui-schema/ui-schema/matchWidget'
+import type { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import type { ComponentType, FunctionComponent, ReactNode, Component } from 'react'
 import type { WidgetPluginType } from '@ui-schema/react/WidgetEngine'
 import type { WidgetProps } from '@ui-schema/react/Widgets'
-import { StoreKeys } from '@ui-schema/react/UIStore'
-import { List } from 'immutable'
-import { WidgetsBindingRoot } from '@ui-schema/ui-schema/WidgetsBinding'
+import type { StoreKeys } from '@ui-schema/react/UIStore'
+import type { List } from 'immutable'
+import type { WidgetsBindingRoot } from '@ui-schema/ui-schema/WidgetsBinding'
 
 /**
  * note: we can't use ComponentType here, as it leads to problems with FC vs. others and
@@ -40,7 +41,7 @@ export type MinimalComponentType<P> =
 export interface NoWidgetProps {
     storeKeys: StoreKeys
     scope?: string
-    matching?: string
+    widgetId?: string
 }
 
 export interface GroupRendererProps {
@@ -117,5 +118,5 @@ export type WidgetsBindingFactory<TW extends {} = {}> =
 
         widgets?: WidgetsBindingRoot<TW>
 
-        matchWidget?: (props: MatchProps<any>) => null | ((props: any) => ReactNode)
+        matchWidget?: (props: MatchProps<any>) => null | WidgetMatch<(props: any) => ReactNode>
     }

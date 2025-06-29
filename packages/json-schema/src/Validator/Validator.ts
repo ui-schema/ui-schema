@@ -166,10 +166,18 @@ export function Validator(
             }
         }
 
+        // todo: could `afterAll` be reused for controlling recursive evaluation when defaulting values?
+        //       or does it always need a two-pass evaluation run:
+        //       if the first run modifies the `value`, then another evaluation must start,
+        //       repeating until the result is the same as the input.
+        //       thus supporting applying defaults in sub-schemas which where conditional and activated due to a default,
+        //       which wasn't known when evaluating the branch which enables the sub-schema.
         afterAll.forEach((afterAllValidator) => {
             afterAllValidator({
                 context: scopedParams.context,
                 output: scopedParams.output,
+                // todo: allow afterAll to modify `applied`? to support schema reduction via validators?
+                // applied: applied,
             })
         })
 

@@ -29,7 +29,7 @@ export default function NavProject() {
         </Typography>
         <hr style={{opacity: 0.1, margin: '4px 0 4px 26px'}}/>
 
-        <Typography component={'a'} variant={'subtitle1'} href={'https://join.slack.com/t/ui-schema/shared_invite/zt-smbsybk5-dFIRLEPCJerzDwtycaA71w'} style={{textDecoration: 'none'}}>
+        <Typography component={'a'} variant={'subtitle1'} href={'https://discord.gg/MAjgpwnm36'} style={{textDecoration: 'none'}}>
             <svg
                 role="img" style={{display: 'inline-block', padding: 1, margin: 1, boxSizing: 'border-box', height: 64, verticalAlign: 'middle'}}
                 fill={'currentColor'} viewBox="0 0 270 270"
@@ -59,7 +59,7 @@ export default function NavProject() {
             </svg>
 
             {' '}
-            <Link component={'span'}>Get Help on Slack!</Link>
+            <Link component={'span'}>Get Help on Discord!</Link>
         </Typography>
     </React.Fragment>
 }

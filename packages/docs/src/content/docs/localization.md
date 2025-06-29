@@ -12,7 +12,7 @@ The `t` prop of `UIMetaProvider` and `UIGenerator` supports complex translators 
 > - `{ t } = useUIMeta()`
 > - `Translate`/`TranslateTitle`
 
-to support just the `t` keyword:
+to support just the `t` keyword, with a single locale:
 
 ```jsx harmony
 import {relTranslator} from '@ui-schema/ui-schema/Translate/relT';
@@ -21,19 +21,19 @@ import {UIMetaProvider} from '@ui-schema/ui-schema/UIMeta';
 <UIMetaProvider t={relTranslator}/>
 ```
 
-to support custom translators and the `t` keyword:
+to support custom translators and the `t` keyword with multi-locale:
 
 ```jsx harmony
-import {relT} from '@ui-schema/ui-schema/Translate/relT';
-import {Translator} from '@ui-schema/ui-schema/Translate/makeTranslator';
-import {UIMetaProvider} from '@ui-schema/ui-schema/UIMeta';
+import { relT } from '@ui-schema/ui-schema/Translate/relT';
+import { Translator } from '@ui-schema/ui-schema/Translate/makeTranslator';
+import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta';
 
 /**
  * @var {Translator} translate
  */
 const translate = (text, context, schema) => {
-    // locale can be empty or the string of the current locale
-    // for handling the schema keyword `t`
+    // locale must be be empty for single locale `t` keyword,
+    // or the string of the current locale for mutli-locale `t` keyword
     const schemaT = relT(schema, context, locale);
     if(schemaT) return schemaT;
 

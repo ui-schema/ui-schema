@@ -127,15 +127,17 @@ body {
 
 pre {
     white-space: pre-wrap;
-    word-wrap: break-spaces;
+    word-wrap: break-word;
     line-height: 1.75;
     padding: 8px 8px;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace !important;
+    /*font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace !important;*/
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
     padding: 2px 2px;
-    font-size: 0.875rem !important;
+    font-size: 0.875rem;
+    /*font-size: 0.875rem !important;*/
 }
 
 td > code {

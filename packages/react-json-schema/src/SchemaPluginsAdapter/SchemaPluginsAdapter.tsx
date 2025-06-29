@@ -12,7 +12,7 @@ export const schemaPluginsAdapterBuilder = <P extends WidgetPluginProps & Schema
 
         const changedProps = useMemoWithObject(
             // todo: support overwrite via props?!
-            () => schemaPlugins ? SchemaPluginStack<Omit<P, 'currentPluginIndex' | 'Next'>>({resource, ...props}, schemaPlugins) : props,
+            () => schemaPlugins?.length ? SchemaPluginStack<Omit<P, 'currentPluginIndex' | 'Next'>>({resource, ...props}, schemaPlugins) : props,
             {resource, ...props},
         )
 

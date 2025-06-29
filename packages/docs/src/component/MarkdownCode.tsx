@@ -38,7 +38,7 @@ const Code = ({variant, className, children}: { variant?: TypographyProps['varia
         <RichCodeEditor
             value={children} readOnly mode={currentMode}
             fontSize={14} minLines={1} maxLines={30} enableShowAll
-            style={{margin: '0 0 12px 0', transition: 'height 0.4s linear 0s'}}
+            style={{margin: '8px 0 12px 0', transition: 'height 0.4s linear 0s'}}
         />
 }
 

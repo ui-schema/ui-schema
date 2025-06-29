@@ -78,4 +78,4 @@ See current *[packages/demo-web@master](https://ui-schema-demo.netlify.app/)* or
 
 By committing your code/creating a pull request to this repository you agree to release the code under the [MIT License](LICENSE) attached to the repository and to adhere to the [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md).
 
-Questions? Feel free to open discussions or join the [slack channel](https://join.slack.com/t/ui-schema/shared_invite/zt-smbsybk5-dFIRLEPCJerzDwtycaA71w)!
+Questions? Feel free to open discussions or join the [discord channel](https://discord.gg/MAjgpwnm36)!
