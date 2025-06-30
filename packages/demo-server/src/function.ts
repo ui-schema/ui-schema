@@ -6,6 +6,7 @@ import boot from './boot.js'
 import onHeaders from 'on-headers'
 import { customAlphabet } from 'nanoid'
 import HomeHandler from './handler/HomeHandler.js'
+import { reactHandler } from './handler/ReactHandler.js'
 
 boot()
 
@@ -54,6 +55,7 @@ app.use(function profilerMiddleware(req: express.Request & RequestCustomPayload,
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.get('/', HomeHandler)
+app.use(reactHandler())
 
 // caching `3h`
 //app.use('/', express.static(__dirname + '/demo', {maxAge: 3600 * 1000 * 3}))

@@ -16,6 +16,10 @@ const HomeHandler: express.Handler = async (_req, res) => {
 </head>
 <body>
     <h1>UI Schema Server</h1>
+    <p>See commands folder for CLI examples.</p>
+    <ul>
+        <li><a href="/preview">React Preview</a></li>
+    </ul>
 </body>
 </html>`)
 }

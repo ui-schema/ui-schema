@@ -1,7 +1,6 @@
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
 import { Map } from 'immutable'
-import React from 'react'
 import { Translate } from '@ui-schema/react/Translate'
 
 export interface ValidityHelperTextProps {

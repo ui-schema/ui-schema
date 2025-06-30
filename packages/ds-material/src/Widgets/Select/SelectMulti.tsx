@@ -1,5 +1,4 @@
 import { useUIMeta } from '@ui-schema/react/UIMeta'
-import React from 'react'
 import { List } from 'immutable'
 import { useUID } from 'react-uid'
 import FormControl from '@mui/material/FormControl'

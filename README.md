@@ -8,6 +8,14 @@ JSON Schema form + UI generator for any design system, first-class support for [
 
 Develop your next React app faster, with less code duplications - and without wasting time to implement validations.
 
+> [!CAUTION]
+>
+> You're **exploring an upcoming version**! If you spot odd behaviour or have feedback, please [open an issue](https://github.com/ui-schema/ui-schema/issues/new?template=bug.md&title=0.5.x%40next%20Bug%20&labels=bug&type=bug).
+>
+> The new documentation is not yet completed, the repository includes [a basic migration guide from 0.4.x to 0.5.x](./packages/docs/src/content/updates/v0.4.0-v0.5.0.md), the below examples are updated for 0.5.x, while the published documentation is still for `0.4.x`.
+>
+> To use the `next` version you must specify the exact version or use `@ui-schema/ui-schema@next` during installation.
+
 [![Github actions Build](https://github.com/ui-schema/ui-schema/actions/workflows/blank.yml/badge.svg)](https://github.com/ui-schema/ui-schema/actions)
 [![react compatibility](https://img.shields.io/badge/React-18,%2019-success?style=flat-square&logo=react)](https://reactjs.org/)
 [![MIT license](https://img.shields.io/npm/l/@ui-schema/ui-schema?style=flat-square)](https://github.com/ui-schema/ui-schema/blob/master/LICENSE)
@@ -119,18 +127,18 @@ Instead of using a `WidgetEngine` at root level (automatic rendering of full sch
 import React from 'react';
 
 // Import Schema UI Provider and Render engine
-import {isInvalid} from '@ui-schema/react/ValidityReporter';
-import {createOrderedMap} from '@ui-schema/ui-schema/createMap';
-import {UIStoreProvider, createStore} from '@ui-schema/react/UIStore';
-import {storeUpdater} from '@ui-schema/react/storeUpdater';
-import {UIMetaProvider, useUIMeta} from '@ui-schema/react/UIMeta';
-import {WidgetEngine} from '@ui-schema/react/WidgetEngine';
+import { isInvalid } from '@ui-schema/react/ValidityReporter';
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap';
+import { UIStoreProvider, createStore } from '@ui-schema/react/UIStore';
+import { storeUpdater } from '@ui-schema/react/storeUpdater';
+import { UIMetaProvider, useUIMeta } from '@ui-schema/react/UIMeta';
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine';
 // basic in-schema translator / `t` keyword support
-import {translateRelative} from '@ui-schema/ui-schema/TranslatorRelative';
+import { translateRelative } from '@ui-schema/ui-schema/TranslatorRelative';
 // Get the widgets binding for your design-system
-import {baseComponents, typeWidgets} from '@ui-schema/ds-material/BindingDefault'
-import {bindingExtended} from '@ui-schema/ds-material/BindingExtended';
-import {GridContainer} from '@ui-schema/ds-material/GridContainer';
+import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { bindingExtended } from '@ui-schema/ds-material/BindingExtended';
+import { GridContainer } from '@ui-schema/ds-material/GridContainer';
 
 // could be fetched from some API or bundled with the app
 const schemaBase = {

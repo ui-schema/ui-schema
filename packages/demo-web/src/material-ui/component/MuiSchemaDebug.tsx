@@ -1,4 +1,3 @@
-import React from 'react'
 import Paper from '@mui/material/Paper'
 import { useTheme } from '@mui/material/styles'
 import { ImmutableEditor, themeMaterial, themeMaterialLight } from 'react-immutable-editor'

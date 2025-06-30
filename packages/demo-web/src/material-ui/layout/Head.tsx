@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import { PropsWithChildren } from 'react'
 import { Helmet } from 'react-helmet'
 
 export default function Head({children}: PropsWithChildren<{}>) {

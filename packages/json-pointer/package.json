@@ -30,25 +30,10 @@
             "import": "./index.js",
             "require": "./index.cjs"
         },
-        "./escapePointer": {
-            "types": "./escapePointer/index.d.ts",
-            "import": "./escapePointer/index.js",
-            "require": "./escapePointer/index.cjs"
-        },
-        "./resolvePointer": {
-            "types": "./resolvePointer/index.d.ts",
-            "import": "./resolvePointer/index.js",
-            "require": "./resolvePointer/index.cjs"
-        },
-        "./pointerToKeySeq": {
-            "types": "./pointerToKeySeq/index.d.ts",
-            "import": "./pointerToKeySeq/index.js",
-            "require": "./pointerToKeySeq/index.cjs"
-        },
-        "./unescapePointer": {
-            "types": "./unescapePointer/index.d.ts",
-            "import": "./unescapePointer/index.js",
-            "require": "./unescapePointer/index.cjs"
+        "./*": {
+            "types": "./*/index.d.ts",
+            "import": "./*/index.js",
+            "require": "./*/index.cjs"
         }
     },
     "sideEffects": false,

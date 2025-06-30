@@ -26,6 +26,24 @@ Clearing the cache seems to fix it:
 rm -rf node_modules/.cache
 ```
 
+Server with `tsx`:
+
+```shell
+tsx ./packages/demo-server/src/cli.js pointer
+tsx --watch ./packages/demo-server/src/server.js
+```
+
+Note that it doesn't work when starting `tsx` from within the packages folder or when specifying the packages `tsconfig`, as then it doesn't correctly apply extended tsconfig settings when using other packages. But also `tsx` doesn't seem to honor nested tsconfig and will only use the main, e.g. the `jsx` setting only worked when either specifying the nested tsconfig or when moving the setting to the root tsconfig.
+
+---
+
+Server with `ts-node`, *broken monorepo TS-ESM module resolving*:
+
+```shell
+npm -w packages/demo-server run serve
+npm -w packages/demo-server run cli pointer
+```
+
 ## develop branch (0.4.0)
 
 1. Fork/Clone repository **branch `develop`**

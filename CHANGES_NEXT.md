@@ -160,6 +160,9 @@ Todo:
         - "in json-schema by default a schema won't be evaluated further if the value does not exist, while for UI we want to render nested fields and lazily initialize the tree up to that field, even if no value exists at all"
     - **TBD:** doesn't that also mean, that `if` shouldn't be evaluated at all if there isn't a value to evaluated?! which would restore similar behaviour like <=0.4.x validators, while being spec. compliant
     - **NOTE:** in `if` and `not` keyword validators, they no longer evaluate deeper if the value is `undefined`, which fixes the behaviour of the combination w/ conditional example! that seems to be the solution.
+- rewrite the plugin adapter to allow async from start? or more the part which loops the validator fn and walks the tree.
+    - how to provide react based hooks via non-react validators plugins? force to write an own widgetPlugin instead of using the default, if someone wishes to use that?
+    - should work around "pausing" the validator, by stopping the loop as soon as possible, returning a state+unresolved payload, which the user must resolve and then restart validation from the state
 
 > See also [CHANGES_NEXT_VALIDATE_TODOS.md](./CHANGES_NEXT_VALIDATE_TODOS.md) for more specific validator todos.
 
@@ -224,6 +227,19 @@ Todo:
 - improved context memoization
 - removed HOC `withUIMeta`, use hook instead
 
+#### SchemaResourceProvider
+
+- better handling of $ref #135
+- simple react provider and hook to consumer context, with logic from core
+- replaces old combination/conditional/referencing plugins with an integration over validators
+    - relies on new resource system
+    - loads all needed schemas initially in root, no longer when/where a ref is actually used
+    - makes `UIApi` unnecessary
+    - ~~`ResourceBranchHandler` vs legacy `ReferencingHandler`~~
+        - only resolves the current schemas $ref, no longer materialized all nested $ref
+        - combines conditional and composition with $ref resolving
+        - *integrated into `ValidatorPlugin`, using the `applied` schemas that are emitted by `validate`*
+
 #### React Plugins / WidgetEngine
 
 - removed `ExtractStorePlugin`, included now in `WidgetEngine` directly (for the moment, experimenting performance/typing)
@@ -236,17 +252,6 @@ Todo:
 - new `widgetPlugin` and `WidgetRenderer` system, with a materialized render-stack, available as `<Next/>` prop in `widgetPlugin`, removes `currentPluginIndex`
 
   materializes in `UIMetaContext` and wraps each plugin in a HOC which takes care of its injections. the `Next` is available with `useUIMeta`, never render the actual `widgetsPlugins` manually or modify them dynamically.
-
-Todos:
-
-- finalize better handling of $ref #135
-    - relies on new resource system
-    - loads all needed schemas initially in root, no longer when/where a ref is actually used
-    - makes `UIApi` unnecessary
-    - ~~`ResourceBranchHandler` vs legacy `ReferencingHandler`~~
-        - only resolves the current schemas $ref, no longer materialized all nested $ref
-        - combines conditional and composition with $ref resolving
-        - *integrated into `ValidatorPlugin`, using the `applied` schemas that are emitted by `validate`*
 
 #### WidgetsBinding
 
@@ -357,11 +362,11 @@ new widget engine functions:
 - [ ] fix/finalize strict UISchemaMap typing and json-schema types
 - [ ] stricter typings, with many `any` switched to `unknown`
 - [x] finalize `package.json` generation for strict esm with ESM and CJS support
-- [ ] finalize strict-ESM compatible imports/exports, especially in packages
+- [x] finalize strict-ESM compatible imports/exports, especially in packages
     - [x] switch to strict-ESM for all core packages, with `Node16`
     - [X] switch to strict-ESM for ds-bootstrap
     - [x] switch to cjs/esm build with `.cjs` file extension instead of separate folders
-    - [ ] verify working behaviour once first alpha is published
+    - [x] verify working behaviour once first alpha is published; sister project https://github.com/ui-schema/react-codemirror uses new build and has a verified prerelease which is used in https://github.com/control-ui/content-ui
 - [x] control and optimize circular package dependencies, remove all which where added as workarounds
     - [x] core packages cleaned up; ds are already clean
     - [x] solve `/react` depends on `ObjectRenderer`/`VirtualWidgetRenderer` (see noted in bindings about separating packages and `VirtualWidgetRenderer`)
@@ -371,7 +376,7 @@ new widget engine functions:
         - validated: it isn't necessary, as instead `/index.ts` files are consistently used with wildcard exports `"import": "./*/index.js"`, which is consistent for `.tsx`/`.ts` components
     - the `exports` with sub-path patterns may expose too much, where the eslint plugin makes sense again,
       depending on if the `*` maps directly to `*/index.js` or more generically to anything
-- [ ] normalize `tsconfig` `moduleResolution`
+- [x] normalize `tsconfig` `moduleResolution`; not possible for now, relies on too many mixed compatibilities
     - `demo-web`: as `react-immutable-editor` is pure ESM and strict ESM using `exports` with files in a sub-directory,
       the `demo-web` uses no `type: "module"` and `moduleResolution: "Bundler"` to resolve it,
       it also works with `type: "module"` and `moduleResolution: "Bundler"` - except for the remaining `.js` files,
@@ -398,7 +403,7 @@ new widget engine functions:
           while a `schemaKeys` based inject plugin was never stable, instead it should use a value-location to schema-location matcher,
           and ~~can~~ must now use the new `SchemaResource` system to resolve canonical ids and pointers, which wasn't possible beforehand,
           with a further refined resource handling and resolving, more information about all applied `$id` for a valueLocation can be used to influence style schema injection
-- [ ] deprecate widget plugins and components replaced by new validator and schema plugins
+- [ ] deprecate widget plugins and components which are replaced by new validator and schema plugins
     - `/*` means anything in that folder will be deprecated and removed in a next version (and not just the symbol with that name)
     - [x] `InjectSplitSchemaPlugin` (use schemaPlugin instead)
     - [x] `CombiningHandler/*` (new validator)

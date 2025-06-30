@@ -1,4 +1,3 @@
-import React from 'react'
 import Typography, { TypographyProps } from '@mui/material/Typography'
 import { useTheme } from '@mui/material/styles'
 import { RichCodeEditor, supportedModes } from './RichCodeEditor'

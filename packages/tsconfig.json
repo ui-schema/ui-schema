@@ -2,7 +2,7 @@
     "compilerOptions": {
         "module": "ESNext",
         "target": "ES2021",
-        "jsx": "preserve",
+        "jsx": "react-jsx",
         "removeComments": false,
         "moduleResolution": "Node10",
         "forceConsistentCasingInFileNames": true,

@@ -32,8 +32,21 @@
         "__release": "cp package.json build/ && cp package-lock.json build/ && cp README.md build/ && npm publish build"
     },
     "main": "./index.cjs",
-    "module": "./index.js",
+    "module": "./esm/index.js",
     "types": "./index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./index.d.ts",
+            "import": "./esm/index.js",
+            "require": "./index.cjs"
+        },
+        "./*": {
+            "types": "./*/index.d.ts",
+            "import": "./esm/*/index.js",
+            "require": "./*/index.cjs"
+        },
+        "./esm": null
+    },
     "sideEffects": false,
     "devDependencies": {
         "@mui/material": "^6.4",

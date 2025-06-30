@@ -1,4 +1,3 @@
-import React from 'react'
 import { HeadMeta } from '@control-ui/kit/HeadMeta'
 import LiveEditor from '../component/Schema/LiveEditor'
 

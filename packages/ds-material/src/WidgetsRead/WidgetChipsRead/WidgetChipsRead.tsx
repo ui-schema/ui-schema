@@ -1,5 +1,4 @@
 import { MuiComponentsBinding } from '@ui-schema/ds-material'
-import React from 'react'
 import { extractValue } from '@ui-schema/react/UIStore'
 import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
 import { Translate } from '@ui-schema/react/Translate'

@@ -46,6 +46,7 @@
     },
     "scripts": {
         "serve": "cross-env NODE_ENV=development NODE_OPTIONS=\"--experimental-vm-modules --unhandled-rejections=strict --import ./ts-node.register.mjs\" node --watch ./src/server.ts",
+        "cli": "cross-env NODE_ENV=development NODE_OPTIONS=\"--experimental-vm-modules --unhandled-rejections=strict --import ./ts-node.register.mjs\" node ./src/cli.ts",
         "prebuild": "npm run clean",
         "build": "npm run tsc",
         "tsc": "tsc --project tsconfig.json",

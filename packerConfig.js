@@ -36,6 +36,33 @@ const babelTargetsEsmCjs = [
     },
 ]
 
+const babelTargetsCjsEsm = [
+    {
+        distSuffix: '',
+        args: [
+            '--env-name', 'cjs', '--no-comments', // '--copy-files', '--no-copy-ignored',
+            '--out-file-extension', '.cjs',
+            '--extensions', '.ts', '--extensions', '.tsx', '--extensions', '.js', '--extensions', '.jsx',
+            '--ignore', '**/*.d.ts',
+            '--ignore', '**/*.test.tsx', '--ignore', '**/*.test.ts', '--ignore', '**/*.test.js',
+            '--ignore', '**/*.mock.ts', '--ignore', '**/*.mock.js',
+        ],
+    },
+    {
+        distSuffix: '/esm',
+        // distSuffix: '', // for mjs it would need a distSuffix
+        args: [
+            // '--env-name', 'mjs',
+            // '--out-file-extension', '.mjs',
+            '--no-comments',
+            '--extensions', '.ts', '--extensions', '.tsx', '--extensions', '.js', '--extensions', '.jsx',
+            '--ignore', '**/*.d.ts',
+            '--ignore', '**/*.test.tsx', '--ignore', '**/*.test.ts', '--ignore', '**/*.test.js',
+            '--ignore', '**/*.mock.ts', '--ignore', '**/*.mock.js',
+        ],
+    },
+]
+
 const transformerForEsmCjs = () => {
     return {
         sideEffects: false,
@@ -110,7 +137,7 @@ const packages = {
         root: path.resolve(__dirname, 'packages', 'ds-material'),
         entry: path.resolve(__dirname, 'packages', 'ds-material/src/'),
         // babelTargets: legacyBabelTargets,
-        babelTargets: babelTargetsEsmCjs,
+        babelTargets: babelTargetsCjsEsm,
     },
     dsBootstrap: {
         name: '@ui-schema/ds-bootstrap',
@@ -135,7 +162,7 @@ const packages = {
         esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'material-pickers'),
         entry: path.resolve(__dirname, 'packages', 'material-pickers/src/'),
-        babelTargets: babelTargetsEsmCjs,
+        babelTargets: babelTargetsCjsEsm,
     },
     materialDnd: {
         name: '@ui-schema/material-dnd',
@@ -143,7 +170,7 @@ const packages = {
         esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'material-dnd'),
         entry: path.resolve(__dirname, 'packages', 'material-dnd/src/'),
-        babelTargets: babelTargetsEsmCjs,
+        babelTargets: babelTargetsCjsEsm,
     },
 }
 
@@ -335,20 +362,7 @@ packer({
     packages: packages,
 }, __dirname, {
     afterEsModules: (packages, pathBuild, isServing) => {
-        const nonStrictPackages = [
-            'dsMaterial',
-            'materialDnd',
-            'materialPickers',
-        ]
         return Promise.all([
-            makeModulePackageJson(transformerForEsmCjs)(
-                Object.keys(packages).reduce(
-                    (packagesFiltered, pack) =>
-                        nonStrictPackages.includes(pack) ? {...packagesFiltered, [pack]: packages[pack]} : packagesFiltered,
-                    {},
-                ),
-                pathBuild,
-            ),
             ...(isServing ? [] : [copyRootPackageJson()(packages, pathBuild)]),
         ]).then(() => undefined).catch((e) => {
             console.error('ERROR after-es-mod', e)
@@ -360,107 +374,8 @@ packer({
         if (execs.indexOf('doServe') !== -1) {
             console.log('[packer] is now serving (after ' + elapsed + 'ms)')
         } else {
-            if (execs.indexOf('doBuildBabel') !== -1) {
-                const nodePackages = [
-                    // [path, esmOnly]
-                    // [path.resolve(__dirname, 'packages', 'ui-schema'), true],
-                    // [path.resolve(__dirname, 'packages', 'json-pointer'), true],
-                    // [path.resolve(__dirname, 'packages', 'json-schema'), true],
-                    ...Object.values(packages).map(pkg => {
-                        return [pkg.root, pkg.esmOnly]
-                    }),
-                ]
-
-                const saver = nodePackages.map(([pkg/*, esmOnly*/]) => {
-                    return new Promise(((resolve, reject) => {
-                        console.log(' rewrite package.json of ' + pkg)
-                        const packageFile = JSON.parse(fs.readFileSync(path.join(pkg, 'package.json')).toString())
-                        // todo: for backends: here check all `devPackages` etc. an replace local-packages with `file:` references,
-                        //       then copy the `build` of that package to e.g. `_modules` in the backend `build`
-                        if (packageFile.exports) {
-                            packageFile.exports = Object.keys(packageFile.exports).reduce((exp, pkgName) => {
-                                let pkgExportsFinal
-                                const pkgExports = packageFile.exports[pkgName]
-                                const changeFolder = (maybePrefixedFolder) =>
-                                    maybePrefixedFolder.startsWith('./build/') ?
-                                        '.' + maybePrefixedFolder.slice('./build'.length) :
-                                        maybePrefixedFolder.startsWith('./src/') ?
-                                            '.' + maybePrefixedFolder.slice('./src'.length) :
-                                            maybePrefixedFolder
-                                if (typeof pkgExports === 'string') {
-                                    pkgExportsFinal = changeFolder(pkgExports)
-                                } else if (typeof pkgExports === 'object') {
-                                    pkgExportsFinal = Object.keys(pkgExports).reduce((pkgExportsNext, pkgExport) => {
-                                        let pkgExportNext = changeFolder(pkgExports[pkgExport])
-                                        let cjs = undefined
-                                        // if (pkgExport === 'import' && !esmOnly) {
-                                        //     if (!pkgExport['require']) {
-                                        //         cjs = {'require': pkgExportNext}
-                                        //     }
-                                        //     pkgExportNext = pkgExportNext.startsWith('./esm/') ? pkgExportNext : './esm' + pkgExportNext.slice(1)
-                                        // }
-                                        return {
-                                            ...pkgExportsNext,
-                                            [pkgExport]:
-                                                pkgExportNext.endsWith('.ts') && !pkgExportNext.endsWith('.d.ts') ?
-                                                    pkgExportNext.slice(0, -3) + '.d.ts' : pkgExportNext,
-                                            ...cjs || {},
-                                        }
-                                    }, {})
-                                } else {
-                                    throw new Error(`package exports could not be generated for ${pkgName}`)
-                                }
-                                return {
-                                    ...exp,
-                                    [pkgName]: pkgExportsFinal,
-                                }
-                            }, packageFile.exports)
-                        }
-                        if (packageFile.module && packageFile.module.startsWith('build/')) {
-                            packageFile.module = packageFile.module.slice('build/'.length)
-                        }
-                        if (packageFile.module && packageFile.module.startsWith('src/')) {
-                            packageFile.module = packageFile.module.slice('src/'.length)
-                        }
-                        if (packageFile.main && packageFile.main.startsWith('build/')) {
-                            packageFile.main = packageFile.main.slice('build/'.length)
-                        }
-                        if (packageFile.main && packageFile.main.startsWith('src/')) {
-                            packageFile.main = packageFile.main.slice('src/'.length)
-                        }
-                        if (packageFile.typings && packageFile.typings.startsWith('build/')) {
-                            packageFile.typings = packageFile.typings.slice('build/'.length)
-                        }
-                        if (packageFile.typings && packageFile.typings.startsWith('src/')) {
-                            packageFile.typings = packageFile.typings.slice('src/'.length)
-                        }
-                        if (packageFile.types && packageFile.types.startsWith('build/')) {
-                            packageFile.types = packageFile.types.slice('build/'.length)
-                        }
-                        if (packageFile.types && packageFile.types.startsWith('src/')) {
-                            packageFile.types = packageFile.types.slice('src/'.length)
-                        }
-                        fs.writeFile(path.join(pkg, 'build', 'package.json'), JSON.stringify(packageFile, null, 4), (err) => {
-                            if (err) {
-                                reject(err)
-                                return
-                            }
-                            resolve()
-                        })
-                    }))
-                })
-                Promise.all(saver)
-                    .then(() => {
-                        console.log('[packer] finished successfully (after ' + elapsed + 'ms)', execs)
-                        process.exit(0)
-                    })
-                    .catch((e) => {
-                        console.error('packerConfig', e)
-                    })
-            } else {
-                console.log('[packer] finished successfully (after ' + elapsed + 'ms)', execs)
-                process.exit(0)
-            }
+            console.log('[packer] finished successfully (after ' + elapsed + 'ms)', execs)
+            process.exit(0)
         }
     })
     .catch((e) => {
