@@ -7,9 +7,9 @@ export const storeBuildScopeTree = <S extends UIStoreType>(
     storeKeys: StoreKeys,
     scope: keyof UIStoreStateData,
     store: S,
-    onMiss: (key: string | number) => any,
+    onMiss: undefined | ((key: string | number) => any),
     onMissWrapper?: () => Map<unknown, unknown> | OrderedMap<unknown, unknown>,
-): S => {
+): { store: S, incomplete: boolean } => {
     let root = store.get(scope)
 
     if (!root && onMissWrapper) {
@@ -17,12 +17,18 @@ export const storeBuildScopeTree = <S extends UIStoreType>(
         root = onMissWrapper()
     }
 
+    const nextScopeRoot = onMissWrapper
+        ? buildScopeTree(storeKeys, root, onMiss, onMissWrapper)
+        : buildTree(storeKeys, root, onMiss)
+
+    if (nextScopeRoot.incomplete) {
+        return {store, incomplete: true}
+    }
+
     store = store.set(
         scope,
-        onMissWrapper
-            ? buildScopeTree(storeKeys, root, onMiss, onMissWrapper)
-            : buildTree(storeKeys, root, onMiss),
+        nextScopeRoot.root,
     ) as S
 
-    return store
+    return {store, incomplete: false}
 }

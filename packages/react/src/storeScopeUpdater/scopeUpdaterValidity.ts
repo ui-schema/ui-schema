@@ -5,13 +5,15 @@ import { List, Map } from 'immutable'
 
 export const scopeUpdaterValidity = <S extends UIStoreType = UIStoreType>(
     store: S, storeKeys: StoreKeys, newValue: any,
+    op: 'set' | 'delete',
 ) => {
+    // todo: switch fully to `op` once `valid` etc. isn't included here
     store = storeBuildScopeTree(
         storeKeys, 'validity', store,
-        (key) => typeof key === 'number' ? List() : Map(),
+        op === 'set' || typeof newValue === 'undefined' ? (key) => typeof key === 'number' ? List() : Map() : undefined,
         () => Map({}),
-    )
-    if (typeof newValue === 'undefined') {
+    ).store
+    if (op === 'delete' || typeof newValue === 'undefined') {
         store = store.deleteIn(
             // todo: add the `valid` sub key as the one for mutation? support `newValue` being any object (except `children`)?
             prependKey(storeKeys.size ? addNestKey('children', storeKeys) : Array.isArray(storeKeys) ? List(storeKeys) : storeKeys, 'validity').push('valid'),

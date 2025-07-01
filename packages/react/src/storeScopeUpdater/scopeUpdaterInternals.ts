@@ -5,16 +5,20 @@ import { List, Map } from 'immutable'
 
 export const scopeUpdaterInternals = <S extends UIStoreType = UIStoreType>(
     store: S, storeKeys: StoreKeys, newValue: any,
+    op: 'set' | 'delete',
 ) => {
-    // initializing the tree for correct data types
-    // https://github.com/ui-schema/ui-schema/issues/119
-    store = storeBuildScopeTree(
+    const storeBuild = storeBuildScopeTree(
         storeKeys, 'internals', store,
-        (key) => typeof key === 'number' ? List() : Map(),
+        op === 'set' ? (key) => typeof key === 'number' ? List() : Map() : undefined,
         () => Map({self: Map()}),
     )
+
+    if (storeBuild.incomplete) {
+        return store
+    }
+
     return updateStoreScope(
-        store, 'internals',
+        storeBuild.store, 'internals',
         (storeKeys.size ? addNestKey('children', storeKeys) : Array.isArray(storeKeys) ? List(storeKeys) : storeKeys).push('self'),
         newValue,
     )

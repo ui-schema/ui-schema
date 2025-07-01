@@ -62,10 +62,22 @@ export interface UIStoreActionSet<S extends UIStoreType = UIStoreType, D extends
     data: D
 }
 
+export interface UIStoreActionDelete<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> extends Partial<UIStoreActionScoped<D>>, UIStoreAction<S, D> {
+    type: 'delete'
+}
+
 export type UIStoreActions<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData> =
     UIStoreActionListItemAdd<S, D> |
     UIStoreActionListItemDelete<S, D> |
     UIStoreActionListItemMove<S, D> |
     UIStoreActionUpdate<S, D> |
-    UIStoreActionSet<S, D>
+    UIStoreActionSet<S, D> |
+    UIStoreActionDelete<S, D>
 
+export function isAffectingValue<S extends Omit<UIStoreAction, 'effect'> | (Omit<UIStoreAction, 'effect'> & UIStoreActionScoped)>(action: S) {
+    if ('scopes' in action && action.scopes) {
+        return action.scopes.includes('value')
+    }
+    // when not a scoped action, it is expected that the action mutates all scopes
+    return true
+}

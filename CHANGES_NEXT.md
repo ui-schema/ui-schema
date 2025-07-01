@@ -76,6 +76,9 @@ Todo:
             - [ ] tree/nested information
         - [ ] in validators
 - [x] simplified `ValidatorErrors`, less hierarchy, easier interface for adding own-errors, child-errors and retrieving them
+- [ ] schemaTypeToDistinct should not always combine types
+    - but for type tests, there are the `schemaTypeIs` utils, which should be used instead?
+    - check current usage of `schemaTypeToDistinct` and switch if test fn must be used
 
 ### JSON-Schema
 
@@ -184,15 +187,17 @@ Todo:
 
 - remodelled `UIStoreAction`
     - removed `scope` from base, now only available for `set` and `update` action
-        - **TODO** add helper for "is value effected change"? as now `action.scopes.includes('value')` is not enough
+        - add helper `isAffectingValue` for "is change affecting the value scope", as now `action.scopes.includes('value')` is not enough; if no `scope` exists, it is expected that the action updates all scopes, or at least `value`
     - deprecated `effect`
         - **TODO** make async? (remove into next tick)
+- added new `delete` action, only for deleting properties in objects, can has `scope`, otherwise deletes all
+- basic support for `default` keywod in `list-item-add` action
 
 Todo:
 
-- [ ] rewrite `storeUpdater` to be simpler and easier to extend
+- [x] rewrite `storeUpdater` to be simpler and easier to extend
     - [x] working basics, roughly rewritten
-    - [ ] normalized and optimized with other store/tree changes
+    - [x] ~~normalized and optimized with other store/tree changes~~ treating most as internals for the moment, while providing a factory function to create action reducer
 - [ ] rewrite store tree building and related nesting keys to be more robust and consistent
     - what/why:
         - all use `children` as nestKey
@@ -200,6 +205,12 @@ Todo:
             - with `valid` holding the number of errors for `validity`
                 - allowing to add e.g. `errors` for full error details
         - all use `List|Map` nesting, previously `validity` didn't use `List` and stringified storeKeys
+            - **TODO:** `internals` with `List` is unstable, as can have holes (push to existing list)
+                - but the reason was that it would be even more complex when removing stuff and needing to shift the indexes, maybe just not initializing internals anymore?! immutable has no problem with empty slots, as long as we don't need to convert internals back to JS
+                - **TODO:** add test cases for behaviour exploration: first value/internal is a nested object, then a nested object with list, then back to nested object or flat;
+                  to further define how internals should be deleted, as if an object is deleted and recreated as list, its old `children` with `List` could still exist, or be useful when switching back,
+                  but the `buildTree` treats any non-List or non-Map compatible value as a miss, auto-correcting the tree with it. *but does that cover the nested `.children` and where they are used?*
+                  while validity is atm. contains a cleanup internally, which prevents that from (typically?) happening
         - all use fully nested structures for no key conflicts and safer nesting
     - [x] working basics, roughly rewritten
     - [ ] finalized typings / initialization
@@ -384,6 +395,11 @@ new widget engine functions:
     - `docs`: uses no `type: "module"`, as that breaks older dependencies, instead TS config contains `"module": "CommonJS", "moduleResolution": "node"`
       to support any older standards in CLI and webpack bundle, even while adjusting / testing different settings in root `tsconfig.json`
     - core packages now use `type: "module"` with `"module": "Node16", "moduleResolution": "Node16"`
+- [ ] fix `pro`, or more easier/stabilized `scopeUpdater*` `UIStoreType` generic
+    - somehow the `dtsgen` of `/pro` fails with type errors caused by `/react`, while react and all other don't have that issue
+    - only appearing with new `storeUpdater` type, and only when importing and using the updater in the store directly
+    - some basic understanding of what caused this would be helpful, for stabilization & future bug prevention, nothing more to do.
+    - as a workaround removed hardcoded `storeUpdater` and moved it to `useStorePro` options, which causes no type build issues
 - [ ] optimize `.d.ts` generation, switch to `rootDir` to have normalized directory names for merge-dir, not depending if anything is imported or not
     - currently intended to be defined in the package.json per package that should be generated
     - options like `composite`/`references` didn't work, except with a defined order of script execs, so most likely no option
@@ -436,6 +452,13 @@ new widget engine functions:
 - [ ] in pickers only types are migrated and props adjusted for `fullWidth`, nothing else was verified
 - [ ] check/migrate `SchemaLayer` to new `WigetEngine`
 - [ ] in the new schema merging, in the `object` level the property-collision conversion takes place, while in the property level it merges the `allOf` produced in the `object` level, which duplicates the keywords, should this be cleaned up internally or is it helpful to have the `allOf` still available, e.g. to access all `$ref` still in there
+- [ ] demo of custom actions with a "rename property" action
+- [ ] write up the (existing) storeUpdater limitations, which also are related to some `0.6.x` targets
+    - e.g. `delete` does not support `deleteOnEmpty` on object level, as the parent object schema is unknown when deleting a property
+- [ ] define behaviour for store actions which mutate nested values, yet the store contains incompatible data, e.g. a `string` root can't be updated to an `object` just by firing the respective nested mutation
+    - this undefined behaviour / normal errors isn't nice
+    - an automatic correction should be optional, as imho. unexpected and may lead to more complex integration with most ORM/DMS
+- [ ] provide a demo of custom store actions which use the schema resource system for more complex recursive mutations?
 
 ## Todo 0.6.x
 
@@ -458,6 +481,11 @@ new widget engine functions:
 - schemaLocation vs valueLocation for schema resolving, reduction, store connection and happy path selection and rendering
 - deprecate `parentSchema`, `schema` in props of widget engine, but not in widget payload
 - better support for skipping `hidden` and empty schema while rendering, to not produce empty grid slots; depends also on central schema validation and building of applied UI happy paths, with some central index for stuff like hidden etc.
+- reevaluate if store utils should stay in `react` or move to system
+- deprecate `extractValue`/`extractValidity` HOCs
+- rewrite all store related functions
+    - external store with subscription system
+    - full rewrite of `scopeUpdater*`; as leading to behaviour changes, should be better in `0.6.x` instead of `0.5.x`
 
 ---
 

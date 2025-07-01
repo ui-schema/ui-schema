@@ -15,6 +15,7 @@ import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/Schema
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { matchWidget } from '@ui-schema/ui-schema/matchWidget'
+import { Map } from 'immutable'
 import React from 'react'
 import { useToggle } from '../component/useToggle'
 import { dataDemoMain, schemaDemoMain, schemaUser } from '../schemas/demoMain'
@@ -52,6 +53,34 @@ const customBinding: MuiWidgetsBinding = {
         // todo: Grid must be after e.g. ConditionalHandler, yet if referencing/combining results in loading, yet should also be used there
         //       (old) but why was it this high? wasn't that because of e.g. conditional object grids
         SchemaGrid2Handler,
+        function TouchedFocusHandler(props) {
+            const focusValueInitial = React.useRef<string | number | null>(null)
+            const {Next, value, onChange, storeKeys} = props
+            return <Next.Component
+                {...props}
+                onFocus={() => {
+                    focusValueInitial.current =
+                        typeof value === 'string'
+                        || typeof value === 'number' ? value : null
+                }}
+                onBlur={() => {
+                    // check if value has changed, only then consider touched
+                    if ((typeof value === 'string' || typeof value === 'number') && focusValueInitial.current !== value) {
+                        onChange({
+                            storeKeys,
+                            scopes: ['internal'],
+                            type: 'update',
+                            updater: ({internal = Map()}) => {
+                                return {
+                                    internal: internal.set('touched', true),
+                                }
+                            },
+                        })
+                    }
+                    focusValueInitial.current = null
+                }}
+            />
+        },
         ValidityReporter,
     ],
     widgets: {

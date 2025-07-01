@@ -125,11 +125,13 @@ describe('UIStoreProvider', () => {
         ],
     ])('doExtractValues(%j, %j): %j', (storeKeys: StoreKeys, store: UIStoreType, expected: any, expectedSameness: boolean) => {
         const r = doExtractValues(storeKeys, store)
+        const r2 = store.extractValues(storeKeys)
         const isExpected = isEqualObject(r, expected)
         if (isExpected !== expectedSameness) {
             // @ts-ignore
             console.log('failed doExtractValues', storeKeys.toJS(), store.toJS(), r, expected)
         }
         expect(isExpected).toBe(expectedSameness)
+        expect(isEqualObject(r, r2)).toBe(expectedSameness)
     })
 })

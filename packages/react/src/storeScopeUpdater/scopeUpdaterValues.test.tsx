@@ -4,7 +4,7 @@
 import { test, expect, describe } from '@jest/globals'
 import '@testing-library/jest-dom/jest-globals'
 import { StoreKeyType } from '@ui-schema/ui-schema/ValueStore'
-import { List, Map, OrderedMap } from 'immutable'
+import { List, OrderedMap } from 'immutable'
 import { UIStore, StoreKeys, UIStoreType, createEmptyStore } from '@ui-schema/react/UIStore'
 import { scopeUpdaterValues } from './scopeUpdaterValues.js'
 
@@ -18,7 +18,7 @@ describe('scopeUpdaterValues', () => {
             createEmptyStore('object'),
             List<StoreKeyType>([]),
             OrderedMap({}),
-            {schema: Map({type: 'object'})},
+            'set' as const,
             new UIStore({
                 values: OrderedMap({}),
                 internals: undefined,
@@ -29,7 +29,7 @@ describe('scopeUpdaterValues', () => {
             createEmptyStore('array'),
             List<StoreKeyType>([]),
             List([]),
-            {schema: Map({type: 'array'})},
+            'set' as const,
             new UIStore({
                 values: List([]),
                 internals: undefined,
@@ -42,7 +42,7 @@ describe('scopeUpdaterValues', () => {
             }),
             List<StoreKeyType>([]),
             OrderedMap({}),
-            {schema: Map({type: 'object'})},
+            'set' as const,
             new UIStore({
                 values: OrderedMap({}),
             }),
@@ -53,7 +53,7 @@ describe('scopeUpdaterValues', () => {
             }),
             List<StoreKeyType>([]),
             OrderedMap({}),
-            undefined,
+            'set' as const,
             new UIStore({
                 values: OrderedMap({}),
             }),
@@ -64,7 +64,7 @@ describe('scopeUpdaterValues', () => {
             }),
             List<StoreKeyType>([]),
             undefined,
-            {schema: Map({type: 'object'}), required: true},
+            'delete',
             new UIStore({}),
         ],
         [
@@ -73,7 +73,7 @@ describe('scopeUpdaterValues', () => {
             }),
             List(['prop_a']),
             'some-string',
-            {schema: Map({type: 'string'})},
+            'set' as const,
             new UIStore({
                 values: OrderedMap({
                     prop_a: 'some-string',
@@ -86,9 +86,7 @@ describe('scopeUpdaterValues', () => {
             }),
             List(['prop_a', 0]),
             'some-string',
-            {
-                schema: Map({type: 'string'}),
-            },
+            'set' as const,
             new UIStore({
                 values: OrderedMap({
                     prop_a: List([
@@ -97,32 +95,49 @@ describe('scopeUpdaterValues', () => {
                 }),
             }),
         ],
+        // [
+        //     new UIStore({
+        //         values: OrderedMap({
+        //             prop_a: 'some-string',
+        //         }),
+        //     }),
+        //     List(['prop_a']),
+        //     '',
+        //     'set' as const,
+        //     new UIStore({
+        //         values: OrderedMap({}),
+        //     }),
+        // ],
         [
-            new UIStore({
-                values: OrderedMap({
-                    prop_a: 'some-string',
-                }),
-            }),
-            List(['prop_a']),
-            '',
-            {schema: Map({type: 'string'}), required: true},
             new UIStore({
                 values: OrderedMap({}),
             }),
-        ],
-        [
-            new UIStore({
-                values: OrderedMap({}),
-            }),
             List(['prop_a']),
             '',
-            {schema: Map({type: 'string'}), required: false},
+            'set' as const,
             new UIStore({
                 values: OrderedMap({
                     prop_a: '',
                 }),
             }),
         ],
+        // [
+        //     new UIStore({
+        //         values: OrderedMap({
+        //             prop_a: OrderedMap({
+        //                 sub_a: 'some-string',
+        //             }),
+        //         }),
+        //     }),
+        //     List(['prop_a', 'sub_a']),
+        //     '',
+        //     'set' as const,
+        //     new UIStore({
+        //         values: OrderedMap({
+        //             prop_a: OrderedMap({}),
+        //         }),
+        //     }),
+        // ],
         [
             new UIStore({
                 values: OrderedMap({
@@ -133,24 +148,7 @@ describe('scopeUpdaterValues', () => {
             }),
             List(['prop_a', 'sub_a']),
             '',
-            {schema: Map({type: 'string'}), required: true},
-            new UIStore({
-                values: OrderedMap({
-                    prop_a: OrderedMap({}),
-                }),
-            }),
-        ],
-        [
-            new UIStore({
-                values: OrderedMap({
-                    prop_a: OrderedMap({
-                        sub_a: 'some-string',
-                    }),
-                }),
-            }),
-            List(['prop_a', 'sub_a']),
-            '',
-            {schema: Map({type: 'string'}), required: false},
+            'set' as const,
             new UIStore({
                 values: OrderedMap({
                     prop_a: OrderedMap({
@@ -159,93 +157,108 @@ describe('scopeUpdaterValues', () => {
                 }),
             }),
         ],
-        [
-            new UIStore({
-                values: OrderedMap({
-                    prop_a: List([
-                        'some-string-0',
-                        'some-string-1',
-                        'some-string-2',
-                        'some-string-3',
-                    ]),
-                }),
-            }),
-            List(['prop_a', 0]),
-            '',
-            {schema: Map({type: 'string'}), required: true},
-            new UIStore({
-                values: OrderedMap({
-                    prop_a: List([
-                        // todo: change test with correct tuple behaviour
-                        null,
-                        'some-string-1',
-                        'some-string-2',
-                        'some-string-3',
-                    ]),
-                }),
-            }),
-        ],
-        [
-            new UIStore({
-                values: OrderedMap({
-                    prop_a: List([
-                        'some-string-0',
-                        'some-string-1',
-                        'some-string-2',
-                        'some-string-3',
-                    ]),
-                }),
-            }),
-            List(['prop_a', 1]),
-            '',
-            {schema: Map({type: 'string'}), required: true},
-            new UIStore({
-                values: OrderedMap({
-                    prop_a: List([
-                        // todo: change test with correct tuple behaviour
-                        'some-string-0',
-                        null,
-                        'some-string-2',
-                        'some-string-3',
-                    ]),
-                }),
-            }),
-        ],
-        [
-            new UIStore({
-                values: OrderedMap({
-                    prop_a: List([
-                        'some-string-0',
-                        'some-string-1',
-                        'some-string-2',
-                        'some-string-3',
-                    ]),
-                }),
-            }),
-            List(['prop_a', 3]),
-            '',
-            {schema: Map({type: 'string'}), required: true},
-            new UIStore({
-                values: OrderedMap({
-                    prop_a: List([
-                        // todo: change test with correct tuple behaviour
-                        'some-string-0',
-                        'some-string-1',
-                        'some-string-2',
-                        null,
-                    ]),
-                }),
-            }),
-        ],
-        [
-            new UIStore({
-                values: 'some-string',
-            }),
-            List<StoreKeyType>([]),
-            '',
-            {schema: Map({type: 'string'}), required: true},
-            new UIStore({}).delete('values'),
-        ],
+        // [
+        //     new UIStore({
+        //         values: OrderedMap({
+        //             prop_a: List([
+        //                 'some-string-0',
+        //                 'some-string-1',
+        //                 'some-string-2',
+        //                 'some-string-3',
+        //             ]),
+        //         }),
+        //     }),
+        //     List(['prop_a', 0]),
+        //     '',
+        //     'set' as const,
+        //     new UIStore({
+        //         values: OrderedMap({
+        //             prop_a: List([
+        //                 // todo: change test with correct tuple behaviour
+        //                 null,
+        //                 'some-string-1',
+        //                 'some-string-2',
+        //                 'some-string-3',
+        //             ]),
+        //         }),
+        //     }),
+        // ],
+        // [
+        //     new UIStore({
+        //         values: OrderedMap({
+        //             prop_a: List([
+        //                 'some-string-0',
+        //                 'some-string-1',
+        //                 'some-string-2',
+        //                 'some-string-3',
+        //             ]),
+        //         }),
+        //     }),
+        //     List(['prop_a', 1]),
+        //     '',
+        //     'set' as const,
+        //     new UIStore({
+        //         values: OrderedMap({
+        //             prop_a: List([
+        //                 // todo: change test with correct tuple behaviour
+        //                 'some-string-0',
+        //                 null,
+        //                 'some-string-2',
+        //                 'some-string-3',
+        //             ]),
+        //         }),
+        //     }),
+        // ],
+        // [
+        //     new UIStore({
+        //         values: OrderedMap({
+        //             prop_a: List([
+        //                 'some-string-0',
+        //                 'some-string-1',
+        //                 'some-string-2',
+        //                 'some-string-3',
+        //             ]),
+        //         }),
+        //     }),
+        //     List(['prop_a', 3]),
+        //     '',
+        //     'set' as const,
+        //     new UIStore({
+        //         values: OrderedMap({
+        //             prop_a: List([
+        //                 // todo: change test with correct tuple behaviour
+        //                 'some-string-0',
+        //                 'some-string-1',
+        //                 'some-string-2',
+        //                 null,
+        //             ]),
+        //         }),
+        //     }),
+        // ],
+        // [
+        //     new UIStore({
+        //         values: 'some-string',
+        //     }),
+        //     List<StoreKeyType>([]),
+        //     '',
+        //     'set' as const,
+        //     new UIStore({}).delete('values'),
+        // ],
+        // [
+        //     new UIStore({
+        //         values: OrderedMap({
+        //             prop_a: 'already-changed',
+        //         }),
+        //     }),
+        //     List(['prop_a', 'sub_a']),
+        //     '',
+        //     'set' as const,
+        //     new UIStore({
+        //         values: OrderedMap({
+        //             prop_a: OrderedMap({}),
+        //         }),
+        //     }),
+        // ],
         [
             new UIStore({
                 values: OrderedMap({
@@ -254,22 +267,7 @@ describe('scopeUpdaterValues', () => {
             }),
             List(['prop_a', 'sub_a']),
             '',
-            {schema: Map({type: 'string'}), required: true},
-            new UIStore({
-                values: OrderedMap({
-                    prop_a: OrderedMap({}),
-                }),
-            }),
-        ],
-        [
-            new UIStore({
-                values: OrderedMap({
-                    prop_a: 'already-changed',
-                }),
-            }),
-            List(['prop_a', 'sub_a']),
-            '',
-            {schema: Map({type: 'string'}), required: false},
+            'set' as const,
             new UIStore({
                 values: OrderedMap({
                     prop_a: OrderedMap({
@@ -282,12 +280,13 @@ describe('scopeUpdaterValues', () => {
         store: UIStoreType<any>,
         storeKeys: StoreKeys,
         newValue: any,
-        action,
+        op: string | 'set' | 'delete' | undefined,
         expected: any,
     ) => {
         const r = scopeUpdaterValues(
             store, storeKeys, newValue,
-            action,
+            // @ts-expect-error
+            op,
         )
         const isExpected = r.equals(expected)
         if (!isExpected) {

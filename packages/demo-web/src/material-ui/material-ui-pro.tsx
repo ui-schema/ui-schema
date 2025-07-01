@@ -3,6 +3,7 @@ import { MuiWidgetsBinding } from '@ui-schema/ds-material'
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
+import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import React from 'react'
 import Button from '@mui/material/Button'
@@ -88,7 +89,11 @@ const Main = () => {
         onChange, store, setStore,
         redoHistory, undoHistory,
         // todo: multi type support #68
-    } = useStorePro({type: String(schema.get('type')), initialStore: initialStore})
+    } = useStorePro({
+        type: String(schema.get('type')),
+        initialStore: initialStore,
+        storeUpdater: storeUpdater,
+    })
 
     // todo: multi type support #68
     const type = String(schema.get('type'))

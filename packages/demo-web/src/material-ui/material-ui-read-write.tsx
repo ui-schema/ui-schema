@@ -33,7 +33,7 @@ import { GroupRendererProps, WidgetProps } from '@ui-schema/react/Widgets'
 import { UIMetaContext, UIMetaContextInternal, UIMetaProvider, useUIMeta } from '@ui-schema/react/UIMeta'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
-import { createStore, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
+import { createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
@@ -190,7 +190,7 @@ const ReadableWritableEditor = () => {
     const [sort, setSort] = React.useState(false)
 
     const onChange = React.useCallback((actions: UIStoreActions[] | UIStoreActions) => {
-        setStore(storeUpdater<UIStoreType>(actions))
+        setStore(storeUpdater(actions))
     }, [setStore])
 
     const customWidgetsRtd = React.useMemo(() => ({

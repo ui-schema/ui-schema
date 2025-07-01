@@ -5,17 +5,22 @@ export const buildTree = <TRoot extends List<unknown> | Map<unknown, unknown> | 
     storeKeys: StoreKeys,
     root: TRoot,
     // is called if the parent of the next key does not exist
-    onMiss: (key: string | number) => any,
-): TRoot => {
+    onMiss: undefined | ((key: string | number) => any),
+): { root: TRoot, incomplete: boolean } => {
     let current: any = root
     const path: (string | number)[] = []
+    let incomplete: boolean = false
 
-    storeKeys.forEach((key) => {
+    for (const key of storeKeys) {
         if (typeof key === 'number') {
             if (
                 !current
                 || !List.isList(current)
             ) {
+                if (!onMiss) {
+                    incomplete = true
+                    break
+                }
                 current = onMiss(key)
                 root = root ? root.setIn(path, current) : current
             }
@@ -23,13 +28,17 @@ export const buildTree = <TRoot extends List<unknown> | Map<unknown, unknown> | 
             !current
             || !Map.isMap(current)
         ) {
+            if (!onMiss) {
+                incomplete = true
+                break
+            }
             current = onMiss(key)
             root = root ? root.setIn(path, current) : current
         }
 
         path.push(key)
         current = current.get(key)
-    })
+    }
 
-    return root
+    return {root, incomplete}
 }

@@ -51,7 +51,7 @@ describe('buildTree', () => {
         },
     ) => {
         const r = buildTree(args.storeKeys, args.value, args.onMiss)
-        const isExpected = r ? r.equals(args.expected) : r === args.expected
+        const isExpected = r.root ? r.root.equals(args.expected) : r.root === args.expected
         if (!isExpected) {
             console.log(
                 'failed buildTree',

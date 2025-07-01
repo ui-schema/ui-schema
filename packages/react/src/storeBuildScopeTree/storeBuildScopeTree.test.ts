@@ -119,13 +119,13 @@ describe('storeBuildScopeTree', () => {
             args.onMiss,
             args.onMissWrapper,
         )
-        const isExpected = store.equals(args.expected)
+        const isExpected = store.store.equals(args.expected)
         if (isExpected !== args.expectedSameness) {
             console.log(
                 'failed storeBuildScopeTree',
                 args.storeKeys.toJS(), args.scope,
                 // JSON.stringify(args.store, undefined, 2),
-                JSON.stringify(store, undefined, 2),
+                JSON.stringify(store.store, undefined, 2),
             )
         }
         expect(isExpected).toBe(args.expectedSameness)

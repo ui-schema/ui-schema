@@ -90,6 +90,7 @@ const AccordionStackBase: React.ComponentType<WidgetProps<WidgetsBindingFactory 
 }
 
 // @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export const AccordionStack = extractValidity(memo(AccordionStackBase))
 
 export interface AccordionsRendererProps {

@@ -1,10 +1,10 @@
+import { isAffectingValue, UIStoreActions, UIStoreUpdaterData } from '@ui-schema/react/UIStoreActions'
 import React from 'react'
 import {
     List, Map, Record,
     RecordOf,
 } from 'immutable'
 import { createEmptyStore, onChangeHandler, UIStoreType } from '@ui-schema/react/UIStore'
-import { storeUpdater } from '@ui-schema/react/storeUpdater'
 
 export type redoHistory = (steps?: number) => void
 export type undoHistory = (steps?: number) => void
@@ -44,7 +44,7 @@ export class UIStorePro extends UIStoreProRecord {
 
 export type UIStoreProType = RecordOf<UIStoreProData>
 
-export const makeStorePro = (type: string, initialStore: UIStoreType | any = undefined): UIStoreProType => {
+export const makeStorePro = (type: string, initialStore: UIStoreType | undefined = undefined): UIStoreProType => {
     // @ts-ignore
     return new UIStorePro({
         activeIndex: 0,
@@ -56,14 +56,15 @@ export const makeStorePro = (type: string, initialStore: UIStoreType | any = und
 
 const initialChangeRater: { current: number, last: any } = {current: 0, last: undefined}
 
-export interface UIStoreProOptions {
+export interface UIStoreProOptions<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData, A extends UIStoreActions<S, D> = UIStoreActions<S, D>> {
     debounceTime?: typeof defaultDebounceTime
     updateRate?: typeof defaultUpdateRate
-    initialStore?: UIStoreType | any
+    initialStore?: S | undefined
     type: string
+    storeUpdater: (actions: A[] | A) => (oldStore: S) => S
 }
 
-const defaultStoreOptions: UIStoreProOptions = {
+const defaultStoreOptions: Omit<UIStoreProOptions, 'storeUpdater'> = {
     debounceTime: defaultDebounceTime,
     updateRate: defaultUpdateRate,
     initialStore: undefined,
@@ -84,8 +85,13 @@ export type setStorePro = React.Dispatch<React.SetStateAction<UIStoreProType>>
 const doingValueSelector = ['opts', 'doingValue']
 
 export const useStorePro = (
-    {debounceTime = defaultDebounceTime, updateRate = defaultUpdateRate, type = defaultStoreOptions.type, initialStore = undefined}:
-    UIStoreProOptions = defaultStoreOptions,
+    {
+        debounceTime = defaultDebounceTime,
+        updateRate = defaultUpdateRate,
+        type = defaultStoreOptions.type,
+        initialStore = undefined,
+        storeUpdater,
+    }: UIStoreProOptions,
 ): {
     reset: (type: string, initialStore?: UIStoreType) => void
     onChange: onChangeHandler
@@ -103,7 +109,7 @@ export const useStorePro = (
         if (!Array.isArray(actions)) {
             actions = [actions]
         }
-        const doValue = actions.reduce((doV, action) => doV || (!('scopes' in action) || action.scopes.indexOf('value') !== -1), false)
+        const doValue = actions.some(action => isAffectingValue(action))
 
         setStore((prevStore: UIStoreProType) => {
             let newStore = prevStore.set(
@@ -142,7 +148,7 @@ export const useStorePro = (
                     let list = prevStore.list
                     if (activeIndex < (list.size - 1)) {
                         // if currently back in history, and the store is changed
-                        // use current as new root and delete everything afterwards
+                        // use current as new root and delete everything afterward
                         list = list.splice(activeIndex + 1, list.size - activeIndex)
                     }
                     list = list.push(...historyDebounce.current)
@@ -158,7 +164,7 @@ export const useStorePro = (
         })
 
         return () => window.clearTimeout(timer.current)
-    }, [setStore, timer, historyDebounce, historyChangeRater, debounceTime, updateRate])
+    }, [storeUpdater, updateRate, debounceTime])
 
     const redoHistory: redoHistory = React.useCallback((steps = 1) => {
         setStore((prevStore: UIStoreProType) => {

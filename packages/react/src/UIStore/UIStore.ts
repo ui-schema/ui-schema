@@ -116,7 +116,11 @@ export const prependKey = <
         [key, ...storeKeys] as S :
         storeKeys.splice(0, 0, key) as S
 
-export const shouldDeleteOnEmpty = (value, force, type) => {
+export const shouldDeleteOnEmpty = (
+    value: any,
+    force: boolean | undefined,
+    type: string | string[] | List<string> | undefined,
+) => {
     const valueTypeOf = typeof value
     // todo: mv number out here, enforces that numbers can be cleared, but should only be forced for the `""` value in number types
     if (!force && !schemaTypeIsNumeric(type)) return false

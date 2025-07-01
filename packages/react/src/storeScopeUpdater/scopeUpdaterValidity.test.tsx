@@ -256,7 +256,7 @@ describe('scopeUpdaterInternals', () => {
         newValue: any,
         expected: any,
     ) => {
-        const r = scopeUpdaterValidity(store, storeKeys, newValue)
+        const r = scopeUpdaterValidity(store, storeKeys, newValue, 'set')
         const isExpected = r.equals(expected)
         if (!isExpected) {
             console.log(
