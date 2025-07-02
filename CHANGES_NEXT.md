@@ -454,7 +454,7 @@ new widget engine functions:
 - [ ] in the new schema merging, in the `object` level the property-collision conversion takes place, while in the property level it merges the `allOf` produced in the `object` level, which duplicates the keywords, should this be cleaned up internally or is it helpful to have the `allOf` still available, e.g. to access all `$ref` still in there
 - [ ] demo of custom actions with a "rename property" action
 - [ ] write up the (existing) storeUpdater limitations, which also are related to some `0.6.x` targets
-    - e.g. `delete` does not support `deleteOnEmpty` on object level, as the parent object schema is unknown when deleting a property
+    - e.g. `delete` does not support `deleteOnEmpty` recursively, when deleting a property, the object level won't be cleaned up, as the parent object schema is unknown when deleting a property
 - [ ] define behaviour for store actions which mutate nested values, yet the store contains incompatible data, e.g. a `string` root can't be updated to an `object` just by firing the respective nested mutation
     - this undefined behaviour / normal errors isn't nice
     - an automatic correction should be optional, as imho. unexpected and may lead to more complex integration with most ORM/DMS
@@ -486,6 +486,7 @@ new widget engine functions:
 - rewrite all store related functions
     - external store with subscription system
     - full rewrite of `scopeUpdater*`; as leading to behaviour changes, should be better in `0.6.x` instead of `0.5.x`
+- instead of checking if an action is value affecting, the updater/reducers should return better what they have done, if anything at all
 
 ---
 

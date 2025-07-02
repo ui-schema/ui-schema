@@ -16,6 +16,7 @@ export const scopeUpdaterValidity = <S extends UIStoreType = UIStoreType>(
     if (op === 'delete' || typeof newValue === 'undefined') {
         store = store.deleteIn(
             // todo: add the `valid` sub key as the one for mutation? support `newValue` being any object (except `children`)?
+            // todo: deleting whole node, instead of just `.valid`, would destroy to much information, but there should be a way to "delete all" and "delete all except `children`"
             prependKey(storeKeys.size ? addNestKey('children', storeKeys) : Array.isArray(storeKeys) ? List(storeKeys) : storeKeys, 'validity').push('valid'),
         ) as typeof store
     } else {

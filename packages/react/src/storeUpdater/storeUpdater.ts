@@ -1,4 +1,4 @@
-import { scopeUpdaterInternals, scopeUpdaterValidity, scopeUpdaterValues } from '@ui-schema/react/storeScopeUpdater'
+import { scopeUpdaterInternals, scopeUpdaterInternals2, scopeUpdaterValidity, scopeUpdaterValues } from '@ui-schema/react/storeScopeUpdater'
 import { addNestKey, shouldDeleteOnEmpty, UIStoreType } from '@ui-schema/react/UIStore'
 import { UIStoreActions, UIStoreUpdaterData } from '@ui-schema/react/UIStoreActions'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
@@ -7,10 +7,6 @@ import { moveItem } from '@ui-schema/ui-schema/Utils'
 import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { List, Map, OrderedMap } from 'immutable'
 
-/**
- * @todo normalize with `store.extractValues`, which extracts only the values for performance reasons
- *       - validity now can has more complex payload, not just `valid`
- */
 function getScopedData<S extends UIStoreType = UIStoreType, D extends UIStoreUpdaterData = UIStoreUpdaterData>(
     store: S,
     scopes: (keyof D)[],
@@ -56,31 +52,16 @@ function updateScopedData<S extends UIStoreType = UIStoreType, D extends UIStore
     op: 'set' | 'delete',
 ): S {
     if (scopes.includes('value')) {
-        store = scopeUpdaterValues(
-            store,
-            storeKeys,
-            data.value,
-            op,
-        )
+        store = scopeUpdaterValues(store, storeKeys, data.value, op)
     }
     if (scopes.includes('internal')) {
-        store = scopeUpdaterInternals(
-            store,
-            storeKeys,
-            data.internal,
-            op,
-        )
+        store = scopeUpdaterInternals(store, storeKeys, data.internal, op)
     }
     if (scopes.includes('valid')) {
-        store = scopeUpdaterValidity(
-            store,
-            storeKeys,
-            data.valid,
-            op,
-        )
+        store = scopeUpdaterValidity(store, storeKeys, data.valid, op)
     }
     if (scopes.includes('meta')) {
-        store = store.set('meta', data.meta) as typeof store
+        store = store.set('meta', data.meta) as unknown as typeof store
     }
     return store
 }
@@ -96,7 +77,7 @@ const shouldDelete = (value: unknown, action) => {
 const storeActionHandlersMap: StoreActionHandlersMap = {
     'list-item-add':
         (store, action) => {
-            const data = getScopedData(store, ['value', 'internal'], action.storeKeys)
+            const data = getScopedData(store, ['value'], action.storeKeys)
             if ('itemValue' in action) {
                 data.value ||= List()
                 data.value = data.value.push(action.itemValue)
@@ -112,7 +93,6 @@ const storeActionHandlersMap: StoreActionHandlersMap = {
                 data.value ||= List()
                 data.value = data.value.push(
                     typeof itemDefault !== 'undefined' ? itemDefault :
-                        // todo: multi type support #68
                         schemaTypeIs(type, 'object') ? OrderedMap() :
                             // todo: handle tuple items default / `undefined of non existing keys`
                             // `List.isList(items)` means it got tuple items
@@ -128,105 +108,81 @@ const storeActionHandlersMap: StoreActionHandlersMap = {
                 )
             }
 
-            // // a list item always needs to be initialized somehow
-            // // data.internal ||= Map({self: Map({defaultHandled: true})})
-            // data.internal ||= Map()
-            // // todo: this is `.self.children`, but must be `.children`
-            // data.internal = data.internal.update('children', (internalInternals = List()) =>
-            //     internalInternals.splice(data.value.length - 1, 0, Map({
-            //         self: Map({defaultHandled: true}),
-            //     })),
-            // )
+            store = scopeUpdaterValues(store, action.storeKeys, data.value, 'set')
 
-            return updateScopedData(
-                store,
-                ['value', 'internal'],
-                action.storeKeys,
-                data,
-                'set',
+            // a list item always needs to be initialized
+            // todo: unify behaviour with DefaultHandler via code or like atm, via expected standard
+            store = scopeUpdaterInternals2(
+                store, action.storeKeys, 'set',
+                (internal) => {
+                    return (internal || Map()).update('children', (internalInternals = List()) => {
+                        return internalInternals.set(data.value.size - 1, Map({
+                            self: Map({defaultHandled: true}),
+                        }))
+                    })
+                },
             )
+
+            return store
         },
     'list-item-delete':
         (store, action) => {
-            const data = getScopedData(store, ['value', 'internal'], action.storeKeys)
+            const data = getScopedData(store, ['value'], action.storeKeys)
             data.value ||= List()
             data.value = data.value.splice(action.index, 1)
 
-            data.internal ||= Map()
-            // todo: this is `.self.children`, but must be `.children`
-            data.internal = data.internal.update('children', (internalInternals = List()) =>
-                internalInternals.splice(action.index, 1),
-            )
-
-            if (shouldDelete(data.value, action)) {
-                store = updateScopedData(
-                    store,
-                    ['value'],
-                    action.storeKeys,
-                    {value: data.value},
-                    'delete',
-                )
-                return updateScopedData(
-                    store,
-                    ['internal'],
-                    action.storeKeys,
-                    {internal: data.internal},
-                    'set',
-                )
-            }
-
-            return updateScopedData(
-                store,
-                ['value', 'internal'],
-                action.storeKeys,
-                data,
-                'set',
-            )
-        },
-    'list-item-move':
-        (store, action) => {
-            const data = getScopedData(store, ['value', 'internal'], action.storeKeys)
-            data.value ||= List()
-            data.value = moveItem(data.value, action.fromIndex, action.toIndex)
-
-            data.internal ||= Map()
-            // todo: this is `.self.children`, but must be `.children`
-            data.internal = data.internal.update('children', (internalInternals = List()) =>
-                // data.internal = data.internal.update('internals', (internalInternals = List()) =>
-                moveItem(
-                    (internalInternals.size - 1) < action.toIndex ?
-                        // "set undefined at target":
-                        // - to fix "Cannot update within non-data-structure value in path ["values","options",0,"choices",0]: undefined"
-                        // - e.g. when rendering DND with existing data where not every item uses `internals`,
-                        //   the structures like [data1, data2] vs [internal1] can not be moved with splice
-                        internalInternals.set(action.toIndex, undefined) :
-                        (internalInternals.size - 1) < action.fromIndex ?
-                            // "set undefined at target":
-                            // - to fix similar issue, but now when "switching" between two, where the from ist after already existing internals
-                            internalInternals.set(action.fromIndex, undefined) :
-                            internalInternals,
-                    action.fromIndex, action.toIndex,
+            // always deleting the item, never the list
+            store = scopeUpdaterInternals2(
+                store, action.storeKeys, 'delete',
+                (internal) => internal?.update('children', (internalInternals = List()) =>
+                    internalInternals.splice(action.index, 1),
                 ),
             )
 
-            return updateScopedData(
-                store,
-                ['value', 'internal'],
-                action.storeKeys,
-                data,
+            if (shouldDelete(data.value, action)) {
+                store = scopeUpdaterValues(store, action.storeKeys, data.value, 'delete')
+                return store
+            }
+
+            store = scopeUpdaterValues(store, action.storeKeys, data.value, 'set')
+            return store
+        },
+    'list-item-move':
+        (store, action) => {
+            const data = getScopedData(store, ['value'], action.storeKeys)
+            data.value ||= List()
+            data.value = moveItem(data.value, action.fromIndex, action.toIndex)
+
+            store = scopeUpdaterValues(store, action.storeKeys, data.value, 'set')
+            store = scopeUpdaterInternals2(
+                store, action.storeKeys,
                 'set',
+                (value = Map()) => {
+                    return (value || Map()).update('children', (internalInternals = List()) =>
+                        moveItem(
+                            (internalInternals.size - 1) < action.toIndex ?
+                                // "set undefined at target":
+                                // - to fix "Cannot update within non-data-structure value in path ["values","options",0,"choices",0]: undefined"
+                                // - e.g. when rendering DND with existing data where not every item uses `internals`,
+                                //   the structures like [data1, data2] vs [internal1] can not be moved with splice
+                                internalInternals.set(action.toIndex, undefined) :
+                                (internalInternals.size - 1) < action.fromIndex ?
+                                    // "set undefined at target":
+                                    // - to fix similar issue, but now when "switching" between two, where the from is after already existing internals
+                                    internalInternals.set(action.fromIndex, undefined) :
+                                    internalInternals,
+                            action.fromIndex, action.toIndex,
+                        ),
+                    )
+                },
             )
+
+            return store
         },
     'set':
         (store, action) => {
             if (action.scopes?.includes('value') && shouldDelete(action.data.value, action)) {
-                store = updateScopedData(
-                    store,
-                    ['value'],
-                    action.storeKeys,
-                    {value: undefined},
-                    'delete',
-                )
+                store = scopeUpdaterValues(store, action.storeKeys, undefined, 'delete')
                 return updateScopedData(
                     store,
                     action.scopes?.filter(s => s !== 'value'),
@@ -249,16 +205,11 @@ const storeActionHandlersMap: StoreActionHandlersMap = {
         },
     'update':
         (store, action) => {
+
             const data = action.updater(getScopedData(store, action.scopes, action.storeKeys))
 
             if (action.scopes?.includes('value') && shouldDelete(data.value, action)) {
-                store = updateScopedData(
-                    store,
-                    ['value'],
-                    action.storeKeys,
-                    {value: undefined},
-                    'delete',
-                )
+                store = scopeUpdaterValues(store, action.storeKeys, undefined, 'delete')
                 return updateScopedData(
                     store,
                     action.scopes?.filter(s => s !== 'value'),
@@ -280,7 +231,7 @@ const storeActionHandlersMap: StoreActionHandlersMap = {
             )
         },
     // delete, but only for properties, not for items, there list-item-delete must be used for the time being.
-    // this supports deleting specific scopes, while in arrays it must always be the whole item
+    // this supports deleting ~~specific scopes~~ `value` or `internal`, or both, while in arrays it must always be the whole item
     'delete':
         (store, action) => {
             if (!action.storeKeys.size) {
@@ -293,17 +244,24 @@ const storeActionHandlersMap: StoreActionHandlersMap = {
                 return store
             }
 
-            if (data.value && !Map.isMap(data.value)) {
+            if (!Map.isMap(data.value)) {
                 throw new Error('Can only delete in object values.')
             }
 
-            return updateScopedData(
-                store,
-                action.scopes || ['value', 'meta', 'internal', 'valid'],
-                action.storeKeys,
-                {} as UIStoreUpdaterData,
-                'delete',
-            )
+            if (!action.scopes || action.scopes?.includes('value')) {
+                store = scopeUpdaterValues(store, action.storeKeys, undefined, 'delete')
+            }
+            if (!action.scopes || action.scopes?.includes('internal')) {
+                store = scopeUpdaterInternals(store, action.storeKeys, Map(), 'delete')
+                // store = scopeUpdaterInternals(store, action.storeKeys, data?.internal?.set('self', Map()), 'delete')
+            }
+            if (!action.scopes || action.scopes?.includes('valid')) {
+                // todo: and this isn't flexible enough, should it be a "delete all, except `children`"? what when wanting to delete whole node?
+                // store = scopeUpdaterValidity(store, action.storeKeys, data?.valid?.delete('valid'), 'delete')
+                store = scopeUpdaterValidity(store, action.storeKeys, undefined, 'delete')
+            }
+
+            return store
         },
 }
 

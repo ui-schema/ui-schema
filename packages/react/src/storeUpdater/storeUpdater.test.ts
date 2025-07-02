@@ -314,9 +314,15 @@ describe('storeUpdater', () => {
             expected: new UIStore({
                 values: OrderedMap({myList: List(['newItem'])}),
                 internals: Map({
-                    self: Map(),
+                    self: Map({}),
                     children: Map({
-                        myList: Map({self: undefined}),
+                        myList: Map({
+                            children: List([
+                                Map({
+                                    self: Map({defaultHandled: true}),
+                                }),
+                            ]),
+                        }),
                     }),
                 }),
             }),
@@ -334,9 +340,16 @@ describe('storeUpdater', () => {
             expected: new UIStore({
                 values: OrderedMap({myList: List(['item1', 'item2'])}),
                 internals: Map({
-                    self: Map(),
+                    self: Map({}),
                     children: Map({
-                        myList: Map({self: undefined}),
+                        myList: Map({
+                            children: List([
+                                undefined,
+                                Map({
+                                    self: Map({defaultHandled: true}),
+                                }),
+                            ]),
+                        }),
                     }),
                 }),
             }),
@@ -356,7 +369,13 @@ describe('storeUpdater', () => {
                 internals: Map({
                     self: Map(),
                     children: Map({
-                        myList: Map({self: undefined}),
+                        myList: Map({
+                            children: List([
+                                Map({
+                                    self: Map({defaultHandled: true}),
+                                }),
+                            ]),
+                        }),
                     }),
                 }),
             }),
@@ -376,7 +395,14 @@ describe('storeUpdater', () => {
                 internals: Map({
                     self: Map(),
                     children: Map({
-                        myList: Map({self: undefined}),
+                        myList: Map({
+                            children: List([
+                                undefined,
+                                Map({
+                                    self: Map({defaultHandled: true}),
+                                }),
+                            ]),
+                        }),
                     }),
                 }),
             }),
@@ -398,9 +424,7 @@ describe('storeUpdater', () => {
                     self: Map(),
                     children: Map({
                         myList: Map({
-                            self: Map({
-                                children: List([undefined, undefined]),
-                            }),
+                            children: List([undefined, undefined]),
                         }),
                     }),
                 }),
@@ -423,9 +447,7 @@ describe('storeUpdater', () => {
                     self: Map(),
                     children: Map({
                         myList: Map({
-                            self: Map({
-                                children: List([undefined]),
-                            }),
+                            children: List([undefined]),
                         }),
                     }),
                 }),
