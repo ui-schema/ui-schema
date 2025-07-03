@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material'
+import { MuiBinding } from '@ui-schema/ds-material'
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { Group2Renderer, SchemaGrid2Handler } from '@ui-schema/ds-material/Grid2'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
@@ -35,7 +35,7 @@ import { TableAdvanced } from '@ui-schema/ds-material/Widgets/TableAdvanced'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { SelectChipsBase as SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
 
-const customBinding: MuiWidgetsBinding = {
+const customBinding: MuiBinding = {
     ...baseComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: [
@@ -89,7 +89,7 @@ const customBinding: MuiWidgetsBinding = {
         SelectChips: SelectChips,
         TableAdvanced: TableAdvanced,
     },
-    matchWidget: matchWidget,//<NonNullable<NonNullable<MuiWidgetsBinding['widgets']>['types']>, NonNullable<NonNullable<MuiWidgetsBinding['widgets']>['custom']>>,
+    matchWidget: matchWidget,//<NonNullable<NonNullable<MuiBinding['widgets']>['types']>, NonNullable<NonNullable<MuiBinding['widgets']>['custom']>>,
 
     GroupRenderer: Group2Renderer,
 }

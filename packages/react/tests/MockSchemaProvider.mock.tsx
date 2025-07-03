@@ -14,12 +14,12 @@ import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 
-export const MockWidgets: WidgetsBindingFactory<{
+export const MockWidgets: BindingTypeGeneric<{
     string?: React.ComponentType<WidgetProps>
     boolean?: React.ComponentType<WidgetProps>
     number?: React.ComponentType<WidgetProps>
@@ -42,7 +42,7 @@ export const MockSchema: OrderedMap<any, any> = createOrderedMap({type: 'object'
 
 export const MockSchemaProvider: React.ComponentType<{
     t?: Translator
-    widgets: WidgetsBindingFactory
+    widgets: BindingTypeGeneric
     schema: UISchemaMap
 }> = (
     {t, widgets, schema},
@@ -71,7 +71,7 @@ export const MockSchemaProvider: React.ComponentType<{
 
 export const MockSchemaMetaProvider: React.ComponentType<React.PropsWithChildren<{
     t?: Translator
-    widgets?: WidgetsBindingFactory
+    widgets?: BindingTypeGeneric
 }>> = (
     {t, widgets, children},
 ) => {

@@ -1,6 +1,6 @@
-import { MuiComponentsBinding } from '@ui-schema/ds-material'
+import { MuiBindingComponents } from '@ui-schema/ds-material'
 import { extractValue } from '@ui-schema/react/UIStore'
-import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { Translate } from '@ui-schema/react/Translate'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { beautifyKey, tt } from '@ui-schema/ui-schema/Utils/beautify'
@@ -19,7 +19,7 @@ export const WidgetChipsReadBase = (
         showValidity, errors,
         valid, binding,
         readDense,
-    }: WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & UIMetaReadContextType,
+    }: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & UIMetaReadContextType,
 ) => {
     if (!schema) return null
 

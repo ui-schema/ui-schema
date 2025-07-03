@@ -5,7 +5,7 @@ import MuiFormGroup from '@mui/material/FormGroup'
 import { useTheme } from '@mui/material/styles'
 import { extractValue } from '@ui-schema/react/UIStore'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 
 export const FormGroupBase: React.ComponentType<WidgetProps> = (props) => {

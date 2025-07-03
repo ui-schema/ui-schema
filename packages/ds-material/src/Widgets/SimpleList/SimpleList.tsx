@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
-import { MuiComponentsBinding } from '@ui-schema/ds-material'
+import { MuiBindingComponents } from '@ui-schema/ds-material'
 import React from 'react'
 import FormControl from '@mui/material/FormControl'
 import Grid from '@mui/material/Grid'
@@ -16,7 +16,7 @@ import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { List, Map } from 'immutable'
-import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { UIStoreActionListItemDelete } from '@ui-schema/react/UIStoreActions'
 import { ButtonProps } from '@mui/material/Button'
@@ -65,7 +65,7 @@ export const SimpleListItemBase: React.FC<SimpleListItemProps & WithOnChange> = 
 }
 export const SimpleListItem = memo(SimpleListItemBase)
 
-export const SimpleListInner: React.FC<Omit<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding>, 'value' | 'internalValue'> & {
+export const SimpleListInner: React.FC<Omit<WidgetProps<BindingTypeGeneric & MuiBindingComponents>, 'value' | 'internalValue'> & {
     listSize: number
     btnAddShowLabel?: boolean
     btnAddStyle?: React.CSSProperties
@@ -153,7 +153,7 @@ export const SimpleListInner: React.FC<Omit<WidgetProps<WidgetsBindingFactory & 
 }
 export const SimpleListBase = memo(SimpleListInner)
 
-export const SimpleListWrapper: React.FC<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & { btnAddShowLabel?: boolean, btnAddStyle?: React.CSSProperties } & ListButtonOverwrites> = (
+export const SimpleListWrapper: React.FC<WidgetProps<BindingTypeGeneric & MuiBindingComponents> & { btnAddShowLabel?: boolean, btnAddStyle?: React.CSSProperties } & ListButtonOverwrites> = (
     {
         value,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

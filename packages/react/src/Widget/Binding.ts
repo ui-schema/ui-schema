@@ -1,12 +1,15 @@
-import type { SchemaTypesType, SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
+import type { UIStoreActions } from '@ui-schema/react/UIStoreActions'
+import type { SchemaKeywordType, SchemaTypesType, SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import type { WidgetMatch } from '@ui-schema/ui-schema/matchWidget'
+import type { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import type { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import type { ComponentType, FunctionComponent, ReactNode, Component } from 'react'
-import type { WidgetPluginType } from '@ui-schema/react/WidgetEngine'
-import type { WidgetProps } from '@ui-schema/react/Widgets'
-import type { StoreKeys } from '@ui-schema/react/UIStore'
+import type { WidgetPluginProps, WidgetPluginType } from '@ui-schema/react/WidgetEngine'
+import type { WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
+import type { UIMetaContextBase } from '@ui-schema/react/UIMeta'
 import type { List } from 'immutable'
 import type { WidgetsBindingRoot } from '@ui-schema/ui-schema/WidgetsBinding'
+import type { WidgetProps } from './Widget.js'
 
 /**
  * note: we can't use ComponentType here, as it leads to problems with FC vs. others and
@@ -22,9 +25,6 @@ type MinimalClassComponent<P> = {
     new(
         props: P,
     ): Component<any, any, any>
-    // ): {
-    //     render(): ReactNode
-    // }
 
     displayName?: string
 }
@@ -37,6 +37,9 @@ export type MinimalComponentType<P> =
     } |
     MinimalClassComponent<P>
 
+type WidgetsBinding<A = UIStoreActions, B = {}, WP extends WidgetProps<B, A> = WidgetProps<B, A>> =
+    { [K in SchemaKeywordType]?: MinimalComponentType<WP> } &
+    Record<string, MinimalComponentType<WP>>
 
 export interface NoWidgetProps {
     storeKeys: StoreKeys
@@ -61,7 +64,7 @@ export interface ErrorFallbackProps {
     widget?: string
 }
 
-export interface WidgetsBindingComponents {
+export interface BindingComponents {
     /**
      * Wrapped around each schema layer, used to catch errors during rendering.
      */
@@ -73,7 +76,7 @@ export interface WidgetsBindingComponents {
     /**
      * When used with `isVirtual` in `WidgetEngine`, this component is used to render virtual widgets.
      */
-    VirtualRenderer?: ComponentType<WidgetProps>
+    VirtualRenderer?: ComponentType<WidgetPayload & UIMetaContextBase & WithOnChange & WithValuePlain>
     /**
      * When `matchWidget` cannot find a widget and throws an `ErrorNoWidgetMatching`, this component is used.
      */
@@ -84,30 +87,25 @@ export interface WidgetsBindingComponents {
     widgetPlugins?: WidgetPluginType[]
 }
 
-export interface MatchProps<WP extends WidgetPayload = WidgetPayload> {
+export interface WidgetMatchProps<WP extends WidgetPayload = WidgetPayload> {
     widgetName: string | undefined
     schemaType: SchemaTypesType
 
-    widgets?: Record<string, (props: WP) => ReactNode>
+    widgets?: Record<string, MinimalComponentType<WP>>
 }
-
-// type MinimalWidgetPayload<A = UIStoreActions> = WidgetPayload & UIMetaContextBase & WithOnChange<A> & WithValuePlain
 
 /**
  * widget binding
  * - `C` = own `UIMetaContext` definition
  * - `TW` = own type widgets definition
  * - `CW` = own custom widgets definition
- * @todo make stricter and add support for strict checks in UIMetaProvider with inferring,
- *       and normalize with all other matchWidget/widgets types, atm. testing MUI with strict shared interface
  * @todo support OnChange generics
  * @todo typing `PWidgetPlugins` strict here leads again to the problem with circular types, but why isn't that the cause with `widgetPlugins`?
  *       switched to `any` here, as the stricter typing comes from mui bindingType and WidgetRenderer atm.,
  *       and here it must be as loose as possible to infer it correctly, while there is must be infer all at once.
  */
-// export type WidgetsBindingFactory<TW extends {} = {}, PWidgetPlugins extends MinimalWidgetPayload = MinimalWidgetPayload> =
-export type WidgetsBindingFactory<TW extends {} = {}> =
-    Omit<WidgetsBindingComponents, 'widgetPlugins'> &
+export type BindingTypeGeneric<TW extends {} = {}> =
+    Omit<BindingComponents, 'widgetPlugins'> &
     {
         widgetPlugins?: ComponentType<any>[]
 
@@ -118,5 +116,26 @@ export type WidgetsBindingFactory<TW extends {} = {}> =
 
         widgets?: WidgetsBindingRoot<TW>
 
-        matchWidget?: (props: MatchProps<any>) => null | WidgetMatch<(props: any) => ReactNode>
+        matchWidget?: (props: WidgetMatchProps<any>) => null | WidgetMatch<MinimalComponentType<any>>
+    }
+
+export type BindingType<A = UIStoreActions, B = {}, WP extends WidgetProps<B, A> = WidgetProps<B, A>> =
+    Omit<BindingComponents, 'widgetPlugins'> &
+    BindingTypeWidgets<A, WP>
+
+export type BindingTypeWidgets<A = UIStoreActions, B = {}, WP extends WidgetProps<B, A> = WidgetProps<B, A>> =
+    {
+        widgetPlugins?: MinimalComponentType<WP & Omit<WidgetPluginProps<B, A>, keyof WP>>[]
+    } &
+    {
+        /**
+         * The component which is rendered inside the WidgetEngine, after any widgetPlugin is applied.
+         */
+        WidgetRenderer?: MinimalComponentType<WP & Omit<WidgetPluginProps<B, A>, keyof WP>>
+    } &
+    {
+        widgets?: WidgetsBinding<A, B, WP>
+    } &
+    {
+        matchWidget?: (props: WidgetMatchProps<WP>) => null | WidgetMatch<MinimalComponentType<WP>>
     }

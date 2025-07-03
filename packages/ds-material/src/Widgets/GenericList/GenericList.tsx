@@ -1,7 +1,7 @@
 import { List } from 'immutable'
 import type { ReactNode } from 'react'
 import { memo } from '@ui-schema/react/Utils/memo'
-import type { WidgetProps } from '@ui-schema/react/Widgets'
+import type { WidgetProps } from '@ui-schema/react/Widget'
 import {
     GenericListContent, GenericListFooter,
     GenericListItem,

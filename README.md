@@ -208,7 +208,7 @@ export const DemoForm = () => {
     </>
 };
 
-const customBinding: MuiWidgetsBinding = {
+const customBinding: MuiBinding = {
     ...baseComponents,
     widgets: {
         ...typeWidgets,
@@ -242,7 +242,7 @@ Easily create new widgets, this is all for a simple text (`type=string`) widget:
 
 ```typescript jsx
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 
 const Widget = (
     {

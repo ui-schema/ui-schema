@@ -44,7 +44,7 @@ Check [this discussion](https://github.com/ui-schema/ui-schema/discussions/184) 
 Example of `widgetsBindingBasic`:
 
 ```tsx
-import { MuiWidgetBinding } from '@ui-schema/ds-material/BindingType'
+import { MuiWidgetBinding } from '@ui-schema/ds-material/Binding'
 import { pluginStack } from '@ui-schema/ds-material/pluginStack'
 import { validators } from '@ui-schema/ui-schema/Validators/validators'
 import { BoolRenderer, NumberRenderer, Select, SelectMulti, StringRenderer, TextRenderer } from '@ui-schema/ds-material/Widgets'

@@ -3,14 +3,14 @@ import { matchWidget } from '@ui-schema/ui-schema/matchWidget'
 import { ValidateFn } from '@ui-schema/ui-schema/Validate'
 import { createContext, PropsWithChildren, useContext, useMemo } from 'react'
 import { Translator } from '@ui-schema/ui-schema/Translator'
-import { WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { NextWidgetPlugin, useNext } from '@ui-schema/react/WidgetEngine'
 
-export interface UIMetaContextInternal<W = WidgetsBindingFactory, P = {}> extends UIMetaContext<W> {
+export interface UIMetaContextInternal<W = BindingTypeGeneric, P = {}> extends UIMetaContext<W> {
     Next: NextWidgetPlugin<P>
 }
 
-export interface UIMetaContext<W = WidgetsBindingFactory> extends UIMetaContextBinding<W>, UIMetaContextBase {
+export interface UIMetaContext<W = BindingTypeGeneric> extends UIMetaContextBinding<W>, UIMetaContextBase {
 }
 
 export interface UIMetaContextBase {
@@ -18,7 +18,7 @@ export interface UIMetaContextBase {
     validate?: ValidateFn
 }
 
-export interface UIMetaContextBinding<W = WidgetsBindingFactory> {
+export interface UIMetaContextBinding<W = BindingTypeGeneric> {
     binding?: W
 }
 
@@ -34,7 +34,7 @@ const UIMetaContextObj = createContext<UIMetaContextInternal<any, any>>({
     },
 })
 
-export function UIMetaProvider<C extends {}, W extends WidgetsBindingFactory = WidgetsBindingFactory>(
+export function UIMetaProvider<C extends {}, W extends BindingTypeGeneric = BindingTypeGeneric>(
     {children, ...props}: PropsWithChildren<
         UIMetaContext<W> &
         Omit<NoInfer<C>, keyof UIMetaContext<W> | 'children'>

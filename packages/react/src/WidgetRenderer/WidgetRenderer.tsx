@@ -1,20 +1,18 @@
+import type { UIMetaContextBase } from '@ui-schema/react/UIMeta'
 import type { UIStoreActions } from '@ui-schema/react/UIStoreActions'
+import type { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import { List } from 'immutable'
 import { useEffect } from 'react'
 import type { ComponentType, ReactNode } from 'react'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
-import { ErrorNoWidgetMatches, matchWidget, WidgetMatch } from '@ui-schema/ui-schema/matchWidget'
+import { ErrorNoWidgetMatches, matchWidget } from '@ui-schema/ui-schema/matchWidget'
 import type { WidgetEngineOverrideProps, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
-import type { WithValuePlain } from '@ui-schema/react/UIStore'
-import type { SchemaKeywordType, SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
-import type { MatchProps, NoWidgetProps, WidgetProps } from '@ui-schema/react/Widgets'
+import type { WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
+import type { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
+import { BindingTypeWidgets, NoWidgetProps, WidgetProps } from '@ui-schema/react/Widget'
 
-export interface WidgetRendererProps extends Omit<WidgetPluginProps, 'binding' | 'currentPluginIndex' | 'Next'> {
+export interface WidgetRendererProps extends Omit<WidgetPluginProps, 'binding' | 'Next'> {
     WidgetOverride?: WidgetEngineOverrideProps['WidgetOverride']
-    // current number of plugin in the stack, received when executed as generic widget
-    // but not when used on its own
-    // todo; cleanup, with 0.5.x there is no reason to use it on its own
-    currentPluginIndex?: number
 }
 
 /**
@@ -31,8 +29,6 @@ export const WidgetRenderer = <A = UIStoreActions, B = {}, WP extends WidgetProp
         WidgetOverride,
         errors,
         onErrors,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        currentPluginIndex,
         // @ts-expect-error is currently omitted from props, as not needed, will still be passed down, lets prevent it from reaching Widget
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         Next,
@@ -42,28 +38,14 @@ export const WidgetRenderer = <A = UIStoreActions, B = {}, WP extends WidgetProp
         WidgetRendererProps &
         Omit<NoInfer<WP>, 'binding' | keyof WidgetRendererProps> &
         {
-            binding?: Omit<NoInfer<B>, 'VirtualRenderer' | 'NoWidget' | 'widgets' | 'matchWidget'> & {
-                VirtualRenderer?: ComponentType<WidgetProps & WithValuePlain>
-                NoWidget?: ComponentType<NoWidgetProps>
-                widgets?: { [K in SchemaKeywordType]?: (props: WP) => ReactNode } & { [K: string]: (props: WP) => ReactNode }
-                matchWidget?: (props: MatchProps<WP>) => null | WidgetMatch<(<PWidget>(props: Omit<NoInfer<PWidget>, keyof WP> & WP) => ReactNode)>
-            }
+            binding?:
+                Omit<NoInfer<B>, 'VirtualRenderer' | 'NoWidget' | 'widgets' | 'matchWidget'> &
+                {
+                    VirtualRenderer?: ComponentType<WidgetPayload & UIMetaContextBase & WithOnChange & WithValuePlain>
+                    NoWidget?: ComponentType<NoWidgetProps>
+                } &
+                Omit<BindingTypeWidgets<A, B, WP>, 'widgetPlugins' | 'WidgetRenderer'>
         },
-    // {
-    //     binding?: {
-    //         NoWidget?: React.ComponentType<NoWidgetProps>
-    //     }
-    // } &
-    // {
-    //     binding?: {
-    //         widgets?: { [K in SchemaKeywordType]?: (props: WP) => ReactNode } & { [K: string]: (props: WP) => ReactNode }
-    //     }
-    // } &
-    // {
-    //     binding?: {
-    //         matchWidget?: (props: MatchProps<A, WP>) => null | (<PWidget>(props: Omit<NoInfer<PWidget>, keyof WP> & WP) => ReactNode)
-    //     }
-    // },
 ): ReactNode => {
     const {schema, binding, isVirtual} = props
     const currentErrors = useImmutable(errors)
@@ -81,8 +63,7 @@ export const WidgetRenderer = <A = UIStoreActions, B = {}, WP extends WidgetProp
         Widget = WidgetOverride
     } else {
         // todo: remove fallback once dev project is migrated? or allow optional?
-        // todo: check typings and fix it, `binding` is already `any`
-        const matchWidgetFn = binding?.matchWidget || matchWidget
+        const matchWidgetFn = binding?.matchWidget || (matchWidget as NonNullable<NonNullable<typeof binding>['matchWidget']>)
         const widgets = binding?.widgets
         try {
             Widget = matchWidgetFn({

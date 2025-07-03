@@ -1,5 +1,5 @@
 import React from 'react'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import Box from '@mui/material/Box'

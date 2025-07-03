@@ -9,10 +9,10 @@ import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelpe
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
 import type { NumberRendererProps, StringRendererProps, TextRendererProps } from '@ui-schema/ds-material/Widgets/TextField'
-import type { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import type { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { useDebounceValue } from '@ui-schema/react/Utils/useDebounceValue'
 import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils/forbidInvalidNumber'
-import type { MuiComponentsBinding } from '@ui-schema/ds-material/BindingType'
+import type { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
 
 export interface StringRendererDebouncedProps {
     /**
@@ -35,7 +35,7 @@ export const StringRendererDebounced = (
         onKeyPress,
         inputProps = {}, InputProps = {}, inputRef: customInputRef,
         debounceTime = 340, binding,
-    }: WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & Omit<StringRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps,
+    }: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & Omit<StringRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps,
 ): React.ReactElement => {
     const uid = useUID()
     // todo: this could break law-of-hooks
@@ -133,7 +133,7 @@ export const TextRendererDebounced = (
     {
         schema,
         ...props
-    }: WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & Omit<TextRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps,
+    }: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & Omit<TextRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps,
 ): React.ReactElement => {
     return <StringRendererDebounced
         {...props}
@@ -150,7 +150,7 @@ export const TextRendererDebounced = (
     />
 }
 
-export const NumberRendererDebounced = (props: WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & Omit<NumberRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps): React.ReactElement => {
+export const NumberRendererDebounced = (props: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & Omit<NumberRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps): React.ReactElement => {
     const {schema, inputProps: inputPropsProps = {}, steps = 'any'} = props
     const schemaType = schema.get('type') as string | undefined
     const inputProps = React.useMemo(() => {

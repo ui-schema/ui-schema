@@ -3,7 +3,7 @@ import FormControlLabel, { FormControlLabelProps } from '@mui/material/FormContr
 import Switch, { SwitchProps } from '@mui/material/Switch'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { TypographyProps } from '@mui/material/Typography'
 
 export const BoolRenderer: React.FC<WidgetProps & {

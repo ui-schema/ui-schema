@@ -1,7 +1,10 @@
+import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import React from 'react'
 import { useUIStoreActions } from '@ui-schema/react/UIStoreActions'
 import { getDisplayName } from '@ui-schema/react/Utils/memo'
-import { StoreKeys, useUIStore, ExtractValueOverwriteProps, WithValidity, addNestKey } from '@ui-schema/react/UIStore'
+import { useUIStore, WithValidity } from './UIStoreProvider.js'
+import type { ExtractValueOverwriteProps } from './doExtractValues.js'
+import { addNestKey } from './UIStore.js'
 
 /**
  * @deprecated

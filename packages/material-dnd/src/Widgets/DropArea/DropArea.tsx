@@ -2,7 +2,7 @@ import React from 'react'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { UIStoreActionListItemAddWithValue, UIStoreActionScoped } from '@ui-schema/react/UIStoreActions'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
 import IconButton from '@mui/material/IconButton'
@@ -21,7 +21,7 @@ export const DropAreaBase = (
     {
         binding,
         ...props
-    }: WidgetProps<WidgetsBindingFactory & DragDropBlockComponentsBinding>,
+    }: WidgetProps<BindingTypeGeneric & DragDropBlockComponentsBinding>,
 ): React.ReactElement => {
     const [showSelector, setShowSelector] = React.useState(false)
     const {schema, storeKeys, onChange, required} = props

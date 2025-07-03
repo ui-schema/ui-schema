@@ -1,4 +1,4 @@
-import { MuiComponentsBinding } from '@ui-schema/ds-material'
+import { MuiBindingComponents } from '@ui-schema/ds-material'
 import React from 'react'
 import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
@@ -9,9 +9,9 @@ import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
-import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 
-export interface OptionsRadioProps extends WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> {
+export interface OptionsRadioProps extends WidgetProps<BindingTypeGeneric & MuiBindingComponents> {
     row?: boolean
 }
 

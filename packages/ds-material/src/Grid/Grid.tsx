@@ -3,7 +3,7 @@ import Grid, { GridSize, GridSpacing } from '@mui/material/Grid'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { OrderedMap } from 'immutable'
-import { GroupRendererProps } from '@ui-schema/react/Widgets'
+import { GroupRendererProps } from '@ui-schema/react/Widget'
 
 export const SchemaGridItem: React.ComponentType<React.PropsWithChildren<{
     schema: UISchemaMap

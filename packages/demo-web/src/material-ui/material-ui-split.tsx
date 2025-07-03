@@ -19,7 +19,7 @@ import { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import React, { useMemo } from 'react'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
+import { MuiBinding } from '@ui-schema/ds-material/Binding'
 import { browserT } from '../t'
 import { Table } from '@ui-schema/ds-material/Widgets/Table'
 import { NumberRendererCell, StringRendererCell, TextRendererCell } from '@ui-schema/ds-material/Widgets/TextFieldCell'
@@ -28,7 +28,7 @@ import { InjectSplitSchemaPlugin, InjectSplitSchemaRootContext } from '@ui-schem
 import { MuiJsonEditor, MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { Map, OrderedMap } from 'immutable'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { SelectChips } from '@ui-schema/ds-material/Widgets'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { UISchema, UISchemaMap } from '@ui-schema/json-schema/Definitions'
@@ -37,8 +37,7 @@ import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { UIMetaContext, UIMetaProvider } from '@ui-schema/react/UIMeta'
 
-// type CustomWidgetsBinding = WidgetsBindingFactory<{}, MuiWidgetsBindingTypes<{}>, MuiWidgetsBindingCustom<{}>>
-type CustomWidgetsBinding = MuiWidgetsBinding
+type CustomWidgetsBinding = MuiBinding
 
 const CustomTable: React.ComponentType<WidgetProps> = ({binding, ...props}) => {
     const customWidgets = React.useMemo(() => ({

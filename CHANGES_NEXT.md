@@ -486,7 +486,9 @@ new widget engine functions:
 - rewrite all store related functions
     - external store with subscription system
     - full rewrite of `scopeUpdater*`; as leading to behaviour changes, should be better in `0.6.x` instead of `0.5.x`
+    - unify onChange/actions-reducers config with general store config? or provide a action-reducers-plugin part to simplify customization via config. (e.g. `doNotDefault` is not known by `list-item-default`)
 - instead of checking if an action is value affecting, the updater/reducers should return better what they have done, if anything at all
+- after removing deprecations and working basics of the new store context, check the circular references in types of binding, WidgetPlugin, WidgetPops and UIMeta, UIStore contexts and try to remove all
 
 ---
 

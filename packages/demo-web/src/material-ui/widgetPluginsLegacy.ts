@@ -22,5 +22,5 @@ export const widgetPluginsLegacy: WidgetPluginType[] = [
     ConditionalHandler,
     // SchemaPluginsAdapter,
     ValidityReporter,
-    WidgetRenderer,
+    WidgetRenderer as WidgetPluginType,
 ]

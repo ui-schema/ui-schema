@@ -1,7 +1,7 @@
-import { MuiComponentsBinding } from '@ui-schema/ds-material'
+import { MuiBindingComponents } from '@ui-schema/ds-material'
 import React, { CSSProperties, EventHandler } from 'react'
 import { useUID } from 'react-uid'
-import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
 import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
@@ -32,7 +32,7 @@ export interface StringRendererCellProps {
     labelledBy?: string
 }
 
-export const StringRendererCell: React.ComponentType<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & StringRendererCellProps> = (
+export const StringRendererCell: React.ComponentType<WidgetProps<BindingTypeGeneric & MuiBindingComponents> & StringRendererCellProps> = (
     {
         type,
         multiline, minRows, maxRows,
@@ -157,7 +157,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<WidgetsBindingF
     </>
 }
 
-export const TextRendererCell: React.ComponentType<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & StringRendererCellProps> = ({schema, ...props}) => {
+export const TextRendererCell: React.ComponentType<WidgetProps<BindingTypeGeneric & MuiBindingComponents> & StringRendererCellProps> = ({schema, ...props}) => {
     return <StringRendererCell
         {...props}
         schema={schema}
@@ -173,7 +173,7 @@ export const TextRendererCell: React.ComponentType<WidgetProps<WidgetsBindingFac
     />
 }
 
-export const NumberRendererCell: React.ComponentType<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & StringRendererCellProps> = (props) => {
+export const NumberRendererCell: React.ComponentType<WidgetProps<BindingTypeGeneric & MuiBindingComponents> & StringRendererCellProps> = (props) => {
     return <StringRendererCell
         {...props}
         type={'number'}

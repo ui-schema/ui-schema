@@ -66,7 +66,7 @@ Hook for executing onChange handlers after a delay or after the user ended editi
 ```typescript jsx
 import { useDebounceValue } from '@ui-schema/ui-schema/Utils/useDebounceValue'
 import { WithScalarValue } from '@ui-schema/ui-schema/UIStore'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 
 const Comp: React.ComponentType<WidgetProps & WithScalarValue> = (
     {onChange, storeKeys, schema, required, value},

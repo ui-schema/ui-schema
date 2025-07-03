@@ -33,8 +33,8 @@ import { DropArea } from '@ui-schema/material-dnd/Widgets/DropArea'
 import { createEmptyStore, createStore, onChangeHandler, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { UIMetaContext, UIMetaProvider } from '@ui-schema/react/UIMeta'
-import { MuiWidgetsBindingWidgets } from '@ui-schema/ds-material/BindingType'
-import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { MuiBindingWidgets } from '@ui-schema/ds-material/Binding'
+import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
@@ -42,7 +42,7 @@ import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
-type CustomWidgetsBinding = WidgetsBindingFactory<MuiWidgetsBindingWidgets<UIStoreActions, WidgetProps<WidgetsBindingFactory<any> & DragDropBlockComponentsBinding>>> & DragDropBlockComponentsBinding
+type CustomWidgetsBinding = BindingTypeGeneric<MuiBindingWidgets<UIStoreActions, WidgetProps<BindingTypeGeneric<any> & DragDropBlockComponentsBinding>>> & DragDropBlockComponentsBinding
 
 const customWidgets: CustomWidgetsBinding = {
     ...baseComponents,

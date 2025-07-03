@@ -13,7 +13,7 @@ import Select from '@mui/material/Select'
 import { createEmptyStore, createStore, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
-import { MuiWidgetsBindingWidgets } from '@ui-schema/ds-material/BindingType'
+import { MuiBindingWidgets } from '@ui-schema/ds-material/Binding'
 import { browserT } from '../t'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { isInvalid } from '@ui-schema/react/ValidityReporter'
@@ -26,14 +26,14 @@ import { KitDndProvider, useOnIntent } from '@ui-schema/kit-dnd'
 import { useOnDirectedMove } from '@ui-schema/material-dnd/useOnDirectedMove'
 import { DragDropSpec } from '@ui-schema/material-dnd/DragDropSpec'
 import { SortableList } from '@ui-schema/material-dnd/Widgets/SortableList'
-import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
-type CustomWidgetsBinding = WidgetsBindingFactory<MuiWidgetsBindingWidgets<{}> & {
+type CustomWidgetsBinding = BindingTypeGeneric<MuiBindingWidgets<{}> & {
     SortableList: React.ComponentType<WidgetProps>
 }>
 

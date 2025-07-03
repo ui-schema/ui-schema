@@ -1,7 +1,7 @@
 import React from 'react'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { extractValue } from '@ui-schema/react/UIStore'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
 import { Translate } from '@ui-schema/react/Translate'

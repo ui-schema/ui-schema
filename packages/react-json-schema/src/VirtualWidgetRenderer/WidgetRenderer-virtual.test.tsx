@@ -9,7 +9,7 @@ import '@testing-library/jest-dom/jest-globals'
 import { WidgetRenderer, WidgetRendererProps } from '@ui-schema/react/WidgetRenderer'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { VirtualArrayRenderer, VirtualWidgetRenderer, VirtualWidgetRendererProps, VirtualWidgetsMapping } from '@ui-schema/react-json-schema/VirtualWidgetRenderer'
-import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import { List } from 'immutable'
 import { createStore, onChangeHandler, UIStoreProvider } from '@ui-schema/react/UIStore'
@@ -134,7 +134,7 @@ describe('WidgetRenderer', () => {
             array: VirtualArrayRenderer,
             object: ObjectRenderer,
         }
-        const widgets: WidgetsBindingFactory = {
+        const widgets: BindingTypeGeneric = {
             VirtualRenderer: VirtualWidgetRenderer,
             widgets: {
                 string: () => 'string-renderer',
@@ -186,7 +186,7 @@ describe('WidgetRenderer', () => {
             array: VirtualArrayRenderer,
             object: ObjectRenderer,
         }
-        const widgets: WidgetsBindingFactory = {
+        const widgets: BindingTypeGeneric = {
             VirtualRenderer: VirtualWidgetRenderer,
             widgets: {
                 string: () => 'string-renderer',

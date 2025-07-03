@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "ESNext",
+        "module": "ES2022",
         "target": "ES2021",
         "jsx": "react-jsx",
         "removeComments": false,

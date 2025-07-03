@@ -5,10 +5,11 @@ import { ComponentType, ReactNode } from 'react'
 import { List } from 'immutable'
 import { UIMetaContext, UIMetaContextInternal, useUIMeta } from '@ui-schema/react/UIMeta'
 import { onErrorHandler } from '@ui-schema/ui-schema/ValidatorOutput'
-import { StoreKeys, useUIConfig, useUIStore, WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
+import { useUIConfig, useUIStore, WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
+import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 import { NextPluginMemo, WidgetEngineErrorBoundary, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
-import { WidgetType, WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetType, WidgetProps } from '@ui-schema/react/Widget'
 import { useUIStoreActions } from '@ui-schema/react/UIStoreActions'
 
 type WidgetEngineRootProps = {
@@ -152,7 +153,6 @@ export const WidgetEngine = <
             internalValue={values?.internalValue}
             valid
 
-            currentPluginIndex={-1}
             isVirtual={isVirtual}
             binding={activeWidgets}
             storeKeys={currentStoreKeys}

@@ -1,4 +1,4 @@
-import { MuiComponentsBinding } from '@ui-schema/ds-material'
+import { MuiBindingComponents } from '@ui-schema/ds-material'
 import { makeParams } from '@ui-schema/json-schema/Validator'
 import { mergeSchemas } from '@ui-schema/json-schema/ValidatorPlugin'
 import { useSchemaResource } from '@ui-schema/react/SchemaResourceProvider'
@@ -9,7 +9,7 @@ import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import { schemaTypeIsAny } from '@ui-schema/ui-schema/schemaTypeIs'
 import { List, Map, OrderedMap } from 'immutable'
@@ -20,7 +20,7 @@ import { TableRendererBaseProps, TableRendererExtractorProps, TableRowProps, Tab
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
-export const TableRendererBase: React.ComponentType<Omit<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding>, 'value' | 'internalValue' | 'errors' | 'valid'> & WithOnChange & TableRendererBaseProps & ListButtonOverwrites> = (
+export const TableRendererBase: React.ComponentType<Omit<WidgetProps<BindingTypeGeneric & MuiBindingComponents>, 'value' | 'internalValue' | 'errors' | 'valid'> & WithOnChange & TableRendererBaseProps & ListButtonOverwrites> = (
     {
         storeKeys, schema, onChange,
         showValidity,
@@ -151,7 +151,7 @@ export const TableRendererBase: React.ComponentType<Omit<WidgetProps<WidgetsBind
 
 export const TableRendererBaseMemo = memo(TableRendererBase)
 
-export const TableRendererExtractor: React.ComponentType<WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & TableRendererExtractorProps> = (
+export const TableRendererExtractor: React.ComponentType<WidgetProps<BindingTypeGeneric & MuiBindingComponents> & TableRendererExtractorProps> = (
     {
         value,
         // remove `internalValue` from the table widget, performance optimize

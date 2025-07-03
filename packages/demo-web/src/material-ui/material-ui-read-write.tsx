@@ -15,7 +15,7 @@ import { schemaTypeToDistinct } from '@ui-schema/ui-schema/schemaTypeToDistinct'
 import React, { ComponentType } from 'react'
 import Grid, { GridSpacing } from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material/BindingType'
+import { MuiBinding } from '@ui-schema/ds-material/Binding'
 import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
 import { browserT } from '../t'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
@@ -29,7 +29,7 @@ import {
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import { WidgetOptionsRead } from '@ui-schema/ds-material/WidgetsRead/WidgetOptionsRead'
-import { GroupRendererProps, WidgetProps } from '@ui-schema/react/Widgets'
+import { GroupRendererProps, WidgetProps } from '@ui-schema/react/Widget'
 import { UIMetaContext, UIMetaContextInternal, UIMetaProvider, useUIMeta } from '@ui-schema/react/UIMeta'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
@@ -155,7 +155,7 @@ export type ReadWidgetsBinding = {
 
 // Notice: `customWidgets` are supplied by the global `UIMetaProvider` at the end of this file,
 //         while `readWidgets` are supplied in the nested `UIMetaProvider` - which re-uses everything else from the global provider
-const customWidgets: MuiWidgetsBinding = {
+const customWidgets: MuiBinding = {
     ...baseComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: [],

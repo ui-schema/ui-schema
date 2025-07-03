@@ -18,7 +18,6 @@ describe('NextPluginRenderer', () => {
         value: undefined,
         internalValue: undefined,
         t: text => text,
-        currentPluginIndex: -1,
     }
     it('Empty NextPluginRenderer', async () => {
         const Next = makeNext(undefined, [] satisfies WidgetPluginType[])
@@ -94,7 +93,6 @@ describe('NextPluginRenderer', () => {
     //                     WidgetRenderer,
     //                 ] satisfies WidgetPluginType[],
     //             }}
-    //             currentPluginIndex={0} // simulate that the first plugin was already rendered
     //             schema={createOrderedMap({type: 'string'})}
     //         />,
     //     )
@@ -121,7 +119,6 @@ describe('NextPluginRenderer', () => {
     //                             </>,
     //                         ] satisfies WidgetPluginType[],
     //                     }}
-    //                     currentPluginIndex={-1}
     //                     schema={createOrderedMap({type: 'string'})}
     //                 />,
     //             ),

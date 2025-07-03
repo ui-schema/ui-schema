@@ -1,6 +1,6 @@
 import { Record, Map, List, OrderedMap, RecordOf } from 'immutable'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
-import { doExtractValues } from '@ui-schema/react/UIStore'
+import { doExtractValues } from './doExtractValues.js'
 import { UIStoreActions, UIStoreUpdaterData } from '@ui-schema/react/UIStoreActions'
 import { StoreKeys as ValueStoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'

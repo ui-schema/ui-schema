@@ -26,7 +26,7 @@ export const checkValueExists = (type: string | List<string> | string[], value: 
 /**
  * @deprecated
  */
-export const requiredValidator: SchemaPlugin<Omit<WidgetPluginProps, 'currentPluginIndex'>> = {
+export const requiredValidator: SchemaPlugin<WidgetPluginProps> = {
     handle: ({parentSchema, schema, storeKeys, value, errors, valid}) => {
         const requiredList = parentSchema?.get('required') as List<string> | undefined
         if (!schema || !requiredList || !List.isList(requiredList) || !storeKeys) {

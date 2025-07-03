@@ -1,5 +1,5 @@
 import { getDisplayName, memo } from '@ui-schema/react/Utils/memo'
-import { MinimalComponentType } from '@ui-schema/react/Widgets'
+import { MinimalComponentType } from '@ui-schema/react/Widget'
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 import type { WidgetPluginProps } from './Plugin.js'
@@ -77,8 +77,6 @@ export const makeNext = <PWidgetPlugin extends WidgetPluginProps>(
                 return <Next
                     {...props}
                     Next={NextNextComponent}
-                    currentPluginIndex={i}
-                    // currentPluginIndex={props.currentPluginIndex}
                 />
             }
             Component.displayName = `WidgetPlugin(${name})`

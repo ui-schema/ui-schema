@@ -1,5 +1,5 @@
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material'
+import { MuiBinding } from '@ui-schema/ds-material'
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
@@ -27,7 +27,7 @@ import { StaticTimePicker } from '@mui/x-date-pickers/StaticTimePicker'
 import { List } from 'immutable'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { createEmptyStore, onChangeHandler, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
@@ -114,7 +114,7 @@ const CustomTimePicker: React.FC<WidgetProps> = (props) => {
 }
 
 // const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
-const customWidgets: MuiWidgetsBinding = {
+const customWidgets: MuiBinding = {
     ...baseComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: [

@@ -1,4 +1,4 @@
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import React from 'react'
 import { beautifyKey } from '@ui-schema/ui-schema/Utils/beautify'
 import { Translate } from '@ui-schema/react/Translate'

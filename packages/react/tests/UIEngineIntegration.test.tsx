@@ -27,7 +27,7 @@ import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { translateRelative } from '@ui-schema/ui-schema/TranslatorRelative'
 import { JsonSchema } from '@ui-schema/json-schema/Definitions'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 
 /**

@@ -9,7 +9,7 @@ import { extractValue } from '@ui-schema/react/UIStore'
 // import { WidgetCode } from '@ui-schema/material-code'
 // import { WidgetCodeSelectable } from '@ui-schema/material-code/WidgetCodeSelectable'
 import { CustomCodeMirror } from './CustomCodeMirror'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { StoreKeyType } from '@ui-schema/ui-schema/ValueStore'
 import { memo } from '@ui-schema/react/Utils/memo'
 

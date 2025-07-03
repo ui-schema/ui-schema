@@ -8,7 +8,7 @@ import MuiSelect, { SelectProps as MuiSelectProps } from '@mui/material/Select'
 import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 

@@ -1,7 +1,7 @@
 import type { ComponentType, ReactNode } from 'react'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import type { GroupRendererProps, WidgetProps } from '@ui-schema/react/Widgets'
+import type { GroupRendererProps, WidgetProps } from '@ui-schema/react/Widget'
 
 export interface ObjectRendererProps extends WidgetProps {
     noGrid?: GroupRendererProps['noGrid']

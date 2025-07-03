@@ -1,7 +1,7 @@
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { List, Map } from 'immutable'
 import { getTranslatableEnum } from '@ui-schema/ui-schema/getTranslatableEnum'
-import { StoreKeys } from '@ui-schema/react/UIStore'
 import { beautifyKey, tt } from '@ui-schema/ui-schema/Utils/beautify'
 
 export interface OptionValueSchema<V = string | number> {

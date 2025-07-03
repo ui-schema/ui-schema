@@ -1,7 +1,7 @@
 import type { ComponentType, ReactNode } from 'react'
 import { List, Map, OrderedMap } from 'immutable'
 import { DraggableRendererProps } from '@ui-schema/kit-dnd/useDraggable'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { extractValue, WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
 import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'

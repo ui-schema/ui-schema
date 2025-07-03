@@ -1,6 +1,6 @@
 import { extractValue } from '@ui-schema/react/UIStore'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { memo } from '@ui-schema/react/Utils/memo'
 

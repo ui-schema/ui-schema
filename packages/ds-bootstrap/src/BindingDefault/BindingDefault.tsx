@@ -1,5 +1,5 @@
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
-import type { ErrorFallbackProps, WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import type { ErrorFallbackProps, WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import type { SchemaKeywordType } from '@ui-schema/ui-schema/CommonTypings'
 import type { ComponentType } from 'react'
 import { NumberRenderer, StringRenderer, TextRenderer } from '@ui-schema/ds-bootstrap/Widgets/TextField'
@@ -19,7 +19,7 @@ const MyFallbackComponent = ({type, widget}: ErrorFallbackProps) => (
     </div>
 )
 
-export type BtsWidgetBinding = WidgetsBindingFactory<
+export type BtsWidgetBinding = BindingTypeGeneric<
     {
         [K in SchemaKeywordType]?: ComponentType<WidgetProps>
     } &

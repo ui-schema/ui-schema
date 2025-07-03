@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box'
 import { useTheme } from '@mui/material/styles'
-import { MuiWidgetsBinding } from '@ui-schema/ds-material'
+import { MuiBinding } from '@ui-schema/ds-material'
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { SchemaGridItem } from '@ui-schema/ds-material/Grid'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
@@ -14,7 +14,7 @@ import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
 import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { TableRendererExtractor as TableRenderer, TableFooter, TableHeader, TableRowRenderer, TableRendererExtractorProps } from '@ui-schema/ds-material/BaseComponents/Table'
 /*import {
     Color, ColorDialog,
@@ -191,7 +191,7 @@ const SchemaGridHandlerWithInspector = <P extends WidgetPluginProps>(props: P): 
 }
 
 
-const customWidgets: MuiWidgetsBinding & {
+const customWidgets: MuiBinding & {
     DndBlockSelector?: DragDropBlockComponentsBinding['DndBlockSelector']
 } = {
     ...baseComponents,

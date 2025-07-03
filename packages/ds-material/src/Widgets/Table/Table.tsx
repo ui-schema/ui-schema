@@ -1,7 +1,7 @@
 import React from 'react'
 import { List } from 'immutable'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { TableRendererExtractor as TableRenderer, TableFooter, TableHeader, TableRowRenderer, TableRendererExtractorProps } from '@ui-schema/ds-material/BaseComponents/Table'
 
 const TableHeaderMemo = memo(TableHeader)

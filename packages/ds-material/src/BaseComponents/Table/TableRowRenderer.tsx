@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { StoreKeyType, WithOnChange } from '@ui-schema/react/UIStore'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'

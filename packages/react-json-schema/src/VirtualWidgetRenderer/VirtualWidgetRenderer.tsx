@@ -1,13 +1,13 @@
-import type { UIMetaContext } from '@ui-schema/react/UIMeta'
+import { UIMetaContext, UIMetaContextBase } from '@ui-schema/react/UIMeta'
 import { WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
 import type { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
-import type { WidgetPayloadFieldSchema } from '@ui-schema/ui-schema/Widget'
+import type { WidgetPayload, WidgetPayloadFieldSchema } from '@ui-schema/ui-schema/Widget'
 import type { ComponentType, ReactNode } from 'react'
 import { List } from 'immutable'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 import { schemaTypeToDistinct } from '@ui-schema/ui-schema/schemaTypeToDistinct'
-import type { WidgetProps } from '@ui-schema/react/Widgets'
+import type { WidgetProps } from '@ui-schema/react/Widget'
 
 export interface VirtualArrayRendererProps {
     storeKeys: StoreKeys
@@ -40,7 +40,7 @@ export interface VirtualWidgetsMapping {
     array: ComponentType<VirtualArrayRendererProps>
 }
 
-export interface VirtualWidgetRendererProps extends WidgetProps {
+export interface VirtualWidgetRendererProps extends WidgetPayload, UIMetaContextBase, WithOnChange, WithValuePlain {
     virtualWidgets?: VirtualWidgetsMapping
 }
 

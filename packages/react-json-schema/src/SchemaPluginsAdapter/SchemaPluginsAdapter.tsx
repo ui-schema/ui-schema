@@ -5,14 +5,13 @@ import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { SchemaPluginStack } from '@ui-schema/ui-schema/SchemaPluginStack'
 import type { ReactElement } from 'react'
 
-export const schemaPluginsAdapterBuilder = <P extends WidgetPluginProps & SchemaPluginProps>(schemaPlugins: SchemaPlugin<NoInfer<Omit<P, 'currentPluginIndex' | 'Next'>>>[]) =>
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    function SchemaPluginsAdapter({Next, currentPluginIndex, ...props}: P): ReactElement {
+export const schemaPluginsAdapterBuilder = <P extends WidgetPluginProps & SchemaPluginProps>(schemaPlugins: SchemaPlugin<NoInfer<Omit<P, 'Next'>>>[]) =>
+    function SchemaPluginsAdapter({Next, ...props}: P): ReactElement {
         const {resource} = useSchemaResource()
 
         const changedProps = useMemoWithObject(
             // todo: support overwrite via props?!
-            () => schemaPlugins?.length ? SchemaPluginStack<Omit<P, 'currentPluginIndex' | 'Next'>>({resource, ...props}, schemaPlugins) : props,
+            () => schemaPlugins?.length ? SchemaPluginStack<Omit<P, 'Next'>>({resource, ...props}, schemaPlugins) : props,
             {resource, ...props},
         )
 

@@ -121,7 +121,7 @@ In production/for-others it should be a bit more flexible, e.g. handling additio
 ```typescript jsx
 import { memo } from '@ui-schema/react/Utils/memo'
 import { UISchemaMap } from '@ui-schema/ui-schema/CommonTypings'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { StoreKeys, extractValue, WithValue } from '@ui-schema/ui-schema/UIStore'
 import { PluginStack } from '@ui-schema/ui-schema/PluginStack'
 
@@ -195,7 +195,7 @@ Since `0.4.0-alpha.1`, this function also applies [`memo`](/docs/core-utils#memo
 import React from 'react'
 import Grid from '@mui/material/Grid'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { StringRenderer } from '@ui-schema/ds-material/Widgets/TextField'
 import { applyWidgetEngine } from '@ui-schema/ui-schema/applyWidgetEngine'
 

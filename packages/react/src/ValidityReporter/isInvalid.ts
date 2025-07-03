@@ -1,5 +1,5 @@
+import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { List, Map } from 'immutable'
-import { StoreKeys } from '@ui-schema/react/UIStore'
 
 const searchRecursive = (
     immutable: Map<string, any>,

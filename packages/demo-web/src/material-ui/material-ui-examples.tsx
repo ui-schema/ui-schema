@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
-import { MuiWidgetsBinding } from '@ui-schema/ds-material'
+import { MuiBinding } from '@ui-schema/ds-material'
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
@@ -32,7 +32,7 @@ import { NumberRendererCell, StringRendererCell, TextRendererCell } from '@ui-sc
 import { TableAdvancedBase as TableAdvanced } from '@ui-schema/ds-material/Widgets/TableAdvanced'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { SelectChipsBase as SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 
 const CustomTableBase: React.ComponentType<WidgetProps> = ({binding, ...props}) => {
     const customWidgets = React.useMemo(() => ({
@@ -58,7 +58,7 @@ const CustomTableBase: React.ComponentType<WidgetProps> = ({binding, ...props}) 
 // run validations on defaulted dats
 // build/merge into happy path
 
-const customWidgets: MuiWidgetsBinding = {
+const customWidgets: MuiBinding = {
     ...baseComponents,
     InfoRenderer: InfoRenderer,
 

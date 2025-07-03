@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
-import { MuiWidgetsBinding } from '@ui-schema/ds-material'
+import { MuiBinding } from '@ui-schema/ds-material'
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
@@ -29,7 +29,7 @@ import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import Grid from '@mui/material/Grid'
 import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
-const customWidgets: MuiWidgetsBinding = {
+const customWidgets: MuiBinding = {
     ...baseComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: widgetPluginsLegacy,

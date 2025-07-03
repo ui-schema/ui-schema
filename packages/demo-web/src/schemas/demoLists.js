@@ -190,6 +190,7 @@ const schemaLists = createOrderedMap({
                 view: {
                     dense: true,
                 },
+                default: 'xy_',
             },
         },
     },

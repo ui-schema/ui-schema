@@ -2,7 +2,7 @@ import React from 'react'
 import InputAdornment from '@mui/material/InputAdornment'
 import { NumberRenderer, NumberRendererProps, StringRenderer, StringRendererProps, TextRenderer, TextRendererProps } from '@ui-schema/ds-material/Widgets/TextField'
 import { Translate } from '@ui-schema/react/Translate'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 
 const useComputeIcon = (schema, baseInputProps) => {
     const icon = schema.getIn(['view', 'icon'])

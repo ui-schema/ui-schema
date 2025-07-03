@@ -1,4 +1,4 @@
-import type { MuiComponentsBinding } from '@ui-schema/ds-material'
+import type { MuiBindingComponents } from '@ui-schema/ds-material'
 import type { UIMetaContext } from '@ui-schema/react/UIMeta'
 import type { WithOnChange } from '@ui-schema/react/UIStore'
 import type { WidgetPayload } from '@ui-schema/ui-schema/Widget'
@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid'
 import type { GridSpacing } from '@mui/material/Grid'
 import FormLabel from '@mui/material/FormLabel'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import type { WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import type { BindingTypeGeneric } from '@ui-schema/react/Widget'
 import type { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
 import type { GenericListFooterProps, GenericListItemProps, GenericListItemSharedProps } from '@ui-schema/ds-material/BaseComponents/GenericList'
 import Box from '@mui/material/Box'
@@ -35,7 +35,7 @@ export const GenericListContent = (
         btnVariant: btnVariantProp,
         btnColor: btnColorProp,
         listSpacing = 3,
-    }: WidgetPayload & UIMetaContext<WidgetsBindingFactory & MuiComponentsBinding> & WithOnChange & GenericListContentProps,
+    }: WidgetPayload & UIMetaContext<BindingTypeGeneric & MuiBindingComponents> & WithOnChange & GenericListContentProps,
 ): ReactNode => {
     const btnSize = (schema.getIn(['view', 'btnSize']) || btnSizeProp || 'small') as ListButtonOverwrites['btnSize']
     const deleteBtnSize = (schema.getIn(['view', 'deleteBtnSize']) || btnSizeProp || 'small') as ListButtonOverwrites['btnSize']

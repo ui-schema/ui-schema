@@ -4,8 +4,11 @@
         "src"
     ],
     "compilerOptions": {
-        "module": "ES2020",
+        "module": "ES2022",
         "moduleResolution": "Bundler",
-        "outDir": "build/dts"
+        "outDir": "build/dts",
+        "lib": [
+            "ES2021"
+        ]
     }
 }

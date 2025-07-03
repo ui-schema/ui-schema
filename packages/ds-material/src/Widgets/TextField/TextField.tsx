@@ -1,4 +1,4 @@
-import { MuiComponentsBinding } from '@ui-schema/ds-material'
+import { MuiBindingComponents } from '@ui-schema/ds-material'
 import React, { CSSProperties, FocusEventHandler, KeyboardEventHandler, MouseEventHandler } from 'react'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -10,7 +10,7 @@ import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelpe
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
 import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
-import { WidgetProps, WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 
 export interface StringRendererBaseProps {
     type?: string
@@ -56,7 +56,7 @@ export const StringRenderer = (
         onKeyPress,
         inputProps = {}, InputProps = {}, inputRef: customInputRef,
         binding,
-    }: WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & StringRendererProps,
+    }: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & StringRendererProps,
 ): React.ReactElement => {
     const uid = useUID()
     // todo: this could break law-of-hooks
@@ -141,7 +141,7 @@ export const StringRenderer = (
     </React.Fragment>
 }
 
-export const TextRenderer = ({schema, ...props}: WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & TextRendererProps): React.ReactElement => {
+export const TextRenderer = ({schema, ...props}: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & TextRendererProps): React.ReactElement => {
     return <StringRenderer
         {...props}
         schema={schema}
@@ -157,7 +157,7 @@ export const TextRenderer = ({schema, ...props}: WidgetProps<WidgetsBindingFacto
     />
 }
 
-export const NumberRenderer = (props: WidgetProps<WidgetsBindingFactory & MuiComponentsBinding> & NumberRendererProps): React.ReactElement => {
+export const NumberRenderer = (props: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & NumberRendererProps): React.ReactElement => {
     const {schema, inputProps: inputPropsProps = {}, steps = 'any'} = props
     const schemaType = schema.get('type') as string | undefined
     const inputProps = React.useMemo(() => {

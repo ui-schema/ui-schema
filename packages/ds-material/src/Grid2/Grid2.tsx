@@ -4,7 +4,7 @@ import Grid2, { GridSize, GridSpacing } from '@mui/material/Grid2'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { OrderedMap } from 'immutable'
-import { GroupRendererProps } from '@ui-schema/react/Widgets'
+import { GroupRendererProps } from '@ui-schema/react/Widget'
 
 export const SchemaGrid2Item: React.ComponentType<React.PropsWithChildren<{
     schema: UISchemaMap

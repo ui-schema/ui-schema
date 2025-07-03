@@ -1,6 +1,6 @@
 import React from 'react'
 import { MapOf } from 'immutable'
-import { onChangeHandler, UIStoreType } from '@ui-schema/react/UIStore'
+import type { onChangeHandler, UIStoreType } from './UIStore.js'
 import { UIStoreActionsContext, UIStoreActionsProvider, UIStoreActions } from '@ui-schema/react/UIStoreActions'
 
 export interface UIStoreContext<D = any> {

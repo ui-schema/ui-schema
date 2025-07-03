@@ -4,7 +4,7 @@
 import { expect, describe, test } from '@jest/globals'
 import { render } from '@testing-library/react'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
-import { WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { SchemaPlugin, SchemaPluginProps } from '@ui-schema/ui-schema/SchemaPlugin'
 import { SchemaPluginStack } from '@ui-schema/ui-schema/SchemaPluginStack'
@@ -19,7 +19,6 @@ describe('SchemaPluginsAdapter', () => {
             <SchemaPluginsAdapter
                 binding={{}}
                 schema={createOrderedMap({type: 'string'})}
-                currentPluginIndex={-1}
                 storeKeys={List()}
                 value={undefined}
                 internalValue={undefined}
@@ -45,7 +44,7 @@ describe('SchemaPluginStack', () => {
         storeKeys: List<string | number>([]),
         schema: OrderedMap<string | number, any>(),
     }
-    const testCases: [SchemaPluginProps & { binding?: WidgetsBindingFactory & { schemaPlugins?: SchemaPlugin<any>[] } }, string, unknown][] = [
+    const testCases: [SchemaPluginProps & { binding?: BindingTypeGeneric & { schemaPlugins?: SchemaPlugin<any>[] } }, string, unknown][] = [
         [{
             binding: {
                 schemaPlugins: [{

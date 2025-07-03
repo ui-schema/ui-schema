@@ -1,5 +1,5 @@
 import { BaseDatePickerProps } from '@mui/x-date-pickers/DatePicker/shared'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { UIStoreActionSet } from '@ui-schema/react/UIStoreActions'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { MuiPickersAdapterContext } from '@mui/x-date-pickers/LocalizationProvider'

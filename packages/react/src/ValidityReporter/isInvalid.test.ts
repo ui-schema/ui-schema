@@ -2,8 +2,9 @@
  * @jest-environment jsdom
  */
 import { test, expect, describe } from '@jest/globals'
+import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { List, Map } from 'immutable'
-import { addNestKey, StoreKeys } from '@ui-schema/react/UIStore'
+import { addNestKey } from '@ui-schema/react/UIStore'
 import { isInvalid } from './isInvalid.js'
 
 /**

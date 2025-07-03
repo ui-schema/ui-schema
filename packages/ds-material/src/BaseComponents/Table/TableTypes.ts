@@ -1,5 +1,5 @@
 import { onChangeHandler, StoreKeys, WithOnChange } from '@ui-schema/react/UIStore'
-import { WidgetProps } from '@ui-schema/react/Widgets'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { Translator } from '@ui-schema/ui-schema/Translator'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import React from 'react'

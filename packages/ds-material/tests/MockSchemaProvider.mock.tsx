@@ -8,7 +8,7 @@ import { Translator } from '@ui-schema/ui-schema/Translator'
 import { createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { WidgetsBindingFactory } from '@ui-schema/react/Widgets'
+import { BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { translateRelative } from '@ui-schema/ui-schema/TranslatorRelative'
@@ -16,7 +16,7 @@ import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 
-export const MockWidgets: WidgetsBindingFactory = {
+export const MockWidgets: BindingTypeGeneric = {
     ErrorFallback: () => null,
     GroupRenderer: () => null,
     widgetPlugins: [],
@@ -30,7 +30,7 @@ export const MockSchema: any = createOrderedMap({type: 'object'})
 
 export const MockSchemaProvider: React.ComponentType<{
     t?: Translator
-    widgets: WidgetsBindingFactory
+    widgets: BindingTypeGeneric
     schema: UISchemaMap
 }> = (
     {t, widgets, schema},
@@ -59,7 +59,7 @@ export const MockSchemaProvider: React.ComponentType<{
 
 export const MockSchemaMetaProvider: React.ComponentType<React.PropsWithChildren<{
     t?: Translator
-    widgets?: WidgetsBindingFactory
+    widgets?: BindingTypeGeneric
 }>> = (
     {t, widgets, children},
 ) => {

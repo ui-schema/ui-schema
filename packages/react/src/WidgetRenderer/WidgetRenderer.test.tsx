@@ -7,7 +7,7 @@ import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'
 import { WidgetRenderer } from './WidgetRenderer.js'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
-import { NoWidgetProps, WidgetProps } from '@ui-schema/react/Widgets'
+import { NoWidgetProps, WidgetProps } from '@ui-schema/react/Widget'
 import { List } from 'immutable'
 import { onChangeHandler } from '@ui-schema/react/UIStore'
 

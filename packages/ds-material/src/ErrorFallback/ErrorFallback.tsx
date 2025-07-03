@@ -1,5 +1,5 @@
 import React from 'react'
-import { ErrorFallbackProps } from '@ui-schema/react/Widgets'
+import { ErrorFallbackProps } from '@ui-schema/react/Widget'
 import Alert from '@mui/material/Alert'
 import Typography from '@mui/material/Typography'
 import { List } from 'immutable'
