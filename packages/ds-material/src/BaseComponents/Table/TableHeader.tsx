@@ -1,9 +1,9 @@
+import { schemaTypeIs } from '@ui-schema/ui-schema/schemaTypeIs'
 import React from 'react'
 import { List, Map } from 'immutable'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { StoreKeyType } from '@ui-schema/react/UIStore'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
-import { schemaTypeToDistinct } from '@ui-schema/ui-schema/schemaTypeToDistinct'
 import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
@@ -18,11 +18,12 @@ export const TableHeader: React.ComponentType<TableHeaderProps> = (
         itemsSchema,
         storeKeys,
         readOnly,
-    }
+    },
 ) => {
     let cellSchema = (itemsSchema.get('items') as List<any>) || (itemsSchema.get('properties') as Map<string, any>)
     if (
-        schemaTypeToDistinct(itemsSchema.get('type') as SchemaTypesType) === 'object' &&
+        /* todo: happy-path issue, always using object and requires value-based decision otherwise */
+        schemaTypeIs(itemsSchema.get('type') as SchemaTypesType, 'object') &&
         (itemsSchema.getIn(['rowSortOrder']) as TableCellSchemaImmutable['rowSortOrder'])?.size
     ) {
         cellSchema = (itemsSchema.getIn(['rowSortOrder']) as TableCellSchemaImmutable['rowSortOrder'])
@@ -40,7 +41,8 @@ export const TableHeader: React.ComponentType<TableHeaderProps> = (
                                 storeKeys={storeKeys.push(j as StoreKeyType)}
                             />
                             {!schema.getIn(['view', 'hideItemsTitle']) &&
-                            schemaTypeToDistinct(item.get('type')) === 'object' ?
+                            /* todo: happy-path issue, always using object and requires value-based decision otherwise */
+                            schemaTypeIs(item.get('type'), 'object') ?
                                 <div>
                                     {' ('}
                                     {item.get('properties')?.keySeq()
@@ -54,7 +56,7 @@ export const TableHeader: React.ComponentType<TableHeaderProps> = (
                                     {')'}
                                 </div> : ''}
                         </div>
-                    </TableCell> : null
+                    </TableCell> : null,
                 ).valueSeq()}
                 {!readOnly ? <TableCell/> : null}
             </TableRow>

@@ -1,7 +1,5 @@
 # Flowchart v0.5.x
 
-Architecture overview of UI-Schema for React.
-
 > The [Flowchart-SchemaEditor.svg](./Flowchart-SchemaEditor.svg) is for `0.4.x`.
 >
 > This overview has fewer details than the previous one, as now many parts are more flexible and agnostic to the render strategy.
@@ -10,10 +8,12 @@ Architecture overview of UI-Schema for React.
 
 ## Flowchart React
 
+Architecture overview of UI-Schema for React.
+
 - Setup: can be outside of render flow
     - setup `binding` with `widgets`, `widgetPlugins` and base components
     - initialize `Validator`
-- Meta Level: shared context for store/schema level
+- Meta Level: shared context for the store/schema level
     - `UIMetaProvider` receives `binding`, `t` and `validate`
     - materializes `binding.widgetPlugins` and `binding.WidgetRenderer` as a widget render pipeline, available as `Next` prop
     - allows supplying more props, which are injected in `WidgetEngine` as default props for the rendering pipeline
@@ -34,8 +34,8 @@ flowchart TD
     subgraph MetaLevel [Meta Level]
         UIMetaProvider["UIMetaProvider\n(receives binding, t, validate, additional props)"]
         MaterializePipeline["Materialize Widget Render Pipeline:\n- binding.widgetPlugins\n- binding.WidgetRenderer"]
-        MetaContextNext["Next prop exists"]
-        MetaContextChildren["children"]
+        MetaContextNext["'Next' exists"]
+        MetaContextChildren["React children"]
     end
 
     subgraph AppPage
@@ -46,7 +46,7 @@ flowchart TD
         WidgetEngine["WidgetEngine\n(receives storeKeys, schema, ...props)"]
         ExtractValue["Connect to store:\n- extract value\n- extract internal"]
         ConnectMeta["Fetch from meta:\n- binding\n- render pipeline\n- t + validate\n- default props"]
-        StartPipeline["Render\nNext.Component"]
+        StartPipeline["Render 'Next'"]
     end
 
     RecursiveChild["nested fields:\n→ Render WidgetEngine(s)"]
@@ -56,8 +56,8 @@ flowchart TD
     %% note: these states are explaining "how it behaves",
     %%       but as it is materialized, the "if remains" is already done in UIMetaProvider
         CheckPlugins["any plugin remains?"]
-        RenderPlugin["Render Plugin, inject `Next` prop"]
-        PluginCallsNext["Plugin renders Next"]
+        RenderPlugin["Render Plugin, inject 'Next' prop"]
+        RenderNextPlugin["Plugin renders 'Next'"]
         NoPlugins["No plugins remaining"]
         FinalRender["WidgetRenderer\n(matches + renders final widget)"]
     end
@@ -76,8 +76,8 @@ flowchart TD
     StartPipeline --> RenderPipelineStart
     RenderPipelineStart --> CheckPlugins
     CheckPlugins -- yes --> RenderPlugin
-    RenderPlugin --> PluginCallsNext
-    PluginCallsNext --> CheckPlugins
+    RenderPlugin --> RenderNextPlugin
+    RenderNextPlugin --> CheckPlugins
     CheckPlugins -- no --> NoPlugins
     NoPlugins --> FinalRender
     FinalRender --> RecursiveChild

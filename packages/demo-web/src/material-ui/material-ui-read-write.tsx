@@ -11,7 +11,7 @@ import { SortPlugin } from '@ui-schema/json-schema/SortPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import { schemaTypeToDistinct } from '@ui-schema/ui-schema/schemaTypeToDistinct'
+import { schemaTypeIs } from '@ui-schema/ui-schema/schemaTypeIs'
 import React, { ComponentType } from 'react'
 import Grid, { GridSpacing } from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
@@ -203,7 +203,7 @@ const ReadableWritableEditor = () => {
                 // non-read widgets do not support a `dense` property by default, thus forcing with inheriting from parent schema
                 InheritKeywords(
                     [['view', 'dense']],
-                    ({schema}) => schemaTypeToDistinct(schema?.get('type')) !== 'boolean' && edit,
+                    ({schema}) => !schemaTypeIs(schema?.get('type'), 'boolean') && edit,
                     // (/*{parentSchema, schema}*/) => edit,
                 ),
             ]),

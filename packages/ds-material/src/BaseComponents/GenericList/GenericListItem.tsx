@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
+import { schemaTypeIs } from '@ui-schema/ui-schema/schemaTypeIs'
 import React from 'react'
 import Grid, { GridSpacing } from '@mui/material/Grid'
 import Divider from '@mui/material/Divider'
@@ -6,7 +7,6 @@ import { onChangeHandler, StoreKeys } from '@ui-schema/react/UIStore'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import { schemaTypeToDistinct } from '@ui-schema/ui-schema/schemaTypeToDistinct'
 import { List } from 'immutable'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
@@ -59,7 +59,7 @@ export const GenericListItemBase = (
                     // tuples in root level not possible
                     // was wrong implementation <= 0.2.2
                     null :
-                    schemaTypeToDistinct(itemsSchema.get('type') as SchemaTypesType) === 'array' &&
+                    schemaTypeIs(itemsSchema.get('type') as SchemaTypesType, 'array') &&
                     itemsSchema.get('items') ?
                         <Grid item style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
                             <Grid container spacing={2}>

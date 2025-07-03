@@ -12,7 +12,6 @@ import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { extractValue, WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
-import { schemaTypeToDistinct } from '@ui-schema/ui-schema/schemaTypeToDistinct'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
@@ -66,9 +65,11 @@ const NumberSliderRenderer: React.FC<{
     },
 ) => {
     const uid = useUID()
+    const type = schema.get('type')
     let hasMulti = false
     let canAdd = false
-    if (schemaTypeToDistinct(schema.get('type')) === 'array') {
+    const listMode = schemaTypeIs(type, 'array') || (!type && List.isList(value))
+    if (listMode) {
         hasMulti = typeof maxItems === 'undefined' || (minItems as number) < maxItems
         canAdd = typeof maxItems === 'undefined' || (!List.isList(value) || (List.isList(value) && value.size < maxItems))
     }
@@ -148,11 +149,11 @@ const NumberSliderRenderer: React.FC<{
                         canDelete: Boolean(hasMulti && value && List.isList(value) && (value.size > (minItems as number))),
                     },
                 }}
-                value={(schemaTypeToDistinct(schema.get('type')) === 'array' ?
+                value={(listMode ?
                     value && List.isList(value) && value.size ? value.toJS() as number[] : List.isList(defaultVal) ? defaultVal.toJS() as number[] : defaultVal :
                     typeof value === 'number' ? value : List.isList(defaultVal) ? defaultVal.toJS() as number[] : defaultVal)}
                 onChange={(e, newValue) => {
-                    if (schemaTypeToDistinct(schema.get('type')) !== 'array' && isNaN(newValue as number * 1)) {
+                    if (!listMode && isNaN(newValue as number * 1)) {
                         console.error('Invalid Type: input not a number in:', e.target, newValue)
                         return
                     }
@@ -164,7 +165,7 @@ const NumberSliderRenderer: React.FC<{
                         scopes: ['value'],
                         type: 'update',
                         // @ts-ignore
-                        updater: () => ({value: schemaTypeToDistinct(schema.get('type')) === 'array' ? List(newValue) : newValue * 1}),
+                        updater: () => ({value: listMode ? List(newValue) : newValue * 1}),
                         schema,
                         required,
                     })
@@ -202,13 +203,16 @@ export const NumberSlider = (
         schema, ...props
     }: WidgetProps,
 ): React.ReactElement => {
+    const {value} = props
+    const type = schema.get('type')
+    const listMode = schemaTypeIs(type, 'array') || (!type && List.isList(value))
     let min: number = 0
     let max: number = 100
     let defaultVal
     let multipleOf: number | undefined = undefined
     let minItems: number | undefined = undefined
     let maxItems: number | undefined = undefined
-    if (schemaTypeToDistinct(schema.get('type')) === 'array') {
+    if (listMode) {
         if (!schemaTypeIsNumeric(schema.getIn(['items', 'type']) as SchemaTypesType)) {
             return null as unknown as React.ReactElement
         }
@@ -238,7 +242,7 @@ export const NumberSlider = (
     }
 
     // todo: happy-path issue with multiple types: `array | number | integer`, will always select array component
-    const Component = schemaTypeIs(schema.get('type'), 'array') ? ValueNumberSliderRenderer : NumberSliderRenderer
+    const Component = listMode ? ValueNumberSliderRenderer : NumberSliderRenderer
 
     return <Component
         multipleOf={multipleOf}

@@ -58,6 +58,8 @@ List of renamed functions, components etc., most are also moved to other package
 - moved react-specific widget matching logic from `matchWidget` to `WidgetRenderer`
 - `schemaTypeToDisctint`, used for matching widgets by `type` keyword, now supports multiple types
     - for `["string", "number"]` will now sort it and try to access a widget with the ID `number+string`, see default `matchWidget` source for entrypoint of general matching algo.
+    - switched from `schemaTypeToDistinct` to `schemaTypeIs` for rendering decision checks, as for tests the new combined types can not be used
+- new `schemaTypeIsDistinct` util for testing if the only allowed type, ignoring `null` if mixed with others (like `schemaTypeToDisctint`, as "null has no input use case")
 - `matchWidget` now return identifiers about what has matched
 - renamed `ErrorNoWidgetMatching` to `ErrorNoWidgetMatches`
 
@@ -76,9 +78,6 @@ Todo:
             - [ ] tree/nested information
         - [ ] in validators
 - [x] simplified `ValidatorErrors`, less hierarchy, easier interface for adding own-errors, child-errors and retrieving them
-- [ ] schemaTypeToDistinct should not always combine types
-    - but for type tests, there are the `schemaTypeIs` utils, which should be used instead?
-    - check current usage of `schemaTypeToDistinct` and switch if test fn must be used
 
 ### JSON-Schema
 
@@ -110,12 +109,12 @@ Todo:
     - [ ] better highlight what is important when using it: use the root branch value as schema (for having the prepared, and not the plain schema), check unresolved, use without `inject/applyWidgetEngine` HOCs to move schema root rendering component
 - [ ] validator support of defaulting values, initially and after applying conditional schema
     - **tbd:** `default` handling and conditionals/selecting branches in ref/allOf/oneOf chains
+- **TBD:** defaulting values may be needed during validation, to not flash invalid states, which requires some store-effects and bindings to `internals`
+    - yet that should also be possible initially/on list actions - but how to handle conditions/composition/ref there?x
 - [x] validator support of composition and conditional schemas
     - `if/then/else`, `allOf`, `oneOf`, `anyOf`
     - `dependencies`
     - support of nested conditionals / chains of `if` / including `$ref`
-- **TBD:** defaulting values may be needed during validation, to not flash invalid states, which requires some store-effects and bindings to `internals`
-    - yet that should also be possible initially/on list actions - but how to handle conditions/composition/ref there?
 - [ ] something that collects for each valueLocation/schemaLocation it's applicable schema, for then having a list of schemas which should be merged, for each field/schema location
     - [x] basic PoC with emitting applied schemas for per-layer/non-recursive validation, with an integration in ValidatorPlugin which reduces applied schemas, not just merging them
     - validators should return applicable schemas + evaluation context with evaluated-fields
@@ -145,18 +144,6 @@ Todo:
             "unevaluatedProperties": false
           }
           ```
-- **TBD:** add utils/hooks for easier usage of resolved nested schemas
-    - `getItemsSchema` - resolve and get the `items` schema
-        - needed in e.g. `TableRenderer` to know the items fields before rendering them
-    - `getItemSchema(schema, index, itemValue)` - resolve and get the schema for one specific value
-        - OR: `getItems(schema, index, arrValue)` - resolve and get the schema for an array, returns the values with their respective schema
-    - `getPropertySchema(schema, property, propValue)` - resolve and get the schema for one specific value
-        - OR: `getProperties(schema, objValue)` - resolve and get the schema for an object, returns the values with their respective schema
-    - **TBD:** value-first vs schema-first strategy
-        - schema-first uses what is in schema, for widgets which work on specific data
-        - value-first uses what is in schema depending on the actual value, for widgets which are more universal and could switch between `items` and `properties` depending if the value is `array` or `object`
-            - which is against the predictable schema rendering, as if no value exists, it can't be decided
-            - which still works reliable in e.g. list widgets, e.g. in `Table` for row-level, as a row only will be rendered if it exists in value
 - rewrite the "Combination with Conditional" demo and explain why that is caused and how to prevent non-existing values from causing validations to not behave like expected with what is rendered
     - the point with e.g. `required` only validates if a value is `object`, not if the value is a `string` (and all other switch to `typeof` checks instead of `type` keyword),
       and as UI is rendered for the whole schema and not only for existing values, the validation must correctly cascade or `default` values must be set
@@ -319,6 +306,7 @@ Todo:
     - replaced `WithValue`/`WithScalarValue` with `WithValuePlain` and otherwise use the existing `WithOnChange`
     - **Reason:** it can't be typed what "value type" a widget allows, as it could receive any (invalid) value (from e.g. remote states).
 - `binding.NoWidget`/`NoWidgetProps`: renamed `matching` to `widgetId`
+- (react-json-schema) `VirtualWidgetRenderer` now is value-aware when matching widget, adds support for no `type` keyword and improves multi-type support
 
 ## Todo WidgetProps
 
@@ -489,6 +477,20 @@ new widget engine functions:
     - unify onChange/actions-reducers config with general store config? or provide a action-reducers-plugin part to simplify customization via config. (e.g. `doNotDefault` is not known by `list-item-default`)
 - instead of checking if an action is value affecting, the updater/reducers should return better what they have done, if anything at all
 - after removing deprecations and working basics of the new store context, check the circular references in types of binding, WidgetPlugin, WidgetPops and UIMeta, UIStore contexts and try to remove all
+- add utils/hooks for easier usage of resolved nested schemas
+    - `getItemsSchema` - resolve and get the `items` schema
+        - needed in e.g. `TableRenderer` to know the items fields before rendering them
+    - `getItemSchema(schema, index, itemValue)` - resolve and get the schema for one specific value
+        - OR: `getItems(schema, index, arrValue)` - resolve and get the schema for an array, returns the values with their respective schema
+    - `getPropertySchema(schema, property, propValue)` - resolve and get the schema for one specific value
+        - OR: `getProperties(schema, objValue)` - resolve and get the schema for an object, returns the values with their respective schema
+    - **TBD:** value-first vs schema-first vs value-aware-schema strategy
+        - schema-first uses what is in schema, for widgets which work on specific data
+        - value-first uses what is in schema depending on the actual value, for widgets which are more universal and could switch between `items` and `properties` depending if the value is `array` or `object`
+            - which is against the predictable schema rendering, as if no value exists, it can't be decided
+            - which still works reliable in e.g. list widgets, e.g. in `Table` for row-level, as a row only will be rendered if it exists in value
+- add value-aware `schemaTypeIs*` support and/or integrated into the `getFields` utils
+    - search for `happy-path issue` and check existing `schemaTypeIs` checks which can be optimized with value awareness
 
 ---
 

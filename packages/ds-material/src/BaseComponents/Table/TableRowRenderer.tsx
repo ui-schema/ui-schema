@@ -1,10 +1,10 @@
+import { schemaTypeIs } from '@ui-schema/ui-schema/schemaTypeIs'
 import React, { Fragment } from 'react'
 import { StoreKeyType, WithOnChange } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widget'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
-import { schemaTypeToDistinct } from '@ui-schema/ui-schema/schemaTypeToDistinct'
 import { List, OrderedMap, Map } from 'immutable'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
@@ -42,7 +42,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
     const deleteOnEmpty = parentSchema?.get('deleteOnEmpty') || required
 
     if (
-        schemaTypeToDistinct(schema.get('type') as SchemaTypesType) === 'object' &&
+        schemaTypeIs(schema.get('type') as SchemaTypesType, 'object') &&
         (schema.getIn(['rowSortOrder']) as TableCellSchemaImmutable['rowSortOrder'])?.size
     ) {
         let orderedCellSchema = OrderedMap();
@@ -69,9 +69,10 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
                 <TableCell
                     key={j}
                     sx={styles}
-                    align={schemaTypeToDistinct(item.get('type')) === 'boolean' ? 'center' : undefined}
+                    align={schemaTypeIs(item.get('type'), 'boolean') ? 'center' : undefined}
                 >
-                    {schemaTypeToDistinct(item.get('type')) === 'object' ?
+                    {/* todo: happy-path issue, always using object and requires value-based decision otherwise */}
+                    {schemaTypeIs(item.get('type'), 'object')/* || (!item.get('type') && Map.isMap(value))*/ ?
                         <GroupRenderer schema={item} storeKeys={storeKeys}>
                             <WidgetEngineMemo<{ [k: string]: any } & WidgetProps>
                                 showValidity={showValidity}
