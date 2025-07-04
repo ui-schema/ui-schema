@@ -6,6 +6,9 @@ import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { OrderedMap } from 'immutable'
 import { GroupRendererProps } from '@ui-schema/react/Widget'
 
+/**
+ * @experimental not compatible with all widgets
+ */
 export const SchemaGrid2Item: React.ComponentType<React.PropsWithChildren<{
     schema: UISchemaMap
     defaultMd?: GridSize
@@ -39,6 +42,9 @@ export const SchemaGrid2Item: React.ComponentType<React.PropsWithChildren<{
     </Grid2>
 }
 
+/**
+ * @experimental not compatible with all widgets
+ */
 export const Group2Renderer: React.ComponentType<React.PropsWithChildren<GroupRendererProps>> = (
     {
         schema, noGrid,
@@ -56,6 +62,9 @@ export const Group2Renderer: React.ComponentType<React.PropsWithChildren<GroupRe
             {children}
         </Grid2>
 
+/**
+ * @experimental not compatible with all widgets
+ */
 export const SchemaGrid2Handler = <P extends WidgetPluginProps>(props: P): React.ReactElement => {
     const {schema, noGrid: noGridProp, isVirtual, Next} = props
 

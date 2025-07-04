@@ -5,6 +5,9 @@ export interface Grid2ContainerProps {
     spacing?: number
 }
 
+/**
+ * @experimental not compatible with all widgets
+ */
 export const Grid2Container = (
     {
         spacing = 0,

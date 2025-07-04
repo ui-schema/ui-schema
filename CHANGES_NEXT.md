@@ -44,6 +44,7 @@ List of renamed functions, components etc., most are also moved to other package
     - `ds-material/BindingExtended` exports `bindingExtended` for `.custom` widget binding
     - no default `schemaPlugins`/`widgetPlugins`; *maybe add a legacy compat to make migration easier, atm. in demo-web*
 - added `Grid2` components and plugins, for future migration path from mui5/6 to 7
+- [ ] `Grid2` components are not enough, as `GenericList` and other container widgets may include hard coded wrappers, which rely on the same Grid component inside the grid plugin
 
 ### DS Bootstrap
 
