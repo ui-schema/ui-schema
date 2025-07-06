@@ -21,7 +21,7 @@ import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
-import { isInvalid } from '@ui-schema/react/ValidityReporter'
+import { isInvalid } from '@ui-schema/react/isInvalid'
 
 const customBinding: typeof widgets = {
     ...widgets,

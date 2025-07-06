@@ -1,5 +1,5 @@
 import React from 'react'
-import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 
 export const ValidityReporter: React.FC<WidgetPluginProps> = (props) => {

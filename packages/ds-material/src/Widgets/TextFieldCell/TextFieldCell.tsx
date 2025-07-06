@@ -1,4 +1,4 @@
-import { MuiBindingComponents } from '@ui-schema/ds-material'
+import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
 import React, { CSSProperties, EventHandler } from 'react'
 import { useUID } from 'react-uid'
 import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'

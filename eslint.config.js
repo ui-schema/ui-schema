@@ -3,6 +3,7 @@ import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import tsParser from '@typescript-eslint/parser'
 import stylistic from '@stylistic/eslint-plugin'
+import importPlugin from 'eslint-plugin-import'
 // import typescriptEs from '@typescript-eslint/eslint-plugin'
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
@@ -18,6 +19,7 @@ export default defineConfig([
     ...tseslint.configs.stylistic,
     reactHooks.configs['recommended-latest'],
     react.configs.flat['jsx-runtime'],
+    importPlugin.flatConfigs.typescript,
     {
         ...react.configs.flat.recommended,
         settings: {
@@ -230,6 +232,43 @@ export default defineConfig([
             '@typescript-eslint/ban-ts-comment': 'off',
             '@typescript-eslint/no-inferrable-types': 'off',
             '@typescript-eslint/no-explicit-any': 'off',
+            // 'no-duplicate-imports': ['error', {allowSeparateTypeImports: true}],
+            'no-restricted-imports': [
+                'error',
+                {
+                    'paths': [
+                        '@mui/material',
+                        '@mui/icon-material',
+                        '@ui-schema/dictionary',
+                        '@ui-schema/ds-bootstrap',
+                        '@ui-schema/ds-material',
+                        '@ui-schema/json-pointer',
+                        '@ui-schema/json-schema',
+                        '@ui-schema/react',
+                        '@ui-schema/react-json-schema',
+                        '@ui-schema/ui-schema',
+                    ],
+                    'patterns': [
+                        // '@mui/*/*/*',
+                        '@mui/material/*/*',
+                        '@mui/icons-material/*/*',
+                        '@mui/lab/*/*',
+                    ],
+                },
+            ],
+            // todo: this rule doesn't work, `ignorePackages` is needed but also disabled the rule for relative imports somehow
+            //       e.g. in ds-material/index.ts when adding `export * from './GridContainer/index'`, it doesn't fail
+            //       but without `ignorePackages` it also fails for `@ui-schema/ui-schema/matchWidget`
+            'import/extensions': [
+                'error',
+                {
+                    'js': 'ignorePackages',
+                    'ts': 'never',
+                    'json': 'never',
+                },
+            ],
+            'import/no-unresolved': 'off',
+            'import/no-mutable-exports': 'off',
         },
     },
     {
@@ -237,11 +276,24 @@ export default defineConfig([
             '**/demo-server/*.{ts,tsx,mjs,js}',
             'packerConfig.js',
             'jest.config.ts',
+            'eslint.config.js',
         ],
         languageOptions: {
             globals: {
                 ...globals.node,
             },
+        },
+        rules: {
+            'import/no-unresolved': 'off',
+            // 'import/no-unresolved': 'error',
+        },
+    },
+    {
+        files: [
+            'packages/ui-schema/src/*.{ts,tsx,mjs,js}',
+        ],
+        rules: {
+            'import/no-nodejs-modules': 'error',
         },
     },
     {

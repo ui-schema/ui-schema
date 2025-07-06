@@ -1,4 +1,4 @@
-import { MuiBindingComponents } from '@ui-schema/ds-material'
+import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
 import React from 'react'
 import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
@@ -15,14 +15,14 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { useUID } from 'react-uid'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
-import { SwitchBaseProps } from '@mui/material/internal/SwitchBase'
+import { SwitchProps } from '@mui/material/Switch'
 import { OptionValueSchema, useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 
 const OptionCheck: React.ComponentType<{
     disabled?: boolean
     checked: boolean
     label: React.ReactNode
-    onChange: SwitchBaseProps['onChange']
+    onChange: SwitchProps['onChange']
 }> = ({disabled, checked, label, onChange}) => {
     const uid = useUID()
 

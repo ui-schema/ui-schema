@@ -52,13 +52,13 @@ function updateScopedData<S extends UIStoreType = UIStoreType, D extends UIStore
     op: 'set' | 'delete',
 ): S {
     if (scopes.includes('value')) {
-        store = scopeUpdaterValues(store, storeKeys, data.value, op)
+        store = scopeUpdaterValues<S>(store, storeKeys, data.value, op)
     }
     if (scopes.includes('internal')) {
-        store = scopeUpdaterInternals(store, storeKeys, data.internal, op)
+        store = scopeUpdaterInternals<S>(store, storeKeys, data.internal, op)
     }
     if (scopes.includes('valid')) {
-        store = scopeUpdaterValidity(store, storeKeys, data.valid, op)
+        store = scopeUpdaterValidity<S>(store, storeKeys, data.valid, op)
     }
     if (scopes.includes('meta')) {
         store = store.set('meta', data.meta) as unknown as typeof store
@@ -294,7 +294,7 @@ export const createActionsReducer =
                                 // todo: now it is no longer possible to know what was changed, only pass down store for simplicity here?
                                 //       would require using e.g. extractValues where effect is used;
                                 //       maybe add such meta data onto the `storeActionHandlersMap`, to be easily extendable and inferable
-                                getScopedData(nextStore, ['value', 'internal', 'valid', 'meta'], action.storeKeys),
+                                getScopedData<S, D>(nextStore, ['value', 'internal', 'valid', 'meta'], action.storeKeys),
                                 nextStore,
                             )
                         }

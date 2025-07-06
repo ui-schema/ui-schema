@@ -4,7 +4,7 @@ import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react-json-sche
 import type { MuiBindingWidgets } from '@ui-schema/ds-material/Binding'
 import { GroupRenderer } from '@ui-schema/ds-material/Grid'
 import { ErrorFallback } from '@ui-schema/ds-material/ErrorFallback'
-import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import type { BindingComponents } from '@ui-schema/react/Widget'
 import { VirtualWidgetRenderer } from '@ui-schema/react-json-schema/VirtualWidgetRenderer'

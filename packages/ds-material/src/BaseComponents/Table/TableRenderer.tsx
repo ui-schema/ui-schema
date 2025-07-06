@@ -1,4 +1,4 @@
-import { MuiBindingComponents } from '@ui-schema/ds-material'
+import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
 import { makeParams } from '@ui-schema/json-schema/Validator'
 import { mergeSchemas } from '@ui-schema/json-schema/ValidatorPlugin'
 import { useSchemaResource } from '@ui-schema/react/SchemaResourceProvider'

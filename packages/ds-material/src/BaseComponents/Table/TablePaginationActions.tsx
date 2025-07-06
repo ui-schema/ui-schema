@@ -7,9 +7,9 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import LastPageIcon from '@mui/icons-material/LastPage'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
 import { Translate } from '@ui-schema/react/Translate'
-import { TablePaginationActionsProps } from '@mui/material/TablePagination/TablePaginationActions'
+import { TablePaginationOwnProps } from '@mui/material/TablePagination'
 
-export const TablePaginationActions: React.ComponentType<TablePaginationActionsProps> = (props) => {
+export const TablePaginationActions: NonNullable<TablePaginationOwnProps['ActionsComponent']> = (props) => {
     const theme = useTheme()
     const {
         count, page, rowsPerPage, onPageChange,

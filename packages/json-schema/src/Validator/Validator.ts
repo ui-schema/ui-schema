@@ -1,5 +1,5 @@
 import { JsonSchemaKeywordType } from '@ui-schema/json-schema/Definitions'
-import { ValidateFn, ValidateParams, ValidateStateNested, ValidateStateOutput, ValidationDetails, ValidationResult } from '@ui-schema/ui-schema/Validate'
+import { ValidateFn, ValidateParams, ValidateStateNested, ValidateStateOutput, ValidationDetails, ValidateResult } from '@ui-schema/ui-schema/Validate'
 import { ValidatorOutput } from '@ui-schema/ui-schema/ValidatorOutput'
 import { getValueType } from './getValueType.js'
 
@@ -133,7 +133,7 @@ export function Validator(
         schema: any,
         value: unknown,
         params: ValidatorParams & Partial<ValidatorState> = makeParams(),
-    ): ValidationResult<TData> {
+    ): ValidateResult<TData> {
         const scopedParams: ValidatorParams & ValidatorState = {
             ...params,
             context: params.context || {},

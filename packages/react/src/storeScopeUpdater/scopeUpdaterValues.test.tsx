@@ -277,7 +277,7 @@ describe('scopeUpdaterValues', () => {
             }),
         ],
     ])('scopeUpdaterValues(%j, %s, %j, %j): %j', (
-        store: UIStoreType<any>,
+        store: UIStoreType,
         storeKeys: StoreKeys,
         newValue: any,
         op: string | 'set' | 'delete' | undefined,

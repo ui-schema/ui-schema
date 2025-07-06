@@ -1,8 +1,8 @@
 import { getDisplayName, memo } from '@ui-schema/react/Utils/memo'
-import { MinimalComponentType } from '@ui-schema/react/Widget'
+import type { MinimalComponentType } from '@ui-schema/react/Widget'
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
-import type { WidgetPluginProps } from './Plugin.js'
+import type { WidgetPluginProps } from './WidgetPlugin.js'
 
 export type NextWidgetPlugin<P = {}> = {
     Component: <P2 extends P = P>(props: P2) => ReactNode
@@ -93,7 +93,7 @@ export const makeNext = <PWidgetPlugin extends WidgetPluginProps>(
         First = {
             ...WidgetRendererNext,
             Component: WidgetRendererNext.Component || (() => {
-                throw new Error(`WidgetPlugin overflow, no plugins.`)
+                throw new Error(`WidgetPlugin overflow, no plugins and no WidgetRenderer.`)
             }),
         }
     }

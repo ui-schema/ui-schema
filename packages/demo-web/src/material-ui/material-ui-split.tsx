@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
-import { escapePointer } from '@ui-schema/json-pointer'
+import { escapePointer } from '@ui-schema/json-pointer/escapePointer'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { resourceFromSchema, SchemaResource } from '@ui-schema/ui-schema/SchemaResource'
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
@@ -34,7 +34,8 @@ import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { UISchema, UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { createStore, onChangeHandler, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
-import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
+import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
+import { isInvalid } from '@ui-schema/react/isInvalid'
 import { UIMetaContext, UIMetaProvider } from '@ui-schema/react/UIMeta'
 
 type CustomWidgetsBinding = MuiBinding

@@ -272,7 +272,7 @@ import { storeUpdater } from '@ui-schema/ui-schema/storeUpdater';
 import { injectWidgetEngine } from '@ui-schema/ui-schema/applyWidgetEngine';
 
 // for validity checking
-import { isInvalid } from '@ui-schema/ui-schema/ValidityReporter';
+import { isInvalid } from '@ui-schema/react/isInvalid';
 // for deep immutables
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap';
 // for \`t\` keyword support / basic in-schema translation

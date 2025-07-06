@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
-import { MuiBindingComponents } from '@ui-schema/ds-material'
+import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
 import React from 'react'
 import FormControl from '@mui/material/FormControl'
 import Grid from '@mui/material/Grid'

@@ -3,8 +3,8 @@ import { matchWidget } from '@ui-schema/ui-schema/matchWidget'
 import { ValidateFn } from '@ui-schema/ui-schema/Validate'
 import { createContext, PropsWithChildren, useContext, useMemo } from 'react'
 import { Translator } from '@ui-schema/ui-schema/Translator'
-import { BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { NextWidgetPlugin, useNext } from '@ui-schema/react/WidgetEngine'
+import { BindingTypeGeneric } from '@ui-schema/react/Widget'
 
 export interface UIMetaContextInternal<W = BindingTypeGeneric, P = {}> extends UIMetaContext<W> {
     Next: NextWidgetPlugin<P>

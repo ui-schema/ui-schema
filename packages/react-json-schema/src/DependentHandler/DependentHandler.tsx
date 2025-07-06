@@ -1,5 +1,5 @@
 import React from 'react'
-import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { useUIStore } from '@ui-schema/react/UIStore'
 import { mergeSchema } from '@ui-schema/ui-schema/Utils/mergeSchema'
 import { List, Map } from 'immutable'

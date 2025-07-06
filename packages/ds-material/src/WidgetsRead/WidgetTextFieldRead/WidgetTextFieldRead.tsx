@@ -1,4 +1,4 @@
-import { MuiBindingComponents } from '@ui-schema/ds-material'
+import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
 import React, { MouseEventHandler } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'

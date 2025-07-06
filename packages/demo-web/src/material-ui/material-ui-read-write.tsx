@@ -5,7 +5,7 @@ import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefau
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
-import { DefaultHandler } from '@ui-schema/react-json-schema'
+import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
 import { InheritKeywords } from '@ui-schema/json-schema/InheritKeywords'
 import { SortPlugin } from '@ui-schema/json-schema/SortPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
@@ -35,7 +35,8 @@ import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
-import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
+import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
+import { isInvalid } from '@ui-schema/react/isInvalid'
 import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
 
 // custom `GroupRenderer` that supports `is-read and display-dense`

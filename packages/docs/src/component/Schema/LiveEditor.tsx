@@ -1,7 +1,7 @@
 import Checkbox from '@mui/material/Checkbox'
 import Popover from '@mui/material/Popover'
 import Tooltip from '@mui/material/Tooltip'
-import { toPointer } from '@ui-schema/json-pointer'
+import { toPointer } from '@ui-schema/json-pointer/toPointer'
 import { useUIMeta, UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { resourceFromSchema } from '@ui-schema/ui-schema/SchemaResource'
@@ -44,7 +44,7 @@ import { useOnDirectedMove } from '@ui-schema/material-dnd/useOnDirectedMove'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { createEmptyStore, createStore, onChangeHandler, UIStoreProvider, UIStoreType, useUIStore } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
-import { isInvalid } from '@ui-schema/react/ValidityReporter'
+import { isInvalid } from '@ui-schema/react/isInvalid'
 import { SchemaInspectorLocation, SchemaInspectorProvider } from './SchemaInspector'
 
 const IconInput = (
@@ -512,7 +512,7 @@ const EditorHandler = ({activeSchema}: any) => {
         schema: any
         input: string
         jsonError?: string
-        store: UIStoreType<any>
+        store: UIStoreType
     }>(() => ({
         id: activeSchema,
         schema: schemas[activeSchema][1],

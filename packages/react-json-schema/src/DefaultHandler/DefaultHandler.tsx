@@ -1,6 +1,6 @@
 import React from 'react'
 import { Map } from 'immutable'
-import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 
 export interface DefaultHandlerProps {
     doNotDefault?: boolean

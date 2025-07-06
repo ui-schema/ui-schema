@@ -87,4 +87,4 @@ flowchart TD
 
 ## Flowchart React with JSON Schema
 
-> todo: a more in depth flow chart, which focuses on how object rendering works by default
+> todo: a more in depth flow chart, which focuses on how object rendering works by default; including `$ref` handling(?)

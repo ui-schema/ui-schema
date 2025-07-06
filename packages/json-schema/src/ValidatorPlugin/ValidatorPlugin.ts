@@ -1,7 +1,7 @@
-import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
-import { SchemaResource } from '@ui-schema/ui-schema/SchemaResource'
+import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import type { SchemaResource } from '@ui-schema/ui-schema/SchemaResource'
 import { createOrdered } from '@ui-schema/ui-schema/createMap'
-import { SchemaPlugin } from '@ui-schema/ui-schema/SchemaPlugin'
+import type { SchemaPlugin } from '@ui-schema/ui-schema/SchemaPlugin'
 import { Map, List, OrderedMap } from 'immutable'
 
 /**

@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { MuiBinding } from '@ui-schema/ds-material'
+import { MuiBinding } from '@ui-schema/ds-material/Binding'
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { Group2Renderer, SchemaGrid2Handler } from '@ui-schema/ds-material/Grid2'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
+import { emailValidator } from '@ui-schema/json-schema/Validators/EmailValidator'
 import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
 import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
@@ -24,7 +25,8 @@ import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
 import { Grid2Container } from '@ui-schema/ds-material/Grid2Container'
 import { createOrderedMap, createMap } from '@ui-schema/ui-schema/createMap'
-import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
+import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
+import { isInvalid } from '@ui-schema/react/isInvalid'
 import { createStore, createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
@@ -223,6 +225,7 @@ const Main = () => {
 
 const validate = Validator([
     ...standardValidators,
+    emailValidator,
     requiredValidatorLegacy,
 ]).validate
 

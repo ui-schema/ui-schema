@@ -15,8 +15,6 @@ import {
     oneOfValidator,
     validateTypes,
     ERROR_NOT_SET,
-    ERROR_EMAIL_INVALID,
-    validateEmail,
     validateMinMaxString, validateMinMaxNumber, validateMinMaxArray, validateMinMaxObject,
 } from '@ui-schema/json-schema/Validators'
 import { ValidatorOutput } from '@ui-schema/ui-schema/ValidatorOutput'
@@ -281,21 +279,6 @@ export const standardValidators: ValidatorHandler[] = [
                         }
                     },
                 }
-            }
-        },
-    },
-    {
-        id: 'format:email',
-        // `format: "email"` validator
-        types: ['string' as const],
-        validate: (schema, value, params) => {
-            if (schema.get('format') !== 'email') return
-            if (!validateEmail(value)) {
-                params.output.addError({
-                    error: ERROR_EMAIL_INVALID,
-                    keywordLocation: toPointer([...params.keywordLocation, 'format']),
-                    instanceLocation: toPointer(params.instanceLocation),
-                })
             }
         },
     },

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Map } from 'immutable'
-import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { useSchemaRoot } from '@ui-schema/react-json-schema/SchemaRootProvider'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { escapePointer } from '@ui-schema/json-pointer/escapePointer'

@@ -1,5 +1,7 @@
 # Changes done
 
+Tracking changes and progress for [v0.5.x](https://github.com/ui-schema/ui-schema/discussions/184#discussioncomment-3100010).
+
 ## Package Split up
 
 > todo: add what was moved to which package/sub-path after first clean-up of a working demo-web/demo-server setup
@@ -155,7 +157,7 @@ Todo:
     - how to provide react based hooks via non-react validators plugins? force to write an own widgetPlugin instead of using the default, if someone wishes to use that?
     - should work around "pausing" the validator, by stopping the loop as soon as possible, returning a state+unresolved payload, which the user must resolve and then restart validation from the state
 
-> See also [CHANGES_NEXT_VALIDATE_TODOS.md](./CHANGES_NEXT_VALIDATE_TODOS.md) for more specific validator todos.
+> See also [TODO_Validate.md](./TODO_Validate.md) for more specific validator todos.
 
 ### JSON-Pointer
 
@@ -345,7 +347,7 @@ new widget engine functions:
         - but causing a lot of performance strain, from ~20-60s to over 5-20min depending on cache; thus should be always disabled for `tdd`;
           and causing CI to fail then and now; thus disabled again via env flag, but removed exclusions in `tsconfig` and with that included in normal tscheck/dtsgen
     - [ ] optimize all `ts-ignore` with better function signatures or mock data
-- [ ] check all `@mui` import, wrong imports lead to jest failures: "can not use import outside module"
+- [x] check all `@mui` import, wrong imports lead to jest failures: "can not use import outside module"
     - never go into the third level, even for "sub bundles" like `/styles`,
       it fails when using `import useTheme from '@mui/material/styles/useTheme'`
       but works using `import { useTheme } from '@mui/material/styles'`
@@ -360,6 +362,7 @@ new widget engine functions:
         - `NextPluginRenderer`
     - **note:** solved with `NoInfer` in `WidgetEngine` and using also `object` for stricter props/context-baggage
 - [ ] fix/finalize strict UISchemaMap typing and json-schema types
+    - alternatively replace `StoreSchemaType` with `SomeSchema` from `/ui-schema/CommonTypings`, for a simpler type, just for enforcing immutable map
 - [ ] stricter typings, with many `any` switched to `unknown`
 - [x] finalize `package.json` generation for strict esm with ESM and CJS support
 - [x] finalize strict-ESM compatible imports/exports, especially in packages
@@ -448,50 +451,6 @@ new widget engine functions:
     - this undefined behaviour / normal errors isn't nice
     - an automatic correction should be optional, as imho. unexpected and may lead to more complex integration with most ORM/DMS
 - [ ] provide a demo of custom store actions which use the schema resource system for more complex recursive mutations?
-
-## Todo 0.6.x
-
-> write up learnings and the architecture change to parse schema and validate in global state
-
-- move validation into global state
-- only keep schema plugins/widget plugins for interop and widget rendering
-- the graph for which schema applies to a field, can only be built after validation,
-  as that would handle `if`/`oneOf` to know which currently applies
-- `default` handling is particular important to do before and maybe after validation, without flashing incorrect errors if e.g. `default` is just not applied
-- store and schema positions to use for subscriptions, mutations and applicable schemas
-    - `schemaKeys` won't capture complex compositional schemas (incl. $ref), thus relying on it to get the current branch/schema is impossible
-    - `storeKeys` must be matched against applicable schemas, to know which are all applying
-- this allows to use a valueLocation in rendering and getting the applicable schema, without the need to pass down the schema at all,
-  without schema reduction done per rendered field, but based on the original tree and not an already reduced tree
-    - which of course would break any existing widget-plugin based schema-manipulation - there should exist some migration path
-        - this is applies especially to widget plugins which where before the validator and relied on schema and modified the value, which then the validator would already use,
-          to validate but also use to evaluate conditional branches; one solution i see is to allow the validator to modify value while traversing and emitting effects for store changes, which are fired after it is done
-    - the performance must be checked and compared against the render-reduction + validation approach
-- schemaLocation vs valueLocation for schema resolving, reduction, store connection and happy path selection and rendering
-- deprecate `parentSchema`, `schema` in props of widget engine, but not in widget payload
-- better support for skipping `hidden` and empty schema while rendering, to not produce empty grid slots; depends also on central schema validation and building of applied UI happy paths, with some central index for stuff like hidden etc.
-- reevaluate if store utils should stay in `react` or move to system
-- deprecate `extractValue`/`extractValidity` HOCs
-- rewrite all store related functions
-    - external store with subscription system
-    - full rewrite of `scopeUpdater*`; as leading to behaviour changes, should be better in `0.6.x` instead of `0.5.x`
-    - unify onChange/actions-reducers config with general store config? or provide a action-reducers-plugin part to simplify customization via config. (e.g. `doNotDefault` is not known by `list-item-default`)
-- instead of checking if an action is value affecting, the updater/reducers should return better what they have done, if anything at all
-- after removing deprecations and working basics of the new store context, check the circular references in types of binding, WidgetPlugin, WidgetPops and UIMeta, UIStore contexts and try to remove all
-- add utils/hooks for easier usage of resolved nested schemas
-    - `getItemsSchema` - resolve and get the `items` schema
-        - needed in e.g. `TableRenderer` to know the items fields before rendering them
-    - `getItemSchema(schema, index, itemValue)` - resolve and get the schema for one specific value
-        - OR: `getItems(schema, index, arrValue)` - resolve and get the schema for an array, returns the values with their respective schema
-    - `getPropertySchema(schema, property, propValue)` - resolve and get the schema for one specific value
-        - OR: `getProperties(schema, objValue)` - resolve and get the schema for an object, returns the values with their respective schema
-    - **TBD:** value-first vs schema-first vs value-aware-schema strategy
-        - schema-first uses what is in schema, for widgets which work on specific data
-        - value-first uses what is in schema depending on the actual value, for widgets which are more universal and could switch between `items` and `properties` depending if the value is `array` or `object`
-            - which is against the predictable schema rendering, as if no value exists, it can't be decided
-            - which still works reliable in e.g. list widgets, e.g. in `Table` for row-level, as a row only will be rendered if it exists in value
-- add value-aware `schemaTypeIs*` support and/or integrated into the `getFields` utils
-    - search for `happy-path issue` and check existing `schemaTypeIs` checks which can be optimized with value awareness
 
 ---
 

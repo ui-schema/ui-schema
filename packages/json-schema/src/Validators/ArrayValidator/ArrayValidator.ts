@@ -1,4 +1,4 @@
-import { toPointer } from '@ui-schema/json-pointer'
+import { toPointer } from '@ui-schema/json-pointer/toPointer'
 import { ValidatorParams, ValidatorState, ValidatorStateNested, ValidatorHandler, getValueType } from '@ui-schema/json-schema/Validator'
 import { ValidatorOutput } from '@ui-schema/ui-schema/ValidatorOutput'
 import { List } from 'immutable'

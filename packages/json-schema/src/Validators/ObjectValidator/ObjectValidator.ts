@@ -1,4 +1,4 @@
-import { toPointer } from '@ui-schema/json-pointer'
+import { toPointer } from '@ui-schema/json-pointer/toPointer'
 import { ValidatorParams, ValidatorState, ValidatorHandler } from '@ui-schema/json-schema/Validator'
 import { List, Map as ImmutableMap, Record } from 'immutable'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'

@@ -2,7 +2,7 @@ import { Breakpoint } from '@mui/material/styles'
 import React, { MouseEventHandler } from 'react'
 import Grid2, { GridSize, GridSpacing } from '@mui/material/Grid2'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { OrderedMap } from 'immutable'
 import { GroupRendererProps } from '@ui-schema/react/Widget'
 

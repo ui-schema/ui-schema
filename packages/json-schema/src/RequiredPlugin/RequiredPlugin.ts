@@ -1,4 +1,4 @@
-import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { SchemaPlugin } from '@ui-schema/ui-schema/SchemaPlugin'
 import { List } from 'immutable'
 

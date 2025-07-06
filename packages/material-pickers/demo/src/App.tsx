@@ -1,5 +1,5 @@
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
-import { MuiBinding } from '@ui-schema/ds-material'
+import { MuiBinding } from '@ui-schema/ds-material/Binding'
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
@@ -30,9 +30,10 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widget'
 import { createEmptyStore, onChangeHandler, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
-import { isInvalid, ValidityReporter } from '@ui-schema/react/ValidityReporter'
+import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
+import { isInvalid } from '@ui-schema/react/isInvalid'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
-import { Paper } from '@mui/material'
+import Paper from '@mui/material/Paper'
 
 const getExtraProps = (schema: UISchemaMap, type: 'date' | 'date-time' | 'time') => {
     const data: { [k: string]: any } = {}

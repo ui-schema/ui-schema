@@ -1,4 +1,4 @@
-import { TransitionProps } from '@mui/material/transitions/transition'
+import { TransitionProps } from '@mui/material/transitions'
 import React from 'react'
 import IcHistory from '@mui/icons-material/History'
 import IcSearch from '@mui/icons-material/Search'

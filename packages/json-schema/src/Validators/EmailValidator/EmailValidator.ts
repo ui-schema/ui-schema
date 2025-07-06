@@ -1,3 +1,5 @@
+import { toPointer } from '@ui-schema/json-pointer/toPointer'
+
 export const ERROR_EMAIL_INVALID = 'email-invalid'
 
 export const validateEmail = (value) => {
@@ -11,4 +13,20 @@ export const validateEmail = (value) => {
         return false
     }
     return true
+}
+
+export const emailValidator = {
+    id: 'format:email',
+    // `format: "email"` validator
+    types: ['string' as const],
+    validate: (schema, value, params) => {
+        if (schema.get('format') !== 'email') return
+        if (!validateEmail(value)) {
+            params.output.addError({
+                error: ERROR_EMAIL_INVALID,
+                keywordLocation: toPointer([...params.keywordLocation, 'format']),
+                instanceLocation: toPointer(params.instanceLocation),
+            })
+        }
+    },
 }

@@ -1,4 +1,4 @@
-import { ListItemButton } from '@mui/material'
+import ListItemButton from '@mui/material/ListItemButton'
 import MuiList from '@mui/material/List'
 import ListItemText from '@mui/material/ListItemText'
 import { useBlocks } from '@ui-schema/material-dnd/DragDropBlockProvider'

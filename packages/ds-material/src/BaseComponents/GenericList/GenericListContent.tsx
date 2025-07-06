@@ -1,4 +1,4 @@
-import type { MuiBindingComponents } from '@ui-schema/ds-material'
+import type { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
 import type { UIMetaContext } from '@ui-schema/react/UIMeta'
 import type { WithOnChange } from '@ui-schema/react/UIStore'
 import type { WidgetPayload } from '@ui-schema/ui-schema/Widget'

@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import type { FC } from 'react'
+import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { handleIfElseThen } from './handleIfElseThen.js'
 
 /**

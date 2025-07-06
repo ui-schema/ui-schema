@@ -90,9 +90,12 @@ export type ValidateFn = <TData = unknown>(
     schema: any,
     value: unknown,
     params?: ValidateParams & Partial<ValidateState>,
-) => ValidationResult<TData>
+) => ValidateResult<TData>
 
-export type ValidationResult<TData = unknown> =
+/**
+ * @todo unify with `ValidationResult` from `/ValidatorOutput`
+ */
+export type ValidateResult<TData = unknown> =
     ({ valid: true, value: TData, errors?: never } & ValidationDetails) |
     ({ valid: false, errors: ValidatorOutput['errors'] } & ValidationDetails)
 

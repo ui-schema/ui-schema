@@ -93,8 +93,7 @@ export const createStore = <D = any>(values: D): UIStoreType<D> => {
 }
 
 // todo: support multiple types #68
-// todo: adjust UIStoreType to List|OrderedMap|Map instead of []|{}
-export const createEmptyStore = (type: SchemaTypesType = 'object'): UIStoreType<[] | '' | 0 | false | {}> =>
+export const createEmptyStore = (type: SchemaTypesType = 'object'): UIStoreType =>
     createStore(
         type === 'array' ?
             List([]) :
@@ -105,7 +104,7 @@ export const createEmptyStore = (type: SchemaTypesType = 'object'): UIStoreType<
                     type === 'boolean' ?
                         false :
                         Map(),
-    ) as UIStoreType
+    )
 
 export const prependKey = <
     O extends StoreKeyType = StoreKeyType,

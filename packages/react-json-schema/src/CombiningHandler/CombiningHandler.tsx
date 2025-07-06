@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import React from 'react'
-import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { useSchemaCombine } from '@ui-schema/react-json-schema/CombiningHandler'
 
 /**

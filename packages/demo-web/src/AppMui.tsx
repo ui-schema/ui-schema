@@ -1,4 +1,4 @@
-import { CircularProgress } from '@mui/material'
+import CircularProgress from '@mui/material/CircularProgress'
 import { lazy, Suspense } from 'react'
 import {
     Switch,

@@ -7,7 +7,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import { isInvalid } from '@ui-schema/react/ValidityReporter'
+import { isInvalid } from '@ui-schema/react/isInvalid'
 import { createEmptyStore, createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { RichCodeEditor } from '../RichCodeEditor'
 // import LuxonAdapter from '@date-io/luxon';
