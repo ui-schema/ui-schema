@@ -8,7 +8,7 @@ import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
-import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
+import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils/forbidInvalidNumber'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
 import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 

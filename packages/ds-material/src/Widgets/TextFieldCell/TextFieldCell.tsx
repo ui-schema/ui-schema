@@ -9,7 +9,7 @@ import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import InputBase, { InputBaseProps, InputBaseComponentProps } from '@mui/material/InputBase'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
-import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
+import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils/forbidInvalidNumber'
 import visuallyHidden from '@mui/utils/visuallyHidden'
 
 export interface StringRendererCellProps {
