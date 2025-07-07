@@ -45,8 +45,11 @@ export type WidgetEngineProps<
     Omit<WidgetPayload, keyof WidgetPayloadFieldLocation | keyof WidgetPayloadFieldSchema> &
     WidgetEngineRootOrNestedProps &
     {
-        // todo: why is this defined here? this is also mixing up engine and plugin props,
-        //       but something which doesn't reach binding; and atm. it should not get any child error, just errors in the next layer
+        /**
+         * @todo why is this defined here? this is also mixing up engine and plugin props,
+         *       but something which doesn't reach binding; and atm. it should not get any child error, just errors in the next layer
+         * @deprecated use `store.extractValidity` to get reported validations
+         */
         onErrors?: onErrorHandler
 
         // wraps the whole stack internally, as interfacing for the utility function `injectWidgetEngine`

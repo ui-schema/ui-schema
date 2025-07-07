@@ -1,5 +1,5 @@
 import { scopeUpdaterInternals, scopeUpdaterInternals2, scopeUpdaterValidity, scopeUpdaterValues } from '@ui-schema/react/storeScopeUpdater'
-import { addNestKey, shouldDeleteOnEmpty, UIStoreType } from '@ui-schema/react/UIStore'
+import { addNestKey, getValidity, shouldDeleteOnEmpty, UIStoreType } from '@ui-schema/react/UIStore'
 import { UIStoreActions, UIStoreUpdaterData } from '@ui-schema/react/UIStoreActions'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import { schemaTypeIs } from '@ui-schema/ui-schema/schemaTypeIs'
@@ -26,10 +26,11 @@ function getScopedData<S extends UIStoreType = UIStoreType, D extends UIStoreUpd
                 store.internals?.get('self')
     }
     if (scopes.includes('valid')) {
-        data.valid =
-            storeKeys.size ?
-                getSelf(store.validity?.getIn(addNestKey('children', storeKeys)), 'valid') :
-                store.validity?.get('valid')
+        const validity = getValidity(storeKeys, store.getValidity())
+        data.valid = typeof validity === 'undefined' || validity === null ? undefined : {
+            valid: Boolean(getSelf(validity, 'valid')),
+            errors: getSelf(validity, 'errors'),
+        }
     }
     if (scopes.includes('meta')) {
         data.meta = store.meta

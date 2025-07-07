@@ -42,7 +42,7 @@ import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
  *
  * todo: test on details and behaviour instead of only does-render-stuff
  *
- * npm test -- --testPathPattern=UIEngineIntegration.test.tsx -u
+ * npm test -- --testPathPattern=UIEngineIntegration.test.tsx -u --selectProjects=test-@ui-schema/react
  */
 
 const widgets = {

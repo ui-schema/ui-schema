@@ -76,12 +76,16 @@ const Comp = ({storeKeys, ...props}) => {
         onChange, // also passed down in props: `props.onChange` for widgets
     } = useUIStoreActions();
 
-    store.getValidity();  // better to use the HOC `extractValidity`
-    store.getInternals(); // better to use the HOC `extractValue`
-    store.getValues();    // better to use the HOC `extractValue`
+    store.getValidity();  // or use the HOC `extractValidity`
+    store.getInternals(); // or use the HOC `extractValue`
+    store.getValues();    // or use the HOC `extractValue`
+
+    store.extractValidity(storeKeys);  // better than the HOC
+    store.extractValue(storeKeys);  // better than the HOC
+
     store.meta.getIn(['config', 'some-user-setting']); // not mangaged/extracted by UI-Schema, handle/use like needed
 
-    let invalid = isInvalid(validity, storeKeys, false); // Map, List, boolean: <if count>
+    let invalid = isInvalid(validity, false); // Map, boolean: <if count>
 
     return null;// e.g. widget or plugin
 };

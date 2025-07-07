@@ -11,7 +11,7 @@ import { scopeUpdaterValidity } from './scopeUpdaterValidity.js'
  * npm run tdd -- --testPathPattern=src/storeScopeUpdater/scopeUpdaterValidity.test.tsx
  */
 
-describe('scopeUpdaterInternals', () => {
+describe('scopeUpdaterValidity', () => {
     test.each([
         [
             new UIStore({
@@ -20,7 +20,10 @@ describe('scopeUpdaterInternals', () => {
             List([]),
             false,
             new UIStore({
-                validity: Map({valid: false}),
+                validity: Map({
+                    valid: false,
+                    errors: null,
+                }),
             }),
         ],
         [
@@ -40,7 +43,10 @@ describe('scopeUpdaterInternals', () => {
             List([]),
             true,
             new UIStore({
-                validity: Map({valid: true}),
+                validity: Map({
+                    valid: true,
+                    errors: null,
+                }),
             }),
         ],
         [
@@ -50,7 +56,10 @@ describe('scopeUpdaterInternals', () => {
             List([]),
             true,
             new UIStore({
-                validity: Map({valid: true}),
+                validity: Map({
+                    valid: true,
+                    errors: null,
+                }),
             }),
         ],
         [
@@ -67,6 +76,7 @@ describe('scopeUpdaterInternals', () => {
                     children: Map({
                         prop_a: Map({
                             valid: true,
+                            errors: null,
                         }),
                     }),
                 }),
@@ -88,6 +98,7 @@ describe('scopeUpdaterInternals', () => {
                             children: List([
                                 Map({
                                     valid: true,
+                                    errors: null,
                                 }),
                             ]),
                         }),
@@ -143,6 +154,7 @@ describe('scopeUpdaterInternals', () => {
                             children: List([
                                 Map({
                                     valid: true,
+                                    errors: null,
                                 }),
                             ]),
                         }),
@@ -200,6 +212,7 @@ describe('scopeUpdaterInternals', () => {
                                     children: Map({
                                         sub_a: Map({
                                             valid: true,
+                                            errors: null,
                                         }),
                                     }),
                                 }),

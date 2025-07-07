@@ -294,7 +294,7 @@ export const standardValidators: ValidatorHandler[] = [
                 // leading to the case where ui-schema encounters conditionals which normally won't have any effect
                 // todo: improve behaviour with explicitly tracking existence and how to traverse deeper,
                 //       - validation doesn't need to go in level where no value exists
-                //       - ui-generation needs to look a head for reducing branches to a happy path
+                //       - ui-generation needs to look a head for reducing branches to a happy path and finding what could be possible to exist
                 typeof value === 'undefined'
             ) return undefined
             const keyThen = schema.get('then')

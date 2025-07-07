@@ -135,10 +135,9 @@ Submits the validity of each widget up to the state hoisted component when it ch
 
 The component deletes the invalidation status on its own dismount, resulting in: only mounted components get's validated, this is intended behaviour at the moment! JSON-Schema is handled through props calculation at React render flow.
 
-Supplies function: `isInvalid(validity, scope = [], count = false)` to check if some scope e.g. `storeKeys` is invalid.
+Supplies function: `isInvalid(validity, count = false)` to check if a validity node contains an invalid node.
 
 - return: `0` when **no** error was found, otherwise `1` or more
-- `scope` : `{Array|List}` with the keys of which schema level should be searched
 - `count` to true will search for the amount of invalids and not end after first invalid
 
 #### ValidationErrors
@@ -860,7 +859,7 @@ const widgets = {
     "type": "object",
     "properties": {
         "prop_b": {},
-        "prop_d": {}
+        "prop_d": {},
         "prop_a": {},
         "prop_c": {}
     },

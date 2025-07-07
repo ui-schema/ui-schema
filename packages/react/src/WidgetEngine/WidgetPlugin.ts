@@ -13,9 +13,12 @@ export type WidgetPluginProps<W = BindingTypeGeneric, A = UIStoreActions> =
     UIMetaContextInternal<W, WidgetProps<W, A> & WithValidatorErrors> &
     WithValidatorErrors &
     {
-        // listen from a hoisted component for `errors` changing,
-        // useful for some performance optimizes like at ds-material Accordions
-        // is executed in `WidgetRenderer`, not passed down to widget
+        /**
+         * listen from a hoisted component for `errors` changing,
+         * useful for some performance optimizes like at ds-material Accordions
+         * is executed in `WidgetRenderer`, not passed down to widget
+         * @deprecated use `store.extractValidity` to get reported validations
+         */
         onErrors?: onErrorHandler
     }
 

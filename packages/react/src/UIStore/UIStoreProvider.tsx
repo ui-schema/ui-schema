@@ -1,5 +1,5 @@
 import React from 'react'
-import { MapOf } from 'immutable'
+import type { List, Map, MapOf } from 'immutable'
 import type { onChangeHandler, UIStoreType } from './UIStore.js'
 import { UIStoreActionsContext, UIStoreActionsProvider, UIStoreActions } from '@ui-schema/react/UIStoreActions'
 
@@ -106,11 +106,20 @@ export interface WithScalarValue<A = UIStoreActions> {
 //     valid?: boolean
 //     children: Validity2[] | Record<string, Validity2>
 // }>
-type Validity = MapOf<{
+export type Validity = MapOf<{
     valid?: boolean
-    children: any
+    children?: ValidityChildren
+    errors?: unknown
 }>
 
+/**
+ * @todo make stricter, with immutable leads to `error TS2615: Type of property 'children' circularly references itself in mapped type`
+ */
+type ValidityChildren = Map<string, any> | List<any>
+
+/**
+ * @deprecated will be removed in a future version
+ */
 export interface WithValidity<A = UIStoreActions> {
     validity: Validity | undefined
     onChange: onChangeHandler<A>

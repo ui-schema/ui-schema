@@ -1,9 +1,11 @@
 import { Record, Map, List, OrderedMap, RecordOf } from 'immutable'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
-import { doExtractValues } from './doExtractValues.js'
+import { getValidity } from './getValidity.js'
+import { getValues } from './getValues.js'
 import { UIStoreActions, UIStoreUpdaterData } from '@ui-schema/react/UIStoreActions'
 import { StoreKeys as ValueStoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
+import { Validity } from './UIStoreProvider.js'
 
 export type Values<V> = List<V> | string | number | boolean | Map<string, V> | OrderedMap<string, V>
 export type ValuesJS = any[] | string | number | boolean | Object
@@ -26,6 +28,7 @@ export interface UIStoreState<D = any> extends UIStoreStateData<D> {
         value: V | undefined
         internalValue: UIStoreInternalsType | undefined
     }
+    extractValidity: (storeKeys: StoreKeys) => Validity | undefined
 }
 
 export type UIStoreTypeFactory<D = any> = Record.Factory<UIStoreState<D>>
@@ -40,7 +43,7 @@ export type UIStoreType<D = any> = RecordOf<UIStoreState<D>>
  */
 export type UIStoreInternalsType = Map<string, any>
 
-export type UIStoreValidityType = Map<string | number, any>
+export type UIStoreValidityType = Map<string, unknown>
 
 // todo: based on immutable v5 this should be possible, yet leads to:
 //       TS2314: Generic type Map<K, V> requires 2 type argument(s).
@@ -77,7 +80,10 @@ export const UIStore: UIStoreTypeFactory = Record({
         return this.validity
     },
     extractValues: function(storeKeys) {
-        return doExtractValues(storeKeys, this as UIStoreType)
+        return getValues(storeKeys, this as UIStoreType)
+    },
+    extractValidity: function(storeKeys) {
+        return getValidity(storeKeys, this.getValidity())
     },
 }) as UIStoreTypeFactory
 
@@ -92,7 +98,13 @@ export const createStore = <D = any>(values: D): UIStoreType<D> => {
     }) as UIStoreType<D>
 }
 
-// todo: support multiple types #68
+/**
+ * @todo support multiple types #68
+ * @todo include non-evaluating default handling here #118 ?
+ *       - would rely on the whole schema
+ *       - would work only for basic `default` without conditionals
+ *       - could reuse the resource system for walking the schema, instead of the validator
+ */
 export const createEmptyStore = (type: SchemaTypesType = 'object'): UIStoreType =>
     createStore(
         type === 'array' ?
@@ -146,9 +158,10 @@ export const shouldDeleteOnEmpty = (
 export const addNestKey = (
     storeKeysNestedKey: string,
     storeKeys: (string | number)[] | List<string | number>,
-): List<string | number> =>
-    (storeKeys as (string | number)[])
-        .reduce<List<string | number>>((nk, sk) => {
-            return nk.concat<string | number>(sk, List([storeKeysNestedKey]))
-        }, List([storeKeysNestedKey]))
-        .splice(-1, 1)
+): List<string | number> => {
+    const maxI = (Array.isArray(storeKeys) ? storeKeys.length : storeKeys.size) - 1
+    return (storeKeys as (string | number)[]).reduce<List<string | number>>((nk, sk, i) => {
+        if (i === maxI) return nk.push(sk)
+        return nk.push(sk, storeKeysNestedKey)
+    }, List([storeKeysNestedKey]))
+}

@@ -4,24 +4,27 @@ import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 
 export const ValidityReporter: React.FC<WidgetPluginProps> = (props) => {
     const [customError, setCustomError] = React.useState(false)
-    const {onChange, showValidity, storeKeys, valid, Next} = props
+    const {onChange, showValidity, storeKeys, valid, errors, Next} = props
 
-    const storeKeysRef = useImmutable(storeKeys)
+    const errorsRef = useImmutable(errors)
 
     const realValid = !customError && valid
 
     React.useEffect(() => {
-        // todo: use `errors` instead of `valid`, but only if not `valid` and `hasErrors`
-        // todo: this will run on each mount, check if necessary
+        // todo: this should use a more sophisticated state operation, which doesn't result in a rerender,
+        //       when `errors` are not memoized here, this can lead to react update depth overflow.
         onChange({
             type: 'set',
-            storeKeys: storeKeysRef,
+            storeKeys: storeKeys,
             scopes: ['valid'],
             data: {
-                valid: realValid,
+                valid: {
+                    valid: realValid,
+                    errors: errorsRef,
+                },
             },
         })
-    }, [realValid, onChange, storeKeysRef])
+    }, [realValid, errorsRef, onChange, storeKeys])
 
     React.useEffect(() => {
         // delete own validity state on component unmount
@@ -29,7 +32,7 @@ export const ValidityReporter: React.FC<WidgetPluginProps> = (props) => {
         return () =>
             onChange({
                 type: 'set',
-                storeKeys: storeKeysRef,
+                storeKeys: storeKeys,
                 scopes: ['valid'],
                 data: {
                     valid: undefined,
@@ -37,10 +40,10 @@ export const ValidityReporter: React.FC<WidgetPluginProps> = (props) => {
             })
         /*return () => onChange({
             type: 'element-delete',
-            storeKeys: storeKeysRef,
+            storeKeys: storeKeys,
             scopes: ['valid'],
         })*/
-    }, [onChange, storeKeysRef])
+    }, [onChange, storeKeys])
 
     return <Next.Component
         {...props}

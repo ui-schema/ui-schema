@@ -1,11 +1,19 @@
-import { UIStoreType, UIStoreUpdaterFn } from '@ui-schema/react/UIStore'
-import { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
-import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
+import type { UIStoreType, UIStoreUpdaterFn } from '@ui-schema/react/UIStore'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
+import type { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
+import type { Map } from 'immutable'
 
 export interface UIStoreUpdaterData {
     value?: any
+
     internal?: any
-    valid?: any
+
+    /**
+     * The validity for this node, for backwards compatible either a boolean or an object.
+     * @todo simplify structure in a future release, after the store and validity part is no longer using immutable
+     */
+    valid?: boolean | { valid?: boolean, errors?: any } | Map<any, any>
+
     meta?: any
 }
 

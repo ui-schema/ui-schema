@@ -8,7 +8,7 @@ import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { extractValidity, StoreKeys, WithValidity, StoreKeyType } from '@ui-schema/react/UIStore'
+import { StoreKeys, StoreKeyType, useUIStore, Validity } from '@ui-schema/react/UIStore'
 import { isInvalid } from '@ui-schema/react/isInvalid'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import Accordion, { AccordionProps } from '@mui/material/Accordion'
@@ -24,7 +24,7 @@ export interface AccordionStackBaseProps {
     SummaryTitle?: AccordionsRendererProps['SummaryTitle']
 }
 
-const AccordionStackBase: React.ComponentType<WidgetProps<BindingTypeGeneric & MuiBindingComponents> & AccordionStackBaseProps & WithValidity> = (
+const AccordionStackBase: React.ComponentType<WidgetProps<BindingTypeGeneric & MuiBindingComponents> & AccordionStackBaseProps & { validity: Validity | undefined }> = (
     {validity, SummaryTitle, ...props},
 ) => {
     const uid = useUID()
@@ -34,7 +34,7 @@ const AccordionStackBase: React.ComponentType<WidgetProps<BindingTypeGeneric & M
         showValidity,
         isOpen, setOpen, valid, binding,
     } = props
-    const [errors, setErrors] = React.useState<ValidationErrorsImmutable | undefined>()
+    const errors = validity?.get('errors') as ValidationErrorsImmutable | undefined
     const elevation = parentSchema?.getIn(['view', 'ev']) as AccordionProps['elevation']
     const variant = parentSchema?.getIn(['view', 'variant']) as AccordionProps['variant']
     const titleVariant = parentSchema?.getIn(['view', 'titleVariant']) as TypographyProps['variant']
@@ -79,7 +79,6 @@ const AccordionStackBase: React.ComponentType<WidgetProps<BindingTypeGeneric & M
                 schema={schema}
                 parentSchema={parentSchema}
                 storeKeys={storeKeys}
-                onErrors={setErrors}
                 isVirtual={props.isVirtual || (parentSchema?.get('onClosedHidden') as boolean && !isOpen)}
             />
             <ValidityHelperText
@@ -89,9 +88,7 @@ const AccordionStackBase: React.ComponentType<WidgetProps<BindingTypeGeneric & M
     </Accordion>
 }
 
-// @ts-ignore
-// eslint-disable-next-line @typescript-eslint/no-deprecated
-export const AccordionStack = extractValidity(memo(AccordionStackBase))
+export const AccordionStack = memo(AccordionStackBase)
 
 export interface AccordionsRendererProps {
     SummaryTitle?: React.ComponentType<{
@@ -111,6 +108,7 @@ export const AccordionsRendererBase = (
         ...props
     }: WidgetProps<BindingTypeGeneric & MuiBindingComponents>,
 ): React.ReactElement => {
+    const {store} = useUIStore()
     const [open, setOpen] = React.useState<string>(schema.get('defaultExpanded') as string || '')
 
     const properties = schema.get('properties') as OrderedMap<string, any> | undefined
@@ -125,6 +123,8 @@ export const AccordionsRendererBase = (
                 storeKeys={storeKeys.push(childKey)}
                 isOpen={open === childKey}
                 setOpen={setOpen}
+                showValidity={showValidity}
+                validity={store?.extractValidity(storeKeys.push(childKey))}
             />,
         )
             .valueSeq()

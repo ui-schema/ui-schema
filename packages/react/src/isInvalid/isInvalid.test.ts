@@ -4,7 +4,7 @@
 import { test, expect, describe } from '@jest/globals'
 import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { List, Map } from 'immutable'
-import { addNestKey } from '@ui-schema/react/UIStore'
+import { getValidity } from '@ui-schema/react/UIStore'
 import { isInvalid } from './isInvalid.js'
 
 /**
@@ -99,8 +99,7 @@ describe('isInvalid', () => {
                     }),
                 }),
             }),
-            // todo: don't rely on addNestKey here? move it into `isInvalid`?
-            storeKeys: addNestKey('children', List(['b', 0])),
+            storeKeys: List(['b', 0]),
             count: true,
             expected: 1,
         },
@@ -137,7 +136,12 @@ describe('isInvalid', () => {
             expected: number
         },
     ) => {
-        const r = isInvalid(args.validity, args.storeKeys, args.count)
+        const r = isInvalid(
+            args.storeKeys
+                ? getValidity(args.storeKeys, args.validity)
+                : args.validity,
+            args.count,
+        )
         expect(r).toBe(args.expected)
     })
 })

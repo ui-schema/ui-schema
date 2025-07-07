@@ -100,6 +100,7 @@ describe('storeUpdater', () => {
                     children: Map({
                         prop_a: Map({
                             valid: true,
+                            errors: null,
                         }),
                     }),
                 }),
@@ -496,6 +497,7 @@ describe('storeUpdater', () => {
                     children: Map({
                         prop_a: Map({
                             valid: false,
+                            errors: null,
                         }),
                     }),
                 }),

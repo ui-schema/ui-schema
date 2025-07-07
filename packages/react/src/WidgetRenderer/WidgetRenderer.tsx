@@ -29,6 +29,7 @@ export const WidgetRenderer = <A = UIStoreActions, B = {}, WP extends WidgetProp
         value, internalValue,
         WidgetOverride,
         errors,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         onErrors,
         // @ts-expect-error is currently omitted from props, as not needed, will still be passed down, lets prevent it from reaching Widget
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

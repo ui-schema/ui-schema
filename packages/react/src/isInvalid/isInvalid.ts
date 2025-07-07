@@ -1,8 +1,8 @@
-import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
+import type { Validity } from '@ui-schema/react/UIStore'
 import { List, Map } from 'immutable'
 
 const searchRecursive = (
-    immutable: Map<string, any>,
+    immutable: Map<string, unknown> | Validity | undefined,
     count: boolean,
 ) => {
     if (!immutable) return 0
@@ -36,9 +36,8 @@ const searchRecursive = (
  * - `1+` when error was found and `count` = true
  */
 export const isInvalid = (
-    validity: Map<any, any> | undefined,
-    storeKeys: StoreKeys = List([]),
+    validity: Map<any, unknown> | Validity | undefined,
     count: boolean = false,
 ) => {
-    return searchRecursive(validity?.getIn(storeKeys) as Map<any, undefined>, count)
+    return searchRecursive(validity, count)
 }

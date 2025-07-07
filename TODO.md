@@ -204,22 +204,24 @@ Todo:
                   while validity is atm. contains a cleanup internally, which prevents that from (typically?) happening
         - all use fully nested structures for no key conflicts and safer nesting
     - [x] working basics, roughly rewritten
-    - [ ] finalized typings / initialization
+    - [x] finalized typings / initialization (as far as reasonable, more when rewriting store in 0.6.x)
 - [ ] rewrite related utils, onChange actions and more
     - [x] `isInvalid`
-    - [ ] `onChange` in ValidityReporter
+    - [x] `onChange` in ValidityReporter
         - [x] working basics, roughly rewritten
-        - [ ] optimized and normalized action handler/payload
-            - [ ] validity support more than `valid`
+        - [x] optimized and normalized action handler/payload
+            - [x] validity support more than `valid`
             - [x] internals is bound to `self`
-            - [ ] normalized and optimized utils for onChange handling: `addNestKey` etc.
+            - [x] normalized and optimized utils for onChange handling: `addNestKey` etc. (as far as reasonable now)
     - [ ] `extractValues` and `extractValidity` and all related:
         - [x] hooks
         - [x] existing store method `extractValues`
         - [x] `getScopedData`
-        - [ ] new store methods
-            - [ ] read of `validity`, separate `value`/`internals`
-            - [ ] write of `validity`, separate `value`/`internals`
+        - [ ] deprecate `extractValues`
+        - [x] deprecate `extractValidity`
+        - [x] new store methods
+            - [x] read of `validity`, separate `value`/`internals`
+            - [x] ~~write of `validity`, separate `value`/`internals`~~
     - [x] `scopeUpdaterValues`/`scopeUpdaterInternals`/`scopeUpdaterValidity`
 
 #### UIMeta
@@ -423,13 +425,13 @@ new widget engine functions:
     - [ ] `RequiredPlugin`, or keep until better solution for required behaviour?
 - [x] deprecate `UIApi` (new resource system hoists loading out of widget-engine/-plugins)
 - [x] deprecate `WithScalarValue`/`WithValue` (switch to `WithValuePlain` and `WithOnChange` - if needed, as now included in `WidgetProps`)
-- [ ] deprecate `WithValidity`, once new validation is available via hooks
+- [x] deprecate `WithValidity`, once new validation is available via hooks
 - [ ] add new schema plugin: injectSplitSchema, deprecate widget plugin: InjectSplitSchema
 - [x] deprecate `SchemaPlugin` methods `.should` and `.noHandle`; always use `.handle`
 - [ ] enable TS rules `@typescript-eslint/no-empty-object-type, "@typescript-eslint/no-wrapper-object-types, @typescript-eslint/no-unsafe-function-type, @typescript-eslint/consistent-indexed-object-style, @typescript-eslint/consistent-type-definitions, @typescript-eslint/no-empty-function`
 - [x] move non-react schemaPlugins into json-schema packages: `InheritKeywords`, `requiredPlugin`, `sortPlugin`, `validatorPlugin`
 - [x] deprecate `useUIConfig`/`UIConfigProvider`
-- [ ] deprecate `onErrors`, once the validation system is available to get any child errors in another component without much performance impact
+- [x] deprecated `onErrors`, use `store.extractValidity(storeKeys)` instead; the `ValidityReporter` now includes full error details
 - [ ] optimize unnecessary rendering of empty parts, e.g. `ObjectRenderer` only checks for `properties` existence, but not if empty (maybe add the `getFields` utils already?)
 - [x] ~~remove or~~ just deprecate the `injectWidgetEngine`, `applyWidgetEngine` HOCs? type migration will be a headache
     - these functions never provided much optimization
