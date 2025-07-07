@@ -1,16 +1,16 @@
-import React from 'react'
 import Grid from '@mui/material/Grid'
-import { PluginStackWrapperProps } from '@ui-schema/ui-schema'
+import { WidgetEngineWrapperProps } from '@ui-schema/react/WidgetEngine'
 
 export interface GridContainerProps {
     spacing?: number
 }
 
-export const GridContainer: React.FC<GridContainerProps & PluginStackWrapperProps> = (
+export const GridContainer = (
     {
         spacing = 0,
         children,
-    },
+    }: GridContainerProps & Partial<WidgetEngineWrapperProps>,
 ) => {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     return <Grid container spacing={spacing}>{children}</Grid>
 }

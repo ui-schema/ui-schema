@@ -1,4 +1,4 @@
-import React from 'react'
+import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { List } from 'immutable'
 import { useUID } from 'react-uid'
 import FormControl from '@mui/material/FormControl'
@@ -7,13 +7,13 @@ import MenuItem from '@mui/material/MenuItem'
 import MuiSelect, { SelectProps as MuiSelectProps } from '@mui/material/Select'
 import Checkbox from '@mui/material/Checkbox'
 import ListItemText from '@mui/material/ListItemText'
-import { extractValue, WithValue } from '@ui-schema/ui-schema/UIStore'
-import { TransTitle, Trans } from '@ui-schema/ui-schema/Translate'
-import { memo } from '@ui-schema/ui-schema/Utils/memo'
-import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { extractValue } from '@ui-schema/react/UIStore'
+import { Translate } from '@ui-schema/react/Translate'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 
@@ -21,15 +21,16 @@ export interface SelectMultiProps {
     variant?: MuiSelectProps['variant']
 }
 
-export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue & SelectMultiProps> = (
+export const SelectMultiBase: React.ComponentType<WidgetProps & SelectMultiProps> = (
     {
         storeKeys, schema, value, onChange,
-        showValidity, valid, required, errors, t,
+        showValidity, valid, required, errors,
         variant,
-    }
+    },
 ) => {
     const uid = useUID()
-    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as StoreSchemaType)
+    const {t} = useUIMeta()
+    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as UISchemaMap)
 
     const currentValue = typeof value !== 'undefined' ? value :
         schema.get('default') ? List(schema.get('default') as string[]) : List()
@@ -40,20 +41,20 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
         size={schema.getIn(['view', 'dense']) ? 'small' : undefined}
         variant={variant}
     >
-        <InputLabel id={'uis-' + uid + '-label'}><TransTitle schema={schema} storeKeys={storeKeys}/></InputLabel>
+        <InputLabel id={'uis-' + uid + '-label'}><TranslateTitle schema={schema} storeKeys={storeKeys}/></InputLabel>
         <MuiSelect
             labelId={'uis-' + uid + '-label'}
             id={'uis-' + uid}
             variant={variant}
             // note: for variant `outlined` the label needs to be also here, as we don't know e.g. theme provider overrides, it is applied all the time
-            label={<TransTitle schema={schema} storeKeys={storeKeys}/>}
-            value={currentValue.toArray()}
+            label={<TranslateTitle schema={schema} storeKeys={storeKeys}/>}
+            value={List.isList(currentValue) ? currentValue.toArray() : Array.isArray(currentValue) ? currentValue : null}
             multiple
             renderValue={selected => {
                 const sel = selected as string[]
                 return sel.map(s => {
                     const valueSchema = valueSchemas?.find(oof => oof.value === s)
-                    const Translated = t(s, valueSchema?.context, valueSchema?.schema?.get('t') as StoreSchemaType)
+                    const Translated = t(s, valueSchema?.context, valueSchema?.schema?.get('t') as UISchemaMap)
                     return typeof Translated === 'string' || typeof Translated === 'number' ?
                         Translated :
                         valueSchema?.fallback
@@ -81,9 +82,9 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
                     dense={denseOptions}
                     disabled={schema?.get('readOnly') as boolean}
                 >
-                    <Checkbox checked={currentValue.contains(value)}/>
-                    <ListItemText primary={<Trans
-                        schema={schema?.get('t') as unknown as StoreSchemaType}
+                    <Checkbox checked={(List.isList(currentValue) && currentValue.contains(value)) || (Array.isArray(currentValue) && currentValue.includes(value))}/>
+                    <ListItemText primary={<Translate
+                        schema={schema?.get('t') as unknown as UISchemaMap}
                         text={text}
                         context={context}
                         fallback={fallback}
@@ -96,5 +97,4 @@ export const SelectMultiBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
     </FormControl>
 }
 
-export const SelectMulti = extractValue(memo(SelectMultiBase)) as React.ComponentType<WidgetProps<MuiWidgetBinding>>
-
+export const SelectMulti = extractValue(memo(SelectMultiBase)) as (props: WidgetProps) => React.ReactElement

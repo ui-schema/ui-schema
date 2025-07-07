@@ -1,3 +1,3 @@
-export * from './DragDropArea'
-export * from './DropArea'
-export * from './SortableList'
+export * from './DragDropArea/index.js'
+export * from './DropArea/index.js'
+export * from './SortableList/index.js'

@@ -1,16 +1,19 @@
 import Typography from '@mui/material/Typography'
-import { Errors, StoreKeys, StoreSchemaType, TransTitle } from '@ui-schema/ui-schema'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { StoreKeys } from '@ui-schema/react/UIStore'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import Box from '@mui/material/Box'
+import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
 import React from 'react'
-import { InfoRendererProps } from '@ui-schema/ds-material'
+import { InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 
 export interface TitleBoxReadProps {
     hideTitle?: boolean
     hasInfo?: boolean
-    schema: StoreSchemaType
+    schema: UISchemaMap
     storeKeys: StoreKeys
     valid?: boolean
-    errors?: Errors
+    errors?: ValidationErrorsImmutable
     InfoRenderer?: React.ComponentType<InfoRendererProps>
 }
 
@@ -29,7 +32,7 @@ export const TitleBoxRead: React.ComponentType<TitleBoxReadProps> = (
                 variant={'caption'}
                 color={!valid ? 'error' : 'textSecondary'}
             >
-                <TransTitle schema={schema} storeKeys={storeKeys}/>
+                <TranslateTitle schema={schema} storeKeys={storeKeys}/>
             </Typography>}
         {hasInfo ? <Box>
             {InfoRenderer && schema?.get('info') ?

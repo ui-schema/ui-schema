@@ -1,43 +1,46 @@
 import React from 'react'
 import TextField from '@mui/material/TextField'
-import { InputProps } from '@mui/material/Input'
+import type { InputProps } from '@mui/material/Input'
 import { useUID } from 'react-uid'
 import InputAdornment from '@mui/material/InputAdornment'
-import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
-import { mapSchema } from '@ui-schema/ui-schema/Utils/schemaToNative'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
-import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/schemaTypeIs'
-import { NumberRendererProps, StringRendererProps, TextRendererProps } from '@ui-schema/ds-material/Widgets/TextField'
-import { WidgetProps, WithScalarValue } from '@ui-schema/ui-schema'
-import { useDebounceValue } from '@ui-schema/ui-schema/Utils/useDebounceValue'
-import { forbidInvalidNumber, MuiWidgetBinding } from '@ui-schema/ds-material'
+import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
+import type { NumberRendererProps, StringRendererProps, TextRendererProps } from '@ui-schema/ds-material/Widgets/TextField'
+import type { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
+import { useDebounceValue } from '@ui-schema/react/Utils/useDebounceValue'
+import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils/forbidInvalidNumber'
+import type { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
 
 export interface StringRendererDebouncedProps {
-    onKeyPress?: StringRendererProps['onKeyPressNative']
+    /**
+     * @deprecated
+     */
+    onKeyPress?: StringRendererProps['onKeyPress']
     debounceTime?: number
 }
 
-export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>(
+export const StringRendererDebounced = (
     {
         type,
         multiline,
-        // eslint-disable-next-line deprecation/deprecation
-        rows, rowsMax,
         minRows, maxRows,
         storeKeys, schema, value, onChange,
         showValidity, valid, errors, required,
         style,
         onClick, onFocus, onBlur, onKeyUp, onKeyDown,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         onKeyPress,
         inputProps = {}, InputProps = {}, inputRef: customInputRef,
-        debounceTime = 340, widgets,
-    }: P & WithScalarValue & Omit<StringRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps
+        debounceTime = 340, binding,
+    }: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & Omit<StringRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps,
 ): React.ReactElement => {
     const uid = useUID()
     // todo: this could break law-of-hooks
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const inputRef = customInputRef || React.useRef()
+    const inputRef = customInputRef || React.useRef(null)
 
     const setter = React.useCallback((newVal: string | number | undefined) => {
         onChange({
@@ -54,11 +57,11 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
 
     const format = schema.get('format')
 
-    inputProps = mapSchema(inputProps, schema)
+    inputProps = schemaRulesToNative(inputProps, schema)
 
     const hideTitle = schema.getIn(['view', 'hideTitle'])
 
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
     if (InfoRenderer && schema?.get('info')) {
         InputProps['endAdornment'] = <InputAdornment position="end">
             <InfoRenderer
@@ -69,22 +72,16 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
     }
     return <React.Fragment>
         <TextField
-            label={hideTitle ? undefined : <TransTitle schema={schema} storeKeys={storeKeys}/>}
-            aria-label={hideTitle ? <TransTitle schema={schema} storeKeys={storeKeys}/> as unknown as string : undefined}
+            label={hideTitle ? undefined : <TranslateTitle schema={schema} storeKeys={storeKeys}/>}
+            aria-label={hideTitle ? <TranslateTitle schema={schema} storeKeys={storeKeys}/> as unknown as string : undefined}
             // changing `type` to `text`, to be able to change invalid data
             type={(format || (typeof bounceVal.value === 'string' && type === 'number' ? 'text' : type)) as InputProps['type']}
             disabled={schema.get('readOnly') as boolean | undefined}
             multiline={multiline}
             required={required}
             error={!valid && showValidity}
-            minRows={
-                typeof minRows === 'number' ? minRows :
-                    rows
-            }
-            maxRows={
-                typeof maxRows === 'number' ? maxRows :
-                    rowsMax
-            }
+            minRows={minRows}
+            maxRows={maxRows}
             inputRef={inputRef}
             fullWidth
             variant={schema.getIn(['view', 'variant']) as any}
@@ -97,17 +94,17 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
                 bubbleBounce(value as string)
             }}
             onKeyUp={onKeyUp}
-            onKeyPress={
-                onKeyPress ?
-                    onKeyPress :
-                    e => forbidInvalidNumber(e.nativeEvent, schema.get('type') as string)
+            onKeyDown={
+                onKeyDown ? onKeyDown :
+                    e => forbidInvalidNumber(e.nativeEvent, schema.get('type') as unknown as string)
             }
+            /* eslint-disable-next-line @typescript-eslint/no-deprecated */
+            onKeyPress={onKeyPress}
             id={'uis-' + uid}
             style={style}
-            onKeyDown={onKeyDown}
             onChange={(e) => {
                 const val = e.target.value
-                const schemaType = schema.get('type') as string
+                const schemaType = schema.get('type') as unknown as string
                 const newVal = convertStringToNumber(val, schemaType)
                 if (
                     schemaTypeIsNumeric(schemaType)
@@ -118,8 +115,11 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
                 }
                 setBounceVal({changed: true, value: newVal})
             }}
+            /* eslint-disable-next-line @typescript-eslint/no-deprecated */
             InputLabelProps={{shrink: schema.getIn(['view', 'shrink']) as boolean}}
+            /* eslint-disable-next-line @typescript-eslint/no-deprecated */
             InputProps={InputProps}
+            /* eslint-disable-next-line @typescript-eslint/no-deprecated */
             inputProps={inputProps}
         />
 
@@ -129,30 +129,28 @@ export const StringRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> 
     </React.Fragment>
 }
 
-export const TextRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>(
+export const TextRendererDebounced = (
     {
         schema,
         ...props
-    }: P & WithScalarValue & Omit<TextRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps
+    }: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & Omit<TextRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps,
 ): React.ReactElement => {
     return <StringRendererDebounced
         {...props}
         schema={schema}
         minRows={
             typeof props.minRows === 'number' ? props.minRows :
-                // eslint-disable-next-line deprecation/deprecation
-                (props.rows || schema.getIn(['view', 'rows']))
+                schema.getIn(['view', 'rows']) as number
         }
         maxRows={
             typeof props.maxRows === 'number' ? props.maxRows :
-                // eslint-disable-next-line deprecation/deprecation
-                (props.rowsMax || schema.getIn(['view', 'rowsMax']))
+                schema.getIn(['view', 'rowsMax']) as number
         }
         multiline
     />
 }
 
-export const NumberRendererDebounced = <P extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>(props: P & WithScalarValue & Omit<NumberRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps): React.ReactElement => {
+export const NumberRendererDebounced = (props: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & Omit<NumberRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps): React.ReactElement => {
     const {schema, inputProps: inputPropsProps = {}, steps = 'any'} = props
     const schemaType = schema.get('type') as string | undefined
     const inputProps = React.useMemo(() => {

@@ -1,1 +1,1 @@
-export * from './GridContainer'
+export * from './GridContainer.js'

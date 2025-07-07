@@ -1,36 +1,40 @@
 import React from 'react'
-import { extractValue, memo, sortScalarList, StoreSchemaType, WidgetProps, WithValue } from '@ui-schema/ui-schema'
-import { Trans, TransTitle } from '@ui-schema/ui-schema/Translate'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { extractValue } from '@ui-schema/react/UIStore'
+import { WidgetProps } from '@ui-schema/react/Widget'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
+import { Translate } from '@ui-schema/react/Translate'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 import { List } from 'immutable'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
 
-export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue> = (
+export const SelectChipsBase: React.ComponentType<WidgetProps> = (
     {
         storeKeys, schema, value, onChange,
         showValidity, errors, required,
         valid,
-    }
+    },
 ) => {
-    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as StoreSchemaType)
+    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as UISchemaMap)
 
-    const currentValue = (typeof value !== 'undefined' ? value : (List(schema.get('default') as string[]) || List())) as List<string>
+    const currentValue = (List.isList(value) ? value : (List(schema.get('default') as string[]) || List())) as List<string>
 
     return <Box>
         <Typography color={showValidity && !valid ? 'error' : undefined}>
-            <TransTitle schema={schema} storeKeys={storeKeys}/>
+            <TranslateTitle schema={schema} storeKeys={storeKeys}/>
         </Typography>
 
         <Box mt={1} style={{display: 'flex', flexWrap: 'wrap'}}>
             {valueSchemas?.map(({value: itemValue, text, fallback, context, schema: itemSchema}) =>
                 <Chip
                     key={itemValue}
-                    label={<Trans
-                        schema={itemSchema?.get('t') as unknown as StoreSchemaType}
+                    label={<Translate
+                        schema={itemSchema?.get('t') as unknown as UISchemaMap}
                         text={text}
                         context={context}
                         fallback={fallback}
@@ -43,22 +47,25 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
                     disabled={schema.get('readOnly') as boolean || itemSchema?.get('readOnly') as boolean}
                     color={(schema.getIn(['view', 'color']) as any) || 'primary'}
                     onClick={() => {
-                        !schema.get('readOnly') &&
-                        !itemSchema?.get('readOnly') &&
-                        onChange({
-                            storeKeys,
-                            scopes: ['value'],
-                            type: 'update',
-                            schema,
-                            required,
-                            updater: ({value = List()}: { value?: List<string> }) => ({
-                                value: value.indexOf(itemValue as string) === -1 ?
-                                    sortScalarList(value.push(itemValue as string)) :
-                                    sortScalarList(value.splice(value.indexOf(itemValue as string), 1)),
-                            }),
-                        })
+                        if (
+                            !schema.get('readOnly') &&
+                            !itemSchema?.get('readOnly')
+                        ) {
+                            onChange({
+                                storeKeys,
+                                scopes: ['value'],
+                                type: 'update',
+                                schema,
+                                required,
+                                updater: ({value = List()}: { value?: List<string> }) => ({
+                                    value: value.indexOf(itemValue as string) === -1 ?
+                                        sortScalarList(value.push(itemValue as string)) :
+                                        sortScalarList(value.splice(value.indexOf(itemValue as string), 1)),
+                                }),
+                            })
+                        }
                     }}
-                />
+                />,
             ).valueSeq()}
         </Box>
 
@@ -66,4 +73,4 @@ export const SelectChipsBase: React.ComponentType<WidgetProps<MuiWidgetBinding> 
     </Box>
 }
 
-export const SelectChips = extractValue(memo(SelectChipsBase)) as React.ComponentType<WidgetProps<MuiWidgetBinding>>
+export const SelectChips = extractValue(memo(SelectChipsBase))

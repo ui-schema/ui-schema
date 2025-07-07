@@ -1,1 +1,1 @@
-export * from './injectBlock'
+export * from './injectBlock.js'

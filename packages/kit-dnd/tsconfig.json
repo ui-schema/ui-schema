@@ -4,6 +4,8 @@
         "src"
     ],
     "compilerOptions": {
-        "outDir": "build/dts"
+        "module": "Node16",
+        "moduleResolution": "Node16",
+        "declarationDir": "build/dts"
     }
 }

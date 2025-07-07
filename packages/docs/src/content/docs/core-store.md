@@ -76,12 +76,16 @@ const Comp = ({storeKeys, ...props}) => {
         onChange, // also passed down in props: `props.onChange` for widgets
     } = useUIStoreActions();
 
-    store.getValidity();  // better to use the HOC `extractValidity`
-    store.getInternals(); // better to use the HOC `extractValue`
-    store.getValues();    // better to use the HOC `extractValue`
+    store.getValidity();  // or use the HOC `extractValidity`
+    store.getInternals(); // or use the HOC `extractValue`
+    store.getValues();    // or use the HOC `extractValue`
+
+    store.extractValidity(storeKeys);  // better than the HOC
+    store.extractValue(storeKeys);  // better than the HOC
+
     store.meta.getIn(['config', 'some-user-setting']); // not mangaged/extracted by UI-Schema, handle/use like needed
 
-    let invalid = isInvalid(validity, storeKeys, false); // Map, List, boolean: <if count>
+    let invalid = isInvalid(validity, false); // Map, boolean: <if count>
 
     return null;// e.g. widget or plugin
 };
@@ -91,7 +95,7 @@ const Comp = ({storeKeys, ...props}) => {
 
 ```js
 import React from "react";
-import {memo} from "@ui-schema/ui-schema/Utils/memo";
+import {memo} from "@ui-schema/react/Utils/memo";
 import {extractValue} from "@ui-schema/ui-schema/UIStore";
 
 // `extractValue` uses `storeKeys` to get the `value`/`internalValue` from the store
@@ -112,7 +116,7 @@ Creates the initial store out of passed in values.
 
 ```js
 import {createStore} from '@ui-schema/ui-schema/UIStore'
-import {createOrderedMap} from '@ui-schema/ui-schema/Utils/createMap'
+import {createOrderedMap} from '@ui-schema/ui-schema/createMap'
 
 const [data, setStore] = React.useState(() => createStore(createOrderedMap(initialData)));
 ```
@@ -267,14 +271,12 @@ onChange([{
 ```javascript
 onChange({
     storeKeys,
-    scopes: ['value', 'internal'],
     type: 'list-item-add',
     schema: schema,
 })
 // OR with value:
 onChange({
     storeKeys,
-    scopes: ['value', 'internal'],
     type: 'list-item-add',
     itemValue: any
 })
@@ -286,7 +288,6 @@ onChange({
 onChange({
     // use the `storeKeys` of the list - NOT of the `item`!
     storeKeys: storeKeys.splice(-1, 1) as StoreKeys,
-    scopes: ['value', 'internal'],
     type: 'list-item-delete',
     index: index as number,
 })
@@ -299,7 +300,6 @@ onChange({
 onChange({
     // use the `storeKeys` of the list - NOT of the `item`!
     storeKeys: storeKeys.splice(-1, 1) as StoreKeys,
-    scopes: ['value', 'internal'],
     type: 'list-item-move',
     fromIndex: index,
     toIndex: index - 1,
@@ -309,7 +309,6 @@ onChange({
 onChange({
     // use the `storeKeys` of the list - NOT of the `item`!
     storeKeys: storeKeys.splice(-1, 1) as StoreKeys,
-    scopes: ['value', 'internal'],
     type: 'list-item-move',
     fromIndex: index,
     toIndex: index + 1,
@@ -344,9 +343,8 @@ Should be used for seldom-changing-values, e.g. is used for the `doNotDefault` c
 <PluginStack<DefaultHandlerProps>
     showValidity={showValidity}
     storeKeys={storeKeys.push('city') as StoreKeys}
-    schema={schema.getIn(['properties', 'city']) as unknown as StoreSchemaType}
+    schema={schema.getIn(['properties', 'city']) as unknown as UISchemaMap}
     parentSchema={schema}
-    level={1}
     // possible also to overwrite:
     doNotDefault={false}
 />

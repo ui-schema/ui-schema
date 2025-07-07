@@ -1,25 +1,22 @@
 import React from 'react'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
-import { WithScalarValue } from '@ui-schema/ui-schema/UIStore'
-import { UIStoreActionSet } from '@ui-schema/ui-schema/UIStoreActions'
-import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
+import { WidgetProps } from '@ui-schema/react/Widget'
+import { UIStoreActionSet } from '@ui-schema/react/UIStoreActions'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { MuiPickersAdapterContext } from '@mui/x-date-pickers/LocalizationProvider'
-import TextField from '@mui/material/TextField'
 import { BaseDateTimePickerProps } from '@mui/x-date-pickers/DateTimePicker/shared'
 import { List } from 'immutable'
-import { CalendarOrClockPickerView } from '@mui/x-date-pickers/internals/models'
 
-export interface WidgetDateTimePickerProps<TInputDate, TDate, P extends BaseDateTimePickerProps<TInputDate, TDate> = BaseDateTimePickerProps<TInputDate, TDate>> {
+export interface WidgetDateTimePickerProps<P extends BaseDateTimePickerProps<any, any> = BaseDateTimePickerProps<any, any>> {
     Picker: React.ComponentType<P>
     pickerProps?: any
 }
 
-export const WidgetDateTimePicker: React.FC<WidgetProps & WithScalarValue & WidgetDateTimePickerProps<any, any>> = (
+export const WidgetDateTimePicker: React.FC<WidgetProps & WidgetDateTimePickerProps> = (
     {
         value, storeKeys, onChange, schema, required,
         Picker,
         pickerProps,
-    }
+    },
 ) => {
     const adapter = React.useContext(MuiPickersAdapterContext)
     const {utils} = adapter || {}
@@ -34,18 +31,18 @@ export const WidgetDateTimePicker: React.FC<WidgetProps & WithScalarValue & Widg
 
     const viewsList = schema.getIn(['date', 'views'])
     const views = React.useMemo(
-        () => List.isList(viewsList) ? viewsList.toArray() as CalendarOrClockPickerView[] : undefined,
+        () => List.isList(viewsList) ? viewsList.toArray() : undefined,
         [viewsList],
     )
 
-    const openTo = schema.getIn(['date', 'openTo']) as CalendarOrClockPickerView
+    const openTo = schema.getIn(['date', 'openTo'])
     const orientation = schema.getIn(['date', 'orientation']) as 'landscape' | 'portrait' | undefined
-    if(!views) {
+    if (!views) {
         console.error('WidgetDatePicker invalid, requires `views` at: ', storeKeys.toJS())
     }
 
     return <Picker
-        label={<TransTitle schema={schema} storeKeys={storeKeys}/>}
+        label={<TranslateTitle schema={schema} storeKeys={storeKeys}/>}
         value={dateValue}
         inputFormat={dateFormat}
         orientation={orientation}
@@ -53,7 +50,7 @@ export const WidgetDateTimePicker: React.FC<WidgetProps & WithScalarValue & Widg
         views={views}
         readOnly={schema.get('readOnly') as boolean}
         onChange={(e) => {
-            if(!utils) return
+            if (!utils) return
             onChange({
                 storeKeys: storeKeys,
                 scopes: ['value'],
@@ -63,7 +60,9 @@ export const WidgetDateTimePicker: React.FC<WidgetProps & WithScalarValue & Widg
                 data: {value: e ? utils.formatByString(e, dateFormatData) : ''},
             } as UIStoreActionSet)
         }}
-        renderInput={(params) => <TextField {...params} fullWidth/>}
+        slotProps={{
+            textField: {fullWidth: true},
+        }}
         {...pickerProps || {}}
     />
 }

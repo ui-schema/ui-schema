@@ -9,7 +9,7 @@ These components are the wire/grid in which the widgets are rendered.
 - `GroupRenderer`, defined as special widget: `widgets.GroupRenderer`
     - has the GridHandler as children
     - each native-object is wrapped with this (default), each property of an `object` results in a new child
-- `GridHandler`, plugin in the pluginStack, you should not need to configure/add it
+- `GridHandler`, plugin in the widgetPlugins, you should not need to configure/add it
     - if the prop `noGrid` is passed through the stack, the grid item is not rendered
     - added to the widget-stack
         - thus each widget is automatically wrapped with the needed grid handler to build responsive grid
@@ -40,18 +40,19 @@ Disabling the GridHandler with `noGrid` can - for example - be done by passing i
 ```js
 import {
     RootRenderer, GroupRenderer,
-    /* not needed to add, is registered in `pluginStack`
+    /* not needed to add, is registered in `widgetPlugins`
         SchemaGridHandler, SchemaGridItem,
     */
 } from "@ui-schema/ds-material/Grid";
-import {pluginStack} from "@ui-schema/ds-material/pluginStack";
-import {validators} from "@ui-schema/ui-schema/Validators/validators";
+import {widgetPlugins} from "@ui-schema/ds-material/widgetPlugins";
+import {validators} from "@ui-schema/ui-schema/Validators";
 
 const widgets = {
     RootRenderer,
     GroupRenderer,
-    validators,
-    pluginStack: pluginStack,
+    widgetPlugins: widgetPlugins,
+    pluginSimpleStack: validators,
+    // ... rest of non-type widget ...
     types: {},
     custom: {},
 };

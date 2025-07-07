@@ -1,2 +1,2 @@
-export * from './Table'
-export * from './GenericList'
+export * from './Table/index.js'
+export * from './GenericList/index.js'

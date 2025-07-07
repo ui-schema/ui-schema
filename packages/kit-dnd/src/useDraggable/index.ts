@@ -1,1 +1,1 @@
-export * from './useDraggable'
+export * from './useDraggable.js'

@@ -1,1 +1,2 @@
-export * from './Table'
+export * from './Table.js'
+export * from './TableSchema.js'

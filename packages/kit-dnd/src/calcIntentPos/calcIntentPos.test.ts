@@ -3,7 +3,7 @@ import { calcIntentPos, CalcDragIntentEvent } from '@ui-schema/kit-dnd/calcInten
 import { DndIntents, DndDragIntentPos } from '@ui-schema/kit-dnd/KitDnd'
 
 /**
- * npm run tdd -- -u --testPathPattern=src/calcIntentPos.test.ts
+ * npm run tdd -- --testPathPattern=src/calcIntentPos.test.ts
  */
 
 describe('calcIntentPos', () => {

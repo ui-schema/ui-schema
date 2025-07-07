@@ -1,1 +1,1 @@
-export * from './DragDropBlock'
+export * from './DragDropBlock.js'

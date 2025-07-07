@@ -7,7 +7,7 @@ import { SearchHighlight, SearchLink } from './SearchBoxUtils'
 import { useSearch } from '@control-ui/docs/DocsSearchProvider'
 import { useDrawer } from '@control-ui/app/DrawerProvider'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import useTheme from '@mui/material/styles/useTheme'
+import { useTheme } from '@mui/material/styles'
 
 export const SearchResultModule: React.FC<{
     match: any

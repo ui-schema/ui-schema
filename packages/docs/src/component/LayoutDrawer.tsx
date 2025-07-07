@@ -1,5 +1,5 @@
 import React from 'react'
-import useTheme from '@mui/material/styles/useTheme'
+import { useTheme } from '@mui/material/styles'
 import { Drawer } from '@control-ui/app/Drawer'
 import { useDrawer } from '@control-ui/app/DrawerProvider'
 import { ListItemLink } from '@control-ui/kit/List'
@@ -11,7 +11,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore'
 import Divider from '@mui/material/Divider'
 import List from '@mui/material/List'
 import Collapse from '@mui/material/Collapse'
-import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
 import { NavListItemAuto, NavListNested } from '@control-ui/kit/NavList'
 import { routesCore, routesFurtherAddOns, routesFurtherDesignSystem } from '../content/docs'
 import { useConsent } from '@bemit/consent-ui-react'
@@ -32,11 +32,11 @@ const CollapseDrawer: React.ComponentType<React.PropsWithChildren<{
 ) => {
     const [open, setOpen] = React.useState(initialOpen)
     return <React.Fragment>
-        <ListItem button onClick={() => setOpen(o => !o)} dense={dense} style={style}>
+        <ListItemButton onClick={() => setOpen(o => !o)} dense={dense} style={style}>
             {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
             <ListItemText primary={toggle}/>
             {open ? <ExpandLess/> : <ExpandMore/>}
-        </ListItem>
+        </ListItemButton>
 
         <Collapse in={open} timeout="auto" unmountOnExit>
             {children}
@@ -108,9 +108,14 @@ export const LayoutDrawerBase: React.ComponentType = () => {
             <Divider/>
             <ListItemLink to={'/impress'} primary={'Impress'} dense disableNavLink={false} onClick={closeOnClick}/>
             <ListItemLink to={'/privacy'} primary={'Privacy Policy'} dense disableNavLink={false} onClick={closeOnClick}/>
-            <ListItem button onClick={() => toggleUi()} dense>
-                <ListItemText primary={'Privacy Settings'} primaryTypographyProps={{variant: 'body2'}}/>
-            </ListItem>
+            <ListItemButton onClick={() => toggleUi()} dense>
+                <ListItemText
+                    primary={'Privacy Settings'}
+                    slotProps={{
+                        primary: {variant: 'body2'},
+                    }}
+                />
+            </ListItemButton>
             <Divider/>
         </List>
     </Drawer>

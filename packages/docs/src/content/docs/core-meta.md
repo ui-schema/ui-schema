@@ -55,7 +55,7 @@ import React from 'react'
 import {
     UIMetaProvider, UIStoreProvider,
     useUIMeta,
-    UIStoreActions, UIStoreType, onChangeHandler, StoreSchemaType,
+    UIStoreActions, UIStoreType, onChangeHandler, UISchemaMap,
 } from '@ui-schema/ui-schema'
 import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer'
 import { UIMetaReadContextType } from '@ui-schema/ui-schema/UIMetaReadContext'
@@ -63,7 +63,7 @@ import { UIMetaReadContextType } from '@ui-schema/ui-schema/UIMetaReadContext'
 const ReadableWritableEditor: React.ComponentType<{
     onChange: onChangeHandler
     store: UIStoreType
-    schema: StoreSchemaType
+    schema: UISchemaMap
     showValidity?: boolean
 }> = ({onChange, store, schema}) => {
     const {widgets, ...metaCtx} = useUIMeta()
@@ -82,9 +82,9 @@ const ReadableWritableEditor: React.ComponentType<{
             <button onClick={() => setEdit(e => !e)}>{edit ? 'ready only' : 'edit'}</button>
             <button disabled={edit} onClick={() => setDense(e => !e)}>{dense ? 'normal-size' : 'dense'}</button>
         </div>
-        <UIMetaProvider<UIMetaReadContextType>
+        <UIMetaProvider<UIMetaContext<typeof customWidgetsRtd> & UIMetaReadContextType>
             // re-use & overwrite of the global meta-context
-            widgets={customWidgetsRtd} {...metaCtx}
+            binding={customWidgetsRtd} {...metaCtx}
             // custom meta-ctx only available within this UIMetaProvider context
             readActive={!edit} readDense={dense}
         >
@@ -109,8 +109,8 @@ export interface UIMetaCustomContext {
     handleStuff: () => 'stuff'
 }
 
-<UIMetaProvider<UIMetaCustomContext>
-    widgets={customWidgets}
+<UIMetaProvider<UIMetaContext<typeof customWidgetsRtd> & UIMetaCustomContext>
+    binding={customWidgets}
     t={browserT}
     handleStuff={() => 'stuff'}
 >
@@ -118,16 +118,15 @@ export interface UIMetaCustomContext {
 
 const {handleStuff, widgets, t} = useUIMeta<UIMetaCustomContext>()
 
-// typing to use `PluginStack`/`applyPluginStack` with custom context:
-const WidgetTextField = applyPluginStack<UIMetaCustomContext>(StringRenderer)
+// typing to use `PluginStack`/`applyWidgetEngine` with custom context:
+const WidgetTextField = applyWidgetEngine<UIMetaCustomContext>(StringRenderer)
 
 // first additional widget props, second the custom context:
 <PluginStack<{ readOnly: boolean }, UIMetaCustomContext>
     showValidity={showValidity}
     storeKeys={storeKeys.push('city') as StoreKeys}
-    schema={schema.getIn(['properties', 'name']) as unknown as StoreSchemaType}
+    schema={schema.getIn(['properties', 'name']) as unknown as UISchemaMap}
     parentSchema={schema}
-    level={1}
     readOnly={false}
     // noGrid={false} (as grid-item is included in `PluginStack`)
 />

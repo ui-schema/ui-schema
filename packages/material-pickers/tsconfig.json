@@ -5,9 +5,10 @@
         "src"
     ],
     "exclude": [
-        "src/**/*.test.*"
     ],
     "compilerOptions": {
-        "outDir": "build/dts"
+        "module": "ES2020",
+        "moduleResolution": "Node10",
+        "declarationDir": "build/dts"
     }
 }

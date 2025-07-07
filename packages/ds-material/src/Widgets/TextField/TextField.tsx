@@ -1,16 +1,16 @@
+import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
 import React, { CSSProperties, FocusEventHandler, KeyboardEventHandler, MouseEventHandler } from 'react'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
 import { InputProps } from '@mui/material/Input'
 import { useUID } from 'react-uid'
-import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
-import { mapSchema } from '@ui-schema/ui-schema/Utils/schemaToNative'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
-import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
-import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/schemaTypeIs'
-import { WidgetProps, WithScalarValue } from '@ui-schema/ui-schema'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
+import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils/forbidInvalidNumber'
+import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
+import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 
 export interface StringRendererBaseProps {
     type?: string
@@ -21,10 +21,9 @@ export interface StringRendererBaseProps {
     onKeyUp?: KeyboardEventHandler<HTMLDivElement> | undefined
     onKeyDown?: KeyboardEventHandler<HTMLDivElement> | undefined
     /**
-     * @deprecated
+     * @deprecated may not be available in newer browser [MDN spec](https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onkeypress)
      */
-    onKeyPress?: (e: KeyboardEvent) => void | undefined
-    onKeyPressNative?: KeyboardEventHandler<HTMLDivElement> | undefined
+    onKeyPress?: KeyboardEventHandler<HTMLDivElement> | undefined
     inputProps?: InputProps['inputProps']
     InputProps?: Partial<InputProps>
     inputRef?: any
@@ -32,17 +31,7 @@ export interface StringRendererBaseProps {
 
 export interface StringRendererProps extends StringRendererBaseProps {
     multiline?: boolean
-    /**
-     * @deprecated use `minRows` instead
-     */
-    rows?: number
-    /**
-     * @deprecated use `maxRows` instead
-     */
-    rowsMax?: number
-
     minRows?: number
-
     maxRows?: number
 }
 
@@ -54,35 +43,32 @@ export interface NumberRendererProps extends StringRendererBaseProps {
     steps?: number | 'any'
 }
 
-export const StringRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>(
+export const StringRenderer = (
     {
         type,
         multiline,
-        // eslint-disable-next-line deprecation/deprecation
-        rows, rowsMax,
         minRows, maxRows,
         storeKeys, schema, value, onChange,
         showValidity, valid, errors, required,
         style,
         onClick, onFocus, onBlur, onKeyUp, onKeyDown,
-        onKeyPressNative: onKeyPress,
-        // eslint-disable-next-line deprecation/deprecation
-        onKeyPress: onKeyPressDeprecated,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        onKeyPress,
         inputProps = {}, InputProps = {}, inputRef: customInputRef,
-        widgets,
-    }: P & WithScalarValue & StringRendererProps
+        binding,
+    }: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & StringRendererProps,
 ): React.ReactElement => {
     const uid = useUID()
     // todo: this could break law-of-hooks
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const inputRef = customInputRef || React.useRef()
+    const inputRef = customInputRef || React.useRef(null)
 
     const format = schema.get('format')
 
-    inputProps = mapSchema(inputProps, schema)
+    inputProps = schemaRulesToNative(inputProps, schema)
 
     const hideTitle = schema.getIn(['view', 'hideTitle'])
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
     if (InfoRenderer && schema?.get('info')) {
         InputProps['endAdornment'] = <InputAdornment position="end">
             <InfoRenderer
@@ -93,46 +79,37 @@ export const StringRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetP
     }
     return <React.Fragment>
         <TextField
-            label={hideTitle ? undefined : <TransTitle schema={schema} storeKeys={storeKeys}/>}
-            aria-label={hideTitle ? <TransTitle schema={schema} storeKeys={storeKeys}/> as unknown as string : undefined}
+            label={hideTitle ? undefined : <TranslateTitle schema={schema} storeKeys={storeKeys}/>}
+            aria-label={hideTitle ? <TranslateTitle schema={schema} storeKeys={storeKeys}/> as unknown as string : undefined}
             // changing `type` to `text`, to be able to change invalid data
             type={(format || (typeof value === 'string' && type === 'number' ? 'text' : type)) as InputProps['type']}
             disabled={schema.get('readOnly') as boolean | undefined}
             multiline={multiline}
             required={required}
             error={!valid && showValidity}
-            minRows={
-                typeof minRows === 'number' ? minRows :
-                    rows
-            }
-            maxRows={
-                typeof maxRows === 'number' ? maxRows :
-                    rowsMax
-            }
+            minRows={minRows}
+            maxRows={maxRows}
             inputRef={inputRef}
             fullWidth
             variant={schema.getIn(['view', 'variant']) as any}
             margin={schema.getIn(['view', 'margin']) as InputProps['margin']}
             size={schema.getIn(['view', 'dense']) ? 'small' : 'medium'}
-            value={
-                typeof value === 'string' || typeof value === 'number' ? value : ''
-            }
+            value={typeof value === 'string' || typeof value === 'number' ? value : ''}
             onClick={onClick}
             onFocus={onFocus}
             onBlur={onBlur}
             onKeyUp={onKeyUp}
-            onKeyPress={onKeyPress ? onKeyPress : e => {
-                const evt = e.nativeEvent
-                if (!forbidInvalidNumber(evt, schema.get('type') as string)) {
-                    onKeyPressDeprecated && onKeyPressDeprecated(evt)
-                }
-            }}
-            id={'uis-' + uid}
+            onKeyDown={
+                onKeyDown ? onKeyDown :
+                    e => forbidInvalidNumber(e.nativeEvent, schema.get('type') as unknown as string)
+            }
+            /* eslint-disable-next-line @typescript-eslint/no-deprecated */
+            onKeyPress={onKeyPress}
             style={style}
-            onKeyDown={onKeyDown}
+            id={'uis-' + uid}
             onChange={(e) => {
                 const val = e.target.value
-                const schemaType = schema.get('type') as string
+                const schemaType = schema.get('type') as unknown as string
                 const newVal = convertStringToNumber(val, schemaType)
                 if (
                     schemaTypeIsNumeric(schemaType)
@@ -150,8 +127,11 @@ export const StringRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetP
                     data: {value: newVal},
                 })
             }}
+            /* eslint-disable-next-line @typescript-eslint/no-deprecated */
             InputLabelProps={{shrink: schema.getIn(['view', 'shrink']) as boolean}}
+            /* eslint-disable-next-line @typescript-eslint/no-deprecated */
             InputProps={InputProps}
+            /* eslint-disable-next-line @typescript-eslint/no-deprecated */
             inputProps={inputProps}
         />
 
@@ -161,25 +141,23 @@ export const StringRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetP
     </React.Fragment>
 }
 
-export const TextRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>({schema, ...props}: P & WithScalarValue & TextRendererProps): React.ReactElement => {
+export const TextRenderer = ({schema, ...props}: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & TextRendererProps): React.ReactElement => {
     return <StringRenderer
         {...props}
         schema={schema}
         minRows={
             typeof props.minRows === 'number' ? props.minRows :
-                // eslint-disable-next-line deprecation/deprecation
-                (props.rows || schema.getIn(['view', 'rows']))
+                schema.getIn(['view', 'rows']) as number
         }
         maxRows={
             typeof props.maxRows === 'number' ? props.maxRows :
-                // eslint-disable-next-line deprecation/deprecation
-                (props.rowsMax || schema.getIn(['view', 'rowsMax']))
+                schema.getIn(['view', 'rowsMax']) as number
         }
         multiline
     />
 }
 
-export const NumberRenderer = <P extends WidgetProps<MuiWidgetBinding> = WidgetProps<MuiWidgetBinding>>(props: P & WithScalarValue & NumberRendererProps): React.ReactElement => {
+export const NumberRenderer = (props: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & NumberRendererProps): React.ReactElement => {
     const {schema, inputProps: inputPropsProps = {}, steps = 'any'} = props
     const schemaType = schema.get('type') as string | undefined
     const inputProps = React.useMemo(() => {

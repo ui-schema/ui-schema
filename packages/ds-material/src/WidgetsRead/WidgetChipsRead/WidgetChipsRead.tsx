@@ -1,29 +1,33 @@
-import React from 'react'
-import { beautifyKey, extractValue, memo, StoreSchemaType, Trans, tt, WidgetProps, WithValue } from '@ui-schema/ui-schema'
+import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
+import { extractValue } from '@ui-schema/react/UIStore'
+import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
+import { Translate } from '@ui-schema/react/Translate'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { beautifyKey, tt } from '@ui-schema/ui-schema/Utils/beautify'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 import { List, Map, OrderedMap } from 'immutable'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
-import { UIMetaReadContextType } from '@ui-schema/ui-schema/UIMetaReadContext'
+import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
 import Typography from '@mui/material/Typography'
 
-export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & UIMetaReadContextType & WithValue> = (
+export const WidgetChipsReadBase = (
     {
         storeKeys, schema, value,
         showValidity, errors,
-        valid, widgets,
+        valid, binding,
         readDense,
-    },
+    }: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & UIMetaReadContextType,
 ) => {
-    if(!schema) return null
+    if (!schema) return null
 
     const oneOfVal = schema.getIn(['items', 'oneOf'])
-    if(!oneOfVal) return null
+    if (!oneOfVal) return null
 
     const hideTitle = schema.getIn(['view', 'hideTitle']) as boolean | undefined
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
     const hasInfo = Boolean(InfoRenderer && schema?.get('info')) as boolean | undefined
 
     const currentValue = (typeof value !== 'undefined' ? value : (List(schema.get('default') as string[]) || List())) as List<string>
@@ -44,8 +48,8 @@ export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetBindi
                 oneOfValues.map((oneOfSchema) =>
                     <Chip
                         key={oneOfSchema.get('const')}
-                        label={<Trans
-                            schema={oneOfSchema.get('t') as unknown as StoreSchemaType}
+                        label={<Translate
+                            schema={oneOfSchema.get('t') as unknown as UISchemaMap}
                             text={oneOfSchema.get('title') as string || oneOfSchema.get('const') as string}
                             context={Map({'relative': List(['title'])})}
                             fallback={oneOfSchema.get('title') || beautifyKey(oneOfSchema.get('const') as string | number, oneOfSchema.get('tt') as tt)}
@@ -54,7 +58,7 @@ export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetBindi
                         size={!readDense && schema.getIn(['view', 'size']) === 'medium' ? 'medium' : 'small'}
                         variant={'filled'}
                         color={'primary'}
-                    />
+                    />,
                 ).valueSeq() :
                 <Typography variant={readDense ? 'body2' : 'body1'} style={{opacity: 0.65}}>-</Typography>
             }
@@ -64,4 +68,4 @@ export const WidgetChipsReadBase: React.ComponentType<WidgetProps<MuiWidgetBindi
     </Box>
 }
 
-export const WidgetChipsRead = extractValue(memo(WidgetChipsReadBase)) as React.ComponentType<WidgetProps<MuiWidgetBinding>>
+export const WidgetChipsRead = extractValue(memo(WidgetChipsReadBase))

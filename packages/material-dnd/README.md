@@ -7,7 +7,7 @@ This project is free software distributed under the **MIT License**.
 
 See: [LICENSE](https://github.com/ui-schema/ui-schema/blob/master/LICENSE).
 
-© 2024 bemit UG (haftungsbeschränkt)
+© 2025 bemit UG (haftungsbeschränkt)
 
 ### License Icons
 
@@ -23,4 +23,4 @@ By committing your code/creating a pull request to this repository you agree to 
 
 ***
 
-Created by [Michael Becker](https://mlbr.xyz)
+Created by [Michael Becker](https://i-am-digital.eu)

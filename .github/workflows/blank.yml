@@ -5,12 +5,12 @@ env:
 
 on:
     push:
-        branches: [ master, develop ]
+        branches: [ master, develop, feature/develop-0.5.0, feature/develop-0.5.0-r2 ]
     pull_request:
-        branches: [ master, develop ]
-#    create:
-#        tags:
-#            - '[0-9]+.[0-9]+.[0-9]+*'
+        branches: [ master, develop, feature/develop-0.5.0, feature/develop-0.5.0-r2 ]
+    #    create:
+    #        tags:
+    #            - '[0-9]+.[0-9]+.[0-9]+*'
 
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
@@ -20,7 +20,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                node-version: [ 18.x ]
+                node-version: [ 24 ]
         steps:
             -   uses: actions/checkout@v4
             -   name: Set Branch
@@ -43,13 +43,27 @@ jobs:
 
             -   name: Setup packages
                 run: |
-                    npm ci --force
-                    npm run bootstrap
-                    npm run link
+                    npm ci --legacy-peer-deps
+                    #npm ci --force
+                    #npm run bootstrap
+                    #npm run link
+
+            -   name: Run linter
+                run: |
+                    npm run lint
+
+            -   name: Run TS checks # for non-packages, as these are checked during dtsgen in build
+                run: |
+                    npm run tscheck
 
             -   name: Run tests
                 run: |
-                    npm test
+                    npm run test
+
+            #-   name: Run checks
+            #    run: |
+            #        # includes lint, ts-checks for non-packages (as checked during dtsgen), tests
+            #        npm run check
 
             -   name: Build
                 run: |

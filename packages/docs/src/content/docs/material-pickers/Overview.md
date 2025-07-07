@@ -18,9 +18,9 @@ Use this basic function for a start:
 
 ```typescript jsx
 import React from 'react'
-import { WidgetProps, WithScalarValue, StoreSchemaType } from '@ui-schema/ui-schema'
+import { WidgetProps, WithScalarValue, UISchemaMap } from '@ui-schema/ui-schema'
 
-const getExtraProps = (schema: StoreSchemaType, type: 'date' | 'date-time' | 'time') => {
+const getExtraProps = (schema: UISchemaMap, type: 'date' | 'date-time' | 'time') => {
     const data: { [k: string]: any } = {}
     if (
         schema.getIn(['date', 'variant']) === 'static' ||
@@ -45,7 +45,7 @@ const getExtraProps = (schema: StoreSchemaType, type: 'date' | 'date-time' | 'ti
 import React from 'react'
 import { List } from 'immutable'
 import { widgets } from '@ui-schema/ds-material'
-import { WidgetProps, WithScalarValue, StoreSchemaType } from '@ui-schema/ui-schema'
+import { WidgetProps, WithScalarValue, UISchemaMap } from '@ui-schema/ui-schema'
 import { WidgetDateTimePicker } from '@ui-schema/material-pickers/WidgetDateTimePicker'
 import { DesktopDateTimePicker } from '@mui/x-date-pickers/DesktopDateTimePicker'
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker'
@@ -86,7 +86,7 @@ customWidgets.custom = {
 import React from 'react'
 import { List } from 'immutable'
 import { widgets } from '@ui-schema/ds-material'
-import { WidgetProps, WithScalarValue, StoreSchemaType } from '@ui-schema/ui-schema'
+import { WidgetProps, WithScalarValue, UISchemaMap } from '@ui-schema/ui-schema'
 import { WidgetDatePicker } from '@ui-schema/material-pickers/WidgetDatePicker'
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
@@ -127,7 +127,7 @@ customWidgets.custom = {
 import React from 'react'
 import { List } from 'immutable'
 import { widgets } from '@ui-schema/ds-material'
-import { WidgetProps, WithScalarValue, StoreSchemaType } from '@ui-schema/ui-schema'
+import { WidgetProps, WithScalarValue, UISchemaMap } from '@ui-schema/ui-schema'
 import { WidgetTimePicker } from '@ui-schema/material-pickers/WidgetTimePicker'
 import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker'
 import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker'

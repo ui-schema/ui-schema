@@ -83,9 +83,7 @@ Custom widgets for `widget`, special UIs and specific type handling:
 | `BoolIcon`                    |                                                                                      |                                                              | 🔵  | 🔵  |  🔵 |
 |                               |                                                                                      |                                                              |     |     |     |
 | **Rich-Text**                 |                                                                                      |                                                              |     |     |     |
-| `Rich*`                       | [rich content + text editor](/docs/widgets/RichText)                                 | `string`,`object`                                            |  ✅  | 🔵  |  🔵 |
 | `Code`, `CodeSelectable`      | [text editor with syntax highlight](/docs/material-code/material-code)                              | `string`, `array(string, string)`, `object`                   |  ✅  | 🔵  |  🔵 |
-| `EditorJS`                    | [EditorJS text editor](/docs/widgets/EditorJS)                                       | `string`                                                     | ✅ℹ️ | 🔵  |  🔵 |
 |                               |                                                                                      |                                                              |     |     |     |
 | **Lists**                     |                                                                                      |                                                              |     |     |     |
 | `SimpleList`                  | [strings and numbers as list](/docs/widgets/SimpleList)                              | `array(string)`<br>`array(number)`                           |  ✅  | 🔵  |  🔵 |

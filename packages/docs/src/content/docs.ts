@@ -1,12 +1,10 @@
 import { demoAccordions } from './docs/widgets/AccordionsDemo'
-import { demoCode } from './docs/material-code/material-codeDemo'
 import { demoColorful } from './docs/material-colorful/material-colorfulDemo'
 import { demoColor } from './docs/widgets/ColorDemo'
 import { demoDateTimePickers } from './docs/widgets/DateTimePickersDemo'
 import { demoGenericList } from './docs/widgets/GenericListDemo'
 import { demoGridHandler } from './docs/widgets/GridHandlerDemo'
 import { demoOptionsList } from './docs/widgets/OptionsListDemo'
-import { demoRichText } from './docs/widgets/RichTextDemo'
 import { demoNumberSlider } from './docs/widgets/NumberSliderDemo'
 import { demoSelect } from './docs/widgets/SelectDemo'
 import { demoSimpleList } from './docs/widgets/SimpleListDemo'
@@ -14,7 +12,6 @@ import { demoStepper } from './docs/widgets/StepperDemo'
 import { demoSwitch } from './docs/widgets/SwitchDemo'
 import { demoTable } from './docs/widgets/TableDemo'
 import { demoTextField } from './docs/widgets/TextFieldDemo'
-import { demoEditorJS } from './docs/widgets/EditorJSDemo'
 import { demoDragnDropGenericDemo } from './docs/material-dnd/widgets-genericDemo'
 import { demoSelectChips } from './docs/widgets/SelectChipsDemo'
 import { demoCard } from './docs/widgets/CardDemo'
@@ -64,10 +61,17 @@ const defineModule = (org: string, name: string, dir: string, from: string, cust
 })
 
 const defineModuleFlat = (org: string, name: string, dir: string, rel: string, from: string, ext: string): TsDocModule => ({
-    modulePath: `${dir}/src/${rel}/${from}.`,
+    modulePath: `${dir}/src/${rel}/`,
+    // modulePath: `${dir}/src/${rel}/${from}`,
     relPath: `${dir}/src/${rel}/`,
     package: `@${org}/${name}`,
-    fromPath: rel + '/' + from,
+    // todo: fromPath should be just `rel`,
+    //       as e.g. `@ui-schema/ds-material/BaseComponents/Table/TableContext` is only correctly exported via `@ui-schema/ds-material/BaseComponents/Table`
+    //       but is used by doc-gen to generate output dir atm.
+    fromPath: rel,
+    // fromPath: rel + '/' + from,
+    // @ts-ignore
+    moduleFilePath: rel + '/' + from, // todo: maybe reuse pagePath or similar?
     files: [from + ext],
 })
 
@@ -135,11 +139,6 @@ export const routesFurtherDesignSystem = [
                     schema: demoDateTimePickers,
                 },
             }),
-            createDoc('widgets/EditorJS', 'EditorJS', {
-                demos: {
-                    schema: demoEditorJS,
-                },
-            }),
             createDoc('widgets/GenericList', 'Generic List', {
                 demos: {
                     schema: demoGenericList,
@@ -153,11 +152,6 @@ export const routesFurtherDesignSystem = [
             createDoc('widgets/OptionsList', 'Options List', {
                 demos: {
                     schema: demoOptionsList,
-                },
-            }),
-            createDoc('widgets/RichText', 'Rich-Text / Rich-Content', {
-                demos: {
-                    schema: demoRichText,
                 },
             }),
             createDoc('widgets/NumberSlider', 'Number Slider', {
@@ -331,14 +325,14 @@ export const routesFurtherDesignSystem = [
                         },
                         module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetChipsRead', ['WidgetChipsRead.tsx']),
                     }),
-                    createDoc('ds-material/widgets-read/EnumRead', 'EnumRead', {
-                        demos: {},
-                        module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetEnumRead', ['WidgetEnumRead.tsx']),
-                    }),
-                    createDoc('ds-material/widgets-read/OneOfRead', 'OneOfRead', {
-                        demos: {},
-                        module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetOneOfRead', ['WidgetOneOfRead.tsx']),
-                    }),
+                    // createDoc('ds-material/widgets-read/EnumRead', 'EnumRead', { // todo: add redirect
+                    //     demos: {},
+                    //     module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetEnumRead', ['WidgetEnumRead.tsx']),
+                    // }),
+                    // createDoc('ds-material/widgets-read/OneOfRead', 'OneOfRead', { // todo: add redirect
+                    //     demos: {},
+                    //     module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetOneOfRead', ['WidgetOneOfRead.tsx']),
+                    // }),
                     createDoc('ds-material/widgets-read/OptionsRead', 'OptionsRead', {
                         demos: {
                             readOnly: true,
@@ -384,16 +378,14 @@ export const routesFurtherDesignSystem = [
             }),
         ],
     }, {
-        nav: {
-            label: 'Material Code',
-            initialOpen: false,
-            to: '/docs/material-code',
-        },
+        // nav: {
+        //     label: 'Material Code',
+        //     initialOpen: false,
+        //     to: '/docs/material-code',
+        // },
         routes: [
             createDoc('material-code/material-code', 'Overview', {
-                demos: {
-                    schema: demoCode,
-                },
+                hidden: true,
             }),
         ],
     }, {
@@ -450,13 +442,15 @@ export const routesFurtherAddOns = [
             createDoc('kit-dnd/kit-dnd', 'Overview'),
         ],
     }, {
-        nav: {
-            label: 'Kit: CodeMirror',
-            initialOpen: false,
-            to: '/docs/kit-codemirror',
-        },
+        // nav: {
+        //     label: 'Kit: CodeMirror',
+        //     initialOpen: false,
+        //     to: '/docs/kit-codemirror',
+        // },
         routes: [
-            createDoc('kit-codemirror/kit-codemirror', 'Overview'),
+            createDoc('kit-codemirror/kit-codemirror', 'Overview', {
+                hidden: true,
+            }),
         ],
     }, {
         nav: {

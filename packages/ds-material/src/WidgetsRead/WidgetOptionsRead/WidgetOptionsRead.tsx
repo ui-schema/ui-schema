@@ -1,24 +1,24 @@
+import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
 import React, { MouseEventHandler } from 'react'
 import { List } from 'immutable'
-import { Trans } from '@ui-schema/ui-schema/Translate'
-import { memo } from '@ui-schema/ui-schema/Utils/memo'
-import { StoreKeys, extractValue, WithScalarValue } from '@ui-schema/ui-schema/UIStore'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
-import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { Translate } from '@ui-schema/react/Translate'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { StoreKeys, extractValue } from '@ui-schema/react/UIStore'
+import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
 import Box from '@mui/material/Box'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
 import Typography from '@mui/material/Typography'
-import { UIMetaReadContextType } from '@ui-schema/ui-schema/UIMetaReadContext'
-import { OptionValueSchema, useOptionsFromSchema } from '@ui-schema/ds-material'
+import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
+import { OptionValueSchema, useOptionsFromSchema } from '@ui-schema/ds-material/Utils/useOptionsFromSchema'
 
 const checkActive = (list: List<any>, name: string | undefined | number) => list && list.contains && typeof list.contains(name) !== 'undefined' ? list.contains(name) : false
 
 const MultiOptionsItemsBase: React.ComponentType<{
     storeKeys: StoreKeys
     valueSchemas?: List<OptionValueSchema>
-    schema: StoreSchemaType
+    schema: UISchemaMap
     dense: boolean
     value?: any
 }> = (
@@ -34,8 +34,8 @@ const MultiOptionsItemsBase: React.ComponentType<{
                 style={{paddingRight: i < (activeValueSchemas.size - 1) ? 4 : 0}}
                 key={i}
             >
-                <Trans
-                    schema={schema?.get('t') as unknown as StoreSchemaType}
+                <Translate
+                    schema={schema?.get('t') as unknown as UISchemaMap}
                     text={text}
                     context={context}
                     fallback={fallback}
@@ -60,7 +60,7 @@ const SingleOptionItem: React.ComponentType<{
 
     return <Typography variant={dense ? 'body2' : 'body1'} color={typeof value === 'undefined' || activeSchema ? undefined : 'error'}>
         {activeSchema && typeof value !== 'undefined' ?
-            <Trans
+            <Translate
                 schema={activeSchema.schema?.get('t')}
                 text={activeSchema.text}
                 context={activeSchema.context}
@@ -75,22 +75,22 @@ export interface WidgetOptionsReadProps {
     style?: React.CSSProperties
 }
 
-export const WidgetOptionsRead: React.ComponentType<WidgetProps<MuiWidgetBinding> & UIMetaReadContextType & WithScalarValue & WidgetOptionsReadProps> = (
+export const WidgetOptionsRead: React.ComponentType<WidgetProps<BindingTypeGeneric & MuiBindingComponents> & UIMetaReadContextType & WidgetOptionsReadProps> = (
     {
         schema, storeKeys, showValidity,
         valid, errors, value,
-        widgets,
+        binding,
         onClick, style,
         readDense,
-    }
+    },
 ) => {
     const hideTitle = schema.getIn(['view', 'hideTitle']) as boolean | undefined
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
     const hasInfo = Boolean(InfoRenderer && schema?.get('info')) as boolean | undefined
     const isMultiOption = Boolean(schema.get('items'))
     const {valueSchemas} = useOptionsFromSchema(
         storeKeys,
-        schema.get('items') ? schema.get('items') as StoreSchemaType : schema,
+        schema.get('items') ? schema.get('items') as UISchemaMap : schema,
     )
     return <Box onClick={onClick} style={style} tabIndex={onClick ? 0 : undefined}>
         <TitleBoxRead

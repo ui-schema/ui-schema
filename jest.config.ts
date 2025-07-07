@@ -1,30 +1,60 @@
 import type { Config } from '@jest/types'
+import { createDefaultEsmPreset } from 'ts-jest'
 
-const packages: string[] = ['ui-schema', 'ui-schema-pro', 'ds-bootstrap', 'ds-material', 'material-dnd', 'material-pickers', 'material-slate', 'kit-dnd']
+// helpful jest commands:
+// npm run test -- --selectProjects=test-@ui-schema/react --maxWorkers=4
+// npm run test -- --selectProjects=test-@ui-schema/react --testPathPattern=WidgetProps
+// npm run test -- --no-cache --selectProjects=test-@ui-schema/react --testPathPattern=WidgetEngine --maxWorkers=4
+// npm run test -- --no-cache --selectProjects=test-@ui-schema/kit-dnd --maxWorkers=4
 
-const testMatchesLint: string[] = []
+const packages: [name: string, folder: string][] = [
+    ['@ui-schema/ui-schema', 'ui-schema'],
+    ['@ui-schema/react-json-schema', 'react-json-schema'],
+    ['@ui-schema/react', 'react'],
+    ['@ui-schema/pro', 'pro'],
+    ['@ui-schema/json-pointer', 'json-pointer'],
+    ['@ui-schema/json-schema', 'json-schema'],
+    ['@ui-schema/ds-bootstrap', 'ds-bootstrap'],
+    ['@ui-schema/ds-material', 'ds-material'],
+    ['@ui-schema/kit-dnd', 'kit-dnd'],
+    ['@ui-schema/dictionary', 'dictionary'],
+    ['@ui-schema/material-dnd', 'material-dnd'],
+    ['@ui-schema/material-pickers', 'material-pickers'],
+]
 
-packages.forEach(pkg => {
-    testMatchesLint.push(...[
-        '<rootDir>/packages/' + pkg + '/src/**/*.(js|ts|tsx)',
-        '<rootDir>/packages/' + pkg + '/tests/**/*.(test|spec|d).(js|ts|tsx)',
-    ])
-})
+const toPackageFolder = (pkg: [name: string, folder?: string]) => {
+    return pkg[1] || pkg[0]
+}
 
 const base: Partial<Config.InitialOptions> = {
     cacheDirectory: '<rootDir>/node_modules/.cache/jest-tmp',
     transformIgnorePatterns: [
         'node_modules/?!(@ui-schema)',
+        // 'node_modules/(?!(.*@ui-schema.*|.*node_modules.*))',
     ],
     transform: {
-        '^.+.[jt]sx?$': 'babel-jest',
+        // '^.+\\.js$': 'babel-jest',
+        ...createDefaultEsmPreset({
+            tsconfig: '<rootDir>/packages/tsconfig-test.json',
+            // diagnostics: false,
+            // disable type checking
+            // isolatedModules: Boolean(noTypeCheck),
+            isolatedModules: process.env.NO_TYPE_CHECK === 'yes',
+            // todo: it seems the babel test env is not used, not found logs from the plugin when disabled here
+            babelConfig: {
+                plugins: [
+                    './babelImportDefaultPlugin.cjs',
+                ],
+            },
+        }).transform,
     },
     moduleNameMapper: {
-        '^@ui-schema/ui-schema(.*)$': '<rootDir>/packages/ui-schema/src$1',
-        '^@ui-schema/pro(.*)$': '<rootDir>/packages/ui-schema-pro/src$1',
-        '^@ui-schema/ds-bootstrap(.*)$': '<rootDir>/packages/ds-bootstrap/src$1',
-        '^@ui-schema/ds-material(.*)$': '<rootDir>/packages/ds-material/src$1',
-        '^@ui-schema/kit-dnd(.*)$': '<rootDir>/packages/kit-dnd/src$1',
+        '^(\\.{1,2}/.*)\\.js$': '$1',// todo: validate ESM testing (and JSDom/react compat.), somehow this mapper was all needed - no further ts-jest/babel adjustments
+        ...packages.reduce((nameMapper, pkg) => {
+            nameMapper[`^${pkg[0]}\\/(.*)$`] = `<rootDir>/packages/${toPackageFolder(pkg)}/src/$1`
+            nameMapper[`^${pkg[0]}$`] = `<rootDir>/packages/${toPackageFolder(pkg)}/src`
+            return nameMapper
+        }, {}),
     },
     moduleFileExtensions: [
         'ts',
@@ -34,42 +64,53 @@ const base: Partial<Config.InitialOptions> = {
         'json',
         'node',
     ],
+    extensionsToTreatAsEsm: ['.ts', '.tsx'],
     coveragePathIgnorePatterns: [
-        '(tests/.*.mock).(jsx?|tsx?|ts?|js?)$',
+        '.*.mock.(jsx?|tsx?|ts?|js?|json?)$',
+        '/mocks/.*',
+        '.*.(test|spec).(js|ts|tsx)$',
+        '<rootDir>/packages/demo-server',
+        '<rootDir>/packages/demo-web',
+        '<rootDir>/packages/docs',
+    ],
+    testPathIgnorePatterns: [
+        '<rootDir>/dist/',
+        '<rootDir>/packages/.+/build/',
+    ],
+    watchPathIgnorePatterns: [
+        '<rootDir>/.idea',
+        '<rootDir>/.git',
+        '<rootDir>/dist/',
+        '<rootDir>/node_modules/',
+        '<rootDir>/packages/.+/node_modules/',
+        '<rootDir>/packages/.+/build/',
+    ],
+    modulePathIgnorePatterns: [
+        '<rootDir>/dist/',
+        '<rootDir>/packages/.+/build/',
     ],
 }
 
 const config: Config.InitialOptions = {
     ...base,
-    collectCoverage: true,
     verbose: true,
-    // todo: check why `transformIgnorePatterns`, combined with multi-projects/lerna 0.5.3 upgrade, throws `Reentrant plugin detected trying to load ....babel-plugin-jest-hoist/build/index.js`
-    /*transformIgnorePatterns: [
-        'node_modules/?!(@ui-schema)',
-    ],*/
     projects: [
-        ...packages.map(pkg => ({
-            displayName: 'test-' + pkg,
+        ...packages.map((pkg) => ({
+            displayName: 'test-' + pkg[0],
             ...base,
-            moduleDirectories: ['node_modules', '<rootDir>/packages/' + pkg + '/node_modules'],
-            //moduleDirectories: ['node_modules', '<rootDir>/packages/ui-schema/node_modules', '<rootDir>/packages/ds-material/node_modules'],
-            // todo: check why `transformIgnorePatterns`, combined with multi-projects/lerna 0.5.3 upgrade, throws `TypeError: /node_modules/jest-runner-eslint/build/runner/index.js: node_modules/@ampproject/remapping/dist/remapping.umd.js: _remapping(...) is not a function`
-            /*transformIgnorePatterns: [
-                'node_modules/?!(@ui-schema)',
-            ],*/
-            //testEnvironmentOptions: {},
+            moduleDirectories: [
+                'node_modules',
+                '<rootDir>/packages/' + toPackageFolder(pkg) + '/node_modules',
+                /*'<rootDir>/packages/' + pkg, '<rootDir>/packages/' + pkg + '/src'*/
+            ],
             testMatch: [
-                '<rootDir>/packages/' + pkg + '/src/**/*.(test|spec).(js|ts|tsx)',
-                '<rootDir>/packages/' + pkg + '/tests/**/*.(test|spec).(js|ts|tsx)',
+                '<rootDir>/packages/' + toPackageFolder(pkg) + '/src/**/*.(test|spec).(js|ts|tsx)',
+                '<rootDir>/packages/' + toPackageFolder(pkg) + '/tests/**/*.(test|spec).(js|ts|tsx)',
             ],
         })),
-        {
-            displayName: 'lint',
-            runner: 'jest-runner-eslint',
-            ...base,
-            testMatch: testMatchesLint,
-        },
     ],
+    collectCoverage: true,
+    coverageReporters: ['clover', 'json', 'lcov', 'text', 'html-spa'],
     coverageDirectory: '<rootDir>/coverage',
 }
 

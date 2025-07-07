@@ -1,5 +1,5 @@
-import { it, expect, describe } from '@jest/globals'
-import { convertStringToNumber } from './convertStringToNumber'
+import { jest, it, expect, describe } from '@jest/globals'
+import { convertStringToNumber } from './convertStringToNumber.js'
 
 describe('convertStringToNumber', () => {
     it('convertStringToNumber', async () => {

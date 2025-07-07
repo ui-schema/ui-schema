@@ -1,3 +1,4 @@
+import { TransitionProps } from '@mui/material/transitions'
 import React from 'react'
 import IcHistory from '@mui/icons-material/History'
 import IcSearch from '@mui/icons-material/Search'
@@ -25,7 +26,7 @@ import { DocsIndexValueModules, DocsIndexValuePackages, DocsIndexValuePages, Doc
 import { MatchMakerType, useSearchMatching } from '@control-ui/docs'
 import { SearchResultModule } from './SearchResultModule'
 import { SearchResultPage } from './SearchResultPage'
-import { useDebounceValue } from '@ui-schema/ui-schema'
+import { useDebounceValue } from '@ui-schema/react/Utils/useDebounceValue'
 
 export type CustomDocsIndexModules = DocsIndexValuesCombiner<DocsIndexValueModules & DocsIndexValuePackages>
 export type CustomDocsIndex = {
@@ -163,16 +164,18 @@ export const SearchBox: React.ComponentType = () => {
     return <Dialog
         open={open} onClose={() => setOpen(false)}
         maxWidth={'sm'} fullWidth
-        PaperProps={{
-            style: {
-                background: 'transparent', overflow: 'visible',
-                margin: '24px 32px 32px 12px',
+        slotProps={{
+            paper: {
+                style: {
+                    background: 'transparent', overflow: 'visible',
+                    margin: '24px 32px 32px 12px',
+                },
+                elevation: 0,
             },
-            elevation: 0,
-        }}
-        TransitionProps={{
-            style: {
-                alignItems: 'flex-start',
+            transition: {
+                style: {
+                    alignItems: 'flex-start',
+                },
             },
         }}
     >
@@ -184,20 +187,22 @@ export const SearchBox: React.ComponentType = () => {
                 onChange={e => setBounceVal({value: e.target.value, changed: true})}
                 autoFocus
                 inputRef={searchRef}
-                InputProps={{
-                    style: {borderRadius: 5},
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <IcSearch/>
-                        </InputAdornment>
-                    ),
-                    endAdornment:
-                        searchTerm && searchTerm.length >= 3 ?
-                            <InputAdornment position="end">
-                                <IconButton onClick={() => setSearchTerm('')}>
-                                    <IcHistory/>
-                                </IconButton>
-                            </InputAdornment> : null,
+                slotProps={{
+                    input: {
+                        style: {borderRadius: 5},
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <IcSearch/>
+                            </InputAdornment>
+                        ),
+                        endAdornment:
+                            searchTerm && searchTerm.length >= 3 ?
+                                <InputAdornment position="end">
+                                    <IconButton onClick={() => setSearchTerm('')}>
+                                        <IcHistory/>
+                                    </IconButton>
+                                </InputAdornment> : null,
+                    },
                 }}
                 onBlur={() => {
                     bubbleBounce(searchTerm as string)
@@ -215,6 +220,8 @@ export const SearchBox: React.ComponentType = () => {
                     marginRight: 'calc(-100% + 4px)',
                     minWidth: 16,
                     padding: 6,
+                    borderTopLeftRadius: 0,
+                    borderBottomLeftRadius: 0,
                 }}
                 onClick={() => setOpen(false)}
                 variant={'contained'}
@@ -229,70 +236,72 @@ export const SearchBox: React.ComponentType = () => {
             </Box> : null}
 
         <Collapse
-            in={Boolean(searchResult)} timeout="auto" unmountOnExit
-            style={{overflow: 'auto', marginTop: 6}}
+            in={Boolean(searchResult)} timeout="auto" unmountOnExit appear
+            sx={{overflow: 'auto', mt: 1}}
+            component={Paper as React.ComponentType<TransitionProps>}
+            // @ts-expect-error props overwrite is missing in mui
+            variant={'outlined'}
         >
-            <Paper style={{borderRadius: 5}} variant={'outlined'}>
-                <Box px={2} pb={2} pt={1}>
-                    <Typography variant={'subtitle1'} style={{display: 'flex'}} color={'primary'}>
-                        <span style={{marginRight: 'auto'}}>Pages</span>
-                        <FormControlLabel
-                            labelPlacement={'start'}
-                            componentsProps={{typography: {variant: 'body2'}}}
-                            label={'search Headlines'}
-                            control={<Switch size={'small'}/>}
-                            checked={showHeadlines}
-                            onChange={() => setShowHeadlines(h => !h)}
-                        />
-                    </Typography>
-                    <Typography style={{display: 'flex'}} color={'textSecondary'} variant={'caption'} gutterBottom>{searchResult?.matches.pages?.length} matches</Typography>
-                    {searchResult?.matches.pages?.map((match, i) =>
-                        <SearchResultPage
-                            key={i}
-                            match={match} term={searchResult?.term}
-                            showHeadlines={showHeadlines}
-                        />)}
-                </Box>
+            <Box px={2} pb={2} pt={1}>
+                <Typography variant={'subtitle1'} style={{display: 'flex'}} color={'primary'}>
+                    <span style={{marginRight: 'auto'}}>Pages</span>
+                    <FormControlLabel
+                        labelPlacement={'start'}
+                        slotProps={{typography: {variant: 'body2'}}}
+                        label={'search Headlines'}
+                        control={<Switch size={'small'}/>}
+                        checked={showHeadlines}
+                        onChange={() => setShowHeadlines(h => !h)}
+                    />
+                </Typography>
+                <Typography style={{display: 'flex'}} color={'textSecondary'} variant={'caption'} gutterBottom>{searchResult?.matches.pages?.length} matches</Typography>
+                {searchResult?.matches.pages?.map((match, i) =>
+                    <SearchResultPage
+                        key={i}
+                        match={match} term={searchResult?.term}
+                        showHeadlines={showHeadlines}
+                    />)}
+            </Box>
 
-                <Box px={2} pb={2} pt={1}>
-                    <Typography variant={'subtitle1'} color={'primary'}>Module APIs</Typography>
-                    <Typography style={{display: 'flex'}} color={'textSecondary'} variant={'caption'} gutterBottom>{searchResult?.matches.modules?.length} matches</Typography>
-                    {searchResult?.matches.modules?.map((match, i) =>
-                        <SearchResultModule key={i} match={match} term={searchResult?.term}/>
-                    )}
-                </Box>
-            </Paper>
+            <Box px={2} pb={2} pt={1}>
+                <Typography variant={'subtitle1'} color={'primary'}>Module APIs</Typography>
+                <Typography style={{display: 'flex'}} color={'textSecondary'} variant={'caption'} gutterBottom>{searchResult?.matches.modules?.length} matches</Typography>
+                {searchResult?.matches.modules?.map((match, i) =>
+                    <SearchResultModule key={i} match={match} term={searchResult?.term}/>,
+                )}
+            </Box>
         </Collapse>
 
         <Collapse
-            in={history.length > 0 && !searchResult} timeout="auto" unmountOnExit
-            style={{overflow: 'auto', marginTop: 6}}
+            in={history.length > 0 && !searchResult} timeout="auto" unmountOnExit appear
+            sx={{overflow: 'auto', mt: 1}}
+            component={Paper as React.ComponentType<TransitionProps>}
+            // @ts-expect-error props overwrite is missing in mui
+            variant={'outlined'}
         >
-            <Paper style={{borderRadius: 5}} variant={'outlined'}>
-                <Box pt={1} pr={2} pl={1}>
-                    <Typography variant={'subtitle1'} gutterBottom style={{display: 'flex', alignItems: 'center'}} color={'primary'}>
-                        <IcHistory fontSize={'small'}/>
+            <Box pt={1} pr={2} pl={1}>
+                <Typography variant={'subtitle1'} gutterBottom style={{display: 'flex', alignItems: 'center'}} color={'primary'}>
+                    <IcHistory fontSize={'small'}/>
 
-                        <span style={{paddingLeft: 8, paddingRight: 4}}>History</span>
+                    <span style={{paddingLeft: 8, paddingRight: 4}}>History</span>
 
-                        <Tooltip title={'clear history'}>
-                            <IconButton
-                                size={'small'}
-                                onClick={() => clearHistory()}
-                                style={{marginLeft: 'auto'}}
-                            ><IcDelete/></IconButton>
-                        </Tooltip>
-                    </Typography>
-                </Box>
-                <Box pb={2}>
-                    <List>
-                        {[...history].reverse().map((h, i) =>
-                            <ListItemButton key={i} onClick={() => setSearchTerm(h)} style={{paddingLeft: 32}}>
-                                <ListItemText primary={h}/>
-                            </ListItemButton>)}
-                    </List>
-                </Box>
-            </Paper>
+                    <Tooltip title={'clear history'}>
+                        <IconButton
+                            size={'small'}
+                            onClick={() => clearHistory()}
+                            style={{marginLeft: 'auto'}}
+                        ><IcDelete/></IconButton>
+                    </Tooltip>
+                </Typography>
+            </Box>
+            <Box pb={1}>
+                <List>
+                    {[...history].reverse().map((h, i) =>
+                        <ListItemButton key={i} onClick={() => setSearchTerm(h)} style={{paddingLeft: 32}}>
+                            <ListItemText primary={h}/>
+                        </ListItemButton>)}
+                </List>
+            </Box>
         </Collapse>
     </Dialog>
 }

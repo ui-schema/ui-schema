@@ -5,7 +5,10 @@ const headingBody = 'IBM Plex Sans, Source Code Pro, Calibri, Candara, Segoe, Se
 
 export type PartialTheme = { [K in keyof Theme]: Partial<Theme[K]> }
 
-const universal: Pick<PartialTheme, 'typography' | 'shape' | 'breakpoints' | 'components'> = {
+const universal: Pick<PartialTheme, 'palette' | 'typography' | 'shape' | 'breakpoints' | 'components'> = {
+    palette: {
+        contrastThreshold: 4.5,
+    },
     breakpoints: {
         values: {
             xs: 0,
@@ -44,13 +47,13 @@ const universal: Pick<PartialTheme, 'typography' | 'shape' | 'breakpoints' | 'co
         },
         body1: {
             fontFamily: headingBody,
-            fontSize: '0.93125rem',
-            letterSpacing: '0.0067235em',
+            //fontSize: '0.93125rem',
+            //letterSpacing: '0.0067235em',
         },
         body2: {
             fontFamily: headingBody,
-            fontSize: '0.875rem',
-            letterSpacing: '0.004215em',
+            //fontSize: '0.875rem',
+            //letterSpacing: '0.004215em',
         },
         subtitle1: {
             fontFamily: headingFont,
@@ -64,16 +67,14 @@ const universal: Pick<PartialTheme, 'typography' | 'shape' | 'breakpoints' | 'co
             fontSize: '0.762rem',
         },
     },
-    shape: {
-        borderRadius: 0,
-    },
-    components: {
-        MuiOutlinedInput: {
-            styleOverrides: {
-                root: {borderRadius: 4},
-            },
-        },
-    },
+    shape: {},
+    // components: {
+    //     MuiOutlinedInput: {
+    //         styleOverrides: {
+    //             root: {borderRadius: 4},
+    //         },
+    //     },
+    // },
     /*components: {
         MuiCssBaseline: {
             styleOverrides: {
@@ -88,7 +89,9 @@ const universal: Pick<PartialTheme, 'typography' | 'shape' | 'breakpoints' | 'co
 }
 
 const themeDark = createTheme({
+    ...universal,
     palette: {
+        ...universal.palette,
         mode: 'dark',
         primary: {
             main: '#05aeca',
@@ -111,23 +114,24 @@ const themeDark = createTheme({
             secondary: '#9b88ad',
         },
         action: {
-            hoverOpacity: 0.2,
+            //hoverOpacity: 0.2,
         },
     },
-    ...universal,
     components: {
         ...universal.components,
         MuiPaper: {
             styleOverrides: {root: {backgroundImage: 'unset'}},
         },
-        MuiLink: {
-            styleOverrides: {underlineAlways: {textDecoration: 'none'}},
-        },
+        // MuiLink: {
+        //     styleOverrides: {underlineAlways: {textDecoration: 'none'}},
+        // },
     },
 })
 
 const themeLight = createTheme({
+    ...universal,
     palette: {
+        ...universal.palette,
         mode: 'light',
         primary: {
             main: '#0590a7',
@@ -150,12 +154,11 @@ const themeLight = createTheme({
             hoverOpacity: 0.2,
         },
     },
-    ...universal,
     components: {
         ...universal.components,
-        MuiLink: {
-            styleOverrides: {underlineAlways: {textDecoration: 'none'}},
-        },
+        // MuiLink: {
+        //     styleOverrides: {underlineAlways: {textDecoration: 'none'}},
+        // },
     },
 })
 

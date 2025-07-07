@@ -10,7 +10,7 @@ Through the **modular approach** and easy definition of new widgets, the widget 
 
 ```typescript jsx
 // Typings of widgets:
-import { WidgetProps } from "@ui-schema/ui-schema/Widget"
+import { WidgetProps } from "@ui-schema/react/Widget"
 ```
 
 ## Widget Composition
@@ -47,7 +47,7 @@ See also [adding or overwriting widgets](#adding--overwriting-widgets)
 
 ## Creating Widgets
 
-JSON-Schema is handled mostly by the `widgets.pluginStack` for you, focus on the behaviour of the widget, connect it through the provided properties and the HOC `extractValue` (only non-scalar values).
+JSON-Schema is handled mostly by the `widgets.widgetPlugins` for you, focus on the behaviour of the widget, connect it through the provided properties and the HOC `extractValue` (only non-scalar values).
 
 Each widget gets properties provided by the root schema renderer or added from plugins. When rendering nested schemas, all passed down `props` to [`PluginStack`](/docs/core-pluginstack) are passed to the nested widget(s) - except those removed by [`WidgetRenderer`](/docs/core-renderer#widgetrenderer).
 
@@ -59,11 +59,10 @@ Received properties from `WidgetRenderer` or accumulated in plugins & pluginSimp
 - `ownKey` : `{string|integer}` *deprecated, will be removed in `0.5.0` use `storeKeys.last()` instead*
 - `schema` : `{Map}` the schema of the current widget
 - `parentSchema` : `{Map}` the schema of the parent widget
-- `level` : `{integer}` how deep in the schema it is, incremented automatically for native-objects, must be done manually when using `PluginStack`
 - `required` : `{boolean}`, extracted from `parentSchema` and transformed from `undefined|List` to `boolean` by `requiredValidator`
-- `valid` : `{boolean}` if this schema level got some error, detected/changed from the `widgets.pluginStack`
+- `valid` : `{boolean}` if this schema level got some error, detected/changed from the `widgets.widgetPlugins`
 - `showValidity` : `{boolean}` if the errors/success should be visible
-- `errors` : `{ValidatorErrorsType}` validation errors, added from the `widgets.pluginStack` for the current widget/schema-level
+- `errors` : `{ValidatorErrorsType}` validation errors, added from the `widgets.widgetPlugins` for the current widget/schema-level
 
 Use typings:
 
@@ -87,7 +86,7 @@ Example of a really simple text widget (in typescript):
 
 ```typescript jsx
 import React from 'react';
-import { TransTitle, WidgetProps } from '@ui-schema/ui-schema';
+import { TranslateTitle, WidgetProps } from '@ui-schema/ui-schema';
 
 const Widget = ({
                     value, storeKeys, onChange,
@@ -96,7 +95,7 @@ const Widget = ({
                     ...props
                 }: WidgetProps) => {
     return <>
-        <label><TransTitle schema={schema} storeKeys={storeKeys}/></label>
+        <label><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
 
         <input
             type={'text'}
@@ -131,7 +130,7 @@ Create a complete custom binding or only `import` the components you need and op
 - `RootRenderer` main wrapper around everything
 - `GroupRenderer` wraps any object that is not a widget
 - `WidgetRenderer` the actual widget matching & rendering component, rendered as "last plugin" by `getNextPlugin`
-- `pluginStack` widget plugin system
+- `widgetPlugins` widget plugin system
     - e.g. used to handle json schema `default`
     - see [how to create widget plugins](/docs/plugins#create-a-widget-plugin)
 - `pluginSimpleStack` the simple plugins
@@ -143,8 +142,8 @@ Create a complete custom binding or only `import` the components you need and op
 Example default binding for `material-ui` can be used as template:
 
 - [Grid Widgets](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/Grid.js) - all special widgets responsible for the grid
-- [pluginStack Definition](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/pluginStack.js) - binding of plugin
-- [Widgets Base Definition](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/widgetsBinding/widgetsBinding.ts) - binding of pluginStack, validators and root-grid and the actual widgets for a design-system
+- [widgetPlugins Definition](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/widgetPlugins.js) - binding of plugin
+- [Widgets Base Definition](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/widgetsBinding/widgetsBinding.ts) - binding of widgetPlugins, validators and root-grid and the actual widgets for a design-system
 
 [Contributing a new ds-binding?](/docs/design-systems#add-design-system-package)
 
@@ -167,7 +166,7 @@ It is only recommended for bigger widgets, using it for e.g. `type` widget is mo
 import React from "react";
 import Loadable from 'react-loadable';
 import {RootRenderer, GroupRenderer} from "@ui-schema/ds-material/Grid";
-import {pluginStack} from "@ui-schema/ds-material/pluginStack";
+import {widgetPlugins} from "@ui-schema/ds-material/widgetPlugins";
 import {validators} from '@ui-schema/ui-schema/Validators/validators';
 import {WidgetRenderer} from '@ui-schema/ui-schema/WidgetRenderer';
 
@@ -198,8 +197,8 @@ export const widgets = {
     RootRenderer,
     GroupRenderer,
     WidgetRenderer,
-    pluginStack,
-    validators,
+    widgetPlugins,
+    pluginSimpleStack: validators,
     types: {
         // supply your needed native-type widgets
         string: StringRenderer,
@@ -218,7 +217,7 @@ Use the existing exported binding of your design-system and add or overwrite wid
 Simple example of adding a new widget to the binding:
 
 ```js
-import {widgets} from "@ui-schema/ds-material/widgetsBinding";
+import {widgets} from "@ui-schema/ds-material/Binding";
 
 const CustomNumberRenderer = () => /* todo: implement */ null;
 const CustomSelect = () => /* todo: implement */ null;
@@ -241,7 +240,7 @@ Example widget binding **with typings**:
 
 ```typescript
 import React from "react";
-import { widgets, MuiWidgetBinding, MuiWidgetsBindingTypes, MuiWidgetsBindingCustom } from "@ui-schema/ds-material/widgetsBinding";
+import { widgets, MuiBinding, MuiWidgetsBindingTypes, MuiWidgetsBindingCustom } from "@ui-schema/ds-material/Binding";
 import { WidgetProps, WidgetsBindingFactory, WithScalarValue } from "@ui-schema/ui-schema";
 
 const CustomNumberRenderer = (props: React.ComponentType<WidgetProps<CustomWidgetsBinding> & WithScalarValue>) => /* todo: implement */ null;
@@ -281,13 +280,13 @@ const CustomPlugin = () => /* todo: implement */ null;
 
 // Multi Level destructure-merge to overwrite and clone and not change the original ones (shallow-copy)
 
-const customPluginStack = [...widgets.pluginStack];
+const customPluginStack = [...widgets.widgetPlugins];
 // insert a custom plugin before the ValidityReporter (last plugin by default)
 customPluginStack.splice(customPluginStack.length - 1, 0, CustomPlugin);
 
 const customWidgets = {
     ...widgets,
-    pluginStack: customPluginStack,
+    widgetPlugins: customPluginStack,
 };
 
 export {customWidgets}

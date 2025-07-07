@@ -1,7 +1,7 @@
 import { DndBlock, DragDropBlockContextType } from '@ui-schema/material-dnd/DragDropBlockProvider'
 import { OrderedMap } from 'immutable'
 
-export const matchBlock = (blocks: DragDropBlockContextType['blocks'], val: OrderedMap<string, any>): {
+export const matchBlock = (blocks: DragDropBlockContextType['blocks'], val: OrderedMap<unknown, unknown>): {
     block: DndBlock
     id: string
 } | undefined => {
@@ -16,6 +16,6 @@ export const matchBlock = (blocks: DragDropBlockContextType['blocks'], val: Orde
     if (!block) return undefined
     return {
         block,
-        id: val.get(block.idKey),
+        id: val.get(block.idKey) as string,
     }
 }

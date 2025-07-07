@@ -49,7 +49,7 @@ Executes `onErrors` for that schema level, when `errors` have changed and `onErr
 
 **Is itself in the `widgets` binding** and can be replaced / extended this way, `widgets.WidgetRenderer` (since `0.3.0`).
 
-Uses `widgetMatcher` to execute the default matching logic: `import {widgetMatcher} from '@ui-schema/ui-schema/widgetMatcher';`
+Uses `matchWidget` to execute the default matching logic: `import {matchWidget} from '@ui-schema/ui-schema/matchWidget';`
 
 ## ObjectGroup
 
@@ -62,11 +62,11 @@ To get the errors of that schema level, use `onErrors` from [`WidgetRenderer`](#
 ```typescript jsx
 const freeFormSchema = OrderedMap()
 
-const WidgetTextField = applyPluginStack(StringRenderer)
+const WidgetTextField = applyWidgetEngine(StringRenderer)
 
 const FreeFormEditor = () => {
     const [store, setStore] = React.useState(() => createStore(OrderedMap()))
-    const [schema, setSchema] = React.useState<StoreSchemaType>(() => freeFormSchema)
+    const [schema, setSchema] = React.useState<UISchemaMap>(() => freeFormSchema)
 
     const onChange = React.useCallback((...update) => setStore(storeUpdater(...update)), [setStore])
 
@@ -74,7 +74,7 @@ const FreeFormEditor = () => {
         schema={freeFormSchema}
         store={store}
         onChange={onChange}
-        // widgets={customWidgets}
+        // binding={customWidgets}
         // showValidity={showValidity}
         // t={browserT}
     >
@@ -85,12 +85,11 @@ const FreeFormEditor = () => {
         >
             <Grid container dir={'columns'} spacing={4}>
                 <WidgetTextField
-                    level={1}
                     storeKeys={storeKeys.push('name') as StoreKeys}
-                    schema={schema.getIn(['properties', 'name']) as unknown as StoreSchemaType}
+                    schema={schema.getIn(['properties', 'name']) as unknown as UISchemaMap}
                     parentSchema={schema}
 
-                    // using `applyPluginStack`, this free-form widget is fully typed
+                    // using `applyWidgetEngine`, this free-form widget is fully typed
                     // with the actual props of the widget component
                     multiline={false}
                 />

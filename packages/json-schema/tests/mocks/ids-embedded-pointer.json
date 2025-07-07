@@ -1,0 +1,63 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://example.org/main-schema",
+    "type": "object",
+    "properties": {
+        "user": {
+            "type": "object",
+            "$id": "#user",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "profile": {
+                    "type": "object",
+                    "$id": "#profile-schema",
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "format": "email"
+                        },
+                        "address": {
+                            "$ref": "#/properties/account/properties/address"
+                        }
+                    }
+                }
+            }
+        },
+        "account": {
+            "type": "object",
+            "$id": "https://example.org/account-schema",
+            "$defs": {
+                "country": {
+                    "type": "string",
+                    "enum": [
+                        "DE",
+                        "ES",
+                        "IT"
+                    ]
+                }
+            },
+            "properties": {
+                "accountNumber": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "object",
+                    "$id": "#address-schema",
+                    "properties": {
+                        "street": {
+                            "type": "string"
+                        },
+                        "city": {
+                            "type": "string"
+                        },
+                        "country": {
+                            "$ref": "#/$defs/country"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,4 +1,0 @@
-jest.*.js
-build
-webpackPartialConfig.js
-node_modules

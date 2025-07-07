@@ -1,1 +1,1 @@
-export * from './TableAdvanced'
+export * from './TableAdvanced.js'

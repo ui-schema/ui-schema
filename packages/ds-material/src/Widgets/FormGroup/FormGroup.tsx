@@ -3,22 +3,23 @@ import FormLabel from '@mui/material/FormLabel'
 import FormControl from '@mui/material/FormControl'
 import MuiFormGroup from '@mui/material/FormGroup'
 import { useTheme } from '@mui/material/styles'
-import { extractValue, WithValue } from '@ui-schema/ui-schema/UIStore'
-import { memo } from '@ui-schema/ui-schema/Utils'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
-import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
+import { extractValue } from '@ui-schema/react/UIStore'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { WidgetProps } from '@ui-schema/react/Widget'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 
-export const FormGroupBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithValue> = (props) => {
-    const {storeKeys, widgets} = props
-    const {WidgetRenderer} = widgets
+export const FormGroupBase: React.ComponentType<WidgetProps> = (props) => {
+    const {storeKeys, binding, schema} = props
     const {spacing} = useTheme()
-    let {schema} = props
-    // deleting the `widget` to directly use `PluginStack` for nesting
-    // with `widget` it would lead to an endless loop
-    // using e.g. default `object` renderer then
-    // @ts-ignore
-    schema = schema.delete('widget')
+    const Widget = binding?.matchWidget?.({
+        widgetName: undefined,
+        schemaType: schema.get('type'),
+        widgets: binding?.widgets,
+    })?.Widget
+
+    // todo: also render NoWidget?
+    if (!Widget) return null
+
     return <FormControl
         component="fieldset"
         style={{
@@ -27,7 +28,7 @@ export const FormGroupBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & 
         }}
     >
         <FormLabel component="legend">
-            <TransTitle schema={schema} storeKeys={storeKeys}/>
+            <TranslateTitle schema={schema} storeKeys={storeKeys}/>
         </FormLabel>
         <MuiFormGroup
             style={{
@@ -35,10 +36,10 @@ export const FormGroupBase: React.ComponentType<WidgetProps<MuiWidgetBinding> & 
                 marginBottom: spacing(1),
             }}
         >
-            <WidgetRenderer {...props} schema={schema}/>
+            <Widget {...props} schema={schema}/>
         </MuiFormGroup>
         {/*<FormHelperText>Be careful</FormHelperText>*/}
     </FormControl>
 }
 
-export const FormGroup: React.ComponentType<WidgetProps<MuiWidgetBinding>> = extractValue(memo(FormGroupBase))
+export const FormGroup = extractValue(memo(FormGroupBase)) as <P extends WidgetProps>(props: P) => React.ReactElement

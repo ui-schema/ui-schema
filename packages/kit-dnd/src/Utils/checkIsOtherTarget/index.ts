@@ -1,1 +1,1 @@
-export * from './checkIsOtherTarget'
+export * from './checkIsOtherTarget.js'

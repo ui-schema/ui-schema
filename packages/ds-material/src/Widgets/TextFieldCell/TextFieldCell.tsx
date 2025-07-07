@@ -1,56 +1,61 @@
+import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
 import React, { CSSProperties, EventHandler } from 'react'
 import { useUID } from 'react-uid'
-import { WidgetProps, WithScalarValue } from '@ui-schema/ui-schema'
-import { TransTitle } from '@ui-schema/ui-schema/Translate/TransTitle'
-import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/Utils/schemaTypeIs'
-import { mapSchema } from '@ui-schema/ui-schema/Utils/schemaToNative'
+import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
+import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import InputBase, { InputBaseProps, InputBaseComponentProps } from '@mui/material/InputBase'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
-import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
-import { visuallyHidden } from '@mui/utils'
+import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils/forbidInvalidNumber'
+import visuallyHidden from '@mui/utils/visuallyHidden'
 
 export interface StringRendererCellProps {
     type?: string
     multiline?: boolean
-    rows?: number
-    rowsMax?: number
+    minRows?: number
+    maxRows?: number
     style?: CSSProperties
     onClick?: EventHandler<any>
     onFocus?: EventHandler<any>
     onBlur?: EventHandler<any>
     onKeyUp?: EventHandler<any>
     onKeyDown?: EventHandler<any>
+    /**
+     * @deprecated may not be available in newer browser [MDN spec](https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onkeypress)
+     */
     onKeyPress?: EventHandler<any>
     inputProps?: Partial<InputBaseComponentProps>
     inputRef?: null | React.RefObject<any>
     labelledBy?: string
 }
 
-export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithScalarValue & StringRendererCellProps> = (
+export const StringRendererCell: React.ComponentType<WidgetProps<BindingTypeGeneric & MuiBindingComponents> & StringRendererCellProps> = (
     {
         type,
-        multiline, rows, rowsMax,
+        multiline, minRows, maxRows,
         storeKeys, schema, value, onChange,
         showValidity, valid, errors, required,
         style = {},
-        onClick, onFocus, onBlur, onKeyUp, onKeyDown, onKeyPress,
+        onClick, onFocus, onBlur, onKeyUp, onKeyDown,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        onKeyPress,
         inputProps = {},
         inputRef: customInputRef,
-        labelledBy, widgets,
-    }
+        labelledBy, binding,
+    },
 ) => {
     const uid = useUID()
     // todo: this could break law-of-hooks
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const inputRef = customInputRef || React.useRef()
+    const inputRef = customInputRef || React.useRef(null)
 
     const format = schema.get('format') as string | undefined
     const currentRef = inputRef.current
 
-    inputProps = mapSchema(inputProps, schema)
+    inputProps = schemaRulesToNative(inputProps, schema)
 
     if (schemaTypeIs(schema.get('type') as SchemaTypesType, 'number') && typeof inputProps['step'] === 'undefined') {
         //inputProps['step'] = 'any'
@@ -86,10 +91,10 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBindin
         inputProps.style.minWidth = schema.getIn(['view', 'minWidth']) as any || '40px'
     }
 
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
     return <>
         {!labelledBy ? <span style={visuallyHidden} id={inputProps['aria-labelledby']}>
-            <TransTitle schema={schema} storeKeys={storeKeys}/>
+            <TranslateTitle schema={schema} storeKeys={storeKeys}/>
         </span> : null}
         <InputBase
             type={format || type}
@@ -97,9 +102,9 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBindin
             multiline={multiline}
             required={required}
             error={!valid && showValidity}
-            rows={rows}
             inputRef={inputRef}
-            maxRows={rowsMax}
+            minRows={minRows}
+            maxRows={maxRows}
             fullWidth
             margin={schema.getIn(['view', 'margin']) as InputBaseProps['margin']}
             value={typeof value === 'string' || typeof value === 'number' ? value : ''}
@@ -107,14 +112,13 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBindin
             onFocus={onFocus}
             onBlur={onBlur}
             onKeyUp={onKeyUp}
-            onKeyPress={e => {
-                const evt = e.nativeEvent
-                if (!forbidInvalidNumber(evt, schema.get('type') as SchemaTypesType)) {
-                    onKeyPress && onKeyPress(evt)
-                }
-            }}
+            onKeyDown={
+                onKeyDown ? onKeyDown :
+                    e => forbidInvalidNumber(e.nativeEvent, schema.get('type') as unknown as string)
+            }
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            onKeyPress={onKeyPress}
             style={style}
-            onKeyDown={onKeyDown}
             onChange={(e) => {
                 const val = e.target.value
                 const schemaType = schema.get('type') as SchemaTypesType
@@ -153,17 +157,23 @@ export const StringRendererCell: React.ComponentType<WidgetProps<MuiWidgetBindin
     </>
 }
 
-export const TextRendererCell: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithScalarValue & StringRendererCellProps> = ({schema, ...props}) => {
+export const TextRendererCell: React.ComponentType<WidgetProps<BindingTypeGeneric & MuiBindingComponents> & StringRendererCellProps> = ({schema, ...props}) => {
     return <StringRendererCell
         {...props}
         schema={schema}
-        rows={schema.getIn(['view', 'rows']) as number | undefined}
-        rowsMax={schema.getIn(['view', 'rowsMax']) as number | undefined}
+        minRows={
+            typeof props.minRows === 'number' ? props.minRows :
+                schema.getIn(['view', 'rows']) as number
+        }
+        maxRows={
+            typeof props.maxRows === 'number' ? props.maxRows :
+                schema.getIn(['view', 'rowsMax']) as number
+        }
         multiline
     />
 }
 
-export const NumberRendererCell: React.ComponentType<WidgetProps<MuiWidgetBinding> & WithScalarValue & StringRendererCellProps> = (props) => {
+export const NumberRendererCell: React.ComponentType<WidgetProps<BindingTypeGeneric & MuiBindingComponents> & StringRendererCellProps> = (props) => {
     return <StringRendererCell
         {...props}
         type={'number'}

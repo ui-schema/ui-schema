@@ -1,14 +1,11 @@
 /**
  * @jest-environment jsdom
  */
-import React from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'
-import { createMap, createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
-import { ValidityHelperText } from './LocaleHelperText'
-import { createValidatorErrors } from '@ui-schema/ui-schema'
-import { Map } from 'immutable'
+import { createOrdered, createOrderedMap } from '@ui-schema/ui-schema/createMap'
+import { ValidityHelperText } from './LocaleHelperText.js'
 import { MockSchemaMetaProvider } from '../../../tests/MockSchemaProvider.mock'
 
 describe('LocaleHelperText', () => {
@@ -17,10 +14,10 @@ describe('LocaleHelperText', () => {
             <MockSchemaMetaProvider>
                 <ValidityHelperText
                     schema={createOrderedMap({type: 'string', widget: 'Text'})}
-                    errors={createValidatorErrors().addError('demo-err', Map({dummy: true}))}
+                    errors={createOrdered([{error: 'demo-err', context: {dummy: true}}])}
                     showValidity
                 />
-            </MockSchemaMetaProvider>
+            </MockSchemaMetaProvider>,
         )
         expect(queryByText('error.demo-err') !== null).toBeTruthy()
     })
@@ -29,10 +26,10 @@ describe('LocaleHelperText', () => {
             <MockSchemaMetaProvider>
                 <ValidityHelperText
                     schema={createOrderedMap({type: 'string', widget: 'Text'})}
-                    errors={createValidatorErrors().addError('demo-err', createMap({dummy: true}))}
+                    errors={createOrdered([{error: 'demo-err', context: {dummy: true}}])}
                     showValidity={false}
                 />
-            </MockSchemaMetaProvider>
+            </MockSchemaMetaProvider>,
         )
         expect(queryByText('browser-error') === null).toBeTruthy()
     })
@@ -41,10 +38,10 @@ describe('LocaleHelperText', () => {
             <MockSchemaMetaProvider>
                 {/* @ts-ignore */}
                 <ValidityHelperText
-                    schema={createOrderedMap({t: 'browser'})}
+                    schema={createOrderedMap({tBy: 'browser'})}
                     browserError={<span>browser-error</span>}
                 />
-            </MockSchemaMetaProvider>
+            </MockSchemaMetaProvider>,
         )
         // expect(container.firstChild).toMatchSnapshot()
         expect(queryByText('browser-error') !== null).toBeTruthy()

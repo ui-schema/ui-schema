@@ -71,7 +71,7 @@ const CustomTable = ({widgets, ...props}) => {
 
     return <Table
         {...props}
-        widgets={customWidgets}
+        binding={customWidgets}
     />
 }
 

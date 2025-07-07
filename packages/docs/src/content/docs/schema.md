@@ -25,7 +25,7 @@ Matches the rendered widget, keywords used:
     - when `object` or `array` only works correctly with immutable `List` or `Map`, the initially provided schema and data props are already compatible
     - [specification](https://json-schema.org/understanding-json-schema/reference/generic.html#constant-values)
 - `format` e.g. `date` for the `type` `string` *(per widget)*
-- `title` what should be used as title, supported by [TransTitle](/docs/localization#example-transtitle)
+- `title` what should be used as title, supported by [TranslateTitle](/docs/localization#example-TranslateTitle)
 - `description` should be used as description (e.g. alt description) *(per widget)*
 - `$comment` is recommended to leave maintaining notes
 - `readOnly` restricts that the a value can not be changed [issue #33](https://github.com/ui-schema/ui-schema/issues/33)

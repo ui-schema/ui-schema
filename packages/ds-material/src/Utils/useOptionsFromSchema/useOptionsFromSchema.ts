@@ -1,18 +1,20 @@
-import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { List, Map } from 'immutable'
-import { beautifyKey, getTranslatableEnum, StoreKeys, tt } from '@ui-schema/ui-schema'
+import { getTranslatableEnum } from '@ui-schema/ui-schema/getTranslatableEnum'
+import { beautifyKey, tt } from '@ui-schema/ui-schema/Utils/beautify'
 
 export interface OptionValueSchema<V = string | number> {
     value: V
     text: string
     fallback: string
     context: any
-    schema: StoreSchemaType | undefined
+    schema: UISchemaMap | undefined
 }
 
 export const useOptionsFromSchema = <V = string | number>(
     storeKeys: StoreKeys,
-    schema: StoreSchemaType | undefined,
+    schema: UISchemaMap | undefined,
 ): {
     enumValues: List<V> | undefined
     valueSchemas: List<OptionValueSchema> | undefined
@@ -22,15 +24,20 @@ export const useOptionsFromSchema = <V = string | number>(
 
     if (schema?.get('enum')) {
         enumValues = schema?.get('enum')
-        valueSchemas = schema?.get('enum').map(enumVal => ({
+        // @ts-ignore
+        valueSchemas = enumValues?.map(enumVal => ({
             value: enumVal,
             schema: schema,
+            // @ts-ignore
             text: storeKeys.insert(0, 'widget').concat(List(['enum', getTranslatableEnum(enumVal)])).join('.'),
+            // @ts-ignore
             fallback: beautifyKey(getTranslatableEnum(enumVal), schema?.get('ttEnum') as tt) + '',
+            // @ts-ignore
             context: Map({'relative': List(['enum', getTranslatableEnum(enumVal)])}),
         }))
     } else if (schema?.get('oneOf')) {
         const oneOfValues = schema?.get('oneOf')
+        // @ts-ignore
         enumValues = oneOfValues.map(oneOf => oneOf.get('const'))
         valueSchemas = oneOfValues?.map(enumSchema => ({
             value: enumSchema.get('const'),

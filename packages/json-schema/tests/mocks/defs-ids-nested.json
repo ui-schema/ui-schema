@@ -1,0 +1,210 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://example.org/course-management-schema",
+    "type": "object",
+    "properties": {
+        "course": {
+            "$ref": "#course"
+        },
+        "module": {
+            "$ref": "#module"
+        },
+        "lesson": {
+            "$ref": "#lesson"
+        },
+        "content": {
+            "$ref": "#content"
+        }
+    },
+    "$defs": {
+        "course": {
+            "type": "object",
+            "$id": "#course",
+            "properties": {
+                "courseId": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "modules": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#module"
+                    }
+                }
+            },
+            "required": [
+                "courseId",
+                "title",
+                "modules"
+            ]
+        },
+        "module": {
+            "type": "object",
+            "$id": "#module",
+            "title": "Module",
+            "description": "A module is available for booking and includes lessons that cover its content.",
+            "properties": {
+                "moduleId": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "lessons": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#lesson"
+                    }
+                }
+            },
+            "required": [
+                "moduleId",
+                "title",
+                "lessons"
+            ]
+        },
+        "lesson": {
+            "type": "object",
+            "$id": "#lesson",
+            "properties": {
+                "lessonId": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "content": {
+                    "$ref": "#content"
+                }
+            },
+            "required": [
+                "lessonId",
+                "title",
+                "content"
+            ]
+        },
+        "content": {
+            "type": "object",
+            "$id": "#content",
+            "oneOf": [
+                {
+                    "$ref": "#textContent"
+                },
+                {
+                    "$ref": "#videoContent"
+                },
+                {
+                    "$ref": "#quizContent"
+                }
+            ]
+        },
+        "textContent": {
+            "$id": "#textContent",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "text"
+                },
+                "body": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "type",
+                "body"
+            ]
+        },
+        "videoContent": {
+            "$id": "#videoContent",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "video"
+                },
+                "url": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "duration": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "type",
+                "url",
+                "duration"
+            ]
+        },
+        "quizContent": {
+            "$id": "#quizContent",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "quiz"
+                },
+                "questions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#question"
+                    }
+                }
+            },
+            "required": [
+                "type",
+                "questions"
+            ]
+        },
+        "question": {
+            "$id": "#question",
+            "type": "object",
+            "properties": {
+                "questionId": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "options": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#option"
+                    }
+                },
+                "correctOptionId": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "questionId",
+                "text",
+                "options",
+                "correctOptionId"
+            ]
+        },
+        "option": {
+            "$id": "#option",
+            "type": "object",
+            "properties": {
+                "optionId": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "optionId",
+                "text"
+            ]
+        }
+    },
+    "additionalProperties": false
+}

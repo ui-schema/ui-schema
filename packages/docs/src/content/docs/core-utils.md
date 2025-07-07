@@ -13,7 +13,7 @@ import {beautify} from '@ui-schema/ui-schema/Utils/beautify'
 Deep change directly from `{}` or `[]` to `Map`/`List` structures:
 
 ```js
-import {createMap} from '@ui-schema/ui-schema/Utils/createMap'
+import {createMap} from '@ui-schema/ui-schema/createMap'
 
 let dataMap = createMap({});
 ```
@@ -23,7 +23,7 @@ let dataMap = createMap({});
 Deep change directly from `{}` or `[]` to `OrderedMap`/`List` structures:
 
 ```js
-import {createOrderedMap} from '@ui-schema/ui-schema/Utils/createMap'
+import {createOrderedMap} from '@ui-schema/ui-schema/createMap'
 
 let dataMap = createOrderedMap({});
 ```
@@ -36,7 +36,7 @@ Function to deep change an object into an ordered map, will change the objects p
 import {OrderedMap} from 'immutable'
 import {fromJSOrdered} from '@ui-schema/ui-schema/Utils/fromJSOrdered'
 
-let dataMap = new OrderedMap(fromJSOrdered({}));
+let dataMap = OrderedMap(fromJSOrdered({}));
 ```
 
 ## useImmutable
@@ -66,7 +66,7 @@ Hook for executing onChange handlers after a delay or after the user ended editi
 ```typescript jsx
 import { useDebounceValue } from '@ui-schema/ui-schema/Utils/useDebounceValue'
 import { WithScalarValue } from '@ui-schema/ui-schema/UIStore'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { WidgetProps } from '@ui-schema/react/Widget'
 
 const Comp: React.ComponentType<WidgetProps & WithScalarValue> = (
     {onChange, storeKeys, schema, required, value},

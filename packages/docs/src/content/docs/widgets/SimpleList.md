@@ -74,7 +74,7 @@ Needed other Component:
 The SimpleList widget uses icons (`Plus` and `Minus`), which have a tooltip and a translation for the tooltip. The translation component must be imported:
 
 ```js
-import {Trans, useUIMeta} from "@ui-schema/ui-schema";
+import {Translate, useUIMeta} from "@ui-schema/ui-schema";
 ```
 
 The translated text can be inserted with: `labels.add`and `labels.remove`

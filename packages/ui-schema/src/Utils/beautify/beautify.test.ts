@@ -1,3 +1,4 @@
+import { expect, describe, test } from '@jest/globals'
 import { beautifyKey, tt, strReplaceAll } from '@ui-schema/ui-schema/Utils/beautify'
 
 describe('strReplaceAll', () => {

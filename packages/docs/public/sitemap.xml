@@ -86,10 +86,6 @@
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/docs/widgets/EditorJS</loc>
-        <changefreq>weekly</changefreq>
-    </url>
-    <url>
         <loc>https://ui-schema.bemit.codes/docs/widgets/GenericList</loc>
         <changefreq>weekly</changefreq>
     </url>
@@ -99,10 +95,6 @@
     </url>
     <url>
         <loc>https://ui-schema.bemit.codes/docs/widgets/OptionsList</loc>
-        <changefreq>weekly</changefreq>
-    </url>
-    <url>
-        <loc>https://ui-schema.bemit.codes/docs/widgets/RichText</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
@@ -230,14 +222,6 @@
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/docs/ds-material/widgets-read/EnumRead</loc>
-        <changefreq>weekly</changefreq>
-    </url>
-    <url>
-        <loc>https://ui-schema.bemit.codes/docs/ds-material/widgets-read/OneOfRead</loc>
-        <changefreq>weekly</changefreq>
-    </url>
-    <url>
         <loc>https://ui-schema.bemit.codes/docs/ds-material/widgets-read/OptionsRead</loc>
         <changefreq>weekly</changefreq>
     </url>
@@ -307,6 +291,10 @@
     </url>
     <url>
         <loc>https://ui-schema.bemit.codes/updates/v0.3.0-v0.4.0</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/updates/v0.4.0-v0.5.0</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
