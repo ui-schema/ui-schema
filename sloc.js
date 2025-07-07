@@ -1,39 +1,46 @@
-const fs = require('fs');
-const path = require('path');
-const sloc = require('sloc');
+import fs from 'node:fs';
+import path from 'node:path';
+import sloc from 'sloc';
+import url from 'node:url';
+
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
 
 const include = [
-    path.resolve(__dirname, 'packages', 'demo/src'),
+    // path.resolve(__dirname, 'packages', 'demo-server/src'),
+    // path.resolve(__dirname, 'packages', 'demo-web/src'),
     path.resolve(__dirname, 'packages', 'dictionary/src'),
-    path.resolve(__dirname, 'packages', 'docs/src'),
+    // path.resolve(__dirname, 'packages', 'docs/src'),
     path.resolve(__dirname, 'packages', 'ds-bootstrap/src'),
     path.resolve(__dirname, 'packages', 'ds-material/src'),
+    path.resolve(__dirname, 'packages', 'json-pointer/src'),
+    path.resolve(__dirname, 'packages', 'json-schema/src'),
     path.resolve(__dirname, 'packages', 'kit-dnd/src'),
-    path.resolve(__dirname, 'packages', 'material-color/src'),
     path.resolve(__dirname, 'packages', 'material-dnd/src'),
+    // path.resolve(__dirname, 'packages', 'material-pickers/demo'),
     path.resolve(__dirname, 'packages', 'material-pickers/src'),
-    // path.resolve(__dirname, 'packages', 'material-richtext/src'),
-    path.resolve(__dirname, 'packages', 'ui-schema/src'),
     path.resolve(__dirname, 'packages', 'pro/src'),
+    path.resolve(__dirname, 'packages', 'react/src'),
+    path.resolve(__dirname, 'packages', 'react-json-schema/src'),
+    path.resolve(__dirname, 'packages', 'ui-schema/src'),
 ];
 
 let scannner = function(dir, root, fileList = []) {
     let files = fs.readdirSync(dir);
     files.forEach(function(file) {
         let abs = path.join(dir, file);
-        if(fs.statSync(abs).isDirectory()) {
-            if(abs.indexOf('node_modules') === -1) {
+        if (fs.statSync(abs).isDirectory()) {
+            if (abs.indexOf('node_modules') === -1) {
                 fileList = scannner(abs, root, fileList);
             }
         } else {
             let included = false;
             include.forEach(allowed => {
-                if(abs.indexOf(allowed) !== -1) {
+                if (abs.indexOf(allowed) !== -1) {
                     included = true;
                 }
             });
 
-            if(included) {
+            if (included) {
                 fileList.push(abs);
             }
         }

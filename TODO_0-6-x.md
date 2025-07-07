@@ -20,7 +20,6 @@
 - deprecate `parentSchema`, `schema` in props of widget engine, but not in widget payload
 - better support for skipping `hidden` and empty schema while rendering, to not produce empty grid slots; depends also on central schema validation and building of applied UI happy paths, with some central index for stuff like hidden etc.
 - reevaluate if store utils should stay in `react` or move to system
-- deprecate `extractValue`/`extractValidity` HOCs
 - rewrite all store related functions
     - external store with subscription system
     - full rewrite of `scopeUpdater*`; as leading to behaviour changes, should be better in `0.6.x` instead of `0.5.x`

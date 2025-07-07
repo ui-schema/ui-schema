@@ -1,0 +1,11 @@
+{
+    "name": "@bemit/cra-server",
+    "devDependencies": {},
+    "private": true,
+    "dependencies": {
+        "express": "^4.16.4"
+    },
+    "scripts": {
+        "start": "node server.js"
+    }
+}
