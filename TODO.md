@@ -421,14 +421,14 @@ new widget engine functions:
     - [x] `ReferencingHandler/*` (new schema resource + validator)
     - [x] `SchemaRootProvider/*` (new schema resource + validator)
     - [ ] `RequiredPlugin`, or keep until better solution for required behaviour?
-- [ ] deprecate `UIApi` (new resource system hoists loading out of widget-engine/-plugins)
+- [x] deprecate `UIApi` (new resource system hoists loading out of widget-engine/-plugins)
 - [x] deprecate `WithScalarValue`/`WithValue` (switch to `WithValuePlain` and `WithOnChange` - if needed, as now included in `WidgetProps`)
 - [ ] deprecate `WithValidity`, once new validation is available via hooks
 - [ ] add new schema plugin: injectSplitSchema, deprecate widget plugin: InjectSplitSchema
 - [x] deprecate `SchemaPlugin` methods `.should` and `.noHandle`; always use `.handle`
 - [ ] enable TS rules `@typescript-eslint/no-empty-object-type, "@typescript-eslint/no-wrapper-object-types, @typescript-eslint/no-unsafe-function-type, @typescript-eslint/consistent-indexed-object-style, @typescript-eslint/consistent-type-definitions, @typescript-eslint/no-empty-function`
 - [x] move non-react schemaPlugins into json-schema packages: `InheritKeywords`, `requiredPlugin`, `sortPlugin`, `validatorPlugin`
-- [ ] deprecate `useUIConfig`/`UIConfigProvider` and related parts, or remove directly if migrating typings isn't easy
+- [x] deprecate `useUIConfig`/`UIConfigProvider`
 - [ ] deprecate `onErrors`, once the validation system is available to get any child errors in another component without much performance impact
 - [ ] optimize unnecessary rendering of empty parts, e.g. `ObjectRenderer` only checks for `properties` existence, but not if empty (maybe add the `getFields` utils already?)
 - [x] ~~remove or~~ just deprecate the `injectWidgetEngine`, `applyWidgetEngine` HOCs? type migration will be a headache
@@ -441,7 +441,6 @@ new widget engine functions:
 - [ ] check `mergeSchema` changes and adjust to respect new applicable schema merging strategy
 - [x] reworked integration of `WidgetRenderer` with new `widgetPlugin`, now thew new `Next` injects the `WidgetRenderer` as the final (or first) `Next` itself
     - the binding `.WidgetRenderer` and `.widgetPlugins` are materialized in `UIMetaProvider` and `Next` rendering is started in `WidgetEngine`, the materialized and must not be modified after passing down and `widgetPlugins` must not be rendered manually, it is no longer possible to skip plugins (which was previously possible by increasing `currentPluginIndex`, yet would have been a bad pattern anyways)
-- [ ] rename `widgetPlugins` to just plugins? as no other plugins exist anymore in the `binding`
 - [ ] in pickers only types are migrated and props adjusted for `fullWidth`, nothing else was verified
 - [ ] check/migrate `SchemaLayer` to new `WigetEngine`
 - [ ] in the new schema merging, in the `object` level the property-collision conversion takes place, while in the property level it merges the `allOf` produced in the `object` level, which duplicates the keywords, should this be cleaned up internally or is it helpful to have the `allOf` still available, e.g. to access all `$ref` still in there

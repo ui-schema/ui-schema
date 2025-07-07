@@ -89,6 +89,7 @@ export const WidgetEngine = <
     type U = object
     // todo: Next isn't fully typed with same as incoming props
     const {binding, Next, ...meta} = useUIMeta<NoInfer<CMeta> & UIMetaContextInternal<{}, WidgetPluginProps<{}>>>()
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const config = useUIConfig<U>()
     const {store, showValidity} = useUIStore()
     const {onChange} = useUIStoreActions()

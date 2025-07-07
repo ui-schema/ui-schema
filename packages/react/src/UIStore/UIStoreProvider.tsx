@@ -13,6 +13,9 @@ const UIStoreContextObj = React.createContext<UIStoreContext>({})
 
 const UIConfigContextObj = React.createContext<{}>({})
 
+/**
+ * @deprecated will be removed in a future version
+ */
 export const UIConfigProvider: React.ComponentType<React.PropsWithChildren<{}>> = (
     {children, ...props},
 ) => {
@@ -32,6 +35,7 @@ export function UIStoreProvider<C extends {} = {}, D = any, A = UIStoreActions>(
 ): React.ReactElement {
     const ctx = React.useMemo(() => ({showValidity, store}), [showValidity, store])
     return <UIStoreContextObj.Provider value={ctx}>
+        {/* eslint-disable-next-line @typescript-eslint/no-deprecated */}
         <UIConfigProvider {...props}>
             <UIStoreActionsProvider<A> onChange={onChange}>
                 {children}
@@ -45,6 +49,9 @@ export const useUIStore = <D extends any = any>(): UIStoreContext<D> => {
     return React.useContext(UIStoreContextObj)
 }
 
+/**
+ * @deprecated will be removed in a future version
+ */
 export function useUIConfig<U extends {} = {}>(): U {
     return React.useContext(UIConfigContextObj) as U
 }

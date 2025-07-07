@@ -16,13 +16,7 @@ import { DocsIndexProvider } from '@control-ui/docs/DocsIndexProvider'
 import { DocsSearchProvider } from '@control-ui/docs/DocsSearchProvider'
 import { CustomLayout } from './component/Layout'
 import { LoadingCircular } from '@control-ui/kit/Loading'
-import { loadSchemaUIApi, UIApiProvider } from '@ui-schema/react/UIApi'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
-
-const loadSchema: loadSchemaUIApi = (url, versions) => {
-    console.log('loadSchema (url, optional versions)', url, versions)
-    return fetch(url).then(r => r.json())
-}
 
 if (process.env.REACT_APP_G_TAG) {
     prepareConsent({
@@ -53,13 +47,11 @@ const Provider: React.ComponentType<React.PropsWithChildren<{}>> = ({children}) 
             <DocsIndexProvider indexRefs={indexRefs}>
                 <DocsSearchProvider localKey={'uis-search-history'} bindKey={'k'}>
                     <HeadlinesProvider>
-                        <UIApiProvider loadSchema={loadSchema} noCache>
-                            <UIMetaProvider {...uiMeta}>
-                                <DndProvider backend={MultiBackend} options={HTML5toTouch}>
-                                    {children}
-                                </DndProvider>
-                            </UIMetaProvider>
-                        </UIApiProvider>
+                        <UIMetaProvider {...uiMeta}>
+                            <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+                                {children}
+                            </DndProvider>
+                        </UIMetaProvider>
                     </HeadlinesProvider>
                 </DocsSearchProvider>
             </DocsIndexProvider>

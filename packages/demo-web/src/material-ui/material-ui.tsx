@@ -32,7 +32,6 @@ import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { browserT } from '../t'
-import { UIApiProvider } from '@ui-schema/react/UIApi'
 import { TableAdvanced } from '@ui-schema/ds-material/Widgets/TableAdvanced'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { SelectChipsBase as SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
@@ -192,11 +191,6 @@ const DemoUser: React.FC<{}> = () => {
     </Grid2>
 }
 
-const loadSchema = (url, versions) => {
-    console.log('Demo loadSchema (url, optional versions)', url, versions)
-    return fetch(url).then(r => r.json())
-}
-
 const Main = () => {
     const [toggle, getToggle] = useToggle()
 
@@ -236,9 +230,7 @@ export default function MaterialDemo() {
             t={browserT}
             validate={validate}
         >
-            <UIApiProvider loadSchema={loadSchema} noCache>
-                <Main/>
-            </UIApiProvider>
+            <Main/>
         </UIMetaProvider>
     </>
 }
