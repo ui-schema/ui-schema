@@ -5,6 +5,9 @@ import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { OrderedMap } from 'immutable'
 import { GroupRendererProps } from '@ui-schema/react/Widget'
 
+/**
+ * @todo rename to `SchemaGridLegacyItem`
+ */
 export const SchemaGridItem: React.ComponentType<React.PropsWithChildren<{
     schema: UISchemaMap
     defaultMd?: GridSize
@@ -40,6 +43,45 @@ export const SchemaGridItem: React.ComponentType<React.PropsWithChildren<{
         style={style}
         className={className}
         classes={classes}
+        onContextMenu={onContextMenu}
+    >
+        {children}
+    </Grid>
+}
+
+/**
+ * @experimental only for MUI@v7
+ */
+export const SchemaGridNextItem: React.ComponentType<React.PropsWithChildren<{
+    schema: UISchemaMap
+    defaultMd?: GridSize
+    style?: React.CSSProperties
+    className?: string
+    onContextMenu?: MouseEventHandler<HTMLDivElement>
+}>> = (
+    {
+        schema, children,
+        defaultMd, style,
+        className,
+        onContextMenu,
+    },
+) => {
+    const view = schema?.get('view') as OrderedMap<string, GridSize> | undefined
+
+    const size = {
+        xs: view?.get('sizeXs') ?? 12,
+        sm: view?.get('sizeSm'),
+        md: view?.get('sizeMd') ?? defaultMd,
+        lg: view?.get('sizeLg'),
+        xl: view?.get('sizeXl'),
+    }
+
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    return <Grid
+        size={size}
+        style={style}
+        className={className}
         onContextMenu={onContextMenu}
     >
         {children}
