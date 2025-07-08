@@ -18,8 +18,8 @@ if(cluster.isPrimary) {
     })
 } else {
     import('./function.js').then(extension => extension.default).then(app => {
-        app.listen(process.env.PORT || 4255, () => {
-            console.log('server: listening on port ' + (process.env.PORT || 4255))
+        app.listen(process.env.PORT ?? 4255, () => {
+            console.log('server: listening on port ' + (process.env.PORT ?? 4255))
         })
     })
 }

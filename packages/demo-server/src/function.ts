@@ -43,8 +43,8 @@ app.use(function corsMiddleware(_req: express.Request, res: express.Response, ne
 const nanoTrace = customAlphabet('0123456789abcdefghijklmnopqrstuvwxqzABCDEFGHIJKLMNOPQRSTUVWXQZ', 32)
 
 app.use(function profilerMiddleware(req: express.Request & RequestCustomPayload, res: express.Response, next: () => void) {
-    const traceId: string = req.header('X-Trace-Id') || req.header('X-Request-Id') || nanoTrace()
-    req.trace = traceId as string
+    const traceId: string = req.header('X-Trace-Id') ?? req.header('X-Request-Id') ?? nanoTrace()
+    req.trace = traceId
     onHeaders(res, function() {
         if (traceId) {
             res.setHeader('X-Trace-Id', traceId)
