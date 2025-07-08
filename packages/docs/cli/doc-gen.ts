@@ -345,7 +345,7 @@ function extractModuleInfo(entrypointFile: ts.SourceFile, program: ts.Program) {
     function formatTypeString(typeStr: string, depth = 0): string {
         return typeStr
             .replace(/\s+/g, ' ')
-            .replace(/\{(.+)}/g, (match, group) => {
+            .replace(/\{(.+?)}/g, (match, group) => {
                 const lines = group.split(';')
                 return lines.length > 2 ? '{\n' + lines.map(l => l.trim() ? ' '.repeat(depth + 4) + l.trim() + ';\n' : '').join('') + ' '.repeat(depth) + '}' : match
             })

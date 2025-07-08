@@ -2,6 +2,7 @@
     "name": "@bemit/cra-server",
     "devDependencies": {},
     "private": true,
+    "type": "module",
     "dependencies": {
         "express": "^4.16.4"
     },

@@ -12,6 +12,8 @@ boot()
 
 const app = express()
 
+app.disable('x-powered-by')
+
 app.use(function corsMiddleware(_req: express.Request, res: express.Response, next: () => void) {
     // using a custom cors middleware, as the `express.cors` isn't CDN compatible (doesn't send headers when not needed)
     res.header('Access-Control-Allow-Origin', '*')
