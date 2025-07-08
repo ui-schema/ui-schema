@@ -63,7 +63,6 @@
         "react-dom": "^19.0"
     },
     "dependencies": {
-        "react-uid": "^2.2.0"
     },
     "peerDependencies": {
         "@mui/material": "^5.1 || ^6.4",

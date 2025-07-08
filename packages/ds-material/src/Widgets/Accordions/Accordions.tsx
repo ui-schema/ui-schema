@@ -2,7 +2,6 @@ import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
 import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
 import React from 'react'
 import { OrderedMap } from 'immutable'
-import { useUID } from 'react-uid'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
@@ -27,7 +26,7 @@ export interface AccordionStackBaseProps {
 const AccordionStackBase: React.ComponentType<WidgetProps<BindingTypeGeneric & MuiBindingComponents> & AccordionStackBaseProps & { validity: Validity | undefined }> = (
     {validity, SummaryTitle, ...props},
 ) => {
-    const uid = useUID()
+    const uid = React.useId()
     const {
         storeKeys, schema,
         parentSchema,

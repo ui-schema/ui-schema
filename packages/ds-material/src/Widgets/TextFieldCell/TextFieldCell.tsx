@@ -1,6 +1,5 @@
 import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
 import React, { CSSProperties, EventHandler } from 'react'
-import { useUID } from 'react-uid'
 import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
@@ -47,7 +46,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<BindingTypeGene
         labelledBy, binding,
     },
 ) => {
-    const uid = useUID()
+    const uid = React.useId()
     // todo: this could break law-of-hooks
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const inputRef = customInputRef || React.useRef(null)

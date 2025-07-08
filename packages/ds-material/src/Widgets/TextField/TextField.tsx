@@ -3,7 +3,6 @@ import React, { CSSProperties, FocusEventHandler, KeyboardEventHandler, MouseEve
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
 import { InputProps } from '@mui/material/Input'
-import { useUID } from 'react-uid'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
@@ -58,7 +57,7 @@ export const StringRenderer = (
         binding,
     }: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & StringRendererProps,
 ): React.ReactElement => {
-    const uid = useUID()
+    const uid = React.useId()
     // todo: this could break law-of-hooks
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const inputRef = customInputRef || React.useRef(null)

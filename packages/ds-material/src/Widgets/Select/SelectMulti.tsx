@@ -1,6 +1,5 @@
 import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { List } from 'immutable'
-import { useUID } from 'react-uid'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
@@ -16,6 +15,7 @@ import { WidgetProps } from '@ui-schema/react/Widget'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
+import React from 'react'
 
 export interface SelectMultiProps {
     variant?: MuiSelectProps['variant']
@@ -28,7 +28,7 @@ export const SelectMultiBase: React.ComponentType<WidgetProps & SelectMultiProps
         variant,
     },
 ) => {
-    const uid = useUID()
+    const uid = React.useId()
     const {t} = useUIMeta()
     const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as UISchemaMap)
 

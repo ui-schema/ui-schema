@@ -1,6 +1,5 @@
 import { useUIMeta } from '@ui-schema/react/UIMeta'
 import React from 'react'
-import { useUID } from 'react-uid'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
@@ -24,7 +23,7 @@ export const Select = <P extends SelectProps>(
     }: P,
 ): React.ReactElement => {
     const {t} = useUIMeta()
-    const uid = useUID()
+    const uid = React.useId()
 
     const {valueSchemas} = useOptionsFromSchema(storeKeys, schema)
 

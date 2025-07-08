@@ -1,7 +1,6 @@
 import React from 'react'
 import TextField from '@mui/material/TextField'
 import type { InputProps } from '@mui/material/Input'
-import { useUID } from 'react-uid'
 import InputAdornment from '@mui/material/InputAdornment'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
@@ -37,7 +36,7 @@ export const StringRendererDebounced = (
         debounceTime = 340, binding,
     }: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & Omit<StringRendererProps, 'onKeyPress' | 'onKeyPressNative'> & StringRendererDebouncedProps,
 ): React.ReactElement => {
-    const uid = useUID()
+    const uid = React.useId()
     // todo: this could break law-of-hooks
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const inputRef = customInputRef || React.useRef(null)

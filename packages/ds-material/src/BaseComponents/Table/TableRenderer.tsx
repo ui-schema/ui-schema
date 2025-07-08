@@ -3,7 +3,6 @@ import { makeParams } from '@ui-schema/json-schema/Validator'
 import { mergeSchemas } from '@ui-schema/json-schema/ValidatorPlugin'
 import { useSchemaResource } from '@ui-schema/react/SchemaResourceProvider'
 import React from 'react'
-import { useUID } from 'react-uid'
 import { extractValue, WithOnChange } from '@ui-schema/react/UIStore'
 import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
@@ -39,7 +38,7 @@ export const TableRendererBase: React.ComponentType<Omit<WidgetProps<BindingType
         validate,
     },
 ) => {
-    const uid = useUID()
+    const uid = React.useId()
     const {resource} = useSchemaResource()
     const [page, setPage] = React.useState(0)
     const [rows, setRows] = React.useState(rowsPerPage.first() || 5)

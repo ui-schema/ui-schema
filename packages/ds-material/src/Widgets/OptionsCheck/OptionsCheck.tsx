@@ -12,7 +12,6 @@ import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { useUID } from 'react-uid'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
 import { SwitchProps } from '@mui/material/Switch'
@@ -24,7 +23,7 @@ const OptionCheck: React.ComponentType<{
     label: React.ReactNode
     onChange: SwitchProps['onChange']
 }> = ({disabled, checked, label, onChange}) => {
-    const uid = useUID()
+    const uid = React.useId()
 
     return <FormControlLabel
         id={'uis-' + uid}

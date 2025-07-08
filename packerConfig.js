@@ -289,7 +289,7 @@ packer({
                     // enforce: true,
                 },
                 common2: {
-                    test: /[\\/]node_modules[\\/](immutable|react-helmet|react-error-boundary|react-uid|react-router|react-router-dom|i18next*|react-i18next|@bemit)[\\/]/,
+                    test: /[\\/]node_modules[\\/](immutable|react-helmet|react-error-boundary|react-router|react-router-dom|i18next*|react-i18next|@bemit)[\\/]/,
                     // reuseExistingChunk: true,
                     usedExports: true,
                     name: 'c2',

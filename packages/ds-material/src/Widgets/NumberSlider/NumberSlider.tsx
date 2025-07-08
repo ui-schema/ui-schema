@@ -1,7 +1,6 @@
 import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
 import React from 'react'
 import { List } from 'immutable'
-import { useUID } from 'react-uid'
 import Add from '@mui/icons-material/Add'
 import Delete from '@mui/icons-material/Delete'
 import Box from '@mui/material/Box'
@@ -64,7 +63,7 @@ const NumberSliderRenderer: React.FC<{
         minItems, maxItems,
     },
 ) => {
-    const uid = useUID()
+    const uid = React.useId()
     const type = schema.get('type')
     let hasMulti = false
     let canAdd = false
