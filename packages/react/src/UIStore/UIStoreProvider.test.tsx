@@ -4,8 +4,7 @@
 import { test, expect, describe } from '@jest/globals'
 import '@testing-library/jest-dom/jest-globals'
 import { List, Map } from 'immutable'
-import { UIStore, createStore, StoreKeys, UIStoreType } from '@ui-schema/react/UIStore'
-import { getValues } from '@ui-schema/react/UIStore'
+import { UIStore, createStore, getValues, StoreKeys, UIStoreType } from '@ui-schema/react/UIStore'
 import { isEqualObject } from '@ui-schema/ui-schema/Utils/isEqualObject'
 import { fromJSOrdered } from '@ui-schema/ui-schema/createMap'
 

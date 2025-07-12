@@ -3,7 +3,7 @@ import React from 'react'
 import { Map, List } from 'immutable'
 import { beautifyKey } from '@ui-schema/ui-schema/Utils/beautify'
 import { Translate } from '@ui-schema/react/Translate'
-import { StoreKeys } from '@ui-schema/react/UIStore'
+import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 
 export interface TranslateTitleProps {
     schema: SomeSchema

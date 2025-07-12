@@ -80,7 +80,8 @@ const blocks: DndBlock[] = [
                 },
             },
         }),
-    }, {
+    },
+    {
         type: 'address',
         typeKey: '_block',
         idKey: '_bid',
@@ -93,7 +94,8 @@ const blocks: DndBlock[] = [
                 },
             },
         }),
-    }, {
+    },
+    {
         type: 'addresses',
         typeKey: '_block',
         idKey: '_bid',

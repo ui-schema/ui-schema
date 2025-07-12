@@ -9,7 +9,7 @@ import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
 import { InheritKeywords } from '@ui-schema/json-schema/InheritKeywords'
 import { SortPlugin } from '@ui-schema/json-schema/SortPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
-import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
+import { schemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { schemaTypeIs } from '@ui-schema/ui-schema/schemaTypeIs'
 import React, { ComponentType } from 'react'
@@ -94,9 +94,11 @@ const formSchema = createOrderedMap({
                 oneOf: [
                     {
                         const: 'notice',
-                    }, {
+                    },
+                    {
                         const: 'content',
-                    }, {
+                    },
+                    {
                         const: 'footer',
                     },
                 ],

@@ -232,7 +232,12 @@ export default defineConfig([
             '@typescript-eslint/ban-ts-comment': 'off',
             '@typescript-eslint/no-inferrable-types': 'off',
             '@typescript-eslint/no-explicit-any': 'off',
-            // 'no-duplicate-imports': ['error', {allowSeparateTypeImports: true}],
+            'no-duplicate-imports': [
+                'error',
+                {
+                    allowSeparateTypeImports: true,
+                },
+            ],
             'no-restricted-imports': [
                 'error',
                 {

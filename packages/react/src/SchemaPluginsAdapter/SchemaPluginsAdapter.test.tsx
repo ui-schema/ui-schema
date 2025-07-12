@@ -3,7 +3,7 @@
  */
 import { expect, describe, test } from '@jest/globals'
 import { render } from '@testing-library/react'
-import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
+import { schemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 import { BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { SchemaPlugin, SchemaPluginProps } from '@ui-schema/ui-schema/SchemaPlugin'

@@ -6,10 +6,11 @@ import { List } from 'immutable'
 import { UIMetaContext, UIMetaContextInternal, useUIMeta } from '@ui-schema/react/UIMeta'
 import { onErrorHandler } from '@ui-schema/ui-schema/ValidatorOutput'
 import { useUIConfig, useUIStore, WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
-import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
+import type { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
-import { WidgetEngineErrorBoundary } from '@ui-schema/react/WidgetEngine'
-import { NextPluginMemo, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import { NextPluginMemo } from './NextPlugin.js'
+import { WidgetEngineErrorBoundary } from './WidgetEngineErrorBoundary.js'
+import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { WidgetType, WidgetProps } from '@ui-schema/react/Widget'
 import { useUIStoreActions } from '@ui-schema/react/UIStoreActions'
 
@@ -71,7 +72,7 @@ export type WidgetEngineOverrideProps<
     NoInfer<PWidget> &
     {
         // override any widget for just this WidgetEngine, not passed down further on
-        // better use `applyWidgetEngine` instead! https://ui-schema.bemit.codes/docs/core-pluginstack#applypluginstack
+        // better use `applyWidgetEngine` instead! https://ui-schema.bemit.codes/docs/react/widgetengine#applypluginstack
         // todo: actually `WidgetOverride` is a WidgetRenderer prop - and also passed through the plugins, so should be available in PluginProps?
         WidgetOverride?: TWidgetOverride
     }

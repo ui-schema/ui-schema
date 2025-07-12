@@ -287,13 +287,17 @@ describe('validateItems', () => {
         [{
             type: 'array',
             additionalItems: true,
-            items: [{
-                type: 'number',
-            }, {
-                type: 'number',
-            }, {
-                type: 'number',
-            }],
+            items: [
+                {
+                    type: 'number',
+                },
+                {
+                    type: 'number',
+                },
+                {
+                    type: 'number',
+                },
+            ],
         }, [1, 2, 3], 0, undefined],
         [{
             type: 'array',

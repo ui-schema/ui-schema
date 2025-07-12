@@ -2,12 +2,11 @@ import type { UIMetaContextBase } from '@ui-schema/react/UIMeta'
 import type { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 import type { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import { List } from 'immutable'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import type { ComponentType, ReactNode } from 'react'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 import { ErrorNoWidgetMatches, matchWidget } from '@ui-schema/ui-schema/matchWidget'
-import type { WidgetEngineOverrideProps } from '@ui-schema/react/WidgetEngine'
-import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import type { WidgetEngineOverrideProps, WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import type { WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
 import type { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import { BindingTypeWidgets, NoWidgetProps, WidgetProps } from '@ui-schema/react/Widget'
@@ -56,38 +55,40 @@ export const WidgetRenderer = <A = UIStoreActions, B = {}, WP extends WidgetProp
 
     const schemaType = schema.get('type') as SchemaTypesType | undefined
     const widgetName = schema.get('widget') as string | undefined
-    let Widget: ComponentType<WP> | null = null
-    // todo: try further extracting isVirtual into a widgetPlugin, which uses WidgetOverride to switch to it?
-    //       which also the virtualWidgets could use, to not further need `isVirtual`
-    if (isVirtual) {
-        Widget = binding?.VirtualRenderer as unknown as ComponentType<WP> || null
-    } else if (WidgetOverride) {
-        Widget = WidgetOverride
-    } else {
-        // todo: remove fallback once dev project is migrated? or allow optional?
-        const matchWidgetFn = binding?.matchWidget || (matchWidget as NonNullable<NonNullable<typeof binding>['matchWidget']>)
-        const widgets = binding?.widgets
-        try {
-            Widget = matchWidgetFn({
-                widgetName: widgetName,
-                schemaType: schemaType,
-                widgets: widgets,
-            })?.Widget || null
-        } catch (e) {
-            if (e instanceof ErrorNoWidgetMatches) {
-                const NoWidget = binding?.NoWidget
-                if (NoWidget) {
-                    return <NoWidget
-                        storeKeys={props.storeKeys}
-                        scope={e.scope}
-                        widgetId={e.widgetId}
-                    />
+
+    const {Widget, error}: { Widget: ComponentType<WP> | null, error?: ErrorNoWidgetMatches } = useMemo(() => {
+        let Widget: ComponentType<WP> | null = null
+        // todo: try further extracting isVirtual into a widgetPlugin, which uses WidgetOverride to switch to it?
+        //       which also the virtualWidgets could use, to not further need `isVirtual`
+        if (isVirtual) {
+            Widget = binding?.VirtualRenderer as unknown as ComponentType<WP> || null
+        } else if (WidgetOverride) {
+            Widget = WidgetOverride
+        } else {
+            // todo: remove fallback once dev project is migrated? or allow optional?
+            const matchWidgetFn = binding?.matchWidget || (matchWidget as NonNullable<NonNullable<typeof binding>['matchWidget']>)
+            const widgets = binding?.widgets
+            try {
+                Widget = matchWidgetFn({
+                    widgetName: widgetName,
+                    schemaType: schemaType,
+                    widgets: widgets,
+                })?.Widget || null
+            } catch (e) {
+                if (e instanceof ErrorNoWidgetMatches) {
+                    return {
+                        Widget: null,
+                        error: e,
+                    }
                 }
-                return null
+                throw e
             }
-            throw e
         }
-    }
+
+        return {
+            Widget,
+        }
+    }, [WidgetOverride, binding?.VirtualRenderer, binding?.matchWidget, binding?.widgets, isVirtual, schemaType, widgetName])
 
     const noExtractValue = noExtractValueEnabled && !isVirtual && (
         schemaType === 'array' || schemaType === 'object' ||
@@ -98,6 +99,18 @@ export const WidgetRenderer = <A = UIStoreActions, B = {}, WP extends WidgetProp
             )
         )
     )
+
+    if (error) {
+        const NoWidget = binding?.NoWidget
+        if (NoWidget) {
+            return <NoWidget
+                storeKeys={props.storeKeys}
+                scope={error.scope}
+                widgetId={error.widgetId}
+            />
+        }
+        return null
+    }
 
     return Widget ?
         <Widget

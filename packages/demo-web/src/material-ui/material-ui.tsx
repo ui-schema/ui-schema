@@ -12,7 +12,7 @@ import { emailValidator } from '@ui-schema/json-schema/Validators/EmailValidator
 import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
 import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
-import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
+import { schemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { matchWidget } from '@ui-schema/ui-schema/matchWidget'

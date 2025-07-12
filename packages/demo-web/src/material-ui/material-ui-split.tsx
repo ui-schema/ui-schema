@@ -13,7 +13,7 @@ import { DefaultHandler, DefaultHandlerProps } from '@ui-schema/react-json-schem
 import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin'
 import { SchemaResourceProvider } from '@ui-schema/react/SchemaResourceProvider'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
-import { schemaPluginsAdapterBuilder } from '@ui-schema/react-json-schema/SchemaPluginsAdapter'
+import { schemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 import { SchemaPlugin } from '@ui-schema/ui-schema/SchemaPlugin'
 import { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import React, { useMemo } from 'react'
