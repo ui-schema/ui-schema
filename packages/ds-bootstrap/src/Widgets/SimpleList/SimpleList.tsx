@@ -17,31 +17,25 @@ const SimpleList = extractValue(memo((
 ) => {
     const btnSize = schema.getIn(['view', 'btnSize']) as string || 'small'
 
-    const classFormGroup = ['form-group', 'd-flex', 'align-items-center']
-    const classFormControl = ['form-control']
-    if (showValidity && errors?.size) {
-        classFormControl.push('is-invalid')
-    }
-    if (showValidity && !errors?.size) {
-        classFormGroup.push('was-validated')
-    }
-
     return <React.Fragment>
-        <TranslateTitle schema={schema} storeKeys={storeKeys}/>
-        <div>
+        <p className={'form-label'}><TranslateTitle schema={schema} storeKeys={storeKeys}/></p>
+        <div className={'d-flex flex-column row-gap-3'}>
             {List.isList(value) ? value.map((_val, i) =>
                 <div
                     key={i}
-                    className={classFormGroup.join(' ')}
+                    className={'d-flex align-items-center'}
                 >
-                    <WidgetEngine<{ className?: string }>
-                        className={classFormControl.join(' ')}
-                        showValidity={showValidity}
-                        storeKeys={storeKeys.push(i)}
-                        parentSchema={schema}
-                        schema={schema.get('items') as UISchemaMap}
-                        noGrid
-                    />
+                    <div
+                        className={'flex-grow-1'}
+                    >
+                        <WidgetEngine
+                            showValidity={showValidity}
+                            storeKeys={storeKeys.push(i)}
+                            parentSchema={schema}
+                            schema={schema.get('items') as UISchemaMap}
+                            noGrid
+                        />
+                    </div>
                     <div>
                         <IconMinus
                             btnSize={btnSize}

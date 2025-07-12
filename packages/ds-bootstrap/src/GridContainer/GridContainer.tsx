@@ -12,5 +12,5 @@ export const GridContainer: React.FC<GridContainerProps & Partial<WidgetEngineWr
         children,
     },
 ) => {
-    return <div className={clsx('row', className)}>{children}</div>
+    return <div className={clsx('row', 'd-flex', 'flex-wrap', 'row-gap-2', className)}>{children}</div>
 }

@@ -33,7 +33,7 @@ const StringRenderer = ({schema, value, multiline = false, onChange, storeKeys, 
         Renderer = 'textarea'
     }
 
-    const classFormGroup = ['form-group']
+    const classFormGroup: string[] = []
     const classFormControl = ['form-control']
     if (showValidity && errors?.size) {
         classFormControl.push('is-invalid')
@@ -43,8 +43,9 @@ const StringRenderer = ({schema, value, multiline = false, onChange, storeKeys, 
     }
 
     return <div className={classFormGroup.join(' ')}>
-        <label htmlFor={'uis-' + uid}><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
+        <label className={'form-label'} htmlFor={'uis-' + uid}><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
         <Renderer
+            id={'uis-' + uid}
             className={classFormControl.join(' ')}
             type={format || type}
             required={required}

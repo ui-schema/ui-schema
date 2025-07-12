@@ -36,7 +36,7 @@ const SchemaGridItem = ({children, schema}: React.PropsWithChildren<{ schema: UI
 }
 
 const GroupRenderer = ({children}: React.PropsWithChildren) =>
-    <div className={clsx('row', 'px-0')}>
+    <div className={clsx('row', 'd-flex', 'row-gap-2', 'flex-wrap')}>
         {children}
     </div>
 

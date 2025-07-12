@@ -55,6 +55,7 @@ List of renamed functions, components etc., most are also moved to other package
 - switched to strict esm
 - update `clsx` to v2 (peer-dep)
     - as v1 is not compatible with `moduleResolution: Node16`
+- css and html fixes, bootstrap 5
 
 ### System
 

@@ -9,9 +9,9 @@ export interface WidgetPropsBoolean extends WidgetProps, WithValuePlain, WithOnC
 
 const BoolRenderer = ({showValidity, required, errors, value, storeKeys, onChange, schema}: WidgetPropsBoolean) => {
     const id = React.useId()
-    const classForm = ['custom-control', 'custom-switch']
-    const classLabel = ['custom-control-label', 'text-light']
-    const classFormControl = ['custom-control-input']
+    const classForm = ['form-check', 'form-switch']
+    const classLabel = ['form-check-label']
+    const classFormControl = ['form-check-input']
     if (showValidity && errors?.size) {
         classFormControl.push('is-invalid')
     }
@@ -23,7 +23,10 @@ const BoolRenderer = ({showValidity, required, errors, value, storeKeys, onChang
 
     return <div className={classForm.join(' ')}>
         <input
-            type="checkbox" className={classFormControl.join(' ')} id={'uis-' + id}
+            type="checkbox"
+            className={classFormControl.join(' ')}
+            id={'uis-' + id}
+            role="switch"
             checked={currentChecked}
             required={required}
             onChange={() =>

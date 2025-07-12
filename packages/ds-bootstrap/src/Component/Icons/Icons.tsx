@@ -32,7 +32,7 @@ const BaseIcon = ({onClick, label, iconName, btnSize}: Icon) => {
     }
 
     return <button
-        type="button" className={['btn', 'btn-transparent'].join(' ')} style={{transform: 'scale(' + btnScale + ', ' + btnScale + ')'}}
+        type="button" className={['btn'].join(' ')} style={{transform: 'scale(' + btnScale + ', ' + btnScale + ')'}}
         data-toggle="tooltip" data-placement="right"
         title={t(label) as string}
         onClick={onClick}

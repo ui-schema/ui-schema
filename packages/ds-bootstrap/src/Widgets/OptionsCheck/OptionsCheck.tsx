@@ -72,9 +72,9 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors, required}: Widge
     const oneOfVal = schema.getIn(['items', 'oneOf'])
     if (!oneOfVal) return null
 
-    const classForm = ['custom-control', 'custom-checkbox']
-    const classLabel = ['custom-control-label', 'text-light']
-    const classFormControl = ['custom-control-input', 'checkbox-inline']
+    const classForm = ['form-check']
+    const classLabel = ['form-check-label']
+    const classFormControl = ['form-check-input']
     if (showValidity && errors?.size) {
         classFormControl.push('is-invalid')
     }
@@ -82,8 +82,10 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors, required}: Widge
         classForm.push('was-validated')
     }
 
-    return <React.Fragment>
-        <TranslateTitle schema={schema} storeKeys={storeKeys}/>
+    return <div>
+        <label className="form-label d-block">
+            <TranslateTitle schema={schema} storeKeys={storeKeys}/>
+        </label>
         <OptionsCheckValue
             required={required}
             type={schema.get('type')}
@@ -93,7 +95,7 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors, required}: Widge
             oneOfValues={oneOfVal} storeKeys={storeKeys} schema={schema}/>
 
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
-    </React.Fragment>
+    </div>
 }
 
 export { OptionsCheck }

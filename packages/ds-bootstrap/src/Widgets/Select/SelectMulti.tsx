@@ -7,16 +7,18 @@ import { memo } from '@ui-schema/react/Utils/memo'
 import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
 import { List, Map, isImmutable } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
+import React from 'react'
 
 export const SelectMulti = extractValue(memo(({schema, storeKeys, showValidity, errors, value, onChange, required}: WidgetProps) => {
+    const uid = React.useId()
     const {t} = useUIMeta()
 
     if (!schema) return null
     const oneOfValues = schema.getIn(['items', 'oneOf'])
     if (!oneOfValues) return null
 
-    const classForm = ['selectpicker', 'custom-select']
-    const classFormParent = ['form-group']
+    const classForm = ['form-select']
+    const classFormParent = []
     if (showValidity && errors?.size) {
         classForm.push('is-invalid')
     }
@@ -27,8 +29,9 @@ export const SelectMulti = extractValue(memo(({schema, storeKeys, showValidity, 
         schema.get('default') ? List(schema.get('default')) : List([])
 
     return <div className={classFormParent.join(' ')}>
-        <label><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
+        <label className={'form-label'} htmlFor={'uis-' + uid}><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
         <select
+            id={'uis-' + uid}
             value={currentValue.toArray() as string[]}
             className={classForm.join(' ')}
             multiple

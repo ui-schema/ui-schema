@@ -11,7 +11,7 @@ const RadioInput = ({classForm, enumName, classLabel, required, classFormControl
 
     return <div
         className={classForm.join(' ')}
-        key={enumName}>
+    >
         <input
             required={required}
             id={'uis-' + uid}
@@ -42,9 +42,9 @@ const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, require
     const enumVal = schema.get('enum')
     if (!enumVal) return null
 
-    const classForm = ['custom-control', 'custom-radio']
-    const classLabel = ['custom-control-label', 'text-light']
-    const classFormControl = ['custom-control-input']
+    const classForm = ['form-check']
+    const classLabel = ['form-check-label']
+    const classFormControl = ['form-check-input']
     if (showValidity && errors?.size) {
         classFormControl.push('is-invalid')
     }
@@ -52,8 +52,8 @@ const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, require
         classForm.push('was-validated')
     }
 
-    return <React.Fragment>
-        <label><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
+    return <div>
+        <label className={'form-label d-block'}><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
         {enumVal ? enumVal.map((enum_name) => {
             return <RadioInput
                 key={enum_name}
@@ -76,7 +76,7 @@ const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, require
         }).valueSeq() : null}
 
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
-    </React.Fragment>
+    </div>
 }
 
 export { OptionsRadio }

@@ -5,16 +5,18 @@ import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { List, Map } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
+import React from 'react'
 
 export const Select = ({schema, storeKeys, showValidity, errors, value, onChange, required}: WidgetProps & WithValuePlain & WithOnChange) => {
+    const uid = React.useId()
     const enum_val = schema.get('enum')
     const {t} = useUIMeta()
 
     if (!enum_val) return null
     if (!schema) return null
 
-    const classForm = ['selectpicker', 'custom-select']
-    const classFormParent = ['form-group']
+    const classForm = ['form-select']
+    const classFormParent = ['']
     if (showValidity && errors?.size) {
         classForm.push('is-invalid')
     }
@@ -23,8 +25,9 @@ export const Select = ({schema, storeKeys, showValidity, errors, value, onChange
     }
     const currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '')
     return <div className={classFormParent.join(' ')}>
-        <label><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
+        <label className={'form-label'} htmlFor={'uis-' + uid}><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
         <select
+            id={'uis-' + uid}
             value={currentValue}
             className={classForm.join(' ')}
             onChange={(e) => {
@@ -47,7 +50,7 @@ export const Select = ({schema, storeKeys, showValidity, errors, value, onChange
                 return <option
                     key={enum_name}
                     value={enum_name}
-                    selected={currentValue === enum_name}
+                    // selected={currentValue === enum_name}
                     // defaultValue={currentValue === enum_name}
                 >
                     {typeof Translated === 'string' || typeof Translated === 'number' ?
