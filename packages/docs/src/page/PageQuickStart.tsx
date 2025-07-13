@@ -84,7 +84,7 @@ const PageQuickStart = () => {
             description={'In 6 steps to a React form that sends data to an API! Generate forms with JSON-Schema and Material-UI or Bootstrap'}
         />
         <PageContent maxWidth={'md'}>
-            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
+            <Paper style={{margin: '12px 0', padding: 24, overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                 <Markdown source={`
 # Quick-Start UI-Schema
 
@@ -124,7 +124,7 @@ See the [**list of widgets**](/docs/overview#widget-list) for the different desi
                 <LinkableHeadlineMenu initial disableNavLink onClickKeepOpen/>
             </Paper>
 
-            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
+            <Paper style={{margin: '12px 0', padding: 24, overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                 <Markdown source={`
 ## 1. Install
 
@@ -155,7 +155,7 @@ First select the design-system and install ui-schema and dependencies.
 
                 {ds === 'mui' ? <Markdown source={`
 \`\`\`bash
-npm i --save @ui-schema/ui-schema immutable \\
+npm i --save @ui-schema/ui-schema @ui-schema/react @ui-schema/react-json-schema @ui-schema/json-schema @ui-schema/json-pointer immutable \\
     @ui-schema/ds-material \\
     @mui/material @mui/icons-material
 \`\`\`
@@ -165,7 +165,8 @@ npm i --save @ui-schema/ui-schema immutable \\
 > first time with MUI? [head to the mui.com quick start](https://mui.com/material-ui/getting-started/installation/)
 >
 > - \`<= ds-material@v0.3.x\` supports \`@material-ui/core\` (v4)
-> - \`>= ds-material@v0.4.x\` supports \`@mui/material\` (v5)
+> - \`ds-material@v0.4.x\` supports \`@mui/material\` (v5)
+> - \`>= ds-material@v0.5.x\` supports \`@mui/material\` (v5, v6)
 
 > More the demo person?
 >
@@ -175,21 +176,38 @@ npm i --save @ui-schema/ui-schema immutable \\
                 {ds === 'bts' ? <Markdown source={`
 > no priority currently for bootstrap widgets development, but happy about PRs
 \`\`\`bash
-npm i --save @ui-schema/ui-schema immutable \\
+npm i --save @ui-schema/ui-schema @ui-schema/react @ui-schema/react-json-schema @ui-schema/json-schema @ui-schema/json-pointer immutable \\
     @ui-schema/ds-bootstrap bootstrap
 \`\`\`
 `}/> : null}
                 {ds === 'custom' ? <Markdown source={`
-Install dependencies then head to the [widgets binding documentation](/docs/widgets#create-design-system-binding) for more about creating design systems bindings.
+Install dependencies then head to the [widgets binding documentation](/docs/widgets#create-design-system-binding) for more details about creating design systems bindings.
+
+> Please note that usage without react isn't covered by any documentation.
+
+The minimum packages needed:
 
 \`\`\`bash
-npm i --save @ui-schema/ui-schema immutable
+npm i --save @ui-schema/ui-schema @ui-schema/json-pointer immutable
 \`\`\`
+
+The additional packages needed for the react engine:
+
+\`\`\`bash
+npm i --save @ui-schema/react @ui-schema/json-schema react
+\`\`\`
+
+Additional package for react, with specific JSON Schema plugins and components, very useful, but not required by the other packages.
+
+\`\`\`bash
+npm i --save @ui-schema/react-json-schema
+\`\`\`
+
 `}/> : null}
             </Paper>
 
-            {render === 'custom' ?
-                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
+            {render === 'custom' && ds !== 'custom' ?
+                <Paper style={{margin: '12px 0', padding: 24, overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                     <Markdown source={`
 ## 2. Create Demo Generator
 
@@ -246,8 +264,8 @@ export const Generator = () => {
                     </Grid>
                 </Paper> : null}
 
-            {render === 'automatic' ?
-                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
+            {render === 'automatic' && ds !== 'custom' ?
+                <Paper style={{margin: '12px 0', padding: 24, overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                     <Markdown source={`
 ## 2. Create Demo Generator
 
@@ -306,8 +324,10 @@ export const Generator = () => {
                     </Grid>
                 </Paper> : null}
 
-            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
-                <Markdown source={`
+            {ds !== 'custom' ?
+                <>
+                    <Paper style={{margin: '12px 0', padding: 24, overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
+                        <Markdown source={`
 ## 3. Create Store State, Add Schema
 
 Each \`UIStoreProvider\` needs to receive a \`store\` and \`onChange\` to work with the data and have something to save validity and internal values. The store must be an \`UIStore\`, which is based on a [immutable](https://immutable-js.github.io/immutable-js/) Record.
@@ -317,9 +337,9 @@ With \`PluginStack\` (and related utils) components can be wired up with the ren
 The schema in this example is bundled with the component and not dynamic, the schema must be an \`immutable\`. A minimal valid schema is an empty \`object\` schema.
 `}/>
 
-                <Grid container>
-                    <Grid size={12}>
-                        <Markdown source={`
+                        <Grid container>
+                            <Grid size={12}>
+                                <Markdown source={`
 \`\`\`jsx
 // Minimal Schema, transformed from JS-Object into deep immutable
 const schema = createOrderedMap({
@@ -360,14 +380,14 @@ export const Generator = () => {
 };
 \`\`\`
 `}/>
-                    </Grid>
-                </Grid>
-            </Paper>
+                            </Grid>
+                        </Grid>
+                    </Paper>
 
-            <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
-                <Grid container>
-                    <Grid size={12}>
-                        <Markdown source={`
+                    <Paper style={{margin: '12px 0', padding: 24, overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
+                        <Grid container>
+                            <Grid size={12}>
+                                <Markdown source={`
 ## 4. Add First Inputs
 
 Each \`object\` can have multiple \`properties\`, each can be of a different type, we define now a single-line text, multi-line text and boolean property to our contact schema.
@@ -376,30 +396,32 @@ Properties defined in \`required\` must be filled out, see what is [invalid for 
 
 See [schema docs](/docs/schema) for the keywords of each type.
 `}/>
-                    </Grid>
-                    <Grid size={12}>
-                        <Markdown source={`
+                            </Grid>
+                            <Grid size={12}>
+                                <Markdown source={`
 \`\`\`jsx
 const schema = createOrderedMap(${JSON.stringify(demoSchema, null, 2)});
 \`\`\`
 `}/>
-                    </Grid>
-                </Grid>
-                {render === 'automatic' ? <>
-                    <Grid size={12}>
-                        <Markdown source={`
+                            </Grid>
+                        </Grid>
+                        {render === 'automatic' ? <>
+                            <Grid size={12}>
+                                <Markdown source={`
 ---
 
 > Your editor should look like this when using **ds-material**:
 `}/>
-                    </Grid>
-                    <Grid size={{xs: 12, md: 9}} style={{margin: '0 auto'}}>
-                        <DemoUIGenerator activeSchema={demoSchema} id={'qs-demo'}/>
-                    </Grid>
+                            </Grid>
+                            <Grid size={{xs: 12, md: 9}} style={{margin: '0 auto'}}>
+                                <DemoUIGenerator activeSchema={demoSchema} id={'qs-demo'}/>
+                            </Grid>
+                        </> : null}
+                    </Paper>
                 </> : null}
-            </Paper>
-            {render === 'automatic' ?
-                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
+
+            {render === 'automatic' && ds !== 'custom' ?
+                <Paper style={{margin: '12px 0', padding: 24, overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                     <Grid container>
                         <Grid size={12}>
                             <Markdown source={`
@@ -474,23 +496,11 @@ Test the demo form below, it will send the entered data to [httpbin.org*](https:
                         <Grid size={{xs: 12, md: 9}} style={{margin: '24px auto 0 auto'}}>
                             <QuickStartEditor/>
                         </Grid>
-
-                        <Grid size={12} style={{marginTop: 16}}>
-                            <Markdown source={`
-### Next Steps
-
-- [JSON-Schema Guides](https://json-schema.org/understanding-json-schema/)
-- [Adding translations](/docs/localization)
-- [Creating widgets](/docs/widgets#creating-widgets)
-- [Adding / Overwriting Widgets](/docs/widgets#adding--overwriting-widgets)
-- [More about PluginStack for nesting in arrays/objects](/docs/core-pluginstack)
-`}/>
-                        </Grid>
                     </Grid>
                 </Paper> : null}
 
-            {render === 'custom' ? <>
-                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
+            {render === 'custom' && ds !== 'custom' ? <>
+                <Paper style={{margin: '12px 0', padding: 24, overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                     <Grid container>
                         <Grid size={12}>
                             <Markdown source={`
@@ -582,7 +592,7 @@ export const Generator = () => {
                     </Grid>
                 </Paper>
 
-                <Paper style={{margin: '12px 0', padding: 24, display: 'flex', flexDirection: 'column', overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
+                <Paper style={{margin: '12px 0', padding: 24, overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
                     <Grid container>
                         <Grid size={12}>
                             <Markdown source={`
@@ -638,21 +648,24 @@ Test the demo form below, it will send the entered data to [httpbin.org*](https:
                         <Grid size={{xs: 12, md: 9}} style={{margin: '24px auto 0 auto'}}>
                             <QuickStartEditor/>
                         </Grid>
-
-                        <Grid size={12} style={{marginTop: 16}}>
-                            <Markdown source={`
-### Next Steps
-
-- [JSON-Schema Guides](https://json-schema.org/understanding-json-schema/)
-- [Adding custom l10n](/docs/localization)
-- [Creating widgets](/docs/widgets#creating-widgets)
-- [Adding / Overwriting Widgets](/docs/widgets#adding--overwriting-widgets)
-- [More about PluginStack for nesting in arrays/objects](/docs/core-pluginstack)
-`}/>
-                        </Grid>
                     </Grid>
                 </Paper>
             </> : null}
+
+            <Paper style={{margin: '12px 0', padding: 24, overflowX: 'auto', borderRadius: 5}} variant={'outlined'}>
+                <Grid container>
+                    <Grid size={12}>
+                        <Typography id={'next-steps'} variant={'h3'} gutterBottom>Next Steps</Typography>
+                        <Markdown source={`
+- [JSON-Schema Guides](https://json-schema.org/understanding-json-schema/)
+- [Adding translations](/docs/localization)
+- [Creating widgets](/docs/widgets#creating-widgets)
+- [Adding / Overwriting Widgets](/docs/widgets#adding--overwriting-widgets)
+- [More about WidgetEngine, nesting in arrays/objects](/docs/react/widgetengine)
+`}/>
+                    </Grid>
+                </Grid>
+            </Paper>
         </PageContent>
     </>
 }

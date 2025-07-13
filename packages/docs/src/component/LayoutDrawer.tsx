@@ -13,7 +13,7 @@ import List from '@mui/material/List'
 import Collapse from '@mui/material/Collapse'
 import ListItemButton from '@mui/material/ListItemButton'
 import { NavListItemAuto, NavListNested } from '@control-ui/kit/NavList'
-import { routesCore, routesFurtherAddOns, routesFurtherDesignSystem } from '../content/docs'
+import { routesCore, routesPackages, routesFurtherAddOns, routesFurtherDesignSystem } from '../content/docs'
 import { useConsent } from '@bemit/consent-ui-react'
 import { Route } from '@control-ui/routes'
 
@@ -74,6 +74,16 @@ export const LayoutDrawerBase: React.ComponentType = () => {
                 unmountOnExit
             />
             <ListItemLink to={'/updates'} primary={'Updates & Migration'} dense disableNavLink={false} onClick={closeOnClick}/>
+            <Divider/>
+            <NavListNested
+                // @ts-ignore
+                routes={routesPackages}
+                filter={routeFiler}
+                dense
+                onClick={closeOnClick}
+                ListItem={NavListItemAutoMemo}
+                unmountOnExit
+            />
             <Divider/>
             <NavListNested
                 // @ts-ignore

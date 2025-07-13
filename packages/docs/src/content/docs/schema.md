@@ -11,7 +11,7 @@ This page covers the support for JSON Schema within the core, validators or from
 Matches the rendered widget, keywords used:
 
 - `type` valid types: `string`, `number`, `integer`, `boolean`, `object`, `array`, `null`
-    - including multiple types support *(experimental, see [happy path infos](/docs/widgets-composition#example-for-multiple-types))*
+    - including multiple types support *(see [happy path infos](/docs/widgets-composition#example-for-multiple-types))*
         - e.g.: use `"type": ["string", "null"], "default": null` for nullable array items
 - `widget` non-standard JSON-Schema to select a specific UI widget
 
@@ -41,7 +41,6 @@ Matches the rendered widget, keywords used:
     - schema-id with `$id` and use `$ref` with `$id`
     - load schemas lazily from any API, [ReferencingNetworkHandler](/docs/plugins#referencingnetworkhandler)
 - `oneOf` for "one-schema must match" validation, only usable with specific widgets
-    - ❗ only checks some schema: everything [validateSchema](/docs/plugins#validateschema) supports
     - supported by e.g. [`SelectChips`](/docs/widgets/SelectChips)
 
 >
@@ -146,10 +145,7 @@ Validation Keywords:
 - `maxItems` max. number of items
 - `uniqueItems` all items must be of an unique value
 - `contains` one or more items needs to be valid against a sub-schema
-    - ❗ only checks some schema: everything [validateSchema](/docs/plugins#validateschema) supports
-    - ❗ no nested arrays support atm.
 - `items` restricts all items be valid against a sub-schema (one schema for all or tuples)
-    - ❗ in conditionals (`if`,`else`), only checks some schema: everything [validateSchema](/docs/plugins#validateschema) supports, no nested array schemas
     - nested schemas must be validated in render tree
         - supported by `ds-material`
         - supported by `isVirtual`/`VirtualWidgetRenderer`
@@ -239,7 +235,7 @@ For latest issues/questions checkout the [github issues](https://github.com/ui-s
 | validation                                             |                    | `maxProperties`           | ✅                      |
 | core                                                   |                    | `additionalProperties`    | ✅                      |
 | core                                                   |                    | `patternProperties`       | ❌                      |
-| core                                                   |                    | `unevaluatedProperties`   | ❌                      |
+| core                                                   |                    | `unevaluatedProperties`   | ✅                      |
 | core                                                   |                    | `propertyNames`           | ✅                      |
 | validation, till draft-07                              |                    | `dependencies`            | ✅                      |
 | core, from 2019-09                                     |                    | `dependentSchemas`        | ✅                      |
@@ -250,7 +246,7 @@ For latest issues/questions checkout the [github issues](https://github.com/ui-s
 | core                                                   |                    | `allOf`                   | ✅                      |
 | core                                                   |                    | `not`                     | ✅                      |
 | core                                                   |                    | `oneOf`                   | ✅                      |
-| core                                                   |                    | `anyOf`                   | ❌                      |
+| core                                                   |                    | `anyOf`                   | ✅                      |
 |                                                        | `array`            |                           |                        |
 | core                                                   |                    | `items`                   | ✅                      |
 | core                                                   |                    | `unevaluatedItems`        | ❌                      |
@@ -311,13 +307,13 @@ Vocabularies (**not up to date**):
 
 ### Hidden Keyword / Virtualization
 
-When the `hidden: true` keyword is applied to any schema, the `UIGenerator` doesn't render any HTML, producing no output in the page, but still renders and executes the plugins and validators - thus rendering it virtually.
+When the `hidden: true` keyword is applied to any schema, the `WidgetEngine` and included `WidgetRenderer` and plugins don't render any HTML, producing no output in the page, but still renders and executes the plugins and validators - thus rendering it virtually.
 
 The prop `isVirtual` can be passed to the per schema-level components, like `PluginStack`, `WidgetRenderer` to render them virtual from within an e.g. widget.
 
 The `SchemaGridHandler` plugin of the design-system and any other plugin needs to support it, the official provided design systems and plugins are compatible.
 
-An internal switch activates the `VirtualWidgetRenderer`, currently it is not possible to overwrite the base components for virtual rendering, e.g. it does not render your custom string widget, but simply `null`. This is hardcoded, but expected to change in the future, pull requests welcome!
+This relies on the `binding.VirtualRenderer`, set it to e.g. `import { VirtualWidgetRenderer } from '@ui-schema/react-json-schema/VirtualWidgetRenderer'`, otherwise the `WidgetRenderer` will render `null`.
 
 ## Schema is Read-Only
 

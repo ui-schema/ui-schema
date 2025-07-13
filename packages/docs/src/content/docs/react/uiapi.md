@@ -1,6 +1,17 @@
+---
+docModule:
+    package: '@ui-schema/react'
+    modulePath: "react/src/"
+    fromPath: "UIApi"
+    files:
+        - "UIApi/*"
+---
+
 # UIApi
 
-> ❗ Only for loading schemas currently, may move to own package
+> ❗ Deprecated, will be removed in a future version. New $ref handling moves loading to user code, outside of widget rendering.
+
+> ❗ Only for loading schemas.
 
 Add the `UIApiProvider`, should be above all UI renderers, to not load the same schema multiple times.
 

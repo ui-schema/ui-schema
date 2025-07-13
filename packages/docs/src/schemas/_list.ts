@@ -1,5 +1,4 @@
 import { dataMain, dataUser, schemaMain, schemaUser } from './demoMain'
-import { dataStepper, schemaStepper } from './demoStepper'
 import {
     schemaCombining, dataCombining,
     schemaCombiningConditional, dataCombiningConditional,
@@ -23,7 +22,6 @@ This example illustrates a bigger schema.
 Including native-objects, native-types and Widgets.
 
 - [Native Types Example](/examples/Simple-Demo)
-- [Stepper Example](/examples/Stepper)
 - [📚 Native Types](/docs/schema#types)
 - [📚 Widgets](/docs/widgets)
 - [📚 Design-System](/docs/overview#design-systems)
@@ -47,32 +45,18 @@ Including native-objects and native-types.
 - array of any sub-schema
 - array of array tuple schemas
 - \`array\` do only correctly validate when rendered/mounted, at \`if\`/\`else\` only one schema level is validated atm.
-`], ['Table: array tuples', createOrderedMap(demoTable[0][1] as any), List(), `
+`],
+    ['Table: array tuples', createOrderedMap(demoTable[0][1] as any), List(), `
 # Table (array of arrays)
 
 - array of tuple array schemas for the rows
 - using multiple types for nullable behaviour
-`], ['Table: object', createOrderedMap(demoTable[1][1] as any), List(), `
+`],
+    ['Table: object', createOrderedMap(demoTable[1][1] as any), List(), `
 # Table (array of objects)
 
 - array of object schemas for the rows
 - in-schema definition of \`sortOrder\`
-`], ['Stepper', schemaStepper, dataStepper, `
-# Stepper / Sequential Example
-
-Example widget for some full custom implementation.
-
-A stepper is a widget that renders a sub-schema after another, it is only possible to enter the next if the current is validated.
-
-- each property of a stepper is used as a step
-- validation of whole stepper is completed after all steps have been rendered
-- creates an object out of all
-- the stepper controls it's own \`showValidity\`, this overwrites an existing \`false\` to \`true\`
-  - this highlights only the invalid of the stepper, not the containing schema
-  - if the containing schema should display validity, the stepper will do it also
-  - it reset's it's own \`showValidity\` on switching steps
-
-Custom widgets like steppers are defined per [design-system](/docs/overview#design-systems)
 `],
     ['Combination Simple', schemaCombining, dataCombining, `
 # Combining Example Simple

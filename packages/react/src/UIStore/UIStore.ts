@@ -35,11 +35,9 @@ export type UIStoreTypeFactory<D = any> = Record.Factory<UIStoreState<D>>
 export type UIStoreType<D = any> = RecordOf<UIStoreState<D>>
 
 /**
- * the `internals` are nested for safer generic usage, only the key `internals` is reserved (for nesting)
- * {} = {internals: Map({})}
- * {prop_a: 20} = {internals: Map({
- *     prop_a: Map({internals: Map({})})
- * })}
+ * Internals store tree.
+ *
+ * Nested with `.children` and a storeKeys value is scoped to `.self`.
  */
 export type UIStoreInternalsType = Map<string, any>
 

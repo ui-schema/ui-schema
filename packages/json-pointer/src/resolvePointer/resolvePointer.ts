@@ -1,10 +1,13 @@
 import { walkPointer } from '@ui-schema/json-pointer/walkPointer'
 import { List, Map, Record } from 'immutable'
 
-export const resolvePointer = (
+/**
+ * Resolves the data point specified by the JSON-Pointer.
+ */
+export function resolvePointer(
     pointer: string,
     data: unknown,
-): any => {
+): any {
     return walkPointer(
         pointer, data,
         (current, key) => {

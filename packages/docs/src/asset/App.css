@@ -91,7 +91,7 @@ html, body {
     }
 }
 
-button {
+/*button {
     background: transparent;
     transition: 0.4s ease-out background-color;
 }
@@ -103,7 +103,7 @@ button:hover {
 button:focus {
     background: rgba(20, 20, 20, 0.25);
     transition: 0.15s ease-out background-color;
-}
+}*/
 
 .sr-only {
     position: absolute;
@@ -125,18 +125,18 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-pre {
+/*pre {
     white-space: pre-wrap;
     word-wrap: break-word;
     line-height: 1.75;
     padding: 8px 8px;
-}
+}*/
 
 code {
     /*font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace !important;*/
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-    padding: 2px 2px;
-    font-size: 0.875rem;
+    /*padding: 2px 2px;*/
+    font-size: 0.92em;
     /*font-size: 0.875rem !important;*/
 }
 
@@ -197,6 +197,14 @@ h6 + .MuiPaper-root {
 }
 
 
-p {
-    overflow: auto;
+/*p {*/
+/*    overflow: auto;*/
+/*}*/
+
+/* better align of content links, which only contain an img, like with markdown badges */
+a > img:first-child:last-child {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 100%;
 }
+

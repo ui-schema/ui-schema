@@ -1,5 +1,7 @@
+import Alert from '@mui/material/Alert'
 import Tooltip from '@mui/material/Tooltip'
 import React from 'react'
+import yaml from 'yaml'
 import Paper from '@mui/material/Paper'
 import Link from '@mui/material/Link'
 import Button from '@mui/material/Button'
@@ -31,19 +33,50 @@ import Box from '@mui/material/Box'
 const cachedContent = new Map<string, any>()
 
 const DocContent: React.FC<{
-    content: string | undefined
+    docBody: {
+        id: string
+        content: string
+    } | null
     id: string
     progress: string
     doc?: DocRouteModule
-}> = ({content, id, progress, doc}) => {
+}> = ({docBody, id, progress, doc}) => {
     const {palette} = useTheme()
     const {breakpoints} = useTheme()
     const isLg = useMediaQuery(breakpoints.up('lg'))
     const [fullWidth, setFullWidth] = React.useState(window.localStorage.getItem('docs-details--fullWidth') === 'yes')
 
-    const module = doc?.docModule
-    // @ts-ignore
-    const codeDocsPath = module ? '/docs/' + module.package + '/' + (module.moduleFilePath || module.fromPath) + '.json' : undefined
+    const mdDoc = React.useMemo(() => {
+        if (!docBody) return undefined
+        const lines: string[] = docBody.content.split('\n')
+        // todo: add correct front-matter extraction, but e.g. `front-matter` is no longer maintained/browser-optimized
+        let data: any = null
+        if (lines[0] === '---') {
+            const i = lines.slice(1).findIndex((l: string) => l === '---')
+            if (i !== -1) {
+                const fmLines = lines.splice(0, i + 2)
+                if (fmLines.length) {
+                    const ymlContent = fmLines.slice(1, -1).join('\n')
+                    try {
+                        data = yaml.parse(ymlContent)
+                    } catch (e) {
+                        console.error('frontmatter error', docBody, e)
+                    }
+                }
+            }
+        }
+        return {
+            data: data,
+            content: lines.join('\n'),
+        }
+    }, [docBody])
+
+    const docModule = doc?.docModule || mdDoc?.data?.docModule
+    const codeDocsPath =
+        docModule
+        && docModule.package/* && (docModule.moduleFilePath || docModule.fromPath)*/
+            ? '/docs/' + docModule.package + '/' + (docModule.moduleFilePath || docModule.fromPath || id.replaceAll('/', '-')) + '.json'
+            : undefined
     const [modules, setModules] = React.useState<any>(codeDocsPath ? cachedContent.get(codeDocsPath) : undefined)
     const [loadingModuleDocs, setLoadingModuleDocs] = React.useState<boolean>(false)
 
@@ -60,6 +93,7 @@ const DocContent: React.FC<{
             setLoadingModuleDocs(false)
             // still try loading, to refresh on changes, e.g. for local HMR updates
         } else {
+            setModules(undefined)
             setLoadingModuleDocs(true)
         }
 
@@ -79,19 +113,6 @@ const DocContent: React.FC<{
             })
         return () => abort.abort()
     }, [codeDocsPath])
-
-    const mdData = React.useMemo(() => {
-        if (!content) return undefined
-        const lines: string[] = content.split('\n')
-        // todo: add correct front-matter extraction, but e.g. `front-matter` is no longer maintained/browser-optimized
-        if (lines[0] === '---') {
-            const i = lines.slice(1).findIndex((l: string) => l === '---')
-            if (i !== -1) {
-                lines.splice(0, i + 2)
-            }
-        }
-        return lines.join('\n')
-    }, [content])
 
     return <>
         <PageContent maxWidth={isLg && fullWidth ? 'xl' : 'md'} style={{flexGrow: 1}}>
@@ -119,60 +140,76 @@ const DocContent: React.FC<{
                 </Typography>
             </div>
 
-            <Paper style={{margin: '0 0 12px 0', padding: 24, display: 'flex', flexDirection: 'column', borderRadius: 5}} variant={'outlined'}>
-                {progress === 'start' || progress === 'progress' || loadingModuleDocs ?
+            <Paper
+                component={'section'}
+                sx={{
+                    margin: '0 0 12px 0',
+                    padding: '24px',
+                    display: 'flex', flexDirection: 'column',
+                    borderRadius: 2,
+                    '& *': {
+                        wordBreak: 'break-word',
+                    },
+                }}
+                variant={'outlined'}
+            >
+                {progress === 'start' || progress === 'progress' ?
                     <LoadingCircular title={'Loading Docs'}/> :
                     progress === 'error' ?
-                        'error' :
+                        <Box>
+                            <Alert severity={'error'}>Error loading page.</Alert>
+                        </Box> :
                         progress === 'not-found' ?
                             <PageNotFound
                                 title={'Not Available'}
                                 error={'This document seems to be vanished - or not yet created.'}
-                            /> :
-                            <Markdown source={mdData}/>}
+                            /> : null}
+                {mdDoc ? <Markdown source={mdDoc.content}/> : null}
             </Paper>
 
-            {progress === 'success' && !loadingModuleDocs ?
+            {progress === 'success' && doc?.demos?.schema ?
                 <>
-                    {doc?.demos?.schema ?
-                        <div style={{display: 'block', textAlign: 'right', margin: '0 12px 4px 12px'}}>
-                            <Typography variant={'body2'} style={{marginLeft: 'auto'}}>
-                                <Link
-                                    target={'_blank'} rel="noreferrer noopener nofollow"
-                                    href={'https://github.com/ui-schema/ui-schema/tree/develop/packages/docs/src/content/' + id + 'Demo.js'}
-                                >Edit Demos</Link>
-                            </Typography>
-                        </div> : null}
+                    <div style={{display: 'block', textAlign: 'right', margin: '0 12px 4px 12px'}}>
+                        <Typography variant={'body2'} style={{marginLeft: 'auto'}}>
+                            <Link
+                                target={'_blank'} rel="noreferrer noopener nofollow"
+                                href={'https://github.com/ui-schema/ui-schema/tree/develop/packages/docs/src/content/' + id + 'Demo.js'}
+                            >Edit Demos</Link>
+                        </Typography>
+                    </div>
 
-                    {doc?.demos?.schema ?
-                        <Paper style={{marginBottom: 12, padding: 24, display: 'flex', flexDirection: 'column', borderRadius: 5}} variant={'outlined'}>
-                            <Markdown
-                                source={`
+                    <Paper style={{marginBottom: 12, padding: 24, display: 'flex', flexDirection: 'column', borderRadius: 5}} variant={'outlined'}>
+                        <Markdown
+                            source={`
 ## Demo UI Generator
 
 Examples of this widget, using \`ds-material\`. Type in/change the input and check the data or change the schema (e.g. add specific keywords from above), the demo generators are showing invalid directly.
 `}/>
-                            {doc?.demos?.schema.map(([demoText, demoSchema, demoData]: DemoWidget, i) =>
-                                <React.Fragment key={i}>
-                                    {demoText ?
-                                        <Box mb={2}>
-                                            <Markdown source={demoText}/>
-                                        </Box> : null}
-                                    <DemoUIGenerator
-                                        activeSchema={demoSchema}
-                                        data={demoData}
-                                        readOnly={doc?.demos?.readOnly}
-                                        id={'i-' + i}
-                                    />
-                                </React.Fragment>)}
-                        </Paper>
-                        : null}
-
-                    {doc?.docModule ?
-                        <Paper style={{margin: '24px 0 12px 0', padding: 24, display: 'flex', flexDirection: 'column', borderRadius: 5}} variant={'outlined'}>
-                            <DocsDetailsModules codeDocumentation={modules}/>
-                        </Paper> : null}
+                        {doc?.demos?.schema.map(([demoText, demoSchema, demoData]: DemoWidget, i) =>
+                            <React.Fragment key={i}>
+                                {demoText ?
+                                    <Box mb={2}>
+                                        <Markdown source={demoText}/>
+                                    </Box> : null}
+                                <DemoUIGenerator
+                                    activeSchema={demoSchema}
+                                    data={demoData}
+                                    readOnly={doc?.demos?.readOnly}
+                                    id={'i-' + i}
+                                />
+                            </React.Fragment>)}
+                    </Paper>
                 </> : null}
+
+            {docModule ?
+                <Paper
+                    style={{margin: '24px 0 12px 0', padding: 24, display: 'flex', flexDirection: 'column', borderRadius: 5}}
+                    variant={'outlined'}
+                    component={'section'}
+                >
+                    <DocsDetailsModules codeDocumentation={modules}/>
+                    {loadingModuleDocs ? <LoadingCircular title={'Loading Module API'}/> : null}
+                </Paper> : null}
         </PageContent>
 
         <Paper
@@ -260,7 +297,6 @@ const DocsDetails: React.FC<{ scrollContainer: React.RefObject<HTMLDivElement | 
             title={doc => doc?.nav?.label ?
                 doc.nav.label + ' · UI Schema Docs' : 'UI Schema Documentation'}
             NotFound={PageNotFound}
-            // @ts-ignore
             Content={DocContent}
         />
         <ScrollUpButton scrollContainer={scrollContainer} color={'secondary'} right={35} bottom={18} resetHash/>

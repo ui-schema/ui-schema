@@ -1,10 +1,10 @@
 import { pointerToKeySeq } from '@ui-schema/json-pointer/pointerToKeySeq'
 
-export const walkPointer = (
+export function walkPointer(
     pointer: string,
     data: unknown,
     pick: (current: unknown, key: string | number) => unknown,
-): any => {
+): any {
     const keySeq = pointerToKeySeq(pointer)
     if (!keySeq.size) return data
     let current = data

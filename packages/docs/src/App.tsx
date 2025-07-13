@@ -1,8 +1,8 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import { App } from '@control-ui/app/App'
 import { BrowserRouter } from 'react-router-dom'
 import { I18nProviderContext } from '@control-ui/app/I18nProvider'
-import { routes } from './routes'
+import { routing } from './routes'
 import { DndProvider } from 'react-dnd'
 import { MultiBackend } from 'react-dnd-multi-backend'
 import { HTML5toTouch } from 'rdndmb-html5-to-touch'
@@ -15,7 +15,6 @@ import { pluginGoogle, prepareConsent } from '@bemit/consent-ui'
 import { DocsIndexProvider } from '@control-ui/docs/DocsIndexProvider'
 import { DocsSearchProvider } from '@control-ui/docs/DocsSearchProvider'
 import { CustomLayout } from './component/Layout'
-import { LoadingCircular } from '@control-ui/kit/Loading'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 
 if (process.env.REACT_APP_G_TAG) {
@@ -72,21 +71,21 @@ const i18n: I18nProviderContext = {
 
 // export const loading = (title) => (props) => <LoadingCircular {...props} title={title}/>
 
-const loading = (title: string, LoadableContent) => {
-    return function LoadingWrapper(props) {
-        return <Suspense
-            fallback={<LoadingCircular title={title}/>}
-        >
-            <LoadableContent {...props}/>
-        </Suspense>
-    }
-}
-const readyRoutes = routes(loading)
+// const loading = (title: string, LoadableContent) => {
+//     return function LoadingWrapper(props) {
+//         return <Suspense
+//             fallback={<LoadingCircular title={title}/>}
+//         >
+//             <LoadableContent {...props}/>
+//         </Suspense>
+//     }
+// }
+// const readyRoutes = routes(loading)
 const CustomApp: React.ComponentType<{}> = () =>
     <BrowserRouter basename={'/'}>
         <App
             // @ts-ignore
-            routes={readyRoutes}
+            routes={routing}
             Layout={CustomLayout}
             i18n={i18n}
             Provider={Provider}

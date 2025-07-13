@@ -14,39 +14,11 @@
         <changefreq>weekly</changefreq>
     </url>
     <url>
-        <loc>https://ui-schema.bemit.codes/docs/core</loc>
-        <changefreq>weekly</changefreq>
-    </url>
-    <url>
-        <loc>https://ui-schema.bemit.codes/docs/core-renderer</loc>
-        <changefreq>weekly</changefreq>
-    </url>
-    <url>
-        <loc>https://ui-schema.bemit.codes/docs/core-meta</loc>
-        <changefreq>weekly</changefreq>
-    </url>
-    <url>
-        <loc>https://ui-schema.bemit.codes/docs/core-store</loc>
-        <changefreq>weekly</changefreq>
-    </url>
-    <url>
-        <loc>https://ui-schema.bemit.codes/docs/core-pluginstack</loc>
-        <changefreq>weekly</changefreq>
-    </url>
-    <url>
-        <loc>https://ui-schema.bemit.codes/docs/core-uiapi</loc>
-        <changefreq>weekly</changefreq>
-    </url>
-    <url>
-        <loc>https://ui-schema.bemit.codes/docs/core-utils</loc>
+        <loc>https://ui-schema.bemit.codes/docs/binding</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
         <loc>https://ui-schema.bemit.codes/docs/design-systems</loc>
-        <changefreq>weekly</changefreq>
-    </url>
-    <url>
-        <loc>https://ui-schema.bemit.codes/docs/widgets</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
@@ -63,6 +35,106 @@
     </url>
     <url>
         <loc>https://ui-schema.bemit.codes/docs/widgets-composition</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/core</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/core-pluginstack</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/core/schemapluginstack</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/core/schemaresource</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/core/localization</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/core/utils</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/react</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/react/renderer</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/react/meta</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/react/store</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/react/localization</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/react/widgetengine</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/react/plugins</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/react/uiapi</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/react/utils</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/react/schemaresourceprovider</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/react/schemapluginsadapter</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/react-json-schema/overview</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/react-json-schema/plugins</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/json-schema/overview</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/json-schema/plugins</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/json-schema/validator</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/json-schema/validators</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/json-pointer/overview</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/widgets/overview</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
@@ -127,6 +199,10 @@
     </url>
     <url>
         <loc>https://ui-schema.bemit.codes/docs/widgets/TextField</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/ds-material/introduction</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
@@ -271,6 +347,10 @@
     </url>
     <url>
         <loc>https://ui-schema.bemit.codes/docs/material-dnd/widgets-generic</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/docs/ds-bootstrap/introduction</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>

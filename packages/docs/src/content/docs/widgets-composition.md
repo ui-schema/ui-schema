@@ -14,7 +14,7 @@ A lot of [component composition](https://www.robinwieruch.de/react-component-com
 
 Custom [`React.Context` / Providers](https://reactjs.org/docs/context.html) are used for handling store updates and extracting with special [HOCs](https://reactjs.org/docs/higher-order-components.html) (connecting `store` to `props`), but enabling `store`/`state` management by typical stuff like `React.useState`, `React.useReducer` or redux reducers.
 
-Using an additional [plugins system based on props](/docs/core-pluginstack#simple-plugins) for a shallower component tree of e.g. validators.
+Using an additional [plugins system based on props](/docs/react/widgetengine#simple-plugins) for a shallower component tree of e.g. validators.
 
 ## Widgets & Component Plugins
 
@@ -22,7 +22,7 @@ Each plugin or widget should only need to do one specific thing, in one specific
 
 > Check the base concepts about [performance](/docs/performance) to learn how unnecessary re-renders are reduced.
 
-The AST and plugins are rendered by [`WidgetEngine`](/docs/core-pluginstack).
+The AST and plugins are rendered by [`WidgetEngine`](/docs/react/widgetengine).
 
 A plugin or widget can use more than only it's own schema/store level in various ways.
 
@@ -152,9 +152,17 @@ Together with cases like: `deleteOnEmpty` within `array` [issue #106](https://gi
 
 ### Output in Core
 
-These are the only positions where `@ui-schema/ui-schema` renders output directly.
+With v0.5.x the `@ui-schema/ui-schema` package is isomorphic and not responsible to produce anything itself.
 
-- error info in `matchWidget` (and thus also `WidgetRenderer`) renders an empty fragment with `missing-*` text when no widget is matching
+The new "rendering core" `@ui-schema/react` has no hard coded output anymore, only headless components and hooks are required to get it working.
+
+Output only exists in two **optional components**:
+
+- `@ui-schema/react`
+    - if no widget could be matched, the `NoWidget` is rendered by `WidgetRenderer`
+    - caused by error which is emitted by `matchWidget`
     - can be changed with a custom `NoWidget` component in the `binding`
-- *(deprecated in 0.5.x)* loading info in `Plugins/ReferencingHandler` while missing schemas are loaded AND it is not virtual
-    - the `Translate` component is rendered with `labels.loading` and with fallback text `Loading`
+    - renders an empty fragment with `missing-*` text when no widget is matching
+- `@ui-schema/react-json-schema`
+    - *(deprecated in 0.5.x)* loading info in `Plugins/ReferencingHandler` while missing schemas are loaded AND it is not virtual
+        - the `Translate` component is rendered with `labels.loading` and with fallback text `Loading`

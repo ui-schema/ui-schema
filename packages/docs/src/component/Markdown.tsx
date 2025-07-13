@@ -44,7 +44,7 @@ renderers.ul = p => <MdList {...p} dense/>
 // @ts-ignore
 renderers.ol = p => <MdList {...p} dense/>
 // @ts-ignore
-renderers.code = ({children, ...p}) => <MdInlineCode variant={'body1'} {...p} p={0.75}>{children}</MdInlineCode>
+renderers.code = ({children, ...p}) => <MdInlineCode variant={'inherit'} {...p} p={0.75}>{children}</MdInlineCode>
 renderers.pre = ({node, ...p}) => {
     const codeChild = node?.children?.[0]
     if (!codeChild || codeChild.type !== 'element' || codeChild.tagName !== 'code') return <pre {...p}/>
@@ -70,7 +70,7 @@ renderers.pre = ({children}) => <pre style={{margin: 0}}>{children}</pre>
 
 const renderersContent = baseRenderers(false)
 // @ts-ignore
-renderersContent.code = ({children, ...p}) => <MdInlineCode variant={'body1'} {...p} p={0.75}>{children}</MdInlineCode>
+renderersContent.code = ({children, ...p}) => <MdInlineCode variant={'inherit'} {...p} p={0.75}>{children}</MdInlineCode>
 renderersContent.pre = ({node, ...p}) => {
     const codeChild = node?.children?.[0]
     if (!codeChild || codeChild.type !== 'element' || codeChild.tagName !== 'code') return <pre {...p}/>

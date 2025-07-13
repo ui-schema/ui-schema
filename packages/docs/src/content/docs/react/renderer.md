@@ -1,37 +1,14 @@
+---
+docModule:
+    package: '@ui-schema/react'
+    modulePath: "react/src/"
+    files:
+        - "WidgetRenderer/*"
+---
+
 # UI Schema Generator & Renderer
 
 Components responsible for the actual rendering of plugins and then finally the widget, using data and functions from the `UI Store` and `UI Meta` providers (or all in one as `UIProvider`)
-
-> ❗ These components will have a breaking change in `v0.5.0`, split up into own modules, [see issue](https://github.com/ui-schema/ui-schema/issues/100)
-
-## UIGenerator
-
-> ⚠ deprecated, will be removed in `v0.5.0`
-
-Convenience, single-entry-point UI Schema generator, starts the whole schema and renders the RootRenderer with `UIRootRenderer`, **checkout the [quick-start](/quick-start)** for a full example!
-
-## UIRootRenderer
-
-> ⚠ deprecated, will be removed in `v0.5.0`
-
-Connects to the current context and starts parsing the schema, renders the `widgets.RootRenderer`.
-
-Starts rendering the root level schema with [`PluginStack`](/docs/core-pluginstack), (passed to `widgets.RootRenderer` in `children` prop).
-
-`widgets.RootRenderer` is rendered inside it, within a memoized component.
-
-```javascript
-import {UIStoreProvider} from '@ui-schema/ui-schema/UIStore';
-import {UIRootRenderer} from '@ui-schema/ui-schema/UIRootRenderer';
-
-<UIStoreProvider
-    store={store}
-    onChange={onChange}
-    showValidity={showValidity}
->
-    <UIRootRenderer schema={schema}/>
-</UIStoreProvider>
-```
 
 ## WidgetRenderer
 
@@ -40,12 +17,6 @@ Finds the actual widget in the mapping by the then defined schema, renders the w
 If no widget is fund, renders nothing / `null`, but the plugins may have already rendered something! (like the grid)
 
 Executes `onErrors` for that schema level, when `errors` have changed and `onErrors` was specified.
-
-**Handles removing props**, before rendering the actual widget component. For performance reasons removes these `props`:
-
-- `value` is removed for `schema.type` `array` or `object`
-- `internalValue` is removed for `schema.type` `array` or `object`
-- `requiredList` is removed for every type
 
 **Is itself in the `widgets` binding** and can be replaced / extended this way, `widgets.WidgetRenderer` (since `0.3.0`).
 

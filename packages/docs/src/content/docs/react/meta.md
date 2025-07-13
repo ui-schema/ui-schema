@@ -1,3 +1,15 @@
+---
+docModule:
+    package: '@ui-schema/react'
+    modulePath: "react/src/"
+    # fromPath: "UIMeta"
+    files:
+        #- "UIMeta/UIMeta.tsx"
+        #- "UIMetaReadContext/UIMetaReadContext.ts"
+        - "UIMeta/*"
+        - "UIMetaReadContext/*"
+---
+
 # UI Schema: Meta
 
 ## UIMetaProvider

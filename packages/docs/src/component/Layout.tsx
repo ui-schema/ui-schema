@@ -1,10 +1,12 @@
-import React from 'react'
+import { useRouter } from '@control-ui/routes/RouterProvider'
+import CircularProgress from '@mui/material/CircularProgress'
+import React, { Suspense } from 'react'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import InvertColorsIcon from '@mui/icons-material/InvertColors'
 import { RouteComponentProps } from 'react-router'
 import GithubLogo from '../asset/GithubLogo'
-import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { Switch, Link as RouterLink, Route, useLocation } from 'react-router-dom'
 import { useTheme } from '@mui/material/styles'
 import IcSearch from '@mui/icons-material/Search'
 import Typography from '@mui/material/Typography'
@@ -17,7 +19,7 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import { useConsent } from '@bemit/consent-ui-react'
 import { ConsentUiBoxDialog, dialogPositions } from '@bemit/consent-ui-mui'
 import { Layout, LayoutProps } from '@control-ui/app/Layout'
-import { RouteCascade } from '@control-ui/routes/RouteCascade'
+import { RouteCascadeNested } from '@control-ui/routes/RouteCascade'
 import { useSearch } from '@control-ui/docs/DocsSearchProvider'
 import { getUserCtrlKey, getUserPlatform } from '@control-ui/kit/Helper'
 import PageNotFound from '../page/PageNotFound'
@@ -33,6 +35,9 @@ export const CustomHeaderBase: React.ComponentType = () => {
     const platform = getUserPlatform()
     return <Header
         appBarSquare
+        appBarSx={{
+            backgroundImage: 'unset',
+        }}
     >
         <RouterLink to={'/'} style={{display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit', marginRight: 8}}>
             <Logo width={26} style={{marginLeft: 6, display: 'block', flexShrink: 0}}/>
@@ -86,12 +91,45 @@ export const CustomHeaderBase: React.ComponentType = () => {
 }
 const CustomHeader = React.memo(CustomHeaderBase)
 
-const RoutingBase: LayoutProps['Content'] = (p) =>
-    <RouteCascade
-        routeId={'content'}
-        childProps={p}
-        Fallback={PageNotFound as React.ComponentType<RouteComponentProps & { scrollContainer?: any }>}
-    />
+// const RoutingBase: LayoutProps['Content'] = (p) =>
+//     <RouteCascade
+//         routeId={'content'}
+//         childProps={p}
+//         Fallback={PageNotFound as React.ComponentType<RouteComponentProps & { scrollContainer?: any }>}
+//     />
+
+export const RoutingBase: LayoutProps['Content'] = (p) => {
+    const routeId = 'content'
+    const childProps = p
+    const Fallback = PageNotFound as React.ComponentType<RouteComponentProps & { scrollContainer?: any }>
+    const {routes} = useRouter()
+    return <Suspense
+        fallback={<CircularProgress color={'secondary'} sx={{mx: 'auto', my: 4}}/>}
+    >
+        <Switch>
+            {/* need to pass the exact same props to the first level of switch, RouteCascaded must be compatible with `Route` */}
+            {routes?.routes?.map((route, i) => {
+                const routeConfig = route?.config?.[routeId] || {}
+                return <RouteCascadeNested
+                    key={i}
+                    path={route.path as string}
+                    routeId={routeId}
+                    childProps={childProps}
+                    {...routeConfig}
+                />
+            })}
+
+            {Fallback ? <Route
+                render={props => (
+                    // pass the sub-routes down to keep nesting
+                    // @ts-ignore
+                    <Fallback {...props} {...childProps}/>
+                )}
+            /> : null}
+        </Switch>
+    </Suspense>
+}
+
 export const Routing: LayoutProps['Content'] = React.memo(RoutingBase)
 
 export const CustomLayout = () => {

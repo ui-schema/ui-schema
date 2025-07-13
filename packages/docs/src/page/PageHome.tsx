@@ -52,7 +52,7 @@ export default function PageHome() {
     - [auto-rendering by data & schema](/quick-start) or [full-custom forms](/quick-start?render=custom) with autowired widgets
     - easily add advanced features like [read-or-write mode](/docs/core-meta#read-context)
 - flexible translation of widgets
-    - with any library ([\`t\` prop (Translator)](/docs/localization#translation), [\`Translate\` component](/docs/localization#trans-component))
+    - with any library ([\`t\` prop (Translator)](/docs/localization#translation), [\`Translate\`/\`TranslateTitle\` components](/docs/localization#trans-component))
     - in-schema translations ([\`t\` keyword](/docs/localization#translation-in-schema))
     - label text transforms ([\`tt\`/\`ttEnum\` keyword](/docs/localization#text-transform))
     - single or multi-language
@@ -60,7 +60,7 @@ export default function PageHome() {
     - (optional) [tiny integrated translation library](/docs/localization#immutable-as-dictionary)
     - (optional) [translation dictionaries](./packages/dictionary)
 - modular, extensible and slim core
-    - add own [plugins](/docs/core-pluginstack)
+    - add own [plugins](/docs/react/widgetengine)
     - add own validators
     - add own base renderers
     - add own widget matchers & render strategies
@@ -68,7 +68,7 @@ export default function PageHome() {
 - [performance optimized](/docs/performance), only updates HTML which must re-render, perfect for big schemas
 - code-splitting, with custom widget mappings / lazy-loading widgets
 - includes helper functions for store and immutable handling
-- easy nesting for custom object/array widgets with [\`PluginStack\`](/docs/core-pluginstack)
+- easy nesting for custom object/array widgets with [\`WidgetEngine\`](/docs/react/widgetengine)
 - validate hidden/auto-generated values, virtualize schema levels ([\`hidden\` keyword](/docs/schema#hidden-keyword--virtualization))
 - handle store update from anywhere and however you want
 - extensive documentations of core, widgets

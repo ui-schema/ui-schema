@@ -21,13 +21,17 @@ const demoOptionsList: DemoWidget[] = [
                                         title: 'Left Sidebar',
                                     },
                                 },
-                            }, {
+                            },
+                            {
                                 const: 'sidebar_right',
-                            }, {
+                            },
+                            {
                                 const: 'notice',
-                            }, {
+                            },
+                            {
                                 const: 'content',
-                            }, {
+                            },
+                            {
                                 const: 'footer',
                             },
                         ],

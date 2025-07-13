@@ -97,7 +97,7 @@ const RichCodeEditor = (
         tabSize?: number
         fontSize?: number
         theme?: string
-        mode?: string
+        mode?: string | null
         raw?: boolean
         renderChange?: number
         minLines?: number
@@ -109,6 +109,8 @@ const RichCodeEditor = (
     const uid = React.useId()
     // triple state/dual-type needed, 0 as default, true when open, false when closed,
     // is used to detect "it will have lines when closed again" - as otherwise, once opened, the "has-scrollbars" check is `false` and the show-less button will be hidden
+    const [touched, setTouched] = React.useState(false)
+    const [focused, setFocused] = React.useState(false)
     const [showAll, setShowAll] = React.useState<boolean | number>(0)
     const [editor, setEditor] = React.useState<any>({})
     const scrollBar = editor && editor.container ? editor.container.querySelector('.ace_scrollbar-v') : undefined
@@ -120,6 +122,13 @@ const RichCodeEditor = (
             editor.renderer.updateFull(true)
         }
     }, [editor, renderChange])
+
+    React.useEffect(() => {
+        if (!editor?.renderer?.$cursorLayer?.element) return
+
+        // especially in readOnly components, the cursor can confuse as looks like a symbol sometimes in an empty line
+        editor.renderer.$cursorLayer.element.style.display = touched ? 'block' : 'none'
+    }, [editor, touched])
 
     if (raw) {
         return <textarea
@@ -134,13 +143,13 @@ const RichCodeEditor = (
         />
     }
 
-    const mode = modeProp in modeAlias ? modeAlias[modeProp] : modeProp
+    const mode = modeProp && modeProp in modeAlias ? modeAlias[modeProp] : modeProp
 
     const Wrapper = enableShowAll ? RelativeDiv : React.Fragment
 
     return <Wrapper>
         <AceEditor
-            mode={mode}
+            mode={mode || undefined}
             theme={palette.mode === 'light' ? themesLight[0] : theme}
             value={typeof value !== 'string' && value ? value.toString() : value || ''}
             onChange={onChange}
@@ -148,9 +157,9 @@ const RichCodeEditor = (
             editorProps={{$blockScrolling: true}}
             showGutter
             showPrintMargin={false}
-            highlightActiveLine
+            // highlightActiveLine
             // orientation={'below'}
-            style={{width: '100%', height: 'auto', flexGrow: 2, lineHeight: '1.27em', transition: 'height 0.4s linear 0s', ...style}}
+            style={{width: '100%', height: 'auto', flexGrow: 2, lineHeight: '1.27em', ...style}}
             width={'100%'}
             minLines={minLines}
             maxLines={showAll ? 3000 : maxLines}
@@ -159,6 +168,11 @@ const RichCodeEditor = (
             enableLiveAutocompletion
             wrapEnabled
             readOnly={readOnly}
+            onFocus={() => {
+                setFocused(true)
+                setTouched(true)
+            }}
+            onBlur={() => setFocused(false)}
             onLoad={editor => {
                 setEditor(editor)
                 if (getEditor) {
@@ -175,8 +189,8 @@ const RichCodeEditor = (
                 showLineNumbers: true,
                 scrollPastEnd: true,
                 fontSize: fontSize,
-                highlightActiveLine: !readOnly,
-                highlightGutterLine: !readOnly,
+                highlightActiveLine: focused,
+                highlightGutterLine: focused,
             }}
         />
         {enableShowAll && (typeof showAll === 'boolean' || (editor && editor.container && scrollBar && scrollBar.clientHeight && scrollBar.clientWidth)) ?

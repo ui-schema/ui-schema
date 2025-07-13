@@ -462,7 +462,7 @@ const EditorSchemaInfoBase = (
                         <SpeakerNotes fontSize={'small'} style={{margin: 'auto ' + (verticalSplit ? 0 : 9) + 'px auto auto'}}/>}
                 </Button>
 
-                {showInfo ? <Paper style={{overflow: 'auto', padding: '0 6px 0 0'}} ref={infoBox}><Box mt={1} mb={1} ml={2} mr={verticalSplit ? 0 : 1.5}>
+                {showInfo ? <Paper elevation={0} style={{overflow: 'auto', padding: '0 6px 0 0'}} ref={infoBox}><Box mt={1} mb={1} ml={2} mr={verticalSplit ? 0 : 1.5}>
                     <div style={{overflow: 'visible', margin: 0}}>
                         <Markdown source={info}/>
                     </div>
@@ -742,7 +742,7 @@ const EditorHandler = ({activeSchema}: any) => {
 
                         <main className="App-main" style={{height: '100%', overflow: 'auto', width: fullWidth ? '100%' : undefined, maxWidth: 'none', margin: verticalSplit ? '0 auto' : 0, order: verticalSplit ? 3 : 1}}>
                             {activeState.jsonError ?
-                                <Paper sx={{margin: 2, padding: 3}}>
+                                <Paper elevation={0} sx={{margin: 2, padding: 3}}>
                                     <Typography component={'h2'} variant={'h5'} color={'error'}>
                                         JSON-Error:
                                     </Typography>
@@ -751,7 +751,7 @@ const EditorHandler = ({activeSchema}: any) => {
                                         {activeState.jsonError.replace('SyntaxError: JSON.parse: ', '')}
                                     </Typography>
                                 </Paper> :
-                                resource ? <Paper sx={{margin: 2, padding: 3}}>
+                                resource ? <Paper elevation={0} sx={{margin: 2, padding: 3}}>
                                     <SchemaResourceProvider
                                         resource={resource}
                                     >
@@ -851,6 +851,7 @@ const EditorHandler = ({activeSchema}: any) => {
                                 </Paper> : null}
 
                             <Paper
+                                elevation={0}
                                 sx={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 1, mx: 2, mb: 2, p: 2}}
                             >
                                 {/* todo: dynamic width is confusing, but toggling without change also, enable this with fixed width breakpoint select */}

@@ -1,6 +1,6 @@
-# Widgets & Widget Binding
+# Components & Widgets Binding
 
-> 📌 Here for the [**list of widgets**](/docs/overview#widget-list)?
+> 📌 Here for the [**list of widgets**](/docs/widgets/overview#widget-list)?
 
 This document is about **creating own widgets and design-system bindings** or changing existing ones.
 
@@ -39,7 +39,7 @@ const customWidgets = {
 export {customWidgets}
 ```
 
-> see the more in-depth docs about the [widget composition concept](/docs/widgets-composition) and the basics about [`PluginStack`](/docs/core-pluginstack)
+> see the more in-depth docs about the [widget composition concept](/docs/widgets-composition) and the basics about [`PluginStack`](/docs/react/widgetengine)
 
 Use github to [request new widget properties](https://github.com/ui-schema/ui-schema/issues/new?template=widget_composition.md) - awesome if you add PRs!
 
@@ -49,7 +49,7 @@ See also [adding or overwriting widgets](#adding--overwriting-widgets)
 
 JSON-Schema is handled mostly by the `widgets.widgetPlugins` for you, focus on the behaviour of the widget, connect it through the provided properties and the HOC `extractValue` (only non-scalar values).
 
-Each widget gets properties provided by the root schema renderer or added from plugins. When rendering nested schemas, all passed down `props` to [`PluginStack`](/docs/core-pluginstack) are passed to the nested widget(s) - except those removed by [`WidgetRenderer`](/docs/core-renderer#widgetrenderer).
+Each widget gets properties provided by the root schema renderer or added from plugins. When rendering nested schemas, all passed down `props` to [`PluginStack`](/docs/react/widgetengine) are passed to the nested widget(s) - except those removed by [`WidgetRenderer`](/docs/core-renderer#widgetrenderer).
 
 Received properties from `WidgetRenderer` or accumulated in plugins & pluginSimpleStack:
 
@@ -135,7 +135,7 @@ Create a complete custom binding or only `import` the components you need and op
     - see [how to create widget plugins](/docs/plugins#create-a-widget-plugin)
 - `pluginSimpleStack` the simple plugins
     - e.g. used to validate json schema `required`
-    - see [how to create simple plugins](/docs/plugins#create-a-simple-plugin)
+    - see [how to create simple plugins](/docs/schemapluginstack#create-a-schema-plugin)
 - `custom` contains widgets mapping with schema's `widget`
 - `types` contains native-type widgets mapping with schema's `type`
 
@@ -146,19 +146,6 @@ Example default binding for `material-ui` can be used as template:
 - [Widgets Base Definition](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/widgetsBinding/widgetsBinding.ts) - binding of widgetPlugins, validators and root-grid and the actual widgets for a design-system
 
 [Contributing a new ds-binding?](/docs/design-systems#add-design-system-package)
-
-### Lazy Loading Bindings
-
-> ❌ Concept, usable but risky
->
-> not all widgets are getting exported perfectly atm.
-
-- needs more exports/splits from ui-schema/each ds ❌
-- needs react-loadable/react.lazy support (deep testing is missing) ❌
-
-Lazy bindings are only loading the needed widgets when really rendering, this can be achieved with code-splitting, through dynamic imports and e.g. `React.lazy` or `react-loadable`.
-
-It is only recommended for bigger widgets, using it for e.g. `type` widget is mostly unneeded - as used anywhere and would produce a lot small network-requests.
 
 #### Example with react-loadable
 
@@ -212,7 +199,7 @@ export const widgets = {
 Use the existing exported binding of your design-system and add or overwrite widgets or add new plugins.
 
 - overwriting is recommended for composition widgets or when using the overwritten in the same page/app
-- or when using the [lazy-loading widgets](#lazy-loading-bindings)
+- or when using lazy-loaded widgets
 
 Simple example of adding a new widget to the binding:
 

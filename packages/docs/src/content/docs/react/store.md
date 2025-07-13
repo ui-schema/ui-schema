@@ -1,3 +1,17 @@
+---
+docModule:
+    package: '@ui-schema/react'
+    modulePath: "react/src/"
+    # fromPath: "UIStore"
+    files:
+        - "UIStore/*"
+        - "UIStoreActions/*"
+        - "storeBuildScopeTree/*"
+        - "storeScopeUpdater/*"
+        - "storeUpdater/*"
+---
+
+
 # UI Schema: Store
 
 Components and Hooks responsible for store binding, configuration - and utilities for handling store changes.

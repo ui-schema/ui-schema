@@ -29,9 +29,7 @@ List of renamed functions, components etc., most are also moved to other package
 
 ### DS Material
 
-- adjusted root import paths, no longer exports the actual widgets directly - only with sub-folder
-- `widgetsBinding` case adjusted to `*W*idgetsBinding`, no longer exports `widgets`
-- `WidgetBinding | WidgetsBinding | MuiWidgetsBinding` types, folder and file names normalized to be `WidgetsBinding`
+- `WidgetBinding | WidgetsBinding | MuiWidgetsBinding` types, folder and file names normalized to be `/Binding`, `/BindingDefault`, `/BindingExtended`
 - ~~previous `widgetsBinding.widgets` now exported with multiple modular functions:~~
     - ~~separate files in `WidgetsDefault`, to be able to only import the ones really used in your app~~
     - i~~mport all: `import * as WidgetsDefault from '@ui-schema/ds-material/WidgetsDefault'`~~
@@ -49,12 +47,14 @@ List of renamed functions, components etc., most are also moved to other package
 - added `SchemaGridNextItem` for mui v7, with `Grid['size']` property, *not using `Grid2`*, *not compatible with v5/6*
 - [ ] `Grid2` components are not enough, as `GenericList` and other container widgets may include hard coded wrappers, which rely on the same Grid component inside the grid plugin
 - fix `forbidInvalidNumber` prevents too much for keyboard control
+- removed `react-uid` dependency
 
 ### DS Bootstrap
 
 - switched to strict esm
 - update `clsx` to v2 (peer-dep)
     - as v1 is not compatible with `moduleResolution: Node16`
+- removed `react-uid` dependency
 - css and html fixes, bootstrap 5
 
 ### System
@@ -150,13 +150,13 @@ Todo:
             "unevaluatedProperties": false
           }
           ```
-- rewrite the "Combination with Conditional" demo and explain why that is caused and how to prevent non-existing values from causing validations to not behave like expected with what is rendered
+- [ ] rewrite the "Combination with Conditional" demo and explain why that is caused and how to prevent non-existing values from causing validations to not behave like expected with what is rendered
     - the point with e.g. `required` only validates if a value is `object`, not if the value is a `string` (and all other switch to `typeof` checks instead of `type` keyword),
       and as UI is rendered for the whole schema and not only for existing values, the validation must correctly cascade or `default` values must be set
         - "in json-schema by default a schema won't be evaluated further if the value does not exist, while for UI we want to render nested fields and lazily initialize the tree up to that field, even if no value exists at all"
     - **TBD:** doesn't that also mean, that `if` shouldn't be evaluated at all if there isn't a value to evaluated?! which would restore similar behaviour like <=0.4.x validators, while being spec. compliant
     - **NOTE:** in `if` and `not` keyword validators, they no longer evaluate deeper if the value is `undefined`, which fixes the behaviour of the combination w/ conditional example! that seems to be the solution.
-- rewrite the plugin adapter to allow async from start? or more the part which loops the validator fn and walks the tree.
+- [ ] rewrite the plugin adapter to allow async from start? or more the part which loops the validator fn and walks the tree.
     - how to provide react based hooks via non-react validators plugins? force to write an own widgetPlugin instead of using the default, if someone wishes to use that?
     - should work around "pausing" the validator, by stopping the loop as soon as possible, returning a state+unresolved payload, which the user must resolve and then restart validation from the state
 
@@ -455,6 +455,35 @@ new widget engine functions:
     - this undefined behaviour / normal errors isn't nice
     - an automatic correction should be optional, as imho. unexpected and may lead to more complex integration with most ORM/DMS
 - [ ] provide a demo of custom store actions which use the schema resource system for more complex recursive mutations?
+- [ ] rethink if `@ui-schema/react-json-schema` is really needed, only some very easy replaceable dependencies to `/json-schema`, and otherwise types
+- [ ] update documentation
+    - [ ] quick start
+    - [ ] new overview
+    - [x] optimized widgets section, with previous overview as index
+    - [ ] separate schema related concepts and docs, like translations, and link to docs of their implementations
+    - [ ] replace old plugins page with overview and links to new widgetPlugins, schemaPPluginsAdapter and validator
+    - [ ] for core and react, separate guides from api docs
+        - [ ] create general usage guides (for react)
+        - [ ] add docs for `/ui-schema`
+            - **TBD:** named `core` in docs/routes, keep it or make it package name?
+        - [ ] add docs for `/react`
+        - [ ] add docs for `/dictionary`
+        - [x] add docs for `/json-pointer` (basic)
+        - [x] add docs for `/json-schema` (basic)
+        - [x] add docs for `/react-json-schema` (basic)
+    - [ ] basic setup/customization guide for ds-material? or is quick-start enough, incl. demo repos?
+    - [ ] basic setup/customization guide for ds-bootstrap? or is quick-start enough, incl. demo repos?
+    - [ ] enable external widget packages (code/color/...) once migrated to 0.5.x
+    - [ ] add redirects for important pages, via htaccess
+    - [ ] scroll to headline does not work for module apis, due to lazy and without effect
+    - [ ] scroll to headline does not work for cached pages, as progress has no change and thus effect is skipped
+    - [ ] simpler docs page definition and normalized module-api via md-frontmatter
+        - [ ] automatic md-page loading + nav registration?
+        - [ ] wildcard support in docModule files definition?
+        - [ ] md file normalization / loader
+            - not required for wildcard, as `files` in route/spec is only used as definition, while index/extracted is used for search/viewer
+        - [ ] remove unused meta data from generated API documentation, rather large JSON, as un-optimized tree with paths as ids
+        - [ ] central docs mapping for packages, to remove `modulePath` and other such needed manual configuration for doc gen
 
 ---
 

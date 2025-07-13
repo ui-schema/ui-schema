@@ -2,8 +2,12 @@ import React, { lazy } from 'react'
 import { DocRouteModule, routesDocs } from './content/docs'
 
 export type Comp = React.ComponentType<{ scrollContainer: React.MutableRefObject<HTMLDivElement | null> }>
-type Loading = <P = {}>(title: string, Content: React.ComponentType<P>) => React.ComponentType<P>
-export const routes = (loading: Loading): DocRouteModule<Comp> => ({
+
+// type Loading = <P = {}>(title: string, Content: React.ComponentType<P>) => React.ComponentType<P>
+
+const DocsDetailsLazy = lazy(() => import('./page/DocsDetails'))
+
+export const routes = (): DocRouteModule<Comp> => ({
     routes: [
         {
             path: '/',
@@ -14,10 +18,12 @@ export const routes = (loading: Loading): DocRouteModule<Comp> => ({
             config: {
                 content: {
                     exact: true,
-                    component: loading('Loading', lazy(() => import('./page/PageHome'))) as Comp,
+                    component: lazy(() => import('./page/PageHome')) as Comp,
+                    // component: loading('Loading', lazy(() => import('./page/PageHome'))) as Comp,
                 },
             },
-        }, {
+        },
+        {
             path: '/docs/:docId+',
             nav: {
                 to: '/docs',
@@ -25,13 +31,15 @@ export const routes = (loading: Loading): DocRouteModule<Comp> => ({
             },
             config: {
                 content: {
-                    component: loading('Loading Docs Viewer', lazy(() => import('./page/DocsDetails'))) as Comp,
+                    // component: loading('Loading Docs Viewer', DocsDetailsLazy) as Comp,
+                    component: DocsDetailsLazy as Comp,
                 },
             },
             // doc: true,
             // @ts-ignore
             routes: routesDocs.routes,
-        }, {
+        },
+        {
             doc: 'updates/overview',
             path: '/updates',
             nav: {
@@ -42,7 +50,8 @@ export const routes = (loading: Loading): DocRouteModule<Comp> => ({
             },
             config: {
                 content: {
-                    component: loading('Loading Docs Viewer', lazy(() => import('./page/DocsDetails'))) as Comp,
+                    // component: loading('Loading Docs Viewer', DocsDetailsLazy) as Comp,
+                    component: DocsDetailsLazy as Comp,
                 },
             },
             routes: [
@@ -77,7 +86,8 @@ export const routes = (loading: Loading): DocRouteModule<Comp> => ({
                     },
                 },
             ],
-        }, {
+        },
+        {
             path: '/examples/:schema?',
             nav: {
                 to: '/docs',
@@ -85,10 +95,12 @@ export const routes = (loading: Loading): DocRouteModule<Comp> => ({
             },
             config: {
                 content: {
-                    component: loading('Loading Live-Editor', lazy(() => import('./page/PageLiveEdit'))) as Comp,
+                    // component: loading('Loading Live-Editor', lazy(() => import('./page/PageLiveEdit'))) as Comp,
+                    component: lazy(() => import('./page/PageLiveEdit')) as Comp,
                 },
             },
-        }, {
+        },
+        {
             path: '/quick-start',
             nav: {
                 to: '/quick-start',
@@ -96,23 +108,30 @@ export const routes = (loading: Loading): DocRouteModule<Comp> => ({
             },
             config: {
                 content: {
-                    component: loading('Loading Quick-Start', lazy(() => import('./page/PageQuickStart'))) as Comp,
+                    // component: loading('Loading Quick-Start', lazy(() => import('./page/PageQuickStart'))) as Comp,
+                    component: lazy(() => import('./page/PageQuickStart')) as Comp,
                 },
             },
-        }, {
+        },
+        {
             path: '/impress',
             config: {
                 content: {
-                    component: loading('Loading', lazy(() => import('./page/PageLaw').then(m => ({default: m.PageImpress})))) as Comp,
+                    // component: loading('Loading', lazy(() => import('./page/PageLaw').then(m => ({default: m.PageImpress})))) as Comp,
+                    component: lazy(() => import('./page/PageLaw').then(m => ({default: m.PageImpress}))) as Comp,
                 },
             },
-        }, {
+        },
+        {
             path: '/privacy',
             config: {
                 content: {
-                    component: loading('Loading', lazy(() => import('./page/PageLaw').then(m => ({default: m.PagePrivacy})))) as Comp,
+                    // component: loading('Loading', lazy(() => import('./page/PageLaw').then(m => ({default: m.PagePrivacy})))) as Comp,
+                    component: lazy(() => import('./page/PageLaw').then(m => ({default: m.PagePrivacy}))) as Comp,
                 },
             },
         },
     ],
 })
+
+export const routing = routes()

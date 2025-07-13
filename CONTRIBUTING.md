@@ -1,10 +1,23 @@
 # Contributing to UI-Schema
 
-## v0.5.0 dev branch
+This repository is a monorepo, managed with lerna and npm workspaces.
 
-*(stub)*
+1. Fork/Clone repository **branch `develop`**
+2. Install root dev-dependencies (like lerna, webpack): `npm i --legacy-peer-deps`
+3. Start dev-server: `npm start`
+    - (will clean-dist + start demo-web app)
+    - to starts docs app: `npm start -- --serve docs`
+    - to starts picker demo app: `npm start -- --serve pickersDemo`
+4. Open browser on [localhost:4200](http://localhost:4200) for demo-web, [localhost:4201](http://localhost:4201) for docs
+5. Explore [packages](packages)
+6. Code -> Commit -> Pull Request -> Being Awesome!
 
-Switched to npm workspaces for monorepo deps management.
+Changes from any package are reflected inside the demo-web/docs package.
+
+See current *[packages/demo-web@master](https://ui-schema-demo.netlify.app/)* or
+*[packages/demo-web@develop](https://develop--ui-schema-demo.netlify.app/)*
+
+---
 
 ```shell
 npm i --legacy-peer-deps
@@ -26,7 +39,7 @@ Clearing the cache seems to fix it:
 rm -rf node_modules/.cache
 ```
 
-Server with `tsx`:
+**SSR, server with `tsx`**:
 
 ```shell
 tsx ./packages/demo-server/src/cli.js pointer
@@ -37,39 +50,51 @@ Note that it doesn't work when starting `tsx` from within the packages folder or
 
 ---
 
-Server with `ts-node`, *broken monorepo TS-ESM module resolving*:
+**SSR, server with `ts-node`**, *broken monorepo TS-ESM module resolving*:
 
 ```shell
 npm -w packages/demo-server run serve
 npm -w packages/demo-server run cli pointer
 ```
 
-## develop branch (0.4.0)
+## Documentation App
 
-1. Fork/Clone repository **branch `develop`**
-2. Install root dev-dependencies (like lerna, webpack): `npm i --force` (**force needed for 0.4.x branch atm.**)
-3. Install & link the `packages`: `npm run bootstrap && npm run link`
-4. Start dev-server: `npm start`
-    - (will clean-dist + start demo-web app)
-    - to starts docs app: `npm start -- --serve docs`
-    - to starts picker demo app: `npm start -- --serve pickersDemo`
-5. Open browser on [localhost:4200](http://localhost:4200) for demo-web, [localhost:4201](http://localhost:4201) for docs
-6. Explore [packages](packages)
-7. Code -> Commit -> Pull Request -> Being Awesome!
+**Serve docs for editing:**
 
-Changes from any package are reflected inside the demo-web/docs package.
+After installing deps, minimal startup for docs:
 
-See current *[packages/demo-web@master](https://ui-schema-demo.netlify.app/)* or
-*[packages/demo-web@develop](https://develop--ui-schema-demo.netlify.app/)*
+```shell
+npm run serve docs
 
-- Start Documentation: `npm run docs` (needs bootstrap/linking packages beforehand)
-    - see [localhost:4201](http://localhost:4201)
-    - write in [packages/docs/src/content/docs](./packages/docs/src/content/docs)
-- Faster start, needs manual bootstrapping and update handling
-    - `npm run serve` start all configured apps
-    - `npm run serve -- demoWeb --serve docs` start specific apps (docs and demo-web here) *[needs a lot of RAM]*
+# (re-)create code documentation and search index
+npm run static-gen
+# npm run doc-gen
+# npm run page-index
+```
 
-**Commands:**
+**Serve docs with docker:**
+
+After installing deps, create a minimal build:
+
+```shell
+npm run build-babel
+npm run build-webpack
+npm run static-gen
+```
+
+And then build the [DockerfileApache](./DockerfileApache) and open [http://localhost:8080](http://localhost:8080).
+
+In some IDEs, you can build it using the `ui-schema-docs` preset, which is configured in the [.run](./.run) folder. It should appear with a play button somewhere in your IDE's toolbar or run menu.
+
+Or build and run via CLI:
+
+```shell
+docker build -f DockerfileApache -t ui-schema-docs .
+
+docker run --rm -p 8080:80 ui-schema-docs
+```
+
+## Commands
 
 - Developing test driven: `npm run tdd`
     - needs manual bootstrapping and update handling
@@ -83,14 +108,12 @@ See current *[packages/demo-web@master](https://ui-schema-demo.netlify.app/)* or
     - needs manual bootstrapping and update handling
 - Clean node_modules and build dirs: `npm run clean`
 - Clean build dirs: `npm run clean-dist`
-- Add new node_module to one package: `lerna add <npm-package-name> --scope=@ui-schema/demo-web [--dev] [--peer]`, without `--scope` in all packages
-- Do not change `package.json` of packages manually, and if Bootstrap [lerna](https://lerna.js.org/): `npm run bootstrap` (maybe delete `package-lock.json`), or simply open an issue
-- Add new package `lerna create <name>` and follow on screen, e.g.: `lerna create material-pickers` add package name `@ui-schema/material-pickerss`, creates folder `./packages/material-pickers`
-
-> All-in-one clean & reinstall command - skip the first one if not installed completely:
-> `npm run clean && rm -rf node_modules && rm -f package-lock.json && npm i && npm run bootstrap && npm run bootstrap && npm run link`
->
-> The two-times `bootstrap` fixes sometimes stale `packages` dependencies/lock-files, but sometimes a manual deletion of those also helps with `node_modules` resolving issues.
+- Start Documentation: `npm run docs` (needs bootstrap/linking packages beforehand)
+    - see [localhost:4201](http://localhost:4201)
+    - write in [packages/docs/src/content/docs](./packages/docs/src/content/docs)
+- Faster start, needs manual bootstrapping and update handling
+    - `npm run serve` start all configured apps
+    - `npm run serve -- demoWeb --serve docs` start specific apps (docs and demo-web here) *[needs a lot of RAM]*
 
 ## Contributors
 

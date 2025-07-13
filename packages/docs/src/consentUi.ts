@@ -34,7 +34,8 @@ export const customConsentUi: ConsentUiInfoDefinition = {
                     title: 'Essential',
                     desc: 'Required technologies for this app to work.',
                     noSelect: true,
-                }, {
+                },
+                {
                     id: 'measure',
                     title: 'Measurements',
                     desc: 'Help us to improve the UX and to provide a more stable service.',
@@ -62,7 +63,8 @@ export const customConsentUi: ConsentUiInfoDefinition = {
                             ],
                         },
                     ],
-                }, {
+                },
+                {
                     id: 'hetzner',
                     title: 'Hetzner',
                     group: 'essential',
@@ -70,7 +72,8 @@ export const customConsentUi: ConsentUiInfoDefinition = {
                         'Provides the server infrastructure where your data is processed and exchanged',
                     ],
                     receives: ['IP', 'Name', 'Account Information', 'E-Mail', 'User Profile'],
-                }, {
+                },
+                {
                     id: 'google_analytics',
                     title: 'Google Analytics',
                     group: 'measure',
@@ -86,7 +89,8 @@ export const customConsentUi: ConsentUiInfoDefinition = {
                                     },
                                     is: 'cookie',
                                     provider: 'Cookiebot Google',
-                                }, {
+                                },
+                                {
                                     name: 'gid [x4]',
                                     info: {
                                         validity: '30d',
@@ -94,7 +98,8 @@ export const customConsentUi: ConsentUiInfoDefinition = {
                                     },
                                     is: 'cookie',
                                     provider: 'Cookiebot Google',
-                                }, {
+                                },
+                                {
                                     name: 'collect',
                                     info: {
                                         //validity: '30d',
@@ -102,7 +107,8 @@ export const customConsentUi: ConsentUiInfoDefinition = {
                                     },
                                     is: 'cookie',
                                     provider: 'Google',
-                                }, {
+                                },
+                                {
                                     name: '_gat [x2]',
                                     info: {
                                         //validity: '30d',

@@ -245,7 +245,7 @@ const schemaMain = createOrderedMap({
 })
 
 const dataMain = createOrderedMap({
-    stepper: {'step-1': {name: 'Max'}},
+    // stepper: {'step-1': {name: 'Max'}},
     headline: 'Some Demo Content Headline',
 })
 

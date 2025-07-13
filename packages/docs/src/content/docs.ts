@@ -8,7 +8,6 @@ import { demoOptionsList } from './docs/widgets/OptionsListDemo'
 import { demoNumberSlider } from './docs/widgets/NumberSliderDemo'
 import { demoSelect } from './docs/widgets/SelectDemo'
 import { demoSimpleList } from './docs/widgets/SimpleListDemo'
-import { demoStepper } from './docs/widgets/StepperDemo'
 import { demoSwitch } from './docs/widgets/SwitchDemo'
 import { demoTable } from './docs/widgets/TableDemo'
 import { demoTextField } from './docs/widgets/TextFieldDemo'
@@ -30,18 +29,17 @@ export interface DocRouteModule<C = any> extends DocRoute<C> {
 const createDoc = (
     path: string,
     label: string,
-    {prefix = '', module, hidden, ...extras}: {
+    {module, hidden, ...extras}: {
         routes?: DocRouteModule[]
         demos?: DocRouteModule['demos']
-        prefix?: string
         hidden?: boolean
         module?: DocRouteModule['docModule']
     } = {},
 ): DocRouteModule => ({
-    doc: 'docs/' + path,
-    path: prefix + '/docs/' + path,
+    doc: path.startsWith('/') ? path.slice(1) : 'docs/' + path,
+    path: path.startsWith('/') ? path : '/docs/' + path,
     nav: hidden ? undefined : {
-        to: '/docs/' + path,
+        to: path.startsWith('/') ? path : '/docs/' + path,
         initialOpen: false,
         label,
     },
@@ -77,46 +75,92 @@ const defineModuleFlat = (org: string, name: string, dir: string, rel: string, f
 
 export const routesCore = [
     createDoc('overview', 'Overview'),
-    createDoc('schema', 'Schema'), {
-        nav: {
-            label: 'Core',
-            //initialOpen: false,
-            toSection: /^(\/docs\/core$|\/docs\/core-)/,
-        },
-        routes: [
-            createDoc('core', 'Core Overview'),
-            createDoc('core-renderer', 'Core: Generator & Renderer'),
-            createDoc('core-meta', 'Core: Meta'),
-            createDoc('core-store', 'Core: Store'),
-            createDoc('core-pluginstack', 'Core: PluginStack'),
-            createDoc('core-uiapi', 'Core: UIApi'),
-            createDoc('core-utils', 'Core: Utils'),
-        ],
-    }, {
-        nav: {
-            label: 'Design-System & Widgets',
-            initialOpen: false,
-            //toSection: /^(\/docs\/design-systems|\/docs\/widgets$|\/docs\/widgets-composition$)/,
-            toSection: /^(\/docs\/design-systems|\/docs\/widgets$)/,
-        },
-        routes: [
-            createDoc('design-systems', 'Design-System'),
-            createDoc('widgets', 'Widget Binding'),
-        ],
-    },
+
+    createDoc('schema', 'Schema'),
+    createDoc('binding', /*'Components & Widgets */'Binding'),
+    createDoc('design-systems', 'Design-Systems'),
     createDoc('plugins', 'Plugins'),
     createDoc('localization', 'Localization'),
     createDoc('performance', 'Performance'),
     createDoc('widgets-composition', 'Composition Concepts'),
 ]
 
+export const routesPackages = [
+    {
+        nav: {
+            label: 'Core',
+            initialOpen: false,
+            toSection: /^(\/docs\/core$|\/docs\/core-)/,
+        },
+        routes: [
+            createDoc('core', 'Core Overview'),
+            createDoc('core-pluginstack', 'Core: PluginStack', {hidden: true}),
+            createDoc('core/schemapluginstack', 'SchemaPluginStack'),
+            createDoc('core/schemaresource', 'SchemaResource'),
+            createDoc('core/localization', 'Core: Localization'),
+            createDoc('core/utils', 'Core: Utils'),
+        ],
+    },
+    {
+        nav: {
+            label: 'React',
+            to: '/docs/react',
+        },
+        routes: [
+            createDoc('react', 'React Overview'),
+            createDoc('react/renderer', 'React: Generator & Renderer'),
+            createDoc('react/meta', 'React: Meta'),
+            createDoc('react/store', 'React: Store'),
+            createDoc('react/localization', 'React: Localization'),
+            createDoc('react/widgetengine', 'React: WidgetEngine'),
+            createDoc('react/plugins', 'React: Plugins'),
+            createDoc('react/uiapi', 'React: UIApi'),
+            createDoc('react/utils', 'React: Utils'),
+            createDoc('react/schemaresourceprovider', 'React: SchemaResource'),
+            createDoc('react/schemapluginsadapter', 'SchemaPluginsAdapter'),
+        ],
+    },
+    {
+        nav: {
+            label: 'React JSON Schema',
+            to: '/docs/react-json-schema',
+        },
+        routes: [
+            createDoc('react-json-schema/overview', 'Overview'),
+            createDoc('react-json-schema/plugins', 'Plugins'),
+        ],
+    },
+    {
+        nav: {
+            label: 'JSON Schema',
+            to: '/docs/json-schema',
+        },
+        routes: [
+            createDoc('json-schema/overview', 'Overview'),
+            createDoc('json-schema/plugins', 'Plugins'),
+            createDoc('json-schema/validator', 'Validator'),
+            createDoc('json-schema/validators', 'Validators'),
+        ],
+    },
+    {
+        nav: {
+            label: 'JSON Pointer',
+            to: '/docs/json-pointer',
+        },
+        routes: [
+            createDoc('json-pointer/overview', 'JSON Pointer Overview'),
+        ],
+    },
+]
+
 export const routesFurtherDesignSystem = [
     {
         nav: {
-            label: 'Widgets List',
-            toSection: /^\/docs\/widgets\//,
+            label: 'Widgets',
+            toSection: /^\/docs\/widgets(\/.+?)$/,
         },
         routes: [
+            createDoc('widgets/overview', 'Widgets Overview', {}),
             createDoc('widgets/Accordions', 'Accordions', {
                 demos: {
                     schema: demoAccordions,
@@ -175,9 +219,7 @@ export const routesFurtherDesignSystem = [
                 },
             }),
             createDoc('widgets/Stepper', 'Stepper', {
-                demos: {
-                    schema: demoStepper,
-                },
+                hidden: true,
             }),
             createDoc('widgets/Switch', 'Switch', {
                 demos: {
@@ -195,13 +237,15 @@ export const routesFurtherDesignSystem = [
                 },
             }),
         ],
-    }, {
+    },
+    {
         nav: {
             label: 'DS Material',
             initialOpen: false,
             to: '/docs/ds-material',
         },
         routes: [
+            createDoc('ds-material/introduction', 'Introduction', {}),
             createDoc('ds-material/Grid', 'Grid', {
                 module: defineModule('ui-schema', 'ds-material', 'ds-material', 'Grid'),
             }),
@@ -356,7 +400,8 @@ export const routesFurtherDesignSystem = [
                 module: defineModule('ui-schema', 'ds-material', 'ds-material', 'ErrorFallback'),
             }),
         ],
-    }, {
+    },
+    {
         nav: {
             label: 'Material Pickers',
             initialOpen: false,
@@ -377,7 +422,8 @@ export const routesFurtherDesignSystem = [
                 module: defineModule('ui-schema', 'material-pickers', 'material-pickers', 'WidgetTimePicker'),
             }),
         ],
-    }, {
+    },
+    {
         // nav: {
         //     label: 'Material Code',
         //     initialOpen: false,
@@ -388,7 +434,8 @@ export const routesFurtherDesignSystem = [
                 hidden: true,
             }),
         ],
-    }, {
+    },
+    {
         nav: {
             label: 'Material Color',
             initialOpen: false,
@@ -401,7 +448,8 @@ export const routesFurtherDesignSystem = [
                 },
             }),
         ],
-    }, {
+    },
+    {
         nav: {
             label: 'Material Colorful',
             initialOpen: false,
@@ -414,7 +462,8 @@ export const routesFurtherDesignSystem = [
                 },
             }),
         ],
-    }, {
+    },
+    {
         nav: {
             label: 'Material-DND',
             initialOpen: false,
@@ -429,6 +478,16 @@ export const routesFurtherDesignSystem = [
             }),
         ],
     },
+    {
+        nav: {
+            label: 'DS Bootstrap',
+            initialOpen: false,
+            to: '/docs/ds-bootstrap',
+        },
+        routes: [
+            createDoc('ds-bootstrap/introduction', 'Introduction', {}),
+        ],
+    },
 ]
 
 export const routesFurtherAddOns = [
@@ -441,7 +500,8 @@ export const routesFurtherAddOns = [
         routes: [
             createDoc('kit-dnd/kit-dnd', 'Overview'),
         ],
-    }, {
+    },
+    {
         // nav: {
         //     label: 'Kit: CodeMirror',
         //     initialOpen: false,
@@ -452,7 +512,8 @@ export const routesFurtherAddOns = [
                 hidden: true,
             }),
         ],
-    }, {
+    },
+    {
         nav: {
             label: 'Pro Extensions',
             initialOpen: false,
@@ -470,6 +531,7 @@ export const routesDocs = {
     },
     routes: [
         ...routesCore,
+        ...routesPackages,
         ...routesFurtherDesignSystem,
         ...routesFurtherAddOns,
     ],

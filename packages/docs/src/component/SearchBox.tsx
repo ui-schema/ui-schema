@@ -40,18 +40,23 @@ export interface CustomSearchOptions {
     headlines?: boolean
 }
 
-const matchMaker: MatchMakerType<CustomDocsIndex, CustomSearchOptions> = {
+const matchMaker = {
     modules: {
         factory: (moduleIndex) => {
             const fuse = new FuseJs(moduleIndex.modules, {
                 includeScore: true,
                 includeMatches: true,
-                threshold: 0.29,
-                useExtendedSearch: true,
-                keys: ['module'],
+                // note: changing threshold changes score at results,
+                // should be very fuzzy but still not show not-that-good,
+                // for that the below filter on actual score
+                threshold: 0.68,
+                // useExtendedSearch: true,
+                ignoreLocation: true,
+                ignoreDiacritics: true,
+                keys: ['module', 'package'],
             })
             return {
-                search: (term) => fuse.search(term),
+                search: (term) => fuse.search(term).filter(r => r.score && r.score < 0.36),
             }
         },
     },
@@ -60,8 +65,10 @@ const matchMaker: MatchMakerType<CustomDocsIndex, CustomSearchOptions> = {
             const fuse = new FuseJs(data.pages, {
                 includeScore: true,
                 includeMatches: true,
-                threshold: 0.29,
-                useExtendedSearch: true,
+                threshold: 0.36,
+                // useExtendedSearch: true,
+                ignoreLocation: true,
+                ignoreDiacritics: true,
                 keys: [
                     'label',
                 ],
@@ -69,8 +76,10 @@ const matchMaker: MatchMakerType<CustomDocsIndex, CustomSearchOptions> = {
             const fuseWithHeadlines = new FuseJs(data.pages, {
                 includeScore: true,
                 includeMatches: true,
-                threshold: 0.29,
-                useExtendedSearch: true,
+                threshold: 0.36,
+                // useExtendedSearch: true,
+                ignoreLocation: true,
+                ignoreDiacritics: true,
                 keys: [
                     'label',
                     'headings.headline',
@@ -85,7 +94,7 @@ const matchMaker: MatchMakerType<CustomDocsIndex, CustomSearchOptions> = {
             }
         },
     },
-}
+} satisfies MatchMakerType<CustomDocsIndex, CustomSearchOptions>
 
 export const SearchBox: React.ComponentType = () => {
     const {open, setOpen} = useSearch()

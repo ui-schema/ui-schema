@@ -75,8 +75,19 @@ const universal: Pick<PartialTheme, 'palette' | 'typography' | 'shape' | 'breakp
     //         },
     //     },
     // },
-    /*components: {
-        MuiCssBaseline: {
+    components: {
+        MuiLink: {
+            styleOverrides: {
+                root: {
+                    borderRadius: 1,
+                    '&.Mui-focusVisible:focus-visible': {
+                        outline: '2px solid currentColor',
+                        outlineOffset: '1px',
+                    },
+                },
+            },
+        },
+        /*MuiCssBaseline: {
             styleOverrides: {
                 body: {
                     fontSize: '0.875rem',
@@ -84,8 +95,8 @@ const universal: Pick<PartialTheme, 'palette' | 'typography' | 'shape' | 'breakp
                     letterSpacing: '0.01071em',
                 },
             },
-        },
-    },*/
+        },*/
+    },
 }
 
 const themeDark = createTheme({
@@ -95,7 +106,7 @@ const themeDark = createTheme({
         mode: 'dark',
         primary: {
             main: '#05aeca',
-            dark: '#033944',
+            dark: '#0a6d7e',
         },
         secondary: {
             // light: '#d8eed4',
@@ -104,9 +115,9 @@ const themeDark = createTheme({
         },
         background: {
             // paper: '#111017',
-            paper: '#121015',
+            paper: '#110e15',
             // default: '#070b13',
-            default: '#06050d',
+            default: '#07050e',
         },
         text: {
             // primary: '#abb8b9',
@@ -114,14 +125,14 @@ const themeDark = createTheme({
             secondary: '#9b88ad',
         },
         action: {
-            //hoverOpacity: 0.2,
+            // hoverOpacity: 0.2,
         },
     },
     components: {
         ...universal.components,
-        MuiPaper: {
-            styleOverrides: {root: {backgroundImage: 'unset'}},
-        },
+        // MuiPaper: {
+        //     styleOverrides: {root: {backgroundImage: 'unset'}},
+        // },
         // MuiLink: {
         //     styleOverrides: {underlineAlways: {textDecoration: 'none'}},
         // },
@@ -134,12 +145,12 @@ const themeLight = createTheme({
         ...universal.palette,
         mode: 'light',
         primary: {
-            main: '#0590a7',
+            main: '#0b7a8c',
             dark: '#033944',
         },
         secondary: {
             // light: '#d8eed4',
-            main: '#bd90e0',
+            main: '#8e62b1',
             // dark: '#002634',
         },
         background: {
@@ -148,11 +159,11 @@ const themeLight = createTheme({
         },
         text: {
             primary: '#2f2f3d',
-            secondary: '#6d388a',
+            secondary: '#6b2e8c',
         },
-        action: {
-            hoverOpacity: 0.2,
-        },
+        // action: {
+        //     hoverOpacity: 0.2,
+        // },
     },
     components: {
         ...universal.components,

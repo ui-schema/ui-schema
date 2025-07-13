@@ -3,7 +3,7 @@ import Paper from '@mui/material/Paper'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Highlighter from 'react-highlight-words'
-import { SearchHighlight, SearchHighlight2, SearchLink } from './SearchBoxUtils'
+import { SearchHighlight, SearchLink } from './SearchBoxUtils'
 import { useSearch } from '@control-ui/docs/DocsSearchProvider'
 import IcPage from '@mui/icons-material/Article'
 import Slide from '@mui/material/Slide'
@@ -89,7 +89,7 @@ export const SearchResultPage: React.FC<{
                                     <Highlighter
                                         searchWords={term?.split(' ') || []}
                                         textToHighlight={match.headings[mk.index].headline}
-                                        highlightTag={SearchHighlight2}
+                                        highlightTag={SearchHighlight}
                                         autoEscape
                                     />
                                 </Typography>

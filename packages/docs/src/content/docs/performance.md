@@ -44,4 +44,4 @@ This ui renderer has multiple levels of performance optimization:
             - an `object`/`array` component can be memoized and will not re-render when it's item change (memoize "non-scalar value widgets" on your own!)
             - use the HOC `extractValue` at your required component, e.g. skip some of the wrapped HTML for re-rendering
 
-Further on to reduce code-size, it is recommended to build your [own ds-binding](/docs/widgets#create-design-system-binding) with only the needed components or use a [lazy-loaded binding](/docs/widgets#lazy-loading-bindings).
+Further on to reduce code-size, it is recommended to build your [own ds-binding](/docs/widgets#create-design-system-binding) with only the needed components or use [lazy](https://react.dev/reference/react/lazy)-loading for very large widgets.

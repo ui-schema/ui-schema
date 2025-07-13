@@ -12,7 +12,7 @@ Develop your next React app faster, with less code duplications - and without wa
 >
 > You're **exploring an [upcoming version](https://github.com/ui-schema/ui-schema/discussions/184#discussioncomment-3100010)**! If you spot odd behaviour or have feedback, please [open an issue](https://github.com/ui-schema/ui-schema/issues/new?template=bug.md&title=0.5.x%40next%20Bug%20&labels=bug&type=bug).
 >
-> The new documentation is not yet completed, the repository includes [a basic migration guide from 0.4.x to 0.5.x](./packages/docs/src/content/updates/v0.4.0-v0.5.0.md), the below examples are updated for 0.5.x, while the published documentation is still for `0.4.x`.
+> The new documentation is not yet completed, the repository includes [a basic migration guide from 0.4.x to 0.5.x](./packages/docs/src/content/updates/v0.4.0-v0.5.0.md), the below examples are updated for 0.5.x, while the published documentation is still for 0.4.x. [Preview the new docs locally](./CONTRIBUTING.md).
 >
 > To use the `next` version you must specify the exact version or use `@ui-schema/ui-schema@next` during installation.
 
@@ -76,7 +76,7 @@ Use JSON Schema to validate data and automatically create UIs with it - UI-Schem
     - easily add advanced features like [read-or-write mode](https://ui-schema.bemit.codes/docs/core-meta#read-context)
 - [auto-rendering by data & schema](https://ui-schema.bemit.codes/quick-start) or [full-custom forms](https://ui-schema.bemit.codes/quick-start?render=custom) with autowired widgets
 - flexible translation of widgets
-    - with any library ([`t` prop (Translator)](https://ui-schema.bemit.codes/docs/localization#translation), [`Translate` component](https://ui-schema.bemit.codes/docs/localization#trans-component))
+    - with any library ([`t` prop (Translator)](https://ui-schema.bemit.codes/docs/localization#translation), [`Translate`/`TranslateTitle` components](https://ui-schema.bemit.codes/docs/localization#trans-component))
     - in-schema translations ([`t` keyword](https://ui-schema.bemit.codes/docs/localization#translation-in-schema))
     - label text transforms ([`tt`/`ttEnum` keyword](https://ui-schema.bemit.codes/docs/localization#text-transform))
     - single or multi-language
@@ -84,7 +84,7 @@ Use JSON Schema to validate data and automatically create UIs with it - UI-Schem
     - (optional) [tiny integrated translation library](https://ui-schema.bemit.codes/docs/localization#immutable-as-dictionary)
     - (optional) [translation dictionaries](./packages/dictionary)
 - modular, extensible and slim core
-    - add own [plugins](https://ui-schema.bemit.codes/docs/core-pluginstack)
+    - add own [plugins](https://ui-schema.bemit.codes/docs/react/widgetengine)
     - add own validators
     - add own base renderers
     - add own widget matchers & render strategies
@@ -92,7 +92,7 @@ Use JSON Schema to validate data and automatically create UIs with it - UI-Schem
 - [performance optimized](https://ui-schema.bemit.codes/docs/performance), only updates HTML which must re-render, perfect for big schemas
 - code-splitting, with custom widget mappings / lazy-loading widgets
 - includes helper functions for store and immutable handling
-- easy nesting for custom object/array widgets with [`WidgetEngine`](https://ui-schema.bemit.codes/docs/core-widgetengine)
+- easy nesting for custom object/array widgets with [`WidgetEngine`](https://ui-schema.bemit.codes/docs/react/widgetengine)
 - validate hidden/auto-generated values, virtualize schema levels ([`hidden` keyword](https://ui-schema.bemit.codes/docs/schema#hidden-keyword--virtualization))
 - handle store update from anywhere and however you want
 - extensive documentations of core, widgets
@@ -127,7 +127,7 @@ Instead of using a `WidgetEngine` at root level (automatic rendering of full sch
 import React from 'react';
 
 // Import Schema UI Provider and Render engine
-import { isInvalid } from '@ui-schema/react/ValidityReporter';
+import { isInvalid } from '@ui-schema/react/isInvalid';
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap';
 import { UIStoreProvider, createStore } from '@ui-schema/react/UIStore';
 import { storeUpdater } from '@ui-schema/react/storeUpdater';
@@ -136,7 +136,7 @@ import { WidgetEngine } from '@ui-schema/react/WidgetEngine';
 // basic in-schema translator / `t` keyword support
 import { translateRelative } from '@ui-schema/ui-schema/TranslatorRelative';
 // Get the widgets binding for your design-system
-import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault';
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended';
 import { GridContainer } from '@ui-schema/ds-material/GridContainer';
 
@@ -177,7 +177,7 @@ export const DemoForm = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap(data)));
     const [schema/*, setSchema*/] = React.useState(() => createOrderedMap(schemaBase));
 
-    // `useUIMeta` can be used safely, without performance impact (`useUI` has a performance impact)
+    // `useUIMeta` can be used safely, without performance impact (while `useUIStore` impacts performance)
     const {widgets, t} = useUIMeta()
 
     const onChange = React.useCallback((actions) => {
@@ -214,6 +214,15 @@ const customBinding: MuiBinding = {
         ...typeWidgets,
         ...bindingExtended,
     },
+    widgetPlugins: [
+        DefaultHandler,
+        schemaPluginsAdapterBuilder([
+            validatorPlugin,
+            requiredPlugin,
+        ]),
+        SchemaGridHandler,
+        ValidityReporter,
+    ],
 }
 
 const validate = Validator(standardValidators).validate
