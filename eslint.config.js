@@ -123,7 +123,7 @@ export default defineConfig([
                         {
                             'from': 'package',
                             'name': 'CombiningHandler',
-                            'package': '@ui-schema/react-json-schema',
+                            'package': '@ui-schema/react',
                         },
                         {
                             'from': 'file',
@@ -250,7 +250,6 @@ export default defineConfig([
                         '@ui-schema/json-pointer',
                         '@ui-schema/json-schema',
                         '@ui-schema/react',
-                        '@ui-schema/react-json-schema',
                         '@ui-schema/ui-schema',
                     ],
                     'patterns': [

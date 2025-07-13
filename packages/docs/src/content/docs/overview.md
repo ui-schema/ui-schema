@@ -27,17 +27,15 @@ This documentation is structured to help you navigate through the various aspect
         - UIStoreActions
         - storeUpdater
     - WidgetEngine
-    - Widget Plugins
-    - Translator Components
     - Widget & Binding Types
+    - Components, Render Utils
+    - Widget Plugins
+    - Legacy Plugins
+    - Translator Components
     - Utils
 - [JSON Schema](/docs/json-schema/overview)
     - Validator
     - Schema Plugins
-- [React JSON Schema](/docs/react-json-schema/overview)
-    - Components, Render Utils
-    - Widget Plugins
-    - Legacy Plugins
 - [JSON Pointer](/docs/json-pointer/overview)
 - [Design Systems & Widgets](/docs/widgets/overview)
 - Additional Packages

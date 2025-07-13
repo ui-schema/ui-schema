@@ -7,7 +7,7 @@ import type { WidgetPayload, WidgetPayloadFieldSchema } from '@ui-schema/ui-sche
 import type { ComponentType, ReactNode } from 'react'
 import { List, Map } from 'immutable'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
+import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react/ObjectRenderer'
 import type { WidgetProps } from '@ui-schema/react/Widget'
 
 export interface VirtualArrayRendererProps {

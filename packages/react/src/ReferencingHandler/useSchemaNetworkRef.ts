@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import React from 'react'
 import { useUIApi } from '@ui-schema/react/UIApi'
-import { getCleanRefUrl, getFragmentFromUrl, isRelUrl, makeUrlFromRef } from '@ui-schema/react-json-schema/ReferencingHandler'
-import { useSchemaRoot } from '@ui-schema/react-json-schema/SchemaRootProvider'
+import { getCleanRefUrl, getFragmentFromUrl, isRelUrl, makeUrlFromRef } from '@ui-schema/react/ReferencingHandler'
+import { useSchemaRoot } from '@ui-schema/react/SchemaRootProvider'
 import { resolvePointer } from '@ui-schema/json-pointer/resolvePointer'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 
 const getUrls = (schemaRef: string, id) => {
     let schemaUrl = schemaRef
@@ -22,7 +22,7 @@ const getUrls = (schemaRef: string, id) => {
 
 export type loadSchemaRefPlugin = (ref: string, rootId?: string, versions?: string[]) => void
 
-export type getSchemaRefPlugin = (ref: string, rootId?: string, version?: string) => UISchemaMap | null
+export type getSchemaRefPlugin = (ref: string, rootId?: string, version?: string) => SomeSchema | null
 
 export const useSchemaNetworkRef = (): {
     getSchema: getSchemaRefPlugin
@@ -47,12 +47,12 @@ export const useSchemaNetworkRef = (): {
 
     const getSchema: getSchemaRefPlugin = React.useCallback((ref, rootId = '#', version = undefined) => {
         const {cleanUrl, schemaUrl} = getUrls(ref, rootId === '#' ? id : rootId)
-        let schema: UISchemaMap | null = null
+        let schema: SomeSchema | null = null
         if (
             typeof cleanUrl === 'string' && schemaUrl &&
             currentSchemas?.has(cleanUrl)
         ) {
-            let tmpSchema: UISchemaMap | undefined = currentSchemas?.get(cleanUrl)
+            let tmpSchema: SomeSchema | undefined = currentSchemas?.get(cleanUrl)
             const fragment = getFragmentFromUrl(schemaUrl)
             if (tmpSchema && fragment) {
                 tmpSchema = resolvePointer('#/' + fragment, tmpSchema)

@@ -3,7 +3,7 @@ import { test, expect, describe } from '@jest/globals'
 import { List, OrderedMap, Map } from 'immutable'
 import { parseRefs, ParseRefsContent } from './parseRefs.js'
 import { createMap, createOrderedMap } from '@ui-schema/ui-schema/createMap'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 
 const mockDefinitions = createOrderedMap({
     country: {type: 'string', enum: ['fr', 'de', 'it']},
@@ -34,39 +34,39 @@ const mockDefinitions = createOrderedMap({
 describe('parseRefs', () => {
     test.each([
         [
-            OrderedMap({'type': 'string'}) as UISchemaMap,
+            OrderedMap({'type': 'string'}) as SomeSchema,
             {defs: OrderedMap()},
-            OrderedMap({'type': 'string'}) as UISchemaMap,
+            OrderedMap({'type': 'string'}) as SomeSchema,
         ],
         [
-            OrderedMap({'$ref': '#/$defs/country'}) as UISchemaMap,
+            OrderedMap({'$ref': '#/$defs/country'}) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
-            mockDefinitions.get('country') as UISchemaMap,
+            mockDefinitions.get('country') as SomeSchema,
         ],
         [
-            OrderedMap({'$ref': '#/$defs/country'}) as UISchemaMap,
+            OrderedMap({'$ref': '#/$defs/country'}) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
-            mockDefinitions.get('country') as UISchemaMap,
+            mockDefinitions.get('country') as SomeSchema,
         ],
         [
-            OrderedMap({if: OrderedMap({'$ref': '#germany_id'})}) as UISchemaMap,
+            OrderedMap({if: OrderedMap({'$ref': '#germany_id'})}) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('germany_id')})},
-            OrderedMap({if: mockDefinitions.get('germany_id')}) as UISchemaMap,
+            OrderedMap({if: mockDefinitions.get('germany_id')}) as SomeSchema,
         ],
         [
-            OrderedMap({then: OrderedMap({'$ref': '#/$defs/country'})}) as UISchemaMap,
+            OrderedMap({then: OrderedMap({'$ref': '#/$defs/country'})}) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
-            OrderedMap({then: mockDefinitions.get('country')}) as UISchemaMap,
+            OrderedMap({then: mockDefinitions.get('country')}) as SomeSchema,
         ],
         [
-            OrderedMap({else: OrderedMap({'$ref': '#/$defs/country'})}) as UISchemaMap,
+            OrderedMap({else: OrderedMap({'$ref': '#/$defs/country'})}) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
-            OrderedMap({else: mockDefinitions.get('country')}) as UISchemaMap,
+            OrderedMap({else: mockDefinitions.get('country')}) as SomeSchema,
         ],
         [
-            OrderedMap({not: OrderedMap({'$ref': '#/$defs/country'})}) as UISchemaMap,
+            OrderedMap({not: OrderedMap({'$ref': '#/$defs/country'})}) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
-            OrderedMap({not: mockDefinitions.get('country')}) as UISchemaMap,
+            OrderedMap({not: mockDefinitions.get('country')}) as SomeSchema,
         ],
         [
             /*
@@ -76,9 +76,9 @@ describe('parseRefs', () => {
                 if: OrderedMap({
                     not: OrderedMap({'$ref': '#germany_id'}),
                 }),
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('germany_id')})},
-            OrderedMap({if: OrderedMap({not: mockDefinitions.get('germany_id')})}) as UISchemaMap,
+            OrderedMap({if: OrderedMap({not: mockDefinitions.get('germany_id')})}) as SomeSchema,
         ],
         [
             /*
@@ -91,7 +91,7 @@ describe('parseRefs', () => {
                         germany: OrderedMap({'$ref': '#germany_id'}),
                     }),
                 }),
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('germany_id')})},
             OrderedMap({
                 contains: OrderedMap({
@@ -100,7 +100,7 @@ describe('parseRefs', () => {
                         germany: mockDefinitions.get('germany_id'),
                     }),
                 }),
-            }) as UISchemaMap,
+            }) as SomeSchema,
         ],
         [
             /*
@@ -111,14 +111,14 @@ describe('parseRefs', () => {
                 properties: OrderedMap({
                     germany: OrderedMap({'$ref': '#germany_id'}),
                 }),
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('germany_id')})},
             OrderedMap({
                 type: 'object',
                 properties: OrderedMap({
                     germany: OrderedMap({'$ref': '#germany_id'}),
                 }),
-            }) as UISchemaMap,
+            }) as SomeSchema,
         ],
         [
             /*
@@ -127,30 +127,30 @@ describe('parseRefs', () => {
             OrderedMap({
                 type: 'array',
                 items: OrderedMap({'$ref': '#germany_id'}),
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('germany_id')})},
             OrderedMap({
                 type: 'array',
                 items: mockDefinitions.get('germany_id'),
-            }) as UISchemaMap,
+            }) as SomeSchema,
         ],
         [
             /*
              * property names must be resolved, as only `pattern` should be in use, recursive doesn't matter (but is enabled)
              */
-            OrderedMap({propertyNames: OrderedMap({'$ref': '#/$defs/country'})}) as UISchemaMap,
+            OrderedMap({propertyNames: OrderedMap({'$ref': '#/$defs/country'})}) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
-            OrderedMap({propertyNames: mockDefinitions.get('country')}) as UISchemaMap,
+            OrderedMap({propertyNames: mockDefinitions.get('country')}) as SomeSchema,
         ],
         [
             /*
              * empty fragment test, must resolve to root
              */
-            OrderedMap({'$ref': '#'}) as UISchemaMap,
+            OrderedMap({'$ref': '#'}) as SomeSchema,
             {
                 root: createOrderedMap({type: 'object', properties: {user_id: {type: 'number'}, sub_user: {'$ref': '#'}}}),
             },
-            createOrderedMap({type: 'object', properties: {user_id: {type: 'number'}, sub_user: {'$ref': '#'}}}) as UISchemaMap,
+            createOrderedMap({type: 'object', properties: {user_id: {type: 'number'}, sub_user: {'$ref': '#'}}}) as SomeSchema,
         ],
         [
             /*
@@ -162,7 +162,7 @@ describe('parseRefs', () => {
                     country: OrderedMap({'$ref': '#/$defs/country'}),
                     address: mockDefinitions.get('address'),
                 }),
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
             OrderedMap({
                 type: 'object',
@@ -176,7 +176,7 @@ describe('parseRefs', () => {
                         }),
                     }),
                 }),
-            }) as UISchemaMap,
+            }) as SomeSchema,
         ],
         [
             /*
@@ -188,7 +188,7 @@ describe('parseRefs', () => {
                     country: OrderedMap({'$ref': '#/$defs/country'}),
                     address: mockDefinitions.get('address'),
                 }),
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
             OrderedMap({
                 type: 'object',
@@ -202,7 +202,7 @@ describe('parseRefs', () => {
                         }),
                     }),
                 }),
-            }) as UISchemaMap,
+            }) as SomeSchema,
         ],
         [
             /*
@@ -212,13 +212,13 @@ describe('parseRefs', () => {
                 patternProperties: OrderedMap({
                     '^s_': OrderedMap({'$ref': '#/$defs/country'}),
                 }),
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
             OrderedMap({
                 patternProperties: OrderedMap({
                     '^s_': mockDefinitions.get('country'),
                 }),
-            }) as UISchemaMap,
+            }) as SomeSchema,
         ],
         [
             /*
@@ -228,13 +228,13 @@ describe('parseRefs', () => {
                 allOf: List([
                     OrderedMap({'$ref': '#/$defs/country'}),
                 ]),
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
             OrderedMap({
                 allOf: List([
                     mockDefinitions.get('country'),
                 ]),
-            }) as UISchemaMap,
+            }) as SomeSchema,
         ],
         [
             /*
@@ -244,13 +244,13 @@ describe('parseRefs', () => {
                 oneOf: List([
                     OrderedMap({'$ref': '#/$defs/country'}),
                 ]),
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
             OrderedMap({
                 oneOf: List([
                     mockDefinitions.get('country'),
                 ]),
-            }) as UISchemaMap,
+            }) as SomeSchema,
         ],
         [
             /*
@@ -260,13 +260,13 @@ describe('parseRefs', () => {
                 anyOf: List([
                     OrderedMap({'$ref': '#/$defs/country'}),
                 ]),
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
             OrderedMap({
                 anyOf: List([
                     mockDefinitions.get('country'),
                 ]),
-            }) as UISchemaMap,
+            }) as SomeSchema,
         ],
         [
             /*
@@ -276,7 +276,7 @@ describe('parseRefs', () => {
                 allOf: List([
                     OrderedMap({'$ref': '#/properties/user_id'}),
                 ]),
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {
                 defs: OrderedMap({country: mockDefinitions.get('country')}),
                 root: createOrderedMap({
@@ -298,7 +298,7 @@ describe('parseRefs', () => {
                 allOf: List([
                     OrderedMap({type: 'number'}),
                 ]),
-            }) as UISchemaMap,
+            }) as SomeSchema,
         ],
         /* [
             /*
@@ -308,7 +308,7 @@ describe('parseRefs', () => {
                 allOf: List([
                     OrderedMap({'$ref': '#/properties/user_id'}),
                 ]),
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {
                 defs: OrderedMap({country: mockDefinitions.get('country')}),
                 root: createOrderedMap({
@@ -330,7 +330,7 @@ describe('parseRefs', () => {
                 allOf: List([
                     OrderedMap({type: 'number'}),
                 ]),
-            }) as UISchemaMap,
+            }) as SomeSchema,
         ],*/
         [
             /*
@@ -338,11 +338,11 @@ describe('parseRefs', () => {
              */
             createOrderedMap({
                 if: {items: {'$ref': '#/$defs/country'}},
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
             OrderedMap({
                 if: OrderedMap({items: mockDefinitions.get('country')}),
-            }) as UISchemaMap,
+            }) as SomeSchema,
         ],
         [
             /*
@@ -350,11 +350,11 @@ describe('parseRefs', () => {
              */
             createOrderedMap({
                 if: {items: [{'$ref': '#/$defs/country'}, {'$ref': '#/$defs/country'}]},
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
             createOrderedMap({
                 if: {items: [mockDefinitions.get('country').toJS(), mockDefinitions.get('country').toJS()]},
-            }) as UISchemaMap,
+            }) as SomeSchema,
         ],
         [
             /*
@@ -362,11 +362,11 @@ describe('parseRefs', () => {
              */
             createOrderedMap({
                 if: {properties: {country: {'$ref': '#/$defs/country'}}},
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
             createOrderedMap({
                 if: {properties: {country: mockDefinitions.get('country').toJS()}},
-            }) as UISchemaMap,
+            }) as SomeSchema,
         ],
         [
             /*
@@ -390,7 +390,7 @@ describe('parseRefs', () => {
                         country: {'$ref': '#/$defs/country'},
                     },
                 },
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {defs: OrderedMap({country: mockDefinitions.get('country')})},
             createOrderedMap({
                 if: {
@@ -408,12 +408,12 @@ describe('parseRefs', () => {
                         country: mockDefinitions.get('country').toJS(),
                     },
                 },
-            }) as UISchemaMap,
+            }) as SomeSchema,
         ],
     ] as [
-        UISchemaMap,
+        SomeSchema,
         ParseRefsContent,
-        UISchemaMap,
+        SomeSchema,
     ][])(
         'parseRefs(%j, %j): %j',
         (schema, context, expectedSchema) => {
@@ -444,7 +444,7 @@ describe('parseRefs', () => {
                         state: {'$ref': 'dummy-3.json'},
                     },
                 },
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {},
             createMap({
                 'https://localhost:8080/root-2.json': {
@@ -473,7 +473,7 @@ describe('parseRefs', () => {
                         state: {'$ref': 'dummy-3.json'},
                     },
                 },
-            }) as UISchemaMap,
+            }) as SomeSchema,
             {getLoadedSchema: (ref) => ref === 'dummy-3.json' ? Map() : undefined},
             createMap({
                 'https://localhost:8080/root-2.json': {
@@ -485,7 +485,7 @@ describe('parseRefs', () => {
             }) as unknown as Map<string, Map<string, any>>,
         ],
     ] as [
-        UISchemaMap,
+        SomeSchema,
         ParseRefsContent,
         Map<string, Map<string, any>>,
     ][])(

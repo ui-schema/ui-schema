@@ -9,7 +9,7 @@ import { OptionsCheck } from '@ui-schema/ds-bootstrap/Widgets/OptionsCheck'
 import { OptionsRadio } from '@ui-schema/ds-bootstrap/Widgets/OptionsRadio'
 import { SimpleList } from '@ui-schema/ds-bootstrap/Widgets/SimpleList'
 import { GroupRenderer } from '@ui-schema/ds-bootstrap/Grid'
-import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
+import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react/ObjectRenderer'
 
 const MyFallbackComponent = ({type, widget}: ErrorFallbackProps) => (
     <div>

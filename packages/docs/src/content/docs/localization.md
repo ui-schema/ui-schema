@@ -6,7 +6,13 @@ Checkout the [core localization guide](/docs/core/localization) and [how localiz
 
 Keyword `t` is not default JSON-Schema, it is a `object` containing multiple or one language with multiple translation keys, which may be nested.
 
-> should work with dynamic properties/values in the future [#182](https://github.com/ui-schema/ui-schema/issues/182)
+JSON Schema Keywords:
+
+- `title` used as translation
+- `enum` used to lookup translation or as translation
+- `t` provided embedded dictionaries
+- `tt` to control [beautification of property/index as tite](#optimistic-beautification) when no translation was found
+- `ttEnum` to control beautification of enum values, when no translation was found
 
 ### Basic Translations
 

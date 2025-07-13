@@ -1,7 +1,7 @@
 # Todos for JSON-Schema
 
 > rewrite of validator system and errors
-> - logic especially in `/json-schema` and `/react-json-schema`
+> - logic especially in `/json-schema` and `/react` (legacy plugins)
 > - types in system, and validate/errors interop
 > - misc in `/react`, `/ds-*`
 

@@ -62,12 +62,6 @@
             "@ui-schema/react/*": [
                 "react/src/*/index.ts"
             ],
-            "@ui-schema/react-json-schema": [
-                "react-json-schema/src/index.ts"
-            ],
-            "@ui-schema/react-json-schema/*": [
-                "react-json-schema/src/*/index.ts"
-            ],
             "@ui-schema/json-pointer": [
                 "json-pointer/src/index.ts"
             ],

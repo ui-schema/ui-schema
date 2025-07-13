@@ -1,6 +1,6 @@
 # WidgetEnumRead
 
-Read-only widgets for `enum`-keyword based widgets, works with the [UIMetaReadContextType](/docs/core-meta#read-context).
+Read-only widgets for `enum`-keyword based widgets, works with the [UIMetaReadContextType](/docs/react/meta#read-context).
 
 - type: -
 - schema keywords

@@ -46,10 +46,6 @@ cd react
 cp README.md build/ && cp ../../LICENSE build/
 cd ../
 
-cd react-json-schema
-cp README.md build/ && cp ../../LICENSE build/
-cd ../
-
 cd ui-schema
 cp README.md build/ && cp ../../LICENSE build/
 cd ../

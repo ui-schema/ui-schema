@@ -15,4 +15,4 @@ export type SchemaTypesType = List<string> | string[] | string | undefined
  *
  * @todo switch to `unknown` in 0.6.x, after removing all deprecations (as then its easier)
  */
-export type SomeSchema = OrderedMap<string | number, any>
+export type SomeSchema = OrderedMap<string | number, any>/* | Map<string | number, any>*/

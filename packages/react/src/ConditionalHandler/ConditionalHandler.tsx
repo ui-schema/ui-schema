@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import type { FC } from 'react'
 import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { handleIfElseThen } from './handleIfElseThen.js'

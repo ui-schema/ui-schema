@@ -18,7 +18,7 @@ Using an additional [plugins system based on props](/docs/react/widgetengine#sim
 
 ## Widgets & Component Plugins
 
-Each plugin or widget should only need to do one specific thing, in one specific schema layer, leading to [enhanced performance](https://reactjs.org/docs/optimizing-performance.html#shouldcomponentupdate-in-action) and optimizing [reconciliation levels](https://reactjs.org/docs/reconciliation.html). The values are stored in a central [immutable data-structure](/docs/core-store), accessible per schema-level by the schema-position with `storeKeys` (a list of the keys (`string|number`)), the `storeKeys` need to be passed down in nested components (e.g. `object`).
+Each plugin or widget should only need to do one specific thing, in one specific schema layer, leading to [enhanced performance](https://reactjs.org/docs/optimizing-performance.html#shouldcomponentupdate-in-action) and optimizing [reconciliation levels](https://reactjs.org/docs/reconciliation.html). The values are stored in a central [immutable data-structure](/docs/react/store), accessible per schema-level by the schema-position with `storeKeys` (a list of the keys (`string|number`)), the `storeKeys` need to be passed down in nested components (e.g. `object`).
 
 > Check the base concepts about [performance](/docs/performance) to learn how unnecessary re-renders are reduced.
 
@@ -154,15 +154,14 @@ Together with cases like: `deleteOnEmpty` within `array` [issue #106](https://gi
 
 With v0.5.x the `@ui-schema/ui-schema` package is isomorphic and not responsible to produce anything itself.
 
-The new "rendering core" `@ui-schema/react` has no hard coded output anymore, only headless components and hooks are required to get it working.
+The new "rendering core" `@ui-schema/react` has no hard coded output, only headless components and hooks are required to get it working.
 
 Output only exists in two **optional components**:
 
 - `@ui-schema/react`
     - if no widget could be matched, the `NoWidget` is rendered by `WidgetRenderer`
-    - caused by error which is emitted by `matchWidget`
-    - can be changed with a custom `NoWidget` component in the `binding`
-    - renders an empty fragment with `missing-*` text when no widget is matching
-- `@ui-schema/react-json-schema`
+        - caused by error which is emitted by `matchWidget`
+        - can be changed with a custom `NoWidget` component in the `binding`
+        - renders an empty fragment with `missing-*` text when no widget is matching
     - *(deprecated in 0.5.x)* loading info in `Plugins/ReferencingHandler` while missing schemas are loaded AND it is not virtual
         - the `Translate` component is rendered with `labels.loading` and with fallback text `Loading`

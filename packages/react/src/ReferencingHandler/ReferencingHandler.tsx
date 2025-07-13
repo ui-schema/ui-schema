@@ -4,8 +4,8 @@ import { Translate } from '@ui-schema/react/Translate'
 import {
     SchemaRootContext, SchemaRootProvider,
     isRootSchema, useSchemaRoot,
-} from '@ui-schema/react-json-schema/SchemaRootProvider'
-import { useSchemaRef } from '@ui-schema/react-json-schema/ReferencingHandler'
+} from '@ui-schema/react/SchemaRootProvider'
+import { useSchemaRef } from '@ui-schema/react/ReferencingHandler'
 import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { getSchemaId } from '@ui-schema/ui-schema/Utils/getSchema'
 

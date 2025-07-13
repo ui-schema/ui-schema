@@ -3,11 +3,11 @@ import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { useUIStore } from '@ui-schema/react/UIStore'
 import { mergeSchema } from '@ui-schema/ui-schema/Utils/mergeSchema'
 import { List, Map } from 'immutable'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 
 const DependentRenderer: React.FC<WidgetPluginProps & {
-    dependencies?: List<string> | UISchemaMap
-    dependentSchemas?: UISchemaMap
+    dependencies?: List<string> | SomeSchema
+    dependentSchemas?: SomeSchema
     dependentRequired?: List<string>
 }> = ({dependencies, dependentSchemas, dependentRequired, Next, ...props}) => {
     const {schema, storeKeys} = props

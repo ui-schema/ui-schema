@@ -12,7 +12,7 @@ Develop your next React app faster, with less code duplications - and without wa
 >
 > You're **exploring an [upcoming version](https://github.com/ui-schema/ui-schema/discussions/184#discussioncomment-3100010)**! If you spot odd behaviour or have feedback, please [open an issue](https://github.com/ui-schema/ui-schema/issues/new?template=bug.md&title=0.5.x%40next%20Bug%20&labels=bug&type=bug).
 >
-> The new documentation is not yet completed, the repository includes [a basic migration guide from 0.4.x to 0.5.x](./packages/docs/src/content/updates/v0.4.0-v0.5.0.md), the below examples are updated for 0.5.x, while the published documentation is still for 0.4.x. [Preview the new docs locally](./CONTRIBUTING.md).
+> The new documentation is not yet completed, the repository includes [a basic migration guide from 0.4.x to 0.5.x](./packages/docs/src/content/updates/v0.4.0-v0.5.0.md), the below examples are updated for 0.5.x, while the published documentation is still for 0.4.x. You can [preview the new docs locally](./CONTRIBUTING.md#documentation-app) by setting up the repo.
 >
 > To use the `next` version you must specify the exact version or use `@ui-schema/ui-schema@next` during installation.
 
@@ -25,7 +25,6 @@ Develop your next React app faster, with less code duplications - and without wa
 
 - @ui-schema/ui-schema [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ui-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ui-schema)
 - @ui-schema/react [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/react?style=flat-square)](https://www.npmjs.com/package/@ui-schema/react)
-- @ui-schema/react-json-schema [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/react-json-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/react-json-schema)
 - @ui-schema/json-schema [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/json-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/json-schema)
 - @ui-schema/json-pointer [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/json-pointer?style=flat-square)](https://www.npmjs.com/package/@ui-schema/json-pointer)
 - @ui-schema/ds-material [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-material?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-material)
@@ -73,7 +72,7 @@ Use JSON Schema to validate data and automatically create UIs with it - UI-Schem
     - easily create isolated and atomic widgets, with autowired data and validations
     - customize design system behaviour with e.g. widget compositions
     - easy binding of own design systems and custom widgets
-    - easily add advanced features like [read-or-write mode](https://ui-schema.bemit.codes/docs/core-meta#read-context)
+    - easily add advanced features like [read-or-write mode](https://ui-schema.bemit.codes/docs/react/meta#read-context)
 - [auto-rendering by data & schema](https://ui-schema.bemit.codes/quick-start) or [full-custom forms](https://ui-schema.bemit.codes/quick-start?render=custom) with autowired widgets
 - flexible translation of widgets
     - with any library ([`t` prop (Translator)](https://ui-schema.bemit.codes/docs/localization#translation), [`Translate`/`TranslateTitle` components](https://ui-schema.bemit.codes/docs/localization#trans-component))
@@ -121,7 +120,7 @@ First time? [Take the quick-start](https://ui-schema.bemit.codes/quick-start) or
 
 Example setup of a renderer, followed by a [simple text widget](#example-simple-text-widget).
 
-Instead of using a `WidgetEngine` at root level (automatic rendering of full schema), it's also possible to use [full custom rendering](https://ui-schema.bemit.codes/quick-start?render=custom) with e.g. [ObjectGroup](https://ui-schema.bemit.codes/docs/core-renderer#objectgroup).
+Instead of using a `WidgetEngine` at root level (automatic rendering of full schema), it's also possible to use [full custom rendering](https://ui-schema.bemit.codes/quick-start?render=custom) with e.g. [ObjectGroup](https://ui-schema.bemit.codes/docs/react/renderer#objectgroup).
 
 ```js
 import React from 'react';

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import { List, Map } from 'immutable'
-import { getSchemaRefPlugin, resolveRef, SchemaRefPending } from '@ui-schema/react-json-schema/ReferencingHandler'
-import { isRootSchema, SchemaRootContext } from '@ui-schema/react-json-schema/SchemaRootProvider'
+import { getSchemaRefPlugin, resolveRef, SchemaRefPending } from '@ui-schema/react/ReferencingHandler'
+import { isRootSchema, SchemaRootContext } from '@ui-schema/react/SchemaRootProvider'
 import { getSchemaId } from '@ui-schema/ui-schema/Utils/getSchema'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 
 /**
  * Pending references, grouped by root id, with requested versions per-schema,
@@ -24,7 +24,7 @@ export interface ParseRefsContent {
     // the definitions, could be get from ReferencingProvider
     defs?: SchemaRootContext['definitions']
     // the root schema, could be get from SchemaRootProvider
-    root?: UISchemaMap
+    root?: SomeSchema
     // try to get a loaded schema
     getLoadedSchema?: getSchemaRefPlugin
 }
@@ -53,8 +53,8 @@ const checkNestedMapSchema = {
 // all keywords which are an array of schemas
 const checkNestedArraySchema = {}
 
-const parseRefsInRenderingKeywords = (schema: UISchemaMap, context: ParseRefsContent, recursive: boolean = false, pending: SchemaRefsPending = Map() as SchemaRefsPending): {
-    schema: UISchemaMap
+const parseRefsInRenderingKeywords = (schema: SomeSchema, context: ParseRefsContent, recursive: boolean = false, pending: SchemaRefsPending = Map() as SchemaRefsPending): {
+    schema: SomeSchema
     pending: SchemaRefsPending
 } => {
     // for all schema keywords which will be rendered, only the root references must be resolved,
@@ -100,8 +100,8 @@ const checkSchema = {
     contains: true,
 }
 
-const parseRefsInConditionalKeywords = (schema: UISchemaMap, context: ParseRefsContent, recursive = false, pending: SchemaRefsPending = Map() as SchemaRefsPending): {
-    schema: UISchemaMap
+const parseRefsInConditionalKeywords = (schema: SomeSchema, context: ParseRefsContent, recursive = false, pending: SchemaRefsPending = Map() as SchemaRefsPending): {
+    schema: SomeSchema
     pending: SchemaRefsPending
 } => {
     // all schema keywords which are never rendered must be resolved endless-recursive
@@ -143,7 +143,7 @@ const parseRefsInConditionalKeywords = (schema: UISchemaMap, context: ParseRefsC
     // here one-schema for all items
     const items = res.schema.get('items')
     if (items && Map.isMap(items)) {
-        const itemsSchema = parseRefs(items, context, recursive, res.pending)
+        const itemsSchema = parseRefs(items as SomeSchema, context, recursive, res.pending)
         res.schema = res.schema.set('items', itemsSchema.schema)
         res.pending = itemsSchema.pending
     }
@@ -155,12 +155,12 @@ const parseRefsInConditionalKeywords = (schema: UISchemaMap, context: ParseRefsC
  * @deprecated use new validatorPlugin instead
  */
 export const parseRefs = (
-    schema: UISchemaMap,
+    schema: SomeSchema,
     context: ParseRefsContent,
     recursive: boolean = false,
     pending: SchemaRefsPending = Map() as SchemaRefsPending,
 ): {
-    schema: UISchemaMap
+    schema: SomeSchema
     pending: SchemaRefsPending
 } => {
     const ref = schema.get('$ref')
@@ -196,12 +196,11 @@ export const parseRefs = (
         context = {...context}
         context.id = getSchemaId(schema)
         context.root = schema
-        // @ts-expect-error missing type inference
         context.defs = schema.get('definitions') || schema.get('$defs')
     }
 
     let res: {
-        schema: UISchemaMap
+        schema: SomeSchema
         pending: SchemaRefsPending
     } = {schema, pending}
 

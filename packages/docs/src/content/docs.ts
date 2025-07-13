@@ -1,25 +1,25 @@
-import { demoAccordions } from './docs/widgets/AccordionsDemo'
+import { DocRoute } from '@control-ui/docs'
+import { TsDocModule } from '@control-ui/docs-ts/TsDocModule'
+import { demoBooleanRead } from './docs/ds-material/widgets-read/BooleanReadDemo'
+import { demoChipsRead } from './docs/ds-material/widgets-read/ChipsReadDemo'
+import { demoOptionsRead } from './docs/ds-material/widgets-read/OptionsReadDemo'
+import { demoTextFieldRead } from './docs/ds-material/widgets-read/TextFieldReadDemo'
 import { demoColorful } from './docs/material-colorful/material-colorfulDemo'
+import { demoDragnDropGenericDemo } from './docs/material-dnd/widgets-genericDemo'
+import { demoAccordions } from './docs/widgets/AccordionsDemo'
+import { demoCard } from './docs/widgets/CardDemo'
 import { demoColor } from './docs/widgets/ColorDemo'
 import { demoDateTimePickers } from './docs/widgets/DateTimePickersDemo'
 import { demoGenericList } from './docs/widgets/GenericListDemo'
 import { demoGridHandler } from './docs/widgets/GridHandlerDemo'
-import { demoOptionsList } from './docs/widgets/OptionsListDemo'
 import { demoNumberSlider } from './docs/widgets/NumberSliderDemo'
+import { demoOptionsList } from './docs/widgets/OptionsListDemo'
+import { demoSelectChips } from './docs/widgets/SelectChipsDemo'
 import { demoSelect } from './docs/widgets/SelectDemo'
 import { demoSimpleList } from './docs/widgets/SimpleListDemo'
 import { demoSwitch } from './docs/widgets/SwitchDemo'
 import { demoTable } from './docs/widgets/TableDemo'
 import { demoTextField } from './docs/widgets/TextFieldDemo'
-import { demoDragnDropGenericDemo } from './docs/material-dnd/widgets-genericDemo'
-import { demoSelectChips } from './docs/widgets/SelectChipsDemo'
-import { demoCard } from './docs/widgets/CardDemo'
-import { TsDocModule } from '@control-ui/docs-ts/TsDocModule'
-import { DocRoute } from '@control-ui/docs'
-import { demoOptionsRead } from './docs/ds-material/widgets-read/OptionsReadDemo'
-import { demoBooleanRead } from './docs/ds-material/widgets-read/BooleanReadDemo'
-import { demoChipsRead } from './docs/ds-material/widgets-read/ChipsReadDemo'
-import { demoTextFieldRead } from './docs/ds-material/widgets-read/TextFieldReadDemo'
 
 export interface DocRouteModule<C = any> extends DocRoute<C> {
     docModule?: TsDocModule
@@ -97,6 +97,7 @@ export const routesPackages = [
             createDoc('core-pluginstack', 'Core: PluginStack', {hidden: true}),
             createDoc('core/schemapluginstack', 'SchemaPluginStack'),
             createDoc('core/schemaresource', 'SchemaResource'),
+            createDoc('core/schematype', 'SchemaType Test'),
             createDoc('core/localization', 'Core: Localization'),
             createDoc('core/utils', 'Core: Utils'),
         ],
@@ -118,16 +119,6 @@ export const routesPackages = [
             createDoc('react/utils', 'React: Utils'),
             createDoc('react/schemaresourceprovider', 'React: SchemaResource'),
             createDoc('react/schemapluginsadapter', 'SchemaPluginsAdapter'),
-        ],
-    },
-    {
-        nav: {
-            label: 'React JSON Schema',
-            to: '/docs/react-json-schema',
-        },
-        routes: [
-            createDoc('react-json-schema/overview', 'Overview'),
-            createDoc('react-json-schema/plugins', 'Plugins'),
         ],
     },
     {
@@ -409,18 +400,9 @@ export const routesFurtherDesignSystem = [
         },
         routes: [
             createDoc('material-pickers/Overview', 'Overview'),
-            createDoc('material-pickers/WidgetDatePicker', 'WidgetDatePicker', {
-                demos: {},
-                module: defineModule('ui-schema', 'material-pickers', 'material-pickers', 'WidgetDatePicker'),
-            }),
-            createDoc('material-pickers/WidgetDateTimePicker', 'WidgetDateTimePicker', {
-                demos: {},
-                module: defineModule('ui-schema', 'material-pickers', 'material-pickers', 'WidgetDateTimePicker'),
-            }),
-            createDoc('material-pickers/WidgetTimePicker', 'WidgetTimePicker', {
-                demos: {},
-                module: defineModule('ui-schema', 'material-pickers', 'material-pickers', 'WidgetTimePicker'),
-            }),
+            createDoc('material-pickers/WidgetDatePicker', 'WidgetDatePicker'),
+            createDoc('material-pickers/WidgetDateTimePicker', 'WidgetDateTimePicker'),
+            createDoc('material-pickers/WidgetTimePicker', 'WidgetTimePicker'),
         ],
     },
     {

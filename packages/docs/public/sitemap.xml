@@ -54,6 +54,10 @@
         <changefreq>weekly</changefreq>
     </url>
     <url>
+        <loc>https://ui-schema.bemit.codes/docs/core/schematype</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
         <loc>https://ui-schema.bemit.codes/docs/core/localization</loc>
         <changefreq>weekly</changefreq>
     </url>
@@ -103,14 +107,6 @@
     </url>
     <url>
         <loc>https://ui-schema.bemit.codes/docs/react/schemapluginsadapter</loc>
-        <changefreq>weekly</changefreq>
-    </url>
-    <url>
-        <loc>https://ui-schema.bemit.codes/docs/react-json-schema/overview</loc>
-        <changefreq>weekly</changefreq>
-    </url>
-    <url>
-        <loc>https://ui-schema.bemit.codes/docs/react-json-schema/plugins</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>
@@ -375,6 +371,10 @@
     </url>
     <url>
         <loc>https://ui-schema.bemit.codes/updates/v0.4.0-v0.5.0</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://ui-schema.bemit.codes/guides/widgets-overriding</loc>
         <changefreq>weekly</changefreq>
     </url>
     <url>

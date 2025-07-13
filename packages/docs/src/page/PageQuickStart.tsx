@@ -1,18 +1,18 @@
-import React from 'react'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid2'
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
-import ToggleButton from '@mui/material/ToggleButton'
-import Paper from '@mui/material/Paper'
-import { Markdown } from '../component/Markdown'
-import DemoUIGenerator from '../component/Schema/DemoUIGenerator'
-import { RichCodeEditor } from '../component/RichCodeEditor'
-import { useHistory } from 'react-router-dom'
 import { LinkableHeadlineMenu, useHeadlines } from '@control-ui/docs/LinkableHeadline'
 import { HeadMeta } from '@control-ui/kit/HeadMeta'
-import { PageContent } from '@control-ui/kit/PageContent'
 import { LoadingCircular } from '@control-ui/kit/Loading'
+import { PageContent } from '@control-ui/kit/PageContent'
+import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid2'
+import Paper from '@mui/material/Paper'
+import ToggleButton from '@mui/material/ToggleButton'
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
+import Typography from '@mui/material/Typography'
+import React from 'react'
+import { useHistory } from 'react-router-dom'
+import { Markdown } from '../component/Markdown'
+import { RichCodeEditor } from '../component/RichCodeEditor'
+import DemoUIGenerator from '../component/Schema/DemoUIGenerator'
 
 const demoSchema = {
     type: 'object',
@@ -155,7 +155,7 @@ First select the design-system and install ui-schema and dependencies.
 
                 {ds === 'mui' ? <Markdown source={`
 \`\`\`bash
-npm i --save @ui-schema/ui-schema @ui-schema/react @ui-schema/react-json-schema @ui-schema/json-schema @ui-schema/json-pointer immutable \\
+npm i --save @ui-schema/ui-schema @ui-schema/react @ui-schema/json-schema @ui-schema/json-pointer immutable \\
     @ui-schema/ds-material \\
     @mui/material @mui/icons-material
 \`\`\`
@@ -176,14 +176,14 @@ npm i --save @ui-schema/ui-schema @ui-schema/react @ui-schema/react-json-schema 
                 {ds === 'bts' ? <Markdown source={`
 > no priority currently for bootstrap widgets development, but happy about PRs
 \`\`\`bash
-npm i --save @ui-schema/ui-schema @ui-schema/react @ui-schema/react-json-schema @ui-schema/json-schema @ui-schema/json-pointer immutable \\
+npm i --save @ui-schema/ui-schema @ui-schema/react @ui-schema/json-schema @ui-schema/json-pointer immutable \\
     @ui-schema/ds-bootstrap bootstrap
 \`\`\`
 `}/> : null}
                 {ds === 'custom' ? <Markdown source={`
 Install dependencies then head to the [widgets binding documentation](/docs/widgets#create-design-system-binding) for more details about creating design systems bindings.
 
-> Please note that usage without react isn't covered by any documentation.
+> Please be aware that the documentation primarily focuses usage with React.
 
 The minimum packages needed:
 
@@ -197,11 +197,7 @@ The additional packages needed for the react engine:
 npm i --save @ui-schema/react @ui-schema/json-schema react
 \`\`\`
 
-Additional package for react, with specific JSON Schema plugins and components, very useful, but not required by the other packages.
-
-\`\`\`bash
-npm i --save @ui-schema/react-json-schema
-\`\`\`
+> Check the [\`@ui-schema/json-schema\` package docs](/docs/json-schema/overview) for basic instructions on validator setup, without rendering.
 
 `}/> : null}
             </Paper>
@@ -508,7 +504,7 @@ Test the demo form below, it will send the entered data to [httpbin.org*](https:
 
 Now we add the root level renderer, the \`CustomGroup\` is responsible to validate the root schema-level.
 
-It is recommended to nest \`type=object\` schemas for best and easiest conditional and referencing handling, otherwise checkout [ObjectGroup](/docs/core-renderer#objectgroup).
+It is recommended to nest \`type=object\` schemas for best and easiest conditional and referencing handling, otherwise checkout [ObjectGroup](/docs/react/renderer#objectgroup).
 `}/>
                         </Grid>
                         <Grid size={12}>

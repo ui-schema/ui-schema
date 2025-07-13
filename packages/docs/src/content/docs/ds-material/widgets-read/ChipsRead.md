@@ -1,6 +1,6 @@
 # WidgetChipsRead
 
-Read-only widgets for the `oneOf`-based `Chips`, works with the [UIMetaReadContextType](/docs/core-meta#read-context).
+Read-only widgets for the `oneOf`-based `Chips`, works with the [UIMetaReadContextType](/docs/react/meta#read-context).
 
 - type: `array`
 - schema keywords

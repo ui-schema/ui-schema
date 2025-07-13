@@ -6,7 +6,7 @@ import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefau
 import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
-import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
+import { DefaultHandler } from '@ui-schema/react/DefaultHandler'
 import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
@@ -64,7 +64,6 @@ const customWidgets: MuiBinding = {
 
     widgetPlugins: [
         //ReferencingHandler,// must be before AND maybe after combining/conditional?
-        // ResourceBranchHandler, // << move into plugins adapter? only dynamicRef wouldn't work that way
         // ExtractStorePlugin,
         DefaultHandler, // default must be before anything that handles conditionals; but also after conditionals if default depends on it
         //CombiningHandler, // < pure schema, but changing applicable schema

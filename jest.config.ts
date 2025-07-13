@@ -9,7 +9,6 @@ import { createDefaultEsmPreset } from 'ts-jest'
 
 const packages: [name: string, folder: string][] = [
     ['@ui-schema/ui-schema', 'ui-schema'],
-    ['@ui-schema/react-json-schema', 'react-json-schema'],
     ['@ui-schema/react', 'react'],
     ['@ui-schema/pro', 'pro'],
     ['@ui-schema/json-pointer', 'json-pointer'],

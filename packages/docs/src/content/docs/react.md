@@ -4,12 +4,13 @@ The UI Schema react part consists of `Providers`, `Renderers`~~, the plugin syst
 
 It supports different ways of creation and UI orchestration, focused for a great developer experience and fast UIs.
 
-- [Generator & Renderer](/docs/core-renderer): components which start the whole form or are part of the automatic/autowired rendering flow
-- [Store](/docs/core-store): internal data handling and the needed providers, each new UI Generator needs its own store
-- [Meta](/docs/core-meta): available `widgets` and translation `t` options, best is to have one [lifted up](https://reactjs.org/docs/lifting-state-up.html) `UIMetaProvider` for many `UIStoreProvider`
-- [PluginStack](/docs/react/widgetengine): wraps each widget and executes plugins / validators
-- [UIApi](/docs/core-uiapi): utilities for network connected forms
-- [Utils](/docs/core-utils): common utilities for immutable and other logic parts
+- [Generator & Renderer](/docs/react/renderer): components which start the whole form or are part of the automatic/autowired rendering flow
+- [Store](/docs/react/store): internal data handling and the needed providers, each form has it's own store
+- [Meta](/docs/react/meta): context for the available `binding`, `validate` and translation `t`, shared across the whole application
+- [WidgetEngine](/docs/react/widgetengine): wraps each widget and renders plugins, and through them e.g. validators
+- [SchemaPluginsAdapter](/docs/react/schemapluginsadapter): runs schema plugins within the React rendering pipeline
+- [Localization](/docs/react/localization): translation components, for [embedded in-schema](/docs/localization#translation-in-schema) and `t` fn as source
+- [Utils](/docs/react/utils): common utilities for immutable and other logic parts
 
 ## Flowchart
 

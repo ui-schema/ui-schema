@@ -1,22 +1,22 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
-import { parseRefs, SchemaRefsPending, useSchemaNetworkRef } from '@ui-schema/react-json-schema/ReferencingHandler'
+import { parseRefs, SchemaRefsPending, useSchemaNetworkRef } from '@ui-schema/react/ReferencingHandler'
 import React from 'react'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import { SchemaRootContext } from '@ui-schema/react-json-schema/SchemaRootProvider'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
+import { SchemaRootContext } from '@ui-schema/react/SchemaRootProvider'
 
 export const useSchemaRef = (
-    maybeRootSchema: UISchemaMap | undefined,
+    maybeRootSchema: SomeSchema | undefined,
     definitions: SchemaRootContext['definitions'] | undefined,
     isRoot: boolean,
-    schema: UISchemaMap,
+    schema: SomeSchema,
 ): {
-    schema: UISchemaMap
+    schema: SomeSchema
     refsPending: SchemaRefsPending
 } => {
     const {getSchema, loadSchema} = useSchemaNetworkRef()
 
     const parseRes: {
-        schema: UISchemaMap
+        schema: SomeSchema
         pending: SchemaRefsPending
     } = React.useMemo(() => {
         return parseRefs(

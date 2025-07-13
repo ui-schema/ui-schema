@@ -313,7 +313,7 @@ The prop `isVirtual` can be passed to the per schema-level components, like `Plu
 
 The `SchemaGridHandler` plugin of the design-system and any other plugin needs to support it, the official provided design systems and plugins are compatible.
 
-This relies on the `binding.VirtualRenderer`, set it to e.g. `import { VirtualWidgetRenderer } from '@ui-schema/react-json-schema/VirtualWidgetRenderer'`, otherwise the `WidgetRenderer` will render `null`.
+This relies on the `binding.VirtualRenderer`, set it to e.g. `import { VirtualWidgetRenderer } from '@ui-schema/react/VirtualWidgetRenderer'`, otherwise the `WidgetRenderer` will render `null`.
 
 ## Schema is Read-Only
 

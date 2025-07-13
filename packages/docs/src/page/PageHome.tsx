@@ -29,7 +29,7 @@ export default function PageHome() {
                         Use <strong>JSON-Schema</strong> to define data-structures and <strong>render the UI automatically</strong>, customize everything with components - UI Schema handles all the validation and data-bindings to give you a great DX.
                     </Typography>
                     <Typography component={'p'} variant={'body1'} gutterBottom>
-                        Widgets are defined per <strong>design-system</strong>, use the ds-binding you need or <Link to={'/docs/widgets'} primary={<strong>create your own easily</strong>}/>.
+                        Widgets are defined per <strong>design-system</strong>, use the ds-binding you need or <Link to={'/docs/binding'} primary={<strong>create your own easily</strong>}/>.
                     </Typography>
                 </Paper>
 
@@ -50,7 +50,7 @@ export default function PageHome() {
     - customize design system behaviour with e.g. widget compositions
     - easy binding of own design systems and custom widgets
     - [auto-rendering by data & schema](/quick-start) or [full-custom forms](/quick-start?render=custom) with autowired widgets
-    - easily add advanced features like [read-or-write mode](/docs/core-meta#read-context)
+    - easily add advanced features like [read-or-write mode](/docs/react/meta#read-context)
 - flexible translation of widgets
     - with any library ([\`t\` prop (Translator)](/docs/localization#translation), [\`Translate\`/\`TranslateTitle\` components](/docs/localization#trans-component))
     - in-schema translations ([\`t\` keyword](/docs/localization#translation-in-schema))

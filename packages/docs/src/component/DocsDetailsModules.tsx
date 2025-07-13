@@ -1,27 +1,28 @@
+import { TsDocModuleCollectionSimple, TsDocsModuleRenderer } from '@control-ui/docs-ts/TsDocModule'
 import { TsDocsSimple } from '@control-ui/docs-ts/TsDocsSimple'
-import { Link } from '@control-ui/kit'
-import Button from '@mui/material/Button'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
-import Table from '@mui/material/Table'
-import TableCell from '@mui/material/TableCell'
-import TableBody from '@mui/material/TableBody'
-import Tooltip from '@mui/material/Tooltip'
-import React, { useState } from 'react'
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
 import { LinkableHeadline } from '@control-ui/docs/LinkableHeadline'
+import { Link } from '@control-ui/kit'
+import { MdInlineCode } from '@control-ui/md/MdInlineCode'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
-import { TsDocModuleCollectionSimple, TsDocsModuleRenderer } from '@control-ui/docs-ts/TsDocModule'
-import { MdInlineCode } from '@control-ui/md/MdInlineCode'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import Tooltip from '@mui/material/Tooltip'
+import Typography from '@mui/material/Typography'
+import React, { ReactNode, useState } from 'react'
 import { Markdown } from './Markdown'
 
 const ModuleHeadline: React.ComponentType<React.PropsWithChildren<{
     id: string
     level: number
-}>> = ({id, level, children}) => {
-    return <LinkableHeadline level={level} levelOffsetVariant={2} customId={id} mb={0} mt={0} style={{wordBreak: 'break-all'}}>
+    secondary?: ReactNode
+}>> = ({id, level, children, secondary}) => {
+    return <LinkableHeadline level={level} levelOffsetVariant={2} customId={id} secondary={secondary} mb={0} mt={0} style={{wordBreak: 'break-all'}}>
         <Box mt={0.5} mb={0.25}>
             {children}
         </Box>

@@ -39,7 +39,7 @@ const customWidgets = {
 export {customWidgets}
 ```
 
-> see the more in-depth docs about the [widget composition concept](/docs/widgets-composition) and the basics about [`PluginStack`](/docs/react/widgetengine)
+> see the more in-depth docs about the [widget composition concept](/docs/widgets-composition) and the basics about [`WidgetEngine`](/docs/react/widgetengine)
 
 Use github to [request new widget properties](https://github.com/ui-schema/ui-schema/issues/new?template=widget_composition.md) - awesome if you add PRs!
 
@@ -49,12 +49,12 @@ See also [adding or overwriting widgets](#adding--overwriting-widgets)
 
 JSON-Schema is handled mostly by the `widgets.widgetPlugins` for you, focus on the behaviour of the widget, connect it through the provided properties and the HOC `extractValue` (only non-scalar values).
 
-Each widget gets properties provided by the root schema renderer or added from plugins. When rendering nested schemas, all passed down `props` to [`PluginStack`](/docs/react/widgetengine) are passed to the nested widget(s) - except those removed by [`WidgetRenderer`](/docs/core-renderer#widgetrenderer).
+Each widget gets properties provided by the root schema renderer or added from plugins. When rendering nested schemas, all passed down `props` to [`WidgetEngine`](/docs/react/widgetengine) are passed to the nested widget(s) - except those removed by [`WidgetRenderer`](/docs/react/renderer#widgetrenderer).
 
 Received properties from `WidgetRenderer` or accumulated in plugins & pluginSimpleStack:
 
 - `value` : `{*}` Plugins receive for any value, Widgets only for scalar
-- `onChange` : `{function}` store updater function, see [updating utils](/docs/core-store#store-updating--onchange)
+- `onChange` : `{function}` store updater function, see [updating utils](/docs/react/store#store-updating--onchange)
 - `storeKeys` : `{List}`
 - `ownKey` : `{string|integer}` *deprecated, will be removed in `0.5.0` use `storeKeys.last()` instead*
 - `schema` : `{Map}` the schema of the current widget

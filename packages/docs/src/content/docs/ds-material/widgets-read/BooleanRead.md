@@ -1,6 +1,6 @@
 # BooleanRead
 
-Read-only widget for standard `boolean` type, works with the [UIMetaReadContextType](/docs/core-meta#read-context).
+Read-only widget for standard `boolean` type, works with the [UIMetaReadContextType](/docs/react/meta#read-context).
 
 - type: `boolean`
 - schema keywords

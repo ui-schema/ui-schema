@@ -1,12 +1,12 @@
 import React from 'react'
 import { Map } from 'immutable'
 import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
-import { useSchemaRoot } from '@ui-schema/react-json-schema/SchemaRootProvider'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { useSchemaRoot } from '@ui-schema/react/SchemaRootProvider'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { escapePointer } from '@ui-schema/json-pointer/escapePointer'
 
 export interface InjectSplitSchemaRootContext {
-    schemaStyle?: UISchemaMap
+    schemaStyle?: SomeSchema
 }
 
 /**
@@ -22,7 +22,7 @@ export const InjectSplitSchemaPlugin: React.ComponentType<WidgetPluginProps> = (
     const pointer = storeKeys.size > 0 ? '/' + storeKeys.map(k => escapePointer(String(k))).join('/') : ''
 
     const schemaStyleLevel = schemaStyle?.get(pointer) as Map<string, any> | undefined
-    let schemaStyleClean: UISchemaMap | undefined
+    let schemaStyleClean: SomeSchema | undefined
     if (schemaStyleLevel && Map.isMap(schemaStyleLevel)) {
         schemaStyleClean = schemaStyleLevel
             .delete('properties')

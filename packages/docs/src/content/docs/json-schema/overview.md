@@ -12,3 +12,8 @@ The `@ui-schema/json-schema` package provides a set of utilities and components 
 
 > 🚧 **New**, the **API is experimental**, expect breaking changes. Only use like shown in the examples.
 
+```bash
+npm i --save @ui-schema/json-schema @ui-schema/json-pointer @ui-schema/ui-schema immutable
+```
+
+This package does not depend on react and is designed for server and browser usage. While the implementation is specialized for UI generation related needs, it is a full JSON Schema validator and employs an opinionated JSON Schema traversal and processing.

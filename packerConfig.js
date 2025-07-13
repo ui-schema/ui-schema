@@ -89,14 +89,6 @@ const packages = {
         entry: path.resolve(__dirname, 'packages', 'react/src/'),
         babelTargets: babelTargetsEsmCjs,
     },
-    uiSchemaReactJsonSchema: {
-        name: '@ui-schema/react-json-schema',
-        doServeWatch: false,
-        esmOnly: false,
-        root: path.resolve(__dirname, 'packages', 'react-json-schema'),
-        entry: path.resolve(__dirname, 'packages', 'react-json-schema/src/'),
-        babelTargets: babelTargetsEsmCjs,
-    },
     uiSchemaJsonSchema: {
         name: '@ui-schema/json-schema',
         doServeWatch: false,

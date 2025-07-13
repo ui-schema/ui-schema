@@ -77,9 +77,9 @@ npm run static-gen
 After installing deps, create a minimal build:
 
 ```shell
+npm run static-gen
 npm run build-babel
 npm run build-webpack
-npm run static-gen
 ```
 
 And then build the [DockerfileApache](./DockerfileApache) and open [http://localhost:8080](http://localhost:8080).

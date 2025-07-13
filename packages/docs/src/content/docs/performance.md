@@ -30,18 +30,16 @@ This ui renderer has multiple levels of performance optimization:
     - widgets:
         - `RootRenderer` is wrapped inside a memoized dump-renderer directly after `UIRootRenderer`, will re-render on `schema` and `widgets` change
         - `GroupRenderer` is wrapped inside the memoized renderer `ObjectRenderer`
-        - any `types.<Component>`, `custom.<Component>` run as the last step in `PluginStack`, the plugin stack in itself uses memoization where needed
+        - any `types.<Component>`, `custom.<Component>` run as the last step in `WidgetEngine`, the plugin stack in itself uses memoization where needed
         - list / generic widgets (non-scalar values) use further nesting, skipping e.g. table headers for any store changes, table footer only receives the number of elements, not the list itself
     - only the `store` immutable is changing, for each current field it's value is retrieved by the HOCs (e.g. `extractValue`) and pushed to the widget
     - core:
-        - `PluginStack` not memoized, optimization in the wrapping level is mostly better
-            - since `0.3.0` the re-render is triggered within the `widgets.widgetPlugins` by e.g. `ExtractStorePlugin`
-            - receives the widget/widget stack and is the internal entry for starting/nesting the schema with rendering the first `Plugin`
-        - `ExtractStorePlugin` is memoized and injects the schema-level `value`/`internalValue`/`onChange` into the `props` for the next plugins in the stack
+        - `WidgetEngine` not memoized, optimization in the wrapping level is mostly better
+            - ~~since `0.3.0` the re-render is triggered within the `widgets.widgetPlugins` by e.g. `ExtractStorePlugin`~~
+            - connect to store, which forces a re-render
+            - runs the first `Next.Component` in a memoized wrapper, ensuring the plugins or WidgetRenderer do only re-render if the locations values have changed
+        - (deprecated, included in WidgetEngine in `0.5.x`) `ExtractStorePlugin` is memoized and injects the schema-level `value`/`internalValue`/`onChange` into the `props` for the next plugins in the stack
             - this component will re-render anytime something in the `store` changes
             - but enforces that any further plugin is only executed again when something in the schema-level values has changed
-        - `WidgetRenderer` is rendered when the plugin-stack is finished, not memoized but removes `value`/`internalValue` from the props again for non-scalar widgets
-            - an `object`/`array` component can be memoized and will not re-render when it's item change (memoize "non-scalar value widgets" on your own!)
-            - use the HOC `extractValue` at your required component, e.g. skip some of the wrapped HTML for re-rendering
 
 Further on to reduce code-size, it is recommended to build your [own ds-binding](/docs/widgets#create-design-system-binding) with only the needed components or use [lazy](https://react.dev/reference/react/lazy)-loading for very large widgets.

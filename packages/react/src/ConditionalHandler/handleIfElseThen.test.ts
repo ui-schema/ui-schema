@@ -1,18 +1,18 @@
 import { expect, describe, test } from '@jest/globals'
 import { Map } from 'immutable'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
-import { handleIfElseThen } from '@ui-schema/react-json-schema/ConditionalHandler'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { handleIfElseThen } from '@ui-schema/react/ConditionalHandler'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { newMockStateNested } from '../../../json-schema/tests/mocks/ValidatorState.mock.js'
 
 /**
  * npm test -- --testPathPattern=ConditionalHandler --watch --watchman --coverage=false
  * npm run tdd -- --testPathPattern=ConditionalHandler
- * npm run tdd -- --runTestsByPath=packages/react-json-schema/src/ConditionalHandler
- * npm run tdd -- --runTestsByPath "./packages/react-json-schema/src/ConditionalHandler"
- * npm run tdd -- --runTestsByPath "./packages/react-json-schema/src/ConditionalHandler/handleIfElseThen.test.ts" --selectProjects test-@ui-schema/react-json-schema
- * npm run test -- --runTestsByPath "./packages/react-json-schema/src/ConditionalHandler/handleIfElseThen.test.ts"
- * npm run test -- --runTestsByPath "./packages/react-json-schema/src/ConditionalHandler/handleIfElseThen.test.ts" --selectProjects test-@ui-schema/react-json-schema
+ * npm run tdd -- --runTestsByPath=packages/react/src/ConditionalHandler
+ * npm run tdd -- --runTestsByPath "./packages/react/src/ConditionalHandler"
+ * npm run tdd -- --runTestsByPath "./packages/react/src/ConditionalHandler/handleIfElseThen.test.ts" --selectProjects test-@ui-schema/react
+ * npm run test -- --runTestsByPath "./packages/react/src/ConditionalHandler/handleIfElseThen.test.ts"
+ * npm run test -- --runTestsByPath "./packages/react/src/ConditionalHandler/handleIfElseThen.test.ts" --selectProjects test-@ui-schema/react
  */
 
 
@@ -315,10 +315,11 @@ describe('handleIfElseThen', () => {
             }),// expectedSchema
             true,// expected
         ],
-    ] as [UISchemaMap, Map<string, string | number>, UISchemaMap, UISchemaMap, boolean][])(
+    ] as [SomeSchema, Map<string, string | number>, SomeSchema, SomeSchema, boolean][])(
         'handleIfElseThen(%j, store, distSchema)',
         (schema, store, distSchema, expectedSchema, expected) => {
             const state = newMockStateNested()
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             const result = handleIfElseThen(schema, store, distSchema, state)
             const equals = result.equals(expectedSchema)
             if (equals !== expected) {

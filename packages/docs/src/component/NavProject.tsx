@@ -9,7 +9,6 @@ export default function NavProject() {
         <Markdown source={`
 - @ui-schema/ui-schema [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ui-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ui-schema)
 - @ui-schema/react [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/react?style=flat-square)](https://www.npmjs.com/package/@ui-schema/react)
-- @ui-schema/react-json-schema [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/react-json-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/react-json-schema)
 - @ui-schema/json-schema [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/json-schema?style=flat-square)](https://www.npmjs.com/package/@ui-schema/json-schema)
 - @ui-schema/json-pointer [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/json-pointer?style=flat-square)](https://www.npmjs.com/package/@ui-schema/json-pointer)
 - @ui-schema/ds-material [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/ds-material?style=flat-square)](https://www.npmjs.com/package/@ui-schema/ds-material)

@@ -8,7 +8,7 @@ import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/Requi
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
 import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd'
-import { DefaultHandler } from '@ui-schema/react-json-schema/DefaultHandler'
+import { DefaultHandler } from '@ui-schema/react/DefaultHandler'
 import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'

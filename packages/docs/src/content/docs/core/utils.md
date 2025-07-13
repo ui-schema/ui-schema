@@ -51,7 +51,7 @@ let dataMap = OrderedMap(fromJSOrdered({}));
 
 Helper for moving an item inside a `List`/`array`, useful for moving up/down inside a list widget.
 
-> **better use [store actions](/docs/core-store#store-actions) instead!**
+> **better use [store actions](/docs/react/store#store-actions) instead!**
 
 ```js
 import {useImmutable} from '@ui-schema/ui-schema/Utils/useImmutable'

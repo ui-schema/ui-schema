@@ -17,7 +17,7 @@ Plugins are wrapped around each widget/json-schema level and can be used to add 
 
 ## WidgetEngine
 
-Entry point into widget and plugin rendering, uses the `props` to start the render tree of all registered plugins, with finally the actual widget by [`WidgetRenderer`](/docs/core-renderer#widgetrenderer).
+Entry point into widget and plugin rendering, uses the `props` to start the render tree of all registered plugins, with finally the actual widget by [`WidgetRenderer`](/docs/react/renderer#widgetrenderer).
 
 When ever you need to build an own `array` or `object` widget, you need to handle the rendering of `properties` or `items` schemas.
 
@@ -30,9 +30,9 @@ See [PluginStack typings](https://github.com/ui-schema/ui-schema/blob/master/pac
 Overwrite `props` rules for any `widgets.widgetPlugins` plugin:
 
 - `props` passed directly to `PluginStack` overwrite any other, except [`PluginStackInjectProps`](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/PluginStack/PluginStack.d.ts)
-- [`UIMetaContext`](/docs/core-meta) are overwritten by any other, added to every plugin stack by default
-- [`UIConfigContext`](/docs/core-store#uiconfigcontext) is overwriting only the `UIMetaContext`, added to every plugin stack by default
-- [`UIStoreContext`](/docs/core-store#uistoreprovider) are extracted using `storeKeys`
+- [`UIMetaContext`](/docs/react/meta) are overwritten by any other, added to every plugin stack by default
+- [`UIConfigContext`](/docs/react/store#uiconfigcontext) is overwriting only the `UIMetaContext`, added to every plugin stack by default
+- [`UIStoreContext`](/docs/react/store#uistoreprovider) are extracted using `storeKeys`
 
 ### Typescript Custom PluginStack props
 

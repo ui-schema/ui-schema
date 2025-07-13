@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import { resolvePointer } from '@ui-schema/json-pointer/resolvePointer'
 import { ParseRefsContent } from './parseRefs.js'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 
 /**
  * @deprecated use new validatorPlugin instead
@@ -12,7 +12,7 @@ export class SchemaRefPending extends Error {
 /**
  * @deprecated use new validatorPlugin instead
  */
-export const resolveRef = (ref: string, context: ParseRefsContent, schemaVersion?: string): UISchemaMap | undefined => {
+export const resolveRef = (ref: string, context: ParseRefsContent, schemaVersion?: string): SomeSchema | undefined => {
     const {
         // the id of the parent schema
         id,
@@ -24,7 +24,7 @@ export const resolveRef = (ref: string, context: ParseRefsContent, schemaVersion
         getLoadedSchema,
     } = context
 
-    let schema: UISchemaMap | undefined = undefined
+    let schema: SomeSchema | undefined = undefined
 
     if (ref.indexOf('#/definitions/') === 0 || ref.indexOf('#/$defs/') === 0) {
         // intercept JSON Pointer for definitions

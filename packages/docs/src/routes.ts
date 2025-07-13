@@ -31,7 +31,6 @@ export const routes = (): DocRouteModule<Comp> => ({
             },
             config: {
                 content: {
-                    // component: loading('Loading Docs Viewer', DocsDetailsLazy) as Comp,
                     component: DocsDetailsLazy as Comp,
                 },
             },
@@ -50,7 +49,6 @@ export const routes = (): DocRouteModule<Comp> => ({
             },
             config: {
                 content: {
-                    // component: loading('Loading Docs Viewer', DocsDetailsLazy) as Comp,
                     component: DocsDetailsLazy as Comp,
                 },
             },
@@ -88,9 +86,32 @@ export const routes = (): DocRouteModule<Comp> => ({
             ],
         },
         {
+            path: '/guides/:docId+',
+            nav: {
+                to: '/guides',
+                label: 'Guides',
+            },
+            config: {
+                content: {
+                    component: DocsDetailsLazy as Comp,
+                },
+            },
+            routes: [
+                {
+                    // @ts-ignore
+                    doc: 'guides/widgets-overriding',
+                    path: '/guides/widgets-overriding',
+                    nav: {
+                        to: '/guides/widgets-overriding',
+                        label: 'Widgets Overriding',
+                    },
+                },
+            ],
+        },
+        {
             path: '/examples/:schema?',
             nav: {
-                to: '/docs',
+                to: '/examples',
                 label: 'Live-Editor',
             },
             config: {

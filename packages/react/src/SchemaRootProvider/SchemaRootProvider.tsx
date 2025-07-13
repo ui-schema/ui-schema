@@ -3,7 +3,7 @@ import React from 'react'
 import { OrderedMap } from 'immutable'
 import { getSchemaId } from '@ui-schema/ui-schema/Utils/getSchema'
 import { memo } from '@ui-schema/react/Utils/memo'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 
 /**
  * @deprecated use new validatorPlugin instead
@@ -11,14 +11,14 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 export interface SchemaRootContext {
     id?: string | undefined
     // the root schema for e.g. JSONPointer resolving
-    schema?: UISchemaMap
-    definitions?: OrderedMap<string, UISchemaMap>
+    schema?: SomeSchema
+    definitions?: OrderedMap<string, SomeSchema>
 }
 
 /**
  * @deprecated use new validatorPlugin instead
  */
-export const isRootSchema = (schema: UISchemaMap): boolean => {
+export const isRootSchema = (schema: SomeSchema): boolean => {
     const id = getSchemaId(schema)
     // todo: is this "no fragment beginning" really the correct root for everything? e.g. $defs?
     return Boolean(id && id.indexOf('#') !== 0)

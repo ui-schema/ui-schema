@@ -81,10 +81,6 @@ component_management:
             name: react
             paths:
                 - packages/react/**
-        -   component_id: react-json-schema
-            name: react-json-schema
-            paths:
-                - packages/react-json-schema/**
         -   component_id: ui-schema
             name: ui-schema
             paths:

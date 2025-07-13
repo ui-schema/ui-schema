@@ -17,7 +17,6 @@
         "@mui/lab": "^6.0.1-beta.35",
         "@ui-schema/ui-schema": "~0.5.0-alpha.0",
         "@ui-schema/react": "~0.5.0-alpha.0",
-        "@ui-schema/react-json-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",
         "@ui-schema/json-pointer": "~0.5.0-alpha.0",
         "@ui-schema/dictionary": "~0.1.0-alpha.0",

@@ -3,7 +3,7 @@
  */
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
-import { ObjectRenderer } from '@ui-schema/react-json-schema/ObjectRenderer'
+import { ObjectRenderer } from '@ui-schema/react/ObjectRenderer'
 import { NoWidget } from '@ui-schema/react/NoWidget'
 import { OrderedMap } from 'immutable'
 import React from 'react'

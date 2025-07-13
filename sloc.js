@@ -20,7 +20,6 @@ const include = [
     path.resolve(__dirname, 'packages', 'material-pickers/src'),
     path.resolve(__dirname, 'packages', 'pro/src'),
     path.resolve(__dirname, 'packages', 'react/src'),
-    path.resolve(__dirname, 'packages', 'react-json-schema/src'),
     path.resolve(__dirname, 'packages', 'ui-schema/src'),
 ];
 

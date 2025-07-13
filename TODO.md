@@ -113,6 +113,7 @@ Todo:
           caused by that, they must resolve the $ref themself when needed, to facilitate it the $ref must be canonicalized while building the schema resource
     - [x] interops with Validator for resolving `$ref` in validator and uses validate for traversing conditionals
     - [ ] better highlight what is important when using it: use the root branch value as schema (for having the prepared, and not the plain schema), check unresolved, use without `inject/applyWidgetEngine` HOCs to move schema root rendering component
+    - [ ] create tests for circular `$ref` between separate remote schemas
 - [ ] validator support of defaulting values, initially and after applying conditional schema
     - **tbd:** `default` handling and conditionals/selecting branches in ref/allOf/oneOf chains
 - **TBD:** defaulting values may be needed during validation, to not flash invalid states, which requires some store-effects and bindings to `internals`
@@ -241,10 +242,6 @@ Todo:
     - relies on new resource system
     - loads all needed schemas initially in root, no longer when/where a ref is actually used
     - makes `UIApi` unnecessary
-    - ~~`ResourceBranchHandler` vs legacy `ReferencingHandler`~~
-        - only resolves the current schemas $ref, no longer materialized all nested $ref
-        - combines conditional and composition with $ref resolving
-        - *integrated into `ValidatorPlugin`, using the `applied` schemas that are emitted by `validate`*
 
 #### React Plugins / WidgetEngine
 
@@ -455,7 +452,6 @@ new widget engine functions:
     - this undefined behaviour / normal errors isn't nice
     - an automatic correction should be optional, as imho. unexpected and may lead to more complex integration with most ORM/DMS
 - [ ] provide a demo of custom store actions which use the schema resource system for more complex recursive mutations?
-- [ ] rethink if `@ui-schema/react-json-schema` is really needed, only some very easy replaceable dependencies to `/json-schema`, and otherwise types
 - [ ] update documentation
     - [ ] quick start
     - [ ] new overview

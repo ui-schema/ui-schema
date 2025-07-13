@@ -202,7 +202,8 @@ h6 + .MuiPaper-root {
 /*}*/
 
 /* better align of content links, which only contain an img, like with markdown badges */
-a > img:first-child:last-child {
+/* with openInNew icon it is not the last-child */
+a > img:first-child/*:last-child*/ {
     display: inline-block;
     vertical-align: middle;
     max-width: 100%;

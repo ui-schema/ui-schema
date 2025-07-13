@@ -14,10 +14,10 @@ Provider for the [schema resource system](/docs/core/schemaresource).
 Basic usage:
 
 ```tsx
-import { useMemo } from 'react'
-import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { SchemaResourceProvider } from '@ui-schema/react/SchemaResourceProvider'
-import { resourceFromSchema } from '@ui-schema/ui-schema/SchemaResource'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
+import { resourceFromSchema, SchemaResource } from '@ui-schema/ui-schema/SchemaResource'
+import { useMemo, useState } from 'react'
 
 const schema = createOrderedMap({
     type: 'object',
@@ -30,7 +30,15 @@ const schema = createOrderedMap({
 })
 
 const Form = () => {
-    const resource = useMemo(() => resourceFromSchema(schema, {}), [])
+    const [knownResources] = useState<Record<string, SchemaResource>>({})
+
+    const resource = useMemo(() => {
+        // create the prepared schema-resource
+        return resourceFromSchema(schema, {
+            // supply prepared resources for resolving $ref which are not embedded in the same schema
+            resources: knownResources,
+        })
+    }, [knownResources])
 
     // use collected information to load missing sub-schema or show errors
     // resource.unresolved
