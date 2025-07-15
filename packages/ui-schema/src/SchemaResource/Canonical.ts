@@ -57,9 +57,8 @@ export const getBaseUrl = (url: string) => {
         const currentRootUrl = new URL(url)
         return currentRootUrl.origin + currentRootUrl.pathname
     } catch (e) {
-        // invalid `url`, e.g. no protocol/hostname, then treating `url` as just a path-hash-get portion
-        return (url.startsWith('/') ? '' : '/') +
-            url.split('#')[0].split('?')[0]
+        // invalid `url`, e.g. no protocol/hostname, then treating `url` as just a path-get-hash portion
+        return (url.startsWith('/') ? '' : '/') + url.split(/[?#]/)[0]
     }
 }
 
