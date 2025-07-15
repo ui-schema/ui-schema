@@ -93,6 +93,7 @@ Todo:
     - removed `getType` and other utils to get only specific types of error
     - only passing down the list of errors as props, not the whole `ValidatiorError`
     - for React: prop `errors` is created inside validator, now only exists when there is an error and is `undefined` otherwise
+- `multipleOf` validator floating point number normalization now uses BigInt for better scaling
 
 Todo:
 
@@ -124,11 +125,29 @@ Todo:
     - support of nested conditionals / chains of `if` / including `$ref`
 - [ ] something that collects for each valueLocation/schemaLocation it's applicable schema, for then having a list of schemas which should be merged, for each field/schema location
     - [x] basic PoC with emitting applied schemas for per-layer/non-recursive validation, with an integration in ValidatorPlugin which reduces applied schemas, not just merging them
-    - validators should return applicable schemas + evaluation context with evaluated-fields
+    - [x] validators should return applicable schemas + evaluation context with evaluated-fields
         - if > adds then or else
         - allOf > return all
         - oneOf > return the first valid
         - anyOf > return the first valid
+    - [x] validator plugin for ui-schema/react merges schemas more reliable
+        - uses sub-schema which the validator collected in `applied`
+        - e.g. finding intersection of `type`, `mininum`, `enum`, `required` etc.
+        - special handling of sub-schemas, like same `properties` in different applied schemas, for deferred merging, once that particular layer will be validated, not when the `object` itself is validated
+          - this guarantees that `{ "properties": { "country": { "$ref": "#/$defs/country" } }` works even if more `$ref` or dynamic branches exist in `if/then/else`, which produces something like the following, where a new `allOf` on those properties include the further `applied` schemas, which then can be resolved when the `country` property itself is validated.
+
+            ```json
+            {
+              "properties": {
+                "country": {
+                  "$ref": "#/$defs/country",
+                  "allOf": [
+                    { "$ref": "#/$defs/country_europe" }
+                  ]
+                }
+              }
+            }
+            ```
     - [ ] collect all applied canonical / pointer to know which are used after reduction
 - [x] ValidatorHandler refactor signature to object for easier complex changes/other state-params mix
 - [ ] validator support of evaluation context for more advanced use cases

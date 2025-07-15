@@ -30,6 +30,9 @@
         - [x] migrated to `.output`
         - [x] forced `recursive`
             - [ ] add tests for `recursive`
+        - [ ] not compliant, as uses first-valid, it does not validate that only a single schema is valid
+            - by design, for performance
+            - should support easy switching to a stricter version
     - [x] PatternValidator
         - kind: `validate:boolean`
     - [ ] RequiredValidator

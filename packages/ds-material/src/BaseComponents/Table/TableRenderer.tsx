@@ -9,15 +9,14 @@ import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
-import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
+import { isSomeSchema, SchemaTypesType, SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { schemaTypeIsAny } from '@ui-schema/ui-schema/schemaTypeIs'
-import { List, Map, OrderedMap } from 'immutable'
+import { List, OrderedMap } from 'immutable'
 import MuiTable from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import { TableRendererBaseProps, TableRendererExtractorProps, TableRowProps, TableContext } from '@ui-schema/ds-material/BaseComponents/Table'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 export const TableRendererBase: React.ComponentType<Omit<WidgetProps<BindingTypeGeneric & MuiBindingComponents>, 'value' | 'internalValue' | 'errors' | 'valid'> & WithOnChange & TableRendererBaseProps & ListButtonOverwrites> = (
     {
@@ -60,13 +59,13 @@ export const TableRendererBase: React.ComponentType<Omit<WidgetProps<BindingType
                     resource: resource,
                 },
             )?.applied || []) :
-            schema.get('items') as UISchemaMap
+            schema.get('items') as SomeSchema
     const readOnly = schema.get('readOnly') as boolean
 
     const currentRows = rows === -1 ? listSize || 0 : rows
     const currentRowsStartVisible = page * currentRows
 
-    const validItemSchema = itemsSchema && Map.isMap(itemsSchema) &&
+    const validItemSchema = itemsSchema && isSomeSchema(itemsSchema) &&
         schemaTypeIsAny(itemsSchema.get('type') as SchemaTypesType, ['array', 'object'])
 
     if (process.env.NODE_ENV === 'development' && !validItemSchema) {
