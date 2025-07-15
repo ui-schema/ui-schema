@@ -1,17 +1,5 @@
 import { expect, describe, test } from '@jest/globals'
-import { beautifyKey, tt, strReplaceAll } from '@ui-schema/ui-schema/Utils/beautify'
-
-describe('strReplaceAll', () => {
-    test.each(([
-        ['user_name_street', '_', ' ', 'user name street'],
-        ['user_name_street', 'e', 'f', 'usfr_namf_strfft'],
-    ] as [string, string, string, string][]))(
-        'strReplaceAll(%s, %s, %s)',
-        (str, search, replacement, expected) => {
-            expect(strReplaceAll(str, search, replacement)).toBe(expected)
-        }
-    )
-})
+import { beautifyKey, tt } from '@ui-schema/ui-schema/Utils/beautify'
 
 describe('beautifyKey', () => {
     test.each(([

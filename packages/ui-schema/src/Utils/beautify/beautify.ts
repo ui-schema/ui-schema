@@ -1,21 +1,4 @@
-import { Map } from 'immutable'
-
 export type tt = 'ol' | 'upper' | 'lower' | 'upper-beauty' | 'lower-beauty' | 'beauty-text' | 'beauty-igno-lead' | true | false | 0
-
-/**
- * @todo replace with other regex
- */
-export const strReplaceAll = (str: string, search: string, replacement: string): string => {
-    return str.split(search).join(replacement)
-}
-
-/**
- * Runtime Cache: strReplace, split, join etc. in that amount on every re-render could lead to performance problems
- * As each input results in the same output, an easy key-value cache is used
- *
- * @todo move this into a runtime context
- */
-let beautified = Map()
 
 const textTransform = (name: string | number, tt: tt) => {
     switch (tt) {
@@ -54,25 +37,24 @@ const textTransform = (name: string | number, tt: tt) => {
     return name
 }
 
-const beauty = (name: any): any | string => {
+const beauty = (
+    name: any,
+    beautified?: Map<string, string>,
+): any | string => {
     if (typeof name !== 'string') return name
 
-    const tmp = beautified.get(name)
-    if (tmp) return tmp
+    const tmp = beautified?.get(name)
+    if (typeof tmp !== 'undefined') return tmp
 
     const beauty =
-        strReplaceAll(
-            strReplaceAll(
-                strReplaceAll(name, '_', ' '),
-                '.', ' '),
-            '-', ' ',
-        )
-            .replace(/  +/g, ' ')
+        name.replace(/[_.\-\s]+/g, ' ')
             .split(' ')
             .map((s) => s.charAt(0).toUpperCase() + s.slice(1))// make first letter uppercase
             .join(' ')
 
-    beautified = beautified.set(name, beauty)
+    if (beautified) {
+        beautified.set(name, beauty)
+    }
 
     return beauty
 }
