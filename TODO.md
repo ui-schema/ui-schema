@@ -48,6 +48,7 @@ List of renamed functions, components etc., most are also moved to other package
 - [ ] `Grid2` components are not enough, as `GenericList` and other container widgets may include hard coded wrappers, which rely on the same Grid component inside the grid plugin
 - fix `forbidInvalidNumber` prevents too much for keyboard control
 - removed `react-uid` dependency
+- optimize useOptionsFromSchema, add basic support for collecting options from nested oneOf/anyOf, apply normalization also on `const`, same like `enum`
 
 ### DS Bootstrap
 
