@@ -1,4 +1,5 @@
 import { useMemoObject } from '@ui-schema/react/Utils/useMemoObject'
+import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { matchWidget } from '@ui-schema/ui-schema/matchWidget'
 import { ValidateFn } from '@ui-schema/ui-schema/Validate'
 import { createContext, PropsWithChildren, useContext, useMemo } from 'react'
@@ -14,9 +15,22 @@ export interface UIMetaContext<W = BindingTypeGeneric> extends UIMetaContextBind
 }
 
 export interface UIMetaContextBase {
+    /**
+     * Used to make labels for widgets from `title` schema keyword, error messages from error codes
+     * and more to display understandable text to the user.
+     */
     t: Translator
+    /**
+     * Validator function to use where needed.
+     */
     validate?: ValidateFn
+    /**
+     * If supplied, used by design system to generate `name` attributes on input elements.
+     */
+    keysToName?: KeysToName
 }
+
+export type KeysToName = (storeKeys: StoreKeys) => string
 
 export interface UIMetaContextBinding<W = BindingTypeGeneric> {
     binding?: W

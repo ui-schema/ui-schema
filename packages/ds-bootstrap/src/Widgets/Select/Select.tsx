@@ -7,7 +7,7 @@ import { List, Map } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
 import React from 'react'
 
-export const Select = ({schema, storeKeys, showValidity, errors, value, onChange, required}: WidgetProps & WithValuePlain & WithOnChange) => {
+export const Select = ({schema, storeKeys, showValidity, keysToName, errors, value, onChange, required}: WidgetProps & WithValuePlain & WithOnChange) => {
     const uid = React.useId()
     const enum_val = schema.get('enum')
     const {t} = useUIMeta()
@@ -30,6 +30,7 @@ export const Select = ({schema, storeKeys, showValidity, errors, value, onChange
             id={'uis-' + uid}
             value={currentValue}
             className={classForm.join(' ')}
+            name={keysToName?.(storeKeys)}
             onChange={(e) => {
                 const target = e.target
                 onChange({

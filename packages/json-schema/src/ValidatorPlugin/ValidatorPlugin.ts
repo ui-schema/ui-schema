@@ -367,7 +367,7 @@ export function mergeSchemas(baseSchema: any, ...appliedSchemas: any[]): any {
 /**
  * @todo make as setup function, to support custom `mergeSchemas`
  */
-export const validatorPlugin = {
+export const validatorPlugin: SchemaPlugin<Omit<WidgetPluginProps, 'Next'> & { resource?: SchemaResource }> = {
     handle: (props) => {
         if (!props.validate) return {}
         const ownKey = props.storeKeys?.last()
@@ -398,4 +398,4 @@ export const validatorPlugin = {
             schema: applicableSchema,
         }
     },
-} satisfies SchemaPlugin<Omit<WidgetPluginProps, 'Next'> & { resource?: SchemaResource }>
+}

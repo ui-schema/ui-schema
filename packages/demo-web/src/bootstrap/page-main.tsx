@@ -8,6 +8,7 @@ import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
+import { keysToName } from '@ui-schema/ui-schema/Utils/keysToName'
 import React from 'react'
 import { Dashboard } from './Dashboard'
 import { schemaTestBts, dataDemoMain } from '../schemas/demoBts'
@@ -52,6 +53,7 @@ const DemoGrid = () => {
         binding={customBinding}
         t={browserT}
         validate={Validator(standardValidators).validate}
+        keysToName={keysToName}
     >
         <UIStoreProvider
             store={store}
@@ -80,6 +82,7 @@ const MainStore = () => {
             binding={customBinding}
             t={browserT}
             validate={Validator(standardValidators).validate}
+            keysToName={keysToName}
         >
             <UIStoreProvider
                 store={store}

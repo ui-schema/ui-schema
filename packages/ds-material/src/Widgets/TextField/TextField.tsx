@@ -47,7 +47,7 @@ export const StringRenderer = (
         type,
         multiline,
         minRows, maxRows,
-        storeKeys, schema, value, onChange,
+        storeKeys, schema, value, onChange, keysToName,
         showValidity, valid, errors, required,
         style,
         onClick, onFocus, onBlur, onKeyUp, onKeyDown,
@@ -93,6 +93,7 @@ export const StringRenderer = (
             variant={schema.getIn(['view', 'variant']) as any}
             margin={schema.getIn(['view', 'margin']) as InputProps['margin']}
             size={schema.getIn(['view', 'dense']) ? 'small' : 'medium'}
+            name={keysToName?.(storeKeys)}
             value={typeof value === 'string' || typeof value === 'number' ? value : ''}
             onClick={onClick}
             onFocus={onFocus}

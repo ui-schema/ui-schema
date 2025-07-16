@@ -24,7 +24,7 @@ export const convertStringToNumber = (value, type) => {
     return value
 }
 
-const StringRenderer = ({schema, value, multiline = false, onChange, storeKeys, showValidity, required, errors, type, rows}: StringRendererProps) => {
+const StringRenderer = ({schema, value, multiline = false, onChange, keysToName, storeKeys, showValidity, required, errors, type, rows}: StringRendererProps) => {
     const format = schema.get('format')
     const uid = React.useId()
 
@@ -50,6 +50,7 @@ const StringRenderer = ({schema, value, multiline = false, onChange, storeKeys, 
             type={format || type}
             required={required}
             rows={rows}
+            name={keysToName?.(storeKeys)}
             value={typeof value === 'string' || typeof value === 'number' ? value : ''}
             onChange={(e) => {
                 const val = e.target.value

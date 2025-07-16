@@ -49,6 +49,7 @@ List of renamed functions, components etc., most are also moved to other package
 - fix `forbidInvalidNumber` prevents too much for keyboard control
 - removed `react-uid` dependency
 - optimize useOptionsFromSchema, add basic support for collecting options from nested oneOf/anyOf, apply normalization also on `const`, same like `enum`
+- support `name` attribute generation on inputs
 
 ### DS Bootstrap
 
@@ -57,6 +58,7 @@ List of renamed functions, components etc., most are also moved to other package
     - as v1 is not compatible with `moduleResolution: Node16`
 - removed `react-uid` dependency
 - css and html fixes, bootstrap 5
+- support `name` attribute generation on inputs
 
 ### System
 
@@ -69,6 +71,7 @@ List of renamed functions, components etc., most are also moved to other package
 - new `schemaTypeIsDistinct` util for testing if the only allowed type, ignoring `null` if mixed with others (like `schemaTypeToDisctint`, as "null has no input use case")
 - `matchWidget` now return identifiers about what has matched
 - renamed `ErrorNoWidgetMatching` to `ErrorNoWidgetMatches`
+- `input[name]` attribute generator with `storeKeys`, optional enabled via ui meta context
 
 Todo:
 

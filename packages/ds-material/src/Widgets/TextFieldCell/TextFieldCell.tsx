@@ -35,7 +35,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<BindingTypeGene
     {
         type,
         multiline, minRows, maxRows,
-        storeKeys, schema, value, onChange,
+        storeKeys, schema, value, onChange, keysToName,
         showValidity, valid, errors, required,
         style = {},
         onClick, onFocus, onBlur, onKeyUp, onKeyDown,
@@ -106,6 +106,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<BindingTypeGene
             maxRows={maxRows}
             fullWidth
             margin={schema.getIn(['view', 'margin']) as InputBaseProps['margin']}
+            name={keysToName?.(storeKeys)}
             value={typeof value === 'string' || typeof value === 'number' ? value : ''}
             onClick={onClick}
             onFocus={onFocus}

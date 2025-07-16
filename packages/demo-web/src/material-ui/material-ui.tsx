@@ -15,6 +15,7 @@ import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 import { injectWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
+import { keysToName } from '@ui-schema/ui-schema/Utils/keysToName'
 import { matchWidget } from '@ui-schema/ui-schema/matchWidget'
 import { Map } from 'immutable'
 import React from 'react'
@@ -229,6 +230,7 @@ export default function MaterialDemo() {
             binding={customBinding}
             t={browserT}
             validate={validate}
+            keysToName={keysToName}
         >
             <Main/>
         </UIMetaProvider>

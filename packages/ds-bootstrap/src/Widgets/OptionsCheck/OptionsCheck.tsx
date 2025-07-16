@@ -9,7 +9,7 @@ import { beautifyKey } from '@ui-schema/ui-schema/Utils/beautify'
 import { List, Map } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
 
-const CheckInput = ({checked, onChange, label, value, classForm, classLabel, classFormControl}: any) => {
+const CheckInput = ({checked, onChange, label, value, storeKeys, keysToName, classForm, classLabel, classFormControl}: any) => {
     const uid = React.useId()
 
     return <div className={classForm}>
@@ -19,7 +19,9 @@ const CheckInput = ({checked, onChange, label, value, classForm, classLabel, cla
             className={classFormControl}
             value={value}
             checked={checked}
-            onChange={onChange}/>
+            onChange={onChange}
+            name={keysToName?.(storeKeys)}
+        />
         <label
             className={classLabel}
             htmlFor={'uis-' + uid}
@@ -30,7 +32,7 @@ const CheckInput = ({checked, onChange, label, value, classForm, classLabel, cla
 }
 const checkActive = (list, name) => list && list.contains && typeof list.contains(name) !== 'undefined' ? list.contains(name) : false
 
-const OptionsCheckValue = extractValue(memo(({oneOfValues, storeKeys, value, onChange, classLabel, classFormControl, classForm, schema, required}) => oneOfValues ?
+const OptionsCheckValue = extractValue(memo(({oneOfValues, storeKeys, value, onChange, keysToName, classLabel, classFormControl, classForm, schema, required}) => oneOfValues ?
     oneOfValues.map((oneOfSchema) => {
         const oneOfVal = oneOfSchema.get('const')
         const isActive = checkActive(value, oneOfVal)
@@ -42,6 +44,8 @@ const OptionsCheckValue = extractValue(memo(({oneOfValues, storeKeys, value, onC
             classLabel={classLabel}
             classFormControl={classFormControl}
             currentValue={isActive}
+            storeKeys={storeKeys}
+            keysToName={keysToName}
             onChange={() => {
                 onChange({
                     storeKeys,
@@ -68,7 +72,7 @@ const OptionsCheckValue = extractValue(memo(({oneOfValues, storeKeys, value, onC
     : null,
 ))
 
-const OptionsCheck = ({schema, storeKeys, showValidity, errors, required}: WidgetProps) => {
+const OptionsCheck = ({schema, storeKeys, showValidity, keysToName, errors, required}: WidgetProps) => {
     const oneOfVal = schema.getIn(['items', 'oneOf'])
     if (!oneOfVal) return null
 
@@ -92,7 +96,9 @@ const OptionsCheck = ({schema, storeKeys, showValidity, errors, required}: Widge
             classForm={classForm.join(' ')}
             classLabel={classLabel.join(' ')}
             classFormControl={classFormControl.join(' ')}
-            oneOfValues={oneOfVal} storeKeys={storeKeys} schema={schema}/>
+            oneOfValues={oneOfVal} storeKeys={storeKeys} schema={schema}
+            keysToName={keysToName}
+        />
 
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </div>

@@ -1,4 +1,5 @@
-import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
+import type { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
+import type { KeysToName } from '@ui-schema/react/UIMeta'
 import React from 'react'
 import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
@@ -22,7 +23,9 @@ const OptionCheck: React.ComponentType<{
     checked: boolean
     label: React.ReactNode
     onChange: SwitchProps['onChange']
-}> = ({disabled, checked, label, onChange}) => {
+    storeKeys: StoreKeys
+    keysToName: KeysToName | undefined
+}> = ({disabled, checked, storeKeys, keysToName, label, onChange}) => {
     const uid = React.useId()
 
     return <FormControlLabel
@@ -32,6 +35,7 @@ const OptionCheck: React.ComponentType<{
             checked={checked}
             onChange={onChange}
             disabled={disabled}
+            name={keysToName?.(storeKeys)}
         />}
         disabled={disabled}
         label={label}
@@ -47,9 +51,10 @@ const OptionsCheckValuesBase: React.ComponentType<{
     schema: UISchemaMap
     disabled?: boolean
     value: List<unknown>
+    keysToName: KeysToName | undefined
 } & WithOnChange> = (
     {
-        valueSchemas, storeKeys, value, onChange,
+        valueSchemas, storeKeys, value, onChange, keysToName,
         required, schema: parentSchema, disabled,
     },
 ) => (
@@ -60,6 +65,8 @@ const OptionsCheckValuesBase: React.ComponentType<{
                 key={i}
                 checked={isActive}
                 disabled={Boolean(disabled || schema?.get('readOnly') as boolean)}
+                storeKeys={storeKeys}
+                keysToName={keysToName}
                 onChange={() => {
                     onChange({
                         storeKeys,
@@ -93,7 +100,7 @@ export interface OptionsCheckRendererProps {
 
 export const OptionsCheck = (
     {
-        schema, storeKeys, showValidity, valid, required, errors,
+        schema, storeKeys, showValidity, valid, required, errors, keysToName,
         row, binding,
     }: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & OptionsCheckRendererProps,
 ): React.ReactElement => {
@@ -117,6 +124,7 @@ export const OptionsCheck = (
         <FormGroup row={row}>
             <OptionsCheckValues
                 valueSchemas={valueSchemas} storeKeys={storeKeys}
+                keysToName={keysToName}
                 required={required} schema={schema}
                 disabled={schema.get('readOnly') as boolean}
             />

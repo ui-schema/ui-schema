@@ -11,6 +11,7 @@ import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
+import { keysToName } from '@ui-schema/ui-schema/Utils/keysToName'
 import React from 'react'
 import { useToggle } from '../component/useToggle'
 import { schemaWCombining } from '../schemas/demoCombining'
@@ -191,6 +192,7 @@ export default function MaterialDemo() {
             binding={customWidgets}
             t={browserT}
             validate={validate}
+            keysToName={keysToName}
         >
             <UIApiProvider loadSchema={loadSchema} noCache>
                 <Main/>

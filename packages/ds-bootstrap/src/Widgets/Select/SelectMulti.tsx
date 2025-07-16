@@ -9,7 +9,7 @@ import { List, Map, isImmutable } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
 import React from 'react'
 
-export const SelectMulti = extractValue(memo(({schema, storeKeys, showValidity, errors, value, onChange, required}: WidgetProps) => {
+export const SelectMulti = extractValue(memo(({schema, storeKeys, keysToName, showValidity, errors, value, onChange, required}: WidgetProps) => {
     const uid = React.useId()
     const {t} = useUIMeta()
 
@@ -35,6 +35,7 @@ export const SelectMulti = extractValue(memo(({schema, storeKeys, showValidity, 
             value={currentValue.toArray() as string[]}
             className={classForm.join(' ')}
             multiple
+            name={keysToName?.(storeKeys)}
             onChange={(e) => {
                 const target = e.target
                 onChange({

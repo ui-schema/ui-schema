@@ -32,6 +32,7 @@ import { DragDropBlockSelector } from '@ui-schema/material-dnd/DragDropBlockSele
 import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { TableAdvanced } from '@ui-schema/ds-material/Widgets'
+import { keysToName } from '@ui-schema/ui-schema/Utils/keysToName'
 import { ErrorNoWidgetMatches, matchWidget, WidgetMatch } from '@ui-schema/ui-schema/matchWidget'
 import { List } from 'immutable'
 import React, { memo, useMemo } from 'react'
@@ -283,4 +284,5 @@ export const uiMeta = {
     ]).validate,
     binding: customWidgets,
     t: browserT,
+    keysToName: keysToName,
 }

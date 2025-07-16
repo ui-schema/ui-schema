@@ -14,6 +14,7 @@ export const BoolRenderer: React.FC<WidgetProps & {
 }> = (
     {
         value, onChange, schema, storeKeys, showValidity, valid, required, errors,
+        keysToName,
         labelledBy = undefined,
         checkedIcon, edge, icon,
     },
@@ -46,6 +47,7 @@ export const BoolRenderer: React.FC<WidgetProps & {
             'aria-labelledby': labelledBy,
         }}
         size={schema.getIn(['view', 'dense']) ? 'small' : undefined}
+        name={keysToName?.(storeKeys)}
         edge={edge}
         {...iconProps}
         onChange={() =>

@@ -7,7 +7,7 @@ import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelp
 export interface WidgetPropsBoolean extends WidgetProps, WithValuePlain, WithOnChange {
 }
 
-const BoolRenderer = ({showValidity, required, errors, value, storeKeys, onChange, schema}: WidgetPropsBoolean) => {
+const BoolRenderer = ({showValidity, required, errors, value, keysToName, storeKeys, onChange, schema}: WidgetPropsBoolean) => {
     const id = React.useId()
     const classForm = ['form-check', 'form-switch']
     const classLabel = ['form-check-label']
@@ -29,6 +29,7 @@ const BoolRenderer = ({showValidity, required, errors, value, storeKeys, onChang
             role="switch"
             checked={currentChecked}
             required={required}
+            name={keysToName?.(storeKeys)}
             onChange={() =>
                 onChange({
                     storeKeys,

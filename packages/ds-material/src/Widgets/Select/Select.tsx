@@ -17,7 +17,7 @@ export type SelectProps = {
 
 export const Select = <P extends SelectProps>(
     {
-        storeKeys, schema, value, onChange,
+        storeKeys, schema, value, onChange, keysToName,
         showValidity, valid, required, errors,
         variant,
     }: P,
@@ -39,6 +39,7 @@ export const Select = <P extends SelectProps>(
         <MuiSelect
             labelId={'uis-' + uid + '-label'}
             id={'uis-' + uid}
+            name={keysToName?.(storeKeys)}
             value={currentValue}
             variant={variant}
             // note: for variant `outlined` the label needs to be also here, as we don't know e.g. theme provider overrides, it is applied all the time

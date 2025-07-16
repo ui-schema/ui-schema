@@ -40,4 +40,3 @@
             - which still works reliable in e.g. list widgets, e.g. in `Table` for row-level, as a row only will be rendered if it exists in value
 - add value-aware `schemaTypeIs*` support and/or integrated into the `getFields` utils
     - search for `happy-path issue` and check existing `schemaTypeIs` checks which can be optimized with value awareness
-- `input[name]` attribute generator for `storeKeys`, optional enabled via ui meta context, included in material/bootstrap widgets

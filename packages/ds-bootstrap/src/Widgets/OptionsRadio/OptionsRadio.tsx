@@ -6,7 +6,7 @@ import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { List, Map } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
 
-const RadioInput = ({classForm, enumName, classLabel, required, classFormControl, value, onChange, storeKeys, label, schema}) => {
+const RadioInput = ({classForm, enumName, classLabel, required, classFormControl, value, onChange, keysToName, storeKeys, label, schema}) => {
     const uid = React.useId()
 
     return <div
@@ -18,6 +18,7 @@ const RadioInput = ({classForm, enumName, classLabel, required, classFormControl
             type="radio"
             className={classFormControl.join(' ')}
             checked={enumName === value}
+            name={keysToName?.(storeKeys)}
             onChange={() =>
                 onChange({
                     storeKeys,
@@ -38,7 +39,7 @@ const RadioInput = ({classForm, enumName, classLabel, required, classFormControl
     </div>
 }
 
-const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, required, errors}: WidgetProps) => {
+const OptionsRadio = ({schema, value, onChange, keysToName, storeKeys, showValidity, required, errors}: WidgetProps) => {
     const enumVal = schema.get('enum')
     if (!enumVal) return null
 
@@ -64,6 +65,7 @@ const OptionsRadio = ({schema, value, onChange, storeKeys, showValidity, require
                 classFormControl={classFormControl}
                 value={value}
                 onChange={onChange}
+                keysToName={keysToName}
                 storeKeys={storeKeys}
                 schema={schema}
                 label={<Translate

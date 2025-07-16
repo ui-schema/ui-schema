@@ -23,7 +23,7 @@ export interface SelectMultiProps {
 
 export const SelectMultiBase: React.ComponentType<WidgetProps & SelectMultiProps> = (
     {
-        storeKeys, schema, value, onChange,
+        storeKeys, schema, value, onChange, keysToName,
         showValidity, valid, required, errors,
         variant,
     },
@@ -48,6 +48,7 @@ export const SelectMultiBase: React.ComponentType<WidgetProps & SelectMultiProps
             variant={variant}
             // note: for variant `outlined` the label needs to be also here, as we don't know e.g. theme provider overrides, it is applied all the time
             label={<TranslateTitle schema={schema} storeKeys={storeKeys}/>}
+            name={keysToName?.(storeKeys)}
             value={List.isList(currentValue) ? currentValue.toArray() : Array.isArray(currentValue) ? currentValue : null}
             multiple
             renderValue={selected => {

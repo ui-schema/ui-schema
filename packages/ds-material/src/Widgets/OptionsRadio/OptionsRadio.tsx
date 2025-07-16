@@ -17,7 +17,7 @@ export interface OptionsRadioProps extends WidgetProps<BindingTypeGeneric & MuiB
 
 export const OptionsRadio: React.FC<OptionsRadioProps> = (
     {
-        schema, value, onChange, storeKeys, showValidity, valid, required, errors,
+        schema, value, onChange, storeKeys, showValidity, keysToName, valid, required, errors,
         row, binding,
     },
 ) => {
@@ -50,6 +50,7 @@ export const OptionsRadio: React.FC<OptionsRadioProps> = (
                         value={value}
                         disabled={schema.get('readOnly')}
                         checked={value === activeValue}
+                        name={keysToName?.(storeKeys)}
                         onChange={() =>
                             !valueSchema?.get('readOnly') &&
                             onChange({

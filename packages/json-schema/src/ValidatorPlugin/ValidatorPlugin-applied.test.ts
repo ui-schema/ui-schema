@@ -1170,7 +1170,7 @@ describe('ValidatorPlugin-applied', () => {
                 schema = createOrdered(await readSchema(params.file))
             }
 
-            const pluginProps = validatorPlugin.handle({
+            const pluginProps = validatorPlugin.handle?.({
                 // --- schema/value location ---
                 schema: schema,
                 storeKeys: List([]),
@@ -1188,10 +1188,10 @@ describe('ValidatorPlugin-applied', () => {
                 internalValue: undefined,
             })
 
-            expect(pluginProps.valid).toBe(expectedValid)
+            expect(pluginProps?.valid).toBe(expectedValid)
 
             // @ts-ignore
-            expect(pluginProps.schema.toJS()).toStrictEqual(merged)
+            expect(pluginProps?.schema.toJS()).toStrictEqual(merged)
         },
     )
 })
