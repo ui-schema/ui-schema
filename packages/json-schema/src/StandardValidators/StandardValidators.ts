@@ -220,10 +220,26 @@ export const standardValidators: ValidatorHandler[] = [
         // `required` validator - modern
         // todo: this is breaking the per-field validation used before,
         //       thus required-error won't reach the actual field
-        types: ['object'],
+        // todo: provide a way to configure undefined/null behaviour, which is not JSON Schema spec. compliant, but allows `required` validation in lookahead rendering
+        //       - must only done for rendered-validation, where the field should be rendered, not for `if`, to stay JSON Schema compliant in most cases
+        //         and only add the error for objects whose fields should be rendered and thus their required fields should be invalid
+        //       - as rendering for objects occurs, even if the object doe not exist,
+        //       - as storeUpdater auto-init nested structured, basically any "rendered object" should be considered "existing"
+        //       - an alternative approach would be `init` button to create object, but then also `delete` buttons would be needed
+        //         - which goes against form UX for endusers, as needs more complex knowledge how data editors work
+        //         - so even if possible, not in scope of included design-system widget strategies
+        //       - due to `valueLocation` being the object, the error can't be resolved via standards on the property itself;
+        //         "not via standards" means it would need some error construct which is non-compliant to json-schema.
+
+        // types: ['object'], // disabled type filter, to be able to validate null/undefined
+
         validate: (schema, value, params) => {
             const requiredList = schema?.get('required') as List<string> | undefined
-            if (!requiredList || !value) return
+            if (
+                !requiredList ||
+                // when recursive (spec-compliant/non-incremental) then don't validate non-existing objects
+                (params.recursive && !value)
+            ) return
             // todo: the new validator only checks existence, not the "HTML-like required" like before
             if (Map.isMap(value) || Record.isRecord(value)) {
                 requiredList.forEach(requiredKey => {
@@ -232,6 +248,7 @@ export const standardValidators: ValidatorHandler[] = [
                             error: ERROR_NOT_SET,
                             keywordLocation: toPointer([...params.keywordLocation, 'required']),
                             instanceLocation: toPointer(params.instanceLocation),
+                            context: {requiredKey: requiredKey},
                         })
                     }
                 })
@@ -242,8 +259,18 @@ export const standardValidators: ValidatorHandler[] = [
                             error: ERROR_NOT_SET,
                             keywordLocation: toPointer([...params.keywordLocation, 'required']),
                             instanceLocation: toPointer(params.instanceLocation),
+                            context: {requiredKey: requiredKey},
                         })
                     }
+                })
+            } else if (typeof value === 'undefined' || value === null) {
+                requiredList.forEach(requiredKey => {
+                    params.output.addError({
+                        error: ERROR_NOT_SET,
+                        keywordLocation: toPointer([...params.keywordLocation, 'required']),
+                        instanceLocation: toPointer(params.instanceLocation),
+                        context: {requiredKey: requiredKey},
+                    })
                 })
             }
         },

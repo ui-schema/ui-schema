@@ -36,7 +36,13 @@
     - [x] PatternValidator
         - kind: `validate:boolean`
     - [ ] RequiredValidator
-        - **todo:** unused HTML-like required fn, which works directly on field-level value and not object
+        - new compliant required validator, while still non-compliant lookahead validation in non recursive runs
+        - checks for existence of keys/undefined, instead of html-like
+        - validated on object level, not on the field
+        - **todo:** produced errors can't be easily consumed by the field they are intended for, see inline comments at validator
+    - [x] RequiredValidatorLegacy
+        - HTML-like required, which works directly on field-level value and not object
+        - similar behaviour as in `0.4.x`
     - [x] TypeValidator
         - kind: `validate:boolean`
     - [x] ValueValidator
@@ -45,8 +51,7 @@
             - improved object/array/Map/List support
         - [x] ValueValidator-Enum
             - kind: `validate:boolean`
-    - [ ] NotValidator
-        - **todo:** add newly?
+    - [x] NotValidator
 - `StandardValidators`
     - [ ] optimize / finalize bindings to `validate` fns
     - **todo:** try to rewrite the way nested validations are done, if the validator could return `deferred` and a `onDeferredDone`
@@ -76,6 +81,8 @@
         - in `<=0.4.x` the `$ref`: `'#/definitions/person'` and `$ref: '#/$defs/person'`  where treated as the same and resolved by the nearest `definitions` or `$defs`; now those are treated as pointer and not as definition aliases, thus two different schema locations would be tried
 - [ ] verify all pass downs of `params` to not pass down e.g. `instanceKey` when switching instances
 - [ ] verify all pass downs of `params` to pass down `parentSchema`, for legacy/HTML-like required checks AND not pass it down where it no longer is applicable
+- [ ] split up `StandardValidators` in own files
+- [ ] add `id` to every validator
 - **todo:** rethink/redo validation based on "rendered by schema/value"
     - as rendering happens by schema, `undefined` is often validated, atm. `undefined` skips different validators due to not knowing if really exists
       or if the field just is empty

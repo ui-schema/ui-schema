@@ -13,6 +13,7 @@ export const ValidityReporter: React.FC<WidgetPluginProps> = (props) => {
     React.useEffect(() => {
         // todo: this should use a more sophisticated state operation, which doesn't result in a rerender,
         //       when `errors` are not memoized here, this can lead to react update depth overflow.
+        //       including normalizing errors from here which apply to the specific `valueLocation` children
         onChange({
             type: 'set',
             storeKeys: storeKeys,

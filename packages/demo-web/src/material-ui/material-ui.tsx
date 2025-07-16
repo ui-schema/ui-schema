@@ -18,7 +18,7 @@ import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { keysToName } from '@ui-schema/ui-schema/Utils/keysToName'
 import { matchWidget } from '@ui-schema/ui-schema/matchWidget'
 import { Map } from 'immutable'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useToggle } from '../component/useToggle'
 import { dataDemoMain, schemaDemoMain, schemaUser } from '../schemas/demoMain'
 import Grid2 from '@mui/material/Grid2'
@@ -55,32 +55,42 @@ const customBinding: MuiBinding = {
         // todo: Grid must be after e.g. ConditionalHandler, yet if referencing/combining results in loading, yet should also be used there
         //       (old) but why was it this high? wasn't that because of e.g. conditional object grids
         SchemaGrid2Handler,
+        // ({Next, ...props}) => {
+        //     // just a debug widget, for inspecting extractions
+        //     const {errors, storeKeys} = props
+        //     const {store} = useUIStore()
+        //     console.log('errors', errors)
+        //     console.log('store', storeKeys.toJS(), store?.extractValidity(storeKeys)?.toJS())
+        //     return <Next.Component {...props}/>
+        // },
         function TouchedFocusHandler(props) {
             const focusValueInitial = React.useRef<string | number | null>(null)
             const {Next, value, onChange, storeKeys} = props
+            const onFocus = useCallback(() => {
+                focusValueInitial.current =
+                    typeof value === 'string'
+                    || typeof value === 'number' ? value : null
+            }, [value])
+            const onBlur = useCallback(() => {
+                // check if value has changed, only then consider touched
+                if ((typeof value === 'string' || typeof value === 'number') && focusValueInitial.current !== value) {
+                    onChange({
+                        storeKeys,
+                        scopes: ['internal'],
+                        type: 'update',
+                        updater: ({internal = Map()}) => {
+                            return {
+                                internal: internal.set('touched', true),
+                            }
+                        },
+                    })
+                }
+                focusValueInitial.current = null
+            }, [onChange, storeKeys, value])
             return <Next.Component
                 {...props}
-                onFocus={() => {
-                    focusValueInitial.current =
-                        typeof value === 'string'
-                        || typeof value === 'number' ? value : null
-                }}
-                onBlur={() => {
-                    // check if value has changed, only then consider touched
-                    if ((typeof value === 'string' || typeof value === 'number') && focusValueInitial.current !== value) {
-                        onChange({
-                            storeKeys,
-                            scopes: ['internal'],
-                            type: 'update',
-                            updater: ({internal = Map()}) => {
-                                return {
-                                    internal: internal.set('touched', true),
-                                }
-                            },
-                        })
-                    }
-                    focusValueInitial.current = null
-                }}
+                onFocus={onFocus}
+                onBlur={onBlur}
             />
         },
         ValidityReporter,
