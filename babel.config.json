@@ -1,50 +1,45 @@
 {
     "presets": [
-        "@babel/preset-react",
+        [
+            "@babel/preset-react",
+            {
+                "runtime": "automatic"
+            }
+        ],
         "@babel/preset-typescript"
     ],
     "plugins": [
-        "react-loadable/babel",
-        [
-            "babel-plugin-named-asset-import",
-            {
-                "loaderMap": {
-                    "svg": {
-                        "ReactComponent": "@svgr/webpack?-svgo,+titleProp,+ref![path]"
-                    }
-                }
-            }
-        ],
-        [
-            "@babel/plugin-proposal-object-rest-spread",
-            {
-                "useBuiltIns": true
-            }
-        ]
     ],
     "env": {
         "cjs": {
             "presets": [
                 "@babel/preset-env",
-                "@babel/preset-react",
+                [
+                    "@babel/preset-react",
+                    {
+                        "runtime": "automatic"
+                    }
+                ],
                 "@babel/preset-typescript"
+            ],
+            "plugins": [
+                [
+                    "babel-plugin-replace-import-extension",
+                    {
+                        "extMapping": {
+                            ".js": ".cjs"
+                        }
+                    }
+                ]
             ]
         },
         "test": {
-            "presets": [
-                "@babel/preset-env",
-                "@babel/preset-react",
-                "@babel/preset-typescript"
-            ],
-            "plugins": []
-        },
-        "node": {
             "presets": [
                 [
                     "@babel/preset-env",
                     {
                         "targets": {
-                            "node": "18"
+                            "node": "24"
                         },
                         "modules": false
                     }
@@ -52,10 +47,42 @@
                 [
                     "@babel/preset-typescript",
                     {
+                        "tsconfig": "./packages/tsconfig-test.json",
                         "targets": {
-                            "node": "18"
+                            "node": "24"
                         },
                         "modules": false
+                    }
+                ],
+                [
+                    "@babel/preset-react",
+                    {
+                        "runtime": "automatic"
+                    }
+                ]
+            ],
+            "plugins": [
+                "./babelImportDefaultPlugin.cjs"
+            ]
+        },
+        "node": {
+            "presets": [
+                [
+                    "@babel/preset-env",
+                    {
+                        "targets": {
+                            "node": "24"
+                        },
+                        "modules": false
+                    }
+                ],
+                [
+                    "@babel/preset-typescript"
+                ],
+                [
+                    "@babel/preset-react",
+                    {
+                        "runtime": "automatic"
                     }
                 ]
             ]

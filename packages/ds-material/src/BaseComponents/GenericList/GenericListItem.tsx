@@ -1,20 +1,23 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
+import { schemaTypeIs } from '@ui-schema/ui-schema/schemaTypeIs'
 import React from 'react'
-import Grid from '@mui/material/Grid'
+import Grid, { GridSpacing } from '@mui/material/Grid'
 import Divider from '@mui/material/Divider'
-import { memo, PluginStack, schemaTypeToDistinct, StoreSchemaType, onChangeHandler, StoreKeys, SchemaTypesType } from '@ui-schema/ui-schema'
+import { onChangeHandler, StoreKeys } from '@ui-schema/react/UIStore'
+import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { List } from 'immutable'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
-import { GridSpacing } from '@mui/material/Grid/Grid'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 export interface GenericListItemSharedProps {
     index: number
     listSize: number
-    listRequired: boolean
-    schema: StoreSchemaType
+    listRequired: boolean | undefined
+    schema: UISchemaMap
     onChange: onChangeHandler
     storeKeys: StoreKeys
-    schemaKeys: StoreKeys | undefined
-    level: number
     notSortable: boolean | undefined
     notDeletable: boolean | undefined
     showValidity: boolean | undefined
@@ -38,11 +41,11 @@ export const GenericListItemBase = (
 ): React.ReactElement => {
     const {
         index, listSize, schema,
-        storeKeys, schemaKeys, level,
+        storeKeys,
         showValidity,
     } = props
     const ownKeys = storeKeys.push(index)
-    const itemsSchema = schema.get('items') as StoreSchemaType
+    const itemsSchema = schema.get('items') as UISchemaMap
 
     return [
         <Grid key={'a'} item xs={12} style={{display: 'flex'}}>
@@ -56,27 +59,24 @@ export const GenericListItemBase = (
                     // tuples in root level not possible
                     // was wrong implementation <= 0.2.2
                     null :
-                    schemaTypeToDistinct(itemsSchema.get('type') as SchemaTypesType) === 'array' &&
+                    schemaTypeIs(itemsSchema.get('type') as SchemaTypesType, 'array') &&
                     itemsSchema.get('items') ?
                         <Grid item style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
                             <Grid container spacing={2}>
-                                {(itemsSchema.get('items') as StoreSchemaType)?.map((item, j) =>
-                                    <PluginStack<{ schemaKeys: StoreKeys | undefined }>
+                                {(itemsSchema.get('items') as UISchemaMap)?.map((item, j) =>
+                                    <WidgetEngine
                                         key={j}
                                         showValidity={showValidity}
-                                        schemaKeys={schemaKeys?.push('items').push('items').push(j)}
                                         storeKeys={ownKeys.push(j)}
-                                        schema={item as StoreSchemaType}
+                                        schema={item as UISchemaMap}
                                         parentSchema={schema}
-                                        level={level + 1}
                                     />).valueSeq()}
                             </Grid>
                         </Grid> :
-                        <PluginStack<{ schemaKeys: StoreKeys | undefined }>
+                        <WidgetEngine
                             showValidity={showValidity}
                             schema={itemsSchema} parentSchema={schema}
-                            storeKeys={ownKeys} level={level + 1}
-                            schemaKeys={schemaKeys?.push('items')}
+                            storeKeys={ownKeys}
                         />}
 
                 {ComponentMore ?

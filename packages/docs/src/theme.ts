@@ -5,7 +5,10 @@ const headingBody = 'IBM Plex Sans, Source Code Pro, Calibri, Candara, Segoe, Se
 
 export type PartialTheme = { [K in keyof Theme]: Partial<Theme[K]> }
 
-const universal: Pick<PartialTheme, 'typography' | 'shape' | 'breakpoints' | 'components'> = {
+const universal: Pick<PartialTheme, 'palette' | 'typography' | 'shape' | 'breakpoints' | 'components'> = {
+    palette: {
+        contrastThreshold: 4.5,
+    },
     breakpoints: {
         values: {
             xs: 0,
@@ -44,13 +47,13 @@ const universal: Pick<PartialTheme, 'typography' | 'shape' | 'breakpoints' | 'co
         },
         body1: {
             fontFamily: headingBody,
-            fontSize: '0.93125rem',
-            letterSpacing: '0.0067235em',
+            //fontSize: '0.93125rem',
+            //letterSpacing: '0.0067235em',
         },
         body2: {
             fontFamily: headingBody,
-            fontSize: '0.875rem',
-            letterSpacing: '0.004215em',
+            //fontSize: '0.875rem',
+            //letterSpacing: '0.004215em',
         },
         subtitle1: {
             fontFamily: headingFont,
@@ -64,18 +67,27 @@ const universal: Pick<PartialTheme, 'typography' | 'shape' | 'breakpoints' | 'co
             fontSize: '0.762rem',
         },
     },
-    shape: {
-        borderRadius: 0,
-    },
+    shape: {},
+    // components: {
+    //     MuiOutlinedInput: {
+    //         styleOverrides: {
+    //             root: {borderRadius: 4},
+    //         },
+    //     },
+    // },
     components: {
-        MuiOutlinedInput: {
+        MuiLink: {
             styleOverrides: {
-                root: {borderRadius: 4},
+                root: {
+                    borderRadius: 1,
+                    '&.Mui-focusVisible:focus-visible': {
+                        outline: '2px solid currentColor',
+                        outlineOffset: '1px',
+                    },
+                },
             },
         },
-    },
-    /*components: {
-        MuiCssBaseline: {
+        /*MuiCssBaseline: {
             styleOverrides: {
                 body: {
                     fontSize: '0.875rem',
@@ -83,16 +95,18 @@ const universal: Pick<PartialTheme, 'typography' | 'shape' | 'breakpoints' | 'co
                     letterSpacing: '0.01071em',
                 },
             },
-        },
-    },*/
+        },*/
+    },
 }
 
 const themeDark = createTheme({
+    ...universal,
     palette: {
+        ...universal.palette,
         mode: 'dark',
         primary: {
             main: '#05aeca',
-            dark: '#033944',
+            dark: '#0a6d7e',
         },
         secondary: {
             // light: '#d8eed4',
@@ -101,9 +115,9 @@ const themeDark = createTheme({
         },
         background: {
             // paper: '#111017',
-            paper: '#121015',
+            paper: '#110e15',
             // default: '#070b13',
-            default: '#06050d',
+            default: '#07050e',
         },
         text: {
             // primary: '#abb8b9',
@@ -111,31 +125,32 @@ const themeDark = createTheme({
             secondary: '#9b88ad',
         },
         action: {
-            hoverOpacity: 0.2,
+            // hoverOpacity: 0.2,
         },
     },
-    ...universal,
     components: {
         ...universal.components,
-        MuiPaper: {
-            styleOverrides: {root: {backgroundImage: 'unset'}},
-        },
-        MuiLink: {
-            styleOverrides: {underlineAlways: {textDecoration: 'none'}},
-        },
+        // MuiPaper: {
+        //     styleOverrides: {root: {backgroundImage: 'unset'}},
+        // },
+        // MuiLink: {
+        //     styleOverrides: {underlineAlways: {textDecoration: 'none'}},
+        // },
     },
 })
 
 const themeLight = createTheme({
+    ...universal,
     palette: {
+        ...universal.palette,
         mode: 'light',
         primary: {
-            main: '#0590a7',
+            main: '#0b7a8c',
             dark: '#033944',
         },
         secondary: {
             // light: '#d8eed4',
-            main: '#bd90e0',
+            main: '#8e62b1',
             // dark: '#002634',
         },
         background: {
@@ -144,18 +159,17 @@ const themeLight = createTheme({
         },
         text: {
             primary: '#2f2f3d',
-            secondary: '#6d388a',
+            secondary: '#6b2e8c',
         },
-        action: {
-            hoverOpacity: 0.2,
-        },
+        // action: {
+        //     hoverOpacity: 0.2,
+        // },
     },
-    ...universal,
     components: {
         ...universal.components,
-        MuiLink: {
-            styleOverrides: {underlineAlways: {textDecoration: 'none'}},
-        },
+        // MuiLink: {
+        //     styleOverrides: {underlineAlways: {textDecoration: 'none'}},
+        // },
     },
 })
 

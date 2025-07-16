@@ -1,1 +1,1 @@
-export * from './isEqual'
+export * from './isEqual.js'

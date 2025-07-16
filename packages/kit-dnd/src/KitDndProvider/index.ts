@@ -1,1 +1,1 @@
-export * from './KitDndProvider'
+export * from './KitDndProvider.js'

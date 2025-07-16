@@ -1,3 +1,12 @@
+---
+docModule:
+    package: '@ui-schema/pro'
+    modulePath: "pro/src/"
+    files:
+        - "**/*"
+---
+
+
 # UI Schema PRO Documentation
 
 Component and helpers for even more advanced usages.

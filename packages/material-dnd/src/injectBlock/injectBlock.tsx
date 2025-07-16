@@ -1,8 +1,8 @@
 import React from 'react'
-import { StoreKeys, useUIStore } from '@ui-schema/ui-schema/UIStore'
-import { getDisplayName } from '@ui-schema/ui-schema/Utils/memo'
+import { StoreKeys, useUIStore } from '@ui-schema/react/UIStore'
+import { getDisplayName } from '@ui-schema/react/Utils/memo'
 import { DndBlock, useBlocks } from '@ui-schema/material-dnd/DragDropBlockProvider'
-import { matchBlock } from '@ui-schema/material-dnd/DndBlocksRenderer/matchBlock'
+import { matchBlock } from '@ui-schema/material-dnd/DndBlocksRenderer'
 import { Map, OrderedMap } from 'immutable'
 
 export interface WithDndBlock {
@@ -12,7 +12,7 @@ export interface WithDndBlock {
 
 export const injectBlock = <P extends WithDndBlock & {
     storeKeys: StoreKeys
-}>(Component: React.ComponentType<P>): React.ComponentType<Omit<P, keyof WithDndBlock>> => {
+}>(Component: React.FC<P>): React.FC<Omit<P, keyof WithDndBlock>> => {
     const InjectBlock = (
         p: Omit<P, keyof WithDndBlock>
     ) => {

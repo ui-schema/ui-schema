@@ -1,52 +1,22 @@
 # UI-Schema Core
 
-The UI Schema core consists of `Providers`, `Renderers`, the plugin system and validators.
+The UI Schema core consists of types, shared schema type checks and utils.
 
-It supports different ways of creation and UI orchestration, focused for a great developer experience and fast UIs.
-
-> todo: document the entry point styles of the FlowChart and their usage here, use the other `Core` docs as component documentations
-
-- [Generator & Renderer](/docs/core-renderer): components which start the whole form or are part of the automatic/autowired rendering flow
-- [Store](/docs/core-store): internal data handling and the needed providers, each new UI Generator needs its own store
-- [Meta](/docs/core-meta): available `widgets` and translation `t` options, best is to have one [lifted up](https://reactjs.org/docs/lifting-state-up.html) `UIMetaProvider` for many `UIStoreProvider`
-- [PluginStack](/docs/core-pluginstack): wraps each widget and executes plugins / validators
-- [UIApi](/docs/core-uiapi): utilities for network connected forms
-- [Utils](/docs/core-utils): common utilities for immutable and other logic parts
-
-## UIProvider
-
-> ⚠ deprecated, will be removed in `v0.5.0`
-
-Convenience Provider for both: UIStore & UIMeta, just pass everything down to the provider, the UIRootRenderer connects to the provider automatically. Only recommended for small usages, for most cases a lifted up `UIMetaProvider` makes more sense.
-
-```js
-import React from "react";
-import {
-    UIProvider, UIRootRenderer,
-    isInvalid, useUIStore,
-} from "@ui-schema/ui-schema";
-
-const CustomFooter = ({someCustomProp}) => {
-    // access the editor context, also available e.g.: useSchemaWidgets, useSchemaData
-    const {store} = useUIStore();
-
-    return <p style={{fontWeight: someCustomProp ? 'bold' : 'normal'}}>
-        {isInvalid(store.getValidity()) ? 'invalid' : 'valid'}
-    </p>
-}
-
-const CustomEditor = ({someCustomProp, ...props}) => (
-    <UIProvider {...props}>
-        <div>
-            <UIRootRenderer schema={props.schema}/>
-            <div>
-                <CustomFooter someCustomProp={someCustomProp}/>
-            </div>
-        </div>
-    </UIProvider>
-);
+```bash
+npm i --save @ui-schema/ui-schema @ui-schema/json-pointer immutable
 ```
 
-## Flowchart
+This package does not depend on react and is designed for server and browser usage.
 
-[![flowchart](/Flowchart-SchemaEditor.svg)](https://ui-schema.bemit.codes/Flowchart-SchemaEditor.svg)
+Some specialized utilities are included, otherwise it provides an abstraction which requires matching implementations.
+
+- `@ui-schema/json-schema` provides an implementation for the validator system
+- `@ui-schema/react` provides
+    - an renderer system for the widgets
+    - components which rely on the translators and validators types
+- `@ui-schema/ui-schema` provides
+    - the implementation for the schema plugin stack
+    - utility implementation for the translator [JSON schema keywords](/docs/localization#translation-in-schema)
+    - the implementation for the schema resource system
+    - the implementation for the widget matching
+    - various type contracts used by the [plugin systems](/docs/plugins)

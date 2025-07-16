@@ -1,0 +1,9 @@
+FROM httpd:2.4.63-alpine
+
+#$ docker run --rm httpd:2.4 cat /usr/local/apache2/conf/httpd.conf > my-httpd.conf
+
+COPY ./tools/server_apache/httpd.conf /usr/local/apache2/conf/httpd.conf
+
+RUN echo "<html><h1>Server Root</h1></html>" > /usr/local/apache2/htdocs/index.html
+
+COPY ./dist/docs /usr/local/apache2/htdocs/

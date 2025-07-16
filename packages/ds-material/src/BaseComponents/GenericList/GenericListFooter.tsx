@@ -1,13 +1,16 @@
 import { ListButton, ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
 import Add from '@mui/icons-material/Add'
-import { onChangeHandler, StoreKeys, StoreSchemaType, Trans, WidgetProps } from '@ui-schema/ui-schema'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { Translate } from '@ui-schema/react/Translate'
+import { onChangeHandler, StoreKeys } from '@ui-schema/react/UIStore'
+import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
 import { Map } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import React from 'react'
 import Box from '@mui/material/Box'
 
 export interface GenericListFooterProps extends ListButtonOverwrites {
-    schema: StoreSchemaType
+    schema: UISchemaMap
     notAddable?: boolean
     notSortable?: boolean
     notDeletable?: boolean
@@ -16,8 +19,8 @@ export interface GenericListFooterProps extends ListButtonOverwrites {
     required?: boolean
     btnAddShowLabel?: boolean
     btnAddStyle?: React.CSSProperties
-    errors: WidgetProps['errors']
-    showValidity: WidgetProps['showValidity']
+    errors: ValidationErrorsImmutable | undefined
+    showValidity: boolean | undefined
 }
 
 export const GenericListFooter: React.ComponentType<GenericListFooterProps> = (
@@ -28,7 +31,7 @@ export const GenericListFooter: React.ComponentType<GenericListFooterProps> = (
         btnColor, btnVariant, btnSize,
         btnAddShowLabel, btnAddStyle,
         errors, showValidity,
-    }
+    },
 ) => {
     return <Box mt={2}>
         {!schema.get('readOnly') && !notAddable ?
@@ -36,7 +39,6 @@ export const GenericListFooter: React.ComponentType<GenericListFooterProps> = (
                 onClick={() => {
                     onChange({
                         storeKeys,
-                        scopes: ['value', 'internal'],
                         type: 'list-item-add',
                         schema,
                         required,
@@ -49,7 +51,7 @@ export const GenericListFooter: React.ComponentType<GenericListFooterProps> = (
                 style={btnAddStyle}
                 Icon={Add}
                 title={
-                    <Trans
+                    <Translate
                         text={'labels.add-item'}
                         context={Map({actionLabels: schema.get('listActionLabels')})}
                     />

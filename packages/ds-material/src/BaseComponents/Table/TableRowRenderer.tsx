@@ -1,13 +1,16 @@
-import React from 'react'
-import { StoreKeyType, memo, PluginStack, SchemaTypesType, schemaTypeToDistinct, WidgetProps, WithValue } from '@ui-schema/ui-schema'
+import { schemaTypeIs } from '@ui-schema/ui-schema/schemaTypeIs'
+import React, { Fragment } from 'react'
+import { StoreKeyType, WithOnChange } from '@ui-schema/react/UIStore'
+import { WidgetProps } from '@ui-schema/react/Widget'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
+import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import { List, OrderedMap, Map } from 'immutable'
-import { Theme } from '@mui/material/styles/createTheme'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import { TableRowProps, TableRowActionDelete } from '@ui-schema/ds-material/BaseComponents/Table'
-import { TableCellSchemaImmutable } from '@ui-schema/ds-material/Widgets/Table/TableSchema'
-import { useTheme } from '@mui/material/styles'
-import { SxProps } from '@mui/system'
+import { TableCellSchemaImmutable } from '@ui-schema/ds-material/Widgets/Table'
+import { useTheme, Theme, SxProps } from '@mui/material/styles'
 
 const useStyles = (theme: Theme, {dense}: { dense: boolean }): SxProps => ({
     padding:
@@ -17,20 +20,19 @@ const useStyles = (theme: Theme, {dense}: { dense: boolean }): SxProps => ({
     overflow: 'hidden',
 })
 
-const PluginStackMemo = memo(PluginStack)
+const WidgetEngineMemo = memo(WidgetEngine)
 
-export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps & Pick<WithValue, 'onChange'>> = (
+export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps & WithOnChange> = (
     {
         parentSchema, schema,
-        showValidity, widgets,
+        showValidity, binding,
         storeKeys,
-        level,
         uid,
         onChange, required,
         dense,
         setPage,
         showRows,
-    }
+    },
 ) => {
     const theme = useTheme()
     const styles = useStyles(theme, {dense})
@@ -40,7 +42,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
     const deleteOnEmpty = parentSchema?.get('deleteOnEmpty') || required
 
     if (
-        schemaTypeToDistinct(schema.get('type') as SchemaTypesType) === 'object' &&
+        schemaTypeIs(schema.get('type') as SchemaTypesType, 'object') &&
         (schema.getIn(['rowSortOrder']) as TableCellSchemaImmutable['rowSortOrder'])?.size
     ) {
         let orderedCellSchema = OrderedMap();
@@ -52,61 +54,58 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
         cellSchema = orderedCellSchema
     }
 
-    const GroupRenderer = widgets.GroupRenderer
+    const GroupRenderer = binding?.GroupRenderer || Fragment
 
     return <TableRow>
         {cellSchema.map((item, j) =>
             item.get('hidden') === true ?
-                <PluginStackMemo
+                <WidgetEngineMemo
                     key={j}
                     storeKeys={storeKeys.push(j as StoreKeyType)}
                     schema={item}
-                    parentSchema={parentSchema}
-                    level={level + 1}
+                    parentSchema={schema}
                     isVirtual
                 /> :
                 <TableCell
                     key={j}
                     sx={styles}
-                    align={schemaTypeToDistinct(item.get('type')) === 'boolean' ? 'center' : undefined}
+                    align={schemaTypeIs(item.get('type'), 'boolean') ? 'center' : undefined}
                 >
-                    {
-                        schemaTypeToDistinct(item.get('type')) === 'object' ?
-                            <GroupRenderer level={0} schema={item} storeKeys={storeKeys}>
-                                <PluginStackMemo<{ [k: string]: any }>
-                                    showValidity={showValidity}
-                                    storeKeys={storeKeys.push(j as StoreKeyType)}
-                                    schema={item.setIn(['view', 'hideTitle'], true)}
-                                    parentSchema={parentSchema}
-                                    level={level + 1}
-                                    readOnly={readOnly}
-
-                                    // overwriting `widgets`, needs to be passed down further on depending on use cases:
-                                    widgets={widgets}
-
-                                    // table field a11y labelling not supported for object,
-                                    // must be done by in-cell translation
-                                    // labelledBy={'uis-' + uid + '-tbl-' + j}
-                                />
-                            </GroupRenderer> :
-                            <PluginStackMemo<{ [k: string]: any }>
+                    {/* todo: happy-path issue, always using object and requires value-based decision otherwise */}
+                    {schemaTypeIs(item.get('type'), 'object')/* || (!item.get('type') && Map.isMap(value))*/ ?
+                        <GroupRenderer schema={item} storeKeys={storeKeys}>
+                            <WidgetEngineMemo<{ [k: string]: any } & WidgetProps>
                                 showValidity={showValidity}
                                 storeKeys={storeKeys.push(j as StoreKeyType)}
                                 schema={item.setIn(['view', 'hideTitle'], true)}
-                                parentSchema={parentSchema}
-                                level={level + 1}
+                                parentSchema={schema}
                                 readOnly={readOnly}
-                                noGrid
 
                                 // overwriting `widgets`, needs to be passed down further on depending on use cases:
-                                widgets={widgets}
+                                binding={binding}
 
-                                // custom table field prop for a11y labelling
-                                // todo: `j` is correct for lists, as it mimics the tuple part
-                                //       for Maps, this must be the property name
-                                labelledBy={'uis-' + uid + '-tbl-' + j}
-                            />}
-                </TableCell>
+                                // table field a11y labelling not supported for object,
+                                // must be done by in-cell translation
+                                // labelledBy={'uis-' + uid + '-tbl-' + j}
+                            />
+                        </GroupRenderer> :
+                        <WidgetEngineMemo<{ [k: string]: any } & WidgetProps>
+                            showValidity={showValidity}
+                            storeKeys={storeKeys.push(j as StoreKeyType)}
+                            schema={item.setIn(['view', 'hideTitle'], true)}
+                            parentSchema={schema}
+                            readOnly={readOnly}
+                            noGrid
+
+                            // overwriting `widgets`, needs to be passed down further on depending on use cases:
+                            binding={binding}
+
+                            // custom table field prop for a11y labelling
+                            // todo: `j` is correct for lists, as it mimics the tuple part
+                            //       for Maps, this must be the property name
+                            labelledBy={'uis-' + uid + '-tbl-' + j}
+                        />}
+                </TableCell>,
         ).valueSeq()}
 
         {!readOnly ?

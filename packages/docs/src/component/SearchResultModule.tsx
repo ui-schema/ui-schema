@@ -7,7 +7,7 @@ import { SearchHighlight, SearchLink } from './SearchBoxUtils'
 import { useSearch } from '@control-ui/docs/DocsSearchProvider'
 import { useDrawer } from '@control-ui/app/DrawerProvider'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import useTheme from '@mui/material/styles/useTheme'
+import { useTheme } from '@mui/material/styles'
 
 export const SearchResultModule: React.FC<{
     match: any
@@ -43,7 +43,14 @@ export const SearchResultModule: React.FC<{
                         />
                     </Typography>
                     <Box style={{display: 'flex'}}>
-                        <Typography variant={'body2'}>{match.package}</Typography>
+                        <Typography variant={'body2'}>
+                            <Highlighter
+                                searchWords={term?.split(' ') || []}
+                                textToHighlight={match.package}
+                                autoEscape
+                                highlightTag={SearchHighlight}
+                            />
+                        </Typography>
                         <Typography variant={'caption'} style={{marginLeft: 'auto', opacity: 0.6}}>Score: {match.score.toFixed(2)}</Typography>
                     </Box>
                 </Box>

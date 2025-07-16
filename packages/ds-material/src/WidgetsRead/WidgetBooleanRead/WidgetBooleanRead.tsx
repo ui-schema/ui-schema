@@ -1,12 +1,12 @@
+import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
 import React from 'react'
 import Box from '@mui/material/Box'
 import IcYes from '@mui/icons-material/CheckCircle'
 import IcNo from '@mui/icons-material/CancelOutlined'
 import Typography from '@mui/material/Typography'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import { WidgetProps, WithScalarValue } from '@ui-schema/ui-schema'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
-import { UIMetaReadContextType } from '@ui-schema/ui-schema/UIMetaReadContext'
+import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
+import { UIMetaReadContextType } from '@ui-schema/react/UIMetaReadContext'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
 
 export interface WidgetBooleanReadProps {
@@ -15,18 +15,18 @@ export interface WidgetBooleanReadProps {
     IconNo?: React.ComponentType<{ fontSize?: 'default' | 'inherit' | 'large' | 'medium' | 'small' }>
 }
 
-export const WidgetBooleanRead = <P extends WidgetProps<MuiWidgetBinding> & UIMetaReadContextType = WidgetProps<MuiWidgetBinding> & UIMetaReadContextType>(
+export const WidgetBooleanRead = (
     {
         storeKeys, schema, value,
         showValidity, valid, errors,
         style,
-        widgets,
+        binding,
         IconYes, IconNo,
         readDense,
-    }: P & WithScalarValue & WidgetBooleanReadProps,
+    }: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & UIMetaReadContextType & WidgetBooleanReadProps,
 ): React.ReactElement => {
     const hideTitle = Boolean(schema.getIn(['view', 'hideTitle']))
-    const InfoRenderer = widgets?.InfoRenderer
+    const InfoRenderer = binding?.InfoRenderer
     const hasInfo = Boolean(InfoRenderer && schema?.get('info'))
     return <>
         <Box style={style}>

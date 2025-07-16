@@ -1,0 +1,60 @@
+{
+    "name": "@ui-schema/demo-server",
+    "private": true,
+    "version": "0.5.0",
+    "description": "scribble",
+    "author": {
+        "name": "bemit",
+        "url": "https://bemit.codes"
+    },
+    "contributors": [
+        {
+            "name": "Michael Becker",
+            "url": "https://i-am-digital.eu"
+        }
+    ],
+    "license": "MIT",
+    "type": "module",
+    "dependencies": {
+        "cross-env": "^7.0.3",
+        "cross-spawn": "^7.0.3",
+        "dotenv": "^14.2.0",
+        "express": "^4.21.0",
+        "nanoid": "^3.1.32",
+        "@types/on-headers": "^2.1.30",
+        "immutable": "^5.0.0",
+        "ajv": "^8.11.0",
+        "on-headers": "^1.0.2",
+        "@ui-schema/ui-schema": "~0.5.0-alpha.0",
+        "@ui-schema/json-schema": "~0.5.0-alpha.0",
+        "@ui-schema/json-pointer": "~0.5.0-alpha.0",
+        "nodemon": "^3.1.7",
+        "superagent": "^9.0.2",
+        "cors": "^2.8.5",
+        "concurrently": "^5.3.0",
+        "symlink-dir": "^5.0.1",
+        "luxon": "^3.6.1"
+    },
+    "devDependencies": {
+        "@types/luxon": "^3.6.2",
+        "@types/nanoid": "^3.0.0",
+        "@types/superagent": "^4.1.14",
+        "@types/cors": "^2.8.12",
+        "@types/express": "^4.17.21",
+        "rimraf": "^5.0.10",
+        "symlink-dir": "^5.0.1"
+    },
+    "scripts": {
+        "serve": "cross-env NODE_ENV=development NODE_OPTIONS=\"--experimental-vm-modules --unhandled-rejections=strict --import ./ts-node.register.mjs\" node --watch ./src/server.ts",
+        "cli": "cross-env NODE_ENV=development NODE_OPTIONS=\"--experimental-vm-modules --unhandled-rejections=strict --import ./ts-node.register.mjs\" node ./src/cli.ts",
+        "prebuild": "npm run clean",
+        "build": "npm run tsc",
+        "tsc": "tsc --project tsconfig.json",
+        "tscheck": "tsc --noEmit",
+        "babel": "cross-env NODE_ENV=node babel src -d build --extensions \".ts,.js\" --copy-files",
+        "clean": "rimraf build"
+    },
+    "nodemonConfig": {
+        "delay": 120
+    }
+}

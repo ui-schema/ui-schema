@@ -1,29 +1,25 @@
-import { demoAccordions } from './docs/widgets/AccordionsDemo'
-import { demoCode } from './docs/material-code/material-codeDemo'
+import { DocRoute } from '@control-ui/docs'
+import { TsDocModule } from '@control-ui/docs-ts/TsDocModule'
+import { demoBooleanRead } from './docs/ds-material/widgets-read/BooleanReadDemo'
+import { demoChipsRead } from './docs/ds-material/widgets-read/ChipsReadDemo'
+import { demoOptionsRead } from './docs/ds-material/widgets-read/OptionsReadDemo'
+import { demoTextFieldRead } from './docs/ds-material/widgets-read/TextFieldReadDemo'
 import { demoColorful } from './docs/material-colorful/material-colorfulDemo'
+import { demoDragnDropGenericDemo } from './docs/material-dnd/widgets-genericDemo'
+import { demoAccordions } from './docs/widgets/AccordionsDemo'
+import { demoCard } from './docs/widgets/CardDemo'
 import { demoColor } from './docs/widgets/ColorDemo'
 import { demoDateTimePickers } from './docs/widgets/DateTimePickersDemo'
 import { demoGenericList } from './docs/widgets/GenericListDemo'
 import { demoGridHandler } from './docs/widgets/GridHandlerDemo'
-import { demoOptionsList } from './docs/widgets/OptionsListDemo'
-import { demoRichText } from './docs/widgets/RichTextDemo'
 import { demoNumberSlider } from './docs/widgets/NumberSliderDemo'
+import { demoOptionsList } from './docs/widgets/OptionsListDemo'
+import { demoSelectChips } from './docs/widgets/SelectChipsDemo'
 import { demoSelect } from './docs/widgets/SelectDemo'
 import { demoSimpleList } from './docs/widgets/SimpleListDemo'
-import { demoStepper } from './docs/widgets/StepperDemo'
 import { demoSwitch } from './docs/widgets/SwitchDemo'
 import { demoTable } from './docs/widgets/TableDemo'
 import { demoTextField } from './docs/widgets/TextFieldDemo'
-import { demoEditorJS } from './docs/widgets/EditorJSDemo'
-import { demoDragnDropGenericDemo } from './docs/material-dnd/widgets-genericDemo'
-import { demoSelectChips } from './docs/widgets/SelectChipsDemo'
-import { demoCard } from './docs/widgets/CardDemo'
-import { TsDocModule } from '@control-ui/docs-ts/TsDocModule'
-import { DocRoute } from '@control-ui/docs'
-import { demoOptionsRead } from './docs/ds-material/widgets-read/OptionsReadDemo'
-import { demoBooleanRead } from './docs/ds-material/widgets-read/BooleanReadDemo'
-import { demoChipsRead } from './docs/ds-material/widgets-read/ChipsReadDemo'
-import { demoTextFieldRead } from './docs/ds-material/widgets-read/TextFieldReadDemo'
 
 export interface DocRouteModule<C = any> extends DocRoute<C> {
     docModule?: TsDocModule
@@ -33,18 +29,17 @@ export interface DocRouteModule<C = any> extends DocRoute<C> {
 const createDoc = (
     path: string,
     label: string,
-    {prefix = '', module, hidden, ...extras}: {
+    {module, hidden, ...extras}: {
         routes?: DocRouteModule[]
         demos?: DocRouteModule['demos']
-        prefix?: string
         hidden?: boolean
         module?: DocRouteModule['docModule']
     } = {},
 ): DocRouteModule => ({
-    doc: 'docs/' + path,
-    path: prefix + '/docs/' + path,
+    doc: path.startsWith('/') ? path.slice(1) : 'docs/' + path,
+    path: path.startsWith('/') ? path : '/docs/' + path,
     nav: hidden ? undefined : {
-        to: '/docs/' + path,
+        to: path.startsWith('/') ? path : '/docs/' + path,
         initialOpen: false,
         label,
     },
@@ -64,55 +59,99 @@ const defineModule = (org: string, name: string, dir: string, from: string, cust
 })
 
 const defineModuleFlat = (org: string, name: string, dir: string, rel: string, from: string, ext: string): TsDocModule => ({
-    modulePath: `${dir}/src/${rel}/${from}.`,
+    modulePath: `${dir}/src/${rel}/`,
+    // modulePath: `${dir}/src/${rel}/${from}`,
     relPath: `${dir}/src/${rel}/`,
     package: `@${org}/${name}`,
-    fromPath: rel + '/' + from,
+    // todo: fromPath should be just `rel`,
+    //       as e.g. `@ui-schema/ds-material/BaseComponents/Table/TableContext` is only correctly exported via `@ui-schema/ds-material/BaseComponents/Table`
+    //       but is used by doc-gen to generate output dir atm.
+    fromPath: rel,
+    // fromPath: rel + '/' + from,
+    // @ts-ignore
+    moduleFilePath: rel + '/' + from, // todo: maybe reuse pagePath or similar?
     files: [from + ext],
 })
 
 export const routesCore = [
     createDoc('overview', 'Overview'),
-    createDoc('schema', 'Schema'), {
-        nav: {
-            label: 'Core',
-            //initialOpen: false,
-            toSection: /^(\/docs\/core$|\/docs\/core-)/,
-        },
-        routes: [
-            createDoc('core', 'Core Overview'),
-            createDoc('core-renderer', 'Core: Generator & Renderer'),
-            createDoc('core-meta', 'Core: Meta'),
-            createDoc('core-store', 'Core: Store'),
-            createDoc('core-pluginstack', 'Core: PluginStack'),
-            createDoc('core-uiapi', 'Core: UIApi'),
-            createDoc('core-utils', 'Core: Utils'),
-        ],
-    }, {
-        nav: {
-            label: 'Design-System & Widgets',
-            initialOpen: false,
-            //toSection: /^(\/docs\/design-systems|\/docs\/widgets$|\/docs\/widgets-composition$)/,
-            toSection: /^(\/docs\/design-systems|\/docs\/widgets$)/,
-        },
-        routes: [
-            createDoc('design-systems', 'Design-System'),
-            createDoc('widgets', 'Widget Binding'),
-        ],
-    },
+
+    createDoc('schema', 'Schema'),
+    createDoc('binding', /*'Components & Widgets */'Binding'),
+    createDoc('design-systems', 'Design-Systems'),
     createDoc('plugins', 'Plugins'),
     createDoc('localization', 'Localization'),
     createDoc('performance', 'Performance'),
     createDoc('widgets-composition', 'Composition Concepts'),
 ]
 
+export const routesPackages = [
+    {
+        nav: {
+            label: 'Core',
+            initialOpen: false,
+            toSection: /^(\/docs\/core$|\/docs\/core-)/,
+        },
+        routes: [
+            createDoc('core', 'Core Overview'),
+            createDoc('core-pluginstack', 'Core: PluginStack', {hidden: true}),
+            createDoc('core/schemapluginstack', 'SchemaPluginStack'),
+            createDoc('core/schemaresource', 'SchemaResource'),
+            createDoc('core/schematype', 'SchemaType Test'),
+            createDoc('core/localization', 'Core: Localization'),
+            createDoc('core/utils', 'Core: Utils'),
+        ],
+    },
+    {
+        nav: {
+            label: 'React',
+            to: '/docs/react',
+        },
+        routes: [
+            createDoc('react', 'React Overview'),
+            createDoc('react/renderer', 'React: Generator & Renderer'),
+            createDoc('react/meta', 'React: Meta'),
+            createDoc('react/store', 'React: Store'),
+            createDoc('react/localization', 'React: Localization'),
+            createDoc('react/widgetengine', 'React: WidgetEngine'),
+            createDoc('react/plugins', 'React: Plugins'),
+            createDoc('react/uiapi', 'React: UIApi'),
+            createDoc('react/utils', 'React: Utils'),
+            createDoc('react/schemaresourceprovider', 'React: SchemaResource'),
+            createDoc('react/schemapluginsadapter', 'SchemaPluginsAdapter'),
+        ],
+    },
+    {
+        nav: {
+            label: 'JSON Schema',
+            to: '/docs/json-schema',
+        },
+        routes: [
+            createDoc('json-schema/overview', 'Overview'),
+            createDoc('json-schema/plugins', 'Plugins'),
+            createDoc('json-schema/validator', 'Validator'),
+            createDoc('json-schema/validators', 'Validators'),
+        ],
+    },
+    {
+        nav: {
+            label: 'JSON Pointer',
+            to: '/docs/json-pointer',
+        },
+        routes: [
+            createDoc('json-pointer/overview', 'JSON Pointer Overview'),
+        ],
+    },
+]
+
 export const routesFurtherDesignSystem = [
     {
         nav: {
-            label: 'Widgets List',
-            toSection: /^\/docs\/widgets\//,
+            label: 'Widgets',
+            toSection: /^\/docs\/widgets(\/.+?)$/,
         },
         routes: [
+            createDoc('widgets/overview', 'Widgets Overview', {}),
             createDoc('widgets/Accordions', 'Accordions', {
                 demos: {
                     schema: demoAccordions,
@@ -135,11 +174,6 @@ export const routesFurtherDesignSystem = [
                     schema: demoDateTimePickers,
                 },
             }),
-            createDoc('widgets/EditorJS', 'EditorJS', {
-                demos: {
-                    schema: demoEditorJS,
-                },
-            }),
             createDoc('widgets/GenericList', 'Generic List', {
                 demos: {
                     schema: demoGenericList,
@@ -153,11 +187,6 @@ export const routesFurtherDesignSystem = [
             createDoc('widgets/OptionsList', 'Options List', {
                 demos: {
                     schema: demoOptionsList,
-                },
-            }),
-            createDoc('widgets/RichText', 'Rich-Text / Rich-Content', {
-                demos: {
-                    schema: demoRichText,
                 },
             }),
             createDoc('widgets/NumberSlider', 'Number Slider', {
@@ -181,9 +210,7 @@ export const routesFurtherDesignSystem = [
                 },
             }),
             createDoc('widgets/Stepper', 'Stepper', {
-                demos: {
-                    schema: demoStepper,
-                },
+                hidden: true,
             }),
             createDoc('widgets/Switch', 'Switch', {
                 demos: {
@@ -201,13 +228,15 @@ export const routesFurtherDesignSystem = [
                 },
             }),
         ],
-    }, {
+    },
+    {
         nav: {
             label: 'DS Material',
             initialOpen: false,
             to: '/docs/ds-material',
         },
         routes: [
+            createDoc('ds-material/introduction', 'Introduction', {}),
             createDoc('ds-material/Grid', 'Grid', {
                 module: defineModule('ui-schema', 'ds-material', 'ds-material', 'Grid'),
             }),
@@ -331,14 +360,14 @@ export const routesFurtherDesignSystem = [
                         },
                         module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetChipsRead', ['WidgetChipsRead.tsx']),
                     }),
-                    createDoc('ds-material/widgets-read/EnumRead', 'EnumRead', {
-                        demos: {},
-                        module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetEnumRead', ['WidgetEnumRead.tsx']),
-                    }),
-                    createDoc('ds-material/widgets-read/OneOfRead', 'OneOfRead', {
-                        demos: {},
-                        module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetOneOfRead', ['WidgetOneOfRead.tsx']),
-                    }),
+                    // createDoc('ds-material/widgets-read/EnumRead', 'EnumRead', { // todo: add redirect
+                    //     demos: {},
+                    //     module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetEnumRead', ['WidgetEnumRead.tsx']),
+                    // }),
+                    // createDoc('ds-material/widgets-read/OneOfRead', 'OneOfRead', { // todo: add redirect
+                    //     demos: {},
+                    //     module: defineModule('ui-schema', 'ds-material', 'ds-material', 'WidgetsRead/WidgetOneOfRead', ['WidgetOneOfRead.tsx']),
+                    // }),
                     createDoc('ds-material/widgets-read/OptionsRead', 'OptionsRead', {
                         demos: {
                             readOnly: true,
@@ -362,7 +391,8 @@ export const routesFurtherDesignSystem = [
                 module: defineModule('ui-schema', 'ds-material', 'ds-material', 'ErrorFallback'),
             }),
         ],
-    }, {
+    },
+    {
         nav: {
             label: 'Material Pickers',
             initialOpen: false,
@@ -370,33 +400,24 @@ export const routesFurtherDesignSystem = [
         },
         routes: [
             createDoc('material-pickers/Overview', 'Overview'),
-            createDoc('material-pickers/WidgetDatePicker', 'WidgetDatePicker', {
-                demos: {},
-                module: defineModule('ui-schema', 'material-pickers', 'material-pickers', 'WidgetDatePicker'),
-            }),
-            createDoc('material-pickers/WidgetDateTimePicker', 'WidgetDateTimePicker', {
-                demos: {},
-                module: defineModule('ui-schema', 'material-pickers', 'material-pickers', 'WidgetDateTimePicker'),
-            }),
-            createDoc('material-pickers/WidgetTimePicker', 'WidgetTimePicker', {
-                demos: {},
-                module: defineModule('ui-schema', 'material-pickers', 'material-pickers', 'WidgetTimePicker'),
-            }),
+            createDoc('material-pickers/WidgetDatePicker', 'WidgetDatePicker'),
+            createDoc('material-pickers/WidgetDateTimePicker', 'WidgetDateTimePicker'),
+            createDoc('material-pickers/WidgetTimePicker', 'WidgetTimePicker'),
         ],
-    }, {
-        nav: {
-            label: 'Material Code',
-            initialOpen: false,
-            to: '/docs/material-code',
-        },
+    },
+    {
+        // nav: {
+        //     label: 'Material Code',
+        //     initialOpen: false,
+        //     to: '/docs/material-code',
+        // },
         routes: [
             createDoc('material-code/material-code', 'Overview', {
-                demos: {
-                    schema: demoCode,
-                },
+                hidden: true,
             }),
         ],
-    }, {
+    },
+    {
         nav: {
             label: 'Material Color',
             initialOpen: false,
@@ -409,7 +430,8 @@ export const routesFurtherDesignSystem = [
                 },
             }),
         ],
-    }, {
+    },
+    {
         nav: {
             label: 'Material Colorful',
             initialOpen: false,
@@ -422,7 +444,8 @@ export const routesFurtherDesignSystem = [
                 },
             }),
         ],
-    }, {
+    },
+    {
         nav: {
             label: 'Material-DND',
             initialOpen: false,
@@ -437,6 +460,16 @@ export const routesFurtherDesignSystem = [
             }),
         ],
     },
+    {
+        nav: {
+            label: 'DS Bootstrap',
+            initialOpen: false,
+            to: '/docs/ds-bootstrap',
+        },
+        routes: [
+            createDoc('ds-bootstrap/introduction', 'Introduction', {}),
+        ],
+    },
 ]
 
 export const routesFurtherAddOns = [
@@ -449,16 +482,20 @@ export const routesFurtherAddOns = [
         routes: [
             createDoc('kit-dnd/kit-dnd', 'Overview'),
         ],
-    }, {
-        nav: {
-            label: 'Kit: CodeMirror',
-            initialOpen: false,
-            to: '/docs/kit-codemirror',
-        },
+    },
+    {
+        // nav: {
+        //     label: 'Kit: CodeMirror',
+        //     initialOpen: false,
+        //     to: '/docs/kit-codemirror',
+        // },
         routes: [
-            createDoc('kit-codemirror/kit-codemirror', 'Overview'),
+            createDoc('kit-codemirror/kit-codemirror', 'Overview', {
+                hidden: true,
+            }),
         ],
-    }, {
+    },
+    {
         nav: {
             label: 'Pro Extensions',
             initialOpen: false,
@@ -476,6 +513,7 @@ export const routesDocs = {
     },
     routes: [
         ...routesCore,
+        ...routesPackages,
         ...routesFurtherDesignSystem,
         ...routesFurtherAddOns,
     ],

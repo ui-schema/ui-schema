@@ -1,0 +1,14 @@
+{
+    "extends": "../tsconfig.json",
+    "include": [
+        "src"
+    ],
+    "compilerOptions": {
+        "module": "ES2022",
+        "moduleResolution": "Bundler",
+        "outDir": "build/dts",
+        "lib": [
+            "ES2021"
+        ]
+    }
+}

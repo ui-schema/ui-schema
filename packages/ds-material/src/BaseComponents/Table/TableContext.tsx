@@ -1,9 +1,10 @@
+import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
 import React from 'react'
-import { getDisplayName, WidgetProps } from '@ui-schema/ui-schema'
+import { getDisplayName } from '@ui-schema/react/Utils/memo'
 
 export interface TableContextType {
-    valid: WidgetProps['valid']
-    errors: WidgetProps['errors']
+    valid: boolean | undefined
+    errors: ValidationErrorsImmutable | undefined
 }
 
 // @ts-ignore

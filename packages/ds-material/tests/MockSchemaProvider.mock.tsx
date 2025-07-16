@@ -1,60 +1,74 @@
+/**
+ * @jest-environment jsdom
+ */
+import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
+import { Validator } from '@ui-schema/json-schema/Validator'
 import React from 'react'
-import { Translator } from '@ui-schema/ui-schema/Translate/makeTranslator'
-import { createEmptyStore } from '@ui-schema/ui-schema/UIStore'
-import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap'
-import { UIProvider } from '@ui-schema/ui-schema/UIGenerator'
-import { UIRootRenderer } from '@ui-schema/ui-schema/UIRootRenderer'
-import { StoreSchemaType } from '@ui-schema/ui-schema/CommonTypings'
-import { WidgetsBindingFactory } from '@ui-schema/ui-schema/WidgetsBinding'
-import { UIMetaProvider, WidgetRenderer } from '@ui-schema/ui-schema'
-import { relTranslator } from '@ui-schema/ui-schema/Translate/relT'
+import { Translator } from '@ui-schema/ui-schema/Translator'
+import { createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { BindingTypeGeneric } from '@ui-schema/react/Widget'
+import { UIMetaProvider } from '@ui-schema/react/UIMeta'
+import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
+import { translatorRelative } from '@ui-schema/ui-schema/TranslatorRelative'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
+import { storeUpdater } from '@ui-schema/react/storeUpdater'
+import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 
-export const MockWidgets: WidgetsBindingFactory = {
+export const MockWidgets: BindingTypeGeneric = {
     ErrorFallback: () => null,
-    RootRenderer: () => null,
     GroupRenderer: () => null,
+    widgetPlugins: [],
     WidgetRenderer: WidgetRenderer,
-    pluginStack: [],
-    pluginSimpleStack: [],
-    types: {},
-    custom: {},
+    widgets: {},
 }
 
-export const MockSchema = createOrderedMap({type: 'object'})
+const validate = Validator(standardValidators).validate
+
+export const MockSchema: any = createOrderedMap({type: 'object'})
 
 export const MockSchemaProvider: React.ComponentType<{
     t?: Translator
-    widgets: WidgetsBindingFactory
-    schema: StoreSchemaType
+    widgets: BindingTypeGeneric
+    schema: UISchemaMap
 }> = (
-    {t, widgets, schema}
+    {t, widgets, schema},
 ) => {
     // @ts-ignore
     const [store, setStore] = React.useState(() => createEmptyStore(schema && schema.get('type')))
 
-    // eslint-disable-next-line deprecation/deprecation
-    return <UIProvider
-        store={store}
-        onChange={setStore}
+    const onChange = React.useCallback((actions: UIStoreActions[] | UIStoreActions) => {
+        setStore(storeUpdater(actions))
+    }, [setStore])
+
+    return <UIMetaProvider
         // @ts-ignore
-        widgets={widgets}
-        t={t || relTranslator}
+        binding={widgets}
+        t={t || translatorRelative}
+        validate={validate}
     >
-        <UIRootRenderer schema={schema}/>
-    </UIProvider>
+        <UIStoreProvider
+            store={store}
+            onChange={onChange}
+        >
+            <WidgetEngine isRoot schema={schema}/>
+        </UIStoreProvider>
+    </UIMetaProvider>
 }
 
 export const MockSchemaMetaProvider: React.ComponentType<React.PropsWithChildren<{
     t?: Translator
-    widgets?: WidgetsBindingFactory
+    widgets?: BindingTypeGeneric
 }>> = (
-    {t, widgets, children}
+    {t, widgets, children},
 ) => {
 
     return <UIMetaProvider
         // @ts-ignore
-        widgets={widgets}
-        t={t || relTranslator}
+        binding={widgets}
+        t={t || translatorRelative}
+        validate={validate}
     >
         {children}
     </UIMetaProvider>

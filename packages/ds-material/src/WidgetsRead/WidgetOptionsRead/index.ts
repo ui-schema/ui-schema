@@ -1,1 +1,1 @@
-export * from './WidgetOptionsRead'
+export * from './WidgetOptionsRead.js'

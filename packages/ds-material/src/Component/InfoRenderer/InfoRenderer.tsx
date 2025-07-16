@@ -1,4 +1,5 @@
-import { StoreKeys, StoreSchemaType, WidgetProps } from '@ui-schema/ui-schema'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import { StoreKeys } from '@ui-schema/react/UIStore'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
@@ -7,6 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import IcInfo from '@mui/icons-material/Info'
+import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
 import React from 'react'
 import { List } from 'immutable'
 
@@ -16,18 +18,20 @@ export interface InfoRendererProps {
     dense?: boolean
     align?: 'right' | 'left'
 
-    schema: StoreSchemaType
+    schema: UISchemaMap
     storeKeys: StoreKeys
 
     valid?: boolean
-    errors?: WidgetProps['errors']
+    errors?: ValidationErrorsImmutable
 }
+
+export type InfoRendererType<P extends InfoRendererProps = InfoRendererProps> = React.ComponentType<P>
 
 export const InfoRenderer: React.ComponentType<InfoRendererProps> = (
     {
         schema, variant, openAs,
         align, dense,
-    }
+    },
 ) => {
     const [open, setOpen] = React.useState(false)
     const content = <>
@@ -37,26 +41,29 @@ export const InfoRenderer: React.ComponentType<InfoRendererProps> = (
             typeof schema.get('info') === 'string' ? schema.get('info') : null}
     </>
     return <>
-        {variant === 'icon' ? <IconButton
-            onClick={() => setOpen(true)}
-            size={dense ? 'small' : 'medium'}
-            style={{float: align ? align : undefined}}
-        >
-            <IcInfo/>
-        </IconButton> : <Button
-            onClick={() => setOpen(o => !o)}
-        >
-            Show Info
-        </Button>}
+        {variant === 'icon' ?
+            <IconButton
+                onClick={() => setOpen(true)}
+                size={dense ? 'small' : 'medium'}
+                style={{float: align ? align : undefined}}
+            >
+                <IcInfo/>
+            </IconButton> :
+            <Button
+                onClick={() => setOpen(o => !o)}
+            >
+                Show Info
+            </Button>}
 
-        {openAs === 'modal' ? <Dialog open={open} onClose={() => setOpen(false)}>
-            <DialogTitle>Info</DialogTitle>
-            <DialogContent>
-                {content}
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => setOpen(false)}>close</Button>
-            </DialogActions>
-        </Dialog> : open ? content : null}
+        {openAs === 'modal' ?
+            <Dialog open={open} onClose={() => setOpen(false)}>
+                <DialogTitle>Info</DialogTitle>
+                <DialogContent>
+                    {content}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpen(false)}>close</Button>
+                </DialogActions>
+            </Dialog> : open ? content : null}
     </>
 }

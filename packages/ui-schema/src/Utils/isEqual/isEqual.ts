@@ -1,6 +1,6 @@
 import { List, Map, Record } from 'immutable'
 
-export const isEqual = (a: any, b: any): boolean => {
+export const isEqual = (a: unknown, b: unknown): boolean => {
     if(List.isList(b) || Map.isMap(b) || Record.isRecord(b)) {
         return b.equals(a)
     } else if(Array.isArray(b)) {

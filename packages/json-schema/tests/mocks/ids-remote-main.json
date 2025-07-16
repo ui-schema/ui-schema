@@ -1,0 +1,16 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://example.org/schemas/main-schema.json",
+    "type": "object",
+    "properties": {
+        "userInfo": {
+            "$ref": "https://example.org/schemas/include-schema.json#/properties/user"
+        },
+        "userProfile": {
+            "$ref": "https://example.org/schemas/include-schema.json#/properties/profile"
+        },
+        "shippingAddress": {
+            "$ref": "https://example.org/schemas/include-schema.json#address"
+        }
+    }
+}

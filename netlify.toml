@@ -8,7 +8,8 @@
 # directory located at the absolute path "root/project/build-output"
 # publish = "dist/demo/"
 
-command = "npm ci && npm run bootstrap && npm run bootstrap && npm run link && npm run build"
+command = "npm ci --legacy-peer-deps && npm run build-babel && npm run build-webpack"
+publish = "dist/demo-web/"
 
 [build.processing]
 skip_processing = false

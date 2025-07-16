@@ -16,9 +16,5 @@ export const SearchLink = styled(Link)`
 `
 
 export const SearchHighlight: React.ComponentType<React.PropsWithChildren<{}>> = ({children}) => (
-    <Typography variant={'body1'} component={'span'} color={'primary'} style={{fontWeight: 'bold'}}>{children}</Typography>
-)
-
-export const SearchHighlight2: React.ComponentType<React.PropsWithChildren<{}>> = ({children}) => (
-    <Typography component={'span'} color={'primary'} style={{fontWeight: 'bold'}} variant={'body2'}>{children}</Typography>
+    <Typography variant={'inherit'} component={'span'} color={'primary'} style={{fontWeight: 'bold'}}>{children}</Typography>
 )

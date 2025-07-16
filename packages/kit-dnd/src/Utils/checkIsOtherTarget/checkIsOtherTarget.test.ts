@@ -4,7 +4,7 @@ import { DataKeys } from '@ui-schema/kit-dnd/KitDnd'
 import { List } from 'immutable'
 
 /**
- * npm run tdd -- -u --testPathPattern=src/Utils/checkIsOther
+ * npm run tdd -- --testPathPattern=src/Utils/checkIsOther
  */
 
 describe('checkIsOtherTarget', () => {

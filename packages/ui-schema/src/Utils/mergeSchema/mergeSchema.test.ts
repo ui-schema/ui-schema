@@ -1,5 +1,6 @@
+import { expect, describe, test } from '@jest/globals'
 import { mergeSchema } from '@ui-schema/ui-schema/Utils/mergeSchema'
-import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 
 describe('mergeSchema', () => {
     /*test.each([

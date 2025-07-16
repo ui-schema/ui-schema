@@ -1,15 +1,13 @@
 /**
  * @jest-environment jsdom
  */
-import React from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'
-import { createOrderedMap } from '@ui-schema/ui-schema/Utils/createMap/createMap'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { List } from 'immutable'
-import { createValidatorErrors } from '@ui-schema/ui-schema'
-import { StringRendererCell } from './TextFieldCell'
-import { MockSchemaMetaProvider } from '../../../tests/MockSchemaProvider.mock'
+import { StringRendererCell } from './TextFieldCell.js'
+import { MockSchemaMetaProvider } from '../../../tests/MockSchemaProvider.mock.js'
 
 describe('StringRenderer', () => {
     it('renders html', async () => {
@@ -21,7 +19,6 @@ describe('StringRenderer', () => {
                     storeKeys={List()}
                     valid={false}
                     showValidity={false}
-                    errors={createValidatorErrors()}
                 />
             </MockSchemaMetaProvider>
         )
@@ -41,7 +38,6 @@ describe('StringRenderer', () => {
                     storeKeys={List()}
                     valid={false}
                     showValidity
-                    errors={createValidatorErrors()}
                 />
             </MockSchemaMetaProvider>
         )

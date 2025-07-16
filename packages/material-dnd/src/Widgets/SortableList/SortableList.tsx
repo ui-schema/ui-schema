@@ -1,7 +1,11 @@
 import React from 'react'
-import { useUID } from 'react-uid'
-import { memo, StoreSchemaType, Trans, TransTitle, UIStoreActionListItemAdd, UIStoreActionScoped, WidgetProps, WithOnChange } from '@ui-schema/ui-schema'
-import { AccessTooltipIcon } from '@ui-schema/ds-material'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { WithOnChange } from '@ui-schema/react/UIStore'
+import { Translate } from '@ui-schema/react/Translate'
+import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
+import { WidgetProps } from '@ui-schema/react/Widget'
+import { UIStoreActionListItemAdd, UIStoreActionScoped } from '@ui-schema/react/UIStoreActions'
+import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
 import IconButton from '@mui/material/IconButton'
 import Add from '@mui/icons-material/Add'
 import Box from '@mui/material/Box'
@@ -10,6 +14,7 @@ import { OrderedMap } from 'immutable'
 import { genId } from '@ui-schema/kit-dnd'
 import { DndListRenderer } from '@ui-schema/material-dnd/DndListRenderer'
 import { SortableListItem } from '@ui-schema/material-dnd/WidgetsBase/SortableListItem'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 export interface SortableListProps {
     scoped?: boolean
@@ -22,22 +27,23 @@ export const SortableListBase = (
         ...props
     }: WidgetProps & WithOnChange & SortableListProps
 ): React.ReactElement => {
-    const uid = useUID()
+    const uid = React.useId()
     const {schema, storeKeys, onChange} = props
     const btnSize = schema.getIn(['view', 'btnSize']) || 'medium'
     //const notSortable = schema.get('notSortable')
     const notAddable = schema.get('notAddable')
     //const notDeletable = schema.get('notDeletable')
 
-    const itemsSchema = schema.get('items') as StoreSchemaType
+    const itemsSchema = schema.get('items') as UISchemaMap
     return <>
-        {schema.getIn(['view', 'hideTitle']) ? null : <Typography
-            variant={(schema.getIn(['view', 'titleVariant']) as TypographyProps['variant']) || 'h5'}
-            component={(schema.getIn(['view', 'titleComp']) as React.ElementType) || 'p'}
-            gutterBottom
-        >
-            <TransTitle schema={schema} storeKeys={storeKeys}/>
-        </Typography>}
+        {schema.getIn(['view', 'hideTitle']) ? null :
+            <Typography
+                variant={(schema.getIn(['view', 'titleVariant']) as TypographyProps['variant']) || 'h5'}
+                component={(schema.getIn(['view', 'titleComp']) as React.ElementType) || 'p'}
+                gutterBottom
+            >
+                <TranslateTitle schema={schema} storeKeys={storeKeys}/>
+            </Typography>}
 
         <DndListRenderer
             {...props}
@@ -55,7 +61,6 @@ export const SortableListBase = (
                     onClick={() => {
                         onChange({
                             storeKeys,
-                            scopes: ['value', 'internal'],
                             type: 'list-item-add',
                             itemValue: OrderedMap({
                                 [idKey]: genId(),
@@ -64,7 +69,7 @@ export const SortableListBase = (
                     }}
                     size={btnSize as 'small' | 'medium'}
                 >
-                    <AccessTooltipIcon title={<Trans text={'labels.add-item'}/>}>
+                    <AccessTooltipIcon title={<Translate text={'labels.add-item'}/>}>
                         <Add fontSize={'inherit'}/>
                     </AccessTooltipIcon>
                 </IconButton> : null}

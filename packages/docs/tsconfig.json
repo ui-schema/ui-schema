@@ -6,6 +6,10 @@
     ],
     "compilerOptions": {
         "outDir": "build",
-        "module": "CommonJS"
+        "module": "CommonJS",
+        "moduleResolution": "Node10",
+        "lib": [
+            "ES2021"
+        ]
     }
 }

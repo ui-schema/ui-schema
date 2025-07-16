@@ -1,17 +1,30 @@
 # Migration and Update Notes
 
-Check the [github release notes](https://github.com/ui-schema/ui-schema/releases) for latest releases, these page focuses on breaking changes of core logic.
+Check the [github release notes](https://github.com/ui-schema/ui-schema/releases) for latest releases, this page focuses on breaking changes of core logic and migration guides.
 
 Check [this discussion](https://github.com/ui-schema/ui-schema/discussions/184) for the current roadmap.
 
-- [v0.2.0 to **v0.3.0**](/updates/v0.2.0-v0.3.0)
-- [v0.3.0 to **v0.4.0**](/updates/v0.3.0-v0.4.0) *(stable)*
+- [update to **v0.5.0**](/updates/v0.4.0-v0.5.0) *(next)*
+- [update to **v0.4.0**](/updates/v0.3.0-v0.4.0) *(latest)*
+- [update to **v0.3.0**](/updates/v0.2.0-v0.3.0)
 
 ## Changelog
 
 > - the code tag `mui` refers to `ds-material` or is used as `material-*` package prefix
 > - the code tag `ui-schema` refers to `ui-schema` or is used as core package prefix
 > - [meaning of emojis](https://gist.github.com/elbakerino/1cd946c4269681d659eede5c828920b7)
+
+### v0.5.0-alpha.0
+
+> @ 2025-??-??
+
+*Split up packages; rewrite codebase to TS; ESM; rewrite validator and WidgetEngine; new SchemaResource system for $ref.*
+
+Check the [migration guide to 0.5.x](/updates/v0.4.0-v0.5.0) for more details.
+
+**This is a pre-release, full changelog comes after alpha.**
+
+For the moment you can find a list of changes and task progress in the [TODO.md](https://github.com/ui-schema/ui-schema/blob/develop/TODO.md).
 
 ### v0.4.7
 
@@ -22,7 +35,7 @@ Check [this discussion](https://github.com/ui-schema/ui-schema/discussions/184) 
 #### `ui-schema@0.4.7`
 
 - ✨ support `type: "object"` widget binding
-    - only intended for supplying a custom `ObjectRenderer`, adding a default widget for `object` is safer via a [SimplePlugin](/docs/core-pluginstack#simple-plugins)
+    - only intended for supplying a custom `ObjectRenderer`, adding a default widget for `object` is safer via a SimplePlugin
       as the `object` binding is used in e.g. ds-material for rendering the object content inside container widgets like `FormGroup`
 - 🔧 include immutable v5 in peer dependency range
 - 🔧 add `sideEffects: false` to root `package.json`

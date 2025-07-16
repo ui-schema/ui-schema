@@ -96,10 +96,10 @@ const StyledCodeEditor = props => {
     const {palette} = useTheme();
 
     useStyle(style);
-    useStyle(palette.type === 'dark' ? themeDark : themeLight);
+    useStyle(palette.mode === 'dark' ? themeDark : themeLight);
 
     return <WidgetCodeProvider
-        theme={palette.type === 'dark' ? 'duotone-dark' : 'duotone-light'}
+        theme={palette.mode === 'dark' ? 'duotone-dark' : 'duotone-light'}
         // only supported since `0.3.0-next.0`
         modes={modes}
     >

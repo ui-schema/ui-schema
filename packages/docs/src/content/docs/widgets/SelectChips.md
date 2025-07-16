@@ -33,7 +33,7 @@ Widgets:
 
 - `SelectChips` select multiple values
     - use the schema of `oneOf` to supply the select translation
-        - applies normal `Trans`/`tt` using:
+        - applies normal `Translate`/`tt` using:
             - the `title` if supplied
             - the `const` value as fallback
         - see demo schema below for an example

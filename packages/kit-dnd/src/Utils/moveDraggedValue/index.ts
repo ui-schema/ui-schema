@@ -1,1 +1,1 @@
-export * from './moveDraggedValue'
+export * from './moveDraggedValue.js'

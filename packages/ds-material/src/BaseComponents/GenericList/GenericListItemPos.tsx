@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp'
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
-import { Trans } from '@ui-schema/ui-schema'
+import { Translate } from '@ui-schema/react/Translate'
 import { Map } from 'immutable'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
 import { GenericListItemSharedProps } from '@ui-schema/ds-material/BaseComponents/GenericList'
@@ -24,7 +24,6 @@ export const GenericListItemPos = (
                 onClick={() =>
                     onChange({
                         storeKeys,
-                        scopes: ['value', 'internal'],
                         type: 'list-item-move',
                         fromIndex: index,
                         toIndex: index - 1,
@@ -33,7 +32,7 @@ export const GenericListItemPos = (
                     })
                 }
             >
-                <AccessTooltipIcon title={<Trans text={'labels.move-to-position'} context={Map({nextIndex: index + 1 - 1})}/>}>
+                <AccessTooltipIcon title={<Translate text={'labels.move-to-position'} context={Map({nextIndex: index + 1 - 1})}/>}>
                     <KeyboardArrowUp fontSize={'inherit'} style={{margin: btnSize === 'small' ? 2 : undefined}}/>
                 </AccessTooltipIcon>
             </IconButton> : null}
@@ -43,7 +42,7 @@ export const GenericListItemPos = (
             style={{margin: '6px 0', minWidth: '2rem'}}
         >
             {index + 1}.
-            <span style={visuallyHidden}><Trans text={'labels.entry'}/></span>
+            <span style={visuallyHidden}><Translate text={'labels.entry'}/></span>
         </Typography>
 
         {!readOnly && !notSortable && index < listSize - 1 ?
@@ -52,7 +51,6 @@ export const GenericListItemPos = (
                 onClick={() =>
                     onChange({
                         storeKeys,
-                        scopes: ['value', 'internal'],
                         type: 'list-item-move',
                         fromIndex: index,
                         toIndex: index + 1,
@@ -61,7 +59,7 @@ export const GenericListItemPos = (
                     })
                 }
             >
-                <AccessTooltipIcon title={<Trans text={'labels.move-to-position'} context={Map({nextIndex: index + 1 + 1})}/>}>
+                <AccessTooltipIcon title={<Translate text={'labels.move-to-position'} context={Map({nextIndex: index + 1 + 1})}/>}>
                     <KeyboardArrowDown fontSize={'inherit'} style={{margin: btnSize === 'small' ? 2 : undefined}}/>
                 </AccessTooltipIcon>
             </IconButton> : null}

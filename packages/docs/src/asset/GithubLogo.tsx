@@ -1,5 +1,5 @@
 import React from 'react'
-import useTheme from '@mui/material/styles/useTheme'
+import {useTheme} from '@mui/material/styles'
 
 const GithubIcon: React.ComponentType<{
     width?: number

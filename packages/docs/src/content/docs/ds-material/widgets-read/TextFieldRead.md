@@ -1,6 +1,6 @@
 # TextFieldRead
 
-Read-only widgets for standard `string` (single/multiline) and `number` types, works with the [UIMetaReadContextType](/docs/core-meta#read-context).
+Read-only widgets for standard `string` (single/multiline) and `number` types, works with the [UIMetaReadContextType](/docs/react/meta#read-context).
 
 - type: `string`, `number`, `integer`
 - schema keywords

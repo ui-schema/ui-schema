@@ -1,4 +1,3 @@
-import { memo, PluginStack, WithOnChange } from '@ui-schema/ui-schema'
 import React from 'react'
 import IconButton from '@mui/material/IconButton'
 import Box from '@mui/material/Box'
@@ -10,6 +9,9 @@ import { DraggableRendererProps, useDraggable } from '@ui-schema/kit-dnd/useDrag
 import { DragDropSpec } from '@ui-schema/material-dnd/DragDropSpec'
 import { DndBlocksRendererItemProps } from '@ui-schema/material-dnd/DndBlocksRenderer'
 import { handleMouseMoveInDraggable } from '@ui-schema/material-dnd/handleMouseMoveInDraggable'
+import { WithOnChange } from '@ui-schema/react/UIStore'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 
 export const AreaRendererBase = <C extends HTMLElement = HTMLElement, S extends DragDropSpec = DragDropSpec>(
     {
@@ -25,7 +27,11 @@ export const AreaRendererBase = <C extends HTMLElement = HTMLElement, S extends 
         schema,/* idKey,*/ type,/* typeKey,*/ listKey,
         isDroppable,
     } = block
-    const allowedTypes = schema?.getIn(['dragDrop', 'allowed']) as List<string> | undefined
+    // todo: refactor and fix `allowedTypes`
+    //       - items inside of restricted lists must be able to have other children - but not other siblings - than the parent list allows
+    const allowedTypesList = listSchema?.getIn(['dragDrop', 'allowed']) as List<string> | undefined
+    const allowedTypesBlock = schema?.getIn(['dragDrop', 'allowed']) as List<string> | undefined
+    const allowedTypes = allowedTypesList ? allowedTypesBlock?.concat(allowedTypesList) || allowedTypesList : allowedTypesBlock
 
     const item = React.useMemo(() => ({
         type: type,
@@ -100,7 +106,7 @@ export const AreaRendererBase = <C extends HTMLElement = HTMLElement, S extends 
                     setDisableDrag(false)
                 }}
             >
-                <PluginStack schema={schema} parentSchema={listSchema} storeKeys={storeKeys}/>
+                <WidgetEngine schema={schema} parentSchema={listSchema} storeKeys={storeKeys}/>
             </Box>
 
             <IconButton
@@ -109,7 +115,6 @@ export const AreaRendererBase = <C extends HTMLElement = HTMLElement, S extends 
                 }}
                 onClick={() => onChange({
                     storeKeys: storeKeys.splice(-1, 1),
-                    scopes: ['value', 'internal'],
                     type: 'list-item-delete',
                     index: storeKeys.last() as number,
                     schema,

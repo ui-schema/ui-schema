@@ -25,7 +25,7 @@ export const useOnIntent = <C extends HTMLElement = HTMLElement, S extends ItemS
 ): {
     onIntent: onIntentFactory<C, S>
 } => {
-    const initialHoverClientOffset = React.useRef<{ x: number, y: number } | undefined>()
+    const initialHoverClientOffset = React.useRef<{ x: number, y: number } | undefined>(undefined)
     const onIntent: onIntentFactory<C, S> = React.useCallback((cb) => {
         return (details) => {
             const {

@@ -1,9 +1,13 @@
-import React from 'react'
-import * as Loadable from 'react-loadable'
+import React, { lazy } from 'react'
 import { DocRouteModule, routesDocs } from './content/docs'
 
 export type Comp = React.ComponentType<{ scrollContainer: React.MutableRefObject<HTMLDivElement | null> }>
-export const routes = (loading: any): DocRouteModule<Comp> => ({
+
+// type Loading = <P = {}>(title: string, Content: React.ComponentType<P>) => React.ComponentType<P>
+
+const DocsDetailsLazy = lazy(() => import('./page/DocsDetails'))
+
+export const routes = (): DocRouteModule<Comp> => ({
     routes: [
         {
             path: '/',
@@ -14,20 +18,12 @@ export const routes = (loading: any): DocRouteModule<Comp> => ({
             config: {
                 content: {
                     exact: true,
-                    /*component: Loadable({
-                        loader: () => import('./page/PageMain'),
-                        loading: (props) => {
-                            console.log(props)
-                            return <LoadingCircular {...props} title="Loading Home"/>
-                        },
-                    }),*/
-                    component: Loadable({
-                        loader: () => import('./page/PageMain'),
-                        loading: loading('Loading'),
-                    }) as Comp,
+                    component: lazy(() => import('./page/PageHome')) as Comp,
+                    // component: loading('Loading', lazy(() => import('./page/PageHome'))) as Comp,
                 },
             },
-        }, {
+        },
+        {
             path: '/docs/:docId+',
             nav: {
                 to: '/docs',
@@ -35,16 +31,14 @@ export const routes = (loading: any): DocRouteModule<Comp> => ({
             },
             config: {
                 content: {
-                    component: Loadable({
-                        loader: () => import('./page/DocsDetails'),
-                        loading: loading('Loading Docs Viewer'),
-                    }) as Comp,
+                    component: DocsDetailsLazy as Comp,
                 },
             },
             // doc: true,
             // @ts-ignore
             routes: routesDocs.routes,
-        }, {
+        },
+        {
             doc: 'updates/overview',
             path: '/updates',
             nav: {
@@ -55,10 +49,7 @@ export const routes = (loading: any): DocRouteModule<Comp> => ({
             },
             config: {
                 content: {
-                    component: Loadable({
-                        loader: () => import('./page/DocsDetails'),
-                        loading: loading('Loading Docs Viewer'),
-                    }) as Comp,
+                    component: DocsDetailsLazy as Comp,
                 },
             },
             routes: [
@@ -71,7 +62,8 @@ export const routes = (loading: any): DocRouteModule<Comp> => ({
                         initialOpen: false,
                         label: 'v0.2.0 to v0.3.0',
                     },
-                }, {
+                },
+                {
                     // @ts-ignore
                     doc: 'updates/v0.3.0-v0.4.0',
                     path: '/updates/v0.3.0-v0.4.0',
@@ -81,22 +73,55 @@ export const routes = (loading: any): DocRouteModule<Comp> => ({
                         label: 'v0.3.0 to v0.4.0',
                     },
                 },
+                {
+                    // @ts-ignore
+                    doc: 'updates/v0.4.0-v0.5.0',
+                    path: '/updates/v0.4.0-v0.5.0',
+                    nav: {
+                        to: '/updates/v0.4.0-v0.5.0',
+                        initialOpen: false,
+                        label: 'v0.4.0 to v0.5.0',
+                    },
+                },
             ],
-        }, {
+        },
+        {
+            path: '/guides/:docId+',
+            nav: {
+                to: '/guides',
+                label: 'Guides',
+            },
+            config: {
+                content: {
+                    component: DocsDetailsLazy as Comp,
+                },
+            },
+            routes: [
+                {
+                    // @ts-ignore
+                    doc: 'guides/widgets-overriding',
+                    path: '/guides/widgets-overriding',
+                    nav: {
+                        to: '/guides/widgets-overriding',
+                        label: 'Widgets Overriding',
+                    },
+                },
+            ],
+        },
+        {
             path: '/examples/:schema?',
             nav: {
-                to: '/docs',
+                to: '/examples',
                 label: 'Live-Editor',
             },
             config: {
                 content: {
-                    component: Loadable({
-                        loader: () => import('./page/PageLiveEdit'),
-                        loading: loading('Loading Live-Editor'),
-                    }) as Comp,
+                    // component: loading('Loading Live-Editor', lazy(() => import('./page/PageLiveEdit'))) as Comp,
+                    component: lazy(() => import('./page/PageLiveEdit')) as Comp,
                 },
             },
-        }, {
+        },
+        {
             path: '/quick-start',
             nav: {
                 to: '/quick-start',
@@ -104,32 +129,30 @@ export const routes = (loading: any): DocRouteModule<Comp> => ({
             },
             config: {
                 content: {
-                    component: Loadable({
-                        loader: () => import('./page/PageQuickStart'),
-                        loading: loading('Loading Quick-Start'),
-                    }) as Comp,
+                    // component: loading('Loading Quick-Start', lazy(() => import('./page/PageQuickStart'))) as Comp,
+                    component: lazy(() => import('./page/PageQuickStart')) as Comp,
                 },
             },
-        }, {
+        },
+        {
             path: '/impress',
             config: {
                 content: {
-                    component: Loadable({
-                        loader: () => import('./page/PageLaw').then(m => m.PageImpress),
-                        loading: loading('Loading'),
-                    }) as Comp,
+                    // component: loading('Loading', lazy(() => import('./page/PageLaw').then(m => ({default: m.PageImpress})))) as Comp,
+                    component: lazy(() => import('./page/PageLaw').then(m => ({default: m.PageImpress}))) as Comp,
                 },
             },
-        }, {
+        },
+        {
             path: '/privacy',
             config: {
                 content: {
-                    component: Loadable({
-                        loader: () => import('./page/PageLaw').then(m => m.PagePrivacy),
-                        loading: loading('Loading'),
-                    }) as Comp,
+                    // component: loading('Loading', lazy(() => import('./page/PageLaw').then(m => ({default: m.PagePrivacy})))) as Comp,
+                    component: lazy(() => import('./page/PageLaw').then(m => ({default: m.PagePrivacy}))) as Comp,
                 },
             },
         },
     ],
 })
+
+export const routing = routes()

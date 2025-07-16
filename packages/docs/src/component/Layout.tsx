@@ -1,37 +1,44 @@
-import React from 'react'
+import { useRouter } from '@control-ui/routes/RouterProvider'
+import CircularProgress from '@mui/material/CircularProgress'
+import React, { Suspense } from 'react'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import InvertColorsIcon from '@mui/icons-material/InvertColors'
+import { RouteComponentProps } from 'react-router'
 import GithubLogo from '../asset/GithubLogo'
-import { Link as RouterLink, useLocation } from 'react-router-dom'
-import useTheme from '@mui/material/styles/useTheme'
+import { Switch, Link as RouterLink, Route, useLocation } from 'react-router-dom'
+import { useTheme } from '@mui/material/styles'
 import IcSearch from '@mui/icons-material/Search'
-import { AccessTooltipIcon } from '@control-ui/kit/Tooltip'
 import Typography from '@mui/material/Typography'
-import { LinkIconButton } from '@control-ui/kit/Link/LinkIconButton'
+import { LinkIconButton } from '@control-ui/kit/Link'
 import { Header } from '@control-ui/app/Header'
 import { useSwitchTheme } from '@control-ui/app/AppTheme'
-import { Logo } from '../asset/logo'
+import { Logo } from '../asset/Logo'
+import Tooltip from '@mui/material/Tooltip'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useConsent } from '@bemit/consent-ui-react'
 import { ConsentUiBoxDialog, dialogPositions } from '@bemit/consent-ui-mui'
 import { Layout, LayoutProps } from '@control-ui/app/Layout'
-import Loadable from 'react-loadable'
-import { LoadingCircular } from '@control-ui/kit/Loading/LoadingCircular'
-import { RouteCascade } from '@control-ui/routes/RouteCascade'
+import { RouteCascadeNested } from '@control-ui/routes/RouteCascade'
 import { useSearch } from '@control-ui/docs/DocsSearchProvider'
-import { getUserCtrlKey, getUserPlatform } from '@control-ui/kit/Helper/getUserPlatform'
+import { getUserCtrlKey, getUserPlatform } from '@control-ui/kit/Helper'
+import PageNotFound from '../page/PageNotFound'
 import { SearchBox } from './SearchBox'
 import { LayoutDrawer } from './LayoutDrawer'
 
-const title = '0.4.x'
+const title = '0.5.x-alpha'
 export const CustomHeaderBase: React.ComponentType = () => {
     const {switchTheme} = useSwitchTheme()
     const {setOpen} = useSearch()
     const {breakpoints} = useTheme()
     const isSm = useMediaQuery(breakpoints.up('sm'))
     const platform = getUserPlatform()
-    return <Header>
+    return <Header
+        appBarSquare
+        appBarSx={{
+            backgroundImage: 'unset',
+        }}
+    >
         <RouterLink to={'/'} style={{display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit', marginRight: 8}}>
             <Logo width={26} style={{marginLeft: 6, display: 'block', flexShrink: 0}}/>
             {title ? <Typography component="p" variant="h6" style={{flexShrink: 0, margin: '0 auto 0 8px'}}>
@@ -39,7 +46,7 @@ export const CustomHeaderBase: React.ComponentType = () => {
             </Typography> : null}
         </RouterLink>
 
-        <AccessTooltipIcon title={'search'}>
+        <Tooltip title={'search'}>
             <Button
                 variant={'outlined'} color={'inherit'}
                 onClick={() => setOpen(o => !o)}
@@ -68,7 +75,7 @@ export const CustomHeaderBase: React.ComponentType = () => {
                     </span> :
                     <span style={{marginLeft: 'auto'}}/>}
             </Button>
-        </AccessTooltipIcon>
+        </Tooltip>
 
         <LinkIconButton size={'medium'} to={'https://github.com/ui-schema/ui-schema'} color="inherit" style={{color: 'inherit'}}>
             <GithubLogo fill="currentColor"/>
@@ -76,23 +83,53 @@ export const CustomHeaderBase: React.ComponentType = () => {
         </LinkIconButton>
 
         <IconButton color="inherit" onClick={() => switchTheme()}>
-            <AccessTooltipIcon title={'Switch Theme'}>
+            <Tooltip title={'Switch Theme'}>
                 <InvertColorsIcon/>
-            </AccessTooltipIcon>
+            </Tooltip>
         </IconButton>
     </Header>
 }
 const CustomHeader = React.memo(CustomHeaderBase)
 
-const PageNotFound: React.ComponentType = Loadable({
-    loader: () => import('../page/PageNotFound'),
-    // eslint-disable-next-line react/display-name
-    loading: () => <LoadingCircular title={'Not Found'}/>,
-})
+// const RoutingBase: LayoutProps['Content'] = (p) =>
+//     <RouteCascade
+//         routeId={'content'}
+//         childProps={p}
+//         Fallback={PageNotFound as React.ComponentType<RouteComponentProps & { scrollContainer?: any }>}
+//     />
 
-const RoutingBase: LayoutProps['Content'] = (p) =>
-// @ts-ignore
-    <RouteCascade routeId={'content'} childProps={p} Fallback={PageNotFound}/>
+export const RoutingBase: LayoutProps['Content'] = (p) => {
+    const routeId = 'content'
+    const childProps = p
+    const Fallback = PageNotFound as React.ComponentType<RouteComponentProps & { scrollContainer?: any }>
+    const {routes} = useRouter()
+    return <Suspense
+        fallback={<CircularProgress color={'secondary'} sx={{mx: 'auto', my: 4}}/>}
+    >
+        <Switch>
+            {/* need to pass the exact same props to the first level of switch, RouteCascaded must be compatible with `Route` */}
+            {routes?.routes?.map((route, i) => {
+                const routeConfig = route?.config?.[routeId] || {}
+                return <RouteCascadeNested
+                    key={i}
+                    path={route.path as string}
+                    routeId={routeId}
+                    childProps={childProps}
+                    {...routeConfig}
+                />
+            })}
+
+            {Fallback ? <Route
+                render={props => (
+                    // pass the sub-routes down to keep nesting
+                    // @ts-ignore
+                    <Fallback {...props} {...childProps}/>
+                )}
+            /> : null}
+        </Switch>
+    </Suspense>
+}
+
 export const Routing: LayoutProps['Content'] = React.memo(RoutingBase)
 
 export const CustomLayout = () => {
@@ -100,7 +137,6 @@ export const CustomLayout = () => {
     const {ready, hasChosen, showUi} = useConsent()
     const [showDetails, setShowDetails] = React.useState(Boolean(hasChosen))
     return <>
-        {/* @ts-ignore */}
         <Layout
             Header={CustomHeader}
             Drawer={LayoutDrawer}

@@ -32,6 +32,7 @@ export const useDraggable = <C extends HTMLElement = HTMLElement, S extends Item
         item: S
         allowedTypes: string[] | List<string> | undefined
         scope?: string
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         refRoot: React.MutableRefObject<C | null>
     }
 ): {

@@ -15,7 +15,7 @@ if(!hostname || !dist) {
 
 console.log('Building sitemap for host ' + hostname)
 
-const routing = routes(() => () => null)
+const routing = routes()
 const sitemapUrls = generateSitemap(
     hostname,
     routing,

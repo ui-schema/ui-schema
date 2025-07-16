@@ -5,22 +5,22 @@ Base components for the `GenericList` widget, to easily configure and re-wire th
 ```typescript jsx
 import React from 'react'
 import { List } from 'immutable'
-import { memo } from '@ui-schema/ui-schema/Utils/memo'
-import { WidgetProps } from '@ui-schema/ui-schema/Widget'
+import { memo } from '@ui-schema/react/Utils/memo'
+import { WidgetProps } from '@ui-schema/react/Widget'
 import { useUIStore, WithOnChange } from '@ui-schema/ui-schema/UIStore'
 import {
     GenericListContent, GenericListFooter,
     GenericListItem,
     GenericListItemMore, GenericListItemPos,
 } from '@ui-schema/ds-material/BaseComponents/GenericList'
-import { MuiWidgetBinding } from '@ui-schema/ds-material/widgetsBinding'
+import { MuiBinding } from '@ui-schema/ds-material/Binding'
 
 // it is important to use `memo` from `@ui-schema/ui-schema` for the content component,
 // as the generic list will re-render on each change of anything in the store,
 // with passing down `listSize` and not other data, the `GenericListContent` will only re-render when the `listSize` changes
 export const GenericListContentMemo = memo(GenericListContent)
 
-export const GenericList = (props: WidgetProps<MuiWidgetBinding> & WithOnChange): React.ReactElement => {
+export const GenericList = (props: WidgetProps<MuiBinding> & WithOnChange): React.ReactElement => {
     const {store} = useUIStore()
     // info: `store?.extractValues` is new since `0.3.0-alpha.11` and can be used instead of the `extractValue` HOC
     const {value} = store?.extractValues<List<any>>(props.storeKeys) || {}
@@ -42,7 +42,7 @@ export const GenericList = (props: WidgetProps<MuiWidgetBinding> & WithOnChange)
 Easily define own schema keywords, for options which are only supported by `props`:
 
 ```typescript jsx
-export const GenericList = (props: WidgetProps<MuiWidgetBinding> & WithOnChange): React.ReactElement => {
+export const GenericList = (props: WidgetProps<MuiBinding> & WithOnChange): React.ReactElement => {
     const {store} = useUIStore()
     const {value} = store?.extractValues<List<any>>(props.storeKeys) || {}
     // extracting and calculating the list size here, not passing down the actual list for performance reasons
@@ -109,7 +109,7 @@ The list renderer component, uses the components passed down per `props` to buil
 - `ComponentItem`: `React.ComponentType<GenericListItemProps>`, is rendered per item in the list, responsible to further render nested schema, also uses component props
 - `ComponentFooter`: `React.ComponentType<GenericListFooterProps>`, will be rendered in `GenericListContent`, contains the add-button
 - `listSize`: `number`, the size of the list
-- `schemaKeys`: `StoreKeys`, experimental [#104](https://github.com/ui-schema/ui-schema/issues/104)
+- ~~`schemaKeys`: `StoreKeys`, experimental [#104](https://github.com/ui-schema/ui-schema/issues/104)~~
 - `listSpacing`: `GridSpacing`, used as the spacing for the item-list
 
 ### GenericListItem

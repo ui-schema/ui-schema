@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/dictionary",
-    "version": "0.0.13",
+    "version": "0.1.0-alpha.0",
     "description": "",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -17,20 +17,40 @@
     "bugs": {
         "url": "https://github.com/ui-schema/ui-schema/issues"
     },
-    "main": "index.js",
-    "module": "esm/index.js",
+    "type": "module",
+    "main": "./index.cjs",
+    "module": "./index.js",
+    "types": "./index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./index.d.ts",
+            "import": "./index.js",
+            "require": "./index.cjs"
+        },
+        "./*": {
+            "types": "./*/index.d.ts",
+            "import": "./*/index.js",
+            "require": "./*/index.cjs"
+        }
+    },
     "sideEffects": false,
     "devDependencies": {
-        "immutable": "^5.0.0"
+        "immutable": "^5.0.0",
+        "@ui-schema/json-schema": "~0.5.0-alpha.0",
+        "@ui-schema/ui-schema": "~0.5.0-alpha.0"
     },
     "peerDependencies": {
-        "@ui-schema/ui-schema": "~0.3.0 || ~0.4.0-alpha",
-        "immutable": "^4.0.0 || ^5.0.0"
+        "immutable": "^4.0.0 || ^5.0.0",
+        "@ui-schema/json-schema": "~0.5.0-alpha.0",
+        "@ui-schema/ui-schema": "~0.5.0-alpha.0"
     },
-    "scripts": {
-        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && merge-dirs build/dts/dictionary/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*"
+    "peerDependenciesMeta": {
+        "immutable": {
+            "optional": true
+        }
     },
     "publishConfig": {
+        "tag": "next",
         "access": "public"
     }
 }

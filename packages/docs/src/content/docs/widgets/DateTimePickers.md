@@ -90,7 +90,7 @@ customWidgets.custom = {
 // Exporting a ui generator that can use the pickers
 export default (props) => <MuiPickersUtilsProvider utils={LuxonAdapter}>
     <UIGenerator
-        widgets={customWidgets}
+        binding={customWidgets}
         {...props}
     />
 </MuiPickersUtilsProvider>

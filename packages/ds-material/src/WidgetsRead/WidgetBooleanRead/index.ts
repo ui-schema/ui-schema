@@ -1,1 +1,1 @@
-export * from './WidgetBooleanRead'
+export * from './WidgetBooleanRead.js'

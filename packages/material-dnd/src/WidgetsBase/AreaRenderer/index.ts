@@ -1,1 +1,1 @@
-export * from './AreaRenderer'
+export * from './AreaRenderer.js'

@@ -1,5 +1,6 @@
+import { expect, describe, test } from '@jest/globals'
 import { isEqualObject } from '@ui-schema/ui-schema/Utils/isEqualObject'
-import { createMap } from '@ui-schema/ui-schema/Utils/createMap'
+import { createMap } from '@ui-schema/ui-schema/createMap'
 import { List } from 'immutable'
 
 describe('isEqualObject', () => {

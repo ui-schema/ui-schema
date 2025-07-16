@@ -1,1 +1,1 @@
-export * from './SelectChips'
+export * from './SelectChips.js'

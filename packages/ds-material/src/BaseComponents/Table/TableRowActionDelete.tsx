@@ -1,19 +1,21 @@
 import React from 'react'
 import IconButton from '@mui/material/IconButton'
 import Delete from '@mui/icons-material/Delete'
-import { onChangeHandler, StoreKeys, StoreSchemaType, Trans, WidgetProps } from '@ui-schema/ui-schema'
+import { Translate } from '@ui-schema/react/Translate'
+import { onChangeHandler, StoreKeys } from '@ui-schema/react/UIStore'
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
-import { TableRowProps } from '@ui-schema/ds-material'
+import { TableRowProps } from '@ui-schema/ds-material/BaseComponents/Table'
 import { Map } from 'immutable'
 
 export interface TableRowActionDeleteProps {
     onChange: onChangeHandler
-    storeKeys: WidgetProps['storeKeys']
+    storeKeys: StoreKeys
     showRows: TableRowProps['showRows']
     setPage: TableRowProps['setPage']
     index: number
     deleteOnEmpty: boolean
-    schema: StoreSchemaType | undefined
+    schema: UISchemaMap | undefined
 }
 
 export const TableRowActionDelete: React.ComponentType<TableRowActionDeleteProps> = (
@@ -29,7 +31,6 @@ export const TableRowActionDelete: React.ComponentType<TableRowActionDeleteProps
             onChange({
                 type: 'list-item-delete',
                 storeKeys: storeKeys.splice(-1, 1) as StoreKeys,
-                scopes: ['value', 'internal'],
                 index: index,
                 effect: ({value}) => {
                     if (showRows !== -1) {
@@ -39,7 +40,7 @@ export const TableRowActionDelete: React.ComponentType<TableRowActionDeleteProps
                         })
                     }
                 },
-                schema: Map({type: 'array'}) as StoreSchemaType,
+                schema: Map({type: 'array'}) as UISchemaMap,
                 required: deleteOnEmpty,
             })
         }}
@@ -47,7 +48,7 @@ export const TableRowActionDelete: React.ComponentType<TableRowActionDeleteProps
     >
         <AccessTooltipIcon
             title={
-                <Trans text={'labels.remove-row'} context={Map({actionLabels: schema?.get('tableActionLabels')})}/>
+                <Translate text={'labels.remove-row'} context={Map({actionLabels: schema?.get('tableActionLabels')})}/>
             }
         >
             <Delete fontSize={'inherit'} style={{margin: 2}}/>

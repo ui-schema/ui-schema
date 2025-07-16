@@ -1,1 +1,1 @@
-export * from './DndListRenderer'
+export * from './DndListRenderer.js'

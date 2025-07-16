@@ -1,6 +1,8 @@
+import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import React from 'react'
 import Add from '@mui/icons-material/Add'
-import { memo, Trans, WidgetProps } from '@ui-schema/ui-schema'
+import { Translate } from '@ui-schema/react/Translate'
+import { memo } from '@ui-schema/react/Utils/memo'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import TablePagination from '@mui/material/TablePagination'
 import MuiTableFooter from '@mui/material/TableFooter'
@@ -13,8 +15,8 @@ import { IconButtonProps } from '@mui/material/IconButton'
 
 export interface TableFooterErrorsBaseProps {
     colSize: number | undefined
-    showValidity: WidgetProps['showValidity']
-    schema: WidgetProps['schema']
+    showValidity: boolean | undefined
+    schema: UISchemaMap
 }
 
 export const TableFooterErrorsBase: React.ComponentType<TableFooterErrorsBaseProps & TableContextType> = (
@@ -23,7 +25,7 @@ export const TableFooterErrorsBase: React.ComponentType<TableFooterErrorsBasePro
         showValidity,
         schema,
         valid, errors,
-    }
+    },
 ) => {
     return !valid && showValidity ? <TableRow>
         <TableCell
@@ -64,7 +66,7 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
         showValidity,
         rowsPerPage, rowsShowAll,
         noFirstPageButton, noLastPageButton,
-    }
+    },
 ) => {
     return <MuiTableFooter>
         <TableRow>
@@ -79,7 +81,6 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                             }
                             onChange({
                                 storeKeys,
-                                scopes: ['value', 'internal'],
                                 type: 'list-item-add',
                                 schema,
                             })
@@ -91,7 +92,7 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                         style={btnStyle}
                         Icon={Add}
                         title={
-                            <Trans
+                            <Translate
                                 text={'labels.add-row'}
                                 context={Map({actionLabels: schema.get('tableActionLabels')})}
                             />
@@ -118,6 +119,7 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                         scrollbarWidth: 'thin',
                     },
                 }}
+                /* eslint-disable-next-line @typescript-eslint/no-deprecated */
                 SelectProps={{
                     inputProps: {'aria-label': t ? t('pagination.rows-per-page') as string : 'per Page'},
                     //native: true,
@@ -127,11 +129,13 @@ export const TableFooterBase: React.ComponentType<TableFooterProps> = (
                     setPage(0)
                     setRows(Number(e.target.value))
                 }}
+                /* eslint-disable-next-line @typescript-eslint/no-deprecated */
                 backIconButtonProps={{
                     size: btnSize,
                     // using these props as a wrapper - as otherwise not possible to pass down
                     noFirstPageButton: noFirstPageButton,
                 } as unknown as IconButtonProps}
+                /* eslint-disable-next-line @typescript-eslint/no-deprecated */
                 nextIconButtonProps={{
                     size: btnSize,
                     style: {
