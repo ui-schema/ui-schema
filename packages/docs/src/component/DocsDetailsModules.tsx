@@ -1,8 +1,10 @@
 import { TsDocModuleCollectionSimple, TsDocsModuleRenderer } from '@control-ui/docs-ts/TsDocModule'
 import { TsDocsSimple } from '@control-ui/docs-ts/TsDocsSimple'
+import { PrintTag } from '@control-ui/docs-ts/TsDocsSimpleModule'
 import { LinkableHeadline } from '@control-ui/docs/LinkableHeadline'
 import { Link } from '@control-ui/kit'
 import { MdInlineCode } from '@control-ui/md/MdInlineCode'
+import Chip from '@mui/material/Chip'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
 import Box from '@mui/material/Box'
@@ -307,6 +309,27 @@ const DocsDetailsModuleChilds = (
                                     <span>{'Default: '}</span>
                                     <MdInlineCode>{child.defaultValue}</MdInlineCode>
                                 </span> : null}
+
+                            {child.experimental ?
+                                <span style={{display: 'block'}}>
+                                    <Chip label={'experimental'} color={'warning'} size={'small'}/>
+                                    {child.tags?.experimental ?
+                                        <PrintTag tag={child.tags?.experimental} Markdown={renderer.Markdown}/> : null}
+                                </span> : null}
+                            {child.deprecated ?
+                                <span style={{display: 'block'}}>
+                                    <Chip label={'deprecated'} color={'warning'} size={'small'}/>
+                                    {child.tags?.deprecated ?
+                                        <PrintTag tag={child.tags?.deprecated} Markdown={renderer.Markdown}/> : null}
+                                </span> : null}
+                            {child.internal ?
+                                <span style={{display: 'block'}}>
+                                    <Chip label={'internal'} color={'warning'} size={'small'}/>
+                                    {child.tags?.internal ?
+                                        <PrintTag tag={child.tags?.internal} Markdown={renderer.Markdown}/> : null}
+                                </span> : null}
+
+                            {/* todo: remarks, examples, etc. would be nicer as a collapsible row */}
                         </TableCell>
                     </TableRow>
                 })}

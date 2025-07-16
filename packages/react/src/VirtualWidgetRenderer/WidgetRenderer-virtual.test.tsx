@@ -14,7 +14,7 @@ import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react/ObjectRen
 import { List } from 'immutable'
 import { createStore, onChangeHandler, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
-import { translateRelative } from '@ui-schema/ui-schema/TranslatorRelative'
+import { translatorRelative } from '@ui-schema/ui-schema/TranslatorRelative'
 
 export const virtualWidgets: VirtualWidgetsMapping & { default_with_id: VirtualWidgetsMapping['default'] } = {
     'default': () => {
@@ -47,7 +47,7 @@ describe('WidgetRenderer', () => {
             WidgetRenderer: WidgetRenderer,
         }
         const {queryByText, queryAllByText} = render(
-            <UIMetaProvider binding={widgets} t={translateRelative}>
+            <UIMetaProvider binding={widgets} t={translatorRelative}>
                 <UIStoreProvider
                     store={store}
                     onChange={undefined as any}
@@ -106,7 +106,7 @@ describe('WidgetRenderer', () => {
             WidgetRenderer: WidgetRenderer,
         }
         const {queryByText, container} = render(
-            <UIMetaProvider binding={widgets} t={translateRelative}>
+            <UIMetaProvider binding={widgets} t={translatorRelative}>
                 <UIStoreProvider
                     store={store}
                     onChange={undefined as any}
@@ -147,7 +147,7 @@ describe('WidgetRenderer', () => {
         const value = createOrderedMap({dummy_array: ['lorem ipsum', 42]})
         const store = createStore(value)
         const {queryByText, queryAllByText} = render(
-            <UIMetaProvider binding={widgets} t={translateRelative}>
+            <UIMetaProvider binding={widgets} t={translatorRelative}>
                 <UIStoreProvider
                     store={store}
                     onChange={undefined as any}
@@ -198,7 +198,7 @@ describe('WidgetRenderer', () => {
         const value = createOrderedMap({dummy_array: [['lorem ipsum', 42], ['dolor sit', 43]]})
         const store = createStore(value)
         const {queryByText, queryAllByText} = render(
-            <UIMetaProvider binding={widgets} t={translateRelative}>
+            <UIMetaProvider binding={widgets} t={translatorRelative}>
                 <UIStoreProvider
                     store={store}
                     onChange={undefined as any}

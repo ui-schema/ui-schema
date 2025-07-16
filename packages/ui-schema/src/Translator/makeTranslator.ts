@@ -1,5 +1,5 @@
 import { Map } from 'immutable'
-import { TranslatorRelative } from '@ui-schema/ui-schema/TranslatorRelative'
+import { getSchemaTranslationRelative } from '@ui-schema/ui-schema/TranslatorRelative'
 import { translation, Translator, TranslatorDictionary } from '@ui-schema/ui-schema/Translator'
 
 /**
@@ -20,16 +20,16 @@ export const makeTranslator =
         locale: string = '',
     ): Translator<TTranslation> =>
         (text, context = Map(), schema = undefined) => {
-            const schemaT = TranslatorRelative(schema, context, locale)
-            if (schemaT) return schemaT
+            const schemaT = getSchemaTranslationRelative(schema, context, locale)
+            if (typeof schemaT !== 'undefined' && schemaT !== null) return schemaT
 
             if (typeof text !== 'string') return undefined
 
-            const trans = dictionary.getIn(text.split('.'))
+            const translation = dictionary.getIn(text.split('.'))
 
-            if (typeof trans === 'function') {
-                return trans(context, locale)
+            if (typeof translation === 'function') {
+                return translation(context, locale)
             }
 
-            return trans
+            return translation
         }

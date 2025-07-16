@@ -71,11 +71,18 @@ Checkout the `@ui-schema/dictionary` [sources](https://github.com/ui-schema/ui-s
 npm i --save @ui-schema/dictionary
 ```
 
+**Package compatibility:**
+
+- use `v0.0.x` with `@ui-schema/ui-schema` up to `v0.4.x`
+- use `v0.1.x` with `@ui-schema/ui-schema` starting from `v0.5.x`
+
+**Basic example:**
+
 ```jsx
 import React from 'react';
 import AccountBox from '@mui/icons-material/AccountBox';
 import { createMap } from '@ui-schema/ui-schema/createMap'
-import { makeTranslator } from '@ui-schema/ui-schema/Translate/makeTranslator';
+import { makeTranslator } from '@ui-schema/ui-schema/Translator';
 import * as en from '@ui-schema/dictionary/en'
 import * as de from '@ui-schema/dictionary/de'
 
@@ -103,12 +110,10 @@ const dicDE = createMap({
 const tEN = makeTranslator(dicEN, 'en');
 const tDE = makeTranslator(dicDE, 'de');
 
-const browserT = (text, context, schema) => {
+export const browserT = (text, context, schema) => {
     // using either some custom language in `localStorage` or the browser language
     // here you can also intercept and use any other translation library (maybe you need to add this inside an useEffect/useCallback)
     const locale = window.localStorage.getItem('locale') || navigator.language;
     return locale === 'de' ? tDE(text, context, schema) : tEN(text, context, schema);
 };
-
-export { browserT }
 ```

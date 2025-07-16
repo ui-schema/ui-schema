@@ -27,7 +27,7 @@ import { ReferencingHandler } from '@ui-schema/react/ReferencingHandler'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import { translateRelative } from '@ui-schema/ui-schema/TranslatorRelative'
+import { translatorRelative } from '@ui-schema/ui-schema/TranslatorRelative'
 import { JsonSchema } from '@ui-schema/json-schema/Definitions'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { WidgetProps } from '@ui-schema/react/Widget'
@@ -265,7 +265,7 @@ const TestUIRenderer = (props: {
 
     const standard = <UIMetaProvider
         binding={appliedWidgets}
-        t={props.notT ? translateRelative : (text: string) => text}
+        t={props.notT ? translatorRelative : (text: string) => text}
         validate={props.legacy ? validatePlain : validate}
     >
         <UIStoreProvider

@@ -8,7 +8,7 @@ import { NoWidget } from '@ui-schema/react/NoWidget'
 import { OrderedMap } from 'immutable'
 import React from 'react'
 import { Translator } from '@ui-schema/ui-schema/Translator'
-import { translateRelative } from '@ui-schema/ui-schema/TranslatorRelative'
+import { translatorRelative } from '@ui-schema/ui-schema/TranslatorRelative'
 import { createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
@@ -57,7 +57,7 @@ export const MockSchemaProvider: React.ComponentType<{
     return <UIMetaProvider
         // @ts-ignore
         binding={widgets}
-        t={t || translateRelative}
+        t={t || translatorRelative}
         validate={validate}
     >
         <UIStoreProvider
@@ -79,7 +79,7 @@ export const MockSchemaMetaProvider: React.ComponentType<React.PropsWithChildren
     return <UIMetaProvider
         // @ts-ignore
         binding={widgets}
-        t={t || translateRelative}
+        t={t || translatorRelative}
         validate={validate}
     >
         {children}

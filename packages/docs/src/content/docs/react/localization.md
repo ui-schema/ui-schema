@@ -23,27 +23,27 @@ The `t` prop of `UIMetaProvider` and `UIGenerator` supports complex translators 
 to support just the `t` keyword, with a single locale:
 
 ```jsx harmony
-import {relTranslator} from '@ui-schema/ui-schema/Translate/relT';
+import {translatorRelative} from '@ui-schema/ui-schema/TranslatorRelative';
 import {UIMetaProvider} from '@ui-schema/ui-schema/UIMeta';
 
-<UIMetaProvider t={relTranslator}/>
+<UIMetaProvider t={translatorRelative}/>
 ```
 
 to support custom translators and the `t` keyword with multi-locale:
 
 ```jsx harmony
-import { relT } from '@ui-schema/ui-schema/Translate/relT';
-import { Translator } from '@ui-schema/ui-schema/Translate/makeTranslator';
+import { getSchemaTranslationRelative } from '@ui-schema/ui-schema/TranslatorRelative';
+import { Translator } from '@ui-schema/ui-schema/Translator';
 import { UIMetaProvider } from '@ui-schema/ui-schema/UIMeta';
 
 /**
  * @var {Translator} translate
  */
 const translate = (text, context, schema) => {
-    // locale must be be empty for single locale `t` keyword,
+    // locale must be be undefined for single locale `t` keyword,
     // or the string of the current locale for mutli-locale `t` keyword
-    const schemaT = relT(schema, context, locale);
-    if(schemaT) return schemaT;
+    const schemaT = getSchemaTranslationRelative(schema, context, locale);
+    if(typeof schemaT !== 'undefined' && schemaT !== null) return schemaT;
 
     // your custom translator function
     return translator(text, context, schema)
@@ -86,8 +86,9 @@ Second example `DemoEnumWidget` is translating a widgets enum values, supporting
 ```jsx harmony
 import React from "react";
 import {Map, List} from "immutable";
-import {Translate, beautifyKey} from '@ui-schema/ui-schema';
-import {getTranslatableEnum} from '@ui-schema/ui-schema/Translate';
+import {Translate} from '@ui-schema/react/Translate';
+import {beautifyKey} from '@ui-schema/ui-schema';
+import {getTranslatableEnum} from '@ui-schema/ui-schema/getTranslatableEnum';
 
 const DemoWidget = ({schema, storeKeys}) => {
     return <Translate
@@ -120,7 +121,7 @@ The above example can be used to translate anything, as titles are often used an
 
 ```jsx harmony
 import React from "react";
-import {TranslateTitle} from '@ui-schema/ui-schema/Translate/TranslateTitle';
+import {TranslateTitle} from '@ui-schema/react/TranslateTitle';
 
 const DemoWidget = ({schema, storeKeys}) => {
     return <TranslateTitle
@@ -141,7 +142,7 @@ Each design-system includes helper component for error translations, this way yo
 ```jsx harmony
 import React from "react";
 import FormHelperText from "@mui/material/FormHelperText";
-import {Translate} from '@ui-schema/ui-schema/Translate/Translate';
+import {Translate} from '@ui-schema/react/Translate';
 
 const LocaleHelperText = ({text, schema, context}) => {
     return <FormHelperText>

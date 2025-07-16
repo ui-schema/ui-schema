@@ -10,9 +10,9 @@ Develop your next React app faster, with less code duplications - and without wa
 
 > [!CAUTION]
 >
-> You're **exploring an [upcoming version](https://github.com/ui-schema/ui-schema/discussions/184#discussioncomment-3100010)**! If you spot odd behaviour or have feedback, please [open an issue](https://github.com/ui-schema/ui-schema/issues/new?template=bug.md&title=0.5.x%40next%20Bug%20&labels=bug&type=bug).
+> You're **exploring the [*next* version](https://github.com/ui-schema/ui-schema/discussions/184#discussioncomment-3100010)**! If you spot odd behaviour or have feedback, please [open an issue](https://github.com/ui-schema/ui-schema/issues/new?template=bug.md&title=0.5.x%40next%20Bug%20&labels=bug&type=bug).
 >
-> The new documentation is not yet completed, the repository includes [a basic migration guide from 0.4.x to 0.5.x](./packages/docs/src/content/updates/v0.4.0-v0.5.0.md), the below examples are updated for 0.5.x, while the published documentation is still for 0.4.x. You can [preview the new docs locally](./CONTRIBUTING.md#documentation-app) by setting up the repo.
+> The new documentation is not yet completed, the repository includes [a basic migration guide from 0.4.x to 0.5.x](./packages/docs/src/content/updates/v0.4.0-v0.5.0.md), the [below example code is updated for 0.5.x](#example-ui-schema), while the published documentation is still for 0.4.x. You can [preview the new docs locally](./CONTRIBUTING.md#documentation-app) by setting up the repo.
 >
 > To use the `next` version you must specify the exact version or use `@ui-schema/ui-schema@next` during installation.
 
@@ -120,24 +120,36 @@ First time? [Take the quick-start](https://ui-schema.bemit.codes/quick-start) or
 
 Example setup of a renderer, followed by a [simple text widget](#example-simple-text-widget).
 
-Instead of using a `WidgetEngine` at root level (automatic rendering of full schema), it's also possible to use [full custom rendering](https://ui-schema.bemit.codes/quick-start?render=custom) with e.g. [ObjectGroup](https://ui-schema.bemit.codes/docs/react/renderer#objectgroup).
+Instead of using a `WidgetEngine` at root level (automatic rendering of full schema), it's also possible to use [full custom rendering](https://ui-schema.bemit.codes/quick-start?render=custom).
 
 ```js
 import React from 'react';
-
-// Import Schema UI Provider and Render engine
-import { isInvalid } from '@ui-schema/react/isInvalid';
-import { createOrderedMap } from '@ui-schema/ui-schema/createMap';
+// Import UI providers and render engine, adapters
 import { UIStoreProvider, createStore } from '@ui-schema/react/UIStore';
 import { storeUpdater } from '@ui-schema/react/storeUpdater';
 import { UIMetaProvider, useUIMeta } from '@ui-schema/react/UIMeta';
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine';
+import { DefaultHandler } from '@ui-schema/react/DefaultHandler';
+import { ValidityReporter } from '@ui-schema/react/ValidityReporter';
+import { schemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter';
+import { isInvalid } from '@ui-schema/react/isInvalid';
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap';
+import { keysToName } from '@ui-schema/ui-schema/Utils/keysToName';
 // basic in-schema translator / `t` keyword support
-import { translateRelative } from '@ui-schema/ui-schema/TranslatorRelative';
+import { translatorRelative } from '@ui-schema/ui-schema/TranslatorRelative';
+// Validator engine, validators and adapter plugin to react
+import { Validator } from '@ui-schema/json-schema/Validator';
+import { standardValidators } from '@ui-schema/json-schema/StandardValidators';
+import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy';
+import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin';
+import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin';
 // Get the widgets binding for your design-system
+// import type { MuiBinding } from '@ui-schema/ds-material/Binding';
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault';
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended';
 import { GridContainer } from '@ui-schema/ds-material/GridContainer';
+import { SchemaGridHandler } from '@ui-schema/ds-material/Grid';
+import Button from '@mui/material/Button';
 
 // could be fetched from some API or bundled with the app
 const schemaBase = {
@@ -147,17 +159,17 @@ const schemaBase = {
             type: 'string',
             widget: 'Select',
             enum: [
-                'usa',
-                'canada',
-                'eu'
+                'mx',
+                'my',
+                'fj',
             ],
-            default: 'eu',
-            tt: 'upper'
+            default: 'fj',
+            ttEnum: 'upper',
         },
         name: {
             type: 'string',
             maxLength: 20,
-        }
+        },
     },
     required: [
         'country',
@@ -177,7 +189,7 @@ export const DemoForm = () => {
     const [schema/*, setSchema*/] = React.useState(() => createOrderedMap(schemaBase));
 
     // `useUIMeta` can be used safely, without performance impact (while `useUIStore` impacts performance)
-    const {widgets, t} = useUIMeta()
+    const {t} = useUIMeta()
 
     const onChange = React.useCallback((actions) => {
         setStore(storeUpdater(actions))
@@ -194,52 +206,83 @@ export const DemoForm = () => {
             </GridContainer>
         </UIStoreProvider>
 
-        <button
+        <Button
             /* show the validity only at submit (or pass `true` to `showValidity`) */
-            onClick={() =>
-                isInvalid(store.getValidity()) ?
-                    setShowValidity(true) :
-                    console.log('doingSomeAction:', store.valuesToJS())
-            }
+            onClick={() => {
+                if(isInvalid(store.getValidity())) {
+                    setShowValidity(true)
+                    return
+                }
+                console.log('doingSomeAction:', store.valuesToJS())
+            }}
         >
             submit
-        </button>
+        </Button>
     </>
 };
 
-const customBinding: MuiBinding = {
+/**
+ * @type {MuiBinding}
+ */
+const customBinding = {
     ...baseComponents,
+
+    // Widget mapping by schema type or custom ID.
     widgets: {
         ...typeWidgets,
         ...bindingExtended,
     },
+
+    // Plugins that wrap each rendered widget.
     widgetPlugins: [
-        DefaultHandler,
+        DefaultHandler, // handles `default` keyword
+
+        // Runs SchemaPlugins, connects to SchemaResource (if enabled)
         schemaPluginsAdapterBuilder([
+            // runs `validate` and related schema postprocessing
             validatorPlugin,
+
+            // injects the `required` prop
             requiredPlugin,
         ]),
-        SchemaGridHandler,
-        ValidityReporter,
-    ],
-}
 
-const validate = Validator(standardValidators).validate
+        SchemaGridHandler, // MUI v5/6 Grid item
+
+        ValidityReporter, // keeps `valid`/`errors` in sync with `store`
+    ],
+};
+
+const validator = Validator([
+    ...standardValidators,
+    requiredValidatorLegacy, // opinionated validator, HTML-like, empty-string = invalid
+])
+const validate = validator.validate
 
 export default function App() {
     return <UIMetaProvider
+        // the components and widgets bindings for the app
         binding={customBinding}
+
+        // optional, needed for any validation based plugin
         validate={validate}
-        t={translateRelative}
-        // never pass down functions like this - always use e.g. `React.useCallback` or use non dynamic functions, check performance docs for more
+
+        // optional, generate labels, error messages,
+        // support embedded translations
+        t={translatorRelative}
+
+        // optional, enable `name` attribute generation
+        keysToName={keysToName}
+
+        // never pass down functions like this - always use e.g. `React.useCallback`
+        // or use functions defined outside rendering, check performance docs for more
         //t={(text, context, schema) => {/* add translations */}}
     >
         {/*
-          * somewhere in `YourRouterAndStuff` are your custom forms,
-          * it's possible to nest `UIMetaProvider` if you need to have different widgets,
+          * Use one UIMetaProvider with multiple forms.
+          * it's possible to nest `UIMetaProvider` if you need to have different `binding`,
           * e.g. depending on some lazy loaded component tree
           */}
-        <YourRouterAndStuff/>
+        <DemoForm/>
     </UIMetaProvider>
 }
 ```
@@ -254,7 +297,7 @@ import { WidgetProps } from '@ui-schema/react/Widget'
 
 const Widget = (
     {
-        value, storeKeys, onChange,
+        value, storeKeys, onChange, keysToName,
         required, schema,
         errors, valid,
     }: WidgetProps,
@@ -269,6 +312,7 @@ const Widget = (
             <input
                 type={'text'}
                 required={required}
+                name={keysToName?.(storeKeys)}
                 value={inputValue}
                 onChange={(e) => {
                     onChange({

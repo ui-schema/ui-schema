@@ -35,7 +35,7 @@ For the moment you can find a list of changes and task progress in the [TODO.md]
 #### `ui-schema@0.4.7`
 
 - ✨ support `type: "object"` widget binding
-    - only intended for supplying a custom `ObjectRenderer`, adding a default widget for `object` is safer via a [SimplePlugin](/docs/react/widgetengine#simple-plugins)
+    - only intended for supplying a custom `ObjectRenderer`, adding a default widget for `object` is safer via a SimplePlugin
       as the `object` binding is used in e.g. ds-material for rendering the object content inside container widgets like `FormGroup`
 - 🔧 include immutable v5 in peer dependency range
 - 🔧 add `sideEffects: false` to root `package.json`
@@ -56,7 +56,7 @@ For the moment you can find a list of changes and task progress in the [TODO.md]
 Example of `widgetsBindingBasic`:
 
 ```tsx
-import { MuiWidgetBinding } from '@ui-schema/ds-material/Binding'
+import { MuiWidgetBinding } from '@ui-schema/ds-material/BindingType'
 import { pluginStack } from '@ui-schema/ds-material/pluginStack'
 import { validators } from '@ui-schema/ui-schema/Validators/validators'
 import { BoolRenderer, NumberRenderer, Select, SelectMulti, StringRenderer, TextRenderer } from '@ui-schema/ds-material/Widgets'

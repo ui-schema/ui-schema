@@ -22,8 +22,9 @@ List of renamed functions, components etc., most are also moved to other package
 - `ObjectGroup` > `SchemaLayer`
 - `Translate/Trans` > `Translate`
 - `Translate/TransTitle` > `TranslateTitle`
-- `Translate/relT` > `TranslatorRelative`
-- `Translate/relT/relTranslator` > `translateRelative`
+- `Translate/relT` > `translatorRelative`
+    - `relT` > `getSchemaTranslationRelative`
+    - `relTranslator` > `translatorRelative`
 
 ## General Changes
 
@@ -138,20 +139,20 @@ Todo:
         - uses sub-schema which the validator collected in `applied`
         - e.g. finding intersection of `type`, `mininum`, `enum`, `required` etc.
         - special handling of sub-schemas, like same `properties` in different applied schemas, for deferred merging, once that particular layer will be validated, not when the `object` itself is validated
-          - this guarantees that `{ "properties": { "country": { "$ref": "#/$defs/country" } }` works even if more `$ref` or dynamic branches exist in `if/then/else`, which produces something like the following, where a new `allOf` on those properties include the further `applied` schemas, which then can be resolved when the `country` property itself is validated.
+            - this guarantees that `{ "properties": { "country": { "$ref": "#/$defs/country" } }` works even if more `$ref` or dynamic branches exist in `if/then/else`, which produces something like the following, where a new `allOf` on those properties include the further `applied` schemas, which then can be resolved when the `country` property itself is validated.
 
-            ```json
-            {
-              "properties": {
-                "country": {
-                  "$ref": "#/$defs/country",
-                  "allOf": [
-                    { "$ref": "#/$defs/country_europe" }
-                  ]
+              ```json
+              {
+                "properties": {
+                  "country": {
+                    "$ref": "#/$defs/country",
+                    "allOf": [
+                      { "$ref": "#/$defs/country_europe" }
+                    ]
+                  }
                 }
               }
-            }
-            ```
+              ```
     - [ ] collect all applied canonical / pointer to know which are used after reduction
 - [x] ValidatorHandler refactor signature to object for easier complex changes/other state-params mix
 - [ ] validator support of evaluation context for more advanced use cases

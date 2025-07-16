@@ -2,7 +2,7 @@
 
 This repository is a monorepo, managed with lerna and npm workspaces.
 
-1. Fork/Clone repository **branch `develop`**
+1. Fork/Clone repository **branch: `develop`**
 2. Install root dev-dependencies (like lerna, webpack): `npm i --legacy-peer-deps`
 3. Start dev-server: `npm start`
     - (will clean-dist + start demo-web app)
@@ -108,15 +108,15 @@ docker run --rm -p 8080:80 ui-schema-docs
     - needs manual bootstrapping and update handling
 - Clean node_modules and build dirs: `npm run clean`
 - Clean build dirs: `npm run clean-dist`
-- Start Documentation: `npm run docs` (needs bootstrap/linking packages beforehand)
+- Start Documentation: `npm run docs`
     - see [localhost:4201](http://localhost:4201)
     - write in [packages/docs/src/content/docs](./packages/docs/src/content/docs)
 - Faster start, needs manual bootstrapping and update handling
     - `npm run serve` start all configured apps
-    - `npm run serve -- demoWeb --serve docs` start specific apps (docs and demo-web here) *[needs a lot of RAM]*
+    - `npm run serve -- demoWeb --serve docs` start specific apps (docs and demo-web here)
 
 ## Contributors
 
 By committing your code/creating a pull request to this repository you agree to release the code under the [MIT License](LICENSE) attached to the repository and to adhere to the [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md).
 
-Questions? Feel free to open discussions or join the [discord channel](https://discord.gg/MAjgpwnm36)!
+Questions? Feel free to [open discussions](https://github.com/ui-schema/ui-schema/discussions) or join the [discord channel](https://discord.gg/MAjgpwnm36)!

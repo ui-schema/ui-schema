@@ -11,7 +11,7 @@ import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
-import { translateRelative } from '@ui-schema/ui-schema/TranslatorRelative'
+import { translatorRelative } from '@ui-schema/ui-schema/TranslatorRelative'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
@@ -45,7 +45,7 @@ export const MockSchemaProvider: React.ComponentType<{
     return <UIMetaProvider
         // @ts-ignore
         binding={widgets}
-        t={t || translateRelative}
+        t={t || translatorRelative}
         validate={validate}
     >
         <UIStoreProvider
@@ -67,7 +67,7 @@ export const MockSchemaMetaProvider: React.ComponentType<React.PropsWithChildren
     return <UIMetaProvider
         // @ts-ignore
         binding={widgets}
-        t={t || translateRelative}
+        t={t || translatorRelative}
         validate={validate}
     >
         {children}

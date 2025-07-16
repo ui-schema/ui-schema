@@ -9,7 +9,7 @@ import { createStore, UIStoreProvider } from '@ui-schema/react/UIStore'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
-import { translateRelative } from '@ui-schema/ui-schema/TranslatorRelative'
+import { translatorRelative } from '@ui-schema/ui-schema/TranslatorRelative'
 import { Router } from 'express'
 import { renderToStaticMarkup } from 'react-dom/server'
 
@@ -68,7 +68,7 @@ export const reactHandler = () => {
                 <UIMetaProvider
                     binding={customBinding}
                     validate={validate}
-                    t={translateRelative}
+                    t={translatorRelative}
                 >
                     <UIStoreProvider
                         store={store}
