@@ -5,45 +5,42 @@ import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { OrderedMap } from 'immutable'
 
 /**
- * Renders a `@mui/material/Grid` with responsive props for MUI v5/6
+ * Renders a `@mui/material/Grid` with responsive props for MUI v7.
  *
- * Use `GridItemPlugin` for MUI 7.
+ * Use `SchemaGridHandler` for MUI 5/6.
+ *
+ * @experimental only for MUI@v7
  */
-export const SchemaGridItemLegacy: React.ComponentType<React.PropsWithChildren<{
+export const SchemaGridItem: React.ComponentType<React.PropsWithChildren<{
     schema: UISchemaMap
     defaultMd?: GridSize
     style?: React.CSSProperties
     className?: string
-    // todo: add correct typing for mui `classes`
-    classes?: any
     onContextMenu?: MouseEventHandler<HTMLDivElement>
 }>> = (
     {
         schema, children,
         defaultMd, style,
-        className, classes,
+        className,
         onContextMenu,
     },
 ) => {
-    const view = schema ? schema.get('view') as OrderedMap<string, GridSize> : undefined
+    const view = schema?.get('view') as OrderedMap<string, GridSize> | undefined
 
-    const viewXs = view ? (view.get('sizeXs') || 12) : 12
-    const viewSm = view ? view.get('sizeSm') : undefined
-    const viewMd = view ? view.get('sizeMd') : defaultMd as GridSize
-    const viewLg = view ? view.get('sizeLg') : undefined
-    const viewXl = view ? view.get('sizeXl') : undefined
+    const size = {
+        xs: view?.get('sizeXs') ?? 12,
+        sm: view?.get('sizeSm'),
+        md: view?.get('sizeMd') ?? defaultMd,
+        lg: view?.get('sizeLg'),
+        xl: view?.get('sizeXl'),
+    }
 
+    // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     return <Grid
-        item
-        xs={viewXs}
-        sm={viewSm}
-        md={viewMd}
-        lg={viewLg}
-        xl={viewXl}
+        size={size}
         style={style}
         className={className}
-        classes={classes}
         onContextMenu={onContextMenu}
     >
         {children}
@@ -51,13 +48,9 @@ export const SchemaGridItemLegacy: React.ComponentType<React.PropsWithChildren<{
 }
 
 /**
- * Renders a `@mui/material/Grid` with responsive props for MUI v5/6
- *
- * Use `GridItemPlugin` for MUI 7
- *
- * @todo rename to `SchemaGridLegacyItem`?
+ * @experimental only for MUI@v7
  */
-export const SchemaGridHandler = <P extends WidgetPluginProps>(props: P): React.ReactElement => {
+export const GridItemPlugin = <P extends WidgetPluginProps>(props: P): React.ReactElement => {
     const {schema, noGrid: noGridProp, isVirtual, Next} = props
 
     const align = schema.getIn(['view', 'align'])
@@ -71,7 +64,7 @@ export const SchemaGridHandler = <P extends WidgetPluginProps>(props: P): React.
     const nestedNext = <Next.Component {...props}/>
 
     return noGrid ? nestedNext :
-        <SchemaGridItemLegacy schema={schema} style={style}>
+        <SchemaGridItem schema={schema} style={style}>
             {nestedNext}
-        </SchemaGridItemLegacy>
+        </SchemaGridItem>
 }

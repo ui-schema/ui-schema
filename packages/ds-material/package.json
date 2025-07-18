@@ -64,8 +64,8 @@
     "dependencies": {
     },
     "peerDependencies": {
-        "@mui/material": "^5.1 || ^6.4",
-        "@mui/icons-material": "^5.1 || ^6.4",
+        "@mui/material": "^5.1 || ^6.1 || ^7.0",
+        "@mui/icons-material": "^5.1 || ^6.1 || ^7.0",
         "@ui-schema/ui-schema": "~0.5.0-alpha.0",
         "@ui-schema/react": "~0.5.0-alpha.0",
         "@ui-schema/json-schema": "~0.5.0-alpha.0",

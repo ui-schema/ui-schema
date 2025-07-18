@@ -63,8 +63,8 @@
         "react-dom": "^19.0"
     },
     "peerDependencies": {
-        "@mui/material": "^5.1 || ^6.4",
-        "@mui/icons-material": "^5.1 || ^6.4",
+        "@mui/material": "^5.1 || ^6.1 || ^7.0",
+        "@mui/icons-material": "^5.1 || ^6.1 || ^7.0",
         "@ui-schema/ds-material": "~0.5.0-alpha.0",
         "@ui-schema/kit-dnd": "~0.1.0-alpha.0",
         "@ui-schema/ui-schema": "~0.5.0-alpha.0",
