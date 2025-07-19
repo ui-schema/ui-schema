@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import IconButton from '@mui/material/IconButton'
 import Delete from '@mui/icons-material/Delete'
 import { Translate } from '@ui-schema/react/Translate'

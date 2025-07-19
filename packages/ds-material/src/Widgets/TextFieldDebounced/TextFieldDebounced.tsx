@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import TextField from '@mui/material/TextField'
 import type { InputProps } from '@mui/material/Input'
 import InputAdornment from '@mui/material/InputAdornment'

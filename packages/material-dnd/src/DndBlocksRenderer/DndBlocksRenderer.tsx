@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { List, Map, OrderedMap } from 'immutable'
 import { DndBlock, useBlocks } from '@ui-schema/material-dnd/DragDropBlockProvider'
 import { DndListItemComponentProps } from '@ui-schema/material-dnd/DndListRenderer'

@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { useTheme } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import FirstPageIcon from '@mui/icons-material/FirstPage'

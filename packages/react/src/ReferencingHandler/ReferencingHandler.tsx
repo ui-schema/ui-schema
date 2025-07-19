@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
-import React from 'react'
+import * as React from 'react'
 import { Translate } from '@ui-schema/react/Translate'
 import {
     SchemaRootContext, SchemaRootProvider,

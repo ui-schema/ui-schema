@@ -1,5 +1,5 @@
 import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
-import React from 'react'
+import * as React from 'react'
 import { getDisplayName } from '@ui-schema/react/Utils/memo'
 
 export interface TableContextType {

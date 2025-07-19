@@ -1,6 +1,6 @@
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { OrderedMap } from 'immutable'
-import React from 'react'
+import * as React from 'react'
 import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import clsx from 'clsx'
 

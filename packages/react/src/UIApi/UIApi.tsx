@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
-import React from 'react'
+import * as React from 'react'
 import { Map } from 'immutable'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 

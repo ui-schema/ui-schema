@@ -1,5 +1,5 @@
 import { schemaTypeIs } from '@ui-schema/ui-schema/schemaTypeIs'
-import React from 'react'
+import * as React from 'react'
 import { List, Map } from 'immutable'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { StoreKeyType } from '@ui-schema/react/UIStore'

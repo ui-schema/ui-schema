@@ -2,7 +2,7 @@ import type { UIMetaContextBase } from '@ui-schema/react/UIMeta'
 import type { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 import type { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import { List } from 'immutable'
-import { useEffect, useMemo } from 'react'
+import * as React from 'react'
 import type { ComponentType, ReactNode } from 'react'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 import { ErrorNoWidgetMatches, matchWidget } from '@ui-schema/ui-schema/matchWidget'
@@ -51,12 +51,12 @@ export const WidgetRenderer = <A = UIStoreActions, B = {}, WP extends WidgetProp
     const {schema, binding, isVirtual} = props
     const currentErrors = useImmutable(errors)
 
-    useEffect(() => onErrors && onErrors(currentErrors), [onErrors, currentErrors])
+    React.useEffect(() => onErrors && onErrors(currentErrors), [onErrors, currentErrors])
 
     const schemaType = schema.get('type') as SchemaTypesType | undefined
     const widgetName = schema.get('widget') as string | undefined
 
-    const {Widget, error}: { Widget: ComponentType<WP> | null, error?: ErrorNoWidgetMatches } = useMemo(() => {
+    const {Widget, error}: { Widget: ComponentType<WP> | null, error?: ErrorNoWidgetMatches } = React.useMemo(() => {
         let Widget: ComponentType<WP> | null = null
         // todo: try further extracting isVirtual into a widgetPlugin, which uses WidgetOverride to switch to it?
         //       which also the virtualWidgets could use, to not further need `isVirtual`

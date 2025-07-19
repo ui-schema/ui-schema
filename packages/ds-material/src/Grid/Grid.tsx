@@ -1,4 +1,5 @@
-import React, { MouseEventHandler } from 'react'
+import * as React from 'react'
+import type { MouseEventHandler } from 'react'
 import Grid, { GridSize } from '@mui/material/Grid'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'

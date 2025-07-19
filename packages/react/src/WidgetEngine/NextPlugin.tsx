@@ -1,7 +1,7 @@
 import { getDisplayName, memo } from '@ui-schema/react/Utils/memo'
 import type { MinimalComponentType } from '@ui-schema/react/Widget'
 import type { ReactNode } from 'react'
-import { useMemo } from 'react'
+import * as React from 'react'
 import type { WidgetPluginProps } from './WidgetPlugin.js'
 
 export type NextWidgetPlugin<P = {}> = {
@@ -44,7 +44,7 @@ export const useNext = <PWidgetPlugin extends WidgetPluginProps>(
     WidgetRenderer: MinimalComponentType<PWidgetPlugin> | undefined | null,
     widgetPlugins: MinimalComponentType<PWidgetPlugin>[] | undefined | null,
 ) => {
-    return useMemo(() => {
+    return React.useMemo(() => {
         return makeNext(WidgetRenderer, widgetPlugins)
     }, [WidgetRenderer, widgetPlugins])
 }

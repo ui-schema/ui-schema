@@ -1,4 +1,5 @@
-import React, { MouseEventHandler } from 'react'
+import * as React from 'react'
+import type { MouseEventHandler } from 'react'
 import { Translate } from '@ui-schema/react/Translate'
 import { useUIMeta } from '@ui-schema/react/UIMeta'
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { checkIsOtherTarget } from '@ui-schema/kit-dnd/Utils/checkIsOtherTarget'
 import { calcIntentPos, CalcDragIntentEvent, CalcDragIntentOptions } from '@ui-schema/kit-dnd/calcIntentPos'
 import { DataKeys, DndDragIntentKeys, DndDragIntentPos, ItemSpec, OnMovedEvent } from '@ui-schema/kit-dnd/KitDnd'

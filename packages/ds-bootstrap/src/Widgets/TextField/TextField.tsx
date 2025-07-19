@@ -1,6 +1,6 @@
 import { WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widget'
-import React from 'react'
+import * as React from 'react'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 

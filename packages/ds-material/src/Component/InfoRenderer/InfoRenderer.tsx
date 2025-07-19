@@ -9,7 +9,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import IcInfo from '@mui/icons-material/Info'
 import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
-import React from 'react'
+import * as React from 'react'
 import { List } from 'immutable'
 
 export interface InfoRendererProps {

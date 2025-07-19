@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import { schemaTypeIs } from '@ui-schema/ui-schema/schemaTypeIs'
-import React from 'react'
+import * as React from 'react'
 import Grid, { GridSpacing } from '@mui/material/Grid'
 import Divider from '@mui/material/Divider'
 import { onChangeHandler, StoreKeys } from '@ui-schema/react/UIStore'

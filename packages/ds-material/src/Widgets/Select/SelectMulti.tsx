@@ -15,7 +15,7 @@ import { WidgetProps } from '@ui-schema/react/Widget'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
-import React from 'react'
+import * as React from 'react'
 
 export interface SelectMultiProps {
     variant?: MuiSelectProps['variant']

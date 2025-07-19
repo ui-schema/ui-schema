@@ -396,8 +396,8 @@ new widget engine functions:
     - [X] switch to strict-ESM for ds-bootstrap
     - [x] switch to cjs/esm build with `.cjs` file extension instead of separate folders
     - [x] switch all packages to cjs-first and `esm` in separate folder, as otherwise not backwards compatible with esm-yet-not-type-module projects (mui5/6 compat. / `NodeNext` without `type: module`)
+    - [x] change all react imports to `import * as React from 'react';` for better compatibility and to not enforce `esModuleInterop` or similar for consumers
     - [ ] verify working behaviour once first alpha is published; sister project https://github.com/ui-schema/react-codemirror uses new build w/ MUI6 and has a verified prerelease which is used in https://github.com/control-ui/content-ui which uses NodeNext + MUI v7
-    - [ ] change all react imports to `import * as React from 'react';` for better compatibility and to not enforce `esModuleInterop` or similar for consumers
 - [x] control and optimize circular package dependencies, remove all which where added as workarounds
     - [x] core packages cleaned up; ds are already clean
     - [x] solve `/react` depends on `ObjectRenderer`/`VirtualWidgetRenderer` (see noted in bindings about separating packages and `VirtualWidgetRenderer`)

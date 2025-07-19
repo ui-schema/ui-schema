@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { ErrorFallbackProps } from '@ui-schema/react/Widget'
 import Alert from '@mui/material/Alert'
 import Typography from '@mui/material/Typography'

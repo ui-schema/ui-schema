@@ -1,5 +1,5 @@
 import { isAffectingValue, UIStoreActions, UIStoreUpdaterData } from '@ui-schema/react/UIStoreActions'
-import React from 'react'
+import * as React from 'react'
 import {
     List, Map, Record,
     RecordOf,

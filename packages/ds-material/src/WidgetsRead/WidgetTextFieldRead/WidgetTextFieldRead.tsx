@@ -1,5 +1,6 @@
 import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
-import React, { MouseEventHandler } from 'react'
+import * as React from 'react'
+import type { MouseEventHandler } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'

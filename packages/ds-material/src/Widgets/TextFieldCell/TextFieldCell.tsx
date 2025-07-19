@@ -1,5 +1,6 @@
 import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
-import React, { CSSProperties, EventHandler } from 'react'
+import * as React from 'react'
+import type { CSSProperties, EventHandler } from 'react'
 import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'

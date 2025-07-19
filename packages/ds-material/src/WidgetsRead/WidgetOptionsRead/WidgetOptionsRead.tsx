@@ -1,5 +1,6 @@
 import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
-import React, { MouseEventHandler } from 'react'
+import * as React from 'react'
+import type { MouseEventHandler } from 'react'
 import { List } from 'immutable'
 import { Translate } from '@ui-schema/react/Translate'
 import { memo } from '@ui-schema/react/Utils/memo'

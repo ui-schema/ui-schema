@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
-import React from 'react'
+import * as React from 'react'
 import { useUIStoreActions } from '@ui-schema/react/UIStoreActions'
 import { getDisplayName } from '@ui-schema/react/Utils/memo'
 import { useUIStore, WithValidity } from './UIStoreProvider.js'
