@@ -24,11 +24,11 @@ await fs.writeFile(packagePath, JSON.stringify(pkg, null, 2));
 
 console.log(`[run-check-with-type] Running check-type-${type} in temp folder`);
 
-execSync(`mkdirp ${tempDir}/node_modules/@ui-schema && cp -r ./dist/* ${tempDir}/node_modules/@ui-schema`, {
+execSync(`mkdirp ${tempDir}/node_modules/@ui-schema && cp -r ./dist/* ${tempDir}/node_modules/@ui-schema`, { // NOSONAR
     stdio: 'inherit',
 });
 
-execSync(`cd ${tempDir} && npm run check-type-${type}`, {stdio: 'inherit'});
+execSync(`cd ${tempDir} && npm run check-type-${type}`, {stdio: 'inherit'}); // NOSONAR
 
 const failScript = `npm run check-type-${type}-fail`;
 
@@ -36,7 +36,7 @@ const expectedErrors = {
     module: /require is not defined in ES module scope/, commonjs: /Cannot use import statement outside a module/,
 };
 
-const failResult = spawnSync(failScript, {
+const failResult = spawnSync(failScript, { // NOSONAR
     cwd: tempDir,
     shell: true,
     stdio: ['inherit', 'inherit', 'pipe'],
