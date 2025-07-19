@@ -43,6 +43,7 @@
             "import": "./esm/*/index.js",
             "require": "./*/index.cjs"
         },
+        "./package.json": "./package.json",
         "./esm": null
     },
     "sideEffects": false,

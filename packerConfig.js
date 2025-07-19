@@ -356,18 +356,25 @@ packer({
     afterEsModules: (packages, pathBuild, isServing) => {
         // removing `type: module` from published versions of packages, for better interop
         //
-        // - during dev, this project should use `type: module`, to enforce `NodeNext` module resolution
+        // - during dev, this project should use `type: module`, to enforce `Node16` module resolution
         //   - where possible, e.g. not as long as any dependency of the package is imported non-flat and it has no `exports`;
         //     e.g. `immutable` has none, but is always imported as `'immutable'`, thus should work as expected;
         //     but @mui v5/6 has none, and imported by nested path, thus `type: module` breaks dev and published packages
-        // - without `type` during dev, TypeScript doesn't correctly apply `NodeNext` in the dev-monorepo
+        // - without `type` during dev, TypeScript doesn't correctly apply `Node16` in the dev-monorepo
         // - once published, Node.js doesn't need `type` in dependencies, it always uses `export`
         // - once published, Node.js behaves differently when the consumer package.json has `type` or none (v24 at least)
         // - if published with `type: module`, MUI5 can't be resolved, due to strict ESM resolution, thus `type` can not be used in any package which depends on @mui
-        //   (TS NodeNext + `type: module`)
+        //   ---
+        //   (in consumer project; MUI v5 + TS Node10 + w/ or w/o type)
+        //   Module not found: Error: Can't resolve '@mui/material/Box' in 'node_modules\@ui-schema\ds-material' Did you mean 'index.js'?
+        //   BREAKING CHANGE: The request '@mui/material/Box' failed to resolve only because it was resolved as fully specified
+        //   (probably because the origin is strict EcmaScript Module, e. g. a module with javascript mimetype, a '*.mjs' file, or a '*.js' file where the package.json contains '"type": "module"').
+        //   The extension in the request is mandatory for it to be fully specified. Add the extension to the request.
+        //   ---
+        //   (in dev; MUI v6 + TS Node16 + `type: module`)
         //   TS2604: JSX element type Box does not have any construct or call signatures. TS2786: Box cannot be used as a JSX component.
         //   Its type `typeof import('/node_modules/@mui/material/Box/index')` is not a valid JSX element type.
-        // - but if the published package has `type: module`, and the consumer package.json has
+        // - but if the published package has `type: module`, and the consumer package.json has:
         //   - no `type`: works for node.js, but with warnings depending if the user file is `.js` (depending on what it includes (ESM or CJS)) / `.cjs` / `.mjs`
         //     - (TS only) produces the following error
         //       "TS1479: The current file is a CommonJS module whose imports will produce require calls"
