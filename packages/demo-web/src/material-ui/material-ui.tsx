@@ -3,7 +3,8 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { MuiBinding } from '@ui-schema/ds-material/Binding'
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
-import { Group2Renderer, SchemaGrid2Handler } from '@ui-schema/ds-material/Grid2'
+import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
+import { GroupRenderer } from '@ui-schema/ds-material/GroupRenderer'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
@@ -21,10 +22,10 @@ import { Map } from 'immutable'
 import React, { useCallback } from 'react'
 import { useToggle } from '../component/useToggle'
 import { dataDemoMain, schemaDemoMain, schemaUser } from '../schemas/demoMain'
-import Grid2 from '@mui/material/Grid2'
+import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
-import { Grid2Container } from '@ui-schema/ds-material/Grid2Container'
+import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { createOrderedMap, createMap } from '@ui-schema/ui-schema/createMap'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { isInvalid } from '@ui-schema/react/isInvalid'
@@ -54,12 +55,12 @@ const customBinding: MuiBinding = {
         ]),
         // todo: Grid must be after e.g. ConditionalHandler, yet if referencing/combining results in loading, yet should also be used there
         //       (old) but why was it this high? wasn't that because of e.g. conditional object grids
-        SchemaGrid2Handler,
+        SchemaGridHandler,
         // ({Next, ...props}) => {
         //     // just a debug widget, for inspecting extractions
         //     const {errors, storeKeys} = props
-        //     const {store} = useUIStore()
         //     console.log('errors', errors)
+        //     const {store} = useUIStore()
         //     console.log('store', storeKeys.toJS(), store?.extractValidity(storeKeys)?.toJS())
         //     return <Next.Component {...props}/>
         // },
@@ -103,11 +104,11 @@ const customBinding: MuiBinding = {
     },
     matchWidget: matchWidget,//<NonNullable<NonNullable<MuiBinding['widgets']>['types']>, NonNullable<NonNullable<MuiBinding['widgets']>['custom']>>,
 
-    GroupRenderer: Group2Renderer,
+    GroupRenderer: GroupRenderer,
 }
 //widgets.types.null = () => 'null'
 
-const GridStack = injectWidgetEngine(Grid2Container)
+const GridStack = injectWidgetEngine(GridContainer)
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false)
@@ -145,9 +146,9 @@ const MainStore = () => {
                     flexDirection: 'column',
                 }}
             >
-                <Grid2Container>
+                <GridContainer>
                     <WidgetEngine isRoot schema={schema}/>
-                </Grid2Container>
+                </GridContainer>
                 {/*<GridStack isRoot schema={schema}/>*/}
                 <MuiSchemaDebug setSchema={setSchema} schema={schema}/>
 
@@ -188,8 +189,8 @@ const DemoUser: React.FC<{}> = () => {
         setStore(storeUpdater(actions))
     }, [setStore])
 
-    return <Grid2 container spacing={3} sx={{justifyContent: 'center'}}>
-        <Grid2 size={{xs: 12, md: 8}}>
+    return <Grid container spacing={3} sx={{justifyContent: 'center'}}>
+        <Grid item xs={12} md={8}>
             <UIStoreProvider
                 store={store}
                 onChange={onChange}
@@ -198,18 +199,18 @@ const DemoUser: React.FC<{}> = () => {
                 <GridStack isRoot schema={schemaUser}/>
                 <MuiSchemaDebug schema={schemaUser}/>
             </UIStoreProvider>
-        </Grid2>
-    </Grid2>
+        </Grid>
+    </Grid>
 }
 
 const Main = () => {
     const [toggle, getToggle] = useToggle()
 
-    return <Grid2 container spacing={3}>
-        <Grid2 size={12}>
+    return <Grid container spacing={3}>
+        <Grid item xs={12}>
             <MainStore/>
-        </Grid2>
-        <Grid2 size={12}>
+        </Grid>
+        <Grid item xs={12}>
             <Button style={{marginBottom: 12}} onClick={() => toggle('demoUser')} variant={getToggle('demoUser') ? 'contained' : 'outlined'}>
                 demo User
             </Button>
@@ -224,8 +225,8 @@ const Main = () => {
                 >
                     <DemoUser/>
                 </Paper> : null}
-        </Grid2>
-    </Grid2>
+        </Grid>
+    </Grid>
 }
 
 const validate = Validator([

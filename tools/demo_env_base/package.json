@@ -1,0 +1,15 @@
+{
+    "name": "@ui-schema/dev-demo-env-base",
+    "description": "Demo environment to check Node.js resolving on build packages, not on dev-sources. In `check-type-module` no `cjs.js` works, in `check-type-commonjs` no `esm.js` works.",
+    "scripts": {
+        "check-no-type": "npm run cjs-cjs && npm run cjs-js && npm run esm-mjs && npm run esm-js",
+        "check-type-module": "npm run cjs-cjs && npm run esm-mjs && npm run esm-js",
+        "check-type-module-fail": "npm run cjs-js",
+        "check-type-commonjs": "npm run cjs-cjs && npm run cjs-js && npm run esm-mjs",
+        "check-type-commonjs-fail": "npm run esm-js",
+        "cjs-cjs": "node ./check-cjs.cjs",
+        "cjs-js": "node ./check-cjs.js",
+        "esm-mjs": "node ./check-esm.mjs",
+        "esm-js": "node ./check-esm.js"
+    }
+}

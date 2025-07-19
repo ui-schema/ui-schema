@@ -44,9 +44,9 @@ List of renamed functions, components etc., most are also moved to other package
     - `ds-material/BindingDefault` (atm.) exports `typeWidgets` and `baseCompoents` (*maybe split up, but could need renaming of type or even widgets folders*)
     - `ds-material/BindingExtended` exports `bindingExtended` for `.custom` widget binding
     - no default `schemaPlugins`/`widgetPlugins`; *maybe add a legacy compat to make migration easier, atm. in demo-web*
-- added `Grid2` components and plugins, for future migration path from mui5/6 to 7
-- added `SchemaGridNextItem` for mui v7, with `Grid['size']` property, *not using `Grid2`*, *not compatible with v5/6*
-- [ ] `Grid2` components are not enough, as `GenericList` and other container widgets may include hard coded wrappers, which rely on the same Grid component inside the grid plugin
+- ~~added `Grid2` components and plugins, for future migration path from mui5/6 to 7~~
+- added `GridItemPlugin` for mui v7, with `Grid['size']` property, *not using `Grid2`*, *not compatible with v5/6*
+- [ ] list widgets, like GenericList, should reuse the components group, to be able to influence their grid component, as it must match what is then used in plugins
 - fix `forbidInvalidNumber` prevents too much for keyboard control
 - removed `react-uid` dependency
 - optimize useOptionsFromSchema, add basic support for collecting options from nested oneOf/anyOf, apply normalization also on `const`, same like `enum`
@@ -391,11 +391,14 @@ new widget engine functions:
     - alternatively replace `StoreSchemaType` with `SomeSchema` from `/ui-schema/CommonTypings`, for a simpler type, just for enforcing immutable map
 - [ ] stricter typings, with many `any` switched to `unknown`
 - [x] finalize `package.json` generation for strict esm with ESM and CJS support
-- [x] finalize strict-ESM compatible imports/exports, especially in packages
+- [ ] finalize strict-ESM compatible imports/exports, especially in packages
     - [x] switch to strict-ESM for all core packages, with `Node16`
     - [X] switch to strict-ESM for ds-bootstrap
     - [x] switch to cjs/esm build with `.cjs` file extension instead of separate folders
-    - [x] verify working behaviour once first alpha is published; sister project https://github.com/ui-schema/react-codemirror uses new build and has a verified prerelease which is used in https://github.com/control-ui/content-ui
+    - [x] switch all packages to cjs-first and `esm` in separate folder, as otherwise not backwards compatible with esm-yet-not-type-module projects (mui5/6 compat. / `NodeNext` without `type: module`)
+    - [x] change all react imports to `import * as React from 'react';` for better compatibility and to not enforce `esModuleInterop` or similar for consumers
+    - [x] added test calls to ESM/CJS of build package versions, from `.js`/`.mjs`/`.cjs` files; with `type: module`, `type: commonjs` and none at all in the package.json
+    - [ ] verify working behaviour once first alpha is published; sister project https://github.com/ui-schema/react-codemirror uses new build w/ MUI6 and has a verified prerelease which is used in https://github.com/control-ui/content-ui which uses NodeNext + MUI v7
 - [x] control and optimize circular package dependencies, remove all which where added as workarounds
     - [x] core packages cleaned up; ds are already clean
     - [x] solve `/react` depends on `ObjectRenderer`/`VirtualWidgetRenderer` (see noted in bindings about separating packages and `VirtualWidgetRenderer`)
@@ -476,6 +479,8 @@ new widget engine functions:
     - this undefined behaviour / normal errors isn't nice
     - an automatic correction should be optional, as imho. unexpected and may lead to more complex integration with most ORM/DMS
 - [ ] provide a demo of custom store actions which use the schema resource system for more complex recursive mutations?
+- [ ] check deps chain (again), clean up any remaining unnecessary dependencies
+    - [ ] remove dependency `@ui-schema/json-schema` from `ds-material`/`ds-bootstrap`
 - [ ] update documentation
     - [ ] quick start
     - [ ] new overview
@@ -490,7 +495,6 @@ new widget engine functions:
         - [ ] add docs for `/dictionary`
         - [x] add docs for `/json-pointer` (basic)
         - [x] add docs for `/json-schema` (basic)
-        - [x] add docs for `/react-json-schema` (basic)
     - [ ] basic setup/customization guide for ds-material? or is quick-start enough, incl. demo repos?
     - [ ] basic setup/customization guide for ds-bootstrap? or is quick-start enough, incl. demo repos?
     - [ ] enable external widget packages (code/color/...) once migrated to 0.5.x
@@ -504,6 +508,7 @@ new widget engine functions:
             - not required for wildcard, as `files` in route/spec is only used as definition, while index/extracted is used for search/viewer
         - [ ] remove unused meta data from generated API documentation, rather large JSON, as un-optimized tree with paths as ids
         - [ ] central docs mapping for packages, to remove `modulePath` and other such needed manual configuration for doc gen
+    - [ ] update all README documentation links once docs are published
 
 ---
 

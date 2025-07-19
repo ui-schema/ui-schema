@@ -7,7 +7,7 @@ import { memo } from '@ui-schema/react/Utils/memo'
 import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
 import { List, Map, isImmutable } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
-import React from 'react'
+import * as React from 'react'
 
 export const SelectMulti = extractValue(memo(({schema, storeKeys, keysToName, showValidity, errors, value, onChange, required}: WidgetProps) => {
     const uid = React.useId()

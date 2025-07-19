@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import { ValidateFn } from '@ui-schema/ui-schema/Validate'
-import { useMemo } from 'react'
+import * as React from 'react'
 import { List, Map, OrderedMap } from 'immutable'
 import { handleIfElseThen } from '@ui-schema/react/ConditionalHandler'
 import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
@@ -44,7 +44,7 @@ export const useSchemaCombine = (
     schema: SomeSchema,
     value: unknown,
 ) => {
-    return useMemo(
+    return React.useMemo(
         () => validate && (Map.isMap(value) || OrderedMap.isOrderedMap(value)) ? handleSchemaCombine(validate, schema, value) : schema,
         [validate, schema, value],
     )

@@ -1,5 +1,5 @@
 import { schemaTypeIs } from '@ui-schema/ui-schema/schemaTypeIs'
-import React, { Fragment } from 'react'
+import * as React from 'react'
 import { StoreKeyType, WithOnChange } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widget'
 import { memo } from '@ui-schema/react/Utils/memo'
@@ -54,7 +54,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
         cellSchema = orderedCellSchema
     }
 
-    const GroupRenderer = binding?.GroupRenderer || Fragment
+    const GroupRenderer = binding?.GroupRenderer || React.Fragment
 
     return <TableRow>
         {cellSchema.map((item, j) =>

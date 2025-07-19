@@ -1,5 +1,5 @@
 import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
-import React from 'react'
+import * as React from 'react'
 import { ErrorFallbackProps } from '@ui-schema/react/Widget'
 import { List } from 'immutable'
 

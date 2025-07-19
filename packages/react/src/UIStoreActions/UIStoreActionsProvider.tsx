@@ -1,13 +1,14 @@
-import { createContext, PropsWithChildren, ReactElement, useContext, useMemo } from 'react'
-import { onChangeHandler } from '@ui-schema/react/UIStore'
-import { UIStoreActions } from '@ui-schema/react/UIStoreActions'
+import * as React from 'react'
+import type { PropsWithChildren, ReactElement } from 'react'
+import type { onChangeHandler } from '@ui-schema/react/UIStore'
+import type { UIStoreActions } from '@ui-schema/react/UIStoreActions'
 
 export interface UIStoreActionsContext<A = UIStoreActions> {
     onChange: onChangeHandler<A>
 }
 
 // @ts-expect-error initialized in provider
-const UIStoreActionsContextObj = createContext<UIStoreActionsContext>({})
+const UIStoreActionsContextObj = React.createContext<UIStoreActionsContext>({})
 
 export function UIStoreActionsProvider<A = UIStoreActions>(
     {
@@ -15,7 +16,7 @@ export function UIStoreActionsProvider<A = UIStoreActions>(
         onChange,
     }: PropsWithChildren<UIStoreActionsContext<A>>,
 ): ReactElement {
-    const ctx = useMemo(() => ({onChange}), [onChange])
+    const ctx = React.useMemo(() => ({onChange}), [onChange])
 
     return <UIStoreActionsContextObj.Provider value={ctx as UIStoreActionsContext}>
         {children}
@@ -23,5 +24,5 @@ export function UIStoreActionsProvider<A = UIStoreActions>(
 }
 
 export function useUIStoreActions<A = UIStoreActions>(): UIStoreActionsContext<A> {
-    return useContext(UIStoreActionsContextObj) as unknown as UIStoreActionsContext<A>
+    return React.useContext(UIStoreActionsContextObj) as unknown as UIStoreActionsContext<A>
 }

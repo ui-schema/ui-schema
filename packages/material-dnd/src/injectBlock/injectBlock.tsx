@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { StoreKeys, useUIStore } from '@ui-schema/react/UIStore'
 import { getDisplayName } from '@ui-schema/react/Utils/memo'
 import { DndBlock, useBlocks } from '@ui-schema/material-dnd/DragDropBlockProvider'

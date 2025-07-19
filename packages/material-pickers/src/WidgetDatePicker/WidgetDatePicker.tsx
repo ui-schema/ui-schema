@@ -4,7 +4,7 @@ import { UIStoreActionSet } from '@ui-schema/react/UIStoreActions'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { MuiPickersAdapterContext } from '@mui/x-date-pickers/LocalizationProvider'
 import { List } from 'immutable'
-import React from 'react'
+import * as React from 'react'
 
 export interface WidgetDatePickerProps<P extends BaseDatePickerProps<any> = BaseDatePickerProps<any>> {
     Picker: React.ComponentType<P>

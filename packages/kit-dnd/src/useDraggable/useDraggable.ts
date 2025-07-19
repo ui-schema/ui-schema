@@ -1,6 +1,6 @@
 import { DataKeys, ItemSpec, useKitDnd } from '@ui-schema/kit-dnd'
 import { List } from 'immutable'
-import React from 'react'
+import * as React from 'react'
 import { Identifier } from 'dnd-core'
 import {
     useDrag, useDrop, DropTargetMonitor,

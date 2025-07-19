@@ -6,10 +6,10 @@ The package `@ui-schema/ui-schema` supports rendering widgets for JSON-schema `t
 
 It is possible to connect any design system, included or planned support:
 
-| Package      | Based on            | Status |
-| :---         | :---                 | ---: |
-| `@ui-schema/ds-material`  | [@mui/material (MUI)](https://material-ui.com/) to use [Material Design](https://material.io/) | ✅ |
-| `@ui-schema/ds-bootstrap` | [bootstrap (BTS)](https://getbootstrap.com/) semantic HTMLs to use with any Bootstrap theme | ✅ |
+| Package      | Based on            |
+| :---         | :---                 |
+| `@ui-schema/ds-material`  | [@mui/material (MUI)](https://mui.com/material-ui/) to use [Material Design](https://material.io/) |
+| `@ui-schema/ds-bootstrap` | [bootstrap (BTS)](https://getbootstrap.com/) semantic HTMLs to use with any Bootstrap theme |
 
 📚 [Quick-Start](/quick-start), [Details about Design Systems](/docs/design-systems)
 

@@ -4,7 +4,7 @@ import { StoreKeys } from '@ui-schema/react/UIStore'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import Box from '@mui/material/Box'
 import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
-import React from 'react'
+import * as React from 'react'
 import { InfoRendererProps } from '@ui-schema/ds-material/Component/InfoRenderer'
 
 export interface TitleBoxReadProps {

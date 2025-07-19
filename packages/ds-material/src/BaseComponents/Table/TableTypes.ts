@@ -2,7 +2,7 @@ import { onChangeHandler, StoreKeys, WithOnChange } from '@ui-schema/react/UISto
 import { WidgetProps } from '@ui-schema/react/Widget'
 import { Translator } from '@ui-schema/ui-schema/Translator'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import React from 'react'
+import * as React from 'react'
 import { List, OrderedMap } from 'immutable'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
 

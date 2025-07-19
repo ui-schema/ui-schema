@@ -1,16 +1,18 @@
-import Grid from '@mui/material/Grid'
-import { WidgetEngineWrapperProps } from '@ui-schema/react/WidgetEngine'
+import Grid, { GridProps, GridTypeMap } from '@mui/material/Grid'
+import type { WidgetEngineWrapperProps } from '@ui-schema/react/WidgetEngine'
+import type { ElementType } from 'react'
 
-export interface GridContainerProps {
-    spacing?: number
-}
-
-export const GridContainer = (
+// eslint-disable-next-line @typescript-eslint/no-deprecated
+export const GridContainer = <RootComponent extends ElementType = GridTypeMap['defaultComponent']>(
     {
-        spacing = 0,
+        spacing,
         children,
-    }: GridContainerProps & Partial<WidgetEngineWrapperProps>,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        schema, storeKeys,
+        ...props
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+    }: Partial<WidgetEngineWrapperProps> & Omit<GridProps<RootComponent>, 'container' | 'item'>,
 ) => {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
-    return <Grid container spacing={spacing}>{children}</Grid>
+    return <Grid container spacing={spacing || 0} {...props}>{children}</Grid>
 }

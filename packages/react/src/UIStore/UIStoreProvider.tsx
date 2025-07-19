@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import type { List, Map, MapOf } from 'immutable'
 import type { onChangeHandler, UIStoreType } from './UIStore.js'
 import { UIStoreActionsContext, UIStoreActionsProvider, UIStoreActions } from '@ui-schema/react/UIStoreActions'

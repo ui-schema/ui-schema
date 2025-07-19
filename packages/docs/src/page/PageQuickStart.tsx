@@ -92,7 +92,7 @@ Quickly build a contact form that sends data to an API - if the user entered it 
 
 UI-Schema works with JSON-Schema and any design-system, each included design-system exports a widget binding for the UI renderer.
 
-See the [**list of widgets**](/docs/overview#widget-list) for the different design-system support.
+See the [**list of widgets**](/docs/widgets/overview) for the different design-system support.
 `}/>
 
                 <Markdown source={`
@@ -166,7 +166,7 @@ npm i --save @ui-schema/ui-schema @ui-schema/react @ui-schema/json-schema @ui-sc
 >
 > - \`<= ds-material@v0.3.x\` supports \`@material-ui/core\` (v4)
 > - \`ds-material@v0.4.x\` supports \`@mui/material\` (v5)
-> - \`>= ds-material@v0.5.x\` supports \`@mui/material\` (v5, v6)
+> - \`>= ds-material@v0.5.x\` supports \`@mui/material\` (v5, v6, v7)
 
 > More the demo person?
 >
@@ -183,7 +183,7 @@ npm i --save @ui-schema/ui-schema @ui-schema/react @ui-schema/json-schema @ui-sc
                 {ds === 'custom' ? <Markdown source={`
 Install dependencies then head to the [widgets binding documentation](/docs/widgets#create-design-system-binding) for more details about creating design systems bindings.
 
-> Please be aware that the documentation primarily focuses usage with React.
+> Please be aware that the documentation primarily focuses on usage with React.
 
 The minimum packages needed:
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import FormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel'
 import Switch, { SwitchProps } from '@mui/material/Switch'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'

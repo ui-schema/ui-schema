@@ -1,40 +1,40 @@
 import path, {dirname} from 'node:path'
 import {packer, webpack} from 'lerna-packer'
-import {copyRootPackageJson, makeModulePackageJson} from 'lerna-packer/packer/modulePackages.js'
-import fs from 'node:fs'
+import {copyRootPackageJson} from 'lerna-packer/packer/modulePackages.js'
 import {fileURLToPath} from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-const babelTargetsEsmCjs = [
-    {
-        distSuffix: '',
-        args: [
-            '--env-name', 'cjs', '--no-comments', // '--copy-files', '--no-copy-ignored',
-            // note: even with defined extension, the extensions of `import` are still `.js`
-            //       which would break relative imports, as they then import ESM instead of the CJS file;
-            //       thus added `babel-plugin-replace-import-extension` for the CJS environment
-            //       it's not validated how it behaves for external imports for third-party modules,
-            //       which can be problematic in other projects,
-            //       here `import` to 3rd party modules are done purely by package name
-            '--out-file-extension', '.cjs',
-            '--extensions', '.ts', '--extensions', '.tsx', '--extensions', '.js', '--extensions', '.jsx',
-            '--ignore', '**/*.d.ts',
-            '--ignore', '**/*.test.tsx', '--ignore', '**/*.test.ts', '--ignore', '**/*.test.js',
-            '--ignore', '**/*.mock.ts', '--ignore', '**/*.mock.js',
-        ],
-    },
-    {
-        distSuffix: '',
-        args: [
-            '--no-comments',
-            '--extensions', '.ts', '--extensions', '.tsx', '--extensions', '.js', '--extensions', '.jsx',
-            '--ignore', '**/*.d.ts',
-            '--ignore', '**/*.test.tsx', '--ignore', '**/*.test.ts', '--ignore', '**/*.test.js',
-            '--ignore', '**/*.mock.ts', '--ignore', '**/*.mock.js',
-        ],
-    },
-]
+// esm-first isn't backwards compatible with some MUI5 setups
+// const babelTargetsEsmCjs = [
+//     {
+//         distSuffix: '',
+//         args: [
+//             '--env-name', 'cjs', '--no-comments', // '--copy-files', '--no-copy-ignored',
+//             // note: even with defined extension, the extensions of `import` are still `.js`
+//             //       which would break relative imports, as they then import ESM instead of the CJS file;
+//             //       thus added `babel-plugin-replace-import-extension` for the CJS environment
+//             //       it's not validated how it behaves for external imports for third-party modules,
+//             //       which can be problematic in other projects,
+//             //       here `import` to 3rd party modules are done purely by package name
+//             '--out-file-extension', '.cjs',
+//             '--extensions', '.ts', '--extensions', '.tsx', '--extensions', '.js', '--extensions', '.jsx',
+//             '--ignore', '**/*.d.ts',
+//             '--ignore', '**/*.test.tsx', '--ignore', '**/*.test.ts', '--ignore', '**/*.test.js',
+//             '--ignore', '**/*.mock.ts', '--ignore', '**/*.mock.js',
+//         ],
+//     },
+//     {
+//         distSuffix: '',
+//         args: [
+//             '--no-comments',
+//             '--extensions', '.ts', '--extensions', '.tsx', '--extensions', '.js', '--extensions', '.jsx',
+//             '--ignore', '**/*.d.ts',
+//             '--ignore', '**/*.test.tsx', '--ignore', '**/*.test.ts', '--ignore', '**/*.test.js',
+//             '--ignore', '**/*.mock.ts', '--ignore', '**/*.mock.js',
+//         ],
+//     },
+// ]
 
 const babelTargetsCjsEsm = [
     {
@@ -63,14 +63,14 @@ const babelTargetsCjsEsm = [
     },
 ]
 
-const transformerForEsmCjs = () => {
-    return {
-        sideEffects: false,
-        main: './index.cjs',
-        module: './index.js',
-        types: './index.d.ts',
-    }
-}
+// const transformerForEsmCjs = () => {
+//     return {
+//         sideEffects: false,
+//         main: './index.cjs',
+//         module: './index.js',
+//         types: './index.d.ts',
+//     }
+// }
 
 const packages = {
     uiSchemaSystem: {
@@ -79,7 +79,7 @@ const packages = {
         esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'ui-schema'),
         entry: path.resolve(__dirname, 'packages', 'ui-schema/src/'),
-        babelTargets: babelTargetsEsmCjs,
+        babelTargets: babelTargetsCjsEsm, // babelTargetsEsmCjs,
     },
     uiSchemaReact: {
         name: '@ui-schema/react',
@@ -87,7 +87,7 @@ const packages = {
         esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'react'),
         entry: path.resolve(__dirname, 'packages', 'react/src/'),
-        babelTargets: babelTargetsEsmCjs,
+        babelTargets: babelTargetsCjsEsm, // babelTargetsEsmCjs,
     },
     uiSchemaJsonSchema: {
         name: '@ui-schema/json-schema',
@@ -95,7 +95,7 @@ const packages = {
         esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'json-schema'),
         entry: path.resolve(__dirname, 'packages', 'json-schema/src/'),
-        babelTargets: babelTargetsEsmCjs,
+        babelTargets: babelTargetsCjsEsm, // babelTargetsEsmCjs,
     },
     uiSchemaJsonPointer: {
         name: '@ui-schema/json-pointer',
@@ -103,7 +103,7 @@ const packages = {
         esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'json-pointer'),
         entry: path.resolve(__dirname, 'packages', 'json-pointer/src/'),
-        babelTargets: babelTargetsEsmCjs,
+        babelTargets: babelTargetsCjsEsm, // babelTargetsEsmCjs,
     },
     uiSchemaPro: {
         name: '@ui-schema/pro',
@@ -111,7 +111,7 @@ const packages = {
         esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'pro'),
         entry: path.resolve(__dirname, 'packages', 'pro/src/'),
-        babelTargets: babelTargetsEsmCjs,
+        babelTargets: babelTargetsCjsEsm, // babelTargetsEsmCjs,
     },
     uiSchemaDictionary: {
         name: '@ui-schema/dictionary',
@@ -119,7 +119,7 @@ const packages = {
         esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'dictionary'),
         entry: path.resolve(__dirname, 'packages', 'dictionary/src/'),
-        babelTargets: babelTargetsEsmCjs,
+        babelTargets: babelTargetsCjsEsm, // babelTargetsEsmCjs,
     },
     dsMaterial: {
         // noClean: true,
@@ -138,7 +138,7 @@ const packages = {
         root: path.resolve(__dirname, 'packages', 'ds-bootstrap'),
         entry: path.resolve(__dirname, 'packages', 'ds-bootstrap/src/'),
         // babelTargets: legacyBabelTargets,
-        babelTargets: babelTargetsEsmCjs,
+        babelTargets: babelTargetsCjsEsm, // babelTargetsEsmCjs,
     },
     kitDnd: {
         name: '@ui-schema/kit-dnd',
@@ -146,7 +146,7 @@ const packages = {
         esmOnly: false,
         root: path.resolve(__dirname, 'packages', 'kit-dnd'),
         entry: path.resolve(__dirname, 'packages', 'kit-dnd/src/'),
-        babelTargets: babelTargetsEsmCjs,
+        babelTargets: babelTargetsCjsEsm, // babelTargetsEsmCjs,
     },
     materialPickers: {
         name: '@ui-schema/material-pickers',
@@ -354,8 +354,44 @@ packer({
     packages: packages,
 }, __dirname, {
     afterEsModules: (packages, pathBuild, isServing) => {
+        // removing `type: module` from published versions of packages, for better interop
+        //
+        // - during dev, this project should use `type: module`, to enforce `Node16` module resolution
+        //   - where possible, e.g. not as long as any dependency of the package is imported non-flat and it has no `exports`;
+        //     e.g. `immutable` has none, but is always imported as `'immutable'`, thus should work as expected;
+        //     but @mui v5/6 has none, and imported by nested path, thus `type: module` breaks dev and published packages
+        // - without `type` during dev, TypeScript doesn't correctly apply `Node16` in the dev-monorepo
+        // - once published, Node.js doesn't need `type` in dependencies, it always uses `export`
+        // - once published, Node.js behaves differently when the consumer package.json has `type` or none (v24 at least)
+        // - if published with `type: module`, MUI5 can't be resolved, due to strict ESM resolution, thus `type` can not be used in any package which depends on @mui
+        //   ---
+        //   (in consumer project; MUI v5 + TS Node10 + w/ or w/o type)
+        //   Module not found: Error: Can't resolve '@mui/material/Box' in 'node_modules\@ui-schema\ds-material' Did you mean 'index.js'?
+        //   BREAKING CHANGE: The request '@mui/material/Box' failed to resolve only because it was resolved as fully specified
+        //   (probably because the origin is strict EcmaScript Module, e. g. a module with javascript mimetype, a '*.mjs' file, or a '*.js' file where the package.json contains '"type": "module"').
+        //   The extension in the request is mandatory for it to be fully specified. Add the extension to the request.
+        //   ---
+        //   (in dev; MUI v6 + TS Node16 + `type: module`)
+        //   TS2604: JSX element type Box does not have any construct or call signatures. TS2786: Box cannot be used as a JSX component.
+        //   Its type `typeof import('/node_modules/@mui/material/Box/index')` is not a valid JSX element type.
+        // - but if the published package has `type: module`, and the consumer package.json has:
+        //   - no `type`: works for node.js, but with warnings depending if the user file is `.js` (depending on what it includes (ESM or CJS)) / `.cjs` / `.mjs`
+        //     - (TS only) produces the following error
+        //       "TS1479: The current file is a CommonJS module whose imports will produce require calls"
+        //     - (JS only) without `type: module` and only `.js` extension, produces the following warning and performance issue
+        //       [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of `abc.js` is not specified and it doesn't parse as CommonJS.
+        //       Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+        //       To eliminate this warning, add "type": "module" to package.json.
+        //   - `type: module`: works for node.js, resolves `/esm/*.js` file
+        //     - (TS only) makes issues if the consumer has no `type: module`
+        //   - `type: commonjs`: works for node.js, resolves `/*.cjs` file
+        if (isServing) return
         return Promise.all([
-            ...(isServing ? [] : [copyRootPackageJson()(packages, pathBuild)]),
+            copyRootPackageJson(({packageJson}) => {
+                packageJson = {...packageJson}
+                delete packageJson.type
+                return packageJson
+            })(packages, pathBuild),
         ]).then(() => undefined).catch((e) => {
             console.error('ERROR after-es-mod', e)
             return Promise.reject(e)

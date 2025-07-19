@@ -1,5 +1,5 @@
 import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
-import React from 'react'
+import * as React from 'react'
 import FormHelperText from '@mui/material/FormHelperText'
 import { Translate } from '@ui-schema/react/Translate'
 import { showValidity } from '@ui-schema/ui-schema/CommonTypings'

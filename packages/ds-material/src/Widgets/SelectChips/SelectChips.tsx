@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { extractValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widget'

@@ -2,7 +2,8 @@ import { useMemoObject } from '@ui-schema/react/Utils/useMemoObject'
 import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { matchWidget } from '@ui-schema/ui-schema/matchWidget'
 import { ValidateFn } from '@ui-schema/ui-schema/Validate'
-import { createContext, PropsWithChildren, useContext, useMemo } from 'react'
+import * as React from 'react'
+import type { PropsWithChildren } from 'react'
 import { Translator } from '@ui-schema/ui-schema/Translator'
 import { NextWidgetPlugin, useNext } from '@ui-schema/react/WidgetEngine'
 import { BindingTypeGeneric } from '@ui-schema/react/Widget'
@@ -36,7 +37,7 @@ export interface UIMetaContextBinding<W = BindingTypeGeneric> {
     binding?: W
 }
 
-const UIMetaContextObj = createContext<UIMetaContextInternal<any, any>>({
+const UIMetaContextObj = React.createContext<UIMetaContextInternal<any, any>>({
     t: text => text,
     // todo: this obj. is awful as solution for no-widgets/no-context rendering, even for tests
     // initialized with some dummy Next, for context-less tests
@@ -61,7 +62,7 @@ export function UIMetaProvider<C extends {}, W extends BindingTypeGeneric = Bind
     const ctx = useMemoObject({
         ...props,
         Next: Next,
-        binding: useMemo(() => {
+        binding: React.useMemo(() => {
             return {
                 ...props.binding,
                 // todo: it is rather confusing without a default matchWidget and only a fallback in WidgetRenderer,
@@ -78,5 +79,5 @@ export function UIMetaProvider<C extends {}, W extends BindingTypeGeneric = Bind
 }
 
 export const useUIMeta = <C extends UIMetaContextInternal<any, any> = UIMetaContextInternal>(): C => {
-    return useContext(UIMetaContextObj) as C
+    return React.useContext(UIMetaContextObj) as C
 }

@@ -1,5 +1,5 @@
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import React from 'react'
+import * as React from 'react'
 import Add from '@mui/icons-material/Add'
 import { Translate } from '@ui-schema/react/Translate'
 import { memo } from '@ui-schema/react/Utils/memo'

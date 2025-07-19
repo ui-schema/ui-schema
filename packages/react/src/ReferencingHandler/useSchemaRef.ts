@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import { parseRefs, SchemaRefsPending, useSchemaNetworkRef } from '@ui-schema/react/ReferencingHandler'
-import React from 'react'
+import * as React from 'react'
 import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { SchemaRootContext } from '@ui-schema/react/SchemaRootProvider'
 

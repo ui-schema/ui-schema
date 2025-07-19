@@ -1,5 +1,5 @@
 import { DndBlock } from '@ui-schema/material-dnd/DragDropBlockProvider'
-import React from 'react'
+import * as React from 'react'
 
 export interface DragDropBlockSelectorProps {
     onSelect: (area: DndBlock) => void

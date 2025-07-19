@@ -2,7 +2,7 @@ import { NumberRenderer, StringRenderer } from '@ui-schema/ds-material/Widgets/T
 import { BoolRenderer } from '@ui-schema/ds-material/Widgets/OptionsBoolean'
 import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react/ObjectRenderer'
 import type { MuiBindingWidgets } from '@ui-schema/ds-material/Binding'
-import { GroupRenderer } from '@ui-schema/ds-material/Grid'
+import { GroupRenderer } from '@ui-schema/ds-material/GroupRenderer'
 import { ErrorFallback } from '@ui-schema/ds-material/ErrorFallback'
 import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'

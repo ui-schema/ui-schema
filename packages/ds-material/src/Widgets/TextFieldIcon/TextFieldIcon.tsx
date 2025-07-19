@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import InputAdornment from '@mui/material/InputAdornment'
 import { NumberRenderer, NumberRendererProps, StringRenderer, StringRendererProps, TextRenderer, TextRendererProps } from '@ui-schema/ds-material/Widgets/TextField'
 import { Translate } from '@ui-schema/react/Translate'

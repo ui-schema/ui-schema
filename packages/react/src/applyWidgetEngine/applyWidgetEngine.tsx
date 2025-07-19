@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import { UIMetaContext } from '@ui-schema/react/UIMeta'
-import React from 'react'
+import * as React from 'react'
 import { WidgetEngine, WidgetEngineWrapperProps } from '@ui-schema/react/WidgetEngine'
 import { getDisplayName, memo } from '@ui-schema/react/Utils/memo'
 import { WithValue } from '@ui-schema/react/UIStore'

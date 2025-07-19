@@ -13,7 +13,7 @@ Architecture overview of UI-Schema for React.
 - Setup: can be outside of render flow
     - setup `binding` with `widgets`, `widgetPlugins` and base components
     - initialize `Validator`
-- Meta Level: shared context for the store/schema level
+- Meta Level: shared context for store/schema levels
     - `UIMetaProvider` receives `binding`, `t` and `validate`
     - materializes `binding.widgetPlugins` and `binding.WidgetRenderer` as a widget render pipeline, available as `Next` prop
     - allows supplying more props, which are injected in `WidgetEngine` as default props for the rendering pipeline

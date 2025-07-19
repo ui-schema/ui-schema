@@ -5,7 +5,7 @@ import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { List, Map } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
-import React from 'react'
+import * as React from 'react'
 
 export const Select = ({schema, storeKeys, showValidity, keysToName, errors, value, onChange, required}: WidgetProps & WithValuePlain & WithOnChange) => {
     const uid = React.useId()

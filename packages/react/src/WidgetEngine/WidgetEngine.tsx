@@ -1,7 +1,7 @@
 import { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { StoreKeyType } from '@ui-schema/ui-schema/ValueStore'
 import { WidgetPayloadFieldSchema, WidgetPayloadFieldLocation, WidgetPayload } from '@ui-schema/ui-schema/Widget'
-import { ComponentType, ReactNode } from 'react'
+import type { ComponentType, ReactNode } from 'react'
 import { List } from 'immutable'
 import { UIMetaContext, UIMetaContextInternal, useUIMeta } from '@ui-schema/react/UIMeta'
 import { onErrorHandler } from '@ui-schema/ui-schema/ValidatorOutput'
@@ -37,7 +37,6 @@ type WidgetEngineRootOrNestedProps =
 export type WidgetEngineWrapperProps = {
     children: ReactNode
     schema: SomeSchema
-    storeKeys: StoreKeys
 } & WidgetPayloadFieldLocation
 
 export type WidgetEngineProps<

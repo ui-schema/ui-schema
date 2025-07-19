@@ -6,7 +6,7 @@ import { onChangeHandler, StoreKeys } from '@ui-schema/react/UIStore'
 import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
 import { Map } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import React from 'react'
+import * as React from 'react'
 import Box from '@mui/material/Box'
 
 export interface GenericListFooterProps extends ListButtonOverwrites {

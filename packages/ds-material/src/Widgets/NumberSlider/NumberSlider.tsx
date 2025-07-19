@@ -1,5 +1,5 @@
 import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
-import React from 'react'
+import * as React from 'react'
 import { List } from 'immutable'
 import Add from '@mui/icons-material/Add'
 import Delete from '@mui/icons-material/Delete'

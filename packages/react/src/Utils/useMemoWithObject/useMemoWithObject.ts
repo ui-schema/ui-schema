@@ -1,6 +1,6 @@
 import { isEqual } from '@ui-schema/ui-schema/Utils/isEqual'
 import { isEqualObjectContents } from '@ui-schema/ui-schema/Utils/isEqualObjectContents'
-import { useRef } from 'react'
+import * as React from 'react'
 
 /**
  * Memoize the factory output depending on changes of the dependencyObject.
@@ -13,7 +13,7 @@ export const useMemoWithObject = <R = unknown>(
     factory: () => R,
     dependencyObject: Record<string, unknown>,
 ) => {
-    const obj = useRef<{
+    const obj = React.useRef<{
         last: Record<string, unknown> | undefined
         memoized: R
     }>({

@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { it, expect, describe } from '@jest/globals'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/jest-globals'

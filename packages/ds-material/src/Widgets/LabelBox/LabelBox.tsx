@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { WidgetProps } from '@ui-schema/react/Widget'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react/ObjectRenderer'
