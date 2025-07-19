@@ -2,17 +2,17 @@
   <a href="https://ui-schema.bemit.codes" rel="noopener noreferrer" target="_blank"><img width="125" src="https://ui-schema.bemit.codes/logo.svg" alt="UI Schema Logo"></a>
 </p>
 
-<h1 align="center">UI Schema for React</h1>
+<h1 align="center">UI Schema</h1>
 
-JSON Schema form + UI generator for any design system, first-class support for [Material UI React](https://material-ui.com), easily create own widgets and plugins.
+Generate forms and UIs from JSON Schema. Use the headless React components to create powerful schema-driven apps, compatible with any design system. Get started quickly with [Material UI React](https://ui-schema.bemit.codes/quick-start?ds=mui) or [Bootstrap](https://ui-schema.bemit.codes/quick-start?ds=bts) and easily create your own widgets and plugins.
 
-Develop your next React app faster, with less code duplications - and without wasting time to implement validations.
+Create smart apps faster, with less code — thanks to auto-generated UIs, built-in validation, and easy customization.
 
 > [!CAUTION]
 >
 > You're **exploring the [*next* version](https://github.com/ui-schema/ui-schema/discussions/184#discussioncomment-3100010)**! If you spot odd behaviour or have feedback, please [open an issue](https://github.com/ui-schema/ui-schema/issues/new?template=bug.md&title=0.5.x%40next%20Bug%20&labels=bug&type=bug).
 >
-> The new documentation is not yet completed, the repository includes [a basic migration guide from 0.4.x to 0.5.x](./packages/docs/src/content/updates/v0.4.0-v0.5.0.md), the [below example code is updated for 0.5.x](#example-ui-schema), while the published documentation is still for 0.4.x. You can [preview the new docs locally](./CONTRIBUTING.md#documentation-app) by setting up the repo.
+> The **published documentation is still for version 0.4.x**. The new documentation for 0.5.x is not yet complete. However, the repository includes [a basic migration guide from 0.4.x to 0.5.x](./packages/docs/src/content/updates/v0.4.0-v0.5.0.md), and the [example code below is updated for 0.5.x](#example-ui-schema). You can [preview the new documentation locally](./CONTRIBUTING.md#documentation-app) by setting up the repository.
 >
 > To use the `next` version you must specify the exact version or use `@ui-schema/ui-schema@next` during installation.
 
@@ -118,9 +118,15 @@ This project adheres to [semver](https://semver.org/), until `1.0.0` and beginni
 
 First time? [Take the quick-start](https://ui-schema.bemit.codes/quick-start) or take a look into the MUI demo repos: [create-react-app & JS (simple)](https://github.com/ui-schema/demo-cra) or [create-react-app & Typescript (advanced)](https://github.com/ui-schema/demo-cra-ts).
 
-Example setup of a renderer, followed by a [simple text widget](#example-simple-text-widget).
+Example setup of the React engine, followed by a [simple text widget](#example-simple-text-widget) - with @mui as design system.
 
-Instead of using a `WidgetEngine` at root level (automatic rendering of full schema), it's also possible to use [full custom rendering](https://ui-schema.bemit.codes/quick-start?render=custom).
+If you haven’t already [set up @mui](https://mui.com/getting-started/installation/), install it first; then install the @ui-schema dependencies:
+
+```shell
+npm i --save @ui-schema/ui-schema@next @ui-schema/json-schema@next @ui-schema/json-pointer@next @ui-schema/ds-material@next
+```
+
+Then add the example code:
 
 ```js
 import React from 'react';
@@ -287,6 +293,8 @@ export default function App() {
 }
 ```
 
+> Instead of using a `WidgetEngine` at root level (automatic rendering of full schema), it's also possible to use [full custom rendering](https://ui-schema.bemit.codes/quick-start?render=custom).
+
 ## Example Simple Text Widget
 
 Easily create new widgets, this is all for a simple text (`type=string`) widget:
@@ -341,11 +349,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-This project is free software distributed under the **MIT License**.
-
-See: [LICENSE](LICENSE).
-
-© 2025 bemit UG (haftungsbeschränkt)
+Released under the [MIT License](https://github.com/ui-schema/ui-schema/blob/main/LICENSE).
 
 ### License Icons
 
@@ -354,7 +358,3 @@ The icons in the badges of the readme's are either from [simpleicons](https://si
 - [Play Icon © Chanut is Industries, CC BY 3.0](https://www.iconfinder.com/icons/928430/go_media_music_play_playing_start_icon)
 - [Experiment Icon © Ardiansyah Ardi, CC BY 3.0](https://www.iconfinder.com/icons/4951169/chemical_experiment_glass_lab_medical_icon)
 - [Doc Icons © PICOL, CC BY 3.0](https://www.iconfinder.com/iconsets/picol-vector)
-
-***
-
-Created by [Michael Becker](https://i-am-digital.eu)

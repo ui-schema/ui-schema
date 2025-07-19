@@ -478,6 +478,8 @@ new widget engine functions:
     - this undefined behaviour / normal errors isn't nice
     - an automatic correction should be optional, as imho. unexpected and may lead to more complex integration with most ORM/DMS
 - [ ] provide a demo of custom store actions which use the schema resource system for more complex recursive mutations?
+- [ ] check deps chain (again), clean up any remaining unnecessary dependencies
+    - [ ] remove dependency `@ui-schema/json-schema` from `ds-material`/`ds-bootstrap`
 - [ ] update documentation
     - [ ] quick start
     - [ ] new overview
@@ -492,7 +494,6 @@ new widget engine functions:
         - [ ] add docs for `/dictionary`
         - [x] add docs for `/json-pointer` (basic)
         - [x] add docs for `/json-schema` (basic)
-        - [x] add docs for `/react-json-schema` (basic)
     - [ ] basic setup/customization guide for ds-material? or is quick-start enough, incl. demo repos?
     - [ ] basic setup/customization guide for ds-bootstrap? or is quick-start enough, incl. demo repos?
     - [ ] enable external widget packages (code/color/...) once migrated to 0.5.x
@@ -506,6 +507,7 @@ new widget engine functions:
             - not required for wildcard, as `files` in route/spec is only used as definition, while index/extracted is used for search/viewer
         - [ ] remove unused meta data from generated API documentation, rather large JSON, as un-optimized tree with paths as ids
         - [ ] central docs mapping for packages, to remove `modulePath` and other such needed manual configuration for doc gen
+    - [ ] update all README documentation links once docs are published
 
 ---
 
