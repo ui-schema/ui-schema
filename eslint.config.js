@@ -277,7 +277,8 @@ export default defineConfig([
     },
     {
         files: [
-            '**/demo-server/*.{ts,tsx,mjs,js}',
+            '**/demo-server/**/*.{ts,tsx,mjs,js}',
+            'tools/**/*.{ts,tsx,mjs,cjs,js}',
             'packerConfig.js',
             'jest.config.ts',
             'eslint.config.js',

@@ -397,6 +397,7 @@ new widget engine functions:
     - [x] switch to cjs/esm build with `.cjs` file extension instead of separate folders
     - [x] switch all packages to cjs-first and `esm` in separate folder, as otherwise not backwards compatible with esm-yet-not-type-module projects (mui5/6 compat. / `NodeNext` without `type: module`)
     - [x] change all react imports to `import * as React from 'react';` for better compatibility and to not enforce `esModuleInterop` or similar for consumers
+    - [x] added test calls to ESM/CJS of build package versions, from `.js`/`.mjs`/`.cjs` files; with `type: module`, `type: commonjs` and none at all in the package.json
     - [ ] verify working behaviour once first alpha is published; sister project https://github.com/ui-schema/react-codemirror uses new build w/ MUI6 and has a verified prerelease which is used in https://github.com/control-ui/content-ui which uses NodeNext + MUI v7
 - [x] control and optimize circular package dependencies, remove all which where added as workarounds
     - [x] core packages cleaned up; ds are already clean

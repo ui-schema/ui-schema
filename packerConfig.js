@@ -385,8 +385,6 @@ packer({
         //   - `type: module`: works for node.js, resolves `/esm/*.js` file
         //     - (TS only) makes issues if the consumer has no `type: module`
         //   - `type: commonjs`: works for node.js, resolves `/*.cjs` file
-        // todo: add test calls to ESM/CJS in build package versions, from `.js`/`.mjs`/`.cjs` files
-        //       - with `type: module`, `type: commonjs` and none at all in the package.json
         if (isServing) return
         return Promise.all([
             copyRootPackageJson(({packageJson}) => {

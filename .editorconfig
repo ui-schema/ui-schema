@@ -14,7 +14,7 @@ trim_trailing_whitespace = true
 ij_continuation_indent_size = 4
 
 # todo: typescript code style broke when IJ introduced `ij_typescript_`, it does not reuse `ij_javascript_`
-[{*.cjs,*.js,*.ts,*.jsx,*.tsx}]
+[{*.cjs,*.mjs,*.js,*.ts,*.jsx,*.tsx}]
 max_line_length = 240
 ij_continuation_indent_size = 4
 ij_javascript_align_imports = false
