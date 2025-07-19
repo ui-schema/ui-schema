@@ -1,6 +1,9 @@
-// todo: this also supports `List<string>`, like used in the `/react` package
 export const typeToString = (
-    type: string[] | string | undefined,
+    type:
+        // only using `join` of an array, for interop with native Array and immutable List
+        { join(separator?: string): string }
+        | string
+        | undefined,
 ): string =>
     typeof type === 'string' ? type :
         typeof type !== 'undefined' && 'join' in type ?
