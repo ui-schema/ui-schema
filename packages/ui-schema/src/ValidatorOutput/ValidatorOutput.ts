@@ -1,4 +1,4 @@
-import { List, Map, MapOf } from 'immutable'
+import type { List, Map, MapOf } from 'immutable'
 
 export interface ValidationErrorBasic {
     keywordLocation: string
@@ -38,9 +38,6 @@ interface ValidationError extends Partial<ValidationErrorBasic> {
     error: string
 }
 
-export type ValidationErrorImmutable = MapOf<Omit<ValidationError, 'context'> & { context?: Map<any, any> }>
-export type ValidationErrorsImmutable = List<ValidationErrorImmutable>
-
 export interface ValidatorErrorsInterface {
     errCount: number
     errors: ValidationError[]
@@ -68,5 +65,8 @@ export class ValidatorOutput implements ValidatorErrorsInterface {
         return this
     }
 }
+
+export type ValidationErrorImmutable = MapOf<Omit<ValidationError, 'context'> & { context?: Map<any, any> }>
+export type ValidationErrorsImmutable = List<ValidationErrorImmutable>
 
 export type onErrorHandler = (errors: ValidationErrorsImmutable | undefined) => void

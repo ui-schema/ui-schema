@@ -1,4 +1,4 @@
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
 import { List, Map } from 'immutable'
 import { getTranslatableEnum } from '@ui-schema/ui-schema/getTranslatableEnum'
@@ -9,7 +9,7 @@ export interface OptionValueSchema<V = string | number> {
     text: string
     fallback: string
     context: any
-    schema: UISchemaMap | undefined
+    schema: SomeSchema | undefined
 }
 
 /**
@@ -17,7 +17,7 @@ export interface OptionValueSchema<V = string | number> {
  * defined by `const` keywords within `oneOf`, `anyOf` structures.
  */
 const flattenSchemaOptions = (
-    schema: UISchemaMap,
+    schema: SomeSchema,
     tt?: tt,
 ): List<OptionValueSchema> => {
     // todo: validate this behaviour, as applied-schema merging hoists the applied options `const`!
@@ -37,7 +37,7 @@ const flattenSchemaOptions = (
 
     let collectedOptions = List<OptionValueSchema>()
 
-    const oneOf = schema.get('oneOf') as List<UISchemaMap> | undefined
+    const oneOf = schema.get('oneOf') as List<SomeSchema> | undefined
     if (List.isList(oneOf)) {
         const oneOfOptions = oneOf.flatMap(subSchema =>
             flattenSchemaOptions(subSchema, schema.get('ttEnum') as tt ?? tt),
@@ -45,7 +45,7 @@ const flattenSchemaOptions = (
         collectedOptions = collectedOptions.concat(oneOfOptions)
     }
 
-    const anyOf = schema.get('anyOf') as List<UISchemaMap> | undefined
+    const anyOf = schema.get('anyOf') as List<SomeSchema> | undefined
     if (List.isList(anyOf)) {
         const anyOfOptions = anyOf.flatMap(subSchema =>
             flattenSchemaOptions(subSchema, schema.get('ttEnum') as tt ?? tt),
@@ -60,7 +60,7 @@ const flattenSchemaOptions = (
     //       but what about `allOf` in `oneOf`?
     // // `allOf` is a conjunction (AND), combining multiple schemas.
     // // We must merge all sub-schemas into one before trying to find options.
-    // const allOf = schema.get('allOf') as List<UISchemaMap> | undefined
+    // const allOf = schema.get('allOf') as List<SomeSchema> | undefined
     // if (List.isList(allOf)) {
     //     // Start with the base schema (without `allOf` itself)
     //     let mergedSchema = schema.delete('allOf')
@@ -82,7 +82,7 @@ const flattenSchemaOptions = (
  */
 export const getOptionsFromSchema = <V = string | number>(
     storeKeys: StoreKeys,
-    schema: UISchemaMap | undefined,
+    schema: SomeSchema | undefined,
 ): {
     enumValues: List<V> | undefined
     valueSchemas: List<OptionValueSchema<V>> | undefined
@@ -142,7 +142,7 @@ export const getOptionsFromSchema = <V = string | number>(
 
 export const useOptionsFromSchema = <V = string | number>(
     storeKeys: StoreKeys,
-    schema: UISchemaMap | undefined,
+    schema: SomeSchema | undefined,
 ): {
     enumValues: List<V> | undefined
     valueSchemas: List<OptionValueSchema<V>> | undefined

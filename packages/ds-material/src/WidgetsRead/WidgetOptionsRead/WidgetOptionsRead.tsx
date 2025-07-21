@@ -6,7 +6,7 @@ import { Translate } from '@ui-schema/react/Translate'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { StoreKeys, extractValue } from '@ui-schema/react/UIStore'
 import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import Box from '@mui/material/Box'
 import { TitleBoxRead } from '@ui-schema/ds-material/Component/TitleBoxRead'
@@ -19,7 +19,7 @@ const checkActive = (list: List<any>, name: string | undefined | number) => list
 const MultiOptionsItemsBase: React.ComponentType<{
     storeKeys: StoreKeys
     valueSchemas?: List<OptionValueSchema>
-    schema: UISchemaMap
+    schema: SomeSchema
     dense: boolean
     value?: any
 }> = (
@@ -36,7 +36,7 @@ const MultiOptionsItemsBase: React.ComponentType<{
                 key={i}
             >
                 <Translate
-                    schema={schema?.get('t') as unknown as UISchemaMap}
+                    schema={schema?.get('t') as unknown as SomeSchema}
                     text={text}
                     context={context}
                     fallback={fallback}
@@ -91,7 +91,7 @@ export const WidgetOptionsRead: React.ComponentType<WidgetProps<BindingTypeGener
     const isMultiOption = Boolean(schema.get('items'))
     const {valueSchemas} = useOptionsFromSchema(
         storeKeys,
-        schema.get('items') ? schema.get('items') as UISchemaMap : schema,
+        schema.get('items') ? schema.get('items') as SomeSchema : schema,
     )
     return <Box onClick={onClick} style={style} tabIndex={onClick ? 0 : undefined}>
         <TitleBoxRead

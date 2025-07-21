@@ -222,10 +222,12 @@ export function walkBranch(
         'if', 'then', 'else',
         'not',
         'propertyNames',
-        'additionalPropertySchema',
+        'additionalProperties',
+        'additionalItems',
     ]
     nestedSchemaKeyword.forEach(keyword => {
         const keywordSchema = schema.get(keyword)
+        // todo: some keywords could be `boolean`, which shouldn't be indexed as schema, but still be in tree
         if (keywordSchema && typeof keywordSchema === 'object') {
             branch.children ||= new Map()
             const childBranch = addSchemaBranch(

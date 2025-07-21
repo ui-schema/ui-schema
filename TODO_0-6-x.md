@@ -26,7 +26,7 @@
     - unify onChange/actions-reducers config with general store config? or provide a action-reducers-plugin part to simplify customization via config. (e.g. `doNotDefault` is not known by `list-item-default`)
 - instead of checking if an action is value affecting, the updater/reducers should return better what they have done, if anything at all
 - after removing deprecations and working basics of the new store context, check the circular references in types of binding, WidgetPlugin, WidgetPops and UIMeta, UIStore contexts and try to remove all
-- add utils/hooks for easier usage of resolved nested schemas
+- add utils/hooks for easier usage of resolved nested schemas (**TBD:** refine with new `getFields`/static fields concept)
     - `getItemsSchema` - resolve and get the `items` schema
         - needed in e.g. `TableRenderer` to know the items fields before rendering them
     - `getItemSchema(schema, index, itemValue)` - resolve and get the schema for one specific value

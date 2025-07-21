@@ -2,7 +2,7 @@ import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
 import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
 import * as React from 'react'
 import { OrderedMap } from 'immutable'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
@@ -94,8 +94,8 @@ export interface AccordionsRendererProps {
         childInvalid: boolean
         valid: boolean
         isOpen: boolean
-        schema: UISchemaMap
-        parentSchema: UISchemaMap | undefined
+        schema: SomeSchema
+        parentSchema: SomeSchema | undefined
         storeKeys: StoreKeys
     }>
 }
@@ -113,7 +113,7 @@ export const AccordionsRendererBase = (
     const properties = schema.get('properties') as OrderedMap<string, any> | undefined
 
     return <>
-        {properties?.map((childSchema: UISchemaMap, childKey: StoreKeyType): React.ReactElement =>
+        {properties?.map((childSchema: SomeSchema, childKey: StoreKeyType): React.ReactElement =>
             <AccordionStack
                 key={childKey}
                 {...props}

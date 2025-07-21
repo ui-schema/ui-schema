@@ -4,7 +4,7 @@ import type { CSSProperties, EventHandler } from 'react'
 import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
-import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
+import { schemaRulesToNative } from '@ui-schema/ui-schema/schemaRulesToNative'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import InputBase, { InputBaseProps, InputBaseComponentProps } from '@mui/material/InputBase'
@@ -42,7 +42,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<BindingTypeGene
         onClick, onFocus, onBlur, onKeyUp, onKeyDown,
         // eslint-disable-next-line @typescript-eslint/no-deprecated
         onKeyPress,
-        inputProps = {},
+        inputProps: inputPropsProp = {},
         inputRef: customInputRef,
         labelledBy, binding,
     },
@@ -55,9 +55,10 @@ export const StringRendererCell: React.ComponentType<WidgetProps<BindingTypeGene
     const format = schema.get('format') as string | undefined
     const currentRef = inputRef.current
 
-    inputProps = schemaRulesToNative(inputProps, schema)
+    const inputPropsFromSchema = schemaRulesToNative(schema)
+    const inputProps = {...inputPropsProp}
 
-    if (schemaTypeIs(schema.get('type') as SchemaTypesType, 'number') && typeof inputProps['step'] === 'undefined') {
+    if (schemaTypeIs(schema.get('type') as SchemaTypesType, 'number') && typeof inputPropsFromSchema['step'] === 'undefined') {
         //inputProps['step'] = 'any'
     }
 
@@ -140,7 +141,7 @@ export const StringRendererCell: React.ComponentType<WidgetProps<BindingTypeGene
                     data: {value: newVal},
                 })
             }}
-            inputProps={inputProps}
+            inputProps={inputProps && inputPropsFromSchema ? {...inputPropsFromSchema, ...inputProps} : inputProps || inputPropsFromSchema}
             endAdornment={
                 InfoRenderer && schema?.get('info') ?
                     <InfoRenderer

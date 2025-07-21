@@ -17,7 +17,7 @@ import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { List, Map } from 'immutable'
 import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { UIStoreActionListItemDelete } from '@ui-schema/react/UIStoreActions'
 import { ButtonProps } from '@mui/material/Button'
 
@@ -38,7 +38,7 @@ export const SimpleListItemBase: React.FC<SimpleListItemProps & WithOnChange> = 
         <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
             <WidgetEngine
                 showValidity={showValidity} noGrid
-                schema={schema.get('items') as UISchemaMap} parentSchema={schema}
+                schema={schema.get('items') as SomeSchema} parentSchema={schema}
                 storeKeys={storeKeys.push(index)}
             />
         </div>

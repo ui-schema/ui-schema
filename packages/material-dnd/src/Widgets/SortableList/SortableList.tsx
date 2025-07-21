@@ -1,3 +1,4 @@
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import * as React from 'react'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WithOnChange } from '@ui-schema/react/UIStore'
@@ -14,7 +15,6 @@ import { OrderedMap } from 'immutable'
 import { genId } from '@ui-schema/kit-dnd'
 import { DndListRenderer } from '@ui-schema/material-dnd/DndListRenderer'
 import { SortableListItem } from '@ui-schema/material-dnd/WidgetsBase/SortableListItem'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 export interface SortableListProps {
     scoped?: boolean
@@ -25,7 +25,7 @@ export const SortableListBase = (
     {
         idKey = '_bid',
         ...props
-    }: WidgetProps & WithOnChange & SortableListProps
+    }: WidgetProps & WithOnChange & SortableListProps,
 ): React.ReactElement => {
     const uid = React.useId()
     const {schema, storeKeys, onChange} = props
@@ -34,7 +34,7 @@ export const SortableListBase = (
     const notAddable = schema.get('notAddable')
     //const notDeletable = schema.get('notDeletable')
 
-    const itemsSchema = schema.get('items') as UISchemaMap
+    const itemsSchema = schema.get('items') as SomeSchema
     return <>
         {schema.getIn(['view', 'hideTitle']) ? null :
             <Typography

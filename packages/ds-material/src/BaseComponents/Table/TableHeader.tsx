@@ -20,7 +20,7 @@ export const TableHeader: React.ComponentType<TableHeaderProps> = (
         readOnly,
     },
 ) => {
-    let cellSchema = (itemsSchema.get('items') as List<any>) || (itemsSchema.get('properties') as Map<string, any>)
+    let cellSchema = itemsSchema?.get('prefixItems') || (List.isList(itemsSchema?.get('items')) ? (itemsSchema.get('items') as List<any>) : undefined) || (itemsSchema.get('properties') as Map<string, any>)
     if (
         /* todo: happy-path issue, always using object and requires value-based decision otherwise */
         schemaTypeIs(itemsSchema.get('type') as SchemaTypesType, 'object') &&
@@ -58,7 +58,7 @@ export const TableHeader: React.ComponentType<TableHeaderProps> = (
                         </div>
                     </TableCell> : null,
                 ).valueSeq()}
-                {!readOnly ? <TableCell/> : null}
+                {!readOnly ? <TableCell sx={{width: '1px'}}/> : null}
             </TableRow>
             : null}
     </TableHead>

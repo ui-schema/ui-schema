@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { extractValue } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widget'
 import { memo } from '@ui-schema/react/Utils/memo'
@@ -20,7 +20,7 @@ export const SelectChipsBase: React.ComponentType<WidgetProps> = (
         valid,
     },
 ) => {
-    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as UISchemaMap)
+    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as SomeSchema)
 
     const currentValue = (List.isList(value) ? value : (List(schema.get('default') as string[]) || List())) as List<string>
 
@@ -34,7 +34,7 @@ export const SelectChipsBase: React.ComponentType<WidgetProps> = (
                 <Chip
                     key={itemValue}
                     label={<Translate
-                        schema={itemSchema?.get('t') as unknown as UISchemaMap}
+                        schema={itemSchema?.get('t') as unknown as SomeSchema}
                         text={text}
                         context={context}
                         fallback={fallback}

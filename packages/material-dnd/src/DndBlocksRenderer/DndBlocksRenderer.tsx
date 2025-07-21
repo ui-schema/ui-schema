@@ -1,3 +1,4 @@
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import * as React from 'react'
 import { List, Map, OrderedMap } from 'immutable'
 import { DndBlock, useBlocks } from '@ui-schema/material-dnd/DragDropBlockProvider'
@@ -5,13 +6,12 @@ import { DndListItemComponentProps } from '@ui-schema/material-dnd/DndListRender
 import { DraggableRendererProps } from '@ui-schema/kit-dnd/useDraggable'
 import { matchBlock } from '@ui-schema/material-dnd/DndBlocksRenderer'
 import { WidgetProps } from '@ui-schema/react/Widget'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { extractValue, WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
 import { memo } from '@ui-schema/react/Utils/memo'
 
 export interface DndBlocksRendererItemProps extends Pick<WidgetProps, 'storeKeys' | 'required'> {
     block: DndBlock
-    listSchema: UISchemaMap
+    listSchema: SomeSchema
     noDragOnNodes?: string[]
 }
 
@@ -19,7 +19,7 @@ export interface DndBlocksRendererProps extends Pick<WidgetProps, 'storeKeys' | 
     Item: React.ComponentType<Omit<DraggableRendererProps, 'scope' | 'dataKeys'> & DndBlocksRendererItemProps & WithOnChange>
 
     // the schema of the `array` level
-    listSchema: UISchemaMap
+    listSchema: SomeSchema
 }
 
 export type DndBlocksRendererType = (props: DndBlocksRendererProps) => React.ReactElement
@@ -67,7 +67,7 @@ export const DndBlocksRendererBase = (
                 isFirst={j === 0}
 
                 storeKeys={storeKeys.push(j)}
-                listSchema={listSchema as UISchemaMap}
+                listSchema={listSchema as SomeSchema}
                 block={block}
                 onChange={onChange}
                 // passing the `required` from the parent down, so e.g. `list-item-delete` correctly also deletes an empty required array

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import type { MouseEventHandler } from 'react'
 import Grid, { GridSize } from '@mui/material/Grid'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { OrderedMap } from 'immutable'
 
@@ -11,7 +11,7 @@ import { OrderedMap } from 'immutable'
  * Use `GridItemPlugin` for MUI 7.
  */
 export const SchemaGridItemLegacy: React.ComponentType<React.PropsWithChildren<{
-    schema: UISchemaMap
+    schema: SomeSchema
     defaultMd?: GridSize
     style?: React.CSSProperties
     className?: string

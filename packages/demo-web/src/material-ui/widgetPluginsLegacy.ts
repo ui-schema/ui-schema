@@ -1,4 +1,7 @@
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
+import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin'
+import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
+import { schemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 import { WidgetPluginType } from '@ui-schema/react/WidgetEngine'
 import { DefaultHandler } from '@ui-schema/react/DefaultHandler'
 import { CombiningHandler } from '@ui-schema/react/CombiningHandler'
@@ -21,6 +24,10 @@ export const widgetPluginsLegacy: WidgetPluginType[] = [
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     ConditionalHandler,
     // SchemaPluginsAdapter,
+    schemaPluginsAdapterBuilder([
+        validatorPlugin,
+        requiredPlugin,
+    ]),
     ValidityReporter,
     WidgetRenderer as WidgetPluginType,
 ]

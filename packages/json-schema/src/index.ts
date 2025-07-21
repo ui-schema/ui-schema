@@ -1,7 +1,6 @@
 export * from './Definitions/index.js'
 export * from './InheritKeywords/index.js'
 export * from './RequiredPlugin/index.js'
-export * from './schemaRulesToNative/index.js'
 export * from './SortPlugin/index.js'
 export * from './StandardValidators/index.js'
 export * from './Validator/index.js'

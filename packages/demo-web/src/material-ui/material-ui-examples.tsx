@@ -84,6 +84,7 @@ const customWidgets: MuiBinding = {
     widgets: {
         ...typeWidgets,
         ...bindingExtended,
+        array: bindingExtended.GenericList,
         SelectChips: SelectChips,
         Table: CustomTableBase,
         TableAdvanced: TableAdvanced,

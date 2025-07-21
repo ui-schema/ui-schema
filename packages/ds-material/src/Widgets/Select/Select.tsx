@@ -6,7 +6,7 @@ import MenuItem from '@mui/material/MenuItem'
 import MuiSelect, { SelectProps as MuiSelectProps } from '@mui/material/Select'
 import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { WidgetProps } from '@ui-schema/react/Widget'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { useOptionsFromSchema } from '@ui-schema/ds-material/Utils'
@@ -46,7 +46,7 @@ export const Select = <P extends SelectProps>(
             label={<TranslateTitle schema={schema} storeKeys={storeKeys}/>}
             renderValue={selected => {
                 const valueSchema = valueSchemas?.find(oof => oof.value === selected)
-                const Translated = t(selected, valueSchema?.context, valueSchema?.schema?.get('t') as UISchemaMap)
+                const Translated = t(selected, valueSchema?.context, valueSchema?.schema?.get('t') as SomeSchema)
                 return typeof Translated === 'string' || typeof Translated === 'number' ?
                     Translated :
                     valueSchema?.fallback
@@ -74,7 +74,7 @@ export const Select = <P extends SelectProps>(
                     disabled={schema?.get('readOnly') as boolean}
                 >
                     <Translate
-                        schema={schema?.get('t') as UISchemaMap}
+                        schema={schema?.get('t') as SomeSchema}
                         text={text}
                         context={context}
                         fallback={fallback}

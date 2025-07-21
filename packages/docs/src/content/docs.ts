@@ -96,6 +96,7 @@ export const routesPackages = [
             createDoc('core/schemapluginstack', 'SchemaPluginStack'),
             createDoc('core/schemaresource', 'SchemaResource'),
             createDoc('core/schematype', 'SchemaType Test'),
+            createDoc('core/getfields', 'Schema Fields'),
             createDoc('core/localization', 'Core: Localization'),
             createDoc('core/utils', 'Core: Utils'),
         ],

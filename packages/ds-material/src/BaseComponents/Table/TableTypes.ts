@@ -1,7 +1,7 @@
 import { onChangeHandler, StoreKeys, WithOnChange } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widget'
 import { Translator } from '@ui-schema/ui-schema/Translator'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import * as React from 'react'
 import { List, OrderedMap } from 'immutable'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
@@ -13,6 +13,7 @@ export interface TableRowProps {
     dense: boolean
     setPage: React.Dispatch<React.SetStateAction<number>>
     showRows: number | undefined
+    requiredList: boolean | undefined
 }
 
 export interface TableRendererExtractorProps {
@@ -42,8 +43,8 @@ export interface TablePaginationActionsProps {
 export interface TableHeaderProps {
     validItemSchema: boolean
     dense: boolean
-    schema: UISchemaMap
-    itemsSchema: UISchemaMap
+    schema: SomeSchema
+    itemsSchema: SomeSchema
     storeKeys: StoreKeys
     readOnly: boolean
     uid: string
@@ -61,7 +62,7 @@ export interface TableFooterProps extends ListButtonOverwrites {
     setRows: React.Dispatch<React.SetStateAction<number>>
     onChange: onChangeHandler
     storeKeys: StoreKeys
-    schema: UISchemaMap
+    schema: SomeSchema
     showValidity: boolean | undefined
     colSize: number
     rowsPerPage: List<number | { label: string, value: number }>

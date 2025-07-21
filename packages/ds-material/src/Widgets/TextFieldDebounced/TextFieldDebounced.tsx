@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField'
 import type { InputProps } from '@mui/material/Input'
 import InputAdornment from '@mui/material/InputAdornment'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
+import { schemaRulesToNative } from '@ui-schema/ui-schema/schemaRulesToNative'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
 import { schemaTypeIs, schemaTypeIsNumeric } from '@ui-schema/ui-schema/schemaTypeIs'
@@ -56,7 +56,7 @@ export const StringRendererDebounced = (
 
     const format = schema.get('format')
 
-    inputProps = schemaRulesToNative(inputProps, schema)
+    const inputPropsFromSchema = schemaRulesToNative(schema)
 
     const hideTitle = schema.getIn(['view', 'hideTitle'])
 
@@ -120,7 +120,7 @@ export const StringRendererDebounced = (
             /* eslint-disable-next-line @typescript-eslint/no-deprecated */
             InputProps={InputProps}
             /* eslint-disable-next-line @typescript-eslint/no-deprecated */
-            inputProps={inputProps}
+            inputProps={inputProps && inputPropsFromSchema ? {...inputPropsFromSchema, ...inputProps} : inputProps || inputPropsFromSchema}
         />
 
         <ValidityHelperText

@@ -3,18 +3,18 @@ import * as React from 'react'
 import FormHelperText from '@mui/material/FormHelperText'
 import { Translate } from '@ui-schema/react/Translate'
 import { showValidity } from '@ui-schema/ui-schema/CommonTypings'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface ValidityHelperTextProps {
     showValidity: showValidity | undefined
     errors: ValidationErrorsImmutable | undefined
-    schema: UISchemaMap
+    schema: SomeSchema
     browserError?: React.ReactNode | React.ReactElement
 }
 
 export interface LocaleHelperTextProps {
     text: string
-    schema: UISchemaMap
+    schema: SomeSchema
     context?: any
     error?: boolean
 }

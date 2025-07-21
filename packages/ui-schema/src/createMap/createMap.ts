@@ -1,4 +1,4 @@
-import { Seq, List, Map, OrderedMap, fromJS, Record } from 'immutable'
+import { Seq, List, Map, OrderedMap, fromJS } from 'immutable'
 
 export type ValueOrImmutableOrdered<V = any> =
     V extends string | number | boolean | null ? V :
@@ -56,12 +56,6 @@ export const createMapStrict = <P extends object = object>(data: P): NestedMap<P
 // ---
 
 export function fromJSOrdered<P>(js: P): P extends unknown[] ? List<any> : P extends object ? OrderedMap<any, any> : P {
-    if (Map.isMap(js) || OrderedMap.isOrderedMap(js) || List.isList(js) || Record.isRecord(js)) {
-        if (process.env.NODE_ENV === 'development') {
-            console.warn('converting immutable to immutable may lead to wrong types')
-        }
-    }
-
     return (
         typeof js !== 'object' || js === null ? js :
             Array.isArray(js) ?

@@ -51,6 +51,7 @@ List of renamed functions, components etc., most are also moved to other package
 - removed `react-uid` dependency
 - optimize useOptionsFromSchema, add basic support for collecting options from nested oneOf/anyOf, apply normalization also on `const`, same like `enum`
 - support `name` attribute generation on inputs
+- fix wrong required was used in table when deleting row
 
 ### DS Bootstrap
 
@@ -73,6 +74,8 @@ List of renamed functions, components etc., most are also moved to other package
 - `matchWidget` now return identifiers about what has matched
 - renamed `ErrorNoWidgetMatching` to `ErrorNoWidgetMatches`
 - `input[name]` attribute generator with `storeKeys`, optional enabled via ui meta context
+- new `getFields` function for normalized access to children keywords (array items/object properties)
+    - with static fields retrieval, for value-less schema fields keywords normalization and resolving, like needed for the table widget (as columns must be known before rendering/having values and all rows must be uniform)
 
 Todo:
 
@@ -458,7 +461,7 @@ new widget engine functions:
 - [x] move non-react schemaPlugins into json-schema packages: `InheritKeywords`, `requiredPlugin`, `sortPlugin`, `validatorPlugin`
 - [x] deprecate `useUIConfig`/`UIConfigProvider`
 - [x] deprecated `onErrors`, use `store.extractValidity(storeKeys)` instead; the `ValidityReporter` now includes full error details
-- [ ] optimize unnecessary rendering of empty parts, e.g. `ObjectRenderer` only checks for `properties` existence, but not if empty (maybe add the `getFields` utils already?)
+- [ ] optimize unnecessary rendering of empty parts, e.g. `ObjectRenderer` only checks for `properties` existence, but not if empty (maybe add the `getFields` utils here?)
 - [x] ~~remove or~~ just deprecate the `injectWidgetEngine`, `applyWidgetEngine` HOCs? type migration will be a headache
     - these functions never provided much optimization
     - people who need that micro optimization, should get better ways to do it their way (which now exists, also as `SchemaRootProvider` provides access to the root level schema)
@@ -467,6 +470,8 @@ new widget engine functions:
 - [x] deprecate `applyWidgetEngine*`: `WidgetEngineInjectProps`, `AppliedWidgetEngineProps`, `applyWidgetEngine`, `injectWidgetEngine`
     - without full migration, they work like previously and are compatible with new system, but their types where not optimized/verified
 - [ ] check `mergeSchema` changes and adjust to respect new applicable schema merging strategy
+    - [ ] previously last-allOf overwrites, check that it is still the case
+    - [ ] `$ref` extends-style chains are official in draft2020, check that following correct order
 - [x] reworked integration of `WidgetRenderer` with new `widgetPlugin`, now thew new `Next` injects the `WidgetRenderer` as the final (or first) `Next` itself
     - the binding `.WidgetRenderer` and `.widgetPlugins` are materialized in `UIMetaProvider` and `Next` rendering is started in `WidgetEngine`, the materialized and must not be modified after passing down and `widgetPlugins` must not be rendered manually, it is no longer possible to skip plugins (which was previously possible by increasing `currentPluginIndex`, yet would have been a bad pattern anyways)
 - [ ] in pickers only types are migrated and props adjusted for `fullWidth`, nothing else was verified
@@ -486,6 +491,8 @@ new widget engine functions:
     - [ ] new overview
     - [x] optimized widgets section, with previous overview as index
     - [ ] separate schema related concepts and docs, like translations, and link to docs of their implementations
+    - [ ] add links to validators in schema overview table? or add information about "opinionated" validators to table/footnotes?
+        - [ ] at least, add basic introduction to opinionated JSON Schema evaluation for UI generation
     - [ ] replace old plugins page with overview and links to new widgetPlugins, schemaPPluginsAdapter and validator
     - [ ] for core and react, separate guides from api docs
         - [ ] create general usage guides (for react)
@@ -508,6 +515,7 @@ new widget engine functions:
             - not required for wildcard, as `files` in route/spec is only used as definition, while index/extracted is used for search/viewer
         - [ ] remove unused meta data from generated API documentation, rather large JSON, as un-optimized tree with paths as ids
         - [ ] central docs mapping for packages, to remove `modulePath` and other such needed manual configuration for doc gen
+    - [ ] add split-schema example in readme/docs where embedded/combined schema is shown/in quickstarts
     - [ ] update all README documentation links once docs are published
 
 ---

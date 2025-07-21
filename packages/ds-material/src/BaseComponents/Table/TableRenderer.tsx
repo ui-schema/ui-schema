@@ -1,16 +1,12 @@
 import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
-import { makeParams } from '@ui-schema/json-schema/Validator'
-import { mergeSchemas } from '@ui-schema/json-schema/ValidatorPlugin'
 import { useSchemaResource } from '@ui-schema/react/SchemaResourceProvider'
+import { getFields } from '@ui-schema/ui-schema/getFields'
 import * as React from 'react'
 import { extractValue, WithOnChange } from '@ui-schema/react/UIStore'
-import { useUIMeta } from '@ui-schema/react/UIMeta'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
-import { isSomeSchema, SchemaTypesType, SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
-import { schemaTypeIsAny } from '@ui-schema/ui-schema/schemaTypeIs'
 import { List, OrderedMap } from 'immutable'
 import MuiTable from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -21,6 +17,7 @@ import { ListButtonOverwrites } from '@ui-schema/ds-material/Component'
 export const TableRendererBase: React.ComponentType<Omit<WidgetProps<BindingTypeGeneric & MuiBindingComponents>, 'value' | 'internalValue' | 'errors' | 'valid'> & WithOnChange & TableRendererBaseProps & ListButtonOverwrites> = (
     {
         storeKeys, schema, onChange,
+        required,
         showValidity,
         // binding must come from an own wrapper component, to overwrite/enable any widgets for special `TableCell` formatting
         binding,
@@ -34,7 +31,6 @@ export const TableRendererBase: React.ComponentType<Omit<WidgetProps<BindingType
         btnSize: btnSizeProp,
         btnVariant: btnVariantProp,
         btnColor: btnColorProp,
-        validate,
     },
 ) => {
     const uid = React.useId()
@@ -46,34 +42,29 @@ export const TableRendererBase: React.ComponentType<Omit<WidgetProps<BindingType
     const btnColor = (schema.getIn(['view', 'btnColor']) || btnColorProp || undefined) as ListButtonOverwrites['btnColor']
 
     const dense = (schema.getIn(['view', 'dense']) as boolean) || false
-    // todo: move to a util that gets the resolved items when needed,
-    //       resolve any $ref in `items`, yet don't handle any conditionals - as that only works with the items value
-    const itemsSchema =
-        validate && resource ?
-            mergeSchemas(schema.get('items'), ...validate?.(
-                schema.get('items'),
-                undefined,
-                {
-                    ...makeParams(),
-                    recursive: false,
-                    resource: resource,
-                },
-            )?.applied || []) :
-            schema.get('items') as SomeSchema
+    const itemsSchema = React.useMemo(() => {
+        const schemaFields = getFields(schema, {resource})
+        const staticSchema = schemaFields.getStaticSchema()
+        // a Table can only be in an array with a homogeneous items,
+        // the schema in `.items` is prepared to contain e.g. titles in available root branch
+        return staticSchema?.get('items')
+    }, [schema, resource])
+
     const readOnly = schema.get('readOnly') as boolean
 
     const currentRows = rows === -1 ? listSize || 0 : rows
     const currentRowsStartVisible = page * currentRows
 
-    const validItemSchema = itemsSchema && isSomeSchema(itemsSchema) &&
-        schemaTypeIsAny(itemsSchema.get('type') as SchemaTypesType, ['array', 'object'])
-
-    if (process.env.NODE_ENV === 'development' && !validItemSchema) {
-        console.error('TableRenderer invalid `items` schema at storeKeys:', storeKeys?.toJS(), itemsSchema.toJS())
-    }
+    const validItemSchema =
+        itemsSchema && (
+            itemsSchema?.get('prefixItems')
+            || List.isList(itemsSchema?.get('items'))
+            || itemsSchema?.get('properties')
+        )
 
     const visibleCols = (
-        (itemsSchema.get('items') as List<any>)?.filter(p => !p.get('hidden')) ||
+        (itemsSchema?.get('prefixItems') as List<any>)?.filter(p => !p.get('hidden')) ||
+        (List.isList(itemsSchema?.get('items')) ? (itemsSchema.get('items') as List<any>)?.filter(p => !p.get('hidden')) : undefined) ||
         (itemsSchema.get('properties') as OrderedMap<string, any>)?.filter(p => !p.get('hidden')).keySeq()
     )
 
@@ -109,6 +100,7 @@ export const TableRendererBase: React.ComponentType<Omit<WidgetProps<BindingType
                                 WidgetOverride={TableRowRenderer}
                                 setPage={setPage}
                                 showRows={isVirtual ? undefined : rows}
+                                requiredList={required}
                                 uid={uid}
                                 // todo: some table rows like `DragDrop` would need info like "is-first-row", "is-last-row", "is-only-row"
                                 //listSize={listSize}
@@ -162,11 +154,10 @@ export const TableRendererExtractor: React.ComponentType<WidgetProps<BindingType
         ...props
     },
 ) => {
-    const {t} = useUIMeta()
     // extracting and calculating the list size here, not passing down the actual list for performance reasons
     // https://github.com/ui-schema/ui-schema/issues/115
     return <TableContext.Provider value={{errors, valid}}>
-        <TableRendererBaseMemo {...props} listSize={List.isList(value) ? value.size : 0} t={t}/>
+        <TableRendererBaseMemo {...props} listSize={List.isList(value) ? value.size : 0}/>
     </TableContext.Provider>
 }
 

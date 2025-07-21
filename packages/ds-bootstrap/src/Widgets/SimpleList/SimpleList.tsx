@@ -1,5 +1,5 @@
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { WidgetProps } from '@ui-schema/react/Widget'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import * as React from 'react'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { memo } from '@ui-schema/react/Utils/memo'
@@ -32,7 +32,7 @@ const SimpleList = extractValue(memo((
                             showValidity={showValidity}
                             storeKeys={storeKeys.push(i)}
                             parentSchema={schema}
-                            schema={schema.get('items') as UISchemaMap}
+                            schema={schema.get('items') as SomeSchema}
                             noGrid
                         />
                     </div>

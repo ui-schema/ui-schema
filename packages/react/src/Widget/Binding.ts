@@ -107,7 +107,7 @@ export interface WidgetMatchProps<WP extends WidgetPayload = WidgetPayload> {
 export type BindingTypeGeneric<TW extends {} = {}> =
     Omit<BindingComponents, 'widgetPlugins'> &
     {
-        widgetPlugins?: ComponentType<any>[]
+        widgetPlugins?: MinimalComponentType<any>[]
 
         /**
          * The component which is rendered inside the WidgetEngine, after any widgetPlugin is applied.

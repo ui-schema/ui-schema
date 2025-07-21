@@ -1,10 +1,10 @@
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import type { ComponentType, ReactNode } from 'react'
 import { List, Map, OrderedMap } from 'immutable'
 import { DraggableRendererProps } from '@ui-schema/kit-dnd/useDraggable'
 import { WidgetProps } from '@ui-schema/react/Widget'
 import { extractValue, WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
 import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 import { memo } from '@ui-schema/react/Utils/memo'
 
 export interface DndListItemComponentProps extends Pick<WidgetProps, 'storeKeys' | 'schema' | 'parentSchema' | 'required'> {
@@ -23,12 +23,12 @@ export interface DndListRendererProps {
     scoped?: string
 
     // the schema of the `array` level
-    parentSchema: UISchemaMap
+    parentSchema: SomeSchema
 
     // either `itemsSchema` OR `schemaFromArea`L
     //
     // the schema for the `array` items
-    itemsSchema: UISchemaMap
+    itemsSchema: SomeSchema
 
     storeKeys: StoreKeys
     required?: boolean
@@ -78,7 +78,7 @@ export const DndListRendererBase = (
             itemType={itemType as string}
 
             storeKeys={storeKeys.push(j)}
-            schema={itemsSchema as UISchemaMap}
+            schema={itemsSchema as SomeSchema}
             parentSchema={parentSchema}
             onChange={onChange}
             // passing the `required` of the object down, so e.g. `list-item-delete` correctly also deletes an empty required array
