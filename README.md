@@ -154,7 +154,8 @@ import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin';
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault';
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended';
 import { GridContainer } from '@ui-schema/ds-material/GridContainer';
-import { SchemaGridHandler } from '@ui-schema/ds-material/Grid';
+import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'; // MUI v5/v6
+// import { GridItemPlugin } from '@ui-schema/ds-material/GridItemPlugin'; // MUI v7
 import Button from '@mui/material/Button';
 
 // could be fetched from some API or bundled with the app
@@ -253,6 +254,7 @@ const customBinding = {
         ]),
 
         SchemaGridHandler, // MUI v5/6 Grid item
+        // GridItemPlugin, // MUI v7 Grid item
 
         ValidityReporter, // keeps `valid`/`errors` in sync with `store`
     ],

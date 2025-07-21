@@ -22,7 +22,7 @@ List of renamed functions, components etc., most are also moved to other package
 - `ObjectGroup` > `SchemaLayer`
 - `Translate/Trans` > `Translate`
 - `Translate/TransTitle` > `TranslateTitle`
-- `Translate/relT` > `translatorRelative`
+- `Translate/relT` > `TranslatorRelative`
     - `relT` > `getSchemaTranslationRelative`
     - `relTranslator` > `translatorRelative`
 
@@ -47,11 +47,11 @@ List of renamed functions, components etc., most are also moved to other package
 - ~~added `Grid2` components and plugins, for future migration path from mui5/6 to 7~~
 - added `GridItemPlugin` for mui v7, with `Grid['size']` property, *not using `Grid2`*, *not compatible with v5/6*
 - [ ] list widgets, like GenericList, should reuse the components group, to be able to influence their grid component, as it must match what is then used in plugins
-- fix `forbidInvalidNumber` prevents too much for keyboard control
+- fixed `forbidInvalidNumber`, prevented too much for keyboard control
 - removed `react-uid` dependency
 - optimize useOptionsFromSchema, add basic support for collecting options from nested oneOf/anyOf, apply normalization also on `const`, same like `enum`
 - support `name` attribute generation on inputs
-- fix wrong required was used in table when deleting row
+- fixed wrongly used required in table when deleting row
 
 ### DS Bootstrap
 
@@ -353,20 +353,6 @@ Todo:
       for overriding the next widgets, like done in table; maybe via a new `container` prop, which would replace the overwriting with a general way to know "where mounted",
       which would imho. be `TableCell` for the current table stuff, while `Table` is the container of `TableRow` and `TableRow` is the container of `TableCell`
 
-new widget engine functions:
-
-- root vs. location props
-- basic schema / value props
-- widgets binding override
-- widget override w/ type inference
-    - the component must be compatible and adds more types to the props
-- standard plugin / feature props
-    - isVirtual
-    - noGrid
-    - noGrid + meta overrides like sHowValidity
-- wrapper and props - but whats the feature of that? hidden, dyn. etc only work once plugins are done (or decide not render further)
-- WidgetProps schemaLocation, or those from isRoot, should be removed to another typing
-
 ## Todos Misc
 
 - [ ] tests
@@ -471,7 +457,7 @@ new widget engine functions:
     - without full migration, they work like previously and are compatible with new system, but their types where not optimized/verified
 - [ ] check `mergeSchema` changes and adjust to respect new applicable schema merging strategy
     - [ ] previously last-allOf overwrites, check that it is still the case
-    - [ ] `$ref` extends-style chains are official in draft2020, check that following correct order
+    - [ ] `$ref` extends-style chains are official in draft2020, but in contrast to UI generation - all apply concurrently, while `$ref` would be more useful for UI generation in a way of "a extends b", especially for content/ui keywords
 - [x] reworked integration of `WidgetRenderer` with new `widgetPlugin`, now thew new `Next` injects the `WidgetRenderer` as the final (or first) `Next` itself
     - the binding `.WidgetRenderer` and `.widgetPlugins` are materialized in `UIMetaProvider` and `Next` rendering is started in `WidgetEngine`, the materialized and must not be modified after passing down and `widgetPlugins` must not be rendered manually, it is no longer possible to skip plugins (which was previously possible by increasing `currentPluginIndex`, yet would have been a bad pattern anyways)
 - [ ] in pickers only types are migrated and props adjusted for `fullWidth`, nothing else was verified
@@ -485,7 +471,7 @@ new widget engine functions:
     - an automatic correction should be optional, as imho. unexpected and may lead to more complex integration with most ORM/DMS
 - [ ] provide a demo of custom store actions which use the schema resource system for more complex recursive mutations?
 - [ ] check deps chain (again), clean up any remaining unnecessary dependencies
-    - [ ] remove dependency `@ui-schema/json-schema` from `ds-material`/`ds-bootstrap`
+    - [x] remove dependency `@ui-schema/json-schema` from `ds-material`/`ds-bootstrap`
 - [ ] update documentation
     - [ ] quick start
     - [ ] new overview

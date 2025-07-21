@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/material-pickers",
-    "version": "0.5.0-alpha.0",
+    "version": "0.5.0-alpha.1",
     "description": "Date+Time Pickers for UI-Schema with Material-UI",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -60,9 +60,9 @@
         "@emotion/react": "^11.9.0",
         "@emotion/styled": "^11.8.1",
         "@mui/x-date-pickers": "^7.29.4",
-        "@ui-schema/ds-material": "~0.5.0-alpha.0",
-        "@ui-schema/ui-schema": "~0.5.0-alpha.0",
-        "@ui-schema/react": "~0.5.0-alpha.0",
+        "@ui-schema/ds-material": "~0.5.0-alpha.1",
+        "@ui-schema/ui-schema": "~0.5.0-alpha.1",
+        "@ui-schema/react": "~0.5.0-alpha.1",
         "immutable": "^5.0.0",
         "react": "^19.0",
         "react-dom": "^19.0"
