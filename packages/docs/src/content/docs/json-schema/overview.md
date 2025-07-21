@@ -17,3 +17,5 @@ npm i --save @ui-schema/json-schema @ui-schema/json-pointer @ui-schema/ui-schema
 ```
 
 This package does not depend on react and is designed for server and browser usage. While the implementation is specialized for UI generation related needs, it is a full JSON Schema validator and employs an opinionated JSON Schema traversal and processing.
+
+- [Validator](/docs/json-schema/validator)

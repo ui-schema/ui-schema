@@ -1,9 +1,9 @@
-import React from 'react'
+import * as React from 'react'
 import IconButton from '@mui/material/IconButton'
 import Delete from '@mui/icons-material/Delete'
 import { Translate } from '@ui-schema/react/Translate'
 import { onChangeHandler, StoreKeys } from '@ui-schema/react/UIStore'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
 import { TableRowProps } from '@ui-schema/ds-material/BaseComponents/Table'
 import { Map } from 'immutable'
@@ -15,7 +15,7 @@ export interface TableRowActionDeleteProps {
     setPage: TableRowProps['setPage']
     index: number
     deleteOnEmpty: boolean
-    schema: UISchemaMap | undefined
+    schema: SomeSchema | undefined
 }
 
 export const TableRowActionDelete: React.ComponentType<TableRowActionDeleteProps> = (
@@ -23,7 +23,7 @@ export const TableRowActionDelete: React.ComponentType<TableRowActionDeleteProps
         onChange, storeKeys,
         showRows = 0, setPage,
         index, deleteOnEmpty, schema,
-    }
+    },
 ) => {
     return <IconButton
         color="inherit"
@@ -33,14 +33,14 @@ export const TableRowActionDelete: React.ComponentType<TableRowActionDeleteProps
                 storeKeys: storeKeys.splice(-1, 1) as StoreKeys,
                 index: index,
                 effect: ({value}) => {
-                    if (showRows !== -1) {
+                    if (value && showRows !== -1) {
                         setPage(p => {
                             const nextPage = (Math.ceil(value.size / showRows) || 1) - 1
                             return (p < nextPage ? p : nextPage)
                         })
                     }
                 },
-                schema: Map({type: 'array'}) as UISchemaMap,
+                schema: Map({type: 'array'}) as SomeSchema,
                 required: deleteOnEmpty,
             })
         }}

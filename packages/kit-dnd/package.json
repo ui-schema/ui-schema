@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/kit-dnd",
-    "version": "0.1.0-alpha.0",
+    "version": "0.1.0-alpha.1",
     "description": "Drag and Drop Tools for (not only) UI-Schema",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -30,19 +30,21 @@
     },
     "type": "module",
     "main": "./index.cjs",
-    "module": "./index.js",
+    "module": "./esm/index.js",
     "types": "./index.d.ts",
     "exports": {
         ".": {
             "types": "./index.d.ts",
-            "import": "./index.js",
+            "import": "./esm/index.js",
             "require": "./index.cjs"
         },
         "./*": {
             "types": "./*/index.d.ts",
-            "import": "./*/index.js",
+            "import": "./esm/*/index.js",
             "require": "./*/index.cjs"
-        }
+        },
+        "./package.json": "./package.json",
+        "./esm": null
     },
     "sideEffects": false,
     "devDependencies": {

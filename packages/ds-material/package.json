@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ds-material",
-    "version": "0.5.0-alpha.0",
+    "version": "0.5.0-alpha.1",
     "description": "Material-UI Binding for UI-Schema",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -45,6 +45,7 @@
             "import": "./esm/*/index.js",
             "require": "./*/index.cjs"
         },
+        "./package.json": "./package.json",
         "./esm": null
     },
     "sideEffects": false,
@@ -53,9 +54,8 @@
         "@mui/icons-material": "^6.4",
         "@emotion/react": "^11.9.0",
         "@emotion/styled": "^11.8.1",
-        "@ui-schema/ui-schema": "~0.5.0-alpha.0",
-        "@ui-schema/react": "~0.5.0-alpha.0",
-        "@ui-schema/json-schema": "~0.5.0-alpha.0",
+        "@ui-schema/ui-schema": "~0.5.0-alpha.1",
+        "@ui-schema/react": "~0.5.0-alpha.1",
         "@types/react": "^19.0",
         "immutable": "^5.0.0",
         "react": "^19.0",
@@ -64,11 +64,10 @@
     "dependencies": {
     },
     "peerDependencies": {
-        "@mui/material": "^5.1 || ^6.4",
-        "@mui/icons-material": "^5.1 || ^6.4",
-        "@ui-schema/ui-schema": "~0.5.0-alpha.0",
-        "@ui-schema/react": "~0.5.0-alpha.0",
-        "@ui-schema/json-schema": "~0.5.0-alpha.0",
+        "@mui/material": "^5.1 || ^6.1 || ^7.0",
+        "@mui/icons-material": "^5.1 || ^6.1 || ^7.0",
+        "@ui-schema/ui-schema": "~0.5.0-alpha.1",
+        "@ui-schema/react": "~0.5.0-alpha.1",
         "react": "^18.0 || ^19.0",
         "@types/react": "^18.0 || ^19.0",
         "immutable": "^4.0.0 || ^5.0.0"

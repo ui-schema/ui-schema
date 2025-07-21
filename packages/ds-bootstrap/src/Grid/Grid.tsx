@@ -1,10 +1,10 @@
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { OrderedMap } from 'immutable'
-import React from 'react'
-import { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
+import * as React from 'react'
+import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import clsx from 'clsx'
 
-export const getGridClasses = (schema: UISchemaMap): string[] => {
+export const getGridClasses = (schema: SomeSchema): string[] => {
     const classNameArray: string[] = []
     const view = schema ? schema.getIn(['view']) as OrderedMap<string, number> : undefined
     if (view && view.get('sizeXs')) {
@@ -27,7 +27,7 @@ export const getGridClasses = (schema: UISchemaMap): string[] => {
     return classNameArray
 }
 
-const SchemaGridItem = ({children, schema}: React.PropsWithChildren<{ schema: UISchemaMap }>) => {
+const SchemaGridItem = ({children, schema}: React.PropsWithChildren<{ schema: SomeSchema }>) => {
     return <div
         className={getGridClasses(schema).join(' ')}
     >

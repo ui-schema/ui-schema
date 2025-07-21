@@ -1,6 +1,6 @@
 import { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { SchemaResource, resourceFromSchema } from '@ui-schema/ui-schema/SchemaResource'
-import React, { useContext, useMemo } from 'react'
+import * as React from 'react'
 import { memo } from '@ui-schema/react/Utils/memo'
 
 export interface SchemaResourceContext {
@@ -27,7 +27,7 @@ export interface SchemaResourceProviderProps {
 
 export const SchemaResourceProviderBase = (props: React.PropsWithChildren<SchemaResourceProviderProps>): React.ReactElement => {
     const {resource, resources, schema, children} = props
-    const context = useMemo(() => {
+    const context = React.useMemo(() => {
         if (resources && resource) {
             throw new Error('Props resources and resource are mutually exclusive, provide schema + resources or use resources while building the resource.')
         }
@@ -47,5 +47,5 @@ export const SchemaResourceProviderBase = (props: React.PropsWithChildren<Schema
 export const SchemaResourceProvider = memo(SchemaResourceProviderBase)
 
 export const useSchemaResource = (): SchemaResourceContext => {
-    return useContext(SchemaResourceContext) as SchemaResourceContext
+    return React.useContext(SchemaResourceContext) as SchemaResourceContext
 }

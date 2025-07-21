@@ -1,5 +1,7 @@
+import type { UIStoreActions } from '@ui-schema/react/UIStoreActions'
+import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { WidgetRenderer } from '@ui-schema/react/WidgetRenderer'
-import type { ErrorFallbackProps, WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
+import type { MinimalComponentType, ErrorFallbackProps, WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import type { SchemaKeywordType } from '@ui-schema/ui-schema/CommonTypings'
 import type { ComponentType } from 'react'
 import { NumberRenderer, StringRenderer, TextRenderer } from '@ui-schema/ds-bootstrap/Widgets/TextField'
@@ -19,16 +21,21 @@ const MyFallbackComponent = ({type, widget}: ErrorFallbackProps) => (
     </div>
 )
 
-export type BtsWidgetBinding = BindingTypeGeneric<
+export type BtsBinding<A = UIStoreActions, WP extends WidgetProps<{}, A> = WidgetProps<{}, A>> =
+    Omit<BindingTypeGeneric<
+        {
+            [K in SchemaKeywordType]?: ComponentType<WidgetProps>
+        } &
+        {
+            [k: string]: ComponentType<WidgetProps>
+        }
+    >, 'widgetPlugins'> &
     {
-        [K in SchemaKeywordType]?: ComponentType<WidgetProps>
-    } &
-    {
-        [k: string]: ComponentType<WidgetProps>
+        widgetPlugins?: MinimalComponentType<WP & Omit<WidgetPluginProps<{}, A>, keyof WP>>[]
+        WidgetRenderer?: MinimalComponentType<WP & Omit<WidgetPluginProps<{}, A>, keyof WP>>
     }
->
 
-export const widgets: BtsWidgetBinding = {
+export const widgets: BtsBinding = {
     ErrorFallback: MyFallbackComponent,
     WidgetRenderer: WidgetRenderer,
     GroupRenderer: GroupRenderer,

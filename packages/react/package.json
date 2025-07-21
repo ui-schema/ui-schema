@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/react",
-    "version": "0.5.0-alpha.0",
+    "version": "0.5.0-alpha.1",
     "description": "Schema-driven UI generator for React, based on JSON Schema. Build headless, dynamic forms and interfaces.",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -10,15 +10,8 @@
         "json-schema",
         "react",
         "reactjs",
-        "react-component",
-        "react-native",
-        "design-system",
-        "ui-library",
-        "ux",
-        "ui",
-        "form-generator",
-        "react",
-        "design-system"
+        "ui-generation",
+        "form-generator"
     ],
     "repository": {
         "type": "git",
@@ -34,32 +27,32 @@
     },
     "type": "module",
     "main": "./index.cjs",
-    "module": "./index.js",
+    "module": "./esm/index.js",
     "types": "./index.d.ts",
     "exports": {
         ".": {
             "types": "./index.d.ts",
-            "import": "./index.js",
+            "import": "./esm/index.js",
             "require": "./index.cjs"
         },
         "./*": {
             "types": "./*/index.d.ts",
-            "import": "./*/index.js",
+            "import": "./esm/*/index.js",
             "require": "./*/index.cjs"
-        }
+        },
+        "./package.json": "./package.json",
+        "./esm": null
     },
     "sideEffects": false,
     "devDependencies": {
-        "@ui-schema/ui-schema": "~0.5.0-alpha.0",
-        "@ui-schema/json-schema": "~0.5.0-alpha.0",
+        "@ui-schema/ui-schema": "~0.5.0-alpha.1",
         "immutable": "^5.0.0",
         "@types/react": "^19.0",
         "react": "^19.0",
         "react-dom": "^19.0"
     },
     "peerDependencies": {
-        "@ui-schema/ui-schema": "~0.5.0-alpha.0",
-        "@ui-schema/json-schema": "~0.5.0-alpha.0",
+        "@ui-schema/ui-schema": "~0.5.0-alpha.1",
         "immutable": "^4.0.0 || ^5.0.0",
         "react": "^18.0 || ^19.0",
         "@types/react": "^18.0 || ^19.0"

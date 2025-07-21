@@ -15,6 +15,7 @@ describe('validateObject', () => {
             {type: 'object'},
             {},
             0,
+            undefined,
         ],
         [
             {
@@ -27,6 +28,7 @@ describe('validateObject', () => {
             },
             {name: 'demo'},
             0,
+            undefined,
         ],
         [
             {
@@ -39,6 +41,7 @@ describe('validateObject', () => {
             },
             {name: 'demo'},
             0,
+            undefined,
         ],
         [
             {
@@ -51,6 +54,7 @@ describe('validateObject', () => {
             },
             {name: 'demo', street: 'long-street'},
             1,
+            undefined,
         ],
         [
             {
@@ -63,6 +67,7 @@ describe('validateObject', () => {
             },
             createMap({name: 'demo'}),
             0,
+            undefined,
         ],
         [
             {
@@ -75,6 +80,7 @@ describe('validateObject', () => {
             },
             createMap({name: 'demo', street: 'long-street'}),
             1,
+            undefined,
         ],
         [
             {
@@ -85,6 +91,70 @@ describe('validateObject', () => {
             },
             createMap({name: 'abc'}),
             0,
+            undefined,
+        ],
+        [
+            {
+                type: 'object',
+                properties: {
+                    name: {
+                        type: 'number',
+                    },
+                },
+            },
+            createMap({name: 'demo'}),
+            0,
+            undefined,
+        ],
+        [
+            {
+                type: 'object',
+                properties: {
+                    name: {
+                        type: 'number',
+                    },
+                },
+            },
+            createMap({name: 'demo'}),
+            1,
+            {recursive: true},
+        ],
+        [
+            {
+                type: 'object',
+                properties: {
+                    name: {
+                        type: 'number',
+                    },
+                },
+            },
+            {name: 'demo'},
+            0,
+            undefined,
+        ],
+        [
+            {
+                type: 'object',
+                properties: {
+                    name: {
+                        type: 'number',
+                    },
+                },
+            },
+            {name: 'demo'},
+            1,
+            {recursive: true},
+        ],
+        [
+            {
+                type: 'object',
+                properties: {
+                    name: null, // null/partial schema doesn't crash it
+                },
+            },
+            {name: 'demo'},
+            0,
+            {recursive: true},
         ],
         [
             {
@@ -95,6 +165,7 @@ describe('validateObject', () => {
             },
             {name: 'abc'},
             0,
+            undefined,
         ],
         [
             {
@@ -105,10 +176,11 @@ describe('validateObject', () => {
             },
             {name_user: 'abc'},
             1,
+            undefined,
         ],
-    ])('validateObject(%j, %j)', (schema, value, expected) => {
+    ])('validateObject(%j, %j)', (schema, value, expected, options) => {
         const state = newMockState()
-        validateObject(createOrderedMap(schema), value, {...makeParams(), ...state})
+        validateObject(createOrderedMap(schema), value, {...makeParams(), ...state, ...options})
         expect(state.output.errCount).toBe(expected)
     })
 })

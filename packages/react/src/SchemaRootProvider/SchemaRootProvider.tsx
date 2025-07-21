@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
-import React from 'react'
+import * as React from 'react'
 import { OrderedMap } from 'immutable'
 import { getSchemaId } from '@ui-schema/ui-schema/Utils/getSchema'
 import { memo } from '@ui-schema/react/Utils/memo'

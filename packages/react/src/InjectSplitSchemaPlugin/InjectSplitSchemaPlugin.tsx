@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { Map } from 'immutable'
 import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { useSchemaRoot } from '@ui-schema/react/SchemaRootProvider'

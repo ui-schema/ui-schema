@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ui-schema",
-    "version": "0.5.0-alpha.0",
+    "version": "0.5.0-alpha.1",
     "description": "JSON-Schema based UI and form generator, for any design-system.",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -8,12 +8,8 @@
     "keywords": [
         "ui-schema",
         "json-schema",
-        "design-system",
-        "ui-library",
-        "ux",
-        "ui",
-        "form-generator",
-        "design-system"
+        "ui-generation",
+        "form-generator"
     ],
     "repository": {
         "type": "git",
@@ -25,19 +21,21 @@
     },
     "type": "module",
     "main": "./index.cjs",
-    "module": "./index.js",
+    "module": "./esm/index.js",
     "types": "./index.d.ts",
     "exports": {
         ".": {
             "types": "./index.d.ts",
-            "import": "./index.js",
+            "import": "./esm/index.js",
             "require": "./index.cjs"
         },
         "./*": {
             "types": "./*/index.d.ts",
-            "import": "./*/index.js",
+            "import": "./esm/*/index.js",
             "require": "./*/index.cjs"
-        }
+        },
+        "./package.json": "./package.json",
+        "./esm": null
     },
     "sideEffects": false,
     "scripts": {
@@ -50,7 +48,7 @@
     },
     "peerDependencies": {
         "immutable": "^4.0.0 || ^5.0.0",
-        "@ui-schema/json-pointer": "*"
+        "@ui-schema/json-pointer": "~0.5.0-alpha.1"
     },
     "publishConfig": {
         "tag": "next",

@@ -158,6 +158,7 @@ Validation Keywords:
     - `additionalItems` if more props then defined are allowed
     - the individual items must be validated in their actual widgets, e.g. done in the `PluginStack` per item rendered by `GenericList`
     - supported by e.g. [GenericList](/docs/widgets/GenericList), [Table](/docs/widgets/Table)
+- `prefixItems` is new in Draft 2019-09 for tuple validation, replacing `items` when `items` is an array.
 - **restrictions:**
     - `null`/`undefined` behaviour [#106](https://github.com/ui-schema/ui-schema/issues/106)
 
@@ -249,6 +250,7 @@ For latest issues/questions checkout the [github issues](https://github.com/ui-s
 | core                                                   |                    | `anyOf`                   | ✅                      |
 |                                                        | `array`            |                           |                        |
 | core                                                   |                    | `items`                   | ✅                      |
+| core, from 2020-12                                     |                    | `prefixItems`             | ✅                      |
 | core                                                   |                    | `unevaluatedItems`        | ❌                      |
 | validation                                             |                    | `minItems`                | ✅                      |
 | validation                                             |                    | `maxItems`                | ✅                      |

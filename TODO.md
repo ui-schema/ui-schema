@@ -22,7 +22,7 @@ List of renamed functions, components etc., most are also moved to other package
 - `ObjectGroup` > `SchemaLayer`
 - `Translate/Trans` > `Translate`
 - `Translate/TransTitle` > `TranslateTitle`
-- `Translate/relT` > `translatorRelative`
+- `Translate/relT` > `TranslatorRelative`
     - `relT` > `getSchemaTranslationRelative`
     - `relTranslator` > `translatorRelative`
 
@@ -44,13 +44,14 @@ List of renamed functions, components etc., most are also moved to other package
     - `ds-material/BindingDefault` (atm.) exports `typeWidgets` and `baseCompoents` (*maybe split up, but could need renaming of type or even widgets folders*)
     - `ds-material/BindingExtended` exports `bindingExtended` for `.custom` widget binding
     - no default `schemaPlugins`/`widgetPlugins`; *maybe add a legacy compat to make migration easier, atm. in demo-web*
-- added `Grid2` components and plugins, for future migration path from mui5/6 to 7
-- added `SchemaGridNextItem` for mui v7, with `Grid['size']` property, *not using `Grid2`*, *not compatible with v5/6*
-- [ ] `Grid2` components are not enough, as `GenericList` and other container widgets may include hard coded wrappers, which rely on the same Grid component inside the grid plugin
-- fix `forbidInvalidNumber` prevents too much for keyboard control
+- ~~added `Grid2` components and plugins, for future migration path from mui5/6 to 7~~
+- added `GridItemPlugin` for mui v7, with `Grid['size']` property, *not using `Grid2`*, *not compatible with v5/6*
+- [ ] list widgets, like GenericList, should reuse the components group, to be able to influence their grid component, as it must match what is then used in plugins
+- fixed `forbidInvalidNumber`, prevented too much for keyboard control
 - removed `react-uid` dependency
 - optimize useOptionsFromSchema, add basic support for collecting options from nested oneOf/anyOf, apply normalization also on `const`, same like `enum`
 - support `name` attribute generation on inputs
+- fixed wrongly used required in table when deleting row
 
 ### DS Bootstrap
 
@@ -73,6 +74,8 @@ List of renamed functions, components etc., most are also moved to other package
 - `matchWidget` now return identifiers about what has matched
 - renamed `ErrorNoWidgetMatching` to `ErrorNoWidgetMatches`
 - `input[name]` attribute generator with `storeKeys`, optional enabled via ui meta context
+- new `getFields` function for normalized access to children keywords (array items/object properties)
+    - with static fields retrieval, for value-less schema fields keywords normalization and resolving, like needed for the table widget (as columns must be known before rendering/having values and all rows must be uniform)
 
 Todo:
 
@@ -350,20 +353,6 @@ Todo:
       for overriding the next widgets, like done in table; maybe via a new `container` prop, which would replace the overwriting with a general way to know "where mounted",
       which would imho. be `TableCell` for the current table stuff, while `Table` is the container of `TableRow` and `TableRow` is the container of `TableCell`
 
-new widget engine functions:
-
-- root vs. location props
-- basic schema / value props
-- widgets binding override
-- widget override w/ type inference
-    - the component must be compatible and adds more types to the props
-- standard plugin / feature props
-    - isVirtual
-    - noGrid
-    - noGrid + meta overrides like sHowValidity
-- wrapper and props - but whats the feature of that? hidden, dyn. etc only work once plugins are done (or decide not render further)
-- WidgetProps schemaLocation, or those from isRoot, should be removed to another typing
-
 ## Todos Misc
 
 - [ ] tests
@@ -391,11 +380,14 @@ new widget engine functions:
     - alternatively replace `StoreSchemaType` with `SomeSchema` from `/ui-schema/CommonTypings`, for a simpler type, just for enforcing immutable map
 - [ ] stricter typings, with many `any` switched to `unknown`
 - [x] finalize `package.json` generation for strict esm with ESM and CJS support
-- [x] finalize strict-ESM compatible imports/exports, especially in packages
+- [ ] finalize strict-ESM compatible imports/exports, especially in packages
     - [x] switch to strict-ESM for all core packages, with `Node16`
     - [X] switch to strict-ESM for ds-bootstrap
     - [x] switch to cjs/esm build with `.cjs` file extension instead of separate folders
-    - [x] verify working behaviour once first alpha is published; sister project https://github.com/ui-schema/react-codemirror uses new build and has a verified prerelease which is used in https://github.com/control-ui/content-ui
+    - [x] switch all packages to cjs-first and `esm` in separate folder, as otherwise not backwards compatible with esm-yet-not-type-module projects (mui5/6 compat. / `NodeNext` without `type: module`)
+    - [x] change all react imports to `import * as React from 'react';` for better compatibility and to not enforce `esModuleInterop` or similar for consumers
+    - [x] added test calls to ESM/CJS of build package versions, from `.js`/`.mjs`/`.cjs` files; with `type: module`, `type: commonjs` and none at all in the package.json
+    - [ ] verify working behaviour once first alpha is published; sister project https://github.com/ui-schema/react-codemirror uses new build w/ MUI6 and has a verified prerelease which is used in https://github.com/control-ui/content-ui which uses NodeNext + MUI v7
 - [x] control and optimize circular package dependencies, remove all which where added as workarounds
     - [x] core packages cleaned up; ds are already clean
     - [x] solve `/react` depends on `ObjectRenderer`/`VirtualWidgetRenderer` (see noted in bindings about separating packages and `VirtualWidgetRenderer`)
@@ -455,7 +447,7 @@ new widget engine functions:
 - [x] move non-react schemaPlugins into json-schema packages: `InheritKeywords`, `requiredPlugin`, `sortPlugin`, `validatorPlugin`
 - [x] deprecate `useUIConfig`/`UIConfigProvider`
 - [x] deprecated `onErrors`, use `store.extractValidity(storeKeys)` instead; the `ValidityReporter` now includes full error details
-- [ ] optimize unnecessary rendering of empty parts, e.g. `ObjectRenderer` only checks for `properties` existence, but not if empty (maybe add the `getFields` utils already?)
+- [ ] optimize unnecessary rendering of empty parts, e.g. `ObjectRenderer` only checks for `properties` existence, but not if empty (maybe add the `getFields` utils here?)
 - [x] ~~remove or~~ just deprecate the `injectWidgetEngine`, `applyWidgetEngine` HOCs? type migration will be a headache
     - these functions never provided much optimization
     - people who need that micro optimization, should get better ways to do it their way (which now exists, also as `SchemaRootProvider` provides access to the root level schema)
@@ -464,6 +456,8 @@ new widget engine functions:
 - [x] deprecate `applyWidgetEngine*`: `WidgetEngineInjectProps`, `AppliedWidgetEngineProps`, `applyWidgetEngine`, `injectWidgetEngine`
     - without full migration, they work like previously and are compatible with new system, but their types where not optimized/verified
 - [ ] check `mergeSchema` changes and adjust to respect new applicable schema merging strategy
+    - [ ] previously last-allOf overwrites, check that it is still the case
+    - [ ] `$ref` extends-style chains are official in draft2020, but in contrast to UI generation - all apply concurrently, while `$ref` would be more useful for UI generation in a way of "a extends b", especially for content/ui keywords
 - [x] reworked integration of `WidgetRenderer` with new `widgetPlugin`, now thew new `Next` injects the `WidgetRenderer` as the final (or first) `Next` itself
     - the binding `.WidgetRenderer` and `.widgetPlugins` are materialized in `UIMetaProvider` and `Next` rendering is started in `WidgetEngine`, the materialized and must not be modified after passing down and `widgetPlugins` must not be rendered manually, it is no longer possible to skip plugins (which was previously possible by increasing `currentPluginIndex`, yet would have been a bad pattern anyways)
 - [ ] in pickers only types are migrated and props adjusted for `fullWidth`, nothing else was verified
@@ -476,11 +470,15 @@ new widget engine functions:
     - this undefined behaviour / normal errors isn't nice
     - an automatic correction should be optional, as imho. unexpected and may lead to more complex integration with most ORM/DMS
 - [ ] provide a demo of custom store actions which use the schema resource system for more complex recursive mutations?
+- [ ] check deps chain (again), clean up any remaining unnecessary dependencies
+    - [x] remove dependency `@ui-schema/json-schema` from `ds-material`/`ds-bootstrap`
 - [ ] update documentation
     - [ ] quick start
     - [ ] new overview
     - [x] optimized widgets section, with previous overview as index
     - [ ] separate schema related concepts and docs, like translations, and link to docs of their implementations
+    - [ ] add links to validators in schema overview table? or add information about "opinionated" validators to table/footnotes?
+        - [ ] at least, add basic introduction to opinionated JSON Schema evaluation for UI generation
     - [ ] replace old plugins page with overview and links to new widgetPlugins, schemaPPluginsAdapter and validator
     - [ ] for core and react, separate guides from api docs
         - [ ] create general usage guides (for react)
@@ -490,7 +488,6 @@ new widget engine functions:
         - [ ] add docs for `/dictionary`
         - [x] add docs for `/json-pointer` (basic)
         - [x] add docs for `/json-schema` (basic)
-        - [x] add docs for `/react-json-schema` (basic)
     - [ ] basic setup/customization guide for ds-material? or is quick-start enough, incl. demo repos?
     - [ ] basic setup/customization guide for ds-bootstrap? or is quick-start enough, incl. demo repos?
     - [ ] enable external widget packages (code/color/...) once migrated to 0.5.x
@@ -504,6 +501,8 @@ new widget engine functions:
             - not required for wildcard, as `files` in route/spec is only used as definition, while index/extracted is used for search/viewer
         - [ ] remove unused meta data from generated API documentation, rather large JSON, as un-optimized tree with paths as ids
         - [ ] central docs mapping for packages, to remove `modulePath` and other such needed manual configuration for doc gen
+    - [ ] add split-schema example in readme/docs where embedded/combined schema is shown/in quickstarts
+    - [ ] update all README documentation links once docs are published
 
 ---
 

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import { schemaTypeIs } from '@ui-schema/ui-schema/schemaTypeIs'
-import React from 'react'
+import * as React from 'react'
 import Grid, { GridSpacing } from '@mui/material/Grid'
 import Divider from '@mui/material/Divider'
 import { onChangeHandler, StoreKeys } from '@ui-schema/react/UIStore'
@@ -9,13 +9,13 @@ import { memo } from '@ui-schema/react/Utils/memo'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { List } from 'immutable'
 import { ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 
 export interface GenericListItemSharedProps {
     index: number
     listSize: number
     listRequired: boolean | undefined
-    schema: UISchemaMap
+    schema: SomeSchema
     onChange: onChangeHandler
     storeKeys: StoreKeys
     notSortable: boolean | undefined
@@ -45,7 +45,7 @@ export const GenericListItemBase = (
         showValidity,
     } = props
     const ownKeys = storeKeys.push(index)
-    const itemsSchema = schema.get('items') as UISchemaMap
+    const itemsSchema = schema.get('items') as SomeSchema
 
     return [
         <Grid key={'a'} item xs={12} style={{display: 'flex'}}>
@@ -63,12 +63,12 @@ export const GenericListItemBase = (
                     itemsSchema.get('items') ?
                         <Grid item style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
                             <Grid container spacing={2}>
-                                {(itemsSchema.get('items') as UISchemaMap)?.map((item, j) =>
+                                {(itemsSchema.get('items') as SomeSchema)?.map((item, j) =>
                                     <WidgetEngine
                                         key={j}
                                         showValidity={showValidity}
                                         storeKeys={ownKeys.push(j)}
-                                        schema={item as UISchemaMap}
+                                        schema={item as SomeSchema}
                                         parentSchema={schema}
                                     />).valueSeq()}
                             </Grid>

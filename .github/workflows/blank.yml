@@ -69,6 +69,10 @@ jobs:
                 run: |
                     npm run build
 
+            -   name: Check Resolver # this check uses the build assets, not source code
+                run: |
+                    npm run check-resolver
+
             -   name: Send code coverage report to Codecov.io
                 uses: codecov/codecov-action@v4
                 with:

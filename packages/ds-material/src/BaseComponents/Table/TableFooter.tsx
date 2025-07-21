@@ -1,5 +1,5 @@
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
-import React from 'react'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
+import * as React from 'react'
 import Add from '@mui/icons-material/Add'
 import { Translate } from '@ui-schema/react/Translate'
 import { memo } from '@ui-schema/react/Utils/memo'
@@ -16,7 +16,7 @@ import { IconButtonProps } from '@mui/material/IconButton'
 export interface TableFooterErrorsBaseProps {
     colSize: number | undefined
     showValidity: boolean | undefined
-    schema: UISchemaMap
+    schema: SomeSchema
 }
 
 export const TableFooterErrorsBase: React.ComponentType<TableFooterErrorsBaseProps & TableContextType> = (

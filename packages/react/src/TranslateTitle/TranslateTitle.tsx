@@ -1,5 +1,5 @@
 import { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
-import React from 'react'
+import * as React from 'react'
 import { Map, List } from 'immutable'
 import { beautifyKey } from '@ui-schema/ui-schema/Utils/beautify'
 import { Translate } from '@ui-schema/react/Translate'

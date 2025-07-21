@@ -1,9 +1,9 @@
-import { MouseEventHandler } from 'react'
+import type { MouseEventHandler } from 'react'
 
 export const handleMouseMoveInDraggable = (
     noDragOnNodes: string[] | undefined,
     canDrag: boolean,
-    setDisableDrag: (disableDrag: boolean) => void
+    setDisableDrag: (disableDrag: boolean) => void,
 ): MouseEventHandler =>
     (e) => {
         if (!noDragOnNodes || noDragOnNodes.length === 0) {

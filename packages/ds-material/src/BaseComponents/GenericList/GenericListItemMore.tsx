@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import IconButton from '@mui/material/IconButton'
 import { Translate } from '@ui-schema/react/Translate'
 import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'

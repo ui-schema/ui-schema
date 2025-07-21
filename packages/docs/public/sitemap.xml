@@ -58,6 +58,10 @@
         <changefreq>weekly</changefreq>
     </url>
     <url>
+        <loc>https://ui-schema.bemit.codes/docs/core/getfields</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
         <loc>https://ui-schema.bemit.codes/docs/core/localization</loc>
         <changefreq>weekly</changefreq>
     </url>

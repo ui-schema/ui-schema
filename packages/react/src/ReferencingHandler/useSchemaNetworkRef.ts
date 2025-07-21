@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
-import React from 'react'
+import * as React from 'react'
 import { useUIApi } from '@ui-schema/react/UIApi'
 import { getCleanRefUrl, getFragmentFromUrl, isRelUrl, makeUrlFromRef } from '@ui-schema/react/ReferencingHandler'
 import { useSchemaRoot } from '@ui-schema/react/SchemaRootProvider'

@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/json-pointer",
-    "version": "0.5.0-alpha.0",
+    "version": "0.5.0-alpha.1",
     "description": "JSON-Pointer implementation.",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes>",
@@ -22,19 +22,21 @@
     },
     "type": "module",
     "main": "./index.cjs",
-    "module": "./index.js",
+    "module": "./esm/index.js",
     "types": "./index.d.ts",
     "exports": {
         ".": {
             "types": "./index.d.ts",
-            "import": "./index.js",
+            "import": "./esm/index.js",
             "require": "./index.cjs"
         },
         "./*": {
             "types": "./*/index.d.ts",
-            "import": "./*/index.js",
+            "import": "./esm/*/index.js",
             "require": "./*/index.cjs"
-        }
+        },
+        "./package.json": "./package.json",
+        "./esm": null
     },
     "sideEffects": false,
     "dependencies": {

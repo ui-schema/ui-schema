@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { visuallyHidden } from '@mui/utils'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'

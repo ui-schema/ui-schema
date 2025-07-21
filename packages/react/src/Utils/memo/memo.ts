@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { getDisplayName } from './getDisplayName.js'
 import { isEqualObject } from '@ui-schema/ui-schema/Utils/isEqualObject'
 

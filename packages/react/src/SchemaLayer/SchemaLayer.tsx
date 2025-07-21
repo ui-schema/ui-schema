@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
-import React from 'react'
+import * as React from 'react'
 import { AppliedWidgetEngineProps, applyWidgetEngine } from '@ui-schema/react/applyWidgetEngine'
 import { useImmutable } from '@ui-schema/react/Utils/useImmutable'
 import { WidgetProps } from '@ui-schema/react/Widget'

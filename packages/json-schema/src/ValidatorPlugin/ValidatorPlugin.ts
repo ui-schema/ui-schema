@@ -1,6 +1,6 @@
 import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
 import { isSomeSchema } from '@ui-schema/ui-schema/CommonTypings'
-import { createOrdered } from '@ui-schema/ui-schema/createMap'
+import { createOrdered, fromJSOrdered } from '@ui-schema/ui-schema/createMap'
 import type { SchemaPlugin } from '@ui-schema/ui-schema/SchemaPlugin'
 import type { SchemaResource } from '@ui-schema/ui-schema/SchemaResource'
 import { is, List, Map, OrderedMap, Set } from 'immutable'
@@ -79,7 +79,12 @@ export const findLeastCommonMultiple = (...values: number[]): number => {
  * @returns A new, merged schema.
  */
 export function mergeSchemas(baseSchema: any, ...appliedSchemas: any[]): any {
-    let mergedSchema: any = baseSchema instanceof Map ? baseSchema : OrderedMap(baseSchema)
+    let mergedSchema: any
+    if (baseSchema instanceof Map) {
+        mergedSchema = baseSchema
+    } else {
+        mergedSchema = baseSchema && typeof baseSchema === 'object' ? fromJSOrdered(baseSchema) : undefined
+    }
 
     // remove stale allOf entries from baseSchema (first-level only)
     // as those would be already in `appliedSchema`
@@ -365,7 +370,11 @@ export function mergeSchemas(baseSchema: any, ...appliedSchemas: any[]): any {
 }
 
 /**
- * @todo make as setup function, to support custom `mergeSchemas`
+ * @todo make as setup function, to support custom `mergeSchemas`;
+ *       or should `mergeSchemas` also be in meta context?
+ *       or the reduction login in general?
+ *       e.g. the table widget must know what `.items` exists, before rendering a row (without value),
+ *       while all others only need to get the needed schema once rendering an actual item (with value)
  */
 export const validatorPlugin: SchemaPlugin<Omit<WidgetPluginProps, 'Next'> & { resource?: SchemaResource }> = {
     handle: (props) => {

@@ -1,4 +1,4 @@
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
 import { Map } from 'immutable'
 import { Translate } from '@ui-schema/react/Translate'
@@ -6,12 +6,12 @@ import { Translate } from '@ui-schema/react/Translate'
 export interface ValidityHelperTextProps {
     showValidity: boolean | undefined
     errors: ValidationErrorsImmutable | undefined
-    schema: UISchemaMap
+    schema: SomeSchema
 }
 
 export interface LocaleHelperTextProps {
     text: string
-    schema: UISchemaMap
+    schema: SomeSchema
     context?: Map<any, any>
     className?: string
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { StoreKeys } from '@ui-schema/react/UIStore'
 import { Translate } from '@ui-schema/react/Translate'

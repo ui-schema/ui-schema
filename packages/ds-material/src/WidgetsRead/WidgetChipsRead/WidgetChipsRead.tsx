@@ -4,7 +4,7 @@ import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { Translate } from '@ui-schema/react/Translate'
 import { memo } from '@ui-schema/react/Utils/memo'
 import { beautifyKey, tt } from '@ui-schema/ui-schema/Utils/beautify'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
@@ -49,7 +49,7 @@ export const WidgetChipsReadBase = (
                     <Chip
                         key={oneOfSchema.get('const')}
                         label={<Translate
-                            schema={oneOfSchema.get('t') as unknown as UISchemaMap}
+                            schema={oneOfSchema.get('t') as unknown as SomeSchema}
                             text={oneOfSchema.get('title') as string || oneOfSchema.get('const') as string}
                             context={Map({'relative': List(['title'])})}
                             fallback={oneOfSchema.get('title') || beautifyKey(oneOfSchema.get('const') as string | number, oneOfSchema.get('tt') as tt)}

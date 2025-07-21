@@ -1,4 +1,4 @@
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { StoreKeys } from '@ui-schema/react/UIStore'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
@@ -9,7 +9,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import IcInfo from '@mui/icons-material/Info'
 import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
-import React from 'react'
+import * as React from 'react'
 import { List } from 'immutable'
 
 export interface InfoRendererProps {
@@ -18,7 +18,7 @@ export interface InfoRendererProps {
     dense?: boolean
     align?: 'right' | 'left'
 
-    schema: UISchemaMap
+    schema: SomeSchema
     storeKeys: StoreKeys
 
     valid?: boolean

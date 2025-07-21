@@ -2,7 +2,7 @@ import Box from '@mui/material/Box'
 import { useTheme } from '@mui/material/styles'
 import { MuiBinding } from '@ui-schema/ds-material/Binding'
 import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
-import { SchemaGridItem } from '@ui-schema/ds-material/Grid'
+import { SchemaGridItemLegacy } from '@ui-schema/ds-material/Grid'
 import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
 import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
@@ -176,7 +176,7 @@ const SchemaGridHandlerWithInspector = <P extends WidgetPluginProps>(props: P): 
         </Box>
     }
 
-    return <SchemaGridItem
+    return <SchemaGridItemLegacy
         schema={schema}
         style={style}
         // onContextMenu={onContextMenu}
@@ -188,7 +188,7 @@ const SchemaGridHandlerWithInspector = <P extends WidgetPluginProps>(props: P): 
         >
             {nestedNext}
         </Box>
-    </SchemaGridItem>
+    </SchemaGridItemLegacy>
 }
 
 

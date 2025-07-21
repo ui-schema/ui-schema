@@ -1,5 +1,5 @@
 import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
-import React from 'react'
+import * as React from 'react'
 import { List } from 'immutable'
 import Add from '@mui/icons-material/Add'
 import Delete from '@mui/icons-material/Delete'
@@ -17,7 +17,7 @@ import { AccessTooltipIcon } from '@ui-schema/ds-material/Component/Tooltip'
 import { WidgetProps } from '@ui-schema/react/Widget'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 import { StoreKeys } from '@ui-schema/ui-schema/ValueStore'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 
 const ThumbComponent = ({onDelete, canDelete, children, ...p}) => {
     const [hover, setHover] = React.useState(false)
@@ -50,7 +50,7 @@ const NumberSliderRenderer: React.FC<{
     constVal?: number | List<number>
     defaultVal?: number | List<number>
     storeKeys: StoreKeys
-    schema: UISchemaMap
+    schema: SomeSchema
     showValidity?: boolean
     valid?: boolean
     errors?: ValidationErrorsImmutable

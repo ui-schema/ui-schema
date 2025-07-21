@@ -1,10 +1,11 @@
 import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
-import React, { CSSProperties, FocusEventHandler, KeyboardEventHandler, MouseEventHandler } from 'react'
+import * as React from 'react'
+import type { CSSProperties, FocusEventHandler, KeyboardEventHandler, MouseEventHandler } from 'react'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
 import { InputProps } from '@mui/material/Input'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
-import { schemaRulesToNative } from '@ui-schema/json-schema/schemaRulesToNative'
+import { schemaRulesToNative } from '@ui-schema/ui-schema/schemaRulesToNative'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { convertStringToNumber } from '@ui-schema/ds-material/Utils/convertStringToNumber'
 import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils/forbidInvalidNumber'
@@ -64,7 +65,7 @@ export const StringRenderer = (
 
     const format = schema.get('format')
 
-    inputProps = schemaRulesToNative(inputProps, schema)
+    const inputPropsFromSchema = schemaRulesToNative(schema)
 
     const hideTitle = schema.getIn(['view', 'hideTitle'])
     const InfoRenderer = binding?.InfoRenderer
@@ -132,7 +133,7 @@ export const StringRenderer = (
             /* eslint-disable-next-line @typescript-eslint/no-deprecated */
             InputProps={InputProps}
             /* eslint-disable-next-line @typescript-eslint/no-deprecated */
-            inputProps={inputProps}
+            inputProps={inputProps && inputPropsFromSchema ? {...inputPropsFromSchema, ...inputProps} : inputProps || inputPropsFromSchema}
         />
 
         <ValidityHelperText

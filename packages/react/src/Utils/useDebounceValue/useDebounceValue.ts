@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 
 export interface DebounceValue<T> {
     // must be `true` when this was a manual update from within this client, will be `false|undefined` when e.g. through a background update

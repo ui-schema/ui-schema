@@ -1,11 +1,9 @@
 import { SchemaGridHandler } from '@ui-schema/ds-bootstrap/Grid'
-import { ReferencingHandler } from '@ui-schema/react/ReferencingHandler'
-import { CombiningHandler } from '@ui-schema/react/CombiningHandler'
+import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin'
+import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
 import { DefaultHandler } from '@ui-schema/react/DefaultHandler'
-import { DependentHandler } from '@ui-schema/react/DependentHandler'
-import { ConditionalHandler } from '@ui-schema/react/ConditionalHandler'
+import { schemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
-import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
 import { keysToName } from '@ui-schema/ui-schema/Utils/keysToName'
@@ -27,20 +25,28 @@ import { isInvalid } from '@ui-schema/react/isInvalid'
 const customBinding: typeof widgets = {
     ...widgets,
     widgetPlugins: [
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        ReferencingHandler,
-        SchemaGridHandler,
-        // ExtractStorePlugin,
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        CombiningHandler,
+        // // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // ReferencingHandler,
+        // SchemaGridHandler,
+        // // ExtractStorePlugin,
+        // // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // CombiningHandler,
+        // DefaultHandler,
+        // // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // DependentHandler,
+        // // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // ConditionalHandler,
+        // ValidityReporter,
         DefaultHandler,
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        DependentHandler,
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        ConditionalHandler,
-        ValidityReporter,
+        schemaPluginsAdapterBuilder([
+            validatorPlugin,
+            requiredPlugin,
+        ]),
+        SchemaGridHandler,
     ],
 }
+
+const validate = Validator(standardValidators).validate
 
 const DemoGrid = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap({})))
@@ -52,7 +58,7 @@ const DemoGrid = () => {
     return <UIMetaProvider
         binding={customBinding}
         t={browserT}
-        validate={Validator(standardValidators).validate}
+        validate={validate}
         keysToName={keysToName}
     >
         <UIStoreProvider
@@ -81,7 +87,7 @@ const MainStore = () => {
         <UIMetaProvider
             binding={customBinding}
             t={browserT}
-            validate={Validator(standardValidators).validate}
+            validate={validate}
             keysToName={keysToName}
         >
             <UIStoreProvider

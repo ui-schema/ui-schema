@@ -1,6 +1,8 @@
 import { WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widget'
-import React from 'react'
+import { schemaRulesToNative } from '@ui-schema/ui-schema/schemaRulesToNative'
+import { useMemo } from 'react'
+import * as React from 'react'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
 
@@ -42,6 +44,8 @@ const StringRenderer = ({schema, value, multiline = false, onChange, keysToName,
         classFormGroup.push('was-validated')
     }
 
+    const inputPropsFromSchema = useMemo(() => schemaRulesToNative(schema), [schema])
+
     return <div className={classFormGroup.join(' ')}>
         <label className={'form-label'} htmlFor={'uis-' + uid}><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
         <Renderer
@@ -51,6 +55,7 @@ const StringRenderer = ({schema, value, multiline = false, onChange, keysToName,
             required={required}
             rows={rows}
             name={keysToName?.(storeKeys)}
+            {...inputPropsFromSchema}
             value={typeof value === 'string' || typeof value === 'number' ? value : ''}
             onChange={(e) => {
                 const val = e.target.value

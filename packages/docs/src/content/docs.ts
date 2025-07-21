@@ -4,11 +4,9 @@ import { demoBooleanRead } from './docs/ds-material/widgets-read/BooleanReadDemo
 import { demoChipsRead } from './docs/ds-material/widgets-read/ChipsReadDemo'
 import { demoOptionsRead } from './docs/ds-material/widgets-read/OptionsReadDemo'
 import { demoTextFieldRead } from './docs/ds-material/widgets-read/TextFieldReadDemo'
-import { demoColorful } from './docs/material-colorful/material-colorfulDemo'
 import { demoDragnDropGenericDemo } from './docs/material-dnd/widgets-genericDemo'
 import { demoAccordions } from './docs/widgets/AccordionsDemo'
 import { demoCard } from './docs/widgets/CardDemo'
-import { demoColor } from './docs/widgets/ColorDemo'
 import { demoDateTimePickers } from './docs/widgets/DateTimePickersDemo'
 import { demoGenericList } from './docs/widgets/GenericListDemo'
 import { demoGridHandler } from './docs/widgets/GridHandlerDemo'
@@ -98,6 +96,7 @@ export const routesPackages = [
             createDoc('core/schemapluginstack', 'SchemaPluginStack'),
             createDoc('core/schemaresource', 'SchemaResource'),
             createDoc('core/schematype', 'SchemaType Test'),
+            createDoc('core/getfields', 'Schema Fields'),
             createDoc('core/localization', 'Core: Localization'),
             createDoc('core/utils', 'Core: Utils'),
         ],
@@ -424,11 +423,7 @@ export const routesFurtherDesignSystem = [
             to: '/docs/material-color',
         },
         routes: [
-            createDoc('material-color/material-color', 'Overview', {
-                demos: {
-                    schema: demoColor,
-                },
-            }),
+            createDoc('material-color/material-color', 'Overview', {}),
         ],
     },
     {
@@ -438,11 +433,7 @@ export const routesFurtherDesignSystem = [
             to: '/docs/material-colorful',
         },
         routes: [
-            createDoc('material-colorful/material-colorful', 'Overview', {
-                demos: {
-                    schema: demoColorful,
-                },
-            }),
+            createDoc('material-colorful/material-colorful', 'Overview', {}),
         ],
     },
     {

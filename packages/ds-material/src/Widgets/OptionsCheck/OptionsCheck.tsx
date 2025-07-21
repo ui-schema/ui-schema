@@ -1,6 +1,6 @@
 import type { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
 import type { KeysToName } from '@ui-schema/react/UIMeta'
-import React from 'react'
+import * as React from 'react'
 import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
 import FormGroup from '@mui/material/FormGroup'
@@ -12,7 +12,7 @@ import { StoreKeys, extractValue, WithOnChange } from '@ui-schema/react/UIStore'
 import { Translate } from '@ui-schema/react/Translate'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
 import { sortScalarList } from '@ui-schema/ui-schema/Utils/sortScalarList'
 import { SwitchProps } from '@mui/material/Switch'
@@ -48,7 +48,7 @@ const OptionsCheckValuesBase: React.ComponentType<{
     storeKeys: StoreKeys
     required?: boolean
     valueSchemas?: List<OptionValueSchema>
-    schema: UISchemaMap
+    schema: SomeSchema
     disabled?: boolean
     value: List<unknown>
     keysToName: KeysToName | undefined
@@ -82,7 +82,7 @@ const OptionsCheckValuesBase: React.ComponentType<{
                     })
                 }}
                 label={<Translate
-                    schema={schema?.get('t') as unknown as UISchemaMap}
+                    schema={schema?.get('t') as unknown as SomeSchema}
                     text={text}
                     context={context}
                     fallback={fallback}
@@ -104,7 +104,7 @@ export const OptionsCheck = (
         row, binding,
     }: WidgetProps<BindingTypeGeneric & MuiBindingComponents> & OptionsCheckRendererProps,
 ): React.ReactElement => {
-    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as UISchemaMap)
+    const {valueSchemas} = useOptionsFromSchema(storeKeys, schema.get('items') as SomeSchema)
     const InfoRenderer = binding?.InfoRenderer
     return <FormControl
         required={required} error={!valid && showValidity} component="fieldset" fullWidth

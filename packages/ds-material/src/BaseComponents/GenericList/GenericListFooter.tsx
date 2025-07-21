@@ -1,16 +1,16 @@
 import { ListButton, ListButtonOverwrites } from '@ui-schema/ds-material/Component/ListButton'
 import Add from '@mui/icons-material/Add'
-import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
+import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import { Translate } from '@ui-schema/react/Translate'
 import { onChangeHandler, StoreKeys } from '@ui-schema/react/UIStore'
 import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
 import { Map } from 'immutable'
 import { ValidityHelperText } from '@ui-schema/ds-material/Component/LocaleHelperText'
-import React from 'react'
+import * as React from 'react'
 import Box from '@mui/material/Box'
 
 export interface GenericListFooterProps extends ListButtonOverwrites {
-    schema: UISchemaMap
+    schema: SomeSchema
     notAddable?: boolean
     notSortable?: boolean
     notDeletable?: boolean

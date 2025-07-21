@@ -1,5 +1,5 @@
 import { schemaTypeIs } from '@ui-schema/ui-schema/schemaTypeIs'
-import React, { Fragment } from 'react'
+import * as React from 'react'
 import { StoreKeyType, WithOnChange } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widget'
 import { memo } from '@ui-schema/react/Utils/memo'
@@ -28,18 +28,25 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
         showValidity, binding,
         storeKeys,
         uid,
-        onChange, required,
+        onChange,
         dense,
         setPage,
         showRows,
+        requiredList,
     },
 ) => {
     const theme = useTheme()
     const styles = useStyles(theme, {dense})
+    // todo: use schema, prepared from getFields, to support more values;
+    //       create an mui specific util and use it in everywhere to get columns from schema
+    //       - object: a cell per property
+    //       - array-tuple: a cell per item
+    //       - array: a cell for the array
+    //       - any other: a cell for the schema
     // only supporting array tuple schemas or objects for table rows / items
-    let cellSchema = (schema.get('items') as List<any>) || (schema.get('properties') as Map<string, any>)
+    let cellSchema = (schema.get('prefixItems') as List<any>) || (List.isList(schema?.get('items')) ? (schema.get('items') as List<any>) : undefined) || (schema.get('properties') as Map<string, any>)
     const readOnly = Boolean(parentSchema?.get('readOnly'))
-    const deleteOnEmpty = parentSchema?.get('deleteOnEmpty') || required
+    const deleteOnEmpty = parentSchema?.get('deleteOnEmpty') || requiredList // || required // todo: why was required here? would be from the array/row, not the array it is contained in
 
     if (
         schemaTypeIs(schema.get('type') as SchemaTypesType, 'object') &&
@@ -54,7 +61,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
         cellSchema = orderedCellSchema
     }
 
-    const GroupRenderer = binding?.GroupRenderer || Fragment
+    const GroupRenderer = binding?.GroupRenderer || React.Fragment
 
     return <TableRow>
         {cellSchema.map((item, j) =>
@@ -109,7 +116,7 @@ export const TableRowRenderer: React.ComponentType<WidgetProps & TableRowProps &
         ).valueSeq()}
 
         {!readOnly ?
-            <TableCell sx={styles}>
+            <TableCell sx={{...styles, width: '1px'}}>
                 <TableRowActionDelete
                     storeKeys={storeKeys}
                     onChange={onChange}

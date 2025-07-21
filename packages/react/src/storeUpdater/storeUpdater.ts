@@ -84,6 +84,8 @@ const storeActionHandlersMap: StoreActionHandlersMap = {
                 data.value = data.value.push(action.itemValue)
             } else {
                 const schema = action.schema
+                // todo: this requires validating and merging `items`, to support $ref and allOf
+                //       (similar to mui table widget, which needs to know the columns before rendering rows)
                 const items = schema?.get('items')
                 const type = schema?.getIn(['items', 'type']) as SchemaTypesType
 
