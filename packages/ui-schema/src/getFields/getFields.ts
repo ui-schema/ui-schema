@@ -194,9 +194,6 @@ export function getFields(
              */
             prefer: 'items' | 'properties' = 'properties',
         ) => {
-            // todo: apply simple keywords hoisting and merging on this level,
-            //       especially to get titles, view and translations when rendering e.g. table header,
-            //       where no value exists
             if ((items || prefixItems) && (prefer === 'items' || !properties)) {
                 return {
                     kind: 'items' as const,
@@ -428,17 +425,15 @@ export function combineSchema(
                         } else if (!mergedSchema.has(key)) {
                             mergedSchema = mergedSchema.set(key, value)
                         }
+                    } else if (Map.isMap(value)) {
+                        mergedSchema = mergedSchema.set(
+                            key,
+                            Map.isMap(existingValue) ?
+                                existingValue.mergeDeep(value) :
+                                value,
+                        )
                     } else {
-                        if (Map.isMap(value)) {
-                            mergedSchema = mergedSchema.set(
-                                key,
-                                Map.isMap(existingValue) ?
-                                    existingValue.mergeDeep(value) :
-                                    value,
-                            )
-                        } else {
-                            mergedSchema = mergedSchema.set(key, value)
-                        }
+                        mergedSchema = mergedSchema.set(key, value)
                     }
                     break
                 }

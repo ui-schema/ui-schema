@@ -19,7 +19,6 @@ interface InputProps {
  */
 export const schemaRulesToNative = (schema: SomeSchema): InputProps => {
     const inputProps: InputProps = {}
-    // export const schemaRulesToNative = <K extends Pick<HTMLInputElement, 'minLength' | 'maxLength' | 'min' | 'max' | 'step' | 'pattern' | 'type'>>(inputProps: K = {} as K, schema: SomeSchema): K => {
     if (typeof schema.get('minLength') === 'number') {
         inputProps['minLength'] = schema.get('minLength')
     }

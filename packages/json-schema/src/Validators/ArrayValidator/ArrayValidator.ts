@@ -171,7 +171,7 @@ export const validateItems = (
     let i = 0
     for (const val of value) {
         let itemSchema: UISchemaMap | undefined = undefined
-        let keyword = 'items'
+        let keyword: string
 
         if (i < prefixItemsCount) {
             itemSchema = prefixItems!.get(i)
@@ -230,7 +230,7 @@ export const validateContains = (
 
     const {found} = validateItemsAgainstSchema(
         value,
-        containsSchema as UISchemaMap,
+        containsSchema,
         params,
     )
 

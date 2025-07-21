@@ -79,7 +79,12 @@ export const findLeastCommonMultiple = (...values: number[]): number => {
  * @returns A new, merged schema.
  */
 export function mergeSchemas(baseSchema: any, ...appliedSchemas: any[]): any {
-    let mergedSchema: any = baseSchema instanceof Map ? baseSchema : baseSchema && typeof baseSchema === 'object' ? fromJSOrdered(baseSchema) : undefined
+    let mergedSchema: any
+    if (baseSchema instanceof Map) {
+        mergedSchema = baseSchema
+    } else {
+        mergedSchema = baseSchema && typeof baseSchema === 'object' ? fromJSOrdered(baseSchema) : undefined
+    }
 
     // remove stale allOf entries from baseSchema (first-level only)
     // as those would be already in `appliedSchema`
