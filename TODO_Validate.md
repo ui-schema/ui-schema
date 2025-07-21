@@ -6,13 +6,13 @@
 > - misc in `/react`, `/ds-*`
 
 - `/Validators`
-    - [ ] ArrayValidator
+    - [x] ArrayValidator
         - [x] migrated to `.output`
         - [x] support `recursive`
-        - [ ] add params for adding keywordLocation/instanceLocation at all `addError` / verify usage for nested errors
-        - [ ] support handling of `prefixItems`
-        - [ ] support handling of `prefixItems` with additional `items`
-        - [ ] remove type validate inside tuple validation, once clarified why that was added there
+        - [x] add params for adding keywordLocation/instanceLocation at all `addError` / verify usage for nested errors
+        - [x] support handling of `prefixItems`
+        - [x] support handling of `prefixItems` with additional `items`
+        - [x] make `additionalItems` behaviour compatible for all versions (with `prefixItems`/`items`)
     - [x] EmailValidator
         - kind: `validate:boolean`
     - [x] MinMaxValidator

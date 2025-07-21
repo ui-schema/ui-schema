@@ -208,6 +208,137 @@ describe('StandardValidators', () => {
             value: {'name': 'A', 'price': 123, 'x': true},
             expected: {valid: false},
         },
+        {
+            schema: {
+                minProperties: 2,
+            },
+            value: {
+                'name': 'John Doe',
+                'credit_card': 5555555555555555,
+            },
+            expected: {valid: true},
+        },
+        {
+            schema: {
+                minProperties: 2,
+            },
+            value: {
+                'name': 'John Doe',
+            },
+            expected: {valid: false},
+        },
+        {
+            schema: {
+                maxProperties: 2,
+            },
+            value: {
+                'name': 'John Doe',
+                'credit_card': 5555555555555555,
+            },
+            expected: {valid: true},
+        },
+        {
+            schema: {
+                maxProperties: 2,
+            },
+            value: {
+                'name': 'John Doe',
+                'credit_card': 5555555555555555,
+                'billing_address': '555 Debtor\'s Lane',
+            },
+            expected: {valid: false},
+        },
+        {
+            schema: {
+                contains: {
+                    type: 'number',
+                },
+            },
+            value: [1, 'a', 2],
+            expected: {valid: true},
+        },
+        {
+            schema: {
+                contains: {
+                    type: 'number',
+                },
+            },
+            value: ['a', 'b', 'c'],
+            expected: {valid: false},
+        },
+        {
+            schema: {
+                contains: {
+                    type: 'number',
+                },
+                minContains: 2,
+            },
+            value: [1, 'a', 2, 'b', 3],
+            expected: {valid: true},
+        },
+        {
+            schema: {
+                contains: {
+                    type: 'number',
+                },
+                minContains: 2,
+            },
+            value: [1, 'a', 'b', 'c'],
+            expected: {valid: false},
+        },
+        {
+            schema: {
+                contains: {
+                    type: 'number',
+                },
+                maxContains: 2,
+            },
+            value: [1, 'a', 2],
+            expected: {valid: true},
+        },
+        {
+            schema: {
+                contains: {
+                    type: 'number',
+                },
+                maxContains: 2,
+            },
+            value: [1, 'a', 2, 'b', 3],
+            expected: {valid: false},
+        },
+        {
+            schema: {
+                contains: {
+                    type: 'number',
+                },
+                minContains: 1,
+                maxContains: 2,
+            },
+            value: [1, 'a', 2],
+            expected: {valid: true},
+        },
+        {
+            schema: {
+                contains: {
+                    type: 'number',
+                },
+                minContains: 1,
+                maxContains: 2,
+            },
+            value: ['a', 'b', 'c'],
+            expected: {valid: false},
+        },
+        {
+            schema: {
+                contains: {
+                    type: 'number',
+                },
+                minContains: 1,
+                maxContains: 2,
+            },
+            value: [1, 2, 3],
+            expected: {valid: false},
+        },
     ])(
         '$# validator($schema, $value): $expected',
         async ({value, expected, ...params}) => {

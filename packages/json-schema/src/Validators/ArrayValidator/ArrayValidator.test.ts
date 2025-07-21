@@ -1,779 +1,348 @@
 import { test, expect, describe } from '@jest/globals'
-import { makeParams, ValidatorParams } from '@ui-schema/json-schema/Validator'
+import { makeParams } from '@ui-schema/json-schema/Validator'
 import { arrayValidator, ERROR_WRONG_TYPE } from '@ui-schema/json-schema/Validators'
-import { isImmutable, List, Map } from 'immutable'
-import { newMockState, newMockStateNested } from '../../../tests/mocks/ValidatorState.mock.js'
+import { List } from 'immutable'
+import { newMockState } from '../../../tests/mocks/ValidatorState.mock.js'
 import {
     validateItems,
     validateContains,
     validateUniqueItems,
-    validateArrayContent,
-    validateAdditionalItems, ERROR_DUPLICATE_ITEMS,
+    ERROR_DUPLICATE_ITEMS,
+    ERROR_ADDITIONAL_ITEMS,
+    ERROR_MAX_CONTAINS,
+    ERROR_MIN_CONTAINS,
+    ERROR_NOT_FOUND_CONTAINS,
 } from './ArrayValidator.js'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 
-describe('validateArrayContent', () => {
-    test.each<[any, unknown, boolean | undefined, number, ValidatorParams | undefined]>([
-        [createOrderedMap({
-            type: 'number',
-        }), [1, 2, 3], undefined, 0, undefined],
-        [createOrderedMap({
-            type: 'number',
-        }), ['1'], undefined, 1, undefined],
-        [createOrderedMap({
-            type: 'number',
-        }), [1, 2, 3], undefined, 0, undefined],
-        [createOrderedMap({
-            type: 'number',
-        }), ['1'], undefined, 1, undefined],
-        [List([
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-        ]), [1, 2, 3], true, 0, {...makeParams(), recursive: false}],
-        [List([
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-        ]), ['abc', 2, null], true, 2, {...makeParams(), recursive: true}],
-        [List([
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-        ]), [1, 2, 3], true, 0, undefined],
-        [List([
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-        ]), [1, 2, 3], false, 0, undefined],
-        [List([
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-        ]), 'no-tuple', false, 1, undefined],
-        [List([
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-            createOrderedMap({
-                type: 'number',
-            }),
-        ]), [1, 2, 3, 4], false, 1, undefined],
-        [List([
-            createOrderedMap({
-                type: 'array',
-            }),
-            createOrderedMap({
-                type: 'array',
-            }),
-            createOrderedMap({
-                type: 'array',
-            }),
-        ]), [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], false, 0, undefined],
-        [List([
-            createOrderedMap({
-                type: 'array',
-            }),
-            createOrderedMap({
-                type: 'array',
-            }),
-            createOrderedMap({
-                type: 'array',
-            }),
-        ]), [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], true, 0, undefined],
-        [List([
-            createOrderedMap({
-                type: 'array',
-            }),
-            createOrderedMap({
-                type: 'array',
-            }),
-            createOrderedMap({
-                type: 'array',
-            }),
-        ]), [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3], [1, 2, 3, 4, 5, 6]], false, 1, undefined],
-        [List([
-            createOrderedMap({
-                type: 'array',
-            }),
-            createOrderedMap({
-                type: 'array',
-            }),
-            createOrderedMap({
-                type: 'array',
-            }),
-        ]), [[1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3]], false, 1, undefined],
-        /*
-        `validateArrayContent` is only responsible for tuple validation `additionalItems` and checking if a tuple is really a tuple
-        deep-schema validation is not it's responsible
-
-        [List([
-            createOrderedMap({
-                type: 'number'
-            }),
-            createOrderedMap({
-                type: 'number'
-            }),
-            createOrderedMap({
-                type: 'number'
-            })
-        ]), [1, 2, 3, 4], false, undefined, 1],
-        [List([
-            createOrderedMap({
-                type: 'number'
-            }),
-            createOrderedMap({
-                type: 'number'
-            }),
-            createOrderedMap({
-                type: 'number'
-            })
-        ]), [1, 2, 3, 4], true, undefined, 0],
-        [List([
-            createOrderedMap({
-                type: 'number'
-            }),
-            createOrderedMap({
-                type: 'string'
-            }),
-            createOrderedMap({
-                type: 'number'
-            })
-        ]), [1, 2, 3], false, undefined, 1],
-        [List([
-            createOrderedMap({
-                type: 'number'
-            }),
-            createOrderedMap({
-                type: 'number'
-            }),
-            createOrderedMap({
-                type: 'number'
-            })
-        ]), [1, '2', false], false, undefined, 2],
-        [List([
-            createOrderedMap({
-                type: 'number'
-            }),
-            createOrderedMap({
-                type: 'number'
-            }),
-            createOrderedMap({
-                type: 'number'
-            })
-        ]), [1, 2, 3, 4], false, false, 1],
-        [List([
-            createOrderedMap({
-                type: 'number'
-            }),
-            createOrderedMap({
-                type: 'number'
-            }),
-            createOrderedMap({
-                type: 'number'
-            })
-        ]), [1, 2, 3, 4], true, false, 0],
-        [List([
-            createOrderedMap({
-                type: 'number'
-            }),
-            createOrderedMap({
-                type: 'string'
-            }),
-            createOrderedMap({
-                type: 'boolean'
-            })
-        ]), [1, 'text', true], true, false, 0],*/
-    ])('validateArrayContent(%j, %j, %s): %s', (schema, value, additionalItems, expected, params) => {
-        const r = validateArrayContent(schema, value, additionalItems, {...params || makeParams(), ...newMockStateNested()})
-        if (r.output.errCount !== expected) {
-            console.log(
-                'failed validateArrayContent',
-                schema.toJS(),
-                isImmutable(value) ? value.toJS() : value,
-                r.output.errors,
-            )
-        }
-        expect(r.output.errCount).toBe(expected)
-    })
-})
-
-describe('validateItems', () => {
-    test.each<[any, unknown, number, ValidatorParams | undefined]>([
-        [{
-            type: 'array',
-            items: {
-                type: 'number',
-            },
-        }, [1, 2, 3], 0, undefined],
-        [{
-            type: 'array',
-            items: {
-                type: 'number',
-            },
-        }, ['1', 2, 3], 1, undefined],
-        [{
-            type: 'array',
-            items: {
-                type: 'null',
-            },
-        }, [null, null, null], 0, undefined],
-        [{
-            type: 'array',
-            items: {
-                type: 'null',
-            },
-        }, [null, 0, null], 1, undefined],
-        [{
-            type: 'array',
-            items: {
-                type: 'number',
-            },
-        }, ['1', '2', 3], 2, undefined],
-        [{
-            type: 'array',
-            items: {
-                type: 'number',
-            },
-        }, List([1, 2, 3]), 0, undefined],
-        [{
-            type: 'array',
-            items: {
-                type: 'number',
-            },
-        }, List(['1', 2, 3]), 1, undefined],
-        [{
-            type: 'array',
-            items: {
-                type: 'number',
-            },
-        }, List(['1', '2', 3]), 2, undefined],
-        [{
-            type: 'array',
-        }, List(['1', '2', 3]), 0, undefined],
-        [{
-            type: 'array',
-            additionalItems: true,
-            items: [
-                {
-                    type: 'number',
+describe('validateUniqueItems', () => {
+    test.each<[any, List<unknown> | unknown[], boolean, number, any[] | undefined]>([
+        // valid: unique items
+        [
+            {uniqueItems: true},
+            [1, 2, 3],
+            true,
+            0,
+            undefined,
+        ],
+        // invalid: duplicate items
+        [
+            {uniqueItems: true},
+            [1, 2, 2],
+            false,
+            1,
+            [{
+                error: ERROR_DUPLICATE_ITEMS,
+                keywordLocation: '/uniqueItems',
+                instanceLocation: '',
+                context: {duplicates: [{value: 2, indexes: [1, 2]}]},
+            }],
+        ],
+        // invalid: multiple duplicate values
+        [
+            {uniqueItems: true},
+            [1, 2, 1, 3, 2],
+            false,
+            1,
+            [{
+                error: ERROR_DUPLICATE_ITEMS,
+                keywordLocation: '/uniqueItems',
+                instanceLocation: '',
+                context: {
+                    duplicates: [
+                        {value: 1, indexes: [0, 2]},
+                        {value: 2, indexes: [1, 4]},
+                    ],
                 },
-                {
-                    type: 'number',
-                },
-                {
-                    type: 'number',
-                },
-            ],
-        }, [1, 2, 3], 0, undefined],
-        [{
-            type: 'array',
-            additionalItems: false,
-            items: [{
-                type: 'number',
-            }, {
-                type: 'number',
-            }, {
-                type: 'number',
             }],
-        }, [1, 2, 3], 0, undefined],
-        [{
-            type: 'array',
-            additionalItems: false,
-            items: [{
-                type: 'number',
-            }, {
-                type: 'number',
-            }, {
-                type: 'number',
+        ],
+        // valid: uniqueItems is false
+        [
+            {uniqueItems: false},
+            [2, 2],
+            true,
+            0,
+            undefined,
+        ],
+        // valid: uniqueItems is not present
+        [
+            {},
+            [2, 2],
+            true,
+            0,
+            undefined,
+        ],
+        // valid: immutable list with unique items
+        [
+            {uniqueItems: true},
+            List([1, 2, 3]),
+            true,
+            0,
+            undefined,
+        ],
+        // invalid: immutable list with duplicate items
+        [
+            {uniqueItems: true},
+            List([1, 2, 2]),
+            false,
+            1,
+            [{
+                error: ERROR_DUPLICATE_ITEMS,
+                keywordLocation: '/uniqueItems',
+                instanceLocation: '',
+                context: {duplicates: [{value: 2, indexes: [1, 2]}]},
             }],
-        }, 'no-tuple', 1, undefined],
-        [{
-            type: 'array',
-            additionalItems: false,
-            items: [{
-                type: 'number',
-            }, {
-                type: 'number',
-            }, {
-                type: 'number',
-            }],
-        }, ['no-tuple', 3, 'no-tuple'], 0, {...makeParams(), recursive: false}],
-        [{
-            type: 'array',
-            additionalItems: false,
-            items: [{
-                type: 'number',
-            }, {
-                type: 'number',
-            }, {
-                type: 'number',
-            }],
-        }, ['no-tuple', 3, 'no-tuple'], 2, {...makeParams(), recursive: true}],
-        [{
-            type: 'array',
-            additionalItems: false,
-            items: [{
-                type: 'number',
-            }, {
-                type: 'number',
-            }, {
-                type: 'number',
-            }],
-        }, [1, 2, 3, 4], 1, undefined],
-        [{
-            type: 'array',
-            additionalItems: true,
-            items: [{
-                type: 'number',
-            }, {
-                type: 'number',
-            }, {
-                type: 'number',
-            }],
-        }, [1, 2, 3, 4], 0, undefined],
-        [{
-            type: 'array',
-            items: {
-                type: 'array',
-                additionalItems: false,
-                items: [
-                    {type: 'number'},
-                    {type: 'number'},
-                    {type: 'number'},
-                ],
-            },
-        }, [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], 0, {...makeParams(), recursive: false}],
-        [{
-            type: 'array',
-            items: {
-                type: 'array',
-                additionalItems: false,
-                items: [
-                    {type: 'number'},
-                    {type: 'number'},
-                    {type: 'number'},
-                ],
-            },
-        }, [[1, 2, 3], [1, 2, 3, 4], [1, 2, 3]], 1, {...makeParams(), recursive: true}],
-    ])('validateItems(%j, %j)', (schema, value, expected, params) => {
+        ],
+        // valid: empty array
+        [
+            {uniqueItems: true},
+            [],
+            true,
+            0,
+            undefined,
+        ],
+    ])('validateUniqueItems(%j, %j)', (schema, value, expected, expectedErrCount, expectedErrors) => {
         const state = newMockState()
-        validateItems(createOrderedMap(schema), value, {...params || makeParams(), ...state})
-        if (state.output.errCount !== expected) {
-            console.log(
-                'failed validateItems',
-                isImmutable(schema) ? schema.toJS() : schema,
-                isImmutable(value) ? value.toJS() : value,
-                state.output.errors,
-            )
+        const unique = validateUniqueItems(createOrderedMap(schema), value, {...makeParams(), ...state})
+        expect(unique).toBe(expected)
+        expect(state.output.errCount).toBe(expectedErrCount)
+        if (expectedErrors) {
+            const simplifiedErrors = state.output.errors.map(e => ({
+                error: e.error,
+                keywordLocation: e.keywordLocation,
+                instanceLocation: e.instanceLocation,
+                context: e.context ? {duplicates: e.context['duplicates']} : undefined,
+            }))
+            expect(simplifiedErrors).toMatchObject(expectedErrors)
         }
-        expect(state.output.errCount).toBe(expected)
     })
 })
 
 describe('validateContains', () => {
-    test.each<[any, unknown, number, ValidatorParams | undefined]>([
+    test.each<[any, List<unknown> | unknown[], number, any[] | undefined]>([
+        // valid cases
+        [{contains: {type: 'number'}}, [1, 'a'], 0, undefined],
+        [{contains: {type: 'number'}}, List([1, 'a']), 0, undefined],
+        [{contains: {type: 'number'}, minContains: 2}, [1, 2, 'a'], 0, undefined],
+        [{contains: {type: 'number'}, maxContains: 2}, [1, 2, 'a'], 0, undefined],
+        [{contains: {type: 'number'}, minContains: 1, maxContains: 2}, [1, 2, 'a'], 0, undefined],
+        [{contains: {type: 'boolean'}}, [1, 2, true], 0, undefined],
+        [{contains: {type: 'number'}, minContains: 0}, [], 0, undefined],
+        [{contains: {type: 'number'}, minContains: 2, maxContains: 4}, [1, 2], 0, undefined],
+        [{contains: {type: 'number'}, minContains: 2, maxContains: 4}, [1, 2, 3], 0, undefined],
+        [{contains: {type: 'number'}, minContains: 2, maxContains: 4}, [1, 2, 3, 4], 0, undefined],
+        [{contains: {type: 'number'}, maxContains: 2}, [1, 2], 0, undefined],
+        [{contains: {type: 'number'}, minContains: 0, maxContains: 1}, [], 0, undefined],
+
+        // invalid cases
+        [
+            {contains: {type: 'number'}},
+            ['a', 'b'],
+            1,
+            [{error: ERROR_NOT_FOUND_CONTAINS, keywordLocation: '/contains', context: {minContains: 1, found: 0}}],
+        ],
+        [
+            {contains: {type: 'number'}},
+            [],
+            1,
+            [{error: ERROR_NOT_FOUND_CONTAINS, keywordLocation: '/contains', context: {minContains: 1, found: 0}}],
+        ],
+        [
+            {contains: {type: 'number'}, minContains: 2},
+            [1, 'a', 'b'],
+            1,
+            [{error: ERROR_MIN_CONTAINS, keywordLocation: '/minContains', context: {minContains: 2, found: 1}}],
+        ],
+        [
+            {contains: {type: 'number'}, maxContains: 1},
+            [1, 2, 'a'],
+            1,
+            [{error: ERROR_MAX_CONTAINS, keywordLocation: '/maxContains', context: {maxContains: 1, found: 2}}],
+        ],
         [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-        }, [1, 2, 3], 0, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-        }, ['1', '2', '3'], 3, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'null',
-            },
-        }, [1, 2, 3], 3, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'null',
-            },
-        }, [null, null, null], 0, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-        }, List([1, 2, 3]), 0, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-        }, List(['1', '2', '3']), 3, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-        }, ['1', '2', 3], 0, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-        }, [1, '2', '3'], 0, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-        }, [1], 0, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
+            contains: {type: 'number'},
             minContains: 2,
-        }, [1], 1, undefined],
+        }, [1], 1, [{error: ERROR_MIN_CONTAINS, keywordLocation: '/minContains'}]],
         [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-            minContains: 2,
-        }, [1, 2], 0, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-            minContains: 0,
-        }, [], 0, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
+            contains: {type: 'number'},
             minContains: 2,
             maxContains: 4,
-        }, [1], 1, undefined],
+        }, [1], 1, [{error: ERROR_MIN_CONTAINS, keywordLocation: '/minContains'}]],
         [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
+            contains: {type: 'number'},
             minContains: 2,
             maxContains: 4,
-        }, [1, 2], 0, undefined],
+        }, [1, 2, 3, 4, 5], 1, [{error: ERROR_MAX_CONTAINS, keywordLocation: '/maxContains'}]],
         [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-            minContains: 2,
-            maxContains: 4,
-        }, [1, 2, 3], 0, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-            minContains: 2,
-            maxContains: 4,
-        }, [1, 2, 3, 4], 0, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-            minContains: 2,
-            maxContains: 4,
-        }, [1, 2, 3, 4, 5], 1, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-            minContains: 0,
-            maxContains: 1,
-        }, [], 0, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
+            contains: {type: 'number'},
             maxContains: 2,
-        }, [1, 2, 3], 1, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-            maxContains: 2,
-        }, [1, 2, 3, '3'], 2, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-            maxContains: 2,
-        }, [1, 2], 0, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-            maxContains: 2,
-        }, [], 1, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-        }, [], 1, undefined],
-        [{
-            type: 'array',
-            contains: {
-                type: 'number',
-            },
-        }, List([]), 1, undefined],
-        [{
-            type: 'array',
-        }, List([]), 0, undefined],
-        [{
-            type: 'array',
-            contains: {},
-        }, List([]), 0, undefined],
-    ])('validateContains(%j, %j)', (schema, value, expected, params) => {
+        }, [1, 2, 3], 1, [{error: ERROR_MAX_CONTAINS, keywordLocation: '/maxContains'}]],
+        [
+            {contains: {type: 'number'}},
+            List([]),
+            1,
+            [{error: ERROR_NOT_FOUND_CONTAINS, keywordLocation: '/contains'}],
+        ],
+
+        // edge cases
+        [{}, [1, 2], 0, undefined], // no `contains` keyword
+        [{contains: true}, [1, 2], 0, undefined], // `contains` must be a schema object
+        [{contains: {}}, [1, 2], 0, undefined], // empty schema, always matches
+    ])('validateContains(%j, %j)', (schema, value, expectedErrCount, expectedErrors) => {
         const state = newMockState()
-        validateContains(createOrderedMap(schema), value, {...params || makeParams(), ...state})
-        expect(state.output.errCount).toBe(expected)
+        validateContains(createOrderedMap(schema), value, {...makeParams(), ...state})
+        expect(state.output.errCount).toBe(expectedErrCount)
+        if (expectedErrors) {
+            const simplifiedErrors = state.output.errors.map(e => ({
+                error: e.error,
+                keywordLocation: e.keywordLocation,
+                context: e.context ? {minContains: e.context['minContains'], maxContains: e.context['maxContains'], found: e.context['found']} : undefined,
+            }))
+            expect(simplifiedErrors).toMatchObject(expectedErrors)
+        }
     })
 })
 
-describe('validateAdditionalItems', () => {
-    test.each([
-        [
-            true,
-            [1],
-            [createOrderedMap({
-                type: 'number',
-            })],
-            true,
-        ],
-        [
-            true,
-            [1, 2],
-            [createOrderedMap({
-                type: 'number',
-            })],
-            true,
-        ],
-        [
-            false,
-            [1, 2],
-            [createOrderedMap({
-                type: 'number',
-            })],
-            false,
-        ],
-        [
-            false,
-            [1],
-            [createOrderedMap({
-                type: 'number',
-            })],
-            true,
-        ],
-        [
-            false,
-            List([1, 2]),
-            [createOrderedMap({
-                type: 'number',
-            })],
-            false,
-        ],
-        [
-            false,
-            List([1]),
-            [createOrderedMap({
-                type: 'number',
-            })],
-            true,
-        ],
-    ])('validateAdditionalItems(%s, %j, %j)', (additionalItems, value, schema, expected) => {
-        expect(validateAdditionalItems(additionalItems, value, List(schema))).toBe(expected)
-    })
-})
+describe('validateItems', () => {
+    test.each<[any, List<unknown> | unknown[], number, any[] | undefined]>([
+        // Homogeneous items (default `items` keyword)
+        [{items: {type: 'string'}}, ['a', 'b'], 0, undefined],
+        [{items: {type: 'string'}}, ['a', 123], 1, [{error: ERROR_WRONG_TYPE, keywordLocation: '/items/type', instanceLocation: '/1'}]],
+        [{items: {type: 'string'}}, List(['a', 123]), 1, [{error: ERROR_WRONG_TYPE, keywordLocation: '/items/type', instanceLocation: '/1'}]],
+        // `items: false` (no items allowed)
+        [{items: false}, [], 0, undefined],
+        [{items: false}, [1], 1, [{error: ERROR_ADDITIONAL_ITEMS, keywordLocation: '/items', instanceLocation: '/0'}]],
 
-describe('validateUniqueItems', () => {
-    test.each([
-        [
-            {
-                type: 'array',
-                uniqueItems: true,
-            },
-            [1, 2, 3],
-            true,
-        ],
-        [
-            {
-                type: 'array',
-                uniqueItems: true,
-            },
-            [1, 2, 2],
-            false,
-        ],
-        [
-            {
-                type: 'array',
-                uniqueItems: false,
-            },
-            [2, 2],
-            true,
-        ],
-        [
-            {
-                type: 'array',
-            },
-            [2, 2],
-            true,
-        ],
-        [
-            {
-                type: 'array',
-                uniqueItems: true,
-            },
-            List([1, 2, 3]),
-            true,
-        ],
-        [
-            {
-                type: 'array',
-                uniqueItems: true,
-            },
-            List([1, 2, 2]),
-            false,
-        ],
-        [
-            {
-                type: 'array',
-                uniqueItems: true,
-            },
-            Map({prop_a: 2, prop_b: 2}),
-            true,
-        ],
-    ])('validateUniqueItems(%j, %j)', (schema, value, expected) => {
-        expect(validateUniqueItems(createOrderedMap(schema), value)).toBe(expected)
+        // Draft-07 Style: `items` as array (tuple), `additionalItems`
+        [{items: [{type: 'string'}, {type: 'number'}]}, ['a', 1], 0, undefined],
+        [{items: [{type: 'string'}, {type: 'number'}]}, ['a', '1'], 1, [{error: ERROR_WRONG_TYPE, keywordLocation: '/items/1/type', instanceLocation: '/1'}]],
+        [{items: [{type: 'string'}, {type: 'number'}]}, [1, 'a'], 2, [
+            {error: ERROR_WRONG_TYPE, keywordLocation: '/items/0/type', instanceLocation: '/0'},
+            {error: ERROR_WRONG_TYPE, keywordLocation: '/items/1/type', instanceLocation: '/1'},
+        ]],
+        [{items: [{type: 'string'}], additionalItems: false}, ['a'], 0, undefined],
+        [{items: [{type: 'string'}], additionalItems: false}, ['a', 1], 1, [{error: ERROR_ADDITIONAL_ITEMS, keywordLocation: '/additionalItems', instanceLocation: '/1'}]],
+        [{items: [{type: 'string'}], additionalItems: {type: 'number'}}, ['a', 1, 2], 0, undefined],
+        [{items: [{type: 'string'}], additionalItems: {type: 'number'}}, ['a', 1, '2'], 1, [{error: ERROR_WRONG_TYPE, keywordLocation: '/items/type', instanceLocation: '/2'}]],
+        [{items: [], additionalItems: false}, [], 0, undefined],
+        [{items: [], additionalItems: false}, [1], 1, [{error: ERROR_ADDITIONAL_ITEMS, keywordLocation: '/additionalItems', instanceLocation: '/0'}]],
+
+        // Draft-2019-09 Style: `prefixItems`, `items`
+        [{prefixItems: [{type: 'string'}, {type: 'number'}]}, ['a', 1], 0, undefined],
+        [{prefixItems: [{type: 'string'}, {type: 'number'}]}, ['a', '1'], 1, [{error: ERROR_WRONG_TYPE, keywordLocation: '/prefixItems/1/type', instanceLocation: '/1'}]],
+        [{prefixItems: [{type: 'string'}], items: false}, ['a'], 0, undefined],
+        [{prefixItems: [{type: 'string'}], items: false}, ['a', 1], 1, [{error: ERROR_ADDITIONAL_ITEMS, keywordLocation: '/items', instanceLocation: '/1'}]],
+        [{prefixItems: [{type: 'string'}], items: {type: 'number'}}, ['a', 1, 2], 0, undefined],
+        [{prefixItems: [{type: 'string'}], items: {type: 'number'}}, ['a', 1, '2'], 1, [{error: ERROR_WRONG_TYPE, keywordLocation: '/items/type', instanceLocation: '/2'}]],
+        [{prefixItems: []}, [1, 'a'], 0, undefined], // `items` is not defined, so additional items are allowed
+        [{prefixItems: [], items: {type: 'number'}}, [1, 2], 0, undefined],
+        [{prefixItems: [], items: {type: 'number'}}, [1, 'a'], 1, [{error: ERROR_WRONG_TYPE, keywordLocation: '/items/type', instanceLocation: '/1'}]],
+        [{prefixItems: [], items: false}, [1], 1, [{error: ERROR_ADDITIONAL_ITEMS, keywordLocation: '/items', instanceLocation: '/0'}]],
+    ])('validateItems(%j, %j)', (schema, value, expectedErrCount, expectedErrors) => {
+        const state = newMockState()
+        validateItems(createOrderedMap(schema), value, {...makeParams(), ...state, recursive: true})
+        expect(state.output.errCount).toBe(expectedErrCount)
+        if (expectedErrors) {
+            const simplifiedErrors = state.output.errors.map(e => ({
+                error: e.error,
+                keywordLocation: e.keywordLocation,
+                instanceLocation: e.instanceLocation,
+            }))
+            expect(simplifiedErrors).toMatchObject(expectedErrors)
+        }
     })
 })
 
 describe('arrayValidator', () => {
-    test.each([
+    test.each<[any, unknown, number, any[] | undefined, { recursive?: boolean } | undefined]>([
+        // uniqueItems
+        [{uniqueItems: true}, ['a', 'b'], 0, undefined, undefined],
+        [{uniqueItems: true}, ['a', 'a'], 1, [{error: ERROR_DUPLICATE_ITEMS, keywordLocation: '/uniqueItems', instanceLocation: ''}], undefined],
+
+        // contains
+        [{contains: {type: 'number'}}, ['a', 1], 0, undefined, undefined],
+        [{contains: {type: 'number'}}, ['a', 'b'], 1, [{error: ERROR_NOT_FOUND_CONTAINS, keywordLocation: '/contains'}], undefined],
+        [{contains: {type: 'number'}, minContains: 2}, [1, 'a'], 1, [{error: ERROR_MIN_CONTAINS, keywordLocation: '/minContains'}], undefined],
+        [{contains: {type: 'number'}, maxContains: 1}, [1, 2], 1, [{error: ERROR_MAX_CONTAINS, keywordLocation: '/maxContains'}], undefined],
+
+        // items (recursive: false by default)
+        [{items: {type: 'number'}}, ['1'], 0, undefined, {recursive: false}],
+        [{items: {type: 'number'}}, [1, 2], 0, undefined, {recursive: false}],
+
+        // items (recursive: true)
+        [{items: {type: 'number'}}, [1, '2'], 1, [{error: ERROR_WRONG_TYPE, keywordLocation: '/items/type', instanceLocation: '/1'}], {recursive: true}],
+        [{items: [{type: 'string'}], additionalItems: false}, ['a', 1], 1, [{error: ERROR_ADDITIONAL_ITEMS, keywordLocation: '/additionalItems', instanceLocation: '/1'}], {recursive: true}],
+        [{prefixItems: [{type: 'string'}], items: false}, ['a', 1], 1, [{error: ERROR_ADDITIONAL_ITEMS, keywordLocation: '/items', instanceLocation: '/1'}], {recursive: true}],
+
+        // combination of keywords (recursive: true)
         [
-            {type: 'array', uniqueItems: true},
-            ['text1'],
-            undefined,
-            true,
+            {uniqueItems: true, contains: {type: 'number'}, items: {type: 'string'}},
+            ['a', 'a', 1],
+            2,
+            [
+                {error: ERROR_DUPLICATE_ITEMS, keywordLocation: '/uniqueItems'},
+                {error: ERROR_WRONG_TYPE, keywordLocation: '/items/type', instanceLocation: '/2'},
+            ],
+            {recursive: true},
         ],
         [
-            {type: 'array', uniqueItems: true},
-            ['text1', 'text1'],
-            [{error: ERROR_DUPLICATE_ITEMS, instanceLocation: '', keywordLocation: '/uniqueItems'}],
-            false,
+            {uniqueItems: true, minContains: 2, items: {type: 'number'}},
+            [1, 1, 2],
+            1,
+            [{error: ERROR_DUPLICATE_ITEMS, keywordLocation: '/uniqueItems'}],
+            {recursive: true},
+        ],
+
+        // non-array value should be skipped by the validator
+        [{uniqueItems: true}, 'a string', 0, undefined, undefined],
+        [{contains: {type: 'number'}}, 123, 0, undefined, undefined],
+        [{items: {type: 'string'}}, {}, 0, undefined, undefined],
+
+        [
+            {items: {type: 'number'}},
+            List(['1', '2', 3]),
+            2,
+            [
+                {error: ERROR_WRONG_TYPE, instanceLocation: '/0'},
+                {error: ERROR_WRONG_TYPE, instanceLocation: '/1'},
+            ],
+            {recursive: true},
         ],
         [
-            {
-                type: 'array',
-                items: {
-                    type: 'number',
-                },
-            },
-            [1, 2],
-            undefined,
-            true,
+            {items: [{type: 'number'}, {type: 'number'}, {type: 'number'}], additionalItems: false},
+            ['no-tuple', 3, 'no-tuple'],
+            2,
+            [
+                {error: ERROR_WRONG_TYPE, instanceLocation: '/0'},
+                {error: ERROR_WRONG_TYPE, instanceLocation: '/2'},
+            ],
+            {recursive: true},
         ],
         [
-            {
-                type: 'array',
-                items: {
-                    type: 'number',
-                },
-            },
-            ['1', 2],
-            undefined,
-            // has error, but childError, thus valid - as this test only tests not recursive
-            true,
-        ],
-        [
-            {
-                type: 'array',
-                contains: {
-                    type: 'number',
-                },
-            },
-            ['1', 2],
-            undefined,
-            true,
-        ],
-        [
-            {
-                type: 'array',
-                contains: {
-                    type: 'number',
-                },
-            },
-            ['1'],
-            [{error: ERROR_WRONG_TYPE, context: {actual: 'string'}, instanceLocation: '/0', keywordLocation: '/contains/items/type'}],
-            false,
+            {items: [{type: 'number'}, {type: 'number'}, {type: 'number'}], additionalItems: false},
+            [1, 2, 3, 4],
+            1,
+            [{error: ERROR_ADDITIONAL_ITEMS, instanceLocation: '/3'}],
+            {recursive: true},
         ],
     ])(
-        'arrayValidator.validate(%j, %s)',
-        (schema, value, errors, expectedValid) => {
+        'arrayValidator.validate(%j, %s, recursive: %j)',
+        (schema, value, expectedErrCount, expectedErrors, params) => {
             const state = newMockState()
+            const finalParams = {...makeParams(), ...(params || {}), ...state}
             arrayValidator.validate(
                 createOrderedMap(schema),
                 value,
-                {...makeParams(), ...state},
+                finalParams,
             )
-            // expect(result.valid).toBe(expectedValid)
-            expect(state.output.errCount === 0).toBe(expectedValid)
-            if (errors) {
-                expect(state.output.errors).toStrictEqual(errors)
-            } else {
-                // todo: test childErrors for array items
+            expect(state.output.errCount).toBe(expectedErrCount)
+            if (expectedErrors) {
+                const simplifiedErrors = state.output.errors.map(e => ({
+                    error: e.error,
+                    keywordLocation: e.keywordLocation,
+                    instanceLocation: e.instanceLocation || '', // normalize for comparison
+                }))
+                expect(simplifiedErrors).toMatchObject(expectedErrors)
             }
         },
     )

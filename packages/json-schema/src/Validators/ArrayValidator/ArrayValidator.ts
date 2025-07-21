@@ -1,8 +1,7 @@
 import { toPointer } from '@ui-schema/json-pointer/toPointer'
-import { ValidatorParams, ValidatorState, ValidatorStateNested, ValidatorHandler, getValueType } from '@ui-schema/json-schema/Validator'
+import { ValidatorParams, ValidatorState, ValidatorHandler } from '@ui-schema/json-schema/Validator'
 import { ValidatorOutput } from '@ui-schema/ui-schema/ValidatorOutput'
-import { List } from 'immutable'
-import { ERROR_WRONG_TYPE } from '@ui-schema/json-schema/Validators/TypeValidator'
+import { List, is } from 'immutable'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
 
 export const ERROR_DUPLICATE_ITEMS = 'duplicate-items'
@@ -11,263 +10,280 @@ export const ERROR_MIN_CONTAINS = 'min-contains'
 export const ERROR_MAX_CONTAINS = 'max-contains'
 export const ERROR_ADDITIONAL_ITEMS = 'additional-items'
 
-const findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== index)
+interface DuplicateEntry {
+    value: unknown
+    indexes: number[]
+}
 
-export const validateArrayContent = (
-    itemsSchema: UISchemaMap | List<UISchemaMap>,
-    value: unknown,
-    additionalItems: boolean = true,
-    // if `output` is in `params`, the output is added directly to it.
-    // with this the calling function can control if adding errors to global or using the result.
-    params: ValidatorParams & (ValidatorStateNested | ValidatorState),
-): {
-    output: ValidatorOutput
-    found: number
-} => {
-    const output = 'output' in params && params.output ? params.output : new ValidatorOutput()
-    let found = 0
-    if (
-        (List.isList(itemsSchema)/* || Array.isArray(itemsSchema)*/)
-    ) {
-        // tuple validation
-        if (List.isList(value) || Array.isArray(value)) {
-            // for tuples, the actual item must be an array/list also
-            // todo: add values as array support
-            // todo: implement tuple validation
-            //   actually, only `additionalItems` should be needed to be validated here, the other values should be validated when the input for them is rendered
-            //   as "only what is mounted can be entered and validated"
-            //   but they must be usable for within conditional schemas
-            if (!validateAdditionalItems(additionalItems, value, itemsSchema)) {
-                // todo: add index of erroneous item; or at all as one context list, only one error instead of multiple?
-                output.addError({
-                    error: ERROR_ADDITIONAL_ITEMS,
-                    keywordLocation: toPointer([...params.keywordLocation, 'additionalItems']),
-                    instanceLocation: toPointer(params.instanceLocation),
-                })
-                found++
+const findDuplicates = (
+    arr: List<unknown> | unknown[],
+    isEqual: (a: unknown, b: unknown) => boolean,
+): DuplicateEntry[] => {
+    const arrInterop =
+        Array.isArray(arr)
+            ? {
+                size: arr.length,
+                get: (i) => arr[i],
             }
+            : arr
 
-            if (params.recursive) {
-                const listSize = itemsSchema.size || 0
-                let i = 0
-                for (const val of value) {
-                    if (i >= listSize) break
-                    const result = params.validate(
-                        itemsSchema.get(i),
-                        val,
-                        {
-                            ...params,
-                            // todo: this won't always be `items`!
-                            keywordLocation: [...params.keywordLocation, 'items'],
-                            instanceLocation: [...params.instanceLocation, i],
-                            instanceKey: i,
-                            output: 'output' in params && params.output ? params.output : new ValidatorOutput(),
-                            context: {},
-                        },
-                    )
-                    if (result.valid) {
-                        found++
-                    } else if (!('output' in params && params.output)) {
-                        result.errors.forEach(err2 => output.addError(err2))
-                    }
-                    i++
-                }
-            }
+    const seen: {
+        value: any
+        indexes: number[]
+    }[] = []
+
+    for (let i = 0; i < arrInterop.size; i++) {
+        const val = arrInterop.get(i)
+
+        const existing = seen.find(entry => isEqual(entry.value, val))
+        if (existing) {
+            existing.indexes.push(i)
         } else {
-            //console.log('val?.toJS()', /*val,*/ schema?.toJS(), value?.toJS())
-            // when tuple schema but no-tuple value
-            output.addError({
-                error: ERROR_WRONG_TYPE,
-                context: {actual: getValueType(value), arrayTupleValidation: true},
-            })
+            seen.push({value: val, indexes: [i]})
+        }
+    }
+
+    return seen.filter(entry => entry.indexes.length > 1)
+}
+
+/**
+ * Validates if all items in an array are unique.
+ */
+export const validateUniqueItems = (
+    schema: UISchemaMap,
+    value: List<any> | any[],
+    params?: ValidatorParams & ValidatorState, // optional for pointer reporting
+): boolean => {
+    const uniqueItems = schema.get('uniqueItems')
+    if (!uniqueItems) {
+        return true
+    }
+
+    const duplicates = findDuplicates(value, is)
+
+    if (duplicates.length > 0 && params) {
+        params.output.addError({
+            error: ERROR_DUPLICATE_ITEMS,
+            keywordLocation: toPointer([...params.keywordLocation, 'uniqueItems']),
+            instanceLocation: toPointer(params.instanceLocation),
+            context: {
+                duplicates: duplicates.map(d => ({
+                    value: d.value,
+                    indexes: d.indexes,
+                })),
+            },
+        })
+    }
+
+    return duplicates.length === 0
+}
+
+/**
+ * A helper to validate a list of items against a single schema.
+ * Used for `contains` validation. It counts the number of valid items
+ * without polluting the main output with errors from non-matching items.
+ */
+export const validateItemsAgainstSchema = (
+    itemsToValidate: List<any> | any[],
+    schemaToValidate: UISchemaMap,
+    params: ValidatorParams & ValidatorState,
+): { found: number } => {
+    let found = 0
+    let i = 0
+    for (const val of itemsToValidate) {
+        // Run a "silent" validation to check for a match.
+        const result = params.validate(
+            schemaToValidate,
+            val,
+            {
+                ...params,
+                instanceLocation: [...params.instanceLocation, i],
+                instanceKey: i,
+                output: new ValidatorOutput(), // Use a temporary output to check validity
+                context: {}, // Isolate context
+            },
+        )
+        if (result.valid) {
             found++
         }
-    }/* else if(
-        itemsSchema.get('type') === 'array' &&
-        (List.isList(nestedItemsSchema) || Array.isArray(nestedItemsSchema))
-    ) {
-        // nested tuple validation
-        console.log('nested tuple validation', itemsSchema?.toJS())
-    } else if(
-        itemsSchema.get('type') === 'array' &&
-        (Map.isMap(nestedItemsSchema) || typeof nestedItemsSchema === 'object')
-    ) {
-        // a nested "one-schema-for-all" array, nested in the current array
-        console.log('nested one-schema-for-all', itemsSchema?.toJS())
-    }*/
-    else if (Array.isArray(value) || List.isList(value)) {
-        // }*/ else if(!schemaTypeIs(itemsSchema.get('type'), 'array')) {
-        // no nested array, one-schema for all items
-        // not validating array content of array here, must be validated with next schema level
-        let i = 0
-        for (const val of value) {
-            // single-validation
-            // Cite from json-schema.org: When items is a single schema, the additionalItems keyword is meaningless, and it should not be used.
-            const result = params.validate(
-                itemsSchema, val,
-                {
-                    ...params,
-                    // todo: this won't always be `items`!
-                    keywordLocation: [...params.keywordLocation, 'items'],
-                    instanceLocation: [...params.instanceLocation, i],
-                    instanceKey: i,
-                    output: 'output' in params && params.output ? params.output : new ValidatorOutput(),
-                    context: {},
-                },
-            )
-            if (result.valid) {
-                found++
-            } else if (!('output' in params && params.output)) {
-                result.errors.forEach(err2 => output.addError(err2))
-            }
-            i++
+        i++
+    }
+    return {found}
+}
+
+/**
+ * Normalizes array validation keywords from different JSON Schema drafts.
+ *
+ * - Draft 2019-09+: `prefixItems` (tuple), `items` (additional)
+ * - Draft-07 and below: `items` (tuple or single), `additionalItems` (additional)
+ */
+const normalizeArraySchema = (schema: UISchemaMap) => {
+    const itemsTmp = schema.get('items')
+    const prefixItemsTmp = schema.get('prefixItems')
+    const additionalItemsTmp = schema.get('additionalItems')
+
+    let prefixItems: List<any> | undefined = undefined
+    let items: UISchemaMap | undefined = undefined
+    let additionalItemsAllowed = true
+
+    if (prefixItemsTmp !== undefined && List.isList(prefixItemsTmp)) {
+        // Draft 2019-09+ style: `prefixItems` for tuple validation.
+        prefixItems = prefixItemsTmp
+        // @ts-ignore
+        if (itemsTmp === false) {
+            additionalItemsAllowed = false
+        } else if (typeof itemsTmp === 'object' && itemsTmp !== null) {
+            items = itemsTmp as UISchemaMap
         }
+    } else if (List.isList(itemsTmp)) {
+        // Draft-07 style: `items` as an array for tuple validation.
+        prefixItems = itemsTmp
+        if (additionalItemsTmp === false) {
+            additionalItemsAllowed = false
+        } else if (typeof additionalItemsTmp === 'object' && additionalItemsTmp !== null) {
+            items = additionalItemsTmp as UISchemaMap
+        }
+    } else if (typeof itemsTmp === 'object' && itemsTmp !== null) {
+        items = itemsTmp as UISchemaMap
+    } else if (itemsTmp === false) {
+        additionalItemsAllowed = false
     }
 
-    return {
-        output,
-        found,
-    }
+    return {prefixItems, items, additionalItemsAllowed}
 }
 
-export const validateAdditionalItems = (additionalItems: boolean, value: List<any> | any[], schema: List<UISchemaMap>): boolean => {
-    return additionalItems || (!additionalItems && (
-        (List.isList(value) && value.size <= schema.size) ||
-        (Array.isArray(value) && value.length <= schema.size)
-    ))
-}
-
+/**
+ * Validates array items against `items`, `prefixItems`, and `additionalItems` keywords.
+ * It handles both tuple and list validation across different JSON Schema drafts.
+ */
 export const validateItems = (
     schema: UISchemaMap,
-    value: any,
+    value: List<any> | any[],
     params: ValidatorParams & ValidatorState,
-) => {
-    const items = schema.get('items')
-    if (items && value) {
-        validateArrayContent(items, value, schema.get('additionalItems'), {
-            ...params,
-            parentSchema: schema,
-        })
+): void => {
+    const {
+        prefixItems,
+        items,
+        additionalItemsAllowed,
+    } = normalizeArraySchema(schema)
+
+    const prefixItemsCount = prefixItems?.size || 0
+    let i = 0
+    for (const val of value) {
+        let itemSchema: UISchemaMap | undefined = undefined
+        let keyword = 'items'
+
+        if (i < prefixItemsCount) {
+            itemSchema = prefixItems!.get(i)
+            keyword = schema.has('prefixItems') ? 'prefixItems' : 'items'
+        } else {
+            // current item is an "additional" item
+            if (!additionalItemsAllowed) {
+                params.output.addError({
+                    error: ERROR_ADDITIONAL_ITEMS,
+                    keywordLocation: toPointer([
+                        ...params.keywordLocation,
+                        // @ts-ignore
+                        schema.get('items') === false ? 'items' : 'additionalItems',
+                    ]),
+                    instanceLocation: toPointer([...params.instanceLocation, i]),
+                })
+                i++
+                continue
+            }
+            itemSchema = items
+            keyword = 'items'
+        }
+
+        if (itemSchema) {
+            params.validate(
+                itemSchema,
+                val,
+                {
+                    ...params,
+                    keywordLocation:
+                        prefixItems?.has(i)
+                            ? [...params.keywordLocation, keyword, i]
+                            : [...params.keywordLocation, keyword],
+                    instanceLocation: [...params.instanceLocation, i],
+                    instanceKey: i,
+                },
+            )
+        }
+        i++
     }
 }
 
+/**
+ * Validates the array against `contains`, `minContains`, and `maxContains` keywords.
+ */
 export const validateContains = (
     schema: UISchemaMap,
-    value: List<any> | any[] | any,
+    value: List<any> | any[],
     params: ValidatorParams & ValidatorState,
-) => {
-    if (!(Array.isArray(value) || List.isList(value))) return
+): void => {
+    const containsSchema = schema.get('contains')
+    if (typeof containsSchema !== 'object' || containsSchema === null) return
 
-    const contains = schema.get('contains')
-    if (!contains) return
-    const contains_type = contains.get('type')
-    if (!contains_type) return
+    const minContains = schema.get('minContains') as number | undefined ?? 1
+    const maxContains = schema.get('maxContains') as number | undefined
 
-    const minContains = schema.get('minContains')
-    const maxContains = schema.get('maxContains')
-
-    const item_err = validateArrayContent(
-        contains,
+    const {found} = validateItemsAgainstSchema(
         value,
-        undefined,
-        {
-            ...params,
-            parentSchema: schema,
-            keywordLocation: [...params.keywordLocation, 'contains'],
-            recursive: true,
-            output: undefined,
-            context: {},
-        },
+        containsSchema as UISchemaMap,
+        params,
     )
 
-    if (
-        (item_err.found < 1 && typeof minContains === 'undefined' && typeof maxContains === 'undefined') ||
-        (typeof minContains === 'number' && minContains > item_err.found) ||
-        (typeof maxContains === 'number' && maxContains < item_err.found)
-    ) {
-        if (item_err.output.errCount !== 0) {
-            item_err.output.errors.forEach(err => params.output.addError(err))
-        }
-    }
-
-    if (typeof minContains === 'number' && minContains > item_err.found) {
+    if (found < minContains) {
+        const isDefaultMinContains = minContains === 1 && !schema.has('minContains')
         params.output.addError({
-            error: ERROR_MIN_CONTAINS,
-            keywordLocation: toPointer([...params.keywordLocation, 'minContains']),
+            error: isDefaultMinContains ? ERROR_NOT_FOUND_CONTAINS : ERROR_MIN_CONTAINS,
+            keywordLocation: toPointer([
+                ...params.keywordLocation,
+                isDefaultMinContains ? 'contains' : 'minContains',
+            ]),
             instanceLocation: toPointer(params.instanceLocation),
-            context: {minContains},
+            context: {minContains, found},
         })
     }
-    if (typeof maxContains === 'number' && maxContains < item_err.found) {
+
+    if (typeof maxContains === 'number' && found > maxContains) {
         params.output.addError({
             error: ERROR_MAX_CONTAINS,
             keywordLocation: toPointer([...params.keywordLocation, 'maxContains']),
             instanceLocation: toPointer(params.instanceLocation),
-            context: {maxContains},
-        })
-    }
-
-    if (
-        minContains !== 0 &&
-        ((Array.isArray(value) && value.length === 0) || (List.isList(value) && value.size === 0))
-    ) {
-        params.output.addError({
-            error: ERROR_NOT_FOUND_CONTAINS,
-            keywordLocation: toPointer([...params.keywordLocation, 'contains']),
-            instanceLocation: toPointer(params.instanceLocation),
+            context: {maxContains, found},
         })
     }
 }
 
-export const validateUniqueItems = (schema: UISchemaMap, value: List<any> | any[] | unknown): boolean => {
-    const uniqueItems = schema.get('uniqueItems')
-    if (uniqueItems && (List.isList(value) || Array.isArray(value))) {
-        const duplicates = findDuplicates(value)
-        if (Array.isArray(duplicates)) {
-            return duplicates.length === 0
-        } else if (List.isList(duplicates)) {
-            return duplicates.size === 0
-        }
-    }
-    return true
-}
-
+/**
+ * The main validator for the `array` type.
+ * Handles `uniqueItems`, `contains`, and recursively validates `items`/`prefixItems`.
+ */
 export const arrayValidator: ValidatorHandler = {
     types: ['array'],
     validate: (schema, value, params) => {
-        if (!schema || !value) return
-        // unique-items sub-schema is intended for dynamics and for statics, e.g. Selects could have duplicates but also a SimpleList of strings
-        const uniqueItems = schema?.get('uniqueItems')
-        if (uniqueItems) {
-            if (!validateUniqueItems(schema, value)) {
-                params.output.addError({
-                    error: ERROR_DUPLICATE_ITEMS,
-                    keywordLocation: toPointer([...params.keywordLocation, 'uniqueItems']),
-                    instanceLocation: toPointer(params.instanceLocation),
-                })
-            }
+        if (!(List.isList(value) || Array.isArray(value))) {
+            return
+        }
+
+        if (schema.get('uniqueItems')) {
+            validateUniqueItems(schema, value, params)
+        }
+
+        if (schema.has('contains')) {
+            validateContains(schema, value, params)
         }
 
         /*
-         * `items` sub-schema validation is intended for dynamic-inputs like SimpleList or GenericList
-         * - thus the validity must also be checked in the components rendering the sub-schema,
-         * - when validation is done here, the parent receives the invalidations instead of the actual component that is invalid
-         * - e.g. 2 out of 3 are invalid, only one error is visible on the parent-component
-         * - but when the items are not valid, the parent should also know that something is invalid
-         * - providing context `arrayItems = true` for errors makes it possible to distinct the errors in the parent-component
-         * - full sub-schema validation is done (and possible) if the sub-schema is rendered through e.g. PluginStack isVirtual
+         * `items`/`prefixItems` validation is recursive and intended for dynamic-inputs like SimpleList or GenericList.
+         * - The validity must also be checked in the components rendering the sub-schema.
+         * - When validation is done here, the parent receives the invalidations instead of the actual component that is invalid.
+         * - This is controlled by the `recursive` flag, which enables look-ahead optimistic schema reduction.
          */
-        const items = schema?.get('items')
-        if (items && params.recursive) {
+        if (params.recursive) {
             validateItems(schema, value, params)
-        }
-
-        // `contains` sub-schema is intended for components which may be dynamic, but the error is intended to be shown on the root-component and not the sub-schema, as not clear which-sub-schema it is, "1 out of n sub-schemas must be valid" can not logically translated to "specific sub-schema X is invalid"
-        // todo: the error displayed on the the array component may be confusing, it should be possible to distinct between "own-errors" and child-errors
-        //    maybe adding a possibility to update the validity for sub-schemas from the parent-component?
-        const contains = schema?.get('contains')
-        if (contains) {
-            validateContains(schema, value, params)
         }
     },
 }
