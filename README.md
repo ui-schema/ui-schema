@@ -351,7 +351,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-Released under the [MIT License](https://github.com/ui-schema/ui-schema/blob/main/LICENSE).
+Released under the [MIT License](LICENSE).
 
 ### License Icons
 
