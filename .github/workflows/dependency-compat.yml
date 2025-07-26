@@ -12,7 +12,7 @@ on:
 
 jobs:
     test_peer_deps:
-        if: github.event_name == 'workflow_dispatch'
+        # if: github.event_name == 'workflow_dispatch'
         name: Test Peer Deps (React ${{ matrix.react-version }}, MUI ${{ matrix.mui-version }})
         runs-on: ubuntu-latest
         strategy:
