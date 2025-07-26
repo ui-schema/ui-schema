@@ -1,0 +1,59 @@
+name: UI-Schema Dependency Compat.
+
+env:
+    DOCKER_BUILDKIT: 1
+
+on:
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
+
+jobs:
+    test_peer_deps:
+        if: github.event_name == 'workflow_dispatch'
+        name: Test Peer Deps (React ${{ matrix.react-version }}, MUI ${{ matrix.mui-version }})
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    # React 18
+                    -   react-version: '18'
+                        mui-version: '5'
+                    -   react-version: '18'
+                        mui-version: '6'
+                    -   react-version: '18'
+                        mui-version: '7'
+                    # React 19
+                    -   react-version: '19'
+                        mui-version: '5'
+                    -   react-version: '19'
+                        mui-version: '6'
+                    -   react-version: '19'
+                        mui-version: '7'
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Use Node.js 24
+                uses: actions/setup-node@v4
+                with:
+                    node-version: 24
+                    registry-url: 'https://registry.npmjs.org'
+                    cache: 'npm'
+
+            -   name: Configure npm overrides
+                run: node ./tools/npm-overrides.js react=${{ matrix.react-version }} mui=${{ matrix.mui-version }}
+
+            -   name: Install dependencies with overrides
+                run: npm install --legacy-peer-deps
+
+            -   name: Run tests
+                run: npm run test
+
+            -   name: Build
+                run: npm run build
+
+            -   name: Check Resolver
+                run: npm run check-resolver
+
+            -   name: Revert package.json
+                if: always()
+                run: node ./tools/npm-revert-overrides.js
