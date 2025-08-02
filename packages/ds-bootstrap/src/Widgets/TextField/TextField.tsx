@@ -5,6 +5,7 @@ import { useMemo } from 'react'
 import * as React from 'react'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import { ValidityHelperText } from '@ui-schema/ds-bootstrap/Component/LocaleHelperText'
+import { Required } from '@ui-schema/ds-bootstrap/Component/Required'
 
 export interface StringRendererProps extends WidgetProps, WithValuePlain, WithOnChange {
     multiline?: boolean
@@ -47,7 +48,10 @@ const StringRenderer = ({schema, value, multiline = false, onChange, keysToName,
     const inputPropsFromSchema = useMemo(() => schemaRulesToNative(schema), [schema])
 
     return <div className={classFormGroup.join(' ')}>
-        <label className={'form-label'} htmlFor={'uis-' + uid}><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
+        <label className={'form-label'} htmlFor={'uis-' + uid}>
+            <TranslateTitle schema={schema} storeKeys={storeKeys}/>
+            <Required required={required}/>
+        </label>
         <Renderer
             id={'uis-' + uid}
             className={classFormControl.join(' ')}

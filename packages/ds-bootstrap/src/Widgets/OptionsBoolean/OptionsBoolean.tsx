@@ -1,3 +1,4 @@
+import { Required } from '@ui-schema/ds-bootstrap/Component'
 import { WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widget'
 import * as React from 'react'
@@ -41,7 +42,10 @@ const BoolRenderer = ({showValidity, required, errors, value, keysToName, storeK
                 })
             }
         />
-        <label className={classLabel.join(' ')} htmlFor={'uis-' + id}><TranslateTitle schema={schema} storeKeys={storeKeys}/>{(required ? ' *' : '')}</label>
+        <label className={classLabel.join(' ')} htmlFor={'uis-' + id}>
+            <TranslateTitle schema={schema} storeKeys={storeKeys}/>
+            <Required required={required}/>
+        </label>
         <ValidityHelperText errors={errors} showValidity={showValidity} schema={schema}/>
     </div>
 }

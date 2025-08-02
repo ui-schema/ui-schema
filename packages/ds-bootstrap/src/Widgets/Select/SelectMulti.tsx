@@ -1,3 +1,4 @@
+import { Required } from '@ui-schema/ds-bootstrap/Component/Required'
 import { WidgetProps } from '@ui-schema/react/Widget'
 import { beautifyKey, tt } from '@ui-schema/ui-schema/Utils/beautify'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
@@ -29,7 +30,10 @@ export const SelectMulti = extractValue(memo(({schema, storeKeys, keysToName, sh
         schema.get('default') ? List(schema.get('default')) : List([])
 
     return <div className={classFormParent.join(' ')}>
-        <label className={'form-label'} htmlFor={'uis-' + uid}><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
+        <label className={'form-label'} htmlFor={'uis-' + uid}>
+            <TranslateTitle schema={schema} storeKeys={storeKeys}/>
+            <Required required={required}/>
+        </label>
         <select
             id={'uis-' + uid}
             value={currentValue.toArray() as string[]}
