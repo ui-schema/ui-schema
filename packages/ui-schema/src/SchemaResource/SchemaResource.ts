@@ -35,10 +35,19 @@ export interface SchemaResource {
     findRef: (canonicalRef: string) => SchemaBranchType | undefined
 }
 
-export const findBranch = (
+/**
+ * Finds a specific branch within a schema resource tree using a JSON Pointer.
+ * This function traverses the `children` property of branches, which are typically
+ * `Map` objects, to locate the branch corresponding to the given pointer.
+ *
+ * @param {string} schemaLocationPointer The JSON Pointer string representing the path to the desired branch.
+ * @param {BranchType} branch The starting branch from which to begin the search.
+ * @returns {BranchType | undefined} The found branch, or `undefined` if no branch is found at the specified pointer.
+ */
+export function findBranch(
     schemaLocationPointer: string,
     branch: BranchType,
-) => {
+): BranchType | undefined {
     return walkPointer(
         schemaLocationPointer, branch,
         (branch, key) => {
@@ -51,6 +60,23 @@ export const findBranch = (
     )
 }
 
+/**
+ * Creates a `SchemaResource` object from a given schema, recursively walking its branches
+ * to identify and canonicalize nested schemas, references (`$ref`), and definitions (`$defs`).
+ * This function builds a comprehensive representation of the schema, including all its
+ * sub-schemas, their canonical IDs, and any unresolved references.
+ *
+ * The `SchemaResource` is crucial for efficient schema processing, allowing for quick
+ * lookup of schemas by their canonical IDs and resolution of `$ref` pointers,
+ * even after hoisting and merging of schemas.
+ *
+ * @param {any} schema The Immutable.js Map representing the root schema.
+ * @param {object} [context={}] An object containing contextual information for resource creation.
+ * @param {string} [context.dialect] The JSON Schema dialect to assume if not specified in the schema's `$schema` keyword.
+ * @param {string} [context.retrievalUri] The base URI for resolving relative references within the schema.
+ * @param {Record<string, SchemaResource>} [context.resources] A collection of already processed external schema resources, used for resolving cross-resource references.
+ * @returns {SchemaResource} A `SchemaResource` object containing the processed schema branches, resolved references, and any unresolved references.
+ */
 export function resourceFromSchema(
     schema: any,
     context: {
@@ -100,7 +126,7 @@ export function resourceFromSchema(
                 const baseBranch = getSchema(baseUrl)
                 if (baseBranch) {
                     const refPointer = canonicalRef.split('#')?.[1]?.split('?')[0] || ''
-                    refBranch = findBranch(refPointer, baseBranch)
+                    refBranch = findBranch(refPointer, baseBranch) as SchemaBranchType | undefined
                 }
             }
             return refBranch

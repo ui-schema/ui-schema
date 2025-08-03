@@ -61,6 +61,23 @@ const addSchemaBranch = (
     return childBranch as SchemaBranchType
 }
 
+
+/**
+ * Walks a schema branch, identifying and processing nested schemas, references, and definitions.
+ * This function recursively traverses the schema tree, creating new branches for sub-schemas
+ * and resolving canonical IDs for `$ref` keywords. It also handles various JSON Schema keywords
+ * that define nested schemas, such as `properties`, `items`, `oneOf`, `if`, etc.
+ *
+ * @param {BranchType} branch The current schema branch being walked.
+ * @param {object} context An object containing contextual information for the walk.
+ * @param {string} [context.dialect] The JSON Schema dialect being used.
+ * @param {string} [context.retrievalUri] The base URI for resolving relative references.
+ * @param {any} [context.resources] A collection of external schema resources.
+ * @param {object} callbacks An object containing callback functions for different events during the walk.
+ * @param {(branch: SchemaBranchType) => void} callbacks.onSchema A callback function invoked when a new schema branch is identified.
+ * @param {(canonicalRef: string) => void} callbacks.onRef A callback function invoked when a `$ref` keyword is encountered, providing its canonical ID.
+ * @returns {BranchType} The modified branch after walking its sub-schemas.
+ */
 export function walkBranch(
     branch: any,
     context: {
@@ -75,7 +92,7 @@ export function walkBranch(
         onSchema: (branch: SchemaBranchType) => void
         onRef: (canonicalRef: string) => void
     },
-) {
+): BranchType {
     const schema: ImmutableMap<any, any> = branch.value()
     // walk embedded resources
     if (schema.get('$defs')) {
