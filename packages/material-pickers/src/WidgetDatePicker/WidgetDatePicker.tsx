@@ -20,6 +20,7 @@ export const WidgetDatePicker: React.FC<WidgetProps & WidgetDatePickerProps> = (
 ) => {
     const adapter = React.useContext(MuiPickersAdapterContext)
     const {utils} = adapter || {}
+    const dense = (schema.getIn(['view', 'dense'], false) as boolean)
     const dateFormat = (schema.getIn(['date', 'format']) as string | undefined) || 'yyyy-MM-dd'
     const dateFormatData = schema.getIn(['date', 'formatData']) as string || dateFormat
     const dateValue = React.useMemo(
@@ -61,7 +62,10 @@ export const WidgetDatePicker: React.FC<WidgetProps & WidgetDatePickerProps> = (
             } as UIStoreActionSet)
         }}
         slotProps={{
-            textField: {fullWidth: true},
+            textField: {
+                fullWidth: true,
+                size: dense ? 'small' : undefined,
+            },
         }}
         {...pickerProps || {}}
     />
