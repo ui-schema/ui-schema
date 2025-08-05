@@ -141,9 +141,10 @@ import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/Requi
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin';
 import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin';
 // Get the widgets binding for your design-system
-// import type { MuiBinding } from '@ui-schema/ds-material/Binding';
-import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault';
-import { bindingExtended } from '@ui-schema/ds-material/BindingExtended';
+// import type { MuiBinding } from '@ui-schema/ds-material/BindingType';
+import { bindingComponents } from '@ui-schema/ds-material/Binding/Components'
+import { widgetsDefault } from '@ui-schema/ds-material/Binding/WidgetsDefault';
+import { widgetsExtended } from '@ui-schema/ds-material/Binding/WidgetsExtended';
 import { GridContainer } from '@ui-schema/ds-material/GridContainer';
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'; // MUI v5/v6
 // import { GridItemPlugin } from '@ui-schema/ds-material/GridItemPlugin'; // MUI v7
@@ -223,12 +224,12 @@ export const DemoForm = () => {
  * @type {MuiBinding}
  */
 const customBinding = {
-    ...baseComponents,
+    ...bindingComponents,
 
     // Widget mapping by schema type or custom ID.
     widgets: {
-        ...typeWidgets,
-        ...bindingExtended,
+        ...widgetsDefault,
+        ...widgetsExtended,
     },
 
     // Plugins that wrap each rendered widget.

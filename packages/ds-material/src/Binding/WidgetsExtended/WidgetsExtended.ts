@@ -10,11 +10,9 @@ import { AccordionsRenderer } from '@ui-schema/ds-material/Widgets/Accordions'
 import { CardRenderer } from '@ui-schema/ds-material/Widgets/Card'
 import { FormGroupBase as FormGroup } from '@ui-schema/ds-material/Widgets/FormGroup'
 import { LabelBox } from '@ui-schema/ds-material/Widgets/LabelBox'
-import { MuiBindingWidgets } from '@ui-schema/ds-material/Binding'
+import { MuiBindingWidgets } from '@ui-schema/ds-material/BindingType'
 
-// todo: named `bindingExtended` to not clash with the `customWidgets` name often used in demo/docs for the binding itself,
-//       should be refined further, but also it may be better to remove any default binding for the `custom` widgets
-export const bindingExtended = {
+export const widgetsExtended = {
     Accordions: AccordionsRenderer,
     Text: TextRenderer,
     StringIcon: StringIconRenderer,

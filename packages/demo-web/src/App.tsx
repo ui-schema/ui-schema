@@ -5,10 +5,10 @@ import {
     Route,
 } from 'react-router-dom'
 
-const AppMui = lazy(() => import('./AppMui'))
-const Bootstrap = lazy(() => import('./bootstrap/page-main'))
-const KitDnd = lazy(() => import('./kit-dnd/page-dnd'))
-const KitDndGrid = lazy(() => import('./kit-dnd/page-grid'))
+const AppMui = lazy(() => import('./AppMui.js'))
+const Bootstrap = lazy(() => import('./bootstrap/page-main.js'))
+const KitDnd = lazy(() => import('./kit-dnd/page-dnd.js'))
+const KitDndGrid = lazy(() => import('./kit-dnd/page-grid.js'))
 
 export const App = () => <Router>
     <Suspense>

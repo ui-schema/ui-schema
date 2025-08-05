@@ -1,4 +1,4 @@
-import type { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
+import type { MuiBindingComponents } from '@ui-schema/ds-material/BindingType'
 import type { KeysToName } from '@ui-schema/react/UIMeta'
 import * as React from 'react'
 import FormControl from '@mui/material/FormControl'

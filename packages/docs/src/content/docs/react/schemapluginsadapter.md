@@ -15,7 +15,7 @@ A [widget plugin](/docs/react/plugins) which runs [schema plugins](/docs/core/sc
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 
 const customBinding = {
-    ...baseComponents,
+    ...bindingComponents,
     widgetPlugins: [
         schemaPluginsAdapterBuilder([
             validatorPlugin,

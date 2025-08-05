@@ -115,6 +115,14 @@ docker run --rm -p 8080:80 ui-schema-docs
     - `npm run serve` start all configured apps
     - `npm run serve -- demoWeb --serve docs` start specific apps (docs and demo-web here)
 
+## Maintenance Notes
+
+Add an already published version to another tag, here the `-alpha` which was published under `next` is also added to `latest`. When publishing a package the first time, but under `next`, it's `latest` is also added, which on further `next` updates stays the old version and can confuse.
+
+```shell
+npm dist-tag add @ui-schema/json-pointer@0.5.0-alpha.1 latest
+```
+
 ## Contributors
 
 By committing your code/creating a pull request to this repository you agree to release the code under the [MIT License](LICENSE) attached to the repository and to adhere to the [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md).

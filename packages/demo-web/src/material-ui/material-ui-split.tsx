@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
-import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
-import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { widgetsExtended } from '@ui-schema/ds-material/Binding/WidgetsExtended'
+import { bindingComponents } from '@ui-schema/ds-material/Binding/Components'
+import { widgetsDefault } from '@ui-schema/ds-material/Binding/WidgetsDefault'
 import { escapePointer } from '@ui-schema/json-pointer/escapePointer'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import { resourceFromSchema, SchemaResource } from '@ui-schema/ui-schema/SchemaResource'
@@ -19,7 +20,7 @@ import { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import React, { useMemo } from 'react'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
-import { MuiBinding } from '@ui-schema/ds-material/Binding'
+import { MuiBinding } from '@ui-schema/ds-material/BindingType'
 import { browserT } from '../t'
 import { Table } from '@ui-schema/ds-material/Widgets/Table'
 import { NumberRendererCell, StringRendererCell, TextRendererCell } from '@ui-schema/ds-material/Widgets/TextFieldCell'
@@ -60,7 +61,7 @@ const CustomTable: React.ComponentType<WidgetProps> = ({binding, ...props}) => {
 // const {widgetPlugins} = WidgetsDefault.plugins()
 // const customWidgets: MuiWidgetsBinding<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }> = {
 const customWidgets: CustomWidgetsBinding = {
-    ...baseComponents,
+    ...bindingComponents,
     // the referencing network handler should be at first position
     // must be before the `ReferencingHandler`, thus if the root schema for the level is a network schema,
     // the network handler can download it, and the normal referencing handler may handle references inside of e.g. `if`
@@ -102,8 +103,8 @@ const customWidgets: CustomWidgetsBinding = {
         ValidityReporter,
     ],
     widgets: {
-        ...typeWidgets,
-        ...bindingExtended,
+        ...widgetsDefault,
+        ...widgetsExtended,
         SelectChips: SelectChips,
         Table: CustomTable,
         TableAdvanced: TableAdvanced,

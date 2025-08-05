@@ -1,4 +1,5 @@
-export * from './BindingDefault/index.js'
+export * from './Binding/index.js'
+export * from './BindingType/index.js'
 export * from './Component/index.js'
 export * from './Grid/index.js'
 export * from './GridContainer/index.js'

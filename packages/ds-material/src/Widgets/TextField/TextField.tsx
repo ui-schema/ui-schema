@@ -1,4 +1,4 @@
-import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
+import { MuiBindingComponents } from '@ui-schema/ds-material/BindingType'
 import * as React from 'react'
 import type { CSSProperties, FocusEventHandler, KeyboardEventHandler, MouseEventHandler } from 'react'
 import TextField from '@mui/material/TextField'

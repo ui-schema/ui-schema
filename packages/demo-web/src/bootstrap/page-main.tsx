@@ -1,6 +1,8 @@
 import { SchemaGridHandler } from '@ui-schema/ds-bootstrap/Grid'
+import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
 import { requiredPlugin } from '@ui-schema/json-schema/RequiredPlugin'
 import { validatorPlugin } from '@ui-schema/json-schema/ValidatorPlugin'
+import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { DefaultHandler } from '@ui-schema/react/DefaultHandler'
 import { schemaPluginsAdapterBuilder } from '@ui-schema/react/SchemaPluginsAdapter'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
@@ -11,7 +13,10 @@ import React from 'react'
 import { Dashboard } from './Dashboard'
 import { schemaTestBts, dataDemoMain } from '../schemas/demoBts'
 import { schemaGrid } from '../schemas/demoGrid'
-import { widgets } from '@ui-schema/ds-bootstrap/BindingDefault'
+import { BtsBinding } from '@ui-schema/ds-bootstrap/BindingType'
+import { bindingComponents } from '@ui-schema/ds-bootstrap/Binding/Components'
+import { widgetsDefault } from '@ui-schema/ds-bootstrap/Binding/WidgetsDefault'
+import { widgetsExtended } from '@ui-schema/ds-bootstrap/Binding/WidgetsExtended'
 import { GridContainer } from '@ui-schema/ds-bootstrap/GridContainer'
 import { browserT } from '../t'
 import { BtsSchemaDebug } from '../component/BtsSchemaDebug'
@@ -22,8 +27,8 @@ import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
 import { isInvalid } from '@ui-schema/react/isInvalid'
 
-const customBinding: typeof widgets = {
-    ...widgets,
+const customBinding: BtsBinding = {
+    ...bindingComponents,
     widgetPlugins: [
         // // eslint-disable-next-line @typescript-eslint/no-deprecated
         // ReferencingHandler,
@@ -43,10 +48,18 @@ const customBinding: typeof widgets = {
             requiredPlugin,
         ]),
         SchemaGridHandler,
+        ValidityReporter,
     ],
+    widgets: {
+        ...widgetsDefault,
+        ...widgetsExtended,
+    },
 }
 
-const validate = Validator(standardValidators).validate
+const validate = Validator([
+    ...standardValidators,
+    requiredValidatorLegacy,
+]).validate
 
 const DemoGrid = () => {
     const [store, setStore] = React.useState(() => createStore(createOrderedMap({})))

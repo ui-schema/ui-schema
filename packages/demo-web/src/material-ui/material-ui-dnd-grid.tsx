@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
-import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
-import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { widgetsExtended } from '@ui-schema/ds-material/Binding/WidgetsExtended'
+import { bindingComponents } from '@ui-schema/ds-material/Binding/Components'
+import { widgetsDefault } from '@ui-schema/ds-material/Binding/WidgetsDefault'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { DragDropBlockComponentsBinding } from '@ui-schema/material-dnd'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
@@ -33,7 +34,7 @@ import { DropArea } from '@ui-schema/material-dnd/Widgets/DropArea'
 import { createEmptyStore, createStore, onChangeHandler, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { UIMetaContext, UIMetaProvider } from '@ui-schema/react/UIMeta'
-import { MuiBindingWidgets } from '@ui-schema/ds-material/Binding'
+import { MuiBindingWidgets } from '@ui-schema/ds-material/BindingType'
 import { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { UISchemaMap } from '@ui-schema/json-schema/Definitions'
@@ -45,12 +46,12 @@ import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 type CustomWidgetsBinding = BindingTypeGeneric<MuiBindingWidgets<UIStoreActions, WidgetProps<BindingTypeGeneric<any> & DragDropBlockComponentsBinding>>> & DragDropBlockComponentsBinding
 
 const customWidgets: CustomWidgetsBinding = {
-    ...baseComponents,
+    ...bindingComponents,
     widgetPlugins: widgetPluginsLegacy,
     DndBlockSelector: DragDropBlockSelector,
     widgets: {
-        ...typeWidgets,
-        ...bindingExtended,
+        ...widgetsDefault,
+        ...widgetsExtended,
         DropArea: DropArea,
         DragDropArea: DragDropArea,
         SortableList: SortableList,
