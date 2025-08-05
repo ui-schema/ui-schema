@@ -44,7 +44,7 @@
         "sloc": "node ./sloc.js",
         "release": "lerna publish from-package --contents build --no-git-reset"
     },
-    "author": "Michael Becker, https://i-am-digital.eu",
+    "author": "Michael Becker <michael@bemit.codes> (https://bemit.codes)",
     "license": "MIT",
     "devDependencies": {
         "@jest/types": "^29.6.3",

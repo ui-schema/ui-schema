@@ -3,7 +3,7 @@
     "version": "0.5.0-alpha.1",
     "description": "Material-UI Binding for UI-Schema",
     "homepage": "https://ui-schema.bemit.codes",
-    "author": "Michael Becker <michael@bemit.codes>",
+    "author": "Michael Becker <michael@bemit.codes> (https://bemit.codes)",
     "license": "MIT",
     "keywords": [
         "ui-schema",

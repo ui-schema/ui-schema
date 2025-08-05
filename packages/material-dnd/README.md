@@ -2,7 +2,7 @@
 
 > **EXPERIMENTAL**
 
-[![GitHub Project](https://img.shields.io/badge/GitHub%20Project-black?labelColor=000&color=fff&style=for-the-badge&logo=github)](https://github.com/ui-schema/ui-schema)
+- [GitHub Project](https://github.com/ui-schema/ui-schema)
 
 ## License
 

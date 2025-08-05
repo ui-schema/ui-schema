@@ -3,7 +3,7 @@
     "version": "0.5.0-alpha.1",
     "description": "JSON-Schema validators and plugins for the UI generator.",
     "homepage": "https://ui-schema.bemit.codes",
-    "author": "Michael Becker <michael@bemit.codes>",
+    "author": "Michael Becker <michael@bemit.codes> (https://bemit.codes)",
     "license": "MIT",
     "keywords": [
         "ui-schema",
