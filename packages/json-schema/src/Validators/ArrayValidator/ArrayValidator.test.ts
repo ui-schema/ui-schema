@@ -1,12 +1,13 @@
 import { test, expect, describe } from '@jest/globals'
+import { ERROR_WRONG_TYPE } from '@ui-schema/json-schema/Validators/TypeValidator'
 import { makeParams } from '@ui-schema/json-schema/Validator'
-import { arrayValidator, ERROR_WRONG_TYPE } from '@ui-schema/json-schema/Validators'
 import { List } from 'immutable'
 import { newMockState } from '../../../tests/mocks/ValidatorState.mock.js'
 import {
     validateItems,
     validateContains,
     validateUniqueItems,
+    arrayItemsValidator,
     ERROR_DUPLICATE_ITEMS,
     ERROR_ADDITIONAL_ITEMS,
     ERROR_MAX_CONTAINS,
@@ -255,16 +256,6 @@ describe('validateItems', () => {
 
 describe('arrayValidator', () => {
     test.each<[any, unknown, number, any[] | undefined, { recursive?: boolean } | undefined]>([
-        // uniqueItems
-        [{uniqueItems: true}, ['a', 'b'], 0, undefined, undefined],
-        [{uniqueItems: true}, ['a', 'a'], 1, [{error: ERROR_DUPLICATE_ITEMS, keywordLocation: '/uniqueItems', instanceLocation: ''}], undefined],
-
-        // contains
-        [{contains: {type: 'number'}}, ['a', 1], 0, undefined, undefined],
-        [{contains: {type: 'number'}}, ['a', 'b'], 1, [{error: ERROR_NOT_FOUND_CONTAINS, keywordLocation: '/contains'}], undefined],
-        [{contains: {type: 'number'}, minContains: 2}, [1, 'a'], 1, [{error: ERROR_MIN_CONTAINS, keywordLocation: '/minContains'}], undefined],
-        [{contains: {type: 'number'}, maxContains: 1}, [1, 2], 1, [{error: ERROR_MAX_CONTAINS, keywordLocation: '/maxContains'}], undefined],
-
         // items (recursive: false by default)
         [{items: {type: 'number'}}, ['1'], 0, undefined, {recursive: false}],
         [{items: {type: 'number'}}, [1, 2], 0, undefined, {recursive: false}],
@@ -274,28 +265,9 @@ describe('arrayValidator', () => {
         [{items: [{type: 'string'}], additionalItems: false}, ['a', 1], 1, [{error: ERROR_ADDITIONAL_ITEMS, keywordLocation: '/additionalItems', instanceLocation: '/1'}], {recursive: true}],
         [{prefixItems: [{type: 'string'}], items: false}, ['a', 1], 1, [{error: ERROR_ADDITIONAL_ITEMS, keywordLocation: '/items', instanceLocation: '/1'}], {recursive: true}],
 
-        // combination of keywords (recursive: true)
-        [
-            {uniqueItems: true, contains: {type: 'number'}, items: {type: 'string'}},
-            ['a', 'a', 1],
-            2,
-            [
-                {error: ERROR_DUPLICATE_ITEMS, keywordLocation: '/uniqueItems'},
-                {error: ERROR_WRONG_TYPE, keywordLocation: '/items/type', instanceLocation: '/2'},
-            ],
-            {recursive: true},
-        ],
-        [
-            {uniqueItems: true, minContains: 2, items: {type: 'number'}},
-            [1, 1, 2],
-            1,
-            [{error: ERROR_DUPLICATE_ITEMS, keywordLocation: '/uniqueItems'}],
-            {recursive: true},
-        ],
-
         // non-array value should be skipped by the validator
-        [{uniqueItems: true}, 'a string', 0, undefined, undefined],
-        [{contains: {type: 'number'}}, 123, 0, undefined, undefined],
+        [{items: {type: 'number'}}, null, 0, undefined, undefined],
+        [{items: {type: 'number'}}, undefined, 0, undefined, undefined],
         [{items: {type: 'string'}}, {}, 0, undefined, undefined],
 
         [
@@ -330,7 +302,7 @@ describe('arrayValidator', () => {
         (schema, value, expectedErrCount, expectedErrors, params) => {
             const state = newMockState()
             const finalParams = {...makeParams(), ...(params || {}), ...state}
-            arrayValidator.validate(
+            arrayItemsValidator.validate(
                 createOrderedMap(schema),
                 value,
                 finalParams,

@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
-import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
+import { widgetsExtended } from '@ui-schema/ds-material/Binding/WidgetsExtended'
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
-import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { bindingComponents } from '@ui-schema/ds-material/Binding/Components'
+import { widgetsDefault } from '@ui-schema/ds-material/Binding/WidgetsDefault'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
@@ -15,7 +16,7 @@ import { schemaTypeIs } from '@ui-schema/ui-schema/schemaTypeIs'
 import React, { ComponentType } from 'react'
 import Grid, { GridSpacing } from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
-import { MuiBinding } from '@ui-schema/ds-material/Binding'
+import { MuiBinding } from '@ui-schema/ds-material/BindingType'
 import { SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
 import { browserT } from '../t'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
@@ -159,12 +160,12 @@ export type ReadWidgetsBinding = {
 // Notice: `customWidgets` are supplied by the global `UIMetaProvider` at the end of this file,
 //         while `readWidgets` are supplied in the nested `UIMetaProvider` - which re-uses everything else from the global provider
 const customWidgets: MuiBinding = {
-    ...baseComponents,
+    ...bindingComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: [],
     widgets: {
-        ...typeWidgets,
-        ...bindingExtended,
+        ...widgetsDefault,
+        ...widgetsExtended,
         SelectChips: SelectChips,
     },
     GroupRenderer: GroupRenderer,

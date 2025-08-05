@@ -56,7 +56,7 @@ export const makeNext = <PWidgetPlugin extends WidgetPluginProps>(
     let First: NextWidgetPlugin<Omit<PWidgetPlugin, 'Next'>> | undefined = undefined
 
     const WidgetRendererNext: NextWidgetPlugin<Omit<PWidgetPlugin, 'Next'>> = {
-        index: 0,
+        index: widgetPlugins?.length ? widgetPlugins.length - 1 : 0,
         name: '$WidgetRenderer',
         Component: WidgetRenderer as NextWidgetPlugin<Omit<PWidgetPlugin, 'Next'>>['Component'],
         plugin: null,

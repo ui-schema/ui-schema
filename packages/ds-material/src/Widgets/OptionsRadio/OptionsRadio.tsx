@@ -1,4 +1,4 @@
-import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
+import { MuiBindingComponents } from '@ui-schema/ds-material/BindingType'
 import * as React from 'react'
 import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'

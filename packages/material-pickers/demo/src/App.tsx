@@ -1,7 +1,8 @@
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
-import { MuiBinding } from '@ui-schema/ds-material/Binding'
-import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
-import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { MuiBinding } from '@ui-schema/ds-material/BindingType'
+import { widgetsExtended } from '@ui-schema/ds-material/Binding/WidgetsExtended'
+import { bindingComponents } from '@ui-schema/ds-material/Binding/Components'
+import { widgetsDefault } from '@ui-schema/ds-material/Binding/WidgetsDefault'
 import { DefaultHandler } from '@ui-schema/react/DefaultHandler'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import React from 'react'
@@ -116,7 +117,7 @@ const CustomTimePicker: React.FC<WidgetProps> = (props) => {
 
 // const customWidgets = WidgetsDefault.define<{ InfoRenderer?: React.ComponentType<InfoRendererProps> }, {}>({
 const customWidgets: MuiBinding = {
-    ...baseComponents,
+    ...bindingComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: [
         DefaultHandler,
@@ -124,8 +125,8 @@ const customWidgets: MuiBinding = {
         ValidityReporter,
     ],
     widgets: {
-        ...typeWidgets,
-        ...bindingExtended,
+        ...widgetsDefault,
+        ...widgetsExtended,
         DateTime: CustomDateTimePicker,
         Date: CustomDatePicker,
         Time: CustomTimePicker,

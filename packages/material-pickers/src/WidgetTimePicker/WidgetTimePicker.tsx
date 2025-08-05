@@ -21,6 +21,7 @@ export const WidgetTimePicker: React.FC<WidgetProps & WidgetTimePickerProps<any>
 ) => {
     const adapter = React.useContext(MuiPickersAdapterContext)
     const {utils} = adapter || {}
+    const dense = (schema.getIn(['view', 'dense'], false) as boolean)
     const dateFormat = (schema.getIn(['date', 'format']) as string | undefined) || 'HH:mm'
     const dateFormatData = schema.getIn(['date', 'formatData']) as string || dateFormat
     const dateValue = React.useMemo(
@@ -62,7 +63,10 @@ export const WidgetTimePicker: React.FC<WidgetProps & WidgetTimePickerProps<any>
             } as UIStoreActionSet)
         }}
         slotProps={{
-            textField: {fullWidth: true},
+            textField: {
+                fullWidth: true,
+                size: dense ? 'small' : undefined,
+            },
         }}
         {...pickerProps || {}}
     />

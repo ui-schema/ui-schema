@@ -1,9 +1,9 @@
 {
     "name": "@ui-schema/pro",
-    "version": "0.1.0-alpha.1",
+    "version": "0.1.0-alpha.2",
     "description": "Components and Utilities for more advanced usages of UI-Schema",
     "homepage": "https://ui-schema.bemit.codes/docs/pro",
-    "author": "Michael Becker <michael@bemit.codes>",
+    "author": "Michael Becker <michael@bemit.codes> (https://bemit.codes)",
     "license": "MIT",
     "keywords": [
         "ui-schema",

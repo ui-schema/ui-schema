@@ -1,16 +1,23 @@
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
 
 /**
- * Returns true if the `expectedType` is the only one existing in the `isType`.
+ * Checks if a given schema type is distinct, meaning it is the only type present,
+ * optionally ignoring certain types (like 'null').
  *
- * Distinct means, the expected type exists in isType, and it is the only one in there, while ignoring any `ignoreType` in `isType`,
- * but if the `expectedType` is in the `ignoreTypes`, it isn't ignored.
+ * This function is useful for determining if a schema strictly represents a single type,
+ * even if 'null' is also allowed alongside it.
+ *
+ * @param {SchemaTypesType} isType The schema type(s) to check. Can be a string or an array of strings.
+ * @param {string} expectedType The type that is expected to be the distinct type.
+ * @param {null | Set<string>} [ignoreTypes=new Set(['null'])] An optional Set of types to ignore when checking for distinctness.
+ *                                                               If `expectedType` is in `ignoreTypes`, it is NOT ignored.
+ * @returns {boolean} True if `expectedType` is the only type in `isType` (after ignoring `ignoreTypes`), false otherwise.
  */
-export const schemaTypeIsDistinct = (
+export function schemaTypeIsDistinct(
     isType: SchemaTypesType,
     expectedType: string,
     ignoreTypes: null | Set<string> = ignoreTypesDefault,
-): boolean => {
+): boolean {
     if (typeof isType === 'string') {
         return isType === expectedType
     }

@@ -1,3 +1,4 @@
+import { Required } from '@ui-schema/ds-bootstrap/Component/Required'
 import { WidgetProps } from '@ui-schema/react/Widget'
 import * as React from 'react'
 import { beautifyKey } from '@ui-schema/ui-schema/Utils/beautify'
@@ -54,7 +55,10 @@ const OptionsRadio = ({schema, value, onChange, keysToName, storeKeys, showValid
     }
 
     return <div>
-        <label className={'form-label d-block'}><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
+        <label className={'form-label d-block'}>
+            <TranslateTitle schema={schema} storeKeys={storeKeys}/>
+            <Required required={required}/>
+        </label>
         {enumVal ? enumVal.map((enum_name) => {
             return <RadioInput
                 key={enum_name}

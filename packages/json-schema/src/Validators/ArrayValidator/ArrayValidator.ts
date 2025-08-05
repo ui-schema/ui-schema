@@ -258,22 +258,14 @@ export const validateContains = (
 }
 
 /**
- * The main validator for the `array` type.
- * Handles `uniqueItems`, `contains`, and recursively validates `items`/`prefixItems`.
+ * Validator for `items` and `prefixItems`, only validates in `recursive` mode.
  */
-export const arrayValidator: ValidatorHandler = {
+export const arrayItemsValidator: ValidatorHandler = {
+    id: 'arrayItems',
     types: ['array'],
     validate: (schema, value, params) => {
         if (!(List.isList(value) || Array.isArray(value))) {
             return
-        }
-
-        if (schema.get('uniqueItems')) {
-            validateUniqueItems(schema, value, params)
-        }
-
-        if (schema.has('contains')) {
-            validateContains(schema, value, params)
         }
 
         /*
@@ -285,5 +277,26 @@ export const arrayValidator: ValidatorHandler = {
         if (params.recursive) {
             validateItems(schema, value, params)
         }
+    },
+}
+
+export const arrayContainsValidator: ValidatorHandler = {
+    id: 'arrayContains',
+    types: ['array'],
+    validate: (schema, value, params) => {
+        if (
+            !['contains', 'minContains', 'maxContains']
+                .some(keyword => schema.has(keyword))
+        ) return
+        validateContains(schema, value, params)
+    },
+}
+
+export const arrayUniqueValidator: ValidatorHandler = {
+    id: 'arrayUnique',
+    types: ['array'],
+    validate: (schema, value, params) => {
+        if (!schema.has('uniqueItems')) return
+        validateUniqueItems(schema, value, params)
     },
 }

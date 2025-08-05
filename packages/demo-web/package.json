@@ -4,7 +4,7 @@
     "version": "0.5.0",
     "description": "",
     "homepage": "",
-    "author": "Michael Becker <michael@bemit.codes>",
+    "author": "Michael Becker <michael@bemit.codes> (https://bemit.codes)",
     "license": "MIT",
     "scripts": {
         "tscheck": "tsc --noEmit"

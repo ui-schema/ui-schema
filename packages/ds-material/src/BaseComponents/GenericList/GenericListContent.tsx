@@ -1,11 +1,9 @@
-import type { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
+import type { MuiBindingComponents } from '@ui-schema/ds-material/BindingType'
 import type { UIMetaContext } from '@ui-schema/react/UIMeta'
 import type { WithOnChange } from '@ui-schema/react/UIStore'
 import type { WidgetPayload } from '@ui-schema/ui-schema/Widget'
 import type { ComponentType, CSSProperties, ReactNode } from 'react'
 import FormControl from '@mui/material/FormControl'
-import Grid from '@mui/material/Grid'
-import type { GridSpacing } from '@mui/material/Grid'
 import FormLabel from '@mui/material/FormLabel'
 import { TranslateTitle } from '@ui-schema/react/TranslateTitle'
 import type { BindingTypeGeneric } from '@ui-schema/react/Widget'
@@ -21,7 +19,7 @@ export interface GenericListContentProps extends ListButtonOverwrites {
     ComponentItem: ComponentType<GenericListItemProps>
     ComponentFooter?: ComponentType<GenericListFooterProps>
     listSize: number
-    listSpacing?: GridSpacing
+    listSpacing?: number | string
 }
 
 export const GenericListContent = (
@@ -55,7 +53,7 @@ export const GenericListContent = (
     return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
         {!schema.getIn(['view', 'hideTitle']) ?
             <Box mb={1}>
-                <Box mb={1}>
+                <Box mb={info ? 1 : 0}>
                     <FormLabel component="legend">
                         <TranslateTitle schema={schema} storeKeys={storeKeys}/>
                     </FormLabel>
@@ -67,8 +65,7 @@ export const GenericListContent = (
         {schema.getIn(['view', 'hideTitle']) ?
             <Box mb={1}>{info}</Box> : null}
 
-        {/* eslint-disable-next-line @typescript-eslint/no-deprecated */}
-        <Grid container spacing={listSpacing}>
+        <Box display={'flex'} flexDirection={'column'} rowGap={listSpacing}>
             {Array(listSize).fill(null).map((_val, i) =>
                 <ComponentItem
                     key={i} index={i} listSize={listSize}
@@ -83,7 +80,7 @@ export const GenericListContent = (
                     ComponentMore={ComponentItemMore}
                 />,
             )}
-        </Grid>
+        </Box>
 
         {ComponentFooter ?
             <ComponentFooter

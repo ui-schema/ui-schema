@@ -59,7 +59,7 @@ Example usage:
 ```typescript jsx
 import { React } from 'react'
 import { WidgetProps, WithScalarValue } from '@ui-schema/ui-schema'
-import { MuiBinding } from '@ui-schema/ds-material/Binding'
+import { MuiBinding } from '@ui-schema/ds-material/BindingType'
 import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 
 export const Widget: React.ComponentType<WidgetProps<MuiBinding> & WithScalarValue> = (

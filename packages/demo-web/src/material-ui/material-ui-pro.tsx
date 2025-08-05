@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
-import { MuiBinding } from '@ui-schema/ds-material/Binding'
-import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
-import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { MuiBinding } from '@ui-schema/ds-material/BindingType'
+import { widgetsExtended } from '@ui-schema/ds-material/Binding/WidgetsExtended'
+import { bindingComponents } from '@ui-schema/ds-material/Binding/Components'
+import { widgetsDefault } from '@ui-schema/ds-material/Binding/WidgetsDefault'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
@@ -30,12 +31,12 @@ import Grid from '@mui/material/Grid'
 import { widgetPluginsLegacy } from './widgetPluginsLegacy'
 
 const customWidgets: MuiBinding = {
-    ...baseComponents,
+    ...bindingComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: widgetPluginsLegacy,
     widgets: {
-        ...typeWidgets,
-        ...bindingExtended,
+        ...widgetsDefault,
+        ...widgetsExtended,
     },
 }
 

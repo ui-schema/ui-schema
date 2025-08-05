@@ -11,7 +11,7 @@ import type { NumberRendererProps, StringRendererProps, TextRendererProps } from
 import type { WidgetProps, BindingTypeGeneric } from '@ui-schema/react/Widget'
 import { useDebounceValue } from '@ui-schema/react/Utils/useDebounceValue'
 import { forbidInvalidNumber } from '@ui-schema/ds-material/Utils/forbidInvalidNumber'
-import type { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
+import type { MuiBindingComponents } from '@ui-schema/ds-material/BindingType'
 
 export interface StringRendererDebouncedProps {
     /**

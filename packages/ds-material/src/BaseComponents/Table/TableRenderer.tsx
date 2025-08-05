@@ -1,4 +1,4 @@
-import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
+import { MuiBindingComponents } from '@ui-schema/ds-material/BindingType'
 import { useSchemaResource } from '@ui-schema/react/SchemaResourceProvider'
 import { getFields } from '@ui-schema/ui-schema/getFields'
 import * as React from 'react'

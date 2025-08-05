@@ -40,3 +40,4 @@
             - which still works reliable in e.g. list widgets, e.g. in `Table` for row-level, as a row only will be rendered if it exists in value
 - add value-aware `schemaTypeIs*` support and/or integrated into the `getFields` utils
     - search for `happy-path issue` and check existing `schemaTypeIs` checks which can be optimized with value awareness
+- provide an open source example of the rich `widgets` configuration? where instead of just components, a widget would be registered including matching information to automatically match widgets using heuristics with prebuild trie-trees, e.g. to auto match SelectMulti for schema instances which have `items.[oneOf|enum & type="string|number|integer|boolean"]`, while GenericList matches for those without "options keywords" and if object/array as children

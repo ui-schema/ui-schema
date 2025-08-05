@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-deprecated */
-import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
+import Box from '@mui/material/Box'
+import { MuiBindingComponents } from '@ui-schema/ds-material/BindingType'
 import * as React from 'react'
 import FormControl from '@mui/material/FormControl'
-import Grid from '@mui/material/Grid'
 import FormLabel from '@mui/material/FormLabel'
 import IconButton, { IconButtonProps } from '@mui/material/IconButton'
 import Add from '@mui/icons-material/Add'
@@ -34,7 +33,7 @@ export const SimpleListItemBase: React.FC<SimpleListItemProps & WithOnChange> = 
         readOnly, required, onChange, index, btnSize,
     },
 ) => {
-    return <Grid item xs={12} style={{display: 'flex'}}>
+    return <Box style={{display: 'flex'}}>
         <div style={{display: 'flex', flexDirection: 'column', flexGrow: 2}}>
             <WidgetEngine
                 showValidity={showValidity} noGrid
@@ -61,7 +60,7 @@ export const SimpleListItemBase: React.FC<SimpleListItemProps & WithOnChange> = 
                     <Remove fontSize={'inherit'} style={{margin: 2}}/>
                 </AccessTooltipIcon>
             </IconButton> : null}
-    </Grid>
+    </Box>
 }
 export const SimpleListItem = memo(SimpleListItemBase)
 
@@ -88,18 +87,19 @@ export const SimpleListInner: React.FC<Omit<WidgetProps<BindingTypeGeneric & Mui
     const readOnly = schema.get('readOnly')
     const InfoRenderer = binding?.InfoRenderer
     return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
-        <Grid container spacing={2}>
-            {!schema.getIn(['view', 'hideTitle']) ? <Grid item xs={12}>
-                <FormLabel component="legend"><TranslateTitle schema={schema} storeKeys={storeKeys}/></FormLabel>
-            </Grid> : null}
+        <Box display={'flex'} flexDirection={'column'} rowGap={2}>
+            {!schema.getIn(['view', 'hideTitle']) ?
+                <Box>
+                    <FormLabel component="legend"><TranslateTitle schema={schema} storeKeys={storeKeys}/></FormLabel>
+                </Box> : null}
 
             {InfoRenderer && schema?.get('info') ?
-                <Grid item xs={12}>
+                <Box>
                     <InfoRenderer
                         schema={schema} variant={'preview'} openAs={'embed'}
                         storeKeys={storeKeys} valid={valid} errors={errors}
                     />
-                </Grid> :
+                </Box> :
                 undefined}
 
             {Array.from(Array(listSize || 0)).map((_itemVal, i) =>
@@ -116,7 +116,7 @@ export const SimpleListInner: React.FC<Omit<WidgetProps<BindingTypeGeneric & Mui
                     onChange={onChange}
                 />)}
 
-            <Grid item xs={12}>
+            <Box>
                 {!readOnly && !notAddable ?
                     <ListButton
                         onClick={() => {
@@ -147,8 +147,8 @@ export const SimpleListInner: React.FC<Omit<WidgetProps<BindingTypeGeneric & Mui
                     showValidity={showValidity}
                     schema={schema}
                 />
-            </Grid>
-        </Grid>
+            </Box>
+        </Box>
     </FormControl>
 }
 export const SimpleListBase = memo(SimpleListInner)

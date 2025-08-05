@@ -1,4 +1,4 @@
-import { MuiBindingComponents } from '@ui-schema/ds-material/Binding'
+import { MuiBindingComponents } from '@ui-schema/ds-material/BindingType'
 import { ValidationErrorsImmutable } from '@ui-schema/ui-schema/ValidatorOutput'
 import * as React from 'react'
 import { OrderedMap } from 'immutable'

@@ -1,3 +1,4 @@
+import { Required } from '@ui-schema/ds-bootstrap/Component/Required'
 import { WidgetProps } from '@ui-schema/react/Widget'
 import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 import * as React from 'react'
@@ -18,7 +19,10 @@ const SimpleList = extractValue(memo((
     const btnSize = schema.getIn(['view', 'btnSize']) as string || 'small'
 
     return <React.Fragment>
-        <p className={'form-label'}><TranslateTitle schema={schema} storeKeys={storeKeys}/></p>
+        <p className={'form-label'}>
+            <TranslateTitle schema={schema} storeKeys={storeKeys}/>
+            <Required required={required}/>
+        </p>
         <div className={'d-flex flex-column row-gap-3'}>
             {List.isList(value) ? value.map((_val, i) =>
                 <div

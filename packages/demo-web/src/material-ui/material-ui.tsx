@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { MuiBinding } from '@ui-schema/ds-material/Binding'
-import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
+import { MuiBinding } from '@ui-schema/ds-material/BindingType'
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
 import { GroupRenderer } from '@ui-schema/ds-material/GroupRenderer'
-import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { bindingComponents } from '@ui-schema/ds-material/Binding/Components'
+import { widgetsDefault } from '@ui-schema/ds-material/Binding/WidgetsDefault'
+import { widgetsExtended } from '@ui-schema/ds-material/Binding/WidgetsExtended'
 import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
@@ -26,7 +27,7 @@ import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
-import { createOrderedMap, createMap } from '@ui-schema/ui-schema/createMap'
+import { createOrderedMap } from '@ui-schema/ui-schema/createMap'
 import { ValidityReporter } from '@ui-schema/react/ValidityReporter'
 import { isInvalid } from '@ui-schema/react/isInvalid'
 import { createStore, createEmptyStore, UIStoreProvider } from '@ui-schema/react/UIStore'
@@ -39,7 +40,7 @@ import { InfoRenderer } from '@ui-schema/ds-material/Component/InfoRenderer'
 import { SelectChipsBase as SelectChips } from '@ui-schema/ds-material/Widgets/SelectChips'
 
 const customBinding: MuiBinding = {
-    ...baseComponents,
+    ...bindingComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: [
         // ReferencingHandler,// must be before AND maybe after combining/conditional?
@@ -97,8 +98,8 @@ const customBinding: MuiBinding = {
         ValidityReporter,
     ],
     widgets: {
-        ...typeWidgets,
-        ...bindingExtended,
+        ...widgetsDefault,
+        ...widgetsExtended,
         SelectChips: SelectChips,
         TableAdvanced: TableAdvanced,
     },
@@ -112,7 +113,7 @@ const GridStack = injectWidgetEngine(GridContainer)
 
 const MainStore = () => {
     const [showValidity, setShowValidity] = React.useState(false)
-    const [store, setStore] = React.useState(() => createStore(createMap(dataDemoMain)))
+    const [store, setStore] = React.useState(() => createStore(createOrderedMap(dataDemoMain)))
     const [schema, setSchema] = React.useState(() => createOrderedMap(schemaDemoMain))
 
     const onChange = React.useCallback((actions) => {

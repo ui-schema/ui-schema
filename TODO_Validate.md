@@ -43,8 +43,9 @@
     - [x] RequiredValidatorLegacy
         - HTML-like required, which works directly on field-level value and not object
         - similar behaviour as in `0.4.x`
-    - [x] TypeValidator
+    - [ ] TypeValidator
         - kind: `validate:boolean`
+        - refine how `undefined` is treated, for `string` in root level, it now fails for `undefined`
     - [x] ValueValidator
         - [x] ValueValidator-Const
             - kind: `validate:boolean`

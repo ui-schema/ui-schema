@@ -1,9 +1,9 @@
 {
     "name": "@ui-schema/json-pointer",
-    "version": "0.5.0-alpha.1",
+    "version": "0.5.0-alpha.2",
     "description": "JSON-Pointer implementation.",
     "homepage": "https://ui-schema.bemit.codes",
-    "author": "Michael Becker <michael@bemit.codes>",
+    "author": "Michael Becker <michael@bemit.codes> (https://bemit.codes)",
     "license": "MIT",
     "keywords": [
         "json-pointer"

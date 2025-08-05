@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
-import { MuiBinding } from '@ui-schema/ds-material/Binding'
-import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
+import { MuiBinding } from '@ui-schema/ds-material/BindingType'
+import { widgetsExtended } from '@ui-schema/ds-material/Binding/WidgetsExtended'
 import { SchemaGridHandler } from '@ui-schema/ds-material/Grid'
-import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { bindingComponents } from '@ui-schema/ds-material/Binding/Components'
+import { widgetsDefault } from '@ui-schema/ds-material/Binding/WidgetsDefault'
 import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
@@ -60,7 +61,7 @@ const CustomTableBase: React.ComponentType<WidgetProps> = ({binding, ...props}) 
 // build/merge into happy path
 
 const customWidgets: MuiBinding = {
-    ...baseComponents,
+    ...bindingComponents,
     InfoRenderer: InfoRenderer,
 
     widgetPlugins: [
@@ -82,9 +83,9 @@ const customWidgets: MuiBinding = {
         ValidityReporter,
     ],
     widgets: {
-        ...typeWidgets,
-        ...bindingExtended,
-        array: bindingExtended.GenericList,
+        ...widgetsDefault,
+        ...widgetsExtended,
+        array: widgetsExtended.GenericList,
         SelectChips: SelectChips,
         Table: CustomTableBase,
         TableAdvanced: TableAdvanced,

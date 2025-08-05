@@ -1,7 +1,3 @@
-import { NumberRenderer, StringRenderer } from '@ui-schema/ds-material/Widgets/TextField'
-import { BoolRenderer } from '@ui-schema/ds-material/Widgets/OptionsBoolean'
-import { ObjectRendererBase as ObjectRenderer } from '@ui-schema/react/ObjectRenderer'
-import type { MuiBindingWidgets } from '@ui-schema/ds-material/Binding'
 import { GroupRenderer } from '@ui-schema/ds-material/GroupRenderer'
 import { ErrorFallback } from '@ui-schema/ds-material/ErrorFallback'
 import type { WidgetPluginProps } from '@ui-schema/react/WidgetEngine'
@@ -11,15 +7,7 @@ import { VirtualWidgetRenderer } from '@ui-schema/react/VirtualWidgetRenderer'
 import { NoWidget } from '@ui-schema/react/NoWidget'
 import type { ComponentType } from 'react'
 
-export const typeWidgets = {
-    string: StringRenderer,
-    boolean: BoolRenderer,
-    number: NumberRenderer,
-    integer: NumberRenderer,
-    object: ObjectRenderer,
-} satisfies MuiBindingWidgets
-
-export const baseComponents = {
+export const bindingComponents = {
     WidgetRenderer: WidgetRenderer,
     ErrorFallback: ErrorFallback,
     GroupRenderer: GroupRenderer,

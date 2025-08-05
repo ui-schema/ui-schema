@@ -52,6 +52,8 @@ List of renamed functions, components etc., most are also moved to other package
 - optimize useOptionsFromSchema, add basic support for collecting options from nested oneOf/anyOf, apply normalization also on `const`, same like `enum`
 - support `name` attribute generation on inputs
 - fixed wrongly used required in table when deleting row
+- replaced `Grid` in SimpleList and GenericList widgets with `Box`, for universal mui v5/6/7 compat;
+    - migration needed for customized widgets: the `ComponentItem` render-prop must return a `Box`, not a `Grid`
 
 ### DS Bootstrap
 
@@ -61,6 +63,11 @@ List of renamed functions, components etc., most are also moved to other package
 - removed `react-uid` dependency
 - css and html fixes, bootstrap 5
 - support `name` attribute generation on inputs
+- added required star `*` to labels
+
+### Material Pickers
+
+- add `view.dense` keyword support
 
 ### System
 
@@ -76,6 +83,7 @@ List of renamed functions, components etc., most are also moved to other package
 - `input[name]` attribute generator with `storeKeys`, optional enabled via ui meta context
 - new `getFields` function for normalized access to children keywords (array items/object properties)
     - with static fields retrieval, for value-less schema fields keywords normalization and resolving, like needed for the table widget (as columns must be known before rendering/having values and all rows must be uniform)
+    - [ ] option to filter out hidden, pure-null etc., to provide easy list/object level iteration
 
 Todo:
 
@@ -503,6 +511,20 @@ Todo:
         - [ ] central docs mapping for packages, to remove `modulePath` and other such needed manual configuration for doc gen
     - [ ] add split-schema example in readme/docs where embedded/combined schema is shown/in quickstarts
     - [ ] update all README documentation links once docs are published
+- [ ] `getFields(schema).getField(index|property)`
+- [ ] optional `onChange` support; adj. types
+- [x] ds-material/bootstrap: normalize bindings exports
+- [ ] ds-material/bootstrap: remove ErrorBoundary from base components
+- [x] ds-material/bootstrap: expand default types binding with universal combinations like `integer+number`
+- [ ] support configurable `widget` keyword?
+- [ ] add `getStaticSchema` in `list-item-add`, to support `default` which are in e.g. `allOf`
+    - but to support `$ref`, this would need `resource` access from within action reducers
+        - workaround: adding/creating static schema where dispatching the event, passing a prepared `schema` in the action itself
+- [ ] make all required stars use `<abbr title="required">*</abbr>`, with `required` from `t`
+- [ ] normalize min/max error messages, string length is not minimum
+- [ ] add support for `contains` title to min/max contains error message
+- [x] check all grid components, to be mui v7 `size` compatible; e.g. SimpleList, util components etc.
+- [ ] add an example of split schema inject with the rjsf `ui:` keywords and their matching/nesting structure
 
 ---
 

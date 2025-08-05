@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
-import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
-import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { widgetsExtended } from '@ui-schema/ds-material/Binding/WidgetsExtended'
+import { bindingComponents } from '@ui-schema/ds-material/Binding/Components'
+import { widgetsDefault } from '@ui-schema/ds-material/Binding/WidgetsDefault'
 import { GridContainer } from '@ui-schema/ds-material/GridContainer'
 import { WidgetEngine } from '@ui-schema/react/WidgetEngine'
 import React from 'react'
@@ -13,7 +14,7 @@ import Select from '@mui/material/Select'
 import { createEmptyStore, createStore, UIStoreProvider, UIStoreType } from '@ui-schema/react/UIStore'
 import { storeUpdater } from '@ui-schema/react/storeUpdater'
 import { UIMetaProvider } from '@ui-schema/react/UIMeta'
-import { MuiBindingWidgets } from '@ui-schema/ds-material/Binding'
+import { MuiBindingWidgets } from '@ui-schema/ds-material/BindingType'
 import { browserT } from '../t'
 import { MuiSchemaDebug } from './component/MuiSchemaDebug'
 import { isInvalid } from '@ui-schema/react/isInvalid'
@@ -38,11 +39,11 @@ type CustomWidgetsBinding = BindingTypeGeneric<MuiBindingWidgets<{}> & {
 }>
 
 const customWidgets: CustomWidgetsBinding = {
-    ...baseComponents,
+    ...bindingComponents,
     widgetPlugins: widgetPluginsLegacy,
     widgets: {
-        ...typeWidgets,
-        ...bindingExtended,
+        ...widgetsDefault,
+        ...widgetsExtended,
         SortableList: SortableList,
     },
 }

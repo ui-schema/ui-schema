@@ -13,7 +13,7 @@ import {
     GenericListItem,
     GenericListItemMore, GenericListItemPos,
 } from '@ui-schema/ds-material/BaseComponents/GenericList'
-import { MuiBinding } from '@ui-schema/ds-material/Binding'
+import { MuiBinding } from '@ui-schema/ds-material/BindingType'
 
 // it is important to use `memo` from `@ui-schema/ui-schema` for the content component,
 // as the generic list will re-render on each change of anything in the store,

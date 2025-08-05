@@ -1,9 +1,10 @@
 import Box from '@mui/material/Box'
 import { useTheme } from '@mui/material/styles'
-import { MuiBinding } from '@ui-schema/ds-material/Binding'
-import { bindingExtended } from '@ui-schema/ds-material/BindingExtended'
+import { MuiBinding } from '@ui-schema/ds-material/BindingType'
+import { widgetsExtended } from '@ui-schema/ds-material/Binding/WidgetsExtended'
 import { SchemaGridItemLegacy } from '@ui-schema/ds-material/Grid'
-import { baseComponents, typeWidgets } from '@ui-schema/ds-material/BindingDefault'
+import { bindingComponents } from '@ui-schema/ds-material/Binding/Components'
+import { widgetsDefault } from '@ui-schema/ds-material/Binding/WidgetsDefault'
 import { requiredValidatorLegacy } from '@ui-schema/json-schema/Validators/RequiredValidatorLegacy'
 import { standardValidators } from '@ui-schema/json-schema/StandardValidators'
 import { Validator } from '@ui-schema/json-schema/Validator'
@@ -195,7 +196,7 @@ const SchemaGridHandlerWithInspector = <P extends WidgetPluginProps>(props: P): 
 const customWidgets: MuiBinding & {
     DndBlockSelector?: DragDropBlockComponentsBinding['DndBlockSelector']
 } = {
-    ...baseComponents,
+    ...bindingComponents,
     InfoRenderer: InfoRenderer,
     widgetPlugins: [
         DefaultHandler,
@@ -208,8 +209,8 @@ const customWidgets: MuiBinding & {
     ],
     DndBlockSelector: DragDropBlockSelector,
     widgets: {
-        ...typeWidgets,
-        ...bindingExtended,
+        ...widgetsDefault,
+        ...widgetsExtended,
         SelectChips: SelectChips,
         Table: CustomTable,
         TableAdvanced: TableAdvanced,

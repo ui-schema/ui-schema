@@ -2,6 +2,13 @@
 
 UI-Schema provides various ways to hook in and customize schema handling and rendering.
 
+- 🔌 **schema plugins**: pure functions which work on each possible value location, receive states, can manipulate all props, can not have side effects
+- 🧱 **widget plugins**: render pipeline components, can influence what is rendered and perform reactive side effects, in react it is a React component,
+- 🧵 **binding / widget**: render pipeline components,  functions (and the actual widget components)
+- 🔍 = validators
+
+Overview of packages and where which part is:
+
 - `@ui-schema/ui-schema`
     - 🐝 contains the engine for [schema plugins 🔌](/docs/core/schemapluginstack)
     - contains the type contracts for validators 🔍, widgets 🧱, and value-location
@@ -23,7 +30,3 @@ UI-Schema provides various ways to hook in and customize schema handling and ren
 
 - 🐝 = engine, runtime
 - 🍯 = implementations
-- 🔌 = schema plugins
-- 🧱 = widget plugins
-- 🧵 = binding / widget
-- 🔍 = validators

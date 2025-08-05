@@ -3,16 +3,7 @@
     "private": true,
     "version": "0.5.0",
     "description": "scribble",
-    "author": {
-        "name": "bemit",
-        "url": "https://bemit.codes"
-    },
-    "contributors": [
-        {
-            "name": "Michael Becker",
-            "url": "https://i-am-digital.eu"
-        }
-    ],
+    "author": "Michael Becker <michael@bemit.codes> (https://bemit.codes)",
     "license": "MIT",
     "type": "module",
     "dependencies": {

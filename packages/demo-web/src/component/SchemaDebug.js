@@ -39,7 +39,7 @@ export const SchemaDebug = (
             <StyledEditor
                 title={<code>UIStore.validity</code>}
                 data={store.getValidity()}
-                getVal={keys => store.getValidity().getIn(keys)}
+                getVal={keys => store.getValidity()?.getIn(keys)}
             /> : null}
         <StyledEditor
             title={<code>Schema</code>}

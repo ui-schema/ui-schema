@@ -1,3 +1,4 @@
+import { Required } from '@ui-schema/ds-bootstrap/Component/Required'
 import { WithOnChange, WithValuePlain } from '@ui-schema/react/UIStore'
 import { WidgetProps } from '@ui-schema/react/Widget'
 import { beautifyKey } from '@ui-schema/ui-schema/Utils/beautify'
@@ -25,7 +26,10 @@ export const Select = ({schema, storeKeys, showValidity, keysToName, errors, val
     }
     const currentValue = typeof value !== 'undefined' ? value : (schema.get('default') || '')
     return <div className={classFormParent.join(' ')}>
-        <label className={'form-label'} htmlFor={'uis-' + uid}><TranslateTitle schema={schema} storeKeys={storeKeys}/></label>
+        <label className={'form-label'} htmlFor={'uis-' + uid}>
+            <TranslateTitle schema={schema} storeKeys={storeKeys}/>
+            <Required required={required}/>
+        </label>
         <select
             id={'uis-' + uid}
             value={currentValue}

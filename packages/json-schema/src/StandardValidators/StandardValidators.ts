@@ -6,16 +6,16 @@ import {
     ERROR_MULTIPLE_OF,
     ERROR_PATTERN,
     ERROR_WRONG_TYPE,
-    validateConst, validateContains,
+    validateConst,
     validateEnum,
     validateMultipleOf,
     validatePattern,
-    arrayValidator,
     objectValidator,
     oneOfValidator,
     validateTypes,
     ERROR_NOT_SET,
     validateMinMaxString, validateMinMaxNumber, validateMinMaxArray, validateMinMaxObject,
+    arrayItemsValidator, arrayContainsValidator, arrayUniqueValidator,
 } from '@ui-schema/json-schema/Validators'
 import { ValidatorOutput } from '@ui-schema/ui-schema/ValidatorOutput'
 import { List, Map, Record } from 'immutable'
@@ -206,16 +206,6 @@ export const standardValidators: ValidatorHandler[] = [
         },
     },
     {
-        types: ['array'],
-        validate: (schema, value, params) => {
-            if (
-                !['contains', 'minContains', 'maxContains']
-                    .some(keyword => schema.has(keyword))
-            ) return
-            validateContains(schema, value, params)
-        },
-    },
-    {
         id: 'required',
         // `required` validator - modern
         // todo: this is breaking the per-field validation used before,
@@ -275,7 +265,6 @@ export const standardValidators: ValidatorHandler[] = [
             }
         },
     },
-    arrayValidator,
     objectValidator,
     {
         id: 'unevaluatedProperties',
@@ -309,6 +298,9 @@ export const standardValidators: ValidatorHandler[] = [
             }
         },
     },
+    arrayItemsValidator,
+    arrayContainsValidator,
+    arrayUniqueValidator,
     {
         id: 'if',
         validate: (schema, value, params) => {

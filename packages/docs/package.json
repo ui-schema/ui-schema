@@ -23,14 +23,10 @@
         "@mui/x-date-pickers": "^7.29.4",
         "@emotion/react": "^11.9.0",
         "@emotion/styled": "^11.8.1",
-        "@types/react": "^19.0",
-        "@types/node": "^24.0.3",
         "ts-node": "^10.7.0",
         "tsconfig-paths": "~3.14.1",
-        "@types/react-highlight-words": "~0.16.4",
         "react-highlight-words": "~0.18.0",
         "fuse.js": "~7.1.0",
-        "@types/react-router-dom": "^5.1.7",
         "rehype-raw": "^7.0.0",
         "remark-rehype": "^11.1.2",
         "remark-gfm": "^4.0.1",
@@ -68,7 +64,6 @@
         "i18next-http-backend": "^2.6.2",
         "immutable": "^5.0.0",
         "@date-io/luxon": "^3.2.0",
-        "@types/luxon": "^3.6.2",
         "luxon": "^3.6.1",
         "react": "^19.0",
         "react-ace": "^7.0.5",
@@ -82,5 +77,12 @@
         "react-i18next": "^15.0.3",
         "react-markdown": "^10.1.0",
         "react-router-dom": "^5.1.2"
+    },
+    "devDependencies": {
+        "@types/react": "^19.0",
+        "@types/node": "^24.0.3",
+        "@types/react-highlight-words": "~0.16.4",
+        "@types/react-router-dom": "^5.1.7",
+        "@types/luxon": "^3.6.2"
     }
 }
