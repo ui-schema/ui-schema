@@ -7,12 +7,13 @@ import type { SomeSchema } from '@ui-schema/ui-schema/CommonTypings'
 
 /**
  * Pending references, grouped by root id, with requested versions per-schema,
- * `#` for no-custom context `$id`:
- * @example
+ * @example `#` for no-custom context `$id`:
+ * ```json
  * {
  *     '#': {'ref-url': ['*', 'version']},
  *     'http://localhost/schema-1.json': {'schema-1b.json': ['*', '1.2']},
  * }
+ * ```
  */
 export type SchemaRefsPending = Map<string, Map<string, List<string>>>
 /**
