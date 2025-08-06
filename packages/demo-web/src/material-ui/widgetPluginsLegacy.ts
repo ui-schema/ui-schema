@@ -16,7 +16,6 @@ export const widgetPluginsLegacy: WidgetPluginType[] = [
     ReferencingHandler,// must be before AND maybe after combining/conditional?
     SchemaGridHandler,// todo: Grid must be after e.g. ConditionalHandler, but why was it this high? wasn't that because of e.g. conditional object grids?
     // ExtractStorePlugin,
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     CombiningHandler,
     DefaultHandler,
     // eslint-disable-next-line @typescript-eslint/no-deprecated

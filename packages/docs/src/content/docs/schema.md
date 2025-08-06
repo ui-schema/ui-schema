@@ -278,14 +278,14 @@ UI Schema extends JSON Schema with special only-UI keywords, take a look at each
 
 Typings:
 
-- [`import {JsonSchema} from '@ui-schema/ui-schema'`](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/JsonSchema.d.ts)
-- [`import {UISchema} from '@ui-schema/ui-schema'`](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/UISchema.d.ts)
+- [`import {JsonSchema} from '@ui-schema/ui-schema'`](https://github.com/ui-schema/ui-schema/blob/main/packages/ui-schema/src/JsonSchema.d.ts)
+- [`import {UISchema} from '@ui-schema/ui-schema'`](https://github.com/ui-schema/ui-schema/blob/main/packages/ui-schema/src/UISchema.d.ts)
 
 Vocabularies (**not up to date**):
 
-- [View](https://github.com/ui-schema/ui-schema/blob/master/schema/2019-09/meta/view.json)
-- [Widget](https://github.com/ui-schema/ui-schema/blob/master/schema/2019-09/meta/widget.json)
-- [Translation](https://github.com/ui-schema/ui-schema/blob/master/schema/2019-09/meta/translation.json)
+- [View](https://github.com/ui-schema/ui-schema/blob/main/schema/2019-09/meta/view.json)
+- [Widget](https://github.com/ui-schema/ui-schema/blob/main/schema/2019-09/meta/widget.json)
+- [Translation](https://github.com/ui-schema/ui-schema/blob/main/schema/2019-09/meta/translation.json)
 - ...
 
 ### View Keyword

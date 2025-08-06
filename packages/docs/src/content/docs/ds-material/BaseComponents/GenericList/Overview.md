@@ -59,7 +59,7 @@ export const GenericList = (props: WidgetProps<MuiBinding> & WithOnChange): Reac
 }
 ```
 
-Use the [GenericListContent.tsx](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/BaseComponents/GenericList/GenericListContent.tsx) as a starting point if you need to further adjust the widget parts.
+Use the [GenericListContent.tsx](https://github.com/ui-schema/ui-schema/tree/main/packages/ds-material/src/BaseComponents/GenericList/GenericListContent.tsx) as a starting point if you need to further adjust the widget parts.
 
 ## Translation / Labels
 
@@ -73,7 +73,7 @@ Use the [GenericListContent.tsx](https://github.com/ui-schema/ui-schema/tree/mas
 - `sr-only` = `screen-reader-only` text `span` for a11y
 - supports named-label: uses the `context` to pass down `actionLabels` for a not-generic-labelling, the given key is the intended action-key for the label
 
-For `actionLabels` handling, see [dictionary/en/labels](https://github.com/ui-schema/ui-schema/tree/master/packages/dictionary/src/en/labels.js) as an example.
+For `actionLabels` handling, see [dictionary/en/labels](https://github.com/ui-schema/ui-schema/tree/main/packages/dictionary/src/en/labels.js) as an example.
 
 Example schema structure that activates `actionLabels`, with support for multiple languages and different buttons:
 

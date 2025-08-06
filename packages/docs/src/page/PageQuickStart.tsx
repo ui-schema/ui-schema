@@ -160,7 +160,7 @@ npm i --save @ui-schema/ui-schema @ui-schema/react @ui-schema/json-schema @ui-sc
     @mui/material @mui/icons-material
 \`\`\`
 
-> for version constraints [check the ds-material/package.json](https://github.com/ui-schema/ui-schema/blob/master/packages/ds-material/package.json)
+> for version constraints [check the ds-material/package.json](https://github.com/ui-schema/ui-schema/blob/main/packages/ds-material/package.json)
 
 > first time with MUI? [head to the mui.com quick start](https://mui.com/material-ui/getting-started/installation/)
 >

@@ -50,7 +50,7 @@ This component is included in the design system and provides a basic implementat
 
 It uses the `info` keyword to either render it directly `string` or for each line `string[]`.
 
-[Source Code](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/Component/InfoRenderer)
+[Source Code](https://github.com/ui-schema/ui-schema/tree/main/packages/ds-material/src/Component/InfoRenderer)
 
 > Use a custom implementation for loading contextual info from an API, render markdown and so on.
 

@@ -63,7 +63,7 @@ const tEN = makeTranslator(dictionary, 'en');
 
 Some widgets are using labels by default, also default error messages are existing, those should be translated for each usage.
 
-Checkout the `@ui-schema/dictionary` [sources](https://github.com/ui-schema/ui-schema/tree/master/packages/dictionary) to see the used/needed translations, or simply use it directly!
+Checkout the `@ui-schema/dictionary` [sources](https://github.com/ui-schema/ui-schema/tree/main/packages/dictionary) to see the used/needed translations, or simply use it directly!
 
 > Created another language? A pull request to share it with us would be awesome!
 
