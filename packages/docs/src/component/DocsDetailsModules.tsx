@@ -341,7 +341,7 @@ const DocsDetailsModuleChilds = (
 
 export const DocsDetailsModules: React.ComponentType<{ codeDocumentation: TsDocModuleCollectionSimple | undefined }> = ({codeDocumentation}) => {
     const [showFiles, setShowFiles] = useState(false)
-    const repoRoot = 'https://github.com/ui-schema/ui-schema/tree/master/packages/'
+    const repoRoot = 'https://github.com/ui-schema/ui-schema/tree/main/packages/'
     return <>
         <LinkableHeadline level={1} customId={'module-api'} mb={4} mt={0}>
             Module API

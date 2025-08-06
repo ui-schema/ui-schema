@@ -19,7 +19,7 @@ npm i --save @ui-schema/pro
 
 Store hook with integrated debouncing and history.
 
-See the dev-demo [source code](https://github.com/ui-schema/ui-schema/tree/master/packages/demo/src/material-ui/material-ui-pro.js) for an easy implementation with Material-UI.
+See the dev-demo [source code](https://github.com/ui-schema/ui-schema/tree/main/packages/demo/src/material-ui/material-ui-pro.js) for an easy implementation with Material-UI.
 
 Checkout the [example video](https://ui-schema.bemit.codes/UISchemaPro-History-Demo.mp4).
 

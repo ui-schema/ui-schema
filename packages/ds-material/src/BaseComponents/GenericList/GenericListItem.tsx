@@ -75,7 +75,7 @@ export const GenericListItemBase = (
                             </Grid>
                         </Box> :
                         /* eslint-disable-next-line @typescript-eslint/no-deprecated */
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} flexGrow={1}>
                             <WidgetEngine
                                 showValidity={showValidity}
                                 schema={itemsSchema} parentSchema={schema}

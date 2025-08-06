@@ -60,7 +60,7 @@ const Comp = withUIMeta(
 
 Only a special typing, works together with special components for a "read-or-write" mode.
 
-> Check the [Material-UI demo code](https://github.com/ui-schema/ui-schema/blob/master/packages/demo/src/material-ui/material-ui-read-write.tsx) as implementation example
+> Check the [Material-UI demo code](https://github.com/ui-schema/ui-schema/blob/main/packages/demo/src/material-ui/material-ui-read-write.tsx) as implementation example
 
 ```typescript tsx
 import React from 'react'

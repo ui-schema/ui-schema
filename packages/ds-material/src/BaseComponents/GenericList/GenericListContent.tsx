@@ -50,37 +50,41 @@ export const GenericListContent = (
             storeKeys={storeKeys} valid={valid} errors={errors}
         /> : null
 
-    return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
-        {!schema.getIn(['view', 'hideTitle']) ?
-            <Box mb={1}>
-                <Box mb={info ? 1 : 0}>
-                    <FormLabel component="legend">
-                        <TranslateTitle schema={schema} storeKeys={storeKeys}/>
-                    </FormLabel>
-                </Box>
+    return <FormControl
+        required={required} error={!valid && showValidity} component="fieldset"
+        sx={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 1,
+        }}
+    >
+        {schema.getIn(['view', 'hideTitle']) ? null :
+            <Box>
+                <FormLabel component="legend">
+                    <TranslateTitle schema={schema} storeKeys={storeKeys}/>
+                </FormLabel>
+            </Box>}
 
-                {info}
+        {info ? <Box>{info}</Box> : null}
+
+        {listSize ?
+            <Box display={'flex'} flexDirection={'column'} rowGap={listSpacing}>
+                {Array(listSize).fill(null).map((_val, i) =>
+                    <ComponentItem
+                        key={i} index={i} listSize={listSize}
+                        storeKeys={storeKeys}
+                        schema={schema} onChange={onChange}
+                        listRequired={required}
+                        btnSize={deleteBtnSize}
+                        notSortable={notSortable}
+                        notDeletable={notDeletable}
+                        showValidity={showValidity}
+                        ComponentPos={ComponentItemPos}
+                        ComponentMore={ComponentItemMore}
+                    />,
+                )}
             </Box> : null}
-
-        {schema.getIn(['view', 'hideTitle']) ?
-            <Box mb={1}>{info}</Box> : null}
-
-        <Box display={'flex'} flexDirection={'column'} rowGap={listSpacing}>
-            {Array(listSize).fill(null).map((_val, i) =>
-                <ComponentItem
-                    key={i} index={i} listSize={listSize}
-                    storeKeys={storeKeys}
-                    schema={schema} onChange={onChange}
-                    listRequired={required}
-                    btnSize={deleteBtnSize}
-                    notSortable={notSortable}
-                    notDeletable={notDeletable}
-                    showValidity={showValidity}
-                    ComponentPos={ComponentItemPos}
-                    ComponentMore={ComponentItemMore}
-                />,
-            )}
-        </Box>
 
         {ComponentFooter ?
             <ComponentFooter

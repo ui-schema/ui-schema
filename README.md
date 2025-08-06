@@ -344,11 +344,3 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 ## License
 
 Released under the [MIT License](LICENSE).
-
-### License Icons
-
-The icons in the badges of the readme's are either from [simpleicons](https://simpleicons.org) or are licensed otherwise:
-
-- [Play Icon © Chanut is Industries, CC BY 3.0](https://www.iconfinder.com/icons/928430/go_media_music_play_playing_start_icon)
-- [Experiment Icon © Ardiansyah Ardi, CC BY 3.0](https://www.iconfinder.com/icons/4951169/chemical_experiment_glass_lab_medical_icon)
-- [Doc Icons © PICOL, CC BY 3.0](https://www.iconfinder.com/iconsets/picol-vector)

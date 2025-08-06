@@ -124,7 +124,7 @@ Each UIGenerator receives an `widgets` object containing all HTML components and
 
 Create a complete custom binding or only `import` the components you need and optimize your bundle size!
 
-[Typing for `WidgetsBinding`](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/WidgetsBinding.ts).
+[Typing for `WidgetsBinding`](https://github.com/ui-schema/ui-schema/blob/main/packages/ui-schema/src/WidgetsBinding.ts).
 
 - `ErrorFallback` shows error for exceptions during of a widget rendering, when not set turns of the error boundary
 - `RootRenderer` main wrapper around everything
@@ -141,9 +141,9 @@ Create a complete custom binding or only `import` the components you need and op
 
 Example default binding for `material-ui` can be used as template:
 
-- [Grid Widgets](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/Grid.js) - all special widgets responsible for the grid
-- [widgetPlugins Definition](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/widgetPlugins.js) - binding of plugin
-- [Widgets Base Definition](https://github.com/ui-schema/ui-schema/tree/master/packages/ds-material/src/widgetsBinding/widgetsBinding.ts) - binding of widgetPlugins, validators and root-grid and the actual widgets for a design-system
+- [Grid Widgets](https://github.com/ui-schema/ui-schema/tree/main/packages/ds-material/src/Grid.js) - all special widgets responsible for the grid
+- [widgetPlugins Definition](https://github.com/ui-schema/ui-schema/tree/main/packages/ds-material/src/widgetPlugins.js) - binding of plugin
+- [Widgets Base Definition](https://github.com/ui-schema/ui-schema/tree/main/packages/ds-material/src/widgetsBinding/widgetsBinding.ts) - binding of widgetPlugins, validators and root-grid and the actual widgets for a design-system
 
 [Contributing a new ds-binding?](/docs/design-systems#add-design-system-package)
 

@@ -86,38 +86,50 @@ export const SimpleListInner: React.FC<Omit<WidgetProps<BindingTypeGeneric & Mui
     const notDeletable = schema.get('notDeletable')
     const readOnly = schema.get('readOnly')
     const InfoRenderer = binding?.InfoRenderer
-    return <FormControl required={required} error={!valid && showValidity} component="fieldset" style={{width: '100%'}}>
-        <Box display={'flex'} flexDirection={'column'} rowGap={2}>
-            {!schema.getIn(['view', 'hideTitle']) ?
-                <Box>
-                    <FormLabel component="legend"><TranslateTitle schema={schema} storeKeys={storeKeys}/></FormLabel>
-                </Box> : null}
-
-            {InfoRenderer && schema?.get('info') ?
-                <Box>
-                    <InfoRenderer
-                        schema={schema} variant={'preview'} openAs={'embed'}
-                        storeKeys={storeKeys} valid={valid} errors={errors}
-                    />
-                </Box> :
-                undefined}
-
-            {Array.from(Array(listSize || 0)).map((_itemVal, i) =>
-                <SimpleListItem
-                    key={i}
-                    index={i}
-                    showValidity={showValidity}
-                    schema={schema}
-                    storeKeys={storeKeys}
-                    btnSize={btnSize}
-                    notDeletable={notDeletable}
-                    readOnly={readOnly}
-                    required={required}
-                    onChange={onChange}
-                />)}
-
+    const canAdd = !readOnly && !notAddable
+    return <FormControl
+        required={required} error={!valid && showValidity} component="fieldset"
+        sx={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 1,
+        }}
+    >
+        {!schema.getIn(['view', 'hideTitle']) ?
             <Box>
-                {!readOnly && !notAddable ?
+                <FormLabel component="legend"><TranslateTitle schema={schema} storeKeys={storeKeys}/></FormLabel>
+            </Box> : null}
+
+        {InfoRenderer && schema?.get('info') ?
+            <Box>
+                <InfoRenderer
+                    schema={schema} variant={'preview'} openAs={'embed'}
+                    storeKeys={storeKeys} valid={valid} errors={errors}
+                />
+            </Box> :
+            undefined}
+
+        {listSize ?
+            <Box display={'flex'} flexDirection={'column'} rowGap={2}>
+                {Array.from(Array(listSize || 0)).map((_itemVal, i) =>
+                    <SimpleListItem
+                        key={i}
+                        index={i}
+                        showValidity={showValidity}
+                        schema={schema}
+                        storeKeys={storeKeys}
+                        btnSize={btnSize}
+                        notDeletable={notDeletable}
+                        readOnly={readOnly}
+                        required={required}
+                        onChange={onChange}
+                    />)}
+            </Box> : null}
+
+        {errors?.size || canAdd ?
+            <Box>
+                {canAdd ?
                     <ListButton
                         onClick={() => {
                             onChange({
@@ -147,8 +159,7 @@ export const SimpleListInner: React.FC<Omit<WidgetProps<BindingTypeGeneric & Mui
                     showValidity={showValidity}
                     schema={schema}
                 />
-            </Box>
-        </Box>
+            </Box> : null}
     </FormControl>
 }
 export const SimpleListBase = memo(SimpleListInner)

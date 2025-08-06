@@ -25,11 +25,11 @@ This is easily done by starting a new `PluginStack` - a new schema-level so to s
 
 `props` passed to the `PluginStack` are received by it's child(ren), some - like `widgets` overwrite the `UIMetaStore` values for a specific `PluginStack` and when passed down also nested ones (e.g. `widgets` is also passed down further levels through `ObjectRenderer`).
 
-See [PluginStack typings](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/PluginStack/PluginStack.d.ts) for more details about `props`.
+See [PluginStack typings](https://github.com/ui-schema/ui-schema/blob/main/packages/ui-schema/src/PluginStack/PluginStack.d.ts) for more details about `props`.
 
 Overwrite `props` rules for any `widgets.widgetPlugins` plugin:
 
-- `props` passed directly to `PluginStack` overwrite any other, except [`PluginStackInjectProps`](https://github.com/ui-schema/ui-schema/blob/master/packages/ui-schema/src/PluginStack/PluginStack.d.ts)
+- `props` passed directly to `PluginStack` overwrite any other, except [`PluginStackInjectProps`](https://github.com/ui-schema/ui-schema/blob/main/packages/ui-schema/src/PluginStack/PluginStack.d.ts)
 - [`UIMetaContext`](/docs/react/meta) are overwritten by any other, added to every plugin stack by default
 - [`UIConfigContext`](/docs/react/store#uiconfigcontext) is overwriting only the `UIMetaContext`, added to every plugin stack by default
 - [`UIStoreContext`](/docs/react/store#uistoreprovider) are extracted using `storeKeys`

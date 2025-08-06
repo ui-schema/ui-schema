@@ -117,63 +117,63 @@ export default defineConfig([
             '@typescript-eslint/no-deprecated': [
                 'error',
                 {
-                    // not working as `const` are not supported
+                    // does not work as expected; also `const` are not supported
                     // https://github.com/typescript-eslint/typescript-eslint/pull/10670
                     'allow': [
                         {
+                            // (still) not working as `const` are not supported
                             'from': 'package',
                             'name': 'CombiningHandler',
                             'package': '@ui-schema/react',
                         },
                         {
+                            // (now) working, even if importing like: `import { CombiningHandler } from '@ui-schema/react/CombiningHandler'`
+                            // (did not work in @typescript-eslint/eslint-plugin@8.35.0 but works in 8.39.0)
                             'from': 'file',
                             'name': 'CombiningHandler',
                             'path': 'CombiningHandler.tsx',
                         },
-                        {
-                            'from': 'file',
-                            'name': 'CombiningHandler',
-                        },
-                        {
-                            'from': 'package',
-                            'name': 'InputLabelProps',
-                            'package': '@mui/material',
-                        },
-                        {
-                            'from': 'package',
-                            'name': 'InputProps',
-                            'package': '@mui/material',
-                        },
-                        {
-                            'from': 'package',
-                            'name': 'inputProps',
-                            'package': '@mui/material',
-                        },
-                        {
-                            'from': 'package',
-                            'name': 'Grid',
-                            'package': '@mui/material',
-                        },
-                        {
-                            'from': 'package',
-                            'name': 'Grid',
-                            'package': '@mui/material/Grid',
-                        },
-                        {
-                            'from': 'package',
-                            'name': 'default',
-                            'package': '@mui/material',
-                        },
-                        {
-                            'from': 'package',
-                            'name': 'default',
-                            'package': '@mui/material/Grid',
-                        },
-                        {
-                            'from': 'package',
-                            'name': 'componentsProps',
-                            'package': '@mui/material',
-                        },
+                        // {
+                        //     'from': 'package',
+                        //     'name': 'InputLabelProps',
+                        //     'package': '@mui/material',
+                        // },
+                        // {
+                        //     'from': 'package',
+                        //     'name': 'InputProps',
+                        //     'package': '@mui/material',
+                        // },
+                        // {
+                        //      // this now also works in 8.39.0; but none of the others, disabled all as atm. have ignore comments
+                        //     'from': 'package',
+                        //     'name': 'inputProps',
+                        //     'package': '@mui/material',
+                        // },
+                        // {
+                        //     'from': 'package',
+                        //     'name': 'Grid',
+                        //     'package': '@mui/material',
+                        // },
+                        // {
+                        //     'from': 'package',
+                        //     'name': 'Grid',
+                        //     'package': '@mui/material/Grid',
+                        // },
+                        // {
+                        //     'from': 'package',
+                        //     'name': 'default',
+                        //     'package': '@mui/material',
+                        // },
+                        // {
+                        //     'from': 'package',
+                        //     'name': 'default',
+                        //     'package': '@mui/material/Grid',
+                        // },
+                        // {
+                        //     'from': 'package',
+                        //     'name': 'componentsProps',
+                        //     'package': '@mui/material',
+                        // },
                     ],
                 },
             ],

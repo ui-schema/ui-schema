@@ -33,8 +33,12 @@ export const GenericListFooter: React.ComponentType<GenericListFooterProps> = (
         errors, showValidity,
     },
 ) => {
+    const canAdd = !schema.get('readOnly') && !notAddable
+
+    if (!canAdd && !errors?.size) return null
+
     return <Box>
-        {!schema.get('readOnly') && !notAddable ?
+        {canAdd ?
             <ListButton
                 onClick={() => {
                     onChange({
