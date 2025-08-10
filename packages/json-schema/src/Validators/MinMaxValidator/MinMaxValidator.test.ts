@@ -217,6 +217,26 @@ describe('validateMinMax', () => {
             1,
         ],
         [
+            {minimum: 2, exclusiveMinimum: 1},
+            1,
+            2,
+        ],
+        [
+            {minimum: 2, exclusiveMinimum: 1},
+            2,
+            0,
+        ],
+        [
+            {maximum: 1, exclusiveMaximum: 2},
+            2,
+            2,
+        ],
+        [
+            {maximum: 1, exclusiveMaximum: 2},
+            1,
+            0,
+        ],
+        [
             // draft-04 check
             {exclusiveMinimum: true, minimum: 2},
             2,
@@ -230,6 +250,18 @@ describe('validateMinMax', () => {
         ],
         [
             // draft-04 check
+            {exclusiveMinimum: false, minimum: 2},
+            1,
+            1,
+        ],
+        [
+            // draft-04 check
+            {exclusiveMinimum: false, minimum: 2},
+            2,
+            0,
+        ],
+        [
+            // draft-04 check
             {exclusiveMaximum: true, maximum: 2},
             1,
             0,
@@ -239,6 +271,18 @@ describe('validateMinMax', () => {
             {exclusiveMaximum: true, maximum: 2},
             2,
             1,
+        ],
+        [
+            // draft-04 check
+            {exclusiveMaximum: false, maximum: 2},
+            3,
+            1,
+        ],
+        [
+            // draft-04 check
+            {exclusiveMaximum: false, maximum: 2},
+            2,
+            0,
         ],
         [
             {maximum: 2},
