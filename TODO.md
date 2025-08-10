@@ -220,7 +220,7 @@ Todo:
     - deprecated `effect`
         - **TODO** make async? (remove into next tick)
 - added new `delete` action, only for deleting properties in objects, can has `scope`, otherwise deletes all
-- basic support for `default` keywod in `list-item-add` action
+- basic support for `default` keyword in `list-item-add` action
 
 Todo:
 
@@ -347,6 +347,21 @@ Todo:
     - **Reason:** it can't be typed what "value type" a widget allows, as it could receive any (invalid) value (from e.g. remote states).
 - `binding.NoWidget`/`NoWidgetProps`: renamed `matching` to `widgetId`
 - (react-json-schema) `VirtualWidgetRenderer` now is value-aware when matching widget, adds support for no `type` keyword and improves multi-type support
+
+#### React Misc
+
+- add `window` guards, for SSR/react-native compatibility
+    - in deprecated `UIApi`
+    - together with safe SSR layout effect in `useDebounceValue`
+
+### Dictionary
+
+- add sentence dots in error labels, refined contents
+- [ ] change `error` to `errors` when used with `<Translation` and in dictionary; unify to plural
+
+### Pro
+
+- add `window` guards, for SSR/react-native compatibility
 
 ## Todo WidgetProps
 

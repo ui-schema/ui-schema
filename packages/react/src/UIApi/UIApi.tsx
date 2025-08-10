@@ -64,11 +64,11 @@ export const useUIApi = (): UIApiContextType => React.useContext(UIApiContext)
 /**
  * @deprecated will be removed in a future version
  */
-export const schemaLocalCachePath = 'uischema-cache' + (typeof window === 'undefined' ? 0 : window.location.port)
+export const schemaLocalCachePath = 'uischema-cache' + (typeof window === 'undefined' || typeof window.location === 'undefined' ? 0 : window.location.port)
 
 const initialState = ({noCache = false}): Map<'schemas', Map<string, SomeSchema>> => {
     let cached
-    if (!noCache) {
+    if (!noCache && typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
         const cachedRaw = window?.localStorage?.getItem(schemaLocalCachePath)
         if (cachedRaw) {
             try {
@@ -100,7 +100,7 @@ function reducer(state: Map<'schemas', Map<string, SomeSchema>>, action: UIApiAc
             const tmpState = state.setIn(['schemas', action.id], createOrderedMap(action.value))
             if (!action.noCache) {
                 const schemas = tmpState.get('schemas')
-                if (schemas) {
+                if (schemas && typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
                     window?.localStorage?.setItem(schemaLocalCachePath, JSON.stringify(schemas.toJS()))
                 }
             }

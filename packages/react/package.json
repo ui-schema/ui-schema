@@ -10,6 +10,7 @@
         "json-schema",
         "react",
         "reactjs",
+        "react-native",
         "ui-generation",
         "form-generator"
     ],

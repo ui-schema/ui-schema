@@ -100,7 +100,7 @@ export const useStorePro = (
     store: UIStoreProType
     setStore: setStorePro
 } => {
-    const timer = React.useRef<number | undefined>(undefined)
+    const timer = React.useRef<  ReturnType<typeof setTimeout> | undefined>(undefined)
     const historyChangeRater = React.useRef(initialChangeRater)
     const historyDebounce = React.useRef<any[]>([])
     const [store, setStore] = React.useState<UIStoreProType>(() => makeStorePro(type, initialStore) as UIStoreProType)
@@ -136,8 +136,8 @@ export const useStorePro = (
                 historyAdded = true
                 historyDebounce.current.push(newStore.current.setIn(doingValueSelector, false))
             }
-            window.clearTimeout(timer.current)
-            timer.current = window.setTimeout(() => {
+            clearTimeout(timer.current)
+            timer.current = setTimeout(() => {
                 if (!historyAdded && updateRate !== 1 && historyChangeRater.current.last) {
                     historyDebounce.current.push(historyChangeRater.current.last)
                 }
@@ -163,7 +163,7 @@ export const useStorePro = (
             return newStore
         })
 
-        return () => window.clearTimeout(timer.current)
+        return () => clearTimeout(timer.current)
     }, [storeUpdater, updateRate, debounceTime])
 
     const redoHistory: redoHistory = React.useCallback((steps = 1) => {
@@ -181,7 +181,7 @@ export const useStorePro = (
     }, [setStore])
 
     const reset: (type: string, initialStore?: UIStoreType) => void = React.useCallback((type, initialStore) => {
-        window.clearTimeout(timer.current)
+        clearTimeout(timer.current)
         historyDebounce.current = []
         historyChangeRater.current = initialChangeRater
         setStore(makeStorePro(type, initialStore))
