@@ -1,4 +1,5 @@
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
+import { List } from 'immutable'
 
 /**
  * Checks if a given schema type is distinct, meaning it is the only type present,
@@ -22,11 +23,7 @@ export function schemaTypeIsDistinct(
         return isType === expectedType
     }
 
-    if (Array.isArray(isType)) {
-        if (isType.length === 0) {
-            return false
-        }
-
+    if (Array.isArray(isType) || List.isList(isType)) {
         let foundExpectedType = false
 
         for (const type of isType) {
