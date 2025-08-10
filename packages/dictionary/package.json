@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/dictionary",
-    "version": "0.1.0-alpha.3",
+    "version": "0.1.0-alpha.4",
     "description": "",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes> (https://bemit.codes)",
@@ -29,16 +29,28 @@
             "import": "./esm/index.js",
             "require": "./index.cjs"
         },
+        "./en": {
+            "types": "./en/index.d.ts",
+            "import": "./esm/en/index.js",
+            "require": "./en/index.cjs"
+        },
         "./en/*": {
             "types": "./en/*.d.ts",
             "import": "./esm/en/*.js",
             "require": "./en/*.cjs"
+        },
+        "./en/index": null,
+        "./de": {
+            "types": "./de/index.d.ts",
+            "import": "./esm/de/index.js",
+            "require": "./de/index.cjs"
         },
         "./de/*": {
             "types": "./de/*.d.ts",
             "import": "./esm/de/*.js",
             "require": "./de/*.cjs"
         },
+        "./de/index": null,
         "./typeToString": {
             "types": "./typeToString/index.d.ts",
             "import": "./esm/typeToString/index.js",
