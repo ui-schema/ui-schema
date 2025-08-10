@@ -1,0 +1,86 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://example.org/mixed-dialects",
+    "$comment": "a example of json-schema with embedded nested schema resource with different dialects than the root",
+    "type": "object",
+    "properties": {
+        "product": {
+            "$ref": "#product"
+        },
+        "customer": {
+            "$ref": "#customer"
+        }
+    },
+    "$defs": {
+        "product": {
+            "$id": "#product",
+            "type": "object",
+            "properties": {
+                "productId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "productId",
+                "name",
+                "price"
+            ]
+        },
+        "customer": {
+            "$id": "#customer",
+            "$schema": "https://json-schema.org/draft/2019-09/schema",
+            "type": "object",
+            "properties": {
+                "customerId": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "address": {
+                    "$ref": "#address"
+                }
+            },
+            "required": [
+                "customerId",
+                "firstName",
+                "lastName"
+            ],
+            "$defs": {
+                "address": {
+                    "$schema": "https://json-schema.org/draft-07/schema",
+                    "$id": "#address",
+                    "type": "object",
+                    "properties": {
+                        "street": {
+                            "type": "string"
+                        },
+                        "city": {
+                            "type": "string"
+                        },
+                        "zipCode": {
+                            "type": "string",
+                            "minLength": 5,
+                            "maxLength": 5,
+                            "exclusiveMaximum": false
+                        }
+                    },
+                    "required": [
+                        "street",
+                        "city",
+                        "zipCode"
+                    ]
+                }
+            }
+        }
+    }
+}

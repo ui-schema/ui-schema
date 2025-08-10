@@ -1,5 +1,10 @@
 import * as React from 'react'
 
+const useIsomorphicLayoutEffect =
+    typeof window !== 'undefined' && typeof window.document !== 'undefined'
+        ? React.useLayoutEffect
+        : React.useEffect
+
 export interface DebounceValue<T> {
     // must be `true` when this was a manual update from within this client, will be `false|undefined` when e.g. through a background update
     changed?: boolean
@@ -17,19 +22,19 @@ export const useDebounceValue = <T>(
     setBounceVal: React.Dispatch<React.SetStateAction<DebounceValue<T>>>
     changeBounceVal: (value: T | undefined) => void
 } => {
-    const timer = React.useRef<undefined | number>(undefined)
+    const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
     const [bounceVal, setBounceVal] = React.useState<DebounceValue<T>>({changed: false, value: undefined})
-    React.useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
         setBounceVal({changed: false, value: value as T})
-        return () => window.clearTimeout(timer.current)
+        return () => clearTimeout(timer.current)
     }, [value, timer])
 
     React.useEffect(() => {
         if (typeof bounceVal.value === 'undefined' || !bounceVal.changed) return
-        timer.current = window.setTimeout(() => {
+        timer.current = setTimeout(() => {
             setter(bounceVal.value)
         }, debounceTime)
-        return () => window.clearTimeout(timer.current)
+        return () => clearTimeout(timer.current)
     }, [
         bounceVal, setBounceVal,
         debounceTime, timer, setter,
@@ -37,7 +42,7 @@ export const useDebounceValue = <T>(
 
     const bubbleBounce = React.useCallback((currentVal) => {
         if (bounceVal.value === currentVal) return
-        window.clearTimeout(timer.current)
+        clearTimeout(timer.current)
         setter(bounceVal.value)
     }, [setter, bounceVal])
 

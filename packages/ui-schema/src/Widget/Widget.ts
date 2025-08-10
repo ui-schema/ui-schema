@@ -34,18 +34,11 @@ export interface WidgetPayloadFieldLocation {
 export interface WidgetPayloadFieldSchema {
     /**
      * the current schema level
-     *
-     * @todo wrong reliance, `/system` should not depend on `/json-schema`
-     *       either move WidgetPayload out or make generic?
      */
     schema: SomeSchema
 
     /**
      * `parentSchema` will only be `undefined` in the root level of a schema
-     *
-     * @todo wrong reliance, `/system` should not depend on `/json-schema`
-     *       either move WidgetPayload out or make generic?
-     *       > better with SomeSchema, but
      */
     parentSchema?: SomeSchema | undefined
 }

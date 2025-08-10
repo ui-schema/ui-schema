@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/ui-schema",
-    "version": "0.5.0-alpha.2",
+    "version": "0.5.0-alpha.3",
     "description": "JSON Schema based UI and form generator, for any design-system.",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes> (https://bemit.codes)",

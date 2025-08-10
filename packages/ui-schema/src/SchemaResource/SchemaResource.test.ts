@@ -554,4 +554,36 @@ describe('SchemaResource', () => {
             )
         },
     )
+
+    test(
+        'mixed schema dialect',
+        async () => {
+            const schema = await readSchema(`mixed-dialects.json`)
+            const schemaMap = createOrdered(schema)
+            const resource = resourceFromSchema(schemaMap)
+            expect(Object.keys(resource.schemas)).toStrictEqual([
+                'https://example.org/mixed-dialects',
+                'https://example.org/mixed-dialects#/properties/customer',
+                'https://example.org/mixed-dialects#/properties/product',
+                'https://example.org/mixed-dialects#customer',
+                'https://example.org/mixed-dialects#/$defs/customer/properties/address',
+                'https://example.org/mixed-dialects#/$defs/customer/properties/lastName',
+                'https://example.org/mixed-dialects#/$defs/customer/properties/firstName',
+                'https://example.org/mixed-dialects#/$defs/customer/properties/customerId',
+                'https://example.org/mixed-dialects#address',
+                'https://example.org/mixed-dialects#/$defs/customer/$defs/address/properties/zipCode',
+                'https://example.org/mixed-dialects#/$defs/customer/$defs/address/properties/city',
+                'https://example.org/mixed-dialects#/$defs/customer/$defs/address/properties/street',
+                'https://example.org/mixed-dialects#product',
+                'https://example.org/mixed-dialects#/$defs/product/properties/price',
+                'https://example.org/mixed-dialects#/$defs/product/properties/name',
+                'https://example.org/mixed-dialects#/$defs/product/properties/productId',
+            ])
+
+            expect(resource.schemas['https://example.org/mixed-dialects'].dialect).toBe('https://json-schema.org/draft/2020-12/schema')
+            expect(resource.schemas['https://example.org/mixed-dialects#product'].dialect).toBe('https://json-schema.org/draft/2020-12/schema')
+            expect(resource.schemas['https://example.org/mixed-dialects#customer'].dialect).toBe('https://json-schema.org/draft/2019-09/schema')
+            expect(resource.schemas['https://example.org/mixed-dialects#address'].dialect).toBe('https://json-schema.org/draft-07/schema')
+        },
+    )
 })

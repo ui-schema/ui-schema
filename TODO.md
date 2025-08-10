@@ -131,6 +131,9 @@ Todo:
     - [x] interops with Validator for resolving `$ref` in validator and uses validate for traversing conditionals
     - [ ] better highlight what is important when using it: use the root branch value as schema (for having the prepared, and not the plain schema), check unresolved, use without `inject/applyWidgetEngine` HOCs to move schema root rendering component
     - [ ] create tests for circular `$ref` between separate remote schemas
+    - [x] basic mixed `$schema` keyword awareness in schema branch creation
+    - [ ] improve `$schema`/`$vocabulary` handling, currently only inherits the latest known `$schema` for use cases where a validator should decide if it is enabled
+        - it should not simply inherit it, but keep track on from where it was specified, as `$schema` itself is location-specific, and not global, and thus should be tracked per branch
 - [ ] validator support of defaulting values, initially and after applying conditional schema
     - **tbd:** `default` handling and conditionals/selecting branches in ref/allOf/oneOf chains
 - **TBD:** defaulting values may be needed during validation, to not flash invalid states, which requires some store-effects and bindings to `internals`
@@ -220,7 +223,7 @@ Todo:
     - deprecated `effect`
         - **TODO** make async? (remove into next tick)
 - added new `delete` action, only for deleting properties in objects, can has `scope`, otherwise deletes all
-- basic support for `default` keywod in `list-item-add` action
+- basic support for `default` keyword in `list-item-add` action
 
 Todo:
 
@@ -347,6 +350,21 @@ Todo:
     - **Reason:** it can't be typed what "value type" a widget allows, as it could receive any (invalid) value (from e.g. remote states).
 - `binding.NoWidget`/`NoWidgetProps`: renamed `matching` to `widgetId`
 - (react-json-schema) `VirtualWidgetRenderer` now is value-aware when matching widget, adds support for no `type` keyword and improves multi-type support
+
+#### React Misc
+
+- add `window` guards, for SSR/react-native compatibility
+    - in deprecated `UIApi`
+    - together with safe SSR layout effect in `useDebounceValue`
+
+### Dictionary
+
+- add sentence dots in error labels, refined contents
+- [ ] change `error` to `errors` when used with `<Translation` and in dictionary; unify to plural
+
+### Pro
+
+- add `window` guards, for SSR/react-native compatibility
 
 ## Todo WidgetProps
 
@@ -525,36 +543,3 @@ Todo:
 - [ ] add support for `contains` title to min/max contains error message
 - [x] check all grid components, to be mui v7 `size` compatible; e.g. SimpleList, util components etc.
 - [ ] add an example of split schema inject with the rjsf `ui:` keywords and their matching/nesting structure
-
----
-
-Prompt helper for git changes (only use AI in this project for docs)
-
-Generate diff of important parts:
-
-```shell
-git diff master..feature/develop-0.5.0-r2 -- \
-  packages \
-  ':!packages/demo/**' \
-  ':!packages/demo-web/**' \
-  ':!packages/demo-server/**' \
-  ':!packages/docs/**' \
-  ':!packages/ds-bootstrap/**' \
-  ':!**eslint**' \
-  ':!**ignore**' \
-  ':!**tsconfig**' \
-  ':!**/package-lock.json' \
-  > ../uis-050.patch
-```
-
-Switch `summarize` to `create a full and detailed changelog` for a long version:
-
-```
-summarize the changes described in the current file, its a git diff.
-
-focus on lib changes and write up a changelog with all typical content and enough details. do not focus on dev suite, so changes for stuff that is only internal, and is not changing the released packages, must be ignored.
-
-only use code file diffs. ignore any changes in markdown/documentation - as they may not reflect the latest changes!
-```
-
-> Gemini often skips over some changes, so add specific questions to get better help specific to your setup.

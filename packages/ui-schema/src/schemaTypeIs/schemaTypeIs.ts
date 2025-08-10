@@ -1,4 +1,5 @@
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
+import { List } from 'immutable'
 
 /**
  * Checks if a given schema type matches a single expected type.
@@ -33,8 +34,12 @@ export const schemaTypeIsNumeric = (type: SchemaTypesType): boolean => schemaTyp
  * @returns {boolean} True if `isType` matches any of the `expectedTypes`, false otherwise.
  */
 export const schemaTypeIsAny = (isType: SchemaTypesType, expectedTypes: string[]): boolean => {
-    return Boolean(typeof isType !== 'undefined' && (
-        typeof isType === 'string' ? expectedTypes.includes(isType) :
-            expectedTypes.reduce((c, v) => c || isType.includes(v), false)
-    ))
+    if (typeof isType === 'undefined') return false
+    if (typeof isType === 'string') {
+        return expectedTypes.includes(isType)
+    }
+    if (Array.isArray(isType) || List.isList(isType)) {
+        return expectedTypes.reduce((c, v) => c || (isType as any[]).includes(v), false)
+    }
+    return false
 }

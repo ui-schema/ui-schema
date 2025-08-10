@@ -42,7 +42,7 @@ const addSchemaBranch = (
     nestedKey: string | number,
     instanceLocation: InstanceLocationPathSegment[],
     schema,
-    context?: { retrievalUri?: string },
+    context?: { dialect?: string, retrievalUri?: string },
 ): SchemaBranchType => {
     const childBranch = makeBranch(ancestor, nestedKey, instanceLocation)
     childBranch.type = 'schema'
@@ -54,6 +54,8 @@ const addSchemaBranch = (
         ancestorCanonical: ancestorCanonical,
         retrievalUri: context?.retrievalUri,
     })
+    // todo: check and handle $vocabulary (e.g. in 2019-09)
+    childBranch.dialect = schema.get('$schema', context?.dialect)
     if (childBranch.canonical.isRoot) {
         childBranch.location = []
     }

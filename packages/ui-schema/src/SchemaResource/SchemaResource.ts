@@ -6,7 +6,6 @@ export interface BranchType {
     type?: string
     value?: () => unknown
     ancestor: undefined | (() => BranchType)
-    // todo: move $schema handling into walkSchema
     dialect?: string
     location: LocationPath
     instanceLocation: InstanceLocationPathSegment[]

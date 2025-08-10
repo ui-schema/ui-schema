@@ -17,6 +17,7 @@
         - kind: `validate:boolean`
     - [x] MinMaxValidator
         - kind: `validate:void`
+        - fixed draft-4 compatibility: previously for `exclusiveMinimum` only the `true` case was handled, while for `exclusiveMaximum` any `boolean` enforced the exclusive validation
         - [x] split up by value-type
         - [ ] add params for adding keywordLocation/instanceLocation at all `addError`
     - [x] MultipleOfValidator

@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/dictionary",
-    "version": "0.1.0-alpha.2",
+    "version": "0.1.0-alpha.3",
     "description": "",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes> (https://bemit.codes)",
@@ -16,6 +16,9 @@
     "bugs": {
         "url": "https://github.com/ui-schema/ui-schema/issues"
     },
+    "scripts": {
+        "dtsgen": "tsc --declaration --emitDeclarationOnly --pretty --rootDir ../ && node ../../tools/merge-dirs.js build/dts/dictionary/src build && rimraf build/dts && rimraf --glob build/**/*.test.* build/**/*.mock.*"
+    },
     "type": "module",
     "main": "./index.cjs",
     "module": "./esm/index.js",
@@ -26,10 +29,20 @@
             "import": "./esm/index.js",
             "require": "./index.cjs"
         },
-        "./*": {
-            "types": "./*/index.d.ts",
-            "import": "./esm/*/index.js",
-            "require": "./*/index.cjs"
+        "./en/*": {
+            "types": "./en/*.d.ts",
+            "import": "./esm/en/*.js",
+            "require": "./en/*.cjs"
+        },
+        "./de/*": {
+            "types": "./de/*.d.ts",
+            "import": "./esm/de/*.js",
+            "require": "./de/*.cjs"
+        },
+        "./typeToString": {
+            "types": "./typeToString/index.d.ts",
+            "import": "./esm/typeToString/index.js",
+            "require": "./typeToString/index.cjs"
         },
         "./package.json": "./package.json",
         "./esm": null

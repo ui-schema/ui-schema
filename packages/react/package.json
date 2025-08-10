@@ -1,6 +1,6 @@
 {
     "name": "@ui-schema/react",
-    "version": "0.5.0-alpha.2",
+    "version": "0.5.0-alpha.3",
     "description": "Schema-driven UI generator for React using JSON Schema. Build powerful form and interface generators with headless components and hooks.",
     "homepage": "https://ui-schema.bemit.codes",
     "author": "Michael Becker <michael@bemit.codes> (https://bemit.codes)",
@@ -10,6 +10,7 @@
         "json-schema",
         "react",
         "reactjs",
+        "react-native",
         "ui-generation",
         "form-generator"
     ],

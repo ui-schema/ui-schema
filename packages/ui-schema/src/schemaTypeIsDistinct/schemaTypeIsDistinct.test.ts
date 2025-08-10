@@ -1,5 +1,6 @@
 import { expect, describe, test } from '@jest/globals'
 import { SchemaTypesType } from '@ui-schema/ui-schema/CommonTypings'
+import { List } from 'immutable'
 import { schemaTypeIsDistinct } from './schemaTypeIsDistinct.js'
 
 /**
@@ -42,12 +43,32 @@ describe('schemaTypeIsDistinct', () => {
             expected: true,
         },
         {
+            type: List(['string']),
+            expectedType: 'string',
+            expected: true,
+        },
+        {
             type: 'string',
             expectedType: 'string',
             expected: true,
         },
         {
             type: ['string', 'number'],
+            expectedType: 'string',
+            expected: false,
+        },
+        {
+            type: List(['string', 'number']),
+            expectedType: 'string',
+            expected: false,
+        },
+        {
+            type: [],
+            expectedType: 'string',
+            expected: false,
+        },
+        {
+            type: null as any,
             expectedType: 'string',
             expected: false,
         },

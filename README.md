@@ -4,7 +4,7 @@
 
 <h1 align="center">UI Schema</h1>
 
-Generate forms and UIs from JSON Schema. Use the headless React components to create powerful schema-driven apps, compatible with any design system. Get started quickly with [Material UI React](https://ui-schema.bemit.codes/quick-start?ds=mui) or [Bootstrap](https://ui-schema.bemit.codes/quick-start?ds=bts) and easily create your own widgets and plugins.
+Generate forms and UIs from JSON Schema. Use the headless React components to create powerful schema-driven apps in any design. Get started quickly with [Material UI React](https://ui-schema.bemit.codes/quick-start?ds=mui) or [Bootstrap](https://ui-schema.bemit.codes/quick-start?ds=bts) and easily create your own widgets and plugins.
 
 Create smart apps faster, with less code — thanks to auto-generated UIs, built-in validation, and easy customization.
 
@@ -12,7 +12,9 @@ Create smart apps faster, with less code — thanks to auto-generated UIs, built
 >
 > You're **exploring the [*next* version](https://github.com/ui-schema/ui-schema/discussions/184#discussioncomment-3100010)**! If you spot odd behaviour or have feedback, please [open an issue](https://github.com/ui-schema/ui-schema/issues/new?template=bug.md&title=0.5.x%40next%20Bug%20&labels=bug&type=bug).
 >
-> The **published documentation is still for version 0.4.x**. The new documentation for 0.5.x is not yet complete. However, the repository includes [a basic migration guide from 0.4.x to 0.5.x](./packages/docs/src/content/updates/v0.4.0-v0.5.0.md), and the [example code below is updated for 0.5.x](#example-ui-schema). You can [preview the new documentation locally](./CONTRIBUTING.md#documentation-app) by setting up the repository.
+> The **published documentation is still for version 0.4.x**. The new documentation for 0.5.x is not yet complete. See [this basic migration guide from 0.4.x to 0.5.x](./packages/docs/src/content/updates/v0.4.0-v0.5.0.md). You can [preview the new documentation locally](./CONTRIBUTING.md#documentation-app) by setting up the repository.
+>
+> Note that the [example code below](#example-ui-schema) and [demo apps](#get-started) are already updated for 0.5.x.
 >
 > To use the `next` version you must specify the exact version or use `@ui-schema/ui-schema@next` during installation.
 
@@ -33,23 +35,26 @@ Create smart apps faster, with less code — thanks to auto-generated UIs, built
 - @ui-schema/dictionary [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/dictionary?style=flat-square)](https://www.npmjs.com/package/@ui-schema/dictionary)
 
 - Additional Material-UI Widgets:
-    - Date-Time Picker: `@ui-schema/material-pickers` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/material-pickers?style=flat-square)](https://www.npmjs.com/package/@ui-schema/material-pickers) [![Component Documentation](https://img.shields.io/badge/Docs-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=mui)](https://ui-schema.bemit.codes/docs/material-pickers/Overview)
-    - Codemirror as Material Input: `@ui-schema/material-code` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/material-code?style=flat-square)](https://www.npmjs.com/package/@ui-schema/material-code) [![Component Documentation](https://img.shields.io/badge/Docs-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=mui)](https://ui-schema.bemit.codes/docs/material-code/material-code) [![repo](https://img.shields.io/badge/Repo-green?labelColor=000000&color=f4f6f7&logoColor=ffffff&style=flat-square&logo=github)](https://github.com/ui-schema/react-codemirror/tree/main/packages/material-code)
-    - `react-color` picker: `@ui-schema/material-color` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/material-color?style=flat-square)](https://www.npmjs.com/package/@ui-schema/material-color) [![Component Documentation](https://img.shields.io/badge/Docs-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=mui)](https://ui-schema.bemit.codes/docs/material-color/material-color) [![repo](https://img.shields.io/badge/Repo-green?labelColor=000000&color=f4f6f7&logoColor=ffffff&style=flat-square&logo=github)](https://github.com/ui-schema/react-color/tree/main/packages/material-color)
-    - `react-colorful` picker: `@ui-schema/material-colorful` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/material-colorful?style=flat-square)](https://www.npmjs.com/package/@ui-schema/material-colorful) [![Component Documentation](https://img.shields.io/badge/Docs-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=mui)](https://ui-schema.bemit.codes/docs/material-colorful/material-colorful) [![repo](https://img.shields.io/badge/Repo-green?labelColor=000000&color=f4f6f7&logoColor=ffffff&style=flat-square&logo=github)](https://github.com/ui-schema/react-color/tree/main/packages/material-colorful)
-    - 🚧 Drag 'n Drop with `react-dnd`: `@ui-schema/material-dnd` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/material-dnd?style=flat-square)](https://www.npmjs.com/package/@ui-schema/material-dnd) [![Component Documentation](https://img.shields.io/badge/Docs-green?labelColor=1a237e&color=0d47a1&logoColor=ffffff&style=flat-square&logo=mui)](https://ui-schema.bemit.codes/docs/material-dnd/overview)
+    - Date-Time Picker: `@ui-schema/material-pickers` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/material-pickers?style=flat-square)](https://www.npmjs.com/package/@ui-schema/material-pickers) [Documentation](https://ui-schema.bemit.codes/docs/material-pickers/Overview)
+    - Codemirror as Material Input: `@ui-schema/material-code` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/material-code?style=flat-square)](https://www.npmjs.com/package/@ui-schema/material-code) [Documentation](https://github.com/ui-schema/react-codemirror/tree/main/docs/material-code), [Repository](https://github.com/ui-schema/react-codemirror/tree/main/packages/material-code)
+    - `react-color` picker: `@ui-schema/material-color` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/material-color?style=flat-square)](https://www.npmjs.com/package/@ui-schema/material-color) [Documentation](https://github.com/ui-schema/react-color/tree/main/docs/material-color), [Repository](https://github.com/ui-schema/react-color/tree/main/packages/material-color)
+    - `react-colorful` picker: `@ui-schema/material-colorful` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/material-colorful?style=flat-square)](https://www.npmjs.com/package/@ui-schema/material-colorful) [Documentation](https://github.com/ui-schema/react-color/tree/main/docs/material-colorful), [Repository](https://github.com/ui-schema/react-color/tree/main/packages/material-colorful)
+    - 🚧 Drag 'n Drop with `react-dnd`: `@ui-schema/material-dnd` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/material-dnd?style=flat-square)](https://www.npmjs.com/package/@ui-schema/material-dnd) [Documentation](https://ui-schema.bemit.codes/docs/material-dnd/overview)
 - Additional Packages, not only for UI Schema:
-    - CodeMirror v6 kit: `@ui-schema/kit-codemirror` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/kit-codemirror?style=flat-square)](https://www.npmjs.com/package/@ui-schema/kit-codemirror) [![Component Documentation](https://img.shields.io/badge/Docs-green?labelColor=0a6e8a&color=61dafb&logoColor=ffffff&style=flat-square&logo=react)](https://ui-schema.bemit.codes/docs/kit-codemirror/kit-codemirror) [![repo](https://img.shields.io/badge/Repo-green?labelColor=000000&color=f4f6f7&logoColor=ffffff&style=flat-square&logo=github)](https://github.com/ui-schema/react-codemirror/tree/main/packages/kit-codemirror)
-    - 🚧 Drag 'n Drop kit: `@ui-schema/kit-dnd` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/kit-dnd?style=flat-square)](https://www.npmjs.com/package/@ui-schema/kit-dnd) [![Component Documentation](https://img.shields.io/badge/Docs-green?labelColor=0a6e8a&color=61dafb&logoColor=ffffff&style=flat-square&logo=react)](https://ui-schema.bemit.codes/docs/kit-dnd/kit-dnd)
+    - CodeMirror v6 kit: `@ui-schema/kit-codemirror` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/kit-codemirror?style=flat-square)](https://www.npmjs.com/package/@ui-schema/kit-codemirror) [Documentation](https://github.com/ui-schema/react-codemirror/tree/main/docs/kit-codemirror), [Repository](https://github.com/ui-schema/react-codemirror/tree/main/packages/kit-codemirror)
+    - 🚧 Drag 'n Drop kit: `@ui-schema/kit-dnd` [![npm (scoped)](https://img.shields.io/npm/v/@ui-schema/kit-dnd?style=flat-square)](https://www.npmjs.com/package/@ui-schema/kit-dnd) [Documentation](https://ui-schema.bemit.codes/docs/kit-dnd/kit-dnd)
 
 ## Get Started
 
-- [Quick-Start](https://ui-schema.bemit.codes/quick-start)
-- [Schema Examples + Live Editor](https://ui-schema.bemit.codes/examples)
-- [Demo App: UI Schema + Material Design](https://github.com/ui-schema/demo-cra)
-    - [CodeSandbox](https://codesandbox.io/s/github/ui-schema/demo-cra/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2FSchema%2FDemoEditor.js) | [StackBlitz](https://stackblitz.com/github/ui-schema/demo-cra)
-- [Documentation](https://ui-schema.bemit.codes)
-- [Get Help on Discord](https://discord.gg/MAjgpwnm36)
+- ⚡ [Quick Start](https://ui-schema.bemit.codes/quick-start)
+- 🕹️ [Schema Examples + Live Editor](https://ui-schema.bemit.codes/examples)
+- Demo Apps:
+    - 🌐 MUI, React, TypeScript: [CodeSandbox](https://codesandbox.io/s/github/ui-schema/demo-cra-ts/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2Fmain.tsx) | [StackBlitz](https://stackblitz.com/github/ui-schema/demo-cra-ts) | [Source Repository](https://github.com/ui-schema/demo-cra-ts)
+    - 🌐 MUI, React: [CodeSandbox](https://codesandbox.io/s/github/ui-schema/demo-cra/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2FSchema%2FDemoEditor.js) | [StackBlitz](https://stackblitz.com/github/ui-schema/demo-cra) | [Source Repository](https://github.com/ui-schema/demo-cra)
+    - 🌐 Bootstrap, React: [CodeSandbox](https://codesandbox.io/s/github/ui-schema/demo-bts/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2FSchema%2FDemoEditor.js) | [StackBlitz](https://stackblitz.com/github/ui-schema/demo-bts) | [Source Repository](https://github.com/ui-schema/demo-bts)
+    - 📱 [React Native](https://github.com/ui-schema/demo-react-native) with custom widgets
+- 📖 [Documentation](https://ui-schema.bemit.codes)
+- 💬 [Get Help on Discord](https://discord.gg/MAjgpwnm36)
 
 ## Schema
 
@@ -79,19 +84,19 @@ Use JSON Schema to validate data and automatically create UIs with it - UI-Schem
     - add own base renderers
     - add own widget matchers & render strategies
     - use what you need
-- [performance optimized](https://ui-schema.bemit.codes/docs/performance), only updates HTML which must re-render, perfect for big schemas
-- code-splitting, with custom widget mappings / lazy-loading widgets
-- includes helper functions for store and immutable handling
-- easy nesting for custom object/array widgets with [`WidgetEngine`](https://ui-schema.bemit.codes/docs/react/widgetengine)
+- isomorphic code: for browser, server, and more
+- not just for React, with vanilla-JS core
+- [performance optimized](https://ui-schema.bemit.codes/docs/performance), React only updates HTML which must re-render, perfect for big schemas
+- easy nesting for custom object/array widgets with [`<WidgetEngine/>`](https://ui-schema.bemit.codes/docs/react/widgetengine)
 - validate hidden/auto-generated values, virtualize schema levels ([`hidden` keyword](https://ui-schema.bemit.codes/docs/schema#hidden-keyword--virtualization))
 - handle store update from anywhere and however you want
+- includes helper functions for store and immutable handling
 - extensive documentations of core, widgets
-- typed components and definitions for JSON Schema and UI Schema
 - complex conditionals schemas
 - loading / referencing schemas by URL, connect any API or e.g. babel dynamic loading instead
 - definitions and JSON-Pointer references in schemas
 - JSON Schema extension: UI Schema, change design and even behaviour of widgets
-- **JSON Schema versions** supported: Draft 2019-09 / Draft-08, Draft-07, Draft-06, Draft-04
+- **JSON Schema versions** supported: Draft 2020-12, 2019-09 / Draft-08, Draft-07, Draft-06, Draft-04
 
 *[Design-System and Widgets Overview](https://ui-schema.bemit.codes/docs/overview)*
 
@@ -107,17 +112,17 @@ This project adheres to [semver](https://semver.org/), until `1.0.0` and beginni
 
 ## Example UI Schema
 
-First time? [Take the quick-start](https://ui-schema.bemit.codes/quick-start) or take a look into the MUI demo repos: [create-react-app & JS (simple)](https://github.com/ui-schema/demo-cra) or [create-react-app & Typescript (advanced)](https://github.com/ui-schema/demo-cra-ts).
+First time? [Take the quick-start](https://ui-schema.bemit.codes/quick-start) or check out the [demo repos](#get-started)!
 
-Example setup of the React engine, followed by a [simple text widget](#example-simple-text-widget) - with @mui as design system.
+Example setup of the React engine with @mui as design system, below is a [vanilla-HTML text widget](#example-simple-text-widget).
 
-If you haven’t already [set up @mui](https://mui.com/getting-started/installation/), install it first; then install the @ui-schema dependencies:
+If you haven’t already [set up @mui](https://mui.com/getting-started/installation/); then install the @ui-schema dependencies:
 
 ```shell
-npm i --save @ui-schema/ui-schema@next @ui-schema/json-schema@next @ui-schema/json-pointer@next @ui-schema/ds-material@next
+npm i --save @ui-schema/ui-schema@next @ui-schema/json-schema@next @ui-schema/json-pointer@next @ui-schema/react@next @ui-schema/ds-material@next
 ```
 
-Then add the example code:
+And add the example code:
 
 ```js
 import React from 'react';
