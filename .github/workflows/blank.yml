@@ -60,6 +60,11 @@ jobs:
                 run: |
                     npm run test
 
+            -   name: Send code coverage report to Codecov.io
+                uses: codecov/codecov-action@v4
+                with:
+                    token: ${{ secrets.CODECOV_TOKEN }}
+
             #-   name: Run checks
             #    run: |
             #        # includes lint, ts-checks for non-packages (as checked during dtsgen), tests
@@ -72,11 +77,6 @@ jobs:
             -   name: Check Resolver # this check uses the build assets, not source code
                 run: |
                     npm run check-resolver
-
-            -   name: Send code coverage report to Codecov.io
-                uses: codecov/codecov-action@v4
-                with:
-                    token: ${{ secrets.CODECOV_TOKEN }}
 
             -   name: Publish to NPM
                 if: github.ref == 'refs/heads/main'

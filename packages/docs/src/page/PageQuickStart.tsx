@@ -168,17 +168,20 @@ npm i --save @ui-schema/ui-schema @ui-schema/react @ui-schema/json-schema @ui-sc
 > - \`ds-material@v0.4.x\` supports \`@mui/material\` (v5)
 > - \`>= ds-material@v0.5.x\` supports \`@mui/material\` (v5, v6, v7)
 
-> More the demo person?
+> Prefer a demo?
 >
-> - [simple create-react-app demo](https://github.com/ui-schema/demo-cra) with a [codesandbox](https://codesandbox.io/s/github/ui-schema/demo-cra/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2FSchema%2FDemoEditor.js)
-> - [complexer examples using TypeScript and create-react-app](https://github.com/ui-schema/demo-cra-ts) with a [codesandbox](https://codesandbox.io/s/github/ui-schema/demo-cra-ts/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2Fpages%2FPageSimpleForm.tsx)
+> - 🌐 MUI, React, TypeScript: [CodeSandbox](https://codesandbox.io/s/github/ui-schema/demo-cra-ts/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2Fmain.tsx) | [StackBlitz](https://stackblitz.com/github/ui-schema/demo-cra-ts) | [Source Repository](https://github.com/ui-schema/demo-cra-ts)
+> - 🌐 MUI, React: [CodeSandbox](https://codesandbox.io/s/github/ui-schema/demo-cra/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2FSchema%2FDemoEditor.js) | [StackBlitz](https://stackblitz.com/github/ui-schema/demo-cra) | [Source Repository](https://github.com/ui-schema/demo-cra)
 `}/> : null}
                 {ds === 'bts' ? <Markdown source={`
-> no priority currently for bootstrap widgets development, but happy about PRs
 \`\`\`bash
 npm i --save @ui-schema/ui-schema @ui-schema/react @ui-schema/json-schema @ui-schema/json-pointer immutable \\
     @ui-schema/ds-bootstrap bootstrap
 \`\`\`
+
+> Prefer a demo?
+>
+> - 🌐 Bootstrap, React: [CodeSandbox](https://codesandbox.io/s/github/ui-schema/demo-bts/tree/master/?autoresize=1&fontsize=12&hidenavigation=1&module=%2Fsrc%2FSchema%2FDemoEditor.js) | [StackBlitz](https://stackblitz.com/github/ui-schema/demo-bts) | [Source Repository](https://github.com/ui-schema/demo-bts)
 `}/> : null}
                 {ds === 'custom' ? <Markdown source={`
 Install dependencies then head to the [widgets binding documentation](/docs/widgets#create-design-system-binding) for more details about creating design systems bindings.
@@ -198,6 +201,8 @@ npm i --save @ui-schema/react @ui-schema/json-schema react
 \`\`\`
 
 > Check the [\`@ui-schema/json-schema\` package docs](/docs/json-schema/overview) for basic instructions on validator setup, without rendering.
+>
+> Check out the [React Native](https://github.com/ui-schema/demo-react-native) demo for a simple yet complete design system.
 
 `}/> : null}
             </Paper>
