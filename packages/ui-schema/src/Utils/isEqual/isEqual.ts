@@ -1,7 +1,10 @@
-import { List, Map, Record } from 'immutable'
+import { isImmutable, Record } from 'immutable'
 
+/**
+ * Checks if two values are structurally equal, with special handling for Immutable.js collections.
+ */
 export const isEqual = (a: unknown, b: unknown): boolean => {
-    if(List.isList(b) || Map.isMap(b) || Record.isRecord(b)) {
+    if(isImmutable(b) || Record.isRecord(b)) {
         return b.equals(a)
     } else if(Array.isArray(b)) {
         return a === b
